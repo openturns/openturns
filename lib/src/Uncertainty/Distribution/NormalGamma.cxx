@@ -22,6 +22,7 @@
 #include "openturns/NormalGamma.hxx"
 #include "openturns/Gamma.hxx"
 #include "openturns/Normal.hxx"
+#include "openturns/AnalyticalFunction.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -47,7 +48,7 @@ NormalGamma::NormalGamma()
   formulas[0] = String(oss << mu_);
   oss.clear();
   formulas[1] = String(oss << "1.0 / (" << kappa_ << "*lambda)");
-  const NumericalMathFunction link(inVars, formulas);
+  const AnalyticalFunction link(inVars, formulas);
   setConditionedAndConditioningDistributionsAndLinkFunction(Normal(), Gamma(alpha_, beta_), link);
 }
 
@@ -73,7 +74,7 @@ NormalGamma::NormalGamma(const NumericalScalar mu,
   formulas[0] = String(oss << mu_);
   oss.clear();
   formulas[1] = String(oss << "1.0 / sqrt(" << kappa_ << "*lambda)");
-  const NumericalMathFunction link(inVars, formulas);
+  const AnalyticalFunction link(inVars, formulas);
   setConditionedAndConditioningDistributionsAndLinkFunction(Normal(), Gamma(alpha_, beta_), link);
   computeRange();
 }

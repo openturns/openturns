@@ -21,7 +21,7 @@ Examples
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
 >>> dim = 2
->>> model = ot.NumericalMathFunction(['x', 'y'], ['z'], ['x^2+y^2*(1-x)^3'])
+>>> model = ot.AnalyticalFunction(['x', 'y'], ['x^2+y^2*(1-x)^3'])
 >>> bounds = ot.Interval([-3.0] * dim, [3.0] * dim)
 >>> problem = ot.OptimizationProblem()
 >>> problem.setObjective(model)

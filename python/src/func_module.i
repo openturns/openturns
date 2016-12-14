@@ -62,6 +62,12 @@
 %include NumericalMathFunctionImplementation.i
 %include ProductNumericalMathFunction.i
 %include NumericalMathFunction.i
+%include AggregatedFunction.i
+%include AnalyticalFunction.i
+%include LinearCombinationFunction.i
+%include ComposedFunction.i
+%include ParametricFunction.i
+%include DualLinearCombinationFunction.i
 %include DynamicalFunctionImplementation.i
 %include DynamicalFunction.i
 %include SpatialFunction.i
@@ -73,8 +79,8 @@
 %include LinearCombinationEvaluationImplementation.i
 %include LinearCombinationGradientImplementation.i
 %include LinearCombinationHessianImplementation.i
-%include LinearNumericalMathFunction.i
-%include QuadraticNumericalMathFunction.i
+%include LinearFunction.i
+%include QuadraticFunction.i
 %include UniVariateFunctionImplementation.i
 %include UniVariateFunction.i
 %include UniVariatePolynomialImplementation.i
@@ -87,6 +93,7 @@
 %include AnalyticalNumericalMathGradientImplementation.i
 %include AnalyticalNumericalMathHessianImplementation.i
 #endif
+%include DatabaseFunction.i
 %include DatabaseNumericalMathEvaluationImplementation.i
 %include IndicatorNumericalMathEvaluationImplementation.i
 %include ProductPolynomialEvaluationImplementation.i

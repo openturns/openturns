@@ -49,7 +49,7 @@ Create a function :math:`g : \Rset^d \mapsto \Rset^q` such as:
                 x & \mapsto & x^2
             \end{array}\right.
 
->>> g = ot.NumericalMathFunction('x', 'x^2')
+>>> g = ot.AnalyticalFunction(['x'], ['x^2'])
 
 Convert :math:`g` into a spatial function with :math:`n` the dimension of the
 mesh of the field on which :math:`g` will be applied:
@@ -72,13 +72,13 @@ mesh of the field on which :math:`g` will be applied:
 4 : [ 0.8 4   ]
 5 : [ 1   5   ]
 >>> print(mySpatialFunction(ts))
-    [ t              outputVariable ]
-0 : [  0              0             ]
-1 : [  0.2            1             ]
-2 : [  0.4            4             ]
-3 : [  0.6            9             ]
-4 : [  0.8           16             ]
-5 : [  1             25             ]"
+    [ t    y0   ]
+0 : [  0    0   ]
+1 : [  0.2  1   ]
+2 : [  0.4  4   ]
+3 : [  0.6  9   ]
+4 : [  0.8 16   ]
+5 : [  1   25   ]"
 
 // ---------------------------------------------------------------------
 

@@ -31,10 +31,10 @@ Examples
 >>> from math import pi
 >>> dist = ot.Uniform(-pi/2, pi/2)
 >>> # Model here is sin(x)
->>> model = ot.NumericalMathFunction('x', 'sin(x)')
+>>> model = ot.AnalyticalFunction(['x'], ['sin(x)'])
 >>> # We can build several types of models (kriging, pc, ...)
 >>> # We use a Taylor developement (order 5) and compare the metamodel with the model
->>> metaModel = ot.NumericalMathFunction('x', 'x - x^3/6.0 + x^5/120.0')
+>>> metaModel = ot.AnalyticalFunction(['x'], ['x - x^3/6.0 + x^5/120.0'])
 >>> x = dist.getSample(10)
 >>> y = model(x)
 >>> # Validation of the model

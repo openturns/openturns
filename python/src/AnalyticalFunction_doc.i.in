@@ -1,0 +1,83 @@
+%feature("docstring") OT::AnalyticalFunction
+"Analytical function.
+
+Available constructor:
+    AnalyticalFunction(*inputs, formulas*)
+
+Parameters
+----------
+inputs : sequence of str
+    List of input variables names of the function.
+formulas : sequence of str
+    List of analytical formulas between the inputs and the outputs.
+    The function is defined by *ouputs = formulas(inputs)*.
+
+Available functions:
+
+    - sin
+    - cos
+    - tan
+    - asin
+    - acos
+    - atan
+    - sinh
+    - cosh
+    - tanh
+    - asinh
+    - acosh
+    - atanh
+    - log2
+    - log10
+    - log
+    - ln
+    - lngamma
+    - gamma
+    - exp
+    - erf
+    - erfc
+    - sqrt
+    - cbrt
+    - besselJ0
+    - besselJ1
+    - besselY0
+    - besselY1
+    - sign
+    - rint
+    - abs
+    - min
+    - max
+    - sum
+    - avg
+    - floor
+    - ceil
+    - trunc
+    - round
+
+    Available operators:
+
+    - = (assignment)
+    - && (logical and)
+    - || (logical or)
+    - <= (less or equal)
+    - >= (greater or equal)
+    - != (not equal)
+    - == (equal)
+    - > (greater than)
+    - < (less than)
+    - \+ (addition)
+    - \- (subtraction)
+    - \* (multiplication)
+    - / (division)
+    - ^ (raise x to the power of y)
+
+    Available constants:
+
+    - _e (Euler's constant)
+    - _pi (Pi)
+
+Examples
+--------
+>>> import openturns as ot
+>>> f = ot.AnalyticalFunction(['x0', 'x1'], ['x0 + x1', 'x0 - x1'])
+>>> print(f([1, 2]))
+[3,-1]"

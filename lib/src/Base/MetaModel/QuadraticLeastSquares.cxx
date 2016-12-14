@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/QuadraticLeastSquares.hxx"
-#include "openturns/QuadraticNumericalMathFunction.hxx"
+#include "openturns/QuadraticFunction.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -159,7 +159,7 @@ void QuadraticLeastSquares::run()
     } // quadratic term
   } // output components
   const NumericalPoint center(inputDimension, 0.0);
-  responseSurface_ = QuadraticNumericalMathFunction(center, constant_, linear_, quadratic_);
+  responseSurface_ = QuadraticFunction(center, constant_, linear_, quadratic_);
 }
 
 /* DataIn accessor */

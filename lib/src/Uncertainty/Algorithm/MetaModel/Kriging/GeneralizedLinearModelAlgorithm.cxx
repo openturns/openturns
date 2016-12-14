@@ -26,12 +26,14 @@
 #include "openturns/TensorizedCovarianceModel.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/LinearNumericalMathFunction.hxx"
+#include "openturns/LinearFunction.hxx"
 #include "openturns/CenteredFiniteDifferenceHessian.hxx"
 #include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
 #include "openturns/NonCenteredFiniteDifferenceGradient.hxx"
 #include "openturns/TNC.hxx"
 #include "openturns/NLopt.hxx"
+#include "openturns/AnalyticalFunction.hxx"
+#include "openturns/ComposedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -109,7 +111,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const Numerica
       if (std::abs(stdev[j]) > SpecFunc::MinNumericalScalar) linear(j, j) /= stdev[j];
     }
     const NumericalPoint zero(dimension);
-    setInputTransformation(LinearNumericalMathFunction(mean, zero, linear));
+    setInputTransformation(LinearFunction(mean, zero, linear));
   }
   initializeMethod();
   initializeDefaultOptimizationSolver();
@@ -171,7 +173,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const Numerica
       if (std::abs(stdev[j]) > SpecFunc::NumericalScalarEpsilon) linear(j, j) /= stdev[j];
     }
     const NumericalPoint zero(dimension);
-    setInputTransformation(LinearNumericalMathFunction(mean, zero, linear));
+    setInputTransformation(LinearFunction(mean, zero, linear));
   }
   initializeMethod();
   initializeDefaultOptimizationSolver();
@@ -275,7 +277,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const Numerica
       if (std::abs(stdev[j]) > SpecFunc::MinNumericalScalar) linear(j, j) /= stdev[j];
     }
     const NumericalPoint zero(dimension);
-    setInputTransformation(LinearNumericalMathFunction(mean, zero, linear));
+    setInputTransformation(LinearFunction(mean, zero, linear));
   }
   initializeMethod();
   initializeDefaultOptimizationSolver();
@@ -553,14 +555,14 @@ void GeneralizedLinearModelAlgorithm::run()
   {
     // If no basis ==> zero function
 #ifdef OPENTURNS_HAVE_MUPARSER
-    metaModel = NumericalMathFunction(Description::BuildDefault(covarianceModel_.getSpatialDimension(), "x"), Description(covarianceModel_.getDimension(), "0.0"));
+    metaModel = AnalyticalFunction(Description::BuildDefault(covarianceModel_.getSpatialDimension(), "x"), Description(covarianceModel_.getDimension(), "0.0"));
 #else
     metaModel = NumericalMathFunction(NumericalSample(1, covarianceModel_.getSpatialDimension()), NumericalSample(1, covarianceModel_.getDimension()));
 #endif
   }
 
   // Add transformation if needed
-  if (normalize_) metaModel = NumericalMathFunction(metaModel, inputTransformation_);
+  if (normalize_) metaModel = ComposedFunction(metaModel, inputTransformation_);
 
   // compute residual, relative error
   const NumericalPoint outputVariance(outputSample_.computeVariance());
@@ -841,7 +843,7 @@ NumericalMathFunction GeneralizedLinearModelAlgorithm::getInputTransformation() 
   if (!normalize_)
   {
     const UnsignedInteger dimension = inputSample_.getDimension();
-    return LinearNumericalMathFunction(NumericalPoint(dimension), NumericalPoint(dimension), IdentityMatrix(dimension));
+    return LinearFunction(NumericalPoint(dimension), NumericalPoint(dimension), IdentityMatrix(dimension));
   }
   return inputTransformation_;
 }

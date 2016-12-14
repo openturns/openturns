@@ -12,6 +12,15 @@ General mathematical functions
     :template: class.rst_t
 
     NumericalMathFunction
+    AnalyticalFunction
+    ComposedFunction
+    LinearCombinationFunction
+    LinearFunction
+    QuadraticFunction
+    AggregatedFunction
+    DualLinearCombinationFunction
+    DatabaseFunction
+    ParametricFunction
     PythonFunction
     OpenTURNSPythonFunction
 
@@ -23,9 +32,7 @@ Various functions
     :template: class.rst_t
 
     ComposedNumericalMathFunction
-    LinearNumericalMathFunction
     ProductNumericalMathFunction
-    QuadraticNumericalMathFunction
 
 Dynamical functions
 ===================

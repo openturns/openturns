@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/StandardEvent.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/ComposedFunction.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/CompositeRandomVector.hxx"
 #include "openturns/UsualRandomVector.hxx"
@@ -72,7 +72,7 @@ StandardEvent::StandardEvent(const Event & event)
   const Distribution standard(distribution.getStandardDistribution());
   // Build the antecedent
   const RandomVector antecedent(standard);
-  const NumericalMathFunction composed(function, inverse);
+  const ComposedFunction composed(function, inverse);
   const RandomVector vect(composed, antecedent);
   // Set the random vector implementation
   (*this) = StandardEvent(vect, event.getOperator(), event.getThreshold());

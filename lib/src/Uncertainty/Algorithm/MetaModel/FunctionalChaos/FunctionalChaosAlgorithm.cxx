@@ -26,6 +26,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/NumericalMathFunctionImplementation.hxx"
+#include "openturns/ComposedFunction.hxx"
 #include "openturns/IdentityFunction.hxx"
 #include "openturns/DatabaseNumericalMathEvaluationImplementation.hxx"
 #include "openturns/RosenblattEvaluation.hxx"
@@ -341,8 +342,8 @@ void FunctionalChaosAlgorithm::run()
         const NumericalMathFunction TinvX(distribution_.getInverseIsoProbabilisticTransformation());
         const NumericalMathFunction TZ(measure.getIsoProbabilisticTransformation());
         const NumericalMathFunction TinvZ(measure.getInverseIsoProbabilisticTransformation());
-        transformation_ = NumericalMathFunction(TinvZ, TX);
-        inverseTransformation_ = NumericalMathFunction(TinvX, TZ);
+        transformation_ = ComposedFunction(TinvZ, TX);
+        inverseTransformation_ = ComposedFunction(TinvX, TZ);
       }
       // The fourth and last case is when the standard spaces are different
       // We use the Rosenblatt transformation for each distribution with non-normal
@@ -378,15 +379,15 @@ void FunctionalChaosAlgorithm::run()
           TZ = NumericalMathFunction(NumericalMathFunctionImplementation(RosenblattEvaluation(measure.getImplementation()).clone()));
           invTZ = NumericalMathFunction(NumericalMathFunctionImplementation(InverseRosenblattEvaluation(measure.getImplementation()).clone()));
         }
-        transformation_ = NumericalMathFunction(invTZ, TX);
-        inverseTransformation_ = NumericalMathFunction(invTX, TZ);
+        transformation_ = ComposedFunction(invTZ, TX);
+        inverseTransformation_ = ComposedFunction(invTX, TZ);
       }
     } // Non-independent input copula
   }
   // Build the composed model g = f o T^{-1}, which is a function of Z so it can be decomposed upon an orthonormal basis based on Z distribution
   LOGINFO("Transform the input sample in the measure space if needed");
   if (noTransformation) composedModel_ = model_;
-  else composedModel_ = NumericalMathFunction(model_, inverseTransformation_);
+  else composedModel_ = ComposedFunction(model_, inverseTransformation_);
   // If the input and output databases have already been given to the projection strategy, transport them to the measure space
   const NumericalSample initialInputSample(projectionStrategy_.getImplementation()->inputSample_);
   if (databaseProjection && !noTransformation) projectionStrategy_.getImplementation()->inputSample_ = transformation_(initialInputSample);

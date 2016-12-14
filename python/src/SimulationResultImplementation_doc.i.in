@@ -10,7 +10,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
->>> limitState = ot.NumericalMathFunction(['E', 'F', 'L', 'I'], ['y'], ['-F*L^3/(3.*E*I)'])
+>>> limitState = ot.AnalyticalFunction(['E', 'F', 'L', 'I'], ['-F*L^3/(3.*E*I)'])
 >>> # Enable the history mecanism in order to use the getImportanceFactors method
 >>> limitState.enableHistory()
 >>> myDistribution = ot.Normal([50.0, 1.0, 10.0, 5.0], [1.0]*4, ot.IdentityMatrix(4))

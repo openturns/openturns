@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 from openturns.viewer import View
 
 
-f = ot.NumericalMathFunction('x', 'abs(sin(x))')
+f = ot.AnalyticalFunction(['x'], ['abs(sin(x))'])
 a = -2.5
 b = 4.5
 algo = ot.GaussKronrod(

@@ -26,7 +26,7 @@
 #include "openturns/SquareComplexMatrix.hxx"
 #include "openturns/NumericalSample.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/LinearNumericalMathFunction.hxx"
+#include "openturns/LinearFunction.hxx"
 #include "openturns/Pointer.hxx"
 #include "openturns/Uniform.hxx"
 #include "openturns/ComposedDistribution.hxx"
@@ -35,6 +35,7 @@
 #include "openturns/OrthogonalProductPolynomialFactory.hxx"
 #include "openturns/LegendreFactory.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/ComposedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -158,13 +159,13 @@ void KarhunenLoeveQuadratureAlgorithm::run()
       normalizationFactor *= T(i, i);
       inverseT(i, i) = 1.0 / T(i, i);
     }
-    scaling = LinearNumericalMathFunction(center, constant, T);
-    inverseScaling = LinearNumericalMathFunction(constant, center, inverseT);
+    scaling = LinearFunction(center, constant, T);
+    inverseScaling = LinearFunction(constant, center, inverseT);
   }
   // Here we set the collection of functions
   Collection<NumericalMathFunction> coll(basisSize_);
   for (UnsignedInteger i = 0; i < basisSize_; ++i)
-    if (!hasSameBounds && mustScale_) coll[i] = NumericalMathFunction(basis_.build(i), inverseScaling);
+    if (!hasSameBounds && mustScale_) coll[i] = ComposedFunction(basis_.build(i), inverseScaling);
     else coll[i] = basis_.build(i);
   // Compute the integration nodes and weights
   NumericalPoint rawWeights;

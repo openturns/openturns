@@ -15,7 +15,7 @@ def hyperplane(coefs):
     linear = ot.Matrix(1, dim)
     for i in range(dim):
         linear[0, i] = coefs[i]
-    function = ot.LinearNumericalMathFunction(center, constant, linear)
+    function = ot.LinearFunction(center, constant, linear)
     return function
 
 

@@ -1,0 +1,49 @@
+%feature("docstring") OT::QuadraticFunction
+"Quadratic function.
+
+Available constructors:
+   QuadraticFunction(*center, constant, linear, quadratic*)
+
+Parameters
+----------
+center : sequence of float
+    Vector :math:`\vect{b}`.
+constant : sequence of float
+    Vector :math:`\vect{c}`.
+linear : :class:`~openturns.Matrix`
+    Matrix :math:`\mat{A}`.
+quadratic : :class:`~openturns.SymmetricTensor`
+    Tensor :math:`\underline{\underline{\underline{M}}}`.
+
+Notes
+-----
+This implements a quadratic function :math:`f` defined as:
+
+.. math::
+
+    f : & \Rset^n \rightarrow \Rset^p  \\
+        & \vect{X} \mapsto \mat{A} ( \vect{X} - \vect{b} ) + \vect{c} + \frac{1}{2} \vect{X}^T \times \underline{\underline{\underline{M}}} \times \vect{X}
+
+where:
+
+- :math:`\mat{A}` is the :math:`\Rset^p \times \Rset^n` matrix defined by *linear*,
+
+- :math:`\vect{b}` is the :math:`\Rset^n` vector defined by *center*,
+
+- :math:`\vect{c}` is the :math:`\Rset^p` vector defined by *constant*.
+
+- :math:`\underline{\underline{\underline{M}}}` is a :math:`\Rset^p \times \Rset^n \times \Rset^n` symmetric tensor defined by *quadratic*.
+
+Examples
+--------
+>>> import openturns as ot
+>>> inputDimension = 3
+>>> outputDimension = 2
+>>> center = [1.0] * inputDimension
+>>> constant = [-1.0, 2.0]
+>>> linear = ot.Matrix(inputDimension, outputDimension)
+>>> quadratic = ot.SymmetricTensor(inputDimension, outputDimension)
+>>> function = ot.QuadraticFunction(center, constant, linear, quadratic)
+>>> inP = [7.0, 8.0, 9.0]
+>>> print(function(inP))
+[-1,2]"

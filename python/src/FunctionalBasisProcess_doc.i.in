@@ -29,8 +29,8 @@ Create the coefficients distribution:
 
 Create a basis of functions:
 
->>> phi_1 = ot.NumericalMathFunction(['t'], ['sin(t)'])
->>> phi_2 = ot.NumericalMathFunction(['t'], ['cos(t)*cos(t)'])
+>>> phi_1 = ot.AnalyticalFunction(['t'], ['sin(t)'])
+>>> phi_2 = ot.AnalyticalFunction(['t'], ['cos(t)*cos(t)'])
 >>> myBasis = ot.Basis([phi_1, phi_2])
 
 Create a mesh:

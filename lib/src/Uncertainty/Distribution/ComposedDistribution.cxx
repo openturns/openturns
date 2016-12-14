@@ -30,7 +30,7 @@
 #include "openturns/InverseNatafEllipticalDistributionEvaluation.hxx"
 #include "openturns/InverseNatafEllipticalDistributionGradient.hxx"
 #include "openturns/InverseNatafEllipticalDistributionHessian.hxx"
-#include "openturns/LinearNumericalMathFunction.hxx"
+#include "openturns/LinearFunction.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Uniform.hxx"
@@ -39,6 +39,7 @@
 #include "openturns/NormalCopula.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/TBB.hxx"
+#include "openturns/ComposedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -759,8 +760,8 @@ ComposedDistribution::IsoProbabilisticTransformation ComposedDistribution::getIs
     marginalTransformation.setParameterDescription(description);
     // Suppress the correlation between the components.
     const TriangularMatrix inverseCholesky(copula_.getShapeMatrix().computeCholesky().solveLinearSystem(IdentityMatrix(dimension)).getImplementation());
-    LinearNumericalMathFunction linear(NumericalPoint(dimension, 0.0), NumericalPoint(dimension, 0.0), inverseCholesky);
-    return IsoProbabilisticTransformation(linear, marginalTransformation);
+    LinearFunction linear(NumericalPoint(dimension, 0.0), NumericalPoint(dimension, 0.0), inverseCholesky);
+    return ComposedFunction(linear, marginalTransformation);
   }
   // General case: go to uniform marginal distributions using marginal transformations, then use the isoprobabilistic ransformation of the copula
   // Get the IsoProbabilisticTransformation from the copula
@@ -770,7 +771,7 @@ ComposedDistribution::IsoProbabilisticTransformation ComposedDistribution::getIs
   IsoProbabilisticTransformation marginalTransformation(evaluation.clone(), new MarginalTransformationGradient(evaluation), new MarginalTransformationHessian(evaluation));
   marginalTransformation.setParameter(parameters);
   marginalTransformation.setParameterDescription(description);
-  return IsoProbabilisticTransformation(copulaIsoprobabilisticTransformation, marginalTransformation);
+  return ComposedFunction(copulaIsoprobabilisticTransformation, marginalTransformation);
 }
 
 /* Get the inverse isoprobabilist transformation */
@@ -836,8 +837,8 @@ ComposedDistribution::InverseIsoProbabilisticTransformation ComposedDistribution
     // Suppress the correlation between the components.
     const TriangularMatrix cholesky(copula_.getShapeMatrix().computeCholesky());
     // const SquareMatrix cholesky(ComposedDistribution(DistributionCollection(dimension, standardMarginal), getCopula()).getCholesky());
-    LinearNumericalMathFunction linear(NumericalPoint(dimension, 0.0), NumericalPoint(dimension, 0.0), cholesky);
-    return InverseIsoProbabilisticTransformation(marginalTransformation, linear);
+    LinearFunction linear(NumericalPoint(dimension, 0.0), NumericalPoint(dimension, 0.0), cholesky);
+    return ComposedFunction(marginalTransformation, linear);
   }
   // General case: go to the copula using its inverse isoprobabilistic transformation, then add the correct marginal distributions using marginal transformations
   // Get the InverseIsoProbabilisticTransformation from the copula
@@ -847,7 +848,7 @@ ComposedDistribution::InverseIsoProbabilisticTransformation ComposedDistribution
   InverseIsoProbabilisticTransformation marginalTransformation(evaluation.clone(), new MarginalTransformationGradient(evaluation), new MarginalTransformationHessian(evaluation));
   marginalTransformation.setParameter(parameters);
   marginalTransformation.setParameterDescription(description);
-  return InverseIsoProbabilisticTransformation(marginalTransformation, copulaInverseIsoprobabilisticTransformation);
+  return ComposedFunction(marginalTransformation, copulaInverseIsoprobabilisticTransformation);
 }
 
 /* Get the standard distribution */

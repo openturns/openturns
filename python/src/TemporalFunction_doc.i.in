@@ -49,7 +49,7 @@ Create a function :math:`h : \Rset^n \times \Rset^d \mapsto \Rset^q` such as:
                 (t, x) & \mapsto & (x + t^2)
             \end{array}\right.
 
->>> h = ot.NumericalMathFunction(['t', 'x'], ['x + t^2'])
+>>> h = ot.AnalyticalFunction(['t', 'x'], ['x + t^2'])
 
 Convert :math:`h` into a temporal function with :math:`n` the dimension of the
 mesh of the field on which :math:`h` will be applied:
@@ -94,7 +94,7 @@ h : :class:`~openturns.NumericalMathEvaluationImplementation`
 Examples
 --------
 >>> import openturns as ot
->>> h = ot.NumericalMathFunction(['t', 'x'], ['x + t^2'])
+>>> h = ot.AnalyticalFunction(['t', 'x'], ['x + t^2'])
 >>> n = 1
 >>> myTemporalFunction = ot.SpatialFunction(h, n)
 >>> print(myTemporalFunction.getEvaluation())

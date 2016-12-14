@@ -17,7 +17,7 @@ vectCoefColl : 2-d sequence of float
 See also
 --------
 NumericalMathFunction, AggregatedNumericalMathEvaluationImplementation, DatabaseNumericalMathEvaluationImplementation,
-LinearNumericalMathFunction
+LinearFunction
 
 Notes
 -----

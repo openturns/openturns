@@ -43,7 +43,7 @@ Create a distribution:
 
 >>> import openturns as ot
 >>> conditioningDist = ot.Normal(0.0, 1.0)
->>> g = ot.NumericalMathFunction(['y'], ['y', '0.1+y^2'])
+>>> g = ot.AnalyticalFunction(['y'], ['y', '0.1+y^2'])
 >>> conditionedDist = ot.Normal()
 >>> finalDist = ot.ConditionalDistribution(conditionedDist, conditioningDist, g)
 

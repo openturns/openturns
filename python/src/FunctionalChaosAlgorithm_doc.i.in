@@ -156,7 +156,7 @@ Create the model:
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
 >>> inputDim = 1
->>> model = ot.NumericalMathFunction(['x'], ['y'], ['x*sin(x)'])
+>>> model = ot.AnalyticalFunction(['x'], ['x*sin(x)'])
 >>> distribution = ot.ComposedDistribution([ot.Uniform()]*inputDim)
 
 Build the multivariate orthonormal basis:

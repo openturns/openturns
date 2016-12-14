@@ -261,9 +261,11 @@ ot_add_python_module(func func_module.i
                       DualLinearCombinationEvaluationImplementation.i DualLinearCombinationEvaluationImplementation_doc.i.in
                       DualLinearCombinationGradientImplementation.i DualLinearCombinationGradientImplementation_doc.i.in
                       DualLinearCombinationHessianImplementation.i DualLinearCombinationHessianImplementation_doc.i.in
+                      LinearCombinationFunction.i LinearCombinationFunction_doc.i.in
                       LinearCombinationEvaluationImplementation.i
                       LinearCombinationGradientImplementation.i
                       LinearCombinationHessianImplementation.i
+                      ParametricFunction.i ParametricFunction_doc.i.in
                       ProductNumericalMathEvaluationImplementation.i
                       ProductNumericalMathGradientImplementation.i
                       ProductNumericalMathHessianImplementation.i
@@ -271,19 +273,24 @@ ot_add_python_module(func func_module.i
                       ComposedNumericalMathFunction.i
                       ProductNumericalMathFunction.i
                       NumericalMathFunction.i NumericalMathFunction_doc.i.in
+                      AggregatedFunction.i AggregatedFunction_doc.i.in
+                      AnalyticalFunction.i AnalyticalFunction_doc.i.in
+                      ComposedFunction.i ComposedFunction_doc.i.in
+                      DualLinearCombinationFunction.i DualLinearCombinationFunction_doc.i.in
                       BaseFuncCollection.i
                       DynamicalFunctionImplementation.i DynamicalFunctionImplementation_doc.i.in
                       DynamicalFunction.i DynamicalFunction_doc.i.in
                       SpatialFunction.i SpatialFunction_doc.i.in
                       TemporalFunction.i TemporalFunction_doc.i.in
-                      LinearNumericalMathFunction.i LinearNumericalMathFunction_doc.i.in
-                      QuadraticNumericalMathFunction.i
+                      LinearFunction.i LinearFunction_doc.i.in
+                      QuadraticFunction.i QuadraticFunction_doc.i.in
                       UniVariatePolynomialImplementation.i UniVariatePolynomialImplementation_doc.i.in
                       UniVariatePolynomial.i UniVariatePolynomial_doc.i.in
                       AggregatedNumericalMathEvaluationImplementation.i AggregatedNumericalMathEvaluationImplementation_doc.i.in
                       AnalyticalNumericalMathEvaluationImplementation.i
                       AnalyticalNumericalMathGradientImplementation.i
                       AnalyticalNumericalMathHessianImplementation.i
+                      DatabaseFunction.i DatabaseFunction_doc.i.in
                       DatabaseNumericalMathEvaluationImplementation.i DatabaseNumericalMathEvaluationImplementation_doc.i.in
                       IndicatorNumericalMathEvaluationImplementation.i
                       PiecewiseLinearEvaluationImplementation.i

@@ -59,7 +59,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
->>> myFunction = ot.NumericalMathFunction(['E', 'F', 'L', 'I'], ['d'], ['-F*L^3/(3*E*I)'])
+>>> myFunction = ot.AnalyticalFunction(['E', 'F', 'L', 'I'], ['-F*L^3/(3*E*I)'])
 >>> myDistribution = ot.Normal([50.0, 1.0, 10.0, 5.0], [1.0]*4, ot.IdentityMatrix(4))
 >>> # We create a 'usual' RandomVector from the Distribution
 >>> vect = ot.RandomVector(myDistribution)

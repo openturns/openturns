@@ -29,6 +29,7 @@
 #include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
 #include "openturns/Brent.hxx"
 #include "openturns/SobolSequence.hxx"
+#include "openturns/AnalyticalFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -39,7 +40,7 @@ static const Factory<CompositeDistribution> Factory_CompositeDistribution;
 /* Default constructor */
 CompositeDistribution::CompositeDistribution()
   : DistributionImplementation()
-  , function_(NumericalMathFunction("x", "x"))
+  , function_(AnalyticalFunction("x", "x"))
   , antecedent_(Uniform(0.0, 1.0))
   , bounds_(0)
   , values_(0)
