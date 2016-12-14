@@ -269,14 +269,58 @@ SymmetricMatrix CholeskyMethod::getH() const
 }
 
 
+NumericalPoint CholeskyMethod::getHDiag() const
+{
+  const UnsignedInteger basisSize = currentIndices_.getSize();
+  const MatrixImplementation invL(*l_.solveLinearSystem(IdentityMatrix(basisSize)).getImplementation());
+  const MatrixImplementation psiAk(computeWeightedDesign());
+  const MatrixImplementation invLPsiAk(invL.genProd(psiAk, false, true));
+
+  const UnsignedInteger dimension = psiAk.getNbRows();
+  NumericalPoint diag(dimension);
+  MatrixImplementation::const_iterator invLPsiAk_iterator(invLPsiAk.begin());
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    NumericalScalar value = 0.0;
+    for (UnsignedInteger j = 0; j < basisSize; ++ j)
+    {
+      value += (*invLPsiAk_iterator) * (*invLPsiAk_iterator);
+      ++invLPsiAk_iterator;
+    }
+    diag[i] = value;
+  }
+
+  return diag;
+}
+
+NumericalPoint CholeskyMethod::getGramInverseDiag() const
+{
+  const UnsignedInteger basisSize = currentIndices_.getSize();
+  const MatrixImplementation invL(*l_.solveLinearSystem(IdentityMatrix(basisSize)).getImplementation());
+  NumericalPoint diag(basisSize);
+  MatrixImplementation::const_iterator invL_iterator(invL.begin());
+  for (UnsignedInteger i = 0; i < basisSize; ++ i)
+  {
+    NumericalScalar value = 0.0;
+    for (UnsignedInteger j = 0; j < basisSize; ++ j)
+    {
+      value += (*invL_iterator) * (*invL_iterator);
+      ++invL_iterator;
+    }
+    diag[i] = value;
+  }
+
+  return diag;
+}
+
 NumericalScalar CholeskyMethod::getGramInverseTrace() const
 {
-
   NumericalScalar traceInverse = 0.0;
-  for (UnsignedInteger k = 0; k < l_.getDimension(); ++ k)
+  const UnsignedInteger basisSize = currentIndices_.getSize();
+  const MatrixImplementation invL(*l_.solveLinearSystem(IdentityMatrix(basisSize)).getImplementation());
+  for (MatrixImplementation::const_iterator it = invL.begin(); it != invL.end(); ++it)
   {
-    const NumericalScalar dk = l_(k, k);
-    traceInverse += 1.0 / (dk * dk);
+    traceInverse += (*it) * (*it);
   }
   return traceInverse;
 }

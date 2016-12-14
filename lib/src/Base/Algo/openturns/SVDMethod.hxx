@@ -59,9 +59,11 @@ public:
   /** Solve least-squares problem, ie x=\argmin |Mx-b|^2 */
   NumericalPoint solve(const NumericalPoint & rhs);
   NumericalPoint solveNormal(const NumericalPoint & rhs);
-  NumericalPoint getHDiag() const;
 
   CovarianceMatrix getGramInverse() const;
+
+  NumericalPoint getGramInverseDiag() const;
+  NumericalPoint getHDiag() const;
 
   NumericalScalar getGramInverseTrace() const;
 

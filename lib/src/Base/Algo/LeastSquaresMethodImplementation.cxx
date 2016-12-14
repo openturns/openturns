@@ -157,6 +157,17 @@ NumericalPoint LeastSquaresMethodImplementation::getHDiag() const
 }
 
 
+NumericalPoint LeastSquaresMethodImplementation::getGramInverseDiag() const
+{
+  const CovarianceMatrix G(getGramInverse());
+  const UnsignedInteger dimension = G.getDimension();
+  NumericalPoint diag(dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++ i) diag[i] = G(i, i);
+
+  return diag;
+}
+
+
 NumericalScalar LeastSquaresMethodImplementation::getGramInverseTrace() const
 {
   // subclasses better override this

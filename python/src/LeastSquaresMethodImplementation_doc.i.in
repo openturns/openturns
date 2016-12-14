@@ -119,7 +119,7 @@ OT_LeastSquaresMethod_getInitialIndices_doc
 Returns
 -------
 phi : :class:`~openturns.Basis`
-    The basis according to current indices"
+    The basis according to current indices."
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::buildCurrentBasis
 OT_LeastSquaresMethod_buildCurrentBasis_doc
@@ -141,7 +141,7 @@ b : sequence of float
 Returns
 -------
 a : :class:`~openturns.NumericalPoint`
-    The solution"
+    The solution."
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::solve
 OT_LeastSquaresMethod_solve_doc
@@ -163,10 +163,95 @@ b : sequence of float
 Returns
 -------
 x : :class:`~openturns.NumericalPoint`
-    The solution"
+    The solution."
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::solveNormal
 OT_LeastSquaresMethod_solveNormal_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_LeastSquaresMethod_getGramInverse_doc
+"Get the inverse Gram matrix of input sample.
+
+.. math::
+
+    G^{-1} = (X^T * X)^{-1}
+
+Returns
+-------
+c : :class:`~openturns.CovarianceMatrix`
+    The inverse Gram matrix."
+%enddef
+%feature("docstring") OT::LeastSquaresMethodImplementation::getGramInverse
+OT_LeastSquaresMethod_getGramInverse_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_LeastSquaresMethod_getGramInverseDiag_doc
+"Get the diagonal of the inverse Gram matrix.
+
+.. math::
+
+    diag(G^{-1}) = diag((X^T * X)^{-1})
+
+Returns
+-------
+d : :class:`~openturns.NumericalPoint`
+    The diagonal of the inverse Gram matrix."
+%enddef
+%feature("docstring") OT::LeastSquaresMethodImplementation::getGramInverseDiag
+OT_LeastSquaresMethod_getGramInverseDiag_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_LeastSquaresMethod_getGramInverseTrace_doc
+"Get the trace of the inverse Gram matrix.
+
+.. math::
+
+    Tr(G^{-1}) = Tr(x^T * x)^{-1}
+
+Returns
+-------
+x : :class:`~openturns.NumericalScalar`
+    The trace of inverse Gram matrix."
+%enddef
+%feature("docstring") OT::LeastSquaresMethodImplementation::getGramInverseTrace
+OT_LeastSquaresMethod_getGramInverseTrace_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_LeastSquaresMethod_getH_doc
+"Get the projection matrix H.
+
+.. math::
+
+    H = X * (X^T * X)^{-1} * X^T
+
+Returns
+-------
+h : :class:`~openturns.SymmetricMatrix`
+    The projection matrix H."
+%enddef
+%feature("docstring") OT::LeastSquaresMethodImplementation::getH
+OT_LeastSquaresMethod_getH_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_LeastSquaresMethod_getHDiag_doc
+"Get the diagonal of the projection matrix H.
+
+.. math::
+
+    H = X * (X^T * X)^{-1} * X^T
+
+Returns
+-------
+d : :class:`~openturns.NumericalPoint`
+    The diagonal of H."
+%enddef
+%feature("docstring") OT::LeastSquaresMethodImplementation::getHDiag
+OT_LeastSquaresMethod_getHDiag_doc
 
 // ---------------------------------------------------------------------
 

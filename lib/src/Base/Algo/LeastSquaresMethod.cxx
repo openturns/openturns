@@ -95,6 +95,11 @@ NumericalPoint LeastSquaresMethod::getHDiag() const
   return getImplementation()->getHDiag();
 }
 
+NumericalPoint LeastSquaresMethod::getGramInverseDiag() const
+{
+  return getImplementation()->getGramInverseDiag();
+}
+
 NumericalScalar LeastSquaresMethod::getGramInverseTrace() const
 {
   return getImplementation()->getGramInverseTrace();

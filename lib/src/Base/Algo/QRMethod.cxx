@@ -134,13 +134,70 @@ NumericalPoint QRMethod::solveNormal(const NumericalPoint & rhs)
   return coefficients;
 }
 
+NumericalPoint QRMethod::getHDiag() const
+{
+  const UnsignedInteger dimension = q_.getNbRows();
+  const UnsignedInteger basisSize = currentIndices_.getSize();
+  NumericalPoint diag(dimension);
+  MatrixImplementation::const_iterator q_iterator(q_.getImplementation()->begin());
+  for (UnsignedInteger j = 0; j < basisSize; ++ j)
+  {
+    for (MatrixImplementation::iterator diag_iterator = diag.begin(); diag_iterator != diag.end(); ++ diag_iterator)
+    {
+      *diag_iterator += (*q_iterator) * (*q_iterator);
+      ++ q_iterator;
+    }
+  }
+
+  return diag;
+}
+
+
 CovarianceMatrix QRMethod::getGramInverse() const
 {
   // G^{-1}=R^-1*R*^-T
   const UnsignedInteger basisSize = currentIndices_.getSize();
   const MatrixImplementation b(*IdentityMatrix(basisSize).getImplementation());
-  Matrix invR(r_.getImplementation()->solveLinearSystemTri(b));
+  Matrix invR(r_.getImplementation()->solveLinearSystemTri(b, true, false));
   return invR.computeGram(false);
+}
+
+NumericalPoint QRMethod::getGramInverseDiag() const
+{
+  // G^{-1}=R^-1*R*^-T
+  const UnsignedInteger dimension = r_.getNbRows();
+  const UnsignedInteger basisSize = currentIndices_.getSize();
+  const MatrixImplementation b(*IdentityMatrix(dimension).getImplementation());
+  const MatrixImplementation invRT(r_.getImplementation()->solveLinearSystemTri(b, true, false, true));
+
+  NumericalPoint diag(dimension);
+  MatrixImplementation::const_iterator invRT_iterator(invRT.begin());
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    NumericalScalar value = 0.0;
+    for (UnsignedInteger j = 0; j < basisSize; ++ j)
+    {
+      value += (*invRT_iterator) * (*invRT_iterator);
+      ++ invRT_iterator;
+    }
+    diag[i] = value;
+  }
+  return diag;
+}
+
+NumericalScalar QRMethod::getGramInverseTrace() const
+{
+  // G^{-1}=R^-1*R*^-T
+  const UnsignedInteger dimension = r_.getNbRows();
+  const MatrixImplementation b(*IdentityMatrix(dimension).getImplementation());
+  const MatrixImplementation invRT(r_.getImplementation()->solveLinearSystemTri(b, true, false, true));
+
+  NumericalScalar traceInverse = 0.0;
+  for (MatrixImplementation::const_iterator it = invRT.begin(); it != invRT.end(); ++it)
+  {
+    traceInverse += (*it) * (*it);
+  }
+  return traceInverse;
 }
 
 void QRMethod::trashDecomposition()
