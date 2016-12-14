@@ -16,6 +16,20 @@ OT_LeastSquaresMethod_getBasis_doc
 OT_LeastSquaresMethod_getCurrentIndices_doc
 %feature("docstring") OT::LeastSquaresMethod::getInitialIndices
 OT_LeastSquaresMethod_getInitialIndices_doc
+%feature("docstring") OT::LeastSquaresMethod::solve
+OT_LeastSquaresMethod_solve_doc
+%feature("docstring") OT::LeastSquaresMethod::solveNormal
+OT_LeastSquaresMethod_solveNormal_doc
+%feature("docstring") OT::LeastSquaresMethod::getGramInverse
+OT_LeastSquaresMethod_getGramInverse_doc
+%feature("docstring") OT::LeastSquaresMethod::getGramInverseDiag
+OT_LeastSquaresMethod_getGramInverseDiag_doc
+%feature("docstring") OT::LeastSquaresMethod::getGramInverseTrace
+OT_LeastSquaresMethod_getGramInverseTrace_doc
+%feature("docstring") OT::LeastSquaresMethod::getH
+OT_LeastSquaresMethod_getH_doc
+%feature("docstring") OT::LeastSquaresMethod::getHDiag
+OT_LeastSquaresMethod_getHDiag_doc
 %feature("docstring") OT::LeastSquaresMethod::trashDecomposition
 OT_LeastSquaresMethod_trashDecomposition_doc
 %feature("docstring") OT::LeastSquaresMethod::update
