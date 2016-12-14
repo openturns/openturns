@@ -7,9 +7,9 @@ inputDimension = 3
 outputDimension = 2
 # Center
 center = ot.NumericalPoint(inputDimension)
-center[0] = -1
+center[0] = -1.0
 center[1] = 0.5
-center[2] = 1
+center[2] = 1.0
 # Constant term
 constant = ot.NumericalPoint(outputDimension)
 constant[0] = -1.0
@@ -43,9 +43,8 @@ quadratic[2, 1, 1] = -11.0
 quadratic[2, 2, 0] = 12.0
 quadratic[2, 2, 1] = -12.0
 
-myFunction = ot.QuadraticNumericalMathEvaluationImplementation(
-    center, constant, linear, quadratic)
-myFunction.setName('quadraticFunction')
+# myFunction = linear * (X- center) + constant
+myFunction = ot.QuadraticFunction(center, constant, linear, quadratic)
 inPoint = ot.NumericalPoint(inputDimension)
 inPoint[0] = 7.0
 inPoint[1] = 8.0
@@ -53,3 +52,7 @@ inPoint[2] = 9.0
 outPoint = myFunction(inPoint)
 print('myFunction=', repr(myFunction))
 print(myFunction.getName(), '( ', repr(inPoint), ' ) = ', repr(outPoint))
+print(myFunction.getName(), '.gradient( ', repr(inPoint), ' ) = ',
+      repr(myFunction.gradient(inPoint)))
+print(myFunction.getName(), '.hessian( ', repr(inPoint), ' ) = ',
+      repr(myFunction.hessian(inPoint)))

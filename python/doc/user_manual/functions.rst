@@ -16,6 +16,7 @@ General mathematical functions
     ComposedFunction
     LinearCombinationFunction
     LinearFunction
+    QuadraticFunction
     AggregatedFunction
     DualLinearCombinationFunction
     DatabaseFunction
@@ -32,7 +33,6 @@ Various functions
 
     ComposedNumericalMathFunction
     ProductNumericalMathFunction
-    QuadraticNumericalMathFunction
 
 Dynamical functions
 ===================

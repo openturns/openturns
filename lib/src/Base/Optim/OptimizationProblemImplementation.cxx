@@ -25,7 +25,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SymmetricTensor.hxx"
 #include "openturns/IdentityMatrix.hxx"
-#include "openturns/QuadraticNumericalMathFunction.hxx"
+#include "openturns/QuadraticFunction.hxx"
 #include "openturns/LinearFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -177,7 +177,7 @@ void OptimizationProblemImplementation::setLevelFunction(const NumericalMathFunc
   const Matrix linear(dimension_, 1);
   const IdentityMatrix identity(dimension_);
   const SymmetricTensor quadratic(dimension_, 1, *(identity.getImplementation().get()));
-  objective_ = QuadraticNumericalMathFunction(center, constant, linear, quadratic);
+  objective_ = QuadraticFunction(center, constant, linear, quadratic);
   setNearestPointConstraints();
 }
 

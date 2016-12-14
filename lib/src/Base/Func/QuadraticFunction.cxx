@@ -18,17 +18,17 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "openturns/QuadraticNumericalMathFunction.hxx"
+#include "openturns/QuadraticFunction.hxx"
 #include "openturns/QuadraticNumericalMathEvaluationImplementation.hxx"
 #include "openturns/LinearNumericalMathGradientImplementation.hxx"
 #include "openturns/ConstantNumericalMathHessianImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(QuadraticNumericalMathFunction);
+CLASSNAMEINIT(QuadraticFunction);
 
 /* Default constructor */
-QuadraticNumericalMathFunction::QuadraticNumericalMathFunction (const NumericalPoint & center,
+QuadraticFunction::QuadraticFunction (const NumericalPoint & center,
     const NumericalPoint & constant,
     const Matrix & linear,
     const SymmetricTensor & quadratic)
@@ -40,25 +40,25 @@ QuadraticNumericalMathFunction::QuadraticNumericalMathFunction (const NumericalP
 }
 
 /* Comparison operator */
-Bool QuadraticNumericalMathFunction::operator ==(const QuadraticNumericalMathFunction & other) const
+Bool QuadraticFunction::operator ==(const QuadraticFunction & other) const
 {
   return true;
 }
 
 /* String converter */
-String QuadraticNumericalMathFunction::__repr__() const
+String QuadraticFunction::__repr__() const
 {
   OSS oss;
-  oss << "class=" << QuadraticNumericalMathFunction::GetClassName()
+  oss << "class=" << QuadraticFunction::GetClassName()
       << " name=" << getName()
       << " implementation=" << getImplementation()->__repr__();
   return oss;
 }
 
-String QuadraticNumericalMathFunction::__str__(const String & offset) const
+String QuadraticFunction::__str__(const String & offset) const
 {
   OSS oss;
-  oss << "class=" << QuadraticNumericalMathFunction::GetClassName()
+  oss << "class=" << QuadraticFunction::GetClassName()
       << " name=" << getName()
       << " implementation=" << getImplementation()->__str__();
   return oss;

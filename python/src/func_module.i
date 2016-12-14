@@ -80,7 +80,7 @@
 %include LinearCombinationGradientImplementation.i
 %include LinearCombinationHessianImplementation.i
 %include LinearFunction.i
-%include QuadraticNumericalMathFunction.i
+%include QuadraticFunction.i
 %include UniVariateFunctionImplementation.i
 %include UniVariateFunction.i
 %include UniVariatePolynomialImplementation.i

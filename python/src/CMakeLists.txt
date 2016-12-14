@@ -283,7 +283,7 @@ ot_add_python_module(func func_module.i
                       SpatialFunction.i SpatialFunction_doc.i.in
                       TemporalFunction.i TemporalFunction_doc.i.in
                       LinearFunction.i LinearFunction_doc.i.in
-                      QuadraticNumericalMathFunction.i
+                      QuadraticFunction.i QuadraticFunction_doc.i.in
                       UniVariatePolynomialImplementation.i UniVariatePolynomialImplementation_doc.i.in
                       UniVariatePolynomial.i UniVariatePolynomial_doc.i.in
                       AggregatedNumericalMathEvaluationImplementation.i AggregatedNumericalMathEvaluationImplementation_doc.i.in

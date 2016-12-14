@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 /**
- * @class QuadraticNumericalMathFunction
+ * @class QuadraticFunction
  *
  * The class that simulates a linear numerical math function,
  * its gradient and its hessian. This class is just an interface
@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * during computation. Each implementation object refers to
  * the function, the gradient or the hessian.
  */
-class OT_API QuadraticNumericalMathFunction
+class OT_API QuadraticFunction
   : public NumericalMathFunction
 {
   CLASSNAME;
@@ -49,20 +49,20 @@ public:
   /* Some typedefs for easy reading */
 
   /** Default constructor */
-  QuadraticNumericalMathFunction (const NumericalPoint & center,
+  QuadraticFunction (const NumericalPoint & center,
                                   const NumericalPoint & constant,
                                   const Matrix & linear,
                                   const SymmetricTensor & quadratic);
 
 
   /** Comparison operator */
-  Bool operator ==(const QuadraticNumericalMathFunction & other) const;
+  Bool operator ==(const QuadraticFunction & other) const;
 
   /** String converter */
   virtual String __repr__() const;
   virtual String __str__(const String & offset = "") const;
 
-}; /* class QuadraticNumericalMathFunction */
+}; /* class QuadraticFunction */
 
 
 END_NAMESPACE_OPENTURNS

@@ -23,7 +23,7 @@
 #include "openturns/QuadraticBasisFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/LinearFunction.hxx"
-#include "openturns/QuadraticNumericalMathFunction.hxx"
+#include "openturns/QuadraticFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -77,7 +77,7 @@ Basis QuadraticBasisFactory::build() const
       NumericalPoint center(inputDimension_, 0.0);
       NumericalPoint constant(1, 0.0);
       Matrix linear(inputDimension_, 1);
-      basis.add(QuadraticNumericalMathFunction(center, constant, linear, quadratic));
+      basis.add(QuadraticFunction(center, constant, linear, quadratic));
     }
   }
   return basis;

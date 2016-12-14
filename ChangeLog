@@ -15,7 +15,7 @@
  * LHSResult
  * MultiStart
  * MethodOfMomentsFactory
- * AnalyticalFunction, AggregatedFunction, ComposedFunction, DatabaseFunction, DualLinearCombinationFunction, LinearCombinationFunction, LinearFunction, ParametricFunction
+ * AnalyticalFunction, AggregatedFunction, ComposedFunction, DatabaseFunction, DualLinearCombinationFunction, LinearCombinationFunction, LinearFunction, QuadraticFunction, ParametricFunction
 
 ==== API changes ====
   * Removed deprecated SLSQP, LBFGS and NelderMead classes
@@ -27,6 +27,7 @@
   * Added a generic implementation of the computeLogPDFGradient() method in the DistributionImplementation class.
   * Allow Box to support bounds
   * Deprecated LinearNumericalMathFunction in favor of LinearFunction
+  * Deprecated QuadraticNumericalMathFunction in favor of QuadraticFunction
 
 === Python module ===
 
