@@ -98,15 +98,14 @@ NumericalScalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method) const
   // Compute the empirical error
   LOGINFO("Compute the empirical error");
 
-  Collection<NumericalMathFunction> coll(basisSize);
-  for (UnsignedInteger j = 0; j < basisSize; ++ j) coll[j] = basis[method.getImplementation()->currentIndices_[j]];
-  const NumericalMathFunction metamodel(coll, coefficients);
-  const NumericalSample yHat(metamodel(x));
+  // reuse design to compute metamodel values
+  NumericalPoint yHat(psiAk * coefficients);
+
   const NumericalPoint h(method.getHDiag());
   NumericalScalar empiricalError = 0.0;
   for (UnsignedInteger i = 0; i < sampleSize; ++ i)
   {
-    const NumericalScalar ns = (y[i][0] - yHat[i][0]) / (1.0 - h[i]);
+    const NumericalScalar ns = (y[i][0] - yHat[i]) / (1.0 - h[i]);
     empiricalError += ns * ns / sampleSize;
   }
   LOGINFO(OSS() << "Empirical error=" << empiricalError);
