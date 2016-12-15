@@ -2,12 +2,6 @@
 
 %feature("docstring") OT::NumericalMathFunction
 OT_NumericalMathFunction_doc
-%feature("docstring") OT::NumericalMathFunction::GetValidFunctions
-OT_NumericalMathFunction_GetValidFunctions_doc
-%feature("docstring") OT::NumericalMathFunction::GetValidConstants
-OT_NumericalMathFunction_GetValidConstants_doc
-%feature("docstring") OT::NumericalMathFunction::GetValidOperators
-OT_NumericalMathFunction_GetValidOperators_doc
 %feature("docstring") OT::NumericalMathFunction::enableCache
 OT_NumericalMathFunction_enableCache_doc
 %feature("docstring") OT::NumericalMathFunction::disableCache

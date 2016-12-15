@@ -57,6 +57,27 @@ public:
   virtual String __repr__() const;
   virtual String __str__(const String & offset = "") const;
 
+  /** Static methods for documentation of analytical fnctions */
+  static Description GetValidConstants();
+  static Description GetValidFunctions();
+  static Description GetValidOperators();
+
+private:
+  /** List of muParser valid constants */
+  static Description ValidConstants_;
+
+  /** List of muParser valid functions */
+  static Description ValidFunctions_;
+
+  /** List of muParser valid operators */
+  static Description ValidOperators_;
+
+  /** Flag to tell if the documentation has been initialized */
+  static Bool IsDocumentationInitialized_;
+
+  /** Method that initialize the fields related to the documentation of the analytical functions */
+  static void InitializeDocumentation();
+
 }; /* class QuadraticNumericalMathFunction */
 
 

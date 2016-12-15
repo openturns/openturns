@@ -81,3 +81,51 @@ Examples
 >>> f = ot.AnalyticalFunction(['x0', 'x1'], ['x0 + x1', 'x0 - x1'])
 >>> print(f([1, 2]))
 [3,-1]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AnalyticalFunction::GetValidFunctions
+"Return the list of valid functions.
+
+Returns
+-------
+list_functions : :class:`~openturns.Description`
+    List of the functions we can use within OpenTURNS.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.AnalyticalFunction.GetValidFunctions()[0])
+sin(arg) -> sine function"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AnalyticalFunction::GetValidConstants
+"Return the list of valid constants.
+
+Returns
+-------
+list_constants : :class:`~openturns.Description`
+    List of the constants we can use within OpenTURNS.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.AnalyticalFunction.GetValidConstants()[0])
+_e -> Euler's constant (2.71828...)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AnalyticalFunction::GetValidOperators
+"Return the list of valid operators.
+
+Returns
+-------
+list_operators : :class:`~openturns.Description`
+    List of the operators we can use within OpenTURNS.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.AnalyticalFunction.GetValidOperators()[0])
+= -> assignement, can only be applied to variable names (priority -1)"

@@ -112,3 +112,11 @@ empty = model.getMarginal([])
 x = [42.0]
 y = empty(x)
 print('empty eval', y)
+
+constants = ot.AnalyticalFunction.GetValidConstants()
+assert len(constants) > 0, 'empty'
+funcs = ot.AnalyticalFunction.GetValidFunctions()
+assert len(funcs) > 0, 'empty'
+ops = ot.AnalyticalFunction.GetValidOperators()
+assert len(ops) > 0, 'empty'
+print('OK')
