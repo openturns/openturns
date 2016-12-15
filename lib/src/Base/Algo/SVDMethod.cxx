@@ -122,7 +122,13 @@ NumericalPoint SVDMethod::solve(const NumericalPoint & rhs)
   const UnsignedInteger svdSize = singularValues_.getSize();
 
   // First step
-  const NumericalPoint c(u_.getImplementation()->genVectProd(rhs, true));
+  NumericalPoint b(rhs);
+  if (!hasUniformWeight_)
+  {
+    const UnsignedInteger size = rhs.getSize();
+    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weightSqrt_[i];
+  }
+  const NumericalPoint c(u_.getImplementation()->genVectProd(b, true));
   // Second step
   NumericalPoint d(svdSize);
   for (UnsignedInteger i = 0; i < svdSize; ++i) d[i] = c[i] / singularValues_[i];
@@ -137,8 +143,14 @@ NumericalPoint SVDMethod::solveNormal(const NumericalPoint & rhs)
   update(Indices(0), currentIndices_, Indices(0));
   const UnsignedInteger basisSize = currentIndices_.getSize();
 
+  NumericalPoint b(rhs);
+  if (!hasUniformWeight_)
+  {
+    const UnsignedInteger size = rhs.getSize();
+    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weight_[i];
+  }
   // G^-1= V*S^-2*V^T
-  NumericalPoint coefficients(vT_ * rhs);
+  NumericalPoint coefficients(vT_ * b);
   for (UnsignedInteger i = 0; i < basisSize; ++i)
   {
     const NumericalScalar sv = singularValues_[i];
