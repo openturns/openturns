@@ -83,6 +83,7 @@
  * #853 (Switch the default for normalize boolean from TRUE to FALSE in ot.GeneralizedLinearModelAlgorithm)
  * #854 (InverseWishart.computeLogPDF)
  * #861 (document HMatrix classes)
+ * #872 (Cannot draw a Text drawable using R)
 
 == 1.7 release (2016-01-27) == #release-1.7
 
