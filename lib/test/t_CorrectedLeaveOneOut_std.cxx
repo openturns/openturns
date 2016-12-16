@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
   NumericalSample x( xuniform.getSample(size) );
   Uniform yuniform(1.9, 2.1);
   NumericalSample y( yuniform.getSample(size) );
-  NumericalMathFunction f( Description(1, "x"), Description(1, "y"), Description(1, "2.0*x") );
+  AnalyticalFunction f("x", "2.0*x");
   Basis basis;
   basis.add(f);
   Indices indices(basis.getSize());
@@ -52,9 +52,9 @@ int main(int argc, char *argv[])
     size = 2;
     x = xuniform.getSample(size);
     y = yuniform.getSample(size);
-    NumericalMathFunction f2( Description(1, "x"), Description(1, "y"), Description(1, "x^2") );
+    AnalyticalFunction f2("x", "x^2");
     basis.add(f2);
-    NumericalMathFunction f3( Description(1, "x"), Description(1, "y"), Description(1, "x^3") );
+    AnalyticalFunction f3("x", "x^3");
     basis.add(f3);
     indices = Indices(basis.getSize());
     indices.fill();
