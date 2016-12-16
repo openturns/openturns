@@ -234,6 +234,27 @@ void CholeskyMethod::update(const Indices & addedIndices,
   } // Update on column modification
 }
 
+NumericalPoint CholeskyMethod::solve(const NumericalPoint & rhs)
+{
+  // This call insures that the decomposition has already been computed.
+  // No cost if it is up to date.
+  update(Indices(0), currentIndices_, Indices(0));
+  NumericalPoint b(rhs);
+  if (!hasUniformWeight_)
+  {
+    const UnsignedInteger size = rhs.getSize();
+    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weightSqrt_[i];
+  }
+  const MatrixImplementation psiAk(computeWeightedDesign());
+  const NumericalPoint c(psiAk.genVectProd(b, true));
+  // We first solve Ly=b then L^Tx=y. The flags given to solveLinearSystemTri() are:
+  // 1) To keep the matrix intact
+  // 2) To say that the matrix L is lower triangular
+  // 3) To say that it is L^Tx=y that is solved instead of Lx=y
+  return l_.getImplementation()->solveLinearSystemTri(l_.solveLinearSystem(c), true, true, true);
+}
+
+
 NumericalPoint CholeskyMethod::solveNormal(const NumericalPoint & rhs)
 {
   const UnsignedInteger basisSize = currentIndices_.getSize();
@@ -244,11 +265,17 @@ NumericalPoint CholeskyMethod::solveNormal(const NumericalPoint & rhs)
   // No cost if it is up to date.
   update(Indices(0), currentIndices_, Indices(0));
 
+  NumericalPoint b(rhs);
+  if (!hasUniformWeight_)
+  {
+    const UnsignedInteger size = rhs.getSize();
+    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weight_[i];
+  }
   // We first solve Ly=b then L^Tx=y. The flags given to solveLinearSystemTri() are:
   // 1) To keep the matrix intact
   // 2) To say that the matrix L is lower triangular
   // 3) To say that it is L^Tx=y that is solved instead of Lx=y
-  return l_.getImplementation()->solveLinearSystemTri(l_.solveLinearSystem(rhs), true, true, true);
+  return l_.getImplementation()->solveLinearSystemTri(l_.solveLinearSystem(b), true, true, true);
 }
 
 

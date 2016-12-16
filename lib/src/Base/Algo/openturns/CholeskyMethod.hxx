@@ -57,6 +57,7 @@ public:
   String __repr__() const;
 
   /** Solve least-squares problem, ie x=\argmin |Mx-b|^2 */
+  NumericalPoint solve(const NumericalPoint & rhs);
   NumericalPoint solveNormal(const NumericalPoint & rhs);
 
   /** Update */

@@ -120,17 +120,12 @@ LeastSquaresMethodImplementation * LeastSquaresMethodImplementation::clone() con
 
 NumericalPoint LeastSquaresMethodImplementation::solve(const NumericalPoint & rhs)
 {
-  // If uniform weights, no scaling of the rhs
-  if (hasUniformWeight_) return solveNormal(computeWeightedDesign().genVectProd(rhs, true));
-  NumericalPoint y(rhs);
-  const UnsignedInteger size = rhs.getSize();
-  for (UnsignedInteger i = 0; i < size; ++i) y[i] *= weightSqrt_[i];
-  return solveNormal(computeWeightedDesign().genVectProd(y, true));
+  throw NotYetImplementedException(HERE) << " in LeastSquaresMethodImplementation::solve";
 }
 
 NumericalPoint LeastSquaresMethodImplementation::solveNormal(const NumericalPoint & rhs)
 {
-  throw NotYetImplementedException(HERE) << " in LeastSquaresMethodImplementation::solve";
+  throw NotYetImplementedException(HERE) << " in LeastSquaresMethodImplementation::solveNormal";
 }
 
 CovarianceMatrix LeastSquaresMethodImplementation::getGramInverse() const

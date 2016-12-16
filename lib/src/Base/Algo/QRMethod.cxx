@@ -110,16 +110,14 @@ NumericalPoint QRMethod::solve(const NumericalPoint & rhs)
   // This call insures that the decomposition has already been computed.
   // No cost if it is up to date.
   update(Indices(0), currentIndices_, Indices(0));
-  NumericalPoint b;
-  if (hasUniformWeight_) b = q_.getImplementation()->genVectProd(rhs, true);
-  else
+  NumericalPoint b(rhs);
+  if (!hasUniformWeight_)
   {
-    NumericalPoint y(rhs);
     const UnsignedInteger size = rhs.getSize();
-    for (UnsignedInteger i = 0; i < size; ++i) y[i] *= weightSqrt_[i];
-    b = q_.getImplementation()->genVectProd(y, true);
+    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weightSqrt_[i];
   }
-  const NumericalPoint coefficients(r_.getImplementation()->solveLinearSystemTri(b, true, false, false)); // rhs, keep, lower, transpose
+  const NumericalPoint c(q_.getImplementation()->genVectProd(b, true));
+  const NumericalPoint coefficients(r_.getImplementation()->solveLinearSystemTri(c, true, false, false)); // rhs, keep, lower, transpose
   return coefficients;
 }
 
@@ -129,8 +127,14 @@ NumericalPoint QRMethod::solveNormal(const NumericalPoint & rhs)
   // This call insures that the decomposition has already been computed.
   // No cost if it is up to date.
   update(Indices(0), currentIndices_, Indices(0));
-  NumericalPoint b(r_.getImplementation()->solveLinearSystemTri(rhs, true, false, true)); // rhs, keep, lower, transpose
-  const NumericalPoint coefficients(r_.getImplementation()->solveLinearSystemTri(b, true, false, false)); // rhs, keep, lower, transpose
+  NumericalPoint b(rhs);
+  if (!hasUniformWeight_)
+  {
+    const UnsignedInteger size = rhs.getSize();
+    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weight_[i];
+  }
+  const NumericalPoint c(r_.getImplementation()->solveLinearSystemTri(b, true, false, true)); // rhs, keep, lower, transpose
+  const NumericalPoint coefficients(r_.getImplementation()->solveLinearSystemTri(c, true, false, false)); // rhs, keep, lower, transpose
   return coefficients;
 }
 
