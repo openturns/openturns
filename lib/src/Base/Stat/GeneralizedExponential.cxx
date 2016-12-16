@@ -34,13 +34,14 @@ GeneralizedExponential::GeneralizedExponential(const UnsignedInteger spatialDime
   : StationaryCovarianceModel(NumericalPoint(spatialDimension, ResourceMap::GetAsNumericalScalar("GeneralizedExponential-DefaultTheta")), NumericalPoint(1, 1.0))
   , p_(1.0)
 {
+  // Nothing to do
 }
 
 /** Parameters constructor */
 GeneralizedExponential::GeneralizedExponential(const NumericalPoint & scale,
     const NumericalScalar p)
   : StationaryCovarianceModel(scale, NumericalPoint(1, 1.0))
-  , p_(0.0)
+  , p_(0.0) // To pass the test !(p_ == p)
 {
   setP(p);
 }
@@ -50,7 +51,7 @@ GeneralizedExponential::GeneralizedExponential(const NumericalPoint & scale,
     const NumericalPoint & amplitude,
     const NumericalScalar p)
   : StationaryCovarianceModel(scale, amplitude)
-  , p_(0.0)
+  , p_(0.0) // To pass the test !(p_ == p)
 {
   if (getDimension() != 1)
     throw InvalidArgumentException(HERE) << "In GeneralizedExponential::GeneralizedExponential, only unidimensional models should be defined."
@@ -163,7 +164,8 @@ NumericalScalar GeneralizedExponential::getP() const
 
 void GeneralizedExponential::setP(const NumericalScalar p)
 {
-  if (p <= 0.0) throw InvalidArgumentException(HERE) << "Error: p must be positive.";
+  if (!(p > 0.0)) throw InvalidArgumentException(HERE) << "Error: p must be positive.";
+  if (!(p <= 2.0)) throw InvalidArgumentException(HERE) << "Error: p must be less or equal to 2.";
   p_ = p;
 }
 
