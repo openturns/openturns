@@ -37,6 +37,7 @@
 === Bug fixes ===
  * #729 (KDTree & save)
  * #871 (GeneralizedExponential P parameter : int or float ?)
+ * #872 (Cannot draw a Text drawable using R)
 
 == 1.8 release (2016-11-18) == #release-1.8
 
