@@ -28,6 +28,7 @@
   * Allow Box to support bounds
   * Deprecated LinearNumericalMathFunction in favor of LinearFunction
   * Deprecated QuadraticNumericalMathFunction in favor of QuadraticFunction
+  * Deprecated NumericalMathFunction::GetValidConstants|GetValidFunctions|GetValidOperators
 
 === Python module ===
 
