@@ -168,6 +168,17 @@ public:
   // Compute the expectation of the min of n independent standard normal random variables
   static NumericalScalar eZ1(const UnsignedInteger n);
 
+  // K factor for exact two-sided tolerance intervals of normal pooled populations
+  static NumericalScalar kFactorPooled(const UnsignedInteger n,
+                                       const UnsignedInteger m,
+                                       const NumericalScalar p,
+                                       const NumericalScalar alpha);
+
+  // K factor for exact two-sided tolerance intervals of a normal population
+  static NumericalScalar kFactor(const UnsignedInteger n,
+                                 const NumericalScalar p,
+                                 const NumericalScalar alpha);
+
   // Asymptotic distribution of the DickeyFuller distribution
   static NumericalScalar pDickeyFullerTrend(const NumericalScalar x,
       const Bool tail = false);

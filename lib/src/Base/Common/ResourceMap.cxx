@@ -671,6 +671,11 @@ void ResourceMap::loadDefaultConfiguration()
   setAsNumericalScalar( "DistFunc-Precision", 1.0e-14 );
   setAsUnsignedInteger( "DistFunc-MaximumIteration", 5000 );
 
+  // KFactor parameters //
+  setAsNumericalScalar( "KFactor-Precision", 1.0e-8 );
+  setAsUnsignedInteger( "KFactor-MaximumIteration", 32 );
+  setAsUnsignedInteger( "KFactor-DefaultIntegrationNodesNumber", 256 );
+
   // RootStrategyImplementation parameters //
   setAsNumericalScalar( "RootStrategy-DefaultMaximumDistance", 8.0 );
   setAsNumericalScalar( "RootStrategy-DefaultStepSize", 1.0 );
