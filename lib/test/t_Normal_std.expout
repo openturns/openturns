@@ -79,6 +79,11 @@ chol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 
 invchol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 chol*t(chol)=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 chol*invchol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+Comparison with a Student distribution false
+Comparison with an Exponential distribution false
+Comparison with itself true
+Comparison with a clone true
+Comparison with another member false
 
 *** Case 2 ***
 
@@ -121,7 +126,7 @@ Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=
  [ 0.5 1   ]])) gradientImplementation=MinimumVolumeLevelSetGradient(Normal(mu = [0,0], sigma = [1,2], R = [[ 1   0.5 ]
  [ 0.5 1   ]])) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=NumericalPoint name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Normal(mu = [0,0], sigma = [1,2], R = [[ 1   0.5 ]
  [ 0.5 1   ]])) level=4.83361
-beta=0.95
+beta=3.1905e-317
 Bilateral confidence interval=class=Interval name=Unnamed dimension=2 lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[-2.21213,-4.42426] upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[2.21213,4.42426] finite lower bound=[1,1] finite upper bound=[1,1]
 beta=0.97304
 Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=2 lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[-7.65063,-15.3013] upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[1.91633,3.83266] finite lower bound=[1,1] finite upper bound=[1,1]
@@ -172,6 +177,11 @@ chol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 
 invchol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,-0.57735,0,0.57735]
 chol*t(chol)=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,1,1,4]
 chol*invchol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1]
+Comparison with a Student distribution false
+Comparison with an Exponential distribution false
+Comparison with itself true
+Comparison with a clone true
+Comparison with another member false
 
 *** Case 3 ***
 
@@ -258,6 +268,11 @@ chol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 
 invchol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,-0.57735,0.408248,0,0.57735,-0.408248,0,0,0.408248]
 chol*t(chol)=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,1,0,1,4,3,0,3,9]
 chol*invchol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0,0,0,1,0,0,0,1]
+Comparison with a Student distribution false
+Comparison with an Exponential distribution false
+Comparison with itself true
+Comparison with a clone true
+Comparison with another member false
 
 *** Case 4 ***
 
@@ -350,3 +365,8 @@ chol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=4 
 invchol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,-0.57735,0.408248,-0.316228,0,0.57735,-0.408248,0.316228,0,0,0.408248,-0.316228,0,0,0,0.316228]
 chol*t(chol)=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,1,0,0,1,4,3,0,0,3,9,6,0,0,6,16]
 chol*invchol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
+Comparison with a Student distribution false
+Comparison with an Exponential distribution false
+Comparison with itself true
+Comparison with a clone true
+Comparison with another member false

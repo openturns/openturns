@@ -89,7 +89,7 @@ Student::Student(const NumericalScalar nu,
 Bool Student::operator ==(const Student & other) const
 {
   if (this == &other) return true;
-  return EllipticalDistribution::operator==(other) && (nu_ == other.nu_);
+  return (nu_ == other.nu_) && EllipticalDistribution::equals(other);
 }
 
 Bool Student::equals(const DistributionImplementation & other) const

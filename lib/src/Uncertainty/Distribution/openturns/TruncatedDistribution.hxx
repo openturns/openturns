@@ -60,6 +60,7 @@ public:
                         const NumericalScalar thresholdRealization = ResourceMap::GetAsNumericalScalar("TruncatedDistribution-DefaultThresholdRealization"));
 
   /** Comparison operator */
+  using DistributionImplementation::operator ==;
   Bool operator ==(const TruncatedDistribution & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const;

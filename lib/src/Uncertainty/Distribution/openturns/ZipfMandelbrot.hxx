@@ -48,6 +48,7 @@ public:
                  const NumericalScalar s);
 
   /** Comparison operator */
+  using DistributionImplementation::operator ==;
   Bool operator ==(const ZipfMandelbrot & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const;

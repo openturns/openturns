@@ -99,7 +99,18 @@ ComposedDistribution::ComposedDistribution(const DistributionCollection & coll,
 Bool ComposedDistribution::operator ==(const ComposedDistribution & other) const
 {
   if (this == &other) return true;
-  return ((hasIndependentCopula() && other.hasIndependentCopula()) || (copula_ == other.copula_)) && (distributionCollection_ == other.distributionCollection_);
+  // The copula...
+  if (!(hasIndependentCopula() && other.hasIndependentCopula())) return false;
+  if (!(copula_ == *other.getCopula())) return false;
+  // Then the marginals
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+    {
+      const Distribution left(distributionCollection_[i]);
+      const Distribution right(other.distributionCollection_[i]);
+      std::cerr << "Compare left=" << left << " to right=" << right << std::endl;
+      if (!(left == right)) return false;
+    }
+  return true;
 }
 
 Bool ComposedDistribution::equals(const DistributionImplementation & other) const
@@ -110,11 +121,18 @@ Bool ComposedDistribution::equals(const DistributionImplementation & other) cons
   const ComposedDistribution* p_other = dynamic_cast<const ComposedDistribution*>(&other);
   if (p_other != 0) return (*this == *p_other);
   // Third, check by properties
+  // We coud go there eg. when comparing a ComposedDistribution([Normal()]*2) with a Normal(2)
   // The copula...
-  if ( !( (hasIndependentCopula() && other.hasIndependentCopula()) || (copula_ == *other.getCopula()) ) ) return false;
+  if (!(hasIndependentCopula() && other.hasIndependentCopula())) return false;
+  if (!(copula_ == *other.getCopula())) return false;
   // Then the marginals
   for (UnsignedInteger i = 0; i < dimension_; ++i)
-    if (!(distributionCollection_[i] == *other.getMarginal(i))) return false;
+    {
+      const Distribution left(distributionCollection_[i]);
+      const Distribution right(*other.getMarginal(i));
+      std::cerr << "Equals left=" << left << " to right=" << right << std::endl;
+      if (!(left == right)) return false;
+    }
   return true;
 }
 

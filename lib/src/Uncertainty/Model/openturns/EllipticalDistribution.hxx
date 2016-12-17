@@ -53,9 +53,8 @@ public:
   virtual EllipticalDistribution * clone() const;
 
   /** Comparison operator */
-  Bool operator ==(const EllipticalDistribution & other) const;
 protected:
-  Bool equals(const DistributionImplementation & other) const;
+  virtual Bool equals(const DistributionImplementation & other) const;
 public:
 
   /** String converter */
