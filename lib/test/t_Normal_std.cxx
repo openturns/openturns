@@ -169,22 +169,22 @@ int main(int argc, char *argv[])
       PlatformInfo::SetNumericalPrecision( oldPrecision );
       fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
       if (distribution.getDimension() <= 2)
-	{
-	  // Confidence regions
-	  NumericalScalar threshold;
-	  fullprint << "Minimum volume interval=" << distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95, threshold) << std::endl;
-	  fullprint << "threshold=" << threshold << std::endl;
-	  NumericalScalar beta;
-	  LevelSet levelSet(distribution.computeMinimumVolumeLevelSetWithThreshold(0.95, beta));
-	  fullprint << "Minimum volume level set=" << levelSet << std::endl;
-	  fullprint << "beta=" << beta << std::endl;
-	  fullprint << "Bilateral confidence interval=" << distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95, beta) << std::endl;
-	  fullprint << "beta=" << beta << std::endl;
-	  fullprint << "Unilateral confidence interval (lower tail)=" << distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, false, beta) << std::endl;
-	  fullprint << "beta=" << beta << std::endl;
-	  fullprint << "Unilateral confidence interval (upper tail)=" << distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, true, beta) << std::endl;
-	  fullprint << "beta=" << beta << std::endl;
-	}
+      {
+        // Confidence regions
+        NumericalScalar threshold;
+        fullprint << "Minimum volume interval=" << distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95, threshold) << std::endl;
+        fullprint << "threshold=" << threshold << std::endl;
+        NumericalScalar beta;
+        LevelSet levelSet(distribution.computeMinimumVolumeLevelSetWithThreshold(0.95, beta));
+        fullprint << "Minimum volume level set=" << levelSet << std::endl;
+        fullprint << "beta=" << beta << std::endl;
+        fullprint << "Bilateral confidence interval=" << distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95, beta) << std::endl;
+        fullprint << "beta=" << beta << std::endl;
+        fullprint << "Unilateral confidence interval (lower tail)=" << distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, false, beta) << std::endl;
+        fullprint << "beta=" << beta << std::endl;
+        fullprint << "Unilateral confidence interval (upper tail)=" << distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, true, beta) << std::endl;
+        fullprint << "beta=" << beta << std::endl;
+      }
       NumericalPoint mean = distribution.getMean();
       fullprint << "mean=" << mean << std::endl;
       NumericalPoint standardDeviation = distribution.getStandardDeviation();
@@ -252,7 +252,41 @@ int main(int argc, char *argv[])
       fullprint << "invchol=" << invChol.clean(1.0e-6) << std::endl;
       fullprint << "chol*t(chol)=" << (chol * chol.transpose()).clean(1.0e-6) << std::endl;
       fullprint << "chol*invchol=" << (chol * invChol).clean(1.0e-6) << std::endl;
-    }
+      {
+        // Comparison with another elliptical distribution
+        const Bool equal = distribution == Student(4.5, meanPoint, sigma, R);
+        fullprint << "Comparison with a Student distribution " << std::boolalpha << equal << std::endl;
+      }
+      {
+        // Comparison with a non-elliptical distribution
+        const Bool equal = distribution == Exponential();
+        fullprint << "Comparison with an Exponential distribution " << std::boolalpha << equal << std::endl;
+      }
+      {
+        // Comparison with itself
+        const Bool equal = distribution == distribution;
+        fullprint << "Comparison with itself " << std::boolalpha << equal << std::endl;
+      }
+      // {
+      //   // Comparison with itself, as a Distribution
+      //   const Bool equal = distribution == Distribution(distribution);
+      //   fullprint << "Comparison with itself as a distribution" << std::boolalpha << equal << std::endl;
+      // }
+      {
+        // Comparison with a clone
+	Normal other(distribution.getDimension());
+	other.setParameter(distribution.getParameter());
+        const Bool equal = distribution == other;
+        fullprint << "Comparison with a clone " << std::boolalpha << equal << std::endl;
+      }
+      {
+        // Comparison with another member of the same family
+	Normal other(distribution.getDimension());
+	other.setParameter(distribution.getParameter() * 0.5);
+        const Bool equal = distribution == other;
+        fullprint << "Comparison with another member " << std::boolalpha << equal << std::endl;
+      }
+    } // dim
   }
   catch (TestFailed & ex)
   {
@@ -263,4 +297,3 @@ int main(int argc, char *argv[])
 
   return ExitCode::Success;
 }
-

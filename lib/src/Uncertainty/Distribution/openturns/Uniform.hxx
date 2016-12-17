@@ -47,6 +47,7 @@ public:
 
 
   /** Comparison operator */
+  using DistributionImplementation::operator ==;
   Bool operator ==(const Uniform & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const;

@@ -80,35 +80,24 @@ EllipticalDistribution::EllipticalDistribution(const NumericalPoint & mean,
 }
 
 
-/* Comparison operator */
-Bool EllipticalDistribution::operator ==(const EllipticalDistribution & other) const
-{
-  if (this == &other) return true;
-  return (R_ == other.R_) &&
-         (mean_ == other.mean_) &&
-         (sigma_ == other.sigma_);
-}
-
 Bool EllipticalDistribution::equals(const DistributionImplementation & other) const
 {
-  const EllipticalDistribution* p_other = dynamic_cast<const EllipticalDistribution*>(&other);
-  // First, check with cast
-  if (p_other != 0) return *this == *p_other;
-  // Second, check by properties
+  // Check by properties
+  // Do they have the same dimension?
+  if (dimension_ != other.getDimension()) return false;
+  // Can I cast other into an elliptical distribution?
+  const EllipticalDistribution * p_other = dynamic_cast<const EllipticalDistribution*>(&other);
+  if (p_other) return (mean_ == p_other->mean_) && (sigma_ == p_other->sigma_) && (R_ == p_other->R_);
+  // Here, if dimension == 1 no more test can be done
+  if (dimension_ == 1) return false;
+  // Otherwise, check equality using properties
+  // Are they both elliptical?
+  if (!other.isElliptical()) return false;
   // The copula...
   if ( !( (hasIndependentCopula() && other.hasIndependentCopula()) || (*getCopula() == *other.getCopula()) ) ) return false;
   // Then the marginals
   for (UnsignedInteger i = 0; i < dimension_; ++ i)
-  {
-    // early exit to avoid recursing in DistributionImplementation::operator==
-    const Pointer<DistributionImplementation> p_marginal(getMarginal(i));
-    const Pointer<DistributionImplementation> p_other_marginal(other.getMarginal(i));
-    const Bool marginalElliptical = dynamic_cast<EllipticalDistribution*>(p_marginal.get());
-    const Bool otherMarginalElliptical = dynamic_cast<EllipticalDistribution*>(p_other_marginal.get());
-    if ((marginalElliptical && !otherMarginalElliptical)) return false;
-
-    if (!(*p_marginal == *p_other_marginal)) return false;
-  }
+    if (!(getMarginal(i)->operator == (*other.getMarginal(i)))) return false;
   return true;
 }
 
