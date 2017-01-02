@@ -8,7 +8,7 @@
  *        means Transpose(linear).x, <quadratic, x> means
  *        Transpose_kj(quadratic).x
  *
- * Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ * Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  * Permission to copy, use, modify, sell and distribute this software
  * is granted provided this copyright notice appears in all copies.
