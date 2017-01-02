@@ -3,7 +3,7 @@
  *  @brief Implementation class of the scalar nonlinear solver based on
  *         a mixed bisection/secant scheme
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
