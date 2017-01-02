@@ -88,7 +88,7 @@ that the intervals :math:`[m_i-k\sigma_{mn},m_i+k\sigma_{mn}]` satisfy:
 .. math::
     \Prob{\Prob{X_i\in[m_i-k\sigma_{mn},m_i+k\sigma_{mn}]}\geq p}=\alpha
 
-for :math:`i\in\{1,\dots,m}`. It reduces to find :math:`k` such that:
+for :math:`i\in\{1,\dots,m\}`. It reduces to find :math:`k` such that:
 
 .. math::
     \int_{\Rset}F(x,k;\nu_{m,n},p)\phi_{0,1/\sqrt{n}}(x)\,\di x = \alpha

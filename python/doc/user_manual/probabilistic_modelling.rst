@@ -232,3 +232,6 @@ Low-level distribution functions
     DistFunc_pNormal
     DistFunc_qNormal
     DistFunc_rNormal
+    DistFunc_kFactor
+    DistFunc_kFactorPooled
+
