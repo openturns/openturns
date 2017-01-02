@@ -1,7 +1,5 @@
 // SWIG file LinearNumericalMathEvaluationImplementation.i
 
-OTAutodoc(LinearNumericalMathEvaluationImplementation)
-
 %{
 #include "openturns/LinearNumericalMathEvaluationImplementation.hxx"
 %}

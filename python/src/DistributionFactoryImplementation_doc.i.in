@@ -42,7 +42,6 @@ OT_DistributionFactory_build_doc
 %define OT_DistributionFactory_buildEstimator_doc
 "Build the distribution and the parameter distribution.
 
-
 Parameters
 ----------
 sample : 2-d sequence of float
