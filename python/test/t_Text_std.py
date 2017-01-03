@@ -19,30 +19,14 @@ try:
     for i in range(1, dim):
         R[i, i - 1] = 0.5
 
-    distribution1 = Normal(meanPoint, sigma, R)
-
-    # Instanciate another distribution object
-    meanPoint[0] = -1.5
-    meanPoint[1] = 0.5
-    sigma[0] = 4.0
-    sigma[1] = 1.0
-    for i in range(1, dim):
-        R[i, i - 1] = -0.25
-
-    distribution2 = Normal(meanPoint, sigma, R)
+    distribution = Normal(meanPoint, sigma, R)
 
     # Test for sampling
     size = 30
-    sample = distribution1.getSample(size)
+    sample = distribution.getSample(size)
 
     # Create an empty graph
     myGraph = Graph("Normal sample", "x1", "x2", True, "topright")
-
-    # Create the first cloud
-    myCloud = Cloud(sample, "blue", "fsquare", "First Cloud")
-
-    # Then, draw it
-    myGraph.add(myCloud)
 
     # Display extrema indices
     x1 = [ x[0] for x in sample[:,0]]
@@ -53,7 +37,8 @@ try:
     idx[2] = x2.index(min(x2))
     idx[3] = x2.index(max(x2))
 
-    labels = Description(sample.getSize())
+    sample.add(distribution.getSample( 5 ))
+    labels = Description(sample.getSize(), ".")
     for i in range(4):
       labels[idx[i]] = str(idx[i])
 
