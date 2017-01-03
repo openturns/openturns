@@ -1,7 +1,5 @@
 %define OT_IntegrationAlgorithm_doc
-"Base class for integration algorithms.
-
-"
+"Base class for integration algorithms."
 %enddef
 %feature("docstring") OT::IntegrationAlgorithmImplementation
 OT_IntegrationAlgorithm_doc

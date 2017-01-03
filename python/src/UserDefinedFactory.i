@@ -1,7 +1,5 @@
 // SWIG file UserDefinedFactory.i
 
-OTAutodoc(UserDefinedFactory)
-
 %{
 #include "openturns/UserDefinedFactory.hxx"
 %}

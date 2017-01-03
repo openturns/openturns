@@ -77,7 +77,6 @@ NumericalScalar KFold::run(LeastSquaresMethod & method) const
   const NumericalSample y(method.getOutputSample());
   const Basis basis(method.getBasis());
 
-  const UnsignedInteger dimension = x.getDimension();
   const UnsignedInteger sampleSize = x.getSize();
   const NumericalScalar variance = y.computeVariance()[0];
 
@@ -106,7 +105,7 @@ NumericalScalar KFold::run(LeastSquaresMethod & method) const
     Indices removedIndices(0);
     Indices rowFilter(0);
     Indices inverseRowFilter(0);
-    for ( UnsignedInteger j = 0; j < ( k_ * testSize ); ++ j )
+    for (UnsignedInteger j = 0; j < (k_ * testSize); ++ j)
     {
       const UnsignedInteger jModK = j % k_;
       // If j is in the learning database

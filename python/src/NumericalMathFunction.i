@@ -203,7 +203,6 @@ def _exec_sample_multiprocessing(func, n_cpus):
     _exec_sample : Function or callable
         The parallelized funtion.
     """
-
     def _exec_sample(X):
         from multiprocessing import Pool
         p = Pool(processes=n_cpus)
