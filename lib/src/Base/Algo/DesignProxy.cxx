@@ -174,6 +174,7 @@ Basis DesignProxy::getBasis() const
 /* Row filter accessor */
 void DesignProxy::setRowFilter(const Indices & rowFilter)
 {
+  rowFilter.check(x_.getSize());
   rowFilter_ = rowFilter;
 }
 
@@ -187,6 +188,13 @@ Bool DesignProxy::hasRowFilter() const
 {
   return rowFilter_.getSize() > 0;
 }
+
+/* Effective size of sample */
+UnsignedInteger DesignProxy::getSampleSize() const
+{
+  return hasRowFilter() ? rowFilter_.getSize() : x_.getSize();
+}
+
 
 /* Weight accessor */
 void DesignProxy::setWeight(const NumericalPoint & weight)

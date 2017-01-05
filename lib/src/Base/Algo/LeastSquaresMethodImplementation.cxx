@@ -50,7 +50,7 @@ LeastSquaresMethodImplementation::LeastSquaresMethodImplementation(const DesignP
   const UnsignedInteger size = proxy.getInputSample().getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: expected a non-empty output sample";
   // Check the argument compatibility
-  if (proxy.getInputSample().getSize() != size) throw InvalidArgumentException(HERE) << "Error: the size of the output sample=" << size << " is different from the size of the input sample=" << proxy.getInputSample().getSize();
+  if (proxy.getSampleSize() != size) throw InvalidArgumentException(HERE) << "Error: the size of the output sample=" << size << " is different from the size of the input sample=" << proxy.getSampleSize();
   if (weight.getSize() != size) throw InvalidArgumentException(HERE) << "Error: the size of the output sample=" << size << " is different from the size of the weight=" << weight.getSize();
   // Check the weight uniformity
   setWeight(weight);

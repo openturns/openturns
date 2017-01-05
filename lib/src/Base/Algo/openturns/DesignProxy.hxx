@@ -67,6 +67,9 @@ public:
   /** Row filter flag accessor */
   Bool hasRowFilter() const;
 
+  /** Effective size of sample */
+  UnsignedInteger getSampleSize() const;
+
   /** Weight accessor */
   void setWeight(const NumericalPoint & weight);
   NumericalPoint getWeight() const;
