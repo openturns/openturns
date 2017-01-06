@@ -20,8 +20,7 @@ try:
     formulaIshigami[
         0] = "sin(_pi*X1)+7*sin(_pi*X2)*sin(_pi*X2)+0.1*((_pi*X3)*(_pi*X3)*(_pi*X3)*(_pi*X3))*sin(_pi*X1)"
 
-    modelIshigami = NumericalMathFunction(
-        inputName, outputName, formulaIshigami)
+    modelIshigami = AnalyticalFunction(inputName, formulaIshigami)
 
     distributions = ComposedDistribution([Uniform(-1.0, 1.0)] * inputDimension)
 

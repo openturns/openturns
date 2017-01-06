@@ -5,18 +5,14 @@ from math import sin, pi
 #matplotlib.use('Agg')
 #import matplotlib.pylab as plt
 
-# Set seed
-ot.RandomGenerator.SetSeed(0)
 # Definition of the Ishigami function
 dimension = 3
 a = 7.0
 b = 0.1
-
-# Create the Ishigami function
-input_variables = ['xi1','xi2','xi3']
-formula = ['sin(xi1) + (' + str(a) + ') * (sin(xi2)) ^ 2 + (' + str(b) + ') * xi3^4 * sin(xi1)']
-ishigami_model = ot.NumericalMathFunction(input_variables, formula)
-ishigami_model.setName('Ishigami')
+input_variables = ['xi1', 'xi2', 'xi3', 'a', 'b']
+formula = ['sin(xi1) + a * (sin(xi2)) ^ 2 + b * xi3^4 * sin(xi1)']
+full = ot.AnalyticalFunction(input_variables, formula)
+ishigami_model = ot.ParametricFunction(full, [3, 4], [a, b])
 
 #  Generating a design of size 
 N = 150
