@@ -187,22 +187,3 @@ for n in range(2):
         # print exc
         print('exception handling: ok')
 
-
-class FUNC(OpenTURNSPythonFunction):
-
-    def __init__(self):
-        super(FUNC, self).__init__(2, 1)
-        self.setInputDescription(['R', 'S'])
-        self.setOutputDescription(['T'])
-
-    def _exec(self, X):
-        theta = self.getParameter()
-        Y = [X[0] + X[1] * theta[0]]
-        return Y
-
-myFunc = NumericalMathFunction(FUNC())
-myFunc.setParameterDescription(['theta'])
-x = [4.0, 5.0]
-theta = [1.2]
-print('x=', x, 'theta=', theta, 'f(x, theta)=', myFunc(x, theta))
-print(myFunc.getParameter(), myFunc.getParameterDescription())

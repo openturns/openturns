@@ -55,5 +55,3 @@ no func
 no function detected : ok.
 exception handling: ok
 exception handling: ok
-x= [4.0, 5.0] theta= [1.2] f(x, theta)= [10]
-[1.2] [theta]
