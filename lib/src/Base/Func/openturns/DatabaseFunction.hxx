@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The class that implements composed functions.
+ *  @brief The class that implements a pre-computed function.
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -44,7 +44,8 @@ public:
 
   /** Parameter constructor */
   DatabaseFunction (const NumericalSample & inputSample,
-                    const NumericalSample & outputSample);
+                    const NumericalSample & outputSample,
+                    const Bool enableCache = true);
 
   /** Comparison operator */
   Bool operator ==(const DatabaseFunction & other) const;

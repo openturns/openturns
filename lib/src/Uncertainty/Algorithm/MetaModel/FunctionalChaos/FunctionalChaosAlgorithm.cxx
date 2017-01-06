@@ -28,7 +28,7 @@
 #include "openturns/NumericalMathFunctionImplementation.hxx"
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/IdentityFunction.hxx"
-#include "openturns/DatabaseNumericalMathEvaluationImplementation.hxx"
+#include "openturns/DatabaseFunction.hxx"
 #include "openturns/RosenblattEvaluation.hxx"
 #include "openturns/InverseRosenblattEvaluation.hxx"
 #include "openturns/MarginalTransformationEvaluation.hxx"
@@ -95,7 +95,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy,
     const ProjectionStrategy & projectionStrategy)
-  : MetaModelAlgorithm( distribution, NumericalMathFunction(NumericalMathFunctionImplementation(DatabaseNumericalMathEvaluationImplementation(inputSample, outputSample, false).clone())) )
+  : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample, false))
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(projectionStrategy)
   , maximumResidual_(ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
@@ -117,7 +117,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy,
     const ProjectionStrategy & projectionStrategy)
-  : MetaModelAlgorithm( distribution, NumericalMathFunction(NumericalMathFunctionImplementation(DatabaseNumericalMathEvaluationImplementation(inputSample, outputSample, false).clone())) )
+  : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample, false))
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(projectionStrategy)
   , maximumResidual_(ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
@@ -149,7 +149,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
     const NumericalSample & outputSample,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy)
-  : MetaModelAlgorithm( distribution, NumericalMathFunction(NumericalMathFunctionImplementation(DatabaseNumericalMathEvaluationImplementation(inputSample, outputSample, false).clone())) )
+  : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample, false))
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(LeastSquaresStrategy(inputSample, outputSample))
   , maximumResidual_(ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
@@ -161,7 +161,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
 /* Constructor */
 FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & inputSample,
     const NumericalSample & outputSample)
-  : MetaModelAlgorithm( Distribution(), NumericalMathFunction(NumericalMathFunctionImplementation(DatabaseNumericalMathEvaluationImplementation(inputSample, outputSample, false).clone())) )
+  : MetaModelAlgorithm(Distribution(), DatabaseFunction(inputSample, outputSample, false))
   , adaptiveStrategy_()
   , projectionStrategy_()
   , maximumResidual_(ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
@@ -223,7 +223,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
     const NumericalSample & outputSample,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy)
-  : MetaModelAlgorithm( distribution, NumericalMathFunction(NumericalMathFunctionImplementation(DatabaseNumericalMathEvaluationImplementation(inputSample, outputSample, false).clone())) )
+  : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample, false))
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(LeastSquaresStrategy(inputSample, weights, outputSample))
   , maximumResidual_(ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))

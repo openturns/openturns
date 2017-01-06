@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The class that implements composed functions.
+ *  @brief The class that implements a pre-computed function.
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/DatabaseFunction.hxx"
-#include "openturns/ComposedNumericalMathFunction.hxx"
+#include "openturns/DatabaseNumericalMathEvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -34,9 +34,11 @@ DatabaseFunction::DatabaseFunction ()
 
 /* Parameter constructor */
 DatabaseFunction::DatabaseFunction (const NumericalSample & inputSample,
-                                    const NumericalSample & outputSample)
-  : NumericalMathFunction(new NumericalMathFunctionImplementation(inputSample, outputSample))
+                                    const NumericalSample & outputSample,
+                                    const Bool enableCache)
+  : NumericalMathFunction()
 {
+  setEvaluation(new DatabaseNumericalMathEvaluationImplementation(inputSample, outputSample, enableCache));
 }
 
 
