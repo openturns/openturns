@@ -77,12 +77,11 @@ FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor(const NumericalSampl
   factory.setOptimizationSolver(solver);
 
   // override bounds
-  OptimizationProblem problem;
   NumericalPoint parametersLowerBound;
   parametersLowerBound.add(ResourceMap::GetAsNumericalScalar("FisherSnedecorFactory-D1LowerBound"));
   parametersLowerBound.add(ResourceMap::GetAsNumericalScalar("FisherSnedecorFactory-D2LowerBound"));
-  problem.setBounds(Interval(parametersLowerBound, NumericalPoint(dimension, SpecFunc::MaxNumericalScalar), Interval::BoolCollection(dimension, true), Interval::BoolCollection(dimension, false)));
-  factory.setOptimizationProblem(problem);
+  Interval bounds(parametersLowerBound, NumericalPoint(dimension, SpecFunc::MaxNumericalScalar), Interval::BoolCollection(dimension, true), Interval::BoolCollection(dimension, false));
+  factory.setOptimizationBounds(bounds);
 
   return buildAsFisherSnedecor(factory.buildParameter(sample));
 }

@@ -63,7 +63,6 @@ TruncatedNormalFactory::Implementation TruncatedNormalFactory::build() const
 
 TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const NumericalSample & sample) const
 {
-  const UnsignedInteger dimension = build()->getParameterDimension();
   const UnsignedInteger size = sample.getSize();
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a TruncatedNormal distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   // In order to avoid numerical stability issues, we normalize the data to [-1, 1]
@@ -84,7 +83,7 @@ TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const NumericalSa
   normalizedSample -= NumericalPoint(1, beta);
   normalizedSample *= NumericalPoint(1, alpha);
 
-
+  const UnsignedInteger dimension = 2;// optimize (mu, sigma)
   NumericalPoint parametersLowerBound(dimension, -SpecFunc::MaxNumericalScalar);
   parametersLowerBound[1] = ResourceMap::GetAsNumericalScalar( "TruncatedNormalFactory-SigmaLowerBound");
   Interval::BoolCollection parametersLowerFlags(dimension, false);
@@ -110,20 +109,19 @@ TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const NumericalSa
   factory.setOptimizationSolver(solver);
 
   // override bounds
-  OptimizationProblem problem;
-  problem.setBounds(Interval(parametersLowerBound, NumericalPoint(dimension, SpecFunc::MaxNumericalScalar), parametersLowerFlags, Interval::BoolCollection(dimension, false)));
-  factory.setOptimizationProblem(problem);
+  Interval bounds(parametersLowerBound, NumericalPoint(dimension, SpecFunc::MaxNumericalScalar), parametersLowerFlags, Interval::BoolCollection(dimension, false));
+  factory.setOptimizationBounds(bounds);
 
   const NumericalPoint parameters(factory.buildParameter(normalizedSample));
 
   // The parameters are scaled back
   // X_norm = alpha * (X - beta)
   // X = beta + X_norm / alpha
-  NumericalPoint scaledParameters(dimension, beta);
+  NumericalPoint scaledParameters(4, beta);
   scaledParameters[0] += parameters[0] / alpha;// mu
-  scaledParameters[1] = parameters[1] / alpha;
-  scaledParameters[2] -= oneEps / alpha;
-  scaledParameters[3] += oneEps / alpha;
+  scaledParameters[1] = parameters[1] / alpha;// sigma
+  scaledParameters[2] -= oneEps / alpha;// a
+  scaledParameters[3] += oneEps / alpha;// b
 
   TruncatedNormal result(buildAsTruncatedNormal(scaledParameters));
   result.setDescription(sample.getDescription());

@@ -131,9 +131,7 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const NumericalSample & sampl
   factory.setOptimizationSolver(solver);
 
   // override constraint
-  OptimizationProblem problem;
-  problem.setInequalityConstraint(getLogLikelihoodInequalityConstraint());
-  factory.setOptimizationProblem(problem);
+  factory.setOptimizationInequalityConstraint(getLogLikelihoodInequalityConstraint());
 
   Trapezoidal result(buildAsTrapezoidal(factory.buildParameter(sample)));
   result.setDescription(sample.getDescription());

@@ -116,8 +116,8 @@ void OrderStatisticsMarginalChecker::check() const
       const NumericalScalar xMiddle = 0.5 * (xMin + xMax);
 
       // Define Optimization problem
-      problem.setBounds(Interval(xMin, xMax));
       problem.setObjective(f);
+      problem.setBounds(Interval(xMin, xMax));
       solver_.setStartingPoint(NumericalPoint(1, xMiddle));
       solver_.setProblem(problem);
       solver_.run();

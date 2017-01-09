@@ -290,9 +290,10 @@ NumericalPoint MaximumLikelihoodFactory::buildParameter(const NumericalSample & 
   logLikelihood.setGradient(logLikelihoodGradientWrapper.clone());
 
   // Define optimization problem
-  OptimizationProblem problem(problem_);
+  OptimizationProblem problem;
   problem.setMinimization(false);
   problem.setObjective(logLikelihood);
+  problem.setBounds(optimizationBounds_);
   OptimizationSolver solver(solver_);
   if (solver.getStartingPoint().getDimension() != logLikelihood.getInputDimension())
   {
@@ -342,14 +343,20 @@ DistributionFactoryImplementation::Implementation MaximumLikelihoodFactory::buil
 }
 
 
-void MaximumLikelihoodFactory::setOptimizationProblem(const OptimizationProblem& problem)
+/* Accessor to optimization bounds */
+void MaximumLikelihoodFactory::setOptimizationBounds(const Interval & optimizationBounds)
 {
-  problem_ = problem;
+  optimizationBounds_ = optimizationBounds;
 }
 
-OptimizationProblem MaximumLikelihoodFactory::getOptimizationProblem() const
+Interval MaximumLikelihoodFactory::getOptimizationBounds() const
 {
-  return problem_;
+  return optimizationBounds_;
+}
+
+void MaximumLikelihoodFactory::setOptimizationInequalityConstraint(const NumericalMathFunction & optimizationInequalityConstraint)
+{
+  optimizationInequalityConstraint_ = optimizationInequalityConstraint;
 }
 
 void MaximumLikelihoodFactory::setOptimizationSolver(const OptimizationSolver& solver)
@@ -365,7 +372,7 @@ OptimizationSolver MaximumLikelihoodFactory::getOptimizationSolver() const
 void MaximumLikelihoodFactory::setKnownParameter(const NumericalPoint & values,
     const Indices & indices)
 {
-  if (knownParameterValues_.getSize() != knownParameterIndices_.getSize()) throw InvalidArgumentException(HERE);
+  if (knownParameterValues_.getSize() != knownParameterIndices_.getSize()) throw InvalidArgumentException(HERE) << "Known parameters values and indices must have the same size";
   knownParameterValues_ = values;
   knownParameterIndices_ = indices;
 }
@@ -387,6 +394,8 @@ void MaximumLikelihoodFactory::save(Advocate & adv) const
   DistributionFactoryImplementation::save(adv);
   adv.saveAttribute("knownParameterValues_", knownParameterValues_);
   adv.saveAttribute("knownParameterIndices_", knownParameterIndices_);
+  adv.saveAttribute("optimizationBounds_", optimizationBounds_);
+  adv.saveAttribute("optimizationInequalityConstraint_", optimizationInequalityConstraint_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -395,6 +404,8 @@ void MaximumLikelihoodFactory::load(Advocate & adv)
   DistributionFactoryImplementation::load(adv);
   adv.loadAttribute("knownParameterValues_", knownParameterValues_);
   adv.loadAttribute("knownParameterIndices_", knownParameterIndices_);
+  adv.loadAttribute("optimizationBounds_", optimizationBounds_);
+  adv.loadAttribute("optimizationInequalityConstraint_", optimizationInequalityConstraint_);
 }
 
 END_NAMESPACE_OPENTURNS

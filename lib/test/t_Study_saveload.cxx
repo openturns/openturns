@@ -384,8 +384,8 @@ int main(int argc, char *argv[])
       model.setName("complex");
 
       OptimizationProblem problem;
-      problem.setBounds(bounds);
       problem.setObjective(model);
+      problem.setBounds(bounds);
       problem.setMinimization(true);
 
       tnc.setProblem(problem);

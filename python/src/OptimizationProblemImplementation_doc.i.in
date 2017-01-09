@@ -11,7 +11,8 @@ Available constructors:
 Parameters
 ----------
 objective : :class:`~openturns.NumericalMathFunction`
-    Objective function.
+    Objective function. Additional constraints and bounds must always be
+    consistent with the objective input dimension.
 equality : :class:`~openturns.NumericalMathFunction`
     Equality constraints.
 inequality : :class:`~openturns.NumericalMathFunction`
@@ -356,8 +357,12 @@ OT_OptimizationProblem_setMinimization_doc
 Parameters
 ----------
 objectiveFunction : :class:`~openturns.NumericalMathFunction`
-    Objective function."
+    Objective function.
 
+Notes
+-----
+Constraints and bounds are cleared if the objective has a different input
+dimension in order to keep the problem valid at all time."
 %enddef
 
 %feature("docstring") OT::OptimizationProblemImplementation::setObjective
