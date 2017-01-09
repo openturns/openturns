@@ -599,7 +599,7 @@ Graph NumericalMathEvaluationImplementation::draw(const NumericalScalar xMin,
     const GraphImplementation::LogScale scale) const
 {
   if (getInputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw a function with input dimension=" << getInputDimension() << " different from 1 using this method. See the other draw() methods.";
-  if (getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw a function with output dimension=" << getInputDimension() << " different from 1 using this method. See the other draw() methods.";
+  if (getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw a function with output dimension=" << getOutputDimension() << " different from 1 using this method. See the other draw() methods.";
   return draw(0, 0, NumericalPoint(1), xMin, xMax, pointNumber, scale);
 }
 
@@ -611,7 +611,7 @@ Graph NumericalMathEvaluationImplementation::draw(const NumericalPoint & xMin,
 {
   if (getInputDimension() == 1) return draw(xMin[0], xMax[0], pointNumber[0], scale);
   if ((getInputDimension() == 0) || (getInputDimension() > 2)) throw InvalidArgumentException(HERE) << "Error: cannot draw a function with input dimension=" << getInputDimension() << " different from 1 or 2 using this method. See the other draw() methods.";
-  if (getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw a function with output dimension=" << getInputDimension() << " different from 1 using this method. See the other draw() methods.";
+  if (getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw a function with output dimension=" << getOutputDimension() << " different from 1 using this method. See the other draw() methods.";
   return draw(0, 1, 0, NumericalPoint(2), xMin, xMax, pointNumber, scale);
 }
 
