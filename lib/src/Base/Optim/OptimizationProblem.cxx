@@ -180,6 +180,11 @@ Bool OptimizationProblem::isMinimization() const
   return getImplementation()->isMinimization();
 }
 
+Bool OptimizationProblem::isValid() const
+{
+  return getImplementation()->isValid();
+}
+
 /* String converter */
 String OptimizationProblem::__repr__() const
 {
