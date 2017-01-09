@@ -59,8 +59,7 @@ int main(int argc, char *argv[])
     solver.setStartingPoint(startingPoint);
 
     // Define Optimization Problem : minimization
-    OptimizationProblem problem;
-    problem.setObjective(levelFunction);
+    OptimizationProblem problem(levelFunction);
     problem.setBounds(bounds);
     problem.setMinimization(true);
     solver.setProblem(problem);
@@ -109,8 +108,7 @@ int main(int argc, char *argv[])
     // Define Optimization Solver :
     OptimizationSolver solver(new TNC());
 
-    OptimizationProblem problem;
-    problem.setObjective(levelFunction);
+    OptimizationProblem problem(levelFunction);
     problem.setBounds(bounds);
 
     {

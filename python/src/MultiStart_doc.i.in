@@ -23,8 +23,7 @@ Examples
 >>> dim = 2
 >>> model = ot.AnalyticalFunction(['x', 'y'], ['x^2+y^2*(1-x)^3'])
 >>> bounds = ot.Interval([-3.0] * dim, [3.0] * dim)
->>> problem = ot.OptimizationProblem()
->>> problem.setObjective(model)
+>>> problem = ot.OptimizationProblem(model)
 >>> problem.setBounds(bounds)
 >>> solver = ot.TNC(problem)
 >>> startingPoints = ot.Normal(dim).getSample(3)

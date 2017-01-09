@@ -47,6 +47,15 @@ OptimizationProblemImplementation::OptimizationProblemImplementation()
   // Nothing to do
 }
 
+OptimizationProblemImplementation::OptimizationProblemImplementation(const NumericalMathFunction & objective)
+  : PersistentObject()
+  , objective_(objective)
+  , minimization_(true)
+  , dimension_(objective.getInputDimension())
+{
+  // nothing to do
+}
+
 /*
  * @brief General multi-objective equality, inequality and bound constraints
  */

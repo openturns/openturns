@@ -46,6 +46,13 @@ OptimizationProblem::OptimizationProblem(const Implementation & p_implementation
 }
 
 /* Constructor with constraints, bounds */
+OptimizationProblem::OptimizationProblem(const NumericalMathFunction & objective)
+: TypedInterfaceObject<OptimizationProblemImplementation>(new OptimizationProblemImplementation(objective))
+{
+  // Nothing to do
+}
+
+/* Constructor with constraints, bounds */
 OptimizationProblem::OptimizationProblem(const NumericalMathFunction & objective,
     const NumericalMathFunction & equalityConstraint,
     const NumericalMathFunction & inequalityConstraint,
