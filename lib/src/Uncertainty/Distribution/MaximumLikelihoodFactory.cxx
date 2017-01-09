@@ -308,6 +308,35 @@ NumericalPoint MaximumLikelihoodFactory::buildParameter(const NumericalSample & 
     }
     solver.setStartingPoint(parameter);
   }
+  // Usually problem requires to set new bounds if dimension != effectiveDimension (for defined bounds)
+  if (problem.hasBounds() && (problem.getDimension() != problem.getBounds().getDimension()))
+  {
+    const Interval bounds(problem.getBounds());
+    const NumericalPoint lowerBound(bounds.getLowerBound());
+    const NumericalPoint upperBound(bounds.getUpperBound());
+    const Interval::BoolCollection finiteLowerBound(bounds.getFiniteLowerBound());
+    const Interval::BoolCollection finiteUpperBound(bounds.getFiniteUpperBound());
+    NumericalPoint effectiveLowerBound;
+    NumericalPoint effectiveUpperBound;
+    Interval::BoolCollection effectiveFiniteLowerBound;
+    Interval::BoolCollection effectiveFiniteUpperBound;
+    for (UnsignedInteger j = 0; j < effectiveParameterSize; ++ j)
+    {
+      if (!knownParameterIndices_.contains(j))
+      {
+        effectiveLowerBound.add(lowerBound[j]);
+        effectiveUpperBound.add(upperBound[j]);
+        effectiveFiniteLowerBound.add(finiteLowerBound[j]);
+        effectiveFiniteUpperBound.add(finiteUpperBound[j]);
+      }
+    }
+    Interval effectiveBounds(effectiveLowerBound, effectiveUpperBound, effectiveFiniteLowerBound, effectiveFiniteUpperBound);
+    problem.setBounds(effectiveBounds);
+  }
+  // Check that problem is valid
+  if(!problem.isValid())
+    throw InvalidArgumentException(HERE) << "In MaximumLikelihoodFactory::buildParameter, given problem is invalid."
+                                         << " Please check that bounds and various constraints have accurate dimensions";
   solver.setProblem(problem);
   solver.run();
 
