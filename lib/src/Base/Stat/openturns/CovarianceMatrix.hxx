@@ -63,12 +63,12 @@ public:
   CovarianceMatrix transpose () const;
 
   /** CovarianceMatrix addition (must have the same dimensions) */
-  CovarianceMatrix operator + (const CovarianceMatrix & m) const;
   using SymmetricMatrix::operator +;
+  CovarianceMatrix operator + (const CovarianceMatrix & m) const;
 
   /** CovarianceMatrix multiplication (must have consistent dimensions) */
-  CovarianceMatrix operator * (const IdentityMatrix & m) const;
   using SymmetricMatrix::operator *;
+  CovarianceMatrix operator * (const IdentityMatrix & m) const;
 
   /** Check if the matrix is SPD */
   virtual Bool isPositiveDefinite(const Bool keepIntact = true);
