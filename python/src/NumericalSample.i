@@ -20,7 +20,7 @@
     try {
       temp = OT::convert<OT::_PySequence_,OT::NumericalSample>( $input );
       $1 = &temp;
-    } catch (OT::InvalidArgumentException & ex) {
+    } catch (OT::InvalidArgumentException &) {
       SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a NumericalSample");
     }
   }

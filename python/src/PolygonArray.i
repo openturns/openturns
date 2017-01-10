@@ -49,7 +49,7 @@ namespace OT {
   } else {
     try {
       $1 = OT::buildCollectionFromPySequence< OT::Polygon >( $input );
-    } catch (OT::InvalidArgumentException & ex) {
+    } catch (OT::InvalidArgumentException &) {
       SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a collection of Polygon");
     }
   }

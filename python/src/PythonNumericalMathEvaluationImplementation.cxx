@@ -188,7 +188,7 @@ NumericalPoint PythonNumericalMathEvaluationImplementation::operator() (const Nu
     {
       outP = convert< _PySequence_, NumericalPoint >(result.get());
     }
-    catch (const InvalidArgumentException & ex)
+    catch (InvalidArgumentException &)
     {
       throw InvalidArgumentException(HERE) << "Output value for " << getName() << "._exec() method is not a sequence object (list, tuple, NumericalPoint, etc.)";
     }

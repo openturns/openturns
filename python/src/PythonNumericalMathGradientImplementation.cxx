@@ -136,7 +136,7 @@ Matrix PythonNumericalMathGradientImplementation::gradient(const NumericalPoint 
   {
     result = convert< _PySequence_, Matrix >(callResult.get());
   }
-  catch (const InvalidArgumentException & ex)
+  catch (InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Output value for " << getName() << "._gradient() method is not a 2-d float sequence object (list, tuple, etc.)";
   }
