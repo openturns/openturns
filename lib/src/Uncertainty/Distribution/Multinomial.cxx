@@ -260,7 +260,7 @@ NumericalScalar Multinomial::computeCDF(const NumericalPoint & point) const
   // If the atoms with non zero probability sum to N
   if ((std::abs(sumP_ - 1.0) < supportEpsilon_) && (sumX == n_))
   {
-    NumericalScalar value = lgamma(n_ + 1);
+    NumericalScalar value = lgamma(n_ + 1.0);
     for (UnsignedInteger j = 0; j < dimension; ++j)
       value += point[j] * std::log(p_[j]) - lgamma(point[j] + 1.0);
     return std::exp(value);
