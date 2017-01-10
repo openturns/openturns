@@ -91,6 +91,12 @@ DistributionFactoryResult DistributionFactoryImplementation::buildEstimator(cons
 DistributionFactoryResult DistributionFactoryImplementation::buildEstimator(const NumericalSample & sample,
     const DistributionParameters & parameters) const
 {
+  String parametersDistributionName(parameters.getDistribution().getImplementation()->getClassName());
+  String referenceDistributionName(build().getImplementation()->getClassName());
+  if (parametersDistributionName != referenceDistributionName)
+    throw InvalidArgumentException(HERE) << "Cannot use a " << parametersDistributionName
+                                         <<" parametrization to build a " << referenceDistributionName;
+
   DistributionFactoryResult nativeResult(buildEstimator(sample));
   Distribution nativeDistribution(nativeResult.getDistribution());
   DistributionParameters parameters2(parameters);
