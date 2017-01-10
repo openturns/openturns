@@ -75,7 +75,9 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
   , covarianceCholeskyFactor_()
   , covarianceCholeskyFactorHMatrix_()
 {
-  glmAlgo_ = GeneralizedLinearModelAlgorithm(inputSample, outputSample, covarianceModel, basis, normalize, keepCholeskyFactor);
+  // Here we must force the GLMAlgo to keep the Cholesky factor as it is mandatory
+  // for the interpolation part
+  glmAlgo_ = GeneralizedLinearModelAlgorithm(inputSample, outputSample, covarianceModel, basis, normalize, true);
   if (ResourceMap::Get("KrigingAlgorithm-LinearAlgebra") == "HMAT") glmAlgo_.setMethod(1);
 }
 
@@ -100,7 +102,9 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
   , covarianceCholeskyFactor_()
   , covarianceCholeskyFactorHMatrix_()
 {
-  glmAlgo_ = GeneralizedLinearModelAlgorithm(inputSample, outputSample, covarianceModel, basis, normalize, keepCholeskyFactor);
+  // Here we must force the GLMAlgo to keep the Cholesky factor as it is mandatory
+  // for the interpolation part
+  glmAlgo_ = GeneralizedLinearModelAlgorithm(inputSample, outputSample, covarianceModel, basis, normalize, true);
   if (ResourceMap::Get("KrigingAlgorithm-LinearAlgebra") == "HMAT") glmAlgo_.setMethod(1);
 }
 
@@ -123,7 +127,9 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
   , covarianceCholeskyFactor_()
   , covarianceCholeskyFactorHMatrix_()
 {
-  glmAlgo_ = GeneralizedLinearModelAlgorithm(inputSample, inputTransformation, outputSample, covarianceModel, basis, keepCholeskyFactor);
+  // Here we must force the GLMAlgo to keep the Cholesky factor as it is mandatory
+  // for the interpolation part
+  glmAlgo_ = GeneralizedLinearModelAlgorithm(inputSample, inputTransformation, outputSample, covarianceModel, basis, true);
   if (ResourceMap::Get("KrigingAlgorithm-LinearAlgebra") == "HMAT") glmAlgo_.setMethod(1);
 }
 
@@ -147,7 +153,9 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
   , covarianceCholeskyFactor_()
   , covarianceCholeskyFactorHMatrix_()
 {
-  glmAlgo_ = GeneralizedLinearModelAlgorithm(inputSample, inputTransformation, outputSample, covarianceModel, basis, keepCholeskyFactor);
+  // Here we must force the GLMAlgo to keep the Cholesky factor as it is mandatory
+  // for the interpolation part
+  glmAlgo_ = GeneralizedLinearModelAlgorithm(inputSample, inputTransformation, outputSample, covarianceModel, basis, true);
   if (ResourceMap::Get("KrigingAlgorithm-LinearAlgebra") == "HMAT") glmAlgo_.setMethod(1);
 }
 
