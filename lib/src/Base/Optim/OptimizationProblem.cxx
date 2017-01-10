@@ -45,10 +45,14 @@ OptimizationProblem::OptimizationProblem(const Implementation & p_implementation
   // Nothing to do
 }
 
-/*
- * @brief  Standard constructor: the problem is defined by a scalar valued function  (in fact, a 1-D vector valued function)
- *         and a level value
- */
+/* Constructor with constraints, bounds */
+OptimizationProblem::OptimizationProblem(const NumericalMathFunction & objective)
+: TypedInterfaceObject<OptimizationProblemImplementation>(new OptimizationProblemImplementation(objective))
+{
+  // Nothing to do
+}
+
+/* Constructor with constraints, bounds */
 OptimizationProblem::OptimizationProblem(const NumericalMathFunction & objective,
     const NumericalMathFunction & equalityConstraint,
     const NumericalMathFunction & inequalityConstraint,

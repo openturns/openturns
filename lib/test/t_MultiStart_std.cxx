@@ -57,8 +57,7 @@ int main(int argc, char *argv[])
     Interval bounds(NumericalPoint(dim, -3.0), NumericalPoint(dim, 3.0));
 
     // problem
-    OptimizationProblem problem;
-    problem.setObjective(model);
+    OptimizationProblem problem(model);
     problem.setBounds(bounds);
 
     // solver

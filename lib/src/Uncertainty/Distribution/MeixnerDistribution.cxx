@@ -420,14 +420,14 @@ void MeixnerDistribution::update()
   MeixnerBoundB fB(clone());
   MeixnerBoundCD fCD(clone());
 
-  // Initilalyse Optimization problems
+  // Initialize Optimization problems
   OptimizationProblem problem;
-  problem.setBounds(getRange());
-  solver_.setStartingPoint(getMean());
 
   // Define Optimization problem1 : maximization fB
   problem.setMinimization(false);
   problem.setObjective(fB);
+  problem.setBounds(getRange());
+  solver_.setStartingPoint(getMean());
   solver_.setProblem(problem);
   solver_.run();
   b_ = std::sqrt(solver_.getResult().getOptimalValue()[0]);

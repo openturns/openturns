@@ -383,9 +383,8 @@ int main(int argc, char *argv[])
       NumericalMathFunction model(input2, output2, formula2);
       model.setName("complex");
 
-      OptimizationProblem problem;
+      OptimizationProblem problem(model);
       problem.setBounds(bounds);
-      problem.setObjective(model);
       problem.setMinimization(true);
 
       tnc.setProblem(problem);

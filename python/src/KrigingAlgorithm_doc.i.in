@@ -147,14 +147,30 @@ Create the Kriging algorithm with the optimizer option:
 >>> basis = ot.Basis([ot.AnalyticalFunction(['x'], ['0.0'])])
 >>> thetaInit = 1.0
 >>> covariance = ot.GeneralizedExponential([thetaInit], 2.0)
->>> optimizer = ot.TNC()
 >>> bounds = ot.Interval(1e-2,1e2)
->>> optimProblem = ot.OptimizationProblem()
->>> optimProblem.setBounds(bounds)
->>> optimizer.setProblem(optimProblem)
 >>> algo = ot.KrigingAlgorithm(input_data, output_data, basis, covariance)
->>> algo.setOptimizationSolver(optimizer)
+>>> algo.setOptimizationBounds(bounds)
 "
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MaximumLikelihoodFactory::setOptimizationBounds
+"Accessor to the optimization bounds.
+
+Parameters
+----------
+problem : :class:`~openturns.Interval`
+    The bounds used for numerical optimization of the likelihood."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MaximumLikelihoodFactory::getOptimizationBounds
+"Accessor to the optimization bounds.
+
+Returns
+-------
+problem : :class:`~openturns.Interval`
+    The bounds used for numerical optimization of the likelihood."
 
 // ---------------------------------------------------------------------
 

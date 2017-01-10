@@ -331,6 +331,26 @@ optimizeParameters : bool
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::GeneralizedLinearModelAlgorithm::setOptimizationBounds
+"Optimization bounds accessor.
+
+Parameters
+----------
+bounds : :class:`~openturns.Interval`
+    Bounds for covariance model parameter optimization."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedLinearModelAlgorithm::getOptimizationBounds
+"Optimization bounds accessor.
+
+Returns
+-------
+bounds : :class:`~openturns.Interval`
+    Bounds for covariance model parameter optimization."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::GeneralizedLinearModelAlgorithm::setNoise
 "Observation noise variance accessor.
 

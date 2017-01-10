@@ -46,23 +46,33 @@ solver : :class:`~openturns.OptimizationSolver`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::MaximumLikelihoodFactory::setOptimizationProblem
-"Accessor to the problem.
+%feature("docstring") OT::MaximumLikelihoodFactory::setOptimizationBounds
+"Accessor to the optimization bounds.
 
 Parameters
 ----------
-problem : :class:`~openturns.OptimizationProblem`
-    The problem used for numerical optimization of the likelihood."
+problem : :class:`~openturns.Interval`
+    The bounds used for numerical optimization of the likelihood."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::MaximumLikelihoodFactory::getOptimizationProblem
-"Accessor to the problem.
+%feature("docstring") OT::MaximumLikelihoodFactory::getOptimizationBounds
+"Accessor to the optimization bounds.
 
 Returns
 -------
-problem : :class:`~openturns.OptimizationProblem`
-    The problem used for numerical optimization of the likelihood."
+problem : :class:`~openturns.Interval`
+    The bounds used for numerical optimization of the likelihood."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MaximumLikelihoodFactory::setOptimizationInequalityConstraint
+"Accessor to the optimization inequality constraint.
+
+Parameters
+----------
+inequalityConstraint : :class:`~openturns.NumericalMathFunction`
+    The inequality constraint used for numerical optimization of the likelihood."
 
 // ---------------------------------------------------------------------
 

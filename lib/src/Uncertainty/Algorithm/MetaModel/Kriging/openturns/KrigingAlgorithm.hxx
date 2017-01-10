@@ -102,6 +102,10 @@ public:
   OptimizationSolver getOptimizationSolver() const;
   void setOptimizationSolver(const OptimizationSolver & solver);
 
+  /** Accessor to optimization bounds */
+  void setOptimizationBounds(const Interval & optimizationBounds);
+  Interval getOptimizationBounds() const;
+
   /** Log-Likelihood function accessor */
   NumericalMathFunction getLogLikelihoodFunction();
 

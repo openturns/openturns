@@ -55,6 +55,9 @@ public:
   OptimizationProblem(const Implementation & p_implementation);
 
   /** Constructor with parameters */
+  explicit OptimizationProblem(const NumericalMathFunction & objective);
+
+  /** Constructor with parameters */
   OptimizationProblem(const NumericalMathFunction & objective,
                       const NumericalMathFunction & equalityConstraint,
                       const NumericalMathFunction & inequalityConstraint,

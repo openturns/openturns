@@ -271,7 +271,18 @@ OptimizationSolver KrigingAlgorithm::getOptimizationSolver() const
 
 void KrigingAlgorithm::setOptimizationSolver(const OptimizationSolver & solver)
 {
-  return glmAlgo_.setOptimizationSolver(solver);
+  glmAlgo_.setOptimizationSolver(solver);
+}
+
+/* Accessor to optimization bounds */
+void KrigingAlgorithm::setOptimizationBounds(const Interval & optimizationBounds)
+{
+  glmAlgo_.setOptimizationBounds(optimizationBounds);
+}
+
+Interval KrigingAlgorithm::getOptimizationBounds() const
+{
+  return glmAlgo_.getOptimizationBounds();
 }
 
 /** Log-Likelihood function accessor */
