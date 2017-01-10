@@ -23,16 +23,11 @@ try:
           [(b * b + a * b * rho) / covTh, b * b / covTh]]
 
     # Model
-    inputName = Description(inputDimension)
-    inputName[0] = "X1"
-    inputName[1] = "X2"
-    outputName = Description(outputDimension)
-    outputName[0] = "Y"
+    inputName = ["X1", "X2", "a", "b"]
+    formula = ["a * X1 + b * X2"]
 
-    formula = Description(outputDimension)
-    formula[0] = str(a) + "* X1 +" + str(b) + "* X2"
-
-    model = NumericalMathFunction(inputName, outputName, formula)
+    full = AnalyticalFunction(inputName, formula)
+    model = ParametricFunction(full, [2, 3], [a, b])
 
     # Input distribution
     distribution = ComposedDistribution([Normal()] * inputDimension)

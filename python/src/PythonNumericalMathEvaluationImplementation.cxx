@@ -375,63 +375,6 @@ UnsignedInteger PythonNumericalMathEvaluationImplementation::getOutputDimension(
 }
 
 
-void PythonNumericalMathEvaluationImplementation::setParameter(const NumericalPoint & parameter)
-{
-  ScopedPyObjectPointer methodName(convert< String, _PyString_>("setParameter"));
-  ScopedPyObjectPointer probArg(convert< NumericalPoint, _PySequence_ >(parameter));
-  ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
-                                   methodName.get(),
-                                   probArg.get(), NULL));
-  if (callResult.isNull())
-  {
-    handleException();
-  }
-}
-
-
-/* Parameters value accessor */
-NumericalPoint PythonNumericalMathEvaluationImplementation::getParameter() const
-{
-  ScopedPyObjectPointer callResult(PyObject_CallMethod(pyObj_,
-                                   const_cast<char *>("getParameter"),
-                                   const_cast<char *>("()")));
-  if (callResult.isNull())
-  {
-    handleException();
-  }
-  NumericalPoint result(convert< _PySequence_, NumericalPoint >(callResult.get()));
-  return result;
-}
-
-
-void PythonNumericalMathEvaluationImplementation::setParameterDescription(const Description & description)
-{
-  ScopedPyObjectPointer methodName(convert< String, _PyString_>("setParameterDescription"));
-  ScopedPyObjectPointer probArg(convert< Description, _PySequence_ >(description));
-  ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
-                                   methodName.get(),
-                                   probArg.get(), NULL));
-  if (callResult.isNull())
-  {
-    handleException();
-  }
-}
-
-/* Parameters description accessor */
-Description PythonNumericalMathEvaluationImplementation::getParameterDescription() const
-{
-  ScopedPyObjectPointer callResult(PyObject_CallMethod(pyObj_,
-                                   const_cast<char *>("getParameterDescription"),
-                                   const_cast<char *>("()")));
-  if (callResult.isNull())
-  {
-    handleException();
-  }
-  Description result(convert< _PySequence_, Description >(callResult.get()));
-  return result;
-}
-
-
 /* Method save() stores the object through the StorageManager */
 void PythonNumericalMathEvaluationImplementation::save(Advocate & adv) const
 {

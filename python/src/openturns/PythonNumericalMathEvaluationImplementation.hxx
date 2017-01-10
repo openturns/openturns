@@ -76,14 +76,6 @@ public:
   /** Accessor for output point dimension */
   virtual UnsignedInteger getOutputDimension() const;
 
-  /** Parameters value accessor */
-  virtual NumericalPoint getParameter() const;
-  virtual void setParameter(const NumericalPoint & parameters);
-
-  /** Parameters description accessor */
-  virtual Description getParameterDescription() const;
-  virtual void setParameterDescription(const Description & description);
-
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
 
