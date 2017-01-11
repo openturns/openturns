@@ -29,20 +29,40 @@ addons:
     - xmlto
     - asciidoc
 
+matrix:
+  include:
+    - os: linux
+      compiler: gcc
+    - os: osx
+      compiler: clang
+
+before_install:
+  - if test "$TRAVIS_OS_NAME" = "osx"; then
+        brew update &&
+        brew tap homebrew/science &&
+        brew install swig tbb muparser R openblas &&
+        export HOMEBREW_PREFIX=`brew --prefix`;
+    fi
+
 install:
-  - export CXX="g++-4.8" CC="gcc-4.8"
+  - if test "$TRAVIS_OS_NAME" = "linux"; then
+      export CXX="g++-4.8" CC="gcc-4.8";
+    fi
 # dvisvgm
-  - git clone https://github.com/mgieseki/dvisvgm.git
-  - pushd dvisvgm
-  - ./autogen.sh
-  - ./configure --prefix=$HOME/.local
-  - make -j2
-  - make install
-  - export PATH=$PATH:$HOME/.local/bin
-  - popd
+  - if test "$TRAVIS_OS_NAME" = "linux"; then
+       git clone https://github.com/mgieseki/dvisvgm.git &&
+       pushd dvisvgm &&
+       ./autogen.sh &&
+       ./configure --prefix=$HOME/.local &&
+       make -j 2 && make install &&
+       export PATH=$PATH:$HOME/.local/bin &&
+       popd;
+   fi
 # sphinx >=1.2 is looking better
-  - pip install six docutils numpydoc --user
-  - pip install git+https://github.com/sphinx-doc/sphinx.git --user
+  - if test "$TRAVIS_OS_NAME" = "linux"; then
+      pip install six docutils numpydoc --user &&
+      pip install git+https://github.com/sphinx-doc/sphinx.git --user;
+    fi
 # keep an eye on swig
   - git clone https://github.com/swig/swig.git
   - pushd swig
@@ -54,7 +74,17 @@ install:
 # use latest hmat-oss
   - git clone https://github.com/jeromerobert/hmat-oss.git
   - pushd hmat-oss
-  - cmake -DCMAKE_INSTALL_PREFIX=~/.local .
+  - if test "$TRAVIS_OS_NAME" = "linux"; then
+       cmake -DCMAKE_INSTALL_PREFIX=~/.local . ;
+    fi
+  - if test "$TRAVIS_OS_NAME" = "osx"; then
+        cmake -DCMAKE_INSTALL_PREFIX=~/.local
+              -DCMAKE_MACOSX_RPATH=ON
+              -DCBLAS_LIBRARIES=$HOMEBREW_PREFIX/opt/openblas/lib/libopenblas.dylib
+              -DBLAS_LIBRARIES=$HOMEBREW_PREFIX/opt/openblas/lib/libopenblas.dylib
+              -DLAPACK_LIBRARIES=$HOMEBREW_PREFIX/opt/openblas/lib/libopenblas.dylib
+              -DCBLAS_INCLUDE_DIRS=$HOMEBREW_PREFIX/opt/openblas/include . ;
+    fi
   - make install -j2
   - popd
 # use latest nlopt
@@ -70,16 +100,40 @@ before_script:
   - export R_LIBS=$PWD
 
 script:
-  - cmake -DCMAKE_INSTALL_PREFIX=~/.local
-    -DSPHINX_EXECUTABLE=~/.local/bin/sphinx-build
-    -DSWIG_EXECUTABLE=~/.local/bin/swig
-    -DHMAT_DIR=~/.local/lib/cmake/hmat
-    -DNLOPT_LIBRARY=~/.local/lib/libnlopt.so -DNLOPT_INCLUDE_DIR=~/.local/include
-    .
-  - make install -j4 && ctest -R pyinstallcheck -j4 --output-on-failure --timeout 100
+  - if test "$TRAVIS_OS_NAME" = "linux"; then
+        cmake -DCMAKE_INSTALL_PREFIX=~/.local
+              -DSPHINX_EXECUTABLE=~/.local/bin/sphinx-build
+              -DSWIG_EXECUTABLE=~/.local/bin/swig
+              -DHMAT_DIR=~/.local/lib/cmake/hmat
+              -DNLOPT_LIBRARY=~/.local/lib/libnlopt.so
+              -DNLOPT_INCLUDE_DIR=~/.local/include
+              . &&
+        make install -j4;
+    fi
+  - if test "$TRAVIS_OS_NAME" = "osx"; then
+        cmake -DCMAKE_INSTALL_PREFIX=~/.local
+              -DSWIG_EXECUTABLE=~/.local/bin/swig
+              -DCMAKE_MACOSX_RPATH=ON
+              -DHMAT_DIR=~/.local/lib/cmake/hmat
+              -DLAPACKE_FOUND=ON
+              -DOPENTURNS_LIBRARIES="-framework Accelerate"
+              -DNLOPT_LIBRARY=~/.local/lib/libnlopt.dylib
+              -DNLOPT_INCLUDE_DIR=~/.local/include
+              -DUSE_SPHINX=OFF
+              -DPYTHON_EXECUTABLE=/usr/bin/python
+              -DPYTHON_INCLUDE_DIR=/usr/include/python2.7
+              -DPYTHON_LIBRARY=/usr/lib/libpython2.7.dylib
+              -DUSE_COTIRE=ON
+              -DCOTIRE_TESTS=OFF
+              -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES="-j4"
+              . &&
+        make python_unity -j4 &&
+        make install/fast;
+    fi
+  - ctest -R pyinstallcheck -j4 --output-on-failure --timeout 100
 
 after_success:
-  - test "$TRAVIS_PULL_REQUEST" = "false" -a "$TRAVIS_BRANCH" = "master" || exit 0
+  - test "$TRAVIS_PULL_REQUEST" = "false" -a "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_OS_NAME" = "linux" || exit 0
   - git clone https://${GH_TOKEN}@github.com/openturns/openturns.github.io.git
   - cp -r ~/.local/share/openturns/doc/html/* openturns.github.io
   - cd openturns.github.io
