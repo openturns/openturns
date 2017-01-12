@@ -87,46 +87,73 @@ private:
  * so OpenTURNS' exceptions can be catched as standard exceptions.
  */
 
-class OT_API Exception :
-  public std::exception
+class Exception : public std::exception
 {
-
 public:
 
   /** Default constructor
    * @internal
    */
-  Exception(const PointInSourceFile & point);
+  Exception(const PointInSourceFile & point)
+    : std::exception()
+    , point_(point)
+    , reason_()
+    , className_("Exception")
+  {
+    // Nothing to do
+    //LOGDEBUG(OSS() << className_  << " typeid = " << typeid(*this).name() );
+  }
 
   /** Copy constructor */
-  Exception(const Exception & other);
+  Exception(const Exception & other)
+    : std::exception(other)
+    , point_(other.point_)
+    , reason_(other.reason_)
+    , className_(other.className_)
+  {
+    //LOGDEBUG(OSS() << className_  << " emited at " << point_.str() << ": " << String(reason_) );
+  }
 
   /** Destructor */
-  virtual ~Exception() throw();
+  virtual ~Exception() throw()
+  {
+    // Nothing to do
+  }
 
   /** @copydoc Object::__repr__() const */
-  String __repr__() const throw();
+  String __repr__() const throw()
+  {
+    return OSS() << className_ << " : " << reason_;
+  }
 
   /** Point accessor
    *
    * This method returns a string describing where the exception was launched.
    * No need to free the string.
    */
-  const char * where() const throw();
+  const char * where() const throw()
+  {
+    return point_.str().c_str();
+  }
 
   /** Reason accessor
    *
    * This method returns a string describing what was the reason of the exception.
    * No need to free the string.
    */
-  const char * what() const throw();
-
+  const char * what() const throw()
+  {
+    return reason_.c_str();
+  }
   /** Class name accessor
    *
    * This method returns a string containing the class of the exception.
    * No need to free the string.
    */
-  const char * type() const throw();
+  const char * type() const throw()
+  {
+    return className_;
+  }
 
   /** Stream operator
    *
@@ -143,7 +170,14 @@ public:
 protected:
 
   /* Inheritance constructor */
-  Exception(const PointInSourceFile & point, const char * type);
+  Exception(const PointInSourceFile & point, const char * className)
+    : std::exception()
+    , point_(point)
+    , reason_()
+    , className_(className)
+  {
+    // Nothing to do
+  }
 
 private:
 
@@ -184,11 +218,12 @@ OT_API OStream & operator <<(OStream & OS, const Exception & obj);
  */
 
 
-#define NEW_EXCEPTION( CName ) class OT_API CName : public Exception   \
+#define NEW_EXCEPTION( CName ) class CName : public Exception   \
   {                                                             \
   public:                                                       \
-    CName (const PointInSourceFile & point);                    \
-    virtual ~CName () throw();                                  \
+    CName (const PointInSourceFile & point)                     \
+    : Exception(point, #CName) {}                               \
+    virtual ~CName () throw() {}                                \
     template <class T> CName & operator << (T obj)              \
     {                                                           \
       this->Exception::operator << ( obj );                     \

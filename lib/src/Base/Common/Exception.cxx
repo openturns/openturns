@@ -18,83 +18,9 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cstdlib>
-#include <assert.h>
-//#include <typeinfo>
-#include "openturns/OSS.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/Log.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
-
-
-/* Default constructor */
-Exception::Exception(const PointInSourceFile & point)
-  : std::exception()
-  , point_(point)
-  , reason_()
-  , className_("Exception")
-{
-  // Nothing to do
-  //LOGDEBUG(OSS() << className_  << " typeid = " << typeid(*this).name() );
-}
-
-/* Copy constructor */
-Exception::Exception(const Exception & other)
-  : std::exception(other)
-  , point_(other.point_)
-  , reason_(other.reason_)
-  , className_(other.className_)
-{
-  //LOGDEBUG(OSS() << className_  << " emited at " << point_.str() << ": " << String(reason_) );
-}
-
-/* Inheritance constructor */
-Exception::Exception(const PointInSourceFile & point,
-                     const char * className)
-  : std::exception()
-  , point_(point)
-  , reason_()
-  , className_(className)
-{
-  // Nothing to do
-}
-
-
-/* Destructor */
-Exception::~Exception() throw()
-{
-  // Nothing to do
-}
-
-
-/* String converter */
-String Exception::__repr__() const throw()
-{
-  return OSS() << className_ << " : " << reason_;
-}
-
-
-/* Point accessor */
-const char * Exception::where() const throw()
-{
-  return point_.str().c_str();
-}
-
-
-/* Reason accessor */
-const char * Exception::what() const throw()
-{
-  return reason_.c_str();
-}
-
-
-/* Class name accessor */
-const char * Exception::type() const throw()
-{
-  return className_;
-}
-
 
 /*
  * @fn std::ostream & operator <<(std::ostream & os, const Exception & obj)
@@ -115,31 +41,5 @@ OStream & operator <<(OStream & OS, const Exception & obj)
 {
   return OS << obj.__repr__();
 }
-
-#define DEFINE_EXCEPTION( CName )               \
-  static const char * CName ## Name = #CName;   \
-  static const CName CName ## Obj ( HERE );     \
-  CName::CName(const PointInSourceFile & point) \
-    : Exception(point, CName ## Name) {}        \
-  CName::~CName () throw() {}
-
-DEFINE_EXCEPTION( FileNotFoundException )
-DEFINE_EXCEPTION( InternalException )
-DEFINE_EXCEPTION( InvalidArgumentException )
-DEFINE_EXCEPTION( InvalidDimensionException )
-DEFINE_EXCEPTION( NotYetImplementedException )
-DEFINE_EXCEPTION( OutOfBoundException )
-DEFINE_EXCEPTION( XMLException )
-DEFINE_EXCEPTION( XMLParserException )
-DEFINE_EXCEPTION( DynamicLibraryException )
-DEFINE_EXCEPTION( NotSymmetricDefinitePositiveException )
-DEFINE_EXCEPTION( InvalidRangeException )
-DEFINE_EXCEPTION( NotDefinedException )
-DEFINE_EXCEPTION( FileOpenException )
-DEFINE_EXCEPTION( StudyFileParsingException )
-DEFINE_EXCEPTION( ObjectNotInStudyException )
-DEFINE_EXCEPTION( ConfigurationFileParsingException )
-
-#undef DEFINE_EXCEPTION
 
 END_NAMESPACE_OPENTURNS
