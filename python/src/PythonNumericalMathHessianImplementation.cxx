@@ -136,7 +136,7 @@ SymmetricTensor PythonNumericalMathHessianImplementation::hessian(const Numerica
   {
     result = convert< _PySequence_, Tensor >(callResult.get()).getImplementation();
   }
-  catch (const InvalidArgumentException & ex)
+  catch (InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Output value for " << getName() << "._hessian() method is not a 3-d float sequence object (list, tuple, etc.)";
   }

@@ -64,9 +64,8 @@ public:
   CorrelationMatrix transpose () const;
 
   /** CorrelationMatrix multiplication (must have consistent dimensions) */
-  CorrelationMatrix operator * (const IdentityMatrix & m) const;
   using CovarianceMatrix::operator *;
-
+  CorrelationMatrix operator * (const IdentityMatrix & m) const;
 protected:
 
 
