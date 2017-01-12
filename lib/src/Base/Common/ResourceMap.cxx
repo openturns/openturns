@@ -242,7 +242,7 @@ void ResourceMap::readConfigurationFile(const FileName & configurationFile)
     }
   }
 #else
-  LOGWARN(OSS() << "Cannot parse configuration file do to lacking xml support");
+  LOGWARN(OSS() << "Cannot parse configuration file due to lacking xml support");
 #endif
 }
 
