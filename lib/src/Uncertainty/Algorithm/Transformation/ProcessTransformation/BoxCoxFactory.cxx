@@ -79,7 +79,7 @@ public:
   }
 
   /** Likelihood function */
-  NumericalScalar computeLogLikelihood(const NumericalPoint & lambda) const
+  NumericalPoint computeLogLikelihood(const NumericalPoint & lambda) const
   {
     const UnsignedInteger size = sample_.getSize();
     // Define BoxCox trannsformation for sample
@@ -92,7 +92,7 @@ public:
 
     // result is translated
     result += (lambda[0] - 1.0) * sumLog_;
-    return result;
+    return NumericalPoint(1, result);
   }
 
   void computeSumLog() const
@@ -105,7 +105,7 @@ public:
   /** Likelihood function accessor */
   NumericalMathFunction getLogLikelihoodFunction() const
   {
-    return bindMethod <BoxCoxSampleOptimization, NumericalScalar, NumericalPoint> ( *this, &BoxCoxSampleOptimization::computeLogLikelihood, 1, 1);
+    return bindMethod <BoxCoxSampleOptimization, NumericalPoint, NumericalPoint> ( *this, &BoxCoxSampleOptimization::computeLogLikelihood, 1, 1);
   }
 
   NumericalPoint optimizeLogLikelihood() const
@@ -163,7 +163,7 @@ public:
   }
 
   /** Likelihood function */
-  NumericalScalar computeLogLikelihood(const NumericalPoint & lambda) const
+  NumericalPoint computeLogLikelihood(const NumericalPoint & lambda) const
   {
     // Define BoxCox trannsformation for output sample
     BoxCoxEvaluationImplementation myBoxFunction(lambda);
@@ -173,13 +173,14 @@ public:
     GeneralizedLinearModelAlgorithm algo(inputSample_, transformedOutputSample, covarianceModel_, basis_);
     algo.run();
     // Return the optimal log-likelihood
-    return algo.getResult().getOptimalLogLikelihood();
+    const NumericalScalar result = algo.getResult().getOptimalLogLikelihood();
+    return NumericalPoint(1, result);
   }
 
   /** Likelihood function accessor */
   NumericalMathFunction getLogLikelihoodFunction() const
   {
-    return bindMethod <BoxCoxGLMOptimization, NumericalScalar, NumericalPoint> ( *this, &BoxCoxGLMOptimization::computeLogLikelihood, 1, 1);
+    return bindMethod <BoxCoxGLMOptimization, NumericalPoint, NumericalPoint> ( *this, &BoxCoxGLMOptimization::computeLogLikelihood, 1, 1);
   }
 
   NumericalPoint optimizeLogLikelihood() const
@@ -307,13 +308,13 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & sample,
   {
     NumericalSample logLikelihoodValues(npts, 1);
     BoxCoxSampleOptimization boxCoxOptimization(marginalSamples[d], sumLog[d]);
-    for (UnsignedInteger i = 0; i < npts; ++i) logLikelihoodValues[i][0] = boxCoxOptimization.computeLogLikelihood(lambdaValues[i]);
+    for (UnsignedInteger i = 0; i < npts; ++i) logLikelihoodValues[i][0] = boxCoxOptimization.computeLogLikelihood(lambdaValues[i])[0];
     Curve curve(lambdaValues, logLikelihoodValues);
     curve.setColor(Curve::ConvertFromHSV((360.0 * d) / dimension, 1.0, 1.0));
     graph.add(curve);
     NumericalPoint optimum(2);
     optimum[0] = lambda[d];
-    optimum[1] = boxCoxOptimization.computeLogLikelihood(optimum);
+    optimum[1] = boxCoxOptimization.computeLogLikelihood(optimum)[0];
     Cloud cloud(NumericalSample(1, optimum));
     cloud.setColor(curve.getColor());
     cloud.setPointStyle("circle");
