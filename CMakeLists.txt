@@ -312,9 +312,6 @@ macro (ot_add_build_dir_to_include_dirs DIR)
   set (INTERNAL_INCLUDE_DIRS ${inc_dirs} CACHE INTERNAL "List of directories with header files needed for build")
 endmacro (ot_add_build_dir_to_include_dirs)
 
-list (APPEND OPENTURNS_PRIVATE_LIBRARIES ${CMAKE_CXX_IMPLICIT_LINK_LIBRARIES})
-list (APPEND OPENTURNS_PRIVATE_LIBRARIES ${CMAKE_Fortran_IMPLICIT_LINK_LIBRARIES})
-
 # Add definitions according to the prerequisites found
 add_definitions(-DHAVE_CONFIG_H)
 
