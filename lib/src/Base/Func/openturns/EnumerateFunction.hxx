@@ -50,7 +50,7 @@ public:
   EnumerateFunction(Implementation & p_implementation);
 
   /** Parameter constructor */
-  EnumerateFunction(const UnsignedInteger dimension = 1);
+  explicit EnumerateFunction(const UnsignedInteger dimension = 1);
 
   /** Parameter constructor */
   EnumerateFunction(const UnsignedInteger dimension,

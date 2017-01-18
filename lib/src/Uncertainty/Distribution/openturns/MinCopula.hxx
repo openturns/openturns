@@ -39,7 +39,7 @@ class OT_API MinCopula
 public:
 
   /** Default constructor */
-  MinCopula(const UnsignedInteger dim = 1);
+  explicit MinCopula(const UnsignedInteger dim = 1);
 
   /** Comparison operator */
   Bool operator ==(const MinCopula & other) const;

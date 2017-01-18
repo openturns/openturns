@@ -33,7 +33,7 @@ class OT_API ConstantBasisFactory
 public:
 
   /** Default constructor */
-  ConstantBasisFactory (const UnsignedInteger inputDimension = 1);
+  explicit ConstantBasisFactory (const UnsignedInteger inputDimension = 1);
 
   /* String converter */
   OT::String __repr__() const;

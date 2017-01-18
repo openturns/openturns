@@ -47,11 +47,11 @@ public:
   /* Some typedefs for easy reading */
 
   /** Default constructor */
-  DynamicalFunction(const UnsignedInteger spatialDimension = 1);
+  explicit DynamicalFunction(const UnsignedInteger spatialDimension = 1);
 
   /** Constructor from NumericalMathFunction */
-  DynamicalFunction(const NumericalMathFunction & function,
-                    const UnsignedInteger spatialDimension = 1);
+  explicit DynamicalFunction(const NumericalMathFunction & function,
+                             const UnsignedInteger spatialDimension = 1);
 
   /** Constructor from DynamicalFunctionImplementation */
   DynamicalFunction(const DynamicalFunctionImplementation & implementation);
