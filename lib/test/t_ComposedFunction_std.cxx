@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
     AnalyticalFunction right(input_r, formula_r);
 
     /** Compositon of left and right */
-    ComposedFunction composed(left, right);
+    NumericalMathFunction composed(ComposedFunction(left, right));
 
     fullprint << "right=" << right << std::endl;
     fullprint << "left=" << left << std::endl;

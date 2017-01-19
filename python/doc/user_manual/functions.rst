@@ -31,7 +31,6 @@ Various functions
     :toctree: _generated/
     :template: class.rst_t
 
-    ComposedNumericalMathFunction
     ProductNumericalMathFunction
 
 Dynamical functions

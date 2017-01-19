@@ -270,7 +270,6 @@ ot_add_python_module(func func_module.i
                       ProductNumericalMathGradientImplementation.i
                       ProductNumericalMathHessianImplementation.i
                       NumericalMathFunctionImplementation.i NumericalMathFunctionImplementation_doc.i.in
-                      ComposedNumericalMathFunction.i
                       ProductNumericalMathFunction.i
                       NumericalMathFunction.i NumericalMathFunction_doc.i.in
                       AggregatedFunction.i AggregatedFunction_doc.i.in

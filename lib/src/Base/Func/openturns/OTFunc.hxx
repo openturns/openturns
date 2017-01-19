@@ -39,7 +39,6 @@
 #include "openturns/BasisSequenceFactoryImplementation.hxx"
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/ComposedNumericalMathEvaluationImplementation.hxx"
-#include "openturns/ComposedNumericalMathFunction.hxx"
 #include "openturns/ComposedNumericalMathGradientImplementation.hxx"
 #include "openturns/ComposedNumericalMathHessianImplementation.hxx"
 #include "openturns/ConstantNumericalMathGradientImplementation.hxx"

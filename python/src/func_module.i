@@ -72,7 +72,6 @@
 %include DynamicalFunction.i
 %include SpatialFunction.i
 %include TemporalFunction.i
-%include ComposedNumericalMathFunction.i
 %include DualLinearCombinationEvaluationImplementation.i
 %include DualLinearCombinationGradientImplementation.i
 %include DualLinearCombinationHessianImplementation.i

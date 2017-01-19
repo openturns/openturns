@@ -421,4 +421,4 @@ random vector composition, etc. It can be found in several aspects of
 the modeling brick. Any related objects tree structure can rely on the
 Composite pattern with benefit. For example, the classes
 ComposedDistribution, CompositeRandomVector,
-ComposedNumericalMathFunction follow this pattern.
+ComposedFunction follow this pattern.
