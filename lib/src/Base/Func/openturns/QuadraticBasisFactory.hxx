@@ -33,7 +33,7 @@ class OT_API QuadraticBasisFactory
 public:
 
   /** Default constructor */
-  QuadraticBasisFactory (const UnsignedInteger inputDimension = 1);
+  explicit QuadraticBasisFactory (const UnsignedInteger inputDimension = 1);
 
   /* String converter */
   OT::String __repr__() const;

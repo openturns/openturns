@@ -40,7 +40,7 @@ public:
 
 
   /** Parameter constructor */
-  EnumerateFunctionImplementation(const UnsignedInteger dimension = 1);
+  explicit EnumerateFunctionImplementation(const UnsignedInteger dimension = 1);
 
   /** Virtual constrcutor */
   virtual EnumerateFunctionImplementation * clone() const;

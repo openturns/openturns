@@ -33,7 +33,7 @@ class OT_API LinearBasisFactory
 public:
 
   /** Default constructor */
-  LinearBasisFactory (const UnsignedInteger inputDimension = 1);
+  explicit LinearBasisFactory (const UnsignedInteger inputDimension = 1);
 
   /* String converter */
   OT::String __repr__() const;
