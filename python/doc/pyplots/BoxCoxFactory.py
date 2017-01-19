@@ -26,7 +26,7 @@ myXproc = ot.TemporalNormalProcess(myCovModel, myMesh)
 # and to get a positive process
 # thanks to the spatial function g
 # myXtProcess R --> R
-g = ot.AnalyticalFunction(['x1'],  ['exp(x1)'])
+g = ot.SymbolicFunction(['x1'],  ['exp(x1)'])
 myDynTransform = ot.SpatialFunction(g, 2)
 myXtProcess = ot.CompositeProcess(myDynTransform, myXproc)
 

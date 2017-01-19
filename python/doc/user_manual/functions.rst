@@ -12,7 +12,7 @@ General mathematical functions
     :template: class.rst_t
 
     NumericalMathFunction
-    AnalyticalFunction
+    SymbolicFunction
     ComposedFunction
     LinearCombinationFunction
     LinearFunction

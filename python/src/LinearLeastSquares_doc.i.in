@@ -85,7 +85,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> formulas = ['cos(x1 + x2)', '(x2 + 1) * exp(x1 - 2 * x2)']
->>> myFunc = ot.AnalyticalFunction(['x1', 'x2'], formulas)
+>>> myFunc = ot.SymbolicFunction(['x1', 'x2'], formulas)
 >>> data  = [[0.5,0.5], [-0.5,-0.5], [-0.5,0.5], [0.5,-0.5]]
 >>> data += [[0.25,0.25], [-0.25,-0.25], [-0.25,0.25], [0.25,-0.25]]
 >>> myLeastSquares = ot.LinearLeastSquares(data, myFunc)

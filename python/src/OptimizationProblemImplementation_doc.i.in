@@ -52,7 +52,7 @@ Examples
 Define an optimization problem to find the minimum of the Rosenbrock function:
 
 >>> import openturns as ot
->>> rosenbrock = ot.AnalyticalFunction(['x1', 'x2'], ['(1-x1)^2+100*(x2-x1^2)^2'])
+>>> rosenbrock = ot.SymbolicFunction(['x1', 'x2'], ['(1-x1)^2+100*(x2-x1^2)^2'])
 >>> problem = ot.OptimizationProblem(rosenbrock)
 
 Define an optimization problem to find the point with minimum norm which satisfies :math:`x1+2*x2-3*x3+4*x4=3`.

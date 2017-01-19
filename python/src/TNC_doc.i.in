@@ -40,7 +40,7 @@ AbdoRackwitz, SQP, Cobyla, NLopt
 Examples
 --------
 >>> import openturns as ot
->>> model = ot.AnalyticalFunction(['E', 'F', 'L', 'I'], ['-F*L^3/(3*E*I)'])
+>>> model = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['-F*L^3/(3*E*I)'])
 >>> bounds = ot.Interval([1.0]*4, [2.0]*4)
 >>> problem = ot.OptimizationProblem(model, ot.NumericalMathFunction(), ot.NumericalMathFunction(), bounds)
 >>> algo = ot.TNC(problem)

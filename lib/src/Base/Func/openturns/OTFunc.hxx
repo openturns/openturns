@@ -26,7 +26,6 @@
 #include "openturns/AggregatedNumericalMathEvaluationImplementation.hxx"
 #include "openturns/AggregatedNumericalMathGradientImplementation.hxx"
 #include "openturns/AggregatedNumericalMathHessianImplementation.hxx"
-#include "openturns/AnalyticalFunction.hxx"
 #ifdef OPENTURNS_HAVE_MUPARSER
 #include "openturns/AnalyticalNumericalMathEvaluationImplementation.hxx"
 #include "openturns/AnalyticalNumericalMathGradientImplementation.hxx"
@@ -93,6 +92,7 @@
 #include "openturns/ProductPolynomialHessianImplementation.hxx"
 #include "openturns/QuadraticNumericalMathEvaluationImplementation.hxx"
 #include "openturns/SpatialFunction.hxx"
+#include "openturns/SymbolicFunction.hxx"
 #include "openturns/TemporalFunction.hxx"
 #include "openturns/UniVariatePolynomial.hxx"
 #include "openturns/UniVariatePolynomialImplementation.hxx"

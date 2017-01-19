@@ -273,7 +273,7 @@ ot_add_python_module(func func_module.i
                       ProductNumericalMathFunction.i
                       NumericalMathFunction.i NumericalMathFunction_doc.i.in
                       AggregatedFunction.i AggregatedFunction_doc.i.in
-                      AnalyticalFunction.i AnalyticalFunction_doc.i.in
+                      SymbolicFunction.i SymbolicFunction_doc.i.in
                       ComposedFunction.i ComposedFunction_doc.i.in
                       DualLinearCombinationFunction.i DualLinearCombinationFunction_doc.i.in
                       BaseFuncCollection.i

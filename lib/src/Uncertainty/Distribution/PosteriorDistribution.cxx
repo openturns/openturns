@@ -24,7 +24,7 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
-#include "openturns/AnalyticalFunction.hxx"
+#include "openturns/SymbolicFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -137,7 +137,7 @@ NumericalScalar PosteriorDistribution::computeCDF(const NumericalPoint & point) 
 
   Description inputDescription(getDimension());
   for (UnsignedInteger i = 0; i < getDimension(); ++i) inputDescription[i] = String(OSS() << "x" << i);
-  const AnalyticalFunction f(inputDescription, Description(1, "1"));
+  const SymbolicFunction f(inputDescription, Description(1, "1"));
   const NumericalScalar cdf = conditionalDistribution_.computeExpectation(f, point)[0];
   return cdf;
 }
@@ -207,7 +207,7 @@ void PosteriorDistribution::computeRange()
 void PosteriorDistribution::computeMean() const
 {
   Description inputDescription(Description::BuildDefault(getDimension(), "x"));
-  const AnalyticalFunction meanFunction(inputDescription, inputDescription);
+  const SymbolicFunction meanFunction(inputDescription, inputDescription);
   const NumericalMathFunction likelihood(bindMethod<PosteriorDistribution, NumericalPoint, NumericalPoint>(PosteriorDistribution(*this), &PosteriorDistribution::computeLikelihood, getDimension(), 1));
   mean_ = conditionalDistribution_.computeExpectation(likelihood * meanFunction, getRange().getUpperBound()) / std::exp(logNormalizationFactor_);
   isAlreadyComputedMean_ = true;
@@ -256,7 +256,7 @@ void PosteriorDistribution::computeCovariance() const
       ++index;
     }
   }
-  const AnalyticalFunction covarianceFunction(inputDescription, formulas);
+  const SymbolicFunction covarianceFunction(inputDescription, formulas);
   const NumericalMathFunction likelihood(bindMethod<PosteriorDistribution, NumericalPoint, NumericalPoint>(PosteriorDistribution(*this), &PosteriorDistribution::computeLikelihood, getDimension(), 1));
   const NumericalPoint result(conditionalDistribution_.computeExpectation(likelihood * covarianceFunction, getRange().getUpperBound()) / std::exp(logNormalizationFactor_));
   index = 0;

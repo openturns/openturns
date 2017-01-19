@@ -39,9 +39,9 @@ int main(int argc, char *argv[])
     Description formula(1);
     formula[0] = "x1^3 * sin(x2 + 2.5 * x3) - (x1 + x2)^2 / (1.0 + x3^2)";
     DualLinearCombinationEvaluationImplementation::NumericalMathFunctionCollection functions(2);
-    functions[0] = AnalyticalFunction(inVar, formula);
+    functions[0] = SymbolicFunction(inVar, formula);
     formula[0] = "exp(-x1 * x2 + x3) / cos(1.0 + x2 * x3 - x1)";
-    functions[1] = AnalyticalFunction(inVar, formula);
+    functions[1] = SymbolicFunction(inVar, formula);
     // Second, build the weights
     NumericalSample coefficients(0, 3);
     NumericalPoint p(3);

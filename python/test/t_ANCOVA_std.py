@@ -26,7 +26,7 @@ try:
     inputName = ["X1", "X2", "a", "b"]
     formula = ["a * X1 + b * X2"]
 
-    full = AnalyticalFunction(inputName, formula)
+    full = SymbolicFunction(inputName, formula)
     model = ParametricFunction(full, [2, 3], [a, b])
 
     # Input distribution

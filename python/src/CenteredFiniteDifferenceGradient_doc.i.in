@@ -29,7 +29,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> formulas = ['x1 * sin(x2)', 'cos(x1 + x2)', '(x2 + 1) * exp(x1 - 2 * x2)']
->>> myFunc = ot.AnalyticalFunction(['x1', 'x2'], formulas)
+>>> myFunc = ot.SymbolicFunction(['x1', 'x2'], formulas)
 >>> epsilon = [0.01]*2
 >>> myGradient = ot.CenteredFiniteDifferenceGradient(epsilon, myFunc.getEvaluation())
 >>> inPoint = [1.]*2

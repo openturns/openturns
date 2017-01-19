@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     formulas[0] = "sin(x0) + x1 * cos(x2) / exp(x3)";
     formulas[1] = "-2.0 * x0 + x1 * x2^2 + cos(x3)";
     formulas[2] = "x0 / (abs(x1) * x2^2 + x3 + 1.0)";
-    AnalyticalFunction f(inVar, formulas);
+    SymbolicFunction f(inVar, formulas);
     Indices set(2);
     set[0] = 3;
     set[1] = 1;

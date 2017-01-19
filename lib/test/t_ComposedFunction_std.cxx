@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     formula[0] = "x1*sin(x2)";
     formula[1] = "cos(x1+x2)";
     formula[2] = "(x2+1)*exp(x1-2*x2)";
-    AnalyticalFunction left(input, formula);
+    SymbolicFunction left(input, formula);
 
     /** Right hand side of the composition */
     Description input_r(4);
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     Description formula_r(2);
     formula_r[0] = "(x1*x1+x2^3*x1)/(2*x3*x3+x4^4+1)";
     formula_r[1] = "cos(x2*x2+x4)/(x1*x1+1+x3^4)";
-    AnalyticalFunction right(input_r, formula_r);
+    SymbolicFunction right(input_r, formula_r);
 
     /** Compositon of left and right */
     NumericalMathFunction composed(ComposedFunction(left, right));

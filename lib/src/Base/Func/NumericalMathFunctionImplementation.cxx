@@ -37,7 +37,7 @@
 #include "openturns/Log.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/Os.hxx"
-#include "openturns/AnalyticalFunction.hxx"
+#include "openturns/SymbolicFunction.hxx"
 
 #undef GetClassName
 
@@ -538,19 +538,19 @@ UnsignedInteger NumericalMathFunctionImplementation::getHessianCallsNumber() con
 Description NumericalMathFunctionImplementation::GetValidConstants()
 {
   Log::Warn(OSS() << "NumericalMathFunction:GetValidConstants is deprecated");
-  return AnalyticalFunction::GetValidConstants();
+  return SymbolicFunction::GetValidConstants();
 }
 
 Description NumericalMathFunctionImplementation::GetValidFunctions()
 {
   Log::Warn(OSS() << "NumericalMathFunction:GetValidFunctions is deprecated");
-  return AnalyticalFunction::GetValidFunctions();
+  return SymbolicFunction::GetValidFunctions();
 }
 
 Description NumericalMathFunctionImplementation::GetValidOperators()
 {
   Log::Warn(OSS() << "NumericalMathFunction:GetValidOperators is deprecated");
-  return AnalyticalFunction::GetValidOperators();
+  return SymbolicFunction::GetValidOperators();
 }
 
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */

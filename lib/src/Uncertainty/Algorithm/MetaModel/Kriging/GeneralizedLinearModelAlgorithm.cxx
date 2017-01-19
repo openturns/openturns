@@ -32,7 +32,7 @@
 #include "openturns/NonCenteredFiniteDifferenceGradient.hxx"
 #include "openturns/TNC.hxx"
 #include "openturns/NLopt.hxx"
-#include "openturns/AnalyticalFunction.hxx"
+#include "openturns/SymbolicFunction.hxx"
 #include "openturns/ComposedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -551,7 +551,7 @@ void GeneralizedLinearModelAlgorithm::run()
   {
     // If no basis ==> zero function
 #ifdef OPENTURNS_HAVE_MUPARSER
-    metaModel = AnalyticalFunction(Description::BuildDefault(covarianceModel_.getSpatialDimension(), "x"), Description(covarianceModel_.getDimension(), "0.0"));
+    metaModel = SymbolicFunction(Description::BuildDefault(covarianceModel_.getSpatialDimension(), "x"), Description(covarianceModel_.getDimension(), "0.0"));
 #else
     metaModel = NumericalMathFunction(NumericalSample(1, covarianceModel_.getSpatialDimension()), NumericalSample(1, covarianceModel_.getDimension()));
 #endif
