@@ -13,25 +13,24 @@ General mathematical functions
 
     NumericalMathFunction
     SymbolicFunction
-    ComposedFunction
-    LinearCombinationFunction
     LinearFunction
     QuadraticFunction
-    AggregatedFunction
-    DualLinearCombinationFunction
     DatabaseFunction
-    ParametricFunction
     PythonFunction
     OpenTURNSPythonFunction
 
-Various functions
-=================
+Algebra of functions
+====================
 
 .. autosummary::
     :toctree: _generated/
     :template: class.rst_t
 
-    ProductNumericalMathFunction
+    AggregatedFunction
+    ComposedFunction
+    DualLinearCombinationFunction
+    LinearCombinationFunction
+    ParametricFunction
 
 Dynamical functions
 ===================
