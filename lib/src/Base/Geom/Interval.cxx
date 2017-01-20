@@ -63,7 +63,6 @@ Interval::Interval(const NumericalPoint & lowerBound,
   , finiteLowerBound_(getDimension(), true)
   , finiteUpperBound_(getDimension(), true)
 {
-  if (getDimension() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an interval of dimension 0";
   if (upperBound.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot build an Interval from two NumericalPoint of different dimensions";
 }
 
@@ -78,7 +77,6 @@ Interval::Interval(const NumericalPoint & lowerBound,
   , finiteLowerBound_(finiteLowerBound)
   , finiteUpperBound_(finiteUpperBound)
 {
-  if (getDimension() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an interval of dimension 0";
   if (upperBound.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot build an Interval from two NumericalPoint of different dimensions";
   if ((finiteLowerBound.getSize() != getDimension()) || (finiteUpperBound.getSize() != getDimension())) throw InvalidArgumentException(HERE) << "Error: cannot build an interval with lower bound flags or upper bound flags of improper dimension";
 }
