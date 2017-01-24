@@ -147,7 +147,7 @@ RegularGrid ProcessSample::getTimeGrid() const
 }
 
 /* Mesh accessors */
-const Mesh & ProcessSample::getMesh() const
+Mesh ProcessSample::getMesh() const
 {
   return mesh_;
 }
