@@ -1,8 +1,8 @@
-%feature("docstring") OT::AnalyticalFunction
-"Analytical function.
+%feature("docstring") OT::SymbolicFunction
+"Symbolic function.
 
 Available constructor:
-    AnalyticalFunction(*inputs, formulas*)
+    SymbolicFunction(*inputs, formulas*)
 
 Parameters
 ----------
@@ -78,13 +78,13 @@ Available functions:
 Examples
 --------
 >>> import openturns as ot
->>> f = ot.AnalyticalFunction(['x0', 'x1'], ['x0 + x1', 'x0 - x1'])
+>>> f = ot.SymbolicFunction(['x0', 'x1'], ['x0 + x1', 'x0 - x1'])
 >>> print(f([1, 2]))
 [3,-1]"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::AnalyticalFunction::GetValidFunctions
+%feature("docstring") OT::SymbolicFunction::GetValidFunctions
 "Return the list of valid functions.
 
 Returns
@@ -95,12 +95,12 @@ list_functions : :class:`~openturns.Description`
 Examples
 --------
 >>> import openturns as ot
->>> print(ot.AnalyticalFunction.GetValidFunctions()[0])
+>>> print(ot.SymbolicFunction.GetValidFunctions()[0])
 sin(arg) -> sine function"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::AnalyticalFunction::GetValidConstants
+%feature("docstring") OT::SymbolicFunction::GetValidConstants
 "Return the list of valid constants.
 
 Returns
@@ -111,12 +111,12 @@ list_constants : :class:`~openturns.Description`
 Examples
 --------
 >>> import openturns as ot
->>> print(ot.AnalyticalFunction.GetValidConstants()[0])
+>>> print(ot.SymbolicFunction.GetValidConstants()[0])
 _e -> Euler's constant (2.71828...)"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::AnalyticalFunction::GetValidOperators
+%feature("docstring") OT::SymbolicFunction::GetValidOperators
 "Return the list of valid operators.
 
 Returns
@@ -127,5 +127,5 @@ list_operators : :class:`~openturns.Description`
 Examples
 --------
 >>> import openturns as ot
->>> print(ot.AnalyticalFunction.GetValidOperators()[0])
+>>> print(ot.SymbolicFunction.GetValidOperators()[0])
 = -> assignement, can only be applied to variable names (priority -1)"

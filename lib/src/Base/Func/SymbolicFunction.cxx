@@ -18,7 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "openturns/AnalyticalFunction.hxx"
+#include "openturns/SymbolicFunction.hxx"
 #ifdef OPENTURNS_HAVE_MUPARSER
 #include "openturns/AnalyticalNumericalMathEvaluationImplementation.hxx"
 #include "openturns/AnalyticalNumericalMathGradientImplementation.hxx"
@@ -29,32 +29,32 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(AnalyticalFunction);
+CLASSNAMEINIT(SymbolicFunction);
 
 // Inline documentation for analytical functions
-Bool AnalyticalFunction::IsDocumentationInitialized_ = false;
-Description AnalyticalFunction::ValidConstants_;
-Description AnalyticalFunction::ValidFunctions_;
-Description AnalyticalFunction::ValidOperators_;
+Bool SymbolicFunction::IsDocumentationInitialized_ = false;
+Description SymbolicFunction::ValidConstants_;
+Description SymbolicFunction::ValidFunctions_;
+Description SymbolicFunction::ValidOperators_;
 
 /* Default constructor */
-AnalyticalFunction::AnalyticalFunction ()
+SymbolicFunction::SymbolicFunction ()
   : NumericalMathFunction()
 {
 }
 
 
 /* Parameter constructor */
-AnalyticalFunction::AnalyticalFunction (const String & inputVariablesName,
+SymbolicFunction::SymbolicFunction (const String & inputVariablesName,
                                         const String & formula)
   : NumericalMathFunction()
 {
-  *this = AnalyticalFunction(Description(1, inputVariablesName), Description(1, formula));
+  *this = SymbolicFunction(Description(1, inputVariablesName), Description(1, formula));
 }
 
 
 /* Parameter constructor */
-AnalyticalFunction::AnalyticalFunction (const Description & inputVariablesNames,
+SymbolicFunction::SymbolicFunction (const Description & inputVariablesNames,
                                         const Description & formulas)
   : NumericalMathFunction()
 {
@@ -85,33 +85,33 @@ AnalyticalFunction::AnalyticalFunction (const Description & inputVariablesNames,
     setHessian(new CenteredFiniteDifferenceHessian(epsilon, getEvaluation()));
   }
 #else
-  throw NotYetImplementedException(HERE) << "AnalyticalFunction requires muParser";
+  throw NotYetImplementedException(HERE) << "SymbolicFunction requires muParser";
 #endif
 }
 
 /* Comparison operator */
-Bool AnalyticalFunction::operator ==(const AnalyticalFunction & other) const
+Bool SymbolicFunction::operator ==(const SymbolicFunction & other) const
 {
   return true;
 }
 
 /* String converter */
-String AnalyticalFunction::__repr__() const
+String SymbolicFunction::__repr__() const
 {
   OSS oss;
-  oss << "class=" << AnalyticalFunction::GetClassName()
+  oss << "class=" << SymbolicFunction::GetClassName()
       << " name=" << getName()
       << " implementation=" << getImplementation()->__repr__();
   return oss;
 }
 
-String AnalyticalFunction::__str__(const String & offset) const
+String SymbolicFunction::__str__(const String & offset) const
 {
   return getImplementation()->__str__(offset);
 }
 
 /* Initialization of the documentation */
-void AnalyticalFunction::InitializeDocumentation()
+void SymbolicFunction::InitializeDocumentation()
 {
   if (IsDocumentationInitialized_) return;
 
@@ -188,19 +188,19 @@ void AnalyticalFunction::InitializeDocumentation()
 }
 
 /* Static methods for documentation of analytical fonctions */
-Description AnalyticalFunction::GetValidConstants()
+Description SymbolicFunction::GetValidConstants()
 {
   if (!IsDocumentationInitialized_) InitializeDocumentation();
   return ValidConstants_;
 }
 
-Description AnalyticalFunction::GetValidFunctions()
+Description SymbolicFunction::GetValidFunctions()
 {
   if (!IsDocumentationInitialized_) InitializeDocumentation();
   return ValidFunctions_;
 }
 
-Description AnalyticalFunction::GetValidOperators()
+Description SymbolicFunction::GetValidOperators()
 {
   if (!IsDocumentationInitialized_) InitializeDocumentation();
   return ValidOperators_;

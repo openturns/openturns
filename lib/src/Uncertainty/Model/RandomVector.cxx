@@ -31,7 +31,7 @@
 #include "openturns/ConditionalRandomVector.hxx"
 #include "openturns/Less.hxx"
 #include "openturns/Greater.hxx"
-#include "openturns/AnalyticalFunction.hxx"
+#include "openturns/SymbolicFunction.hxx"
 #include "openturns/ComposedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -134,7 +134,7 @@ RandomVector::RandomVector(const RandomVector & antecedent,
   Interval::BoolCollection finiteUpperBound(interval.getFiniteUpperBound());
   NumericalPoint lowerBound(interval.getLowerBound());
   NumericalPoint upperBound(interval.getUpperBound());
-  AnalyticalFunction testFunction(Description::BuildDefault(inputDimension, "x"), Description(1, "0.0"));
+  SymbolicFunction testFunction(Description::BuildDefault(inputDimension, "x"), Description(1, "0.0"));
 
   // easy case: 1d interval
   if (interval.getDimension() == 1)
@@ -150,7 +150,7 @@ RandomVector::RandomVector(const RandomVector & antecedent,
 
     if (finiteLowerBound[0] && finiteUpperBound[0])
     {
-      testFunction = AnalyticalFunction("x", OSS() << "min(x-(" << lowerBound[0] << "), (" << upperBound[0] << ") - x)");
+      testFunction = SymbolicFunction("x", OSS() << "min(x-(" << lowerBound[0] << "), (" << upperBound[0] << ") - x)");
       RandomVector newVector(ComposedFunction(testFunction, antecedent.getFunction()), antecedent.getAntecedent());
       *this = RandomVector(newVector, Greater(), 0.0);
     }
@@ -192,7 +192,7 @@ RandomVector::RandomVector(const RandomVector & antecedent,
           formula += "," + slacks[i];
         formula += ")";
       }
-      testFunction = AnalyticalFunction(inVars, Description(1, formula));
+      testFunction = SymbolicFunction(inVars, Description(1, formula));
       RandomVector newVector(ComposedFunction(testFunction, antecedent.getFunction()), antecedent.getAntecedent());
       *this = RandomVector(newVector, Greater(), 0.0);
     }

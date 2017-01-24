@@ -49,7 +49,7 @@ Create a function :math:`g : \Rset^d \mapsto \Rset^q` such as:
                 x & \mapsto & x^2
             \end{array}\right.
 
->>> g = ot.AnalyticalFunction(['x'], ['x^2'])
+>>> g = ot.SymbolicFunction(['x'], ['x^2'])
 
 Convert :math:`g` into a spatial function with :math:`n` the dimension of the
 mesh of the field on which :math:`g` will be applied:

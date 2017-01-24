@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/NumericalMathFunction.hxx"
-#include "openturns/ComposedNumericalMathFunction.hxx"
+#include "openturns/ComposedFunction.hxx"
 #include "openturns/AggregatedNumericalMathEvaluationImplementation.hxx"
 #include "openturns/AggregatedNumericalMathGradientImplementation.hxx"
 #include "openturns/AggregatedNumericalMathHessianImplementation.hxx"
@@ -84,7 +84,7 @@ NumericalMathFunction::NumericalMathFunction(const NumericalMathEvaluationImplem
 /* Composition constructor */
 NumericalMathFunction::NumericalMathFunction(const NumericalMathFunction & left,
     const NumericalMathFunction & right)
-  : TypedInterfaceObject<NumericalMathFunctionImplementation>(new ComposedNumericalMathFunction(left.getImplementation(), right.getImplementation()))
+  : TypedInterfaceObject<NumericalMathFunctionImplementation>(new ComposedFunction(left.getImplementation(), right.getImplementation()))
 {
   // Nothing to do
 }

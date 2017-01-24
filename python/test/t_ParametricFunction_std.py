@@ -4,7 +4,7 @@ from __future__ import print_function
 import openturns as ot
 import math as m
 
-f = ot.AnalyticalFunction(ot.Description.BuildDefault(5, 'x'),
+f = ot.SymbolicFunction(ot.Description.BuildDefault(5, 'x'),
                              ['sin(x0) + x1 * cos(x2) / exp(x3)',
                               '-2.0 * x0 + x1 * x2^2 + cos(x3)',
                               'x0 / (abs(x1) * x2^2 + x3 + 1.0)'])

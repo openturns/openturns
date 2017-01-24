@@ -25,7 +25,7 @@
 #include "openturns/ResourceMap.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/Collection.hxx"
-#include "openturns/AnalyticalFunction.hxx"
+#include "openturns/SymbolicFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -37,7 +37,7 @@ static const Factory<FunctionalBasisProcess> Factory_FunctionalBasisProcess;
 FunctionalBasisProcess::FunctionalBasisProcess()
   : ProcessImplementation()
   , distribution_(Normal())
-  , basis_(Collection<NumericalMathFunction>(1, AnalyticalFunction("t", "t")))
+  , basis_(Collection<NumericalMathFunction>(1, SymbolicFunction("t", "t")))
   , state_(1, 0.0)
 {
   // Set the dimension of the process

@@ -23,7 +23,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/WhiteNoise.hxx"
-#include "openturns/AnalyticalFunction.hxx"
+#include "openturns/SymbolicFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -33,7 +33,7 @@ static const Factory<CompositeProcess> Factory_CompositeProcess;
 
 CompositeProcess::CompositeProcess()
   : ProcessImplementation()
-  , function_(AnalyticalFunction("x", "x^2"))
+  , function_(SymbolicFunction("x", "x^2"))
   , p_antecedent_(WhiteNoise().clone())
 {
   // Set the mesh

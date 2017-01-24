@@ -30,7 +30,7 @@ Examples
 Create a trend function: :math:`f_{trend} : \Rset \mapsto \Rset` where :math:`f_{trend}(t,s)=-(1+2t+t^2)`:
 
 >>> import openturns as ot
->>> h = ot.AnalyticalFunction(['t'], ['-(1+2*t+t^2)'])
+>>> h = ot.SymbolicFunction(['t'], ['-(1+2*t+t^2)'])
 >>> fTrendInv = ot.InverseTrendTransform(h)
 
 "

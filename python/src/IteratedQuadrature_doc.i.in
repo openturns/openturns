@@ -26,9 +26,9 @@ Create an iterated quadrature algorithm:
 >>> import math as m
 >>> a = -m.pi
 >>> b = m.pi
->>> f = ot.AnalyticalFunction(['x', 'y'], ['1+cos(x)*sin(y)'])
->>> l = [ot.AnalyticalFunction(['x'], [' 2+cos(x)'])]
->>> u = [ot.AnalyticalFunction(['x'], ['-2-cos(x)'])]
+>>> f = ot.SymbolicFunction(['x', 'y'], ['1+cos(x)*sin(y)'])
+>>> l = [ot.SymbolicFunction(['x'], [' 2+cos(x)'])]
+>>> u = [ot.SymbolicFunction(['x'], ['-2-cos(x)'])]
 
 Draw the graph of the integrand and the bounds:
 

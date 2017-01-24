@@ -15,7 +15,7 @@
  * LHSResult
  * MultiStart
  * MethodOfMomentsFactory
- * AnalyticalFunction, AggregatedFunction, ComposedFunction, DatabaseFunction, DualLinearCombinationFunction, LinearCombinationFunction, LinearFunction, QuadraticFunction, ParametricFunction
+ * SymbolicFunction, AggregatedFunction, ComposedFunction, DatabaseFunction, DualLinearCombinationFunction, LinearCombinationFunction, LinearFunction, QuadraticFunction, ParametricFunction
 
 ==== API changes ====
   * Removed deprecated SLSQP, LBFGS and NelderMead classes
@@ -29,6 +29,8 @@
   * Deprecated LinearNumericalMathFunction in favor of LinearFunction
   * Deprecated QuadraticNumericalMathFunction in favor of QuadraticFunction
   * Deprecated NumericalMathFunction::GetValidConstants|GetValidFunctions|GetValidOperators
+  * Renamed ComposedNumericalMathFunction to ComposedFunction
+  * Renamed LinearNumericalMathFunction to LinearFunction
 
 === Python module ===
 

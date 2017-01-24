@@ -6,7 +6,7 @@ from openturns.viewer import View
 mesher = ot.LevelSetMesher([50] * 2)
 
 # Create a level set
-function = ot.AnalyticalFunction(['x0', 'x1'], ['10*(x0^3+x1)^2+x0^2'])
+function = ot.SymbolicFunction(['x0', 'x1'], ['10*(x0^3+x1)^2+x0^2'])
 level = 0.5
 set = ot.LevelSet(function, level)
 

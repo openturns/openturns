@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The class that implements analytical functions.
+ *  @brief The class that implements symbolic functions.
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_ANALYTICALFUNCTION_HXX
-#define OPENTURNS_ANALYTICALFUNCTION_HXX
+#ifndef OPENTURNS_SYMBOLICFUNCTION_HXX
+#define OPENTURNS_SYMBOLICFUNCTION_HXX
 
 #include "openturns/NumericalMathFunction.hxx"
 #include "openturns/NumericalPoint.hxx"
@@ -30,28 +30,28 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 /**
- * @class AnalyticalFunction
+ * @class SymbolicFunction
  *
  */
-class OT_API AnalyticalFunction
+class OT_API SymbolicFunction
   : public NumericalMathFunction
 {
   CLASSNAME;
 public:
 
   /* Default constructor */
-  AnalyticalFunction();
+  SymbolicFunction();
 
   /** Parameter constructor */
-  AnalyticalFunction (const String & inputVariableName,
+  SymbolicFunction (const String & inputVariableName,
                       const String & formula);
 
   /** Parameter constructor */
-  AnalyticalFunction (const Description & inputVariablesNames,
+  SymbolicFunction (const Description & inputVariablesNames,
                       const Description & formulas);
 
   /** Comparison operator */
-  Bool operator ==(const AnalyticalFunction & other) const;
+  Bool operator ==(const SymbolicFunction & other) const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -83,4 +83,4 @@ private:
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_ANALYTICALFUNCTION_HXX */
+#endif /* OPENTURNS_SYMBOLICFUNCTION_HXX */

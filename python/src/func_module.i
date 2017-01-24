@@ -63,7 +63,7 @@
 %include ProductNumericalMathFunction.i
 %include NumericalMathFunction.i
 %include AggregatedFunction.i
-%include AnalyticalFunction.i
+%include SymbolicFunction.i
 %include LinearCombinationFunction.i
 %include ComposedFunction.i
 %include ParametricFunction.i
@@ -72,7 +72,6 @@
 %include DynamicalFunction.i
 %include SpatialFunction.i
 %include TemporalFunction.i
-%include ComposedNumericalMathFunction.i
 %include DualLinearCombinationEvaluationImplementation.i
 %include DualLinearCombinationGradientImplementation.i
 %include DualLinearCombinationHessianImplementation.i

@@ -6,8 +6,8 @@ import openturns as ot
 # First, build two functions from R^3->R
 inVar = ['x1', 'x2', 'x3']
 functions = list()
-functions.append(ot.AnalyticalFunction(inVar, ['x1^3 * sin(x2 + 2.5 * x3) - (x1 + x2)^2 / (1.0 + x3^2)']))
-functions.append(ot.AnalyticalFunction(inVar, ['exp(-x1 * x2 + x3) / cos(1.0 + x2 * x3 - x1)']))
+functions.append(ot.SymbolicFunction(inVar, ['x1^3 * sin(x2 + 2.5 * x3) - (x1 + x2)^2 / (1.0 + x3^2)']))
+functions.append(ot.SymbolicFunction(inVar, ['exp(-x1 * x2 + x3) / cos(1.0 + x2 * x3 - x1)']))
 # Second, build the weights
 coefficients = ot.NumericalSample(0, 3)
 coefficients.add([1.5, 2.5, -0.5])

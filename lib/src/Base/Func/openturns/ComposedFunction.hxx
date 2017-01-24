@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The class that implements composed functions.
+ *  @brief The class that implements composed numerical math functions
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -21,39 +21,71 @@
 #ifndef OPENTURNS_COMPOSEDFUNCTION_HXX
 #define OPENTURNS_COMPOSEDFUNCTION_HXX
 
+#include "openturns/NumericalMathFunctionImplementation.hxx"
 #include "openturns/NumericalMathFunction.hxx"
-#include "openturns/NumericalPoint.hxx"
-#include "openturns/Matrix.hxx"
-#include "openturns/SymmetricTensor.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 
+
+
 /**
  * @class ComposedFunction
- *
  */
+
 class OT_API ComposedFunction
-  : public NumericalMathFunction
+  : public NumericalMathFunctionImplementation
 {
   CLASSNAME;
 public:
 
-  /* Default constructor */
+  /* Some typedefs for easy reading */
+
+  /** Default constructor */
   ComposedFunction();
 
-  /** Parameter constructor */
-  ComposedFunction (const NumericalMathFunction & left,
-                    const NumericalMathFunction & right);
+  /** Composition constructor */
+  ComposedFunction(const Implementation & p_left,
+                                const Implementation & p_right);
+
+  /** Composition constructor */
+  ComposedFunction(const NumericalMathFunction & left,
+                                const NumericalMathFunction & right);
+
+  /** Virtual constructor */
+  virtual ComposedFunction * clone() const;
 
   /** Comparison operator */
   Bool operator ==(const ComposedFunction & other) const;
 
   /** String converter */
   virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
 
-}; /* class QuadraticNumericalMathFunction */
+
+
+  /** Gradient according to the marginal parameters */
+  virtual Matrix parameterGradient(const NumericalPoint & inP) const;
+
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv);
+
+protected:
+
+  //ComposedFunction() {};
+  //friend class Factory<ComposedFunction>;
+
+private:
+
+  /** The f function in fog */
+  Implementation p_leftFunction_;
+
+  /** The g function in fog */
+  Implementation p_rightFunction_;
+
+}; /* class ComposedFunction */
 
 
 END_NAMESPACE_OPENTURNS

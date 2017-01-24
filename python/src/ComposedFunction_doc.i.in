@@ -14,9 +14,9 @@ f,g : two :class:`~openturns.NumericalMathFunction`
 Examples
 --------
 >>> import openturns as ot
->>> g = ot.AnalyticalFunction(['x1', 'x2'],
+>>> g = ot.SymbolicFunction(['x1', 'x2'],
 ...                           ['x1 + x2','3 * x1 * x2'])
->>> f = ot.AnalyticalFunction(['x1', 'x2'], ['2 * x1 - x2'])
+>>> f = ot.SymbolicFunction(['x1', 'x2'], ['2 * x1 - x2'])
 >>> composed = ot.ComposedFunction(f, g)
 >>> print(composed([3, 4]))
 [-22]"
