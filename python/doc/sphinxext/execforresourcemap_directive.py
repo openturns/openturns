@@ -3,11 +3,7 @@ from os.path import basename
 import openturns as ot
 
 
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
-
+from io import StringIO
 from sphinx.util.compat import Directive
 from docutils import nodes, statemachine
 

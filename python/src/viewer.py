@@ -561,16 +561,13 @@ def ToSVGString(graph):
 
     Returns a SVG representation as string
     """
-    if sys.version_info[0] >= 3:
-        output = io.StringIO()
-    else:
-        output = io.BytesIO()
 
     # save interactive mode state
     ision = plt.isinteractive()
     plt.ioff()
 
     view = View(graph)
+    output = io.BytesIO()
     view.save(output, format='svg')
     view.close()
 
@@ -578,7 +575,8 @@ def ToSVGString(graph):
     if ision:
         plt.ion()
 
-    return output.getvalue()
+    svgBytes = output.getvalue()
+    return svgBytes.decode('utf-8')
 
 
 
