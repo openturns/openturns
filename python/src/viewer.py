@@ -10,7 +10,7 @@ Examples
 >>> graph = ot.Normal().drawPDF()
 >>> view = View(graph, plot_kwargs={'color':'blue'})
 >>> view.save('curve.png', dpi=100)
->>> view.show(block=False)
+>>> view.show()
 """
 import openturns as ot
 import numpy as np
@@ -503,17 +503,15 @@ class View(object):
 
     def show(self, **kwargs):
         """
-        Display the graph on screen.
+        Display the graph.
 
-        Parameters
-        ----------
-        kwargs:
-            block: bool, optional
-                If true (default), block until the graph is closed.
-
-            These parameters are passed to matplotlib.pyplot.show()
+        See http://matplotlib.org/api/figure_api.html#matplotlib.figure.Figure.show
         """
-        plt.show(**kwargs)
+        if hasattr(self._fig, 'show'):
+            self._fig.show(**kwargs)
+        else:
+            # mpl < 1.3.1, see https://github.com/ipython/ipython/pull/1615
+            plt.show(**kwargs)
 
     def save(self, fname, **kwargs):
         """
