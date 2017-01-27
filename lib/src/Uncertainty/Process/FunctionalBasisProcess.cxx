@@ -26,6 +26,7 @@
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/SymbolicFunction.hxx"
+#include "openturns/RankMCovarianceModel.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
