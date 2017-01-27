@@ -326,7 +326,8 @@ void FunctionalChaosAlgorithm::run()
     {
       // Deal only with non-zero coefficients
       const NumericalScalar marginalAlpha_kj = marginalAlpha_k[j];
-      if (marginalAlpha_kj != 0.0)
+      // To avoid -0.0
+      if (std::abs(marginalAlpha_kj) != 0.0)
       {
         // Current index in the decomposition of the current marginal output
         const UnsignedInteger index = marginalIndices[j];
@@ -348,9 +349,10 @@ void FunctionalChaosAlgorithm::run()
   for (iter = coefficientsMap.begin(); iter != coefficientsMap.end(); ++iter)
   {
     const UnsignedInteger i = iter->first;
-    const NumericalPoint currentcoefficient(iter->second);
+    const NumericalPoint currentCoefficient(iter->second);
     I_k.add(i);
-    alpha_k.add(currentcoefficient);
+    alpha_k.add(currentCoefficient);
+    // We could reuse the function
     Psi_k.add(basis.build(i));
   }
   // Build the result
