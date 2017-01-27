@@ -26,6 +26,7 @@
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/SymbolicFunction.hxx"
+#include "openturns/RankMCovarianceModel.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -104,7 +105,7 @@ CovarianceModel FunctionalBasisProcess::getCovarianceModel() const
 	coefficients[i] *= coefficients[i];
       return RankMCovarianceModel(coefficients, functions);
     }
-  return RankMCovarianceModel(NumericalPoint(dimension, 1.0), functions, distribution_.getCovariance());
+  return RankMCovarianceModel(distribution_.getCovariance(), functions);
 }
 
 /* Is the process stationary ? */
