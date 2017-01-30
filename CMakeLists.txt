@@ -413,6 +413,8 @@ if (BUILD_PYTHON)
     if (SPHINX_EXECUTABLE)
       find_python_module (sphinx 1.1)
       find_python_module (numpydoc)
+      find_python_module (nbsphinx)
+      find_python_module (IPython)
     endif ()
   endif ()
 

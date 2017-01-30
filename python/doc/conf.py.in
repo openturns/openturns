@@ -44,6 +44,13 @@ extensions.append('numpydoc')
 numpydoc_show_class_members = True
 numpydoc_class_members_toctree = False
 
+extensions.append('nbsphinx')
+nbsphinx_execute = 'never'
+# dont add .txt suffix to notebook
+html_sourcelink_suffix = ''
+
+extensions.append('IPython.sphinxext.ipython_console_highlighting')
+
 extensions.append('sphinx.ext.doctest')
 
 extensions.append('sphinx.ext.todo')
@@ -107,7 +114,7 @@ release = '@OPENTURNS_VERSION@'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['_build', 'themes', 'sphinxext']
+exclude_patterns = ['_build', 'themes', 'sphinxext', '**.ipynb_checkpoints']
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
