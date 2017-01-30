@@ -73,3 +73,33 @@ Returns
 -------
 gradient : :class:`~openturns.Matrix`
     The Jacobian transposed matrix of the function at *point*."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NumericalMathGradientImplementation::isActualImplementation
+"Accessor to the validity flag.
+
+Returns
+-------
+is_impl : bool
+    Whether the implementation is valid."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NumericalMathGradientImplementation::getParameter
+"Accessor to the parameter values.
+
+Returns
+-------
+parameter : :class:`~openturns.NumericalPoint`
+    The parameter values."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NumericalMathGradientImplementation::setParameter
+"Accessor to the parameter values.
+
+Parameters
+----------
+parameter : sequence of float
+    The parameter values."
