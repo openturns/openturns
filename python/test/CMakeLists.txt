@@ -609,6 +609,9 @@ ot_pyinstallcheck_test (Waarts_system_series)
 ot_pyinstallcheck_test (Waarts_saddle)
 
 ## Misc
+if (NBSPHINX_FOUND) # depends on nbconvert, nbformat
+  ot_pyinstallcheck_test (notebook IGNOREOUT)
+endif ()
 if (MATPLOTLIB_FOUND)
   ot_pyinstallcheck_test (Viewer IGNOREOUT)
 endif ()
