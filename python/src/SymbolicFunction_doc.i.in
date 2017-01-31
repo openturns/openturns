@@ -6,9 +6,9 @@ Available constructor:
 
 Parameters
 ----------
-inputs : sequence of str
+inputs : sequence of str, or str
     List of input variables names of the function.
-formulas : sequence of str
+formulas : sequence of str, or str
     List of analytical formulas between the inputs and the outputs.
     The function is defined by *ouputs = formulas(inputs)*.
 
