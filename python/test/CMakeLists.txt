@@ -322,6 +322,7 @@ ot_pyinstallcheck_test (IsoProbabilisticTransformation_IndependentCopula)
 ot_pyinstallcheck_test (BoxCoxFactory_std)
 ot_pyinstallcheck_test (BoxCoxFactory_glm)
 ot_pyinstallcheck_test (TrendFactory_std)
+ot_pyinstallcheck_test (DistributionTransformation_std)
 
 ## Distribution
 ot_pyinstallcheck_test (AliMikhailHaqCopula_std)
