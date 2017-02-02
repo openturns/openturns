@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level view of an fixedExperiment plane
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -20,13 +20,13 @@
  */
 #include "openturns/FixedExperiment.hxx"
 #include "openturns/UserDefined.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(FixedExperiment);
 
+static const Factory<FixedExperiment> Factory_FixedExperiment;
 
 /* Default constructor */
 FixedExperiment::FixedExperiment()
@@ -81,6 +81,22 @@ NumericalSample FixedExperiment::generateWithWeights(NumericalPoint & weights) c
 {
   weights = weights_;
   return sample_;
+}
+
+/* Method save() stores the object through the StorageManager */
+void FixedExperiment::save(Advocate & adv) const
+{
+  WeightedExperimentImplementation::save(adv);
+  adv.saveAttribute("sample_", sample_);
+  adv.saveAttribute("weights_", weights_);
+}
+
+/* Method load() reloads the object from the StorageManager */
+void FixedExperiment::load(Advocate & adv)
+{
+  WeightedExperimentImplementation::load(adv);
+  adv.loadAttribute("sample_", sample_);
+  adv.loadAttribute("weights_", weights_);
 }
 
 END_NAMESPACE_OPENTURNS

@@ -2,7 +2,7 @@
 /**
  * @brief Top-level class for all distribution factories
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -210,23 +210,6 @@ DistributionFactoryResult DistributionFactory::buildEstimator(const NumericalSam
 DistributionFactoryResult DistributionFactory::buildEstimator(const NumericalSample & sample, const DistributionParameters & parameters) const
 {
   return getImplementation()->buildEstimator(sample, parameters);
-}
-
-void DistributionFactory::setKnownParameter(const NumericalPoint & values,
-    const Indices & indices)
-{
-  copyOnWrite();
-  getImplementation()->setKnownParameter(values, indices);
-}
-
-Indices DistributionFactory::getKnownParameterIndices() const
-{
-  return getImplementation()->getKnownParameterIndices();
-}
-
-NumericalPoint DistributionFactory::getKnownParameterValues() const
-{
-  return getImplementation()->getKnownParameterValues();
 }
 
 END_NAMESPACE_OPENTURNS

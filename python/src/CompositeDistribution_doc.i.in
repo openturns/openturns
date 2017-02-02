@@ -48,10 +48,10 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> g = ot.NumericalMathFunction('x', 'sin(x) + cos(x)')
+>>> g = ot.SymbolicFunction(['x'], ['sin(x) + cos(x)'])
 >>> distY = ot.CompositeDistribution(g, ot.Normal(1.0, 0.5))
 
->>> g = ot.NumericalMathFunction('x', 'abs(x)')
+>>> g = ot.SymbolicFunction(['x'], ['abs(x)'])
 >>> a = [-1.0, 0.0, 2.0]
 >>> v = [1.0, 0.0, 2.0]
 >>> distZ = ot.CompositeDistribution(g, ot.Uniform(-1.0, 2.0), a, v)
@@ -60,7 +60,7 @@ Create a distribution:
 >>> a0 = distX.getRange().getLowerBound()
 >>> aN = distX.getRange().getUpperBound()
 >>> a = [a0[0], 0.0, 0.0, aN[0]]
->>> g = ot.NumericalMathFunction('x', '1.0/x')
+>>> g = ot.SymbolicFunction(['x'], ['1.0/x'])
 >>> v = [g(a0)[0], -ot.SpecFunc.MaxNumericalScalar, ot.SpecFunc.MaxNumericalScalar, g(aN)[0]]
 >>> distT = ot.CompositeDistribution(g, distX, a, v)
 

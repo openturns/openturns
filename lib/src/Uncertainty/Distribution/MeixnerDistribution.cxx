@@ -2,7 +2,7 @@
 /**
  *  @brief The MeixnerDistribution distribution
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -420,14 +420,14 @@ void MeixnerDistribution::update()
   MeixnerBoundB fB(clone());
   MeixnerBoundCD fCD(clone());
 
-  // Initilalyse Optimization problems
+  // Initialize Optimization problems
   OptimizationProblem problem;
-  problem.setBounds(getRange());
-  solver_.setStartingPoint(getMean());
 
   // Define Optimization problem1 : maximization fB
   problem.setMinimization(false);
   problem.setObjective(fB);
+  problem.setBounds(getRange());
+  solver_.setStartingPoint(getMean());
   solver_.setProblem(problem);
   solver_.run();
   b_ = std::sqrt(solver_.getResult().getOptimalValue()[0]);

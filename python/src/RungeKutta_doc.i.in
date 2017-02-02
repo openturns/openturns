@@ -8,7 +8,7 @@ ODESolver
 Examples
 --------
 >>> import openturns as ot
->>> f = ot.NumericalMathFunction(['t', 'y0', 'y1'], ['dy0', 'dy1'], ['t - y0', 'y1 + t^2'])
+>>> f = ot.SymbolicFunction(['t', 'y0', 'y1'], ['t - y0', 'y1 + t^2'])
 >>> phi = ot.TemporalFunction(f)
 >>> solver = ot.RungeKutta(phi)
 >>> Y0 = [1.0, -1.0]

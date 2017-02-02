@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all OrdinalSumCopulas
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -431,7 +431,7 @@ NumericalScalar OrdinalSumCopula::computeConditionalQuantile(const NumericalScal
 OrdinalSumCopula::Implementation OrdinalSumCopula::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
-  if (!indices.check(dimension - 1)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal distribution must be in the range [0, dim-1] and  must be different";
+  if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal distribution must be in the range [0, dim-1] and must be different";
   const UnsignedInteger size = copulaCollection_.getSize();
   CopulaCollection coll(size);
   for (UnsignedInteger i = 0; i < size; ++i) coll[i] = copulaCollection_[i].getMarginal(indices);

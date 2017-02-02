@@ -85,7 +85,7 @@ value : :class:`~openturns.NumericalPoint`
 Examples
 --------
 >>> import openturns as ot
->>> f = ot.NumericalMathFunction('x', 'abs(sin(x))')
+>>> f = ot.SymbolicFunction(['x'], ['abs(sin(x))'])
 >>> a = -2.5
 >>> b = 4.5
 >>> algoGK = ot.GaussKronrod(100, 1e-8, ot.GaussKronrodRule(ot.GaussKronrodRule.G11K23))

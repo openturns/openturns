@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level view of an monteCarloExperiment plane
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,12 +22,13 @@
 #include "openturns/SobolSequence.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/ComposedDistribution.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
 CLASSNAMEINIT(LowDiscrepancyExperiment);
 
+static const Factory<LowDiscrepancyExperiment> Factory_LowDiscrepancyExperiment;
 
 /* Default constructor */
 LowDiscrepancyExperiment::LowDiscrepancyExperiment()

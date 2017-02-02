@@ -2,7 +2,7 @@
 /**
  *  @brief Mesh is defined as a collection of n-D vertices and simplices
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -141,7 +141,7 @@ void Mesh::checkValidity() const
     if (simplex.getSize() != getDimension() + 1)
       throw InvalidArgumentException(HERE) << "Error: mesh has dimension " << getDimension() << " but simplex #" << i << " has size" << simplex.getSize();
 
-    if (!simplex.check(getVerticesNumber() - 1))
+    if (!simplex.check(getVerticesNumber()))
       throw InvalidArgumentException(HERE) << "Error: mesh has " << getVerticesNumber() << " vertices but simplex #" << i << " refers to an unknown vertex";
   }
   // Check that no ball can be included into the intersection of two simplices

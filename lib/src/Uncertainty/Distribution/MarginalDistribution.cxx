@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements a generic mechanism to extract marginal distributions
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -130,7 +130,7 @@ Indices MarginalDistribution::getIndices() const
 void MarginalDistribution::setDistributionAndIndices(const Distribution & distribution,
     const Indices & indices)
 {
-  if (!indices.check(distribution.getDimension() - 1)) throw InvalidArgumentException(HERE) << "Error: the given indices=" << indices << " are not compatible with the given distribution dimension=" << distribution.getDimension();
+  if (!indices.check(distribution.getDimension())) throw InvalidArgumentException(HERE) << "Error: the given indices=" << indices << " are not compatible with the given distribution dimension=" << distribution.getDimension();
   distribution_ = distribution;
   indices_ = indices;
   // Set the dimension
@@ -298,7 +298,7 @@ MarginalDistribution::Implementation MarginalDistribution::getMarginal(const Uns
 MarginalDistribution::Implementation MarginalDistribution::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
-  if (!indices.check(dimension - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and  must be different";
+  if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";
   if (dimension == 1) return clone();
   // Build the indices associated to the marginal of the marginal
   const UnsignedInteger outputDimension = indices.getSize();

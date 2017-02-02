@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all functions
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/NumericalMathFunction.hxx"
-#include "openturns/ComposedNumericalMathFunction.hxx"
+#include "openturns/ComposedFunction.hxx"
 #include "openturns/AggregatedNumericalMathEvaluationImplementation.hxx"
 #include "openturns/AggregatedNumericalMathGradientImplementation.hxx"
 #include "openturns/AggregatedNumericalMathHessianImplementation.hxx"
@@ -84,7 +84,7 @@ NumericalMathFunction::NumericalMathFunction(const NumericalMathEvaluationImplem
 /* Composition constructor */
 NumericalMathFunction::NumericalMathFunction(const NumericalMathFunction & left,
     const NumericalMathFunction & right)
-  : TypedInterfaceObject<NumericalMathFunctionImplementation>(new ComposedNumericalMathFunction(left.getImplementation(), right.getImplementation()))
+  : TypedInterfaceObject<NumericalMathFunctionImplementation>(new ComposedFunction(left.getImplementation(), right.getImplementation()))
 {
   // Nothing to do
 }

@@ -2,7 +2,7 @@
 /**
  *  @brief The BayesDistribution distribution
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -236,13 +236,13 @@ BayesDistribution::Implementation BayesDistribution::getMarginal(const UnsignedI
 BayesDistribution::Implementation BayesDistribution::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
-  if (!indices.check(dimension - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and  must be different";
+  if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";
   // Special case for dimension 1
   if (dimension == 1) return clone();
   // General case
   // If the indices are in the conditioned part
   const UnsignedInteger conditionedDimension = conditionedDistribution_.getDimension();
-  if (indices.check(conditionedDimension - 1)) return ConditionalDistribution(conditionedDistribution_, conditioningDistribution_, linkFunction_).getMarginal(indices);
+  if (indices.check(conditionedDimension)) return ConditionalDistribution(conditionedDistribution_, conditioningDistribution_, linkFunction_).getMarginal(indices);
   // If the indices are in the conditioning part
   Indices conditioningIndices(0);
   const UnsignedInteger size = indices.getSize();

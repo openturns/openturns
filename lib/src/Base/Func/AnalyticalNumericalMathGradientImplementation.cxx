@@ -2,7 +2,7 @@
 /**
  * @brief The class that implements the gradient of an analytical function.
  *
- * Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ * Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  * Permission to copy, use, modify, sell and distribute this software
  * is granted provided this copyright notice appears in all copies.
@@ -221,7 +221,7 @@ AnalyticalNumericalMathGradientImplementation::Implementation AnalyticalNumerica
 /* Get the function corresponding to indices components */
 AnalyticalNumericalMathGradientImplementation::Implementation AnalyticalNumericalMathGradientImplementation::getMarginal(const Indices & indices) const
 {
-  if (!indices.check(getOutputDimension() - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal gradient must be in the range [0, dim-1] and  must be different";
+  if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal gradient must be in the range [0, dim-1] and must be different";
   const UnsignedInteger marginalDimension = indices.getSize();
   Description marginalFormulas(marginalDimension);
   Description marginalOutputNames(marginalDimension);

@@ -2,7 +2,7 @@
 /**
  *  @brief The maximum entropy order statistics copula
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -109,7 +109,7 @@ MaximumEntropyOrderStatisticsCopula::Implementation MaximumEntropyOrderStatistic
   const UnsignedInteger size = indices.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "indices is empty";
   const UnsignedInteger dimension = getDimension();
-  if (!indices.check(dimension - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and  must be different";
+  if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";
   if (dimension == 1) return clone();
   if (size == 1)
   {

@@ -2,7 +2,7 @@
 /**
  *  @brief An implementation class for functionalChaos random vectors
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -95,7 +95,7 @@ NumericalScalar FunctionalChaosRandomVector::getSobolIndex(const Indices & varia
     const UnsignedInteger marginalIndex) const
 {
   const UnsignedInteger inputDimension = getAntecedent()->getDimension();
-  if (!variableIndices.check(inputDimension - 1)) throw InvalidArgumentException(HERE) << "The variable indices of a Sobol indice must be in the range [0, dim-1] and  must be different.";
+  if (!variableIndices.check(inputDimension)) throw InvalidArgumentException(HERE) << "The variable indices of a Sobol indice must be in the range [0, dim-1] and must be different.";
   if (marginalIndex >= getDimension()) throw InvalidArgumentException(HERE) << "The marginal index must be in the range [0, dim-1].";
   // Check if the measure defining the basis has an independent copula else
   // the conditional covariance cannot be extracted from the decomposition
@@ -157,7 +157,7 @@ NumericalScalar FunctionalChaosRandomVector::getSobolTotalIndex(const Indices & 
     const UnsignedInteger marginalIndex) const
 {
   const UnsignedInteger inputDimension = getAntecedent()->getDimension();
-  if (!variableIndices.check(inputDimension - 1)) throw InvalidArgumentException(HERE) << "The variable indices of a Sobol indice must be in the range [0, dim-1] and  must be different.";
+  if (!variableIndices.check(inputDimension)) throw InvalidArgumentException(HERE) << "The variable indices of a Sobol indice must be in the range [0, dim-1] and must be different.";
   if (marginalIndex >= getDimension()) throw InvalidArgumentException(HERE) << "The marginal index must be in the range [0, dim-1].";
   // Check if the measure defining the basis has an independent copula else
   // the conditional covariance cannot be extracted from the decomposition

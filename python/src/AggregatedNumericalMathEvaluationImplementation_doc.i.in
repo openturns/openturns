@@ -14,7 +14,7 @@ functionsCollection : sequence of :class:`~openturns.NumericalMathFunction`
 See also
 --------
 NumericalMathFunction, DatabaseNumericalMathEvaluationImplementation, DualLinearCombinationEvaluationImplementation,
-LinearNumericalMathFunction
+LinearFunction
 
 Notes
 -----

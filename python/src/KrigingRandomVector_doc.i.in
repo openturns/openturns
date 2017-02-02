@@ -64,7 +64,7 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> sampleSize = 6
 >>> dimension = 1
->>> f = ot.NumericalMathFunction(['x0'], ['y'], ['x0 * sin(x0)'])
+>>> f = ot.SymbolicFunction(['x0'], ['x0 * sin(x0)'])
 >>> X = ot.NumericalSample(sampleSize, dimension)
 >>> for i in range(sampleSize):
 ...     X[i, 0] = 3.0 + i
@@ -109,7 +109,7 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> sampleSize = 6
 >>> dimension = 1
->>> f = ot.NumericalMathFunction(['x0'], ['y'], ['x0 * sin(x0)'])
+>>> f = ot.SymbolicFunction(['x0'], ['x0 * sin(x0)'])
 >>> X = ot.NumericalSample(sampleSize, dimension)
 >>> for i in range(sampleSize):
 ...    X[i, 0] = 3.0 + i
@@ -150,7 +150,7 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> sampleSize = 6
 >>> dimension = 1
->>> f = ot.NumericalMathFunction(['x0'], ['y'], ['x0 * sin(x0)'])
+>>> f = ot.SymbolicFunction(['x0'], ['x0 * sin(x0)'])
 >>> X = ot.NumericalSample(sampleSize, dimension)
 >>> for i in range(sampleSize):
 ...    X[i, 0] = 3.0 + i

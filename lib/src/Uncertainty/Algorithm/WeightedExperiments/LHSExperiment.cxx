@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level view of an LHSExperiment plane
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,12 +23,15 @@
 #include "openturns/Collection.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/Exception.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 typedef Collection<Distribution> DistributionCollection;
 
 CLASSNAMEINIT(LHSExperiment);
+
+static const Factory<LHSExperiment> Factory_LHSExperiment;
 
 /* Default constructor */
 LHSExperiment::LHSExperiment()
@@ -197,6 +200,22 @@ void LHSExperiment::setRandomShift(const Bool randomShift)
   randomShift_ = randomShift;
 }
 
+/* Method save() stores the object through the StorageManager */
+void LHSExperiment::save(Advocate & adv) const
+{
+  WeightedExperimentImplementation::save(adv);
+  adv.saveAttribute("alwaysShuffle_", alwaysShuffle_);
+  adv.saveAttribute("randomShift_", randomShift_);
+}
+
+/* Method load() reloads the object from the StorageManager */
+void LHSExperiment::load(Advocate & adv)
+{
+  WeightedExperimentImplementation::load(adv);
+  adv.loadAttribute("alwaysShuffle_", alwaysShuffle_);
+  adv.loadAttribute("randomShift_", randomShift_);
+  setDistribution(distribution_);
+}
 
 END_NAMESPACE_OPENTURNS
 

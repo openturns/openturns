@@ -2,7 +2,7 @@
 /**
  *  @brief LevelSet is defined as the set of points such that f(x_1,...,x_n) <= level
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,10 +23,11 @@
 #include "openturns/Log.hxx"
 #include "openturns/Os.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/NumericalMathFunction.hxx"
-#include "openturns/LinearNumericalMathFunction.hxx"
+#include "openturns/SymbolicFunction.hxx"
+#include "openturns/LinearFunction.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/Cobyla.hxx"
+#include "openturns/ComposedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -37,7 +38,7 @@ static const Factory<LevelSet> Factory_LevelSet;
 /* Default constructor */
 LevelSet::LevelSet(const UnsignedInteger dimension)
   : DomainImplementation(dimension)
-  , function_(NumericalMathFunction(Description::BuildDefault(dimension, "x"), Description(1, "1.0")))
+  , function_(SymbolicFunction(Description::BuildDefault(dimension, "x"), Description(1, "1.0")))
   , level_(0.0)
   , lowerBound_(0)
   , upperBound_(0)
@@ -71,11 +72,11 @@ LevelSet LevelSet::intersect(const LevelSet & other) const
   // else check dimension compatibility
   if (other.dimension_ != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot intersect level sets of different dimensions";
   // The intersectFunction is negative or zero iff the given point is inside of the resulting level set, ie if both functions are less or equal to their respective level
-  const NumericalMathFunction intersectFunction(NumericalMathFunction(Description::BuildDefault(2, "x"), Description(1, (OSS() << "max(x0 - " << level_ << ", x1 - " << other.level_ << ")"))));
+  const SymbolicFunction intersectFunction(Description::BuildDefault(2, "x"), Description(1, (OSS() << "max(x0 - " << level_ << ", x1 - " << other.level_ << ")")));
   NumericalMathFunction::NumericalMathFunctionCollection coll(2);
   coll[0] = function_;
   coll[1] = other.function_;
-  LevelSet result(NumericalMathFunction(intersectFunction, NumericalMathFunction(coll)), 0.0);
+  LevelSet result(ComposedFunction(intersectFunction, NumericalMathFunction(coll)), 0.0);
   // Check if we can compute a bounding box
   if ((lowerBound_.getDimension() == dimension_) &&
       (upperBound_.getDimension() == dimension_) &&
@@ -97,11 +98,11 @@ LevelSet LevelSet::join(const LevelSet & other) const
   // else check dimension compatibility
   if (other.dimension_ != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot intersect level sets of different dimensions";
   // The intersectFunction is negative or zero iff the given point is inside of the resulting level set, ie if at least on function is less or equal to its level
-  const NumericalMathFunction intersectFunction(NumericalMathFunction(Description::BuildDefault(2, "x"), Description(1, (OSS() << "min(x0 - " << level_ << ", x1 - " << other.level_ << ")"))));
+  const SymbolicFunction intersectFunction(Description::BuildDefault(2, "x"), Description(1, (OSS() << "min(x0 - " << level_ << ", x1 - " << other.level_ << ")")));
   NumericalMathFunction::NumericalMathFunctionCollection coll(2);
   coll[0] = function_;
   coll[1] = other.function_;
-  LevelSet result(NumericalMathFunction(intersectFunction, NumericalMathFunction(coll)), 0.0);
+  LevelSet result(ComposedFunction(intersectFunction, NumericalMathFunction(coll)), 0.0);
   // Check if we can compute a bounding box
   if ((lowerBound_.getDimension() == dimension_) &&
       (upperBound_.getDimension() == dimension_) &&
@@ -170,13 +171,13 @@ NumericalPoint LevelSet::getLowerBound() const
 void LevelSet::computeLowerBound() const
 {
   lowerBound_ = NumericalPoint(dimension_);
-  LinearNumericalMathFunction translate(NumericalPoint(1, level_), NumericalPoint(1), IdentityMatrix(1));
-  NumericalMathFunction equality(translate, function_);
+  LinearFunction translate(NumericalPoint(1, level_), NumericalPoint(1), IdentityMatrix(1));
+  ComposedFunction equality(translate, function_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     Matrix m(1, dimension_);
     m(0, i) = 1.0;
-    LinearNumericalMathFunction coordinate(NumericalPoint(dimension_), NumericalPoint(1), m);
+    LinearFunction coordinate(NumericalPoint(dimension_), NumericalPoint(1), m);
     OptimizationProblem problem(coordinate, equality, NumericalMathFunction(), Interval());
     problem.setMinimization(true);
     Cobyla solver(problem);
@@ -202,13 +203,13 @@ NumericalPoint LevelSet::getUpperBound() const
 void LevelSet::computeUpperBound() const
 {
   upperBound_ = NumericalPoint(dimension_);
-  LinearNumericalMathFunction translate(NumericalPoint(1, level_), NumericalPoint(1), IdentityMatrix(1));
-  NumericalMathFunction equality(translate, function_);
+  LinearFunction translate(NumericalPoint(1, level_), NumericalPoint(1), IdentityMatrix(1));
+  ComposedFunction equality(translate, function_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     Matrix m(1, dimension_);
     m(0, i) = 1.0;
-    LinearNumericalMathFunction coordinate(NumericalPoint(dimension_), NumericalPoint(1), m);
+    LinearFunction coordinate(NumericalPoint(dimension_), NumericalPoint(1), m);
     OptimizationProblem problem(coordinate, equality, NumericalMathFunction(), Interval());
     problem.setMinimization(false);
     Cobyla solver(problem);

@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all ConstantBasisFactory
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -33,7 +33,7 @@ class OT_API ConstantBasisFactory
 public:
 
   /** Default constructor */
-  ConstantBasisFactory (const UnsignedInteger inputDimension = 1);
+  explicit ConstantBasisFactory (const UnsignedInteger inputDimension = 1);
 
   /* String converter */
   OT::String __repr__() const;

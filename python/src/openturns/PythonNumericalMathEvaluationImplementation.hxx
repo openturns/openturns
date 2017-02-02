@@ -2,7 +2,7 @@
 /**
  * @brief PythonNumericalMathEvaluationImplementation declaration
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -75,14 +75,6 @@ public:
 
   /** Accessor for output point dimension */
   virtual UnsignedInteger getOutputDimension() const;
-
-  /** Parameters value accessor */
-  virtual NumericalPoint getParameter() const;
-  virtual void setParameter(const NumericalPoint & parameters);
-
-  /** Parameters description accessor */
-  virtual Description getParameterDescription() const;
-  virtual void setParameterDescription(const Description & description);
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

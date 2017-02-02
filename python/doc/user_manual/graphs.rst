@@ -45,3 +45,6 @@ Graphical visualisation object
     :template: class.rst_t
 
     viewer.View
+
+    :template: function.rst_t
+    viewer.PlotDesign

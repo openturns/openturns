@@ -261,29 +261,35 @@ ot_add_python_module(func func_module.i
                       DualLinearCombinationEvaluationImplementation.i DualLinearCombinationEvaluationImplementation_doc.i.in
                       DualLinearCombinationGradientImplementation.i DualLinearCombinationGradientImplementation_doc.i.in
                       DualLinearCombinationHessianImplementation.i DualLinearCombinationHessianImplementation_doc.i.in
+                      LinearCombinationFunction.i LinearCombinationFunction_doc.i.in
                       LinearCombinationEvaluationImplementation.i
                       LinearCombinationGradientImplementation.i
                       LinearCombinationHessianImplementation.i
+                      ParametricFunction.i ParametricFunction_doc.i.in
                       ProductNumericalMathEvaluationImplementation.i
                       ProductNumericalMathGradientImplementation.i
                       ProductNumericalMathHessianImplementation.i
                       NumericalMathFunctionImplementation.i NumericalMathFunctionImplementation_doc.i.in
-                      ComposedNumericalMathFunction.i
                       ProductNumericalMathFunction.i
                       NumericalMathFunction.i NumericalMathFunction_doc.i.in
+                      AggregatedFunction.i AggregatedFunction_doc.i.in
+                      SymbolicFunction.i SymbolicFunction_doc.i.in
+                      ComposedFunction.i ComposedFunction_doc.i.in
+                      DualLinearCombinationFunction.i DualLinearCombinationFunction_doc.i.in
                       BaseFuncCollection.i
                       DynamicalFunctionImplementation.i DynamicalFunctionImplementation_doc.i.in
                       DynamicalFunction.i DynamicalFunction_doc.i.in
                       SpatialFunction.i SpatialFunction_doc.i.in
                       TemporalFunction.i TemporalFunction_doc.i.in
-                      LinearNumericalMathFunction.i LinearNumericalMathFunction_doc.i.in
-                      QuadraticNumericalMathFunction.i
+                      LinearFunction.i LinearFunction_doc.i.in
+                      QuadraticFunction.i QuadraticFunction_doc.i.in
                       UniVariatePolynomialImplementation.i UniVariatePolynomialImplementation_doc.i.in
                       UniVariatePolynomial.i UniVariatePolynomial_doc.i.in
                       AggregatedNumericalMathEvaluationImplementation.i AggregatedNumericalMathEvaluationImplementation_doc.i.in
                       AnalyticalNumericalMathEvaluationImplementation.i
                       AnalyticalNumericalMathGradientImplementation.i
                       AnalyticalNumericalMathHessianImplementation.i
+                      DatabaseFunction.i DatabaseFunction_doc.i.in
                       DatabaseNumericalMathEvaluationImplementation.i DatabaseNumericalMathEvaluationImplementation_doc.i.in
                       IndicatorNumericalMathEvaluationImplementation.i
                       PiecewiseLinearEvaluationImplementation.i
@@ -346,6 +352,7 @@ ot_add_python_module(optim optim_module.i
                       Cobyla.i Cobyla_doc.i.in
                       TNC.i TNC_doc.i.in
                       SQP.i SQP_doc.i.in
+                      MultiStart.i MultiStart_doc.i.in
                       NLopt.i NLopt_doc.i.in
                       LevelSet.i LevelSet_doc.i.in
                       LevelSetMesher.i LevelSetMesher_doc.i.in
@@ -515,7 +522,6 @@ ot_add_python_module(dist_bundle1 dist_bundle1_module.i
                       Chi.i Chi_doc.i.in
                       ChiFactory.i ChiFactory_doc.i.in
                       CompositeDistribution.i CompositeDistribution_doc.i.in
-                      ConditionalDistribution.i ConditionalDistribution_doc.i.in
                       Dirac.i Dirac_doc.i.in
                       DiracFactory.i DiracFactory_doc.i.in
                       Dirichlet.i Dirichlet_doc.i.in
@@ -567,7 +573,10 @@ ot_add_python_module(dist_bundle2 dist_bundle2_module.i
                       MaximumLikelihoodFactory.i MaximumLikelihoodFactory_doc.i.in
                       MeixnerDistribution.i MeixnerDistribution_doc.i.in
                       MeixnerDistributionFactory.i MeixnerDistributionFactory_doc.i.in
+                      MethodOfMomentsFactory.i MethodOfMomentsFactory_doc.i.in
                       Mixture.i  Mixture_doc.i.in
+                      ConditionalDistribution.i ConditionalDistribution_doc.i.in
+                      PosteriorDistribution.i PosteriorDistribution_doc.i.in
                       Multinomial.i Multinomial_doc.i.in
                       MultinomialFactory.i MultinomialFactory_doc.i.in
                       NegativeBinomial.i NegativeBinomial_doc.i.in
@@ -584,7 +593,6 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       ParametrizedDistribution.i ParametrizedDistribution_doc.i.in
                       Poisson.i Poisson_doc.i.in
                       PoissonFactory.i PoissonFactory_doc.i.in
-                      PosteriorDistribution.i
                       ProductDistribution.i ProductDistribution_doc.i.in
                       RandomMixture.i RandomMixture_doc.i.in
                       Rayleigh.i Rayleigh_doc.i.in
@@ -846,7 +854,7 @@ install (FILES ${EXTRA_PYTHON_FILES}
 
 install (FILES ${SWIGFILES} DESTINATION ${OPENTURNS_SWIG_INCLUDE_DIRS})
 
-if (SPHINX_FOUND AND SPHINX_EXECUTABLE AND MUPARSER_FOUND AND MATPLOTLIB_FOUND AND R_rot_FOUND)
+if (SPHINX_FOUND AND SPHINX_EXECUTABLE AND NUMPYDOC_FOUND AND MUPARSER_FOUND AND MATPLOTLIB_FOUND AND R_rot_FOUND)
 
   # create a build site-package from which sphinx can import
   set (OPENTURNS_PYTHON_BUILD_MODULE_PATH ${CMAKE_CURRENT_BINARY_DIR}/site-packages)

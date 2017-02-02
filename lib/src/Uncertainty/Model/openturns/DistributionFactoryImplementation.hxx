@@ -2,7 +2,7 @@
 /**
  *  @brief Top-level class for all distribution factories
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -73,12 +73,7 @@ public:
   UnsignedInteger getBootstrapSize() const;
   void setBootstrapSize(const UnsignedInteger bootstrapSize);
 
-  /** Accessor to known parameter */
-  void setKnownParameter(const NumericalPoint & values, const Indices & positions);
-  NumericalPoint getKnownParameterValues() const;
-  Indices getKnownParameterIndices() const;
-
-    /** Method save() stores the object through the StorageManager */
+  /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 
   /** Method load() reloads the object from the StorageManager */
@@ -93,10 +88,6 @@ protected:
 
   /* Number of bootstrap resampling for covariance estimation */
   UnsignedInteger bootstrapSize_;
-
-  /* Known parameter */
-  NumericalPoint knownParameterValues_;
-  Indices knownParameterIndices_;
 
 }; /* class DistributionFactoryImplementation */
 

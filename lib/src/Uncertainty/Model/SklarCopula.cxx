@@ -2,7 +2,7 @@
 /**
  *  @brief The SklarCopula distribution
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -30,6 +30,7 @@
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/Uniform.hxx"
 #include "openturns/IndependentCopula.hxx"
+#include "openturns/ComposedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -329,7 +330,7 @@ SklarCopula::IsoProbabilisticTransformation SklarCopula::getIsoProbabilisticTran
     // Get the right hessian implementations
     const HessianImplementation p_rightHessian = new MarginalTransformationHessian(rightEvaluation);
     const IsoProbabilisticTransformation right(p_rightFunction, p_rightGradient, p_rightHessian);
-    const IsoProbabilisticTransformation transformation(isoprobabilistic, right);
+    const ComposedFunction transformation(isoprobabilistic, right);
     return transformation;
   }
   // Else simply use the Rosenblatt transformation
@@ -352,7 +353,7 @@ SklarCopula::InverseIsoProbabilisticTransformation SklarCopula::getInverseIsoPro
     // Get the left and right hessian implementations
     const HessianImplementation p_leftHessian = new MarginalTransformationHessian(leftEvaluation);
     const InverseIsoProbabilisticTransformation left(p_leftFunction, p_leftGradient, p_leftHessian);
-    const InverseIsoProbabilisticTransformation transformation(left, inverseIsoprobabilistic);
+    const ComposedFunction transformation(left, inverseIsoprobabilistic);
     return transformation;
   }
   // Else simply use the inverse  Rosenblatt transformation

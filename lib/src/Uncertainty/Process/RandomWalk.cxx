@@ -2,7 +2,7 @@
 /**
  *  @brief A class which implements the RandomWalk process
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -149,7 +149,7 @@ RandomWalk::Implementation RandomWalk::getMarginal(const UnsignedInteger i) cons
 /* Get the marginal process corresponding to indices components */
 RandomWalk::Implementation RandomWalk::getMarginal(const Indices & indices) const
 {
-  if (!indices.check(getDimension() - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal process must be in the range [0, dim-1] and  must be different";
+  if (!indices.check(getDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal process must be in the range [0, dim-1] and must be different";
   const UnsignedInteger size = indices.getSize();
   NumericalPoint marginalOrigin(size);
   for (UnsignedInteger i = 0; i < size; ++i) marginalOrigin[i] = origin_[indices[i]];

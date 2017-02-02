@@ -22,9 +22,8 @@ amplitude : sequence of positive floats
     Amplitude of the process :math:`\vect{\sigma}\in \Rset^d`.
     Must be of size equal to 1.
     By default, equal to :math:`[1]`.
-p : int, :math:`p \geq 1`
-    Define the norm that is used within the model.
-
+p : float, :math:`0<p \leq 2`
+    Define the exponent of the euclidean norm that is used within the model.
 
 Notes
 -----
@@ -64,12 +63,12 @@ Create a standard generalized exponential covariance function:
 
 Create a  generalized exponential covariance function specifying the scale vector and p:
 
->>> covModel2 = ot.GeneralizedExponential([1.5, 2.5], 3)
->>> covModel2bis = ot.GeneralizedExponential([1.5] * 2, 3)
+>>> covModel2 = ot.GeneralizedExponential([1.5, 2.5], 1.5)
+>>> covModel2bis = ot.GeneralizedExponential([1.5] * 2, 1.5)
 
 Create a  generalized exponential covariance function specifying the scale vector, the amplitude and p:
 
->>> covModel3 = ot.GeneralizedExponential([1.5, 2.5], [3.5], 3)"
+>>> covModel3 = ot.GeneralizedExponential([1.5, 2.5], [3.5], 1.5)"
 
 
 // ---------------------------------------------------------------------

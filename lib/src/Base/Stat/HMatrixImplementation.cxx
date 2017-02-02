@@ -3,7 +3,7 @@
  *  @file  HMatrixImplementation.cxx
  *  @brief This file supplies support for HMat
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -317,6 +317,15 @@ void HMatrixImplementation::factorize(const String& method)
     // hmat::LapackException is not yet exported
     throw InternalException(HERE) << ex.what();
   }
+#else
+  throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
+#endif
+}
+
+void HMatrixImplementation::scale(NumericalScalar alpha)
+{
+#ifdef OPENTURNS_HAVE_HMAT
+  static_cast<hmat_interface_t*>(hmatInterface_)->scale(&alpha, static_cast<hmat_matrix_t*>(hmat_));
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
 #endif

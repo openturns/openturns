@@ -223,6 +223,8 @@ The tools chosen for the development of the platform are:
 +---------------------------------------+-----------------------------------------------------------+-------------------+
 | ReSt to HTML (optional for doc)       | `Sphinx <http://sphinx-doc.org/>`_                        | 1.1               |
 +---------------------------------------+-----------------------------------------------------------+-------------------+
+| Sphinx extension (optional for doc)   | `Numpydoc <https://github.com/numpy/numpydoc/>`_          | 0.4               |
++---------------------------------------+-----------------------------------------------------------+-------------------+
 | LaTeX to XML (optional for doc)       | `Tralics <http://www-sop.inria.fr/marelle/tralics/>`_     | 2.14.5            |
 +---------------------------------------+-----------------------------------------------------------+-------------------+
 
@@ -419,4 +421,4 @@ random vector composition, etc. It can be found in several aspects of
 the modeling brick. Any related objects tree structure can rely on the
 Composite pattern with benefit. For example, the classes
 ComposedDistribution, CompositeRandomVector,
-ComposedNumericalMathFunction follow this pattern.
+ComposedFunction follow this pattern.

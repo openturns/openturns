@@ -2,7 +2,7 @@
 /**
  *  @brief The NormalGamma distribution
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,6 +22,7 @@
 #include "openturns/NormalGamma.hxx"
 #include "openturns/Gamma.hxx"
 #include "openturns/Normal.hxx"
+#include "openturns/SymbolicFunction.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -47,7 +48,7 @@ NormalGamma::NormalGamma()
   formulas[0] = String(oss << mu_);
   oss.clear();
   formulas[1] = String(oss << "1.0 / (" << kappa_ << "*lambda)");
-  const NumericalMathFunction link(inVars, formulas);
+  const SymbolicFunction link(inVars, formulas);
   setConditionedAndConditioningDistributionsAndLinkFunction(Normal(), Gamma(alpha_, beta_), link);
 }
 
@@ -73,7 +74,7 @@ NormalGamma::NormalGamma(const NumericalScalar mu,
   formulas[0] = String(oss << mu_);
   oss.clear();
   formulas[1] = String(oss << "1.0 / sqrt(" << kappa_ << "*lambda)");
-  const NumericalMathFunction link(inVars, formulas);
+  const SymbolicFunction link(inVars, formulas);
   setConditionedAndConditioningDistributionsAndLinkFunction(Normal(), Gamma(alpha_, beta_), link);
   computeRange();
 }

@@ -2,7 +2,7 @@
 /**
  *  @brief Second order polynomial response surface by least square
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/QuadraticLeastSquares.hxx"
-#include "openturns/QuadraticNumericalMathFunction.hxx"
+#include "openturns/QuadraticFunction.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -159,7 +159,7 @@ void QuadraticLeastSquares::run()
     } // quadratic term
   } // output components
   const NumericalPoint center(inputDimension, 0.0);
-  responseSurface_ = QuadraticNumericalMathFunction(center, constant_, linear_, quadratic_);
+  responseSurface_ = QuadraticFunction(center, constant_, linear_, quadratic_);
 }
 
 /* DataIn accessor */

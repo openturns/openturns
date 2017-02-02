@@ -2,7 +2,7 @@
 /**
  *  @brief
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -39,7 +39,6 @@ SphericalModel::SphericalModel(const UnsignedInteger spatialDimension)
   , radius_(1.0)
 {
   if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << dimension_;
-  activeParameter_.add(activeParameter_.getSize());// add radius
 }
 
 /* Constructor with parameters */
@@ -51,7 +50,6 @@ SphericalModel::SphericalModel(const NumericalPoint & scale,
 {
   if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << dimension_;
   setRadius(radius);
-  activeParameter_.add(activeParameter_.getSize());// add radius
 }
 
 /* Virtual constructor */

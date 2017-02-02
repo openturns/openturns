@@ -22,22 +22,22 @@ Sobol total index  [0,1,2] =0.00171843 absolute error=0.0017184293
 ###################################
 class=AdaptiveStrategy implementation=class=CleaningStrategy maximum size=20 significance factor=1e-06 derived from class=AdaptiveStrategyImplementation maximumDimension=84
 class=ProjectionStrategy implementation=class=LeastSquaresStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=100
-residuals= [0.00304432]
-relativeErrors= [0.000294246]
-mean=3.52880217 absolute error=0.0288021749
-variance=13.29971414 absolute error=0.5448737983
-Sobol index 0 = 0.32623972 absolute error=0.0123345262
-Sobol index 1 = 0.42007829 absolute error=0.0223328551
+residuals= [0.00197231]
+relativeErrors= [8.89613e-05]
+mean=3.51972123 absolute error=0.0197212272
+variance=13.59298523 absolute error=0.2516027058
+Sobol index 0 = 0.31923587 absolute error=0.0053306780
+Sobol index 1 = 0.43639617 absolute error=0.0060149749
 Sobol index 2 = 0.00000000 absolute error=0.0000000000
 Sobol index [0,1] =0.00000000 absolute error=0.0000000000
-Sobol index [0,2] =0.25368199 absolute error=0.0099983289
+Sobol index [0,2] =0.24436796 absolute error=0.0006842969
 Sobol index [1,2] =0.00000000 absolute error=0.0000000000
 Sobol index [0,1,2] =0.00000000 absolute error=0.0000000000
-Sobol total index 0 =0.57992171 absolute error=0.0223328551
-Sobol total index 1 =0.42007829 absolute error=0.0223328551
-Sobol total index 2 =0.25368199 absolute error=0.0099983289
+Sobol total index 0 =0.56360383 absolute error=0.0060149749
+Sobol total index 1 =0.43639617 absolute error=0.0060149749
+Sobol total index 2 =0.24436796 absolute error=0.0006842969
 Sobol total index [0,1] =0.00000000 absolute error=0.0000000000
-Sobol total index [0,2] =0.25368199 absolute error=0.0099983289
+Sobol total index [0,2] =0.24436796 absolute error=0.0006842969
 Sobol total index [1,2] =0.00000000 absolute error=0.0000000000
 Sobol total index  [0,1,2] =0.00000000 absolute error=0.0000000000
 ###################################
@@ -85,24 +85,24 @@ Sobol total index  [0,1,2] =0.00548925 absolute error=0.0054892488
 ###################################
 class=AdaptiveStrategy implementation=class=FixedStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=84
 class=ProjectionStrategy implementation=class=LeastSquaresStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=100
-residuals= [0.00189287]
-relativeErrors= [0.000136757]
-mean=3.52069064 absolute error=0.0206906357
-variance=13.65418253 absolute error=0.1904054104
-Sobol index 0 = 0.31778035 absolute error=0.0038751550
-Sobol index 1 = 0.43415084 absolute error=0.0082603022
+residuals= [0.00186978]
+relativeErrors= [8.25367e-05]
+mean=3.52361492 absolute error=0.0236149151
+variance=13.62089732 absolute error=0.2236906178
+Sobol index 0 = 0.31594346 absolute error=0.0020382686
+Sobol index 1 = 0.43512170 absolute error=0.0072894407
 Sobol index 2 = 0.00000000 absolute error=0.0000000000
 Sobol index [0,1] =0.00000000 absolute error=0.0000000000
-Sobol index [0,2] =0.24616651 absolute error=0.0024828430
+Sobol index [0,2] =0.24688054 absolute error=0.0031968719
 Sobol index [1,2] =0.00000000 absolute error=0.0000000000
-Sobol index [0,1,2] =0.00190230 absolute error=0.0019023042
-Sobol total index 0 =0.56584916 absolute error=0.0082603022
-Sobol total index 1 =0.43605315 absolute error=0.0063579980
-Sobol total index 2 =0.24806881 absolute error=0.0043851472
+Sobol index [0,1,2] =0.00205430 absolute error=0.0020543003
+Sobol total index 0 =0.56487830 absolute error=0.0072894407
+Sobol total index 1 =0.43717600 absolute error=0.0052351404
+Sobol total index 2 =0.24893484 absolute error=0.0052511721
 Sobol total index [0,1] =0.00000000 absolute error=0.0000000000
-Sobol total index [0,2] =0.24616651 absolute error=0.0024828430
+Sobol total index [0,2] =0.24688054 absolute error=0.0031968719
 Sobol total index [1,2] =0.00000000 absolute error=0.0000000000
-Sobol total index  [0,1,2] =0.00190230 absolute error=0.0019023042
+Sobol total index  [0,1,2] =0.00205430 absolute error=0.0020543003
 ###################################
 class=AdaptiveStrategy implementation=class=FixedStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=84
 class=ProjectionStrategy implementation=class=IntegrationStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=100
@@ -148,22 +148,22 @@ Sobol total index  [0,1,2] =0.00071391 absolute error=0.0007139144
 ###################################
 class=AdaptiveStrategy implementation=class=SequentialStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=20
 class=ProjectionStrategy implementation=class=LeastSquaresStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=100
-residuals= [0.0109354]
-relativeErrors= [0.00288979]
-mean=3.54127942 absolute error=0.0412794161
-variance=6.25713118 absolute error=7.5874567592
-Sobol index 0 = 0.68439503 absolute error=0.3704898399
-Sobol index 1 = 0.00000000 absolute error=0.4424111448
+residuals= [0.0107763]
+relativeErrors= [0.00230957]
+mean=3.53848004 absolute error=0.0384800409
+variance=6.35015933 absolute error=7.4944286102
+Sobol index 0 = 0.67140179 absolute error=0.3574966007
+Sobol index 1 = 0.03519957 absolute error=0.4072115718
 Sobol index 2 = 0.00000000 absolute error=0.0000000000
 Sobol index [0,1] =0.00000000 absolute error=0.0000000000
-Sobol index [0,2] =0.31560497 absolute error=0.0719213049
+Sobol index [0,2] =0.29339864 absolute error=0.0497149711
 Sobol index [1,2] =0.00000000 absolute error=0.0000000000
 Sobol index [0,1,2] =0.00000000 absolute error=0.0000000000
-Sobol total index 0 =1.00000000 absolute error=0.4424111448
-Sobol total index 1 =0.00000000 absolute error=0.4424111448
-Sobol total index 2 =0.31560497 absolute error=0.0719213049
+Sobol total index 0 =0.96480043 absolute error=0.4072115718
+Sobol total index 1 =0.03519957 absolute error=0.4072115718
+Sobol total index 2 =0.29339864 absolute error=0.0497149711
 Sobol total index [0,1] =0.00000000 absolute error=0.0000000000
-Sobol total index [0,2] =0.31560497 absolute error=0.0719213049
+Sobol total index [0,2] =0.29339864 absolute error=0.0497149711
 Sobol total index [1,2] =0.00000000 absolute error=0.0000000000
 Sobol total index  [0,1,2] =0.00000000 absolute error=0.0000000000
 ###################################

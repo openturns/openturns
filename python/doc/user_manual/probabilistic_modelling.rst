@@ -120,8 +120,9 @@ Combining and transforming distributions
 .. autosummary::
     :toctree: _generated/
     :template: class.rst_t
-    
+
     OrderStatisticsMarginalChecker
+    PosteriorDistribution
 
 .. autosummary::
     :toctree: _generated/
@@ -231,3 +232,6 @@ Low-level distribution functions
     DistFunc_pNormal
     DistFunc_qNormal
     DistFunc_rNormal
+    DistFunc_kFactor
+    DistFunc_kFactorPooled
+

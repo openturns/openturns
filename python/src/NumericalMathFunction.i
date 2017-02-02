@@ -23,7 +23,7 @@ OTTypedInterfaceObjectHelper(NumericalMathFunction)
   } else {
     try {
       $1 = OT::buildCollectionFromPySequence< OT::NumericalMathFunction >( $input );
-    } catch (OT::InvalidArgumentException & ex) {
+    } catch (OT::InvalidArgumentException &) {
       SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a collection of NumericalMathFunction");
     }
   }
@@ -115,8 +115,6 @@ class OpenTURNSPythonFunction(object):
             raise TypeError('p argument is not an integer.')
         self.__descIn = list(map(lambda i: 'x' + str(i), range(n)))
         self.__descOut = list(map(lambda i: 'y' + str(i), range(p)))
-        self.__param = []
-        self.__paramDesc = []
 
     def setInputDescription(self, descIn):
         if (len(descIn) != self.__n):
@@ -174,17 +172,6 @@ class OpenTURNSPythonFunction(object):
         """Implement exec from exec_sample."""
         return self._exec_sample([X])[0]
 
-    def setParameter(self, param):
-        self.__param = param
-
-    def getParameter(self):
-        return self.__param
-
-    def setParameterDescription(self, paramDesc):
-        self.__paramDesc = paramDesc
-
-    def getParameterDescription(self):
-        return self.__paramDesc
 
 def _exec_sample_multiprocessing(func, n_cpus):
     """Return a distributed function using multiprocessing.
@@ -203,7 +190,6 @@ def _exec_sample_multiprocessing(func, n_cpus):
     _exec_sample : Function or callable
         The parallelized funtion.
     """
-
     def _exec_sample(X):
         from multiprocessing import Pool
         p = Pool(processes=n_cpus)

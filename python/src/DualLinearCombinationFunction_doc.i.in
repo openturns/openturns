@@ -1,0 +1,25 @@
+%feature("docstring") OT::DualLinearCombinationFunction
+"Linear combination of functions with vectorial weights.
+
+Allows to create a function which is the linear combination
+of scalar functions with vectorial weights.
+
+Parameters
+----------
+functionCollection : sequence of :class:`~openturns.NumericalMathFunction`
+    Collection of functions.
+vectorCoefficientColl : 2-d sequence of float
+    Collection of vectorial weights.
+
+Examples
+--------
+>>> import openturns as ot
+>>> functions = list()
+>>> functions.append(ot.SymbolicFunction(['x1', 'x2', 'x3'],
+...                                        ['x1 + 2 * x2 + x3']))
+>>> functions.append(ot.SymbolicFunction(['x1', 'x2', 'x3'],
+...                                        ['x1^2 + x2']))
+>>> myFunction = ot.DualLinearCombinationFunction(functions, [[2.0, 4.0], [3.0, 1.0]])
+>>> print(myFunction([1, 2, 3]))
+[25,35]
+"

@@ -2,7 +2,7 @@
 /**
  *  @brief An interface for all implementation class of process
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -208,7 +208,7 @@ ProcessImplementation::Implementation ProcessImplementation::getMarginal(const U
 ProcessImplementation::Implementation ProcessImplementation::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
-  if (!indices.check(dimension - 1)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal process must be in the range [0, dim-1] and  must be different";
+  if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal process must be in the range [0, dim-1] and must be different";
   if (dimension == 1) return clone();
   throw NotYetImplementedException(HERE) << "In ProcessImplementation::getMarginal(const Indices & indices) const";
 }

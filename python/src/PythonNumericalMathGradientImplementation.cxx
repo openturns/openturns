@@ -2,7 +2,7 @@
 /**
  * @brief PythonNumericalMathGradientImplementation implementation
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -136,7 +136,7 @@ Matrix PythonNumericalMathGradientImplementation::gradient(const NumericalPoint 
   {
     result = convert< _PySequence_, Matrix >(callResult.get());
   }
-  catch (const InvalidArgumentException & ex)
+  catch (InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Output value for " << getName() << "._gradient() method is not a 2-d float sequence object (list, tuple, etc.)";
   }

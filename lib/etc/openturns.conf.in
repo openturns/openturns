@@ -339,13 +339,19 @@
   <!-- OT::TruncatedNormalFactory parameters -->
   <TruncatedNormalFactory-SigmaLowerBound         value="1.0e-4"  />
 
-  <!-- OT::TruncatedNormalFactory parameters -->
+  <!-- OT::MaximumLikelihoodFactory parameters -->
   <MaximumLikelihoodFactory-MaximumEvaluationNumber value="1000"    />
   <MaximumLikelihoodFactory-MaximumAbsoluteError    value="1.0e-10" />
   <MaximumLikelihoodFactory-MaximumRelativeError    value="1.0e-10" />
   <MaximumLikelihoodFactory-MaximumObjectiveError   value="1.0e-10" />
   <MaximumLikelihoodFactory-MaximumConstraintError  value="1.0e-10" />
-  <MaximumLikelihoodFactory-Parallel                value="true" />
+
+  <!-- OT::MethodOfMomentsFactory parameters -->
+  <MethodOfMomentsFactory-MaximumEvaluationNumber value="1000"    />
+  <MethodOfMomentsFactory-MaximumAbsoluteError    value="1.0e-10" />
+  <MethodOfMomentsFactory-MaximumRelativeError    value="1.0e-10" />
+  <MethodOfMomentsFactory-MaximumObjectiveError   value="1.0e-10" />
+  <MethodOfMomentsFactory-MaximumConstraintError  value="1.0e-10" />
 
   <!-- OT::Student parameters -->
   <Student-MaximumNumberOfPoints          value="10000000" />
@@ -398,6 +404,11 @@
   <!-- OT::DistFunc parameters -->
   <DistFunc-Precision        value="1.0e-14" />
   <DistFunc-MaximumIteration value="5000"    />
+
+  <!-- OT::KFactor parameters -->
+  <KFactor-Precision                     value="1.0e-8" />
+  <KFactor-MaximumIteration              value="    32" />
+  <KFactor-DefaultIntegrationNodesNumber value="   256" />
 
   <!-- OT::RootStrategyImplementation parameters -->
   <RootStrategy-DefaultMaximumDistance value="8.0" />

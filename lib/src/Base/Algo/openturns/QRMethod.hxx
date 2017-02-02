@@ -2,7 +2,7 @@
 /**
  *  @brief QR-decomposition based LS solver
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -61,6 +61,11 @@ public:
   NumericalPoint solveNormal(const NumericalPoint & rhs);
 
   CovarianceMatrix getGramInverse() const;
+
+  NumericalPoint getGramInverseDiag() const;
+  NumericalPoint getHDiag() const;
+
+  NumericalScalar getGramInverseTrace() const;
 
   /** Update */
   void update(const Indices & addedIndices,

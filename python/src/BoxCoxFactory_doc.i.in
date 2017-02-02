@@ -208,7 +208,7 @@ Estimate the Box Cox transformation from a field:
 >>> scale=[0.2, 0.2]
 >>> myCovModel=ot.ExponentialModel(scale, amplitude)
 >>> myXproc=ot.TemporalNormalProcess(myCovModel, myMesh)
->>> g = ot.NumericalMathFunction(['x1'],  ['exp(x1)'])
+>>> g = ot.SymbolicFunction(['x1'],  ['exp(x1)'])
 >>> myDynTransform = ot.SpatialFunction(g, 2)
 >>> myXtProcess = ot.CompositeProcess(myDynTransform, myXproc)
 

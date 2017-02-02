@@ -2,7 +2,7 @@
 /**
  *  @brief The class building gaussian process regression
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -21,7 +21,7 @@
 
 #include "openturns/KrigingAlgorithm.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/LinearNumericalMathFunction.hxx"
+#include "openturns/LinearFunction.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/ProductCovarianceModel.hxx"
 #include "openturns/KrigingEvaluation.hxx"
@@ -31,6 +31,7 @@
 #include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
 #include "openturns/NonCenteredFiniteDifferenceGradient.hxx"
 #include "openturns/GeneralizedLinearModelResult.hxx"
+#include "openturns/ComposedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -211,7 +212,7 @@ void KrigingAlgorithm::run()
   metaModel.setHessian(new CenteredFiniteDifferenceHessian(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), metaModel.getEvaluation()));
   // First build the meta-model on the transformed data
   // Then add the transformation if needed
-  if (normalize_) metaModel = NumericalMathFunction(metaModel, glmResult.getTransformation());
+  if (normalize_) metaModel = ComposedFunction(metaModel, glmResult.getTransformation());
   // compute residual, relative error
   const NumericalPoint outputVariance(outputSample_.computeVariance());
   const NumericalSample mY(metaModel(inputSample_));
@@ -270,7 +271,18 @@ OptimizationSolver KrigingAlgorithm::getOptimizationSolver() const
 
 void KrigingAlgorithm::setOptimizationSolver(const OptimizationSolver & solver)
 {
-  return glmAlgo_.setOptimizationSolver(solver);
+  glmAlgo_.setOptimizationSolver(solver);
+}
+
+/* Accessor to optimization bounds */
+void KrigingAlgorithm::setOptimizationBounds(const Interval & optimizationBounds)
+{
+  glmAlgo_.setOptimizationBounds(optimizationBounds);
+}
+
+Interval KrigingAlgorithm::getOptimizationBounds() const
+{
+  return glmAlgo_.getOptimizationBounds();
 }
 
 /** Log-Likelihood function accessor */

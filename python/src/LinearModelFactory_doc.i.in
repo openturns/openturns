@@ -74,7 +74,7 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.Normal()
 >>> Xsample = distribution.getSample(30)
->>> func = ot.NumericalMathFunction('x', '2 * x + 1')
+>>> func = ot.SymbolicFunction(['x'], ['2 * x + 1'])
 >>> Ysample = func(Xsample) + ot.Normal().getSample(30)
 >>> LMF = ot.LinearModelFactory()
 >>> linearModel = LMF.build(Xsample, Ysample)

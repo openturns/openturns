@@ -2,7 +2,7 @@
 /**
  *  @brief A class which implements the FunctionalBasisProcess process
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -25,7 +25,7 @@
 #include "openturns/ResourceMap.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/Collection.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/SymbolicFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -37,7 +37,7 @@ static const Factory<FunctionalBasisProcess> Factory_FunctionalBasisProcess;
 FunctionalBasisProcess::FunctionalBasisProcess()
   : ProcessImplementation()
   , distribution_(Normal())
-  , basis_(Collection<NumericalMathFunction>(1, NumericalMathFunction("t", "t")))
+  , basis_(Collection<NumericalMathFunction>(1, SymbolicFunction("t", "t")))
   , state_(1, 0.0)
 {
   // Set the dimension of the process
@@ -170,7 +170,7 @@ FunctionalBasisProcess::Implementation FunctionalBasisProcess::getMarginal(const
 /* Get the marginal random vector corresponding to indices components */
 FunctionalBasisProcess::Implementation FunctionalBasisProcess::getMarginal(const Indices & indices) const
 {
-  if (!indices.check(getDimension() - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal process must be in the range [0, dim-1] and  must be different";
+  if (!indices.check(getDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal process must be in the range [0, dim-1] and must be different";
   // First the marginal distribution
   Distribution marginalDistribution(distribution_.getMarginal(indices));
   // Second the marginal basis

@@ -2,7 +2,7 @@
 /**
  *  @brief OpenTURNS wrapper to a library of special functions
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -167,6 +167,17 @@ public:
   //      static NumericalScalar rTruncatedNormal(const NumericalScalar a, const NumericalScalar b);
   // Compute the expectation of the min of n independent standard normal random variables
   static NumericalScalar eZ1(const UnsignedInteger n);
+
+  // K factor for exact two-sided tolerance intervals of normal pooled populations
+  static NumericalScalar kFactorPooled(const UnsignedInteger n,
+                                       const UnsignedInteger m,
+                                       const NumericalScalar p,
+                                       const NumericalScalar alpha);
+
+  // K factor for exact two-sided tolerance intervals of a normal population
+  static NumericalScalar kFactor(const UnsignedInteger n,
+                                 const NumericalScalar p,
+                                 const NumericalScalar alpha);
 
   // Asymptotic distribution of the DickeyFuller distribution
   static NumericalScalar pDickeyFullerTrend(const NumericalScalar x,

@@ -2,7 +2,7 @@
 /**
  *  @brief The Multinomial distribution
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -260,7 +260,7 @@ NumericalScalar Multinomial::computeCDF(const NumericalPoint & point) const
   // If the atoms with non zero probability sum to N
   if ((std::abs(sumP_ - 1.0) < supportEpsilon_) && (sumX == n_))
   {
-    NumericalScalar value = lgamma(n_ + 1);
+    NumericalScalar value = lgamma(n_ + 1.0);
     for (UnsignedInteger j = 0; j < dimension; ++j)
       value += point[j] * std::log(p_[j]) - lgamma(point[j] + 1.0);
     return std::exp(value);
@@ -413,7 +413,7 @@ Multinomial::Implementation Multinomial::getMarginal(const UnsignedInteger i) co
 Multinomial::Implementation Multinomial::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
-  if (!indices.check(dimension - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and  must be different";
+  if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";
   // Special case for dimension 1
   if (dimension == 1) return clone();
   // General case

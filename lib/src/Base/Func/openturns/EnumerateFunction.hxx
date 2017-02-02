@@ -2,7 +2,7 @@
 /**
  *  @brief The bijective function to select polynomials in the orthogonal basis
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -50,7 +50,7 @@ public:
   EnumerateFunction(Implementation & p_implementation);
 
   /** Parameter constructor */
-  EnumerateFunction(const UnsignedInteger dimension = 1);
+  explicit EnumerateFunction(const UnsignedInteger dimension = 1);
 
   /** Parameter constructor */
   EnumerateFunction(const UnsignedInteger dimension,

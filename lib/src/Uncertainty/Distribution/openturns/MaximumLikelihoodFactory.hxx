@@ -2,7 +2,7 @@
 /**
  *  @brief Maximum likelihood estimation
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -62,20 +62,41 @@ public:
   void setOptimizationSolver(const OptimizationSolver & solver);
   OptimizationSolver getOptimizationSolver() const;
 
-  void setOptimizationProblem(const OptimizationProblem & problem);
-  OptimizationProblem getOptimizationProblem() const;
+  /** Accessor to optimization bounds */
+  void setOptimizationBounds(const Interval & optimizationBounds);
+  Interval getOptimizationBounds() const;
 
-  void setParallel(const Bool parallel);
+  /** Accessor to inequality constraint */
+  void setOptimizationInequalityConstraint(const NumericalMathFunction & optimizationInequalityConstraint);
+
+  /** Accessor to known parameter */
+  void setKnownParameter(const NumericalPoint & values, const Indices & positions);
+  NumericalPoint getKnownParameterValues() const;
+  Indices getKnownParameterIndices() const;
+
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv);
+
 protected:
   /* The underlying distribution */
   Distribution distribution_;
 
   /* Solver & optimization problem for log-likelihood maximization */
   OptimizationSolver solver_;
-  OptimizationProblem problem_;
 
-  /* Flag to tell if the log-likelihood can be computed in parallel */
-  Bool isParallel_;
+  // Bounds used for parameter optimization
+  Interval optimizationBounds_;
+
+  // Inequality constraint used for parameter optimization
+  NumericalMathFunction optimizationInequalityConstraint_;
+
+  /* Known parameter */
+  NumericalPoint knownParameterValues_;
+  Indices knownParameterIndices_;
+
 }; /* class MaximumLikelihoodFactory */
 
 

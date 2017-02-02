@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements all random vectors
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -31,6 +31,8 @@
 #include "openturns/ConditionalRandomVector.hxx"
 #include "openturns/Less.hxx"
 #include "openturns/Greater.hxx"
+#include "openturns/SymbolicFunction.hxx"
+#include "openturns/ComposedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -132,7 +134,7 @@ RandomVector::RandomVector(const RandomVector & antecedent,
   Interval::BoolCollection finiteUpperBound(interval.getFiniteUpperBound());
   NumericalPoint lowerBound(interval.getLowerBound());
   NumericalPoint upperBound(interval.getUpperBound());
-  NumericalMathFunction testFunction(Description::BuildDefault(inputDimension, "x"), Description(1, "0.0"));
+  SymbolicFunction testFunction(Description::BuildDefault(inputDimension, "x"), Description(1, "0.0"));
 
   // easy case: 1d interval
   if (interval.getDimension() == 1)
@@ -148,8 +150,8 @@ RandomVector::RandomVector(const RandomVector & antecedent,
 
     if (finiteLowerBound[0] && finiteUpperBound[0])
     {
-      testFunction = NumericalMathFunction("x", OSS() << "min(x-(" << lowerBound[0] << "), (" << upperBound[0] << ") - x)");
-      RandomVector newVector(NumericalMathFunction(testFunction, antecedent.getFunction()), antecedent.getAntecedent());
+      testFunction = SymbolicFunction("x", OSS() << "min(x-(" << lowerBound[0] << "), (" << upperBound[0] << ") - x)");
+      RandomVector newVector(ComposedFunction(testFunction, antecedent.getFunction()), antecedent.getAntecedent());
       *this = RandomVector(newVector, Greater(), 0.0);
     }
     if (!finiteLowerBound[0] && !finiteUpperBound[0])
@@ -190,8 +192,8 @@ RandomVector::RandomVector(const RandomVector & antecedent,
           formula += "," + slacks[i];
         formula += ")";
       }
-      testFunction = NumericalMathFunction(inVars, Description(1, formula));
-      RandomVector newVector(NumericalMathFunction(testFunction, antecedent.getFunction()), antecedent.getAntecedent());
+      testFunction = SymbolicFunction(inVars, Description(1, formula));
+      RandomVector newVector(ComposedFunction(testFunction, antecedent.getFunction()), antecedent.getAntecedent());
       *this = RandomVector(newVector, Greater(), 0.0);
     }
   }

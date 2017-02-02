@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements all random vectors
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,6 +22,7 @@
 #include "openturns/Event.hxx"
 #include "openturns/CompositeRandomVector.hxx"
 #include "openturns/Less.hxx"
+#include "openturns/SymbolicFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,7 +32,7 @@ CLASSNAMEINIT(Event);
 
 /* Default constructor for save/load */
 Event::Event()
-  : RandomVector(CompositeRandomVector(NumericalMathFunction("x", "x"), RandomVector(NumericalPoint(1, 0.0))), Less(), 0.0)
+  : RandomVector(CompositeRandomVector(SymbolicFunction("x", "x"), RandomVector(NumericalPoint(1, 0.0))), Less(), 0.0)
 {
   // Nothing to do
 }

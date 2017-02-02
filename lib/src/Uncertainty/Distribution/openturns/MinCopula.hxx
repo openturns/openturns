@@ -2,7 +2,7 @@
 /**
  *  @brief A class that implements a min copula
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -39,7 +39,7 @@ class OT_API MinCopula
 public:
 
   /** Default constructor */
-  MinCopula(const UnsignedInteger dim = 1);
+  explicit MinCopula(const UnsignedInteger dim = 1);
 
   /** Comparison operator */
   Bool operator ==(const MinCopula & other) const;

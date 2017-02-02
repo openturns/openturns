@@ -2,7 +2,7 @@
 /**
  *  @brief ParametricEvaluationImplementation
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -54,7 +54,7 @@ ParametricEvaluationImplementation::ParametricEvaluationImplementation(const Num
   // Check if the given parameters positions are compatible with the input dimension of the function
   if (inputDimension < setDimension) throw InvalidArgumentException(HERE) << "Error: the size of the " << (parametersSet ? "parameters" : "input") << " positions=" << setDimension << " is greater than the input dimension=" << inputDimension << " of the function.";
   // Check if the given indices are valid
-  if (!set.check(inputDimension - 1)) throw InvalidArgumentException(HERE) << "Error: the given set of positions contain either duplicate positions or positions greater than the input dimension of the function.";
+  if (!set.check(inputDimension)) throw InvalidArgumentException(HERE) << "Error: the given set of positions contain either duplicate positions or positions greater than the input dimension of the function.";
   // Deduce the input position from the input dimension of the function and the parameters positions
   // Warning! the parameters positions can be in any order
   Indices fullIndices(inputDimension);

@@ -27,6 +27,7 @@ Optimization solvers
     SQP
     TNC
     NLopt
+    MultiStart
 
 Nearest point assessment
 ========================

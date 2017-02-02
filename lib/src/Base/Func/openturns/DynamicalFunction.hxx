@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements dynamical functions
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -47,11 +47,11 @@ public:
   /* Some typedefs for easy reading */
 
   /** Default constructor */
-  DynamicalFunction(const UnsignedInteger spatialDimension = 1);
+  explicit DynamicalFunction(const UnsignedInteger spatialDimension = 1);
 
   /** Constructor from NumericalMathFunction */
-  DynamicalFunction(const NumericalMathFunction & function,
-                    const UnsignedInteger spatialDimension = 1);
+  explicit DynamicalFunction(const NumericalMathFunction & function,
+                             const UnsignedInteger spatialDimension = 1);
 
   /** Constructor from DynamicalFunctionImplementation */
   DynamicalFunction(const DynamicalFunctionImplementation & implementation);

@@ -30,9 +30,8 @@ bounds = ot.Interval(ot.NumericalPoint(4, -3.0), ot.NumericalPoint(4, 5.0))
 algo = ot.TNC()
 algo.setStartingPoint(startingPoint)
 
-problem = ot.OptimizationProblem()
+problem = ot.OptimizationProblem(levelFunction)
 problem.setBounds(bounds)
-problem.setObjective(levelFunction)
 problem.setMinimization(True)
 
 algo.setProblem(problem)
@@ -69,9 +68,8 @@ startingPointNearMaximizationCorner[3] = 4.5
 bounds = ot.Interval(ot.NumericalPoint(4, -3.0), ot.NumericalPoint(4, 5.0))
 
 algo = ot.TNC()
-problem = ot.OptimizationProblem()
+problem = ot.OptimizationProblem(levelFunction)
 problem.setBounds(bounds)
-problem.setObjective(levelFunction)
 
 problem.setMinimization(True)
 algo.setProblem(problem)

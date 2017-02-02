@@ -2,7 +2,7 @@
 /**
  *  @brief Meshing algorithm for levelSets
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,11 +24,12 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/OptimizationProblem.hxx"
-#include "openturns/LinearNumericalMathFunction.hxx"
+#include "openturns/LinearFunction.hxx"
 #include "openturns/AbdoRackwitz.hxx"
 #include "openturns/Cobyla.hxx"
 #include "openturns/CenteredFiniteDifferenceGradient.hxx"
 #include "openturns/NLopt.hxx"
+#include "openturns/ComposedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -151,7 +152,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
       linear(i, i) = 1.0;
       linear(i, dimension + i) = 1.0;
     }
-    LinearNumericalMathFunction shiftFunctionBase(NumericalPoint(2 * dimension), NumericalPoint(dimension), linear);
+    LinearFunction shiftFunctionBase(NumericalPoint(2 * dimension), NumericalPoint(dimension), linear);
     Indices parameters(dimension);
     parameters.fill();
     shiftFunction = NumericalMathFunction(shiftFunctionBase, parameters, NumericalPoint(dimension));
@@ -218,7 +219,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
               // Project the vertices not in the level set on the boundary of the level set
               // Build the optimization problem argmin ||x - x_0||^2 such that level - f(x) >= 0, where x_0 is the current vertex
               shiftFunction.setParameter(currentVertex);
-              NumericalMathFunction levelFunction(function, shiftFunction);
+              ComposedFunction levelFunction(function, shiftFunction);
               problem.setLevelFunction(levelFunction);
               solver_.setStartingPoint(delta);
 	      OptimizationResult result;

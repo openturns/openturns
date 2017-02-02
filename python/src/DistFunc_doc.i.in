@@ -49,3 +49,99 @@ Examples
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
 >>> r = ot.DistFunc.rNormal()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::kFactorPooled
+"Exact margin factor for bilateral covering interval of pooled Normal populations.
+
+Parameters
+----------
+n : int
+    The size of the population
+
+m : int
+    The size of the pool
+
+p : float :math:`0<p<1`
+    The probability level of the covering interval
+
+alpha : float :math:`0<\alpha<1`
+    The confidence level of the covering interval
+
+Returns
+-------
+k : float
+    The margin factor
+
+Notes
+-----
+This method allows to compute the *exact* margin factor :math:`k` of a
+pool of :math:`m` Normal populations of size :math:`n` with unknown
+means :math:`\mu_i` and unknown common variance :math:`\sigma^2`.
+Let :math:`m_i=\dfrac{1}{n}\sum_{j=1}^nX_{ij}` be the empirical mean
+of the ith population :math:`(X_{i1},\dots,X_{in})` and
+:math:`\sigma^2_{mn}=\dfrac{}{}\sum_{i=1}^m\sum_{j=1}^n(X_{ij}-m_i)^2`
+the empirical *pooled* variance. The covering factor :math:`k` is such
+that the intervals :math:`[m_i-k\sigma_{mn},m_i+k\sigma_{mn}]` satisfy:
+
+.. math::
+    \Prob{\Prob{X_i\in[m_i-k\sigma_{mn},m_i+k\sigma_{mn}]}\geq p}=\alpha
+
+for :math:`i\in\{1,\dots,m\}`. It reduces to find :math:`k` such that:
+
+.. math::
+    \int_{\Rset}F(x,k;\nu_{m,n},p)\phi_{0,1/\sqrt{n}}(x)\,\di x = \alpha
+
+where :math:`phi_{0,1/\sqrt{n}}` is the density function of the normal
+distribution with a mean equals to 0 and a variance equals to
+:math:`1/n`, :math:`\nu_{m,n}=m(n-1)` and :math:`F(x,k;\nu_{m,n},p)`
+the function defined by:
+
+.. math::
+    F(x,k;\nu_{m,n},p)=\bar{F}_{\chi^2_{\nu_{m,n}}}(\nu_{m,n} R^2(x;p)/k^2)
+
+where :math:`\bar{F}_{\chi^2_{\nu_{m,n}}}` is the complementary distribution
+function of a chi-square distribution with :math:`\nu_{m,n}` degrees
+of freedom and :math:`R(x;p)` the solution of:
+
+.. math::
+    \Phi(x + R) - \Phi(x - R) = p
+    
+Examples
+--------
+>>> import openturns as ot
+>>> k = ot.DistFunc.kFactorPooled(5, 3, 0.95, 0.9)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::kFactor
+"Exact margin factor for bilateral covering interval of a Normal population.
+
+Parameters
+----------
+n : int
+    The size of the population
+
+p : float :math:`0<p<1`
+    The probability level of the covering interval
+
+alpha : float :math:`0<\alpha<1`
+    The confidence level of the covering interval
+
+Returns
+-------
+k : float
+    The margin factor
+
+Notes
+-----
+This method allows to compute the *exact* margin factor :math:`k` of a
+Normal population of size :math:`n` with unknown
+means :math:`\mu_i` and unknown common variance :math:`\sigma^2`. It
+is equivalent to the pooled version with :math:`m=1`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> k = ot.DistFunc.kFactor(5, 0.95, 0.9)"

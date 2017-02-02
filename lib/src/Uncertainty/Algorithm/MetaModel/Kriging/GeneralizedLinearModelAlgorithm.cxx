@@ -2,7 +2,7 @@
 /**
  *  @brief The class builds generalized linear models
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -26,12 +26,14 @@
 #include "openturns/TensorizedCovarianceModel.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/LinearNumericalMathFunction.hxx"
+#include "openturns/LinearFunction.hxx"
 #include "openturns/CenteredFiniteDifferenceHessian.hxx"
 #include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
 #include "openturns/NonCenteredFiniteDifferenceGradient.hxx"
 #include "openturns/TNC.hxx"
 #include "openturns/NLopt.hxx"
+#include "openturns/SymbolicFunction.hxx"
+#include "openturns/ComposedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -109,7 +111,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const Numerica
       if (std::abs(stdev[j]) > SpecFunc::MinNumericalScalar) linear(j, j) /= stdev[j];
     }
     const NumericalPoint zero(dimension);
-    setInputTransformation(LinearNumericalMathFunction(mean, zero, linear));
+    setInputTransformation(LinearFunction(mean, zero, linear));
   }
   initializeMethod();
   initializeDefaultOptimizationSolver();
@@ -171,7 +173,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const Numerica
       if (std::abs(stdev[j]) > SpecFunc::NumericalScalarEpsilon) linear(j, j) /= stdev[j];
     }
     const NumericalPoint zero(dimension);
-    setInputTransformation(LinearNumericalMathFunction(mean, zero, linear));
+    setInputTransformation(LinearFunction(mean, zero, linear));
   }
   initializeMethod();
   initializeDefaultOptimizationSolver();
@@ -275,7 +277,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm (const Numerica
       if (std::abs(stdev[j]) > SpecFunc::MinNumericalScalar) linear(j, j) /= stdev[j];
     }
     const NumericalPoint zero(dimension);
-    setInputTransformation(LinearNumericalMathFunction(mean, zero, linear));
+    setInputTransformation(LinearFunction(mean, zero, linear));
   }
   initializeMethod();
   initializeDefaultOptimizationSolver();
@@ -426,16 +428,12 @@ void GeneralizedLinearModelAlgorithm::initializeDefaultOptimizationSolver()
     solver_ = NLopt("LD_LBFGS");
   else
     throw InvalidArgumentException(HERE) << "Unknown optimization solver:" << solverName;
-  // Define Optimization Problem
-  // Default problem takes into account the bounds and thus determine the dimension
-  OptimizationProblem problem;
+
   // Bounds should be of size spatialDimension + dimension
-  const UnsignedInteger optimizationProblemSize = covarianceModel_.getParameter().getSize();
-  const NumericalPoint lowerBound(optimizationProblemSize, ResourceMap::GetAsNumericalScalar( "GeneralizedLinearModelAlgorithm-DefaultOptimizationLowerBound"));
-  const NumericalPoint upperBound(optimizationProblemSize, ResourceMap::GetAsNumericalScalar( "GeneralizedLinearModelAlgorithm-DefaultOptimizationUpperBound"));
-  const Interval bounds(lowerBound, upperBound);
-  problem.setBounds(bounds);
-  solver_.setProblem(problem);
+  const UnsignedInteger optimizationDimension = covarianceModel_.getParameter().getSize();
+  const NumericalPoint lowerBound(optimizationDimension, ResourceMap::GetAsNumericalScalar( "GeneralizedLinearModelAlgorithm-DefaultOptimizationLowerBound"));
+  const NumericalPoint upperBound(optimizationDimension, ResourceMap::GetAsNumericalScalar( "GeneralizedLinearModelAlgorithm-DefaultOptimizationUpperBound"));
+  optimizationBounds_ = Interval(lowerBound, upperBound);
 }
 
 /* Virtual constructor */
@@ -553,14 +551,14 @@ void GeneralizedLinearModelAlgorithm::run()
   {
     // If no basis ==> zero function
 #ifdef OPENTURNS_HAVE_MUPARSER
-    metaModel = NumericalMathFunction(Description::BuildDefault(covarianceModel_.getSpatialDimension(), "x"), Description(covarianceModel_.getDimension(), "0.0"));
+    metaModel = SymbolicFunction(Description::BuildDefault(covarianceModel_.getSpatialDimension(), "x"), Description(covarianceModel_.getDimension(), "0.0"));
 #else
     metaModel = NumericalMathFunction(NumericalSample(1, covarianceModel_.getSpatialDimension()), NumericalSample(1, covarianceModel_.getDimension()));
 #endif
   }
 
   // Add transformation if needed
-  if (normalize_) metaModel = NumericalMathFunction(metaModel, inputTransformation_);
+  if (normalize_) metaModel = ComposedFunction(metaModel, inputTransformation_);
 
   // compute residual, relative error
   const NumericalPoint outputVariance(outputSample_.computeVariance());
@@ -784,9 +782,10 @@ NumericalPoint GeneralizedLinearModelAlgorithm::optimizeLogLikelihood()
   if (!optimizeParameters_) return initialParameters;
 
   // Define Optimization problem
-  OptimizationProblem problem(solver_.getProblem());
+  OptimizationProblem problem;
   problem.setObjective(logLikelihoodFunction);
   problem.setMinimization(false);
+  problem.setBounds(optimizationBounds_);
   solver_.setStartingPoint(initialParameters);
   solver_.setProblem(problem);
   solver_.run();
@@ -808,19 +807,10 @@ OptimizationSolver GeneralizedLinearModelAlgorithm::getOptimizationSolver() cons
 {
   return solver_;
 }
+
 void GeneralizedLinearModelAlgorithm::setOptimizationSolver(const OptimizationSolver & solver)
 {
-  const Interval bounds(solver.getProblem().getBounds());
-  const UnsignedInteger optimizationProblemSize = covarianceModel_.getParameter().getSize();
-  OptimizationProblem problem;
-  if (bounds.getDimension() != optimizationProblemSize)
-  {
-    problem = solver_.getProblem();
-    solver_ = solver;
-    solver_.setProblem(problem);
-  }
-  else
-    solver_ = solver;
+  solver_ = solver;
   hasRun_ = false;
 }
 
@@ -841,7 +831,7 @@ NumericalMathFunction GeneralizedLinearModelAlgorithm::getInputTransformation() 
   if (!normalize_)
   {
     const UnsignedInteger dimension = inputSample_.getDimension();
-    return LinearNumericalMathFunction(NumericalPoint(dimension), NumericalPoint(dimension), IdentityMatrix(dimension));
+    return LinearFunction(NumericalPoint(dimension), NumericalPoint(dimension), IdentityMatrix(dimension));
   }
   return inputTransformation_;
 }
@@ -863,6 +853,16 @@ void GeneralizedLinearModelAlgorithm::setOptimizeParameters(const Bool optimizeP
   }
 }
 
+/* Accessor to optimization bounds */
+void GeneralizedLinearModelAlgorithm::setOptimizationBounds(const Interval & optimizationBounds)
+{
+  optimizationBounds_ = optimizationBounds;
+}
+
+Interval GeneralizedLinearModelAlgorithm::getOptimizationBounds() const
+{
+  return optimizationBounds_;
+}
 
 /* Observation noise accessor */
 void GeneralizedLinearModelAlgorithm::setNoise(const NumericalPoint & noise)
@@ -957,6 +957,7 @@ void GeneralizedLinearModelAlgorithm::save(Advocate & adv) const
   adv.saveAttribute( "outputSample_", outputSample_ );
   adv.saveAttribute( "covarianceModel_", covarianceModel_ );
   adv.saveAttribute( "solver_", solver_ );
+  adv.saveAttribute( "optimizationBounds_", optimizationBounds_ );
   adv.saveAttribute( "basis_", basis_ );
   adv.saveAttribute( "result_", result_ );
   adv.saveAttribute( "method", method_ );
@@ -977,6 +978,7 @@ void GeneralizedLinearModelAlgorithm::load(Advocate & adv)
   adv.loadAttribute( "outputSample_", outputSample_ );
   adv.loadAttribute( "covarianceModel_", covarianceModel_ );
   adv.loadAttribute( "solver_", solver_ );
+  adv.loadAttribute( "optimizationBounds_", optimizationBounds_ );
   adv.loadAttribute( "basis_", basis_ );
   adv.loadAttribute( "result_", result_ );
   adv.loadAttribute( "method", method_ );

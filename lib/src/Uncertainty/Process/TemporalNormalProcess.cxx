@@ -2,7 +2,7 @@
 /**
  *  @brief A class which implements the TemporalNormalProcess process
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -29,6 +29,7 @@
 #include "openturns/KPermutationsDistribution.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/HMatrixFactory.hxx"
+#include "openturns/SymbolicFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -49,7 +50,7 @@ TemporalNormalProcess::TemporalNormalProcess()
   , samplingMethod_(0)
 {
 #ifdef OPENTURNS_HAVE_MUPARSER
-  trend_ = TrendTransform(NumericalMathFunction(Description::BuildDefault(covarianceModel_.getSpatialDimension(), "x"), Description(getDimension(), "0.0")));
+  trend_ = TrendTransform(SymbolicFunction(Description::BuildDefault(covarianceModel_.getSpatialDimension(), "x"), Description(getDimension(), "0.0")));
 #else
   trend_ = TrendTransform(NumericalMathFunction(NumericalSample(1, covarianceModel_.getSpatialDimension()), NumericalSample(1, getDimension())));
 #endif
@@ -117,7 +118,7 @@ TemporalNormalProcess::TemporalNormalProcess(const SecondOrderModel & model,
   setMesh(mesh);
   setDimension(model.getDimension());
 #ifdef OPENTURNS_HAVE_MUPARSER
-  trend_ = TrendTransform(NumericalMathFunction(Description::BuildDefault(getSpatialDimension(), "x"), Description(getDimension(), "0.0")));
+  trend_ = TrendTransform(SymbolicFunction(Description::BuildDefault(getSpatialDimension(), "x"), Description(getDimension(), "0.0")));
 #else
   trend_ = TrendTransform(NumericalMathFunction(NumericalSample(1, getSpatialDimension()), NumericalSample(1, getDimension())));
 #endif
@@ -141,7 +142,7 @@ TemporalNormalProcess::TemporalNormalProcess(const CovarianceModel & covarianceM
   setMesh(mesh);
   setDimension(covarianceModel.getDimension());
 #ifdef OPENTURNS_HAVE_MUPARSER
-  trend_ = TrendTransform(NumericalMathFunction(Description::BuildDefault(getSpatialDimension(), "x"), Description(getDimension(), "0.0")));
+  trend_ = TrendTransform(SymbolicFunction(Description::BuildDefault(getSpatialDimension(), "x"), Description(getDimension(), "0.0")));
 #else
   trend_ = TrendTransform(NumericalMathFunction(NumericalSample(1, getSpatialDimension()), NumericalSample(1, getDimension())));
 #endif

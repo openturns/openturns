@@ -3,8 +3,8 @@ from math import exp
 from matplotlib import pyplot as plt
 from openturns.viewer import View
 
-f1 = ot.NumericalMathFunction(['t'], ['sin(t)'])
-f2 = ot.NumericalMathFunction(['t'], ['cos(t)*cos(t)'])
+f1 = ot.SymbolicFunction(['t'], ['sin(t)'])
+f2 = ot.SymbolicFunction(['t'], ['cos(t)*cos(t)'])
 myBasis = ot.Basis([f1, f2])
 coefDis = ot.Normal([2] * 2, [5] * 2, ot.CorrelationMatrix(2))
 myTG = ot.RegularGrid(0.0, 0.1, 250)

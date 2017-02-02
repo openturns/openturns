@@ -2,7 +2,7 @@
 /**
  *  @brief A class which implements the CompositeProcess process
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,6 +23,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/WhiteNoise.hxx"
+#include "openturns/SymbolicFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -32,7 +33,7 @@ static const Factory<CompositeProcess> Factory_CompositeProcess;
 
 CompositeProcess::CompositeProcess()
   : ProcessImplementation()
-  , function_(NumericalMathFunction("x", "x^2"))
+  , function_(SymbolicFunction("x", "x^2"))
   , p_antecedent_(WhiteNoise().clone())
 {
   // Set the mesh

@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Trapezoidal for standard methods
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -30,8 +30,6 @@ int main(int argc, char *argv[])
   OStream fullprint(std::cout);
   setRandomGenerator();
 
-  ResourceMap::SetAsBool("MaximumLikelihoodFactory-Parallel", false);
-  TBB::Disable();
   try
   {
     Trapezoidal distribution( 1.0, 2.3, 4.5, 5.0 );

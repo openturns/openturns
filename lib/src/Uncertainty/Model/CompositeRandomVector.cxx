@@ -2,7 +2,7 @@
 /**
  *  @brief An implementation class for Composite random vectors
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -140,7 +140,7 @@ CompositeRandomVector::Implementation CompositeRandomVector::getMarginal(const U
 /* Get the marginal random vector corresponding to indices components */
 CompositeRandomVector::Implementation CompositeRandomVector::getMarginal(const Indices & indices) const
 {
-  if (!indices.check(getDimension() - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal random vector must be in the range [0, dim-1] and  must be different";
+  if (!indices.check(getDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal random vector must be in the range [0, dim-1] and must be different";
   return new CompositeRandomVector(function_.getMarginal(indices), p_antecedent_);
 }
 

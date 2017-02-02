@@ -3,7 +3,7 @@
  *  @brief This class implements the multivariate distribution based on a
  *         bipartite graph and a collection of distributions
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -257,7 +257,7 @@ CumulativeDistributionNetwork::Implementation CumulativeDistributionNetwork::get
   LOGINFO(OSS() << "in getMarginal(" << indices << "), contributors=" << distributionCollection_ << ", graph=" << graph_);
   if (indices.getSize() == 1) return getMarginal(indices[0]);
   const UnsignedInteger dimension = getDimension();
-  if (!indices.check(dimension - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and  must be different";
+  if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";
   return DistributionImplementation::getMarginal(indices);
   /*
   // General case

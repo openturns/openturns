@@ -4,7 +4,7 @@ from openturns.viewer import View
 
 
 distX = ot.Normal(0.0, 10.0)
-myFunc = ot.NumericalMathFunction('x', 'x+sin(x)')
+myFunc = ot.SymbolicFunction(['x'], ['x+sin(x)'])
 distFin = ot.CompositeDistribution(myFunc, distX)
 
 graphPDF = distFin.drawPDF(1024)

@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Text for standard methods
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -32,7 +32,6 @@ int main(int argc, char *argv[])
 
   try
   {
-
     // Instanciate one distribution object
     UnsignedInteger dim = 2;
     NumericalPoint meanPoint(dim, 1.0);
@@ -54,11 +53,6 @@ int main(int argc, char *argv[])
 
     // Create an empty graph
     Graph myGraph("Normal sample", "x1", "x2", true, "topright");
-
-    Cloud myCloud(sample, "blue", "circle", "Cloud");
-    // Add it to the graph and draw everything
-    myGraph.add(myCloud);
-
     // Display extrema indices
     NumericalScalar x1min(sample[0][0]);
     NumericalScalar x1max(x1min);
@@ -90,7 +84,7 @@ int main(int argc, char *argv[])
         idx[3] = i;
       }
     }
-    Description labels(sample.getSize());
+    Description labels(sample.getSize(), ".");
     for (UnsignedInteger i = 0; i < 4; ++i)
     {
       labels[idx[i]] = (OSS() << idx[i]);

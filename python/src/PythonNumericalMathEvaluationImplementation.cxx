@@ -2,7 +2,7 @@
 /**
  * @brief PythonNumericalMathEvaluationImplementation implementation
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -188,7 +188,7 @@ NumericalPoint PythonNumericalMathEvaluationImplementation::operator() (const Nu
     {
       outP = convert< _PySequence_, NumericalPoint >(result.get());
     }
-    catch (const InvalidArgumentException & ex)
+    catch (InvalidArgumentException &)
     {
       throw InvalidArgumentException(HERE) << "Output value for " << getName() << "._exec() method is not a sequence object (list, tuple, NumericalPoint, etc.)";
     }
@@ -372,63 +372,6 @@ UnsignedInteger PythonNumericalMathEvaluationImplementation::getOutputDimension(
                                const_cast<char *>("()")));
   UnsignedInteger dim = convert< _PyInt_, UnsignedInteger >(result.get());
   return dim;
-}
-
-
-void PythonNumericalMathEvaluationImplementation::setParameter(const NumericalPoint & parameter)
-{
-  ScopedPyObjectPointer methodName(convert< String, _PyString_>("setParameter"));
-  ScopedPyObjectPointer probArg(convert< NumericalPoint, _PySequence_ >(parameter));
-  ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
-                                   methodName.get(),
-                                   probArg.get(), NULL));
-  if (callResult.isNull())
-  {
-    handleException();
-  }
-}
-
-
-/* Parameters value accessor */
-NumericalPoint PythonNumericalMathEvaluationImplementation::getParameter() const
-{
-  ScopedPyObjectPointer callResult(PyObject_CallMethod(pyObj_,
-                                   const_cast<char *>("getParameter"),
-                                   const_cast<char *>("()")));
-  if (callResult.isNull())
-  {
-    handleException();
-  }
-  NumericalPoint result(convert< _PySequence_, NumericalPoint >(callResult.get()));
-  return result;
-}
-
-
-void PythonNumericalMathEvaluationImplementation::setParameterDescription(const Description & description)
-{
-  ScopedPyObjectPointer methodName(convert< String, _PyString_>("setParameterDescription"));
-  ScopedPyObjectPointer probArg(convert< Description, _PySequence_ >(description));
-  ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
-                                   methodName.get(),
-                                   probArg.get(), NULL));
-  if (callResult.isNull())
-  {
-    handleException();
-  }
-}
-
-/* Parameters description accessor */
-Description PythonNumericalMathEvaluationImplementation::getParameterDescription() const
-{
-  ScopedPyObjectPointer callResult(PyObject_CallMethod(pyObj_,
-                                   const_cast<char *>("getParameterDescription"),
-                                   const_cast<char *>("()")));
-  if (callResult.isNull())
-  {
-    handleException();
-  }
-  Description result(convert< _PySequence_, Description >(callResult.get()));
-  return result;
 }
 
 

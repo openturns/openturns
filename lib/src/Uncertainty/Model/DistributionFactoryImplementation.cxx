@@ -2,7 +2,7 @@
 /**
  *  @brief Top-level class for all distribution factories
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -91,6 +91,12 @@ DistributionFactoryResult DistributionFactoryImplementation::buildEstimator(cons
 DistributionFactoryResult DistributionFactoryImplementation::buildEstimator(const NumericalSample & sample,
     const DistributionParameters & parameters) const
 {
+  String parametersDistributionName(parameters.getDistribution().getImplementation()->getClassName());
+  String referenceDistributionName(build().getImplementation()->getClassName());
+  if (parametersDistributionName != referenceDistributionName)
+    throw InvalidArgumentException(HERE) << "Cannot use a " << parametersDistributionName
+                                         <<" parametrization to build a " << referenceDistributionName;
+
   DistributionFactoryResult nativeResult(buildEstimator(sample));
   Distribution nativeDistribution(nativeResult.getDistribution());
   DistributionParameters parameters2(parameters);
@@ -191,24 +197,6 @@ DistributionFactoryResult DistributionFactoryImplementation::buildMaximumLikelih
   return result;
 }
 
-void DistributionFactoryImplementation::setKnownParameter(const NumericalPoint & values,
-    const Indices & indices)
-{
-  if (knownParameterValues_.getSize() != knownParameterIndices_.getSize()) throw InvalidArgumentException(HERE);
-  knownParameterValues_ = values;
-  knownParameterIndices_ = indices;
-}
-
-Indices DistributionFactoryImplementation::getKnownParameterIndices() const
-{
-  return knownParameterIndices_;
-}
-
-NumericalPoint DistributionFactoryImplementation::getKnownParameterValues() const
-{
-  return knownParameterValues_;
-}
-
 /* Bootstrap size accessor */
 UnsignedInteger DistributionFactoryImplementation::getBootstrapSize() const
 {
@@ -227,8 +215,6 @@ void DistributionFactoryImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute("bootstrapSize_", bootstrapSize_);
-  adv.saveAttribute("knownParameterValues_", knownParameterValues_);
-  adv.saveAttribute("knownParameterIndices_", knownParameterIndices_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -236,8 +222,6 @@ void DistributionFactoryImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute("bootstrapSize_", bootstrapSize_);
-  adv.loadAttribute("knownParameterValues_", knownParameterValues_);
-  adv.loadAttribute("knownParameterIndices_", knownParameterIndices_);
 }
 
 END_NAMESPACE_OPENTURNS

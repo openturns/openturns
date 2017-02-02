@@ -2,7 +2,7 @@
 /**
  *  @brief The external header file of OpenTURNS for subdir Func
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,6 +22,7 @@
 #ifndef OPENTURNS_OTFUNC_HXX
 #define OPENTURNS_OTFUNC_HXX
 
+#include "openturns/AggregatedFunction.hxx"
 #include "openturns/AggregatedNumericalMathEvaluationImplementation.hxx"
 #include "openturns/AggregatedNumericalMathGradientImplementation.hxx"
 #include "openturns/AggregatedNumericalMathHessianImplementation.hxx"
@@ -35,13 +36,15 @@
 #include "openturns/BasisSequenceImplementation.hxx"
 #include "openturns/BasisSequenceFactory.hxx"
 #include "openturns/BasisSequenceFactoryImplementation.hxx"
+#include "openturns/ComposedFunction.hxx"
 #include "openturns/ComposedNumericalMathEvaluationImplementation.hxx"
-#include "openturns/ComposedNumericalMathFunction.hxx"
 #include "openturns/ComposedNumericalMathGradientImplementation.hxx"
 #include "openturns/ComposedNumericalMathHessianImplementation.hxx"
 #include "openturns/ConstantNumericalMathGradientImplementation.hxx"
 #include "openturns/ConstantNumericalMathHessianImplementation.hxx"
+#include "openturns/DatabaseFunction.hxx"
 #include "openturns/DatabaseNumericalMathEvaluationImplementation.hxx"
+#include "openturns/DualLinearCombinationFunction.hxx"
 #include "openturns/DualLinearCombinationEvaluationImplementation.hxx"
 #include "openturns/DualLinearCombinationGradientImplementation.hxx"
 #include "openturns/DualLinearCombinationHessianImplementation.hxx"
@@ -49,6 +52,7 @@
 #include "openturns/DynamicalFunctionImplementation.hxx"
 #include "openturns/EnumerateFunction.hxx"
 #include "openturns/EnumerateFunctionImplementation.hxx"
+#include "openturns/LinearCombinationFunction.hxx"
 #include "openturns/LinearEnumerateFunction.hxx"
 #include "openturns/HyperbolicAnisotropicEnumerateFunction.hxx"
 #include "openturns/ExpertMixture.hxx"
@@ -58,10 +62,10 @@
 #include "openturns/LinearCombinationGradientImplementation.hxx"
 #include "openturns/LinearCombinationHessianImplementation.hxx"
 #include "openturns/LinearNumericalMathEvaluationImplementation.hxx"
-#include "openturns/LinearNumericalMathFunction.hxx"
+#include "openturns/LinearFunction.hxx"
 #include "openturns/IdentityEvaluation.hxx"
 #include "openturns/IdentityFunction.hxx"
-#include "openturns/QuadraticNumericalMathFunction.hxx"
+#include "openturns/QuadraticFunction.hxx"
 #include "openturns/LinearNumericalMathGradientImplementation.hxx"
 #include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
 #include "openturns/NoNumericalMathEvaluationImplementation.hxx"
@@ -72,6 +76,7 @@
 #include "openturns/NumericalMathFunctionImplementation.hxx"
 #include "openturns/NumericalMathGradientImplementation.hxx"
 #include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/ParametricFunction.hxx"
 #include "openturns/ParametricEvaluationImplementation.hxx"
 #include "openturns/ParametricGradientImplementation.hxx"
 #include "openturns/ParametricHessianImplementation.hxx"
@@ -87,6 +92,7 @@
 #include "openturns/ProductPolynomialHessianImplementation.hxx"
 #include "openturns/QuadraticNumericalMathEvaluationImplementation.hxx"
 #include "openturns/SpatialFunction.hxx"
+#include "openturns/SymbolicFunction.hxx"
 #include "openturns/TemporalFunction.hxx"
 #include "openturns/UniVariatePolynomial.hxx"
 #include "openturns/UniVariatePolynomialImplementation.hxx"

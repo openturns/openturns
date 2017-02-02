@@ -2,7 +2,7 @@
 /**
  *  @brief The CompositeDistribution distribution
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -29,6 +29,7 @@
 #include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
 #include "openturns/Brent.hxx"
 #include "openturns/SobolSequence.hxx"
+#include "openturns/SymbolicFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -39,7 +40,7 @@ static const Factory<CompositeDistribution> Factory_CompositeDistribution;
 /* Default constructor */
 CompositeDistribution::CompositeDistribution()
   : DistributionImplementation()
-  , function_(NumericalMathFunction("x", "x"))
+  , function_(SymbolicFunction("x", "x"))
   , antecedent_(Uniform(0.0, 1.0))
   , bounds_(0)
   , values_(0)

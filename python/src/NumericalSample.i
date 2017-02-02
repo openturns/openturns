@@ -20,7 +20,7 @@
     try {
       temp = OT::convert<OT::_PySequence_,OT::NumericalSample>( $input );
       $1 = &temp;
-    } catch (OT::InvalidArgumentException & ex) {
+    } catch (OT::InvalidArgumentException &) {
       SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a NumericalSample");
     }
   }
@@ -413,11 +413,13 @@ NumericalSample(PyObject * pyObj, UnsignedInteger dimension)
 
 Bool __eq__(const NumericalSample & other) { return (*self) == other; }
 
+#if SWIG_VERSION < 0x030011
 NumericalSample __truediv__(const NumericalScalar & u) { return (*self) / u; }
 
 NumericalSample __truediv__(const NumericalPoint & v) { return (*self) / v; }
 
 NumericalSample __truediv__(const SquareMatrix & m) { return (*self) / m; }
+#endif
 
 } // %extend
 } // namespace OT

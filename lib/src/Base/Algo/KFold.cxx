@@ -2,7 +2,7 @@
 /**
  *  @brief K-Fold cross validation
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -77,7 +77,6 @@ NumericalScalar KFold::run(LeastSquaresMethod & method) const
   const NumericalSample y(method.getOutputSample());
   const Basis basis(method.getBasis());
 
-  const UnsignedInteger dimension = x.getDimension();
   const UnsignedInteger sampleSize = x.getSize();
   const NumericalScalar variance = y.computeVariance()[0];
 
@@ -99,14 +98,14 @@ NumericalScalar KFold::run(LeastSquaresMethod & method) const
   {
     LOGINFO(OSS() << "Sub-sample " << i << " over " << k_ - 1);
     // build training/test samples
-    NumericalSample xTest(0, dimension);
-    NumericalSample yTest(0, 1);
+    NumericalPoint yTest(0);
     NumericalPoint rhs(0);
     Indices addedIndices(0);
     Indices conservedIndices(0);
     Indices removedIndices(0);
     Indices rowFilter(0);
-    for ( UnsignedInteger j = 0; j < ( k_ * testSize ); ++ j )
+    Indices inverseRowFilter(0);
+    for (UnsignedInteger j = 0; j < (k_ * testSize); ++ j)
     {
       const UnsignedInteger jModK = j % k_;
       // If j is in the learning database
@@ -123,8 +122,8 @@ NumericalScalar KFold::run(LeastSquaresMethod & method) const
       {
         // If it is not the first pass, the test points were in the learning database at the previous pass
         if (i > 0) removedIndices.add(j);
-        xTest.add(x[j]);
-        yTest.add(y[j]);
+        yTest.add(y[j][0]);
+        inverseRowFilter.add(j);
       }
     } // Partitioning loop
 
@@ -133,13 +132,14 @@ NumericalScalar KFold::run(LeastSquaresMethod & method) const
     method.getImplementation()->proxy_.setRowFilter(rowFilter);
     method.update(addedIndices, conservedIndices, removedIndices, true);
     const NumericalPoint coefficients(method.solve(rhs));
+    // evaluate on the test sample
+    method.getImplementation()->proxy_.setRowFilter(inverseRowFilter);
+    const Matrix psiAk(method.computeWeightedDesign());
+    const NumericalPoint yHatTest(psiAk * coefficients);
     LOGINFO("Compute the residual");
 
-    // evaluate on the test sample
-    const NumericalMathFunction metamodel(basis.getSubBasis(method.getImplementation()->currentIndices_), coefficients);
-    const NumericalSample yHatTest(metamodel(xTest));
     // The empirical error is the normalized L2 error
-    quadraticResidual += (yTest - yHatTest).computeRawMoment(2)[0];
+    quadraticResidual += (yTest - yHatTest).normSquare() / yTest.getSize();
 
     LOGINFO(OSS() << "Cumulated residual=" << quadraticResidual);
   }

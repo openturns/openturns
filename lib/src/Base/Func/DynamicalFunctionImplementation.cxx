@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all dynamical function implementations
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -80,7 +80,7 @@ DynamicalFunctionImplementation::Implementation DynamicalFunctionImplementation:
 /* Get the function corresponding to indices components */
 DynamicalFunctionImplementation::Implementation DynamicalFunctionImplementation::getMarginal(const Indices & indices) const
 {
-  if (!indices.check(getOutputDimension() - 1)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and  must be different";
+  if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and must be different";
   throw NotYetImplementedException(HERE) << "In DynamicalFunctionImplementation::getMarginal(const Indices & indices) const";
 }
 

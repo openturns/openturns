@@ -71,7 +71,7 @@ Examples
 An event created from a limit state function:
 
 >>> import openturns as ot
->>> myFunction = ot.NumericalMathFunction(['E', 'F', 'L', 'I'], ['d'], ['-F*L^3/(3*E*I)'])
+>>> myFunction = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['-F*L^3/(3*E*I)'])
 >>> myDistribution = ot.Normal([50.0, 1.0, 10.0, 5.0], [1.0]*4, ot.IdentityMatrix(4))
 >>> vect = ot.RandomVector(myDistribution)
 >>> output = ot.RandomVector(myFunction, vect)
@@ -80,7 +80,7 @@ An event created from a limit state function:
 A composite random vector based event:
 
 >>> X = ot.RandomVector(ot.Normal(2))
->>> model = ot.NumericalMathFunction(['x0', 'x1'], ['x0', 'x1'])
+>>> model = ot.SymbolicFunction(['x0', 'x1'], ['x0', 'x1'])
 >>> Y = ot.RandomVector(model, X)
 >>> # The domain: [0, 1]^2
 >>> domain = ot.Interval(2)

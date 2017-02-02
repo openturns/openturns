@@ -2,7 +2,7 @@
 /**
  *  @brief The evaluation part of linear combination of polynomials
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -320,7 +320,7 @@ LinearCombinationEvaluationImplementation::Implementation LinearCombinationEvalu
 /* Get the function corresponding to indices components */
 LinearCombinationEvaluationImplementation::Implementation LinearCombinationEvaluationImplementation::getMarginal(const Indices & indices) const
 {
-  if (!indices.check(getOutputDimension() - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal function must be in the range [0, dim-1] and  must be different";
+  if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal function must be in the range [0, dim-1] and must be different";
   const UnsignedInteger size = functionsCollection_.getSize();
   NumericalMathFunctionCollection marginalFunctions(size);
   for (UnsignedInteger i = 0; i < size; ++i) marginalFunctions[i] = functionsCollection_[i].getMarginal(indices);

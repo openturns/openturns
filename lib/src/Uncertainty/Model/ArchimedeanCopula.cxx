@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for archimedean copulas
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -172,7 +172,7 @@ Bool ArchimedeanCopula::hasIndependentCopula() const
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
 ArchimedeanCopula::Implementation ArchimedeanCopula::getMarginal(const Indices & indices) const
 {
-  if (!indices.check(1)) throw InvalidArgumentException(HERE) << "The indices of an archimedean copula  must be in the range [0, 1] and  must be different";
+  if (!indices.check(2)) throw InvalidArgumentException(HERE) << "The indices of an archimedean copula must be in the range [0, 1] and must be different";
   // General case
   const UnsignedInteger outputDimension = indices.getSize();
   // Only one indice is needed, call the specialized method

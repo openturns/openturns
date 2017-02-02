@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract class for algorithms generating optimized LHS
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -21,11 +21,10 @@
 #include "openturns/OptimalLHSExperiment.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/LHSExperiment.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
-using namespace OT;
 
-namespace OT
-{
+BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(OptimalLHSExperiment);
 
@@ -152,4 +151,4 @@ NumericalSample OptimalLHSExperiment::inverseRankTransform(const NumericalSample
 
 
 
-} /* namespace OT */
+END_NAMESPACE_OPENTURNS

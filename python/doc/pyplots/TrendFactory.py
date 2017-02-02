@@ -11,7 +11,7 @@ myCovModel = ot.ExponentialModel(scale, amplitude)
 myXProcess = ot.TemporalNormalProcess(myCovModel, myGrid)
 
 # Create a trend
-fTrend = ot.NumericalMathFunction(["t"], ["1+2*t+t^2"])
+fTrend = ot.SymbolicFunction(["t"], ["1+2*t+t^2"])
 fTemp = ot.TrendTransform(fTrend)
 
 # Add the trend to the process and get a field
@@ -21,9 +21,9 @@ myYField = myYProcess.getRealization()
 # Create a TrendFactory
 myBasisSequenceFactory = ot.LARS()
 myFittingAlgorithm = ot.KFold()
-func1 = ot.NumericalMathFunction(["t"], ["1"])
-func2 = ot.NumericalMathFunction(["t"], ["t"])
-func3 = ot.NumericalMathFunction(["t"], ["t^2"])
+func1 = ot.SymbolicFunction(["t"], ["1"])
+func2 = ot.SymbolicFunction(["t"], ["t"])
+func3 = ot.SymbolicFunction(["t"], ["t^2"])
 myBasis = ot.Basis([func1, func2, func3])
 
 myTrendFactory = ot.TrendFactory(myBasisSequenceFactory, myFittingAlgorithm)

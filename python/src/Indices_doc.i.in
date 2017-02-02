@@ -44,17 +44,17 @@ Use some functionalities:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Indices::check
-"Check that no value is repeated and no value exceed the given bound.
+"Check that no value is repeated and no value exceeds the given bound.
 
 Parameters
 ----------
 bound : positive int
-    A bound.
+    The bound value.
 
 Returns
 -------
 check : bool
-    *True* if no value is repeated and no value exceed the given bound."
+    *True* if no value is repeated and all values are < bound."
 
 // ---------------------------------------------------------------------
 

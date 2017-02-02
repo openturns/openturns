@@ -2,7 +2,7 @@
 /**
  *  @brief LeastSquares solving algorithm implementation
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -120,17 +120,12 @@ LeastSquaresMethodImplementation * LeastSquaresMethodImplementation::clone() con
 
 NumericalPoint LeastSquaresMethodImplementation::solve(const NumericalPoint & rhs)
 {
-  // If uniform weights, no scaling of the rhs
-  if (hasUniformWeight_) return solveNormal(computeWeightedDesign().genVectProd(rhs, true));
-  NumericalPoint y(rhs);
-  const UnsignedInteger size = rhs.getSize();
-  for (UnsignedInteger i = 0; i < size; ++i) y[i] *= weightSqrt_[i];
-  return solveNormal(computeWeightedDesign().genVectProd(y, true));
+  throw NotYetImplementedException(HERE) << " in LeastSquaresMethodImplementation::solve";
 }
 
 NumericalPoint LeastSquaresMethodImplementation::solveNormal(const NumericalPoint & rhs)
 {
-  throw NotYetImplementedException(HERE) << " in LeastSquaresMethodImplementation::solve";
+  throw NotYetImplementedException(HERE) << " in LeastSquaresMethodImplementation::solveNormal";
 }
 
 CovarianceMatrix LeastSquaresMethodImplementation::getGramInverse() const
@@ -152,6 +147,17 @@ NumericalPoint LeastSquaresMethodImplementation::getHDiag() const
   const UnsignedInteger dimension = H.getDimension();
   NumericalPoint diag(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++ i) diag[i] = H(i, i);
+
+  return diag;
+}
+
+
+NumericalPoint LeastSquaresMethodImplementation::getGramInverseDiag() const
+{
+  const CovarianceMatrix G(getGramInverse());
+  const UnsignedInteger dimension = G.getDimension();
+  NumericalPoint diag(dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++ i) diag[i] = G(i, i);
 
   return diag;
 }

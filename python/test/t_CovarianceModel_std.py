@@ -3,8 +3,7 @@
 from __future__ import print_function
 import openturns as ot
 
-
-def test_model(myModel):
+def test_model(myModel, test_grad=True, x1=None, x2=None):
 
     print('myModel = ',  myModel)
 
@@ -15,32 +14,26 @@ def test_model(myModel):
     print('parameter=', myModel.getParameter())
     print('parameterDescription=', myModel.getParameterDescription())
 
-
-
-    x1 = ot.NumericalPoint(spatialDimension)
-    x2 = ot.NumericalPoint(spatialDimension)
-    for j in range(spatialDimension):
-        x1[j] = -1.0 - j
-        x2[j] = 3.0 + 2.0 * j
+    if x1 is None and x2 is None:
+        x1 = ot.NumericalPoint(spatialDimension)
+        x2 = ot.NumericalPoint(spatialDimension)
+        for j in range(spatialDimension):
+            x1[j] = -1.0 - j
+            x2[j] = 3.0 + 2.0 * j
 
     eps = 1e-5
-    if (dimension == 1):
-        print('myModel(', x1, ', ', x2, ')=',  repr(myModel(x1, x2)))
+    print('myModel(', x1, ', ', x2, ')=',  repr(myModel(x1, x2)))
 
-        grad = myModel.partialGradient(x1, x2)
-        print('dCov =', repr(grad))
+    grad = myModel.partialGradient(x1, x2)
+    print('dCov =', repr(grad))
+
+    if (dimension == 1):
         gradfd = ot.NumericalPoint(spatialDimension)
         for j in range(spatialDimension):
             x1_d = ot.NumericalPoint(x1)
             x1_d[j] = x1_d[j] + eps
             gradfd[j] = (myModel(x1_d, x2)[0, 0] - myModel(x1, x2)[0, 0]) / eps
-        print('dCov (FD)=', repr(gradfd))
     else:
-        print('myModel(', x1, ', ', x2, ')=',  repr(myModel(x1, x2)))
-
-        grad = myModel.partialGradient(x1, x2)
-        print('dCov =', repr(grad))
-
         gradfd = ot.Matrix(spatialDimension, dimension * dimension)
         covarianceX1X2 = myModel(x1, x2)
         # Symmetrize matrix
@@ -56,7 +49,14 @@ def test_model(myModel):
                 localCovariance.getImplementation())
             for j in range(currentValue.getSize()):
                 gradfd[i, j] = (currentValue[j] - centralValue[j]) / eps
-        print('dCov (FD)=', repr(gradfd))
+    print('dCov (FD)=', repr(gradfd))
+
+    if test_grad:
+        pGrad = myModel.parameterGradient(x1, x2)
+        precision = ot.PlatformInfo.GetNumericalPrecision()
+        ot.PlatformInfo.SetNumericalPrecision(4)
+        print('dCov/dP=', pGrad)
+        ot.PlatformInfo.SetNumericalPrecision(precision)
 
 spatialDimension = 2
 
@@ -112,9 +112,13 @@ print('myDefautModel = ',  myDefautModel)
 test_model(myDefautModel)
 
 amplitude = list(map(lambda k: 1.5 + 2.0 * k, range(2)))
-myModel = ot.DiracCovarianceModel(spatialDimension, amplitude)
-test_model(myModel)
-
+dimension = 2
+spatialCorrelation = ot.CorrelationMatrix(dimension)
+for j in range(dimension):
+    for i in range(j + 1, dimension):
+        spatialCorrelation[i,j] = (i + 1.0)  / dimension - (j + 1.0) / dimension
+myModel = ot.DiracCovarianceModel(spatialDimension, amplitude, spatialCorrelation)
+test_model(myModel, x1=[0.5, 0.0], x2=[0.5, 0.0])
 
 myDefautModel = ot.ProductCovarianceModel()
 print('myDefautModel = ',  myDefautModel)
@@ -139,8 +143,8 @@ myExponentialModel = ot.ExponentialModel(scale, amplitude, spatialCorrelation)
 # Build TensorizedCovarianceModel with scale = [1,..,1]
 myModel = ot.TensorizedCovarianceModel(
     [myAbsoluteExponential, mySquaredExponential, myExponentialModel])
-test_model(myModel)
+test_model(myModel, test_grad=False)
 # Define new scale
 scale = [2.5, 1.5]
 myModel.setScale(scale)
-test_model(myModel)
+test_model(myModel, test_grad=False)

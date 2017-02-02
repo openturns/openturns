@@ -4,7 +4,7 @@
  *         basis and eigenvalues of a given covariance model based on
  *         quadrature approximation of the integral equation.
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -26,8 +26,9 @@
 #include "openturns/SquareComplexMatrix.hxx"
 #include "openturns/NumericalSample.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/LinearNumericalMathFunction.hxx"
+#include "openturns/LinearFunction.hxx"
 #include "openturns/Pointer.hxx"
+#include "openturns/ComposedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -97,12 +98,12 @@ KarhunenLoeveQuadratureFactory::KarhunenLoeveQuadratureFactory(const Domain & do
       normalizationFactor *= T(i, i);
       inverseT(i, i) = 1.0 / T(i, i);
     }
-    scaling = LinearNumericalMathFunction(center, constant, T);
-    inverseScaling = LinearNumericalMathFunction(constant, center, inverseT);
+    scaling = LinearFunction(center, constant, T);
+    inverseScaling = LinearFunction(constant, center, inverseT);
   }
   // Here we set the collection of functions
   for (UnsignedInteger i = 0; i < basisSize; ++i)
-    if (!hasSameBounds && mustScale) coll_[i] = NumericalMathFunction(basis.build(i), inverseScaling);
+    if (!hasSameBounds && mustScale) coll_[i] = ComposedFunction(basis.build(i), inverseScaling);
     else coll_[i] = basis.build(i);
   // Compute the integration nodes and weights
   NumericalPoint rawWeights;

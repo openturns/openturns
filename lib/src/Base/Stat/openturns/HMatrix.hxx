@@ -2,7 +2,7 @@
 /**
  *  @brief This file supplies support for HMat
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -58,6 +58,9 @@ class OT_API HMatrix :
   void assemble(const HMatrixTensorRealAssemblyFunction& f, char symmetry);
 
   void factorize(const String& method);
+
+  /** Compute this <- alpha * this */
+  void scale(NumericalScalar alpha);
 
   /** Compute y <- alpha op(this) * x + beta * y */
   void gemv(char trans, NumericalScalar alpha, const NumericalPoint& x, NumericalScalar beta, NumericalPoint& y) const;

@@ -204,7 +204,7 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.Normal()
 >>> sample = distribution.getSample(30)
->>> func = ot.NumericalMathFunction(['x'], ['x', 'x^2'])
+>>> func = ot.SymbolicFunction(['x'], ['x', 'x^2'])
 >>> testedSample = func(sample)
 >>> test_result = ot.HypothesisTest.FullSpearman(testedSample, sample)
 >>> print(test_result)
@@ -305,7 +305,7 @@ HypothesisTest_FullRegression, LinearModelTest_LinearModelFisher
 Notes
 -----
 The Partial Regression Test is used to check the quality of the linear regression
-model between two samples: *firstSample* of dimension *n* and *secondSample* of
+AnalyticalFmodel between two samples: *firstSample* of dimension *n* and *secondSample* of
 dimension 1. The parameter *selection* enables to select specific subsets of the
 *firstSample* to be tested.
 
@@ -374,7 +374,7 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.Normal()
 >>> sample = distribution.getSample(30)
->>> func = ot.NumericalMathFunction(['x'], ['x', 'x^2', 'x^3', 'sin(5*x)'])
+>>> func = ot.SymbolicFunction(['x'], ['x', 'x^2', 'x^3', 'sin(5*x)'])
 >>> testedSample = func(sample)
 >>> test_result = ot.HypothesisTest.PartialSpearman(testedSample, sample, [0,3])
 >>> print(test_result)
@@ -524,7 +524,7 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.Normal()
 >>> firstSample = distribution.getSample(30)
->>> func = ot.NumericalMathFunction('x', 'x^2')
+>>> func = ot.SymbolicFunction(['x'], ['x^2'])
 >>> secondSample = func(firstSample)
 >>> test_result = ot.HypothesisTest.Spearman(firstSample, secondSample)
 >>> print(test_result)

@@ -2,7 +2,7 @@
 /**
  *  @brief OptimizationSolverImplementation implements an algorithm for solving an optimization problem
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -63,7 +63,7 @@ public:
 
   /** Problem accessor */
   OptimizationProblem getProblem() const;
-  void setProblem(const OptimizationProblem & problem);
+  virtual void setProblem(const OptimizationProblem & problem);
 
   /** Result accessor */
   OptimizationResult getResult() const;

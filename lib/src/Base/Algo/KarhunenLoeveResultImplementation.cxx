@@ -2,7 +2,7 @@
 /**
  *  @brief Karhunen-Loeve decomposition and by-products
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -21,9 +21,10 @@
 
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/KarhunenLoeveResultImplementation.hxx"
-#include "openturns/LinearNumericalMathFunction.hxx"
+#include "openturns/LinearFunction.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/IdentityMatrix.hxx"
+#include "openturns/ComposedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -107,8 +108,8 @@ Basis KarhunenLoeveResultImplementation::getScaledModes() const
   for (UnsignedInteger i = 0; i < scaledModes.getSize(); ++i)
     {
       const NumericalMathFunction modeI(modes_.build(i));
-      LinearNumericalMathFunction scaling(zero, zero, id * std::sqrt(eigenvalues_[i]));
-      scaledModes[i] = NumericalMathFunction(scaling, modeI);
+      LinearFunction scaling(zero, zero, id * std::sqrt(eigenvalues_[i]));
+      scaledModes[i] = ComposedFunction(scaling, modeI);
     }
   return scaledModes;
 }

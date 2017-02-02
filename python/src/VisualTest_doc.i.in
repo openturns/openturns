@@ -201,7 +201,7 @@ Generate a random sample from a Normal distribution:
 >>> inputSample = ot.Normal(2).getSample(15)
 >>> inputSample.setDescription(['X0', 'X1'])
 >>> formula = ['cos(X0)+cos(2*X1)']
->>> model = ot.NumericalMathFunction(['X0', 'X1'], ['y'], formula)
+>>> model = ot.SymbolicFunction(['X0', 'X1'], formula)
 >>> outputSample = model(inputSample)
 
 Draw a Cobweb plot:

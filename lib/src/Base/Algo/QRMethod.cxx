@@ -2,7 +2,7 @@
 /**
  *  @brief QR-decomposition based LS solver
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -110,16 +110,14 @@ NumericalPoint QRMethod::solve(const NumericalPoint & rhs)
   // This call insures that the decomposition has already been computed.
   // No cost if it is up to date.
   update(Indices(0), currentIndices_, Indices(0));
-  NumericalPoint b;
-  if (hasUniformWeight_) b = q_.getImplementation()->genVectProd(rhs, true);
-  else
+  NumericalPoint b(rhs);
+  if (!hasUniformWeight_)
   {
-    NumericalPoint y(rhs);
     const UnsignedInteger size = rhs.getSize();
-    for (UnsignedInteger i = 0; i < size; ++i) y[i] *= weightSqrt_[i];
-    b = q_.getImplementation()->genVectProd(y, true);
+    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weightSqrt_[i];
   }
-  const NumericalPoint coefficients(r_.getImplementation()->solveLinearSystemTri(b, true, false, false)); // rhs, keep, lower, transpose
+  const NumericalPoint c(q_.getImplementation()->genVectProd(b, true));
+  const NumericalPoint coefficients(r_.getImplementation()->solveLinearSystemTri(c, true, false, false)); // rhs, keep, lower, transpose
   return coefficients;
 }
 
@@ -129,18 +127,81 @@ NumericalPoint QRMethod::solveNormal(const NumericalPoint & rhs)
   // This call insures that the decomposition has already been computed.
   // No cost if it is up to date.
   update(Indices(0), currentIndices_, Indices(0));
-  NumericalPoint b(r_.getImplementation()->solveLinearSystemTri(rhs, true, false, true)); // rhs, keep, lower, transpose
-  const NumericalPoint coefficients(r_.getImplementation()->solveLinearSystemTri(b, true, false, false)); // rhs, keep, lower, transpose
+  NumericalPoint b(rhs);
+  if (!hasUniformWeight_)
+  {
+    const UnsignedInteger size = rhs.getSize();
+    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weight_[i];
+  }
+  const NumericalPoint c(r_.getImplementation()->solveLinearSystemTri(b, true, false, true)); // rhs, keep, lower, transpose
+  const NumericalPoint coefficients(r_.getImplementation()->solveLinearSystemTri(c, true, false, false)); // rhs, keep, lower, transpose
   return coefficients;
 }
+
+NumericalPoint QRMethod::getHDiag() const
+{
+  const UnsignedInteger dimension = q_.getNbRows();
+  const UnsignedInteger basisSize = currentIndices_.getSize();
+  NumericalPoint diag(dimension);
+  MatrixImplementation::const_iterator q_iterator(q_.getImplementation()->begin());
+  for (UnsignedInteger j = 0; j < basisSize; ++ j)
+  {
+    for (MatrixImplementation::iterator diag_iterator = diag.begin(); diag_iterator != diag.end(); ++ diag_iterator)
+    {
+      *diag_iterator += (*q_iterator) * (*q_iterator);
+      ++ q_iterator;
+    }
+  }
+
+  return diag;
+}
+
 
 CovarianceMatrix QRMethod::getGramInverse() const
 {
   // G^{-1}=R^-1*R*^-T
   const UnsignedInteger basisSize = currentIndices_.getSize();
   const MatrixImplementation b(*IdentityMatrix(basisSize).getImplementation());
-  Matrix invR(r_.getImplementation()->solveLinearSystemTri(b));
+  Matrix invR(r_.getImplementation()->solveLinearSystemTri(b, true, false));
   return invR.computeGram(false);
+}
+
+NumericalPoint QRMethod::getGramInverseDiag() const
+{
+  // G^{-1}=R^-1*R*^-T
+  const UnsignedInteger dimension = r_.getNbRows();
+  const UnsignedInteger basisSize = currentIndices_.getSize();
+  const MatrixImplementation b(*IdentityMatrix(dimension).getImplementation());
+  const MatrixImplementation invRT(r_.getImplementation()->solveLinearSystemTri(b, true, false, true));
+
+  NumericalPoint diag(dimension);
+  MatrixImplementation::const_iterator invRT_iterator(invRT.begin());
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    NumericalScalar value = 0.0;
+    for (UnsignedInteger j = 0; j < basisSize; ++ j)
+    {
+      value += (*invRT_iterator) * (*invRT_iterator);
+      ++ invRT_iterator;
+    }
+    diag[i] = value;
+  }
+  return diag;
+}
+
+NumericalScalar QRMethod::getGramInverseTrace() const
+{
+  // G^{-1}=R^-1*R*^-T
+  const UnsignedInteger dimension = r_.getNbRows();
+  const MatrixImplementation b(*IdentityMatrix(dimension).getImplementation());
+  const MatrixImplementation invRT(r_.getImplementation()->solveLinearSystemTri(b, true, false, true));
+
+  NumericalScalar traceInverse = 0.0;
+  for (MatrixImplementation::const_iterator it = invRT.begin(); it != invRT.end(); ++it)
+  {
+    traceInverse += (*it) * (*it);
+  }
+  return traceInverse;
 }
 
 void QRMethod::trashDecomposition()

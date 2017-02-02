@@ -10,7 +10,7 @@
 #  R_VERSION_STRING - R version
 #
 #=============================================================================
-# Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+# Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
 #
 # Distributed under the OSI-approved BSD License (the "License");
 # see accompanying file Copyright.txt for details.

@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level view of an monteCarloExperiment plane
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,12 +22,13 @@
 #include "openturns/StandardDistributionPolynomialFactory.hxx"
 #include "openturns/AdaptiveStieltjesAlgorithm.hxx"
 #include "openturns/ComposedDistribution.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(GaussProductExperiment);
+
+static const Factory<GaussProductExperiment> Factory_GaussProductExperiment;
 
 typedef Collection< NumericalPoint > NumericalPointCollection;
 
@@ -179,5 +180,23 @@ void GaussProductExperiment::computeNodesAndWeights() const
   } // Loop over the n-D nodes
   isAlreadyComputedNodesAndWeights_ = true;
 }
+
+/* Method save() stores the object through the StorageManager */
+void GaussProductExperiment::save(Advocate & adv) const
+{
+  WeightedExperimentImplementation::save(adv);
+  adv.saveAttribute("collection_", collection_);
+  adv.saveAttribute("marginalDegrees_", marginalDegrees_);
+}
+
+/* Method load() reloads the object from the StorageManager */
+void GaussProductExperiment::load(Advocate & adv)
+{
+  WeightedExperimentImplementation::load(adv);
+  adv.loadAttribute("collection_", collection_);
+  adv.loadAttribute("marginalDegrees_", marginalDegrees_);
+  setDistributionAndMarginalDegrees(distribution_, marginalDegrees_);
+}
+
 
 END_NAMESPACE_OPENTURNS

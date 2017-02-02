@@ -2,7 +2,7 @@
 /**
  *  @brief OptimizationProblemImplementation allows to describe an optimization problem
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -25,8 +25,8 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SymmetricTensor.hxx"
 #include "openturns/IdentityMatrix.hxx"
-#include "openturns/QuadraticNumericalMathFunction.hxx"
-#include "openturns/LinearNumericalMathFunction.hxx"
+#include "openturns/QuadraticFunction.hxx"
+#include "openturns/LinearFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -47,6 +47,15 @@ OptimizationProblemImplementation::OptimizationProblemImplementation()
   // Nothing to do
 }
 
+OptimizationProblemImplementation::OptimizationProblemImplementation(const NumericalMathFunction & objective)
+  : PersistentObject()
+  , objective_(objective)
+  , minimization_(true)
+  , dimension_(objective.getInputDimension())
+{
+  // nothing to do
+}
+
 /*
  * @brief General multi-objective equality, inequality and bound constraints
  */
@@ -56,16 +65,12 @@ OptimizationProblemImplementation::OptimizationProblemImplementation(const Numer
     const Interval & bounds)
   : PersistentObject()
   , objective_(objective)
-  , equalityConstraint_(equalityConstraint)
-  , inequalityConstraint_(inequalityConstraint)
-  , bounds_(bounds)
   , minimization_(true)
   , dimension_(objective.getInputDimension())
 {
-  // Check if the input dimension of the objective, the constraints and the bounds are compatible
-  if (hasEqualityConstraint() && (equalityConstraint.getInputDimension() != dimension_)) throw InvalidArgumentException(HERE) << "Error: the given equality constraints have an input dimension=" << equalityConstraint.getInputDimension() << " different from the input dimension=" << dimension_ << " of the objective.";
-  if (hasInequalityConstraint() && (inequalityConstraint.getInputDimension() != dimension_)) throw InvalidArgumentException(HERE) << "Error: the given inequality constraints have an input dimension=" << inequalityConstraint.getInputDimension() << " different from the input dimension=" << dimension_ << " of the objective.";
-  if (hasBounds() && (bounds.getDimension() != dimension_)) throw InvalidArgumentException(HERE) << "Error: the given bounds are of dimension=" << bounds.getDimension() << " different from the input dimension=" << dimension_ << " of the objective.";
+  setEqualityConstraint(equalityConstraint);
+  setInequalityConstraint(inequalityConstraint);
+  setBounds(bounds);
 }
 
 /* Constructor for nearest point problem */
@@ -97,6 +102,14 @@ NumericalMathFunction OptimizationProblemImplementation::getObjective() const
 
 void OptimizationProblemImplementation::setObjective(const NumericalMathFunction & objective)
 {
+  if (objective.getInputDimension() != objective_.getInputDimension())
+  {
+    // clear constraints, bounds
+    LOGWARN(OSS() << "Clearing constraints and bounds");
+    equalityConstraint_ = NumericalMathFunction();
+    inequalityConstraint_ = NumericalMathFunction();
+    bounds_ = Interval(0);
+  }
   clearLevelFunction();
 
   objective_ = objective;
@@ -117,6 +130,8 @@ NumericalMathFunction OptimizationProblemImplementation::getEqualityConstraint()
 
 void OptimizationProblemImplementation::setEqualityConstraint(const NumericalMathFunction & equalityConstraint)
 {
+  if ((equalityConstraint.getInputDimension() > 0) && (equalityConstraint.getInputDimension() != dimension_)) throw InvalidArgumentException(HERE) << "Error: the given equality constraints have an input dimension=" << equalityConstraint.getInputDimension() << " different from the input dimension=" << dimension_ << " of the objective.";
+
   clearLevelFunction();
   equalityConstraint_ = equalityConstraint;
 }
@@ -134,6 +149,8 @@ NumericalMathFunction OptimizationProblemImplementation::getInequalityConstraint
 
 void OptimizationProblemImplementation::setInequalityConstraint(const NumericalMathFunction & inequalityConstraint)
 {
+  if ((inequalityConstraint.getInputDimension() > 0) && (inequalityConstraint.getInputDimension() != dimension_)) throw InvalidArgumentException(HERE) << "Error: the given inequality constraints have an input dimension=" << inequalityConstraint.getInputDimension() << " different from the input dimension=" << dimension_ << " of the objective.";
+
   clearLevelFunction();
   inequalityConstraint_ = inequalityConstraint;
 }
@@ -151,6 +168,8 @@ Interval OptimizationProblemImplementation::getBounds() const
 
 void OptimizationProblemImplementation::setBounds(const Interval & bounds)
 {
+  if ((bounds.getDimension() > 0) && (bounds.getDimension() != dimension_)) throw InvalidArgumentException(HERE) << "Error: the given bounds are of dimension=" << bounds.getDimension() << " different from the input dimension=" << dimension_ << " of the objective.";
+
   bounds_ = bounds;
 }
 
@@ -177,7 +196,7 @@ void OptimizationProblemImplementation::setLevelFunction(const NumericalMathFunc
   const Matrix linear(dimension_, 1);
   const IdentityMatrix identity(dimension_);
   const SymmetricTensor quadratic(dimension_, 1, *(identity.getImplementation().get()));
-  objective_ = QuadraticNumericalMathFunction(center, constant, linear, quadratic);
+  objective_ = QuadraticFunction(center, constant, linear, quadratic);
   setNearestPointConstraints();
 }
 
@@ -203,7 +222,7 @@ void OptimizationProblemImplementation::setNearestPointConstraints()
 {
   const NumericalPoint center(dimension_);
   const Matrix linear(dimension_, 1);
-  LinearNumericalMathFunction constantFunction(center, NumericalPoint(1, levelValue_), linear.transpose());
+  LinearFunction constantFunction(center, NumericalPoint(1, levelValue_), linear.transpose());
   NumericalMathFunction equalityConstraint(levelFunction_);
   equalityConstraint_ = equalityConstraint.operator - (constantFunction);
   inequalityConstraint_ = NumericalMathFunction();
@@ -211,6 +230,7 @@ void OptimizationProblemImplementation::setNearestPointConstraints()
 
 void OptimizationProblemImplementation::clearLevelFunction()
 {
+  LOGWARN(OSS() << "Clearing level function");
   levelFunction_ = NumericalMathFunction();
   levelValue_ = 0.0;
 }

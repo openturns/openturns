@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level view of an monteCarloExperiment plane
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -20,13 +20,13 @@
  */
 #include "openturns/ImportanceSamplingExperiment.hxx"
 #include "openturns/Exception.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(ImportanceSamplingExperiment);
 
+static const Factory<ImportanceSamplingExperiment> Factory_ImportanceSamplingExperiment;
 
 /* Default constructor */
 ImportanceSamplingExperiment::ImportanceSamplingExperiment():
@@ -92,6 +92,20 @@ NumericalSample ImportanceSamplingExperiment::generateWithWeights(NumericalPoint
     weights[i] = distribution_.computePDF(result[i]) / importanceDistribution_.computePDF(result[i]);
   }
   return result;
+}
+
+/* Method save() stores the object through the StorageManager */
+void ImportanceSamplingExperiment::save(Advocate & adv) const
+{
+  WeightedExperimentImplementation::save(adv);
+  adv.saveAttribute("importanceDistribution_", importanceDistribution_);
+}
+
+/* Method load() reloads the object from the StorageManager */
+void ImportanceSamplingExperiment::load(Advocate & adv)
+{
+  WeightedExperimentImplementation::load(adv);
+  adv.loadAttribute("importanceDistribution_", importanceDistribution_);
 }
 
 

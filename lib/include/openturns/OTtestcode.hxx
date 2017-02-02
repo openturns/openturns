@@ -2,7 +2,7 @@
 /**
  *  @brief The header file that declares exit codes for tests
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -103,7 +103,7 @@ inline void parseOptions(int argc, char *argv[])
     }
   } /* end for */
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER) && (_MSC_VER < 1900)
   // Windows displays scientific notation with 3 digits in the exponent.
   // We force 2 digits to avoid test failures.
   _set_output_format(_TWO_DIGIT_EXPONENT);

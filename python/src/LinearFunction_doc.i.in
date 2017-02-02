@@ -1,0 +1,36 @@
+%feature("docstring") OT::LinearFunction
+"Linear numerical math function.
+
+Available constructors:
+   LinearFunction(*center, constant, linear*)
+
+Parameters
+----------
+center : sequence of float
+    Vector :math:`\vect{b}`.
+constant : sequence of float
+    Vector :math:`\vect{c}`.
+linear : :class:`~openturns.Matrix`
+    Matrix :math:`\mat{A}`.
+
+See also
+--------
+NumericalMathFunction
+
+Notes
+-----
+This implements a linear :class:`~openturns.NumericalMathFunction` :math:`f` 
+defined as :
+
+.. math::
+
+    f : & \Rset^n \rightarrow \Rset^p  \\
+        & \vect{X} \mapsto \mat{A} ( \vect{X} - \vect{b} ) + \vect{c}
+
+where:
+
+- :math:`\mat{A}` is the :math:`\Rset^p \times \Rset^n` matrix defined by the
+  input *linear*,
+- :math:`\vect{b}` is the :math:`\Rset^n` vector defined by the object *center*,
+
+- :math:`\vect{c}` is the :math:`\Rset^p` vector defined by the object *constant*."

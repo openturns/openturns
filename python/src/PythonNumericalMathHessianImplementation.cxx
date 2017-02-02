@@ -2,7 +2,7 @@
 /**
  * @brief PythonNumericalMathHessianImplementation implementation
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -136,7 +136,7 @@ SymmetricTensor PythonNumericalMathHessianImplementation::hessian(const Numerica
   {
     result = convert< _PySequence_, Tensor >(callResult.get()).getImplementation();
   }
-  catch (const InvalidArgumentException & ex)
+  catch (InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Output value for " << getName() << "._hessian() method is not a 3-d float sequence object (list, tuple, etc.)";
   }

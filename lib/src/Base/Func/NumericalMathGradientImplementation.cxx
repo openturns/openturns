@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all gradient implementations
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -133,7 +133,7 @@ NumericalMathGradientImplementation::Implementation NumericalMathGradientImpleme
 /* Get the function corresponding to indices components */
 NumericalMathGradientImplementation::Implementation NumericalMathGradientImplementation::getMarginal(const Indices & indices) const
 {
-  if (!indices.check(getOutputDimension() - 1)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and  must be different";
+  if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and must be different";
   // Here we use the linear algebra representation of the marginal extraction operation in order to extract the marginal gradient.
   // The chain rule gives:
   // D(Af) = AD(f) in our case, instead of D(gof) = Dg(f)Df, so we don't need f as in our case Dg(f) = A is a constant. As we don't

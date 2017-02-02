@@ -2,7 +2,7 @@
 /**
  *  @brief A class that implements an independent copula
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -30,6 +30,7 @@
 #include "openturns/InverseNatafIndependentCopulaHessian.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/RandomGenerator.hxx"
+#include "openturns/SymbolicFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -220,14 +221,14 @@ LevelSet IndependentCopula::computeMinimumVolumeLevelSetWithThreshold(const Nume
     formula << "),abs(" << inVars[i] << "-0.5";
   formula << "))";
   threshold = std::pow(prob, 1.0 / dimension_);
-  return LevelSet(NumericalMathFunction(inVars, Description(1, formula)), threshold);
+  return LevelSet(SymbolicFunction(inVars, Description(1, formula)), threshold);
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
 IndependentCopula::Implementation IndependentCopula::getMarginal(const Indices & indices) const
 {
   UnsignedInteger dimension = getDimension();
-  if (!indices.check(dimension - 1)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal distribution must be in the range [0, dim-1] and  must be different";
+  if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal distribution must be in the range [0, dim-1] and must be different";
   // General case
   return new IndependentCopula(indices.getSize());
 }

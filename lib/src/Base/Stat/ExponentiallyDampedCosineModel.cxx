@@ -2,7 +2,7 @@
 /**
  *  @brief
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -38,7 +38,6 @@ ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const UnsignedInt
   : StationaryCovarianceModel(spatialDimension)
   , frequency_(1.0)
 {
-  activeParameter_.add(activeParameter_.getSize());// add f
 }
 
 /** Standard constructor with amplitude and scale parameters */
@@ -50,7 +49,6 @@ ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const NumericalPo
 {
   if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << dimension_;
   setFrequency(frequency);
-  activeParameter_.add(activeParameter_.getSize());// add f
 }
 
 /* Virtual constructor */

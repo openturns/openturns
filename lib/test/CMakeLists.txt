@@ -2,7 +2,7 @@
 #
 #  CMakeLists.txt
 #
-#  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+#  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
 #
 #  This library is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published by
@@ -172,7 +172,7 @@ ot_check_test (AnalyticalNumericalMathEvaluationImplementation_std)
 ot_check_test (AnalyticalNumericalMathGradientImplementation_std)
 ot_check_test (AnalyticalNumericalMathHessianImplementation_std)
 endif ()
-ot_check_test (LinearNumericalMathFunction_std)
+ot_check_test (LinearFunction_std)
 ot_check_test (LinearCombinationEvaluationImplementation_std)
 ot_check_test (LinearCombinationGradientImplementation_std)
 ot_check_test (LinearCombinationHessianImplementation_std)
@@ -180,14 +180,14 @@ ot_check_test (QuadraticNumericalMathEvaluationImplementation_std)
 ot_check_test (LinearNumericalMathGradientImplementation_std)
 ot_check_test (ConstantNumericalMathHessianImplementation_std)
 ot_check_test (MethodBoundNumericalMathEvaluationImplementation_std)
-ot_check_test (NumericalMathFunction_analytical)
+ot_check_test (SymbolicFunction_std)
 ot_check_test (NumericalMathFunction_indicator)
-ot_check_test (NumericalMathFunction_aggregated)
-ot_check_test (NumericalMathFunction_dual_linear_combination)
-ot_check_test (NumericalMathFunction_linear_combination)
+ot_check_test (AggregatedFunction_std)
+ot_check_test (DualLinearCombinationFunction_std)
+ot_check_test (LinearCombinationFunction_std)
 ot_check_test (NumericalMathFunction_operations)
-ot_check_test (NumericalMathFunction_parametric)
-ot_check_test (NumericalMathFunction_data)
+ot_check_test (ParametricFunction_std)
+ot_check_test (DatabaseFunction_std)
 ot_check_test (NumericalMathFunction_history)
 
 if (R_base_FOUND)
@@ -220,6 +220,7 @@ ot_check_test (NearestPointChecker_std)
 if (NLOPT_FOUND)
 ot_check_test (NLopt_std)
 endif ()
+ot_check_test (MultiStart_std)
 
 # Solver
 ot_check_test (Bisection_std)
@@ -316,6 +317,8 @@ ot_check_test (GaussKronrod_std)
 ot_check_test (IteratedQuadrature_std)
 ot_check_test (KarhunenLoeveP1Factory_std)
 ot_check_test (KarhunenLoeveP1Algorithm_std)
+ot_check_test (LeastSquaresMethod_std)
+ot_check_test (LeastSquaresMethod_weighted)
 
 # Analytical
 ot_check_test (Analytical_std)
@@ -408,7 +411,7 @@ ot_check_test (Normal_large)
 ot_check_test (Normal_wrongarg)
 ot_check_test (Poisson_std)
 ot_check_test (PoissonFactory_std)
-#ot_check_test (PosteriorDistribution_std)
+ot_check_test (PosteriorDistribution_std)
 ot_check_test (ProductDistribution_std)
 ot_check_test (RandomMixture_std)
 ot_check_test (RandomMixture_grid3d)
@@ -459,6 +462,7 @@ ot_check_test (GumbelCopulaFactory_std)
 ot_check_test (OrdinalSumCopula_std)
 ot_check_test (DistFunc_beta)
 ot_check_test (DistFunc_gamma)
+ot_check_test (DistFunc_kfactor)
 ot_check_test (DistFunc_kolmogorov)
 ot_check_test (DistFunc_noncentralchisquare)
 ot_check_test (DistFunc_noncentralstudent)
@@ -535,8 +539,8 @@ ot_check_test (Tuples_std)
 ot_check_test (BootstrapExperiment_std)
 ot_check_test (FixedExperiment_std)
 ot_check_test (SpaceFilling_std)
-ot_check_test (OptimalLHS_SA)
-ot_check_test (OptimalLHS_MC)
+ot_check_test (MonteCarloLHS_std)
+ot_check_test (SimulatedAnnealingLHS_std)
 ot_check_test (GaussProductExperiment_std)
 ot_check_test (ImportanceSamplingExperiment_std)
 ot_check_test (LHSExperiment_std)
@@ -629,7 +633,7 @@ ot_check_test (Path_std IGNOREOUT)
 
 # Func
 ot_check_test (NumericalMathFunction_std)
-ot_check_test (NumericalMathFunction_composition)
+ot_check_test (ComposedFunction_std)
 
 # Stat
 ot_check_test (NumericalSample_csv)

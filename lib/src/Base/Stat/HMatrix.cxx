@@ -2,7 +2,7 @@
 /**
  *  @brief This file supplies support for HMat
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -62,6 +62,13 @@ void HMatrix::factorize(const String& method)
 {
   copyOnWrite();
   getImplementation()->factorize(method);
+}
+
+/** Compute x <- alpha * this */
+void HMatrix::scale(NumericalScalar alpha)
+{
+  copyOnWrite();
+  getImplementation()->scale(alpha);
 }
 
 /** Compute y <- alpha op(this) * x + beta * y */

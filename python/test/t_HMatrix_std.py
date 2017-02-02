@@ -89,8 +89,17 @@ blockAssembly = TestHMatrixTensorRealAssemblyFunction(covarianceModel, vertices)
 hmat.assembleTensor(blockAssembly, covarianceModel.getDimension(), 'L')
 hmatRef = ot.HMatrix(hmat)
 hmat.factorize('LLt')
+normL = hmat.norm()
 hmatRef.gemm('N', 'T', -1.0, hmat, hmat, 1.0)
 if hmatRef.norm() < 1e-10:
   print('norm(A-LLt) < 1e-10')
 else:
   print('norm(A-LLt) =', hmatRef.norm())
+
+alpha = 0.1
+hmat.scale(alpha)
+normScaled = hmat.norm()
+if abs(normL - normScaled / alpha) < 1e-10:
+  print('|norm(L) - 10 * norm(0.1*L)| < 1e-10')
+else:
+  print('|norm(L) - 10 * norm(0.1*L)| > 1e-10')

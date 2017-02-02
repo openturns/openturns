@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all ConstantBasisFactory
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,7 @@
  */
 #include "openturns/ConstantBasisFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/LinearNumericalMathFunction.hxx"
+#include "openturns/LinearFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -57,7 +57,7 @@ Basis ConstantBasisFactory::build() const
   Basis basis;
   NumericalPoint constant(1);
   constant[0] = 1.;
-  basis.add(LinearNumericalMathFunction (NumericalPoint(inputDimension_, 0.0),
+  basis.add(LinearFunction (NumericalPoint(inputDimension_, 0.0),
                                          constant,
                                          Matrix(1, inputDimension_)));
   return basis;

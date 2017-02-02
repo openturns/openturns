@@ -2,7 +2,7 @@
 /**
  *  @brief OptimizationResult stores the result of a OptimizationSolverImplementation
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -354,6 +354,31 @@ Graph OptimizationResult::drawErrorHistory() const
     result.add( constraintErrorCurve );
   }
 
+  return result;
+}
+
+/* Draw optimal value graph */
+Graph OptimizationResult::drawOptimalValueHistory() const
+{
+  Graph result("Optimal value history", "Iteration number", "Optimal value", true, "topright", 1.0);
+  result.setGrid(true);
+  result.setGridColor("black");
+  NumericalSample data(getOutputSample());
+  const UnsignedInteger size = data.getSize();
+  const Bool minimization = problem_.isMinimization();
+  for (UnsignedInteger i = 1; i < size; ++ i)
+  {
+    const UnsignedInteger j = 0;
+    if (!((minimization && (data[i][j] < data[i - 1][j]))
+      || (!minimization && (data[i][j] > data[i - 1][j]))))
+    {
+      data[i][j] = data[i - 1][j];
+    }
+  }
+  Curve optimalValueCurve(data, "optimal value");
+  optimalValueCurve.setLegend("optimal value");
+  optimalValueCurve.setColor("red");
+  result.add(optimalValueCurve);
   return result;
 }
 

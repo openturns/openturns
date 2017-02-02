@@ -8,7 +8,7 @@
  *         where:
  *         C = \frac{1}{N\prod_{k=1}^n h_k}
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -503,7 +503,7 @@ KernelMixture::Implementation KernelMixture::getMarginal(const UnsignedInteger i
 KernelMixture::Implementation KernelMixture::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
-  if (!indices.check(dimension - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and  must be different";
+  if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";
   // Special case for dimension 1
   if (dimension == 1) return clone();
   // General case

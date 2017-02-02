@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for Trapezoidal distribution
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -131,9 +131,7 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const NumericalSample & sampl
   factory.setOptimizationSolver(solver);
 
   // override constraint
-  OptimizationProblem problem;
-  problem.setInequalityConstraint(getLogLikelihoodInequalityConstraint());
-  factory.setOptimizationProblem(problem);
+  factory.setOptimizationInequalityConstraint(getLogLikelihoodInequalityConstraint());
 
   Trapezoidal result(buildAsTrapezoidal(factory.buildParameter(sample)));
   result.setDescription(sample.getDescription());

@@ -1,0 +1,131 @@
+%feature("docstring") OT::SymbolicFunction
+"Symbolic function.
+
+Available constructor:
+    SymbolicFunction(*inputs, formulas*)
+
+Parameters
+----------
+inputs : sequence of str
+    List of input variables names of the function.
+formulas : sequence of str
+    List of analytical formulas between the inputs and the outputs.
+    The function is defined by *ouputs = formulas(inputs)*.
+
+Available functions:
+
+    - sin
+    - cos
+    - tan
+    - asin
+    - acos
+    - atan
+    - sinh
+    - cosh
+    - tanh
+    - asinh
+    - acosh
+    - atanh
+    - log2
+    - log10
+    - log
+    - ln
+    - lngamma
+    - gamma
+    - exp
+    - erf
+    - erfc
+    - sqrt
+    - cbrt
+    - besselJ0
+    - besselJ1
+    - besselY0
+    - besselY1
+    - sign
+    - rint
+    - abs
+    - min
+    - max
+    - sum
+    - avg
+    - floor
+    - ceil
+    - trunc
+    - round
+
+    Available operators:
+
+    - = (assignment)
+    - && (logical and)
+    - || (logical or)
+    - <= (less or equal)
+    - >= (greater or equal)
+    - != (not equal)
+    - == (equal)
+    - > (greater than)
+    - < (less than)
+    - \+ (addition)
+    - \- (subtraction)
+    - \* (multiplication)
+    - / (division)
+    - ^ (raise x to the power of y)
+
+    Available constants:
+
+    - _e (Euler's constant)
+    - _pi (Pi)
+
+Examples
+--------
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction(['x0', 'x1'], ['x0 + x1', 'x0 - x1'])
+>>> print(f([1, 2]))
+[3,-1]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SymbolicFunction::GetValidFunctions
+"Return the list of valid functions.
+
+Returns
+-------
+list_functions : :class:`~openturns.Description`
+    List of the functions we can use within OpenTURNS.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.SymbolicFunction.GetValidFunctions()[0])
+sin(arg) -> sine function"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SymbolicFunction::GetValidConstants
+"Return the list of valid constants.
+
+Returns
+-------
+list_constants : :class:`~openturns.Description`
+    List of the constants we can use within OpenTURNS.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.SymbolicFunction.GetValidConstants()[0])
+_e -> Euler's constant (2.71828...)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SymbolicFunction::GetValidOperators
+"Return the list of valid operators.
+
+Returns
+-------
+list_operators : :class:`~openturns.Description`
+    List of the operators we can use within OpenTURNS.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.SymbolicFunction.GetValidOperators()[0])
+= -> assignement, can only be applied to variable names (priority -1)"

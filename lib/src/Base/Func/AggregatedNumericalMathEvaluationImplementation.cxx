@@ -2,7 +2,7 @@
 /**
  *  @brief The evaluation part of an aggregation of functions from R^n to R^p_1,...,R^n to R^p_k
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -168,7 +168,7 @@ AggregatedNumericalMathEvaluationImplementation::Implementation AggregatedNumeri
 AggregatedNumericalMathEvaluationImplementation::Implementation AggregatedNumericalMathEvaluationImplementation::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getOutputDimension();
-  if (!indices.check(dimension - 1)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal aggregated function must be in the range [0, dim-1] and  must be different";
+  if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal aggregated function must be in the range [0, dim-1] and must be different";
   NumericalMathFunctionCollection marginalFunctions;
   const UnsignedInteger indicesSize = indices.getSize();
   const UnsignedInteger size = functionsCollection_.getSize();

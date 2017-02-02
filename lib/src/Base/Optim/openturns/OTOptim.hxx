@@ -2,7 +2,7 @@
 /**
  *  @brief The external header file of OpenTURNS for subdir Optim
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,18 +22,18 @@
 #ifndef OPENTURNS_OTOPTIM_HXX
 #define OPENTURNS_OTOPTIM_HXX
 
-#include "openturns/PenalizedLeastSquaresAlgorithm.hxx"
+#include "openturns/AbdoRackwitz.hxx"
+#include "openturns/Cobyla.hxx"
+#include "openturns/MultiStart.hxx"
 #include "openturns/NearestPointCheckerResult.hxx"
 #include "openturns/NearestPointChecker.hxx"
+#include "openturns/NLopt.hxx"
 #include "openturns/OptimizationProblem.hxx"
 #include "openturns/OptimizationProblemImplementation.hxx"
 #include "openturns/OptimizationSolver.hxx"
 #include "openturns/OptimizationSolverImplementation.hxx"
 #include "openturns/OptimizationResult.hxx"
-#include "openturns/OTAbdoRackwitz.hxx"
-#include "openturns/OTCobyla.hxx"
-#include "openturns/OTSQP.hxx"
-#include "openturns/OTTNC.hxx"
-#include "openturns/NLopt.hxx"
+#include "openturns/SQP.hxx"
+#include "openturns/TNC.hxx"
 
 #endif /* OPENTURNS_OTOPTIM_HXX */

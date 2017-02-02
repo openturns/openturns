@@ -2,7 +2,7 @@
 /**
  *  @brief ResourceMap defines top-most resourceMap strategies
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -242,7 +242,7 @@ void ResourceMap::readConfigurationFile(const FileName & configurationFile)
     }
   }
 #else
-  LOGWARN(OSS() << "Cannot parse configuration file do to lacking xml support");
+  LOGWARN(OSS() << "Cannot parse configuration file due to lacking xml support");
 #endif
 }
 
@@ -611,7 +611,13 @@ void ResourceMap::loadDefaultConfiguration()
   setAsNumericalScalar( "MaximumLikelihoodFactory-MaximumRelativeError", 1.0e-10 );
   setAsNumericalScalar( "MaximumLikelihoodFactory-MaximumObjectiveError", 1.0e-10 );
   setAsNumericalScalar( "MaximumLikelihoodFactory-MaximumConstraintError", 1.0e-10 );
-  setAsBool("MaximumLikelihoodFactory-Parallel", true);
+
+  // MethodOfMomentsFactory parameters //
+  setAsUnsignedInteger( "MethodOfMomentsFactory-MaximumEvaluationNumber", 1000 );
+  setAsNumericalScalar( "MethodOfMomentsFactory-MaximumAbsoluteError", 1.0e-10 );
+  setAsNumericalScalar( "MethodOfMomentsFactory-MaximumRelativeError", 1.0e-10 );
+  setAsNumericalScalar( "MethodOfMomentsFactory-MaximumObjectiveError", 1.0e-10 );
+  setAsNumericalScalar( "MethodOfMomentsFactory-MaximumConstraintError", 1.0e-10 );
 
   // Student parameters //
   setAsUnsignedInteger( "Student-MaximumNumberOfPoints", 10000000 );
@@ -664,6 +670,11 @@ void ResourceMap::loadDefaultConfiguration()
   // DistFunc parameters //
   setAsNumericalScalar( "DistFunc-Precision", 1.0e-14 );
   setAsUnsignedInteger( "DistFunc-MaximumIteration", 5000 );
+
+  // KFactor parameters //
+  setAsNumericalScalar( "KFactor-Precision", 1.0e-8 );
+  setAsUnsignedInteger( "KFactor-MaximumIteration", 32 );
+  setAsUnsignedInteger( "KFactor-DefaultIntegrationNodesNumber", 256 );
 
   // RootStrategyImplementation parameters //
   setAsNumericalScalar( "RootStrategy-DefaultMaximumDistance", 8.0 );

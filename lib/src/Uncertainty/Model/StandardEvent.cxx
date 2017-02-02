@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements an event based on a composite random vector whose
  *  antecedent has a spherical distribution
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/StandardEvent.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/ComposedFunction.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/CompositeRandomVector.hxx"
 #include "openturns/UsualRandomVector.hxx"
@@ -72,7 +72,7 @@ StandardEvent::StandardEvent(const Event & event)
   const Distribution standard(distribution.getStandardDistribution());
   // Build the antecedent
   const RandomVector antecedent(standard);
-  const NumericalMathFunction composed(function, inverse);
+  const ComposedFunction composed(function, inverse);
   const RandomVector vect(composed, antecedent);
   // Set the random vector implementation
   (*this) = StandardEvent(vect, event.getOperator(), event.getThreshold());

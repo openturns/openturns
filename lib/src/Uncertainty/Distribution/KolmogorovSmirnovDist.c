@@ -51,7 +51,7 @@ static double DurbinMatrix (int n, double d);
 
 
 /*========================================================================*/
-#ifdef _MSC_VER
+#if defined(_MSC_VER) && (_MSC_VER < 1800)
 
 /* For ANSI C89 only, not for ISO C99 */
 #define MAXI 50

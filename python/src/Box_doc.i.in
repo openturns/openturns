@@ -4,24 +4,24 @@
 Available constructor:
     Box(*levels*)
 
+    Box(*levels, bounds*)
+
 Parameters
 ----------
 levels : sequence of int or float
-    Sequence specifying the number of intermediate points on each direction
-    which regularly discretize :math:`[0,1]`. In direction :math:`i`, the
-    points number is :math:`levels[i]+2`: the extreme bounds 0 and 1 are
-    always taken.
+    Sequence specifying the number of intermediate points in each direction
+    which regularly discretizes a pavement. In direction :math:`i`, the
+    points number is :math:`levels[i]+2`.
+bounds : :class:`~openturns.Interval`
+    The bounds of the pavement
+    If not specified, the bounds are set to the unit pavement :math:`[0,1]^n`.
 
 Notes
 -----
 Box is a stratified design of experiments enabling to create
-a points grid by regularly discretizing the unit pavement :math:`[0,1]^n` with
-the number of intermediate points specified for each direction. The number of
+a points grid by regularly discretizing a pavement with
+the number of intermediate points specified in each direction. The number of
 points generated is :math:`\prod_{i=1}^n (2+levels[i])`.
-
-In order to scale each direction and translate the grid structure onto the
-proper center, use the operator :math:`*=` and :math:`+=` of
-:class:`~openturns.NumericalSample`.
 
 See also
 --------
@@ -30,12 +30,11 @@ StratifiedExperiment
 Examples
 --------
 >>> import openturns as ot
->>> levels = [4.0, 2.0]
->>> # Here : direction 1 will be discretized with 4 intermediate points
+>>> # direction 1 will be discretized in with 4 intermediate points
 >>> # and direction 2 with 2 intermediate points
->>> myCenteredReductedGrid = ot.Box(levels)
->>> mySample = myCenteredReductedGrid.generate()
->>> # Translate the grid
->>> mySample+=4
->>> # Scale each direction
->>> mySample*=2"
+>>> levels = [4, 2]
+>>> # first component in [5,7], second in [6,9]
+>>> bounds = ot.Interval([5.0, 6.0], [7.0, 9.0])
+>>> myGrid = ot.Box(levels, bounds)
+>>> mySample = myGrid.generate()"
+

@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all function implementations
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -37,6 +37,7 @@
 #include "openturns/Log.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/Os.hxx"
+#include "openturns/SymbolicFunction.hxx"
 
 #undef GetClassName
 
@@ -45,12 +46,6 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(NumericalMathFunctionImplementation);
 
 static const Factory<NumericalMathFunctionImplementation> Factory_NumericalMathFunctionImplementation;
-
-// Inline documentation for analytical functions
-Bool NumericalMathFunctionImplementation::IsDocumentationInitialized_ = false;
-Description NumericalMathFunctionImplementation::ValidConstants_;
-Description NumericalMathFunctionImplementation::ValidFunctions_;
-Description NumericalMathFunctionImplementation::ValidOperators_;
 
 /* Default constructor */
 NumericalMathFunctionImplementation::NumericalMathFunctionImplementation()
@@ -517,7 +512,7 @@ NumericalMathFunctionImplementation::Implementation NumericalMathFunctionImpleme
 /* Get the function corresponding to indices components */
 NumericalMathFunctionImplementation::Implementation NumericalMathFunctionImplementation::getMarginal(const Indices & indices) const
 {
-  if (!indices.check(getOutputDimension() - 1)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and  must be different";
+  if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and must be different";
   return new NumericalMathFunctionImplementation(p_evaluationImplementation_->getMarginal(indices), p_gradientImplementation_->getMarginal(indices), p_hessianImplementation_->getMarginal(indices));
 }
 
@@ -539,100 +534,23 @@ UnsignedInteger NumericalMathFunctionImplementation::getHessianCallsNumber() con
   return p_hessianImplementation_->getCallsNumber();
 }
 
-/* Initialization of the documentation */
-void NumericalMathFunctionImplementation::InitializeDocumentation()
-{
-  if (IsDocumentationInitialized_) return;
-
-  // First, the constants
-  ValidConstants_.setName("Valid constants");
-  ValidConstants_.add("_e -> Euler's constant (2.71828...)");
-  ValidConstants_.add("_pi -> Pi constant (3.14159...)");
-
-  // Second, the functions
-  ValidFunctions_.setName("Valid functions");
-  ValidFunctions_.add("sin(arg) -> sine function");
-  ValidFunctions_.add("cos(arg) -> cosine function");
-  ValidFunctions_.add("cotan(arg) -> cotangent function");
-  ValidFunctions_.add("tan(arg) -> tangent function");
-  ValidFunctions_.add("asin(arg) -> inverse sine function");
-  ValidFunctions_.add("acos(arg) -> inverse cosine function");
-  ValidFunctions_.add("acotan(arg) -> inverse cotangent function");
-  ValidFunctions_.add("atan(arg) -> inverse tangent function, values in (-pi/2, pi/2)");
-  ValidFunctions_.add("atan2(arg1, arg2) -> inverse tangent function, values in (-pi, pi)");
-  ValidFunctions_.add("sinh(arg) -> hyperbolic sine function");
-  ValidFunctions_.add("cosh(arg) -> hyperbolic cosine function");
-  ValidFunctions_.add("tanh(arg) -> hyperbolic tangens function");
-  ValidFunctions_.add("asinh(arg) -> inverse hyperbolic sine function");
-  ValidFunctions_.add("acosh(arg) -> inverse hyperbolic cosine function");
-  ValidFunctions_.add("atanh(arg) -> inverse hyperbolic tangent function");
-  ValidFunctions_.add("log2(arg) -> logarithm in base 2");
-  ValidFunctions_.add("log10(arg) -> logarithm in base 10");
-  ValidFunctions_.add("log(arg) -> logarithm in base e (2.71828...)");
-  ValidFunctions_.add("ln(arg) -> alias for log function");
-  ValidFunctions_.add("lngamma(arg) -> log of the gamma function");
-  ValidFunctions_.add("gamma(arg) -> gamma function");
-  ValidFunctions_.add("exp(arg) -> exponential function");
-  ValidFunctions_.add("erf(arg) -> error function");
-  ValidFunctions_.add("erfc(arg) -> complementary error function");
-  ValidFunctions_.add("abs(arg) -> absolute value function");
-  ValidFunctions_.add("sqrt(arg) -> square root function");
-  ValidFunctions_.add("cbrt(arg) -> cubic root function");
-  ValidFunctions_.add("besselJ0(arg) -> 1rst kind Bessel function with parameter 0");
-  ValidFunctions_.add("besselJ1(arg) -> 1rst kind Bessel function with parameter 1");
-  ValidFunctions_.add("besselY0(arg) -> 2nd kind Bessel function with parameter 0");
-  ValidFunctions_.add("besselY1(arg) -> 2nd kind Bessel function with parameter 1");
-  ValidFunctions_.add("floor(arg) -> round to nearest integer");
-  ValidFunctions_.add("ceil(arg) -> round to nearest integer");
-  ValidFunctions_.add("trunc(arg) -> round to nearest integer");
-  ValidFunctions_.add("round(arg) -> round to nearest integer");
-  ValidFunctions_.add("rint(arg) -> round to nearest integer");
-  ValidFunctions_.add("sign(arg) -> sign function -1 if x<0; 1 if x>0");
-  ValidFunctions_.add("(condition ? value1 : value2) -> if condition then value1 else value2");
-  ValidFunctions_.add("sum(arg1, ..., argn) -> sum of all arguments");
-  ValidFunctions_.add("avg(arg1, ..., argn) -> mean value of all arguments");
-  ValidFunctions_.add("min(arg1, ..., argn) -> min of all arguments");
-  ValidFunctions_.add("max(arg1, ..., argn) -> max of all arguments");
-
-  // Third, the operators
-  ValidOperators_.setName("Valid operators");
-  ValidOperators_.add("= -> assignement, can only be applied to variable names (priority -1)");
-  ValidOperators_.add("and -> logical and (priority 1)");
-  ValidOperators_.add("or -> logical or (priority 1)");
-  ValidOperators_.add("xor -> logical xor (priority 1)");
-  ValidOperators_.add("<= -> less or equal (priority 2)");
-  ValidOperators_.add(">= -> greater or equal (priority 2)");
-  ValidOperators_.add("!= -> not equal (priority 2)");
-  ValidOperators_.add("== -> equal (priority 2)");
-  ValidOperators_.add("> -> greater than (priority 2)");
-  ValidOperators_.add("< -> less than (priority 2)");
-  ValidOperators_.add("+ -> addition (priority 3)");
-  ValidOperators_.add("- -> subtraction (priority 3)");
-  ValidOperators_.add("* -> multiplication (priority 4)");
-  ValidOperators_.add("/ -> division (priority 4)");
-  ValidOperators_.add("~ -> logical negation (priority 4)");
-  ValidOperators_.add("- -> sign change (priority 4)");
-  ValidOperators_.add("^ -> raise x to the power of y (priority 5)");
-  IsDocumentationInitialized_ = true;
-}
-
 /* Static methods for documentation of analytical fonctions */
 Description NumericalMathFunctionImplementation::GetValidConstants()
 {
-  if (!IsDocumentationInitialized_) InitializeDocumentation();
-  return ValidConstants_;
+  Log::Warn(OSS() << "NumericalMathFunction:GetValidConstants is deprecated");
+  return SymbolicFunction::GetValidConstants();
 }
 
 Description NumericalMathFunctionImplementation::GetValidFunctions()
 {
-  if (!IsDocumentationInitialized_) InitializeDocumentation();
-  return ValidFunctions_;
+  Log::Warn(OSS() << "NumericalMathFunction:GetValidFunctions is deprecated");
+  return SymbolicFunction::GetValidFunctions();
 }
 
 Description NumericalMathFunctionImplementation::GetValidOperators()
 {
-  if (!IsDocumentationInitialized_) InitializeDocumentation();
-  return ValidOperators_;
+  Log::Warn(OSS() << "NumericalMathFunction:GetValidOperators is deprecated");
+  return SymbolicFunction::GetValidOperators();
 }
 
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */

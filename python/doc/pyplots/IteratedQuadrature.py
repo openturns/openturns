@@ -8,9 +8,9 @@ oldPrecision = ot.PlatformInfo.GetNumericalPrecision()
 ot.PlatformInfo.SetNumericalPrecision(16)
 a = -m.pi
 b = m.pi
-f = ot.NumericalMathFunction(['x', 'y'], ['1+cos(x)*sin(y)'])
-l = [ot.NumericalMathFunction('x', ' 2+cos(x)')]
-u = [ot.NumericalMathFunction('x', '-2-cos(x)')]
+f = ot.SymbolicFunction(['x', 'y'], ['1+cos(x)*sin(y)'])
+l = [ot.SymbolicFunction(['x'], [' 2+cos(x)'])]
+u = [ot.SymbolicFunction(['x'], ['-2-cos(x)'])]
 
 # Draw the graph of the integrand and the bounds:
 

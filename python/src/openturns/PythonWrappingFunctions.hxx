@@ -2,7 +2,7 @@
 /**
  * @brief This file provides functions to ease Python wrapping
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -518,7 +518,7 @@ canConvertCollectionObjectFromPySequence(PyObject * pyObj)
   {
     check<_PySequence_>(pyObj);
   }
-  catch( InvalidArgumentException & ex )
+  catch (InvalidArgumentException &)
   {
     return false;
   }
@@ -563,7 +563,7 @@ buildCollectionFromPySequence(PyObject * pyObj, int sz = 0)
     {
       check<typename traitsPythonType< T >::Type>( elt );
     }
-    catch( InvalidArgumentException & ex )
+    catch (InvalidArgumentException &)
     {
       delete p_coll;
       throw;
@@ -775,7 +775,7 @@ convert< _PySequence_, MatrixImplementation* >(PyObject * pyObj)
               {
                 p_implementation->operator()( i, j ) = checkAndConvert<_PyFloat_, NumericalScalar>(elt.get());
               }
-              catch( InvalidArgumentException & ex )
+              catch (InvalidArgumentException &)
               {
                 delete p_implementation;
                 throw;
@@ -995,7 +995,7 @@ convert< _PySequence_, ComplexMatrixImplementation* >(PyObject * pyObj)
               {
                 p_implementation->operator()( i, j ) = checkAndConvert<_PyComplex_, NumericalComplex>(elt.get());
               }
-              catch( InvalidArgumentException & ex )
+              catch (InvalidArgumentException &)
               {
                 delete p_implementation;
                 throw;
@@ -1144,7 +1144,7 @@ convert< _PySequence_, ComplexTensorImplementation* >(PyObject * pyObj)
                 {
                   p_implementation->operator()( i, j, k ) = checkAndConvert<_PyComplex_, NumericalComplex>(elt.get());
                 }
-                catch( InvalidArgumentException & ex )
+                catch (InvalidArgumentException &)
                 {
                   delete p_implementation;
                   throw;
@@ -1239,7 +1239,7 @@ void handleException()
         String valueString = checkAndConvert< _PyString_, String >(value);
         exceptionMessage += ": " + valueString;
       }
-      catch( InvalidArgumentException & ex )
+      catch (InvalidArgumentException &)
       {
         // could not get msg from strings
       }

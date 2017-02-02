@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class HMatrixImplementation
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -82,13 +82,18 @@ int main(int argc, char *argv[])
     hmat.assemble(simpleAssembly, 'L');
 
     HMatrix hmatRef(hmat);
-    NumericalScalar refNorm = hmatRef.norm();
+    const NumericalScalar refNorm = hmatRef.norm();
 
     hmat.factorize("LLt");
 
     hmatRef.gemm('N', 'T', -1., hmat, hmat, 1.);
     NumericalScalar threshold = 1.e-10;
     fullprint << "|| M - L Lt || / || M ||" << ((hmatRef.norm() < threshold * refNorm) ? " < " : " > ") << threshold << std::endl;
+
+    const NumericalScalar normL(hmat.norm());
+    const NumericalScalar alpha(0.1);
+    hmat.scale(alpha);
+    fullprint << "|| L || - 10.0 * || 0.1 * L || " << ((std::abs(normL - hmat.norm()/alpha) < threshold) ? " < " : " > ") << threshold << std::endl;
   }
   catch (NotYetImplementedException & ex)
   {

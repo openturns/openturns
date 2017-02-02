@@ -3,7 +3,7 @@
  *  @brief Implementation class of the scalar nonlinear solver based on
  *         the Brent mixed bisection/linear/inverse quadratic interpolation
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -72,14 +72,14 @@ NumericalScalar Brent::solve(const NumericalMathFunction & function,
   /* We transform the equation function(x) = value into function(x) - value = 0 */
   UnsignedInteger usedFunctionEvaluation = 0;
   const UnsignedInteger maximumFunctionEvaluation = getMaximumFunctionEvaluation();
-  NumericalScalar a = infPoint;
+  volatile NumericalScalar a = infPoint;
   NumericalScalar fA = infValue - value;
   if (std::abs(fA) <= getResidualError()) return a;
-  NumericalScalar b = supPoint;
+  volatile NumericalScalar b = supPoint;
   NumericalScalar fB = supValue - value;
   if (std::abs(fB) <= getResidualError()) return b;
   if (fA * fB > 0.0) throw InternalException(HERE) << "Error: Brent method requires that the function takes different signs at the endpoints of the given starting interval, here infPoint=" << infPoint << ", supPoint=" << supPoint << ", value=" << value << ", f(infPoint) - value=" << fA << " and f(supPoint) - value=" << fB;
-  NumericalScalar c = a;
+  volatile NumericalScalar c = a;
   NumericalScalar fC = fA;
   // Main loop
   for (;;)

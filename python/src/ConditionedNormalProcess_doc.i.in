@@ -45,7 +45,7 @@ Examples
 >>> # Scale each direction
 >>> inputSample *= 10
 >>> # Define model
->>> model = ot.NumericalMathFunction(['x', 'y'], ['z'], ['cos(0.5*x) + sin(y)'])
+>>> model = ot.SymbolicFunction(['x', 'y'], ['cos(0.5*x) + sin(y)'])
 >>> outputSample = model(inputSample)
 >>> # Definition of exponential model
 >>> spatialDimension = 2
@@ -82,7 +82,7 @@ Examples
 >>> # Scale each direction
 >>> inputSample *= 10
 >>> # Define model
->>> model = ot.NumericalMathFunction(['x', 'y'], ['z'], ['cos(0.5*x) + sin(y)'])
+>>> model = ot.SymbolicFunction(['x', 'y'], ['cos(0.5*x) + sin(y)'])
 >>> outputSample = model(inputSample)
 >>> # Definition of exponential model
 >>> spatialDimension = 2

@@ -2,7 +2,7 @@
 /**
  *  @brief Corrected implicit leave-one-out cross validation
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -72,7 +72,6 @@ NumericalScalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method) const
 {
   const NumericalSample x(method.getInputSample());
   const NumericalSample y(method.getOutputSample());
-  const Basis basis(method.getBasis());
 
   const UnsignedInteger sampleSize = y.getSize();
 
@@ -87,7 +86,7 @@ NumericalScalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method) const
   // Build the design of experiments
   LOGINFO("Build the design matrix");
 
-  Matrix psiAk(method.computeWeightedDesign());
+  const Matrix psiAk(method.computeWeightedDesign());
 
   // Solve the least squares problem argmin ||psiAk * coefficients - b||^2 using this decomposition
   LOGINFO("Solve the least squares problem");
@@ -98,15 +97,13 @@ NumericalScalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method) const
   // Compute the empirical error
   LOGINFO("Compute the empirical error");
 
-  Collection<NumericalMathFunction> coll(basisSize);
-  for (UnsignedInteger j = 0; j < basisSize; ++ j) coll[j] = basis[method.getImplementation()->currentIndices_[j]];
-  const NumericalMathFunction metamodel(coll, coefficients);
-  const NumericalSample yHat(metamodel(x));
+  const NumericalPoint yHat(psiAk * coefficients);
+
   const NumericalPoint h(method.getHDiag());
   NumericalScalar empiricalError = 0.0;
   for (UnsignedInteger i = 0; i < sampleSize; ++ i)
   {
-    const NumericalScalar ns = (y[i][0] - yHat[i][0]) / (1.0 - h[i]);
+    const NumericalScalar ns = (y[i][0] - yHat[i]) / (1.0 - h[i]);
     empiricalError += ns * ns / sampleSize;
   }
   LOGINFO(OSS() << "Empirical error=" << empiricalError);

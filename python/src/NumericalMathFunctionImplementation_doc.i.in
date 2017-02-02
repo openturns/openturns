@@ -1,5 +1,5 @@
 %define OT_NumericalMathFunction_doc
-"Function.
+"Function base class.
 
 Available constructors:
     NumericalMathFunction(*inputs, outputs, formulas*)
@@ -284,63 +284,6 @@ Create a *NumericalMathFunction* which is the composition function
 %enddef
 %feature("docstring") OT::NumericalMathFunctionImplementation
 OT_NumericalMathFunction_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_NumericalMathFunction_GetValidFunctions_doc
-"Return the list of valid functions.
-
-Returns
--------
-list_functions : :class:`~openturns.Description`
-    List of the functions we can use within OpenTURNS.
-
-Examples
---------
->>> import openturns as ot
->>> print(ot.NumericalMathFunction.GetValidFunctions()[0])
-sin(arg) -> sine function"
-%enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::GetValidFunctions
-OT_NumericalMathFunction_GetValidFunctions_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_NumericalMathFunction_GetValidConstants_doc
-"Return the list of valid constants.
-
-Returns
--------
-list_constants : :class:`~openturns.Description`
-    List of the constants we can use within OpenTURNS.
-
-Examples
---------
->>> import openturns as ot
->>> print(ot.NumericalMathFunction.GetValidConstants()[0])
-_e -> Euler's constant (2.71828...)"
-%enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::GetValidConstants
-OT_NumericalMathFunction_GetValidConstants_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_NumericalMathFunction_GetValidOperators_doc
-"Return the list of valid operators.
-
-Returns
--------
-list_operators : :class:`~openturns.Description`
-    List of the operators we can use within OpenTURNS.
-
-Examples
---------
->>> import openturns as ot
->>> print(ot.NumericalMathFunction.GetValidOperators()[0])
-= -> assignement, can only be applied to variable names (priority -1)"
-%enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::GetValidOperators
-OT_NumericalMathFunction_GetValidOperators_doc
 
 // ---------------------------------------------------------------------
 

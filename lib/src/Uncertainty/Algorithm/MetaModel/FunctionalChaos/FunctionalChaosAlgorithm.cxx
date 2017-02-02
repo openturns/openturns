@@ -2,7 +2,7 @@
 /**
  *  @brief The class building chaos expansions
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -26,8 +26,9 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/NumericalMathFunctionImplementation.hxx"
+#include "openturns/ComposedFunction.hxx"
 #include "openturns/IdentityFunction.hxx"
-#include "openturns/DatabaseNumericalMathEvaluationImplementation.hxx"
+#include "openturns/DatabaseFunction.hxx"
 #include "openturns/RosenblattEvaluation.hxx"
 #include "openturns/InverseRosenblattEvaluation.hxx"
 #include "openturns/MarginalTransformationEvaluation.hxx"
@@ -94,7 +95,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy,
     const ProjectionStrategy & projectionStrategy)
-  : MetaModelAlgorithm( distribution, NumericalMathFunction(NumericalMathFunctionImplementation(DatabaseNumericalMathEvaluationImplementation(inputSample, outputSample, false).clone())) )
+  : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample, false))
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(projectionStrategy)
   , maximumResidual_(ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
@@ -116,7 +117,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy,
     const ProjectionStrategy & projectionStrategy)
-  : MetaModelAlgorithm( distribution, NumericalMathFunction(NumericalMathFunctionImplementation(DatabaseNumericalMathEvaluationImplementation(inputSample, outputSample, false).clone())) )
+  : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample, false))
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(projectionStrategy)
   , maximumResidual_(ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
@@ -148,7 +149,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
     const NumericalSample & outputSample,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy)
-  : MetaModelAlgorithm( distribution, NumericalMathFunction(NumericalMathFunctionImplementation(DatabaseNumericalMathEvaluationImplementation(inputSample, outputSample, false).clone())) )
+  : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample, false))
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(LeastSquaresStrategy(inputSample, outputSample))
   , maximumResidual_(ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
@@ -160,7 +161,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
 /* Constructor */
 FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & inputSample,
     const NumericalSample & outputSample)
-  : MetaModelAlgorithm( Distribution(), NumericalMathFunction(NumericalMathFunctionImplementation(DatabaseNumericalMathEvaluationImplementation(inputSample, outputSample, false).clone())) )
+  : MetaModelAlgorithm(Distribution(), DatabaseFunction(inputSample, outputSample, false))
   , adaptiveStrategy_()
   , projectionStrategy_()
   , maximumResidual_(ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
@@ -222,7 +223,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
     const NumericalSample & outputSample,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy)
-  : MetaModelAlgorithm( distribution, NumericalMathFunction(NumericalMathFunctionImplementation(DatabaseNumericalMathEvaluationImplementation(inputSample, outputSample, false).clone())) )
+  : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample, false))
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(LeastSquaresStrategy(inputSample, weights, outputSample))
   , maximumResidual_(ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
@@ -341,8 +342,8 @@ void FunctionalChaosAlgorithm::run()
         const NumericalMathFunction TinvX(distribution_.getInverseIsoProbabilisticTransformation());
         const NumericalMathFunction TZ(measure.getIsoProbabilisticTransformation());
         const NumericalMathFunction TinvZ(measure.getInverseIsoProbabilisticTransformation());
-        transformation_ = NumericalMathFunction(TinvZ, TX);
-        inverseTransformation_ = NumericalMathFunction(TinvX, TZ);
+        transformation_ = ComposedFunction(TinvZ, TX);
+        inverseTransformation_ = ComposedFunction(TinvX, TZ);
       }
       // The fourth and last case is when the standard spaces are different
       // We use the Rosenblatt transformation for each distribution with non-normal
@@ -378,15 +379,15 @@ void FunctionalChaosAlgorithm::run()
           TZ = NumericalMathFunction(NumericalMathFunctionImplementation(RosenblattEvaluation(measure.getImplementation()).clone()));
           invTZ = NumericalMathFunction(NumericalMathFunctionImplementation(InverseRosenblattEvaluation(measure.getImplementation()).clone()));
         }
-        transformation_ = NumericalMathFunction(invTZ, TX);
-        inverseTransformation_ = NumericalMathFunction(invTX, TZ);
+        transformation_ = ComposedFunction(invTZ, TX);
+        inverseTransformation_ = ComposedFunction(invTX, TZ);
       }
     } // Non-independent input copula
   }
   // Build the composed model g = f o T^{-1}, which is a function of Z so it can be decomposed upon an orthonormal basis based on Z distribution
   LOGINFO("Transform the input sample in the measure space if needed");
   if (noTransformation) composedModel_ = model_;
-  else composedModel_ = NumericalMathFunction(model_, inverseTransformation_);
+  else composedModel_ = ComposedFunction(model_, inverseTransformation_);
   // If the input and output databases have already been given to the projection strategy, transport them to the measure space
   const NumericalSample initialInputSample(projectionStrategy_.getImplementation()->inputSample_);
   if (databaseProjection && !noTransformation) projectionStrategy_.getImplementation()->inputSample_ = transformation_(initialInputSample);

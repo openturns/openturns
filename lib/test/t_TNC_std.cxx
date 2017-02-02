@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Tnc for standard methods
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -59,9 +59,8 @@ int main(int argc, char *argv[])
     solver.setStartingPoint(startingPoint);
 
     // Define Optimization Problem : minimization
-    OptimizationProblem problem;
+    OptimizationProblem problem(levelFunction);
     problem.setBounds(bounds);
-    problem.setObjective(levelFunction);
     problem.setMinimization(true);
     solver.setProblem(problem);
     solver.run();
@@ -109,9 +108,8 @@ int main(int argc, char *argv[])
     // Define Optimization Solver :
     OptimizationSolver solver(new TNC());
 
-    OptimizationProblem problem;
+    OptimizationProblem problem(levelFunction);
     problem.setBounds(bounds);
-    problem.setObjective(levelFunction);
 
     {
       // Define Optimization Problem : minimization

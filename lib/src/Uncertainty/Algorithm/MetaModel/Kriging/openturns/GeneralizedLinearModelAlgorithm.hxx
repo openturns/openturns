@@ -2,7 +2,7 @@
 /**
  *  @brief The class builds generalized linear models
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -118,7 +118,11 @@ public:
   /** Optimization flag accessor */
   Bool getOptimizeParameters() const;
   void setOptimizeParameters(const Bool optimizeParameters);
-  
+
+  /** Accessor to optimization bounds */
+  void setOptimizationBounds(const Interval & optimizationBounds);
+  Interval getOptimizationBounds() const;
+
   /** Observation noise accessor */
   void setNoise(const NumericalPoint & noise);
   NumericalPoint getNoise() const;
@@ -192,6 +196,9 @@ private:
 
   // The optimization algorithm used for the meta-parameters estimation
   mutable OptimizationSolver solver_;
+
+  // Bounds used for parameter optimization
+  Interval optimizationBounds_;
 
   // The coefficients of the current output conditional expectation part
   mutable NumericalPoint beta_;

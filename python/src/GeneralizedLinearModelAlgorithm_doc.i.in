@@ -171,7 +171,7 @@ Examples
 Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
 
 >>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x'], ['x * sin(x)'])
+>>> f = ot.SymbolicFunction(['x'], ['x * sin(x)'])
 >>> inputSample = ot.NumericalSample([[1.0], [3.0], [5.0], [6.0], [7.0], [8.0]])
 >>> outputSample = f(inputSample)
 
@@ -261,7 +261,7 @@ Examples
 Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
 
 >>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x0'], ['f0'], ['x0 * sin(x0)'])
+>>> f = ot.SymbolicFunction(['x0'], ['x0 * sin(x0)'])
 >>> inputSample = ot.NumericalSample([[1.0], [3.0], [5.0], [6.0], [7.0], [8.0]])
 >>> outputSample = f(inputSample)
 
@@ -328,6 +328,26 @@ Returns
 -------
 optimizeParameters : bool
     Whether to optimize the covariance model parameters."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedLinearModelAlgorithm::setOptimizationBounds
+"Optimization bounds accessor.
+
+Parameters
+----------
+bounds : :class:`~openturns.Interval`
+    Bounds for covariance model parameter optimization."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedLinearModelAlgorithm::getOptimizationBounds
+"Optimization bounds accessor.
+
+Returns
+-------
+bounds : :class:`~openturns.Interval`
+    Bounds for covariance model parameter optimization."
 
 // ---------------------------------------------------------------------
 

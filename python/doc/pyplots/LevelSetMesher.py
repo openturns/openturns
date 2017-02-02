@@ -6,7 +6,7 @@ from openturns.viewer import View
 mesher = ot.LevelSetMesher([50] * 2)
 
 # Create a level set
-function = ot.NumericalMathFunction(["x0", "x1"], ["10*(x0^3+x1)^2+x0^2"])
+function = ot.SymbolicFunction(['x0', 'x1'], ['10*(x0^3+x1)^2+x0^2'])
 level = 0.5
 set = ot.LevelSet(function, level)
 
@@ -19,7 +19,7 @@ graph.setXTitle('$x_0$')
 graph.setYTitle('$x_1$')
 
 fig = plt.figure(figsize=(10, 4))
-plt.suptitle("Mesh of a level set")
+plt.suptitle('Mesh of a level set')
 graph_axis = fig.add_subplot(111)
 graph_axis.set_xlim(auto=True)
 

@@ -2,7 +2,7 @@
 /**
  *  @brief LeastSquares solving algorithm implementation
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -93,6 +93,9 @@ public:
 
   /** Get the diagonal of H */
   virtual NumericalPoint getHDiag() const;
+
+  /** Get the diagonal of the Gram inverse */
+  virtual NumericalPoint getGramInverseDiag() const;
 
   /** Get the trace of the Gram inverse */
   virtual NumericalScalar getGramInverseTrace() const;

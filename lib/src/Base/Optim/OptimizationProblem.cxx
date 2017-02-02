@@ -2,7 +2,7 @@
 /**
  *  @brief OptimizationProblem implements an algorithm for finding the
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -45,10 +45,14 @@ OptimizationProblem::OptimizationProblem(const Implementation & p_implementation
   // Nothing to do
 }
 
-/*
- * @brief  Standard constructor: the problem is defined by a scalar valued function  (in fact, a 1-D vector valued function)
- *         and a level value
- */
+/* Constructor with constraints, bounds */
+OptimizationProblem::OptimizationProblem(const NumericalMathFunction & objective)
+: TypedInterfaceObject<OptimizationProblemImplementation>(new OptimizationProblemImplementation(objective))
+{
+  // Nothing to do
+}
+
+/* Constructor with constraints, bounds */
 OptimizationProblem::OptimizationProblem(const NumericalMathFunction & objective,
     const NumericalMathFunction & equalityConstraint,
     const NumericalMathFunction & inequalityConstraint,

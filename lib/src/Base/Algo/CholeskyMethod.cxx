@@ -2,7 +2,7 @@
 /**
  *  @brief Cholesky decomposition based LS solver
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -234,6 +234,27 @@ void CholeskyMethod::update(const Indices & addedIndices,
   } // Update on column modification
 }
 
+NumericalPoint CholeskyMethod::solve(const NumericalPoint & rhs)
+{
+  // This call insures that the decomposition has already been computed.
+  // No cost if it is up to date.
+  update(Indices(0), currentIndices_, Indices(0));
+  NumericalPoint b(rhs);
+  if (!hasUniformWeight_)
+  {
+    const UnsignedInteger size = rhs.getSize();
+    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weightSqrt_[i];
+  }
+  const MatrixImplementation psiAk(computeWeightedDesign());
+  const NumericalPoint c(psiAk.genVectProd(b, true));
+  // We first solve Ly=b then L^Tx=y. The flags given to solveLinearSystemTri() are:
+  // 1) To keep the matrix intact
+  // 2) To say that the matrix L is lower triangular
+  // 3) To say that it is L^Tx=y that is solved instead of Lx=y
+  return l_.getImplementation()->solveLinearSystemTri(l_.solveLinearSystem(c), true, true, true);
+}
+
+
 NumericalPoint CholeskyMethod::solveNormal(const NumericalPoint & rhs)
 {
   const UnsignedInteger basisSize = currentIndices_.getSize();
@@ -244,11 +265,17 @@ NumericalPoint CholeskyMethod::solveNormal(const NumericalPoint & rhs)
   // No cost if it is up to date.
   update(Indices(0), currentIndices_, Indices(0));
 
+  NumericalPoint b(rhs);
+  if (!hasUniformWeight_)
+  {
+    const UnsignedInteger size = rhs.getSize();
+    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weight_[i];
+  }
   // We first solve Ly=b then L^Tx=y. The flags given to solveLinearSystemTri() are:
   // 1) To keep the matrix intact
   // 2) To say that the matrix L is lower triangular
   // 3) To say that it is L^Tx=y that is solved instead of Lx=y
-  return l_.getImplementation()->solveLinearSystemTri(l_.solveLinearSystem(rhs), true, true, true);
+  return l_.getImplementation()->solveLinearSystemTri(l_.solveLinearSystem(b), true, true, true);
 }
 
 
@@ -269,14 +296,58 @@ SymmetricMatrix CholeskyMethod::getH() const
 }
 
 
+NumericalPoint CholeskyMethod::getHDiag() const
+{
+  const UnsignedInteger basisSize = currentIndices_.getSize();
+  const MatrixImplementation invL(*l_.solveLinearSystem(IdentityMatrix(basisSize)).getImplementation());
+  const MatrixImplementation psiAk(computeWeightedDesign());
+  const MatrixImplementation invLPsiAk(invL.genProd(psiAk, false, true));
+
+  const UnsignedInteger dimension = psiAk.getNbRows();
+  NumericalPoint diag(dimension);
+  MatrixImplementation::const_iterator invLPsiAk_iterator(invLPsiAk.begin());
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    NumericalScalar value = 0.0;
+    for (UnsignedInteger j = 0; j < basisSize; ++ j)
+    {
+      value += (*invLPsiAk_iterator) * (*invLPsiAk_iterator);
+      ++invLPsiAk_iterator;
+    }
+    diag[i] = value;
+  }
+
+  return diag;
+}
+
+NumericalPoint CholeskyMethod::getGramInverseDiag() const
+{
+  const UnsignedInteger basisSize = currentIndices_.getSize();
+  const MatrixImplementation invL(*l_.solveLinearSystem(IdentityMatrix(basisSize)).getImplementation());
+  NumericalPoint diag(basisSize);
+  MatrixImplementation::const_iterator invL_iterator(invL.begin());
+  for (UnsignedInteger i = 0; i < basisSize; ++ i)
+  {
+    NumericalScalar value = 0.0;
+    for (UnsignedInteger j = 0; j < basisSize; ++ j)
+    {
+      value += (*invL_iterator) * (*invL_iterator);
+      ++invL_iterator;
+    }
+    diag[i] = value;
+  }
+
+  return diag;
+}
+
 NumericalScalar CholeskyMethod::getGramInverseTrace() const
 {
-
   NumericalScalar traceInverse = 0.0;
-  for (UnsignedInteger k = 0; k < l_.getDimension(); ++ k)
+  const UnsignedInteger basisSize = currentIndices_.getSize();
+  const MatrixImplementation invL(*l_.solveLinearSystem(IdentityMatrix(basisSize)).getImplementation());
+  for (MatrixImplementation::const_iterator it = invL.begin(); it != invL.end(); ++it)
   {
-    const NumericalScalar dk = l_(k, k);
-    traceInverse += 1.0 / (dk * dk);
+    traceInverse += (*it) * (*it);
   }
   return traceInverse;
 }

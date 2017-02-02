@@ -8,6 +8,7 @@ try:
     # use non-interactive backend
     import matplotlib
     matplotlib.use('Agg')
+    import matplotlib.pyplot as plt
 
     from openturns.viewer import View
     import openturns as ot
@@ -17,14 +18,14 @@ try:
     # graph.draw('curve1.png')
     view = View(graph, pixelsize=(800, 600), plot_kwargs={'color': 'blue'})
     # view.save('curve1.png')
-    view.show(block=False)
+    view.show()
 
     # Contour
     graph = ot.Normal([1, 2], [3, 5], ot.CorrelationMatrix(2)).drawPDF()
     # graph.draw('curve2.png')
     view = View(graph)
     # view.save('curve2.png')
-    view.show(block=False)
+    view.show()
 
     # Histogram tests
     normal = ot.Normal(1)
@@ -34,7 +35,7 @@ try:
     # graph.draw('curve3.png')
     view = View(graph)
     # view.save('curve3.png')
-    view.show(block=False)
+    view.show()
 
     # QQPlot tests
     size = 100
@@ -45,7 +46,7 @@ try:
     # graph.draw('curve4.png')
     view = View(graph)
     # view.save('curve4.png')
-    view.show()
+    plt.show(block=True)
 
     # Clouds tests
     dimension = (2)
@@ -65,7 +66,7 @@ try:
     # graph.draw('curve5.png')
     view = View(graph)
     # view.save('curve5.png')
-    view.show(block=False)
+    view.show()
 
     # Text
     graph = ot.Graph('Annotated cloud', 'x', 'y', True, '')
@@ -100,7 +101,7 @@ try:
 
     graph.add(text)
     view = View(graph)
-    view.show(block=False)
+    view.show()
 
     # CobWeb tests
     size = 100
@@ -119,7 +120,7 @@ try:
     # graph.draw('curve6.png')
     view = View(graph, legend_kwargs={'loc': 'lower center'})
     # view.save('curve6.png')
-    view.show(block=False)
+    view.show()
 
     # Staircase
     distribution = ot.Poisson(10.0)
@@ -127,7 +128,7 @@ try:
     # graph.draw('curve7.png')
     view = View(graph)
     # view.save('curve7.png')
-    view.show(block=False)
+    view.show()
 
     # Pie
     graph = ot.SobolIndicesAlgorithmImplementation.DrawImportanceFactors(
@@ -135,7 +136,7 @@ try:
     # graph.draw('curve8.png')
     view = View(graph)
     # view.save('curve8.png')
-    view.show()
+    plt.show(block=True)
 
     # Pairs
     dim = 5
@@ -155,7 +156,7 @@ try:
     # graph.draw('curve9.png')
     view = View(graph)
     # view.save('curve9.png')
-    view.show(block=False)
+    view.show()
 
     # Convergence graph curve
     aCollection = []
@@ -175,7 +176,7 @@ try:
     # graph.draw('curve10.png')
     view = View(graph)
     # view.save('curve10.png')
-    view.show(block=False)
+    view.show()
 
     # Polygon
     size = 50
@@ -201,7 +202,7 @@ try:
     # graph.draw('curve11.png')
     view = View(graph)
     # view.save('curve11.png')
-    view.show(block=False)
+    view.show()
 
     # PolygonArray
     generator = ot.Normal(2)
@@ -217,7 +218,7 @@ try:
     # graph.draw('curve12.png')
     view = View(graph)
     # view.save('curve12.png')
-    view.show()
+    plt.show(block=True)
 
 except:
     traceback.print_exc()

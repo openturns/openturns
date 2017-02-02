@@ -2,7 +2,7 @@
 /**
  *  @brief SVD-decomposition based LS solver
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -59,9 +59,11 @@ public:
   /** Solve least-squares problem, ie x=\argmin |Mx-b|^2 */
   NumericalPoint solve(const NumericalPoint & rhs);
   NumericalPoint solveNormal(const NumericalPoint & rhs);
-  NumericalPoint getHDiag() const;
 
   CovarianceMatrix getGramInverse() const;
+
+  NumericalPoint getGramInverseDiag() const;
+  NumericalPoint getHDiag() const;
 
   NumericalScalar getGramInverseTrace() const;
 

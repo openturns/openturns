@@ -2,7 +2,7 @@
 /**
  *  @brief An implementation class for constant random vectors
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -114,7 +114,7 @@ ConstantRandomVector::Implementation ConstantRandomVector::getMarginal(const Uns
 /* Get the marginal random vector corresponding to indices components */
 ConstantRandomVector::Implementation ConstantRandomVector::getMarginal(const Indices & indices) const
 {
-  if (!indices.check(getDimension() - 1)) throw InvalidArgumentException(HERE) << "The indices of a marginal random vector must be in the range [0, dim-1] and  must be different";
+  if (!indices.check(getDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal random vector must be in the range [0, dim-1] and must be different";
   const UnsignedInteger marginalDimension = indices.getSize();
   NumericalPoint marginalPoint(marginalDimension);
   for (UnsignedInteger i = 0; i < marginalDimension; ++i) marginalPoint[i] = point_[indices[i]];

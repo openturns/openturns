@@ -2,7 +2,7 @@
 /**
  *  @brief OptimizationProblem allows to describe an optimization problem
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -53,6 +53,9 @@ public:
 
   /** Constructor from a Pointer to an implementation */
   OptimizationProblem(const Implementation & p_implementation);
+
+  /** Constructor with parameters */
+  explicit OptimizationProblem(const NumericalMathFunction & objective);
 
   /** Constructor with parameters */
   OptimizationProblem(const NumericalMathFunction & objective,

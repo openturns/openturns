@@ -1,0 +1,46 @@
+%feature("docstring") OT::ParametricFunction
+"Parametric function.
+
+Available constructor:
+    ParametricFunction(*function, indices, referencePoint, parametersSet*)
+
+It defines a parametric function from *function* by freezing the variables
+marked by the *indices* set to the values of *referencePoint*.
+
+Parameters
+----------
+function : :class:`~openturns.NumericalMathFunction`
+    Function with full parameters from which the parametric function is built.
+indices : sequence of int
+    Indices of the frozen variables.
+referencePoint : sequence of float
+    Values of the frozen variables.
+    Must be of size of *indices* if *parametersSet* is *True* (default),
+    else its size should be the complementary size of *indices*.
+parametersSet : bool
+    If *True* (default), the frozen variables are the ones referenced
+    in *indices*.
+    Otherwise, the set variables are the ones referenced in the complementary
+    set of *indices*.
+
+Examples
+--------
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction(ot.Description.BuildDefault(4, 'x'),
+...                              ['x0', 'x0 + x1', 'x0 + x2 + x3'])
+
+Then create another function by setting x1=4 and x3=10:
+
+>>> g = ot.ParametricFunction(f, [3, 1], [10, 4])
+>>> print(g.getInputDescription())
+[x0,x2]
+>>> print(g((1, 2)))
+[1,5,13]
+
+Or by setting x0=6 and x2=5 using the complementary set flag:
+
+>>> g = ot.ParametricFunction(f, [3, 1], [6, 5], False)
+>>> print(g.getInputDescription())
+[x3,x1]
+>>> print(g((1, 2)))
+[6,8,12]"

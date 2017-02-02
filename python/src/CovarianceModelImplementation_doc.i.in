@@ -486,6 +486,24 @@ OT_CovarianceModel_partialGradient_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_CovarianceModel_parameterGradient_doc
+"Compute the gradient according to the parameters.
+
+Parameters
+----------
+s, t : sequences of float
+    Multivariate index :math:`(\vect{s}, \vect{t}) \in \cD \times \cD`.
+
+Returns
+-------
+gradient : :class:`~openturns.Matrix`
+    Gradient of the function according to the parameters."
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::parameterGradient
+OT_CovarianceModel_parameterGradient_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_CovarianceModel_setAmplitude_doc
 "Set the amplitude parameter :math:`\vect{\sigma}` of the covariance function.
 

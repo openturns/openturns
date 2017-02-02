@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation of the factorial experiment plane
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -20,12 +20,15 @@
  */
 #include "openturns/OTprivate.hxx"
 #include "openturns/Factorial.hxx"
-#include "openturns/SpecFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SpecFunc.hxx" // for boost.math.round
 #include <cmath>
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Factorial);
+
+static const Factory<Factorial> Factory_Factorial;
 
 /* Default constructor */
 Factorial::Factorial()

@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all numerical math function implementations
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -57,26 +57,10 @@ public:
   typedef NumericalMathGradientImplementation::Implementation    GradientImplementation;
   typedef NumericalMathHessianImplementation::Implementation     HessianImplementation;
 
-private:
-
-  /** List of muParser valid constants */
-  static Description ValidConstants_;
-
-  /** List of muParser valid functions */
-  static Description ValidFunctions_;
-
-  /** List of muParser valid operators */
-  static Description ValidOperators_;
-
-  /** Flag to tell if the documentation has been initialized */
-  static Bool IsDocumentationInitialized_;
-
-  /** Method that initialize the fields related to the documentation of the analytical functions */
-  static void InitializeDocumentation();
-
 public:
 
-  /** Static methods for documentation of analytical fnctions */
+  /** Static methods for documentation of analytical functions
+   * @deprecated */
   static Description GetValidConstants();
   static Description GetValidFunctions();
   static Description GetValidOperators();

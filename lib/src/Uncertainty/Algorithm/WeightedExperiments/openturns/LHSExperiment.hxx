@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level view of an LHSExperiment plane
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -86,9 +86,15 @@ public:
   Bool getRandomShift() const;
   void setRandomShift(const Bool randomShift);
 
+  /** Method save() stores the object through the StorageManager */
+  virtual void save(Advocate & adv) const;
+
+  /** Method load() reloads the object from the StorageManager */
+  virtual void load(Advocate & adv);
+
 private:
   // Marginal distributions
-  DistributionCollection marginals_;
+  mutable DistributionCollection marginals_;
 
   // Cells shuffle
   mutable Matrix shuffle_;

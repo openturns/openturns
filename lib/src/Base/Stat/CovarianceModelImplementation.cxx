@@ -2,7 +2,7 @@
 /**
  *  @brief
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -242,6 +242,35 @@ Matrix CovarianceModelImplementation::partialGradient (const NumericalPoint & s,
     const NumericalPoint currentValue(localCovarianceImplementation);
     for (UnsignedInteger j = 0; j < centralValue.getDimension(); ++j)
       gradient(i, j) = (currentValue[j] - centralValue[j]) / epsilon;
+  }
+  return gradient;
+}
+
+/* Gradient */
+Matrix CovarianceModelImplementation::parameterGradient(const NumericalPoint & s,
+                                                        const NumericalPoint & t) const
+{
+  const NumericalPoint parameter(getParameter());
+  const UnsignedInteger size = parameter.getSize();
+  const NumericalScalar epsilon = std::sqrt(SpecFunc::NumericalScalarEpsilon);
+  Matrix gradient(size, (dimension_ * (dimension_ + 1)) / 2);
+  CovarianceMatrix covRef = operator()(s, t);
+  Pointer<CovarianceModelImplementation> p_implementation(clone());
+  for (UnsignedInteger k = 0; k < size; ++ k)
+  {
+    NumericalPoint parameterP(parameter);
+    parameterP[k] += epsilon;
+    p_implementation->setParameter(parameterP);
+    CovarianceMatrix covP = p_implementation->operator()(s, t);
+    UnsignedInteger index = 0;
+    for (UnsignedInteger j = 0; j < dimension_; ++ j)
+    {
+      for (UnsignedInteger i = 0; i <= j; ++ i)
+      {
+        gradient(k, index) = (covP(i, j) - covRef(i, j)) / epsilon;
+        ++ index;
+      }
+    }
   }
   return gradient;
 }

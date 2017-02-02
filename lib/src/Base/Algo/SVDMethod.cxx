@@ -2,7 +2,7 @@
 /**
  *  @brief SVD-decomposition based LS solver
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -122,7 +122,13 @@ NumericalPoint SVDMethod::solve(const NumericalPoint & rhs)
   const UnsignedInteger svdSize = singularValues_.getSize();
 
   // First step
-  const NumericalPoint c(u_.getImplementation()->genVectProd(rhs, true));
+  NumericalPoint b(rhs);
+  if (!hasUniformWeight_)
+  {
+    const UnsignedInteger size = rhs.getSize();
+    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weightSqrt_[i];
+  }
+  const NumericalPoint c(u_.getImplementation()->genVectProd(b, true));
   // Second step
   NumericalPoint d(svdSize);
   for (UnsignedInteger i = 0; i < svdSize; ++i) d[i] = c[i] / singularValues_[i];
@@ -137,8 +143,14 @@ NumericalPoint SVDMethod::solveNormal(const NumericalPoint & rhs)
   update(Indices(0), currentIndices_, Indices(0));
   const UnsignedInteger basisSize = currentIndices_.getSize();
 
+  NumericalPoint b(rhs);
+  if (!hasUniformWeight_)
+  {
+    const UnsignedInteger size = rhs.getSize();
+    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weight_[i];
+  }
   // G^-1= V*S^-2*V^T
-  NumericalPoint coefficients(vT_ * rhs);
+  NumericalPoint coefficients(vT_ * b);
   for (UnsignedInteger i = 0; i < basisSize; ++i)
   {
     const NumericalScalar sv = singularValues_[i];
@@ -159,7 +171,7 @@ CovarianceMatrix SVDMethod::getGramInverse() const
   for (UnsignedInteger j = 0; j < n; ++j)
     for (UnsignedInteger i = 0; i < m; ++i)
     {
-      sigmaInvVt[index] = singularValues_[i] * vTimpl[index];
+      sigmaInvVt[index] = (1.0 / singularValues_[i]) * vTimpl[index];
       ++ index;
     }
   return sigmaInvVt.computeGram();
@@ -170,7 +182,7 @@ NumericalScalar SVDMethod::getGramInverseTrace() const
   NumericalScalar traceInverse = 0.0;
   for (UnsignedInteger k = 0; k < singularValues_.getDimension(); ++ k)
   {
-    traceInverse += 1.0 / singularValues_[k];
+    traceInverse += 1.0 / singularValues_[k] / singularValues_[k];
   }
   return traceInverse;
 }
@@ -182,15 +194,41 @@ NumericalPoint SVDMethod::getHDiag() const
   const UnsignedInteger basisSize = currentIndices_.getSize();
   NumericalPoint h(sampleSize);
   // matrices are stored by columns
+  MatrixImplementation::const_iterator u_iterator(u_.getImplementation()->begin());
   for (UnsignedInteger j = 0; j < basisSize; ++ j)
   {
-    for (UnsignedInteger i = 0; i < sampleSize; ++ i)
+    for (MatrixImplementation::iterator h_iterator = h.begin(); h_iterator != h.end(); ++ h_iterator)
     {
-      const NumericalScalar u_ij = u_(i, j);
-      h[i] += u_ij * u_ij;
+      *h_iterator += (*u_iterator) * (*u_iterator);
+      ++ u_iterator;
     }
   }
   return h;
+}
+
+NumericalPoint SVDMethod::getGramInverseDiag() const
+{
+  // G^{-1}=V\Sigma^{-2}V^T
+  const UnsignedInteger m = vT_.getNbRows();
+  const UnsignedInteger n = vT_.getNbColumns();
+  const MatrixImplementation & vTimpl(*vT_.getImplementation());
+  UnsignedInteger index = 0;
+  const UnsignedInteger svdSize = singularValues_.getSize();
+  NumericalPoint diag(n);
+  for (UnsignedInteger j = 0; j < n; ++j)
+  {
+    NumericalScalar diag_value = 0.0;
+    for (UnsignedInteger i = 0; i < svdSize; ++i)
+    {
+      const NumericalScalar val = vTimpl[index] / singularValues_[i];
+      diag_value += val * val;
+      ++ index;
+    }
+    diag[j] = diag_value;
+    index += (m - svdSize);
+  }
+
+  return diag;
 }
 
 

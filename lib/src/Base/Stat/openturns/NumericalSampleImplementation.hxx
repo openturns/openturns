@@ -2,7 +2,7 @@
 /**
  *  @brief The class NumericalSampleImplementation implements blank free samples
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -467,6 +467,8 @@ public:
   /* Some typedefs for easy reading */
   typedef NSI_iterator               iterator;
   typedef NSI_const_iterator         const_iterator;
+  typedef       NumericalScalar *       data_iterator;
+  typedef const NumericalScalar * const_data_iterator;
 
   typedef Collection<UnsignedInteger>   UnsignedIntegerCollection;
 
@@ -532,6 +534,23 @@ public:
   inline const_iterator end() const
   {
     return const_iterator(*this, size_);
+  }
+
+  inline data_iterator data_begin()
+  {
+    return &data_[0];
+  }
+  inline data_iterator data_end()
+  {
+    return &data_[0] + size_ * dimension_;
+  }
+  inline const_data_iterator data_begin() const
+  {
+    return &data_[0];
+  }
+  inline const_data_iterator data_end() const
+  {
+    return &data_[0] + size_ * dimension_;
   }
 
   void erase(const UnsignedInteger first, const UnsignedInteger last);

@@ -2,7 +2,7 @@
 /**
  * @brief Abstract top-level class for all evaluation implementations
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -401,7 +401,7 @@ NumericalMathEvaluationImplementation::Implementation NumericalMathEvaluationImp
 /* Get the function corresponding to indices components */
 NumericalMathEvaluationImplementation::Implementation NumericalMathEvaluationImplementation::getMarginal(const Indices & indices) const
 {
-  if (!indices.check(getOutputDimension() - 1)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and  must be different";
+  if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and must be different";
   // We build an analytical function that extract the needed component
   // If X1,...,XN are the descriptions of the input of this function, it is a function from R^n to R^p
   // with formula Yk = Xindices[k] for k=1,...,p
@@ -599,7 +599,7 @@ Graph NumericalMathEvaluationImplementation::draw(const NumericalScalar xMin,
     const GraphImplementation::LogScale scale) const
 {
   if (getInputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw a function with input dimension=" << getInputDimension() << " different from 1 using this method. See the other draw() methods.";
-  if (getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw a function with output dimension=" << getInputDimension() << " different from 1 using this method. See the other draw() methods.";
+  if (getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw a function with output dimension=" << getOutputDimension() << " different from 1 using this method. See the other draw() methods.";
   return draw(0, 0, NumericalPoint(1), xMin, xMax, pointNumber, scale);
 }
 
@@ -611,7 +611,7 @@ Graph NumericalMathEvaluationImplementation::draw(const NumericalPoint & xMin,
 {
   if (getInputDimension() == 1) return draw(xMin[0], xMax[0], pointNumber[0], scale);
   if ((getInputDimension() == 0) || (getInputDimension() > 2)) throw InvalidArgumentException(HERE) << "Error: cannot draw a function with input dimension=" << getInputDimension() << " different from 1 or 2 using this method. See the other draw() methods.";
-  if (getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw a function with output dimension=" << getInputDimension() << " different from 1 using this method. See the other draw() methods.";
+  if (getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw a function with output dimension=" << getOutputDimension() << " different from 1 using this method. See the other draw() methods.";
   return draw(0, 1, 0, NumericalPoint(2), xMin, xMax, pointNumber, scale);
 }
 

@@ -38,6 +38,7 @@ extern "C" {
 #include <sys/types.h>
 #undef interface
 #include <stdio.h>
+#include <time.h>
 #include <errno.h>
 
 #ifdef __CYGWIN32__
@@ -272,7 +273,7 @@ typedef struct {
 #define PTHREAD_COND_INITIALIZER { NULL, 0}
 
 #ifndef _TIMESPEC_DEFINED
-#ifndef STARPU_TIMESPEC_DEFINED
+#if !defined(STARPU_TIMESPEC_DEFINED) && (defined(_MSC_VER) && (_MSC_VER < 1800))
 #define STARPU_TIMESPEC_DEFINED 1
 struct timespec {
   time_t  tv_sec;  /* Seconds */

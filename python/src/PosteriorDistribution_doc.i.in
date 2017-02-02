@@ -1,0 +1,83 @@
+%feature("docstring") OT::PosteriorDistribution
+"Distribution conditioned by observations.
+
+Available constructors:
+    PosteriorDistribution(*conditional, observations*)
+
+Parameters
+----------
+conditional : :class:`~openturns.ConditionalDistribution`
+    The conditional distribution.
+observations : 2-d sequence of float
+    Observations.
+
+See also
+--------
+ConditionalDistribution, MCMC
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> conditionedDistribution = ot.Normal()
+>>> # Conditional distribution
+>>> atoms = [ot.Uniform(0.0, 1.0), ot.Uniform(1.0, 2.0)]
+>>> conditioning = ot.ComposedDistribution(atoms)
+>>> conditional = ot.ConditionalDistribution(conditionedDistribution, conditioning)
+>>> # Observations
+>>> observationsSize = 5
+>>> observationsDistribution = ot.Distribution(conditionedDistribution)
+>>> observationsDistribution.setParameter(conditioning.getMean())
+>>> observations = observationsDistribution.getSample(observationsSize)
+>>> # Posterior distribution
+>>> distribution  = ot.PosteriorDistribution(conditional, observations)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PosteriorDistribution::setConditionalDistribution
+"Conditional distribution accessor.
+
+Parameters
+----------
+conditional : :class:`~openturns.ConditionalDistribution`
+    The conditional distribution."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PosteriorDistribution::getConditionalDistribution
+"Conditional distribution accessor.
+
+Returns
+-------
+conditional : :class:`~openturns.ConditionalDistribution`
+    The conditional distribution."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PosteriorDistribution::setObservations
+"Observations accessor.
+
+Parameters
+----------
+observations : 2-d sequence of float
+    Observations."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PosteriorDistribution::getObservations
+"Observations accessor.
+
+Returns
+-------
+observations : :class:`~openturns.NumericalSample`
+    Observations."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PosteriorDistribution::getLogNormalizationFactor
+"Normalization factor accessor.
+
+Returns
+-------
+factor : float
+    Log-scale normalization factor."

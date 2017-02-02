@@ -2,7 +2,7 @@
 /**
  *  @brief Implementation of the composite experiment plane
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,11 +22,14 @@
 #include "openturns/Axial.hxx"
 #include "openturns/Composite.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 #include <cmath>
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Composite);
+
+static const Factory<Composite> Factory_Composite;
 
 /* Default constructor */
 Composite::Composite()

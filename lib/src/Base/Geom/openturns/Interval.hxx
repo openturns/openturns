@@ -2,7 +2,7 @@
 /**
  *  @brief Interval is defined as the cartesian product of n 1D intervalls ]low_1, up_1]x...x]low_n,up_n]
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -99,6 +99,7 @@ public:
 
   /** Comparison operator */
   Bool operator == (const Interval & other) const;
+  Bool operator != (const Interval & other) const;
 
   /** Lower bound accessor */
   NumericalPoint getLowerBound() const;

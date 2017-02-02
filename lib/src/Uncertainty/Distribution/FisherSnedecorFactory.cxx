@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for FisherSnedecor distribution
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -77,12 +77,11 @@ FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor(const NumericalSampl
   factory.setOptimizationSolver(solver);
 
   // override bounds
-  OptimizationProblem problem;
   NumericalPoint parametersLowerBound;
   parametersLowerBound.add(ResourceMap::GetAsNumericalScalar("FisherSnedecorFactory-D1LowerBound"));
   parametersLowerBound.add(ResourceMap::GetAsNumericalScalar("FisherSnedecorFactory-D2LowerBound"));
-  problem.setBounds(Interval(parametersLowerBound, NumericalPoint(dimension, SpecFunc::MaxNumericalScalar), Interval::BoolCollection(dimension, true), Interval::BoolCollection(dimension, false)));
-  factory.setOptimizationProblem(problem);
+  Interval bounds(parametersLowerBound, NumericalPoint(dimension, SpecFunc::MaxNumericalScalar), Interval::BoolCollection(dimension, true), Interval::BoolCollection(dimension, false));
+  factory.setOptimizationBounds(bounds);
 
   return buildAsFisherSnedecor(factory.buildParameter(sample));
 }
