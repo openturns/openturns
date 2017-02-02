@@ -154,7 +154,7 @@ def replace(infile, outfile, tokens, values, formats=None, encoding=default_enco
 
     for token, found_token in zip(tokens, found_tokens):
         if not found_token:
-            EOFError("Error: token '" + token + "' not found!")
+            raise EOFError("Error: token '" + token + "' not found!")
 
     if inplace:
         os.remove(infile)
