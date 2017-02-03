@@ -112,13 +112,13 @@ String SquaredExponential::__str__(const String & offset) const
 /* Method save() stores the object through the StorageManager */
 void SquaredExponential::save(Advocate & adv) const
 {
-  CovarianceModelImplementation::save(adv);
+  StationaryCovarianceModel::save(adv);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void SquaredExponential::load(Advocate & adv)
 {
-  CovarianceModelImplementation::load(adv);
+  StationaryCovarianceModel::load(adv);
 }
 
 END_NAMESPACE_OPENTURNS
