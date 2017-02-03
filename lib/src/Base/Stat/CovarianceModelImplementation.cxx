@@ -703,6 +703,7 @@ void CovarianceModelImplementation::save(Advocate & adv) const
   adv.saveAttribute("spatialCovariance_", spatialCovariance_);
   adv.saveAttribute("isDiagonal_", isDiagonal_);
   adv.saveAttribute("nuggetFactor_", nuggetFactor_);
+  adv.saveAttribute("activeParameter_", activeParameter_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -717,6 +718,7 @@ void CovarianceModelImplementation::load(Advocate & adv)
   adv.loadAttribute("spatialCovariance_", spatialCovariance_);
   adv.loadAttribute("isDiagonal_", isDiagonal_);
   adv.loadAttribute("nuggetFactor_", nuggetFactor_);
+  adv.loadAttribute("activeParameter_", activeParameter_);
 }
 
 END_NAMESPACE_OPENTURNS
