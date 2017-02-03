@@ -120,3 +120,8 @@ assert len(funcs) > 0, 'empty'
 ops = ot.SymbolicFunction.GetValidOperators()
 assert len(ops) > 0, 'empty'
 print('OK')
+
+# str ctor
+model = ot.SymbolicFunction('x', '3*x')
+assert model(x)[0] == 3.0 * x[0], 'str ctor eval'
+
