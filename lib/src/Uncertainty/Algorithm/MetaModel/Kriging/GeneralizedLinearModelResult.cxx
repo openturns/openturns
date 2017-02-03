@@ -47,7 +47,8 @@ GeneralizedLinearModelResult::GeneralizedLinearModelResult(const NumericalSample
     const NumericalPoint & relativeErrors,
     const BasisCollection & basis,
     const NumericalPointCollection & trendCoefficients,
-    const CovarianceModel & covarianceModel)
+    const CovarianceModel & covarianceModel,
+    const NumericalScalar optimalLogLikelihood)
   : MetaModelResult(NumericalMathFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
   , inputData_(inputSample)
   , inputTransformedData_(inputSample)
@@ -56,6 +57,7 @@ GeneralizedLinearModelResult::GeneralizedLinearModelResult(const NumericalSample
   , basis_(basis)
   , beta_(trendCoefficients)
   , covarianceModel_(covarianceModel)
+  , optimalLogLikelihood_(optimalLogLikelihood)
   , hasCholeskyFactor_(false)
   , covarianceCholeskyFactor_()
   , covarianceHMatrix_()
@@ -75,6 +77,7 @@ GeneralizedLinearModelResult::GeneralizedLinearModelResult(const NumericalSample
     const BasisCollection & basis,
     const NumericalPointCollection & trendCoefficients,
     const CovarianceModel & covarianceModel,
+    const NumericalScalar optimalLogLikelihood,
     const TriangularMatrix & covarianceCholeskyFactor,
     const HMatrix & covarianceHMatrix)
   : MetaModelResult(NumericalMathFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
@@ -85,6 +88,7 @@ GeneralizedLinearModelResult::GeneralizedLinearModelResult(const NumericalSample
   , basis_(basis)
   , beta_(trendCoefficients)
   , covarianceModel_(covarianceModel)
+  , optimalLogLikelihood_(optimalLogLikelihood)
   , hasCholeskyFactor_(true)
   , covarianceCholeskyFactor_(covarianceCholeskyFactor)
   , covarianceHMatrix_(covarianceHMatrix)
@@ -164,15 +168,22 @@ void GeneralizedLinearModelResult::setTransformation(const NumericalMathFunction
   hasTransformation_ = true;
 }
 
-/** process accessor */
+/* Optimal log-likelihood accessor */
+NumericalScalar GeneralizedLinearModelResult::getOptimalLogLikelihood() const
+{
+  return optimalLogLikelihood_;
+}
+
+/* process accessor */
 Process GeneralizedLinearModelResult::getNoise() const
 {
   // Define noise process
   if (covarianceModel_.getClassName() == "DiracCovarianceModel")
   {
-    //
-    const NumericalPoint sigma = covarianceModel_.getParameter();
-    const CorrelationMatrix R = covarianceModel_.getSpatialCorrelation();
+    // Here it is assumed that the covariance model parameters are the
+    // marginal amplitude.
+    const NumericalPoint sigma(covarianceModel_.getParameter());
+    const CorrelationMatrix R(covarianceModel_.getSpatialCorrelation());
     const Normal dist(NumericalPoint(sigma.getSize(), 0.0), sigma, R);
     WhiteNoise noise(dist);
     return noise;
@@ -182,13 +193,13 @@ Process GeneralizedLinearModelResult::getNoise() const
   return noise;
 }
 
-/** Method that returns the covariance factor - lapack */
+/* Method that returns the covariance factor - lapack */
 TriangularMatrix GeneralizedLinearModelResult::getCholeskyFactor() const
 {
   return covarianceCholeskyFactor_;
 }
 
-/** Method that returns the covariance factor - hmat */
+/* Method that returns the covariance factor - hmat */
 HMatrix GeneralizedLinearModelResult::getHMatCholeskyFactor() const
 {
   return covarianceHMatrix_;
@@ -211,6 +222,7 @@ void GeneralizedLinearModelResult::save(Advocate & adv) const
   adv.saveAttribute( "basis_", basis_ );
   adv.saveAttribute( "beta_", beta_ );
   adv.saveAttribute( "covarianceModel_", covarianceModel_ );
+  adv.saveAttribute( "optimalLogLikelihood_", optimalLogLikelihood_ );
   adv.saveAttribute( "hasCholeskyFactor_", hasCholeskyFactor_);
   adv.saveAttribute( "covarianceCholeskyFactor_", covarianceCholeskyFactor_);
 }
@@ -227,6 +239,7 @@ void GeneralizedLinearModelResult::load(Advocate & adv)
   adv.loadAttribute( "basis_", basis_ );
   adv.loadAttribute( "beta_", beta_ );
   adv.loadAttribute( "covarianceModel_", covarianceModel_ );
+  adv.loadAttribute( "optimalLogLikelihood_", optimalLogLikelihood_ );
   adv.loadAttribute( "hasCholeskyFactor_", hasCholeskyFactor_);
   adv.loadAttribute( "covarianceCholeskyFactor_", covarianceCholeskyFactor_);
 }

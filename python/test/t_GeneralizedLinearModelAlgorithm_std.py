@@ -2,77 +2,72 @@
 
 from __future__ import print_function
 import openturns as ot
-from openturns.testing import assert_almost_equal
 
 ot.TESTPREAMBLE()
 
 try:
 
-    # Set precision
-    ot.PlatformInfo.SetNumericalPrecision(3)
-
-    print("=============")
-    print("Test Standard")
-    print("=============")
-    sampleSize = 6
+    # Set Numerical precision to 4
+    ot.PlatformInfo.SetNumericalPrecision(4)
+    sampleSize = 40
     spatialDimension = 1
 
     # Create the function to estimate
-    input_description = ["x0"]
-    foutput = ["f0"]
-    formulas = ["x0"]
-    model = ot.NumericalMathFunction(input_description, foutput, formulas)
+    model = ot.SymbolicFunction(["x0"], ["x0"])
 
     X = ot.NumericalSample(sampleSize, spatialDimension)
-    X2 = ot.NumericalSample(sampleSize, spatialDimension)
     for i in range(sampleSize):
-        X[i, 0] = 3.0 + i
-        X2[i, 0] = 2.5 + i
-    X[0, 0] = 1.0
-    X[1, 0] = 3.0
-    X2[0, 0] = 2.0
-    X2[1, 0] = 4.0
+        X[i, 0] = 3.0 + (8.0 * i) / sampleSize
     Y = model(X)
-    # Data validation
-    Y2 = model(X2)
-    for i in range(sampleSize):
-        # Add a small noise to data
-        Y[i, 0] += 0.01 * ot.DistFunc.rNormal()
+    
+    # Add a small noise to data
+    Y += ot.TemporalNormalProcess(ot.AbsoluteExponential([0.1], [0.2]), ot.Mesh(X)).getRealization().getValues()
 
     basis = ot.LinearBasisFactory(spatialDimension).build()
+    # Case of a misspecified covariance model
     covarianceModel = ot.DiracCovarianceModel(spatialDimension)
+    print("===================================================\n")
     algo = ot.GeneralizedLinearModelAlgorithm(X, Y, covarianceModel, basis)
     algo.run()
 
-    # perform an evaluation
     result = algo.getResult()
-    metaModel = result.getMetaModel()
-    conditionalCovariance = result.getCovarianceModel()
-    residual = metaModel(X) - Y
-    assert_almost_equal(residual.computeCenteredMoment(2),
-                        [0.00013144], 1e-5, 1e-5)
-    assert_almost_equal(conditionalCovariance.getParameter(), [
-                        0.011464782674211804], 1e-5, 1e-3)
-
-    # With no estimation of the covariance model parameters
+    print("\ncovariance (dirac, optimized)=", result.getCovarianceModel())
+    print("trend (dirac, optimized)=", result.getTrendCoefficients())
+    print("===================================================\n")
+    # Now without estimating covariance parameters
     basis = ot.LinearBasisFactory(spatialDimension).build()
     covarianceModel = ot.DiracCovarianceModel(spatialDimension)
     algo = ot.GeneralizedLinearModelAlgorithm(X, Y, covarianceModel, basis, True, True)
     algo.setOptimizeParameters(False)
     algo.run()
     result = algo.getResult()
+    print("\ncovariance (dirac, not optimized)=", result.getCovarianceModel())
+    print("trend (dirac, not optimized)=", result.getTrendCoefficients())
+    print("===================================================\n")
 
-    # compare covariance parameters
-    conditionalCovariance = result.getCovarianceModel()
-    assert_almost_equal(conditionalCovariance.getParameter(), covarianceModel.getParameter())
-
-    # perform an evaluation
-    metaModel = result.getMetaModel()
-    conditionalCovariance = result.getCovarianceModel()
-    residual = metaModel(X) - Y
-    assert_almost_equal(residual.computeCenteredMoment(2), [0.00013144], 1e-5, 1e-5)
-    
-    print("Test Ok")
+    # Case of a well specified covariance model
+    # Test the optimization when the amplitude is deduced analytically from the scale
+    covarianceModel = ot.AbsoluteExponential(spatialDimension)
+    algo = ot.GeneralizedLinearModelAlgorithm(X, Y, covarianceModel, basis)
+    algo.run()
+    result = algo.getResult()
+    print("\ncovariance (reduced, unbiased)=", result.getCovarianceModel())
+    print("trend (reduced, unbiased)=", result.getTrendCoefficients())
+    print("===================================================\n")
+    ot.ResourceMap.SetAsBool("GeneralizedLinearModelAlgorithm-UnbiasedVariance", False)
+    algo = ot.GeneralizedLinearModelAlgorithm(X, Y, covarianceModel, basis)
+    algo.run()
+    result = algo.getResult()
+    print("\ncovariance (reduced, biased)=", result.getCovarianceModel())
+    print("trend (reduced, biased)=", result.getTrendCoefficients())
+    print("===================================================\n")
+    ot.ResourceMap.SetAsBool("GeneralizedLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate", False)
+    algo = ot.GeneralizedLinearModelAlgorithm(X, Y, covarianceModel, basis)
+    algo.run()
+    result = algo.getResult()
+    print("\ncovariance (full optim)=", result.getCovarianceModel())
+    print("trend (full optim)=", result.getTrendCoefficients())
+    print("===================================================\n")
 
 except:
     import sys

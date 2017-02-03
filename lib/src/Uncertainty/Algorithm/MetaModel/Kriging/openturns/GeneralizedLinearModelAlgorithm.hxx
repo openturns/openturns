@@ -76,7 +76,7 @@ public:
   GeneralizedLinearModelAlgorithm (const NumericalSample & inputSample,
                                    const NumericalSample & outputSample,
                                    const CovarianceModel & covarianceModel,
-                                   const BasisCollection & multivariateBasis,
+                                   const BasisCollection & basisCollection,
                                    const Bool normalize = ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-NormalizeData"),
                                    const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-KeepCovariance"));
 
@@ -85,7 +85,7 @@ public:
                                    const NumericalMathFunction & inputTransformation,
                                    const NumericalSample & outputSample,
                                    const CovarianceModel & covarianceModel,
-                                   const BasisCollection & multivariateBasis,
+                                   const BasisCollection & basisCollection,
                                    const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-KeepCovariance"));
 
   /** Virtual constructor */
@@ -108,7 +108,7 @@ public:
   /** result accessor */
   GeneralizedLinearModelResult getResult();
 
-  /** Objective function (log-Likelihood) accessor */
+  /** Objective function (reduced log-Likelihood) accessor */
   NumericalMathFunction getObjectiveFunction();
 
   /** Optimization solver accessor */
@@ -134,13 +134,13 @@ public:
   virtual void load(Advocate & adv);
 
 protected:
-  // Optimize the log-likelihood
-  NumericalPoint optimizeLogLikelihood();
+  // Maximize the reduced log-likelihood
+  NumericalScalar maximizeReducedLogLikelihood();
 
   // Compute the output log-likelihood function
-  NumericalScalar computeLogLikelihood(const NumericalPoint & theta) const;
-  NumericalScalar computeLapackLogDeterminantCholesky(const NumericalPoint & theta) const;
-  NumericalScalar computeHMatLogDeterminantCholesky(const NumericalPoint & theta) const;
+  NumericalPoint computeReducedLogLikelihood(const NumericalPoint & parameters) const;
+  NumericalScalar computeLapackLogDeterminantCholesky() const;
+  NumericalScalar computeHMatLogDeterminantCholesky() const;
 
   // Compute the design matrix on the normalized input sample
   void computeF();
@@ -162,15 +162,86 @@ protected:
 
 private:
 
+  // Helper class to compute the reduced log-likelihood function of the model
+  class ReducedLogLikelihoodEvaluation: public NumericalMathEvaluationImplementation
+  {
+  public:
+    // Constructor from a GLM algorithm
+    ReducedLogLikelihoodEvaluation(GeneralizedLinearModelAlgorithm & algorithm)
+      : NumericalMathEvaluationImplementation()
+      , algorithm_(algorithm)
+    {
+      // Nothing to do
+    }
+
+    ReducedLogLikelihoodEvaluation * clone() const
+    {
+      return new ReducedLogLikelihoodEvaluation(*this);
+    }
+
+    // It is a simple call to the computeReducedLogLikelihood() of the algo
+    NumericalPoint operator() (const NumericalPoint & point) const
+    {
+      const NumericalPoint value(algorithm_.computeReducedLogLikelihood(point));
+      return value;
+    }
+
+    UnsignedInteger getInputDimension() const
+    {
+      return algorithm_.getReducedCovarianceModel().getParameter().getDimension();
+    }
+
+    UnsignedInteger getOutputDimension() const
+    {
+      return 1;
+    }
+
+    Description getInputDescription() const
+    {
+      return algorithm_.getReducedCovarianceModel().getParameterDescription();
+    }
+
+    Description getOutputDescription() const
+    {
+      return Description(1, "ReducedLogLikelihood");
+    }
+
+    Description getDescription() const
+    {
+      Description description(getInputDescription());
+      description.add(getOutputDescription());
+      return description;
+    }
+
+    String __repr__() const
+    {
+      OSS oss;
+      // Don't print algorithm_ here as it will result in an infinite loop!
+      oss << "ReducedLogLikelihoodEvaluation";
+      return oss;
+    }
+
+    String __str__(const String & offset) const
+    {
+      // Don't print algorithm_ here as it will result in an infinite loop!
+      return __repr__();
+    }
+
+  private:
+    GeneralizedLinearModelAlgorithm & algorithm_;
+  }; // ReducedLogLikelihoodEvaluation
+
   /** set sample  method */
   void setData(const NumericalSample & inputSample,
                const NumericalSample & outputSample);
 
-  /** set covariance method */
-  void setCovariance(const CovarianceModel & covarianceModel);
+  /** Covariance model accessor */
+  void setCovarianceModel(const CovarianceModel & covarianceModel);
+  CovarianceModel getCovarianceModel() const;
+  CovarianceModel getReducedCovarianceModel() const;
 
   /** Set basis collection method */
-  void setBasis(const BasisCollection & basisCollection);
+  void setBasisCollection(const BasisCollection & basisCollection);
 
   /** check that sample is centered to precison eps */
   void checkYCentered(const NumericalSample & Y);
@@ -190,9 +261,7 @@ private:
 
   // The covariance model parametric familly
   CovarianceModel covarianceModel_;
-
-  // The member of the covariance model fitted to the data
-  CovarianceModel conditionalCovarianceModel_;
+  mutable CovarianceModel reducedCovarianceModel_;
 
   // The optimization algorithm used for the meta-parameters estimation
   mutable OptimizationSolver solver_;
@@ -211,7 +280,7 @@ private:
   GeneralizedLinearModelResult result_;
 
   /** BasisCollection */
-  BasisPersistentCollection basis_;
+  BasisPersistentCollection basisCollection_;
 
   /** Cholesky factor ==>  TriangularMatrix */
   mutable TriangularMatrix covarianceCholeskyFactor_;
@@ -235,6 +304,11 @@ private:
   /** Observation noise */
   NumericalPoint noise_;
 
+  /** Flag to tell if the amplitude parameters are estimated using an analytical derivation */
+  Bool analyticalAmplitude_;
+
+  /** Cache of the last computed reduced log-likelihood */
+  mutable NumericalScalar lastReducedLogLikelihood_;
 }; // class GeneralizedLinearModelAlgorithm
 
 

@@ -428,7 +428,7 @@
 
   <!-- OT::SubsetSampling parameters -->
   <SubsetSampling-DefaultMaximumOuterSampling value="10000" />
-  <SubsetSampling-DefaultConditionalProbability value="0.1"      />
+  <SubsetSampling-DefaultConditionalProbability value="0.1" />
   <SubsetSampling-DefaultProposalRange value="2.0"          />
   <SubsetSampling-DefaultBetaMin value="2.0"                />
 
@@ -458,15 +458,17 @@
 
   <!-- OT::GeneralizedLinearModelAlgorithm parameters -->
   <GeneralizedLinearModelAlgorithm-LinearAlgebra                  value="LAPACK"  />
-  <GeneralizedLinearModelAlgorithm-NormalizeData                  value="false" />
-  <GeneralizedLinearModelAlgorithm-KeepCovariance                 value="true" />
-  <GeneralizedLinearModelAlgorithm-OptimizeParameters             value="true" />
+  <GeneralizedLinearModelAlgorithm-NormalizeData                  value="false"   />
+  <GeneralizedLinearModelAlgorithm-KeepCovariance                 value="true"    />
+  <GeneralizedLinearModelAlgorithm-OptimizeParameters             value="true"    />
+  <GeneralizedLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate value="true"    />
+  <GeneralizedLinearModelAlgorithm-UnbiasedVariance               value="true"    />
   <GeneralizedLinearModelAlgorithm-MeanEpsilon                    value="1.0e-12" />
   <GeneralizedLinearModelAlgorithm-StartingScaling                value="1.0e-13" />
   <GeneralizedLinearModelAlgorithm-MaximalScaling                 value="1.0e5"   />
-  <GeneralizedLinearModelAlgorithm-DefaultOptimizationLowerBound  value="1.0e-5" />
-  <GeneralizedLinearModelAlgorithm-DefaultOptimizationUpperBound  value="20"  />
-  <GeneralizedLinearModelAlgorithm-DefaultOptimizationSolver      value="TNC"  />
+  <GeneralizedLinearModelAlgorithm-DefaultOptimizationLowerBound  value="1.0e-2"  />
+  <GeneralizedLinearModelAlgorithm-DefaultOptimizationUpperBound  value="1.0e2"      />
+  <GeneralizedLinearModelAlgorithm-DefaultOptimizationSolver      value="TNC"     />
 
 <!-- OT::KrigingAlgorithm parameters -->
   <KrigingAlgorithm-StartingScaling value="1.0e-13" />

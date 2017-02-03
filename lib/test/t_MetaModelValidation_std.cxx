@@ -118,6 +118,7 @@ int main(int argc, char *argv[])
 
 
     KrigingAlgorithm algo2(inputSample, outputSample, basis, covarianceModel, true, true);
+    algo2.setOptimizeParameters(false);
     algo2.run();
 
     KrigingResult result2 = algo2.getResult();

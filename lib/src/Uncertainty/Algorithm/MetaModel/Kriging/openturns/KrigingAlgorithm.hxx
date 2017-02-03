@@ -107,7 +107,7 @@ public:
   Interval getOptimizationBounds() const;
 
   /** Log-Likelihood function accessor */
-  NumericalMathFunction getLogLikelihoodFunction();
+  NumericalMathFunction getReducedLogLikelihoodFunction();
 
   /** Optimization flag accessor */
   Bool getOptimizeParameters() const;

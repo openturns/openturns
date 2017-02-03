@@ -6,28 +6,28 @@ Available constructors:
 
     GeneralizedLinearModelAlgorithm(*inputSample, inputTransformation, outputSample, covarianceModel, basis, keepCovariance=True*)
 
-    GeneralizedLinearModelAlgorithm(*inputSample, outputSample, covarianceModel, multivariateBasis, normalize=True, keepCovariance=True*)
+    GeneralizedLinearModelAlgorithm(*inputSample, outputSample, covarianceModel, basisCollection, normalize=True, keepCovariance=True*)
 
-    GeneralizedLinearModelAlgorithm(*inputSample, inputTransformation, outputSample, covarianceModel, multivariateBasis, keepCovariance=True*)
+    GeneralizedLinearModelAlgorithm(*inputSample, inputTransformation, outputSample, covarianceModel, basisCollection, keepCovariance=True*)
 
 Parameters
 ----------
 inputSample, outputSample : :class:`~openturns.NumericalSample` or 2d-array
-    The samples :math:`(\vect{x}_k)_{1 \leq k \leq N} \in \Rset^d` and :math:`(\vect{y}_k)_{1 \leq k \leq N}\in \Rset^p`.
+    The samples :math:`(\vect{x}_k)_{1 \leq k \leq N} \in \Rset^n` and :math:`(\vect{y}_k)_{1 \leq k \leq N}\in \Rset^d`.
 inputTransformation : :class:`~openturns.NumericalMathFunction`
-    Function  *T* that helps to normalize the input sample.
+    Function :math:`T` used to normalize the input sample.
 
     If used, the meta model is built on the transformed data.
 basis : :class:`~openturns.Basis`
-    Functional basis to estimate the trend: :math:`(\varphi_j)_{1 \leq j \leq n_1}: \Rset^d \rightarrow \Rset`. 
+    Functional basis to estimate the trend: :math:`(\varphi_j)_{1 \leq j \leq n_1}: \Rset^n \rightarrow \Rset`. 
 
-    If :math:`p>1`, the same basis is used for each marginal output.
-multivariateBasis : collection of :class:`~openturns.Basis`
-    Collection of :math:`p` functional basis: one basis for each marginal output.
+    If :math:`d>1`, the same basis is used for each marginal output.
+basisCollection : collection of :class:`~openturns.Basis`
+    Collection of :math:`d` functional basis: one basis for each marginal output.
 
-    If the trend is not estimated, the collection must be empty.
+    An empty collection means that no trend is estimated.
 covarianceModel : :class:`~openturns.CovarianceModel`
-    Covariance model of the normal process. 
+    Covariance model of the normal process. See notes for the details.
 normalize : bool, optional
     Indicates whether the input sample has to be normalized.
 
@@ -39,9 +39,9 @@ keepCovariance : bool, optional
 
 Notes
 -----
-We suppose we have a sample :math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq N}` where :math:`\vect{y}_k = \cM(\vect{x}_k)` for all *k*, with :math:`\cM:\Rset^d \mapsto \Rset^p` the model.
+We suppose we have a sample :math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq N}` where :math:`\vect{y}_k = \cM(\vect{x}_k)` for all :math:`k`, with :math:`\cM:\Rset^n \mapsto \Rset^d` a given function.
 
-The objective is to build a metamodel :math:`\tilde{\cM}`, using a **generalized linear model**: the sample :math:`(\vect{y}_k)_{1 \leq k \leq N}` is considered as the trace of a normal process :math:`\vect{Y}(\omega, \vect{x})` on :math:`(\vect{x}_k)_{1 \leq k \leq N}`. The normal process :math:`\vect{Y}(\omega, \vect{x})` is defined by:
+The objective is to build a metamodel :math:`\tilde{\cM}`, using a **generalized linear model**: the sample :math:`(\vect{y}_k)_{1 \leq k \leq N}` is considered as the restriction of a normal process :math:`\vect{Y}(\omega, \vect{x})` on :math:`(\vect{x}_k)_{1 \leq k \leq N}`. The normal process :math:`\vect{Y}(\omega, \vect{x})` is defined by:
 
 .. math::
 
@@ -55,42 +55,42 @@ where:
       \begin{array}{l}
         \mu_1(\vect{x}) \\
         \dots  \\
-        \mu_p(\vect{x}) 
+        \mu_d(\vect{x}) 
        \end{array}
      \right)
 
-with :math:`\mu_l(\vect{x}) = \sum_{j=1}^{n_l} \alpha_j^l \varphi_j^l(\vect{x})` and :math:`\varphi_j^l: \Rset^d \rightarrow \Rset` the trend functions.
+with :math:`\mu_\ell(\vect{x}) = \sum_{j=1}^{n_\ell} \beta_j^\ell \varphi_j^\ell(\vect{x})` and :math:`\varphi_j^\ell: \Rset^n \rightarrow \Rset` the trend functions.
 
-:math:`\vect{W}` is a normal process of dimension *p* with zero mean and covariance function :math:`C = C(\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda})` (see :class:`~openturns.CovarianceModel` for the notations).
+:math:`\vect{W}` is a normal process of dimension :math:`d` with zero mean and covariance function :math:`C = C(\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda})` (see :class:`~openturns.CovarianceModel` for the notations).
 
 We note:
 
 .. math::
 
-    \vect{\alpha}^l(\vect{x}) = \left(
+    \vect{\beta}^\ell = \left(
       \begin{array}{l}
-        \alpha_1^l \\
+        \beta_1^\ell \\
         \dots  \\
-        \alpha_{n_l}^l
+        \beta_{n_\ell}^\ell
        \end{array}
-     \right) \in \Rset^{n_l}
+     \right) \in \Rset^{n_\ell}
      \quad \mbox{ and } \quad 
-     \vect{\alpha}(\vect{x}) = \left(
+     \vect{\beta} = \left(
       \begin{array}{l}
-         \vect{\alpha}^1\\
+         \vect{\beta}^1\\
         \dots  \\
-         \vect{\alpha}^p
+         \vect{\beta}^d
        \end{array}
-     \right)\in \Rset^{\sum_{l=1}^p n_l}
+     \right)\in \Rset^{\sum_{\ell=1}^p n_\ell}
 
 
-The *GeneralizedLinearModelAlgorithm* class estimates the coefficients :math:`\alpha_j^l, \vect{\theta}, \vect{\sigma}` by maximizing the likelihood of the model. The values of :math:`(\vect{\theta}, \vect{\sigma})` fixed by the User at the creation of the class are used as initial values for the optimization algorithm.
+The *GeneralizedLinearModelAlgorithm* class estimates the coefficients :math:`\beta_j^\ell, \vect{p}` where :math:`\vect{p}` is the vector of parameters of the covariance model (a subset of :math:`\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda}`) that has been declared as *active* (by default, the full vectors :math:`\vect{\theta}` and :math:`\vect{\sigma}`).
 
-Note that the parameters :math:`(\mat{R}, \vect{\lambda})` are not optimized: they are fixed to the values specified by the User.
+The estimation is done by maximizing the *reduced* log-likelihood of the model, see its expression below.
 
-If a normalizing transformation *T* has been used, the meta model is built on the inputs :math:`\vect{z}_k = T(\vect{x}_k)`.
+If a normalizing transformation :math:`T` has been used, the meta model is built on the inputs :math:`\vect{z}_k = T(\vect{x}_k)`.
 
- **Estimation of the parameters** :math:`\alpha_j^l, \vect{\theta}, \vect{\sigma}`
+**Estimation of the parameters** :math:`\beta_j^\ell, \vect{p}`
 
 We note:
 
@@ -102,64 +102,81 @@ We note:
         \dots  \\
         \vect{y}_N
        \end{array}
-     \right) \in \Rset^{pN},
+     \right) \in \Rset^{dN},
      \quad 
-     \vect{m} = \left(
+     \vect{m}_{\vect{\beta}} = \left(
       \begin{array}{l}
         \vect{\mu}(\vect{x}_1) \\
         \dots  \\
         \vect{\mu}(\vect{x}_N)
        \end{array}
-     \right) \in \Rset^{pN}
+     \right) \in \Rset^{dN}
 
  and 
 
 .. math::
 
-    \mat{C} = \left(
+    \mat{C}_{\vect{p}} = \left(
       \begin{array}{lcl}
         \mat{C}_{11} & \dots &  \mat{C}_{1N}\\
         \dots & \dots & \\
         \mat{C}_{N1} & \dots &  \mat{C}_{NN}
        \end{array}
-     \right) \in \cS_{pN}^+(\Rset)
+     \right) \in \cS_{dN}^+(\Rset)
 
-where :math:`\mat{C}_{ij} = C(\vect{x}_i, \vect{x}_j)`. 
+where :math:`\mat{C}_{ij} = C_{\vect{p}}(\vect{x}_i, \vect{x}_j)`. 
 
 The model likelihood writes:
 
 .. math::
 
-    p((\vect{x}_k, \vect{y}_k)_{1 \leq k \leq N}) = \dfrac{1}{(2\pi)^{pN/2} |\det \mat{C}|^{1/2}} \exp\left[ -\dfrac{1}{2}\Tr{\left( \vect{y}-\vect{m} \right)} \mat{C}^{-1}  \left( \vect{y}-\vect{m} \right)  \right]
+    \cL(\vect{\beta}, \vect{p};(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq N}) = \dfrac{1}{(2\pi)^{dN/2} |\det \mat{C}_{\vect{p}}|^{1/2}} \exp\left[ -\dfrac{1}{2}\Tr{\left( \vect{y}-\vect{m} \right)} \mat{C}_{\vect{p}}^{-1}  \left( \vect{y}-\vect{m} \right)  \right]
 
-With  :math:`\mat{L}` the inferior triangular matrix such that :math:`\mat{L}\Tr{\mat{L}} = \mat{C}`, then:
+If :math:`\mat{L}` is the Cholesky factor of :math:`\mat{C}`, ie the lower triangular matrix with positive diagonal such that :math:`\mat{L}\,\Tr{\mat{L}} = \mat{C}`, then:
 
 .. math::
     :label: logLikelihood
 
-    \log p((\vect{x}_k, \vect{y}_k)_{1 \leq k \leq N}) = cste -\dfrac{1}{2} \log \det \mat{L} -\dfrac{1}{2}  \| \mat{L}^{-1}(\vect{y}-\vect{m}) \|^2
+    \log \cL(\vect{\beta}, \vect{p};(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq N}) = cste - \log \det \mat{L}_{\vect{p}} -\dfrac{1}{2}  \| \mat{L}_{\vect{p}}^{-1}(\vect{y}-\vect{m}_{\vect{\beta}}) \|^2
 
-OpenTURNS proceeds as follows:
+The maximization of :eq:`logLikelihood` leads to the following optimality condition for $\vect{\beta}$:
 
-    - maximization of :eq:`logLikelihood` with respect to :math:`\vect{\alpha}` where :math:`(\vect{\theta}, \vect{\sigma})` are fixed: it is equivalent to minimizing the term :math:`\| \mat{L}^{-1}(\vect{y}-\vect{m}) \|^2` (the optimization problem is a least square problem). Then :math:`\vect{\alpha} = \vect{\alpha}(\vect{\theta}, \vect{\sigma})`;
-    - maximization of :eq:`logLikelihood` with respect to :math:`\vect{\theta}, \vect{\sigma}` where :math:`\vect{\alpha}` has been replaced by  :math:`\vect{\alpha} = \vect{\alpha}(\vect{\theta}, \vect{\sigma})`. 
-    - then, we obtain the optimal values :math:`(\vect{\theta}^*, \vect{\sigma}^*)`  and :math:`\vect{\theta}^* = \vect{\alpha}(\vect{\theta}^*, \vect{\sigma}^*)`.
+.. math::
 
-In the particular case where :math:`p=1`, the first step introduces the additional relation :math:`\vect{\sigma} = \vect{\sigma}(\vect{\theta})`. Thus, the second step is optimized with respect to the only parameter :math:`\vect{\theta}` and the optimized values write :math:`\vect{\sigma}^* = \vect{\sigma}(\vect{\theta}^*)` and :math:`\vect{\alpha}^* = \vect{\alpha}(\vect{\theta}^*)`.
+    \vect{\beta}^*(\vect{p}^*)=\argmin_{\vect{\beta}} \| \mat{L}_{\vect{p}^*}^{-1}(\vect{y}-\vect{m}_{\vect{\beta}}) \|^2
 
+This expression of :math:`\vect{\beta}^*` as a function of :math:`\vect{p}^*` is taken as a general relation between :math:`\vect{\beta}` and :math:`_vect{p}` and is substituted into :eq:`logLikelihood`, leading to a *reduced log-likelihood* function depending solely on :math:`\vect{p}`.
 
-Default optimizer is :class:`~openturns.TNC` and can be changed thanks to the *setOptimizationSolver* method. User could also change the default optimization solver by setting the `GeneralizedLinearModelAlgorithm-DefaultOptimizationSolver` resource map key to `NELDER-MEAD` or `LBFGS` respectively for Nelder-Mead and LBFGS-B solvers.
+In the particular case where :math:`d=\dim(\vect{\sigma})=1` and :math:`\sigma` is a part of :math:`\vect{p}`, then a further reduction is possible. In this case, if :math:`\vect{q}` is the vector :math:`\vect{p}` in which :math:`\sigma` has been substituted by 1, then:
+
+.. math::
+
+    \| \mat{L}_{\vect{p}}^{-1}(\vect{y}-\vect{m}_{\vect{\beta}}) \|^2=\| \mat{L}_{\vect{q}}^{-1}(\vect{y}-\vect{m}_{\vect{\beta}}) \|^2/\sigma^2
+
+showing that :math:`\vect{\beta}^*` is a function of :math:`\vect{q}^*` only, and the optimality condition for :math:`\sigma` reads:
+
+.. math::
+
+    \vect{\sigma}^*(\vect{q}^*)=\dfrac{1}{N}\| \mat{L}_{\vect{q}^*}^{-1}(\vect{y}-\vect{m}_{\vect{\beta}^*(\vect{q}^*)}) \|^2
+   
+which leads to a further reduction of the log-likelihood function where both :math:`\vect{\beta}` and :math:`\sigma` are replaced by their expression in terms of :math:`\vect{q}`.
+    
+The default optimizer is :class:`~openturns.TNC` and can be changed thanks to the *setOptimizationSolver* method. User could also change the default optimization solver by setting the `GeneralizedLinearModelAlgorithm-DefaultOptimizationSolver` resource map key to `NELDER-MEAD` or `LBFGS` respectively for Nelder-Mead and LBFGS-B solvers.
 
 It is also possible to proceed as follows:
 
-    - ask for the log-likelihood function of the *GeneralizedLinearModelAlgorithm* thanks to the *getObjectiveFunction()* method
+    - ask for the reduced log-likelihood function of the *GeneralizedLinearModelAlgorithm* thanks to the *getObjectiveFunction()* method
     - optimize it with respect to the parameters :math:`\vect{\theta}` and  :math:`\vect{\sigma}` using any optimisation algorithms (that can take into account some additional constraints if needed)
-    - fulfill the *GeneralizedLinearModelAlgorithm* with the optimized value of these parameters.
+    - set the optimal parameter value into the covariance model used in the *GeneralizedLinearModelAlgorithm*
+    - tell the algorithm not to optimize the parameter using *setOptimizeParameter*
 
+The behaviour of the reduction is controlled by the following keys in :class:`~openturns.ResourceMap`:
+    - *ResourceMap.SetAsBooletAsBool('GeneralizedLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate', true)* to use the reduction associated to :math:`\sigma`. It has no effect if :math:`d>1` or if :math:`d=1` and :math:`\sigma` is not part of :math:`\vect{p}`
+    - *ResourceMap.SetAsBool('GeneralizedLinearModelAlgorithm-UnbiasedVariance', true)* allows to use the *unbiased* estimate of :math:`sigma` where :math:`\dfrac{1}{N}` is replaced by :math:`\dfrac{1}{N-p}` in the optimality condition for :math:`\sigma`.
 
 With huge samples, the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierarchical_matrix>`_  implementation could be used if OpenTURNS had been compiled with `hmat-oss` support.
 
-This implementation, which is based on a sparse representation of an approximated covariance matrix (and its Cholesky factor), has a better complexity both in terms of memory requirements and floating point operations. To use it, the `GeneralizedLinearModelAlgorithm-LinearAlgebra` resource map key should be instancied to `HMAT`. Default value of the key is `LAPACK`.
+This implementation, which is based on a compressed representation of an approximated covariance matrix (and its Cholesky factor), has a better complexity both in terms of memory requirements and floating point operations. To use it, the `GeneralizedLinearModelAlgorithm-LinearAlgebra` resource map key should be instancied to `HMAT`. Default value of the key is `LAPACK`.
 
 A known centered gaussian observation noise :math:`\epsilon_k` can be taken into account
 with :func:`setNoise()`:

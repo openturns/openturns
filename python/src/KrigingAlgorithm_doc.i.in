@@ -13,21 +13,19 @@ Available constructors:
 Parameters
 ----------
 inputSample, outputSample : 2-d sequence of float
-    The samples :math:`(\vect{x}_k)_{1 \leq k \leq N} \in \Rset^d` and :math:`(\vect{y}_k)_{1 \leq k \leq N}\in \Rset^p`.
+    The samples :math:`(\vect{x}_k)_{1 \leq k \leq N} \in \Rset^d` and :math:`(\vect{y}_k)_{1 \leq k \leq N}\in \Rset^p` upon which the meta-model is built.
 inputTransformation : :class:`~openturns.NumericalMathFunction`
-    Function  *T* that helps to normalize the input sample.
+    Function :math:`T` used to normalize the input sample.
 
     If used, the meta model is built on the transformed data.
 basis : :class:`~openturns.Basis`
-    Functional basis to estimate the trend: :math:`(\varphi_j)_{1 \leq j \leq n_1}: \Rset^d \rightarrow \Rset`.
+    Functional basis to estimate the trend (universal kriging): :math:`(\varphi_j)_{1 \leq j \leq n_1}: \Rset^d \rightarrow \Rset`.
 
     If :math:`p>1`, the same basis is used for each marginal output.
-multivariateBasis : collection of :class:`~openturns.Basis`
-    Collection of :math:`p` functional basis: one basis for each marginal output: :math:`\left[(\varphi_j^1)_{1 \leq j \leq n_1}, \dots, (\varphi_j^p)_{1 \leq j \leq n_p}\right]`
-
-    If the trend is not estimated, the collection must be empty.
+multivariateBasis : sequence of :class:`~openturns.Basis`
+    Collection of :math:`p` functional basis: one basis for each marginal output: :math:`\left[(\varphi_j^1)_{1 \leq j \leq n_1}, \dots, (\varphi_j^p)_{1 \leq j \leq n_p}\right]`. If the sequence is empty, no trend coefficient is estimated (simple kriging).
 covarianceModel : :class:`~openturns.CovarianceModel`
-    Covariance model of the normal process. 
+    Covariance model used for the underlying Gaussian process assumption.
 normalize : bool, optional
     Indicates whether the input sample has to be normalized.
 
@@ -154,7 +152,7 @@ Create the Kriging algorithm with the optimizer option:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::MaximumLikelihoodFactory::setOptimizationBounds
+%feature("docstring") OT::KrigingAlgorithm::setOptimizationBounds
 "Accessor to the optimization bounds.
 
 Parameters
@@ -164,7 +162,7 @@ problem : :class:`~openturns.Interval`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::MaximumLikelihoodFactory::getOptimizationBounds
+%feature("docstring") OT::KrigingAlgorithm::getOptimizationBounds
 "Accessor to the optimization bounds.
 
 Returns
@@ -208,17 +206,17 @@ outputSample : :class:`~openturns.NumericalSample`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::KrigingAlgorithm::getLogLikelihoodFunction
-"Accessor to the log-likelihood function that writes as argument of the covariance's model parameters.
+%feature("docstring") OT::KrigingAlgorithm::getReducedLogLikelihoodFunction
+"Accessor to the reduced log-likelihood function that writes as argument of the covariance's model parameters.
 
 Returns
 -------
-logLikelihood : :class:`~openturns.NumericalMathFunction`
-    The log-likelihood function as a function of :math:`(\vect{\theta}, \vect{\sigma})`.
+reducedLogLikelihood : :class:`~openturns.NumericalMathFunction`
+    The reduced log-likelihood function as a function of :math:`(\vect{\theta}, \vect{\sigma})`.
 
 Notes
 -----
-The log-likelihood function may be useful for some postprocessing: maximization using external optimizers for example.
+The reduced log-likelihood function may be useful for some pre/postprocessing: vizuaisation of the maximizer, use of an external optimizers to maximize the reduced log-likelihood etc.
 
 
 Examples
@@ -237,9 +235,9 @@ Create the algorithm:
 >>> algo = ot.KrigingAlgorithm(inputSample, outputSample, basis, covarianceModel)
 >>> algo.run()
 
-Get the log-likelihood function:
+Get the reduced log-likelihood function:
 
->>> likelihoodFunction = algo.getLogLikelihoodFunction()
+>>> reducedLogLikelihoodFunction = algo.getReducedLogLikelihoodFunction()
 "
 
 
