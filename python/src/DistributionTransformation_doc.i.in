@@ -1,0 +1,20 @@
+%feature("docstring") OT::DistributionTransformation
+"Isoprobabilistic transformation.
+
+Available constructor:
+    DistributionTransformation(*left, right*)
+
+Parameters
+----------
+left, right : :class:`~openturns.Distribution`
+    The transformation that maps *left* into *right*."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistributionTransformation::inverse
+"Inverse isoprobabilistic transformation.
+
+Returns
+-------
+inverseT : :class:`~openturns.DistributionTransformation`
+    The inverse transformation."

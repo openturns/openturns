@@ -22,6 +22,7 @@
 #ifndef OPENTURNS_OTTRANSFORMATION_HXX
 #define OPENTURNS_OTTRANSFORMATION_HXX
 
+#include "openturns/DistributionTransformation.hxx"
 #include "openturns/OTMarginalTransformation.hxx"
 #include "openturns/OTNatafEllipticalCopula.hxx"
 #include "openturns/OTNatafEllipticalDistribution.hxx"

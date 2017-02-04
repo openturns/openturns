@@ -98,8 +98,17 @@ Bool EllipticalDistribution::equals(const DistributionImplementation & other) co
   // The copula...
   if ( !( (hasIndependentCopula() && other.hasIndependentCopula()) || (*getCopula() == *other.getCopula()) ) ) return false;
   // Then the marginals
-  for (UnsignedInteger i = 0; i < dimension_; ++i)
-    if (!(*getMarginal(i) == *other.getMarginal(i))) return false;
+  for (UnsignedInteger i = 0; i < dimension_; ++ i)
+  {
+    // early exit to avoid recursing in DistributionImplementation::operator==
+    const Pointer<DistributionImplementation> p_marginal(getMarginal(i));
+    const Pointer<DistributionImplementation> p_other_marginal(other.getMarginal(i));
+    const Bool marginalElliptical = dynamic_cast<EllipticalDistribution*>(p_marginal.get());
+    const Bool otherMarginalElliptical = dynamic_cast<EllipticalDistribution*>(p_other_marginal.get());
+    if ((marginalElliptical && !otherMarginalElliptical)) return false;
+
+    if (!(*p_marginal == *p_other_marginal)) return false;
+  }
   return true;
 }
 

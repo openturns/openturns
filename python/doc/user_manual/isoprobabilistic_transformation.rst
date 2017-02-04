@@ -4,6 +4,12 @@ Isoprobabilistic transformation
 
 .. currentmodule:: openturns
 
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    DistributionTransformation
+
 Marginal transformation
 =======================
 

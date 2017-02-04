@@ -50,6 +50,7 @@
 %include InverseNatafEllipticalDistributionHessian.i
 %include RosenblattEvaluation.i
 %include InverseRosenblattEvaluation.i
+%include DistributionTransformation.i
 
 /* Uncertainty/Algorithm/Transformation/ProcessTransformation */
 %import metamodel_module.i

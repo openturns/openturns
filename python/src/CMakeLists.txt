@@ -765,6 +765,7 @@ ot_add_python_module(transformation transformation_module.i
                       InverseRosenblattEvaluation.i
                       BoxCoxFactory.i BoxCoxFactory_doc.i.in
                       TrendFactory.i TrendFactory_doc.i.in
+                      DistributionTransformation.i DistributionTransformation_doc.i.in
                       UncertaintyTransformationTemplateDefs.i
                    )
 

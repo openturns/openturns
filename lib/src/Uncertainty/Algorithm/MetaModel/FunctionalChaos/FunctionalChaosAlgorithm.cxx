@@ -27,13 +27,7 @@
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/NumericalMathFunctionImplementation.hxx"
 #include "openturns/ComposedFunction.hxx"
-#include "openturns/IdentityFunction.hxx"
 #include "openturns/DatabaseFunction.hxx"
-#include "openturns/RosenblattEvaluation.hxx"
-#include "openturns/InverseRosenblattEvaluation.hxx"
-#include "openturns/MarginalTransformationEvaluation.hxx"
-#include "openturns/MarginalTransformationGradient.hxx"
-#include "openturns/MarginalTransformationHessian.hxx"
 #include "openturns/FixedStrategy.hxx"
 #include "openturns/CleaningStrategy.hxx"
 #include "openturns/FixedExperiment.hxx"
@@ -54,10 +48,10 @@
 #include "openturns/KFold.hxx"
 #include "openturns/CorrectedLeaveOneOut.hxx"
 #include "openturns/FittingTest.hxx"
+#include "openturns/DistributionTransformation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-typedef Collection<Distribution> DistributionCollection;
 typedef Collection<NumericalMathFunction> NumericalMathFunctionCollection;
 
 CLASSNAMEINIT(FunctionalChaosAlgorithm);
@@ -278,6 +272,14 @@ AdaptiveStrategy FunctionalChaosAlgorithm::getAdaptiveStrategy() const
 void FunctionalChaosAlgorithm::run()
 {
   const UnsignedInteger outputDimension = model_.getOutputDimension();
+
+  // Get the measure upon which the orthogonal basis is built
+  const OrthogonalBasis basis(adaptiveStrategy_.getImplementation()->basis_);
+  const Distribution measure(basis.getMeasure());
+  // Correct the measure of the projection strategy if no input sample
+  const Bool databaseProjection = projectionStrategy_.getImplementation()->inputSample_.getSize() > 0;
+  if (!databaseProjection) projectionStrategy_.setMeasure(measure);
+
   // First, compute all the parts that are independent of the marginal output
   // Create the isoprobabilistic transformation
   // We have two distributions here:
@@ -287,105 +289,13 @@ void FunctionalChaosAlgorithm::run()
   // introduce an isoprobabilistic transformation that maps distribution_ onto
   // measure
   //
-  // Get the measure upon which the orthogonal basis is built
-  const OrthogonalBasis basis(adaptiveStrategy_.getImplementation()->basis_);
-  const Distribution measure(basis.getMeasure());
-  // Correct the measure of the projection strategy if no input sample
-  const Bool databaseProjection = projectionStrategy_.getImplementation()->inputSample_.getSize() > 0;
-  if (!databaseProjection) projectionStrategy_.setMeasure(measure);
-  // The first case is when distribution_ == measure, in which case there is
-  // no isoprobabilistic transformation to introduce.
-  LOGINFO("Build the iso-probabilistic transformation");
-  const Bool noTransformation = (measure == distribution_);
-  const UnsignedInteger dimension = distribution_.getDimension();
-  if (noTransformation)
-  {
-    LOGINFO(OSS(false) << "Same distribution for input vector=" << distribution_ << " and basis=" << measure);
-    transformation_ = IdentityFunction(dimension);
-    inverseTransformation_ = transformation_;
-  }
-  else
-  {
-    // The second case is when both distributions share the same copula
-    // in which case the transformation is made of maginal transformations
-    if (distribution_.getCopula() == measure.getCopula())
-    {
-      // We use empty collections to avoid the construction of default distributions
-      LOGINFO("Same copula for input vector and basis");
-      DistributionCollection marginalX(0);
-      DistributionCollection marginalZ(0);
-      for (UnsignedInteger i = 0; i < dimension; ++i)
-      {
-        marginalX.add(distribution_.getMarginal(i));
-        marginalZ.add(measure.getMarginal(i));
-      }
-      // The distributions have an independent copula, they can be converted one into another by marginal transformation. T is such that T(X) = Z
-      const MarginalTransformationEvaluation evaluationT(MarginalTransformationEvaluation(marginalX, marginalZ));
-      const MarginalTransformationGradient gradientT(evaluationT);
-      const MarginalTransformationHessian hessianT(evaluationT);
-      transformation_ = NumericalMathFunction(evaluationT.clone(), gradientT.clone(), hessianT.clone());
-      const MarginalTransformationEvaluation evaluationTinv(MarginalTransformationEvaluation(marginalZ, marginalX));
-      const MarginalTransformationGradient gradientTinv(evaluationTinv);
-      const MarginalTransformationHessian hessianTinv(evaluationTinv);
-      inverseTransformation_ = NumericalMathFunction(evaluationTinv.clone(), gradientTinv.clone(), hessianTinv.clone());
-    }
-    // The third case is when both distributions share the same standard
-    // distribution in which case the transformation is made of
-    // isoprobabilistic transformations
-    else
-    {
-      if (distribution_.getStandardDistribution() == measure.getStandardDistribution())
-      {
-        LOGINFO("Same standard space for input vector and basis");
-        // The distributions share the same standard space, it is thus possible to transform one into the other by composition between their isoprobabilistic transformations. T = T^{-1}_Z o T_X and T^{-1} = T^{-1}_X o T_Z
-        const NumericalMathFunction TX(distribution_.getIsoProbabilisticTransformation());
-        const NumericalMathFunction TinvX(distribution_.getInverseIsoProbabilisticTransformation());
-        const NumericalMathFunction TZ(measure.getIsoProbabilisticTransformation());
-        const NumericalMathFunction TinvZ(measure.getInverseIsoProbabilisticTransformation());
-        transformation_ = ComposedFunction(TinvZ, TX);
-        inverseTransformation_ = ComposedFunction(TinvX, TZ);
-      }
-      // The fourth and last case is when the standard spaces are different
-      // We use the Rosenblatt transformation for each distribution with non-normal
-      // standard space
-      else
-      {
-        LOGINFO("Different standard space for input vector and basis");
-        NumericalMathFunction TX;
-        NumericalMathFunction invTX;
-        if (distribution_.getStandardDistribution().hasIndependentCopula())
-        {
-          LOGINFO("Normal standard space for input vector");
-          TX = distribution_.getIsoProbabilisticTransformation();
-          invTX = distribution_.getInverseIsoProbabilisticTransformation();
-        }
-        else
-        {
-          LOGINFO("Non-normal standard space for input vector");
-          TX = NumericalMathFunction(NumericalMathFunctionImplementation(RosenblattEvaluation(distribution_.getImplementation()).clone()));
-          invTX = NumericalMathFunction(NumericalMathFunctionImplementation(InverseRosenblattEvaluation(distribution_.getImplementation()).clone()));
-        }
-        NumericalMathFunction TZ;
-        NumericalMathFunction invTZ;
-        if (measure.getStandardDistribution().hasIndependentCopula())
-        {
-          LOGINFO("Normal standard space for basis");
-          TZ = measure.getIsoProbabilisticTransformation();
-          invTZ = measure.getInverseIsoProbabilisticTransformation();
-        }
-        else
-        {
-          LOGINFO("Non-normal standard space for basis");
-          TZ = NumericalMathFunction(NumericalMathFunctionImplementation(RosenblattEvaluation(measure.getImplementation()).clone()));
-          invTZ = NumericalMathFunction(NumericalMathFunctionImplementation(InverseRosenblattEvaluation(measure.getImplementation()).clone()));
-        }
-        transformation_ = ComposedFunction(invTZ, TX);
-        inverseTransformation_ = ComposedFunction(invTX, TZ);
-      }
-    } // Non-independent input copula
-  }
+  const DistributionTransformation transformation(distribution_, measure);
+  transformation_ = transformation;
+  inverseTransformation_ = transformation.inverse();
+
   // Build the composed model g = f o T^{-1}, which is a function of Z so it can be decomposed upon an orthonormal basis based on Z distribution
   LOGINFO("Transform the input sample in the measure space if needed");
+  const Bool noTransformation = (measure == distribution_);
   if (noTransformation) composedModel_ = model_;
   else composedModel_ = ComposedFunction(model_, inverseTransformation_);
   // If the input and output databases have already been given to the projection strategy, transport them to the measure space

@@ -95,18 +95,20 @@ void SVDMethod::update(const Indices& addedIndices,
   if ((addedIndices.getSize() > 0) || (removedIndices.getSize() > 0) || (conservedIndices != currentIndices_) || (singularValues_.getSize() == 0))
   {
     // If it is a row modification, update the row filter
-    if (row)
-    {
-      Matrix psiAk(computeWeightedDesign());
-      singularValues_ = psiAk.computeSVD(u_, vT_, false, false);
-    } // row modification
-    else
+    if (!row)
     {
       currentIndices_ = conservedIndices;
       currentIndices_.add(addedIndices);
-      Matrix psiAk(computeWeightedDesign());
-      singularValues_ = psiAk.computeSVD(u_, vT_, false, false);
     } // column modification
+
+    Matrix psiAk(computeWeightedDesign());
+    singularValues_ = psiAk.computeSVD(u_, vT_, false, false);
+
+    // check eigen values
+    const UnsignedInteger svdSize = singularValues_.getSize();
+    for (UnsignedInteger i = 0; i < svdSize; ++ i)
+      if (!(singularValues_[i] > 0.0)) throw InvalidArgumentException(HERE) << "Error: null eigen value in svd decomposition";
+
   } // Something has changed
 }
 
