@@ -1059,7 +1059,6 @@ NumericalMathFunction GeneralizedLinearModelAlgorithm::getObjectiveFunction()
   normalizeInputSample();
   LOGINFO("Compute the design matrix");
   computeF();
-  const UnsignedInteger inputDimension = reducedCovarianceModel_.getParameter().getSize();
   NumericalMathFunction logLikelihood(ReducedLogLikelihoodEvaluation(*this));
   // Here we change the finite difference gradient for a non centered one in order to reduce the computational cost
   logLikelihood.setGradient(NonCenteredFiniteDifferenceGradient(ResourceMap::GetAsNumericalScalar( "NonCenteredFiniteDifferenceGradient-DefaultEpsilon" ), logLikelihood.getEvaluation()).clone());
