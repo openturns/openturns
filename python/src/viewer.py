@@ -23,6 +23,7 @@ import warnings
 import io
 import sys
 
+__all__ = ["View", "PlotDesign"]
 
 class View(object):
     """
