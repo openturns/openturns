@@ -1,5 +1,5 @@
-Examples
-========
+Optimal LHS designs
+===================
 
 LHS and space filling
 ---------------------
