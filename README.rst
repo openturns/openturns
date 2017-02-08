@@ -1,3 +1,6 @@
+.. image:: https://circleci.com/gh/openturns/openturns.svg?style=shield
+    :target: https://circleci.com/gh/openturns/openturns
+
 .. image:: https://travis-ci.org/openturns/openturns.svg?branch=master
     :target: https://travis-ci.org/openturns/openturns
 
