@@ -38,10 +38,10 @@ typedef Collection<HermitianMatrix>  HermitianMatrixCollection;
 
 /* Default constructor */
 WelchFactory::WelchFactory()
-  : SpectralModelFactoryImplementation(),
-    window_(Hamming()),
-    blockNumber_(1),
-    overlap_(0.0)
+  : SpectralModelFactoryImplementation()
+  , window_(Hamming())
+  , blockNumber_(1)
+  , overlap_(0.0)
 {
   // Nothing to do
 }
@@ -49,10 +49,10 @@ WelchFactory::WelchFactory()
 WelchFactory::WelchFactory(const FilteringWindows & window,
                            const UnsignedInteger blockNumber,
                            const NumericalScalar overlap)
-  : SpectralModelFactoryImplementation(),
-    window_(window),
-    blockNumber_(0),
-    overlap_(0.0)
+  : SpectralModelFactoryImplementation()
+  , window_(window)
+  , blockNumber_(0)
+  , overlap_(0.0)
 {
   setBlockNumber(blockNumber);
   setOverlap(overlap);
