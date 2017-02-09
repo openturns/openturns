@@ -58,6 +58,10 @@ public:
   /** Computation of the spectral density function */
   HermitianMatrix operator()(const NumericalScalar frequency) const;
 
+  /** Frequency grid accessors */
+  RegularGrid getFrequencyGrid() const;
+  void setFrequencyGrid(const RegularGrid & frequencyGrid);
+
   /** String converter */
   String __repr__() const;
 
@@ -75,6 +79,9 @@ private:
   /** collection of spectral functions */
   HermitianMatrixPersistentCollection DSPCollection_;
 
+  /** Frequency grid over which the model is discretized */
+  RegularGrid frequencyGrid_;
+  
 } ; /* class UserDefinedSpectralModel */
 
 END_NAMESPACE_OPENTURNS

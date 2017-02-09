@@ -30,9 +30,8 @@ static const Factory<SpectralModelFactoryImplementation> Factory_SpectralModelFa
 
 /* Default constructor */
 SpectralModelFactoryImplementation::SpectralModelFactoryImplementation()
-  : PersistentObject(),
-    frequencyGrid_(),
-    fftAlgorithm_()
+  : PersistentObject()
+  , fftAlgorithm_()
 {
   // Nothing to do
 }
@@ -41,19 +40,6 @@ SpectralModelFactoryImplementation::SpectralModelFactoryImplementation()
 SpectralModelFactoryImplementation * SpectralModelFactoryImplementation::clone() const
 {
   return new SpectralModelFactoryImplementation(*this);
-}
-
-
-/* Frequency grid accessor */
-RegularGrid SpectralModelFactoryImplementation::getFrequencyGrid() const
-{
-  return frequencyGrid_;
-}
-
-/* Frequency grid accessor */
-void SpectralModelFactoryImplementation::setFrequencyGrid(const RegularGrid & grid)
-{
-  frequencyGrid_ = grid;
 }
 
 /* FFT algorithm accessor */

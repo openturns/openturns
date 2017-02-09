@@ -55,12 +55,6 @@ public:
   /** Virtual constructor */
   virtual  SpectralModelFactory * clone() const;
 
-  /** Frequency grid accessor */
-  RegularGrid getFrequencyGrid() const;
-
-  /** Frequency grid accessor */
-  void setFrequencyGrid(const RegularGrid & point);
-
   /** FFT algorithm accessor */
   FFT getFFTAlgorithm() const;
 

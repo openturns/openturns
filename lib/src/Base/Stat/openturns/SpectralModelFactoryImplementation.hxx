@@ -47,12 +47,6 @@ public:
   /** Virtual constructor */
   virtual SpectralModelFactoryImplementation * clone() const;
 
-  /** Frequency grid accessor */
-  RegularGrid getFrequencyGrid() const;
-
-  /** Frequency grid accessor */
-  void setFrequencyGrid(const RegularGrid & grid);
-
   /** FFT algorithm accessor */
   FFT getFFTAlgorithm() const;
 
@@ -79,9 +73,6 @@ public:
   virtual void load(Advocate & adv);
 
 protected:
-
-  /** Frequency grid */
-  RegularGrid frequencyGrid_;
 
   /** FFT algorithm */
   FFT fftAlgorithm_;

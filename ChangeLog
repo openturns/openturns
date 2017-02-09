@@ -46,6 +46,7 @@
  * #872 (Cannot draw a Text drawable using R)
  * #874 (Compatibility between a distribution factory and an alternate parametrization not checked)
  * #875 (TruncatedNormalFactory randomly crashes)
+ * #876 (Bad time grid in StationaryCovarianceModelFactory::build)
 
 == 1.8 release (2016-11-18) == #release-1.8
 

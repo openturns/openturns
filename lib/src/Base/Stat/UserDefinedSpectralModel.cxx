@@ -87,6 +87,17 @@ HermitianMatrix UserDefinedSpectralModel::operator() (const NumericalScalar freq
 }
 
 
+/* Frequency grid accessors */
+RegularGrid UserDefinedSpectralModel::getFrequencyGrid() const
+{
+  return frequencyGrid_;
+}
+
+void UserDefinedSpectralModel::setFrequencyGrid(const RegularGrid & frequencyGrid)
+{
+  frequencyGrid_ = frequencyGrid;
+}
+
 /* String converter */
 String UserDefinedSpectralModel::__repr__() const
 {

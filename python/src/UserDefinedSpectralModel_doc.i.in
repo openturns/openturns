@@ -10,11 +10,11 @@ densityCollectionFunction : :class:`~openturns.HermitianMatrixCollection`
 
 Notes
 -----
-We consider a multivariate process :math:`X: \Omega \times \cD \rightarrow \Rset^d` of dimension *d* where :math:`\cD \in \Rset^n`. We only treat here the case where the domain is of dimension 1: :math:`\cD \in \Rset` (*n=1*).
+We consider a multivariate process :math:`X: \Omega \times \cD \rightarrow \Rset^d` of dimension :math:`d` where :math:`\cD \in \Rset^n`. We only treat here the case where the domain is of dimension 1: :math:`\cD \in \Rset` (:math:`n=1`).
 
 We denote :math:`(\vect{t}_0, \dots, \vect{t}_{N-1})` the time stamps of the time grid.
 
-*X* is supposed to be a stationary second order process and we suppose that its spectral density function :math:`S : \Rset \rightarrow \mathcal{H}^+(d)` defined by:
+:math:`X` is supposed to be a stationary second order process and we suppose that its spectral density function :math:`S : \Rset \rightarrow \mathcal{H}^+(d)` defined by:
 
 .. math::
     :label: fourier_transform
@@ -60,3 +60,32 @@ Create the spectral model:
 
 >>> mySpectralModel = ot.UserDefinedSpectralModel(myFrequencyGrid, myCollection)
 "
+
+// ---------------------------------------------------------------------
+
+%define OT_UserDefinedSpectralModel_get_frequency_grid_doc
+"Return the frequency grid associated to the model.
+
+Returns
+-------
+grid : :class:`~openturns.RegularGrid`
+    The frequency grid of the model."
+
+%enddef
+%feature("docstring") OT::UserDefinedSpectralModel::getFrequencyGrid
+OT_UserDefinedSpectralModel_get_frequency_grid_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_UserDefinedSpectralModel_set_frequency_grid_doc
+"Set the frequency grid associated to the model.
+
+Parameters
+----------
+grid : :class:`~openturns.RegularGrid`
+    The frequency grid of the model."
+
+%enddef
+%feature("docstring") OT::UserDefinedSpectralModel::setFrequencyGrid
+OT_UserDefinedSpectralModel_set_frequency_grid_doc
+

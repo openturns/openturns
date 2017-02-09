@@ -66,10 +66,6 @@ public:
   /** Standard representative */
   virtual NumericalComplex computeStandardRepresentative(const NumericalScalar frequency) const;
 
-  /** Frequency grid accessors */
-  virtual RegularGrid getFrequencyGrid() const;
-  virtual void setFrequencyGrid(const RegularGrid & frequencyGrid);
-
   /** Drawing method */
   Graph draw(const UnsignedInteger rowIndex = 0,
              const UnsignedInteger columnIndex = 0,

@@ -1,6 +1,7 @@
 //                                               -*- C++ -*-
 /**
- *  @brief
+ *  @brief The class SpectralModelImplementation defines the concept of
+ *         spectral model for stationary processes
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -39,7 +40,6 @@ SpectralModelImplementation::SpectralModelImplementation()
   , spatialCorrelation_(0)
   , spatialCovariance_(0)
   , isDiagonal_(true)
-  , frequencyGrid_()
 {
   updateSpatialCovariance();
 }
@@ -54,7 +54,6 @@ SpectralModelImplementation::SpectralModelImplementation(const NumericalPoint & 
   , spatialCorrelation_(0)
   , spatialCovariance_(0)
   , isDiagonal_(true)
-  , frequencyGrid_()
 {
   setAmplitude(amplitude);
   setScale(scale);
@@ -72,7 +71,6 @@ SpectralModelImplementation::SpectralModelImplementation(const NumericalPoint & 
   , spatialCorrelation_(0)
   , spatialCovariance_(0)
   , isDiagonal_(false)
-  , frequencyGrid_()
 {
   if (spatialCorrelation.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given spatial correlation has a dimension different from the scales and amplitudes.";
   isDiagonal_ = spatialCorrelation.isDiagonal();
@@ -92,7 +90,6 @@ SpectralModelImplementation::SpectralModelImplementation(const NumericalPoint & 
   , spatialCorrelation_(0)
   , spatialCovariance_(0)
   , isDiagonal_(false)
-  , frequencyGrid_()
 {
   // Check scale values
   setScale(scale);
@@ -142,17 +139,6 @@ void SpectralModelImplementation::setDimension(const UnsignedInteger dimension)
 UnsignedInteger SpectralModelImplementation::getSpatialDimension() const
 {
   return spatialDimension_;
-}
-
-/* Frequency grid accessors */
-RegularGrid SpectralModelImplementation::getFrequencyGrid() const
-{
-  return frequencyGrid_;
-}
-
-void SpectralModelImplementation::setFrequencyGrid(const RegularGrid & frequencyGrid)
-{
-  frequencyGrid_ = frequencyGrid;
 }
 
 /* Computation of the spectral density function */
@@ -240,17 +226,17 @@ String SpectralModelImplementation::__str__(const String & offset) const
 /* Drawing method */
 Graph SpectralModelImplementation::draw(const UnsignedInteger rowIndex,
                                         const UnsignedInteger columnIndex,
+					const NumericalScalar frequencyMin,
+					const NumericalScalar frequencyMax,
+					const NumericalScalar numFrequencies,
                                         const Bool module) const
 {
   if (rowIndex >= dimension_) throw InvalidArgumentException(HERE) << "Error: the given row index must be less than " << dimension_ << ", here rowIndex=" << rowIndex;
   if (columnIndex >= dimension_) throw InvalidArgumentException(HERE) << "Error: the given column index must be less than " << dimension_ << ", here columnIndex=" << columnIndex;
-  const UnsignedInteger n = frequencyGrid_.getN();
-  const NumericalScalar fMin = frequencyGrid_.getStart();
-  const NumericalScalar fStep = frequencyGrid_.getStep();
-  NumericalSample data(n, 2);
-  for (UnsignedInteger i = 0; i < n; ++i)
+  NumericalSample data(numFrequencies, 2);
+  for (UnsignedInteger i = 0; i < numFrequencies; ++i)
   {
-    const NumericalScalar f = fMin + i * fStep;
+    const NumericalScalar f = (i * frequencyMin + (numFrequencies - i - 1.0) * frequencyMax) / (numFrequencies - 1.0);
     const NumericalComplex value((*this)(f)(rowIndex, columnIndex));
     data[i][0] = f;
     if (module) data[i][1] = std::abs(value);
@@ -276,7 +262,6 @@ void SpectralModelImplementation::save(Advocate & adv) const
   adv.saveAttribute( "spatialCorrelation_", spatialCorrelation_);
   adv.saveAttribute( "spatialCovariance_", spatialCovariance_);
   adv.saveAttribute( "isDiagonal_", isDiagonal_);
-  adv.saveAttribute( "frequencyGrid_", frequencyGrid_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -290,7 +275,6 @@ void SpectralModelImplementation::load(Advocate & adv)
   adv.loadAttribute( "spatialCorrelation_", spatialCorrelation_);
   adv.loadAttribute( "spatialCovariance_", spatialCovariance_);
   adv.loadAttribute( "isDiagonal_", isDiagonal_);
-  adv.loadAttribute( "frequencyGrid_", frequencyGrid_);
 }
 
 END_NAMESPACE_OPENTURNS

@@ -36,33 +36,6 @@ OT_SpectralModelFactory_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_SpectralModelFactory_getFrequencyGrid_doc
-"Accessor to the frequency grid.
-
-Returns
--------
-freqGrid : :class:`~openturns.RegularGrid` 
-    Grid on which the  spectral model is estimated.
- "
-%enddef
-%feature("docstring") OT::SpectralModelFactoryImplementation::getFrequencyGrid
-OT_SpectralModelFactory_getFrequencyGrid_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_SpectralModelFactory_setFrequencyGrid_doc
-"Accessor to the frequency grid.
-
-Parameters
-----------
-freqGrid : :class:`~openturns.RegularGrid` 
-    Grid on which the  spectral model is estimated.
- "
-%enddef
-%feature("docstring") OT::SpectralModelFactoryImplementation::setFrequencyGrid
-OT_SpectralModelFactory_setFrequencyGrid_doc
-
-
 // ---------------------------------------------------------------------
 
 %define OT_SpectralModelFactory_getFFTAlgorithm_doc

@@ -60,19 +60,6 @@ SpectralModelFactory * SpectralModelFactory::clone() const
   return new SpectralModelFactory(*this);
 }
 
-/* Frequency grid accessor */
-RegularGrid SpectralModelFactory::getFrequencyGrid() const
-{
-  return getImplementation()->getFrequencyGrid();
-}
-
-/* Frequency grid accessor */
-void SpectralModelFactory::setFrequencyGrid(const RegularGrid & grid)
-{
-  copyOnWrite();
-  getImplementation()->setFrequencyGrid(grid);
-}
-
 /* FFT algorithm accessor */
 FFT SpectralModelFactory::getFFTAlgorithm() const
 {

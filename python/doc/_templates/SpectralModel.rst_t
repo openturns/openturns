@@ -9,8 +9,6 @@
     from openturns.viewer import View
     spectralModel = ot.{{ objname }}()
     if spectralModel.getSpatialDimension() == 1:
-        freqGrid = ot.RegularGrid(1, 0.2, 10)
-        spectralModel.setFrequencyGrid(freqGrid)
         spec_graph = spectralModel.draw(0, 0, True)
         spec_graph.setXTitle('f')
         spec_graph.setYTitle('Spectral Density')

@@ -1,6 +1,7 @@
 //                                               -*- C++ -*-
 /**
- *  @brief
+ *  @brief Interface class for the concept of spectral model for
+ *         stationary processes
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -66,18 +67,6 @@ UnsignedInteger SpectralModel::getDimension() const
 UnsignedInteger SpectralModel::getSpatialDimension() const
 {
   return getImplementation()->getSpatialDimension();
-}
-
-/* Frequency grid accessors */
-RegularGrid SpectralModel::getFrequencyGrid() const
-{
-  return getImplementation()->getFrequencyGrid();
-}
-
-void SpectralModel::setFrequencyGrid(const RegularGrid & frequencyGrid)
-{
-  copyOnWrite();
-  getImplementation()->setFrequencyGrid(frequencyGrid);
 }
 
 HermitianMatrix SpectralModel::operator() (const NumericalScalar frequency) const
