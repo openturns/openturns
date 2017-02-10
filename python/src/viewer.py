@@ -514,6 +514,13 @@ class View(object):
             # mpl < 1.3.1, see https://github.com/ipython/ipython/pull/1615
             plt.show(**kwargs)
 
+    @staticmethod
+    def ShowAll(**kwargs):
+        """
+        Display all graphs.
+        """
+        plt.show(**kwargs)
+
     def save(self, fname, **kwargs):
         """
         Save the graph as file.
