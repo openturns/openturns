@@ -85,7 +85,7 @@ Create the algorithm:
 
 >>> basis = ot.Basis([ot.SymbolicFunction(['x'], ['x']), ot.SymbolicFunction(['x'], ['x^2'])])
 >>> covarianceModel = ot.GeneralizedExponential([2.0], 2.0)
->>> algoKriging = ot.KrigingAlgorithm(sampleX, sampleY, basis, covarianceModel)
+>>> algoKriging = ot.KrigingAlgorithm(sampleX, sampleY, covarianceModel, basis)
 >>> algoKriging.run()
 
 Get the result:

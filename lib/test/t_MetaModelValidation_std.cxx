@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
     CovarianceModel covarianceModel = GeneralizedExponential(scale, amplitude, 2.0);
 
 
-    KrigingAlgorithm algo2(inputSample, outputSample, basis, covarianceModel, true, true);
+    KrigingAlgorithm algo2(inputSample, outputSample, covarianceModel, basis, true);
     algo2.setOptimizeParameters(false);
     algo2.run();
 

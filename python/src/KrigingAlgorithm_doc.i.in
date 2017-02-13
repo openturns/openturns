@@ -2,13 +2,13 @@
 "Kriging algorithm.
 
 Available constructors:
-    KrigingAlgorithm(*inputSample, outputSample, basis, covarianceModel, normalize=True, keepCovariance=True*)
+    KrigingAlgorithm(*inputSample, outputSample, covarianceModel, basis, normalize=True*)
 
-    KrigingAlgorithm(*inputSample, inputTransformation, outputSample, basis, covarianceModel, keepCovariance=True*)
+    KrigingAlgorithm(*inputSample, inputTransformation, outputSample, covarianceModel, basis*)
 
-    KrigingAlgorithm(*inputSample, outputSample, multivariateBasis, covarianceModel, normalize=True, keepCovariance=True*)
+    KrigingAlgorithm(*inputSample, outputSample, covarianceModel, basisCollection, normalize=True*)
 
-    KrigingAlgorithm(*inputSample, inputTransformation, outputSample, multivariateBasis, covarianceModel, keepCovariance=True*)
+    KrigingAlgorithm(*inputSample, inputTransformation, outputSample, covarianceModel, basisCollection*)
 
 Parameters
 ----------
@@ -22,19 +22,15 @@ basis : :class:`~openturns.Basis`
     Functional basis to estimate the trend (universal kriging): :math:`(\varphi_j)_{1 \leq j \leq n_1}: \Rset^d \rightarrow \Rset`.
 
     If :math:`p>1`, the same basis is used for each marginal output.
-multivariateBasis : sequence of :class:`~openturns.Basis`
-    Collection of :math:`p` functional basis: one basis for each marginal output: :math:`\left[(\varphi_j^1)_{1 \leq j \leq n_1}, \dots, (\varphi_j^p)_{1 \leq j \leq n_p}\right]`. If the sequence is empty, no trend coefficient is estimated (simple kriging).
 covarianceModel : :class:`~openturns.CovarianceModel`
     Covariance model used for the underlying Gaussian process assumption.
+basisCollection : sequence of :class:`~openturns.Basis`
+    Collection of :math:`p` functional basis: one basis for each marginal output: :math:`\left[(\varphi_j^1)_{1 \leq j \leq n_1}, \dots, (\varphi_j^p)_{1 \leq j \leq n_p}\right]`. If the sequence is empty, no trend coefficient is estimated (simple kriging).
 normalize : bool, optional
     Indicates whether the input sample has to be normalized.
 
     OpenTURNS uses the transformation fixed by the User in *inputTransformation* or the empirical mean and variance of the input sample.
     Default is set in resource map key `GeneralizedLinearModelAlgorithm-NormalizeData`
-keepCovariance : bool, optional
-    Indicates whether the covariance matrix has to be stored in the result structure *KrigingResult*.
-
-    Default is *True*.
 
 Notes
 -----
@@ -103,7 +99,7 @@ Create the algorithm:
 
 >>> basis = ot.ConstantBasisFactory().build()
 >>> covarianceModel = ot.SquaredExponential(1)
->>> algo = ot.KrigingAlgorithm(inputSample, outputSample, basis, covarianceModel)
+>>> algo = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
 >>> algo.run()
 
 Get the resulting meta model:
@@ -146,7 +142,7 @@ Create the Kriging algorithm with the optimizer option:
 >>> thetaInit = 1.0
 >>> covariance = ot.GeneralizedExponential([thetaInit], 2.0)
 >>> bounds = ot.Interval(1e-2,1e2)
->>> algo = ot.KrigingAlgorithm(input_data, output_data, basis, covariance)
+>>> algo = ot.KrigingAlgorithm(input_data, output_data, covariance, basis)
 >>> algo.setOptimizationBounds(bounds)
 "
 
@@ -232,7 +228,7 @@ Create the algorithm:
 
 >>> basis = ot.ConstantBasisFactory().build()
 >>> covarianceModel = ot.SquaredExponential(1)
->>> algo = ot.KrigingAlgorithm(inputSample, outputSample, basis, covarianceModel)
+>>> algo = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
 >>> algo.run()
 
 Get the reduced log-likelihood function:

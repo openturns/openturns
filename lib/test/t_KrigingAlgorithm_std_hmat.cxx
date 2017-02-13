@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
 
       Basis basis(ConstantBasisFactory(dimension).build());
       SquaredExponential covarianceModel(NumericalPoint(1, 1e-05), NumericalPoint(1, 4.11749));
-      KrigingAlgorithm algo(X, Y, basis, covarianceModel);
+      KrigingAlgorithm algo(X, Y, covarianceModel, basis);
 
       algo.run();
 
@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
       NumericalPoint amplitude(1,  8.05);
       SquaredExponential covarianceModel(scale, amplitude);
 
-      KrigingAlgorithm algo(X, Y, basis, covarianceModel);
+      KrigingAlgorithm algo(X, Y, covarianceModel, basis);
       algo.run();
 
       // perform an evaluation

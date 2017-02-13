@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
 
   // Kriring algorithm
   std::cerr << "before algo" << std::endl;
-  KrigingAlgorithm algo(inputSample, outputSample, basis, covarianceModel, true, true);
+  KrigingAlgorithm algo(inputSample, outputSample, covarianceModel, basis, true);
   std::cerr << "before run" << std::endl;
   algo.run();
   std::cerr << "run ok" << std::endl;

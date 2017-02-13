@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
     Basis basis(ConstantBasisFactory(2).build());
 
     // Kriring algorithm
-    KrigingAlgorithm algo(inputSample, outputSample, basis, covarianceModel);
+    KrigingAlgorithm algo(inputSample, outputSample, covarianceModel, basis);
     algo.run();
 
     // Get result

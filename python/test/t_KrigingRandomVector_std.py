@@ -38,7 +38,7 @@ basisCollection = BasisCollection(
 
 # Kriring algorithm
 algo = KrigingAlgorithm(inputSample, outputSample,
-                        basisCollection, covarianceModel)
+                        covarianceModel, basisCollection)
 algo.run()
 result = algo.getResult()
 # Get meta model
