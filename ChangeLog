@@ -32,6 +32,8 @@
   * Deprecated NumericalMathFunction::GetValidConstants|GetValidFunctions|GetValidOperators
   * Renamed ComposedNumericalMathFunction to ComposedFunction
   * Renamed LinearNumericalMathFunction to LinearFunction
+  * Swap covModel and basis arguments in KrigingAlgorithm constructors
+  * Removed useless keepCholesky argument in KrigingAlgorithm constructors
 
 === Python module ===
 
