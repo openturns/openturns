@@ -69,10 +69,12 @@ public:
                       const Indices & indices,
                       const DesignProxy & proxy);
 
-  BasisSequence build(LeastSquaresMethod & method);
+  BasisSequence build(LeastSquaresMethod & method,
+                      const NumericalSample & y);
 
   void initialize();
-  void updateBasis(LeastSquaresMethod & method);
+  void updateBasis(LeastSquaresMethod & method,
+                   const NumericalSample & y);
 
 #endif
 

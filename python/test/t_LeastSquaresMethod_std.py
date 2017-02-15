@@ -10,8 +10,6 @@ X = ot.NumericalSample(sampleSize, 1)
 for i in range(sampleSize):
     X[i, 0] = i + 1.0
 
-Y = ot.NumericalSample(sampleSize, 1)
-
 phis = []
 for j in range(basisSize):
     phis.append(ot.NumericalMathFunction(['x'],['y'], ['x^' + str(j + 1)]))
@@ -23,9 +21,9 @@ proxy = ot.DesignProxy(X, basis)
 full = range(basisSize)
 
 design = proxy.computeDesign(full)
-methods = [ot.SVDMethod(proxy, Y, full),
-           ot.CholeskyMethod(proxy, Y, full),
-           ot.QRMethod(proxy, Y, full)]
+methods = [ot.SVDMethod(proxy, full),
+           ot.CholeskyMethod(proxy, full),
+           ot.QRMethod(proxy, full)]
 for method in methods:
     print(method.__class__.__name__)
     y = [1.0] * 3

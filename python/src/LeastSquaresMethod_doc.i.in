@@ -6,8 +6,6 @@ OT_LeastSquaresMethod_buildCurrentBasis_doc
 OT_LeastSquaresMethod_computeWeightedDesign_doc
 %feature("docstring") OT::LeastSquaresMethod::getInputSample
 OT_LeastSquaresMethod_getInputSample_doc
-%feature("docstring") OT::LeastSquaresMethod::getOutputSample
-OT_LeastSquaresMethod_getOutputSample_doc
 %feature("docstring") OT::LeastSquaresMethod::getWeight
 OT_LeastSquaresMethod_getWeight_doc
 %feature("docstring") OT::LeastSquaresMethod::getBasis

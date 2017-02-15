@@ -38,19 +38,17 @@ LeastSquaresMethod::LeastSquaresMethod()
 
 /* Parameters constructor */
 LeastSquaresMethod::LeastSquaresMethod (const DesignProxy & proxy,
-                                        const NumericalSample & outputSample,
                                         const NumericalPoint & weight,
                                         const Indices & indices)
-  : TypedInterfaceObject<LeastSquaresMethodImplementation>(new SVDMethod(proxy, outputSample, weight, indices))
+  : TypedInterfaceObject<LeastSquaresMethodImplementation>(new SVDMethod(proxy, weight, indices))
 {
   // Nothing to do
 }
 
 /* Parameters constructor */
 LeastSquaresMethod::LeastSquaresMethod (const DesignProxy & proxy,
-                                        const NumericalSample & outputSample,
                                         const Indices & indices)
-  : TypedInterfaceObject<LeastSquaresMethodImplementation>(new SVDMethod(proxy, outputSample, indices))
+  : TypedInterfaceObject<LeastSquaresMethodImplementation>(new SVDMethod(proxy, indices))
 {
   // Nothing to do
 }
@@ -136,11 +134,6 @@ Indices LeastSquaresMethod::getInitialIndices() const
 NumericalSample LeastSquaresMethod::getInputSample() const
 {
   return getImplementation()->getInputSample();
-}
-
-NumericalSample LeastSquaresMethod::getOutputSample() const
-{
-  return getImplementation()->getOutputSample();
 }
 
 NumericalPoint LeastSquaresMethod::getWeight() const

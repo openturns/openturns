@@ -56,7 +56,8 @@ public:
 //                               const DesignProxy & proxy);
 
   virtual void initialize();
-  virtual void updateBasis(LeastSquaresMethod & method);
+  virtual void updateBasis(LeastSquaresMethod & method,
+                            const NumericalSample & y);
 #endif
   /** String converter */
   virtual String __repr__() const;

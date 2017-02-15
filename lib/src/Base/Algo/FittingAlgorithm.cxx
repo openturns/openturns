@@ -85,8 +85,9 @@ NumericalScalar FittingAlgorithm::run(const NumericalSample & y,
   return getImplementation()->run(y, weight, indices, proxy);
 }
 
-NumericalScalar FittingAlgorithm::run(LeastSquaresMethod & method) const
+NumericalScalar FittingAlgorithm::run(LeastSquaresMethod & method,
+                                      const NumericalSample & y) const
 {
-  return getImplementation()->run(method);
+  return getImplementation()->run(method, y);
 }
 END_NAMESPACE_OPENTURNS

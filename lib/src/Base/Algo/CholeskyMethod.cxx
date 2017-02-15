@@ -44,10 +44,9 @@ CholeskyMethod::CholeskyMethod()
 
 /* Parameters constructor */
 CholeskyMethod::CholeskyMethod(const DesignProxy & proxy,
-                               const NumericalSample & outputSample,
                                const NumericalPoint & weight,
                                const Indices & indices)
-  : LeastSquaresMethodImplementation(proxy, outputSample, weight, indices)
+  : LeastSquaresMethodImplementation(proxy, weight, indices)
   , l_(0)
 {
   // Nothing to do
@@ -56,9 +55,8 @@ CholeskyMethod::CholeskyMethod(const DesignProxy & proxy,
 
 /* Parameters constructor */
 CholeskyMethod::CholeskyMethod(const DesignProxy & proxy,
-                               const NumericalSample & outputSample,
                                const Indices & indices)
-  : LeastSquaresMethodImplementation(proxy, outputSample, indices)
+  : LeastSquaresMethodImplementation(proxy, indices)
   , l_(0)
 {
   // Nothing to do

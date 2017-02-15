@@ -2,16 +2,14 @@
 "Least squares solver using Cholesky decomposition.
 
 Available constructors:
-    CholeskyMethod(*proxy, y, weight, indices*)
+    CholeskyMethod(*proxy, weight, indices*)
 
-    CholeskyMethod(*proxy, y, indices*)
+    CholeskyMethod(*proxy, indices*)
 
 Parameters
 ----------
 proxy : :class:`~openturns.DesignProxy`
     Input sample
-y : :class:`~openturns.NumericalSample`
-    Output sample
 weight : sequence of float
     Output weights
 indices : sequence of int

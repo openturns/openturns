@@ -2,16 +2,14 @@
 "Least squares solver using SVD decomposition.
 
 Available constructors:
-    SVDMethod(*proxy, y, weight, indices*)
+    SVDMethod(*proxy, weight, indices*)
 
-    SVDMethod(*proxy, y, indices*)
+    SVDMethod(*proxy, indices*)
 
 Parameters
 ----------
 proxy : :class:`~openturns.DesignProxy`
     Input sample
-y : :class:`~openturns.NumericalSample`
-    Output sample
 weight : sequence of float
     Output weights
 indices : sequence of int

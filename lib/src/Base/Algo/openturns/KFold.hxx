@@ -62,7 +62,8 @@ public:
                               const Indices & indices,
                               const DesignProxy & proxy) const;
 
-  virtual NumericalScalar run(LeastSquaresMethod & method) const;
+  virtual NumericalScalar run(LeastSquaresMethod & method,
+                              const NumericalSample & y) const;
 #endif
 
   /** Method save() stores the object through the StorageManager */

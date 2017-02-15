@@ -67,19 +67,19 @@ NumericalScalar FittingAlgorithmImplementation::run(const NumericalSample & y,
     const Indices & indices,
     const DesignProxy & proxy) const
 {
-  LeastSquaresMethod method(proxy, y, weight, indices);
-  return run(method);
+  LeastSquaresMethod method(proxy, weight, indices);
+  return run(method, y);
 }
 
 NumericalScalar FittingAlgorithmImplementation::run(const NumericalSample & y,
     const Indices & indices,
     const DesignProxy & proxy) const
 {
-  LeastSquaresMethod method(proxy, y, indices);
-  return run(method);
+  LeastSquaresMethod method(proxy, indices);
+  return run(method, y);
 }
 
-NumericalScalar FittingAlgorithmImplementation::run(LeastSquaresMethod & method) const
+NumericalScalar FittingAlgorithmImplementation::run(LeastSquaresMethod & method, const NumericalSample & y) const
 {
   throw NotYetImplementedException(HERE);
 }

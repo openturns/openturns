@@ -81,9 +81,10 @@ BasisSequence BasisSequenceFactory::build(const NumericalSample & y,
   return getImplementation()->build(y, indices, proxy);
 }
 
-BasisSequence BasisSequenceFactory::build(LeastSquaresMethod & method)
+BasisSequence BasisSequenceFactory::build(LeastSquaresMethod & method,
+                                          const NumericalSample & y)
 {
-  return getImplementation()->build(method);
+  return getImplementation()->build(method, y);
 }
 
 void BasisSequenceFactory::initialize()
@@ -91,9 +92,10 @@ void BasisSequenceFactory::initialize()
   getImplementation()->initialize();
 }
 
-void BasisSequenceFactory::updateBasis(LeastSquaresMethod & method)
+void BasisSequenceFactory::updateBasis(LeastSquaresMethod & method,
+                                       const NumericalSample & y)
 {
-  getImplementation()->updateBasis(method);
+  getImplementation()->updateBasis(method, y);
 }
 
 

@@ -41,13 +41,11 @@ public:
 
   /** Default constructor */
   SVDMethod(const DesignProxy & proxy,
-            const NumericalSample & outputSample,
             const NumericalPoint & weight,
             const Indices & indices);
 
   /** Default constructor */
   SVDMethod(const DesignProxy & proxy,
-            const NumericalSample & outputSample,
             const Indices & indices);
 
   /** Virtual constructor */

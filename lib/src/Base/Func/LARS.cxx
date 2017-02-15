@@ -71,10 +71,10 @@ void LARS::initialize()
 }
 
 /* Method to create new BasisSequence objects */
-void LARS::updateBasis(LeastSquaresMethod & method)
+void LARS::updateBasis(LeastSquaresMethod & method,
+                       const NumericalSample & y)
 {
   NumericalSample x(method.getInputSample());
-  NumericalSample y(method.getOutputSample());
 
   const UnsignedInteger sampleSize = x.getSize();
 

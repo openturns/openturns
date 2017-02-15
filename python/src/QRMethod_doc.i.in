@@ -2,16 +2,14 @@
 "Least squares solver using the QR decomposition.
 
 Available constructors:
-    QRMethod(*proxy, y, weight, indices*)
+    QRMethod(*proxy, weight, indices*)
 
-    QRMethod(*proxy, y, indices*)
+    QRMethod(*proxy, indices*)
 
 Parameters
 ----------
 proxy : :class:`~openturns.DesignProxy`
     Input sample
-y : :class:`~openturns.NumericalSample`
-    Output sample
 weight : sequence of float
     Output weights
 indices : sequence of int
