@@ -133,6 +133,7 @@ script:
   - ctest -R pyinstallcheck -j4 --output-on-failure --timeout 100
 
 after_success:
+  - exit 0
   - test "$TRAVIS_PULL_REQUEST" = "false" -a "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_OS_NAME" = "linux" || exit 0
   - git clone https://${GH_TOKEN}@github.com/openturns/openturns.github.io.git
   - cp -r ~/.local/share/openturns/doc/html/* openturns.github.io
