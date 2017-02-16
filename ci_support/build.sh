@@ -10,5 +10,5 @@ cmake -DCMAKE_INSTALL_PREFIX=~/.local \
       -DSWIG_EXECUTABLE=~/.local/bin/swig \
       -DHMAT_DIR=~/.local/lib/cmake/hmat .
 make install -j2
-make tests -j2
-ctest --output-on-failure --timeout 100
+#make tests -j2
+ctest -R pyinstallcheck --output-on-failure --timeout 100 -j2
