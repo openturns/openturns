@@ -66,10 +66,12 @@ public:
                               const Indices & indices,
                               const DesignProxy & proxy);
 
-  virtual BasisSequence build(LeastSquaresMethod & method);
+  virtual BasisSequence build(LeastSquaresMethod & method,
+                              const NumericalSample & y);
 
   virtual void initialize();
-  virtual void updateBasis(LeastSquaresMethod & method);
+  virtual void updateBasis(LeastSquaresMethod & method,
+                           const NumericalSample & y);
 #endif
 
   /** Stopping criterion on the L1-norm of the coefficients accessor */

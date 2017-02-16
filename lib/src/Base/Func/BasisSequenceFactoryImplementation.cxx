@@ -85,21 +85,22 @@ BasisSequence BasisSequenceFactoryImplementation::build(const NumericalSample & 
     const Indices & indices,
     const DesignProxy & proxy)
 {
-  LeastSquaresMethod method(proxy, y, indices);
-  return build(method);
+  LeastSquaresMethod method(proxy, indices);
+  return build(method, y);
 }
 
-BasisSequence BasisSequenceFactoryImplementation::build(LeastSquaresMethod & method)
+BasisSequence BasisSequenceFactoryImplementation::build(LeastSquaresMethod & method,
+                                                        const NumericalSample & y)
 {
 //   BasisSequence basisSequence(method.buildCurrentBasis());
   BasisSequence basisSequence(method.getBasis());
   initialize();
 
-  updateBasis(method);
+  updateBasis(method, y);
   while ((addedPsi_k_ranks_.getSize() > 0) || (removedPsi_k_ranks_.getSize() > 0))
   {
     basisSequence.add(currentIndices_);
-    updateBasis(method);
+    updateBasis(method, y);
   }
   return basisSequence;
 }
@@ -113,7 +114,7 @@ void BasisSequenceFactoryImplementation::initialize()
 }
 
 
-void BasisSequenceFactoryImplementation::updateBasis(LeastSquaresMethod & method)
+void BasisSequenceFactoryImplementation::updateBasis(LeastSquaresMethod & method, const NumericalSample & y)
 {
   throw NotYetImplementedException(HERE) << " in BasisSequenceFactoryImplementation::updateBasis";
 }

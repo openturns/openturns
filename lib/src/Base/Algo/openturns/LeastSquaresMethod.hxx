@@ -48,13 +48,11 @@ public:
 
   /** Parameters constructor */
   LeastSquaresMethod (const DesignProxy & proxy,
-                      const NumericalSample & outputSample,
                       const NumericalPoint & weight,
                       const Indices & indices);
 
   /** Parameters constructor */
   LeastSquaresMethod (const DesignProxy & proxy,
-                      const NumericalSample & outputSample,
                       const Indices & indices);
 
   /** Constructor from implementation */
@@ -69,9 +67,6 @@ public:
 
   /** Input sample accessor */
   NumericalSample getInputSample() const;
-
-  /** Output sample accessor */
-  NumericalSample getOutputSample() const;
 
   /** Weight accessor */
   NumericalPoint getWeight() const;

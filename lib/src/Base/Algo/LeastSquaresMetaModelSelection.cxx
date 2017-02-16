@@ -124,16 +124,16 @@ void LeastSquaresMetaModelSelection::run(const DesignProxy & proxy)
 
   LeastSquaresMethod method;
   const String methodName(ResourceMap::Get("LeastSquaresMetaModelSelection-DecompositionMethod"));
-  if      (methodName == "SVD")      method = SVDMethod(proxy, y_, weight_, currentIndices_);
-  else if (methodName == "Cholesky") method = CholeskyMethod(proxy, y_, weight_, currentIndices_);
-  else if (methodName == "QR")       method = QRMethod(proxy, y_, weight_, currentIndices_);
+  if      (methodName == "SVD")      method = SVDMethod(proxy, weight_, currentIndices_);
+  else if (methodName == "Cholesky") method = CholeskyMethod(proxy, weight_, currentIndices_);
+  else if (methodName == "QR")       method = QRMethod(proxy, weight_, currentIndices_);
   else throw InvalidArgumentException(HERE) << "Error: invalid value for \"LeastSquaresMetaModelSelection-DecompositionMethod\" in ResourceMap";
 
   Indices optimalBasisIndices;
   UnsignedInteger iterations = 0;
 
   basisSequenceFactory_.initialize();
-  basisSequenceFactory_.updateBasis(method);
+  basisSequenceFactory_.updateBasis(method, y_);
 
   // for each sub-basis ...
   const NumericalScalar alpha = std::max(1.0, ResourceMap::GetAsNumericalScalar("LeastSquaresMetaModelSelection-MaximumErrorFactor"));
@@ -141,7 +141,7 @@ void LeastSquaresMetaModelSelection::run(const DesignProxy & proxy)
   while ((basisSequenceFactory_.getImplementation()->addedPsi_k_ranks_.getSize() > 0) || (basisSequenceFactory_.getImplementation()->removedPsi_k_ranks_.getSize() > 0))
   {
     // retrieve the i-th basis of the sequence
-    const NumericalScalar error = fittingAlgorithm_.run(method);
+    const NumericalScalar error = fittingAlgorithm_.run(method, y_);
     LOGINFO(OSS() << "\nsubbasis=" << iterations << ", size=" << basisSequenceFactory_.getImplementation()->currentIndices_.getSize() << ", error=" << error << ", qSquare=" << 1.0 - error);
 
     if (error < minimumError)
@@ -162,7 +162,7 @@ void LeastSquaresMetaModelSelection::run(const DesignProxy & proxy)
       LOGINFO(OSS() << "Minimum error=" << minimumError << " smaller than threshold=" << errorThreshold);
       break;
     }
-    basisSequenceFactory_.updateBasis(method);
+    basisSequenceFactory_.updateBasis(method, y_);
 
     ++ iterations;
   }

@@ -37,19 +37,17 @@ LeastSquaresMethodImplementation::LeastSquaresMethodImplementation()
 
 /* Parameters constructor */
 LeastSquaresMethodImplementation::LeastSquaresMethodImplementation(const DesignProxy & proxy,
-    const NumericalSample & outputSample,
     const NumericalPoint & weight,
     const Indices & indices)
   : PersistentObject()
   , proxy_(proxy)
-  , outputSample_(outputSample)
   , weight_(0)
   , weightSqrt_(0)
   , hasUniformWeight_(false)
   , currentIndices_(indices)
   , initialIndices_(indices)
 {
-  const UnsignedInteger size = outputSample.getSize();
+  const UnsignedInteger size = proxy.getInputSample().getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: expected a non-empty output sample";
   // Check the argument compatibility
   if (proxy.getInputSample().getSize() != size) throw InvalidArgumentException(HERE) << "Error: the size of the output sample=" << size << " is different from the size of the input sample=" << proxy.getInputSample().getSize();
@@ -60,21 +58,17 @@ LeastSquaresMethodImplementation::LeastSquaresMethodImplementation(const DesignP
 
 /* Parameters constructor */
 LeastSquaresMethodImplementation::LeastSquaresMethodImplementation(const DesignProxy & proxy,
-    const NumericalSample & outputSample,
     const Indices & indices)
   : PersistentObject()
   , proxy_(proxy)
-  , outputSample_(outputSample)
   , weight_(1, 1.0)
   , weightSqrt_(1, 1.0)
   , hasUniformWeight_(true)
   , currentIndices_(indices)
   , initialIndices_(indices)
 {
-  const UnsignedInteger size = outputSample.getSize();
+  const UnsignedInteger size = proxy.getInputSample().getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: expected a non-empty output sample";
-  // Check the argument compatibility
-  if (proxy.getInputSample().getSize() != size) throw InvalidArgumentException(HERE) << "Error: the size of the output sample=" << size << " is different from the size of the input sample=" << proxy.getInputSample().getSize();
 }
 
 /* Weight accessor */
@@ -174,7 +168,6 @@ String LeastSquaresMethodImplementation::__repr__() const
 {
   return OSS() << "class=" << GetClassName()
          << ", proxy=" << proxy_
-         << ", outputSample=" << outputSample_
          << ", weight=" << weight_
          << ", weightSqrt=" << weightSqrt_
          << ", hasUniformWeight=" << hasUniformWeight_
@@ -201,12 +194,6 @@ NumericalSample LeastSquaresMethodImplementation::getInputSample() const
 {
   return proxy_.getInputSample();
 }
-
-NumericalSample LeastSquaresMethodImplementation::getOutputSample() const
-{
-  return outputSample_;
-}
-
 
 MatrixImplementation LeastSquaresMethodImplementation::computeWeightedDesign(const Bool whole) const
 {

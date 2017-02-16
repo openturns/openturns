@@ -71,7 +71,8 @@ public:
                       const Indices & indices,
                       const DesignProxy & proxy) const;
 
-  NumericalScalar run(LeastSquaresMethod & method) const;
+  NumericalScalar run(LeastSquaresMethod & method,
+                      const NumericalSample & y) const;
 #endif
 
 }; /* class FittingAlgorithm */

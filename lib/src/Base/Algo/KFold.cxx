@@ -71,10 +71,10 @@ NumericalScalar KFold::run(const NumericalSample & y,
   return FittingAlgorithmImplementation::run(y, weight, indices, proxy);
 }
 
-NumericalScalar KFold::run(LeastSquaresMethod & method) const
+NumericalScalar KFold::run(LeastSquaresMethod & method,
+                          const NumericalSample & y) const
 {
   const NumericalSample x(method.getInputSample());
-  const NumericalSample y(method.getOutputSample());
   const Basis basis(method.getBasis());
 
   const UnsignedInteger sampleSize = x.getSize();

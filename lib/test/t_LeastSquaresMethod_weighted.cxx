@@ -37,7 +37,6 @@ int main(int argc, char *argv[])
     const UnsignedInteger size = 20;
 
     NumericalSample x(Normal(dimension).getSample(size));
-    NumericalSample y(Normal(1).getSample(size));
     Collection<NumericalMathFunction> coll;
     const Description description(Description::BuildDefault(dimension, "x"));
     for(UnsignedInteger i = 0; i < dimension; ++i)
@@ -51,7 +50,7 @@ int main(int argc, char *argv[])
     NumericalPoint weights(size, 10.0);
     fullprint << "Uniform weights" << std::endl << std::endl;
     {
-      QRMethod qrMethod(proxy, y, weights, indices);
+      QRMethod qrMethod(proxy, weights, indices);
       qrMethod.update(Indices(0), indices, Indices(0));
 
       fullprint << "QR" << std::endl;
@@ -63,7 +62,7 @@ int main(int argc, char *argv[])
       fullprint << "GramInverseDiag=" << qrMethod.getGramInverseDiag() << std::endl;
     }
     {
-      SVDMethod svdMethod(proxy, y, weights, indices);
+      SVDMethod svdMethod(proxy, weights, indices);
       svdMethod.update(Indices(0), indices, Indices(0));
 
       fullprint << "SVD" << std::endl;
@@ -75,7 +74,7 @@ int main(int argc, char *argv[])
       fullprint << "GramInverseDiag=" << svdMethod.getGramInverseDiag() << std::endl;
     }
     {
-      CholeskyMethod choleskyMethod(proxy, y, weights, indices);
+      CholeskyMethod choleskyMethod(proxy, weights, indices);
       choleskyMethod.update(Indices(0), indices, Indices(0));
 
       fullprint << "Cholesky" << std::endl;
@@ -90,7 +89,7 @@ int main(int argc, char *argv[])
     fullprint << std::endl << "Non-uniform weights" << std::endl << std::endl;
     weights[0] += 1.e-10;
     {
-      QRMethod qrMethod(proxy, y, weights, indices);
+      QRMethod qrMethod(proxy, weights, indices);
       qrMethod.update(Indices(0), indices, Indices(0));
 
       fullprint << "QR" << std::endl;
@@ -102,7 +101,7 @@ int main(int argc, char *argv[])
       fullprint << "GramInverseDiag=" << qrMethod.getGramInverseDiag() << std::endl;
     }
     {
-      SVDMethod svdMethod(proxy, y, weights, indices);
+      SVDMethod svdMethod(proxy, weights, indices);
       svdMethod.update(Indices(0), indices, Indices(0));
 
       fullprint << "SVD" << std::endl;
@@ -114,7 +113,7 @@ int main(int argc, char *argv[])
       fullprint << "GramInverseDiag=" << svdMethod.getGramInverseDiag() << std::endl;
     }
     {
-      CholeskyMethod choleskyMethod(proxy, y, weights, indices);
+      CholeskyMethod choleskyMethod(proxy, weights, indices);
       choleskyMethod.update(Indices(0), indices, Indices(0));
 
       fullprint << "Cholesky" << std::endl;

@@ -2,16 +2,14 @@
 "Base class for least square solvers.
 
 Available constructors:
-    LeastSquaresMethod(*proxy, y, weight, indices*)
+    LeastSquaresMethod(*proxy, weight, indices*)
 
-    LeastSquaresMethod(*proxy, y, indices*)
+    LeastSquaresMethod(*proxy, indices*)
 
 Parameters
 ----------
 proxy : :class:`~openturns.DesignProxy`
     Input sample
-y : :class:`~openturns.NumericalSample`
-    Output sample
 weight : sequence of float
     Output weights
 indices : sequence of int
@@ -45,19 +43,6 @@ inputSample : :class:`~openturns.NumericalSample`
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::getInputSample
 OT_LeastSquaresMethod_getInputSample_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_LeastSquaresMethod_getOutputSample_doc
-"Output sample accessor.
-
-Returns
--------
-inputSample : :class:`~openturns.NumericalSample`
-    Output sample."
-%enddef
-%feature("docstring") OT::LeastSquaresMethodImplementation::getOutputSample
-OT_LeastSquaresMethod_getOutputSample_doc
 
 // ---------------------------------------------------------------------
 

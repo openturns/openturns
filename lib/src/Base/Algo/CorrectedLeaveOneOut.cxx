@@ -68,10 +68,10 @@ NumericalScalar CorrectedLeaveOneOut::run(const NumericalSample & y,
   return FittingAlgorithmImplementation::run(y, weight, indices, proxy);
 }
 
-NumericalScalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method) const
+NumericalScalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method,
+                                          const NumericalSample & y) const
 {
   const NumericalSample x(method.getInputSample());
-  const NumericalSample y(method.getOutputSample());
 
   const UnsignedInteger sampleSize = y.getSize();
 

@@ -41,13 +41,11 @@ public:
 
   /** Parameters constructor */
   CholeskyMethod(const DesignProxy & proxy,
-                 const NumericalSample & outputSample,
                  const NumericalPoint & weight,
                  const Indices & indices);
 
   /** Parameters constructor */
   CholeskyMethod(const DesignProxy & proxy,
-                 const NumericalSample & outputSample,
                  const Indices & indices);
 
   /** Virtual constructor */

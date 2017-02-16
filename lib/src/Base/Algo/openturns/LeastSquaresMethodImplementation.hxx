@@ -48,13 +48,11 @@ public:
 
   /** Parameters constructor */
   LeastSquaresMethodImplementation(const DesignProxy & proxy,
-                                   const NumericalSample & outputSample,
                                    const NumericalPoint & weight,
                                    const Indices & indices);
 
   /** Parameters constructor */
   LeastSquaresMethodImplementation(const DesignProxy & proxy,
-                                   const NumericalSample & outputSample,
                                    const Indices & indices);
 
   /** Virtual constructor */
@@ -65,9 +63,6 @@ public:
 
   /** Input sample accessor */
   virtual NumericalSample getInputSample() const;
-
-  /** Output sample accessor */
-  virtual NumericalSample getOutputSample() const;
 
   /** Weight accessor */
   virtual NumericalPoint getWeight() const;
@@ -130,9 +125,6 @@ protected:
 
   /** Proxy to the input sample and the basis */
   DesignProxy proxy_;
-
-  /** Target values */
-  NumericalSample outputSample_;
 
   /** Weights for the least-squares norm. The size is positive if and only if the weights are not uniform. */
   NumericalPoint weight_;

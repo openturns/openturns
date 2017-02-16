@@ -37,7 +37,6 @@ int main(int argc, char *argv[])
     const UnsignedInteger size = 20;
 
     NumericalSample x(Normal(dimension).getSample(size));
-    NumericalSample y(Normal(1).getSample(size));
     Collection<NumericalMathFunction> coll;
     const Description description(Description::BuildDefault(dimension, "x"));
     for(UnsignedInteger i = 0; i < dimension; ++i)
@@ -50,7 +49,7 @@ int main(int argc, char *argv[])
     DesignProxy proxy(x, psi);
 
     {
-      QRMethod qrMethod(proxy, y, indices);
+      QRMethod qrMethod(proxy, indices);
       qrMethod.update(Indices(0), indices, Indices(0));
 
       fullprint << "QR" << std::endl;
@@ -62,7 +61,7 @@ int main(int argc, char *argv[])
       fullprint << "GramInverseDiag=" << qrMethod.getGramInverseDiag() << std::endl;
     }
     {
-      SVDMethod svdMethod(proxy, y, indices);
+      SVDMethod svdMethod(proxy, indices);
       svdMethod.update(Indices(0), indices, Indices(0));
 
       fullprint << "SVD" << std::endl;
@@ -74,7 +73,7 @@ int main(int argc, char *argv[])
       fullprint << "GramInverseDiag=" << svdMethod.getGramInverseDiag() << std::endl;
     }
     {
-      CholeskyMethod choleskyMethod(proxy, y, indices);
+      CholeskyMethod choleskyMethod(proxy, indices);
       choleskyMethod.update(Indices(0), indices, Indices(0));
 
       fullprint << "Cholesky" << std::endl;
