@@ -10,7 +10,6 @@
 .. raw:: html
 
     <div style="display: none;">
-    
 
 .. toctree::
 
@@ -21,6 +20,7 @@
     theory/theory
     developer_guide/developer_guide
     bibliography
+    about
 
 .. raw:: html
 

@@ -12,6 +12,7 @@ Contents
     theory/theory
     developer_guide/developer_guide
     bibliography
+    about
 
 Indices and tables
 ==================
