@@ -897,6 +897,10 @@ void ResourceMap::loadDefaultConfiguration()
   setAsNumericalScalar("LeastSquaresMetaModelSelection-MaximumErrorFactor", 2.0);
   setAsNumericalScalar("LeastSquaresMetaModelSelection-ErrorThreshold", 0.0);
 
+  // SparseMethod parameters //
+  setAsNumericalScalar("SparseMethod-MaximumErrorFactor", 2.0);
+  setAsNumericalScalar("SparseMethod-ErrorThreshold", 0.0);
+
   // CholeskyMethod parameters //
   setAsUnsignedInteger("CholeskyMethod-LargeCase", 128);
 

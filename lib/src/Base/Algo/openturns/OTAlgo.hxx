@@ -52,6 +52,7 @@
 #include "openturns/CholeskyMethod.hxx"
 #include "openturns/QRMethod.hxx"
 #include "openturns/SVDMethod.hxx"
+#include "openturns/SparseMethod.hxx"
 #include "openturns/KarhunenLoeveResultImplementation.hxx"
 #include "openturns/KarhunenLoeveResult.hxx"
 #include "openturns/KarhunenLoeveAlgorithmImplementation.hxx"

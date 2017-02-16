@@ -632,6 +632,10 @@
   <LeastSquaresMetaModelSelection-MaximumErrorFactor  value="2.0"/>
   <LeastSquaresMetaModelSelection-ErrorThreshold      value="0.0"/>
 
+  <!-- OT::SparseMethod parameters -->
+  <SparseMethod-MaximumErrorFactor  value="2.0"/>
+  <SparseMethod-ErrorThreshold      value="0.0"/>
+
   <!-- OT::CholeskyMethod parameters -->
   <CholeskyMethod-LargeCase value="128"/>
 

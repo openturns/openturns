@@ -386,6 +386,7 @@ ot_add_python_module(algo algo_module.i
                       CholeskyMethod.i CholeskyMethod_doc.i.in
                       QRMethod.i QRMethod_doc.i.in
                       SVDMethod.i SVDMethod_doc.i.in
+                      SparseMethod.i SparseMethod_doc.i.in
                       LeastSquaresMetaModelSelection.i LeastSquaresMetaModelSelection_doc.i.in
                       LeastSquaresMetaModelSelectionFactory.i LeastSquaresMetaModelSelectionFactory_doc.i.in
                       ClassifierImplementation.i ClassifierImplementation_doc.i.in

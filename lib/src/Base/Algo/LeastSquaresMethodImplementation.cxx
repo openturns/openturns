@@ -67,8 +67,8 @@ LeastSquaresMethodImplementation::LeastSquaresMethodImplementation(const DesignP
   , currentIndices_(indices)
   , initialIndices_(indices)
 {
-  const UnsignedInteger size = proxy.getInputSample().getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: expected a non-empty output sample";
+//   const UnsignedInteger size = proxy.getInputSample().getSize();
+//   if (size == 0) throw InvalidArgumentException(HERE) << "Error: expected a non-empty output sample";
 }
 
 /* Weight accessor */

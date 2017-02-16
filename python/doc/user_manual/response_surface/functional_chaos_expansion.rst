@@ -58,6 +58,7 @@ Least Squares problem resolution
     CholeskyMethod
     SVDMethod
     QRMethod
+    SparseMethod
     
 Functional chaos result
 =======================

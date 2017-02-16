@@ -22,6 +22,7 @@
  * MonomialFunction, MonomialFunctionFactory
  * KarhunenLoeveSVDAlgorithm
  * RankMCovarianceModel
+ * SparseMethod
 
 ==== API changes ====
  * Removed deprecated SLSQP, LBFGS and NelderMead classes
