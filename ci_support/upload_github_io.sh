@@ -3,7 +3,7 @@
 
 set -e
 
-git clone https://${GH_TOKEN}@github.com/openturns/openturns.github.io.github
+git clone https://${GH_TOKEN}@github.com/openturns/openturns.github.io.git
 cp -r $1/* openturns.github.io/
 cd openturns.github.io
 touch .nojekyll
