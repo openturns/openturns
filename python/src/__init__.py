@@ -100,6 +100,6 @@ def Show(graph):
     """
     from .viewer import View
     view = View(graph)
-    view.show()
+    view.ShowAll()
 
 __version__ = PlatformInfo.GetVersion()

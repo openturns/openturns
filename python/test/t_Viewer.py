@@ -66,7 +66,7 @@ try:
     # graph.draw('curve5.png')
     view = View(graph)
     # view.save('curve5.png')
-    view.show()
+    View.ShowAll()
 
     # Text
     graph = ot.Graph('Annotated cloud', 'x', 'y', True, '')
@@ -156,7 +156,7 @@ try:
     # graph.draw('curve9.png')
     view = View(graph)
     # view.save('curve9.png')
-    view.show()
+    View.ShowAll()
 
     # Convergence graph curve
     aCollection = []
@@ -218,7 +218,7 @@ try:
     # graph.draw('curve12.png')
     view = View(graph)
     # view.save('curve12.png')
-    plt.show(block=True)
+    View.ShowAll()
 
 except:
     traceback.print_exc()
