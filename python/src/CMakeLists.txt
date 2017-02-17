@@ -838,6 +838,7 @@ ot_add_python_module(uncertainty uncertainty_module.i
 ot_add_python_module(testing testing_module.i
                     )
 
+set (OPENTURNS_PYTHON_MODULES ${OPENTURNS_PYTHON_MODULES} PARENT_SCOPE) # for the docstring test
 
 foreach (module ${OPENTURNS_PYTHON_MODULES})
   install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${module}.py

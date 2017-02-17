@@ -16,8 +16,7 @@ try:
 except:
     pass
 
-ot_path = os.path.dirname(ot.__file__)
-py_files = sorted(glob(ot_path + '/*.py'))
+py_files = sys.argv[1:]
 
 total_failure_count = 0
 total_test_count = 0
@@ -48,3 +47,5 @@ print(('%s %5d tests failed'
 # Delete temporary working directory for IO tests
 os.chdir('..')
 shutil.rmtree(work_dir)
+
+sys.exit(total_failure_count)

@@ -20,7 +20,6 @@ set (PYINSTALLCHECK_ENVIRONMENT "OPENTURNS_CONFIG_PATH=${INSTALL_DESTDIR}${SYSCO
 # before or after the test if needed
 # PRE and POST options cn be repeated many times: the arguments will be run one after the other
 # in the order of appearence. If one fails, the whole command fails.
-set (PYINSTALLCHECK_TO_BE_RUN)
 macro (ot_pyinstallcheck_test TESTNAME)
   set (TESTNAME_TGT t_${TESTNAME})
   set (TESTNAME_SRC ${TESTNAME_TGT}.py)
@@ -68,7 +67,6 @@ macro (ot_pyinstallcheck_test TESTNAME)
   add_test (pyinstallcheck_${TESTNAME} "sh" "-c" "${COMMAND}")
 
   set_tests_properties (pyinstallcheck_${TESTNAME} PROPERTIES ENVIRONMENT "${PYINSTALLCHECK_ENVIRONMENT}")
-  list (APPEND PYINSTALLCHECK_TO_BE_RUN ${TESTNAME_SRC})
   install (FILES ${TESTNAME_SRC}
             DESTINATION ${EXAMPLE_PATH}
             PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ OWNER_EXECUTE GROUP_EXECUTE WORLD_EXECUTE
@@ -623,15 +621,22 @@ endif ()
 
 
 if (MUPARSER_FOUND AND MATPLOTLIB_FOUND AND SCIPY_FOUND AND R_rot_FOUND AND NLOPT_FOUND)
-  if (PYTHON_VERSION_MAJOR VERSION_EQUAL "2")
-    ot_pyinstallcheck_test (docstring)
-  elseif (SWIG_VERSION VERSION_GREATER "3")
-    # on py3k/swig<3.0.0, doctest fails with "NameError: Unknown C global variable"
-    ot_pyinstallcheck_test (docstring)
+  # on py3k/swig<3.0.0, doctest fails with "NameError: Unknown C global variable"
+  if (PYTHON_VERSION_MAJOR VERSION_EQUAL "2" OR SWIG_VERSION VERSION_GREATER "3")
+    # source modules
+    file (GLOB modules ${PROJECT_SOURCE_DIR}/python/src/*.py)
+    # swig modules
+    foreach (module ${OPENTURNS_PYTHON_MODULES})
+      list (APPEND modules ${PROJECT_BINARY_DIR}/python/src/${module}.py)
+    endforeach ()
+    foreach (module ${modules})
+      get_filename_component (module_name ${module} NAME_WE)
+      add_test (pyinstallcheck_docstring_${module_name} ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/t_docstring.py ${module})
+      set_tests_properties (pyinstallcheck_docstring_${module_name} PROPERTIES ENVIRONMENT "${PYINSTALLCHECK_ENVIRONMENT}")
+    endforeach()
   endif ()
 endif ()
 
 add_custom_target (pyinstallcheck COMMAND ${CMAKE_CTEST_COMMAND} -R "^pyinstallcheck_"
-                    DEPENDS ${PYINSTALLCHECK_TO_BE_RUN}
                     COMMENT "Run Python post-installation tests")
 add_dependencies (installcheck pyinstallcheck)
