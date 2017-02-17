@@ -39,7 +39,7 @@ Citing OpenTURNS
 ----------------
 If you use OpenTURNS in a scientific publication, we would appreciate citations to the following paper:
 
-.. code::
+.. code-block:: bash
 
     @article{OpenTURNS,
     title={OpenTURNS: An industrial software for uncertainty quantification in simulation},
