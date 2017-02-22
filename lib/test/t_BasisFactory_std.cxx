@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of KrigingAlgorithm class
+ *  @brief The test file of BasisFactory class
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *

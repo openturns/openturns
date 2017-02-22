@@ -118,7 +118,7 @@ Rice RiceFactory::buildAsRice(const NumericalSample & sample) const
     if (fA * fB <= 0.0) break;
     b = 2.0 * b;
     fB = f(NumericalPoint(1, b))[0];
-    LOGINFO(OSS() << "a=" << a << ", fa=" << fA << ", b=" << b << ", fb=" << fB);
+    LOGDEBUG(OSS() << "a=" << a << ", fa=" << fA << ", b=" << b << ", fb=" << fB);
     ++iteration;
   }
   if ((std::abs(fA) > largeValue) || (std::abs(fB) > largeValue) || (std::abs(b) > largeValue) || (iteration == maximumIteration)) throw InvalidArgumentException(HERE) << "Error: cannot estimate parameters of a Rice distribution from the given sample";

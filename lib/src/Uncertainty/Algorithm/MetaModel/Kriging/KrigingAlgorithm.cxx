@@ -47,7 +47,6 @@ KrigingAlgorithm::KrigingAlgorithm()
   , gamma_(0)
   , rho_(0)
   , result_()
-  , keepCholeskyFactor_(true)
   , covarianceCholeskyFactor_()
   , covarianceCholeskyFactorHMatrix_()
 {
@@ -58,10 +57,9 @@ KrigingAlgorithm::KrigingAlgorithm()
 /* Constructor */
 KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
                                    const NumericalSample & outputSample,
-                                   const Basis & basis,
                                    const CovarianceModel & covarianceModel,
-                                   const Bool normalize,
-                                   const Bool keepCholeskyFactor)
+                                   const Basis & basis,
+                                   const Bool normalize)
   : MetaModelAlgorithm()
   , inputSample_(inputSample)
   , outputSample_(outputSample)
@@ -71,7 +69,6 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
   , gamma_(0)
   , rho_(0)
   , result_()
-  , keepCholeskyFactor_(keepCholeskyFactor)
   , covarianceCholeskyFactor_()
   , covarianceCholeskyFactorHMatrix_()
 {
@@ -85,10 +82,9 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
 /* Constructor */
 KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
                                    const NumericalSample & outputSample,
-                                   const BasisCollection & basis,
                                    const CovarianceModel & covarianceModel,
-                                   const Bool normalize,
-                                   const Bool keepCholeskyFactor)
+                                   const BasisCollection & basisCollection,
+                                   const Bool normalize)
   : MetaModelAlgorithm()
   , inputSample_(inputSample)
   , outputSample_(outputSample)
@@ -98,13 +94,12 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
   , gamma_(0)
   , rho_(0)
   , result_()
-  , keepCholeskyFactor_(keepCholeskyFactor)
   , covarianceCholeskyFactor_()
   , covarianceCholeskyFactorHMatrix_()
 {
   // Here we must force the GLMAlgo to keep the Cholesky factor as it is mandatory
   // for the interpolation part
-  glmAlgo_ = GeneralizedLinearModelAlgorithm(inputSample, outputSample, covarianceModel, basis, normalize, true);
+  glmAlgo_ = GeneralizedLinearModelAlgorithm(inputSample, outputSample, covarianceModel, basisCollection, normalize, true);
   if (ResourceMap::Get("KrigingAlgorithm-LinearAlgebra") == "HMAT") glmAlgo_.setMethod(1);
 }
 
@@ -112,9 +107,8 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
 KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
                                    const NumericalMathFunction & inputTransformation,
                                    const NumericalSample & outputSample,
-                                   const Basis & basis,
                                    const CovarianceModel & covarianceModel,
-                                   const Bool keepCholeskyFactor)
+                                   const Basis & basis)
   : MetaModelAlgorithm()
   , inputSample_(inputSample)
   , outputSample_(outputSample)
@@ -123,7 +117,6 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
   , gamma_(0)
   , rho_(0)
   , result_()
-  , keepCholeskyFactor_(keepCholeskyFactor)
   , covarianceCholeskyFactor_()
   , covarianceCholeskyFactorHMatrix_()
 {
@@ -137,9 +130,8 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
 KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
                                    const NumericalMathFunction & inputTransformation,
                                    const NumericalSample & outputSample,
-                                   const BasisCollection & basis,
                                    const CovarianceModel & covarianceModel,
-                                   const Bool keepCholeskyFactor)
+                                   const BasisCollection & basisCollection)
   : MetaModelAlgorithm()
   , inputSample_(inputSample)
   , outputSample_(outputSample)
@@ -149,13 +141,12 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
   , gamma_(0)
   , rho_(0)
   , result_()
-  , keepCholeskyFactor_(keepCholeskyFactor)
   , covarianceCholeskyFactor_()
   , covarianceCholeskyFactorHMatrix_()
 {
   // Here we must force the GLMAlgo to keep the Cholesky factor as it is mandatory
   // for the interpolation part
-  glmAlgo_ = GeneralizedLinearModelAlgorithm(inputSample, inputTransformation, outputSample, covarianceModel, basis, true);
+  glmAlgo_ = GeneralizedLinearModelAlgorithm(inputSample, inputTransformation, outputSample, covarianceModel, basisCollection, true);
   if (ResourceMap::Get("KrigingAlgorithm-LinearAlgebra") == "HMAT") glmAlgo_.setMethod(1);
 }
 
@@ -230,10 +221,7 @@ void KrigingAlgorithm::run()
     residuals[outputIndex] = sqrt(squaredResiduals[outputIndex] / size);
     relativeErrors[outputIndex] = squaredResiduals[outputIndex] / outputVariance[outputIndex];
   }
-  if (keepCholeskyFactor_)
-    result_ = KrigingResult(inputSample_, outputSample_, metaModel, residuals, relativeErrors, basis, trendCoefficients, conditionalCovarianceModel, covarianceCoefficients, covarianceCholeskyFactor_, covarianceCholeskyFactorHMatrix_);
-  else
-    result_ = KrigingResult(inputSample_, outputSample_, metaModel, residuals, relativeErrors, basis, trendCoefficients, conditionalCovarianceModel, covarianceCoefficients);
+  result_ = KrigingResult(inputSample_, outputSample_, metaModel, residuals, relativeErrors, basis, trendCoefficients, conditionalCovarianceModel, covarianceCoefficients, covarianceCholeskyFactor_, covarianceCholeskyFactorHMatrix_);
   // If normalize, set input transformation
   if (normalize_)
   {
@@ -326,7 +314,6 @@ void KrigingAlgorithm::save(Advocate & adv) const
   adv.saveAttribute( "outputSample_", outputSample_ );
   adv.saveAttribute( "covarianceModel_", covarianceModel_ );
   adv.saveAttribute( "result_", result_ );
-  adv.saveAttribute( "keepCholeskyFactor_", keepCholeskyFactor_ );
   adv.saveAttribute( "covarianceCholeskyFactor_", covarianceCholeskyFactor_ );
 }
 
@@ -340,7 +327,6 @@ void KrigingAlgorithm::load(Advocate & adv)
   adv.loadAttribute( "outputSample_", outputSample_ );
   adv.loadAttribute( "covarianceModel_", covarianceModel_ );
   adv.loadAttribute( "result_", result_ );
-  adv.loadAttribute( "keepCholeskyFactor_", keepCholeskyFactor_ );
   adv.loadAttribute( "covarianceCholeskyFactor_", covarianceCholeskyFactor_ );
 }
 

@@ -29,7 +29,7 @@ Y2 = f(X2)
 basis = ConstantBasisFactory(dimension).build()
 covarianceModel = SquaredExponential([1e-05], [4.11749])
 
-algo = KrigingAlgorithm(X, Y, basis, covarianceModel)
+algo = KrigingAlgorithm(X, Y, covarianceModel, basis)
 algo.run()
 
 # perform an evaluation
@@ -83,7 +83,7 @@ basisCollection = BasisCollection(
 
 # Kriring algorithm
 algo = KrigingAlgorithm(inputSample, outputSample,
-                        basisCollection, covarianceModel)
+                        covarianceModel, basisCollection)
 algo.run()
 result = algo.getResult()
 # Get meta model

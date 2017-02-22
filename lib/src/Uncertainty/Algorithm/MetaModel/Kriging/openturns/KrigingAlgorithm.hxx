@@ -53,34 +53,30 @@ public:
   /** Constructor */
   KrigingAlgorithm (const NumericalSample & inputSample,
                     const NumericalSample & outputSample,
-                    const Basis & basis,
                     const CovarianceModel & covarianceModel,
-                    const Bool normalize = true,
-                    const Bool keepCholeskyFactor = true);
+                    const Basis & basis,
+                    const Bool normalize = true);
 
   /** Constructor */
   KrigingAlgorithm (const NumericalSample & inputSample,
                     const NumericalMathFunction & inputTransformation,
                     const NumericalSample & outputSample,
-                    const Basis & basis,
                     const CovarianceModel & covarianceModel,
-                    const Bool keepCholeskyFactor = true);
+                    const Basis & basis);
 
   /** Constructor */
   KrigingAlgorithm (const NumericalSample & inputSample,
                     const NumericalSample & outputSample,
-                    const BasisCollection & multivariateBasis,
                     const CovarianceModel & covarianceModel,
-                    const Bool normalize = true,
-                    const Bool keepCholeskyFactor = true);
+                    const BasisCollection & basisCollection,
+                    const Bool normalize = true);
 
   /** Constructor */
   KrigingAlgorithm (const NumericalSample & inputSample,
                     const NumericalMathFunction & inputTransformation,
                     const NumericalSample & outputSample,
-                    const BasisCollection & multivariateBasis,
                     const CovarianceModel & covarianceModel,
-                    const Bool keepCholeskyFactor = true);
+                    const BasisCollection & basisCollection);
 
   /** Virtual constructor */
   KrigingAlgorithm * clone() const;
@@ -112,7 +108,7 @@ public:
   /** Optimization flag accessor */
   Bool getOptimizeParameters() const;
   void setOptimizeParameters(const Bool optimizeParameters);
-  
+
   /** Observation noise accessor */
   void setNoise(const NumericalPoint & noise);
   NumericalPoint getNoise() const;
@@ -149,9 +145,6 @@ private:
 
   /** Result */
   KrigingResult result_;
-
-  /** Bool for keeping or not covariance factor */
-  Bool keepCholeskyFactor_;
 
   /** Cholesky factor ==>  TriangularMatrix */
   mutable TriangularMatrix covarianceCholeskyFactor_;

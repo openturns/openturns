@@ -34,8 +34,8 @@ try:
         1, ot.ConstantBasisFactory(spatialDimension).build())
 
     # Kriring algorithm
-    algo = ot.KrigingAlgorithm(
-        inputSample, outputSample, basisCollection, covarianceModel)
+    algo = ot.KrigingAlgorithm(inputSample, outputSample,
+                               covarianceModel, basisCollection)
     algo.run()
     result = algo.getResult()
 

@@ -74,7 +74,7 @@ Examples
 >>> # create algorithm
 >>> basis = ot.ConstantBasisFactory(dimension).build()
 >>> covarianceModel = ot.SquaredExponential([2.23606797749979])
->>> algo = ot.KrigingAlgorithm(X, Y, basis, covarianceModel)
+>>> algo = ot.KrigingAlgorithm(X, Y, covarianceModel, basis)
 >>> algo.run()
 >>> # get the results
 >>> result = algo.getResult()
@@ -119,7 +119,7 @@ Examples
 >>> # create algorithm
 >>> basis = ot.ConstantBasisFactory(dimension).build()
 >>> covarianceModel = ot.SquaredExponential([2.23606797749979])
->>> algo = ot.KrigingAlgorithm(X, Y, basis, covarianceModel)
+>>> algo = ot.KrigingAlgorithm(X, Y, covarianceModel, basis)
 >>> algo.run()
 >>> # get the results
 >>> result = algo.getResult()
@@ -160,7 +160,7 @@ Examples
 >>> # create algorithm
 >>> basis = ot.ConstantBasisFactory(dimension).build()
 >>> covarianceModel = ot.SquaredExponential([2.23606797749979])
->>> algo = ot.KrigingAlgorithm(X, Y, basis, covarianceModel)
+>>> algo = ot.KrigingAlgorithm(X, Y, covarianceModel, basis)
 >>> algo.run()
 >>> # get the results
 >>> result = algo.getResult()
