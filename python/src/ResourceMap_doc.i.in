@@ -12,10 +12,10 @@ Get some keys:
 >>> import openturns as ot
 >>> for key in ot.ResourceMap.GetKeys()[:4]:
 ...     print(key)
+ARMA-MeanEpsilon
 ARMALikelihoodFactory-DefaultMaxFun
 ARMALikelihoodFactory-DefaultRhoBeg
-ARMALikelihoodFactory-DefaultRhoEnd
-ARMALikelihoodFactory-DefaultStartingPointScale"
+ARMALikelihoodFactory-DefaultRhoEnd"
 
 // ---------------------------------------------------------------------
 
