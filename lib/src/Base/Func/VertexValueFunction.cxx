@@ -18,19 +18,19 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "openturns/TemporalFunction.hxx"
+#include "openturns/VertexValueFunction.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/NumericalMathEvaluationImplementation.hxx"
 #include "openturns/NoNumericalMathEvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(TemporalFunction);
+CLASSNAMEINIT(VertexValueFunction);
 
-static const Factory<TemporalFunction> Factory_TemporalFunction;
+static const Factory<VertexValueFunction> Factory_VertexValueFunction;
 
 /* Default constructor */
-TemporalFunction::TemporalFunction(const UnsignedInteger meshDimension)
+VertexValueFunction::VertexValueFunction(const UnsignedInteger meshDimension)
   : FieldFunctionImplementation(meshDimension)
   , p_evaluation_(new NoNumericalMathEvaluationImplementation)
 {
@@ -38,7 +38,7 @@ TemporalFunction::TemporalFunction(const UnsignedInteger meshDimension)
 }
 
 /* Parameter constructor */
-TemporalFunction::TemporalFunction(const NumericalMathFunction & function,
+VertexValueFunction::VertexValueFunction(const NumericalMathFunction & function,
                                    const UnsignedInteger meshDimension)
   : FieldFunctionImplementation(meshDimension)
   , p_evaluation_(function.getEvaluation())
@@ -53,7 +53,7 @@ TemporalFunction::TemporalFunction(const NumericalMathFunction & function,
 }
 
 /* Parameter constructor */
-TemporalFunction::TemporalFunction(const EvaluationImplementation & p_evaluation,
+VertexValueFunction::VertexValueFunction(const EvaluationImplementation & p_evaluation,
                                    const UnsignedInteger meshDimension)
   : FieldFunctionImplementation(meshDimension)
   , p_evaluation_(p_evaluation)
@@ -68,7 +68,7 @@ TemporalFunction::TemporalFunction(const EvaluationImplementation & p_evaluation
 }
 
 /* Parameter constructor */
-TemporalFunction::TemporalFunction(const NumericalMathEvaluationImplementation & evaluation,
+VertexValueFunction::VertexValueFunction(const NumericalMathEvaluationImplementation & evaluation,
                                    const UnsignedInteger meshDimension)
   : FieldFunctionImplementation(meshDimension)
   , p_evaluation_(evaluation.clone())
@@ -83,34 +83,34 @@ TemporalFunction::TemporalFunction(const NumericalMathEvaluationImplementation &
 }
 
 /* Virtual constructor */
-TemporalFunction * TemporalFunction::clone() const
+VertexValueFunction * VertexValueFunction::clone() const
 {
-  return new TemporalFunction(*this);
+  return new VertexValueFunction(*this);
 }
 
 /* Comparison operator */
-Bool TemporalFunction::operator ==(const TemporalFunction & other) const
+Bool VertexValueFunction::operator ==(const VertexValueFunction & other) const
 {
   return true;
 }
 
 /* String converter */
-String TemporalFunction::__repr__() const
+String VertexValueFunction::__repr__() const
 {
   OSS oss(true);
-  oss << "class=" << TemporalFunction::GetClassName()
+  oss << "class=" << VertexValueFunction::GetClassName()
       << " evaluation=" << p_evaluation_->__repr__();
   return oss;
 }
 
 /* String converter */
-String TemporalFunction::__str__(const String & offset) const
+String VertexValueFunction::__str__(const String & offset) const
 {
   return OSS(false) << p_evaluation_->__str__(offset);
 }
 
 /* Operator () */
-Field TemporalFunction::operator() (const Field & inFld) const
+Field VertexValueFunction::operator() (const Field & inFld) const
 {
   if (inFld.getSpatialDimension() != getSpatialDimension()) throw InvalidArgumentException(HERE) << "Error: expected a field with mesh dimension=" << getSpatialDimension() << ", got mesh dimension=" << inFld.getSpatialDimension();
   ++callsNumber_;
@@ -118,34 +118,34 @@ Field TemporalFunction::operator() (const Field & inFld) const
 }
 
 /* Get the i-th marginal function */
-TemporalFunction::Implementation TemporalFunction::getMarginal(const UnsignedInteger i) const
+VertexValueFunction::Implementation VertexValueFunction::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
-  return new TemporalFunction(p_evaluation_->getMarginal(i));
+  return new VertexValueFunction(p_evaluation_->getMarginal(i));
 }
 
 /* Get the function corresponding to indices components */
-TemporalFunction::Implementation TemporalFunction::getMarginal(const Indices & indices) const
+VertexValueFunction::Implementation VertexValueFunction::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and must be different";
-  return new TemporalFunction(p_evaluation_->getMarginal(indices));
+  return new VertexValueFunction(p_evaluation_->getMarginal(indices));
 }
 
 /* Method save() stores the object through the StorageManager */
-void TemporalFunction::save(Advocate & adv) const
+void VertexValueFunction::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute( "evaluation_", *p_evaluation_ );
 }
 
 /* Evaluation accessor */
-TemporalFunction::EvaluationImplementation TemporalFunction::getEvaluation() const
+VertexValueFunction::EvaluationImplementation VertexValueFunction::getEvaluation() const
 {
   return p_evaluation_;
 }
 
 /* Method load() reloads the object from the StorageManager */
-void TemporalFunction::load(Advocate & adv)
+void VertexValueFunction::load(Advocate & adv)
 {
   TypedInterfaceObject<NumericalMathEvaluationImplementation> evaluationValue;
   PersistentObject::load(adv);

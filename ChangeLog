@@ -41,6 +41,7 @@
   * Renamed GeneralizedLinearModelResult to GeneralLinearModelResult
   * Renamed DynamicalFunction to FieldFunction
   * Renamed SpatialFunction to ValueFunction
+  * Renamed TemporalFunction to VertexValueFunction
 
 === Python module ===
 

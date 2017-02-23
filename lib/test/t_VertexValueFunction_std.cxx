@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class TemporalFunction for standard methods
+ *  @brief The test file of class VertexValueFunction for standard methods
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     inputVars.add("x");
     Description formula(1, "x + t^2");
     NumericalMathFunction myFunc(inputVars, formula);
-    TemporalFunction myTemporalFunc(myFunc);
+    VertexValueFunction myTemporalFunc(myFunc);
 
     fullprint << "myTemporalFunc=" << myTemporalFunc << std::endl;
     /* Get the input and output description */

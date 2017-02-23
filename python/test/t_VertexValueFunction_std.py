@@ -8,7 +8,7 @@ TESTPREAMBLE()
 try:
     # Create an intance
     myFunc = NumericalMathFunction(["t", "x"], ["x + t^2"])
-    myTemporalFunc = TemporalFunction(myFunc)
+    myTemporalFunc = VertexValueFunction(myFunc)
 
     print("myTemporalFunc=", myTemporalFunc)
     # Get the input and output description
@@ -35,4 +35,4 @@ try:
 
 except:
     import sys
-    print("t_TemporalFunction_std.py", sys.exc_info()[0], sys.exc_info()[1])
+    print("t_VertexValueFunction_std.py", sys.exc_info()[0], sys.exc_info()[1])

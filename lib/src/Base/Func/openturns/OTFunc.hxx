@@ -93,7 +93,7 @@
 #include "openturns/QuadraticNumericalMathEvaluationImplementation.hxx"
 #include "openturns/ValueFunction.hxx"
 #include "openturns/SymbolicFunction.hxx"
-#include "openturns/TemporalFunction.hxx"
+#include "openturns/VertexValueFunction.hxx"
 #include "openturns/UniVariatePolynomial.hxx"
 #include "openturns/UniVariatePolynomialImplementation.hxx"
 #include "openturns/UniVariateFunction.hxx"

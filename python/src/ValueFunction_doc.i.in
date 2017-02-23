@@ -34,7 +34,7 @@ dimension of :math:`\vect{x}`: :math:`d`. Its output dimension is equal to
 
 See also
 --------
-TemporalFunction
+VertexValueFunction
 
 Examples
 --------

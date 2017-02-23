@@ -71,7 +71,7 @@
 %include FieldFunctionImplementation.i
 %include FieldFunction.i
 %include ValueFunction.i
-%include TemporalFunction.i
+%include VertexValueFunction.i
 %include DualLinearCombinationEvaluationImplementation.i
 %include DualLinearCombinationGradientImplementation.i
 %include DualLinearCombinationHessianImplementation.i

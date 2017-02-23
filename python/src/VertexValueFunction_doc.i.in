@@ -1,10 +1,10 @@
-%feature("docstring") OT::TemporalFunction
+%feature("docstring") OT::VertexValueFunction
 "Temporal function.
 
 Available constructors:
-    TemporalFunction(*meshDimension=1*)
+    VertexValueFunction(*meshDimension=1*)
 
-    TemporalFunction(*h, meshDimension=1*)
+    VertexValueFunction(*h, meshDimension=1*)
 
 Parameters
 ----------
@@ -55,7 +55,7 @@ Convert :math:`h` into a temporal function with :math:`n` the dimension of the
 mesh of the field on which :math:`h` will be applied:
 
 >>> n = 1
->>> myTemporalFunction = ot.TemporalFunction(h, n)
+>>> myVertexValueFunction = ot.VertexValueFunction(h, n)
 >>> # Create a TimeSeries
 >>> tg = ot.RegularGrid(0.0, 0.2, 6)
 >>> data = ot.NumericalSample(tg.getN(), h.getInputDimension()-1)
@@ -71,7 +71,7 @@ mesh of the field on which :math:`h` will be applied:
 3 : [ 0.6 3   ]
 4 : [ 0.8 4   ]
 5 : [ 1   5   ]
->>> print(myTemporalFunction(ts))
+>>> print(myVertexValueFunction(ts))
     [ t    y0   ]
 0 : [ 0    0    ]
 1 : [ 0.2  1.04 ]
@@ -82,7 +82,7 @@ mesh of the field on which :math:`h` will be applied:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::TemporalFunction::getEvaluation
+%feature("docstring") OT::VertexValueFunction::getEvaluation
 "Get the evaluation function of :math:`h`.
 
 Returns
@@ -96,6 +96,6 @@ Examples
 >>> import openturns as ot
 >>> h = ot.SymbolicFunction(['t', 'x'], ['x + t^2'])
 >>> n = 1
->>> myTemporalFunction = ot.ValueFunction(h, n)
->>> print(myTemporalFunction.getEvaluation())
+>>> myVertexValueFunction = ot.ValueFunction(h, n)
+>>> print(myVertexValueFunction.getEvaluation())
 [t,x]->[x + t^2]"

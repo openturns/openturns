@@ -19,7 +19,7 @@ Notes
 Dynamical functions are functions being able to act on fields. OpenTURNS
 defines two particular dynamical functions:
 the :class:`spatial function <openturns.ValueFunction>` and
-the :class:`temporal function <openturns.TemporalFunction>`.
+the :class:`temporal function <openturns.VertexValueFunction>`.
 
 
 A dynamical function

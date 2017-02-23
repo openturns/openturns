@@ -42,7 +42,7 @@ Dynamical functions
     FieldFunction
     PythonFieldFunction
     ValueFunction
-    TemporalFunction
+    VertexValueFunction
 
 Collection of functions
 =======================

@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_TEMPORALFUNCTION_HXX
-#define OPENTURNS_TEMPORALFUNCTION_HXX
+#ifndef OPENTURNS_VERTEXVALUEFUNCTION_HXX
+#define OPENTURNS_VERTEXVALUEFUNCTION_HXX
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/FieldFunctionImplementation.hxx"
@@ -29,13 +29,13 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class TemporalFunction
+ * @class VertexValueFunction
  *
  * The class that simulates a dynamical function based on a
  * numerical math function that acts only on the temporal part
  * of a time series.
  */
-class OT_API TemporalFunction
+class OT_API VertexValueFunction
   : public FieldFunctionImplementation
 {
   CLASSNAME;
@@ -44,27 +44,27 @@ public:
   typedef NumericalMathEvaluationImplementation::Implementation EvaluationImplementation;
 
   /** Default constructor */
-  explicit TemporalFunction(const UnsignedInteger meshDimension = 1);
+  explicit VertexValueFunction(const UnsignedInteger meshDimension = 1);
 
   /** Parameter constructor */
-  explicit TemporalFunction(const NumericalMathFunction & function,
+  explicit VertexValueFunction(const NumericalMathFunction & function,
                             const UnsignedInteger meshDimension = 1);
 
 #ifndef SWIG
   /** Parameter constructor */
-  explicit TemporalFunction(const EvaluationImplementation & p_evaluation,
+  explicit VertexValueFunction(const EvaluationImplementation & p_evaluation,
                             const UnsignedInteger meshDimension = 1);
 #endif
 
   /** Parameter constructor */
-  explicit TemporalFunction(const NumericalMathEvaluationImplementation & evaluation,
+  explicit VertexValueFunction(const NumericalMathEvaluationImplementation & evaluation,
                             const UnsignedInteger meshDimension = 1);
 
   /** Virtual constructor */
-  virtual TemporalFunction * clone() const;
+  virtual VertexValueFunction * clone() const;
 
   /** Comparison operator */
-  Bool operator ==(const TemporalFunction & other) const;
+  Bool operator ==(const VertexValueFunction & other) const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -93,9 +93,9 @@ protected:
   /** Pointer to the actual evaluation class */
   EvaluationImplementation p_evaluation_;
 
-}; /* class TemporalFunction */
+}; /* class VertexValueFunction */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_TEMPORALFUNCTION_HXX */
+#endif /* OPENTURNS_VERTEXVALUEFUNCTION_HXX */

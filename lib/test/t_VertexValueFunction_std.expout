@@ -1,4 +1,4 @@
-myTemporalFunc=class=TemporalFunction evaluation=class=AnalyticalNumericalMathEvaluationImplementation name=Unnamed inputVariablesNames=[t,x] outputVariablesNames=[y0] formulas=[x + t^2]
+myTemporalFunc=class=VertexValueFunction evaluation=class=AnalyticalNumericalMathEvaluationImplementation name=Unnamed inputVariablesNames=[t,x] outputVariablesNames=[y0] formulas=[x + t^2]
 myTemporalFunc input description=[x]
 myTemporalFunc output description=[y0]
 myTemporalFunc input dimension=1

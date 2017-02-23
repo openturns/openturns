@@ -9,3 +9,4 @@ Remove GeneralizedLinearModelAlgorithm alias
 Remove GeneralizedLinearModelResult alias
 Remove DynamicalFunction aliases
 Remove SpatialFunction alias
+Remove TemporalFuncion alias

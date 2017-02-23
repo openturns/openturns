@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_TRENDTRANSOFORM_HXX
 #define OPENTURNS_TRENDTRANSOFORM_HXX
 
-#include "openturns/TemporalFunction.hxx"
+#include "openturns/VertexValueFunction.hxx"
 #include "openturns/NumericalMathFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class InverseTrendTransform;
 
 class OT_API TrendTransform
-  : public TemporalFunction
+  : public VertexValueFunction
 {
   CLASSNAME;
 public:
@@ -67,7 +67,7 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Operator () */
-  using TemporalFunction::operator();
+  using VertexValueFunction::operator();
   Field operator() (const Field & inFld) const;
 
   /** Inverse accessor */
