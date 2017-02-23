@@ -20,10 +20,10 @@ print('myAntecedentProcess = ',  myARMAProcess)
 f = ot.NumericalMathFunction(['x'], ['2 * x + 5.0'])
 
 # We build a dynamical function
-myDynamicalFunction = ot.DynamicalFunction(ot.SpatialFunction(f))
+myFieldFunction = ot.FieldFunction(ot.SpatialFunction(f))
 
 # finally we get the compsite process
-myCompositeProcess = ot.CompositeProcess(myDynamicalFunction, myARMAProcess)
+myCompositeProcess = ot.CompositeProcess(myFieldFunction, myARMAProcess)
 print('myCompositeProcess = ',  repr(myCompositeProcess))
 
 # Test realization

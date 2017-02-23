@@ -18,17 +18,17 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_DYNAMICALFUNCTION_HXX
-#define OPENTURNS_DYNAMICALFUNCTION_HXX
+#ifndef OPENTURNS_FIELDFUNCTION_HXX
+#define OPENTURNS_FIELDFUNCTION_HXX
 
 #include "openturns/TypedInterfaceObject.hxx"
-#include "openturns/DynamicalFunctionImplementation.hxx"
+#include "openturns/FieldFunctionImplementation.hxx"
 #include "openturns/NumericalMathFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class DynamicalFunction
+ * @class FieldFunction
  * @brief Simulates a dynamical function
  *
  * The class that simulates a dynamical function, it means
@@ -36,10 +36,10 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class is just an interface to actual implementation
  * objects that can be hot-replaced during computation.
  * Each implementation object refers to a specific evaluation
- * @see DynamicalFunctionImplementation
+ * @see FieldFunctionImplementation
  */
-class OT_API DynamicalFunction
-  : public TypedInterfaceObject<DynamicalFunctionImplementation>
+class OT_API FieldFunction
+  : public TypedInterfaceObject<FieldFunctionImplementation>
 {
   CLASSNAME;
 public:
@@ -47,25 +47,25 @@ public:
   /* Some typedefs for easy reading */
 
   /** Default constructor */
-  explicit DynamicalFunction(const UnsignedInteger spatialDimension = 1);
+  explicit FieldFunction(const UnsignedInteger spatialDimension = 1);
 
   /** Constructor from NumericalMathFunction */
-  explicit DynamicalFunction(const NumericalMathFunction & function,
+  explicit FieldFunction(const NumericalMathFunction & function,
                              const UnsignedInteger spatialDimension = 1);
 
-  /** Constructor from DynamicalFunctionImplementation */
-  DynamicalFunction(const DynamicalFunctionImplementation & implementation);
+  /** Constructor from FieldFunctionImplementation */
+  FieldFunction(const FieldFunctionImplementation & implementation);
 
   /** Constructor from implementation */
-  DynamicalFunction(const Implementation & p_implementation);
+  FieldFunction(const Implementation & p_implementation);
 
 #ifndef SWIG
   /** Constructor from implementation pointer */
-  DynamicalFunction(DynamicalFunctionImplementation * p_implementation);
+  FieldFunction(FieldFunctionImplementation * p_implementation);
 #endif
 
   /** Comparison operator */
-  Bool operator ==(const DynamicalFunction & other) const;
+  Bool operator ==(const FieldFunction & other) const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -82,10 +82,10 @@ public:
   ProcessSample operator() (const ProcessSample & inPS) const;
 
   /** Get the i-th marginal function */
-  DynamicalFunction getMarginal(const UnsignedInteger i) const;
+  FieldFunction getMarginal(const UnsignedInteger i) const;
 
   /** Get the function corresponding to indices components */
-  DynamicalFunction getMarginal(const Indices & indices) const;
+  FieldFunction getMarginal(const Indices & indices) const;
 
   /** Accessor for mesh dimension */
   UnsignedInteger getSpatialDimension() const;
@@ -108,9 +108,9 @@ public:
   /** Number of calls to the evaluation */
   UnsignedInteger getCallsNumber() const;
 
-}; /* class DynamicalFunction */
+}; /* class FieldFunction */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_DYNAMICALFUNCTION_HXX */
+#endif /* OPENTURNS_FIELDFUNCTION_HXX */

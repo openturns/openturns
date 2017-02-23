@@ -22,7 +22,7 @@
 #define OPENTURNS_TEMPORALFUNCTION_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/DynamicalFunctionImplementation.hxx"
+#include "openturns/FieldFunctionImplementation.hxx"
 #include "openturns/NumericalMathEvaluationImplementation.hxx"
 #include "openturns/NumericalMathFunction.hxx"
 
@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * of a time series.
  */
 class OT_API TemporalFunction
-  : public DynamicalFunctionImplementation
+  : public FieldFunctionImplementation
 {
   CLASSNAME;
 public:

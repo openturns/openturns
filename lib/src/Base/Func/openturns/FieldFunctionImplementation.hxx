@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_DYNAMICALFUNCTIONIMPLEMENTATION_HXX
-#define OPENTURNS_DYNAMICALFUNCTIONIMPLEMENTATION_HXX
+#ifndef OPENTURNS_FIELDFUNCTIONIMPLEMENTATION_HXX
+#define OPENTURNS_FIELDFUNCTIONIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Description.hxx"
@@ -29,7 +29,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class DynamicalFunctionImplementation
+ * @class FieldFunctionImplementation
  *
  * The class that simulates a numerical math function,
  * its gradient and its hessian. This class is just an interface
@@ -37,23 +37,23 @@ BEGIN_NAMESPACE_OPENTURNS
  * during computation. Each implementation object refers to
  * the evaluation, the gradient or the hessian.
  */
-class OT_API DynamicalFunctionImplementation
+class OT_API FieldFunctionImplementation
   : public PersistentObject
 {
   CLASSNAME;
 public:
 
   /* Some typedefs for easy reading */
-  typedef Pointer<DynamicalFunctionImplementation> Implementation;
+  typedef Pointer<FieldFunctionImplementation> Implementation;
 
   /** Default constructor */
-  explicit DynamicalFunctionImplementation(const UnsignedInteger spatialDimension = 1);
+  explicit FieldFunctionImplementation(const UnsignedInteger spatialDimension = 1);
 
   /** Virtual constructor */
-  virtual DynamicalFunctionImplementation * clone() const;
+  virtual FieldFunctionImplementation * clone() const;
 
   /** Comparison operator */
-  Bool operator ==(const DynamicalFunctionImplementation & other) const;
+  Bool operator ==(const FieldFunctionImplementation & other) const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -115,9 +115,9 @@ protected:
   /** Counter for the number of calls */
   mutable UnsignedInteger callsNumber_;
 
-}; /* class DynamicalFunctionImplementation */
+}; /* class FieldFunctionImplementation */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_DYNAMICALFUNCTIONIMPLEMENTATION_HXX */
+#endif /* OPENTURNS_FIELDFUNCTIONIMPLEMENTATION_HXX */

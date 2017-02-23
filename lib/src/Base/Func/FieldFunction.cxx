@@ -18,143 +18,143 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "openturns/DynamicalFunction.hxx"
+#include "openturns/FieldFunction.hxx"
 #include "openturns/SpatialFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(DynamicalFunction);
+CLASSNAMEINIT(FieldFunction);
 
 /* Default constructor */
-DynamicalFunction::DynamicalFunction(const UnsignedInteger spatialDimension)
-  : TypedInterfaceObject<DynamicalFunctionImplementation>(new DynamicalFunctionImplementation(spatialDimension))
+FieldFunction::FieldFunction(const UnsignedInteger spatialDimension)
+  : TypedInterfaceObject<FieldFunctionImplementation>(new FieldFunctionImplementation(spatialDimension))
 {
   // Nothing to do
 }
 
 /* Constructor from NumericalMathFunction */
-DynamicalFunction::DynamicalFunction(const NumericalMathFunction & function,
+FieldFunction::FieldFunction(const NumericalMathFunction & function,
                                      const UnsignedInteger spatialDimension)
-  : TypedInterfaceObject<DynamicalFunctionImplementation>(SpatialFunction(function, spatialDimension).clone())
+  : TypedInterfaceObject<FieldFunctionImplementation>(SpatialFunction(function, spatialDimension).clone())
 {
   // Nothing to do
 }
 
-/* Constructor from DynamicalFunctionImplementation */
-DynamicalFunction::DynamicalFunction(const DynamicalFunctionImplementation & implementation)
-  : TypedInterfaceObject<DynamicalFunctionImplementation>(implementation.clone())
+/* Constructor from FieldFunctionImplementation */
+FieldFunction::FieldFunction(const FieldFunctionImplementation & implementation)
+  : TypedInterfaceObject<FieldFunctionImplementation>(implementation.clone())
 {
   // Nothing to do
 }
 
 /* Constructor from implementation */
-DynamicalFunction::DynamicalFunction(const Implementation & p_implementation)
-  : TypedInterfaceObject<DynamicalFunctionImplementation>(p_implementation)
+FieldFunction::FieldFunction(const Implementation & p_implementation)
+  : TypedInterfaceObject<FieldFunctionImplementation>(p_implementation)
 {
   // Nothing to do
 }
 
 /* Constructor from implementation pointer */
-DynamicalFunction::DynamicalFunction(DynamicalFunctionImplementation * p_implementation)
-  : TypedInterfaceObject<DynamicalFunctionImplementation>(p_implementation)
+FieldFunction::FieldFunction(FieldFunctionImplementation * p_implementation)
+  : TypedInterfaceObject<FieldFunctionImplementation>(p_implementation)
 {
   // Nothing to do
 }
 
 /* Comparison operator */
-Bool DynamicalFunction::operator ==(const DynamicalFunction & other) const
+Bool FieldFunction::operator ==(const FieldFunction & other) const
 {
   return true;
 }
 
 /* String converter */
-String DynamicalFunction::__repr__() const
+String FieldFunction::__repr__() const
 {
-  return OSS(true) << "class=" << DynamicalFunction::GetClassName()
+  return OSS(true) << "class=" << FieldFunction::GetClassName()
          << " name=" << getName()
          << " implementation=" << getImplementation()->__repr__();
 }
 
 /* String converter */
-String DynamicalFunction::__str__(const String & offset) const
+String FieldFunction::__str__(const String & offset) const
 {
   return OSS(false) << offset << getClassName() << " :\n" << getImplementation()->__str__( offset + "  ");
 }
 
 /* Get the i-th marginal function */
-DynamicalFunction DynamicalFunction::getMarginal(const UnsignedInteger i) const
+FieldFunction FieldFunction::getMarginal(const UnsignedInteger i) const
 {
   return *(getImplementation()->getMarginal(i));
 }
 
 /* Get the function corresponding to indices components */
-DynamicalFunction DynamicalFunction::getMarginal(const Indices & indices) const
+FieldFunction FieldFunction::getMarginal(const Indices & indices) const
 {
   return *(getImplementation()->getMarginal(indices));
 }
 
 /* Input description Accessor */
-Description DynamicalFunction::getInputDescription() const
+Description FieldFunction::getInputDescription() const
 {
   return getImplementation()->getInputDescription();
 }
 
 /* Output description Accessor */
-Description DynamicalFunction::getOutputDescription() const
+Description FieldFunction::getOutputDescription() const
 {
   return getImplementation()->getOutputDescription();
 }
 
 /* Output mesh Accessor */
-Mesh DynamicalFunction::getOutputMesh(const Mesh & inputMesh) const
+Mesh FieldFunction::getOutputMesh(const Mesh & inputMesh) const
 {
   return getImplementation()->getOutputMesh(inputMesh);
 }
 
 /* Operator () */
-NumericalPoint DynamicalFunction::operator() (const NumericalScalar timeStamp,
+NumericalPoint FieldFunction::operator() (const NumericalScalar timeStamp,
     const NumericalPoint & inP) const
 {
   return getImplementation()->operator()(timeStamp, inP);
 }
 
-NumericalPoint DynamicalFunction::operator() (const NumericalPoint & location,
+NumericalPoint FieldFunction::operator() (const NumericalPoint & location,
     const NumericalPoint & inP) const
 {
   return getImplementation()->operator()(location, inP);
 }
 
-Field DynamicalFunction::operator() (const Field & inFld) const
+Field FieldFunction::operator() (const Field & inFld) const
 {
   return getImplementation()->operator()(inFld);
 }
 
 /* Operator () */
-ProcessSample DynamicalFunction::operator() (const ProcessSample & inPS) const
+ProcessSample FieldFunction::operator() (const ProcessSample & inPS) const
 {
   return getImplementation()->operator()(inPS);
 }
 
 /* Accessor for mesh dimension */
-UnsignedInteger DynamicalFunction::getSpatialDimension() const
+UnsignedInteger FieldFunction::getSpatialDimension() const
 {
   return getImplementation()->getSpatialDimension();
 }
 
 /* Accessor for input point dimension */
-UnsignedInteger DynamicalFunction::getInputDimension() const
+UnsignedInteger FieldFunction::getInputDimension() const
 {
   return getImplementation()->getInputDimension();
 }
 
 /* Accessor for output point dimension */
-UnsignedInteger DynamicalFunction::getOutputDimension() const
+UnsignedInteger FieldFunction::getOutputDimension() const
 {
   return getImplementation()->getOutputDimension();
 }
 
 /* Number of calls to the dynamical function */
-UnsignedInteger DynamicalFunction::getCallsNumber() const
+UnsignedInteger FieldFunction::getCallsNumber() const
 {
   return getImplementation()->getCallsNumber();
 }

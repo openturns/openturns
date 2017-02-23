@@ -7,3 +7,4 @@ Remove TemporalNormalProcess alias
 Remove SpectralNormalProcess alias
 Remove GeneralizedLinearModelAlgorithm alias
 Remove GeneralizedLinearModelResult alias
+Remove DynamicalFunction aliases

@@ -3,7 +3,7 @@
 
 Parameters
 ----------
-fdyn : :class:`~openturns.DynamicalFunction`
+fdyn : :class:`~openturns.FieldFunction`
     A dynamical function.
 inputProc : :class:`~openturns.Process`
     The input process.
@@ -84,5 +84,5 @@ XProcess : :class:`~openturns.Process`
 
 Returns
 -------
-fdyn : :class:`~openturns.DynamicalFunction`
+fdyn : :class:`~openturns.FieldFunction`
     The dynamical function :math:`f_{dyn}`."

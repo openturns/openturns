@@ -18,19 +18,19 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "openturns/DynamicalFunctionImplementation.hxx"
+#include "openturns/FieldFunctionImplementation.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(DynamicalFunctionImplementation);
+CLASSNAMEINIT(FieldFunctionImplementation);
 
-static const Factory<DynamicalFunctionImplementation> Factory_DynamicalFunctionImplementation;
+static const Factory<FieldFunctionImplementation> Factory_FieldFunctionImplementation;
 
 /* Default constructor */
-DynamicalFunctionImplementation::DynamicalFunctionImplementation(const UnsignedInteger spatialDimension)
+FieldFunctionImplementation::FieldFunctionImplementation(const UnsignedInteger spatialDimension)
   : PersistentObject()
   , spatialDimension_(spatialDimension)
   , inputDescription_()
@@ -41,22 +41,22 @@ DynamicalFunctionImplementation::DynamicalFunctionImplementation(const UnsignedI
 }
 
 /* Virtual constructor */
-DynamicalFunctionImplementation * DynamicalFunctionImplementation::clone() const
+FieldFunctionImplementation * FieldFunctionImplementation::clone() const
 {
-  return new DynamicalFunctionImplementation(*this);
+  return new FieldFunctionImplementation(*this);
 }
 
 /* Comparison operator */
-Bool DynamicalFunctionImplementation::operator ==(const DynamicalFunctionImplementation & other) const
+Bool FieldFunctionImplementation::operator ==(const FieldFunctionImplementation & other) const
 {
   return true;
 }
 
 /* String converter */
-String DynamicalFunctionImplementation::__repr__() const
+String FieldFunctionImplementation::__repr__() const
 {
   OSS oss(true);
-  oss << "class=" << DynamicalFunctionImplementation::GetClassName()
+  oss << "class=" << FieldFunctionImplementation::GetClassName()
       << " name=" << getName()
       << " input description=" << inputDescription_
       << " output description=" << outputDescription_
@@ -65,74 +65,74 @@ String DynamicalFunctionImplementation::__repr__() const
 }
 
 /* String converter */
-String DynamicalFunctionImplementation::__str__(const String & offset) const
+String FieldFunctionImplementation::__str__(const String & offset) const
 {
   return OSS(false) << offset << __repr__();
 }
 
 /* Get the i-th marginal function */
-DynamicalFunctionImplementation::Implementation DynamicalFunctionImplementation::getMarginal(const UnsignedInteger i) const
+FieldFunctionImplementation::Implementation FieldFunctionImplementation::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
   return getMarginal(Indices(1, i));
 }
 
 /* Get the function corresponding to indices components */
-DynamicalFunctionImplementation::Implementation DynamicalFunctionImplementation::getMarginal(const Indices & indices) const
+FieldFunctionImplementation::Implementation FieldFunctionImplementation::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and must be different";
-  throw NotYetImplementedException(HERE) << "In DynamicalFunctionImplementation::getMarginal(const Indices & indices) const";
+  throw NotYetImplementedException(HERE) << "In FieldFunctionImplementation::getMarginal(const Indices & indices) const";
 }
 
 /* Input description Accessor */
-void DynamicalFunctionImplementation::setInputDescription(const Description & inputDescription)
+void FieldFunctionImplementation::setInputDescription(const Description & inputDescription)
 {
   inputDescription_ = inputDescription;
 }
 
-Description DynamicalFunctionImplementation::getInputDescription() const
+Description FieldFunctionImplementation::getInputDescription() const
 {
   return inputDescription_;
 }
 
 /* Output description Accessor */
-void DynamicalFunctionImplementation::setOutputDescription(const Description & outputDescription)
+void FieldFunctionImplementation::setOutputDescription(const Description & outputDescription)
 {
   outputDescription_ = outputDescription;
 }
 
-Description DynamicalFunctionImplementation::getOutputDescription() const
+Description FieldFunctionImplementation::getOutputDescription() const
 {
   return outputDescription_;
 }
 
 /* Accessor for the output mesh associated with the given input mesh */
-Mesh DynamicalFunctionImplementation::getOutputMesh(const Mesh & inputMesh) const
+Mesh FieldFunctionImplementation::getOutputMesh(const Mesh & inputMesh) const
 {
   return inputMesh;
 }
 
 
 /* Operator () */
-NumericalPoint DynamicalFunctionImplementation::operator() (const NumericalScalar timeStamp,
+NumericalPoint FieldFunctionImplementation::operator() (const NumericalScalar timeStamp,
     const NumericalPoint & inP) const
 {
   return (*this)(NumericalPoint(1, timeStamp), inP);
 }
 
-NumericalPoint DynamicalFunctionImplementation::operator() (const NumericalPoint & location,
+NumericalPoint FieldFunctionImplementation::operator() (const NumericalPoint & location,
     const NumericalPoint & inP) const
 {
   return (*this)(Field(Mesh(NumericalSample(1, location), Collection<Indices>(0)), NumericalSample(1, inP))).getValues()[0];
 }
 
-Field DynamicalFunctionImplementation::operator() (const Field & inFld) const
+Field FieldFunctionImplementation::operator() (const Field & inFld) const
 {
-  throw NotYetImplementedException(HERE) << "In DynamicalFunctionImplementation::operator() (const Field & inFld) const";
+  throw NotYetImplementedException(HERE) << "In FieldFunctionImplementation::operator() (const Field & inFld) const";
 }
 
 /* Operator () */
-ProcessSample DynamicalFunctionImplementation::operator() (const ProcessSample & inPS) const
+ProcessSample FieldFunctionImplementation::operator() (const ProcessSample & inPS) const
 {
   if (inPS.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given process sample has an invalid dimension. Expect a dimension " << getInputDimension() << ", got " << inPS.getDimension();
   if (inPS.getMesh().getDimension() != getSpatialDimension()) throw InvalidArgumentException(HERE) << "Error: the given process sample has an invalid mesh dimension. Expect a mesh dimension " << getSpatialDimension() << ", got " << inPS.getMesh().getDimension();
@@ -149,31 +149,31 @@ ProcessSample DynamicalFunctionImplementation::operator() (const ProcessSample &
 }
 
 /* Accessor for mesh dimension */
-UnsignedInteger DynamicalFunctionImplementation::getSpatialDimension() const
+UnsignedInteger FieldFunctionImplementation::getSpatialDimension() const
 {
   return spatialDimension_;
 }
 
 /* Accessor for input point dimension */
-UnsignedInteger DynamicalFunctionImplementation::getInputDimension() const
+UnsignedInteger FieldFunctionImplementation::getInputDimension() const
 {
   return inputDescription_.getSize();
 }
 
 /* Accessor for output point dimension */
-UnsignedInteger DynamicalFunctionImplementation::getOutputDimension() const
+UnsignedInteger FieldFunctionImplementation::getOutputDimension() const
 {
   return outputDescription_.getSize();
 }
 
 /* Number of calls to the dynamical function */
-UnsignedInteger DynamicalFunctionImplementation::getCallsNumber() const
+UnsignedInteger FieldFunctionImplementation::getCallsNumber() const
 {
   return callsNumber_;
 }
 
 /* Method save() stores the object through the StorageManager */
-void DynamicalFunctionImplementation::save(Advocate & adv) const
+void FieldFunctionImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute( "spatialDimension_", spatialDimension_ );
@@ -183,7 +183,7 @@ void DynamicalFunctionImplementation::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void DynamicalFunctionImplementation::load(Advocate & adv)
+void FieldFunctionImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute( "spatialDimension_", spatialDimension_ );

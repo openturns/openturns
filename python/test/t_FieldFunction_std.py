@@ -4,7 +4,7 @@ from __future__ import print_function
 import openturns as ot
 
 # Create an intance
-myFunc = ot.DynamicalFunction()
+myFunc = ot.FieldFunction()
 
 print('myFunc=', myFunc)
 # Get the input and output description
@@ -27,7 +27,7 @@ in_dim = 3
 out_dim = 1
 spatial_dim = 3
 
-myFunc = ot.PythonDynamicalFunction(in_dim, out_dim, spatial_dim, myPyFunc)
+myFunc = ot.PythonFieldFunction(in_dim, out_dim, spatial_dim, myPyFunc)
 print('myFunc=', myFunc)
 
 vertices = []

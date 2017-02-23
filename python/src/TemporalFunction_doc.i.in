@@ -20,7 +20,7 @@ Notes
 A temporal function
 :math:`f_{temp}: \cD \times \Rset^d \mapsto \cD \times \Rset^q`, with
 :math:`\cD \in \Rset^n`, is a particular
-:class:`dynamical function <openturns.DynamicalFunction>` that lets invariant
+:class:`dynamical function <openturns.FieldFunction>` that lets invariant
 the mesh of a field and defined by a function
 :math:`h : \Rset^n \times \Rset^d \mapsto \Rset^q` such that:
 

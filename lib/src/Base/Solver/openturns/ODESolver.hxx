@@ -46,7 +46,7 @@ public:
   ODESolver();
 
   /** Parameter constructor */
-  explicit ODESolver(const DynamicalFunction & transitionFunction);
+  explicit ODESolver(const FieldFunction & transitionFunction);
 
   /** Constructor from implementation */
   ODESolver(const Implementation & p_implementation);
@@ -63,8 +63,8 @@ public:
                         const NumericalPoint & timeGrid) const;
 
   /** Transition function accessor */
-  void setTransitionFunction(const DynamicalFunction & transitionFunction);
-  DynamicalFunction getTransitionFunction() const;
+  void setTransitionFunction(const FieldFunction & transitionFunction);
+  FieldFunction getTransitionFunction() const;
 
 }; /* class ODESolver */
 

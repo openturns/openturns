@@ -1,13 +1,13 @@
-myFunc= DynamicalFunction :
-  class=DynamicalFunctionImplementation name=Unnamed input description=[] output description=[] number of calls=0
+myFunc= FieldFunction :
+  class=FieldFunctionImplementation name=Unnamed input description=[] output description=[] number of calls=0
 myFunc input description= []
 myFunc output description= []
 myFunc input dimension= 0
 myFunc output dimension= 0
 myFunc spatial dimension= 1
 called  0  times
-myFunc= DynamicalFunction :
-class=PythonDynamicalFunctionImplementation name=OpenTURNSPythonDynamicalFunction
+myFunc= FieldFunction :
+class=PythonFieldFunctionImplementation name=OpenTURNSPythonFieldFunction
 X=     [ v0         v1         v2         X0         X1         X2         ]
 0 : [  0          0          0          0.608202  -1.26617   -0.438266  ]
 1 : [  0          0          1          1.20548   -2.18139    0.350042  ]

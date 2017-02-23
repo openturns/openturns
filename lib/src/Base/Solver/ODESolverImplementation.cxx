@@ -37,7 +37,7 @@ ODESolverImplementation::ODESolverImplementation()
 }
 
 /* Parameter constructor */
-ODESolverImplementation::ODESolverImplementation(const DynamicalFunction & transitionFunction)
+ODESolverImplementation::ODESolverImplementation(const FieldFunction & transitionFunction)
   : PersistentObject()
   , transitionFunction_(transitionFunction)
 {
@@ -67,12 +67,12 @@ String ODESolverImplementation::__repr__() const
 }
 
 /* Transition function accessor */
-void ODESolverImplementation::setTransitionFunction(const DynamicalFunction & transitionFunction)
+void ODESolverImplementation::setTransitionFunction(const FieldFunction & transitionFunction)
 {
   transitionFunction_ = transitionFunction;
 }
 
-DynamicalFunction ODESolverImplementation::getTransitionFunction() const
+FieldFunction ODESolverImplementation::getTransitionFunction() const
 {
   return transitionFunction_;
 }

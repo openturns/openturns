@@ -36,7 +36,7 @@ RungeKutta::RungeKutta()
 }
 
 /* Default constructor */
-RungeKutta::RungeKutta(const DynamicalFunction & transitionFunction)
+RungeKutta::RungeKutta(const FieldFunction & transitionFunction)
   : ODESolverImplementation(transitionFunction)
 {
   // Nothing to do

@@ -39,6 +39,7 @@
   * Renamed SpectralNormalProcess to SpectralGaussianProcess
   * Renamed GeneralizedLinearModelAlgorithm to GeneralLinearModelAlgorithm
   * Renamed GeneralizedLinearModelResult to GeneralLinearModelResult
+  * Renamed DynamicalFunction to FieldFunction
 
 === Python module ===
 

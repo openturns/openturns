@@ -39,8 +39,8 @@ Dynamical functions
     :toctree: _generated/
     :template: class.rst_t
 
-    DynamicalFunction
-    PythonDynamicalFunction
+    FieldFunction
+    PythonFieldFunction
     SpatialFunction
     TemporalFunction
 

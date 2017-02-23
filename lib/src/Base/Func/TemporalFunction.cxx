@@ -31,7 +31,7 @@ static const Factory<TemporalFunction> Factory_TemporalFunction;
 
 /* Default constructor */
 TemporalFunction::TemporalFunction(const UnsignedInteger meshDimension)
-  : DynamicalFunctionImplementation(meshDimension)
+  : FieldFunctionImplementation(meshDimension)
   , p_evaluation_(new NoNumericalMathEvaluationImplementation)
 {
   // Nothing to do
@@ -40,7 +40,7 @@ TemporalFunction::TemporalFunction(const UnsignedInteger meshDimension)
 /* Parameter constructor */
 TemporalFunction::TemporalFunction(const NumericalMathFunction & function,
                                    const UnsignedInteger meshDimension)
-  : DynamicalFunctionImplementation(meshDimension)
+  : FieldFunctionImplementation(meshDimension)
   , p_evaluation_(function.getEvaluation())
 {
   // Check that the given function has an input dimension large enough to be compatible with the mesh dimension
@@ -55,7 +55,7 @@ TemporalFunction::TemporalFunction(const NumericalMathFunction & function,
 /* Parameter constructor */
 TemporalFunction::TemporalFunction(const EvaluationImplementation & p_evaluation,
                                    const UnsignedInteger meshDimension)
-  : DynamicalFunctionImplementation(meshDimension)
+  : FieldFunctionImplementation(meshDimension)
   , p_evaluation_(p_evaluation)
 {
   // Check that the given function has an input dimension large enough to be compatible with the mesh dimension
@@ -70,7 +70,7 @@ TemporalFunction::TemporalFunction(const EvaluationImplementation & p_evaluation
 /* Parameter constructor */
 TemporalFunction::TemporalFunction(const NumericalMathEvaluationImplementation & evaluation,
                                    const UnsignedInteger meshDimension)
-  : DynamicalFunctionImplementation(meshDimension)
+  : FieldFunctionImplementation(meshDimension)
   , p_evaluation_(evaluation.clone())
 {
   // Check that the given function has an input dimension large enough to be compatible with the mesh dimension

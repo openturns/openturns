@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- * @brief PythonDynamicalFunctionImplementation declaration
+ * @brief PythonFieldFunctionImplementation declaration
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -19,39 +19,39 @@
  *
  */
 
-#ifndef OPENTURNS_PYTHONDYNAMICALFUNCTIONIMPLEMENTATION_HXX
-#define OPENTURNS_PYTHONDYNAMICALFUNCTIONIMPLEMENTATION_HXX
+#ifndef OPENTURNS_PYTHONFIELDFUNCTIONIMPLEMENTATION_HXX
+#define OPENTURNS_PYTHONFIELDFUNCTIONIMPLEMENTATION_HXX
 
 #include <Python.h>
-#include "openturns/DynamicalFunctionImplementation.hxx"
+#include "openturns/FieldFunctionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class PythonDynamicalFunctionImplementation
+ * @class PythonFieldFunctionImplementation
  *
- * This class binds a Python function to an OpenTURNS' DynamicalFunction
+ * This class binds a Python function to an OpenTURNS' FieldFunction
  */
-class PythonDynamicalFunctionImplementation
-  : public DynamicalFunctionImplementation
+class PythonFieldFunctionImplementation
+  : public FieldFunctionImplementation
 {
   CLASSNAME;
 public:
 
   /** Constructor from Python object*/
-  PythonDynamicalFunctionImplementation(PyObject * pyCallable);
+  PythonFieldFunctionImplementation(PyObject * pyCallable);
 
   /** Copy constructor */
-  PythonDynamicalFunctionImplementation(const PythonDynamicalFunctionImplementation & other);
+  PythonFieldFunctionImplementation(const PythonFieldFunctionImplementation & other);
 
   /** Virtual constructor */
-  virtual PythonDynamicalFunctionImplementation * clone() const;
+  virtual PythonFieldFunctionImplementation * clone() const;
 
   /** Destructor */
-  virtual ~PythonDynamicalFunctionImplementation();
+  virtual ~PythonFieldFunctionImplementation();
 
   /** Comparison operator */
-  Bool operator ==(const PythonDynamicalFunctionImplementation & other) const;
+  Bool operator ==(const PythonFieldFunctionImplementation & other) const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -83,18 +83,18 @@ protected:
 
 private:
 
-  friend class Factory<PythonDynamicalFunctionImplementation>;
+  friend class Factory<PythonFieldFunctionImplementation>;
 
   /** Default constructor */
-  PythonDynamicalFunctionImplementation();
+  PythonFieldFunctionImplementation();
 
   /** The underlying Python callable object */
   PyObject * pyObj_;
 
-}; /* class PythonDynamicalFunctionImplementation */
+}; /* class PythonFieldFunctionImplementation */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_PYTHONDYNAMICALFUNCTIONIMPLEMENTATION_HXX */
+#endif /* OPENTURNS_PYTHONFIELDFUNCTIONIMPLEMENTATION_HXX */
 

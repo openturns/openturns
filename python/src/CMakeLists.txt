@@ -67,7 +67,7 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
     cotire (${SWIG_MODULE_${MODULENAME}_REAL_NAME})
     add_dependencies (${SWIG_MODULE_${MODULENAME}_REAL_NAME}_unity generate_swig_runtime generate_docstrings)
     add_dependencies (python_unity ${SWIG_MODULE_${MODULENAME}_REAL_NAME}_unity)
-    set_source_files_properties (PythonDistributionImplementation.cxx PythonDynamicalFunctionImplementation.cxx PROPERTIES COTIRE_EXCLUDED TRUE)
+    set_source_files_properties (PythonDistributionImplementation.cxx PythonFieldFunctionImplementation.cxx PROPERTIES COTIRE_EXCLUDED TRUE)
   endif ()
 
   list (APPEND OPENTURNS_PYTHON_MODULES ${MODULENAME})
@@ -277,8 +277,8 @@ ot_add_python_module(func func_module.i
                       ComposedFunction.i ComposedFunction_doc.i.in
                       DualLinearCombinationFunction.i DualLinearCombinationFunction_doc.i.in
                       BaseFuncCollection.i
-                      DynamicalFunctionImplementation.i DynamicalFunctionImplementation_doc.i.in
-                      DynamicalFunction.i DynamicalFunction_doc.i.in
+                      FieldFunctionImplementation.i FieldFunctionImplementation_doc.i.in
+                      FieldFunction.i FieldFunction_doc.i.in
                       SpatialFunction.i SpatialFunction_doc.i.in
                       TemporalFunction.i TemporalFunction_doc.i.in
                       LinearFunction.i LinearFunction_doc.i.in
@@ -312,7 +312,7 @@ ot_add_python_module(func func_module.i
                       PythonNumericalMathEvaluationImplementation.cxx
                       PythonNumericalMathGradientImplementation.cxx
                       PythonNumericalMathHessianImplementation.cxx
-                      PythonDynamicalFunctionImplementation.cxx
+                      PythonFieldFunctionImplementation.cxx
                       InverseBoxCoxTransform.i InverseBoxCoxTransform_doc.i.in
                       TrendEvaluationImplementation.i
                       TrendTransform.i TrendTransform_doc.i.in

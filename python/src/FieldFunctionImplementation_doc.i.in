@@ -1,10 +1,10 @@
-%define OT_DynamicalFunction_doc
+%define OT_FieldFunction_doc
 "Dynamical function.
 
 Available constructors:
-    DynamicalFunction(*meshDimension=1*)
+    FieldFunction(*meshDimension=1*)
 
-    DynamicalFunction(*function, meshDimension=1*)
+    FieldFunction(*function, meshDimension=1*)
 
 Parameters
 ----------
@@ -65,26 +65,26 @@ OpenTURNS only proposes dynamical functions where :math:`\cD'=\cD` and
 and the *temporal function*. It follows that the process :math:`Y` shares the
 same mesh with :math:`X`, only its values have changed."
 %enddef
-%feature("docstring") OT::DynamicalFunctionImplementation
-OT_DynamicalFunction_doc
+%feature("docstring") OT::FieldFunctionImplementation
+OT_FieldFunction_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_DynamicalFunction_getCallsNumber_doc
-"Get the number of calls of a DynamicalFunction.
+%define OT_FieldFunction_getCallsNumber_doc
+"Get the number of calls of a FieldFunction.
 
 Returns
 -------
 callsNumber : int
-    Counts the number of times the DynamicalFunction has been called since its
+    Counts the number of times the FieldFunction has been called since its
     creation."
 %enddef
-%feature("docstring") OT::DynamicalFunctionImplementation::getCallsNumber
-OT_DynamicalFunction_getCallsNumber_doc
+%feature("docstring") OT::FieldFunctionImplementation::getCallsNumber
+OT_FieldFunction_getCallsNumber_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_DynamicalFunction_getInputDescription_doc
+%define OT_FieldFunction_getInputDescription_doc
 "Get the description of the inputs.
 
 Returns
@@ -92,12 +92,12 @@ Returns
 inputDescription : :class:`~openturns.Description`
     Describes the inputs of the dynamical function."
 %enddef
-%feature("docstring") OT::DynamicalFunctionImplementation::getInputDescription
-OT_DynamicalFunction_getInputDescription_doc
+%feature("docstring") OT::FieldFunctionImplementation::getInputDescription
+OT_FieldFunction_getInputDescription_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_DynamicalFunction_getInputDimension_doc
+%define OT_FieldFunction_getInputDimension_doc
 "Get the dimension of the input.
 
 Returns
@@ -105,32 +105,32 @@ Returns
 d : int
     Input dimension :math:`d` of the dynamical function."
 %enddef
-%feature("docstring") OT::DynamicalFunctionImplementation::getInputDimension
-OT_DynamicalFunction_getInputDimension_doc
+%feature("docstring") OT::FieldFunctionImplementation::getInputDimension
+OT_FieldFunction_getInputDimension_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_DynamicalFunction_getMarginal_doc
+%define OT_FieldFunction_getMarginal_doc
 "Get the marginal(s) at given indice(s).
 
 Parameters
 ----------
 i : int or list of ints, :math:`0 \leq i < d`
     Indice(s) of the marginal(s) needed. :math:`d` is the dimension of the
-    DynamicalFunction.
+    FieldFunction.
 
 Returns
 -------
-dynamicalFunction : :class:`~openturns.DynamicalFunction`
-    DynamicalFunction restricted to the concerned marginal(s) at the indice(s)
+dynamicalFunction : :class:`~openturns.FieldFunction`
+    FieldFunction restricted to the concerned marginal(s) at the indice(s)
     :math:`i` of the dynamical function :math:`f_{dyn}`."
 %enddef
-%feature("docstring") OT::DynamicalFunctionImplementation::getMarginal
-OT_DynamicalFunction_getMarginal_doc
+%feature("docstring") OT::FieldFunctionImplementation::getMarginal
+OT_FieldFunction_getMarginal_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_DynamicalFunction_getOutputMesh_doc
+%define OT_FieldFunction_getOutputMesh_doc
 "Get the mesh associated to the output process.
 
 Returns
@@ -138,11 +138,11 @@ Returns
 outputMesh : :class:`~openturns.Mesh`
     The mesh of the output process."
 %enddef
-%feature("docstring") OT::DynamicalFunctionImplementation::getOutputMesh
-OT_DynamicalFunction_getOutputMesh_doc
+%feature("docstring") OT::FieldFunctionImplementation::getOutputMesh
+OT_FieldFunction_getOutputMesh_doc
 // ---------------------------------------------------------------------
 
-%define OT_DynamicalFunction_getSpatialDimension_doc
+%define OT_FieldFunction_getSpatialDimension_doc
 "Get the dimension of the mesh.
 
 Returns
@@ -150,12 +150,12 @@ Returns
 spatialDimension : int, :math:`n \geq 0`
     Dimension of the mesh :math:`\cM`."
 %enddef
-%feature("docstring") OT::DynamicalFunctionImplementation::getSpatialDimension
-OT_DynamicalFunction_getSpatialDimension_doc
+%feature("docstring") OT::FieldFunctionImplementation::getSpatialDimension
+OT_FieldFunction_getSpatialDimension_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_DynamicalFunction_getOutputDescription_doc
+%define OT_FieldFunction_getOutputDescription_doc
 "Get the description of the outputs.
 
 Returns
@@ -163,12 +163,12 @@ Returns
 outputDescription : :class:`~openturns.Description`
     Describes the outputs of the dynamical function."
 %enddef
-%feature("docstring") OT::DynamicalFunctionImplementation::getOutputDescription
-OT_DynamicalFunction_getOutputDescription_doc
+%feature("docstring") OT::FieldFunctionImplementation::getOutputDescription
+OT_FieldFunction_getOutputDescription_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_DynamicalFunction_getOutputDimension_doc
+%define OT_FieldFunction_getOutputDimension_doc
 "Get the dimension of the output.
 
 Returns
@@ -176,12 +176,12 @@ Returns
 q : int
     Output dimension :math:`q` of the dynamical function."
 %enddef
-%feature("docstring") OT::DynamicalFunctionImplementation::getOutputDimension
-OT_DynamicalFunction_getOutputDimension_doc
+%feature("docstring") OT::FieldFunctionImplementation::getOutputDimension
+OT_FieldFunction_getOutputDimension_doc
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::DynamicalFunctionImplementation::setInputDescription
+%feature("docstring") OT::FieldFunctionImplementation::setInputDescription
 "Set the description of the inputs.
 
 Parameters
@@ -191,7 +191,7 @@ inputDescription : sequence of str
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::DynamicalFunctionImplementation::setOutputDescription
+%feature("docstring") OT::FieldFunctionImplementation::setOutputDescription
 "Set the description of the outputs.
 
 Parameters

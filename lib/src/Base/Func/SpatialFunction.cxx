@@ -31,7 +31,7 @@ static const Factory<SpatialFunction> Factory_SpatialFunction;
 
 /* Default constructor */
 SpatialFunction::SpatialFunction(const UnsignedInteger meshDimension)
-  : DynamicalFunctionImplementation(meshDimension)
+  : FieldFunctionImplementation(meshDimension)
   , p_evaluation_(new NoNumericalMathEvaluationImplementation)
 {
   // Nothing to do
@@ -40,7 +40,7 @@ SpatialFunction::SpatialFunction(const UnsignedInteger meshDimension)
 /* Parameter constructor */
 SpatialFunction::SpatialFunction(const NumericalMathFunction & function,
                                  const UnsignedInteger meshDimension)
-  : DynamicalFunctionImplementation(meshDimension)
+  : FieldFunctionImplementation(meshDimension)
   , p_evaluation_(function.getEvaluation())
 {
   // Set the descriptions
@@ -51,7 +51,7 @@ SpatialFunction::SpatialFunction(const NumericalMathFunction & function,
 /* Parameter constructor */
 SpatialFunction::SpatialFunction(const EvaluationImplementation & p_evaluation,
                                  const UnsignedInteger meshDimension)
-  : DynamicalFunctionImplementation(meshDimension)
+  : FieldFunctionImplementation(meshDimension)
   , p_evaluation_(p_evaluation)
 {
   // Set the descriptions
@@ -62,7 +62,7 @@ SpatialFunction::SpatialFunction(const EvaluationImplementation & p_evaluation,
 /* Parameter constructor */
 SpatialFunction::SpatialFunction(const NumericalMathEvaluationImplementation & evaluation,
                                  const UnsignedInteger meshDimension)
-  : DynamicalFunctionImplementation(meshDimension)
+  : FieldFunctionImplementation(meshDimension)
   , p_evaluation_(evaluation.clone())
 {
   // Set the descriptions

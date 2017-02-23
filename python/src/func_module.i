@@ -68,8 +68,8 @@
 %include ComposedFunction.i
 %include ParametricFunction.i
 %include DualLinearCombinationFunction.i
-%include DynamicalFunctionImplementation.i
-%include DynamicalFunction.i
+%include FieldFunctionImplementation.i
+%include FieldFunction.i
 %include SpatialFunction.i
 %include TemporalFunction.i
 %include DualLinearCombinationEvaluationImplementation.i

@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- * @brief PythonDynamicalFunctionImplementation implementation
+ * @brief PythonFieldFunctionImplementation implementation
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -21,7 +21,7 @@
 #include <Python.h>
 #include "openturns/swig_runtime.hxx"
 
-#include "openturns/PythonDynamicalFunctionImplementation.hxx"
+#include "openturns/PythonFieldFunctionImplementation.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/Description.hxx"
 #include "openturns/PythonWrappingFunctions.hxx"
@@ -30,13 +30,13 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(PythonDynamicalFunctionImplementation);
+CLASSNAMEINIT(PythonFieldFunctionImplementation);
 
-static const Factory<PythonDynamicalFunctionImplementation> Factory_PythonDynamicalFunctionImplementation;
+static const Factory<PythonFieldFunctionImplementation> Factory_PythonFieldFunctionImplementation;
 
 /* Default constructor */
-PythonDynamicalFunctionImplementation::PythonDynamicalFunctionImplementation()
-  : DynamicalFunctionImplementation()
+PythonFieldFunctionImplementation::PythonFieldFunctionImplementation()
+  : FieldFunctionImplementation()
   , pyObj_(0)
 {
   // Nothing to do
@@ -44,8 +44,8 @@ PythonDynamicalFunctionImplementation::PythonDynamicalFunctionImplementation()
 
 
 /* Constructor from Python object*/
-PythonDynamicalFunctionImplementation::PythonDynamicalFunctionImplementation(PyObject * pyCallable)
-  : DynamicalFunctionImplementation()
+PythonFieldFunctionImplementation::PythonFieldFunctionImplementation(PyObject * pyCallable)
+  : FieldFunctionImplementation()
   , pyObj_(pyCallable)
 {
   Py_XINCREF(pyCallable);
@@ -88,36 +88,36 @@ PythonDynamicalFunctionImplementation::PythonDynamicalFunctionImplementation(PyO
 }
 
 /* Virtual constructor */
-PythonDynamicalFunctionImplementation * PythonDynamicalFunctionImplementation::clone() const
+PythonFieldFunctionImplementation * PythonFieldFunctionImplementation::clone() const
 {
-  return new PythonDynamicalFunctionImplementation(*this);
+  return new PythonFieldFunctionImplementation(*this);
 }
 
 /* Copy constructor */
-PythonDynamicalFunctionImplementation::PythonDynamicalFunctionImplementation(const PythonDynamicalFunctionImplementation & other)
-  : DynamicalFunctionImplementation(other)
+PythonFieldFunctionImplementation::PythonFieldFunctionImplementation(const PythonFieldFunctionImplementation & other)
+  : FieldFunctionImplementation(other)
   , pyObj_(other.pyObj_)
 {
   Py_XINCREF(pyObj_);
 }
 
 /* Destructor */
-PythonDynamicalFunctionImplementation::~PythonDynamicalFunctionImplementation()
+PythonFieldFunctionImplementation::~PythonFieldFunctionImplementation()
 {
   Py_XDECREF(pyObj_);
 }
 
 /* Comparison operator */
-Bool PythonDynamicalFunctionImplementation::operator ==(const PythonDynamicalFunctionImplementation & other) const
+Bool PythonFieldFunctionImplementation::operator ==(const PythonFieldFunctionImplementation & other) const
 {
   return true;
 }
 
 /* String converter */
-String PythonDynamicalFunctionImplementation::__repr__() const
+String PythonFieldFunctionImplementation::__repr__() const
 {
   OSS oss;
-  oss << "class=" << PythonDynamicalFunctionImplementation::GetClassName()
+  oss << "class=" << PythonFieldFunctionImplementation::GetClassName()
       << " name=" << getName()
       << " input description=" << getInputDescription()
       << " output description=" << getOutputDescription();
@@ -125,10 +125,10 @@ String PythonDynamicalFunctionImplementation::__repr__() const
 }
 
 /* String converter */
-String PythonDynamicalFunctionImplementation::__str__(const String & offset) const
+String PythonFieldFunctionImplementation::__str__(const String & offset) const
 {
   OSS oss;
-  oss << "class=" << PythonDynamicalFunctionImplementation::GetClassName()
+  oss << "class=" << PythonFieldFunctionImplementation::GetClassName()
       << " name=" << getName();
   return oss;
 }
@@ -138,7 +138,7 @@ String PythonDynamicalFunctionImplementation::__str__(const String & offset) con
 /* Here is the interface that all derived class must implement */
 
 /* Operator () */
-Field PythonDynamicalFunctionImplementation::operator() (const Field & inF) const
+Field PythonFieldFunctionImplementation::operator() (const Field & inF) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inputDimension != inF.getDimension())
@@ -175,7 +175,7 @@ Field PythonDynamicalFunctionImplementation::operator() (const Field & inF) cons
 }
 
 /* Accessor for mesh dimension */
-UnsignedInteger PythonDynamicalFunctionImplementation::getSpatialDimension() const
+UnsignedInteger PythonFieldFunctionImplementation::getSpatialDimension() const
 {
   ScopedPyObjectPointer result(PyObject_CallMethod ( pyObj_,
                                const_cast<char *>("getSpatialDimension"),
@@ -186,7 +186,7 @@ UnsignedInteger PythonDynamicalFunctionImplementation::getSpatialDimension() con
 
 
 /* Accessor for input point dimension */
-UnsignedInteger PythonDynamicalFunctionImplementation::getInputDimension() const
+UnsignedInteger PythonFieldFunctionImplementation::getInputDimension() const
 {
   ScopedPyObjectPointer result(PyObject_CallMethod ( pyObj_,
                                const_cast<char *>("getInputDimension"),
@@ -197,7 +197,7 @@ UnsignedInteger PythonDynamicalFunctionImplementation::getInputDimension() const
 
 
 /* Accessor for output point dimension */
-UnsignedInteger PythonDynamicalFunctionImplementation::getOutputDimension() const
+UnsignedInteger PythonFieldFunctionImplementation::getOutputDimension() const
 {
   ScopedPyObjectPointer result(PyObject_CallMethod (pyObj_,
                                const_cast<char *>("getOutputDimension"),
@@ -208,18 +208,18 @@ UnsignedInteger PythonDynamicalFunctionImplementation::getOutputDimension() cons
 
 
 /* Method save() stores the object through the StorageManager */
-void PythonDynamicalFunctionImplementation::save(Advocate & adv) const
+void PythonFieldFunctionImplementation::save(Advocate & adv) const
 {
-  DynamicalFunctionImplementation::save( adv );
+  FieldFunctionImplementation::save( adv );
 
   pickleSave(adv, pyObj_);
 }
 
 
 /* Method save() reloads the object from the StorageManager */
-void PythonDynamicalFunctionImplementation::load(Advocate & adv)
+void PythonFieldFunctionImplementation::load(Advocate & adv)
 {
-  DynamicalFunctionImplementation::load( adv );
+  FieldFunctionImplementation::load( adv );
 
   pickleLoad(adv, pyObj_);
 }

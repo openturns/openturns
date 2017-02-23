@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class DynamicalFunction for standard methods
+ *  @brief The test file of class FieldFunction for standard methods
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   {
 
     /* Create an intance */
-    DynamicalFunction myFunc;
+    FieldFunction myFunc;
 
     fullprint << "myFunc=" << myFunc << std::endl;
     /* Get the input and output description */

@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 from openturns.viewer import View
 
 
-class GaussianConvolution(ot.OpenTURNSPythonDynamicalFunction):
+class GaussianConvolution(ot.OpenTURNSPythonFieldFunction):
 
     def __init__(self):
         super(GaussianConvolution, self).__init__(1, 1, 1)
@@ -32,7 +32,7 @@ class GaussianConvolution(ot.OpenTURNSPythonDynamicalFunction):
 N = 5
 X = ot.GaussianProcess(ot.GeneralizedExponential(
     [0.1], 1.0), ot.RegularGrid(-5.0, 0.1, 101))
-f = ot.DynamicalFunction(GaussianConvolution())
+f = ot.FieldFunction(GaussianConvolution())
 Y = ot.CompositeProcess(f, X)
 x_graph = X.getSample(N).drawMarginal(0)
 y_graph = Y.getSample(N).drawMarginal(0)

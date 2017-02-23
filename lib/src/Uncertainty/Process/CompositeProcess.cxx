@@ -41,7 +41,7 @@ CompositeProcess::CompositeProcess()
 }
 
 /* Standard constructor */
-CompositeProcess::CompositeProcess(const DynamicalFunction & function,
+CompositeProcess::CompositeProcess(const FieldFunction & function,
                                    const Antecedent & p_antecedent)
   : ProcessImplementation()
 {
@@ -49,20 +49,20 @@ CompositeProcess::CompositeProcess(const DynamicalFunction & function,
 }
 
 /* Standard constructor */
-CompositeProcess::CompositeProcess(const DynamicalFunction & function,
+CompositeProcess::CompositeProcess(const FieldFunction & function,
                                    const Process & antecedent)
   : ProcessImplementation()
   , function_(function)
   , p_antecedent_(antecedent.getImplementation())
 {
   if (function.getInputDimension() != p_antecedent_->getDimension())
-    throw InvalidArgumentException(HERE) << "Error: trying to build a CompositeProcess from a Process and a DynamicalFunction with incompatible dimensions "
+    throw InvalidArgumentException(HERE) << "Error: trying to build a CompositeProcess from a Process and a FieldFunction with incompatible dimensions "
                                          << "here Process dimension=" << p_antecedent_->getDimension()
-                                         << " and DynamicalFunction input dimension=" << function.getInputDimension();
+                                         << " and FieldFunction input dimension=" << function.getInputDimension();
   if (function.getSpatialDimension() != p_antecedent_->getSpatialDimension())
-    throw InvalidArgumentException(HERE) << "Error: trying to build a CompositeProcess from a Process and a DynamicalFunction with incompatible mesh dimensions "
+    throw InvalidArgumentException(HERE) << "Error: trying to build a CompositeProcess from a Process and a FieldFunction with incompatible mesh dimensions "
                                          << "here Process mesh dimension=" << p_antecedent_->getSpatialDimension()
-                                         << " and DynamicalFunction mesh dimension=" << function.getSpatialDimension();
+                                         << " and FieldFunction mesh dimension=" << function.getSpatialDimension();
   setMesh(function.getOutputMesh(p_antecedent_->getMesh()));
   setDimension(function.getOutputDimension());
   setDescription(function.getOutputDescription());
@@ -105,7 +105,7 @@ CompositeProcess::Antecedent CompositeProcess::getAntecedent() const
 }
 
 /* Function accessor */
-DynamicalFunction CompositeProcess::getFunction() const
+FieldFunction CompositeProcess::getFunction() const
 {
   return function_;
 }

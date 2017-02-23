@@ -1,13 +1,13 @@
-// SWIG file DynamicalFunction.i
+// SWIG file FieldFunction.i
 
 %{
-#include "openturns/DynamicalFunction.hxx"
-#include "openturns/PythonDynamicalFunctionImplementation.hxx"
+#include "openturns/FieldFunction.hxx"
+#include "openturns/PythonFieldFunctionImplementation.hxx"
 
 namespace OT {
 
   template <>
-  struct traitsPythonType< OT::DynamicalFunction >
+  struct traitsPythonType< OT::FieldFunction >
   {
     typedef _PyObject_ Type;
   };
@@ -15,17 +15,17 @@ namespace OT {
   template <>
   inline
   bool
-  canConvert< _PyObject_, OT::DynamicalFunction >(PyObject * pyObj)
+  canConvert< _PyObject_, OT::FieldFunction >(PyObject * pyObj)
   {
     void * ptr = 0;
-    if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__DynamicalFunction, 0 ))) {
-      OT::DynamicalFunction * p_nmf = reinterpret_cast< OT::DynamicalFunction * >( ptr );
+    if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__FieldFunction, 0 ))) {
+      OT::FieldFunction * p_nmf = reinterpret_cast< OT::FieldFunction * >( ptr );
       return p_nmf != NULL;
-    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__DynamicalFunctionImplementation, 0 ))) {
-      OT::DynamicalFunctionImplementation * p_impl = reinterpret_cast< OT::DynamicalFunctionImplementation * >( ptr );
+    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__FieldFunctionImplementation, 0 ))) {
+      OT::FieldFunctionImplementation * p_impl = reinterpret_cast< OT::FieldFunctionImplementation * >( ptr );
       return p_impl != NULL;
-    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIG_TypeQuery("OT::Pointer<OT::DynamicalFunctionImplementation> *"), 0))) {
-      OT::Pointer<OT::DynamicalFunctionImplementation> * p_impl = reinterpret_cast< OT::Pointer<OT::DynamicalFunctionImplementation> * >( ptr );
+    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIG_TypeQuery("OT::Pointer<OT::FieldFunctionImplementation> *"), 0))) {
+      OT::Pointer<OT::FieldFunctionImplementation> * p_impl = reinterpret_cast< OT::Pointer<OT::FieldFunctionImplementation> * >( ptr );
       return p_impl != NULL && !p_impl->isNull();
     } else {
       return PyCallable_Check( pyObj );
@@ -34,23 +34,23 @@ namespace OT {
 
   template <>
   inline
-  OT::DynamicalFunction
-  convert< _PyObject_, OT::DynamicalFunction >(PyObject * pyObj)
+  OT::FieldFunction
+  convert< _PyObject_, OT::FieldFunction >(PyObject * pyObj)
   {
     void * ptr = 0;
-    if ( SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__DynamicalFunction, 0 ) ) ) {
-      OT::DynamicalFunction * p_nmf = reinterpret_cast< OT::DynamicalFunction * >( ptr );
+    if ( SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__FieldFunction, 0 ) ) ) {
+      OT::FieldFunction * p_nmf = reinterpret_cast< OT::FieldFunction * >( ptr );
       return *p_nmf;
-    } else if ( SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__DynamicalFunctionImplementation, 0 ) ) ) {
-      OT::DynamicalFunctionImplementation * p_impl = reinterpret_cast< OT::DynamicalFunctionImplementation * >( ptr );
+    } else if ( SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__FieldFunctionImplementation, 0 ) ) ) {
+      OT::FieldFunctionImplementation * p_impl = reinterpret_cast< OT::FieldFunctionImplementation * >( ptr );
       return *p_impl;
-    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIG_TypeQuery("OT::Pointer<OT::DynamicalFunctionImplementation> *"), 0))) {
-      OT::Pointer<OT::DynamicalFunctionImplementation> * p_impl = reinterpret_cast< OT::Pointer<OT::DynamicalFunctionImplementation> * >( ptr );
+    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIG_TypeQuery("OT::Pointer<OT::FieldFunctionImplementation> *"), 0))) {
+      OT::Pointer<OT::FieldFunctionImplementation> * p_impl = reinterpret_cast< OT::Pointer<OT::FieldFunctionImplementation> * >( ptr );
       return **p_impl;
     } else if (!PyCallable_Check( pyObj )) {
-      throw OT::InvalidArgumentException(HERE) << "Argument is not a callable object (function or class) - can not be convertible to a DynamicalFunction";
+      throw OT::InvalidArgumentException(HERE) << "Argument is not a callable object (function or class) - can not be convertible to a FieldFunction";
     }
-    OT::DynamicalFunction pythonFunction(new OT::PythonDynamicalFunctionImplementation(pyObj));
+    OT::FieldFunction pythonFunction(new OT::PythonFieldFunctionImplementation(pyObj));
     return pythonFunction;
   }
 
@@ -58,26 +58,26 @@ namespace OT {
 
 %}
 
-%include DynamicalFunction_doc.i
+%include FieldFunction_doc.i
 
-OTTypedInterfaceObjectHelper(DynamicalFunction)
+OTTypedInterfaceObjectHelper(FieldFunction)
 
-%include openturns/DynamicalFunction.hxx
+%include openturns/FieldFunction.hxx
 
 namespace OT { 
-%extend DynamicalFunction {
+%extend FieldFunction {
 
-DynamicalFunction(PyObject * pyObj)
+FieldFunction(PyObject * pyObj)
 {
   void * ptr = 0;
   if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIG_TypeQuery("OT::Object *"), 0)))
   {
     throw OT::InvalidArgumentException(HERE) << "Argument should be a pure python object";
   }
-  return new OT::DynamicalFunction(OT::convert<OT::_PyObject_, OT::DynamicalFunction>(pyObj));
+  return new OT::FieldFunction(OT::convert<OT::_PyObject_, OT::FieldFunction>(pyObj));
 }
 
-DynamicalFunction(const DynamicalFunction & other) { return new OT::DynamicalFunction( other ); }
+FieldFunction(const FieldFunction & other) { return new OT::FieldFunction( other ); }
 
 }}
 
@@ -85,9 +85,9 @@ DynamicalFunction(const DynamicalFunction & other) { return new OT::DynamicalFun
 # We have to make sure the submodule is loaded with absolute path
 import openturns.typ
 
-class OpenTURNSPythonDynamicalFunction(object):
+class OpenTURNSPythonFieldFunction(object):
     """
-    Override DynamicalFunction from Python.
+    Override FieldFunction from Python.
 
     Parameters
     ----------
@@ -146,7 +146,7 @@ class OpenTURNSPythonDynamicalFunction(object):
         return self.__s
 
     def __str__(self):
-        return 'OpenTURNSPythonDynamicalFunction( %s #%d ) -> %s #%d' % (self.__descIn, self.__n, self.__descOut, self.__p)
+        return 'OpenTURNSPythonFieldFunction( %s #%d ) -> %s #%d' % (self.__descIn, self.__n, self.__descOut, self.__p)
 
     def __repr__(self):
         return self.__str__()
@@ -158,9 +158,9 @@ class OpenTURNSPythonDynamicalFunction(object):
     def _exec(self, X):
         raise RuntimeError('You must define a method _exec(X) -> Y, where X and Y are Fields objects')
 
-class PythonDynamicalFunction(DynamicalFunction):
+class PythonFieldFunction(FieldFunction):
     """
-    Override DynamicalFunction from Python.
+    Override FieldFunction from Python.
 
     Parameters
     ----------
@@ -182,11 +182,29 @@ class PythonDynamicalFunction(DynamicalFunction):
     def __new__(self, n, p, s, func=None):
         if func == None:
             raise RuntimeError('func not provided.')
-        instance = OpenTURNSPythonDynamicalFunction(n, p, s)
+        instance = OpenTURNSPythonFieldFunction(n, p, s)
         import collections
         if func != None:
             if not isinstance(func, collections.Callable):
                 raise RuntimeError('func argument is not callable.')
             instance._exec = func
-        return DynamicalFunction(instance)
+        return FieldFunction(instance)
+
+
+# deprecated
+class DynamicalFunction(FieldFunction):
+    def __init__(self, *args):
+        super(DynamicalFunction, self).__init__(*args)
+        openturns.common.Log.Warn('class DynamicalFunction is deprecated in favor of FieldFunction')
+
+class OpenTURNSPythonDynamicalFunction(OpenTURNSPythonFieldFunction):
+    def __init__(self, *args):
+        super(OpenTURNSPythonDynamicalFunction, self).__init__(*args)
+        openturns.common.Log.Warn('class OpenTURNSPythonDynamicalFunction is deprecated in favor of OpenTURNSPythonFieldFunction')
+
+class PythonDynamicalFunction(PythonFieldFunction):
+    def __new__(self, *args):
+        common.Log.Warn('class PythonDynamicalFunction is deprecated in favor of PythonFieldFunction')
+        return FieldFunction(*args)
+
 %}
