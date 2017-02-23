@@ -27,7 +27,7 @@
 #include "openturns/KrigingResult.hxx"
 #include "openturns/HMatrix.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
-#include "openturns/GeneralizedLinearModelResult.hxx"
+#include "openturns/GeneralLinearModelResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -44,8 +44,8 @@ class OT_API GeneralLinearModelAlgorithm
 
 public:
 
-  typedef GeneralizedLinearModelResult::BasisCollection BasisCollection;
-  typedef GeneralizedLinearModelResult::BasisPersistentCollection BasisPersistentCollection;
+  typedef GeneralLinearModelResult::BasisCollection BasisCollection;
+  typedef GeneralLinearModelResult::BasisPersistentCollection BasisPersistentCollection;
 
   /** Default constructor */
   GeneralLinearModelAlgorithm();
@@ -106,7 +106,7 @@ public:
   NumericalSample getOutputSample() const;
 
   /** result accessor */
-  GeneralizedLinearModelResult getResult();
+  GeneralLinearModelResult getResult();
 
   /** Objective function (reduced log-Likelihood) accessor */
   NumericalMathFunction getObjectiveFunction();
@@ -277,7 +277,7 @@ private:
   mutable Matrix F_;
 
   /** Result */
-  GeneralizedLinearModelResult result_;
+  GeneralLinearModelResult result_;
 
   /** BasisCollection */
   BasisPersistentCollection basisCollection_;

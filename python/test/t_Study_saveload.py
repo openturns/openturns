@@ -152,8 +152,8 @@ try:
         ot.RandomGenerator.GetState())
     myStudy.add('randomGeneratorState', randomGeneratorState)
 
-    # Create a GeneralizedLinearModelResult
-    generalizedLinearModelResult = ot.GeneralizedLinearModelResult()
+    # Create a GeneralLinearModelResult
+    generalizedLinearModelResult = ot.GeneralLinearModelResult()
     generalizedLinearModelResult.setName('generalizedLinearModelResult')
     myStudy.add('generalizedLinearModelResult', generalizedLinearModelResult)
 
@@ -225,8 +225,8 @@ try:
 
     print('analytical = ', analytical)
 
-    # Create a GeneralizedLinearModelResult from the one stored in the Study
-    generalizedLinearModelResult = ot.GeneralizedLinearModelResult()
+    # Create a GeneralLinearModelResult from the one stored in the Study
+    generalizedLinearModelResult = ot.GeneralLinearModelResult()
     myStudy.fillObject('generalizedLinearModelResult',
                        generalizedLinearModelResult)
 

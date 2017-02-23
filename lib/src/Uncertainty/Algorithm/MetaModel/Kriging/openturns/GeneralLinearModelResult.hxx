@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_GENERALIZEDLINEARMODELRESULT_HXX
-#define OPENTURNS_GENERALIZEDLINEARMODELRESULT_HXX
+#ifndef OPENTURNS_GENERALLINEARMODELRESULT_HXX
+#define OPENTURNS_GENERALLINEARMODELRESULT_HXX
 
 #include "openturns/MetaModelResult.hxx"
 #include "openturns/CovarianceModel.hxx"
@@ -33,29 +33,29 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class GeneralizedLinearModelResult
+ * @class GeneralLinearModelResult
  *
  * The result of a generalized linear model evaluation
  */
 
-class OT_API GeneralizedLinearModelResult
+class OT_API GeneralLinearModelResult
   : public MetaModelResult
 {
   CLASSNAME;
 
 public:
 
-  // friend class Factory<GeneralizedLinearModelResult>;
+  // friend class Factory<GeneralLinearModelResult>;
   typedef Collection<NumericalPoint> NumericalPointCollection;
   typedef PersistentCollection<NumericalPoint> NumericalPointPersistentCollection;
   typedef Collection<Basis> BasisCollection;
   typedef PersistentCollection<Basis> BasisPersistentCollection;
 
   /** Default constructor */
-  GeneralizedLinearModelResult();
+  GeneralLinearModelResult();
 
   /** Parameter constructor without any cholesky factor*/
-  GeneralizedLinearModelResult(const NumericalSample & inputData,
+  GeneralLinearModelResult(const NumericalSample & inputData,
                                const NumericalSample & outputData,
                                const NumericalMathFunction & metaModel,
                                const NumericalPoint & residuals,
@@ -66,7 +66,7 @@ public:
 			       const NumericalScalar optimalLogLikelihood);
 
   /** Parameter constructor with Cholesky factor (Lapack)*/
-  GeneralizedLinearModelResult(const NumericalSample & inputData,
+  GeneralLinearModelResult(const NumericalSample & inputData,
                                const NumericalSample & outputData,
                                const NumericalMathFunction & metaModel,
                                const NumericalPoint & residuals,
@@ -79,7 +79,7 @@ public:
                                const HMatrix & covarianceHMatrix);
 
   /** Virtual constructor */
-  GeneralizedLinearModelResult * clone() const;
+  GeneralLinearModelResult * clone() const;
 
   /** String converter */
   String __repr__() const;
@@ -159,7 +159,7 @@ private:
   /** Cholesky factor when using hmat-oss/hmat */
   mutable HMatrix covarianceHMatrix_;
 
-} ; /* class GeneralizedLinearModelResult */
+} ; /* class GeneralLinearModelResult */
 
 
 END_NAMESPACE_OPENTURNS

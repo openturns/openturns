@@ -26,7 +26,7 @@
 #include "openturns/KrigingEvaluation.hxx"
 #include "openturns/KrigingGradient.hxx"
 #include "openturns/CenteredFiniteDifferenceHessian.hxx"
-#include "openturns/GeneralizedLinearModelResult.hxx"
+#include "openturns/GeneralLinearModelResult.hxx"
 #include "openturns/ComposedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -183,7 +183,7 @@ void KrigingAlgorithm::run()
   rho_ = glmAlgo_.getRho();
 
   /* Method that returns the covariance factor - hmat */
-  const GeneralizedLinearModelResult glmResult(glmAlgo_.getResult());
+  const GeneralLinearModelResult glmResult(glmAlgo_.getResult());
   if (ResourceMap::Get("KrigingAlgorithm-LinearAlgebra") == "HMAT")
     covarianceCholeskyFactorHMatrix_ = glmResult.getHMatCholeskyFactor();
   else

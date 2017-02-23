@@ -1,10 +1,10 @@
-%feature("docstring") OT::GeneralizedLinearModelResult
+%feature("docstring") OT::GeneralLinearModelResult
 "Generalized linear model result.
 
 Available constructors:
-    GeneralizedLinearModelResult(*inputSample, outputSample, metaModel, residuals, relativeErrors, basis, trendCoefficients, covarianceModel, optimalLogLikelihood*)
+    GeneralLinearModelResult(*inputSample, outputSample, metaModel, residuals, relativeErrors, basis, trendCoefficients, covarianceModel, optimalLogLikelihood*)
 
-    GeneralizedLinearModelResult(*inputSample, outputSample, metaModel, residuals, relativeErrors, basis, trendCoefficients, covarianceModel, covarianceCholeskyFactor, covarianceHMatrix, optimalLogLikelihood*)
+    GeneralLinearModelResult(*inputSample, outputSample, metaModel, residuals, relativeErrors, basis, trendCoefficients, covarianceModel, covarianceCholeskyFactor, covarianceHMatrix, optimalLogLikelihood*)
 
 
 Parameters
@@ -97,7 +97,7 @@ Get the meta model:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GeneralizedLinearModelResult::getTrendCoefficients
+%feature("docstring") OT::GeneralLinearModelResult::getTrendCoefficients
 "Accessor to the trend coefficients.
 
 Returns
@@ -108,7 +108,7 @@ trendCoef : collection of :class:`~openturns.NumericalPoint`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GeneralizedLinearModelResult::getCovarianceModel
+%feature("docstring") OT::GeneralLinearModelResult::getCovarianceModel
 "Accessor to the covariance model.
 
 Returns
@@ -119,7 +119,7 @@ covModel : :class:`~openturns.CovarianceModel`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GeneralizedLinearModelResult::getBasisCollection
+%feature("docstring") OT::GeneralLinearModelResult::getBasisCollection
 "Accessor to the collection of basis.
 
 Returns
@@ -134,7 +134,7 @@ If the trend is not estimated, the collection is empty.
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GeneralizedLinearModelResult::getMetaModel
+%feature("docstring") OT::GeneralLinearModelResult::getMetaModel
 "Accessor to the metamodel.
 
 Returns
@@ -145,7 +145,7 @@ metaModel : :class:`~openturns.NumericalMathFunction`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GeneralizedLinearModelResult::getTransformation
+%feature("docstring") OT::GeneralLinearModelResult::getTransformation
 "Accessor to the normalizing transformation.
 
 Returns
@@ -156,7 +156,7 @@ transformation : :class:`~openturns.NumericalMathFunction`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GeneralizedLinearModelResult::setTransformation
+%feature("docstring") OT::GeneralLinearModelResult::setTransformation
 "Set accessor to the normalizing transformation.
 
 Parameters
@@ -167,7 +167,7 @@ transformation : :class:`~openturns.NumericalMathFunction`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GeneralizedLinearModelResult::getNoise
+%feature("docstring") OT::GeneralLinearModelResult::getNoise
 "Accessor to the normal process.
 
 Returns
@@ -178,7 +178,7 @@ process : :class:`~openturns.Process`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GeneralizedLinearModelResult::getOptimalLogLikelihood
+%feature("docstring") OT::GeneralLinearModelResult::getOptimalLogLikelihood
 "Accessor to the optimal log-likelihood of the model.
 
 Returns

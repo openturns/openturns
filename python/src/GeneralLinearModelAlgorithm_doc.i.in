@@ -34,7 +34,7 @@ normalize : bool, optional
     OpenTURNS uses the transformation fixed by the User in *inputTransformation* or the empirical mean and variance of the input sample.
     Default is set in resource map key `GeneralLinearModelAlgorithm-NormalizeData`
 keepCovariance : bool, optional
-    Indicates whether the covariance matrix has to be stored in the result structure *GeneralizedLinearModelResult*.
+    Indicates whether the covariance matrix has to be stored in the result structure *GeneralLinearModelResult*.
     Default is set in resource map key `GeneralLinearModelAlgorithm-KeepCovariance`
 
 Notes
@@ -233,7 +233,7 @@ transformation : :class:`~openturns.NumericalMathFunction`
 
 Returns
 -------
-result : :class:`~openturns.GeneralizedLinearModelResult`
+result : :class:`~openturns.GeneralLinearModelResult`
     Structure containing all the results obtained after computation
     and created by the method :py:meth:`run`.
 "
@@ -303,7 +303,7 @@ Get the log-likelihood function:
 Notes
 -----
 It computes the response surface and creates a
-:class:`~openturns.GeneralizedLinearModelResult` structure containing all the results."
+:class:`~openturns.GeneralLinearModelResult` structure containing all the results."
 
 // ---------------------------------------------------------------------
 

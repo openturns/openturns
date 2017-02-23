@@ -71,7 +71,7 @@ covarianceModel : :class:`~openturns.CovarianceModel`
     Covariance model.
     Should have spatial dimension equal to input sample's dimension and dimension equal to output sample's dimension.
     See note for some particular applications.
-generalizedLinearModelResult : :class:`~openturns.GeneralizedLinearModelResult`
+generalizedLinearModelResult : :class:`~openturns.GeneralLinearModelResult`
     Empty structure that contains results of generalized linear model algorithm.
 
 Returns
@@ -226,7 +226,7 @@ Estimation of a generalized linear model:
 >>> inv_transfo = ot.PythonFunction(1,1, f)
 >>> outputSample = inv_transfo(outputSample) + ot.Normal(0, 1.0e-2).getSample(20)
 >>> # Estimation
->>> result = ot.GeneralizedLinearModelResult()
+>>> result = ot.GeneralLinearModelResult()
 >>> basis = ot.LinearBasisFactory(1).build()
 >>> covarianceModel = ot.DiracCovarianceModel()
 >>> shift = [1.0e-1]

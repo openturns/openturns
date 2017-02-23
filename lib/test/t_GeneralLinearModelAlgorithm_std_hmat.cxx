@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
     algo.run();
 
     // perform an evaluation
-    GeneralizedLinearModelResult result = algo.getResult();
+    GeneralLinearModelResult result = algo.getResult();
     NumericalMathFunction metaModel = result.getMetaModel();
     CovarianceModel conditionalCovariance = result.getCovarianceModel();
     const NumericalSample residual = metaModel(X) - Y;

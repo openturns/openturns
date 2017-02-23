@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
     BoxCoxFactory factory;
 
     // Creation of the BoxCoxTransform
-    GeneralizedLinearModelResult result;
+    GeneralLinearModelResult result;
     const Basis basis = LinearBasisFactory(1).build();
     const DiracCovarianceModel covarianceModel;
     const NumericalPoint shift(1, 1.0e-1);

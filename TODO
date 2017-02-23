@@ -6,4 +6,4 @@ Rename AnalyticalNumericalMath*Implementation to SymbolicEvaluation|Gradient|Hes
 Remove TemporalNormalProcess alias
 Remove SpectralNormalProcess alias
 Remove GeneralizedLinearModelAlgorithm alias
-
+Remove GeneralizedLinearModelResult alias

@@ -362,7 +362,7 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & inputSample,
                                      const CovarianceModel & covarianceModel,
                                      const Basis & basis,
                                      const NumericalPoint & shift,
-                                     GeneralizedLinearModelResult & result)
+                                     GeneralLinearModelResult & result)
 {
   BasisCollection basisColl(outputSample.getDimension(), basis);
   return build(inputSample, outputSample, covarianceModel, basisColl, shift, result);
@@ -372,7 +372,7 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & inputSample,
                                      const NumericalSample & outputSample,
                                      const CovarianceModel & covarianceModel,
                                      const NumericalPoint & shift,
-                                     GeneralizedLinearModelResult & result)
+                                     GeneralLinearModelResult & result)
 {
   BasisCollection basis;
   return build(inputSample, outputSample, covarianceModel, basis, shift, result);
@@ -383,7 +383,7 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & inputSample,
                                      const CovarianceModel & covarianceModel,
                                      const BasisCollection & basis,
                                      const NumericalPoint & shift,
-                                     GeneralizedLinearModelResult & result)
+                                     GeneralLinearModelResult & result)
 {
   checkGLMData(inputSample, outputSample, covarianceModel, basis);
 
@@ -403,7 +403,7 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & inputSample,
   BoxCoxEvaluationImplementation myBoxFunction(lambda, shift);
   // compute the transformed output sample using the Box-Cox function
   const NumericalSample transformedOutputSample = myBoxFunction(outputSample);
-  // Build the GeneralizedLinearModelResult
+  // Build the GeneralLinearModelResult
   // Use of GLM to estimate the best generalized linear model
   GeneralLinearModelAlgorithm algo(inputSample, transformedOutputSample, covarianceModel, basis);
   algo.run();

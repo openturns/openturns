@@ -670,10 +670,10 @@ void GeneralLinearModelAlgorithm::run()
       if (method_ == 0) covarianceCholeskyFactor_ = covarianceCholeskyFactor_ * sigma;
       else covarianceCholeskyFactorHMatrix_.scale(sigma);
     }
-    result_ = GeneralizedLinearModelResult(inputSample_, outputSample_, metaModel, residuals, relativeErrors, basisCollection_, trendCoefficients, reducedCovarianceModel_, optimalLogLikelihood, covarianceCholeskyFactor_, covarianceCholeskyFactorHMatrix_);
+    result_ = GeneralLinearModelResult(inputSample_, outputSample_, metaModel, residuals, relativeErrors, basisCollection_, trendCoefficients, reducedCovarianceModel_, optimalLogLikelihood, covarianceCholeskyFactor_, covarianceCholeskyFactorHMatrix_);
   }
   else
-    result_ = GeneralizedLinearModelResult(inputSample_, outputSample_, metaModel, residuals, relativeErrors, basisCollection_, trendCoefficients, reducedCovarianceModel_, optimalLogLikelihood);
+    result_ = GeneralLinearModelResult(inputSample_, outputSample_, metaModel, residuals, relativeErrors, basisCollection_, trendCoefficients, reducedCovarianceModel_, optimalLogLikelihood);
   // If normalize, set input transformation
   if (normalize_) result_.setTransformation(inputTransformation_);
   hasRun_ = true;
@@ -1047,7 +1047,7 @@ NumericalSample GeneralLinearModelAlgorithm::getOutputSample() const
 }
 
 
-GeneralizedLinearModelResult GeneralLinearModelAlgorithm::getResult()
+GeneralLinearModelResult GeneralLinearModelAlgorithm::getResult()
 {
   if (!hasRun_) run();
   return result_;

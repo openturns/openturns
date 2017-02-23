@@ -30,7 +30,7 @@
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/Basis.hxx"
-#include "openturns/GeneralizedLinearModelResult.hxx"
+#include "openturns/GeneralLinearModelResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -46,7 +46,7 @@ class OT_API BoxCoxFactory
 
 public:
 
-  typedef GeneralizedLinearModelResult::BasisCollection BasisCollection;
+  typedef GeneralLinearModelResult::BasisCollection BasisCollection;
 
   /** Default constructor without parameters */
   BoxCoxFactory();
@@ -80,20 +80,20 @@ public:
                         const CovarianceModel & covarianceModel,
                         const Basis & basis,
                         const NumericalPoint & shift,
-                        GeneralizedLinearModelResult & result);
+                        GeneralLinearModelResult & result);
 
   BoxCoxTransform build(const NumericalSample & inputSample,
                         const NumericalSample & outputSample,
                         const CovarianceModel & covarianceModel,
                         const BasisCollection & basis,
                         const NumericalPoint & shift,
-                        GeneralizedLinearModelResult & result);
+                        GeneralLinearModelResult & result);
 
   BoxCoxTransform build(const NumericalSample & inputSample,
                         const NumericalSample & outputSample,
                         const CovarianceModel & covarianceModel,
                         const NumericalPoint & shift,
-                        GeneralizedLinearModelResult & result);
+                        GeneralLinearModelResult & result);
 
   /** Optimization solver accessor */
   OptimizationAlgorithm getOptimizationSolver() const;

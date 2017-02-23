@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     GeneralLinearModelAlgorithm algo(X, Y, covarianceModel, basis);
     algo.run();
 
-    GeneralizedLinearModelResult result = algo.getResult();
+    GeneralLinearModelResult result = algo.getResult();
     fullprint << "\ncovariance (dirac, optimized)=" << result.getCovarianceModel() << std::endl;
     fullprint << "trend (dirac, optimized)=" << result.getTrendCoefficients() << std::endl;
     fullprint << "===================================================\n" << std::endl;
@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
       AbsoluteExponential covarianceModel(spatialDimension);
       GeneralLinearModelAlgorithm algo(X, Y, covarianceModel, basis);
       algo.run();
-      GeneralizedLinearModelResult result = algo.getResult();
+      GeneralLinearModelResult result = algo.getResult();
       fullprint << "\ncovariance (reduced, unbiased)=" << result.getCovarianceModel() << std::endl;
       fullprint << "trend (reduced, unbiased)=" << result.getTrendCoefficients() << std::endl;
       fullprint << "===================================================\n" << std::endl;
