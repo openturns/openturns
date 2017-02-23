@@ -55,14 +55,14 @@ int main(int argc, char *argv[])
     // RegularGrid --> Build list of frequencies using the RegularGrid
     RegularGrid myTimeGrid(tMin, tStep, points);
 
-    SpectralNormalProcess mySpectralProcess0(myModel, myTimeGrid);
+    SpectralGaussianProcess mySpectralProcess0(myModel, myTimeGrid);
 
     fullprint << "mySpectralProcess0 = " << mySpectralProcess0.__str__() << std::endl;
     fullprint << "Realization = " << mySpectralProcess0.getRealization().__str__() << std::endl;
 
     // Constructor using maximalFrequency value and size of discretization
     const NumericalScalar maximalFrequency = 10.0;
-    SpectralNormalProcess mySpectralProcess1(myModel, maximalFrequency, points);
+    SpectralGaussianProcess mySpectralProcess1(myModel, maximalFrequency, points);
     RegularGrid tg(mySpectralProcess1.getTimeGrid());
 
     fullprint << "mySpectralProcess1 = " << mySpectralProcess1.__str__() << std::endl;
@@ -75,10 +75,10 @@ int main(int argc, char *argv[])
     CauchyModel mySpecModel(scale, amplitude);
     fullprint << "mySpecModel = " << mySpecModel << std::endl;
 
-    SpectralNormalProcess mySpectralProcess2(mySpecModel, myTimeGrid);
+    SpectralGaussianProcess mySpectralProcess2(mySpecModel, myTimeGrid);
     fullprint << "mySpectralProcess2 = " << mySpectralProcess2.__str__() << std::endl;
     fullprint << "Realization = " << mySpectralProcess2.getRealization().__str__() << std::endl;
-    SpectralNormalProcess mySpectralProcess3(mySpecModel, maximalFrequency, points);
+    SpectralGaussianProcess mySpectralProcess3(mySpecModel, maximalFrequency, points);
     fullprint << "mySpectralProcess3 = " << mySpectralProcess3.__str__() << std::endl;
     fullprint << "Realization = " << mySpectralProcess3.getRealization().__str__() << std::endl;
 

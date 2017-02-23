@@ -33,7 +33,7 @@
 %include ARMACoefficients.i
 %include ARMAState.i
 %include ARMA.i
-%include SpectralNormalProcess.i
+%include SpectralGaussianProcess.i
 %include GaussianProcess.i
 %include AggregatedProcess.i
 %include CompositeProcess.i

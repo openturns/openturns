@@ -825,10 +825,10 @@ void ResourceMap::loadDefaultConfiguration()
   setAsNumericalScalar( "GaussianProcess-MaximalScaling", 1.0e5 );
   setAsUnsignedInteger( "GaussianProcess-GibbsMaximumIteration", 100 );
 
-  // SpectralNormalProcess parameters //
-  setAsNumericalScalar( "SpectralNormalProcess-StartingScaling", 1.0e-13 );
-  setAsNumericalScalar( "SpectralNormalProcess-MaximalScaling", 1.0e5 );
-  setAsUnsignedInteger( "SpectralNormalProcess-CholeskyCacheSize", 16384 );
+  // SpectralGaussianProcess parameters //
+  setAsNumericalScalar( "SpectralGaussianProcess-StartingScaling", 1.0e-13 );
+  setAsNumericalScalar( "SpectralGaussianProcess-MaximalScaling", 1.0e5 );
+  setAsUnsignedInteger( "SpectralGaussianProcess-CholeskyCacheSize", 16384 );
 
   // WhittleFactory parameters //
   setAsNumericalScalar( "WhittleFactory-DefaultRhoBeg", 0.1 );

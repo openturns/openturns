@@ -93,7 +93,7 @@ Normal process
     :toctree: _generated/
     :template: Process.rst_t
 
-    SpectralNormalProcess
+    SpectralGaussianProcess
     GaussianProcess
 
     :template: class.rst_t

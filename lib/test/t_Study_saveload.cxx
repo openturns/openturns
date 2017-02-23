@@ -614,9 +614,9 @@ int main(int argc, char *argv[])
     SecondOrderModel secondOrderModel(absoluteExponential, cauchyModel);
     study.add("secondOrderModel", secondOrderModel);
 
-    // Create a SpectralNormalProcess
-    SpectralNormalProcess spectralNormalProcess(exponentialCauchy, regularGrid);
-    study.add("spectralNormalProcess", spectralNormalProcess);
+    // Create a SpectralGaussianProcess
+    SpectralGaussianProcess spectralGaussianProcess(exponentialCauchy, regularGrid);
+    study.add("spectralGaussianProcess", spectralGaussianProcess);
 
     // Create an  UserDefinedSpectralModel
     UserDefinedSpectralModel userDefinedSpectralModel;
@@ -1066,7 +1066,7 @@ int main(int argc, char *argv[])
     compare<AbsoluteExponential >( absoluteExponential, study2 );
     compare<SecondOrderModel >( secondOrderModel, study2 );
     compare<CompositeProcess >( compositeProcess, study2 );
-    compare<SpectralNormalProcess >( spectralNormalProcess, study2 );
+    compare<SpectralGaussianProcess >( spectralGaussianProcess, study2 );
     compare<GaussianProcess >( gaussianProcess, study2 );
     compare<Domain >( domain, study2 );
     compare<EventDomainImplementation >( eventDomainImplementation, study2 );

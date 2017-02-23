@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     const NumericalPoint amplitude(dimension, 1.0);
     const NumericalPoint scale(dimension, 1.0);
     ExponentialCauchy model(scale, amplitude);
-    SpectralNormalProcess myProcess(model, timeGrid);
+    SpectralGaussianProcess myProcess(model, timeGrid);
 
     // Create a sample of time series
     const UnsignedInteger N = 1000;

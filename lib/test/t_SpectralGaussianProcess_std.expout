@@ -1,4 +1,4 @@
-mySpectralProcess0 =  SpectralNormalProcess=SpectralNormalProcess dimension=1 spectralModel=class=CauchyModel amplitude=[1] scale=[1] no spatial correlation maximal frequency=3.5 n frequency=4
+mySpectralProcess0 =  SpectralGaussianProcess=SpectralGaussianProcess dimension=1 spectralModel=class=CauchyModel amplitude=[1] scale=[1] no spatial correlation maximal frequency=3.5 n frequency=4
 Realization =     [ t          x0         ]
 0 : [  0         -0.541695  ]
 1 : [  0.142857  -0.17745   ]
@@ -8,7 +8,7 @@ Realization =     [ t          x0         ]
 5 : [  0.714286  -0.267239  ]
 6 : [  0.857143  -0.318985  ]
 7 : [  1         -0.442252  ]
-mySpectralProcess1 =  SpectralNormalProcess=SpectralNormalProcess dimension=1 spectralModel=class=CauchyModel amplitude=[1] scale=[1] no spatial correlation maximal frequency=10 n frequency=8
+mySpectralProcess1 =  SpectralGaussianProcess=SpectralGaussianProcess dimension=1 spectralModel=class=CauchyModel amplitude=[1] scale=[1] no spatial correlation maximal frequency=10 n frequency=8
 Realization =      [ t           x0          ]
  0 : [  0           0.120989   ]
  1 : [  0.05       -0.00948819 ]
@@ -27,7 +27,7 @@ Realization =      [ t           x0          ]
 14 : [  0.7        -0.178035   ]
 15 : [  0.75       -0.21869    ]
 mySpecModel = class=CauchyModel amplitude=class=NumericalPoint name=Unnamed dimension=3 values=[1,1,1] scale=class=NumericalPoint name=Unnamed dimension=1 values=[1] spatial correlation=class=CorrelationMatrix dimension=0 implementation=class=MatrixImplementation name=Unnamed rows=0 columns=0 values=[] isDiagonal=true
-mySpectralProcess2 =  SpectralNormalProcess=SpectralNormalProcess dimension=3 spectralModel=class=CauchyModel amplitude=[1,1,1] scale=[1] no spatial correlation maximal frequency=3.5 n frequency=4
+mySpectralProcess2 =  SpectralGaussianProcess=SpectralGaussianProcess dimension=3 spectralModel=class=CauchyModel amplitude=[1,1,1] scale=[1] no spatial correlation maximal frequency=3.5 n frequency=4
 Realization =     [ t          x0         x1         x2         ]
 0 : [  0          0.654415   0.327034   0.995509  ]
 1 : [  0.142857   0.391645   0.83302    0.963103  ]
@@ -37,7 +37,7 @@ Realization =     [ t          x0         x1         x2         ]
 5 : [  0.714286  -0.0868007 -0.182155   0.158721  ]
 6 : [  0.857143  -0.0743807  0.450592  -0.333411  ]
 7 : [  1         -0.357537   0.134426  -0.894867  ]
-mySpectralProcess3 =  SpectralNormalProcess=SpectralNormalProcess dimension=3 spectralModel=class=CauchyModel amplitude=[1,1,1] scale=[1] no spatial correlation maximal frequency=10 n frequency=8
+mySpectralProcess3 =  SpectralGaussianProcess=SpectralGaussianProcess dimension=3 spectralModel=class=CauchyModel amplitude=[1,1,1] scale=[1] no spatial correlation maximal frequency=10 n frequency=8
 Realization =      [ t           x0          x1          x2          ]
  0 : [  0           0.375052   -0.406979    0.694822   ]
  1 : [  0.05        0.599149   -0.253222    0.973576   ]

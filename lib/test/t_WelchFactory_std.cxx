@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     NumericalPoint amplitude(dimension, 2.0);
     NumericalPoint scale(dimension, 1.0);
     ExponentialCauchy model(scale, amplitude);
-    SpectralNormalProcess myProcess(model, timeGrid);
+    SpectralGaussianProcess myProcess(model, timeGrid);
 
     // Create a Process sample
     UnsignedInteger N = 100;

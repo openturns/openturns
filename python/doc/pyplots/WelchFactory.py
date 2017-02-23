@@ -15,7 +15,7 @@ myTimeGrid = ot.RegularGrid(tMin, timeStep, size)
 amplitude = [5]
 scale = [3]
 model = ot.ExponentialCauchy(scale, amplitude)
-myNormalProcess = ot.SpectralNormalProcess(model, myTimeGrid)
+myNormalProcess = ot.SpectralGaussianProcess(model, myTimeGrid)
 
 # Get a time series or a sample of time series
 #myTimeSeries = myNormalProcess.getRealization()

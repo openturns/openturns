@@ -559,10 +559,10 @@
   <GaussianProcess-MaximalScaling        value="1.0e5"   />
   <GaussianProcess-GibbsMaximumIteration value="100"     />
 
-  <!-- OT::SpectralNormalProcess parameters -->
-  <SpectralNormalProcess-StartingScaling   value="1.0e-13" />
-  <SpectralNormalProcess-MaximalScaling    value="1.0e5"   />
-  <SpectralNormalProcess-CholeskyCacheSize value="16384"   />
+  <!-- OT::SpectralGaussianProcess parameters -->
+  <SpectralGaussianProcess-StartingScaling   value="1.0e-13" />
+  <SpectralGaussianProcess-MaximalScaling    value="1.0e5"   />
+  <SpectralGaussianProcess-CholeskyCacheSize value="16384"   />
 
   <!-- OT::WhittleFactory parameters -->
   <WhittleFactory-DefaultRhoBeg             value="0.1"     />

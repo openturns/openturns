@@ -4,3 +4,4 @@ Remove deprecated QuadraticNumericalMathFunction in 1.10 version
 Remove deprecated NumericalMathFunction::GetValidConstants|GetValidFunctions|GetValidOperators in 1.10 version
 Rename AnalyticalNumericalMath*Implementation to SymbolicEvaluation|Gradient|Hessian
 Remove TemporalNormalProcess alias
+Remove SpectralNormalProcess alias

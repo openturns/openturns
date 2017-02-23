@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief A class which implements the SpectralNormalProcess process
+ *  @brief A class which implements the SpectralGaussianProcess process
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -19,7 +19,7 @@
  *
  */
 
-#include "openturns/SpectralNormalProcess.hxx"
+#include "openturns/SpectralGaussianProcess.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/Log.hxx"
@@ -31,11 +31,11 @@ BEGIN_NAMESPACE_OPENTURNS
 TEMPLATE_CLASSNAMEINIT(PersistentCollection< TriangularComplexMatrix >);
 static const Factory<PersistentCollection<TriangularComplexMatrix> > Factory_PersistentCollection_TriangularComplexMatrix;
 
-CLASSNAMEINIT(SpectralNormalProcess);
+CLASSNAMEINIT(SpectralGaussianProcess);
 
-static const Factory<SpectralNormalProcess> Factory_SpectralNormalProcess;
+static const Factory<SpectralGaussianProcess> Factory_SpectralGaussianProcess;
 
-SpectralNormalProcess::SpectralNormalProcess()
+SpectralGaussianProcess::SpectralGaussianProcess()
   : ProcessImplementation()
   , spectralModel_()
   , maximalFrequency_(0.0)
@@ -50,7 +50,7 @@ SpectralNormalProcess::SpectralNormalProcess()
 }
 
 /* Standard constructor  */
-SpectralNormalProcess::SpectralNormalProcess(const SecondOrderModel & model,
+SpectralGaussianProcess::SpectralGaussianProcess(const SecondOrderModel & model,
     const RegularGrid & timeGrid)
   : ProcessImplementation()
   , spectralModel_(model.getSpectralModel())
@@ -67,7 +67,7 @@ SpectralNormalProcess::SpectralNormalProcess(const SecondOrderModel & model,
 }
 
 /* Standard constructor with spectralModel - The timeGrid imposes the frequencies values*/
-SpectralNormalProcess::SpectralNormalProcess(const SpectralModel & spectralModel,
+SpectralGaussianProcess::SpectralGaussianProcess(const SpectralModel & spectralModel,
     const RegularGrid & timeGrid)
   : ProcessImplementation()
   , spectralModel_(spectralModel)
@@ -84,7 +84,7 @@ SpectralNormalProcess::SpectralNormalProcess(const SpectralModel & spectralModel
 }
 
 /* Standard constructor  */
-SpectralNormalProcess::SpectralNormalProcess(const SecondOrderModel & model,
+SpectralGaussianProcess::SpectralGaussianProcess(const SecondOrderModel & model,
     const NumericalScalar maximalFrequency,
     const UnsignedInteger nFrequency)
   : ProcessImplementation()
@@ -107,7 +107,7 @@ SpectralNormalProcess::SpectralNormalProcess(const SecondOrderModel & model,
 }
 
 /* Standard constructor with spectralModel - The timeGrid imposes the frequencies values*/
-SpectralNormalProcess::SpectralNormalProcess(const SpectralModel & spectralModel,
+SpectralGaussianProcess::SpectralGaussianProcess(const SpectralModel & spectralModel,
     const NumericalScalar maximalFrequency,
     const UnsignedInteger nFrequency)
 
@@ -131,26 +131,26 @@ SpectralNormalProcess::SpectralNormalProcess(const SpectralModel & spectralModel
 }
 
 /* Virtual constructor */
-SpectralNormalProcess * SpectralNormalProcess::clone() const
+SpectralGaussianProcess * SpectralGaussianProcess::clone() const
 {
-  return new SpectralNormalProcess(*this);
+  return new SpectralGaussianProcess(*this);
 }
 
 /** Get the Cholesky factor of the kth DSP matrix from cache or computed on the fly */
-TriangularComplexMatrix SpectralNormalProcess::getCholeskyFactor(const UnsignedInteger k) const
+TriangularComplexMatrix SpectralGaussianProcess::getCholeskyFactor(const UnsignedInteger k) const
 {
   // The value is in the cache
   if (k < choleskyFactorsCache_.getSize()) return choleskyFactorsCache_[k];
   // Compute the needed factor
   TriangularComplexMatrix factor(computeCholeskyFactor(k));
   // There are still room to store the factor
-  if (k < ResourceMap::GetAsUnsignedInteger("SpectralNormalProcess-CholeskyCacheSize")) choleskyFactorsCache_.add(factor);
-  else LOGWARN(OSS() << "Warning! The cache for cholesky factors is full. Expect a big performance penalty. Increase the cache size using the ResourceMap key \"SpectralNormalProcess-CholeskyCacheSize\" if you have enough memory.");
+  if (k < ResourceMap::GetAsUnsignedInteger("SpectralGaussianProcess-CholeskyCacheSize")) choleskyFactorsCache_.add(factor);
+  else LOGWARN(OSS() << "Warning! The cache for cholesky factors is full. Expect a big performance penalty. Increase the cache size using the ResourceMap key \"SpectralGaussianProcess-CholeskyCacheSize\" if you have enough memory.");
   return factor;
 }
 
 /** Compute the needed Cholesky factor using regularization */
-TriangularComplexMatrix SpectralNormalProcess::computeCholeskyFactor(const UnsignedInteger k) const
+TriangularComplexMatrix SpectralGaussianProcess::computeCholeskyFactor(const UnsignedInteger k) const
 {
   // Convert the index into a frequency
   // The index k corresponds to the kth positive discretization point in the frequency domain [-f_max, f_max] discretized using the center of the regular partition into 2N cells of the interval.
@@ -161,8 +161,8 @@ TriangularComplexMatrix SpectralNormalProcess::computeCholeskyFactor(const Unsig
   Bool continuationCondition = true;
   // Scale control values
   NumericalScalar cumulatedScaling = 0.0;
-  const NumericalScalar startingScaling = ResourceMap::GetAsNumericalScalar("SpectralNormalProcess-StartingScaling");
-  const NumericalScalar maximalScaling = ResourceMap::GetAsNumericalScalar("SpectralNormalProcess-MaximalScaling");
+  const NumericalScalar startingScaling = ResourceMap::GetAsNumericalScalar("SpectralGaussianProcess-StartingScaling");
+  const NumericalScalar maximalScaling = ResourceMap::GetAsNumericalScalar("SpectralGaussianProcess-MaximalScaling");
   NumericalScalar scaling = startingScaling;
   TriangularComplexMatrix choleskyFactor;
   while (continuationCondition)
@@ -189,10 +189,10 @@ TriangularComplexMatrix SpectralNormalProcess::computeCholeskyFactor(const Unsig
 }
 
 /* String converter */
-String SpectralNormalProcess::__repr__() const
+String SpectralGaussianProcess::__repr__() const
 {
   OSS oss(true);
-  oss << "class=" << SpectralNormalProcess::GetClassName();
+  oss << "class=" << SpectralGaussianProcess::GetClassName();
   oss << " timeGrid=" << getTimeGrid()
       << " spectralModel=" << spectralModel_
       << " maximal frequency=" << maximalFrequency_
@@ -201,10 +201,10 @@ String SpectralNormalProcess::__repr__() const
   return oss;
 }
 
-String SpectralNormalProcess::__str__(const String & offset) const
+String SpectralGaussianProcess::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << " SpectralNormalProcess=" << SpectralNormalProcess::GetClassName()
+  oss << " SpectralGaussianProcess=" << SpectralGaussianProcess::GetClassName()
       << " dimension=" << dimension_
       << " spectralModel=" << spectralModel_
       << " maximal frequency=" << maximalFrequency_
@@ -213,48 +213,48 @@ String SpectralNormalProcess::__str__(const String & offset) const
 }
 
 /* Get the grid of frequencies, covering both the negative and the positive axes */
-RegularGrid SpectralNormalProcess::getFrequencyGrid() const
+RegularGrid SpectralGaussianProcess::getFrequencyGrid() const
 {
   return RegularGrid(-maximalFrequency_ + 0.5 * frequencyStep_, frequencyStep_, 2 * nFrequency_);
 }
 
 /* Maximal frequency accessor */
-NumericalScalar SpectralNormalProcess::getMaximalFrequency() const
+NumericalScalar SpectralGaussianProcess::getMaximalFrequency() const
 {
   return maximalFrequency_;
 }
 
 /* Number of frequency steps accessor */
-UnsignedInteger SpectralNormalProcess::getNFrequency() const
+UnsignedInteger SpectralGaussianProcess::getNFrequency() const
 {
   return nFrequency_;
 }
 
 /* Frequency steps accessor */
-NumericalScalar SpectralNormalProcess::getFrequencyStep() const
+NumericalScalar SpectralGaussianProcess::getFrequencyStep() const
 {
   return frequencyStep_;
 }
 
 /* FFT algorithm accessors */
-FFT SpectralNormalProcess::getFFTAlgorithm() const
+FFT SpectralGaussianProcess::getFFTAlgorithm() const
 {
   return fftAlgorithm_;
 }
 
-void SpectralNormalProcess::setFFTAlgorithm(const FFT & fft)
+void SpectralGaussianProcess::setFFTAlgorithm(const FFT & fft)
 {
   fftAlgorithm_ = fft;
 }
 
 /** Spectral model accessor */
-SpectralModel SpectralNormalProcess::getSpectralModel() const
+SpectralModel SpectralGaussianProcess::getSpectralModel() const
 {
   return spectralModel_;
 }
 
 /* Set TimeGrid */
-void SpectralNormalProcess::setTimeGrid(const RegularGrid & tg)
+void SpectralGaussianProcess::setTimeGrid(const RegularGrid & tg)
 {
   if (tg != RegularGrid(mesh_))
   {
@@ -275,13 +275,13 @@ void SpectralNormalProcess::setTimeGrid(const RegularGrid & tg)
 }
 
 /* Compute the time grid associated to the frequency grid */
-void SpectralNormalProcess::computeTimeGrid()
+void SpectralGaussianProcess::computeTimeGrid()
 {
   mesh_ = RegularGrid(0.0, 1.0 / (2.0 * maximalFrequency_), 2 * nFrequency_);
 }
 
 /* Set the alpha vector */
-void SpectralNormalProcess::computeAlpha()
+void SpectralGaussianProcess::computeAlpha()
 {
   alpha_ = PersistentNumericalComplexCollection(2 * nFrequency_);
   // Convert the frequency into pulsation, take into account that there are 2*nFrequency points and that
@@ -296,7 +296,7 @@ void SpectralNormalProcess::computeAlpha()
 }
 
 /* Realization accessor */
-Field SpectralNormalProcess::getRealization() const
+Field SpectralGaussianProcess::getRealization() const
 {
   // Build the big collection of size dimension * number of frequencies
   const UnsignedInteger twoNF = 2 * nFrequency_;
@@ -347,19 +347,19 @@ Field SpectralNormalProcess::getRealization() const
 }
 
 /* Check if the process is stationary */
-Bool SpectralNormalProcess::isStationary() const
+Bool SpectralGaussianProcess::isStationary() const
 {
   return true;
 }
 
 /* Check if the process is Normal */
-Bool SpectralNormalProcess::isNormal() const
+Bool SpectralGaussianProcess::isNormal() const
 {
   return true;
 }
 
 /* Adapt a time grid in order to have a power of two time stamps. Both the starting point and the end point are preserved. */
-RegularGrid SpectralNormalProcess::AdaptGrid(const RegularGrid & grid)
+RegularGrid SpectralGaussianProcess::AdaptGrid(const RegularGrid & grid)
 {
   const NumericalScalar start = grid.getStart();
   const NumericalScalar end = grid.getEnd();
@@ -368,7 +368,7 @@ RegularGrid SpectralNormalProcess::AdaptGrid(const RegularGrid & grid)
 }
 
 /* Method save() stores the object through the StorageManager */
-void SpectralNormalProcess::save(Advocate & adv) const
+void SpectralGaussianProcess::save(Advocate & adv) const
 {
   ProcessImplementation::save(adv);
   adv.saveAttribute("spectralModel_", spectralModel_);
@@ -380,7 +380,7 @@ void SpectralNormalProcess::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void SpectralNormalProcess::load(Advocate & adv)
+void SpectralGaussianProcess::load(Advocate & adv)
 {
   ProcessImplementation::load(adv);
   adv.loadAttribute("spectralModel_", spectralModel_);

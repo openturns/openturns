@@ -25,7 +25,7 @@
 #include "openturns/ARMA.hxx"
 #include "openturns/ARMACoefficients.hxx"
 #include "openturns/ARMAState.hxx"
-#include "openturns/SpectralNormalProcess.hxx"
+#include "openturns/SpectralGaussianProcess.hxx"
 #include "openturns/GaussianProcess.hxx"
 #include "openturns/WhiteNoise.hxx"
 #include "openturns/RandomWalk.hxx"

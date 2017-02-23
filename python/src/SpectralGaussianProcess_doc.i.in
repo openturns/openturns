@@ -1,14 +1,14 @@
-%feature("docstring") OT::SpectralNormalProcess
+%feature("docstring") OT::SpectralGaussianProcess
 "Spectral normal process.
 
 Available constructors:
-    SpectralNormalProcess(*secondOrderModel, timeGrid*)
+    SpectralGaussianProcess(*secondOrderModel, timeGrid*)
 
-    SpectralNormalProcess(*spectralModel, timeGrid*)
+    SpectralGaussianProcess(*spectralModel, timeGrid*)
 
-    SpectralNormalProcess(*secondOrderModel, fmax, N*)
+    SpectralGaussianProcess(*secondOrderModel, fmax, N*)
 
-    SpectralNormalProcess(*spectralModel, maxFreq, N*)
+    SpectralGaussianProcess(*spectralModel, maxFreq, N*)
 
 Parameters
 ----------
@@ -49,7 +49,7 @@ and stored in order to be used for each call of the *getRealization* method.
 
 Examples
 --------
-Create a *SpectralNormalProcess* from a spectral model and a time grid:
+Create a *SpectralGaussianProcess* from a spectral model and a time grid:
 
 >>> import openturns as ot
 >>> amplitude = [1.0, 2.0]
@@ -58,20 +58,20 @@ Create a *SpectralNormalProcess* from a spectral model and a time grid:
 >>> spatialCorrelation[0,1] = 0.8
 >>> myTimeGrid =  ot.RegularGrid(0.0, 0.1, 20)
 >>> mySpectralModel = ot.CauchyModel(scale, amplitude, spatialCorrelation)
->>> mySpectNormProc1 = ot.SpectralNormalProcess(mySpectralModel, myTimeGrid)
+>>> mySpectNormProc1 = ot.SpectralGaussianProcess(mySpectralModel, myTimeGrid)
 
-Create a *SpectralNormalProcess* from a second order model and a time grid:
+Create a *SpectralGaussianProcess* from a second order model and a time grid:
 
 >>> import openturns as ot
 >>> amplitude = [1.0]
 >>> scale = [4.0, 5.0]
 >>> myTimeGrid =  ot.RegularGrid(0.0, 0.1, 20)
 >>> mySecondOrderModel = ot.ExponentialCauchy(scale, amplitude)
->>> mySpectNormProc2 = ot.SpectralNormalProcess(mySecondOrderModel, myTimeGrid)
+>>> mySpectNormProc2 = ot.SpectralGaussianProcess(mySecondOrderModel, myTimeGrid)
 "
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::SpectralNormalProcess::getFFTAlgorithm
+%feature("docstring") OT::SpectralGaussianProcess::getFFTAlgorithm
 "Get the FFT algorithm used to generate realizations of the spectral normal process.
 
 Returns
@@ -83,7 +83,7 @@ fftAlgo : :class:`~openturns.FFT`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::SpectralNormalProcess::setFFTAlgorithm
+%feature("docstring") OT::SpectralGaussianProcess::setFFTAlgorithm
 "Set the FFT algorithm used to generate realizations of the spectral normal process.
 
 Parameters
@@ -96,7 +96,7 @@ fftAlgo : :class:`~openturns.FFT`
 "
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::SpectralNormalProcess::getFrequencyStep
+%feature("docstring") OT::SpectralGaussianProcess::getFrequencyStep
 "Get the frequency step :math:`\Delta f` used to discretize the spectral model.
 
 Returns
@@ -106,7 +106,7 @@ freqStep : float
 "
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::SpectralNormalProcess::getFrequencyGrid
+%feature("docstring") OT::SpectralGaussianProcess::getFrequencyGrid
 "Get the frequency grid used to discretize the spectral model.
 
 Returns
@@ -116,7 +116,7 @@ freqGrid : :class:`~openturns.RegularGrid`
 "
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::SpectralNormalProcess::getMaximalFrequency
+%feature("docstring") OT::SpectralGaussianProcess::getMaximalFrequency
 "Get the maximal frequency used in the computation.
 
 Returns
@@ -126,7 +126,7 @@ freqMax : float
 "
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::SpectralNormalProcess::getNFrequency
+%feature("docstring") OT::SpectralGaussianProcess::getNFrequency
 "Get the  number of points in the frequency grid.
 
 Returns
@@ -137,7 +137,7 @@ freqGrid : :class:`~openturns.RegularGrid`
 "
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::SpectralNormalProcess::getSpectralModel
+%feature("docstring") OT::SpectralGaussianProcess::getSpectralModel
 "Get the spectral model.
 
 Returns

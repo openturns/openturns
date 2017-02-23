@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief A class which implements the SpectralNormalProcess process
+ *  @brief A class which implements the SpectralGaussianProcess process
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_SPECTRALNORMALPROCESS_HXX
-#define OPENTURNS_SPECTRALNORMALPROCESS_HXX
+#ifndef OPENTURNS_SPECTRALGAUSSIANPROCESS_HXX
+#define OPENTURNS_SPECTRALGAUSSIANPROCESS_HXX
 
 #include "openturns/ProcessImplementation.hxx"
 #include "openturns/SpectralModel.hxx"
@@ -31,12 +31,12 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class SpectralNormalProcess
+ * @class SpectralGaussianProcess
  *
  * The implementation of the Normal process class
  * in spectral domain
  */
-class OT_API SpectralNormalProcess
+class OT_API SpectralGaussianProcess
   : public ProcessImplementation
 {
   CLASSNAME;
@@ -49,28 +49,28 @@ public:
   typedef Collection<NumericalComplex>                     NumericalComplexCollection;
 
   /** Default constructor */
-  SpectralNormalProcess();
+  SpectralGaussianProcess();
 
   /** Standard constructor  - The timeGrid imposes the frequencies values*/
-  SpectralNormalProcess(const SecondOrderModel & model,
+  SpectralGaussianProcess(const SecondOrderModel & model,
                         const RegularGrid & grid);
 
   /** Standard constructor with spectralModel - The timeGrid imposes the frequencies values*/
-  SpectralNormalProcess(const SpectralModel & spectralModel,
+  SpectralGaussianProcess(const SpectralModel & spectralModel,
                         const RegularGrid & grid);
 
   /** Specific constructor  - The frequency parameters impose the time grid */
-  SpectralNormalProcess(const SecondOrderModel & model,
+  SpectralGaussianProcess(const SecondOrderModel & model,
                         const NumericalScalar maximalFrequency,
                         const UnsignedInteger nFrequency);
 
   /** Specific constructor  - The frequency parameters impose the time grid */
-  SpectralNormalProcess(const SpectralModel & spectralModel,
+  SpectralGaussianProcess(const SpectralModel & spectralModel,
                         const NumericalScalar maximalFrequency,
                         const UnsignedInteger nFrequency);
 
   /** Virtual constructor */
-  virtual SpectralNormalProcess * clone() const;
+  virtual SpectralGaussianProcess * clone() const;
 
   /** String converter */
   String __repr__() const;
@@ -161,8 +161,8 @@ private:
   /** FFT Algorithm */
   FFT fftAlgorithm_;
 
-}; /* class SpectralNormalProcess */
+}; /* class SpectralGaussianProcess */
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_SPECTRALNORMALPROCESS_HXX */
+#endif /* OPENTURNS_SPECTRALGAUSSIANPROCESS_HXX */

@@ -485,7 +485,7 @@ ot_add_python_module(model_process model_process_module.i
                       ARMACoefficients.i ARMACoefficients_doc.i.in
                       ARMAState.i ARMAState_doc.i.in
                       ARMA.i ARMA_doc.i.in
-                      SpectralNormalProcess.i SpectralNormalProcess_doc.i.in
+                      SpectralGaussianProcess.i SpectralGaussianProcess_doc.i.in
                       GaussianProcess.i GaussianProcess_doc.i.in
                       AggregatedProcess.i AggregatedProcess_doc.i.in
                       CompositeProcess.i CompositeProcess_doc.i.in

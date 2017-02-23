@@ -28,14 +28,14 @@ try:
     # RegularGrid --> Build list of frequencies using the RegularGrid
     myTimeGrid = RegularGrid(tMin, tStep, points)
 
-    mySpectralProcess0 = SpectralNormalProcess(myModel, myTimeGrid)
+    mySpectralProcess0 = SpectralGaussianProcess(myModel, myTimeGrid)
 
     print("mySpectralProcess0 = ", mySpectralProcess0)
     print("Realization = ", mySpectralProcess0.getRealization())
 
     # Constructor using maximalFrequency value and size of discretization
     maximalFrequency = 10.0
-    mySpectralProcess1 = SpectralNormalProcess(
+    mySpectralProcess1 = SpectralGaussianProcess(
         myModel, maximalFrequency, points)
     tg = RegularGrid(mySpectralProcess1.getTimeGrid())
 
@@ -50,15 +50,15 @@ try:
     mySpecModel = CauchyModel(scale, amplitude)
     print("mySpecModel = ", mySpecModel)
 
-    mySpectralProcess2 = SpectralNormalProcess(mySpecModel, myTimeGrid)
+    mySpectralProcess2 = SpectralGaussianProcess(mySpecModel, myTimeGrid)
     print("mySpectralProcess2 = ", mySpectralProcess2)
     print("Realization = ", mySpectralProcess2.getRealization())
-    mySpectralProcess3 = SpectralNormalProcess(
+    mySpectralProcess3 = SpectralGaussianProcess(
         mySpecModel, maximalFrequency, points)
     print("mySpectralProcess3 = ", mySpectralProcess3)
     print("Realization = ", mySpectralProcess3.getRealization())
 
 except:
     import sys
-    print("t_SpectralNormalProcess_std.py",
+    print("t_SpectralGaussianProcess_std.py",
           sys.exc_info()[0], sys.exc_info()[1])
