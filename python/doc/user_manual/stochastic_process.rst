@@ -94,7 +94,7 @@ Normal process
     :template: Process.rst_t
 
     SpectralNormalProcess
-    TemporalNormalProcess
+    GaussianProcess
 
     :template: class.rst_t
     ConditionedNormalProcess

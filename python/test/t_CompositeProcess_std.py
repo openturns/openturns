@@ -72,7 +72,7 @@ amplitude = [1.0, 1.0]
 scale = [0.2, 0.3]
 myCovModel = ot.ExponentialModel(scale, amplitude)
 
-myXtProcess_temp = ot.TemporalNormalProcess(myCovModel, myMesh)
+myXtProcess_temp = ot.GaussianProcess(myCovModel, myMesh)
 
 # Non linear transformation of myXtProcess
 # to get a positive process

@@ -10,7 +10,7 @@ a = 20.0
 myMesh = ot.RegularGrid(0.0, 2 * a / N, N + 1)
 covarianceModel = ot.ExponentialModel([1.0], [1.0])
 
-myProcess = ot.TemporalNormalProcess(covarianceModel, myMesh)
+myProcess = ot.GaussianProcess(covarianceModel, myMesh)
 
 mySample = myProcess.getSample(1000)
 

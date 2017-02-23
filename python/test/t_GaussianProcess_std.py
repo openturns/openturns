@@ -31,7 +31,7 @@ try:
     myTimeGrid = RegularGrid(tmin, step, n)
     size = 25
 
-    myProcess = TemporalNormalProcess(myModel, myTimeGrid)
+    myProcess = GaussianProcess(myModel, myTimeGrid)
     print("myProcess = ", myProcess)
     print("is stationary? ", myProcess.isStationary())
     myProcess.setSamplingMethod(0)
@@ -45,7 +45,7 @@ try:
     myCovModel = ExponentialModel(scale, amplitude)
     print("myCovModel = ", myCovModel)
 
-    myProcess1 = TemporalNormalProcess(myCovModel, myTimeGrid)
+    myProcess1 = GaussianProcess(myCovModel, myTimeGrid)
     print("myProcess1 = ", myProcess1)
     print("is stationary? ", myProcess1.isStationary())
     myProcess.setSamplingMethod(0)
@@ -57,7 +57,7 @@ try:
 
     # With constant trend
     trend = TrendTransform(NumericalMathFunction("t", "4.0"))
-    myProcess2 = TemporalNormalProcess(trend, myCovModel, myTimeGrid)
+    myProcess2 = GaussianProcess(trend, myCovModel, myTimeGrid)
     myProcess2.setSamplingMethod(2)
     print("myProcess2 = ", myProcess2)
     print("is stationary? ", myProcess2.isStationary())
@@ -66,7 +66,7 @@ try:
 
     # With varying trend
     trend3 = TrendTransform(NumericalMathFunction("t", "sin(t)"))
-    myProcess3 = TemporalNormalProcess(trend3, myCovModel, myTimeGrid)
+    myProcess3 = GaussianProcess(trend3, myCovModel, myTimeGrid)
     print("myProcess3 = ", myProcess3)
     print("is stationary? ", myProcess3.isStationary())
     myProcess.setSamplingMethod(0)
@@ -78,5 +78,5 @@ try:
 
 except:
     import sys
-    print("t_TemporalNormalProcess_std.py",
+    print("t_GaussianProcess_std.py",
           sys.exc_info()[0], sys.exc_info()[1])

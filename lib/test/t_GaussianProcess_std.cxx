@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
     RegularGrid myTimeGrid(tmin, step, n);
     const UnsignedInteger size = 25;
 
-    TemporalNormalProcess myProcess(myModel, myTimeGrid);
+    GaussianProcess myProcess(myModel, myTimeGrid);
     fullprint << "myProcess=" << myProcess << std::endl;
     fullprint << "is stationary? " << myProcess.isStationary() << std::endl;
     myProcess.setSamplingMethod(0);
@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
     ExponentialModel myCovModel(scale, amplitude);
     fullprint << "myCovModel=" << myCovModel << std::endl;
 
-    TemporalNormalProcess myProcess1(myCovModel, myTimeGrid);
+    GaussianProcess myProcess1(myCovModel, myTimeGrid);
     fullprint << "myProcess1=" << myProcess1 << std::endl;
     fullprint << "is stationary? " << myProcess1.isStationary() << std::endl;
     myProcess1.setSamplingMethod(0);
@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
 
     /* With constant trend */
     TrendTransform trend(NumericalMathFunction("t", "4.0"));
-    TemporalNormalProcess myProcess2(trend, myCovModel, myTimeGrid);
+    GaussianProcess myProcess2(trend, myCovModel, myTimeGrid);
     fullprint << "myProcess2=" << myProcess2 << std::endl;
     fullprint << "is stationary? " << myProcess2.isStationary() << std::endl;
     myProcess1.setSamplingMethod(0);
@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
 
     /* With varying trend */
     TrendTransform trend3(NumericalMathFunction("t", "sin(t)"));
-    TemporalNormalProcess myProcess3(trend3, myCovModel, myTimeGrid);
+    GaussianProcess myProcess3(trend3, myCovModel, myTimeGrid);
     fullprint << "myProcess3=" << myProcess3 << std::endl;
     fullprint << "is stationary? " << myProcess3.isStationary() << std::endl;
     myProcess1.setSamplingMethod(0);

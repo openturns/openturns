@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
       Collection< Process > coll(0);
       coll.add(WhiteNoise());
       coll.add(ARMA());
-      coll.add(TemporalNormalProcess());
+      coll.add(GaussianProcess());
       AggregatedProcess myProcess(coll);
       myProcess.setTimeGrid(timeGrid);
       fullprint << "myProcess=" << myProcess << std::endl;

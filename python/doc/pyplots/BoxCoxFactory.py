@@ -19,7 +19,7 @@ myMesh = myMesher.build(myInterval)
 amplitude = [1.0]
 scale = [0.2, 0.2]
 myCovModel = ot.ExponentialModel(scale, amplitude)
-myXproc = ot.TemporalNormalProcess(myCovModel, myMesh)
+myXproc = ot.GaussianProcess(myCovModel, myMesh)
 
 
 # Transform myXproc to make its variance depend on the vertex (s,t)

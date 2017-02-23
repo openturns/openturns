@@ -69,7 +69,7 @@ Examples
 >>> N = 256
 >>> mesh = ot.IntervalMesher([N - 1]).build(ot.Interval(-1, 1))
 >>> covariance_X = ot.AbsoluteExponential([1])
->>> process_X = ot.TemporalNormalProcess(covariance_X, mesh)
+>>> process_X = ot.GaussianProcess(covariance_X, mesh)
 >>> threshold = 0.001
 >>> algo_X = ot.KarhunenLoeveP1Algorithm(mesh, covariance_X, threshold)
 >>> algo_X.run()

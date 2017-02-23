@@ -19,7 +19,7 @@ try:
     KLModes = result.getModesAsProcessSample()
     print("KL modes=", KLModes)
     print("KL eigenvalues=", lambd)
-    process = ot.TemporalNormalProcess(model, KLModes.getMesh())
+    process = ot.GaussianProcess(model, KLModes.getMesh())
     sample = process.getSample(10)
     coefficients = result.project(sample)
     print("KL coefficients=", coefficients)

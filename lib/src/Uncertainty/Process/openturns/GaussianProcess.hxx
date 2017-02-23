@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief A class which implements the TemporalNormalProcess process
+ *  @brief A class which implements the Gaussian process
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_TEMPORALNORMALPROCESS_HXX
-#define OPENTURNS_TEMPORALNORMALPROCESS_HXX
+#ifndef OPENTURNS_GAUSSIANPROCESS_HXX
+#define OPENTURNS_GAUSSIANPROCESS_HXX
 
 #include "openturns/ProcessImplementation.hxx"
 #include "openturns/SquareMatrix.hxx"
@@ -31,11 +31,11 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class TemporalNormalProcess
+ * @class GaussianProcess
  *
  * The implementation of the Normal process class
  */
-class OT_API TemporalNormalProcess
+class OT_API GaussianProcess
   : public ProcessImplementation
 {
   CLASSNAME;
@@ -45,28 +45,28 @@ public:
   /** Some typedefs to ease reading */
 
   /** Default constructor */
-  TemporalNormalProcess();
+  GaussianProcess();
 
   /** Standard constructor  */
-  TemporalNormalProcess(const TrendTransform & trend,
+  GaussianProcess(const TrendTransform & trend,
                         const SecondOrderModel  & model,
                         const Mesh & mesh);
 
   /** Standard constructor  */
-  TemporalNormalProcess(const TrendTransform & trend,
+  GaussianProcess(const TrendTransform & trend,
                         const CovarianceModel & covarianceModel,
                         const Mesh & mesh);
 
   /** Standard constructor  */
-  TemporalNormalProcess(const SecondOrderModel  & model,
+  GaussianProcess(const SecondOrderModel  & model,
                         const Mesh & mesh);
 
   /** Standard constructor  */
-  TemporalNormalProcess(const CovarianceModel & covarianceModel,
+  GaussianProcess(const CovarianceModel & covarianceModel,
                         const Mesh & mesh);
 
   /** Virtual constructor */
-  virtual TemporalNormalProcess * clone() const;
+  virtual GaussianProcess * clone() const;
 
   /** String converter */
   String __repr__() const;
@@ -143,7 +143,7 @@ protected:
   /** Sampling method */
   UnsignedInteger samplingMethod_;
 
-}; /* class TemporalNormalProcess */
+}; /* class GaussianProcess */
 
 END_NAMESPACE_OPENTURNS
 

@@ -23,7 +23,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/Mesh.hxx"
-#include "openturns/TemporalNormalProcess.hxx"
+#include "openturns/GaussianProcess.hxx"
 #include "openturns/WhiteNoise.hxx"
 #include "openturns/Normal.hxx"
 
@@ -189,7 +189,7 @@ Process GeneralizedLinearModelResult::getNoise() const
     return noise;
   }
   // Other covariance models
-  const TemporalNormalProcess noise(covarianceModel_, Mesh(inputTransformedData_));
+  const GaussianProcess noise(covarianceModel_, Mesh(inputTransformedData_));
   return noise;
 }
 

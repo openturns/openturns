@@ -630,9 +630,9 @@ int main(int argc, char *argv[])
     }
     study.add("userDefinedSpectralModel", userDefinedSpectralModel);
 
-    // Create a TemporalNormalProcess
-    TemporalNormalProcess temporalNormalProcess(exponentialCauchy, regularGrid);
-    study.add("temporalNormalProcess", temporalNormalProcess);
+    // Create a GaussianProcess
+    GaussianProcess gaussianProcess(exponentialCauchy, regularGrid);
+    study.add("gaussianProcess", gaussianProcess);
 
     // Create a CompositeProcess Object
     CompositeProcess compositeProcess;
@@ -1067,7 +1067,7 @@ int main(int argc, char *argv[])
     compare<SecondOrderModel >( secondOrderModel, study2 );
     compare<CompositeProcess >( compositeProcess, study2 );
     compare<SpectralNormalProcess >( spectralNormalProcess, study2 );
-    compare<TemporalNormalProcess >( temporalNormalProcess, study2 );
+    compare<GaussianProcess >( gaussianProcess, study2 );
     compare<Domain >( domain, study2 );
     compare<EventDomainImplementation >( eventDomainImplementation, study2 );
     compare<EventProcess >( eventProcess, study2 );

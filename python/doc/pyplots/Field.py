@@ -6,7 +6,7 @@ from openturns.viewer import View
 # Create a bivariate normal process
 myMesh = ot.IntervalMesher([39, 39]).build(ot.Interval([0.0] * 2, [1.0] * 2))
 myCov = ot.GeneralizedExponential(2 * [0.1], 1.3)
-myProcess = ot.TemporalNormalProcess(myCov, myMesh)
+myProcess = ot.GaussianProcess(myCov, myMesh)
 
 myField = myProcess.getRealization()
 

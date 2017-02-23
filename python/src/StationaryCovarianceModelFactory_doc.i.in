@@ -170,7 +170,7 @@ Create the stationary covariance model, a mesh and a process:
 >>> import openturns as ot
 >>> myModel = ot.AbsoluteExponential([0.1])
 >>> myTimeGrid = ot.RegularGrid(0.0, 0.1, 10)
->>> myProcess = ot.TemporalNormalProcess(myModel, myTimeGrid)
+>>> myProcess = ot.GaussianProcess(myModel, myTimeGrid)
 
 Generate 20 fields:
 

@@ -6,7 +6,7 @@ from openturns.viewer import View
 # Create a bivariate normal process
 myTG = ot.RegularGrid(0.0, 0.01, 100)
 myCov = ot.ExponentialModel([3.0], [1.2])
-myProcess = ot.TemporalNormalProcess(myCov, myTG)
+myProcess = ot.GaussianProcess(myCov, myTG)
 
 myPS = myProcess.getSample(6)
 

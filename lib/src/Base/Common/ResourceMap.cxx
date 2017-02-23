@@ -820,10 +820,10 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "HMatrix-ValidationDump", 0);
   setAsBool( "HMatrix-ForceSequential", false);
 
-  // TemporalNormalProcess parameters //
-  setAsNumericalScalar( "TemporalNormalProcess-StartingScaling", 1.0e-13 );
-  setAsNumericalScalar( "TemporalNormalProcess-MaximalScaling", 1.0e5 );
-  setAsUnsignedInteger( "TemporalNormalProcess-GibbsMaximumIteration", 100 );
+  // GaussianProcess parameters //
+  setAsNumericalScalar( "GaussianProcess-StartingScaling", 1.0e-13 );
+  setAsNumericalScalar( "GaussianProcess-MaximalScaling", 1.0e5 );
+  setAsUnsignedInteger( "GaussianProcess-GibbsMaximumIteration", 100 );
 
   // SpectralNormalProcess parameters //
   setAsNumericalScalar( "SpectralNormalProcess-StartingScaling", 1.0e-13 );

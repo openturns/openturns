@@ -37,7 +37,7 @@ Create the process X:
 >>> scale = [0.2, 0.3]
 >>> myCovModel = ot.ExponentialModel(scale, amplitude)
 >>> myMesh = ot.IntervalMesher([100]*2).build(ot.Interval([0.0]*2, [1.0]*2))
->>> myXProcess = ot.TemporalNormalProcess(myCovModel, myMesh)
+>>> myXProcess = ot.GaussianProcess(myCovModel, myMesh)
 
 Create a spatial  dynamical function :math:`g_{dyn}` associated to :math:`g: \Rset^2 \mapsto \Rset^2` where :math:`g(x_1,x_2)= (x_1^2, x_1+x_2)`:
 

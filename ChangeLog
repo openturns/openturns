@@ -35,6 +35,7 @@
   * Swap covModel and basis arguments in KrigingAlgorithm constructors
   * Removed useless keepCholesky argument in KrigingAlgorithm constructors
   * Renamed OptimizationSolver to OptimizationAlgorithm
+  * Renamed TemporalNormalProcess to GaussianProcess
 
 === Python module ===
 

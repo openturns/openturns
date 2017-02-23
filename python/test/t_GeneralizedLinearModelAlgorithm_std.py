@@ -21,7 +21,7 @@ try:
     Y = model(X)
     
     # Add a small noise to data
-    Y += ot.TemporalNormalProcess(ot.AbsoluteExponential([0.1], [0.2]), ot.Mesh(X)).getRealization().getValues()
+    Y += ot.GaussianProcess(ot.AbsoluteExponential([0.1], [0.2]), ot.Mesh(X)).getRealization().getValues()
 
     basis = ot.LinearBasisFactory(spatialDimension).build()
     # Case of a misspecified covariance model

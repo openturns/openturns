@@ -34,7 +34,7 @@ CLASSNAMEINIT(ConditionedNormalProcess);
 static const Factory<ConditionedNormalProcess> Factory_ConditionedNormalProcess;
 
 ConditionedNormalProcess::ConditionedNormalProcess()
-  : TemporalNormalProcess()
+  : GaussianProcess()
   , krigingResult_()
   , trendEvaluationMesh_()
 {
@@ -43,7 +43,7 @@ ConditionedNormalProcess::ConditionedNormalProcess()
 
 ConditionedNormalProcess::ConditionedNormalProcess(const KrigingResult & result,
     const Mesh & mesh)
-  : TemporalNormalProcess()
+  : GaussianProcess()
   , krigingResult_(result)
   , trendEvaluationMesh_()
 {
@@ -181,7 +181,7 @@ Bool ConditionedNormalProcess::isStationary() const
 /* Method save() stores the object through the StorageManager */
 void ConditionedNormalProcess::save(Advocate & adv) const
 {
-  TemporalNormalProcess::save(adv);
+  GaussianProcess::save(adv);
   adv.saveAttribute("krigingResult_", krigingResult_);
   adv.saveAttribute("trendEvaluationMesh_", trendEvaluationMesh_);
 }
@@ -189,7 +189,7 @@ void ConditionedNormalProcess::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void ConditionedNormalProcess::load(Advocate & adv)
 {
-  TemporalNormalProcess::load(adv);
+  GaussianProcess::load(adv);
   adv.loadAttribute("krigingResult_", krigingResult_);
   adv.loadAttribute("trendEvaluationMesh_", trendEvaluationMesh_);
 }

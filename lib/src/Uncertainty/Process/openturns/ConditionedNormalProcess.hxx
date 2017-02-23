@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_CONDITIONEDNORMALPROCESS_HXX
 #define OPENTURNS_CONDITIONEDNORMALPROCESS_HXX
 
-#include "openturns/TemporalNormalProcess.hxx"
+#include "openturns/GaussianProcess.hxx"
 #include "openturns/KrigingResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The implementation of a Normal process, conditioned by observations & kriging
  */
 class OT_API ConditionedNormalProcess
-  : public TemporalNormalProcess
+  : public GaussianProcess
 {
   CLASSNAME;
 
@@ -71,14 +71,14 @@ public:
 
 
   /** Mesh accessor */
-  using TemporalNormalProcess::setMesh;
+  using GaussianProcess::setMesh;
   void setMesh(const Mesh & mesh);
 
-  using TemporalNormalProcess::setTimeGrid;
+  using GaussianProcess::setTimeGrid;
   void setTimeGrid(const RegularGrid & timeGrid);
 
   /** Set sampling method accessor */
-  using TemporalNormalProcess::setSamplingMethod;
+  using GaussianProcess::setSamplingMethod;
   void setSamplingMethod(const UnsignedInteger samplingMethod);
 
 protected:

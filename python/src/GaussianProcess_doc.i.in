@@ -1,14 +1,14 @@
-%feature("docstring") OT::TemporalNormalProcess
-"Temporal normal processes.
+%feature("docstring") OT::GaussianProcess
+"Gaussian processes.
 
 Available constructor:
-    TemporalNormalProcess(*trend, secondOrderModel, mesh*)
+    GaussianProcess(*trend, secondOrderModel, mesh*)
 
-    TemporalNormalProcess(*trend, covarianceModel, mesh*)
+    GaussianProcess(*trend, covarianceModel, mesh*)
 
-    TemporalNormalProcess(*secondOrderModel, mesh*)
+    GaussianProcess(*secondOrderModel, mesh*)
 
-    TemporalNormalProcess(*covarianceModel, mesh*)
+    GaussianProcess(*covarianceModel, mesh*)
 
 Parameters
 ----------
@@ -24,7 +24,7 @@ mesh : :class:`~openturns.Mesh`
 
 Notes
 -----
-TemporalNormalProcess creates normal processes,
+GaussianProcess creates the processes,
 :math:`X: \Omega \times\cD \mapsto \Rset^d` where :math:`\cD \in \Rset^n`,
 from their temporal covariance function
 :math:`\cC: \cD \times \cD \mapsto \cM_{d \times d}(\Rset)`, which writes, in
@@ -32,7 +32,7 @@ the stationary case: :math:`\cC^{stat}: \cD \mapsto \cM_{d \times d}(\Rset)`. A
 process is *normal*, if all its finite dimensional joint distributions are
 normal (See the method :meth:`~openturns.Process.isNormal` for a detailed definition).
 
-The temporal normal processes may have a trend: in that case, the normal
+The gaussian processes may have a trend: in that case, the normal
 process is the sum of the trend function
 :math:`f_{trend}: \Rset^n \mapsto \Rset^d` and a zero-mean normal process.
 
@@ -62,11 +62,11 @@ Examples
 >>> n = 11
 >>> myTimeGrid = ot.RegularGrid(tmin, step, n)
 >>> size = 100
->>> myProcess = ot.TemporalNormalProcess(myModel, myTimeGrid)"
+>>> myProcess = ot.GaussianProcess(myModel, myTimeGrid)"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::TemporalNormalProcess::getCovarianceModel
+%feature("docstring") OT::GaussianProcess::getCovarianceModel
 "Get the covariance model.
 
 Returns
@@ -76,7 +76,7 @@ covarianceModel : :class:`~openturns.CovarianceModel`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::TemporalNormalProcess::getTrend
+%feature("docstring") OT::GaussianProcess::getTrend
 "Get the trend function.
 
 Returns
@@ -86,7 +86,7 @@ trend : :class:`~openturns.TrendTransform`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::TemporalNormalProcess::isTrendStationary
+%feature("docstring") OT::GaussianProcess::isTrendStationary
 "Tell if the process is trend stationary or not.
 
 Returns
@@ -96,7 +96,7 @@ isTrendStationary : bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::TemporalNormalProcess::setSamplingMethod
+%feature("docstring") OT::GaussianProcess::setSamplingMethod
 "Set the used method for getRealization.
 
 Available parameters are :

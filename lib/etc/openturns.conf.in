@@ -554,10 +554,10 @@
   <HMatrix-ValidationDump       value="0"   />
   <HMatrix-ForceSequential      value="false"   />
 
-  <!-- OT::TemporalNormalProcess parameters -->
-  <TemporalNormalProcess-StartingScaling       value="1.0e-13" />
-  <TemporalNormalProcess-MaximalScaling        value="1.0e5"   />
-  <TemporalNormalProcess-GibbsMaximumIteration value="100"     />
+  <!-- OT::GaussianProcess parameters -->
+  <GaussianProcess-StartingScaling       value="1.0e-13" />
+  <GaussianProcess-MaximalScaling        value="1.0e5"   />
+  <GaussianProcess-GibbsMaximumIteration value="100"     />
 
   <!-- OT::SpectralNormalProcess parameters -->
   <SpectralNormalProcess-StartingScaling   value="1.0e-13" />

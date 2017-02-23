@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief A class which implements the TemporalNormalProcess process
+ *  @brief A class which implements the Gaussian process
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -19,7 +19,7 @@
  *
  */
 
-#include "openturns/TemporalNormalProcess.hxx"
+#include "openturns/GaussianProcess.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/Log.hxx"
@@ -33,11 +33,11 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(TemporalNormalProcess);
+CLASSNAMEINIT(GaussianProcess);
 
-static const Factory<TemporalNormalProcess> Factory_TemporalNormalProcess;
+static const Factory<GaussianProcess> Factory_GaussianProcess;
 
-TemporalNormalProcess::TemporalNormalProcess()
+GaussianProcess::GaussianProcess()
   : ProcessImplementation()
   , covarianceModel_()
   , covarianceCholeskyFactor_(0)
@@ -58,7 +58,7 @@ TemporalNormalProcess::TemporalNormalProcess()
 }
 
 /* Standard constructor  */
-TemporalNormalProcess::TemporalNormalProcess(const TrendTransform & trend,
+GaussianProcess::GaussianProcess(const TrendTransform & trend,
     const SecondOrderModel & model,
     const Mesh & mesh)
   : ProcessImplementation()
@@ -80,7 +80,7 @@ TemporalNormalProcess::TemporalNormalProcess(const TrendTransform & trend,
 }
 
 /* Standard constructor  */
-TemporalNormalProcess::TemporalNormalProcess(const TrendTransform & trend,
+GaussianProcess::GaussianProcess(const TrendTransform & trend,
     const CovarianceModel & covarianceModel,
     const Mesh & mesh)
   : ProcessImplementation()
@@ -102,7 +102,7 @@ TemporalNormalProcess::TemporalNormalProcess(const TrendTransform & trend,
 }
 
 /* Standard constructor  */
-TemporalNormalProcess::TemporalNormalProcess(const SecondOrderModel & model,
+GaussianProcess::GaussianProcess(const SecondOrderModel & model,
     const Mesh & mesh)
   : ProcessImplementation()
   , covarianceModel_(model.getCovarianceModel())
@@ -126,7 +126,7 @@ TemporalNormalProcess::TemporalNormalProcess(const SecondOrderModel & model,
 }
 
 /* Standard constructor  */
-TemporalNormalProcess::TemporalNormalProcess(const CovarianceModel & covarianceModel,
+GaussianProcess::GaussianProcess(const CovarianceModel & covarianceModel,
     const Mesh & mesh)
   : ProcessImplementation()
   , covarianceModel_(covarianceModel)
@@ -150,12 +150,12 @@ TemporalNormalProcess::TemporalNormalProcess(const CovarianceModel & covarianceM
 }
 
 /* Virtual constructor */
-TemporalNormalProcess * TemporalNormalProcess::clone() const
+GaussianProcess * GaussianProcess::clone() const
 {
-  return new TemporalNormalProcess(*this);
+  return new GaussianProcess(*this);
 }
 
-void TemporalNormalProcess::initialize() const
+void GaussianProcess::initialize() const
 {
   // Initialization of the process
   // Get the covariance matrix (its Cholesky factor)
@@ -169,8 +169,8 @@ void TemporalNormalProcess::initialize() const
   Bool continuationCondition = true;
   // Scaling factor of the matrix : M-> M + \lambda I with \lambda very small
   // The regularization is needed for fast decreasing covariance models
-  const NumericalScalar startingScaling = ResourceMap::GetAsNumericalScalar("TemporalNormalProcess-StartingScaling");
-  const NumericalScalar maximalScaling = ResourceMap::GetAsNumericalScalar("TemporalNormalProcess-MaximalScaling");
+  const NumericalScalar startingScaling = ResourceMap::GetAsNumericalScalar("GaussianProcess-StartingScaling");
+  const NumericalScalar maximalScaling = ResourceMap::GetAsNumericalScalar("GaussianProcess-MaximalScaling");
   NumericalScalar cumulatedScaling = 0.0;
   NumericalScalar scaling = startingScaling;
   HMatrixFactory hmatFactory;
@@ -241,10 +241,10 @@ void TemporalNormalProcess::initialize() const
 }
 
 /* String converter */
-String TemporalNormalProcess::__repr__() const
+String GaussianProcess::__repr__() const
 {
   OSS oss(true);
-  oss << "class=" << TemporalNormalProcess::GetClassName();
+  oss << "class=" << GaussianProcess::GetClassName();
   oss << " mesh=" << mesh_
       << " trend=" << trend_
       << " covarianceModel=" << covarianceModel_
@@ -255,10 +255,10 @@ String TemporalNormalProcess::__repr__() const
   return oss;
 }
 
-String TemporalNormalProcess::__str__(const String & offset) const
+String GaussianProcess::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << "TemporalNormalProcess("
+  oss << "GaussianProcess("
       << "trend=" << trend_.__str__(offset)
       << ", covariance=" << covarianceModel_.__str__(offset)
       << ")";
@@ -266,7 +266,7 @@ String TemporalNormalProcess::__str__(const String & offset) const
 }
 
 /* Mesh accessor */
-void TemporalNormalProcess::setMesh(const Mesh & mesh)
+void GaussianProcess::setMesh(const Mesh & mesh)
 {
   checkedStationaryTrend_ = false;
   ProcessImplementation::setMesh(mesh);
@@ -276,13 +276,13 @@ void TemporalNormalProcess::setMesh(const Mesh & mesh)
 }
 
 /* TimeGrid accessor */
-void TemporalNormalProcess::setTimeGrid(const RegularGrid & timeGrid)
+void GaussianProcess::setTimeGrid(const RegularGrid & timeGrid)
 {
   setMesh(timeGrid);
 }
 
 /** Set sampling method accessor */
-void TemporalNormalProcess::setSamplingMethod(const UnsignedInteger samplingMethod)
+void GaussianProcess::setSamplingMethod(const UnsignedInteger samplingMethod)
 {
   if (samplingMethod > 2)
     throw InvalidArgumentException(HERE) << "Sampling method should be 0 (Cholesky), 1 (H-Matrix implementation) or 2 (Gibbs, available only in dimension 1 ";
@@ -300,7 +300,7 @@ void TemporalNormalProcess::setSamplingMethod(const UnsignedInteger samplingMeth
 }
 
 /* Realization generator */
-Field TemporalNormalProcess::getRealization() const
+Field GaussianProcess::getRealization() const
 {
   NumericalSample values;
   if ((getDimension() == 1) && (samplingMethod_ == 2))
@@ -321,11 +321,11 @@ Field TemporalNormalProcess::getRealization() const
   return trend_(Field(mesh_, values));
 }
 
-NumericalSample TemporalNormalProcess::getRealizationGibbs() const
+NumericalSample GaussianProcess::getRealizationGibbs() const
 {
   const NumericalSample vertices(getMesh().getVertices());
   const UnsignedInteger size = vertices.getSize();
-  const UnsignedInteger nMax = std::max(static_cast<UnsignedInteger>(1), ResourceMap::GetAsUnsignedInteger("TemporalNormalProcess-GibbsMaximumIteration"));
+  const UnsignedInteger nMax = std::max(static_cast<UnsignedInteger>(1), ResourceMap::GetAsUnsignedInteger("GaussianProcess-GibbsMaximumIteration"));
 
   NumericalSample values(size, 1);
   NumericalPoint diagonal(size);
@@ -350,7 +350,7 @@ NumericalSample TemporalNormalProcess::getRealizationGibbs() const
   return values;
 }
 
-NumericalSample TemporalNormalProcess::getRealizationCholesky() const
+NumericalSample GaussianProcess::getRealizationCholesky() const
 {
   if (!isInitialized_) initialize();
   // Constantes values
@@ -360,12 +360,12 @@ NumericalSample TemporalNormalProcess::getRealizationCholesky() const
 
   NumericalSampleImplementation values(size, dimension_);
   const NumericalPoint rawResult(covarianceCholeskyFactor_ * gaussianPoint);
-  LOGINFO(OSS() << "In TemporalNormalProcess::getRealizationCholesky(), size=" << size << ", fullSize=" << fullSize << ", gaussianPoint dimension=" << gaussianPoint.getDimension() << ", rawResult dimension=" << rawResult.getDimension());
+  LOGINFO(OSS() << "In GaussianProcess::getRealizationCholesky(), size=" << size << ", fullSize=" << fullSize << ", gaussianPoint dimension=" << gaussianPoint.getDimension() << ", rawResult dimension=" << rawResult.getDimension());
   values.setData(rawResult);
   return values;
 }
 
-NumericalSample TemporalNormalProcess::getRealizationHMatrix() const
+NumericalSample GaussianProcess::getRealizationHMatrix() const
 {
   if (!isInitialized_) initialize();
   const UnsignedInteger size = getMesh().getVerticesNumber();
@@ -380,32 +380,32 @@ NumericalSample TemporalNormalProcess::getRealizationHMatrix() const
 }
 
 /* Covariance model accessor */
-CovarianceModel TemporalNormalProcess::getCovarianceModel() const
+CovarianceModel GaussianProcess::getCovarianceModel() const
 {
   return covarianceModel_;
 }
 
 /* Trend accessor */
-TrendTransform TemporalNormalProcess::getTrend() const
+TrendTransform GaussianProcess::getTrend() const
 {
   return trend_;
 }
 
 /* Check if the process is stationary */
-Bool TemporalNormalProcess::isStationary() const
+Bool GaussianProcess::isStationary() const
 {
   return covarianceModel_.isStationary() && isTrendStationary();
 }
 
 /* Tell if the process is trend stationary */
-Bool TemporalNormalProcess::isTrendStationary() const
+Bool GaussianProcess::isTrendStationary() const
 {
   if (!checkedStationaryTrend_) checkStationaryTrend();
   return hasStationaryTrend_;
 }
 
 /* Check if the process is trend stationary */
-void TemporalNormalProcess::checkStationaryTrend() const
+void GaussianProcess::checkStationaryTrend() const
 {
   hasStationaryTrend_ = true;
   checkedStationaryTrend_ = true;
@@ -424,14 +424,14 @@ void TemporalNormalProcess::checkStationaryTrend() const
 }
 
 /* Check if the process is Normal */
-Bool TemporalNormalProcess::isNormal() const
+Bool GaussianProcess::isNormal() const
 {
   return true;
 }
 
 
 /* Method save() stores the object through the StorageManager */
-void TemporalNormalProcess::save(Advocate & adv) const
+void GaussianProcess::save(Advocate & adv) const
 {
   ProcessImplementation::save(adv);
   adv.saveAttribute("covarianceModel_", covarianceModel_);
@@ -445,7 +445,7 @@ void TemporalNormalProcess::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void TemporalNormalProcess::load(Advocate & adv)
+void GaussianProcess::load(Advocate & adv)
 {
   ProcessImplementation::load(adv);
   adv.loadAttribute("covarianceModel_", covarianceModel_);

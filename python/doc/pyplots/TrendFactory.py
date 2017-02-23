@@ -8,7 +8,7 @@ myGrid = ot.RegularGrid(0.0, 0.1, 100)
 amplitude = [5.0]
 scale = [0.2]
 myCovModel = ot.ExponentialModel(scale, amplitude)
-myXProcess = ot.TemporalNormalProcess(myCovModel, myGrid)
+myXProcess = ot.GaussianProcess(myCovModel, myGrid)
 
 # Create a trend
 fTrend = ot.SymbolicFunction(["t"], ["1+2*t+t^2"])

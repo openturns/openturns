@@ -486,7 +486,7 @@ ot_add_python_module(model_process model_process_module.i
                       ARMAState.i ARMAState_doc.i.in
                       ARMA.i ARMA_doc.i.in
                       SpectralNormalProcess.i SpectralNormalProcess_doc.i.in
-                      TemporalNormalProcess.i TemporalNormalProcess_doc.i.in
+                      GaussianProcess.i GaussianProcess_doc.i.in
                       AggregatedProcess.i AggregatedProcess_doc.i.in
                       CompositeProcess.i CompositeProcess_doc.i.in
                       FunctionalBasisProcess.i FunctionalBasisProcess_doc.i.in
