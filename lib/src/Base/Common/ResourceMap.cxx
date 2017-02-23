@@ -807,9 +807,6 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "MaximumEntropyOrderStatisticsDistribution-MaximumQuantileIteration", 10);
   setAsUnsignedInteger( "MaximumEntropyOrderStatisticsDistribution-CDFIntegrationNodesNumber", 16);
 
-  // WhiteNoise parameters //
-  setAsNumericalScalar( "WhiteNoise-MeanEpsilon", 1.0e-14 );
-
   // HMatrix parameters //
   set( "HMatrix-ClusteringAlgorithm", "median" );
   setAsNumericalScalar( "HMatrix-AdmissibilityFactor", 2.0 );
@@ -860,6 +857,8 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger("MCMC-DefaultBurnIn", 0);
   setAsUnsignedInteger("MCMC-DefaultThinning", 1);
 
+  // ARMA parameters //
+  setAsNumericalScalar( "ARMA-MeanEpsilon", 1.0e-14 );
 
   // ARMALikelihoodFactory parameters //
   setAsNumericalScalar( "ARMALikelihoodFactory-StartingScaling", 1.0e-13 );

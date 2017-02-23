@@ -156,9 +156,6 @@ Distribution WhiteNoise::getDistribution() const
 /* Distribution accessor */
 void WhiteNoise::setDistribution(const Distribution & distribution)
 {
-  // Check if the given distribution has a null mean
-  const NumericalPoint mean(distribution.getMean());
-  if (mean.norm() > ResourceMap::GetAsNumericalScalar( "WhiteNoise-MeanEpsilon" )) throw InvalidArgumentException(HERE) << "Error: the given distribution has a mean=" << mean.__str__() << " which is not null.";
   distribution_ = distribution;
   setDimension(distribution.getDimension());
   setDescription(distribution.getDescription());

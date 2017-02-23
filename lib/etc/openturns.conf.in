@@ -541,9 +541,6 @@
   <MaximumEntropyOrderStatisticsDistribution-MaximumQuantileIteration        value="10" />
   <MaximumEntropyOrderStatisticsDistribution-CDFIntegrationNodesNumber       value="16" />
 
-  <!-- OT::WhiteNoise parameters -->
-  <WhiteNoise-MeanEpsilon value="1.0e-14" />
-
   <!-- OT::HMatrix parameters -->
   <HMatrix-ClusteringAlgorithm  value="median" />
   <HMatrix-AdmissibilityFactor  value="2.0" />
@@ -593,6 +590,9 @@
   <!-- OT::MCMC parameters -->
   <MCMC-DefaultBurnIn                                           value="0" />
   <MCMC-DefaultThinning                                         value="1" />
+
+  <!-- OT::ARMA parameters -->
+  <ARMA-MeanEpsilon value="1.0e-14" />
 
   <!-- OT::ARMALikelihoodFactoryFactory parameters -->
   <ARMALikelihoodFactory-StartingScaling              value="1.0e-13" />
