@@ -70,7 +70,7 @@
 %include DualLinearCombinationFunction.i
 %include FieldFunctionImplementation.i
 %include FieldFunction.i
-%include SpatialFunction.i
+%include ValueFunction.i
 %include TemporalFunction.i
 %include DualLinearCombinationEvaluationImplementation.i
 %include DualLinearCombinationGradientImplementation.i

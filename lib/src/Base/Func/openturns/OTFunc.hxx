@@ -91,7 +91,7 @@
 #include "openturns/ProductPolynomialGradientImplementation.hxx"
 #include "openturns/ProductPolynomialHessianImplementation.hxx"
 #include "openturns/QuadraticNumericalMathEvaluationImplementation.hxx"
-#include "openturns/SpatialFunction.hxx"
+#include "openturns/ValueFunction.hxx"
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/TemporalFunction.hxx"
 #include "openturns/UniVariatePolynomial.hxx"

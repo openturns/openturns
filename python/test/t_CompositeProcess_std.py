@@ -20,7 +20,7 @@ print('myAntecedentProcess = ',  myARMAProcess)
 f = ot.NumericalMathFunction(['x'], ['2 * x + 5.0'])
 
 # We build a dynamical function
-myFieldFunction = ot.FieldFunction(ot.SpatialFunction(f))
+myFieldFunction = ot.FieldFunction(ot.ValueFunction(f))
 
 # finally we get the compsite process
 myCompositeProcess = ot.CompositeProcess(myFieldFunction, myARMAProcess)
@@ -41,7 +41,7 @@ g = ot.NumericalMathFunction(['x1', 'x2'],  ['x1^2', 'x1+x2'])
 # n is the dimension of the mesh
 # of the field on wich g will be applied
 nSpat = 2
-myDynFunc = ot.SpatialFunction(g, nSpat)
+myDynFunc = ot.ValueFunction(g, nSpat)
 
 # Then g acts on processes X: Omega * R^nSpat --> R^2
 
@@ -77,7 +77,7 @@ myXtProcess_temp = ot.GaussianProcess(myCovModel, myMesh)
 # Non linear transformation of myXtProcess
 # to get a positive process
 g2 = ot.NumericalMathFunction(['x1', 'x2'],  ['x1^2', 'abs(x2)'])
-myDynTransform = ot.SpatialFunction(g2, 2)
+myDynTransform = ot.ValueFunction(g2, 2)
 myXtProcess = ot.CompositeProcess(myDynTransform, myXtProcess_temp)
 
 # Create the  image Y

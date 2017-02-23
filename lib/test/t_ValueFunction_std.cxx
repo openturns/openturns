@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class SpatialFunction for standard methods
+ *  @brief The test file of class ValueFunction for standard methods
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 
     /* Create an intance */
     NumericalMathFunction myFunc("x", "x^2");
-    SpatialFunction mySpatialFunc(myFunc);
+    ValueFunction mySpatialFunc(myFunc);
 
     fullprint << "mySpatialFunc=" << mySpatialFunc << std::endl;
     /* Get the input and output description */

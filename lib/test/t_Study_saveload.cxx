@@ -646,7 +646,7 @@ int main(int argc, char *argv[])
       Description inputDescription(1, "x");
       Description formula(1, "2 * x + 5");
       NumericalMathFunction myOneDimensionalFunction(inputDescription, formula);
-      SpatialFunction myFunction(myOneDimensionalFunction);
+      ValueFunction myFunction(myOneDimensionalFunction);
       compositeProcess = CompositeProcess (myFunction, myARMAProcess);
     }
     study.add("compositeProcess", compositeProcess);

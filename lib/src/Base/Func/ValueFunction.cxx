@@ -18,19 +18,19 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "openturns/SpatialFunction.hxx"
+#include "openturns/ValueFunction.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/NumericalMathEvaluationImplementation.hxx"
 #include "openturns/NoNumericalMathEvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(SpatialFunction);
+CLASSNAMEINIT(ValueFunction);
 
-static const Factory<SpatialFunction> Factory_SpatialFunction;
+static const Factory<ValueFunction> Factory_ValueFunction;
 
 /* Default constructor */
-SpatialFunction::SpatialFunction(const UnsignedInteger meshDimension)
+ValueFunction::ValueFunction(const UnsignedInteger meshDimension)
   : FieldFunctionImplementation(meshDimension)
   , p_evaluation_(new NoNumericalMathEvaluationImplementation)
 {
@@ -38,7 +38,7 @@ SpatialFunction::SpatialFunction(const UnsignedInteger meshDimension)
 }
 
 /* Parameter constructor */
-SpatialFunction::SpatialFunction(const NumericalMathFunction & function,
+ValueFunction::ValueFunction(const NumericalMathFunction & function,
                                  const UnsignedInteger meshDimension)
   : FieldFunctionImplementation(meshDimension)
   , p_evaluation_(function.getEvaluation())
@@ -49,7 +49,7 @@ SpatialFunction::SpatialFunction(const NumericalMathFunction & function,
 }
 
 /* Parameter constructor */
-SpatialFunction::SpatialFunction(const EvaluationImplementation & p_evaluation,
+ValueFunction::ValueFunction(const EvaluationImplementation & p_evaluation,
                                  const UnsignedInteger meshDimension)
   : FieldFunctionImplementation(meshDimension)
   , p_evaluation_(p_evaluation)
@@ -60,7 +60,7 @@ SpatialFunction::SpatialFunction(const EvaluationImplementation & p_evaluation,
 }
 
 /* Parameter constructor */
-SpatialFunction::SpatialFunction(const NumericalMathEvaluationImplementation & evaluation,
+ValueFunction::ValueFunction(const NumericalMathEvaluationImplementation & evaluation,
                                  const UnsignedInteger meshDimension)
   : FieldFunctionImplementation(meshDimension)
   , p_evaluation_(evaluation.clone())
@@ -71,34 +71,34 @@ SpatialFunction::SpatialFunction(const NumericalMathEvaluationImplementation & e
 }
 
 /* Virtual constructor */
-SpatialFunction * SpatialFunction::clone() const
+ValueFunction * ValueFunction::clone() const
 {
-  return new SpatialFunction(*this);
+  return new ValueFunction(*this);
 }
 
 /* Comparison operator */
-Bool SpatialFunction::operator ==(const SpatialFunction & other) const
+Bool ValueFunction::operator ==(const ValueFunction & other) const
 {
   return true;
 }
 
 /* String converter */
-String SpatialFunction::__repr__() const
+String ValueFunction::__repr__() const
 {
   OSS oss(true);
-  oss << "class=" << SpatialFunction::GetClassName()
+  oss << "class=" << ValueFunction::GetClassName()
       << " evaluation=" << p_evaluation_->__repr__();
   return oss;
 }
 
 /* String converter */
-String SpatialFunction::__str__(const String & offset) const
+String ValueFunction::__str__(const String & offset) const
 {
   return OSS(false) << p_evaluation_->__str__(offset);
 }
 
 /* Operator () */
-Field SpatialFunction::operator() (const Field & inFld) const
+Field ValueFunction::operator() (const Field & inFld) const
 {
   if (inFld.getSpatialDimension() != getSpatialDimension()) throw InvalidArgumentException(HERE) << "Error: expected a field with mesh dimension=" << getSpatialDimension() << ", got mesh dimension=" << inFld.getSpatialDimension();
   ++callsNumber_;
@@ -106,34 +106,34 @@ Field SpatialFunction::operator() (const Field & inFld) const
 }
 
 /* Get the i-th marginal function */
-SpatialFunction::Implementation SpatialFunction::getMarginal(const UnsignedInteger i) const
+ValueFunction::Implementation ValueFunction::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
-  return new SpatialFunction(p_evaluation_->getMarginal(i));
+  return new ValueFunction(p_evaluation_->getMarginal(i));
 }
 
 /* Get the function corresponding to indices components */
-SpatialFunction::Implementation SpatialFunction::getMarginal(const Indices & indices) const
+ValueFunction::Implementation ValueFunction::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and must be different";
-  return new SpatialFunction(p_evaluation_->getMarginal(indices));
+  return new ValueFunction(p_evaluation_->getMarginal(indices));
 }
 
 /* Method save() stores the object through the StorageManager */
-void SpatialFunction::save(Advocate & adv) const
+void ValueFunction::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute( "evaluation_", *p_evaluation_ );
 }
 
 /* Evaluation accessor */
-SpatialFunction::EvaluationImplementation SpatialFunction::getEvaluation() const
+ValueFunction::EvaluationImplementation ValueFunction::getEvaluation() const
 {
   return p_evaluation_;
 }
 
 /* Method load() reloads the object from the StorageManager */
-void SpatialFunction::load(Advocate & adv)
+void ValueFunction::load(Advocate & adv)
 {
   TypedInterfaceObject<NumericalMathEvaluationImplementation> evaluationValue;
   PersistentObject::load(adv);

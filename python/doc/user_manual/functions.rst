@@ -41,7 +41,7 @@ Dynamical functions
 
     FieldFunction
     PythonFieldFunction
-    SpatialFunction
+    ValueFunction
     TemporalFunction
 
 Collection of functions

@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/FieldFunction.hxx"
-#include "openturns/SpatialFunction.hxx"
+#include "openturns/ValueFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -35,7 +35,7 @@ FieldFunction::FieldFunction(const UnsignedInteger spatialDimension)
 /* Constructor from NumericalMathFunction */
 FieldFunction::FieldFunction(const NumericalMathFunction & function,
                                      const UnsignedInteger spatialDimension)
-  : TypedInterfaceObject<FieldFunctionImplementation>(SpatialFunction(function, spatialDimension).clone())
+  : TypedInterfaceObject<FieldFunctionImplementation>(ValueFunction(function, spatialDimension).clone())
 {
   // Nothing to do
 }

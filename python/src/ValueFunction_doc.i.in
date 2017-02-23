@@ -1,10 +1,10 @@
-%feature("docstring") OT::SpatialFunction
+%feature("docstring") OT::ValueFunction
 "Spatial function.
 
 Available constructors:
-    SpatialFunction(*meshDimension=1*)
+    ValueFunction(*meshDimension=1*)
 
-    SpatialFunction(*g, meshDimension=1*)
+    ValueFunction(*g, meshDimension=1*)
 
 Parameters
 ----------
@@ -55,7 +55,7 @@ Convert :math:`g` into a spatial function with :math:`n` the dimension of the
 mesh of the field on which :math:`g` will be applied:
 
 >>> n = 1
->>> mySpatialFunction = ot.SpatialFunction(g, n)
+>>> myValueFunction = ot.ValueFunction(g, n)
 >>> # Create a TimeSeries
 >>> tg = ot.RegularGrid(0.0, 0.2, 6)
 >>> data = ot.NumericalSample(tg.getN(), g.getInputDimension())
@@ -71,7 +71,7 @@ mesh of the field on which :math:`g` will be applied:
 3 : [ 0.6 3   ]
 4 : [ 0.8 4   ]
 5 : [ 1   5   ]
->>> print(mySpatialFunction(ts))
+>>> print(myValueFunction(ts))
     [ t    y0   ]
 0 : [  0    0   ]
 1 : [  0.2  1   ]
@@ -82,7 +82,7 @@ mesh of the field on which :math:`g` will be applied:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::SpatialFunction::getEvaluation
+%feature("docstring") OT::ValueFunction::getEvaluation
 "Get the evaluation function of :math:`g`.
 
 Returns
@@ -95,7 +95,7 @@ Examples
 >>> import openturns as ot
 >>> g = ot.NumericalMathFunction('x', 'x^2')
 >>> n = 1
->>> mySpatialFunction = ot.SpatialFunction(g, n)
->>> print(mySpatialFunction.getEvaluation())
+>>> myValueFunction = ot.ValueFunction(g, n)
+>>> print(myValueFunction.getEvaluation())
 [x]->[x^2]"
 

@@ -10,7 +10,7 @@ Parameters
 ----------
 function : :class:`~openturns.NumericalMathFunction`
     Function :math:`g: \Rset^d \mapsto \Rset^q` used to define a
-    :class:`~openturns.SpatialFunction` object.
+    :class:`~openturns.ValueFunction` object.
 meshDimension : int, :math:`n \geq 0`
     Dimension of the mesh :math:`\cM`.
 
@@ -18,7 +18,7 @@ Notes
 -----
 Dynamical functions are functions being able to act on fields. OpenTURNS
 defines two particular dynamical functions:
-the :class:`spatial function <openturns.SpatialFunction>` and
+the :class:`spatial function <openturns.ValueFunction>` and
 the :class:`temporal function <openturns.TemporalFunction>`.
 
 

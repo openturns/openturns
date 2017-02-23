@@ -1,4 +1,4 @@
-mySpatialFunc=class=SpatialFunction evaluation=class=AnalyticalNumericalMathEvaluationImplementation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[outputVariable] formulas=[x^2]
+mySpatialFunc=class=ValueFunction evaluation=class=AnalyticalNumericalMathEvaluationImplementation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[outputVariable] formulas=[x^2]
 mySpatialFunc input description=[x]
 mySpatialFunc output description=[outputVariable]
 mySpatialFunc input dimension=1

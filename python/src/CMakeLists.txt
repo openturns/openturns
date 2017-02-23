@@ -279,7 +279,7 @@ ot_add_python_module(func func_module.i
                       BaseFuncCollection.i
                       FieldFunctionImplementation.i FieldFunctionImplementation_doc.i.in
                       FieldFunction.i FieldFunction_doc.i.in
-                      SpatialFunction.i SpatialFunction_doc.i.in
+                      ValueFunction.i ValueFunction_doc.i.in
                       TemporalFunction.i TemporalFunction_doc.i.in
                       LinearFunction.i LinearFunction_doc.i.in
                       QuadraticFunction.i QuadraticFunction_doc.i.in

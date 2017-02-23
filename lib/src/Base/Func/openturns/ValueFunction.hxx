@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_SPATIALFUNCTION_HXX
-#define OPENTURNS_SPATIALFUNCTION_HXX
+#ifndef OPENTURNS_VALUEFUNCTION_HXX
+#define OPENTURNS_VALUEFUNCTION_HXX
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/FieldFunctionImplementation.hxx"
@@ -29,13 +29,13 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class SpatialFunction
+ * @class ValueFunction
  *
  * The class that simulates a dynamical function based on a
  * numerical math function that acts only on the spatial part
  * of a time series.
  */
-class OT_API SpatialFunction
+class OT_API ValueFunction
   : public FieldFunctionImplementation
 {
   CLASSNAME;
@@ -44,27 +44,27 @@ public:
   typedef NumericalMathEvaluationImplementation::Implementation EvaluationImplementation;
 
   /** Default constructor */
-  explicit SpatialFunction(const UnsignedInteger meshDimension = 1);
+  explicit ValueFunction(const UnsignedInteger meshDimension = 1);
 
   /** Parameter constructor */
-  explicit SpatialFunction(const NumericalMathFunction & function,
+  explicit ValueFunction(const NumericalMathFunction & function,
                            const UnsignedInteger meshDimension = 1);
 
 #ifndef SWIG
   /** Parameter constructor */
-  explicit SpatialFunction(const EvaluationImplementation & p_evaluation,
+  explicit ValueFunction(const EvaluationImplementation & p_evaluation,
                            const UnsignedInteger meshDimension = 1);
 #endif
 
   /** Parameter constructor */
-  explicit SpatialFunction(const NumericalMathEvaluationImplementation & evaluation,
+  explicit ValueFunction(const NumericalMathEvaluationImplementation & evaluation,
                            const UnsignedInteger meshDimension = 1);
 
   /** Virtual constructor */
-  virtual SpatialFunction * clone() const;
+  virtual ValueFunction * clone() const;
 
   /** Comparison operator */
-  Bool operator ==(const SpatialFunction & other) const;
+  Bool operator ==(const ValueFunction & other) const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -93,9 +93,9 @@ protected:
   /** Pointer to the actual evaluation class */
   EvaluationImplementation p_evaluation_;
 
-}; /* class SpatialFunction */
+}; /* class ValueFunction */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_SPATIALFUNCTION_HXX */
+#endif /* OPENTURNS_VALUEFUNCTION_HXX */

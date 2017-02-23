@@ -8,7 +8,7 @@ TESTPREAMBLE()
 try:
     # Create an intance
     myFunc = NumericalMathFunction("x", "x^2")
-    mySpatialFunc = SpatialFunction(myFunc)
+    mySpatialFunc = ValueFunction(myFunc)
 
     print("mySpatialFunc=", mySpatialFunc)
     # Get the input and output description
@@ -34,4 +34,4 @@ try:
 
 except:
     import sys
-    print("t_SpatialFunction_std.py", sys.exc_info()[0], sys.exc_info()[1])
+    print("t_ValueFunction_std.py", sys.exc_info()[0], sys.exc_info()[1])

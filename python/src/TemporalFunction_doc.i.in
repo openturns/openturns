@@ -34,7 +34,7 @@ dimension of :math:`\vect{x}`: :math:`d`. Its output dimension is equal to
 
 See also
 --------
-SpatialFunction
+ValueFunction
 
 Examples
 --------
@@ -96,6 +96,6 @@ Examples
 >>> import openturns as ot
 >>> h = ot.SymbolicFunction(['t', 'x'], ['x + t^2'])
 >>> n = 1
->>> myTemporalFunction = ot.SpatialFunction(h, n)
+>>> myTemporalFunction = ot.ValueFunction(h, n)
 >>> print(myTemporalFunction.getEvaluation())
 [t,x]->[x + t^2]"
