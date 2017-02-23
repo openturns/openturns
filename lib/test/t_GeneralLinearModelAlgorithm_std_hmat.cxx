@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of GeneralizedLinearModelAlgorithm class
+ *  @brief The test file of GeneralLinearModelAlgorithm class
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
   TESTPREAMBLE;
   OStream fullprint(std::cout);
   setRandomGenerator();
-  ResourceMap::Set("GeneralizedLinearModelAlgorithm-LinearAlgebra", "HMAT");
+  ResourceMap::Set("GeneralLinearModelAlgorithm-LinearAlgebra", "HMAT");
 
   try
   {
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
 
     Basis basis = LinearBasisFactory(spatialDimension).build();
     DiracCovarianceModel covarianceModel(spatialDimension);
-    GeneralizedLinearModelAlgorithm algo(X, Y, covarianceModel, basis);
+    GeneralLinearModelAlgorithm algo(X, Y, covarianceModel, basis);
     algo.run();
 
     // perform an evaluation

@@ -37,6 +37,7 @@
   * Renamed OptimizationSolver to OptimizationAlgorithm
   * Renamed TemporalNormalProcess to GaussianProcess
   * Renamed SpectralNormalProcess to SpectralGaussianProcess
+  * Renamed GeneralizedLinearModelAlgorithm to GeneralLinearModelAlgorithm
 
 === Python module ===
 

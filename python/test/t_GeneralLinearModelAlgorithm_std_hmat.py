@@ -10,7 +10,7 @@ try:
 
     # Set precision
     ot.PlatformInfo.SetNumericalPrecision(3)
-    ot.ResourceMap.Set("GeneralizedLinearModelAlgorithm-LinearAlgebra", "HMAT")
+    ot.ResourceMap.Set("GeneralLinearModelAlgorithm-LinearAlgebra", "HMAT")
 
     # Test 1
     print("========================")
@@ -43,7 +43,7 @@ try:
 
     basis = ot.LinearBasisFactory(spatialDimension).build()
     covarianceModel = ot.DiracCovarianceModel(spatialDimension)
-    algo = ot.GeneralizedLinearModelAlgorithm(X, Y, covarianceModel, basis)
+    algo = ot.GeneralLinearModelAlgorithm(X, Y, covarianceModel, basis)
     algo.run()
 
     # perform an evaluation
@@ -59,5 +59,5 @@ try:
 
 except:
     import sys
-    print("t_GeneralizedLinearModelAlgorithm_std_hmat.py",
+    print("t_GeneralLinearModelAlgorithm_std_hmat.py",
           sys.exc_info()[0], sys.exc_info()[1])

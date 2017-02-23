@@ -27,7 +27,7 @@ try:
     # Case of a misspecified covariance model
     covarianceModel = ot.DiracCovarianceModel(spatialDimension)
     print("===================================================\n")
-    algo = ot.GeneralizedLinearModelAlgorithm(X, Y, covarianceModel, basis)
+    algo = ot.GeneralLinearModelAlgorithm(X, Y, covarianceModel, basis)
     algo.run()
 
     result = algo.getResult()
@@ -37,7 +37,7 @@ try:
     # Now without estimating covariance parameters
     basis = ot.LinearBasisFactory(spatialDimension).build()
     covarianceModel = ot.DiracCovarianceModel(spatialDimension)
-    algo = ot.GeneralizedLinearModelAlgorithm(X, Y, covarianceModel, basis, True, True)
+    algo = ot.GeneralLinearModelAlgorithm(X, Y, covarianceModel, basis, True, True)
     algo.setOptimizeParameters(False)
     algo.run()
     result = algo.getResult()
@@ -48,21 +48,21 @@ try:
     # Case of a well specified covariance model
     # Test the optimization when the amplitude is deduced analytically from the scale
     covarianceModel = ot.AbsoluteExponential(spatialDimension)
-    algo = ot.GeneralizedLinearModelAlgorithm(X, Y, covarianceModel, basis)
+    algo = ot.GeneralLinearModelAlgorithm(X, Y, covarianceModel, basis)
     algo.run()
     result = algo.getResult()
     print("\ncovariance (reduced, unbiased)=", result.getCovarianceModel())
     print("trend (reduced, unbiased)=", result.getTrendCoefficients())
     print("===================================================\n")
-    ot.ResourceMap.SetAsBool("GeneralizedLinearModelAlgorithm-UnbiasedVariance", False)
-    algo = ot.GeneralizedLinearModelAlgorithm(X, Y, covarianceModel, basis)
+    ot.ResourceMap.SetAsBool("GeneralLinearModelAlgorithm-UnbiasedVariance", False)
+    algo = ot.GeneralLinearModelAlgorithm(X, Y, covarianceModel, basis)
     algo.run()
     result = algo.getResult()
     print("\ncovariance (reduced, biased)=", result.getCovarianceModel())
     print("trend (reduced, biased)=", result.getTrendCoefficients())
     print("===================================================\n")
-    ot.ResourceMap.SetAsBool("GeneralizedLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate", False)
-    algo = ot.GeneralizedLinearModelAlgorithm(X, Y, covarianceModel, basis)
+    ot.ResourceMap.SetAsBool("GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate", False)
+    algo = ot.GeneralLinearModelAlgorithm(X, Y, covarianceModel, basis)
     algo.run()
     result = algo.getResult()
     print("\ncovariance (full optim)=", result.getCovarianceModel())
@@ -71,5 +71,5 @@ try:
 
 except:
     import sys
-    print("t_GeneralizedLinearModelAlgorithm_std.py",
+    print("t_GeneralLinearModelAlgorithm_std.py",
           sys.exc_info()[0], sys.exc_info()[1])

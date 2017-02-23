@@ -456,19 +456,19 @@
   <FunctionalChaosAlgorithm-LargeSampleSize           value="10000"  />
   <FunctionalChaosAlgorithm-MaximumTotalDegree        value="10"     />
 
-  <!-- OT::GeneralizedLinearModelAlgorithm parameters -->
-  <GeneralizedLinearModelAlgorithm-LinearAlgebra                  value="LAPACK"  />
-  <GeneralizedLinearModelAlgorithm-NormalizeData                  value="false"   />
-  <GeneralizedLinearModelAlgorithm-KeepCovariance                 value="true"    />
-  <GeneralizedLinearModelAlgorithm-OptimizeParameters             value="true"    />
-  <GeneralizedLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate value="true"    />
-  <GeneralizedLinearModelAlgorithm-UnbiasedVariance               value="true"    />
-  <GeneralizedLinearModelAlgorithm-MeanEpsilon                    value="1.0e-12" />
-  <GeneralizedLinearModelAlgorithm-StartingScaling                value="1.0e-13" />
-  <GeneralizedLinearModelAlgorithm-MaximalScaling                 value="1.0e5"   />
-  <GeneralizedLinearModelAlgorithm-DefaultOptimizationLowerBound  value="1.0e-2"  />
-  <GeneralizedLinearModelAlgorithm-DefaultOptimizationUpperBound  value="1.0e2"      />
-  <GeneralizedLinearModelAlgorithm-DefaultOptimizationAlgorithm      value="TNC"     />
+  <!-- OT::GeneralLinearModelAlgorithm parameters -->
+  <GeneralLinearModelAlgorithm-LinearAlgebra                  value="LAPACK"  />
+  <GeneralLinearModelAlgorithm-NormalizeData                  value="false"   />
+  <GeneralLinearModelAlgorithm-KeepCovariance                 value="true"    />
+  <GeneralLinearModelAlgorithm-OptimizeParameters             value="true"    />
+  <GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate value="true"    />
+  <GeneralLinearModelAlgorithm-UnbiasedVariance               value="true"    />
+  <GeneralLinearModelAlgorithm-MeanEpsilon                    value="1.0e-12" />
+  <GeneralLinearModelAlgorithm-StartingScaling                value="1.0e-13" />
+  <GeneralLinearModelAlgorithm-MaximalScaling                 value="1.0e5"   />
+  <GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound  value="1.0e-2"  />
+  <GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound  value="1.0e2"      />
+  <GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm      value="TNC"     />
 
 <!-- OT::KrigingAlgorithm parameters -->
   <KrigingAlgorithm-StartingScaling value="1.0e-13" />

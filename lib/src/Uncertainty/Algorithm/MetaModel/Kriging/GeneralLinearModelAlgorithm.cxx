@@ -19,7 +19,7 @@
  *
  */
 
-#include "openturns/GeneralizedLinearModelAlgorithm.hxx"
+#include "openturns/GeneralLinearModelAlgorithm.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/HMatrixFactory.hxx"
 #include "openturns/ProductCovarianceModel.hxx"
@@ -38,12 +38,12 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(GeneralizedLinearModelAlgorithm);
+CLASSNAMEINIT(GeneralLinearModelAlgorithm);
 
-static const Factory<GeneralizedLinearModelAlgorithm> Factory_GeneralizedLinearModelAlgorithm;
+static const Factory<GeneralLinearModelAlgorithm> Factory_GeneralLinearModelAlgorithm;
 
 /* Default constructor */
-GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm()
+GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm()
   : MetaModelAlgorithm()
   , inputSample_(0, 1) // 1 is to be consistent with the default covariance model
   , normalizedInputSample_(0, 1) // same
@@ -74,7 +74,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm()
 }
 
 /* Parameters constructor */
-GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm(const NumericalSample & inputSample,
+GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const NumericalSample & inputSample,
     const NumericalSample & outputSample,
     const CovarianceModel & covarianceModel,
     const Bool normalize,
@@ -99,7 +99,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm(const Numerical
   , keepCholeskyFactor_(keepCholeskyFactor)
   , method_(0)
   , hasRun_(false)
-  , optimizeParameters_(ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-OptimizeParameters"))
+  , optimizeParameters_(ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-OptimizeParameters"))
   , analyticalAmplitude_(false)
   , lastReducedLogLikelihood_(SpecFunc::LogMinNumericalScalar)
 {
@@ -128,7 +128,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm(const Numerical
   initializeDefaultOptimizationAlgorithm();
 }
 
-GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm(const NumericalSample & inputSample,
+GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const NumericalSample & inputSample,
     const NumericalSample & outputSample,
     const CovarianceModel & covarianceModel,
     const Basis & basis,
@@ -154,7 +154,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm(const Numerical
   , keepCholeskyFactor_(keepCholeskyFactor)
   , method_(0)
   , hasRun_(false)
-  , optimizeParameters_(ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-OptimizeParameters"))
+  , optimizeParameters_(ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-OptimizeParameters"))
   , analyticalAmplitude_(false)
   , lastReducedLogLikelihood_(SpecFunc::LogMinNumericalScalar)
 {
@@ -195,7 +195,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm(const Numerical
 }
 
 /* Parameters constructor */
-GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm(const NumericalSample & inputSample,
+GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const NumericalSample & inputSample,
     const NumericalMathFunction & inputTransformation,
     const NumericalSample & outputSample,
     const CovarianceModel & covarianceModel,
@@ -221,7 +221,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm(const Numerical
   , keepCholeskyFactor_(keepCholeskyFactor)
   , method_(0)
   , hasRun_(false)
-  , optimizeParameters_(ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-OptimizeParameters"))
+  , optimizeParameters_(ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-OptimizeParameters"))
   , analyticalAmplitude_(false)
   , lastReducedLogLikelihood_(SpecFunc::LogMinNumericalScalar)
 {
@@ -250,7 +250,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm(const Numerical
 }
 
 /* Parameters constructor */
-GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm(const NumericalSample & inputSample,
+GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const NumericalSample & inputSample,
     const NumericalSample & outputSample,
     const CovarianceModel & covarianceModel,
     const BasisCollection & basisCollection,
@@ -276,7 +276,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm(const Numerical
   , keepCholeskyFactor_(keepCholeskyFactor)
   , method_(0)
   , hasRun_(false)
-  , optimizeParameters_(ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-OptimizeParameters"))
+  , optimizeParameters_(ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-OptimizeParameters"))
   , analyticalAmplitude_(false)
   , lastReducedLogLikelihood_(SpecFunc::LogMinNumericalScalar)
 {
@@ -307,7 +307,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm(const Numerical
 }
 
 /* Parameters constructor */
-GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm(const NumericalSample & inputSample,
+GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const NumericalSample & inputSample,
     const NumericalMathFunction & inputTransformation,
     const NumericalSample & outputSample,
     const CovarianceModel & covarianceModel,
@@ -333,7 +333,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm(const Numerical
   , keepCholeskyFactor_(keepCholeskyFactor)
   , method_(0)
   , hasRun_(false)
-  , optimizeParameters_(ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-OptimizeParameters"))
+  , optimizeParameters_(ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-OptimizeParameters"))
   , analyticalAmplitude_(false)
   , lastReducedLogLikelihood_(SpecFunc::LogMinNumericalScalar)
 {
@@ -351,19 +351,19 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm(const Numerical
 }
 
 /* set sample  method */
-void GeneralizedLinearModelAlgorithm::setData(const NumericalSample & inputSample,
+void GeneralLinearModelAlgorithm::setData(const NumericalSample & inputSample,
     const NumericalSample & outputSample)
 {
   // Check the sample sizes
   if (inputSample.getSize() != outputSample.getSize())
-    throw InvalidArgumentException(HERE) << "In GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm, input sample size=" << inputSample.getSize() << " does not match output sample size=" << outputSample.getSize();
+    throw InvalidArgumentException(HERE) << "In GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm, input sample size=" << inputSample.getSize() << " does not match output sample size=" << outputSample.getSize();
   // Set samples
   inputSample_ = inputSample;
   outputSample_ = outputSample;
 }
 
 /* Covariance model accessors */
-void GeneralizedLinearModelAlgorithm::setCovarianceModel(const CovarianceModel & covarianceModel)
+void GeneralLinearModelAlgorithm::setCovarianceModel(const CovarianceModel & covarianceModel)
 {
   // Here we can store any modified version of the given covariance model wrt its parameters as it is mainly a parametric template
   const UnsignedInteger inputDimension = inputSample_.getDimension();
@@ -393,7 +393,7 @@ void GeneralizedLinearModelAlgorithm::setCovarianceModel(const CovarianceModel &
   // Case 4
   else if (unitModelSpatialDimension && unitModelDimension)
     covarianceModel_ = TensorizedCovarianceModel(TensorizedCovarianceModel::CovarianceModelCollection(dimension, ProductCovarianceModel(ProductCovarianceModel::CovarianceModelCollection(inputDimension, covarianceModel))));
-  else throw InvalidArgumentException(HERE) << "In GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm, invalid dimension=" << covarianceModel.getDimension() << " or spatial dimension=" << covarianceModel.getSpatialDimension() << " for the given covariance model. A model of both spatial dimension=" << inputDimension << " and dimension=" << dimension << " is expected, or a model of spatial dimension=" << inputDimension << " and unit dimension, or a model of unit spatial dimension and dimension=" << dimension << ", or a model of unit spatial dimension and unit dimension.";
+  else throw InvalidArgumentException(HERE) << "In GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm, invalid dimension=" << covarianceModel.getDimension() << " or spatial dimension=" << covarianceModel.getSpatialDimension() << " for the given covariance model. A model of both spatial dimension=" << inputDimension << " and dimension=" << dimension << " is expected, or a model of spatial dimension=" << inputDimension << " and unit dimension, or a model of unit spatial dimension and dimension=" << dimension << ", or a model of unit spatial dimension and unit dimension.";
   // All the computation will be done on the reduced covariance model. We keep the initial covariance model (ie the one we just built) in order to reinitialize the reduced covariance model if some flags are changed after the creation of the algorithm.
   reducedCovarianceModel_ = covarianceModel_;
   // Now, adapt the model parameters.
@@ -401,7 +401,7 @@ void GeneralizedLinearModelAlgorithm::setCovarianceModel(const CovarianceModel &
   analyticalAmplitude_ = false;
   if (!optimizeParameters_) reducedCovarianceModel_.setActiveParameter(Indices());
   // Second, check if the amplitude parameter is unique and active
-  else if (ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate"))
+  else if (ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate"))
   {
     // The model has to be of dimension 1
     if (reducedCovarianceModel_.getDimension() == 1)
@@ -430,29 +430,29 @@ void GeneralizedLinearModelAlgorithm::setCovarianceModel(const CovarianceModel &
   const UnsignedInteger optimizationDimension = reducedCovarianceModel_.getParameter().getSize();
   if (optimizationDimension > 0)
   {
-    const NumericalPoint lowerBound(optimizationDimension, ResourceMap::GetAsNumericalScalar( "GeneralizedLinearModelAlgorithm-DefaultOptimizationLowerBound"));
-    const NumericalPoint upperBound(optimizationDimension, ResourceMap::GetAsNumericalScalar( "GeneralizedLinearModelAlgorithm-DefaultOptimizationUpperBound"));
+    const NumericalPoint lowerBound(optimizationDimension, ResourceMap::GetAsNumericalScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound"));
+    const NumericalPoint upperBound(optimizationDimension, ResourceMap::GetAsNumericalScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound"));
     optimizationBounds_ = Interval(lowerBound, upperBound);
   }
   else optimizationBounds_ = Interval();
 }
 
-CovarianceModel GeneralizedLinearModelAlgorithm::getCovarianceModel() const
+CovarianceModel GeneralLinearModelAlgorithm::getCovarianceModel() const
 {
   return covarianceModel_;
 }
 
-CovarianceModel GeneralizedLinearModelAlgorithm::getReducedCovarianceModel() const
+CovarianceModel GeneralLinearModelAlgorithm::getReducedCovarianceModel() const
 {
   return reducedCovarianceModel_;
 }
 
 /* Set basis collection method */
-void GeneralizedLinearModelAlgorithm::setBasisCollection(const BasisCollection & basis)
+void GeneralLinearModelAlgorithm::setBasisCollection(const BasisCollection & basis)
 {
   // If basis given, then its size should be the same as the output dimension (each marginal of multibasis is a basis that will be used for trend of the corresponding marginal.
   if (basis.getSize() != outputSample_.getDimension())
-    throw InvalidArgumentException(HERE) << "In GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm, output sample dimension=" << outputSample_.getDimension()  << " does not match multi-basis dimension=" << basis.getSize();
+    throw InvalidArgumentException(HERE) << "In GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm, output sample dimension=" << outputSample_.getDimension()  << " does not match multi-basis dimension=" << basis.getSize();
   // Get the output dimension of the basis
   // The first marginal may be an empty basis
   Bool continuationCondition = true;
@@ -472,26 +472,26 @@ void GeneralizedLinearModelAlgorithm::setBasisCollection(const BasisCollection &
     }
   }
   if (outputDimension == 0)
-    throw InvalidArgumentException(HERE) << "In GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm, basisCollection argument contains basis with empty collection of functions";
+    throw InvalidArgumentException(HERE) << "In GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm, basisCollection argument contains basis with empty collection of functions";
   if (outputDimension > 1) LOGWARN(OSS() << "Expected a basis of scalar functions, but some function has dimension" << outputDimension << ". Only the first output component will be taken into account.");
   // Everything is ok, we set the basis
   basisCollection_ = basis;
 }
 
-void GeneralizedLinearModelAlgorithm::checkYCentered(const NumericalSample & Y)
+void GeneralLinearModelAlgorithm::checkYCentered(const NumericalSample & Y)
 {
-  const NumericalScalar meanEpsilon = ResourceMap::GetAsNumericalScalar("GeneralizedLinearModelAlgorithm-MeanEpsilon");
+  const NumericalScalar meanEpsilon = ResourceMap::GetAsNumericalScalar("GeneralLinearModelAlgorithm-MeanEpsilon");
   const NumericalPoint meanY(Y.computeMean());
   for (UnsignedInteger k = 0; k < meanY.getDimension(); ++k)
   {
     if (std::abs(meanY[k]) > meanEpsilon)
-      LOGWARN(OSS() << "In GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm, basis is empty and output sample is not centered, mean=" << meanY);
+      LOGWARN(OSS() << "In GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm, basis is empty and output sample is not centered, mean=" << meanY);
   }
 }
 
-void GeneralizedLinearModelAlgorithm::initializeDefaultOptimizationAlgorithm()
+void GeneralLinearModelAlgorithm::initializeDefaultOptimizationAlgorithm()
 {
-  const String solverName(ResourceMap::Get("GeneralizedLinearModelAlgorithm-DefaultOptimizationAlgorithm"));
+  const String solverName(ResourceMap::Get("GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm"));
   if (solverName == "TNC")
     solver_ = TNC();
   else if (solverName == "NELDER-MEAD")
@@ -503,14 +503,14 @@ void GeneralizedLinearModelAlgorithm::initializeDefaultOptimizationAlgorithm()
 }
 
 /* Virtual constructor */
-GeneralizedLinearModelAlgorithm * GeneralizedLinearModelAlgorithm::clone() const
+GeneralLinearModelAlgorithm * GeneralLinearModelAlgorithm::clone() const
 {
-  return new GeneralizedLinearModelAlgorithm(*this);
+  return new GeneralLinearModelAlgorithm(*this);
 }
 
 
 /* Normalize the input sample */
-void GeneralizedLinearModelAlgorithm::normalizeInputSample()
+void GeneralLinearModelAlgorithm::normalizeInputSample()
 {
   // Nothing to do if the sample has alredy been normalized
   if (normalizedInputSample_.getSize() != 0) return;
@@ -526,7 +526,7 @@ void GeneralizedLinearModelAlgorithm::normalizeInputSample()
 }
 
 /* Compute the design matrix */
-void GeneralizedLinearModelAlgorithm::computeF()
+void GeneralLinearModelAlgorithm::computeF()
 {
   // Nothing to do if the design matrix has already been computed
   if (F_.getNbRows() != 0) return;
@@ -539,7 +539,7 @@ void GeneralizedLinearModelAlgorithm::computeF()
   UnsignedInteger totalSize = 0;
   for (UnsignedInteger i = 0; i < basisCollectionSize; ++ i ) totalSize += basisCollection_[i].getSize();
   // if totalSize > 0, then basisCollection_.getSize() should be equal to outputDimension
-  // This is checked in GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm
+  // This is checked in GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm
   F_ = Matrix(sampleSize * outputDimension, totalSize);
   if (totalSize == 0) return;
   // Compute F
@@ -576,7 +576,7 @@ void GeneralizedLinearModelAlgorithm::computeF()
   b) Update the covariance model if needed
  */
 
-void GeneralizedLinearModelAlgorithm::run()
+void GeneralLinearModelAlgorithm::run()
 {
   // Do not run again if already computed
   if (hasRun_) return;
@@ -690,7 +690,7 @@ void GeneralizedLinearModelAlgorithm::run()
 // The method returns the optimal log-likelihood (which is equal to the optimal
 // reduced log-likelihood), the corresponding parameters being directly stored
 // into the covariance model
-NumericalScalar GeneralizedLinearModelAlgorithm::maximizeReducedLogLikelihood()
+NumericalScalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
 {
   // initial guess
   NumericalPoint initialParameters(reducedCovarianceModel_.getParameter());
@@ -732,11 +732,11 @@ NumericalScalar GeneralizedLinearModelAlgorithm::maximizeReducedLogLikelihood()
   return optimalLogLikelihood;
 }
 
-NumericalPoint GeneralizedLinearModelAlgorithm::computeReducedLogLikelihood(const NumericalPoint & parameters) const
+NumericalPoint GeneralLinearModelAlgorithm::computeReducedLogLikelihood(const NumericalPoint & parameters) const
 {
   // Check that the parameters have a size compatible with the covariance model
   if (parameters.getSize() != reducedCovarianceModel_.getParameter().getSize())
-    throw InvalidArgumentException(HERE) << "In GeneralizedLinearModelAlgorithm::computeReducedLogLikelihood, could not compute likelihood,"
+    throw InvalidArgumentException(HERE) << "In GeneralLinearModelAlgorithm::computeReducedLogLikelihood, could not compute likelihood,"
                                          << " covariance model requires an argument of size " << reducedCovarianceModel_.getParameter().getSize()
                                          << " but here we got " << parameters.getSize();
   LOGINFO(OSS(false) << "Compute reduced log-likelihood for parameters=" << parameters);
@@ -761,7 +761,7 @@ NumericalPoint GeneralizedLinearModelAlgorithm::computeReducedLogLikelihood(cons
     // dJ/d\sigma=-N/\sigma+(Y-M)^tR^{-1}(Y-M)/\sigma^3=0
     // \sigma=\sqrt{(Y-M)^tR^{-1}(Y-M)/N}
     const UnsignedInteger size = inputSample_.getSize();
-    const NumericalScalar sigma = std::sqrt(rho_.normSquare() / (ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-UnbiasedVariance") ? size - beta_.getSize() : size));
+    const NumericalScalar sigma = std::sqrt(rho_.normSquare() / (ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-UnbiasedVariance") ? size - beta_.getSize() : size));
     LOGDEBUG(OSS(false) << "sigma=" << sigma);
     reducedCovarianceModel_.setAmplitude(NumericalPoint(1, sigma));
     logDeterminant += 2.0 * size * std::log(sigma);
@@ -780,7 +780,7 @@ NumericalPoint GeneralizedLinearModelAlgorithm::computeReducedLogLikelihood(cons
 }
 
 
-NumericalScalar GeneralizedLinearModelAlgorithm::computeLapackLogDeterminantCholesky() const
+NumericalScalar GeneralLinearModelAlgorithm::computeLapackLogDeterminantCholesky() const
 {
   // Using the hypothesis that parameters = scale & model writes : C(s,t) = diag(sigma) * R(s,t) * diag(sigma) with R a correlation function
   LOGINFO(OSS(false) << "Compute the LAPACK log-determinant of the Cholesky factor for covariance=" << reducedCovarianceModel_);
@@ -795,8 +795,8 @@ NumericalScalar GeneralizedLinearModelAlgorithm::computeLapackLogDeterminantChol
   LOGDEBUG(OSS(false) << "C=\n" << C);
   LOGINFO("Compute the Cholesky factor of the covariance matrix");
   Bool continuationCondition = true;
-  const NumericalScalar startingScaling = ResourceMap::GetAsNumericalScalar("GeneralizedLinearModelAlgorithm-StartingScaling");
-  const NumericalScalar maximalScaling = ResourceMap::GetAsNumericalScalar("GeneralizedLinearModelAlgorithm-MaximalScaling");
+  const NumericalScalar startingScaling = ResourceMap::GetAsNumericalScalar("GeneralLinearModelAlgorithm-StartingScaling");
+  const NumericalScalar maximalScaling = ResourceMap::GetAsNumericalScalar("GeneralLinearModelAlgorithm-MaximalScaling");
   NumericalScalar cumulatedScaling = 0.0;
   NumericalScalar scaling = startingScaling;
   while (continuationCondition && (cumulatedScaling < maximalScaling))
@@ -816,7 +816,7 @@ NumericalScalar GeneralizedLinearModelAlgorithm::computeLapackLogDeterminantChol
     }
   }
   if (scaling >= maximalScaling)
-    throw InvalidArgumentException(HERE) << "In GeneralizedLinearModelAlgorithm::computeLapackLogDeterminantCholesky, could not compute the Cholesky factor."
+    throw InvalidArgumentException(HERE) << "In GeneralLinearModelAlgorithm::computeLapackLogDeterminantCholesky, could not compute the Cholesky factor."
                                          << " Scaling up to "  << cumulatedScaling << " was not enough";
   if (cumulatedScaling > 0.0)
     LOGWARN(OSS() <<  "Warning! Scaling up to "  << cumulatedScaling << " was needed in order to get an admissible covariance. ");
@@ -856,14 +856,14 @@ NumericalScalar GeneralizedLinearModelAlgorithm::computeLapackLogDeterminantChol
   return 2.0 * logDetL;
 }
 
-NumericalScalar GeneralizedLinearModelAlgorithm::computeHMatLogDeterminantCholesky() const
+NumericalScalar GeneralLinearModelAlgorithm::computeHMatLogDeterminantCholesky() const
 {
   // Using the hypothesis that parameters = scale & model writes : C(s,t) = \sigma^2 * R(s,t) with R a correlation function
   LOGINFO(OSS(false) << "Compute the HMAT log-determinant of the Cholesky factor for covariance=" << reducedCovarianceModel_);
 
   Bool continuationCondition = true;
-  const NumericalScalar startingScaling = ResourceMap::GetAsNumericalScalar("GeneralizedLinearModelAlgorithm-StartingScaling");
-  const NumericalScalar maximalScaling = ResourceMap::GetAsNumericalScalar("GeneralizedLinearModelAlgorithm-MaximalScaling");
+  const NumericalScalar startingScaling = ResourceMap::GetAsNumericalScalar("GeneralLinearModelAlgorithm-StartingScaling");
+  const NumericalScalar maximalScaling = ResourceMap::GetAsNumericalScalar("GeneralLinearModelAlgorithm-MaximalScaling");
   NumericalScalar cumulatedScaling = 0.0;
   NumericalScalar scaling = startingScaling;
   const UnsignedInteger covarianceDimension = reducedCovarianceModel_.getDimension();
@@ -905,7 +905,7 @@ NumericalScalar GeneralizedLinearModelAlgorithm::computeHMatLogDeterminantCholes
     }
   }
   if (scaling >= maximalScaling)
-    throw InvalidArgumentException(HERE) << "In GeneralizedLinearModelAlgorithm::computeHMatLogLikelihood, could not compute the Cholesky factor"
+    throw InvalidArgumentException(HERE) << "In GeneralLinearModelAlgorithm::computeHMatLogLikelihood, could not compute the Cholesky factor"
                                          << " Scaling up to "  << cumulatedScaling << " was not enough";
   if (cumulatedScaling > 0.0)
     LOGWARN(OSS() <<  "Warning! Scaling up to "  << cumulatedScaling << " was needed in order to get an admissible covariance. ");
@@ -939,28 +939,29 @@ NumericalScalar GeneralizedLinearModelAlgorithm::computeHMatLogDeterminantCholes
 }
 
 /* Optimization solver accessor */
-OptimizationAlgorithm GeneralizedLinearModelAlgorithm::getOptimizationSolver() const
+OptimizationAlgorithm GeneralLinearModelAlgorithm::getOptimizationSolver() const
 {
   return solver_;
 }
-void GeneralizedLinearModelAlgorithm::setOptimizationSolver(const OptimizationAlgorithm & solver)
+
+void GeneralLinearModelAlgorithm::setOptimizationSolver(const OptimizationAlgorithm & solver)
 {
   solver_ = solver;
   hasRun_ = false;
 }
 
-void GeneralizedLinearModelAlgorithm::setInputTransformation(const NumericalMathFunction & inputTransformation)
+void GeneralLinearModelAlgorithm::setInputTransformation(const NumericalMathFunction & inputTransformation)
 {
   if (inputTransformation.getInputDimension() != inputSample_.getDimension()) throw InvalidDimensionException(HERE)
-        << "In GeneralizedLinearModelAlgorithm::setInputTransformation, input dimension of the transformation=" << inputTransformation.getInputDimension() << " should match input sample dimension=" << inputSample_.getDimension();
+        << "In GeneralLinearModelAlgorithm::setInputTransformation, input dimension of the transformation=" << inputTransformation.getInputDimension() << " should match input sample dimension=" << inputSample_.getDimension();
   if (inputTransformation.getOutputDimension() != inputSample_.getDimension()) throw InvalidDimensionException(HERE)
-        << "In GeneralizedLinearModelAlgorithm::setInputTransformation, output dimension of the transformation=" << inputTransformation.getOutputDimension() << " should match output sample dimension=" << inputSample_.getDimension();
+        << "In GeneralLinearModelAlgorithm::setInputTransformation, output dimension of the transformation=" << inputTransformation.getOutputDimension() << " should match output sample dimension=" << inputSample_.getDimension();
   inputTransformation_ = inputTransformation;
   // Set normalize to true
   normalize_ = true;
 }
 
-NumericalMathFunction GeneralizedLinearModelAlgorithm::getInputTransformation() const
+NumericalMathFunction GeneralLinearModelAlgorithm::getInputTransformation() const
 {
   // If normlize is false, we return identity function
   if (!normalize_) return IdentityFunction(inputSample_.getDimension());
@@ -968,12 +969,12 @@ NumericalMathFunction GeneralizedLinearModelAlgorithm::getInputTransformation() 
 }
 
 /* Optimize parameters flag accessor */
-Bool GeneralizedLinearModelAlgorithm::getOptimizeParameters() const
+Bool GeneralLinearModelAlgorithm::getOptimizeParameters() const
 {
   return optimizeParameters_;
 }
 
-void GeneralizedLinearModelAlgorithm::setOptimizeParameters(const Bool optimizeParameters)
+void GeneralLinearModelAlgorithm::setOptimizeParameters(const Bool optimizeParameters)
 {
   if (optimizeParameters != optimizeParameters_)
   {
@@ -984,19 +985,19 @@ void GeneralizedLinearModelAlgorithm::setOptimizeParameters(const Bool optimizeP
 }
 
 /* Accessor to optimization bounds */
-void GeneralizedLinearModelAlgorithm::setOptimizationBounds(const Interval & optimizationBounds)
+void GeneralLinearModelAlgorithm::setOptimizationBounds(const Interval & optimizationBounds)
 {
   if (!(optimizationBounds.getDimension() == reducedCovarianceModel_.getParameter().getSize())) throw InvalidArgumentException(HERE) << "Error: expected bounds of dimension=" << reducedCovarianceModel_.getParameter().getSize() << ", got dimension=" << optimizationBounds.getDimension();
   optimizationBounds_ = optimizationBounds;
 }
 
-Interval GeneralizedLinearModelAlgorithm::getOptimizationBounds() const
+Interval GeneralLinearModelAlgorithm::getOptimizationBounds() const
 {
   return optimizationBounds_;
 }
 
 /* Observation noise accessor */
-void GeneralizedLinearModelAlgorithm::setNoise(const NumericalPoint & noise)
+void GeneralLinearModelAlgorithm::setNoise(const NumericalPoint & noise)
 {
   const UnsignedInteger size = inputSample_.getSize();
   if (noise.getSize() != size) throw InvalidArgumentException(HERE) << "Noise size=" << noise.getSize()  << " does not match sample size=" << size;
@@ -1006,19 +1007,19 @@ void GeneralizedLinearModelAlgorithm::setNoise(const NumericalPoint & noise)
 }
 
 
-NumericalPoint GeneralizedLinearModelAlgorithm::getNoise() const
+NumericalPoint GeneralLinearModelAlgorithm::getNoise() const
 {
   return noise_;
 }
 
 
-NumericalPoint GeneralizedLinearModelAlgorithm::getRho() const
+NumericalPoint GeneralLinearModelAlgorithm::getRho() const
 {
   return rho_;
 }
 
 /* String converter */
-String GeneralizedLinearModelAlgorithm::__repr__() const
+String GeneralLinearModelAlgorithm::__repr__() const
 {
   OSS oss;
   oss << "class=" << getClassName()
@@ -1034,26 +1035,26 @@ String GeneralizedLinearModelAlgorithm::__repr__() const
 }
 
 
-NumericalSample GeneralizedLinearModelAlgorithm::getInputSample() const
+NumericalSample GeneralLinearModelAlgorithm::getInputSample() const
 {
   return inputSample_;
 }
 
 
-NumericalSample GeneralizedLinearModelAlgorithm::getOutputSample() const
+NumericalSample GeneralLinearModelAlgorithm::getOutputSample() const
 {
   return outputSample_;
 }
 
 
-GeneralizedLinearModelResult GeneralizedLinearModelAlgorithm::getResult()
+GeneralizedLinearModelResult GeneralLinearModelAlgorithm::getResult()
 {
   if (!hasRun_) run();
   return result_;
 }
 
 
-NumericalMathFunction GeneralizedLinearModelAlgorithm::getObjectiveFunction()
+NumericalMathFunction GeneralLinearModelAlgorithm::getObjectiveFunction()
 {
   LOGINFO("Normalizing the data (if needed)...");
   normalizeInputSample();
@@ -1066,20 +1067,20 @@ NumericalMathFunction GeneralizedLinearModelAlgorithm::getObjectiveFunction()
   return logLikelihood;
 }
 
-void GeneralizedLinearModelAlgorithm::initializeMethod()
+void GeneralLinearModelAlgorithm::initializeMethod()
 {
-  if (ResourceMap::Get("GeneralizedLinearModelAlgorithm-LinearAlgebra") == "HMAT")
+  if (ResourceMap::Get("GeneralLinearModelAlgorithm-LinearAlgebra") == "HMAT")
     method_ = 1;
 }
 
-/* Method accessor (lapack/hmat) - Protected but friend with GeneralizedLinearModelAlgorithm class */
-void GeneralizedLinearModelAlgorithm::setMethod(const UnsignedInteger method)
+/* Method accessor (lapack/hmat) - Protected but friend with GeneralLinearModelAlgorithm class */
+void GeneralLinearModelAlgorithm::setMethod(const UnsignedInteger method)
 {
   method_ = method;
 }
 
 /* Method save() stores the object through the StorageManager */
-void GeneralizedLinearModelAlgorithm::save(Advocate & adv) const
+void GeneralLinearModelAlgorithm::save(Advocate & adv) const
 {
   MetaModelAlgorithm::save(adv);
   adv.saveAttribute( "inputSample_", inputSample_ );
@@ -1101,7 +1102,7 @@ void GeneralizedLinearModelAlgorithm::save(Advocate & adv) const
 
 
 /* Method load() reloads the object from the StorageManager */
-void GeneralizedLinearModelAlgorithm::load(Advocate & adv)
+void GeneralLinearModelAlgorithm::load(Advocate & adv)
 {
   MetaModelAlgorithm::load(adv);
   adv.loadAttribute( "inputSample_", inputSample_ );

@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of GeneralizedLinearModelAlgorithm class
+ *  @brief The test file of GeneralLinearModelAlgorithm class
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
     // Case of a misspecified covariance model
     DiracCovarianceModel covarianceModel(spatialDimension);
     fullprint << "===================================================\n" << std::endl;
-    GeneralizedLinearModelAlgorithm algo(X, Y, covarianceModel, basis);
+    GeneralLinearModelAlgorithm algo(X, Y, covarianceModel, basis);
     algo.run();
 
     GeneralizedLinearModelResult result = algo.getResult();
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
     // Now without estimating covariance parameters
     basis = LinearBasisFactory(spatialDimension).build();
     covarianceModel = DiracCovarianceModel(spatialDimension);
-    algo = GeneralizedLinearModelAlgorithm(X, Y, covarianceModel, basis, true, true);
+    algo = GeneralLinearModelAlgorithm(X, Y, covarianceModel, basis, true, true);
     algo.setOptimizeParameters(false);
     algo.run();
     result = algo.getResult();
@@ -74,21 +74,21 @@ int main(int argc, char *argv[])
     // Test the optimization when the amplitude is deduced analytically from the scale
     {
       AbsoluteExponential covarianceModel(spatialDimension);
-      GeneralizedLinearModelAlgorithm algo(X, Y, covarianceModel, basis);
+      GeneralLinearModelAlgorithm algo(X, Y, covarianceModel, basis);
       algo.run();
       GeneralizedLinearModelResult result = algo.getResult();
       fullprint << "\ncovariance (reduced, unbiased)=" << result.getCovarianceModel() << std::endl;
       fullprint << "trend (reduced, unbiased)=" << result.getTrendCoefficients() << std::endl;
       fullprint << "===================================================\n" << std::endl;
-      ResourceMap::SetAsBool("GeneralizedLinearModelAlgorithm-UnbiasedVariance", false);
-      algo = GeneralizedLinearModelAlgorithm(X, Y, covarianceModel, basis);
+      ResourceMap::SetAsBool("GeneralLinearModelAlgorithm-UnbiasedVariance", false);
+      algo = GeneralLinearModelAlgorithm(X, Y, covarianceModel, basis);
       algo.run();
       result = algo.getResult();
       fullprint << "\ncovariance (reduced, biased)=" << result.getCovarianceModel() << std::endl;
       fullprint << "trend (reduced, biased)=" << result.getTrendCoefficients() << std::endl;
       fullprint << "===================================================\n" << std::endl;
-      ResourceMap::SetAsBool("GeneralizedLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate", false);
-      algo = GeneralizedLinearModelAlgorithm(X, Y, covarianceModel, basis);
+      ResourceMap::SetAsBool("GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate", false);
+      algo = GeneralLinearModelAlgorithm(X, Y, covarianceModel, basis);
       algo.run();
       result = algo.getResult();
       fullprint << "\ncovariance (full optim)=" << result.getCovarianceModel() << std::endl;

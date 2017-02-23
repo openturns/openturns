@@ -5,3 +5,5 @@ Remove deprecated NumericalMathFunction::GetValidConstants|GetValidFunctions|Get
 Rename AnalyticalNumericalMath*Implementation to SymbolicEvaluation|Gradient|Hessian
 Remove TemporalNormalProcess alias
 Remove SpectralNormalProcess alias
+Remove GeneralizedLinearModelAlgorithm alias
+

@@ -33,7 +33,7 @@ optimalLogLikelihood : float
 
 Notes
 -----
-The structure is usually created by the method *run()* of a :class:`~openturns.GeneralizedLinearModelAlgorithm`, and obtained thanks to the *getResult()* method.
+The structure is usually created by the method *run()* of a :class:`~openturns.GeneralLinearModelAlgorithm`, and obtained thanks to the *getResult()* method.
 
 The meta model :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p` is defined by:
 
@@ -76,7 +76,7 @@ Create the algorithm:
 
 >>> basis = ot.Basis([ot.SymbolicFunction(['x'], ['x']), ot.SymbolicFunction(['x'], ['x^2'])])
 >>> covarianceModel = ot.GeneralizedExponential([2.0], 2.0)
->>> algo = ot.GeneralizedLinearModelAlgorithm(sampleX, sampleY, covarianceModel, basis)
+>>> algo = ot.GeneralLinearModelAlgorithm(sampleX, sampleY, covarianceModel, basis)
 >>> algo.run()
 
 Get the result:

@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_GENERALIZEDLINEARMODELALGORITHM_HXX
-#define OPENTURNS_GENERALIZEDLINEARMODELALGORITHM_HXX
+#ifndef OPENTURNS_GENERALLINEARMODELALGORITHM_HXX
+#define OPENTURNS_GENERALLINEARMODELALGORITHM_HXX
 
 #include "openturns/MetaModelAlgorithm.hxx"
 #include "openturns/Basis.hxx"
@@ -32,12 +32,12 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class GeneralizedLinearModelAlgorithm
+ * @class GeneralLinearModelAlgorithm
  *
  * The class building generalized linear model
  */
 
-class OT_API GeneralizedLinearModelAlgorithm
+class OT_API GeneralLinearModelAlgorithm
   : public MetaModelAlgorithm
 {
   CLASSNAME;
@@ -48,48 +48,48 @@ public:
   typedef GeneralizedLinearModelResult::BasisPersistentCollection BasisPersistentCollection;
 
   /** Default constructor */
-  GeneralizedLinearModelAlgorithm();
+  GeneralLinearModelAlgorithm();
 
   /** Parameters constructor */
-  GeneralizedLinearModelAlgorithm (const NumericalSample & inputSample,
+  GeneralLinearModelAlgorithm (const NumericalSample & inputSample,
                                    const NumericalSample & outputSample,
                                    const CovarianceModel & covarianceModel,
-                                   const Bool normalize = ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-NormalizeData"),
-                                   const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-KeepCovariance"));
+                                   const Bool normalize = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-NormalizeData"),
+                                   const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
 
-  GeneralizedLinearModelAlgorithm (const NumericalSample & inputSample,
+  GeneralLinearModelAlgorithm (const NumericalSample & inputSample,
                                    const NumericalSample & outputSample,
                                    const CovarianceModel & covarianceModel,
                                    const Basis & basis,
-                                   const Bool normalize = ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-NormalizeData"),
-                                   const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-KeepCovariance"));
+                                   const Bool normalize = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-NormalizeData"),
+                                   const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
 
   /** Parameters constructor */
-  GeneralizedLinearModelAlgorithm (const NumericalSample & inputSample,
+  GeneralLinearModelAlgorithm (const NumericalSample & inputSample,
                                    const NumericalMathFunction & inputTransformation,
                                    const NumericalSample & outputSample,
                                    const CovarianceModel & covarianceModel,
                                    const Basis & basis,
-                                   const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-KeepCovariance"));
+                                   const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
 
   /** Parameters constructor */
-  GeneralizedLinearModelAlgorithm (const NumericalSample & inputSample,
+  GeneralLinearModelAlgorithm (const NumericalSample & inputSample,
                                    const NumericalSample & outputSample,
                                    const CovarianceModel & covarianceModel,
                                    const BasisCollection & basisCollection,
-                                   const Bool normalize = ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-NormalizeData"),
-                                   const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-KeepCovariance"));
+                                   const Bool normalize = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-NormalizeData"),
+                                   const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
 
   /** Parameters constructor */
-  GeneralizedLinearModelAlgorithm (const NumericalSample & inputSample,
+  GeneralLinearModelAlgorithm (const NumericalSample & inputSample,
                                    const NumericalMathFunction & inputTransformation,
                                    const NumericalSample & outputSample,
                                    const CovarianceModel & covarianceModel,
                                    const BasisCollection & basisCollection,
-                                   const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralizedLinearModelAlgorithm-KeepCovariance"));
+                                   const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
 
   /** Virtual constructor */
-  GeneralizedLinearModelAlgorithm * clone() const;
+  GeneralLinearModelAlgorithm * clone() const;
 
   /** String converter */
   String __repr__() const;
@@ -154,7 +154,7 @@ protected:
 
   // Initialize default optimization solver
   void initializeDefaultOptimizationAlgorithm();
-  friend class Factory<GeneralizedLinearModelAlgorithm>;
+  friend class Factory<GeneralLinearModelAlgorithm>;
 
 
   friend class KrigingAlgorithm;
@@ -167,7 +167,7 @@ private:
   {
   public:
     // Constructor from a GLM algorithm
-    ReducedLogLikelihoodEvaluation(GeneralizedLinearModelAlgorithm & algorithm)
+    ReducedLogLikelihoodEvaluation(GeneralLinearModelAlgorithm & algorithm)
       : NumericalMathEvaluationImplementation()
       , algorithm_(algorithm)
     {
@@ -228,7 +228,7 @@ private:
     }
 
   private:
-    GeneralizedLinearModelAlgorithm & algorithm_;
+    GeneralLinearModelAlgorithm & algorithm_;
   }; // ReducedLogLikelihoodEvaluation
 
   /** set sample  method */
@@ -309,7 +309,7 @@ private:
 
   /** Cache of the last computed reduced log-likelihood */
   mutable NumericalScalar lastReducedLogLikelihood_;
-}; // class GeneralizedLinearModelAlgorithm
+}; // class GeneralLinearModelAlgorithm
 
 
 END_NAMESPACE_OPENTURNS

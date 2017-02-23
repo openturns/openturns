@@ -1,14 +1,14 @@
-%feature("docstring") OT::GeneralizedLinearModelAlgorithm
+%feature("docstring") OT::GeneralLinearModelAlgorithm
 "Algorithm for the evaluation of general linear models.
 
 Available constructors:
-    GeneralizedLinearModelAlgorithm(*inputSample, outputSample, covarianceModel, basis, normalize=True, keepCovariance=True*)
+    GeneralLinearModelAlgorithm(*inputSample, outputSample, covarianceModel, basis, normalize=True, keepCovariance=True*)
 
-    GeneralizedLinearModelAlgorithm(*inputSample, inputTransformation, outputSample, covarianceModel, basis, keepCovariance=True*)
+    GeneralLinearModelAlgorithm(*inputSample, inputTransformation, outputSample, covarianceModel, basis, keepCovariance=True*)
 
-    GeneralizedLinearModelAlgorithm(*inputSample, outputSample, covarianceModel, basisCollection, normalize=True, keepCovariance=True*)
+    GeneralLinearModelAlgorithm(*inputSample, outputSample, covarianceModel, basisCollection, normalize=True, keepCovariance=True*)
 
-    GeneralizedLinearModelAlgorithm(*inputSample, inputTransformation, outputSample, covarianceModel, basisCollection, keepCovariance=True*)
+    GeneralLinearModelAlgorithm(*inputSample, inputTransformation, outputSample, covarianceModel, basisCollection, keepCovariance=True*)
 
 Parameters
 ----------
@@ -32,10 +32,10 @@ normalize : bool, optional
     Indicates whether the input sample has to be normalized.
 
     OpenTURNS uses the transformation fixed by the User in *inputTransformation* or the empirical mean and variance of the input sample.
-    Default is set in resource map key `GeneralizedLinearModelAlgorithm-NormalizeData`
+    Default is set in resource map key `GeneralLinearModelAlgorithm-NormalizeData`
 keepCovariance : bool, optional
     Indicates whether the covariance matrix has to be stored in the result structure *GeneralizedLinearModelResult*.
-    Default is set in resource map key `GeneralizedLinearModelAlgorithm-KeepCovariance`
+    Default is set in resource map key `GeneralLinearModelAlgorithm-KeepCovariance`
 
 Notes
 -----
@@ -84,7 +84,7 @@ We note:
      \right)\in \Rset^{\sum_{\ell=1}^p n_\ell}
 
 
-The *GeneralizedLinearModelAlgorithm* class estimates the coefficients :math:`\beta_j^\ell, \vect{p}` where :math:`\vect{p}` is the vector of parameters of the covariance model (a subset of :math:`\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda}`) that has been declared as *active* (by default, the full vectors :math:`\vect{\theta}` and :math:`\vect{\sigma}`).
+The *GeneralLinearModelAlgorithm* class estimates the coefficients :math:`\beta_j^\ell, \vect{p}` where :math:`\vect{p}` is the vector of parameters of the covariance model (a subset of :math:`\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda}`) that has been declared as *active* (by default, the full vectors :math:`\vect{\theta}` and :math:`\vect{\sigma}`).
 
 The estimation is done by maximizing the *reduced* log-likelihood of the model, see its expression below.
 
@@ -165,18 +165,18 @@ The default optimizer is :class:`~openturns.TNC` and can be changed thanks to th
 
 It is also possible to proceed as follows:
 
-    - ask for the reduced log-likelihood function of the *GeneralizedLinearModelAlgorithm* thanks to the *getObjectiveFunction()* method
+    - ask for the reduced log-likelihood function of the *GeneralLinearModelAlgorithm* thanks to the *getObjectiveFunction()* method
     - optimize it with respect to the parameters :math:`\vect{\theta}` and  :math:`\vect{\sigma}` using any optimisation algorithms (that can take into account some additional constraints if needed)
-    - set the optimal parameter value into the covariance model used in the *GeneralizedLinearModelAlgorithm*
+    - set the optimal parameter value into the covariance model used in the *GeneralLinearModelAlgorithm*
     - tell the algorithm not to optimize the parameter using *setOptimizeParameter*
 
 The behaviour of the reduction is controlled by the following keys in :class:`~openturns.ResourceMap`:
-    - *ResourceMap.SetAsBooletAsBool('GeneralizedLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate', true)* to use the reduction associated to :math:`\sigma`. It has no effect if :math:`d>1` or if :math:`d=1` and :math:`\sigma` is not part of :math:`\vect{p}`
-    - *ResourceMap.SetAsBool('GeneralizedLinearModelAlgorithm-UnbiasedVariance', true)* allows to use the *unbiased* estimate of :math:`sigma` where :math:`\dfrac{1}{N}` is replaced by :math:`\dfrac{1}{N-p}` in the optimality condition for :math:`\sigma`.
+    - *ResourceMap.SetAsBooletAsBool('GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate', true)* to use the reduction associated to :math:`\sigma`. It has no effect if :math:`d>1` or if :math:`d=1` and :math:`\sigma` is not part of :math:`\vect{p}`
+    - *ResourceMap.SetAsBool('GeneralLinearModelAlgorithm-UnbiasedVariance', true)* allows to use the *unbiased* estimate of :math:`sigma` where :math:`\dfrac{1}{N}` is replaced by :math:`\dfrac{1}{N-p}` in the optimality condition for :math:`\sigma`.
 
 With huge samples, the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierarchical_matrix>`_  implementation could be used if OpenTURNS had been compiled with `hmat-oss` support.
 
-This implementation, which is based on a compressed representation of an approximated covariance matrix (and its Cholesky factor), has a better complexity both in terms of memory requirements and floating point operations. To use it, the `GeneralizedLinearModelAlgorithm-LinearAlgebra` resource map key should be instancied to `HMAT`. Default value of the key is `LAPACK`.
+This implementation, which is based on a compressed representation of an approximated covariance matrix (and its Cholesky factor), has a better complexity both in terms of memory requirements and floating point operations. To use it, the `GeneralLinearModelAlgorithm-LinearAlgebra` resource map key should be instancied to `HMAT`. Default value of the key is `LAPACK`.
 
 A known centered gaussian observation noise :math:`\epsilon_k` can be taken into account
 with :func:`setNoise()`:
@@ -196,7 +196,7 @@ Create the algorithm:
 
 >>> basis = ot.ConstantBasisFactory().build()
 >>> covarianceModel = ot.SquaredExponential(1)
->>> algo = ot.GeneralizedLinearModelAlgorithm(inputSample, outputSample, covarianceModel, basis)
+>>> algo = ot.GeneralLinearModelAlgorithm(inputSample, outputSample, covarianceModel, basis)
 >>> algo.run()
 
 Get the resulting meta model:
@@ -206,7 +206,7 @@ Get the resulting meta model:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GeneralizedLinearModelAlgorithm::getInputTransformation
+%feature("docstring") OT::GeneralLinearModelAlgorithm::getInputTransformation
 "Get the function normalizing the input.
 
 Returns
@@ -216,7 +216,7 @@ transformation : :class:`~openturns.NumericalMathFunction`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GeneralizedLinearModelAlgorithm::setInputTransformation
+%feature("docstring") OT::GeneralLinearModelAlgorithm::setInputTransformation
 "Set the function normalizing the input.
 
 Parameters
@@ -228,7 +228,7 @@ transformation : :class:`~openturns.NumericalMathFunction`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GeneralizedLinearModelAlgorithm::getResult
+%feature("docstring") OT::GeneralLinearModelAlgorithm::getResult
 "Get the results of the metamodel computation.
 
 Returns
@@ -240,7 +240,7 @@ result : :class:`~openturns.GeneralizedLinearModelResult`
 
 //-----------------------------------------------------------------------
 
-%feature("docstring") OT::GeneralizedLinearModelAlgorithm::getInputSample
+%feature("docstring") OT::GeneralLinearModelAlgorithm::getInputSample
 "Accessor to the input sample.
 
 Returns
@@ -250,7 +250,7 @@ inputSample : :class:`~openturns.NumericalSample`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GeneralizedLinearModelAlgorithm::getOutputSample
+%feature("docstring") OT::GeneralLinearModelAlgorithm::getOutputSample
 "Accessor to the output sample.
 
 Returns
@@ -260,7 +260,7 @@ outputSample : :class:`~openturns.NumericalSample`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GeneralizedLinearModelAlgorithm::getObjectiveFunction()
+%feature("docstring") OT::GeneralLinearModelAlgorithm::getObjectiveFunction()
 "Accessor to the log-likelihood function that writes as argument of the covariance's model parameters.
 
 Returns
@@ -286,7 +286,7 @@ Create the algorithm:
 
 >>> basis = ot.ConstantBasisFactory().build()
 >>> covarianceModel = ot.SquaredExponential(1)
->>> algo = ot.GeneralizedLinearModelAlgorithm(inputSample, outputSample, covarianceModel, basis)
+>>> algo = ot.GeneralLinearModelAlgorithm(inputSample, outputSample, covarianceModel, basis)
 >>> algo.run()
 
 Get the log-likelihood function:
@@ -297,7 +297,7 @@ Get the log-likelihood function:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GeneralizedLinearModelAlgorithm::run
+%feature("docstring") OT::GeneralLinearModelAlgorithm::run
 "Compute the response surface.
 
 Notes
@@ -328,7 +328,7 @@ algorithm : :class:`~openturns.OptimizationAlgorithm`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GeneralizedLinearModelAlgorithm::setOptimizeParameters
+%feature("docstring") OT::GeneralLinearModelAlgorithm::setOptimizeParameters
 "Accessor to the covariance model parameters optimization flag.
 
 Parameters
@@ -338,7 +338,7 @@ optimizeParameters : bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GeneralizedLinearModelAlgorithm::getOptimizeParameters
+%feature("docstring") OT::GeneralLinearModelAlgorithm::getOptimizeParameters
 "Accessor to the covariance model parameters optimization flag.
 
 Returns
@@ -348,7 +348,7 @@ optimizeParameters : bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GeneralizedLinearModelAlgorithm::setOptimizationBounds
+%feature("docstring") OT::GeneralLinearModelAlgorithm::setOptimizationBounds
 "Optimization bounds accessor.
 
 Parameters
@@ -358,7 +358,7 @@ bounds : :class:`~openturns.Interval`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GeneralizedLinearModelAlgorithm::getOptimizationBounds
+%feature("docstring") OT::GeneralLinearModelAlgorithm::getOptimizationBounds
 "Optimization bounds accessor.
 
 Returns
@@ -368,7 +368,7 @@ bounds : :class:`~openturns.Interval`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GeneralizedLinearModelAlgorithm::setNoise
+%feature("docstring") OT::GeneralLinearModelAlgorithm::setNoise
 "Observation noise variance accessor.
 
 Parameters
@@ -378,7 +378,7 @@ noise : sequence of positive float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GeneralizedLinearModelAlgorithm::getNoise
+%feature("docstring") OT::GeneralLinearModelAlgorithm::getNoise
 "Observation noise variance accessor.
 
 Parameters

@@ -16,9 +16,9 @@ try:
     print("================")
     # Calibration of default optimizer
     ot.ResourceMap.SetAsNumericalScalar(
-        'GeneralizedLinearModelAlgorithm-DefaultOptimizationLowerBound', 1.0e-5)
+        'GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound', 1.0e-5)
     ot.ResourceMap.SetAsNumericalScalar(
-        'GeneralizedLinearModelAlgorithm-DefaultOptimizationUpperBound', 100)
+        'GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound', 100)
     # Data & estimation
     spatialDimension = 1
     X = ot.Normal().getSample(100)
@@ -44,5 +44,5 @@ try:
 
 except:
     import sys
-    print("t_GeneralizedLinearModelAlgorithm_nlopt.py",
+    print("t_GeneralLinearModelAlgorithm_nlopt.py",
           sys.exc_info()[0], sys.exc_info()[1])

@@ -11,7 +11,7 @@ GLM algorithm
     :toctree: _generated/
     :template: class.rst_t
 
-    GeneralizedLinearModelAlgorithm
+    GeneralLinearModelAlgorithm
     GeneralizedLinearModelResult
 
 

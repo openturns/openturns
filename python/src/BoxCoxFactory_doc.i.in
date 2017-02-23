@@ -23,7 +23,7 @@ for all :math:`x+\alpha_i >0`.
 
 |
 
-BoxCox transformation could alse be performed in the case of the estimation of a generalized linear model through :class:`~openturns.GeneralizedLinearModelAlgorithm`.
+BoxCox transformation could alse be performed in the case of the estimation of a generalized linear model through :class:`~openturns.GeneralLinearModelAlgorithm`.
 The objective is to estimate the most likely surrogate model (generalized linear model) which links input data :math:`x` and :math:`h_{\vect{\lambda}, \vect{\alpha}}(y)`. :math:`\vect{\lambda}` are to be calibrated such as maximizing the generalized linear model's likelihood function. In that context, a :class:`~openturns.CovarianceModel` and a :class:`~openturns.Basis` have to be fixed
 "
 

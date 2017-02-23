@@ -722,19 +722,19 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "FunctionalChaosAlgorithm-LargeSampleSize", 10000);
   setAsUnsignedInteger( "FunctionalChaosAlgorithm-MaximumTotalDegree", 10 );
 
-  // GeneralizedLinearModelAlgorithm parameters //
-  set("GeneralizedLinearModelAlgorithm-LinearAlgebra", "LAPACK");
-  setAsBool("GeneralizedLinearModelAlgorithm-NormalizeData", false);
-  setAsBool("GeneralizedLinearModelAlgorithm-KeepCovariance", true);
-  setAsBool("GeneralizedLinearModelAlgorithm-OptimizeParameters", true);
-  setAsBool("GeneralizedLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate", true);
-  setAsBool("GeneralizedLinearModelAlgorithm-UnbiasedVariance", true);
-  setAsNumericalScalar( "GeneralizedLinearModelAlgorithm-MeanEpsilon", 1.0e-12 );
-  setAsNumericalScalar( "GeneralizedLinearModelAlgorithm-StartingScaling", 1.0e-13 );
-  setAsNumericalScalar( "GeneralizedLinearModelAlgorithm-MaximalScaling", 1.0e5 );
-  setAsNumericalScalar( "GeneralizedLinearModelAlgorithm-DefaultOptimizationLowerBound", 1.0e-2 );
-  setAsNumericalScalar( "GeneralizedLinearModelAlgorithm-DefaultOptimizationUpperBound", 1.0e2 );
-  set("GeneralizedLinearModelAlgorithm-DefaultOptimizationAlgorithm", "TNC");
+  // GeneralLinearModelAlgorithm parameters //
+  set("GeneralLinearModelAlgorithm-LinearAlgebra", "LAPACK");
+  setAsBool("GeneralLinearModelAlgorithm-NormalizeData", false);
+  setAsBool("GeneralLinearModelAlgorithm-KeepCovariance", true);
+  setAsBool("GeneralLinearModelAlgorithm-OptimizeParameters", true);
+  setAsBool("GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate", true);
+  setAsBool("GeneralLinearModelAlgorithm-UnbiasedVariance", true);
+  setAsNumericalScalar( "GeneralLinearModelAlgorithm-MeanEpsilon", 1.0e-12 );
+  setAsNumericalScalar( "GeneralLinearModelAlgorithm-StartingScaling", 1.0e-13 );
+  setAsNumericalScalar( "GeneralLinearModelAlgorithm-MaximalScaling", 1.0e5 );
+  setAsNumericalScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound", 1.0e-2 );
+  setAsNumericalScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound", 1.0e2 );
+  set("GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm", "TNC");
 
   // KrigingAlgorithm parameters //
   setAsNumericalScalar( "KrigingAlgorithm-StartingScaling", 1.0e-13 );

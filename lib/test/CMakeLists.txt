@@ -579,15 +579,15 @@ ot_check_test (FunctionalChaos_nd)
 ot_check_test (KrigingAlgorithm_std)
 ot_check_test (KrigingRandomVector_std)
 ot_check_test (MetaModelValidation_std)
-ot_check_test (GeneralizedLinearModelAlgorithm_std)
+ot_check_test (GeneralLinearModelAlgorithm_std)
 
 if (HMAT_FOUND)
 ot_check_test (KrigingAlgorithm_std_hmat)
-ot_check_test (GeneralizedLinearModelAlgorithm_std_hmat)
+ot_check_test (GeneralLinearModelAlgorithm_std_hmat)
 endif ()
 
 if (NLOPT_FOUND)
-ot_check_test (GeneralizedLinearModelAlgorithm_nlopt)
+ot_check_test (GeneralLinearModelAlgorithm_nlopt)
 endif ()
 
 # Sensitivity

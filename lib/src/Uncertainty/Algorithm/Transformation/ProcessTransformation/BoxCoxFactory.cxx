@@ -33,7 +33,7 @@
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/Cobyla.hxx"
 #include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
-#include "openturns/GeneralizedLinearModelAlgorithm.hxx"
+#include "openturns/GeneralLinearModelAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -170,7 +170,7 @@ public:
     // compute the mean of the transformed sample using the Box-Cox function
     const NumericalSample transformedOutputSample(myBoxFunction(shiftedOutputSample_));
     // Use of GLM to estimate the best generalized linear model
-    GeneralizedLinearModelAlgorithm algo(inputSample_, transformedOutputSample, covarianceModel_, basis_);
+    GeneralLinearModelAlgorithm algo(inputSample_, transformedOutputSample, covarianceModel_, basis_);
     algo.run();
     // Return the optimal log-likelihood
     const NumericalScalar result = algo.getResult().getOptimalLogLikelihood();
@@ -405,7 +405,7 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & inputSample,
   const NumericalSample transformedOutputSample = myBoxFunction(outputSample);
   // Build the GeneralizedLinearModelResult
   // Use of GLM to estimate the best generalized linear model
-  GeneralizedLinearModelAlgorithm algo(inputSample, transformedOutputSample, covarianceModel, basis);
+  GeneralLinearModelAlgorithm algo(inputSample, transformedOutputSample, covarianceModel, basis);
   algo.run();
   // Get result
   result = algo.getResult();

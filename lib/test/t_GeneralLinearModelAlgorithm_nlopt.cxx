@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of GeneralizedLinearModelAlgorithm class
+ *  @brief The test file of GeneralLinearModelAlgorithm class
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -40,8 +40,8 @@ int main(int argc, char *argv[])
     std::cout << "Test using NLOpt" << std::endl;
     std::cout << "================" << std::endl;
     // Calibration of default optimizer
-    ResourceMap::SetAsNumericalScalar("GeneralizedLinearModelAlgorithm-DefaultOptimizationLowerBound", 1.0e-5);
-    ResourceMap::SetAsNumericalScalar("GeneralizedLinearModelAlgorithm-DefaultOptimizationUpperBound", 100);
+    ResourceMap::SetAsNumericalScalar("GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound", 1.0e-5);
+    ResourceMap::SetAsNumericalScalar("GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound", 100);
     // Data & estimation
     const UnsignedInteger spatialDimension = 1;
     NumericalSample X = Normal(0, 1).getSample(100);
@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
     NumericalMathFunction model(inDescription, formula);
     const NumericalSample Y = model(X);
     const Basis basis = QuadraticBasisFactory(spatialDimension).build();
-    GeneralizedLinearModelAlgorithm algo(X, Y, covarianceModel, basis, true);
+    GeneralLinearModelAlgorithm algo(X, Y, covarianceModel, basis, true);
     NLopt solver("LN_NELDERMEAD");
     algo.setOptimizationSolver(solver);
     algo.run();
