@@ -226,17 +226,17 @@ String SpectralModelImplementation::__str__(const String & offset) const
 /* Drawing method */
 Graph SpectralModelImplementation::draw(const UnsignedInteger rowIndex,
                                         const UnsignedInteger columnIndex,
-					const NumericalScalar frequencyMin,
-					const NumericalScalar frequencyMax,
-					const NumericalScalar numFrequencies,
+					const NumericalScalar minimumFrequency,
+					const NumericalScalar maximumFrequency,
+					const UnsignedInteger frequencyNumber,
                                         const Bool module) const
 {
   if (rowIndex >= dimension_) throw InvalidArgumentException(HERE) << "Error: the given row index must be less than " << dimension_ << ", here rowIndex=" << rowIndex;
   if (columnIndex >= dimension_) throw InvalidArgumentException(HERE) << "Error: the given column index must be less than " << dimension_ << ", here columnIndex=" << columnIndex;
-  NumericalSample data(numFrequencies, 2);
-  for (UnsignedInteger i = 0; i < numFrequencies; ++i)
+  NumericalSample data(frequencyNumber, 2);
+  for (UnsignedInteger i = 0; i < frequencyNumber; ++i)
   {
-    const NumericalScalar f = (i * frequencyMin + (numFrequencies - i - 1.0) * frequencyMax) / (numFrequencies - 1.0);
+    const NumericalScalar f = (i * minimumFrequency + (frequencyNumber - i - 1.0) * maximumFrequency) / (frequencyNumber - 1.0);
     const NumericalComplex value((*this)(f)(rowIndex, columnIndex));
     data[i][0] = f;
     if (module) data[i][1] = std::abs(value);

@@ -81,10 +81,13 @@ NumericalComplex SpectralModel::computeStandardRepresentative(const NumericalSca
 
 /* Drawing method */
 Graph SpectralModel::draw(const UnsignedInteger rowIndex,
-                          const UnsignedInteger columnIndex,
-                          const Bool module) const
+			  const UnsignedInteger columnIndex,
+			  const NumericalScalar minimumFrequency,
+			  const NumericalScalar maximumFrequency,
+			  const UnsignedInteger frequencyNumber,
+			  const Bool module) const
 {
-  return getImplementation()->draw(rowIndex, columnIndex, module);
+  return getImplementation()->draw(rowIndex, columnIndex, minimumFrequency, maximumFrequency, frequencyNumber, module);
 }
 
 /** Amplitude accessor */
