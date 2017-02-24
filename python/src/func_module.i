@@ -88,9 +88,9 @@
 %include PiecewiseLinearEvaluationImplementation.i
 %include PiecewiseHermiteEvaluationImplementation.i
 #ifdef OPENTURNS_HAVE_MUPARSER
-%include AnalyticalNumericalMathEvaluationImplementation.i
-%include AnalyticalNumericalMathGradientImplementation.i
-%include AnalyticalNumericalMathHessianImplementation.i
+%include SymbolicEvaluation.i
+%include SymbolicGradient.i
+%include SymbolicHessian.i
 #endif
 %include DatabaseFunction.i
 %include DatabaseNumericalMathEvaluationImplementation.i

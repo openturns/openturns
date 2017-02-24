@@ -12,7 +12,7 @@
  *
  */
 
-#include "openturns/AnalyticalNumericalMathGradientImplementation.hxx"
+#include "openturns/SymbolicGradient.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "Ev3/expression.h"
 #include "Ev3/parser.h"
@@ -23,58 +23,58 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(AnalyticalNumericalMathGradientImplementation);
+CLASSNAMEINIT(SymbolicGradient);
 
-static const Factory<AnalyticalNumericalMathGradientImplementation> Factory_AnalyticalNumericalMathGradientImplementation;
+static const Factory<SymbolicGradient> Factory_SymbolicGradient;
 
 /* Default constructor */
-AnalyticalNumericalMathGradientImplementation::AnalyticalNumericalMathGradientImplementation()
+SymbolicGradient::SymbolicGradient()
   : NumericalMathGradientImplementation()
   , isInitialized_(false)
   , isAnalytical_(true)
   , evaluation_()
 {
   // Nothing to do
-} // AnalyticalNumericalMathGradientImplementation
+} // SymbolicGradient
 
 /* Default constructor */
-AnalyticalNumericalMathGradientImplementation::AnalyticalNumericalMathGradientImplementation(const AnalyticalNumericalMathEvaluationImplementation & evaluation)
+SymbolicGradient::SymbolicGradient(const SymbolicEvaluation & evaluation)
   : NumericalMathGradientImplementation()
   , isInitialized_(false)
   , isAnalytical_(true)
   , evaluation_(evaluation)
 {
   // Nothing to do
-} // AnalyticalNumericalMathGradientImplementation
+} // SymbolicGradient
 
 
 /* Virtual constructor */
-AnalyticalNumericalMathGradientImplementation * AnalyticalNumericalMathGradientImplementation::clone() const
+SymbolicGradient * SymbolicGradient::clone() const
 {
-  AnalyticalNumericalMathGradientImplementation * result = new AnalyticalNumericalMathGradientImplementation(*this);
+  SymbolicGradient * result = new SymbolicGradient(*this);
   result->isInitialized_ = false;
   return result;
 }
 
 
 /* Comparison operator */
-Bool AnalyticalNumericalMathGradientImplementation::operator ==(const AnalyticalNumericalMathGradientImplementation & other) const
+Bool SymbolicGradient::operator ==(const SymbolicGradient & other) const
 {
   return (evaluation_ == other.evaluation_);
 }
 
 /* String converter */
-String AnalyticalNumericalMathGradientImplementation::__repr__() const
+String SymbolicGradient::__repr__() const
 {
   OSS oss(true);
-  oss << "class=" << AnalyticalNumericalMathGradientImplementation::GetClassName()
+  oss << "class=" << SymbolicGradient::GetClassName()
       << " name=" << getName()
       << " evaluation=" << evaluation_;
   return oss;
 }
 
 /* String converter */
-String AnalyticalNumericalMathGradientImplementation::__str__(const String & offset) const
+String SymbolicGradient::__str__(const String & offset) const
 {
   OSS oss(false);
   oss << offset;
@@ -116,7 +116,7 @@ String AnalyticalNumericalMathGradientImplementation::__str__(const String & off
 
 /* Must initialize the parser at the first call to operator() as the
    reference associated with the variables may have change after the construction */
-void AnalyticalNumericalMathGradientImplementation::initialize() const
+void SymbolicGradient::initialize() const
 {
   if (isInitialized_) return;
   isAnalytical_ = false;
@@ -167,7 +167,7 @@ void AnalyticalNumericalMathGradientImplementation::initialize() const
 }
 
 /* Gradient */
-Matrix AnalyticalNumericalMathGradientImplementation::gradient(const NumericalPoint & inP) const
+Matrix SymbolicGradient::gradient(const NumericalPoint & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a NumericalMathFunction with an argument of invalid dimension";
@@ -190,19 +190,19 @@ Matrix AnalyticalNumericalMathGradientImplementation::gradient(const NumericalPo
 }
 
 /* Accessor for input point dimension */
-UnsignedInteger AnalyticalNumericalMathGradientImplementation::getInputDimension() const
+UnsignedInteger SymbolicGradient::getInputDimension() const
 {
   return evaluation_.getInputDimension();
 }
 
 /* Accessor for output point dimension */
-UnsignedInteger AnalyticalNumericalMathGradientImplementation::getOutputDimension() const
+UnsignedInteger SymbolicGradient::getOutputDimension() const
 {
   return evaluation_.getOutputDimension();
 }
 
 /* Accessor to a specific formula */
-String AnalyticalNumericalMathGradientImplementation::getFormula(const UnsignedInteger i,
+String SymbolicGradient::getFormula(const UnsignedInteger i,
     const UnsignedInteger j) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
@@ -212,14 +212,14 @@ String AnalyticalNumericalMathGradientImplementation::getFormula(const UnsignedI
 }
 
 /* Get the i-th marginal function */
-AnalyticalNumericalMathGradientImplementation::Implementation AnalyticalNumericalMathGradientImplementation::getMarginal(const UnsignedInteger i) const
+SymbolicGradient::Implementation SymbolicGradient::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal gradient must be in the range [0, outputDimension-1]";
   return getMarginal(Indices(1, i));
 }
 
 /* Get the function corresponding to indices components */
-AnalyticalNumericalMathGradientImplementation::Implementation AnalyticalNumericalMathGradientImplementation::getMarginal(const Indices & indices) const
+SymbolicGradient::Implementation SymbolicGradient::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal gradient must be in the range [0, dim-1] and must be different";
   const UnsignedInteger marginalDimension = indices.getSize();
@@ -232,22 +232,22 @@ AnalyticalNumericalMathGradientImplementation::Implementation AnalyticalNumerica
     marginalFormulas[i] = formulas[indices[i]];
     marginalOutputNames[i] = outputNames[indices[i]];
   }
-  return new AnalyticalNumericalMathGradientImplementation(AnalyticalNumericalMathEvaluationImplementation(evaluation_.getInputVariablesNames(), marginalOutputNames, marginalFormulas));
+  return new SymbolicGradient(SymbolicEvaluation(evaluation_.getInputVariablesNames(), marginalOutputNames, marginalFormulas));
 }
 
 /* Method save() stores the object through the StorageManager */
-void AnalyticalNumericalMathGradientImplementation::save(Advocate & adv) const
+void SymbolicGradient::save(Advocate & adv) const
 {
   NumericalMathGradientImplementation::save(adv);
   adv.saveAttribute( "evaluation_", evaluation_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
-void AnalyticalNumericalMathGradientImplementation::load(Advocate & adv)
+void SymbolicGradient::load(Advocate & adv)
 {
   NumericalMathGradientImplementation::load(adv);
   adv.loadAttribute( "evaluation_", evaluation_ );
-  *this = AnalyticalNumericalMathGradientImplementation(evaluation_);
+  *this = SymbolicGradient(evaluation_);
 }
 
 END_NAMESPACE_OPENTURNS

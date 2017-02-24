@@ -25,7 +25,7 @@
 #include "openturns/ComposedNumericalMathEvaluationImplementation.hxx"
 #include "openturns/OTconfig.hxx"
 #ifdef OPENTURNS_HAVE_MUPARSER
-#include "openturns/AnalyticalNumericalMathEvaluationImplementation.hxx"
+#include "openturns/SymbolicEvaluation.hxx"
 #endif
 #include "openturns/LinearNumericalMathEvaluationImplementation.hxx"
 #include "openturns/Exception.hxx"
@@ -421,7 +421,7 @@ NumericalMathEvaluationImplementation::Implementation NumericalMathEvaluationImp
     output[index] = currentOutputDescription[indices[index]];
     formulas[index] = input[indices[index]];
   }
-  const AnalyticalNumericalMathEvaluationImplementation left(input, output, formulas);
+  const SymbolicEvaluation left(input, output, formulas);
 #else
   NumericalPoint center(inputDimension);
   Matrix linear(inputDimension, outputDimension);

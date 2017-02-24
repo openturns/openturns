@@ -12,8 +12,8 @@
  *
  */
 
-#ifndef OPENTURNS_ANALYTICALNUMERICALMATHEVALUATIONIMPLEMENTATION_HXX
-#define OPENTURNS_ANALYTICALNUMERICALMATHEVALUATIONIMPLEMENTATION_HXX
+#ifndef OPENTURNS_SYMBOLICEVALUATION_HXX
+#define OPENTURNS_SYMBOLICEVALUATION_HXX
 
 #include "openturns/NumericalMathEvaluationImplementation.hxx"
 #include "openturns/AnalyticalParser.hxx"
@@ -22,29 +22,29 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class AnalyticalNumericalMathEvaluationImplementation
+ * @class SymbolicEvaluation
  *
  * The class that implement the evaluation of an analytical function.
  */
-class OT_API AnalyticalNumericalMathEvaluationImplementation
+class OT_API SymbolicEvaluation
   : public NumericalMathEvaluationImplementation
 {
   CLASSNAME;
 public:
 
   /** Default constructor */
-  AnalyticalNumericalMathEvaluationImplementation();
+  SymbolicEvaluation();
 
   /** Default constructor */
-  AnalyticalNumericalMathEvaluationImplementation(const Description & inputVariablesNames,
+  SymbolicEvaluation(const Description & inputVariablesNames,
       const Description & outputVariablesNames,
       const Description & formulas);
 
   /** Virtual constructor */
-  virtual AnalyticalNumericalMathEvaluationImplementation * clone() const;
+  virtual SymbolicEvaluation * clone() const;
 
   /** Comparison operator */
-  Bool operator ==(const AnalyticalNumericalMathEvaluationImplementation & other) const;
+  Bool operator ==(const SymbolicEvaluation & other) const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -85,8 +85,8 @@ public:
 protected:
 
 private:
-  friend class AnalyticalNumericalMathGradientImplementation;
-  friend class AnalyticalNumericalMathHessianImplementation;
+  friend class SymbolicGradient;
+  friend class SymbolicHessian;
 
   Description inputVariablesNames_;
   Description outputVariablesNames_;
@@ -95,9 +95,9 @@ private:
   /** A mathematical expression parser from the muParser library */
   mutable AnalyticalParser parser_;
 
-}; /* class AnalyticalNumericalMathEvaluationImplementation */
+}; /* class SymbolicEvaluation */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_ANALYTICALNUMERICALMATHEVALUATIONIMPLEMENTATION_HXX */
+#endif /* OPENTURNS_SYMBOLICEVALUATION_HXX */

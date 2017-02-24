@@ -13,30 +13,30 @@
  */
 #include <iomanip>
 
-#include "openturns/AnalyticalNumericalMathEvaluationImplementation.hxx"
+#include "openturns/SymbolicEvaluation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Os.hxx"
 #include "openturns/OTconfig.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(AnalyticalNumericalMathEvaluationImplementation);
+CLASSNAMEINIT(SymbolicEvaluation);
 
-static const Factory<AnalyticalNumericalMathEvaluationImplementation> Factory_AnalyticalNumericalMathEvaluationImplementation;
+static const Factory<SymbolicEvaluation> Factory_SymbolicEvaluation;
 
 
 /* Default constructor */
-AnalyticalNumericalMathEvaluationImplementation::AnalyticalNumericalMathEvaluationImplementation()
+SymbolicEvaluation::SymbolicEvaluation()
   : NumericalMathEvaluationImplementation()
   , inputVariablesNames_()
   , outputVariablesNames_()
   , formulas_()
 {
   // Nothing to do
-} // AnalyticalNumericalMathEvaluationImplementation
+} // SymbolicEvaluation
 
 /* Default constructor */
-AnalyticalNumericalMathEvaluationImplementation::AnalyticalNumericalMathEvaluationImplementation(const Description & inputVariablesNames,
+SymbolicEvaluation::SymbolicEvaluation(const Description & inputVariablesNames,
     const Description & outputVariablesNames,
     const Description & formulas)
   : NumericalMathEvaluationImplementation()
@@ -51,27 +51,27 @@ AnalyticalNumericalMathEvaluationImplementation::AnalyticalNumericalMathEvaluati
   parser_.setVariablesFormulas(inputVariablesNames, formulas);
   setInputDescription(inputVariablesNames_);
   setOutputDescription(outputVariablesNames_);
-} // AnalyticalNumericalMathEvaluationImplementation
+} // SymbolicEvaluation
 
 
 /* Virtual constructor */
-AnalyticalNumericalMathEvaluationImplementation * AnalyticalNumericalMathEvaluationImplementation::clone() const
+SymbolicEvaluation * SymbolicEvaluation::clone() const
 {
-  return new AnalyticalNumericalMathEvaluationImplementation(*this);
+  return new SymbolicEvaluation(*this);
 }
 
 
 /* Comparison operator */
-Bool AnalyticalNumericalMathEvaluationImplementation::operator ==(const AnalyticalNumericalMathEvaluationImplementation & other) const
+Bool SymbolicEvaluation::operator ==(const SymbolicEvaluation & other) const
 {
   return true;
 }
 
 /* String converter */
-String AnalyticalNumericalMathEvaluationImplementation::__repr__() const
+String SymbolicEvaluation::__repr__() const
 {
   OSS oss(true);
-  oss << "class=" << AnalyticalNumericalMathEvaluationImplementation::GetClassName()
+  oss << "class=" << SymbolicEvaluation::GetClassName()
       << " name=" << getName()
       << " inputVariablesNames=" << inputVariablesNames_
       << " outputVariablesNames=" << outputVariablesNames_
@@ -80,7 +80,7 @@ String AnalyticalNumericalMathEvaluationImplementation::__repr__() const
 }
 
 /* String converter */
-String AnalyticalNumericalMathEvaluationImplementation::__str__(const String & offset) const
+String SymbolicEvaluation::__str__(const String & offset) const
 {
   OSS oss(false);
   oss << offset << getInputDescription() << "->" << formulas_;
@@ -90,7 +90,7 @@ String AnalyticalNumericalMathEvaluationImplementation::__str__(const String & o
 
 
 /* Operator () */
-NumericalPoint AnalyticalNumericalMathEvaluationImplementation::operator() (const NumericalPoint & inP) const
+NumericalPoint SymbolicEvaluation::operator() (const NumericalPoint & inP) const
 {
   NumericalPoint result(parser_(inP));
   ++ callsNumber_;
@@ -103,7 +103,7 @@ NumericalPoint AnalyticalNumericalMathEvaluationImplementation::operator() (cons
 }
 
 /* Operator () */
-NumericalSample AnalyticalNumericalMathEvaluationImplementation::operator() (const NumericalSample & inS) const
+NumericalSample SymbolicEvaluation::operator() (const NumericalSample & inS) const
 {
   UnsignedInteger size = inS.getSize();
   NumericalSample outSample(size, getOutputDimension());
@@ -113,26 +113,26 @@ NumericalSample AnalyticalNumericalMathEvaluationImplementation::operator() (con
 }
 
 /* Accessor for input point dimension */
-UnsignedInteger AnalyticalNumericalMathEvaluationImplementation::getInputDimension() const
+UnsignedInteger SymbolicEvaluation::getInputDimension() const
 {
   return inputVariablesNames_.getSize();
 }
 
 /* Accessor for output point dimension */
-UnsignedInteger AnalyticalNumericalMathEvaluationImplementation::getOutputDimension() const
+UnsignedInteger SymbolicEvaluation::getOutputDimension() const
 {
   return outputVariablesNames_.getSize();
 }
 
 /* Get the i-th marginal function */
-AnalyticalNumericalMathEvaluationImplementation::Implementation AnalyticalNumericalMathEvaluationImplementation::getMarginal(const UnsignedInteger i) const
+SymbolicEvaluation::Implementation SymbolicEvaluation::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
-  return new AnalyticalNumericalMathEvaluationImplementation(inputVariablesNames_, Description(1, outputVariablesNames_[i]), Description(1, formulas_[i]));
+  return new SymbolicEvaluation(inputVariablesNames_, Description(1, outputVariablesNames_[i]), Description(1, formulas_[i]));
 }
 
 /* Get the function corresponding to indices components */
-AnalyticalNumericalMathEvaluationImplementation::Implementation AnalyticalNumericalMathEvaluationImplementation::getMarginal(const Indices & indices) const
+SymbolicEvaluation::Implementation SymbolicEvaluation::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal function must be in the range [0, dim-1] and must be different";
   const UnsignedInteger size = indices.getSize();
@@ -144,29 +144,29 @@ AnalyticalNumericalMathEvaluationImplementation::Implementation AnalyticalNumeri
     marginalOutputVariablesNames[i] = outputVariablesNames_[j];
     marginalFormulas[i] = formulas_[j];
   }
-  return new AnalyticalNumericalMathEvaluationImplementation(inputVariablesNames_, marginalOutputVariablesNames, marginalFormulas);
+  return new SymbolicEvaluation(inputVariablesNames_, marginalOutputVariablesNames, marginalFormulas);
 }
 
 /* Accessor to the input variables names */
-Description AnalyticalNumericalMathEvaluationImplementation::getInputVariablesNames() const
+Description SymbolicEvaluation::getInputVariablesNames() const
 {
   return inputVariablesNames_;
 }
 
 /* Accessor to the output variables names */
-Description AnalyticalNumericalMathEvaluationImplementation::getOutputVariablesNames() const
+Description SymbolicEvaluation::getOutputVariablesNames() const
 {
   return outputVariablesNames_;
 }
 
 /* Accessor to the formulas */
-Description AnalyticalNumericalMathEvaluationImplementation::getFormulas() const
+Description SymbolicEvaluation::getFormulas() const
 {
   return formulas_;
 }
 
 /* Method save() stores the object through the StorageManager */
-void AnalyticalNumericalMathEvaluationImplementation::save(Advocate & adv) const
+void SymbolicEvaluation::save(Advocate & adv) const
 {
   NumericalMathEvaluationImplementation::save(adv);
   adv.saveAttribute( "inputVariablesNames_", inputVariablesNames_ );
@@ -175,13 +175,13 @@ void AnalyticalNumericalMathEvaluationImplementation::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void AnalyticalNumericalMathEvaluationImplementation::load(Advocate & adv)
+void SymbolicEvaluation::load(Advocate & adv)
 {
   NumericalMathEvaluationImplementation::load(adv);
   adv.loadAttribute( "inputVariablesNames_", inputVariablesNames_ );
   adv.loadAttribute( "outputVariablesNames_", outputVariablesNames_ );
   adv.loadAttribute( "formulas_", formulas_ );
-  *this = AnalyticalNumericalMathEvaluationImplementation(inputVariablesNames_, outputVariablesNames_, formulas_);
+  *this = SymbolicEvaluation(inputVariablesNames_, outputVariablesNames_, formulas_);
 }
 
 END_NAMESPACE_OPENTURNS

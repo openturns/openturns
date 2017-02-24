@@ -12,7 +12,7 @@
  *
  */
 
-#include "openturns/AnalyticalNumericalMathHessianImplementation.hxx"
+#include "openturns/SymbolicHessian.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "Ev3/expression.h"
 #include "Ev3/parser.h"
@@ -24,59 +24,59 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(AnalyticalNumericalMathHessianImplementation);
+CLASSNAMEINIT(SymbolicHessian);
 
-static const Factory<AnalyticalNumericalMathHessianImplementation> Factory_AnalyticalNumericalMathHessianImplementation;
+static const Factory<SymbolicHessian> Factory_SymbolicHessian;
 
 
 /* Default constructor */
-AnalyticalNumericalMathHessianImplementation::AnalyticalNumericalMathHessianImplementation()
+SymbolicHessian::SymbolicHessian()
   : NumericalMathHessianImplementation()
   , isInitialized_(false)
   , isAnalytical_(true)
   , evaluation_()
 {
   // Nothing to do
-} // AnalyticalNumericalMathHessianImplementation
+} // SymbolicHessian
 
 /* Default constructor */
-AnalyticalNumericalMathHessianImplementation::AnalyticalNumericalMathHessianImplementation(const AnalyticalNumericalMathEvaluationImplementation & evaluation)
+SymbolicHessian::SymbolicHessian(const SymbolicEvaluation & evaluation)
   : NumericalMathHessianImplementation()
   , isInitialized_(false)
   , isAnalytical_(true)
   , evaluation_(evaluation)
 {
   // Nothing to do
-} // AnalyticalNumericalMathHessianImplementation
+} // SymbolicHessian
 
 
 /* Virtual constructor */
-AnalyticalNumericalMathHessianImplementation * AnalyticalNumericalMathHessianImplementation::clone() const
+SymbolicHessian * SymbolicHessian::clone() const
 {
-  AnalyticalNumericalMathHessianImplementation * result = new AnalyticalNumericalMathHessianImplementation(*this);
+  SymbolicHessian * result = new SymbolicHessian(*this);
   result->isInitialized_ = false;
   return result;
 }
 
 
 /* Comparison operator */
-Bool AnalyticalNumericalMathHessianImplementation::operator ==(const AnalyticalNumericalMathHessianImplementation & other) const
+Bool SymbolicHessian::operator ==(const SymbolicHessian & other) const
 {
   return true;
 }
 
 /* String converter */
-String AnalyticalNumericalMathHessianImplementation::__repr__() const
+String SymbolicHessian::__repr__() const
 {
   OSS oss(true);
-  oss << "class=" << AnalyticalNumericalMathHessianImplementation::GetClassName()
+  oss << "class=" << SymbolicHessian::GetClassName()
       << " name=" << getName()
       << " evaluation=" << evaluation_;
   return oss;
 }
 
 /* String converter */
-String AnalyticalNumericalMathHessianImplementation::__str__(const String & offset) const
+String SymbolicHessian::__str__(const String & offset) const
 {
   OSS oss(false);
   oss << offset;
@@ -127,7 +127,7 @@ String AnalyticalNumericalMathHessianImplementation::__str__(const String & offs
 
 /* Must initialize the parser at the first call to operator() as the
    reference associated with the variables may have change after the construction */
-void AnalyticalNumericalMathHessianImplementation::initialize() const
+void SymbolicHessian::initialize() const
 {
   if (isInitialized_) return;
 
@@ -194,7 +194,7 @@ void AnalyticalNumericalMathHessianImplementation::initialize() const
 }
 
 /* Hessian */
-SymmetricTensor AnalyticalNumericalMathHessianImplementation::hessian(const NumericalPoint & inP) const
+SymmetricTensor SymbolicHessian::hessian(const NumericalPoint & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a NumericalMathFunction with an argument of invalid dimension";
@@ -220,7 +220,7 @@ SymmetricTensor AnalyticalNumericalMathHessianImplementation::hessian(const Nume
 }
 
 /* Accessor to a specific formula */
-String AnalyticalNumericalMathHessianImplementation::getFormula(const UnsignedInteger i,
+String SymbolicHessian::getFormula(const UnsignedInteger i,
     const UnsignedInteger j,
     const UnsignedInteger k) const
 {
@@ -247,26 +247,26 @@ String AnalyticalNumericalMathHessianImplementation::getFormula(const UnsignedIn
 }
 
 /* Accessor for input point dimension */
-UnsignedInteger AnalyticalNumericalMathHessianImplementation::getInputDimension() const
+UnsignedInteger SymbolicHessian::getInputDimension() const
 {
   return evaluation_.getInputDimension();
 }
 
 /* Accessor for output point dimension */
-UnsignedInteger AnalyticalNumericalMathHessianImplementation::getOutputDimension() const
+UnsignedInteger SymbolicHessian::getOutputDimension() const
 {
   return evaluation_.getOutputDimension();
 }
 
 /* Get the i-th marginal function */
-AnalyticalNumericalMathHessianImplementation::Implementation AnalyticalNumericalMathHessianImplementation::getMarginal(const UnsignedInteger i) const
+SymbolicHessian::Implementation SymbolicHessian::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal hessian must be in the range [0, outputDimension-1]";
   return getMarginal(Indices(1, i));
 }
 
 /* Get the function corresponding to indices components */
-AnalyticalNumericalMathHessianImplementation::Implementation AnalyticalNumericalMathHessianImplementation::getMarginal(const Indices & indices) const
+SymbolicHessian::Implementation SymbolicHessian::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal hessian must be in the range [0, dim-1] and must be different";
   const UnsignedInteger marginalDimension = indices.getSize();
@@ -279,22 +279,22 @@ AnalyticalNumericalMathHessianImplementation::Implementation AnalyticalNumerical
     marginalFormulas[i] = formulas[indices[i]];
     marginalOutputNames[i] = outputNames[indices[i]];
   }
-  return new AnalyticalNumericalMathHessianImplementation(AnalyticalNumericalMathEvaluationImplementation(evaluation_.getInputVariablesNames(), marginalOutputNames, marginalFormulas));
+  return new SymbolicHessian(SymbolicEvaluation(evaluation_.getInputVariablesNames(), marginalOutputNames, marginalFormulas));
 }
 
 /* Method save() stores the object through the StorageManager */
-void AnalyticalNumericalMathHessianImplementation::save(Advocate & adv) const
+void SymbolicHessian::save(Advocate & adv) const
 {
   NumericalMathHessianImplementation::save(adv);
   adv.saveAttribute( "evaluation_", evaluation_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
-void AnalyticalNumericalMathHessianImplementation::load(Advocate & adv)
+void SymbolicHessian::load(Advocate & adv)
 {
   NumericalMathHessianImplementation::load(adv);
   adv.loadAttribute( "evaluation_", evaluation_ );
-  *this = AnalyticalNumericalMathHessianImplementation(evaluation_);
+  *this = SymbolicHessian(evaluation_);
 }
 
 END_NAMESPACE_OPENTURNS

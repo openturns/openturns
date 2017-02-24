@@ -1,4 +1,4 @@
-myInverseTrendFunc=class=InverseTrendTransform evaluation=class=AnalyticalNumericalMathEvaluationImplementation name=Unnamed inputVariablesNames=[t] outputVariablesNames=[y0,y1] formulas=[sin(t),cos(t)]
+myInverseTrendFunc=class=InverseTrendTransform evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[t] outputVariablesNames=[y0,y1] formulas=[sin(t),cos(t)]
 myInverseTrendFunc input description=[y0,y1]
 myInverseTrendFunc input dimension=2
 myInverseTrendFunc output description=[y0,y1]

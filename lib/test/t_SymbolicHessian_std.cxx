@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- * @brief The test file of class AnalyticalNumericalMathHessianImplementation for standard methods
+ * @brief The test file of class SymbolicHessian for standard methods
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -39,8 +39,8 @@ int main(int argc, char *argv[])
     outputNames[0] = "y0";
     Description formulas(1);
     formulas[0] = "x0^2+2*x1+3*x2^3";
-    AnalyticalNumericalMathEvaluationImplementation evaluation(inputNames, outputNames, formulas);
-    AnalyticalNumericalMathHessianImplementation hessian(evaluation);
+    SymbolicEvaluation evaluation(inputNames, outputNames, formulas);
+    SymbolicHessian hessian(evaluation);
     fullprint << "hessian=" << hessian << std::endl;
     NumericalPoint point(3);
     point[0] = -1.0;

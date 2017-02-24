@@ -12,36 +12,36 @@
  *
  */
 
-#ifndef OPENTURNS_ANALYTICALNUMERICALMATHHESSIANIMPLEMENTATION_HXX
-#define OPENTURNS_ANALYTICALNUMERICALMATHHESSIANIMPLEMENTATION_HXX
+#ifndef OPENTURNS_SYMBOLICHESSIAN_HXX
+#define OPENTURNS_SYMBOLICHESSIAN_HXX
 
 #include "openturns/NumericalMathHessianImplementation.hxx"
-#include "openturns/AnalyticalNumericalMathEvaluationImplementation.hxx"
+#include "openturns/SymbolicEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class AnalyticalNumericalMathHessianImplementation
+ * @class SymbolicHessian
  *
  * The class that implement the Hessian of analytical functions.
  */
-class OT_API AnalyticalNumericalMathHessianImplementation
+class OT_API SymbolicHessian
   : public NumericalMathHessianImplementation
 {
   CLASSNAME;
 public:
 
   /** Default constructor */
-  AnalyticalNumericalMathHessianImplementation();
+  SymbolicHessian();
 
   /** Default constructor */
-  AnalyticalNumericalMathHessianImplementation(const AnalyticalNumericalMathEvaluationImplementation & evaluation);
+  SymbolicHessian(const SymbolicEvaluation & evaluation);
 
   /** Virtual constructor */
-  virtual AnalyticalNumericalMathHessianImplementation * clone() const;
+  virtual SymbolicHessian * clone() const;
 
   /** Comparison operator */
-  Bool operator ==(const AnalyticalNumericalMathHessianImplementation & other) const;
+  Bool operator ==(const SymbolicHessian & other) const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -84,14 +84,14 @@ private:
 
   mutable Bool isInitialized_;
   mutable Bool isAnalytical_;
-  AnalyticalNumericalMathEvaluationImplementation evaluation_;
+  SymbolicEvaluation evaluation_;
 
   /** A mathematical expression parser from the muParser library */
   mutable AnalyticalParser parser_;
 
-}; /* class AnalyticalNumericalMathHessianImplementation */
+}; /* class SymbolicHessian */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_ANALYTICALNUMERICALMATHHESSIANIMPLEMENTATION_HXX */
+#endif /* OPENTURNS_SYMBOLICHESSIAN_HXX */

@@ -1,4 +1,0 @@
-evaluation=class=AnalyticalNumericalMathEvaluationImplementation name=Unnamed inputVariablesNames=[x0,x1,x2] outputVariablesNames=[y0,y1] formulas=[x0^2+2*x1+3*x2^3,cos(x0-sin(x1 * x2))]
-value at class=NumericalPoint name=Unnamed dimension=3 values=[-1,4,-4]=class=NumericalPoint name=Unnamed dimension=2 values=[-183,0.279135]
-Marginal 0=class=AnalyticalNumericalMathEvaluationImplementation name=Unnamed inputVariablesNames=[x0,x1,x2] outputVariablesNames=[y0] formulas=[x0^2+2*x1+3*x2^3]
-Marginal 1=class=AnalyticalNumericalMathEvaluationImplementation name=Unnamed inputVariablesNames=[x0,x1,x2] outputVariablesNames=[y1] formulas=[cos(x0-sin(x1 * x2))]

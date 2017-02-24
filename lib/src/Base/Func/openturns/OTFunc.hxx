@@ -27,9 +27,9 @@
 #include "openturns/AggregatedNumericalMathGradientImplementation.hxx"
 #include "openturns/AggregatedNumericalMathHessianImplementation.hxx"
 #ifdef OPENTURNS_HAVE_MUPARSER
-#include "openturns/AnalyticalNumericalMathEvaluationImplementation.hxx"
-#include "openturns/AnalyticalNumericalMathGradientImplementation.hxx"
-#include "openturns/AnalyticalNumericalMathHessianImplementation.hxx"
+#include "openturns/SymbolicEvaluation.hxx"
+#include "openturns/SymbolicGradient.hxx"
+#include "openturns/SymbolicHessian.hxx"
 #endif
 #include "openturns/Basis.hxx"
 #include "openturns/BasisSequence.hxx"

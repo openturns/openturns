@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- * @brief The test file of class AnalyticalNumericalMathEvaluationImplementation for standard methods
+ * @brief The test file of class SymbolicGradient for standard methods
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -35,21 +35,18 @@ int main(int argc, char *argv[])
     inputNames[0] = "x0";
     inputNames[1] = "x1";
     inputNames[2] = "x2";
-    Description outputNames(2);
+    Description outputNames(1);
     outputNames[0] = "y0";
-    outputNames[1] = "y1";
-    Description formulas(2);
+    Description formulas(1);
     formulas[0] = "x0^2+2*x1+3*x2^3";
-    formulas[1] = "cos(x0-sin(x1 * x2))";
-    AnalyticalNumericalMathEvaluationImplementation evaluation(inputNames, outputNames, formulas);
-    fullprint << "evaluation=" << evaluation << std::endl;
+    SymbolicEvaluation evaluation(inputNames, outputNames, formulas);
+    SymbolicGradient gradient(evaluation);
+    fullprint << "gradient=" << gradient << std::endl;
     NumericalPoint point(3);
     point[0] = -1.0;
-    point[1] =  4.0;
-    point[2] = -4.0;
-    fullprint << "value at " << point << "=" << evaluation(point) << std::endl;
-    for (UnsignedInteger i = 0; i < evaluation.getOutputDimension(); ++i)
-      fullprint << "Marginal " << i << "=" << evaluation.getMarginal(i)->__repr__() << std::endl;
+    point[0] =  4.0;
+    point[1] = -4.0;
+    fullprint << "value at " << point << "=" << gradient.gradient(point) << std::endl;
   }
   catch (TestFailed & ex)
   {

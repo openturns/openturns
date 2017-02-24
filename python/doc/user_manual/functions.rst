@@ -81,7 +81,7 @@ Evaluation functions
 
     NumericalMathEvaluationImplementation
     AggregatedNumericalMathEvaluationImplementation
-    AnalyticalNumericalMathEvaluationImplementation
+    SymbolicEvaluation
     ComposedNumericalMathEvaluationImplementation
     DatabaseNumericalMathEvaluationImplementation
     DualLinearCombinationEvaluationImplementation
@@ -106,7 +106,7 @@ Gradient functions
     :template: class.rst_t
 
     NumericalMathGradientImplementation
-    AnalyticalNumericalMathGradientImplementation
+    SymbolicGradient
     ComposedNumericalMathGradientImplementation
     ConstantNumericalMathGradientImplementation
     DualLinearCombinationGradientImplementation
@@ -124,7 +124,7 @@ Hessian functions
     :template: class.rst_t
 
     NumericalMathHessianImplementation
-    AnalyticalNumericalMathHessianImplementation
+    SymbolicHessian
     ComposedNumericalMathHessianImplementation
     ConstantNumericalMathHessianImplementation
     DualLinearCombinationHessianImplementation

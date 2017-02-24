@@ -12,36 +12,36 @@
  *
  */
 
-#ifndef OPENTURNS_ANALYTICALNUMERICALMATHGRADIENTIMPLEMENTATION_HXX
-#define OPENTURNS_ANALYTICALNUMERICALMATHGRADIENTIMPLEMENTATION_HXX
+#ifndef OPENTURNS_SYMBOLICGRADIENT_HXX
+#define OPENTURNS_SYMBOLICGRADIENT_HXX
 
 #include "openturns/NumericalMathGradientImplementation.hxx"
-#include "openturns/AnalyticalNumericalMathEvaluationImplementation.hxx"
+#include "openturns/SymbolicEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class AnalyticalNumericalMathGradientImplementation
+ * @class SymbolicGradient
  *
  * The class that implement the gradient of an analytical function.
  */
-class OT_API AnalyticalNumericalMathGradientImplementation
+class OT_API SymbolicGradient
   : public NumericalMathGradientImplementation
 {
   CLASSNAME;
 public:
 
   /** Default constructor */
-  AnalyticalNumericalMathGradientImplementation();
+  SymbolicGradient();
 
   /** Default constructor */
-  AnalyticalNumericalMathGradientImplementation(const AnalyticalNumericalMathEvaluationImplementation & evaluation);
+  SymbolicGradient(const SymbolicEvaluation & evaluation);
 
   /** Virtual constructor */
-  virtual AnalyticalNumericalMathGradientImplementation * clone() const;
+  virtual SymbolicGradient * clone() const;
 
   /** Comparison operator */
-  Bool operator ==(const AnalyticalNumericalMathGradientImplementation & other) const;
+  Bool operator ==(const SymbolicGradient & other) const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -83,14 +83,14 @@ private:
 
   mutable Bool isInitialized_;
   mutable Bool isAnalytical_;
-  AnalyticalNumericalMathEvaluationImplementation evaluation_;
+  SymbolicEvaluation evaluation_;
 
   /** A mathematical expression parser from the muParser library */
   mutable AnalyticalParser parser_;
 
-}; /* class AnalyticalNumericalMathGradientImplementation */
+}; /* class SymbolicGradient */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_ANALYTICALNUMERICALMATHGRADIENTIMPLEMENTATION_HXX */
+#endif /* OPENTURNS_SYMBOLICGRADIENT_HXX */

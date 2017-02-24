@@ -6,7 +6,7 @@ from openturns import *
 TESTPREAMBLE()
 
 try:
-    evaluation = AnalyticalNumericalMathEvaluationImplementation(
+    evaluation = SymbolicEvaluation(
         ["x0", "x1", "x2"], ["y0", "y1"], ["x0^2+2*x1+3*x2^3", "cos(x0-sin(x1 * x2))"])
     point = [-1.0, 4.0, -4.0]
     print("evaluation=", evaluation)
@@ -16,5 +16,5 @@ try:
 
 except:
     import sys
-    print("t_AnalyticalNumericalMathEvaluationImplementation_std.py",
+    print("t_SymbolicEvaluation_std.py",
           sys.exc_info()[0], sys.exc_info()[1])

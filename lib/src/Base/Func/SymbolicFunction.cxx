@@ -20,9 +20,9 @@
  */
 #include "openturns/SymbolicFunction.hxx"
 #ifdef OPENTURNS_HAVE_MUPARSER
-#include "openturns/AnalyticalNumericalMathEvaluationImplementation.hxx"
-#include "openturns/AnalyticalNumericalMathGradientImplementation.hxx"
-#include "openturns/AnalyticalNumericalMathHessianImplementation.hxx"
+#include "openturns/SymbolicEvaluation.hxx"
+#include "openturns/SymbolicGradient.hxx"
+#include "openturns/SymbolicHessian.hxx"
 #endif
 #include "openturns/CenteredFiniteDifferenceGradient.hxx"
 #include "openturns/CenteredFiniteDifferenceHessian.hxx"
@@ -62,11 +62,11 @@ SymbolicFunction::SymbolicFunction (const Description & inputVariablesNames,
   const Description outputVariablesNames(Description::BuildDefault(formulas.getSize(), "y"));
 
   // Try to build an analytical gradient
-  AnalyticalNumericalMathEvaluationImplementation evaluation(inputVariablesNames, outputVariablesNames, formulas);
+  SymbolicEvaluation evaluation(inputVariablesNames, outputVariablesNames, formulas);
   setEvaluation(evaluation.clone());
   try
   {
-    setGradient(new AnalyticalNumericalMathGradientImplementation(evaluation));
+    setGradient(new SymbolicGradient(evaluation));
   }
   catch(...)
   {
@@ -76,7 +76,7 @@ SymbolicFunction::SymbolicFunction (const Description & inputVariablesNames,
   }
   try
   {
-    setHessian(new AnalyticalNumericalMathHessianImplementation(evaluation));
+    setHessian(new SymbolicHessian(evaluation));
   }
   catch(...)
   {

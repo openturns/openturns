@@ -286,9 +286,9 @@ ot_add_python_module(func func_module.i
                       UniVariatePolynomialImplementation.i UniVariatePolynomialImplementation_doc.i.in
                       UniVariatePolynomial.i UniVariatePolynomial_doc.i.in
                       AggregatedNumericalMathEvaluationImplementation.i AggregatedNumericalMathEvaluationImplementation_doc.i.in
-                      AnalyticalNumericalMathEvaluationImplementation.i
-                      AnalyticalNumericalMathGradientImplementation.i
-                      AnalyticalNumericalMathHessianImplementation.i
+                      SymbolicEvaluation.i
+                      SymbolicGradient.i
+                      SymbolicHessian.i
                       DatabaseFunction.i DatabaseFunction_doc.i.in
                       DatabaseNumericalMathEvaluationImplementation.i DatabaseNumericalMathEvaluationImplementation_doc.i.in
                       IndicatorNumericalMathEvaluationImplementation.i
