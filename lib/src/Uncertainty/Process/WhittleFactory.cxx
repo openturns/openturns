@@ -28,7 +28,7 @@
 #include "openturns/Log.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/UniVariatePolynomial.hxx"
-#include "openturns/OptimizationSolver.hxx"
+#include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/Cobyla.hxx"
 #include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
 
@@ -263,12 +263,12 @@ void WhittleFactory::initializeCobylaSolverParameter()
 }
 
 /* Optimization solver accessor */
-OptimizationSolver WhittleFactory::getOptimizationSolver() const
+OptimizationAlgorithm WhittleFactory::getOptimizationSolver() const
 {
   return solver_;
 }
 
-void WhittleFactory::setOptimizationSolver(const OptimizationSolver & solver)
+void WhittleFactory::setOptimizationSolver(const OptimizationAlgorithm & solver)
 {
   solver_ = solver;
 }

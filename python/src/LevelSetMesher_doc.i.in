@@ -8,7 +8,7 @@ Parameters
 ----------
 discretization : sequence of int, of dimension :math:`\leq 3`.
     Discretization of the level set bounding box.
-solver : :class:`~openturns.OptimizationSolver`
+solver : :class:`~openturns.OptimizationAlgorithm`
     Optimization solver used to project the vertices onto the level set.
     It must be able to solve nearest point problems.
     Default is :class:`~openturns.AbdoRackwitz`.
@@ -87,7 +87,7 @@ discretization : sequence of int
 
 Returns
 -------
-solver : :class:`~openturns.OptimizationSolver`
+solver : :class:`~openturns.OptimizationAlgorithm`
     The optimization solver used to project vertices onto the level set."
 
 // ---------------------------------------------------------------------
@@ -97,5 +97,5 @@ solver : :class:`~openturns.OptimizationSolver`
 
 Parameters
 ----------
-solver : :class:`~openturns.OptimizationSolver`
+solver : :class:`~openturns.OptimizationAlgorithm`
     The optimization solver used to project vertices onto the level set."

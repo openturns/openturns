@@ -256,12 +256,12 @@ KrigingResult KrigingAlgorithm::getResult()
 }
 
 /* Optimization solver accessor */
-OptimizationSolver KrigingAlgorithm::getOptimizationSolver() const
+OptimizationAlgorithm KrigingAlgorithm::getOptimizationSolver() const
 {
   return glmAlgo_.getOptimizationSolver();
 }
 
-void KrigingAlgorithm::setOptimizationSolver(const OptimizationSolver & solver)
+void KrigingAlgorithm::setOptimizationSolver(const OptimizationAlgorithm & solver)
 {
   glmAlgo_.setOptimizationSolver(solver);
 }

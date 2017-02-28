@@ -72,7 +72,7 @@ FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor(const NumericalSampl
   MaximumLikelihoodFactory factory(buildAsFisherSnedecor());
 
   // override starting point
-  OptimizationSolver solver(factory.getOptimizationSolver());
+  OptimizationAlgorithm solver(factory.getOptimizationSolver());
   solver.setStartingPoint(NumericalPoint(dimension, 0.0));
   factory.setOptimizationSolver(solver);
 
@@ -106,12 +106,12 @@ FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor() const
 }
 
 /* Optimization solver accessor */
-OptimizationSolver FisherSnedecorFactory::getOptimizationSolver() const
+OptimizationAlgorithm FisherSnedecorFactory::getOptimizationSolver() const
 {
   return solver_;
 }
 
-void FisherSnedecorFactory::setOptimizationSolver(const OptimizationSolver & solver)
+void FisherSnedecorFactory::setOptimizationSolver(const OptimizationAlgorithm & solver)
 {
   solver_ = solver;
 }

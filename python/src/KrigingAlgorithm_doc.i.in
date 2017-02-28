@@ -114,7 +114,7 @@ Get the resulting meta model:
 
 Returns
 -------
-algorithm : :class:`~openturns.OptimizationSolver`
+algorithm : :class:`~openturns.OptimizationAlgorithm`
     Solver used to optimize the covariance model parameters."
 
 // ---------------------------------------------------------------------
@@ -124,7 +124,7 @@ algorithm : :class:`~openturns.OptimizationSolver`
 
 Parameters
 ----------
-algorithm : :class:`~openturns.OptimizationSolver`
+algorithm : :class:`~openturns.OptimizationAlgorithm`
     Solver used to optimize the covariance model parameters.
 
 Examples

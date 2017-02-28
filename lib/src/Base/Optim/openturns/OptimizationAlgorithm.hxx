@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief OptimizationSolver provides capabilities to solve optimization problems
+ *  @brief OptimizationAlgorithm provides capabilities to solve optimization problems
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,42 +18,42 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_OPTIMIZATIONSOLVER_HXX
-#define OPENTURNS_OPTIMIZATIONSOLVER_HXX
+#ifndef OPENTURNS_OPTIMIZATIONALGORITHM_HXX
+#define OPENTURNS_OPTIMIZATIONALGORITHM_HXX
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/TypedInterfaceObject.hxx"
 #include "openturns/NumericalMathFunction.hxx"
-#include "openturns/OptimizationSolverImplementation.hxx"
+#include "openturns/OptimizationAlgorithmImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class OptimizationSolver
+ * @class OptimizationAlgorithm
  * This class provides capabilities to solve optimization problems
  */
 
-class OT_API OptimizationSolver
-  : public TypedInterfaceObject<OptimizationSolverImplementation>
+class OT_API OptimizationAlgorithm
+  : public TypedInterfaceObject<OptimizationAlgorithmImplementation>
 {
 
   CLASSNAME;
 public:
 
-  typedef Pointer<OptimizationSolverImplementation>   Implementation;
+  typedef Pointer<OptimizationAlgorithmImplementation>   Implementation;
   typedef OptimizationResult              Result;
 
   /** Default constructor */
-  OptimizationSolver();
+  OptimizationAlgorithm();
 
   /** Constructor from an implementation */
-  OptimizationSolver(const OptimizationSolverImplementation & implementation);
+  OptimizationAlgorithm(const OptimizationAlgorithmImplementation & implementation);
 
   /** Constructor from a Pointer to an implementation */
-  OptimizationSolver(const Implementation & p_implementation);
+  OptimizationAlgorithm(const Implementation & p_implementation);
 
   /** Constructor with parameters */
-  explicit OptimizationSolver(const OptimizationProblem & problem);
+  explicit OptimizationAlgorithm(const OptimizationProblem & problem);
 
   /** Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
   void run();
@@ -100,8 +100,8 @@ public:
   /** String converter */
   virtual String __str__(const String & offset = "") const;
 
-} ; /* class OptimizationSolver */
+} ; /* class OptimizationAlgorithm */
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_OPTIMIZATIONSOLVER_HXX */
+#endif /* OPENTURNS_OPTIMIZATIONALGORITHM_HXX */

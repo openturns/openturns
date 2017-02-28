@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief TNC is an actual implementation for OptimizationSolverImplementation using the TNC library
+ *  @brief TNC is an actual implementation for OptimizationAlgorithmImplementation using the TNC library
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -39,7 +39,7 @@ static const Factory<TNC> Factory_TNC;
 
 /* Default constructor */
 TNC::TNC()
-  : OptimizationSolverImplementation()
+  : OptimizationAlgorithmImplementation()
   , maxCGit_(ResourceMap::GetAsUnsignedInteger("TNC-DefaultMaxCGit"))
   , eta_(ResourceMap::GetAsNumericalScalar("TNC-DefaultEta"))
   , stepmx_(ResourceMap::GetAsNumericalScalar("TNC-DefaultStepmx"))
@@ -52,7 +52,7 @@ TNC::TNC()
 
 /* Constructor with parameters */
 TNC::TNC(const OptimizationProblem & problem)
-  : OptimizationSolverImplementation(problem)
+  : OptimizationAlgorithmImplementation(problem)
   , maxCGit_(ResourceMap::GetAsUnsignedInteger("TNC-DefaultMaxCGit"))
   , eta_(ResourceMap::GetAsNumericalScalar("TNC-DefaultEta"))
   , stepmx_(ResourceMap::GetAsNumericalScalar("TNC-DefaultStepmx"))
@@ -73,7 +73,7 @@ TNC::TNC (const OptimizationProblem & problem,
           const NumericalScalar accuracy,
           const NumericalScalar fmin,
           const NumericalScalar rescale)
-  : OptimizationSolverImplementation(problem)
+  : OptimizationAlgorithmImplementation(problem)
   , scale_(scale)
   , offset_(offset)
   , maxCGit_(maxCGit)
@@ -346,7 +346,7 @@ String TNC::__repr__() const
 {
   OSS oss;
   oss << "class=" << TNC::GetClassName()
-      << " " << OptimizationSolverImplementation::__repr__()
+      << " " << OptimizationAlgorithmImplementation::__repr__()
       << " scale=" << scale_
       << " offset=" << offset_
       << " maxCGit=" << maxCGit_
@@ -361,7 +361,7 @@ String TNC::__repr__() const
 /* Method save() stores the object through the StorageManager */
 void TNC::save(Advocate & adv) const
 {
-  OptimizationSolverImplementation::save(adv);
+  OptimizationAlgorithmImplementation::save(adv);
   adv.saveAttribute("scale_", scale_);
   adv.saveAttribute("offset_", offset_);
   adv.saveAttribute("maxCGit_", maxCGit_);
@@ -375,7 +375,7 @@ void TNC::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void TNC::load(Advocate & adv)
 {
-  OptimizationSolverImplementation::load(adv);
+  OptimizationAlgorithmImplementation::load(adv);
   adv.loadAttribute("scale_", scale_);
   adv.loadAttribute("offset_", offset_);
   adv.loadAttribute("maxCGit_", maxCGit_);

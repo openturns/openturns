@@ -32,7 +32,7 @@ static const Factory<MultiStart> Factory_MultiStart;
 
 /* Constructor with parameters */
 MultiStart::MultiStart()
-  : OptimizationSolverImplementation()
+  : OptimizationAlgorithmImplementation()
   , solver_(new Cobyla)
 {
   // Nothing to do here
@@ -40,9 +40,9 @@ MultiStart::MultiStart()
 
 
 /* Constructor with parameters */
-MultiStart::MultiStart(const OptimizationSolver & solver,
+MultiStart::MultiStart(const OptimizationAlgorithm & solver,
                        const NumericalSample & startingPoints)
-  : OptimizationSolverImplementation(solver.getProblem())
+  : OptimizationAlgorithmImplementation(solver.getProblem())
   , solver_(solver)
   , startingPoints_(startingPoints)
 {
@@ -51,7 +51,7 @@ MultiStart::MultiStart(const OptimizationSolver & solver,
 
 void MultiStart::setProblem(const OptimizationProblem & problem)
 {
-  OptimizationSolverImplementation::setProblem(problem);
+  OptimizationAlgorithmImplementation::setProblem(problem);
   solver_.setProblem(problem);
 }
 
@@ -69,7 +69,7 @@ void MultiStart::run()
     throw InvalidArgumentException(HERE) << "The starting points dimension must match the problem dimension";
 
   // run the solver with each starting point
-  OptimizationSolver solver(solver_);
+  OptimizationAlgorithm solver(solver_);
   resultCollection_.clear();
   NumericalScalar bestValue = getProblem().isMinimization() ? SpecFunc::MaxNumericalScalar : -SpecFunc::MaxNumericalScalar;
   const UnsignedInteger size = startingPoints_.getSize();
@@ -115,18 +115,18 @@ String MultiStart::__repr__() const
 {
   OSS oss;
   oss << "class=" << getClassName()
-      << " " << OptimizationSolverImplementation::__repr__()
+      << " " << OptimizationAlgorithmImplementation::__repr__()
       << " solver=" << solver_
       << " startingPoints=" << startingPoints_;
   return oss;
 }
 
-void MultiStart::setOptimizationSolver(const OptimizationSolver & solver)
+void MultiStart::setOptimizationSolver(const OptimizationAlgorithm & solver)
 {
   solver_ = solver;
 }
 
-OptimizationSolver MultiStart::getOptimizationSolver() const
+OptimizationAlgorithm MultiStart::getOptimizationSolver() const
 {
   return solver_;
 }
@@ -152,7 +152,7 @@ MultiStart::OptimizationResultCollection MultiStart::getResultCollection() const
 /* Method save() stores the object through the StorageManager */
 void MultiStart::save(Advocate & adv) const
 {
-  OptimizationSolverImplementation::save(adv);
+  OptimizationAlgorithmImplementation::save(adv);
   adv.saveAttribute("solver_", solver_);
   adv.saveAttribute("startingPoints_", startingPoints_);
 }
@@ -160,7 +160,7 @@ void MultiStart::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void MultiStart::load(Advocate & adv)
 {
-  OptimizationSolverImplementation::load(adv);
+  OptimizationAlgorithmImplementation::load(adv);
   adv.loadAttribute("solver_", solver_);
   adv.loadAttribute("startingPoints_", startingPoints_);
 }

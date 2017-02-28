@@ -23,7 +23,7 @@
 
 #include "openturns/DistributionFactoryImplementation.hxx"
 #include "openturns/DistributionFactory.hxx"
-#include "openturns/OptimizationSolver.hxx"
+#include "openturns/OptimizationAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -59,8 +59,8 @@ public:
   /** Build a distribution based on a set of parameters */
   virtual NumericalPoint buildParameter(const NumericalSample & sample) const;
 
-  void setOptimizationSolver(const OptimizationSolver & solver);
-  OptimizationSolver getOptimizationSolver() const;
+  void setOptimizationSolver(const OptimizationAlgorithm & solver);
+  OptimizationAlgorithm getOptimizationSolver() const;
 
   void setOptimizationProblem(const OptimizationProblem & problem);
   OptimizationProblem getOptimizationProblem() const;
@@ -81,7 +81,7 @@ protected:
   Distribution distribution_;
 
   /* Solver & optimization problem for log-likelihood maximization */
-  OptimizationSolver solver_;
+  OptimizationAlgorithm solver_;
   OptimizationProblem problem_;
   
   /* Known parameter */

@@ -24,7 +24,7 @@
 #include "openturns/LevelSet.hxx"
 #include "openturns/Interval.hxx"
 #include "openturns/Mesh.hxx"
-#include "openturns/OptimizationSolver.hxx"
+#include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/AbdoRackwitz.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -43,7 +43,7 @@ public:
 
   /** Default constructor */
   explicit LevelSetMesher(const Indices & discretization,
-                          const OptimizationSolver & solver = AbdoRackwitz());
+                          const OptimizationAlgorithm & solver = AbdoRackwitz());
 
   /** Virtual constructor */
   virtual LevelSetMesher * clone() const;
@@ -59,8 +59,8 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** Optimization solver accessor */
-  void setOptimizationSolver(const OptimizationSolver & solver);
-  OptimizationSolver getOptimizationSolver() const;
+  void setOptimizationSolver(const OptimizationAlgorithm & solver);
+  OptimizationAlgorithm getOptimizationSolver() const;
 
   /* Here is the interface that all derived class must implement */
   /** Build a mesh based on a domain */
@@ -78,7 +78,7 @@ private:
   Indices discretization_;
 
   /* Optimization solver used to project the vertices */
-  mutable OptimizationSolver solver_;
+  mutable OptimizationAlgorithm solver_;
 
 }; /* class LevelSetMesher */
 

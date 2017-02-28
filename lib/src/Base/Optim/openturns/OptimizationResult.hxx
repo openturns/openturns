@@ -39,8 +39,8 @@ class OT_API OptimizationResult
 {
   CLASSNAME;
 
-  // Make the OptimizationSolverImplementation class friend in order to allow them to use protected methods
-  friend class OptimizationSolverImplementation;
+  // Make the OptimizationAlgorithmImplementation class friend in order to allow them to use protected methods
+  friend class OptimizationAlgorithmImplementation;
 
 public:
 

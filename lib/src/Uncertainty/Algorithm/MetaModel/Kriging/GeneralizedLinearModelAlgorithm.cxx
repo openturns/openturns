@@ -70,7 +70,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm()
 {
   // Set the default covariance to adapt the active parameters of the covariance model
   setCovarianceModel(CovarianceModel());
-  initializeDefaultOptimizationSolver();
+  initializeDefaultOptimizationAlgorithm();
 }
 
 /* Parameters constructor */
@@ -125,7 +125,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm(const Numerical
     setInputTransformation(LinearFunction(mean, zero, linear));
   }
   initializeMethod();
-  initializeDefaultOptimizationSolver();
+  initializeDefaultOptimizationAlgorithm();
 }
 
 GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm(const NumericalSample & inputSample,
@@ -191,7 +191,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm(const Numerical
     setInputTransformation(LinearFunction(mean, zero, linear));
   }
   initializeMethod();
-  initializeDefaultOptimizationSolver();
+  initializeDefaultOptimizationAlgorithm();
 }
 
 /* Parameters constructor */
@@ -246,7 +246,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm(const Numerical
   // Set the isoprobabilistic transformation
   setInputTransformation(inputTransformation);
   initializeMethod();
-  initializeDefaultOptimizationSolver();
+  initializeDefaultOptimizationAlgorithm();
 }
 
 /* Parameters constructor */
@@ -303,7 +303,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm(const Numerical
     setInputTransformation(LinearFunction(mean, zero, linear));
   }
   initializeMethod();
-  initializeDefaultOptimizationSolver();
+  initializeDefaultOptimizationAlgorithm();
 }
 
 /* Parameters constructor */
@@ -347,7 +347,7 @@ GeneralizedLinearModelAlgorithm::GeneralizedLinearModelAlgorithm(const Numerical
   // Set the isoprobabilistic transformation
   setInputTransformation(inputTransformation);
   initializeMethod();
-  initializeDefaultOptimizationSolver();
+  initializeDefaultOptimizationAlgorithm();
 }
 
 /* set sample  method */
@@ -489,9 +489,9 @@ void GeneralizedLinearModelAlgorithm::checkYCentered(const NumericalSample & Y)
   }
 }
 
-void GeneralizedLinearModelAlgorithm::initializeDefaultOptimizationSolver()
+void GeneralizedLinearModelAlgorithm::initializeDefaultOptimizationAlgorithm()
 {
-  const String solverName(ResourceMap::Get("GeneralizedLinearModelAlgorithm-DefaultOptimizationSolver"));
+  const String solverName(ResourceMap::Get("GeneralizedLinearModelAlgorithm-DefaultOptimizationAlgorithm"));
   if (solverName == "TNC")
     solver_ = TNC();
   else if (solverName == "NELDER-MEAD")
@@ -939,11 +939,11 @@ NumericalScalar GeneralizedLinearModelAlgorithm::computeHMatLogDeterminantCholes
 }
 
 /* Optimization solver accessor */
-OptimizationSolver GeneralizedLinearModelAlgorithm::getOptimizationSolver() const
+OptimizationAlgorithm GeneralizedLinearModelAlgorithm::getOptimizationSolver() const
 {
   return solver_;
 }
-void GeneralizedLinearModelAlgorithm::setOptimizationSolver(const OptimizationSolver & solver)
+void GeneralizedLinearModelAlgorithm::setOptimizationSolver(const OptimizationAlgorithm & solver)
 {
   solver_ = solver;
   hasRun_ = false;

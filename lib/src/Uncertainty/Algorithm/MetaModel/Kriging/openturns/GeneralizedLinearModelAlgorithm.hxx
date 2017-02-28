@@ -26,7 +26,7 @@
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/KrigingResult.hxx"
 #include "openturns/HMatrix.hxx"
-#include "openturns/OptimizationSolver.hxx"
+#include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/GeneralizedLinearModelResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -112,8 +112,8 @@ public:
   NumericalMathFunction getObjectiveFunction();
 
   /** Optimization solver accessor */
-  OptimizationSolver getOptimizationSolver() const;
-  void setOptimizationSolver(const OptimizationSolver & solver);
+  OptimizationAlgorithm getOptimizationSolver() const;
+  void setOptimizationSolver(const OptimizationAlgorithm & solver);
 
   /** Optimization flag accessor */
   Bool getOptimizeParameters() const;
@@ -153,7 +153,7 @@ protected:
   void setMethod(const UnsignedInteger method);
 
   // Initialize default optimization solver
-  void initializeDefaultOptimizationSolver();
+  void initializeDefaultOptimizationAlgorithm();
   friend class Factory<GeneralizedLinearModelAlgorithm>;
 
 
@@ -264,7 +264,7 @@ private:
   mutable CovarianceModel reducedCovarianceModel_;
 
   // The optimization algorithm used for the meta-parameters estimation
-  mutable OptimizationSolver solver_;
+  mutable OptimizationAlgorithm solver_;
 
   // Bounds used for parameter optimization
   Interval optimizationBounds_;

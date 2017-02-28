@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief OptimizationSolverImplementation implements an algorithm for solving an optimization problem
+ *  @brief OptimizationAlgorithmImplementation implements an algorithm for solving an optimization problem
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -19,22 +19,22 @@
  *
  */
 
-#include "openturns/OptimizationSolverImplementation.hxx"
+#include "openturns/OptimizationAlgorithmImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(OptimizationSolverImplementation);
+CLASSNAMEINIT(OptimizationAlgorithmImplementation);
 
 /* Default constructor */
-OptimizationSolverImplementation::OptimizationSolverImplementation()
+OptimizationAlgorithmImplementation::OptimizationAlgorithmImplementation()
   : PersistentObject()
   , startingPoint_(NumericalPoint(0))
-  , maximumIterationNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationSolver-DefaultMaximumIteration"))
-  , maximumEvaluationNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationSolver-DefaultMaximumEvaluationNumber"))
-  , maximumAbsoluteError_(ResourceMap::GetAsNumericalScalar("OptimizationSolver-DefaultMaximumAbsoluteError"))
-  , maximumRelativeError_(ResourceMap::GetAsNumericalScalar("OptimizationSolver-DefaultMaximumRelativeError"))
-  , maximumResidualError_(ResourceMap::GetAsNumericalScalar("OptimizationSolver-DefaultMaximumResidualError"))
-  , maximumConstraintError_(ResourceMap::GetAsNumericalScalar("OptimizationSolver-DefaultMaximumConstraintError"))
+  , maximumIterationNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumIteration"))
+  , maximumEvaluationNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumEvaluationNumber"))
+  , maximumAbsoluteError_(ResourceMap::GetAsNumericalScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError"))
+  , maximumRelativeError_(ResourceMap::GetAsNumericalScalar("OptimizationAlgorithm-DefaultMaximumRelativeError"))
+  , maximumResidualError_(ResourceMap::GetAsNumericalScalar("OptimizationAlgorithm-DefaultMaximumResidualError"))
+  , maximumConstraintError_(ResourceMap::GetAsNumericalScalar("OptimizationAlgorithm-DefaultMaximumConstraintError"))
   , verbose_(false)
 {
   // Nothing to do
@@ -43,119 +43,119 @@ OptimizationSolverImplementation::OptimizationSolverImplementation()
 /*
  * @brief Standard constructor: the optimization problem is managed by the optimization solver, and the actual solver is in charge to check if it is able to solve it.
  */
-OptimizationSolverImplementation::OptimizationSolverImplementation(const OptimizationProblem & problem)
+OptimizationAlgorithmImplementation::OptimizationAlgorithmImplementation(const OptimizationProblem & problem)
   : PersistentObject()
   , problem_(problem)
-  , maximumIterationNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationSolver-DefaultMaximumIteration"))
-  , maximumEvaluationNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationSolver-DefaultMaximumEvaluationNumber"))
-  , maximumAbsoluteError_(ResourceMap::GetAsNumericalScalar("OptimizationSolver-DefaultMaximumAbsoluteError"))
-  , maximumRelativeError_(ResourceMap::GetAsNumericalScalar("OptimizationSolver-DefaultMaximumRelativeError"))
-  , maximumResidualError_(ResourceMap::GetAsNumericalScalar("OptimizationSolver-DefaultMaximumResidualError"))
-  , maximumConstraintError_(ResourceMap::GetAsNumericalScalar("OptimizationSolver-DefaultMaximumConstraintError"))
+  , maximumIterationNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumIteration"))
+  , maximumEvaluationNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumEvaluationNumber"))
+  , maximumAbsoluteError_(ResourceMap::GetAsNumericalScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError"))
+  , maximumRelativeError_(ResourceMap::GetAsNumericalScalar("OptimizationAlgorithm-DefaultMaximumRelativeError"))
+  , maximumResidualError_(ResourceMap::GetAsNumericalScalar("OptimizationAlgorithm-DefaultMaximumResidualError"))
+  , maximumConstraintError_(ResourceMap::GetAsNumericalScalar("OptimizationAlgorithm-DefaultMaximumConstraintError"))
   , verbose_(false)
 {
   // Nothing to do
 }
 
 /* Starting point accessor */
-NumericalPoint OptimizationSolverImplementation::getStartingPoint() const
+NumericalPoint OptimizationAlgorithmImplementation::getStartingPoint() const
 {
   return startingPoint_;
 }
 
 /* Starting point accessor */
-void OptimizationSolverImplementation::setStartingPoint(const NumericalPoint & startingPoint)
+void OptimizationAlgorithmImplementation::setStartingPoint(const NumericalPoint & startingPoint)
 {
   startingPoint_ = startingPoint;
 }
 
 /* Result accessor */
-OptimizationResult OptimizationSolverImplementation::getResult() const
+OptimizationResult OptimizationAlgorithmImplementation::getResult() const
 {
   return result_;
 }
 
 /* Result accessor */
-void OptimizationSolverImplementation::setResult(const OptimizationResult & result)
+void OptimizationAlgorithmImplementation::setResult(const OptimizationResult & result)
 {
   result_ = result;
 }
 
 /* Maximum iterations number accessor */
-UnsignedInteger OptimizationSolverImplementation::getMaximumIterationNumber() const
+UnsignedInteger OptimizationAlgorithmImplementation::getMaximumIterationNumber() const
 {
   return maximumIterationNumber_;
 }
 
 /* Maximum iterations number accessor */
-void OptimizationSolverImplementation::setMaximumIterationNumber(const UnsignedInteger maximumIterationNumber)
+void OptimizationAlgorithmImplementation::setMaximumIterationNumber(const UnsignedInteger maximumIterationNumber)
 {
   maximumIterationNumber_ = maximumIterationNumber;
 }
 
-void OptimizationSolverImplementation::setMaximumEvaluationNumber(const UnsignedInteger maximumEvaluationNumber)
+void OptimizationAlgorithmImplementation::setMaximumEvaluationNumber(const UnsignedInteger maximumEvaluationNumber)
 {
   maximumEvaluationNumber_ = maximumEvaluationNumber;
 }
 
-UnsignedInteger OptimizationSolverImplementation::getMaximumEvaluationNumber() const
+UnsignedInteger OptimizationAlgorithmImplementation::getMaximumEvaluationNumber() const
 {
   return maximumEvaluationNumber_;
 }
 
 /* Maximum absolute error accessor */
-NumericalScalar OptimizationSolverImplementation::getMaximumAbsoluteError() const
+NumericalScalar OptimizationAlgorithmImplementation::getMaximumAbsoluteError() const
 {
   return maximumAbsoluteError_;
 }
 
 /* Maximum absolute error accessor */
-void OptimizationSolverImplementation::setMaximumAbsoluteError(const NumericalScalar maximumAbsoluteError)
+void OptimizationAlgorithmImplementation::setMaximumAbsoluteError(const NumericalScalar maximumAbsoluteError)
 {
   maximumAbsoluteError_ = maximumAbsoluteError;
 }
 
 /* Maximum relative error accessor */
-NumericalScalar OptimizationSolverImplementation::getMaximumRelativeError() const
+NumericalScalar OptimizationAlgorithmImplementation::getMaximumRelativeError() const
 {
   return maximumRelativeError_;
 }
 
 /* Maximum relative error accessor */
-void OptimizationSolverImplementation::setMaximumRelativeError(const NumericalScalar maximumRelativeError)
+void OptimizationAlgorithmImplementation::setMaximumRelativeError(const NumericalScalar maximumRelativeError)
 {
   maximumRelativeError_ = maximumRelativeError;
 }
 
 /* Maximum residual error accessor */
-NumericalScalar OptimizationSolverImplementation::getMaximumResidualError() const
+NumericalScalar OptimizationAlgorithmImplementation::getMaximumResidualError() const
 {
   return maximumResidualError_;
 }
 
 /* Maximum residual error accessor */
-void OptimizationSolverImplementation::setMaximumResidualError(const NumericalScalar maximumResidualError)
+void OptimizationAlgorithmImplementation::setMaximumResidualError(const NumericalScalar maximumResidualError)
 {
   maximumResidualError_ = maximumResidualError;
 }
 
 /* Maximum constraint error accessor */
-NumericalScalar OptimizationSolverImplementation::getMaximumConstraintError() const
+NumericalScalar OptimizationAlgorithmImplementation::getMaximumConstraintError() const
 {
   return maximumConstraintError_;
 }
 
 /* Maximum constraint error accessor */
-void OptimizationSolverImplementation::setMaximumConstraintError(const NumericalScalar maximumConstraintError)
+void OptimizationAlgorithmImplementation::setMaximumConstraintError(const NumericalScalar maximumConstraintError)
 {
   maximumConstraintError_ = maximumConstraintError;
 }
 
 /* String converter */
-String OptimizationSolverImplementation::__repr__() const
+String OptimizationAlgorithmImplementation::__repr__() const
 {
   OSS oss;
-  oss << "class=" << OptimizationSolverImplementation::GetClassName()
+  oss << "class=" << OptimizationAlgorithmImplementation::GetClassName()
       << " problem=" << problem_
       << " startingPoint=" << startingPoint_
       << " maximumIterationNumber=" << maximumIterationNumber_
@@ -169,27 +169,27 @@ String OptimizationSolverImplementation::__repr__() const
 }
 
 /* Problem accessor */
-OptimizationProblem OptimizationSolverImplementation::getProblem() const
+OptimizationProblem OptimizationAlgorithmImplementation::getProblem() const
 {
   return problem_;
 }
 
-void OptimizationSolverImplementation::setProblem(const OptimizationProblem & problem)
+void OptimizationAlgorithmImplementation::setProblem(const OptimizationProblem & problem)
 {
   checkProblem(problem);
   problem_ = problem;
 }
 
 /* Performs the actual checks. Must be overloaded by the actual optimisation algorithm */
-void OptimizationSolverImplementation::checkProblem(const OptimizationProblem & problem) const
+void OptimizationAlgorithmImplementation::checkProblem(const OptimizationProblem & problem) const
 {
-  throw NotYetImplementedException(HERE) << "In OptimizationSolverImplementation::checkProblem()";
+  throw NotYetImplementedException(HERE) << "In OptimizationAlgorithmImplementation::checkProblem()";
 }
 
 /* Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
-void OptimizationSolverImplementation::run()
+void OptimizationAlgorithmImplementation::run()
 {
-  throw NotYetImplementedException(HERE) << "In OptimizationSolverImplementation::run()";
+  throw NotYetImplementedException(HERE) << "In OptimizationAlgorithmImplementation::run()";
 }
 
 /* Computes the Lagrange multipliers associated with the constraints as a post-processing of the optimal point. Actual algorithms should overload this method. */
@@ -203,7 +203,7 @@ void OptimizationSolverImplementation::run()
 
    so if there is no constraint of any kind, the Lagrange multipliers are of dimension 0.
  */
-NumericalPoint OptimizationSolverImplementation::computeLagrangeMultipliers(const NumericalPoint & x) const
+NumericalPoint OptimizationAlgorithmImplementation::computeLagrangeMultipliers(const NumericalPoint & x) const
 {
   const UnsignedInteger equalityDimension = problem_.getEqualityConstraint().getOutputDimension();
   const UnsignedInteger inequalityDimension = problem_.getInequalityConstraint().getOutputDimension();
@@ -261,25 +261,25 @@ NumericalPoint OptimizationSolverImplementation::computeLagrangeMultipliers(cons
 }
 
 /* Virtual constructor */
-OptimizationSolverImplementation * OptimizationSolverImplementation::clone() const
+OptimizationAlgorithmImplementation * OptimizationAlgorithmImplementation::clone() const
 {
-  return new OptimizationSolverImplementation(*this);
+  return new OptimizationAlgorithmImplementation(*this);
 }
 
 /* Verbose accessor */
-Bool OptimizationSolverImplementation::getVerbose() const
+Bool OptimizationAlgorithmImplementation::getVerbose() const
 {
   return verbose_;
 }
 
 /* Verbose accessor */
-void OptimizationSolverImplementation::setVerbose(const Bool verbose)
+void OptimizationAlgorithmImplementation::setVerbose(const Bool verbose)
 {
   verbose_ = verbose;
 }
 
 /* Method save() stores the object through the StorageManager */
-void OptimizationSolverImplementation::save(Advocate & adv) const
+void OptimizationAlgorithmImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute( "startingPoint_", startingPoint_);
@@ -295,7 +295,7 @@ void OptimizationSolverImplementation::save(Advocate & adv) const
 
 
 /* Method load() reloads the object from the StorageManager */
-void OptimizationSolverImplementation::load(Advocate & adv)
+void OptimizationAlgorithmImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute( "startingPoint_", startingPoint_);

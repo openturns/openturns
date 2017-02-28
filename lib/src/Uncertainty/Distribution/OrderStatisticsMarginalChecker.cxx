@@ -25,7 +25,7 @@
 #include "openturns/BlendedStep.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/TNC.hxx"
-#include "openturns/OptimizationSolver.hxx"
+#include "openturns/OptimizationAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -160,12 +160,12 @@ Indices OrderStatisticsMarginalChecker::buildPartition() const
 }
 
 /* Optimization solver accessor */
-OptimizationSolver OrderStatisticsMarginalChecker::getOptimizationSolver() const
+OptimizationAlgorithm OrderStatisticsMarginalChecker::getOptimizationSolver() const
 {
   return solver_;
 }
 
-void OrderStatisticsMarginalChecker::setOptimizationSolver(const OptimizationSolver & solver)
+void OrderStatisticsMarginalChecker::setOptimizationSolver(const OptimizationAlgorithm & solver)
 {
   solver_ = solver;
 }

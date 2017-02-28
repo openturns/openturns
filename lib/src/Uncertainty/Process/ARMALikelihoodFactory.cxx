@@ -30,7 +30,7 @@
 #include "openturns/WhittleFactory.hxx"
 #include "openturns/Lapack.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/OptimizationSolver.hxx"
+#include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/Cobyla.hxx"
 #include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
 
@@ -423,12 +423,12 @@ void ARMALikelihoodFactory::initializeCobylaSolverParameter()
 }
 
 /* Optimization solver accessor */
-OptimizationSolver ARMALikelihoodFactory::getOptimizationSolver() const
+OptimizationAlgorithm ARMALikelihoodFactory::getOptimizationSolver() const
 {
   return solver_;
 }
 
-void ARMALikelihoodFactory::setOptimizationSolver(const OptimizationSolver & solver)
+void ARMALikelihoodFactory::setOptimizationSolver(const OptimizationAlgorithm & solver)
 {
   solver_ = solver;
 }

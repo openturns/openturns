@@ -161,7 +161,7 @@ showing that :math:`\vect{\beta}^*` is a function of :math:`\vect{q}^*` only, an
    
 which leads to a further reduction of the log-likelihood function where both :math:`\vect{\beta}` and :math:`\sigma` are replaced by their expression in terms of :math:`\vect{q}`.
     
-The default optimizer is :class:`~openturns.TNC` and can be changed thanks to the *setOptimizationSolver* method. User could also change the default optimization solver by setting the `GeneralizedLinearModelAlgorithm-DefaultOptimizationSolver` resource map key to `NELDER-MEAD` or `LBFGS` respectively for Nelder-Mead and LBFGS-B solvers.
+The default optimizer is :class:`~openturns.TNC` and can be changed thanks to the *setOptimizationSolver* method. User could also change the default optimization solver by setting the `GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm` resource map key to `NELDER-MEAD` or `LBFGS` respectively for Nelder-Mead and LBFGS-B solvers.
 
 It is also possible to proceed as follows:
 
@@ -307,23 +307,23 @@ It computes the response surface and creates a
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GeneralizedLinearModelAlgorithm::getOptimizationSolver
+%feature("docstring") OT::GeneralLinearModelAlgorithm::getOptimizationSolver
 "Accessor to solver used to optimize the covariance model parameters.
 
 Returns
 -------
-algorithm : :class:`~openturns.OptimizationSolver`
+algorithm : :class:`~openturns.OptimizationAlgorithm`
     Solver used to optimize the covariance model parameters.
     Default optimizer is :class:`~openturns.TNC`"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GeneralizedLinearModelAlgorithm::setOptimizationSolver
+%feature("docstring") OT::GeneralLinearModelAlgorithm::setOptimizationSolver
 "Accessor to the solver used to optimize the covariance model parameters.
 
 Parameters
 ----------
-algorithm : :class:`~openturns.OptimizationSolver`
+algorithm : :class:`~openturns.OptimizationAlgorithm`
     Solver used to optimize the covariance model parameters."
 
 // ---------------------------------------------------------------------

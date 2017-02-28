@@ -373,14 +373,14 @@ void ResourceMap::loadDefaultConfiguration()
   setAsNumericalScalar( "AbdoRackwitz-DefaultOmega", 1.0e-4 );
   setAsNumericalScalar( "AbdoRackwitz-DefaultSmooth", 1.2 );
 
-  // OptimizationSolverImplementation parameters //
-  setAsNumericalScalar( "OptimizationSolver-DefaultLevelValue", 0.0 );
-  setAsUnsignedInteger( "OptimizationSolver-DefaultMaximumIteration", 100 );
-  setAsUnsignedInteger( "OptimizationSolver-DefaultMaximumEvaluationNumber", 100000);
-  setAsNumericalScalar( "OptimizationSolver-DefaultMaximumAbsoluteError", 1.0e-5 );
-  setAsNumericalScalar( "OptimizationSolver-DefaultMaximumRelativeError", 1.0e-5 );
-  setAsNumericalScalar( "OptimizationSolver-DefaultMaximumResidualError", 1.0e-5 );
-  setAsNumericalScalar( "OptimizationSolver-DefaultMaximumConstraintError", 1.0e-5 );
+  // OptimizationAlgorithmImplementation parameters //
+  setAsNumericalScalar( "OptimizationAlgorithm-DefaultLevelValue", 0.0 );
+  setAsUnsignedInteger( "OptimizationAlgorithm-DefaultMaximumIteration", 100 );
+  setAsUnsignedInteger( "OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 100000);
+  setAsNumericalScalar( "OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1.0e-5 );
+  setAsNumericalScalar( "OptimizationAlgorithm-DefaultMaximumRelativeError", 1.0e-5 );
+  setAsNumericalScalar( "OptimizationAlgorithm-DefaultMaximumResidualError", 1.0e-5 );
+  setAsNumericalScalar( "OptimizationAlgorithm-DefaultMaximumConstraintError", 1.0e-5 );
 
 
   // Cobyla parameters //
@@ -734,7 +734,7 @@ void ResourceMap::loadDefaultConfiguration()
   setAsNumericalScalar( "GeneralizedLinearModelAlgorithm-MaximalScaling", 1.0e5 );
   setAsNumericalScalar( "GeneralizedLinearModelAlgorithm-DefaultOptimizationLowerBound", 1.0e-2 );
   setAsNumericalScalar( "GeneralizedLinearModelAlgorithm-DefaultOptimizationUpperBound", 1.0e2 );
-  set("GeneralizedLinearModelAlgorithm-DefaultOptimizationSolver", "TNC");
+  set("GeneralizedLinearModelAlgorithm-DefaultOptimizationAlgorithm", "TNC");
 
   // KrigingAlgorithm parameters //
   setAsNumericalScalar( "KrigingAlgorithm-StartingScaling", 1.0e-13 );

@@ -65,12 +65,12 @@ NumericalMathFunction TrapezoidalFactory::getLogLikelihoodInequalityConstraint()
 }
 
 /* Optimization solver accessor */
-OptimizationSolver TrapezoidalFactory::getOptimizationSolver() const
+OptimizationAlgorithm TrapezoidalFactory::getOptimizationSolver() const
 {
   return solver_;
 }
 
-void TrapezoidalFactory::setOptimizationSolver(const OptimizationSolver & solver)
+void TrapezoidalFactory::setOptimizationSolver(const OptimizationAlgorithm & solver)
 {
   solver_ = solver;
 }

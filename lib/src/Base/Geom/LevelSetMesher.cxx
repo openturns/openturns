@@ -48,7 +48,7 @@ LevelSetMesher::LevelSetMesher()
 
 /* Parameter constructor */
 LevelSetMesher::LevelSetMesher(const Indices & discretization,
-                               const OptimizationSolver & solver)
+                               const OptimizationAlgorithm & solver)
   : PersistentObject()
   , discretization_(discretization)
   , solver_(solver)
@@ -80,12 +80,12 @@ String LevelSetMesher::__str__(const String & offset) const
 }
 
 /* Optimization solver accessor */
-void LevelSetMesher::setOptimizationSolver(const OptimizationSolver & solver)
+void LevelSetMesher::setOptimizationSolver(const OptimizationAlgorithm & solver)
 {
   solver_ = solver;
 }
 
-OptimizationSolver LevelSetMesher::getOptimizationSolver() const
+OptimizationAlgorithm LevelSetMesher::getOptimizationSolver() const
 {
   return solver_;
 }

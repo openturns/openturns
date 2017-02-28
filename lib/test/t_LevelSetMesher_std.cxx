@@ -31,12 +31,12 @@ int main(int argc, char *argv[])
 
   try
   {
-    ResourceMap::SetAsUnsignedInteger("OptimizationSolver-DefaultMaximumIteration", 1000 );
-    ResourceMap::SetAsUnsignedInteger("OptimizationSolver-DefaultMaximumEvaluationNumber", 100000);
-    ResourceMap::SetAsNumericalScalar("OptimizationSolver-DefaultMaximumAbsoluteError", 1.0e-7 );
-    ResourceMap::SetAsNumericalScalar("OptimizationSolver-DefaultMaximumRelativeError", 1.0e-7 );
-    ResourceMap::SetAsNumericalScalar("OptimizationSolver-DefaultMaximumResidualError", 1.0e-7 );
-    ResourceMap::SetAsNumericalScalar("OptimizationSolver-DefaultMaximumConstraintError", 1.0e-7 );
+    ResourceMap::SetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumIteration", 1000 );
+    ResourceMap::SetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 100000);
+    ResourceMap::SetAsNumericalScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1.0e-7 );
+    ResourceMap::SetAsNumericalScalar("OptimizationAlgorithm-DefaultMaximumRelativeError", 1.0e-7 );
+    ResourceMap::SetAsNumericalScalar("OptimizationAlgorithm-DefaultMaximumResidualError", 1.0e-7 );
+    ResourceMap::SetAsNumericalScalar("OptimizationAlgorithm-DefaultMaximumConstraintError", 1.0e-7 );
     PlatformInfo::SetNumericalPrecision(3);
 
     // The 1D mesher

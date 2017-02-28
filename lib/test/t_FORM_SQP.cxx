@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
     myAlgorithm.setMaximumConstraintError(1.0e-10);
 
     /* We create a FORM algorithm */
-    /* The first parameter is an OptimizationSolver */
+    /* The first parameter is an OptimizationAlgorithm */
     /* The second parameter is an event */
     /* The third parameter is a starting point for the design point research */
     FORM myAlgo(myAlgorithm, myEvent, mean);

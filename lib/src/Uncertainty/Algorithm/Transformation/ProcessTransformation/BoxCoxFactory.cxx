@@ -30,7 +30,7 @@
 #include "openturns/InverseBoxCoxTransform.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/Cloud.hxx"
-#include "openturns/OptimizationSolver.hxx"
+#include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/Cobyla.hxx"
 #include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
 #include "openturns/GeneralizedLinearModelAlgorithm.hxx"
@@ -56,7 +56,7 @@ private:
   mutable NumericalScalar sumLog_;
 
   /** Optimization solver */
-  mutable OptimizationSolver solver_;
+  mutable OptimizationAlgorithm solver_;
 
 public:
 
@@ -70,7 +70,7 @@ public:
   }
 
   BoxCoxSampleOptimization(const NumericalSample & sample,
-                           const OptimizationSolver & solver)
+                           const OptimizationAlgorithm & solver)
     : sample_(sample)
     , sumLog_(0.0)
     , solver_(solver)
@@ -143,7 +143,7 @@ private:
   mutable BasisCollection basis_;
 
   /** Optimization solver */
-  mutable OptimizationSolver solver_;
+  mutable OptimizationAlgorithm solver_;
 
 public:
 
@@ -152,7 +152,7 @@ public:
                         const NumericalSample & shiftedOutputSample,
                         const CovarianceModel & covarianceModel,
                         const BasisCollection & basis,
-                        const OptimizationSolver & solver)
+                        const OptimizationAlgorithm & solver)
     : inputSample_(inputSample)
     , shiftedOutputSample_(shiftedOutputSample)
     , covarianceModel_(covarianceModel)
@@ -220,12 +220,12 @@ BoxCoxFactory * BoxCoxFactory::clone() const
   return new BoxCoxFactory(*this);
 }
 
-OptimizationSolver BoxCoxFactory::getOptimizationSolver() const
+OptimizationAlgorithm BoxCoxFactory::getOptimizationSolver() const
 {
   return solver_;
 }
 
-void BoxCoxFactory::setOptimizationSolver(const OptimizationSolver & solver)
+void BoxCoxFactory::setOptimizationSolver(const OptimizationAlgorithm & solver)
 {
   solver_ = solver;
 }

@@ -22,7 +22,7 @@
 #define OPENTURNS_ARMALIKELIHOODFACTORY_HXX
 
 #include "openturns/ARMAFactoryImplementation.hxx"
-#include "openturns/OptimizationSolver.hxx"
+#include "openturns/OptimizationAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -182,8 +182,8 @@ private :
   mutable UnsignedInteger nbInequalityConstraint_;
 
   /** Optimization solver accessor */
-  OptimizationSolver getOptimizationSolver() const;
-  void setOptimizationSolver(const OptimizationSolver & solver);
+  OptimizationAlgorithm getOptimizationSolver() const;
+  void setOptimizationSolver(const OptimizationAlgorithm & solver);
 
   /** Initialize default Cobyla solver parameter using the ResourceMap */
   void initializeCobylaSolverParameter();
@@ -191,7 +191,7 @@ private :
 protected:
 
   /** Optimization solver */
-  mutable OptimizationSolver  solver_;
+  mutable OptimizationAlgorithm  solver_;
 
 }; /* class ARMALikelihoodFactory */
 

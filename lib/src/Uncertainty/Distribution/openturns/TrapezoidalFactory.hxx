@@ -24,7 +24,7 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/DistributionFactoryImplementation.hxx"
 #include "openturns/Trapezoidal.hxx"
-#include "openturns/OptimizationSolver.hxx"
+#include "openturns/OptimizationAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -54,8 +54,8 @@ public:
   Trapezoidal buildAsTrapezoidal() const;
 
   /** Optimization solver accessor */
-  OptimizationSolver getOptimizationSolver() const;
-  void setOptimizationSolver(const OptimizationSolver & solver);
+  OptimizationAlgorithm getOptimizationSolver() const;
+  void setOptimizationSolver(const OptimizationAlgorithm & solver);
 
 protected:
   /** Likelihood constraint accessor */
@@ -67,8 +67,8 @@ protected:
   /** only used to pass data to be used in computeLogLikeliHood */
   mutable NumericalSample sample_;
 
-  /**   OptimizationSolver   */
-  mutable OptimizationSolver solver_;
+  /**   OptimizationAlgorithm   */
+  mutable OptimizationAlgorithm solver_;
 
 }; /* class TrapezoidalFactory */
 

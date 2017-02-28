@@ -121,7 +121,7 @@ void NLopt::SetSeed(const UnsignedInteger seed)
 
 /* Default constructor */
 NLopt::NLopt(const String & algoName)
-  : OptimizationSolverImplementation()
+  : OptimizationAlgorithmImplementation()
   , algoName_(algoName)
 {
   GetAlgorithmCode(algoName);
@@ -129,7 +129,7 @@ NLopt::NLopt(const String & algoName)
 
 NLopt::NLopt(const OptimizationProblem & problem,
              const String & algoName)
-  : OptimizationSolverImplementation(problem)
+  : OptimizationAlgorithmImplementation(problem)
   , algoName_(algoName)
 {
   checkProblem(problem);
@@ -354,7 +354,7 @@ String NLopt::__repr__() const
 {
   OSS oss;
   oss << "class=" << getClassName()
-      << " " << OptimizationSolverImplementation::__repr__()
+      << " " << OptimizationAlgorithmImplementation::__repr__()
       << " algorithm=" << algoName_;
   return oss;
 }
@@ -371,7 +371,7 @@ String NLopt::__str__(const String & offset) const
 /* Method save() stores the object through the StorageManager */
 void NLopt::save(Advocate & adv) const
 {
-  OptimizationSolverImplementation::save(adv);
+  OptimizationAlgorithmImplementation::save(adv);
   adv.saveAttribute("algoName_", algoName_);
   adv.saveAttribute("initialStep_", initialStep_);
   if (!p_localSolver_.isNull())
@@ -381,7 +381,7 @@ void NLopt::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void NLopt::load(Advocate & adv)
 {
-  OptimizationSolverImplementation::load(adv);
+  OptimizationAlgorithmImplementation::load(adv);
   adv.loadAttribute("algoName_", algoName_);
   adv.loadAttribute("initialStep_", initialStep_);
   if (adv.hasAttribute("localSolver_"))

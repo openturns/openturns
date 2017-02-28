@@ -27,7 +27,7 @@ try:
     model = ot.NumericalMathFunction(["x"], ["x - 0.6 * cos(x/3)"])
     Y = model(X)
     basis = ot.QuadraticBasisFactory(spatialDimension).build()
-    algo = ot.GeneralizedLinearModelAlgorithm(X, Y, covarianceModel, basis, True)
+    algo = ot.GeneralLinearModelAlgorithm(X, Y, covarianceModel, basis, True)
     algo.setOptimizationSolver(ot.NLopt('LN_NELDERMEAD'))
     algo.run()
 

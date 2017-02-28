@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief OptimizationSolverImplementation implements an algorithm for solving an optimization problem
+ *  @brief OptimizationAlgorithmImplementation implements an algorithm for solving an optimization problem
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_OPTIMIZATIONSOLVERIMPLEMENTATION_HXX
-#define OPENTURNS_OPTIMIZATIONSOLVERIMPLEMENTATION_HXX
+#ifndef OPENTURNS_OPTIMIZATIONALGORITHMIMPLEMENTATION_HXX
+#define OPENTURNS_OPTIMIZATIONALGORITHMIMPLEMENTATION_HXX
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/PersistentObject.hxx"
@@ -29,11 +29,11 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class OptimizationSolverImplementation
- * OptimizationSolverImplementation implements an algorithm for solving an optimization problem
+ * @class OptimizationAlgorithmImplementation
+ * OptimizationAlgorithmImplementation implements an algorithm for solving an optimization problem
  */
 
-class OT_API OptimizationSolverImplementation
+class OT_API OptimizationAlgorithmImplementation
   : public PersistentObject
 {
 
@@ -41,13 +41,13 @@ class OT_API OptimizationSolverImplementation
 public:
 
   /** Default constructor */
-  OptimizationSolverImplementation();
+  OptimizationAlgorithmImplementation();
 
   /** Constructor with parameters */
-  explicit OptimizationSolverImplementation(const OptimizationProblem & problem);
+  explicit OptimizationAlgorithmImplementation(const OptimizationProblem & problem);
 
   /** Virtual constructor */
-  virtual OptimizationSolverImplementation * clone() const;
+  virtual OptimizationAlgorithmImplementation * clone() const;
 
   /** Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
   virtual void run();
@@ -139,9 +139,9 @@ private:
   NumericalScalar maximumConstraintError_;  /**< Value of ||constraints(x_n)|| for the active constraints */
   Bool verbose_;
 
-} ; /* class OptimizationSolverImplementation */
+} ; /* class OptimizationAlgorithmImplementation */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_OPTIMIZATIONSOLVERIMPLEMENTATION_HXX */
+#endif /* OPENTURNS_OPTIMIZATIONALGORITHMIMPLEMENTATION_HXX */

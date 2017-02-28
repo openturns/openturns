@@ -31,7 +31,7 @@ try:
     # We create an Event from this RandomVector
     myEvent = Event(output, Less(), -3.0)
 
-    # We create an OptimizationSolver algorithm
+    # We create an OptimizationAlgorithm algorithm
     myCobyla = Cobyla()
     myCobyla.setMaximumIterationNumber(400)
     myCobyla.setMaximumAbsoluteError(1.0e-10)
@@ -41,7 +41,7 @@ try:
     print("myCobyla=", myCobyla)
 
     # We create a Analytical algorithm
-    # The first parameter is an OptimizationSolver
+    # The first parameter is an OptimizationAlgorithm
     # The second parameter is an event
     # The third parameter is a starting point for the design point research
     myAlgo = Analytical(myCobyla, myEvent, mean)

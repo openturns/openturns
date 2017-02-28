@@ -1,0 +1,48 @@
+// OptimizationAlgorithm docstrings are defined in OptimizationAlgorithmImplementation_doc.i.in
+
+%feature("docstring") OT::OptimizationAlgorithm
+OT_OptimizationAlgorithm_doc
+%feature("docstring") OT::OptimizationAlgorithm::computeLagrangeMultipliers
+OT_OptimizationAlgorithm_computeLagrangeMultipliers_doc
+%feature("docstring") OT::OptimizationAlgorithm::getMaximumAbsoluteError
+OT_OptimizationAlgorithm_getMaximumAbsoluteError_doc
+%feature("docstring") OT::OptimizationAlgorithm::getMaximumConstraintError
+OT_OptimizationAlgorithm_getMaximumConstraintError_doc
+%feature("docstring") OT::OptimizationAlgorithm::getMaximumIterationNumber
+OT_OptimizationAlgorithm_getMaximumIterationNumber_doc
+%feature("docstring") OT::OptimizationAlgorithm::getMaximumEvaluationNumber
+OT_OptimizationAlgorithm_getMaximumEvaluationNumber_doc
+%feature("docstring") OT::OptimizationAlgorithm::getMaximumRelativeError
+OT_OptimizationAlgorithm_getMaximumRelativeError_doc
+%feature("docstring") OT::OptimizationAlgorithm::getMaximumResidualError
+OT_OptimizationAlgorithm_getMaximumResidualError_doc
+%feature("docstring") OT::OptimizationAlgorithm::getProblem
+OT_OptimizationAlgorithm_getProblem_doc
+%feature("docstring") OT::OptimizationAlgorithm::getResult
+OT_OptimizationAlgorithm_getResult_doc
+%feature("docstring") OT::OptimizationAlgorithm::getStartingPoint
+OT_OptimizationAlgorithm_getStartingPoint_doc
+%feature("docstring") OT::OptimizationAlgorithm::run
+OT_OptimizationAlgorithm_run_doc
+%feature("docstring") OT::OptimizationAlgorithm::setMaximumAbsoluteError
+OT_OptimizationAlgorithm_setMaximumAbsoluteError_doc
+%feature("docstring") OT::OptimizationAlgorithm::setMaximumConstraintError
+OT_OptimizationAlgorithm_setMaximumConstraintError_doc
+%feature("docstring") OT::OptimizationAlgorithm::setMaximumIterationNumber
+OT_OptimizationAlgorithm_setMaximumIterationNumber_doc
+%feature("docstring") OT::OptimizationAlgorithm::setMaximumEvaluationNumber
+OT_OptimizationAlgorithm_setMaximumEvaluationNumber_doc
+%feature("docstring") OT::OptimizationAlgorithm::setMaximumRelativeError
+OT_OptimizationAlgorithm_setMaximumRelativeError_doc
+%feature("docstring") OT::OptimizationAlgorithm::setMaximumResidualError
+OT_OptimizationAlgorithm_setMaximumResidualError_doc
+%feature("docstring") OT::OptimizationAlgorithm::setProblem
+OT_OptimizationAlgorithm_setProblem_doc
+%feature("docstring") OT::OptimizationAlgorithm::setResult
+OT_OptimizationAlgorithm_setResult_doc
+%feature("docstring") OT::OptimizationAlgorithm::setStartingPoint
+OT_OptimizationAlgorithm_setStartingPoint_doc
+%feature("docstring") OT::OptimizationAlgorithm::setVerbose
+OT_OptimizationAlgorithm_setVerbose_doc
+%feature("docstring") OT::OptimizationAlgorithm::getVerbose
+OT_OptimizationAlgorithm_getVerbose_doc

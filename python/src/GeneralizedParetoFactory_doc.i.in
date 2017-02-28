@@ -15,7 +15,7 @@ DistributionFactory"
 
 Parameters
 ----------
-solver : :class:`~openturns.OptimizationSolver`
+solver : :class:`~openturns.OptimizationAlgorithm`
     The solver used for numerical optimization of the likelihood."
 
 // ---------------------------------------------------------------------
@@ -25,6 +25,6 @@ solver : :class:`~openturns.OptimizationSolver`
 
 Returns
 -------
-solver : :class:`~openturns.OptimizationSolver`
+solver : :class:`~openturns.OptimizationAlgorithm`
     The solver used for numerical optimization of the likelihood."
 

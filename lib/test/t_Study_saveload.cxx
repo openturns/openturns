@@ -369,7 +369,7 @@ int main(int argc, char *argv[])
     cobyla.setMaximumConstraintError(1.0e-10);
 
     // Create a TNC algorithm
-    OptimizationSolver tnc(new TNC());
+    OptimizationAlgorithm tnc(new TNC());
     {
       Interval bounds(NumericalPoint(3, -3.0), NumericalPoint(3, 5.0));
       Description input2(3);
@@ -996,7 +996,7 @@ int main(int argc, char *argv[])
     compare<AbdoRackwitz >( abdoRackwitz, study2 );
     compare<SQP >( sqp, study2, "sqp" );
     compare<Cobyla >( cobyla, study2, "cobyla" );
-    compare<OptimizationSolver >( tnc, study2, "tnc" );
+    compare<OptimizationAlgorithm >( tnc, study2, "tnc" );
 
     // Model
     compare<Event >( event, study2 );

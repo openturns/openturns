@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *  @brief SQP is an actual implementation for
- *         OptimizationSolver using the SQP algorithm.
+ *         OptimizationAlgorithm using the SQP algorithm.
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -23,7 +23,7 @@
 #define OPENTURNS_SQP_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/OptimizationSolverImplementation.hxx"
+#include "openturns/OptimizationAlgorithmImplementation.hxx"
 #include "openturns/NumericalPoint.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -33,11 +33,11 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class SQP
  * SQP is an actual implementation for
- * OptimizationSolver
+ * OptimizationAlgorithm
  */
 
 class OT_API SQP :
-  public OptimizationSolverImplementation
+  public OptimizationAlgorithmImplementation
 {
   CLASSNAME;
 

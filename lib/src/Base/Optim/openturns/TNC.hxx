@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief TNC is an actual implementation for OptimizationSolverImplementation using the TNC library
+ *  @brief TNC is an actual implementation for OptimizationAlgorithmImplementation using the TNC library
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -22,7 +22,7 @@
 #define OPENTURNS_TNC_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/OptimizationSolverImplementation.hxx"
+#include "openturns/OptimizationAlgorithmImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,10 +31,10 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class TNC
  * TNC is an actual implementation for
- * OptimizationSolverImplementation using the TNC library
+ * OptimizationAlgorithmImplementation using the TNC library
  */
 class OT_API TNC :
-  public OptimizationSolverImplementation
+  public OptimizationAlgorithmImplementation
 {
   CLASSNAME;
 public:

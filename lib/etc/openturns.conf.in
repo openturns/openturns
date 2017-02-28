@@ -107,14 +107,14 @@
   <AbdoRackwitz-DefaultOmega  value="1.0e-4" />
   <AbdoRackwitz-DefaultSmooth value="1.2"    />
 
-  <!-- OT::OptimizationSolverImplementation parameters -->
-  <OptimizationSolver-DefaultLevelValue              value="0.0"    />
-  <OptimizationSolver-DefaultMaximumIteration        value="100"    />
-  <OptimizationSolver-DefaultMaximumEvaluationNumber value="100000" />
-  <OptimizationSolver-DefaultMaximumAbsoluteError    value="1.0e-5" />
-  <OptimizationSolver-DefaultMaximumRelativeError    value="1.0e-5" />
-  <OptimizationSolver-DefaultMaximumResidualError    value="1.0e-5" />
-  <OptimizationSolver-DefaultMaximumConstraintError  value="1.0e-5" />
+  <!-- OT::OptimizationAlgorithmImplementation parameters -->
+  <OptimizationAlgorithm-DefaultLevelValue              value="0.0"    />
+  <OptimizationAlgorithm-DefaultMaximumIteration        value="100"    />
+  <OptimizationAlgorithm-DefaultMaximumEvaluationNumber value="100000" />
+  <OptimizationAlgorithm-DefaultMaximumAbsoluteError    value="1.0e-5" />
+  <OptimizationAlgorithm-DefaultMaximumRelativeError    value="1.0e-5" />
+  <OptimizationAlgorithm-DefaultMaximumResidualError    value="1.0e-5" />
+  <OptimizationAlgorithm-DefaultMaximumConstraintError  value="1.0e-5" />
 
   <!-- OT::Cobyla parameters -->
   <Cobyla-DefaultRhoBeg value="0.1" />
@@ -468,7 +468,7 @@
   <GeneralizedLinearModelAlgorithm-MaximalScaling                 value="1.0e5"   />
   <GeneralizedLinearModelAlgorithm-DefaultOptimizationLowerBound  value="1.0e-2"  />
   <GeneralizedLinearModelAlgorithm-DefaultOptimizationUpperBound  value="1.0e2"      />
-  <GeneralizedLinearModelAlgorithm-DefaultOptimizationSolver      value="TNC"     />
+  <GeneralizedLinearModelAlgorithm-DefaultOptimizationAlgorithm      value="TNC"     />
 
 <!-- OT::KrigingAlgorithm parameters -->
   <KrigingAlgorithm-StartingScaling value="1.0e-13" />

@@ -27,7 +27,7 @@
 #include "openturns/Field.hxx"
 #include "openturns/BoxCoxTransform.hxx"
 #include "openturns/Graph.hxx"
-#include "openturns/OptimizationSolver.hxx"
+#include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/Basis.hxx"
 #include "openturns/GeneralizedLinearModelResult.hxx"
@@ -96,13 +96,13 @@ public:
                         GeneralizedLinearModelResult & result);
 
   /** Optimization solver accessor */
-  OptimizationSolver getOptimizationSolver() const;
-  void setOptimizationSolver(const OptimizationSolver & solver);
+  OptimizationAlgorithm getOptimizationSolver() const;
+  void setOptimizationSolver(const OptimizationAlgorithm & solver);
 
 protected:
 
   /** Optimization solver */
-  OptimizationSolver  solver_;
+  OptimizationAlgorithm  solver_;
 
   void checkGLMData(const NumericalSample & inputSample,
                     const NumericalSample & outputSample,

@@ -222,7 +222,7 @@ NumericalPoint MethodOfMomentsFactory::buildParameter(const NumericalSample & sa
   // Define optimisation problem
   OptimizationProblem problem(problem_);
   problem.setObjective(momentsObjective);
-  OptimizationSolver solver(solver_);
+  OptimizationAlgorithm solver(solver_);
   if (solver.getStartingPoint().getDimension() != momentsObjective.getInputDimension())
   {
     NumericalPoint effectiveParameter(distribution_.getParameter());
@@ -280,12 +280,12 @@ OptimizationProblem MethodOfMomentsFactory::getOptimizationProblem() const
   return problem_;
 }
 
-void MethodOfMomentsFactory::setOptimizationSolver(const OptimizationSolver& solver)
+void MethodOfMomentsFactory::setOptimizationSolver(const OptimizationAlgorithm& solver)
 {
   solver_ = solver;
 }
 
-OptimizationSolver MethodOfMomentsFactory::getOptimizationSolver() const
+OptimizationAlgorithm MethodOfMomentsFactory::getOptimizationSolver() const
 {
   return solver_;
 }

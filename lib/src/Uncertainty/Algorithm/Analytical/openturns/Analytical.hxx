@@ -24,7 +24,7 @@
 #include "openturns/PersistentObject.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/NumericalPointWithDescription.hxx"
-#include "openturns/OptimizationSolver.hxx"
+#include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/Event.hxx"
 #include "openturns/StandardEvent.hxx"
@@ -54,7 +54,7 @@ public:
   typedef Collection<NumericalPointWithDescription> Sensitivity;
 
   /** Constructor with parameters */
-  Analytical(const OptimizationSolver & solver,
+  Analytical(const OptimizationAlgorithm & solver,
              const Event & compositeEvent,
              const NumericalPoint & physicalStartingPoint);
 
@@ -74,11 +74,11 @@ public:
   /** Event accessor */
   void setEvent(const Event & event);
 
-  /** OptimizationSolver accessor */
-  OptimizationSolver getNearestPointAlgorithm() const;
+  /** OptimizationAlgorithm accessor */
+  OptimizationAlgorithm getNearestPointAlgorithm() const;
 
-  /** OptimizationSolver accessor */
-  void setNearestPointAlgorithm(const OptimizationSolver & solver);
+  /** OptimizationAlgorithm accessor */
+  void setNearestPointAlgorithm(const OptimizationAlgorithm & solver);
 
   /** Result accessor */
   virtual AnalyticalResult getAnalyticalResult() const;
@@ -104,7 +104,7 @@ protected:
 
 private:
 
-  OptimizationSolver nearestPointAlgorithm_;
+  OptimizationAlgorithm nearestPointAlgorithm_;
   Event event_;
   NumericalPoint physicalStartingPoint_;
   AnalyticalResult result_;

@@ -66,7 +66,7 @@ try:
     print("myAbdoRackwitz=", myAbdoRackwitz)
 
     # We create a FORM algorithm
-    # The first parameter is an OptimizationSolver
+    # The first parameter is an OptimizationAlgorithm
     # The second parameter is an event
     # The third parameter is a starting point for the design point research
     myAlgo = SORM(myAbdoRackwitz, myEvent, mean)

@@ -230,12 +230,12 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfProbabilityWeightedMome
 }
 
 /* Optimization solver accessor */
-OptimizationSolver GeneralizedParetoFactory::getOptimizationSolver() const
+OptimizationAlgorithm GeneralizedParetoFactory::getOptimizationSolver() const
 {
   return solver_;
 }
 
-void GeneralizedParetoFactory::setOptimizationSolver(const OptimizationSolver & solver)
+void GeneralizedParetoFactory::setOptimizationSolver(const OptimizationAlgorithm & solver)
 {
   solver_ = solver;
 }

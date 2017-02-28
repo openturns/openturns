@@ -104,7 +104,7 @@ TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const NumericalSa
   factory.setKnownParameter(knownParameterValues, knownParameterIndices);
 
   // override starting point
-  OptimizationSolver solver(factory.getOptimizationSolver());
+  OptimizationAlgorithm solver(factory.getOptimizationSolver());
   solver.setStartingPoint(startingPoint);
   factory.setOptimizationSolver(solver);
 
@@ -148,12 +148,12 @@ TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal() const
 }
 
 /* Optimization solver accessor */
-OptimizationSolver TruncatedNormalFactory::getOptimizationSolver() const
+OptimizationAlgorithm TruncatedNormalFactory::getOptimizationSolver() const
 {
   return solver_;
 }
 
-void TruncatedNormalFactory::setOptimizationSolver(const OptimizationSolver & solver)
+void TruncatedNormalFactory::setOptimizationSolver(const OptimizationAlgorithm & solver)
 {
   solver_ = solver;
 }

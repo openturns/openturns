@@ -95,8 +95,8 @@ public:
   KrigingResult getResult();
 
   /** Optimization solver accessor */
-  OptimizationSolver getOptimizationSolver() const;
-  void setOptimizationSolver(const OptimizationSolver & solver);
+  OptimizationAlgorithm getOptimizationSolver() const;
+  void setOptimizationSolver(const OptimizationAlgorithm & solver);
 
   /** Accessor to optimization bounds */
   void setOptimizationBounds(const Interval & optimizationBounds);

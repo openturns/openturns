@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
     solver.setStartingPoint(startingPoint);
 
     // run locally
-    OptimizationSolver algo = solver;
+    OptimizationAlgorithm algo = solver;
     algo.run();
     OptimizationResult result(algo.getResult());
     fullprint << "local search x*=" << result.getOptimalPoint() << " f(x*)=" << result.getOptimalValue() << std::endl;

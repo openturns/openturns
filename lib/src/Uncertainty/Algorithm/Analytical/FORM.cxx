@@ -40,7 +40,7 @@ FORM::FORM()
 /*
  * @brief  Standard constructor: the class is defined by an optimisation algorithm, a failure event and a physical starting point
  */
-FORM::FORM(const OptimizationSolver & nearestPointAlgorithm,
+FORM::FORM(const OptimizationAlgorithm & nearestPointAlgorithm,
            const Event & event,
            const NumericalPoint & physicalStartingPoint):
   Analytical(nearestPointAlgorithm, event, physicalStartingPoint)

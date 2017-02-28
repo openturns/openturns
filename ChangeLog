@@ -34,6 +34,7 @@
   * Renamed LinearNumericalMathFunction to LinearFunction
   * Swap covModel and basis arguments in KrigingAlgorithm constructors
   * Removed useless keepCholesky argument in KrigingAlgorithm constructors
+  * Renamed OptimizationSolver to OptimizationAlgorithm
 
 === Python module ===
 

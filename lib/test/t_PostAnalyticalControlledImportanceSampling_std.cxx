@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
     Event myEvent(output, Less(), -3.0);
 
     /* We create a FORM algorithm */
-    /* The first parameter is an OptimizationSolver */
+    /* The first parameter is an OptimizationAlgorithm */
     /* The second parameter is an event */
     /* The third parameter is a starting point for the design point research */
     Cobyla myCobyla;

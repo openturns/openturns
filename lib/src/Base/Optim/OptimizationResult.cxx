@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief OptimizationResult stores the result of a OptimizationSolverImplementation
+ *  @brief OptimizationResult stores the result of a OptimizationAlgorithmImplementation
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *

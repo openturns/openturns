@@ -7,17 +7,17 @@ ot.TESTPREAMBLE()
 
 try:
     ot.ResourceMap.SetAsUnsignedInteger(
-        "OptimizationSolver-DefaultMaximumIteration", 1000)
+        "OptimizationAlgorithm-DefaultMaximumIteration", 1000)
     ot.ResourceMap.SetAsUnsignedInteger(
-        "OptimizationSolver-DefaultMaximumEvaluationNumber", 100000)
+        "OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 100000)
     ot.ResourceMap.SetAsNumericalScalar(
-        "OptimizationSolver-DefaultMaximumAbsoluteError", 1.0e-7)
+        "OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1.0e-7)
     ot.ResourceMap.SetAsNumericalScalar(
-        "OptimizationSolver-DefaultMaximumRelativeError", 1.0e-7)
+        "OptimizationAlgorithm-DefaultMaximumRelativeError", 1.0e-7)
     ot.ResourceMap.SetAsNumericalScalar(
-        "OptimizationSolver-DefaultMaximumResidualError", 1.0e-7)
+        "OptimizationAlgorithm-DefaultMaximumResidualError", 1.0e-7)
     ot.ResourceMap.SetAsNumericalScalar(
-        "OptimizationSolver-DefaultMaximumConstraintError", 1.0e-7)
+        "OptimizationAlgorithm-DefaultMaximumConstraintError", 1.0e-7)
     ot.PlatformInfo.SetNumericalPrecision(3)
 
     # The 1D mesher

@@ -1,7 +1,7 @@
 %feature("docstring") OT::OptimizationResult
 "Optimization result.
 
-Returned by optimization solvers, see :class:`~openturns.OptimizationSolver`.
+Returned by optimization solvers, see :class:`~openturns.OptimizationAlgorithm`.
 
 Available constructors:
     OptimizationResult(*optimalPoint, optimalValue, iterationNumber, absoluteError, relativeError, residualError, constraintError*)
@@ -157,7 +157,7 @@ multipliers : :class:`~openturns.NumericalPoint`
 
 Notes
 -----
-See :class:`~openturns.OptimizationSolver` for the details on how the multipliers are defined and stored in the result.
+See :class:`~openturns.OptimizationAlgorithm` for the details on how the multipliers are defined and stored in the result.
 "
 
 // ---------------------------------------------------------------------
@@ -172,7 +172,7 @@ multipliers : :class:`~openturns.NumericalPoint`
 
 Notes
 -----
-See :class:`~openturns.OptimizationSolver` for the details on how the multipliers are defined and stored in the result.
+See :class:`~openturns.OptimizationAlgorithm` for the details on how the multipliers are defined and stored in the result.
 "
 
 // ---------------------------------------------------------------------
