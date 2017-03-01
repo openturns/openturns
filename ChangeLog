@@ -84,6 +84,7 @@
  * #854 (InverseWishart.computeLogPDF)
  * #861 (document HMatrix classes)
  * #872 (Cannot draw a Text drawable using R)
+ * #878 (Viewer does not take into account labels in Contour)
 
 == 1.7 release (2016-01-27) == #release-1.7
 

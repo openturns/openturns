@@ -377,7 +377,11 @@ class View(object):
                 contourset = self._ax[0].contour(X, Y, Z, **contour_kwargs)
                 if drawable.getDrawLabels():
                     clabel_kwargs.setdefault('fontsize', 8)
-                    clabel_kwargs.setdefault('fmt', '%g')
+                    # Use labels
+                    fmt = {}
+                    for l,s in zip(np.array(drawable.getLevels()), drawable.getLabels()):
+                        fmt[l] = s
+                    clabel_kwargs.setdefault('fmt', fmt)
                     plt.clabel(contourset, **clabel_kwargs)
                 for i in range(drawable.getLabels().getSize()):
                     contourset.collections[i].set_label(
