@@ -39,7 +39,7 @@ class OT_API SpectralModelFactoryImplementation
   CLASSNAME;
 public:
 
-  typedef Pointer<SpectralModelFactoryImplementation>    Implementation;
+  typedef Pointer<SpectralModelImplementation> Implementation;
 
   /** Default constructor */
   SpectralModelFactoryImplementation();
@@ -61,10 +61,10 @@ public:
 
   /* Here is the interface that all derived class must implement */
   /** Build a a spectral model based on a sample */
-  virtual SpectralModelImplementation * build(const ProcessSample & sample) const;
+  virtual Implementation build(const ProcessSample & sample) const;
 
   /** Build a a spectral model based on a Field */
-  virtual SpectralModelImplementation * build(const Field & timeSerie) const;
+  virtual Implementation build(const Field & timeSerie) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

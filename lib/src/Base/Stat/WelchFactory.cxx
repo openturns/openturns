@@ -116,7 +116,17 @@ void WelchFactory::setOverlap(const NumericalScalar overlap)
   overlap_ = overlap;
 }
 
-UserDefinedSpectralModel * WelchFactory::build(const ProcessSample & sample) const
+WelchFactory::Implementation WelchFactory::build(const ProcessSample & sample) const
+{
+  return buildAsUserDefinedSpectralModel(sample).clone();
+}
+
+WelchFactory::Implementation WelchFactory::build(const Field & timeSeries) const
+{
+  return buildAsUserDefinedSpectralModel(timeSeries).clone();
+}
+
+UserDefinedSpectralModel WelchFactory::buildAsUserDefinedSpectralModel(const ProcessSample & sample) const
 {
   const UnsignedInteger dimension = sample.getDimension();
   const UnsignedInteger sampleSize = sample.getSize();
@@ -177,10 +187,10 @@ UserDefinedSpectralModel * WelchFactory::build(const ProcessSample & sample) con
           DSPCollection[k](p, q) += zHat(k, p) * std::conj(zHat(k, q));
     }
   } // Loop over the time series
-  return UserDefinedSpectralModel(frequencyGrid, DSPCollection).clone();
+  return UserDefinedSpectralModel(frequencyGrid, DSPCollection);
 }
 
-UserDefinedSpectralModel * WelchFactory::build(const Field & timeSeries) const
+UserDefinedSpectralModel WelchFactory::buildAsUserDefinedSpectralModel(const Field & timeSeries) const
 {
   // We split the time series into overlaping blockNumbers that are used as a ProcessSample
   const UnsignedInteger size = timeSeries.getSize();
@@ -201,7 +211,7 @@ UserDefinedSpectralModel * WelchFactory::build(const Field & timeSeries) const
         sample[blockIndex][timeIndex][i] = timeSeries.getValues()[blockIndex * hopSize + timeIndex][i];
     } // Loop on the time index
   } // Loop on the blocks
-  return build(sample);
+  return buildAsUserDefinedSpectralModel(sample);
 }
 
 /* Method save() stores the object through the StorageManager */

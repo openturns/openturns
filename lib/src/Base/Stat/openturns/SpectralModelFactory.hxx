@@ -36,7 +36,7 @@ class OT_API  SpectralModelFactory
   CLASSNAME;
 public:
 
-  typedef SpectralModelFactoryImplementation::Implementation    Implementation;
+  typedef Pointer<SpectralModelFactoryImplementation> Implementation;
 
   /** Default constructor */
   SpectralModelFactory();
