@@ -121,15 +121,29 @@ String MultiStart::__repr__() const
   return oss;
 }
 
-void MultiStart::setOptimizationSolver(const OptimizationAlgorithm & solver)
+void MultiStart::setOptimizationAlgorithm(const OptimizationAlgorithm & solver)
 {
   solver_ = solver;
 }
 
-OptimizationAlgorithm MultiStart::getOptimizationSolver() const
+OptimizationAlgorithm MultiStart::getOptimizationAlgorithm() const
 {
   return solver_;
 }
+
+
+void MultiStart::setOptimizationSolver(const OptimizationAlgorithm & solver)
+{
+  Log::Warn(OSS() << "MultiStart::setOptimizationSolver is deprecated");
+  setOptimizationAlgorithm(solver);
+}
+
+OptimizationAlgorithm MultiStart::getOptimizationSolver() const
+{
+  Log::Warn(OSS() << "MultiStart::getOptimizationSolver is deprecated");
+  return getOptimizationAlgorithm();
+}
+
 
 void MultiStart::setStartingPoints(const NumericalSample & startingPoints)
 {

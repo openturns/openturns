@@ -9,3 +9,4 @@ Remove GeneralizedLinearModelResult alias
 Remove DynamicalFunction aliases
 Remove SpatialFunction alias
 Remove TemporalFuncion alias
+Remove [gs]etOptimizationSolver methods

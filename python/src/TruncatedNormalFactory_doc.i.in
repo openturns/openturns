@@ -12,7 +12,7 @@ DistributionFactory, TruncatedNormal"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::TrapezoidalFactory::setOptimizationSolver
+%feature("docstring") OT::TrapezoidalFactory::setOptimizationAlgorithm
 "Accessor to the solver.
 
 Parameters
@@ -22,7 +22,7 @@ solver : :class:`~openturns.OptimizationAlgorithm`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::TrapezoidalFactory::getOptimizationSolver
+%feature("docstring") OT::TrapezoidalFactory::getOptimizationAlgorithm
 "Accessor to the solver.
 
 Returns

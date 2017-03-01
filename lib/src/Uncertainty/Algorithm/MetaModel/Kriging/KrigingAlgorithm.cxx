@@ -256,15 +256,28 @@ KrigingResult KrigingAlgorithm::getResult()
 }
 
 /* Optimization solver accessor */
+OptimizationAlgorithm KrigingAlgorithm::getOptimizationAlgorithm() const
+{
+  return glmAlgo_.getOptimizationAlgorithm();
+}
+
+void KrigingAlgorithm::setOptimizationAlgorithm(const OptimizationAlgorithm & solver)
+{
+  glmAlgo_.setOptimizationAlgorithm(solver);
+}
+
 OptimizationAlgorithm KrigingAlgorithm::getOptimizationSolver() const
 {
-  return glmAlgo_.getOptimizationSolver();
+  Log::Warn(OSS() << "KrigingAlgorithm::getOptimizationSolver is deprecated");
+  return getOptimizationAlgorithm();
 }
 
 void KrigingAlgorithm::setOptimizationSolver(const OptimizationAlgorithm & solver)
 {
-  glmAlgo_.setOptimizationSolver(solver);
+  Log::Warn(OSS() << "KrigingAlgorithm::setOptimizationSolver is deprecated");
+  setOptimizationAlgorithm(solver);
 }
+
 
 /* Accessor to optimization bounds */
 void KrigingAlgorithm::setOptimizationBounds(const Interval & optimizationBounds)

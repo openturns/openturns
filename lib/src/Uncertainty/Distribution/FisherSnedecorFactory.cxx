@@ -72,9 +72,9 @@ FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor(const NumericalSampl
   MaximumLikelihoodFactory factory(buildAsFisherSnedecor());
 
   // override starting point
-  OptimizationAlgorithm solver(factory.getOptimizationSolver());
+  OptimizationAlgorithm solver(factory.getOptimizationAlgorithm());
   solver.setStartingPoint(NumericalPoint(dimension, 0.0));
-  factory.setOptimizationSolver(solver);
+  factory.setOptimizationAlgorithm(solver);
 
   // override bounds
   NumericalPoint parametersLowerBound;
@@ -106,14 +106,28 @@ FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor() const
 }
 
 /* Optimization solver accessor */
-OptimizationAlgorithm FisherSnedecorFactory::getOptimizationSolver() const
+OptimizationAlgorithm FisherSnedecorFactory::getOptimizationAlgorithm() const
 {
   return solver_;
 }
 
-void FisherSnedecorFactory::setOptimizationSolver(const OptimizationAlgorithm & solver)
+void FisherSnedecorFactory::setOptimizationAlgorithm(const OptimizationAlgorithm & solver)
 {
   solver_ = solver;
 }
+
+OptimizationAlgorithm FisherSnedecorFactory::getOptimizationSolver() const
+{
+  Log::Warn(OSS() << "FisherSnedecorFactory::getOptimizationSolver is deprecated");
+  return getOptimizationAlgorithm();
+}
+
+void FisherSnedecorFactory::setOptimizationSolver(const OptimizationAlgorithm & solver)
+{
+  Log::Warn(OSS() << "FisherSnedecorFactory::setOptimizationSolver is deprecated");
+  setOptimizationAlgorithm(solver);
+}
+
+
 
 END_NAMESPACE_OPENTURNS

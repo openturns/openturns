@@ -82,7 +82,7 @@ discretization : sequence of int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LevelSetMesher::getOptimizationSolver
+%feature("docstring") OT::LevelSetMesher::getOptimizationAlgorithm
 "Accessor to the optimization solver.
 
 Returns
@@ -92,7 +92,7 @@ solver : :class:`~openturns.OptimizationAlgorithm`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LevelSetMesher::setOptimizationSolver
+%feature("docstring") OT::LevelSetMesher::setOptimizationAlgorithm
 "Accessor to the optimization solver.
 
 Parameters

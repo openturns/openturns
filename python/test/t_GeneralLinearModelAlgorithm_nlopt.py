@@ -28,7 +28,7 @@ try:
     Y = model(X)
     basis = ot.QuadraticBasisFactory(spatialDimension).build()
     algo = ot.GeneralLinearModelAlgorithm(X, Y, covarianceModel, basis, True)
-    algo.setOptimizationSolver(ot.NLopt('LN_NELDERMEAD'))
+    algo.setOptimizationAlgorithm(ot.NLopt('LN_NELDERMEAD'))
     algo.run()
 
     # perform an evaluation

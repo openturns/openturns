@@ -80,14 +80,27 @@ String LevelSetMesher::__str__(const String & offset) const
 }
 
 /* Optimization solver accessor */
-void LevelSetMesher::setOptimizationSolver(const OptimizationAlgorithm & solver)
+void LevelSetMesher::setOptimizationAlgorithm(const OptimizationAlgorithm & solver)
 {
   solver_ = solver;
 }
 
-OptimizationAlgorithm LevelSetMesher::getOptimizationSolver() const
+OptimizationAlgorithm LevelSetMesher::getOptimizationAlgorithm() const
 {
   return solver_;
+}
+
+
+void LevelSetMesher::setOptimizationSolver(const OptimizationAlgorithm & solver)
+{
+  Log::Warn(OSS() << "LevelSetMesher::setOptimizationSolver is deprecated");
+  setOptimizationAlgorithm(solver);
+}
+
+OptimizationAlgorithm LevelSetMesher::getOptimizationSolver() const
+{
+  Log::Warn(OSS() << "LevelSetMesher::getOptimizationSolver is deprecated");
+  return getOptimizationAlgorithm();
 }
 
 /* Discretization accessors */

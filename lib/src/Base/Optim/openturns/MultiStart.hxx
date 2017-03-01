@@ -57,8 +57,13 @@ public:
   /** Problem accessor */
   virtual void setProblem(const OptimizationProblem & problem);
 
+  /** Solver accessor */
+  void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
+  OptimizationAlgorithm getOptimizationAlgorithm() const;
+
+  // @deprecated
   void setOptimizationSolver(const OptimizationAlgorithm & solver);
-  OptimizationAlgorithm getOptimizationSolver() const;
+  OptimizationAlgorithm getOptimizationSolver() const;  
 
   void setStartingPoints(const NumericalSample & sample);
   NumericalSample getStartingPoints() const;

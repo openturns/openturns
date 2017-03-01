@@ -59,6 +59,11 @@ public:
   /** Build a distribution based on a set of parameters */
   virtual NumericalPoint buildParameter(const NumericalSample & sample) const;
 
+  /** Optimization solver accessor */
+  void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
+  OptimizationAlgorithm getOptimizationAlgorithm() const;  
+
+  // @deprecated
   void setOptimizationSolver(const OptimizationAlgorithm & solver);
   OptimizationAlgorithm getOptimizationSolver() const;
 

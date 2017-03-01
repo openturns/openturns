@@ -632,14 +632,26 @@ void MeixnerDistribution::load(Advocate & adv)
 }
 
 /* Optimization solver accessor */
-OptimizationAlgorithm MeixnerDistribution::getOptimizationSolver() const
+OptimizationAlgorithm MeixnerDistribution::getOptimizationAlgorithm() const
 {
   return solver_;
 }
 
-void MeixnerDistribution::setOptimizationSolver(const OptimizationAlgorithm & solver)
+void MeixnerDistribution::setOptimizationAlgorithm(const OptimizationAlgorithm & solver)
 {
   solver_ = solver;
+}
+
+OptimizationAlgorithm MeixnerDistribution::getOptimizationSolver() const
+{
+  Log::Warn(OSS() << "MeixnerDistribution::getOptimizationSolver is deprecated");
+  return getOptimizationAlgorithm();
+}
+
+void MeixnerDistribution::setOptimizationSolver(const OptimizationAlgorithm & solver)
+{
+  Log::Warn(OSS() << "MeixnerDistribution::setOptimizationSolver is deprecated");
+  setOptimizationAlgorithm(solver);
 }
 
 END_NAMESPACE_OPENTURNS

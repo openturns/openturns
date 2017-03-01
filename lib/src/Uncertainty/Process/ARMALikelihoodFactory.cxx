@@ -423,15 +423,28 @@ void ARMALikelihoodFactory::initializeCobylaSolverParameter()
 }
 
 /* Optimization solver accessor */
-OptimizationAlgorithm ARMALikelihoodFactory::getOptimizationSolver() const
+OptimizationAlgorithm ARMALikelihoodFactory::getOptimizationAlgorithm() const
 {
   return solver_;
 }
 
-void ARMALikelihoodFactory::setOptimizationSolver(const OptimizationAlgorithm & solver)
+void ARMALikelihoodFactory::setOptimizationAlgorithm(const OptimizationAlgorithm & solver)
 {
   solver_ = solver;
 }
+
+OptimizationAlgorithm ARMALikelihoodFactory::getOptimizationSolver() const
+{
+  Log::Warn(OSS() << "ARMALikelihoodFactory::getOptimizationSolver is deprecated");
+  return getOptimizationAlgorithm();
+}
+
+void ARMALikelihoodFactory::setOptimizationSolver(const OptimizationAlgorithm & solver)
+{
+  Log::Warn(OSS() << "ARMALikelihoodFactory::getOptimizationSolver is deprecated");
+  setOptimizationAlgorithm(solver);
+}
+
 
 // in-place Cholesky decomposition
 int modifiedCholeskyDecomposition(SquareMatrix &matrix,

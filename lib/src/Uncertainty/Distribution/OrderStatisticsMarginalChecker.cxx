@@ -160,14 +160,27 @@ Indices OrderStatisticsMarginalChecker::buildPartition() const
 }
 
 /* Optimization solver accessor */
-OptimizationAlgorithm OrderStatisticsMarginalChecker::getOptimizationSolver() const
+OptimizationAlgorithm OrderStatisticsMarginalChecker::getOptimizationAlgorithm() const
 {
   return solver_;
 }
 
-void OrderStatisticsMarginalChecker::setOptimizationSolver(const OptimizationAlgorithm & solver)
+void OrderStatisticsMarginalChecker::setOptimizationAlgorithm(const OptimizationAlgorithm & solver)
 {
   solver_ = solver;
 }
+
+OptimizationAlgorithm OrderStatisticsMarginalChecker::getOptimizationSolver() const
+{
+  Log::Warn(OSS() << "OrderStatisticsMarginalChecker::getOptimizationSolver is deprecated");
+  return getOptimizationAlgorithm(); 
+}
+
+void OrderStatisticsMarginalChecker::setOptimizationSolver(const OptimizationAlgorithm & solver)
+{
+  Log::Warn(OSS() << "OrderStatisticsMarginalChecker::setOptimizationSolver is deprecated");
+  setOptimizationAlgorithm(solver); 
+}
+
 
 END_NAMESPACE_OPENTURNS

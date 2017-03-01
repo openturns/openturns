@@ -109,7 +109,7 @@ Get the resulting meta model:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::KrigingAlgorithm::getOptimizationSolver
+%feature("docstring") OT::KrigingAlgorithm::getOptimizationAlgorithm
 "Accessor to solver used to optimize the covariance model parameters.
 
 Returns
@@ -119,7 +119,7 @@ algorithm : :class:`~openturns.OptimizationAlgorithm`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::KrigingAlgorithm::setOptimizationSolver
+%feature("docstring") OT::KrigingAlgorithm::setOptimizationAlgorithm
 "Accessor to the solver used to optimize the covariance model parameters.
 
 Parameters

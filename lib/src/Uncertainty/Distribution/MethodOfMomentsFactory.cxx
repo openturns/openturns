@@ -280,14 +280,27 @@ OptimizationProblem MethodOfMomentsFactory::getOptimizationProblem() const
   return problem_;
 }
 
-void MethodOfMomentsFactory::setOptimizationSolver(const OptimizationAlgorithm& solver)
+void MethodOfMomentsFactory::setOptimizationAlgorithm(const OptimizationAlgorithm& solver)
 {
   solver_ = solver;
 }
 
-OptimizationAlgorithm MethodOfMomentsFactory::getOptimizationSolver() const
+OptimizationAlgorithm MethodOfMomentsFactory::getOptimizationAlgorithm() const
 {
   return solver_;
+}
+
+
+void MethodOfMomentsFactory::setOptimizationSolver(const OptimizationAlgorithm& solver)
+{
+  Log::Warn(OSS() << "MethodOfMomentsFactory::setOptimizationSolver is deprecated");
+  setOptimizationAlgorithm(solver);
+}
+
+OptimizationAlgorithm MethodOfMomentsFactory::getOptimizationSolver() const
+{
+  Log::Warn(OSS() << "MethodOfMomentsFactory::getOptimizationSolver is deprecated");
+  return getOptimizationAlgorithm();
 }
 
 void MethodOfMomentsFactory::setKnownParameter(const NumericalPoint & values,

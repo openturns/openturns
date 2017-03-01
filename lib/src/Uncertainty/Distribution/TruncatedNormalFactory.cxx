@@ -104,9 +104,9 @@ TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const NumericalSa
   factory.setKnownParameter(knownParameterValues, knownParameterIndices);
 
   // override starting point
-  OptimizationAlgorithm solver(factory.getOptimizationSolver());
+  OptimizationAlgorithm solver(factory.getOptimizationAlgorithm());
   solver.setStartingPoint(startingPoint);
-  factory.setOptimizationSolver(solver);
+  factory.setOptimizationAlgorithm(solver);
 
   // override bounds
   Interval bounds(parametersLowerBound, NumericalPoint(dimension, SpecFunc::MaxNumericalScalar), parametersLowerFlags, Interval::BoolCollection(dimension, false));
@@ -148,13 +148,27 @@ TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal() const
 }
 
 /* Optimization solver accessor */
-OptimizationAlgorithm TruncatedNormalFactory::getOptimizationSolver() const
+OptimizationAlgorithm TruncatedNormalFactory::getOptimizationAlgorithm() const
 {
   return solver_;
 }
 
-void TruncatedNormalFactory::setOptimizationSolver(const OptimizationAlgorithm & solver)
+void TruncatedNormalFactory::setOptimizationAlgorithm(const OptimizationAlgorithm & solver)
 {
   solver_ = solver;
 }
+
+void TruncatedNormalFactory::setOptimizationSolver(const OptimizationAlgorithm & solver)
+{
+  Log::Warn(OSS() << "TruncatedNormalFactory::setOptimizationSolver is deprecated");
+  setOptimizationAlgorithm(solver);
+}
+
+OptimizationAlgorithm TruncatedNormalFactory::getOptimizationSolver() const
+{
+  Log::Warn(OSS() << "TruncatedNormalFactory::getOptimizationSolver is deprecated");
+  return getOptimizationAlgorithm();
+}
+
+
 END_NAMESPACE_OPENTURNS

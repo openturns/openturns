@@ -42,6 +42,7 @@
   * Renamed DynamicalFunction to FieldFunction
   * Renamed SpatialFunction to ValueFunction
   * Renamed TemporalFunction to VertexValueFunction
+  * Deprecated [gs]etOptimizationSolver methods
 
 === Python module ===
 

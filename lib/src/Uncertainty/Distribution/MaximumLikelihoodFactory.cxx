@@ -359,14 +359,26 @@ void MaximumLikelihoodFactory::setOptimizationInequalityConstraint(const Numeric
   optimizationInequalityConstraint_ = optimizationInequalityConstraint;
 }
 
-void MaximumLikelihoodFactory::setOptimizationSolver(const OptimizationAlgorithm& solver)
+void MaximumLikelihoodFactory::setOptimizationAlgorithm(const OptimizationAlgorithm& solver)
 {
   solver_ = solver;
 }
 
-OptimizationAlgorithm MaximumLikelihoodFactory::getOptimizationSolver() const
+OptimizationAlgorithm MaximumLikelihoodFactory::getOptimizationAlgorithm() const
 {
   return solver_;
+}
+
+void MaximumLikelihoodFactory::setOptimizationSolver(const OptimizationAlgorithm& solver)
+{
+  Log::Warn(OSS() << "MaximumLikelihoodFactory::setOptimizationSolver is deprecated");
+  setOptimizationAlgorithm(solver);
+}
+
+OptimizationAlgorithm MaximumLikelihoodFactory::getOptimizationSolver() const
+{
+  Log::Warn(OSS() << "MaximumLikelihoodFactory::getOptimizationSolver is deprecated");
+  return getOptimizationAlgorithm();
 }
 
 void MaximumLikelihoodFactory::setKnownParameter(const NumericalPoint & values,

@@ -939,16 +939,30 @@ NumericalScalar GeneralLinearModelAlgorithm::computeHMatLogDeterminantCholesky()
 }
 
 /* Optimization solver accessor */
-OptimizationAlgorithm GeneralLinearModelAlgorithm::getOptimizationSolver() const
+OptimizationAlgorithm GeneralLinearModelAlgorithm::getOptimizationAlgorithm() const
 {
   return solver_;
 }
 
-void GeneralLinearModelAlgorithm::setOptimizationSolver(const OptimizationAlgorithm & solver)
+void GeneralLinearModelAlgorithm::setOptimizationAlgorithm(const OptimizationAlgorithm & solver)
 {
   solver_ = solver;
   hasRun_ = false;
 }
+
+OptimizationAlgorithm GeneralLinearModelAlgorithm::getOptimizationSolver() const
+{
+  Log::Warn(OSS() << "GeneralLinearModelAlgorithm::getOptimizationSolver is deprecated");
+  return getOptimizationAlgorithm();
+}
+
+void GeneralLinearModelAlgorithm::setOptimizationSolver(const OptimizationAlgorithm & solver)
+{
+  Log::Warn(OSS() << "GeneralLinearModelAlgorithm::setOptimizationSolver is deprecated");
+  setOptimizationAlgorithm(solver);
+}
+
+
 
 void GeneralLinearModelAlgorithm::setInputTransformation(const NumericalMathFunction & inputTransformation)
 {

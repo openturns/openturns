@@ -65,15 +65,28 @@ NumericalMathFunction TrapezoidalFactory::getLogLikelihoodInequalityConstraint()
 }
 
 /* Optimization solver accessor */
-OptimizationAlgorithm TrapezoidalFactory::getOptimizationSolver() const
+OptimizationAlgorithm TrapezoidalFactory::getOptimizationAlgorithm() const
 {
   return solver_;
 }
 
-void TrapezoidalFactory::setOptimizationSolver(const OptimizationAlgorithm & solver)
+void TrapezoidalFactory::setOptimizationAlgorithm(const OptimizationAlgorithm & solver)
 {
   solver_ = solver;
 }
+
+OptimizationAlgorithm TrapezoidalFactory::getOptimizationSolver() const
+{
+  Log::Warn(OSS() << "TrapezoidalFactory::getOptimizationSolver is deprecated");
+  return getOptimizationAlgorithm();
+}
+
+void TrapezoidalFactory::setOptimizationSolver(const OptimizationAlgorithm & solver)
+{
+  Log::Warn(OSS() << "TrapezoidalFactory::setOptimizationSolver is deprecated");
+  setOptimizationAlgorithm(solver);
+}
+
 
 /* Here is the interface that all derived class must implement */
 
@@ -128,7 +141,7 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const NumericalSample & sampl
   solver.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("TrapezoidalFactory-RhoEnd"));
   solver.setMaximumIterationNumber(ResourceMap::GetAsUnsignedInteger("TrapezoidalFactory-MaximumIteration"));
   solver.setStartingPoint(startingPoint);
-  factory.setOptimizationSolver(solver);
+  factory.setOptimizationAlgorithm(solver);
 
   // override constraint
   factory.setOptimizationInequalityConstraint(getLogLikelihoodInequalityConstraint());

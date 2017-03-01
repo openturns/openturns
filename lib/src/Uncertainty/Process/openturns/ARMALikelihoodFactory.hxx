@@ -182,6 +182,10 @@ private :
   mutable UnsignedInteger nbInequalityConstraint_;
 
   /** Optimization solver accessor */
+  OptimizationAlgorithm getOptimizationAlgorithm() const;
+  void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
+
+  // @deprecated
   OptimizationAlgorithm getOptimizationSolver() const;
   void setOptimizationSolver(const OptimizationAlgorithm & solver);
 

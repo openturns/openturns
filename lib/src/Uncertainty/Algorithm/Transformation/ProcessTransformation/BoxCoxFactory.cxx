@@ -220,15 +220,28 @@ BoxCoxFactory * BoxCoxFactory::clone() const
   return new BoxCoxFactory(*this);
 }
 
-OptimizationAlgorithm BoxCoxFactory::getOptimizationSolver() const
+OptimizationAlgorithm BoxCoxFactory::getOptimizationAlgorithm() const
 {
   return solver_;
 }
 
-void BoxCoxFactory::setOptimizationSolver(const OptimizationAlgorithm & solver)
+void BoxCoxFactory::setOptimizationAlgorithm(const OptimizationAlgorithm & solver)
 {
   solver_ = solver;
 }
+
+OptimizationAlgorithm BoxCoxFactory::getOptimizationSolver() const
+{
+  Log::Warn(OSS() << "BoxCoxFactory::getOptimizationSolver is deprecated");
+  return getOptimizationAlgorithm();
+}
+
+void BoxCoxFactory::setOptimizationSolver(const OptimizationAlgorithm & solver)
+{
+  Log::Warn(OSS() << "BoxCoxFactory::setOptimizationSolver is deprecated");
+  setOptimizationAlgorithm(solver);
+}
+
 
 
 /* Build the factory from data */

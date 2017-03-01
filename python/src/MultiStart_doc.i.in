@@ -33,7 +33,7 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::MultiStart::getOptimizationSolver
+%feature("docstring") OT::MultiStart::getOptimizationAlgorithm
 "Solver accessor.
 
 Returns
@@ -42,7 +42,7 @@ solver : :class:`~openturns.OptimizationAlgorithm`
     The internal solver"
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::MultiStart::setOptimizationSolver
+%feature("docstring") OT::MultiStart::setOptimizationAlgorithm
 "Solver accessor.
 
 Parameters
