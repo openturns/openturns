@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     WelchFactory myFactory;
 
     // Build a UserDefinedSpectralModel using the Welch method
-    SpectralModel mySpectralModel(myFactory.build(sample));
+    UserDefinedSpectralModel mySpectralModel(myFactory.buildAsUserDefinedSpectralModel(sample));
 
     // Get the frequency grid of the model
     RegularGrid myFrequencyGrid(mySpectralModel.getFrequencyGrid());
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
     TimeSeries timeSeries(myProcess.getRealization());
 
     // Build a UserDefinedSpectralModel using the Welch method
-    SpectralModel mySpectralModel2(myFactory.build(timeSeries));
+    UserDefinedSpectralModel mySpectralModel2(myFactory.buildAsUserDefinedSpectralModel(timeSeries));
 
     // Get the frequency grid of the model
     myFrequencyGrid = mySpectralModel2.getFrequencyGrid();

@@ -23,7 +23,6 @@
 
 #include "openturns/CovarianceModelFactoryImplementation.hxx"
 #include "openturns/UserDefinedStationaryCovarianceModel.hxx"
-#include "openturns/SpectralModelFactory.hxx"
 #include "openturns/WelchFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -39,14 +38,14 @@ public:
 
 
   /** Default constructor */
-  StationaryCovarianceModelFactory(const SpectralModelFactory & factory = WelchFactory());
+  StationaryCovarianceModelFactory(const WelchFactory & factory = WelchFactory());
 
   /** Virtual constructor */
   virtual StationaryCovarianceModelFactory * clone() const;
 
   /** SpectralModelFactory accessors */
-  SpectralModelFactory getSpectralModelFactory() const;
-  void setSpectralModelFactory(const SpectralModelFactory & factory);
+  WelchFactory getSpectralModelFactory() const;
+  void setSpectralModelFactory(const WelchFactory & factory);
 
   /** String converter */
   String __repr__() const;
@@ -54,16 +53,23 @@ public:
   /** String converter */
   String __str__(const String & offset = "") const;
 
-  /** Build a a spectral model based on a sample */
+  /** Build a covariance model based on a process sample */
   CovarianceModelImplementation::Implementation build(const ProcessSample & sample) const;
 
+  /** Build a user defined covariance model based on a process sample */
   UserDefinedStationaryCovarianceModel buildAsUserDefinedStationaryCovarianceModel(const ProcessSample & sample) const;
 
-  UserDefinedStationaryCovarianceModel buildAsUserDefinedStationaryCovarianceModel(const SpectralModel & mySpectralModel) const;
+  /** Build a user defined covariance model based on a spectral model and a frequency grid */
+  UserDefinedStationaryCovarianceModel buildAsUserDefinedStationaryCovarianceModel(const SpectralModel & mySpectralModel,
+										   const RegularGrid & frequencyGrid) const;
+
+  /** Build a user defined covariance model based on a user defined spectral model */
+  UserDefinedStationaryCovarianceModel buildAsUserDefinedStationaryCovarianceModel(const UserDefinedSpectralModel & mySpectralModel) const;
 
   /** Build a covariance model based on a Field */
   CovarianceModelImplementation::Implementation build(const Field & timeSerie) const;
 
+  /** Build a user defined covariance model based on a Field */
   UserDefinedStationaryCovarianceModel buildAsUserDefinedStationaryCovarianceModel(const Field & timeSerie) const;
 
   /** Method save() stores the object through the StorageManager */
@@ -74,8 +80,8 @@ public:
 
 private:
 
-  /** SpectralModelEstimate */
-  SpectralModelFactory spectralFactory_;
+  /** Spectral model factory */
+  WelchFactory spectralFactory_;
 
 }; /* class StationaryCovarianceModelFactory */
 

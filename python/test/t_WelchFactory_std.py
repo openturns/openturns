@@ -25,7 +25,7 @@ try:
     myFactory = WelchFactory()
 
     # Build a UserDefinedSpectralModel using the Wellch method
-    mySpectralModel = myFactory.build(sample)
+    mySpectralModel = myFactory.buildAsUserDefinedSpectralModel(sample)
 
     # Get the frequency grid of the model
     myFrequencyGrid = mySpectralModel.getFrequencyGrid()
@@ -46,7 +46,7 @@ try:
     timeSeries = myProcess.getRealization()
 
     # Build a UserDefinedSpectralModel using the Wellch method
-    mySpectralModel2 = myFactory.build(timeSeries)
+    mySpectralModel2 = myFactory.buildAsUserDefinedSpectralModel(timeSeries)
 
     # Get the frequency grid of the model
     myFrequencyGrid = mySpectralModel2.getFrequencyGrid()

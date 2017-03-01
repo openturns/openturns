@@ -131,7 +131,7 @@ It follows that:
 
     C_{i,j}^{stat}(\tau_m)  = \Delta f \delta(m) \sum_{k=1}^{M} \phi_k \exp\left\{2i \frac{\pi}{M} (m-1)(k-1)  \right\}
 
-In the equation :eq:`eq5`, we notice a discret inverse Fourier transform.
+In the equation :eq:`eq5`, we notice a discrete inverse Fourier transform.
 "
 
 // ---------------------------------------------------------------------
@@ -139,16 +139,16 @@ In the equation :eq:`eq5`, we notice a discret inverse Fourier transform.
 "Estimate a stationary covariance model.
 
 Available usages:
-    build(*sampleFields*)
+    build(*processSample*)
 
-    build(*myField*)
+    build(*field*)
 
 Parameters
 ----------
-sampleFields : :class:`~openturns.ProcessSample`
-    The fields used to estimate the covariance model.
-myField : :class:`~openturns.Field`
-    One field used to estimate the covariance model. 
+processSample : :class:`~openturns.ProcessSample`
+    The collection of fields used to estimate the covariance model.
+field : :class:`~openturns.Field`
+    The field used to estimate the covariance model. 
 
 Returns
 -------
@@ -157,7 +157,7 @@ covEst : :class:`~openturns.CovarianceModelImplementation`
 
 Notes
 -----
-The fields are in fact time series.
+The fields must be time series, ie the underlying mesh must be a 1D lattice.
 
 The estimated :class:`~openturns.CovarianceModelImplementation` which is a :class:`~openturns.UserDefinedStationaryCovarianceModel` composed of a time grid and a collection of *K* square matrices of dimension *d* where *K* corresponds to the number of time steps of the final time grid on which the covariance is estimated.
 
@@ -186,38 +186,47 @@ Estimate the covariance model  supposing the stationarity:
 "Estimate the covariance model as a User defined covariance model.
 
 Available usages:
-    buildAsUserDefinedStationaryCovarianceModel(*sampleFields*)
+    buildAsUserDefinedStationaryCovarianceModel(*processSample*)
 
-    buildAsUserDefinedStationaryCovarianceModel(*myField*)
+    buildAsUserDefinedStationaryCovarianceModel(*field*)
+
+    buildAsUserDefinedStationaryCovarianceModel(*spectralModel*)
+
+    buildAsUserDefinedStationaryCovarianceModel(*spectralModel, frequencyGrid*)
 
 Parameters
 ----------
-sampleFields : :class:`~openturns.ProcessSample`
-    The fields used to estimate the covariance model which is  supposed to be stationary.
+processSample : :class:`~openturns.ProcessSample`
+    The collection fields used to estimate the covariance model which is  supposed to be stationary.
+field : :class:`~openturns.Field`
+    The field used to estimate the covariance model. 
+spectralModel : :class:`~openturns.UserDefinedSpectralModel` if alone, otherwise :class:`~openturns.SpectralModel`
+    The spectral model to convert into a covariance model.
+frequencyGrid : :class:`~openturns.RegularGrid`
+    The frequency grid over which the spectral model is discretized.
 
 Returns
 -------
 covEst : :class:`~openturns.UserDefinedStationaryCovarianceModel`
-    The estimated covariance model that can be used as  a :class:`~openturns.UserDefinedStationaryCovarianceModel`.
+    The estimated covariance model that can be used as a :class:`~openturns.UserDefinedStationaryCovarianceModel`.
 "
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::StationaryCovarianceModelFactory::getSpectralModelFactory
-"Accessor to the spectral factory algorithm.
+"Accessor to the underlying Welch agorithm.
 
 Returns
 -------
-spectModel : :class:`~openturns.SpectralModelFactory`
-    The spectral factory algorithm.
+spectralModelFactory : :class:`~openturns.WelchFactory`
+    The Welch algorithm used to estimate the stationary covariance model.
 "
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::StationaryCovarianceModelFactory::setSpectralModelFactory
-"Accessor to the spectral factory algorithm.
+"Accessor to the underlying Welch agorithm.
 
 Parameters
 ----------
-spectModel : :class:`~openturns.SpectralModelFactory`
-    The spectral factory algorithm.
+spectralModelFactory : :class:`~openturns.WelchFactory`
+    The Welch algorithm to use to estimate the stationary covariance model.
 "
-
