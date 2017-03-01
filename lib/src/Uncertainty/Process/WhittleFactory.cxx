@@ -21,7 +21,6 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/WhittleFactory.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/WelchFactory.hxx"
 #include "openturns/ARMACoefficients.hxx"
 #include "openturns/UserDefinedSpectralModel.hxx"
 #include "openturns/SpecFunc.hxx"
@@ -117,7 +116,7 @@ void WhittleFactory::buildSpectralDensity(const TimeSeries & timeSeries) const
 {
   timeGrid_ = timeSeries.getTimeGrid();
   // Estimate a spectral model
-  computeSpectralDensity(spectralFactory_.build(timeSeries));
+  computeSpectralDensity(spectralFactory_.buildAsUserDefinedSpectralModel(timeSeries));
 }
 
 /* Estimate the spectral density */
@@ -125,11 +124,11 @@ void WhittleFactory::buildSpectralDensity(const ProcessSample & sample) const
 {
   timeGrid_ = sample.getTimeGrid();
   // Estimate a spectral model
-  computeSpectralDensity(spectralFactory_.build(sample));
+  computeSpectralDensity(spectralFactory_.buildAsUserDefinedSpectralModel(sample));
 }
 
 /* Compute the spectral density in normalized frequencies */
-void WhittleFactory::computeSpectralDensity(const SpectralModel & spectralModel) const
+void WhittleFactory::computeSpectralDensity(const UserDefinedSpectralModel & spectralModel) const
 {
   // We get the frequency grid and fix it for computation purposes
   const RegularGrid frequencyGrid(spectralModel.getFrequencyGrid());
@@ -290,7 +289,7 @@ String WhittleFactory::__str__(const String & offset) const
 }
 
 /* SpectralModelFactory set acccessor */
-SpectralModelFactory WhittleFactory::getSpectralModelFactory() const
+WelchFactory WhittleFactory::getSpectralModelFactory() const
 {
   return spectralFactory_;
 }
@@ -333,7 +332,7 @@ Collection< WhittleFactoryState > WhittleFactory::getHistory() const
 }
 
 /* SpectralModelFactory get acccessor */
-void WhittleFactory::setSpectralModelFactory(const SpectralModelFactory & factory)
+void WhittleFactory::setSpectralModelFactory(const WelchFactory & factory)
 {
   spectralFactory_ = factory;
 }
