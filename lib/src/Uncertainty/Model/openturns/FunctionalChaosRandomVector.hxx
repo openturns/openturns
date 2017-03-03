@@ -26,10 +26,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
-
-
 /**
  * @class FunctionalChaosRandomVector
  *
@@ -47,16 +43,11 @@ public:
   /** Default constructor */
   FunctionalChaosRandomVector(const FunctionalChaosResult & functionalChaosResult);
 
-
   /** Virtual constructor */
   virtual FunctionalChaosRandomVector * clone() const;
 
-
   /** String converter */
   String __repr__() const;
-
-
-
 
   /* Here is the interface that all derived class must implement */
 
@@ -77,6 +68,12 @@ public:
                                      const UnsignedInteger marginalIndex = 0) const;
   NumericalScalar getSobolTotalIndex(const UnsignedInteger variableIndex,
                                      const UnsignedInteger marginalIndex = 0) const;
+
+  /** Sobol grouped index accessor */
+  NumericalScalar getSobolGroupedIndex(const Indices & variableIndices,
+				       const UnsignedInteger marginalIndex = 0) const;
+  NumericalScalar getSobolGroupedIndex(const UnsignedInteger variableIndex,
+				       const UnsignedInteger marginalIndex = 0) const;
 
   /** Functional chaos result accessor */
   FunctionalChaosResult getFunctionalChaosResult() const;
