@@ -151,6 +151,27 @@ try:
             value = vector.getSobolTotalIndex(indices)
             print("Sobol total index ", indices, "=%.8f" %
                   value, "absolute error=%.10f" % fabs(value - sob_3[0]))
+            for i in range(dimension):
+                value = vector.getSobolGroupedIndex(i)
+                print("Sobol grouped index", i, "=%.8f" %
+                      value, "absolute error=%.10f" % fabs(value - sob_T1[i]))
+            indices = Indices(2)
+            k = 0
+            for i in range(dimension):
+                indices[0] = i
+                for j in range(i + 1, dimension):
+                    indices[1] = j
+                    value = vector.getSobolGroupedIndex(indices)
+                    print("Sobol grouped index", indices, "=%.8f" %
+                          value, "absolute error=%.10f" % fabs(value - sob_2[k]))
+                    k = k + 1
+            indices = Indices(3)
+            indices[0] = 0
+            indices[1] = 1
+            indices[2] = 2
+            value = vector.getSobolGroupedIndex(indices)
+            print("Sobol grouped index ", indices, "=%.8f" %
+                  value, "absolute error=%.10f" % fabs(value - sob_3[0]))
 
 except:
     import sys
