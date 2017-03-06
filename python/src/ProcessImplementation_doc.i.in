@@ -33,8 +33,8 @@ index :math:`\vect{t} \in \cD` defined by:
 
 A Process object can be created only through its derived classes:
 
-:class:`~openturns.SpectralNormalProcess`,
-:class:`~openturns.TemporalNormalProcess`,
+:class:`~openturns.SpectralGaussianProcess`,
+:class:`~openturns.GaussianProcess`,
 :class:`~openturns.CompositeProcess`, :class:`~openturns.ARMA`,
 :class:`~openturns.RandomWalk`, :class:`~openturns.FunctionalBasisProcess`
 and :class:`~openturns.WhiteNoise`."

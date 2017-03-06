@@ -23,7 +23,7 @@ for all :math:`x+\alpha_i >0`.
 
 |
 
-BoxCox transformation could alse be performed in the case of the estimation of a generalized linear model through :class:`~openturns.GeneralizedLinearModelAlgorithm`.
+BoxCox transformation could alse be performed in the case of the estimation of a generalized linear model through :class:`~openturns.GeneralLinearModelAlgorithm`.
 The objective is to estimate the most likely surrogate model (generalized linear model) which links input data :math:`x` and :math:`h_{\vect{\lambda}, \vect{\alpha}}(y)`. :math:`\vect{\lambda}` are to be calibrated such as maximizing the generalized linear model's likelihood function. In that context, a :class:`~openturns.CovarianceModel` and a :class:`~openturns.Basis` have to be fixed
 "
 
@@ -71,7 +71,7 @@ covarianceModel : :class:`~openturns.CovarianceModel`
     Covariance model.
     Should have spatial dimension equal to input sample's dimension and dimension equal to output sample's dimension.
     See note for some particular applications.
-generalizedLinearModelResult : :class:`~openturns.GeneralizedLinearModelResult`
+generalizedLinearModelResult : :class:`~openturns.GeneralLinearModelResult`
     Empty structure that contains results of generalized linear model algorithm.
 
 Returns
@@ -207,9 +207,9 @@ Estimate the Box Cox transformation from a field:
 >>> amplitude=[1.0]
 >>> scale=[0.2, 0.2]
 >>> myCovModel=ot.ExponentialModel(scale, amplitude)
->>> myXproc=ot.TemporalNormalProcess(myCovModel, myMesh)
+>>> myXproc=ot.GaussianProcess(myCovModel, myMesh)
 >>> g = ot.SymbolicFunction(['x1'],  ['exp(x1)'])
->>> myDynTransform = ot.SpatialFunction(g, 2)
+>>> myDynTransform = ot.ValueFunction(g, 2)
 >>> myXtProcess = ot.CompositeProcess(myDynTransform, myXproc)
 
 >>> myField = myXtProcess.getRealization()
@@ -226,7 +226,7 @@ Estimation of a generalized linear model:
 >>> inv_transfo = ot.PythonFunction(1,1, f)
 >>> outputSample = inv_transfo(outputSample) + ot.Normal(0, 1.0e-2).getSample(20)
 >>> # Estimation
->>> result = ot.GeneralizedLinearModelResult()
+>>> result = ot.GeneralLinearModelResult()
 >>> basis = ot.LinearBasisFactory(1).build()
 >>> covarianceModel = ot.DiracCovarianceModel()
 >>> shift = [1.0e-1]

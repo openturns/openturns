@@ -27,7 +27,7 @@
 #include "openturns/Log.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/UniVariatePolynomial.hxx"
-#include "openturns/OptimizationSolver.hxx"
+#include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/Cobyla.hxx"
 #include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
 
@@ -262,15 +262,29 @@ void WhittleFactory::initializeCobylaSolverParameter()
 }
 
 /* Optimization solver accessor */
-OptimizationSolver WhittleFactory::getOptimizationSolver() const
+OptimizationAlgorithm WhittleFactory::getOptimizationAlgorithm() const
 {
   return solver_;
 }
 
-void WhittleFactory::setOptimizationSolver(const OptimizationSolver & solver)
+void WhittleFactory::setOptimizationAlgorithm(const OptimizationAlgorithm & solver)
 {
   solver_ = solver;
 }
+
+
+OptimizationAlgorithm WhittleFactory::getOptimizationSolver() const
+{
+  Log::Warn(OSS() << "WhittleFactory::getOptimizationSolver is deprecated");
+  return getOptimizationAlgorithm();
+}
+
+void WhittleFactory::setOptimizationSolver(const OptimizationAlgorithm & solver)
+{
+  Log::Warn(OSS() << "WhittleFactory::setOptimizationSolver is deprecated");
+  setOptimizationAlgorithm(solver);
+}
+
 
 /* String converter */
 String WhittleFactory::__repr__() const

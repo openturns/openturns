@@ -67,7 +67,7 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
     cotire (${SWIG_MODULE_${MODULENAME}_REAL_NAME})
     add_dependencies (${SWIG_MODULE_${MODULENAME}_REAL_NAME}_unity generate_swig_runtime generate_docstrings)
     add_dependencies (python_unity ${SWIG_MODULE_${MODULENAME}_REAL_NAME}_unity)
-    set_source_files_properties (PythonDistributionImplementation.cxx PythonDynamicalFunctionImplementation.cxx PROPERTIES COTIRE_EXCLUDED TRUE)
+    set_source_files_properties (PythonDistributionImplementation.cxx PythonFieldFunctionImplementation.cxx PROPERTIES COTIRE_EXCLUDED TRUE)
   endif ()
 
   list (APPEND OPENTURNS_PYTHON_MODULES ${MODULENAME})
@@ -277,18 +277,18 @@ ot_add_python_module(func func_module.i
                       ComposedFunction.i ComposedFunction_doc.i.in
                       DualLinearCombinationFunction.i DualLinearCombinationFunction_doc.i.in
                       BaseFuncCollection.i
-                      DynamicalFunctionImplementation.i DynamicalFunctionImplementation_doc.i.in
-                      DynamicalFunction.i DynamicalFunction_doc.i.in
-                      SpatialFunction.i SpatialFunction_doc.i.in
-                      TemporalFunction.i TemporalFunction_doc.i.in
+                      FieldFunctionImplementation.i FieldFunctionImplementation_doc.i.in
+                      FieldFunction.i FieldFunction_doc.i.in
+                      ValueFunction.i ValueFunction_doc.i.in
+                      VertexValueFunction.i VertexValueFunction_doc.i.in
                       LinearFunction.i LinearFunction_doc.i.in
                       QuadraticFunction.i QuadraticFunction_doc.i.in
                       UniVariatePolynomialImplementation.i UniVariatePolynomialImplementation_doc.i.in
                       UniVariatePolynomial.i UniVariatePolynomial_doc.i.in
                       AggregatedNumericalMathEvaluationImplementation.i AggregatedNumericalMathEvaluationImplementation_doc.i.in
-                      AnalyticalNumericalMathEvaluationImplementation.i
-                      AnalyticalNumericalMathGradientImplementation.i
-                      AnalyticalNumericalMathHessianImplementation.i
+                      SymbolicEvaluation.i
+                      SymbolicGradient.i
+                      SymbolicHessian.i
                       DatabaseFunction.i DatabaseFunction_doc.i.in
                       DatabaseNumericalMathEvaluationImplementation.i DatabaseNumericalMathEvaluationImplementation_doc.i.in
                       IndicatorNumericalMathEvaluationImplementation.i
@@ -312,7 +312,7 @@ ot_add_python_module(func func_module.i
                       PythonNumericalMathEvaluationImplementation.cxx
                       PythonNumericalMathGradientImplementation.cxx
                       PythonNumericalMathHessianImplementation.cxx
-                      PythonDynamicalFunctionImplementation.cxx
+                      PythonFieldFunctionImplementation.cxx
                       InverseBoxCoxTransform.i InverseBoxCoxTransform_doc.i.in
                       TrendEvaluationImplementation.i
                       TrendTransform.i TrendTransform_doc.i.in
@@ -343,9 +343,9 @@ ot_add_python_module(diff diff_module.i
 ot_add_python_module(optim optim_module.i
                       OptimizationProblem.i OptimizationProblem_doc.i.in
                       OptimizationProblemImplementation.i OptimizationProblemImplementation_doc.i.in
-                      OptimizationSolver.i OptimizationSolver_doc.i.in
+                      OptimizationAlgorithm.i OptimizationAlgorithm_doc.i.in
                       OptimizationResult.i OptimizationResult_doc.i.in
-                      OptimizationSolverImplementation.i OptimizationSolverImplementation_doc.i.in
+                      OptimizationAlgorithmImplementation.i OptimizationAlgorithmImplementation_doc.i.in
                       NearestPointCheckerResult.i
                       NearestPointChecker.i
                       AbdoRackwitz.i AbdoRackwitz_doc.i.in
@@ -485,8 +485,8 @@ ot_add_python_module(model_process model_process_module.i
                       ARMACoefficients.i ARMACoefficients_doc.i.in
                       ARMAState.i ARMAState_doc.i.in
                       ARMA.i ARMA_doc.i.in
-                      SpectralNormalProcess.i SpectralNormalProcess_doc.i.in
-                      TemporalNormalProcess.i TemporalNormalProcess_doc.i.in
+                      SpectralGaussianProcess.i SpectralGaussianProcess_doc.i.in
+                      GaussianProcess.i GaussianProcess_doc.i.in
                       AggregatedProcess.i AggregatedProcess_doc.i.in
                       CompositeProcess.i CompositeProcess_doc.i.in
                       FunctionalBasisProcess.i FunctionalBasisProcess_doc.i.in
@@ -705,8 +705,8 @@ ot_add_python_module(metamodel metamodel_module.i
                       MetaModelAlgorithm.i MetaModelAlgorithm_doc.i.in
                       KrigingResult.i KrigingResult_doc.i.in
                       MetaModelValidation.i MetaModelValidation_doc.i.in
-		      GeneralizedLinearModelResult.i GeneralizedLinearModelResult_doc.i.in
-		      GeneralizedLinearModelAlgorithm.i GeneralizedLinearModelAlgorithm_doc.i.in
+		      GeneralLinearModelResult.i GeneralLinearModelResult_doc.i.in
+		      GeneralLinearModelAlgorithm.i GeneralLinearModelAlgorithm_doc.i.in
                       LinearTaylor.i LinearTaylor_doc.i.in
                       QuadraticTaylor.i QuadraticTaylor_doc.i.in
                       LinearLeastSquares.i LinearLeastSquares_doc.i.in

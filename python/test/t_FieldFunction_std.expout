@@ -1,0 +1,32 @@
+myFunc= FieldFunction :
+  class=FieldFunctionImplementation name=Unnamed input description=[] output description=[] number of calls=0
+myFunc input description= []
+myFunc output description= []
+myFunc input dimension= 0
+myFunc output dimension= 0
+myFunc spatial dimension= 1
+called  0  times
+myFunc= FieldFunction :
+class=PythonFieldFunctionImplementation name=OpenTURNSPythonFieldFunction
+X=     [ v0         v1         v2         X0         X1         X2         ]
+0 : [  0          0          0          0.608202  -1.26617   -0.438266  ]
+1 : [  0          0          1          1.20548   -2.18139    0.350042  ]
+2 : [  0          1          0         -0.355007   1.43725    0.810668  ]
+3 : [  0          1          1          0.793156  -0.470526   0.261018  ]
+4 : [  1          0          0         -2.29006   -1.28289   -1.31178   ]
+5 : [  1          0          1         -0.0907838  0.995793  -0.139453  ]
+6 : [  1          1          0         -0.560206   0.44549    0.322925  ]
+7 : [  1          1          1          0.445785  -1.03808   -0.856712  ]
+Y=     [ v0         v1         v2         X0         ]
+0 : [  0          0          0          0.473617  ]
+1 : [  0          0          1         -0.125498  ]
+2 : [  0          1          0          0.351418  ]
+3 : [  0          1          1          1.78236   ]
+4 : [  1          0          0          0.0702074 ]
+5 : [  1          0          1         -0.781366  ]
+6 : [  1          1          0         -0.721533  ]
+7 : [  1          1          1         -0.241223  ]
+myFunc input dimension= 3
+myFunc output dimension= 1
+myFunc spatial dimension= 3
+called  1  times

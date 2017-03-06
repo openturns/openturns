@@ -41,7 +41,7 @@ SORM::SORM()
 /*
  * @brief  Standard constructor: the class is defined by an optimisation algorithm, a failure event and a physical starting point
  */
-SORM::SORM(const OptimizationSolver & nearestPointAlgorithm,
+SORM::SORM(const OptimizationAlgorithm & nearestPointAlgorithm,
            const Event & event,
            const NumericalPoint & physicalStartingPoint):
   Analytical(nearestPointAlgorithm, event, physicalStartingPoint),

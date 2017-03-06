@@ -23,7 +23,7 @@
 #include "openturns/Matrix.hxx"
 #include "openturns/OTconfig.hxx"
 #ifdef OPENTURNS_HAVE_MUPARSER
-#include "openturns/AnalyticalNumericalMathEvaluationImplementation.hxx"
+#include "openturns/SymbolicEvaluation.hxx"
 #else
 #include "openturns/LinearNumericalMathEvaluationImplementation.hxx"
 #endif
@@ -143,7 +143,7 @@ NumericalMathHessianImplementation::Implementation NumericalMathHessianImplement
   const UnsignedInteger inputDimension = getInputDimension();
   const UnsignedInteger outputDimension = getOutputDimension();
 #ifdef OPENTURNS_HAVE_MUPARSER
-  const AnalyticalNumericalMathEvaluationImplementation right(Description::BuildDefault(inputDimension, "x"), Description::BuildDefault(outputDimension, "y"), Description(outputDimension, "0.0"));
+  const SymbolicEvaluation right(Description::BuildDefault(inputDimension, "x"), Description::BuildDefault(outputDimension, "y"), Description(outputDimension, "0.0"));
 #else
   NumericalPoint center(inputDimension);
   Matrix linear(inputDimension, outputDimension);

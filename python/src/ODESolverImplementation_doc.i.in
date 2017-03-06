@@ -33,7 +33,7 @@ OT_ODESolver_solve_doc
 
 Parameters
 ----------
-transitionFunction : :class:`~openturns.DynamicalFunction`
+transitionFunction : :class:`~openturns.FieldFunction`
     Transition function."
 %enddef
 %feature("docstring") OT::ODESolverImplementation::setTransitionFunction
@@ -46,7 +46,7 @@ OT_ODESolver_setTransitionFunction_doc
 
 Returns
 -------
-transitionFunction : :class:`~openturns.DynamicalFunction`
+transitionFunction : :class:`~openturns.FieldFunction`
     Transition function."
 %enddef
 %feature("docstring") OT::ODESolverImplementation::getTransitionFunction

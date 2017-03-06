@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     ProcessSample KLModes(result.getModesAsProcessSample());
     fullprint << "KL modes=" << KLModes << std::endl;
     fullprint << "KL eigenvalues=" << lambda << std::endl;
-    TemporalNormalProcess process(model, KLModes.getMesh());
+    GaussianProcess process(model, KLModes.getMesh());
     ProcessSample sample(process.getSample(10));
     NumericalSample coefficients(result.project(sample));
     fullprint << "KL coefficients=" << coefficients << std::endl;

@@ -26,14 +26,14 @@
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/KrigingResult.hxx"
 #include "openturns/HMatrix.hxx"
-#include "openturns/GeneralizedLinearModelAlgorithm.hxx"
+#include "openturns/GeneralLinearModelAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class KrigingAlgorithm
  *
- * The class building kriging process, relying on generalized linear model class (GeneralizedLinearModelAlgorithm)
+ * The class building kriging process, relying on generalized linear model class (GeneralLinearModelAlgorithm)
  * for the evaluation of the coefficients of the parameters.
  */
 
@@ -95,8 +95,12 @@ public:
   KrigingResult getResult();
 
   /** Optimization solver accessor */
-  OptimizationSolver getOptimizationSolver() const;
-  void setOptimizationSolver(const OptimizationSolver & solver);
+  OptimizationAlgorithm getOptimizationAlgorithm() const;
+  void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
+
+  // @deprecated
+  OptimizationAlgorithm getOptimizationSolver() const;
+  void setOptimizationSolver(const OptimizationAlgorithm & solver);
 
   /** Accessor to optimization bounds */
   void setOptimizationBounds(const Interval & optimizationBounds);
@@ -137,7 +141,7 @@ private:
   // The covariance model parametric family
   CovarianceModel covarianceModel_;
   // Underlying algo used for the evaluation of parameters
-  GeneralizedLinearModelAlgorithm glmAlgo_;
+  GeneralLinearModelAlgorithm glmAlgo_;
   // The coefficients of the current output deterministic trend
   mutable NumericalPoint gamma_;
   // Temporarly used to compute gamma

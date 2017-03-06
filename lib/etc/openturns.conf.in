@@ -107,14 +107,14 @@
   <AbdoRackwitz-DefaultOmega  value="1.0e-4" />
   <AbdoRackwitz-DefaultSmooth value="1.2"    />
 
-  <!-- OT::OptimizationSolverImplementation parameters -->
-  <OptimizationSolver-DefaultLevelValue              value="0.0"    />
-  <OptimizationSolver-DefaultMaximumIteration        value="100"    />
-  <OptimizationSolver-DefaultMaximumEvaluationNumber value="100000" />
-  <OptimizationSolver-DefaultMaximumAbsoluteError    value="1.0e-5" />
-  <OptimizationSolver-DefaultMaximumRelativeError    value="1.0e-5" />
-  <OptimizationSolver-DefaultMaximumResidualError    value="1.0e-5" />
-  <OptimizationSolver-DefaultMaximumConstraintError  value="1.0e-5" />
+  <!-- OT::OptimizationAlgorithmImplementation parameters -->
+  <OptimizationAlgorithm-DefaultLevelValue              value="0.0"    />
+  <OptimizationAlgorithm-DefaultMaximumIteration        value="100"    />
+  <OptimizationAlgorithm-DefaultMaximumEvaluationNumber value="100000" />
+  <OptimizationAlgorithm-DefaultMaximumAbsoluteError    value="1.0e-5" />
+  <OptimizationAlgorithm-DefaultMaximumRelativeError    value="1.0e-5" />
+  <OptimizationAlgorithm-DefaultMaximumResidualError    value="1.0e-5" />
+  <OptimizationAlgorithm-DefaultMaximumConstraintError  value="1.0e-5" />
 
   <!-- OT::Cobyla parameters -->
   <Cobyla-DefaultRhoBeg value="0.1" />
@@ -461,19 +461,19 @@
   <FunctionalChaosAlgorithm-LargeSampleSize           value="10000"  />
   <FunctionalChaosAlgorithm-MaximumTotalDegree        value="10"     />
 
-  <!-- OT::GeneralizedLinearModelAlgorithm parameters -->
-  <GeneralizedLinearModelAlgorithm-LinearAlgebra                  value="LAPACK"  />
-  <GeneralizedLinearModelAlgorithm-NormalizeData                  value="false"   />
-  <GeneralizedLinearModelAlgorithm-KeepCovariance                 value="true"    />
-  <GeneralizedLinearModelAlgorithm-OptimizeParameters             value="true"    />
-  <GeneralizedLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate value="true"    />
-  <GeneralizedLinearModelAlgorithm-UnbiasedVariance               value="true"    />
-  <GeneralizedLinearModelAlgorithm-MeanEpsilon                    value="1.0e-12" />
-  <GeneralizedLinearModelAlgorithm-StartingScaling                value="1.0e-13" />
-  <GeneralizedLinearModelAlgorithm-MaximalScaling                 value="1.0e5"   />
-  <GeneralizedLinearModelAlgorithm-DefaultOptimizationLowerBound  value="1.0e-2"  />
-  <GeneralizedLinearModelAlgorithm-DefaultOptimizationUpperBound  value="1.0e2"      />
-  <GeneralizedLinearModelAlgorithm-DefaultOptimizationSolver      value="TNC"     />
+  <!-- OT::GeneralLinearModelAlgorithm parameters -->
+  <GeneralLinearModelAlgorithm-LinearAlgebra                  value="LAPACK"  />
+  <GeneralLinearModelAlgorithm-NormalizeData                  value="false"   />
+  <GeneralLinearModelAlgorithm-KeepCovariance                 value="true"    />
+  <GeneralLinearModelAlgorithm-OptimizeParameters             value="true"    />
+  <GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate value="true"    />
+  <GeneralLinearModelAlgorithm-UnbiasedVariance               value="true"    />
+  <GeneralLinearModelAlgorithm-MeanEpsilon                    value="1.0e-12" />
+  <GeneralLinearModelAlgorithm-StartingScaling                value="1.0e-13" />
+  <GeneralLinearModelAlgorithm-MaximalScaling                 value="1.0e5"   />
+  <GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound  value="1.0e-2"  />
+  <GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound  value="1.0e2"      />
+  <GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm      value="TNC"     />
 
 <!-- OT::KrigingAlgorithm parameters -->
   <KrigingAlgorithm-StartingScaling value="1.0e-13" />
@@ -559,15 +559,15 @@
   <HMatrix-ValidationDump       value="0"   />
   <HMatrix-ForceSequential      value="false"   />
 
-  <!-- OT::TemporalNormalProcess parameters -->
-  <TemporalNormalProcess-StartingScaling       value="1.0e-13" />
-  <TemporalNormalProcess-MaximalScaling        value="1.0e5"   />
-  <TemporalNormalProcess-GibbsMaximumIteration value="100"     />
+  <!-- OT::GaussianProcess parameters -->
+  <GaussianProcess-StartingScaling       value="1.0e-13" />
+  <GaussianProcess-MaximalScaling        value="1.0e5"   />
+  <GaussianProcess-GibbsMaximumIteration value="100"     />
 
-  <!-- OT::SpectralNormalProcess parameters -->
-  <SpectralNormalProcess-StartingScaling   value="1.0e-13" />
-  <SpectralNormalProcess-MaximalScaling    value="1.0e5"   />
-  <SpectralNormalProcess-CholeskyCacheSize value="16384"   />
+  <!-- OT::SpectralGaussianProcess parameters -->
+  <SpectralGaussianProcess-StartingScaling   value="1.0e-13" />
+  <SpectralGaussianProcess-MaximalScaling    value="1.0e5"   />
+  <SpectralGaussianProcess-CholeskyCacheSize value="16384"   />
 
   <!-- OT::WhittleFactory parameters -->
   <WhittleFactory-DefaultRhoBeg             value="0.1"     />

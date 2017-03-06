@@ -222,7 +222,7 @@ NumericalPoint MethodOfMomentsFactory::buildParameter(const NumericalSample & sa
   // Define optimisation problem
   OptimizationProblem problem(problem_);
   problem.setObjective(momentsObjective);
-  OptimizationSolver solver(solver_);
+  OptimizationAlgorithm solver(solver_);
   if (solver.getStartingPoint().getDimension() != momentsObjective.getInputDimension())
   {
     NumericalPoint effectiveParameter(distribution_.getParameter());
@@ -280,14 +280,27 @@ OptimizationProblem MethodOfMomentsFactory::getOptimizationProblem() const
   return problem_;
 }
 
-void MethodOfMomentsFactory::setOptimizationSolver(const OptimizationSolver& solver)
+void MethodOfMomentsFactory::setOptimizationAlgorithm(const OptimizationAlgorithm& solver)
 {
   solver_ = solver;
 }
 
-OptimizationSolver MethodOfMomentsFactory::getOptimizationSolver() const
+OptimizationAlgorithm MethodOfMomentsFactory::getOptimizationAlgorithm() const
 {
   return solver_;
+}
+
+
+void MethodOfMomentsFactory::setOptimizationSolver(const OptimizationAlgorithm& solver)
+{
+  Log::Warn(OSS() << "MethodOfMomentsFactory::setOptimizationSolver is deprecated");
+  setOptimizationAlgorithm(solver);
+}
+
+OptimizationAlgorithm MethodOfMomentsFactory::getOptimizationSolver() const
+{
+  Log::Warn(OSS() << "MethodOfMomentsFactory::getOptimizationSolver is deprecated");
+  return getOptimizationAlgorithm();
 }
 
 void MethodOfMomentsFactory::setKnownParameter(const NumericalPoint & values,

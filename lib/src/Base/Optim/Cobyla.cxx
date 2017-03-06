@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Cobyla is an actual implementation for OptimizationSolverImplementation using the cobyla library
+ *  @brief Cobyla is an actual implementation for OptimizationAlgorithmImplementation using the cobyla library
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -32,14 +32,14 @@ static const Factory<Cobyla> Factory_Cobyla;
 
 /* Default constructor */
 Cobyla::Cobyla()
-  : OptimizationSolverImplementation()
+  : OptimizationAlgorithmImplementation()
   , rhoBeg_(ResourceMap::GetAsNumericalScalar("Cobyla-DefaultRhoBeg"))
 {
   // Nothing to do
 }
 
 Cobyla::Cobyla(const OptimizationProblem & problem)
-  : OptimizationSolverImplementation(problem)
+  : OptimizationAlgorithmImplementation(problem)
   , rhoBeg_(ResourceMap::GetAsNumericalScalar("Cobyla-DefaultRhoBeg"))
 {
   checkProblem(problem);
@@ -47,7 +47,7 @@ Cobyla::Cobyla(const OptimizationProblem & problem)
 
 Cobyla::Cobyla(const OptimizationProblem & problem,
                const NumericalScalar rhoBeg)
-  : OptimizationSolverImplementation(problem)
+  : OptimizationAlgorithmImplementation(problem)
   , rhoBeg_(rhoBeg)
 {
   checkProblem(problem);
@@ -181,7 +181,7 @@ String Cobyla::__repr__() const
 {
   OSS oss;
   oss << "class=" << Cobyla::GetClassName()
-      << " " << OptimizationSolverImplementation::__repr__()
+      << " " << OptimizationAlgorithmImplementation::__repr__()
       << " rhoBeg=" << rhoBeg_;
   return oss;
 }
@@ -189,14 +189,14 @@ String Cobyla::__repr__() const
 /* Method save() stores the object through the StorageManager */
 void Cobyla::save(Advocate & adv) const
 {
-  OptimizationSolverImplementation::save(adv);
+  OptimizationAlgorithmImplementation::save(adv);
   adv.saveAttribute("rhoBeg_", rhoBeg_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void Cobyla::load(Advocate & adv)
 {
-  OptimizationSolverImplementation::load(adv);
+  OptimizationAlgorithmImplementation::load(adv);
   adv.loadAttribute("rhoBeg_", rhoBeg_);
 }
 

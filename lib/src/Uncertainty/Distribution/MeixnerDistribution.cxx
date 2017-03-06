@@ -27,7 +27,7 @@
 #include "openturns/TNC.hxx"
 #include "openturns/Brent.hxx"
 #include "openturns/NumericalMathFunctionImplementation.hxx"
-#include "openturns/OptimizationSolver.hxx"
+#include "openturns/OptimizationAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -47,7 +47,7 @@ MeixnerDistribution::MeixnerDistribution()
 {
   setName("MeixnerDistribution");
   // Create the optimization solver parameters using the parameters in the ResourceMap
-  initializeOptimizationSolverParameter();
+  initializeOptimizationAlgorithmParameter();
   setAlphaBetaDelta(1.0, 0.0, 1.0);
   setDimension(1);
 }
@@ -67,13 +67,13 @@ MeixnerDistribution::MeixnerDistribution(const NumericalScalar alpha,
 {
   setName("MeixnerDistribution");
   // Create the optimization solver parameters using the parameters in the ResourceMap
-  initializeOptimizationSolverParameter();
+  initializeOptimizationAlgorithmParameter();
   setAlphaBetaDelta(alpha, beta, delta);
   setDimension(1);
 }
 
 /* Initialize optimization solver parameter using the ResourceMap */
-void MeixnerDistribution::initializeOptimizationSolverParameter()
+void MeixnerDistribution::initializeOptimizationAlgorithmParameter()
 {
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("MeixnerDistribution-MaximumAbsoluteError"));
   solver_.setMaximumRelativeError(ResourceMap::GetAsNumericalScalar("MeixnerDistribution-MaximumRelativeError"));
@@ -632,14 +632,26 @@ void MeixnerDistribution::load(Advocate & adv)
 }
 
 /* Optimization solver accessor */
-OptimizationSolver MeixnerDistribution::getOptimizationSolver() const
+OptimizationAlgorithm MeixnerDistribution::getOptimizationAlgorithm() const
 {
   return solver_;
 }
 
-void MeixnerDistribution::setOptimizationSolver(const OptimizationSolver & solver)
+void MeixnerDistribution::setOptimizationAlgorithm(const OptimizationAlgorithm & solver)
 {
   solver_ = solver;
+}
+
+OptimizationAlgorithm MeixnerDistribution::getOptimizationSolver() const
+{
+  Log::Warn(OSS() << "MeixnerDistribution::getOptimizationSolver is deprecated");
+  return getOptimizationAlgorithm();
+}
+
+void MeixnerDistribution::setOptimizationSolver(const OptimizationAlgorithm & solver)
+{
+  Log::Warn(OSS() << "MeixnerDistribution::setOptimizationSolver is deprecated");
+  setOptimizationAlgorithm(solver);
 }
 
 END_NAMESPACE_OPENTURNS

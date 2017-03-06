@@ -24,7 +24,7 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Distribution.hxx"
-#include "openturns/OptimizationSolver.hxx"
+#include "openturns/OptimizationAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -53,13 +53,17 @@ public:
   Indices buildPartition() const;
 
   /** Optimization solver accessor */
-  OptimizationSolver getOptimizationSolver() const;
-  void setOptimizationSolver(const OptimizationSolver & solver);
+  OptimizationAlgorithm getOptimizationAlgorithm() const;
+  void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
+
+  // @deprecated
+  OptimizationAlgorithm getOptimizationSolver() const;
+  void setOptimizationSolver(const OptimizationAlgorithm & solver);
 
 protected:
 
   /** Optimization solver */
-  mutable OptimizationSolver  solver_;
+  mutable OptimizationAlgorithm  solver_;
 
 private:
   DistributionCollection collection_;

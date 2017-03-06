@@ -22,7 +22,7 @@
 #define OPENTURNS_ODESOLVERIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/DynamicalFunction.hxx"
+#include "openturns/FieldFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -42,7 +42,7 @@ public:
   ODESolverImplementation();
 
   /** Parameter constructor */
-  explicit ODESolverImplementation(const DynamicalFunction & transitionFunction);
+  explicit ODESolverImplementation(const FieldFunction & transitionFunction);
 
   /** Virtual constructor */
   virtual ODESolverImplementation * clone() const;
@@ -55,8 +55,8 @@ public:
                                 const NumericalPoint & timeGrid) const;
 
   /** Transition function accessor */
-  void setTransitionFunction(const DynamicalFunction & transitionFunction);
-  DynamicalFunction getTransitionFunction() const;
+  void setTransitionFunction(const FieldFunction & transitionFunction);
+  FieldFunction getTransitionFunction() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -67,7 +67,7 @@ public:
 protected:
 
   /** Transition function */
-  DynamicalFunction transitionFunction_;
+  FieldFunction transitionFunction_;
 
 }; /* class ODESolverImplementation */
 

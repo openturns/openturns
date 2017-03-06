@@ -82,9 +82,9 @@ Apply it to a field:
 >>> amplitude=[1.0]
 >>> scale=[0.2, 0.2]
 >>> myCovModel=ot.ExponentialModel(scale, amplitude)
->>> myXproc=ot.TemporalNormalProcess(myCovModel, myMesh)
+>>> myXproc=ot.GaussianProcess(myCovModel, myMesh)
 >>> g = ot.SymbolicFunction(['x1'],  ['exp(x1)'])
->>> myDynTransform = ot.SpatialFunction(g, 2)
+>>> myDynTransform = ot.ValueFunction(g, 2)
 >>> myXtProcess = ot.CompositeProcess(myDynTransform, myXproc)
 
 >>> myField = myXtProcess.getRealization()

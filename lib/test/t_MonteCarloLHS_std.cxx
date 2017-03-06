@@ -38,7 +38,7 @@ int main(int argc, char **argv)
   // --------------------------------------------------
 
   // RandomBruteForce MonteCarlo with N designs
-  const UnsignedInteger N(10000);
+  const UnsignedInteger N = 1000;
 
   // 1) LHS with C2 optimization
   MonteCarloLHS optimalMC_C2(lhs, N, spaceFillingC2);

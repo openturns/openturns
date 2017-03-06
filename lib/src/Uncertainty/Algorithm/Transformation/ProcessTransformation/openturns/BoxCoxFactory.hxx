@@ -27,10 +27,10 @@
 #include "openturns/Field.hxx"
 #include "openturns/BoxCoxTransform.hxx"
 #include "openturns/Graph.hxx"
-#include "openturns/OptimizationSolver.hxx"
+#include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/Basis.hxx"
-#include "openturns/GeneralizedLinearModelResult.hxx"
+#include "openturns/GeneralLinearModelResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -46,7 +46,7 @@ class OT_API BoxCoxFactory
 
 public:
 
-  typedef GeneralizedLinearModelResult::BasisCollection BasisCollection;
+  typedef GeneralLinearModelResult::BasisCollection BasisCollection;
 
   /** Default constructor without parameters */
   BoxCoxFactory();
@@ -80,29 +80,33 @@ public:
                         const CovarianceModel & covarianceModel,
                         const Basis & basis,
                         const NumericalPoint & shift,
-                        GeneralizedLinearModelResult & result);
+                        GeneralLinearModelResult & result);
 
   BoxCoxTransform build(const NumericalSample & inputSample,
                         const NumericalSample & outputSample,
                         const CovarianceModel & covarianceModel,
                         const BasisCollection & basis,
                         const NumericalPoint & shift,
-                        GeneralizedLinearModelResult & result);
+                        GeneralLinearModelResult & result);
 
   BoxCoxTransform build(const NumericalSample & inputSample,
                         const NumericalSample & outputSample,
                         const CovarianceModel & covarianceModel,
                         const NumericalPoint & shift,
-                        GeneralizedLinearModelResult & result);
+                        GeneralLinearModelResult & result);
 
   /** Optimization solver accessor */
-  OptimizationSolver getOptimizationSolver() const;
-  void setOptimizationSolver(const OptimizationSolver & solver);
+  OptimizationAlgorithm getOptimizationAlgorithm() const;
+  void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
+
+  // @deprecated
+  OptimizationAlgorithm getOptimizationSolver() const;
+  void setOptimizationSolver(const OptimizationAlgorithm & solver);
 
 protected:
 
   /** Optimization solver */
-  OptimizationSolver  solver_;
+  OptimizationAlgorithm  solver_;
 
   void checkGLMData(const NumericalSample & inputSample,
                     const NumericalSample & outputSample,

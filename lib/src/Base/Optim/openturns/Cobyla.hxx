@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Cobyla is an actual implementation for OptimizationSolverImplementation using the cobyla library
+ *  @brief Cobyla is an actual implementation for OptimizationAlgorithmImplementation using the cobyla library
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -22,7 +22,7 @@
 #define OPENTURNS_COBYLA_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/OptimizationSolverImplementation.hxx"
+#include "openturns/OptimizationAlgorithmImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -30,10 +30,10 @@ BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class cobyla
- * cobyla is an actual implementation for OptimizationSolverImplementation using the cobyla library
+ * cobyla is an actual implementation for OptimizationAlgorithmImplementation using the cobyla library
  */
 class OT_API Cobyla :
-  public OptimizationSolverImplementation
+  public OptimizationAlgorithmImplementation
 {
   CLASSNAME;
 public:

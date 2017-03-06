@@ -48,8 +48,8 @@
 %include OptimizationProblemImplementation.i
 %include OptimizationProblem.i
 %include OptimizationResult.i
-%include OptimizationSolverImplementation.i
-%include OptimizationSolver.i
+%include OptimizationAlgorithmImplementation.i
+%include OptimizationAlgorithm.i
 %include NearestPointCheckerResult.i
 %include NearestPointChecker.i
 %include AbdoRackwitz.i

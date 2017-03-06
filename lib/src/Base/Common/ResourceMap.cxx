@@ -373,14 +373,14 @@ void ResourceMap::loadDefaultConfiguration()
   setAsNumericalScalar( "AbdoRackwitz-DefaultOmega", 1.0e-4 );
   setAsNumericalScalar( "AbdoRackwitz-DefaultSmooth", 1.2 );
 
-  // OptimizationSolverImplementation parameters //
-  setAsNumericalScalar( "OptimizationSolver-DefaultLevelValue", 0.0 );
-  setAsUnsignedInteger( "OptimizationSolver-DefaultMaximumIteration", 100 );
-  setAsUnsignedInteger( "OptimizationSolver-DefaultMaximumEvaluationNumber", 100000);
-  setAsNumericalScalar( "OptimizationSolver-DefaultMaximumAbsoluteError", 1.0e-5 );
-  setAsNumericalScalar( "OptimizationSolver-DefaultMaximumRelativeError", 1.0e-5 );
-  setAsNumericalScalar( "OptimizationSolver-DefaultMaximumResidualError", 1.0e-5 );
-  setAsNumericalScalar( "OptimizationSolver-DefaultMaximumConstraintError", 1.0e-5 );
+  // OptimizationAlgorithmImplementation parameters //
+  setAsNumericalScalar( "OptimizationAlgorithm-DefaultLevelValue", 0.0 );
+  setAsUnsignedInteger( "OptimizationAlgorithm-DefaultMaximumIteration", 100 );
+  setAsUnsignedInteger( "OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 100000);
+  setAsNumericalScalar( "OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1.0e-5 );
+  setAsNumericalScalar( "OptimizationAlgorithm-DefaultMaximumRelativeError", 1.0e-5 );
+  setAsNumericalScalar( "OptimizationAlgorithm-DefaultMaximumResidualError", 1.0e-5 );
+  setAsNumericalScalar( "OptimizationAlgorithm-DefaultMaximumConstraintError", 1.0e-5 );
 
 
   // Cobyla parameters //
@@ -727,19 +727,19 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "FunctionalChaosAlgorithm-LargeSampleSize", 10000);
   setAsUnsignedInteger( "FunctionalChaosAlgorithm-MaximumTotalDegree", 10 );
 
-  // GeneralizedLinearModelAlgorithm parameters //
-  set("GeneralizedLinearModelAlgorithm-LinearAlgebra", "LAPACK");
-  setAsBool("GeneralizedLinearModelAlgorithm-NormalizeData", false);
-  setAsBool("GeneralizedLinearModelAlgorithm-KeepCovariance", true);
-  setAsBool("GeneralizedLinearModelAlgorithm-OptimizeParameters", true);
-  setAsBool("GeneralizedLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate", true);
-  setAsBool("GeneralizedLinearModelAlgorithm-UnbiasedVariance", true);
-  setAsNumericalScalar( "GeneralizedLinearModelAlgorithm-MeanEpsilon", 1.0e-12 );
-  setAsNumericalScalar( "GeneralizedLinearModelAlgorithm-StartingScaling", 1.0e-13 );
-  setAsNumericalScalar( "GeneralizedLinearModelAlgorithm-MaximalScaling", 1.0e5 );
-  setAsNumericalScalar( "GeneralizedLinearModelAlgorithm-DefaultOptimizationLowerBound", 1.0e-2 );
-  setAsNumericalScalar( "GeneralizedLinearModelAlgorithm-DefaultOptimizationUpperBound", 1.0e2 );
-  set("GeneralizedLinearModelAlgorithm-DefaultOptimizationSolver", "TNC");
+  // GeneralLinearModelAlgorithm parameters //
+  set("GeneralLinearModelAlgorithm-LinearAlgebra", "LAPACK");
+  setAsBool("GeneralLinearModelAlgorithm-NormalizeData", false);
+  setAsBool("GeneralLinearModelAlgorithm-KeepCovariance", true);
+  setAsBool("GeneralLinearModelAlgorithm-OptimizeParameters", true);
+  setAsBool("GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate", true);
+  setAsBool("GeneralLinearModelAlgorithm-UnbiasedVariance", true);
+  setAsNumericalScalar( "GeneralLinearModelAlgorithm-MeanEpsilon", 1.0e-12 );
+  setAsNumericalScalar( "GeneralLinearModelAlgorithm-StartingScaling", 1.0e-13 );
+  setAsNumericalScalar( "GeneralLinearModelAlgorithm-MaximalScaling", 1.0e5 );
+  setAsNumericalScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound", 1.0e-2 );
+  setAsNumericalScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound", 1.0e2 );
+  set("GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm", "TNC");
 
   // KrigingAlgorithm parameters //
   setAsNumericalScalar( "KrigingAlgorithm-StartingScaling", 1.0e-13 );
@@ -825,15 +825,15 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "HMatrix-ValidationDump", 0);
   setAsBool( "HMatrix-ForceSequential", false);
 
-  // TemporalNormalProcess parameters //
-  setAsNumericalScalar( "TemporalNormalProcess-StartingScaling", 1.0e-13 );
-  setAsNumericalScalar( "TemporalNormalProcess-MaximalScaling", 1.0e5 );
-  setAsUnsignedInteger( "TemporalNormalProcess-GibbsMaximumIteration", 100 );
+  // GaussianProcess parameters //
+  setAsNumericalScalar( "GaussianProcess-StartingScaling", 1.0e-13 );
+  setAsNumericalScalar( "GaussianProcess-MaximalScaling", 1.0e5 );
+  setAsUnsignedInteger( "GaussianProcess-GibbsMaximumIteration", 100 );
 
-  // SpectralNormalProcess parameters //
-  setAsNumericalScalar( "SpectralNormalProcess-StartingScaling", 1.0e-13 );
-  setAsNumericalScalar( "SpectralNormalProcess-MaximalScaling", 1.0e5 );
-  setAsUnsignedInteger( "SpectralNormalProcess-CholeskyCacheSize", 16384 );
+  // SpectralGaussianProcess parameters //
+  setAsNumericalScalar( "SpectralGaussianProcess-StartingScaling", 1.0e-13 );
+  setAsNumericalScalar( "SpectralGaussianProcess-MaximalScaling", 1.0e5 );
+  setAsUnsignedInteger( "SpectralGaussianProcess-CholeskyCacheSize", 16384 );
 
   // WhittleFactory parameters //
   setAsNumericalScalar( "WhittleFactory-DefaultRhoBeg", 0.1 );

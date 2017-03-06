@@ -10,21 +10,21 @@ DistributionFactory"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GeneralizedParetoFactory::setOptimizationSolver
+%feature("docstring") OT::GeneralizedParetoFactory::setOptimizationAlgorithm
 "Accessor to the solver.
 
 Parameters
 ----------
-solver : :class:`~openturns.OptimizationSolver`
+solver : :class:`~openturns.OptimizationAlgorithm`
     The solver used for numerical optimization of the likelihood."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GeneralizedParetoFactory::getOptimizationSolver
+%feature("docstring") OT::GeneralizedParetoFactory::getOptimizationAlgorithm
 "Accessor to the solver.
 
 Returns
 -------
-solver : :class:`~openturns.OptimizationSolver`
+solver : :class:`~openturns.OptimizationAlgorithm`
     The solver used for numerical optimization of the likelihood."
 

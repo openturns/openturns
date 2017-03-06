@@ -68,10 +68,10 @@
 %include ComposedFunction.i
 %include ParametricFunction.i
 %include DualLinearCombinationFunction.i
-%include DynamicalFunctionImplementation.i
-%include DynamicalFunction.i
-%include SpatialFunction.i
-%include TemporalFunction.i
+%include FieldFunctionImplementation.i
+%include FieldFunction.i
+%include ValueFunction.i
+%include VertexValueFunction.i
 %include DualLinearCombinationEvaluationImplementation.i
 %include DualLinearCombinationGradientImplementation.i
 %include DualLinearCombinationHessianImplementation.i
@@ -88,9 +88,9 @@
 %include PiecewiseLinearEvaluationImplementation.i
 %include PiecewiseHermiteEvaluationImplementation.i
 #ifdef OPENTURNS_HAVE_MUPARSER
-%include AnalyticalNumericalMathEvaluationImplementation.i
-%include AnalyticalNumericalMathGradientImplementation.i
-%include AnalyticalNumericalMathHessianImplementation.i
+%include SymbolicEvaluation.i
+%include SymbolicGradient.i
+%include SymbolicHessian.i
 #endif
 %include DatabaseFunction.i
 %include DatabaseNumericalMathEvaluationImplementation.i

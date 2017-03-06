@@ -33,14 +33,14 @@ static const Factory<TrendTransform> Factory_TrendTransform;
 
 /* Default constructor */
 TrendTransform::TrendTransform()
-  : TemporalFunction()
+  : VertexValueFunction()
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
 TrendTransform::TrendTransform(const NumericalMathFunction & function)
-  : TemporalFunction(function.getInputDimension())
+  : VertexValueFunction(function.getInputDimension())
 {
   p_evaluation_ = function.getEvaluation() ;
   // Set the descriptions
@@ -50,7 +50,7 @@ TrendTransform::TrendTransform(const NumericalMathFunction & function)
 
 /* Parameter constructor */
 TrendTransform::TrendTransform(const EvaluationImplementation & p_evaluation)
-  : TemporalFunction(p_evaluation->getInputDimension())
+  : VertexValueFunction(p_evaluation->getInputDimension())
 {
   p_evaluation_ = p_evaluation;
   // Set the descriptions
@@ -60,7 +60,7 @@ TrendTransform::TrendTransform(const EvaluationImplementation & p_evaluation)
 
 /* Parameter constructor */
 TrendTransform::TrendTransform(const NumericalMathEvaluationImplementation & evaluation)
-  : TemporalFunction(evaluation.getInputDimension())
+  : VertexValueFunction(evaluation.getInputDimension())
 {
   p_evaluation_ = evaluation.clone();
   // Set the descriptions
@@ -116,13 +116,13 @@ InverseTrendTransform TrendTransform::getInverse() const
 /* Method save() stores the object through the StorageManager */
 void TrendTransform::save(Advocate & adv) const
 {
-  TemporalFunction::save(adv);
+  VertexValueFunction::save(adv);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void TrendTransform::load(Advocate & adv)
 {
-  TemporalFunction::load(adv);
+  VertexValueFunction::load(adv);
 }
 
 END_NAMESPACE_OPENTURNS

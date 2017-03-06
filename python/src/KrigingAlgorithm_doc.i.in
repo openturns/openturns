@@ -30,7 +30,7 @@ normalize : bool, optional
     Indicates whether the input sample has to be normalized.
 
     OpenTURNS uses the transformation fixed by the User in *inputTransformation* or the empirical mean and variance of the input sample.
-    Default is set in resource map key `GeneralizedLinearModelAlgorithm-NormalizeData`
+    Default is set in resource map key `GeneralLinearModelAlgorithm-NormalizeData`
 
 Notes
 -----
@@ -60,7 +60,7 @@ with :math:`\mu_l(\vect{x}) = \sum_{j=1}^{n_l} \alpha_j^l \varphi_j^l(\vect{x})`
 
 :math:`W` is a normal process of dimension *p* with zero mean and covariance function :math:`C = C(\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda})` (see :class:`~openturns.CovarianceModel` for the notations).
 
-The estimation of the parameters :math:`\alpha_j^l, \vect{\theta}, \vect{\sigma}` are made by the :class:`~openturns.GeneralizedLinearModelAlgorithm` class.
+The estimation of the parameters :math:`\alpha_j^l, \vect{\theta}, \vect{\sigma}` are made by the :class:`~openturns.GeneralLinearModelAlgorithm` class.
 
 The Kriging algorithm makes the generalized linear model interpolary on the input samples. The Kriging meta model :math:`\tilde{\cM}` is defined by:
 
@@ -109,22 +109,22 @@ Get the resulting meta model:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::KrigingAlgorithm::getOptimizationSolver
+%feature("docstring") OT::KrigingAlgorithm::getOptimizationAlgorithm
 "Accessor to solver used to optimize the covariance model parameters.
 
 Returns
 -------
-algorithm : :class:`~openturns.OptimizationSolver`
+algorithm : :class:`~openturns.OptimizationAlgorithm`
     Solver used to optimize the covariance model parameters."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::KrigingAlgorithm::setOptimizationSolver
+%feature("docstring") OT::KrigingAlgorithm::setOptimizationAlgorithm
 "Accessor to the solver used to optimize the covariance model parameters.
 
 Parameters
 ----------
-algorithm : :class:`~openturns.OptimizationSolver`
+algorithm : :class:`~openturns.OptimizationAlgorithm`
     Solver used to optimize the covariance model parameters.
 
 Examples

@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
     /* We create an Event from this RandomVector */
     Event myEvent(output, Less(), -3.0);
 
-    /* We create an OptimizationSolver algorithm */
+    /* We create an OptimizationAlgorithm algorithm */
     Cobyla myCobyla;
     myCobyla.setMaximumIterationNumber(400);
     myCobyla.setMaximumAbsoluteError(1.0e-10);
@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
     fullprint << "myCobyla=" << myCobyla << std::endl << std::flush;
 
     /* We create a Analytical algorithm */
-    /* The first parameter is an OptimizationSolver */
+    /* The first parameter is an OptimizationAlgorithm */
     /* The second parameter is an event */
     /* The third parameter is a starting point for the design point research */
     Analytical myAlgo(myCobyla, myEvent, mean);

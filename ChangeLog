@@ -34,6 +34,15 @@
   * Renamed LinearNumericalMathFunction to LinearFunction
   * Swap covModel and basis arguments in KrigingAlgorithm constructors
   * Removed useless keepCholesky argument in KrigingAlgorithm constructors
+  * Renamed OptimizationSolver to OptimizationAlgorithm
+  * Renamed TemporalNormalProcess to GaussianProcess
+  * Renamed SpectralNormalProcess to SpectralGaussianProcess
+  * Renamed GeneralizedLinearModelAlgorithm to GeneralLinearModelAlgorithm
+  * Renamed GeneralizedLinearModelResult to GeneralLinearModelResult
+  * Renamed DynamicalFunction to FieldFunction
+  * Renamed SpatialFunction to ValueFunction
+  * Renamed TemporalFunction to VertexValueFunction
+  * Deprecated [gs]etOptimizationSolver methods
 
 === Python module ===
 

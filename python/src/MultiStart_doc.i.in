@@ -11,7 +11,7 @@ Available constructors:
 
 Parameters
 ----------
-solver : :class:`~openturns.OptimizationSolver`
+solver : :class:`~openturns.OptimizationAlgorithm`
     The internal solver
 startingPoints : 2-d sequence of float
     Starting point candidates
@@ -33,21 +33,21 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::MultiStart::getOptimizationSolver
+%feature("docstring") OT::MultiStart::getOptimizationAlgorithm
 "Solver accessor.
 
 Returns
 -------
-solver : :class:`~openturns.OptimizationSolver`
+solver : :class:`~openturns.OptimizationAlgorithm`
     The internal solver"
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::MultiStart::setOptimizationSolver
+%feature("docstring") OT::MultiStart::setOptimizationAlgorithm
 "Solver accessor.
 
 Parameters
 ----------
-solver : :class:`~openturns.OptimizationSolver`
+solver : :class:`~openturns.OptimizationAlgorithm`
     The internal solver"
 
 // ---------------------------------------------------------------------

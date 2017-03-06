@@ -92,7 +92,7 @@ try:
         print("myCobyla=", myCobyla)
 
         # We create a FORM algorithm
-        # The first parameter is an OptimizationSolver
+        # The first parameter is an OptimizationAlgorithm
         # The second parameter is an event
         # The third parameter is a starting point for the design point research
         myAlgo = FORM(myCobyla, myEvent, mean)

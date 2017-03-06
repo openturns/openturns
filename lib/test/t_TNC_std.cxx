@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     Interval bounds(NumericalPoint(4, -3.0), NumericalPoint(4, 5.0));
 
     // Define Optimization Solver :
-    OptimizationSolver solver(new TNC());
+    OptimizationAlgorithm solver(new TNC());
     solver.setStartingPoint(startingPoint);
 
     // Define Optimization Problem : minimization
@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
     Interval bounds(NumericalPoint(4, -3.0), NumericalPoint(4, 5.0));
 
     // Define Optimization Solver :
-    OptimizationSolver solver(new TNC());
+    OptimizationAlgorithm solver(new TNC());
 
     OptimizationProblem problem(levelFunction);
     problem.setBounds(bounds);

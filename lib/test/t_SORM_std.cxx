@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
     fullprint << "myAbdoRackwitz=" << myAbdoRackwitz << std::endl;
 
     /* We create a SORM algorithm */
-    /* The first parameter is an OptimizationSolver */
+    /* The first parameter is an OptimizationAlgorithm */
     /* The second parameter is an event */
     /* The third parameter is a starting point for the design point research */
     SORM myAlgo(myAbdoRackwitz, myEvent, mean);

@@ -22,7 +22,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/OTconfig.hxx"
 #ifdef OPENTURNS_HAVE_MUPARSER
-#include "openturns/AnalyticalNumericalMathEvaluationImplementation.hxx"
+#include "openturns/SymbolicEvaluation.hxx"
 #else
 #include "openturns/LinearNumericalMathEvaluationImplementation.hxx"
 #endif
@@ -150,7 +150,7 @@ NumericalMathGradientImplementation::Implementation NumericalMathGradientImpleme
   for (UnsignedInteger index = 0; index < outputDimension; ++index)
     output[index] = OSS() << "y" << index;
   const Description formulas(outputDimension, "0.0");
-  const AnalyticalNumericalMathEvaluationImplementation right(input, output, formulas);
+  const SymbolicEvaluation right(input, output, formulas);
 #else
   NumericalPoint center(inputDimension);
   Matrix linear(inputDimension, outputDimension);

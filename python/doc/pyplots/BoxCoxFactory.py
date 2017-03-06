@@ -19,7 +19,7 @@ myMesh = myMesher.build(myInterval)
 amplitude = [1.0]
 scale = [0.2, 0.2]
 myCovModel = ot.ExponentialModel(scale, amplitude)
-myXproc = ot.TemporalNormalProcess(myCovModel, myMesh)
+myXproc = ot.GaussianProcess(myCovModel, myMesh)
 
 
 # Transform myXproc to make its variance depend on the vertex (s,t)
@@ -27,7 +27,7 @@ myXproc = ot.TemporalNormalProcess(myCovModel, myMesh)
 # thanks to the spatial function g
 # myXtProcess R --> R
 g = ot.SymbolicFunction(['x1'],  ['exp(x1)'])
-myDynTransform = ot.SpatialFunction(g, 2)
+myDynTransform = ot.ValueFunction(g, 2)
 myXtProcess = ot.CompositeProcess(myDynTransform, myXproc)
 
 myField = myXtProcess.getRealization()

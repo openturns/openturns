@@ -15,7 +15,7 @@ try:
     amplitude = NumericalPoint(dimension, 2.0)
     scale = NumericalPoint(dimension, 1.0)
     model = ExponentialCauchy(scale, amplitude)
-    myProcess = SpectralNormalProcess(model, timeGrid)
+    myProcess = SpectralGaussianProcess(model, timeGrid)
 
     # Create a Process sample
     N = 100

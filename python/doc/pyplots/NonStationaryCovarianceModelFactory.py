@@ -59,7 +59,7 @@ myCovarianceModel = ot.UserDefinedCovarianceModel(
 
 # Create the non stationary Normal process with
 # that covariance model
-myProcess = ot.TemporalNormalProcess(myCovarianceModel, myMesh)
+myProcess = ot.GaussianProcess(myCovarianceModel, myMesh)
 
 # Create a  sample of fields
 size = 10**4

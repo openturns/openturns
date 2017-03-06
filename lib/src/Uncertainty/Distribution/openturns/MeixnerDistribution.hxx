@@ -24,7 +24,7 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/ContinuousDistribution.hxx"
 #include "openturns/PiecewiseHermiteEvaluationImplementation.hxx"
-#include "openturns/OptimizationSolver.hxx"
+#include "openturns/OptimizationAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -132,16 +132,20 @@ public:
   void load(Advocate & adv);
 
   /** Initialize optimization solver parameter using the ResourceMap */
-  void initializeOptimizationSolverParameter();
+  void initializeOptimizationAlgorithmParameter();
 
   /** Optimization solver accessor */
-  OptimizationSolver getOptimizationSolver() const;
-  void setOptimizationSolver(const OptimizationSolver & solver);
+  OptimizationAlgorithm getOptimizationAlgorithm() const;
+  void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
+
+  // @deprecated
+  OptimizationAlgorithm getOptimizationSolver() const;
+  void setOptimizationSolver(const OptimizationAlgorithm & solver);
 
 protected:
 
   /** Optimization solver */
-  mutable OptimizationSolver  solver_;
+  mutable OptimizationAlgorithm  solver_;
 
 private:
 

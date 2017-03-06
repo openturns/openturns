@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
     NumericalMathFunction myOneDimensionalFunction(inputDescription, formula);
 
     /* We build a spatial function */
-    SpatialFunction myFunction(myOneDimensionalFunction);
+    ValueFunction myFunction(myOneDimensionalFunction);
 
     /* Definition of the CompositeProcess */
     CompositeProcess myCompositeProcess(myFunction, myARMAProcess);

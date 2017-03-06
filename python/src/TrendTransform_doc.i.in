@@ -36,7 +36,7 @@ Add it to a process:
 >>> amplitude=[5.0]
 >>> scale=[0.2]
 >>> myCovModel=ot.ExponentialModel(scale, amplitude)
->>> myXProcess=ot.TemporalNormalProcess(myCovModel, myGrid)
+>>> myXProcess=ot.GaussianProcess(myCovModel, myGrid)
 >>> myYProcess = ot.CompositeProcess(fTrend, myXProcess)
 
 Remove it from a field:

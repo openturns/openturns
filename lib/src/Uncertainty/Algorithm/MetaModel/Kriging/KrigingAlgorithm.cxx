@@ -26,7 +26,7 @@
 #include "openturns/KrigingEvaluation.hxx"
 #include "openturns/KrigingGradient.hxx"
 #include "openturns/CenteredFiniteDifferenceHessian.hxx"
-#include "openturns/GeneralizedLinearModelResult.hxx"
+#include "openturns/GeneralLinearModelResult.hxx"
 #include "openturns/ComposedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -74,7 +74,7 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
 {
   // Here we must force the GLMAlgo to keep the Cholesky factor as it is mandatory
   // for the interpolation part
-  glmAlgo_ = GeneralizedLinearModelAlgorithm(inputSample, outputSample, covarianceModel, basis, normalize, true);
+  glmAlgo_ = GeneralLinearModelAlgorithm(inputSample, outputSample, covarianceModel, basis, normalize, true);
   if (ResourceMap::Get("KrigingAlgorithm-LinearAlgebra") == "HMAT") glmAlgo_.setMethod(1);
 }
 
@@ -99,7 +99,7 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
 {
   // Here we must force the GLMAlgo to keep the Cholesky factor as it is mandatory
   // for the interpolation part
-  glmAlgo_ = GeneralizedLinearModelAlgorithm(inputSample, outputSample, covarianceModel, basisCollection, normalize, true);
+  glmAlgo_ = GeneralLinearModelAlgorithm(inputSample, outputSample, covarianceModel, basisCollection, normalize, true);
   if (ResourceMap::Get("KrigingAlgorithm-LinearAlgebra") == "HMAT") glmAlgo_.setMethod(1);
 }
 
@@ -122,7 +122,7 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
 {
   // Here we must force the GLMAlgo to keep the Cholesky factor as it is mandatory
   // for the interpolation part
-  glmAlgo_ = GeneralizedLinearModelAlgorithm(inputSample, inputTransformation, outputSample, covarianceModel, basis, true);
+  glmAlgo_ = GeneralLinearModelAlgorithm(inputSample, inputTransformation, outputSample, covarianceModel, basis, true);
   if (ResourceMap::Get("KrigingAlgorithm-LinearAlgebra") == "HMAT") glmAlgo_.setMethod(1);
 }
 
@@ -146,7 +146,7 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
 {
   // Here we must force the GLMAlgo to keep the Cholesky factor as it is mandatory
   // for the interpolation part
-  glmAlgo_ = GeneralizedLinearModelAlgorithm(inputSample, inputTransformation, outputSample, covarianceModel, basisCollection, true);
+  glmAlgo_ = GeneralLinearModelAlgorithm(inputSample, inputTransformation, outputSample, covarianceModel, basisCollection, true);
   if (ResourceMap::Get("KrigingAlgorithm-LinearAlgebra") == "HMAT") glmAlgo_.setMethod(1);
 }
 
@@ -175,15 +175,15 @@ void KrigingAlgorithm::computeGamma()
 /* Perform regression */
 void KrigingAlgorithm::run()
 {
-  LOGINFO("Launch GeneralizedLinearModelAlgorithm for the optimization");
+  LOGINFO("Launch GeneralLinearModelAlgorithm for the optimization");
   glmAlgo_.run();
-  LOGINFO("End of GeneralizedLinearModelAlgorithm run");
+  LOGINFO("End of GeneralLinearModelAlgorithm run");
 
   // Covariance coefficients are computed once, ever if optimiser is fixed
   rho_ = glmAlgo_.getRho();
 
   /* Method that returns the covariance factor - hmat */
-  const GeneralizedLinearModelResult glmResult(glmAlgo_.getResult());
+  const GeneralLinearModelResult glmResult(glmAlgo_.getResult());
   if (ResourceMap::Get("KrigingAlgorithm-LinearAlgebra") == "HMAT")
     covarianceCholeskyFactorHMatrix_ = glmResult.getHMatCholeskyFactor();
   else
@@ -256,15 +256,28 @@ KrigingResult KrigingAlgorithm::getResult()
 }
 
 /* Optimization solver accessor */
-OptimizationSolver KrigingAlgorithm::getOptimizationSolver() const
+OptimizationAlgorithm KrigingAlgorithm::getOptimizationAlgorithm() const
 {
-  return glmAlgo_.getOptimizationSolver();
+  return glmAlgo_.getOptimizationAlgorithm();
 }
 
-void KrigingAlgorithm::setOptimizationSolver(const OptimizationSolver & solver)
+void KrigingAlgorithm::setOptimizationAlgorithm(const OptimizationAlgorithm & solver)
 {
-  glmAlgo_.setOptimizationSolver(solver);
+  glmAlgo_.setOptimizationAlgorithm(solver);
 }
+
+OptimizationAlgorithm KrigingAlgorithm::getOptimizationSolver() const
+{
+  Log::Warn(OSS() << "KrigingAlgorithm::getOptimizationSolver is deprecated");
+  return getOptimizationAlgorithm();
+}
+
+void KrigingAlgorithm::setOptimizationSolver(const OptimizationAlgorithm & solver)
+{
+  Log::Warn(OSS() << "KrigingAlgorithm::setOptimizationSolver is deprecated");
+  setOptimizationAlgorithm(solver);
+}
+
 
 /* Accessor to optimization bounds */
 void KrigingAlgorithm::setOptimizationBounds(const Interval & optimizationBounds)

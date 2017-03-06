@@ -30,10 +30,10 @@
 #include "openturns/InverseBoxCoxTransform.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/Cloud.hxx"
-#include "openturns/OptimizationSolver.hxx"
+#include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/Cobyla.hxx"
 #include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
-#include "openturns/GeneralizedLinearModelAlgorithm.hxx"
+#include "openturns/GeneralLinearModelAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -56,7 +56,7 @@ private:
   mutable NumericalScalar sumLog_;
 
   /** Optimization solver */
-  mutable OptimizationSolver solver_;
+  mutable OptimizationAlgorithm solver_;
 
 public:
 
@@ -70,7 +70,7 @@ public:
   }
 
   BoxCoxSampleOptimization(const NumericalSample & sample,
-                           const OptimizationSolver & solver)
+                           const OptimizationAlgorithm & solver)
     : sample_(sample)
     , sumLog_(0.0)
     , solver_(solver)
@@ -143,7 +143,7 @@ private:
   mutable BasisCollection basis_;
 
   /** Optimization solver */
-  mutable OptimizationSolver solver_;
+  mutable OptimizationAlgorithm solver_;
 
 public:
 
@@ -152,7 +152,7 @@ public:
                         const NumericalSample & shiftedOutputSample,
                         const CovarianceModel & covarianceModel,
                         const BasisCollection & basis,
-                        const OptimizationSolver & solver)
+                        const OptimizationAlgorithm & solver)
     : inputSample_(inputSample)
     , shiftedOutputSample_(shiftedOutputSample)
     , covarianceModel_(covarianceModel)
@@ -170,7 +170,7 @@ public:
     // compute the mean of the transformed sample using the Box-Cox function
     const NumericalSample transformedOutputSample(myBoxFunction(shiftedOutputSample_));
     // Use of GLM to estimate the best generalized linear model
-    GeneralizedLinearModelAlgorithm algo(inputSample_, transformedOutputSample, covarianceModel_, basis_);
+    GeneralLinearModelAlgorithm algo(inputSample_, transformedOutputSample, covarianceModel_, basis_);
     algo.run();
     // Return the optimal log-likelihood
     const NumericalScalar result = algo.getResult().getOptimalLogLikelihood();
@@ -220,15 +220,28 @@ BoxCoxFactory * BoxCoxFactory::clone() const
   return new BoxCoxFactory(*this);
 }
 
-OptimizationSolver BoxCoxFactory::getOptimizationSolver() const
+OptimizationAlgorithm BoxCoxFactory::getOptimizationAlgorithm() const
 {
   return solver_;
 }
 
-void BoxCoxFactory::setOptimizationSolver(const OptimizationSolver & solver)
+void BoxCoxFactory::setOptimizationAlgorithm(const OptimizationAlgorithm & solver)
 {
   solver_ = solver;
 }
+
+OptimizationAlgorithm BoxCoxFactory::getOptimizationSolver() const
+{
+  Log::Warn(OSS() << "BoxCoxFactory::getOptimizationSolver is deprecated");
+  return getOptimizationAlgorithm();
+}
+
+void BoxCoxFactory::setOptimizationSolver(const OptimizationAlgorithm & solver)
+{
+  Log::Warn(OSS() << "BoxCoxFactory::setOptimizationSolver is deprecated");
+  setOptimizationAlgorithm(solver);
+}
+
 
 
 /* Build the factory from data */
@@ -362,7 +375,7 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & inputSample,
                                      const CovarianceModel & covarianceModel,
                                      const Basis & basis,
                                      const NumericalPoint & shift,
-                                     GeneralizedLinearModelResult & result)
+                                     GeneralLinearModelResult & result)
 {
   BasisCollection basisColl(outputSample.getDimension(), basis);
   return build(inputSample, outputSample, covarianceModel, basisColl, shift, result);
@@ -372,7 +385,7 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & inputSample,
                                      const NumericalSample & outputSample,
                                      const CovarianceModel & covarianceModel,
                                      const NumericalPoint & shift,
-                                     GeneralizedLinearModelResult & result)
+                                     GeneralLinearModelResult & result)
 {
   BasisCollection basis;
   return build(inputSample, outputSample, covarianceModel, basis, shift, result);
@@ -383,7 +396,7 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & inputSample,
                                      const CovarianceModel & covarianceModel,
                                      const BasisCollection & basis,
                                      const NumericalPoint & shift,
-                                     GeneralizedLinearModelResult & result)
+                                     GeneralLinearModelResult & result)
 {
   checkGLMData(inputSample, outputSample, covarianceModel, basis);
 
@@ -403,9 +416,9 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & inputSample,
   BoxCoxEvaluationImplementation myBoxFunction(lambda, shift);
   // compute the transformed output sample using the Box-Cox function
   const NumericalSample transformedOutputSample = myBoxFunction(outputSample);
-  // Build the GeneralizedLinearModelResult
+  // Build the GeneralLinearModelResult
   // Use of GLM to estimate the best generalized linear model
-  GeneralizedLinearModelAlgorithm algo(inputSample, transformedOutputSample, covarianceModel, basis);
+  GeneralLinearModelAlgorithm algo(inputSample, transformedOutputSample, covarianceModel, basis);
   algo.run();
   // Get result
   result = algo.getResult();

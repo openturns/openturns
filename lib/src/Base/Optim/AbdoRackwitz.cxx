@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *  @brief AbdoRackwitz is an actual implementation for
- *         OptimizationSolverImplementation using the AbdoRackwitz algorithm.
+ *         OptimizationAlgorithmImplementation using the AbdoRackwitz algorithm.
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -32,7 +32,7 @@ static const Factory<AbdoRackwitz> Factory_AbdoRackwitz;
 
 /* Default constructor */
 AbdoRackwitz::AbdoRackwitz()
-  : OptimizationSolverImplementation()
+  : OptimizationAlgorithmImplementation()
   , tau_(ResourceMap::GetAsNumericalScalar("AbdoRackwitz-DefaultTau"))
   , omega_(ResourceMap::GetAsNumericalScalar("AbdoRackwitz-DefaultOmega"))
   , smooth_(ResourceMap::GetAsNumericalScalar("AbdoRackwitz-DefaultSmooth"))
@@ -44,7 +44,7 @@ AbdoRackwitz::AbdoRackwitz (const OptimizationProblem & problem,
                             const NumericalScalar tau,
                             const NumericalScalar omega,
                             const NumericalScalar smooth)
-  : OptimizationSolverImplementation(problem)
+  : OptimizationAlgorithmImplementation(problem)
   , tau_(tau)
   , omega_(omega)
   , smooth_(smooth)
@@ -55,7 +55,7 @@ AbdoRackwitz::AbdoRackwitz (const OptimizationProblem & problem,
 
 
 AbdoRackwitz::AbdoRackwitz(const OptimizationProblem & problem)
-  : OptimizationSolverImplementation(problem)
+  : OptimizationAlgorithmImplementation(problem)
   , tau_(ResourceMap::GetAsNumericalScalar("AbdoRackwitz-DefaultTau"))
   , omega_(ResourceMap::GetAsNumericalScalar("AbdoRackwitz-DefaultOmega"))
   , smooth_(ResourceMap::GetAsNumericalScalar("AbdoRackwitz-DefaultSmooth"))
@@ -245,7 +245,7 @@ String AbdoRackwitz::__repr__() const
 {
   OSS oss;
   oss << "class=" << AbdoRackwitz::GetClassName()
-      << " " << OptimizationSolverImplementation::__repr__()
+      << " " << OptimizationAlgorithmImplementation::__repr__()
       << " tau=" << tau_
       << " omega=" << omega_
       << " smooth=" << smooth_;
@@ -255,7 +255,7 @@ String AbdoRackwitz::__repr__() const
 /* Method save() stores the object through the StorageManager */
 void AbdoRackwitz::save(Advocate & adv) const
 {
-  OptimizationSolverImplementation::save(adv);
+  OptimizationAlgorithmImplementation::save(adv);
   adv.saveAttribute("tau_", tau_);
   adv.saveAttribute("omega_", omega_);
   adv.saveAttribute("smooth_", smooth_);
@@ -270,7 +270,7 @@ void AbdoRackwitz::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void AbdoRackwitz::load(Advocate & adv)
 {
-  OptimizationSolverImplementation::load(adv);
+  OptimizationAlgorithmImplementation::load(adv);
   adv.loadAttribute("tau_", tau_);
   adv.loadAttribute("omega_", omega_);
   adv.loadAttribute("smooth_", smooth_);

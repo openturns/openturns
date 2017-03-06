@@ -12,20 +12,20 @@ DistributionFactory, TruncatedNormal"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::TrapezoidalFactory::setOptimizationSolver
+%feature("docstring") OT::TrapezoidalFactory::setOptimizationAlgorithm
 "Accessor to the solver.
 
 Parameters
 ----------
-solver : :class:`~openturns.OptimizationSolver`
+solver : :class:`~openturns.OptimizationAlgorithm`
     The solver used for numerical optimization of the likelihood."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::TrapezoidalFactory::getOptimizationSolver
+%feature("docstring") OT::TrapezoidalFactory::getOptimizationAlgorithm
 "Accessor to the solver.
 
 Returns
 -------
-solver : :class:`~openturns.OptimizationSolver`
+solver : :class:`~openturns.OptimizationAlgorithm`
     The solver used for numerical optimization of the likelihood."

@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     NumericalPoint amplitude(dimension, 1.0);
     NumericalPoint scale(spatialDimension, 1.0);
     ExponentialModel model(scale, amplitude);
-    TemporalNormalProcess myProcess(model, timeGrid);
+    GaussianProcess myProcess(model, timeGrid);
 
     // Create a Process sample of size N
     UnsignedInteger N = 10000;

@@ -23,7 +23,7 @@
 
 #include <map>
 #include "openturns/OTprivate.hxx"
-#include "openturns/OptimizationSolverImplementation.hxx"
+#include "openturns/OptimizationAlgorithmImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * NLopt solver
  */
 class OT_API NLopt :
-  public OptimizationSolverImplementation
+  public OptimizationAlgorithmImplementation
 {
   CLASSNAME;
 public:

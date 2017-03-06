@@ -23,7 +23,7 @@
 
 #include "openturns/ProcessImplementation.hxx"
 #include "openturns/Process.hxx"
-#include "openturns/DynamicalFunction.hxx"
+#include "openturns/FieldFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -44,11 +44,11 @@ public:
   CompositeProcess();
 
   /** Standard constructor */
-  CompositeProcess(const DynamicalFunction & function,
+  CompositeProcess(const FieldFunction & function,
                    const Antecedent & p_antecedent);
 
   /** Standard constructor */
-  CompositeProcess(const DynamicalFunction & function,
+  CompositeProcess(const FieldFunction & function,
                    const Process & antecedent);
 
   /** Virtual constructor */
@@ -74,7 +74,7 @@ public:
   Antecedent getAntecedent() const;
 
   /** Function accessor */
-  DynamicalFunction getFunction() const;
+  FieldFunction getFunction() const;
 
   /** Get the random vector corresponding to the i-th marginal component */
   Implementation getMarginal(const UnsignedInteger i) const;
@@ -91,7 +91,7 @@ public:
 protected:
 
   /** The function used for realization  */
-  DynamicalFunction function_;
+  FieldFunction function_;
 
   /** The antecedent of the process through the function */
   Antecedent p_antecedent_;

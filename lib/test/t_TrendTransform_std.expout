@@ -1,4 +1,4 @@
-myTrendFunc=class=TrendTransform evaluation=class=AnalyticalNumericalMathEvaluationImplementation name=Unnamed inputVariablesNames=[t] outputVariablesNames=[y0,y1] formulas=[sin(t),cos(t)]
+myTrendFunc=class=TrendTransform evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[t] outputVariablesNames=[y0,y1] formulas=[sin(t),cos(t)]
 myTrendFunc input description=[y0,y1]
 myTrendFunc input dimension=2
 myTrendFunc output description=[y0,y1]

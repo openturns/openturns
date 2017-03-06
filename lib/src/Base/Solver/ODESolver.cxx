@@ -35,7 +35,7 @@ ODESolver::ODESolver()
 }
 
 /* Default constructor */
-ODESolver::ODESolver(const DynamicalFunction & transitionFunction)
+ODESolver::ODESolver(const FieldFunction & transitionFunction)
   : TypedInterfaceObject<ODESolverImplementation>(RungeKutta(transitionFunction).clone())
 {
   // Nothing to do
@@ -74,13 +74,13 @@ NumericalSample ODESolver::solve(const NumericalPoint & initialState,
 }
 
 /* Transition function accessor */
-void ODESolver::setTransitionFunction(const DynamicalFunction & transitionFunction)
+void ODESolver::setTransitionFunction(const FieldFunction & transitionFunction)
 {
   copyOnWrite();
   getImplementation()->setTransitionFunction(transitionFunction);
 }
 
-DynamicalFunction ODESolver::getTransitionFunction() const
+FieldFunction ODESolver::getTransitionFunction() const
 {
   return getImplementation()->getTransitionFunction();
 }

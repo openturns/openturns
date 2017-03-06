@@ -24,7 +24,7 @@ try:
 
     # Cauchy model
     model = ExponentialCauchy(scale, amplitude)
-    myProcess = SpectralNormalProcess(model, timeGrid)
+    myProcess = SpectralGaussianProcess(model, timeGrid)
 
     # Create a sample of size N = 1000
     sample = myProcess.getSample(1000)

@@ -24,9 +24,9 @@
 #include "openturns/NoNumericalMathGradientImplementation.hxx"
 #include "openturns/NoNumericalMathHessianImplementation.hxx"
 #ifdef OPENTURNS_HAVE_MUPARSER
-#include "openturns/AnalyticalNumericalMathEvaluationImplementation.hxx"
-#include "openturns/AnalyticalNumericalMathGradientImplementation.hxx"
-#include "openturns/AnalyticalNumericalMathHessianImplementation.hxx"
+#include "openturns/SymbolicEvaluation.hxx"
+#include "openturns/SymbolicGradient.hxx"
+#include "openturns/SymbolicHessian.hxx"
 #endif
 #include "openturns/DatabaseNumericalMathEvaluationImplementation.hxx"
 #include "openturns/ProductNumericalMathFunction.hxx"
@@ -72,11 +72,11 @@ NumericalMathFunctionImplementation::NumericalMathFunctionImplementation(const D
 {
 #ifdef OPENTURNS_HAVE_MUPARSER
   // Try to build an analytical gradient
-  AnalyticalNumericalMathEvaluationImplementation evaluation(inputVariablesNames, outputVariablesNames, formulas);
+  SymbolicEvaluation evaluation(inputVariablesNames, outputVariablesNames, formulas);
   p_evaluationImplementation_ = evaluation.clone();
   try
   {
-    p_gradientImplementation_ = new AnalyticalNumericalMathGradientImplementation(evaluation);
+    p_gradientImplementation_ = new SymbolicGradient(evaluation);
     useDefaultGradientImplementation_ = false;
   }
   catch(...)
@@ -86,7 +86,7 @@ NumericalMathFunctionImplementation::NumericalMathFunctionImplementation(const D
   }
   try
   {
-    p_hessianImplementation_ = new AnalyticalNumericalMathHessianImplementation(evaluation);
+    p_hessianImplementation_ = new SymbolicHessian(evaluation);
     useDefaultHessianImplementation_ = false;
   }
   catch(...)

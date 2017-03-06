@@ -35,7 +35,7 @@ print("PhiP=%f, C2=%f, MinDist=%f"%(spaceFillingPhiP.evaluate(design), spaceFill
 #--------------------------------------------------#
 
 # RandomBruteForce MonteCarlo with N designs
-N = 10000
+N = 1000
 
 # 1) LHS with C2 optimization
 optimalLHSAlgorithmC2 = ot.MonteCarloLHS(lhs, N, spaceFillingC2)

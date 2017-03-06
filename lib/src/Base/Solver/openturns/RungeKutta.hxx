@@ -40,7 +40,7 @@ public:
   RungeKutta();
 
   /** Parameter constructor */
-  explicit RungeKutta(const DynamicalFunction & transitionFunction);
+  explicit RungeKutta(const FieldFunction & transitionFunction);
 
   /** Virtual constructor */
   virtual RungeKutta * clone() const;

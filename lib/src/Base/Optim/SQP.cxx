@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *  @brief SQP is an actual implementation for
- *         OptimizationSolverImplementation using the SQP algorithm.
+ *         OptimizationAlgorithmImplementation using the SQP algorithm.
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -38,7 +38,7 @@ static const Factory<SQP> Factory_SQP;
 
 /* Default constructor */
 SQP::SQP()
-  : OptimizationSolverImplementation()
+  : OptimizationAlgorithmImplementation()
   , tau_(ResourceMap::GetAsNumericalScalar("SQP-DefaultTau"))
   , omega_(ResourceMap::GetAsNumericalScalar("SQP-DefaultOmega"))
   , smooth_(ResourceMap::GetAsNumericalScalar("SQP-DefaultSmooth"))
@@ -47,7 +47,7 @@ SQP::SQP()
 }
 
 SQP::SQP(const OptimizationProblem & problem)
-  : OptimizationSolverImplementation(problem)
+  : OptimizationAlgorithmImplementation(problem)
   , tau_(ResourceMap::GetAsNumericalScalar("SQP-DefaultTau"))
   , omega_(ResourceMap::GetAsNumericalScalar("SQP-DefaultOmega"))
   , smooth_(ResourceMap::GetAsNumericalScalar("SQP-DefaultSmooth"))
@@ -60,7 +60,7 @@ SQP::SQP (const OptimizationProblem & problem,
           const NumericalScalar tau,
           const NumericalScalar omega,
           const NumericalScalar smooth)
-  : OptimizationSolverImplementation(problem)
+  : OptimizationAlgorithmImplementation(problem)
   , tau_(tau)
   , omega_(omega)
   , smooth_(smooth)
@@ -296,7 +296,7 @@ String SQP::__repr__() const
 {
   OSS oss;
   oss << "class=" << SQP::GetClassName()
-      << " " << OptimizationSolverImplementation::__repr__()
+      << " " << OptimizationAlgorithmImplementation::__repr__()
       << " tau=" << tau_
       << " omega=" << omega_
       << " smooth=" << smooth_;
@@ -306,7 +306,7 @@ String SQP::__repr__() const
 /* Method save() stores the object through the StorageManager */
 void SQP::save(Advocate & adv) const
 {
-  OptimizationSolverImplementation::save(adv);
+  OptimizationAlgorithmImplementation::save(adv);
   adv.saveAttribute("tau_", tau_);
   adv.saveAttribute("omega_", omega_);
   adv.saveAttribute("smooth_", smooth_);
@@ -324,7 +324,7 @@ void SQP::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void SQP::load(Advocate & adv)
 {
-  OptimizationSolverImplementation::load(adv);
+  OptimizationAlgorithmImplementation::load(adv);
   adv.loadAttribute("tau_", tau_);
   adv.loadAttribute("omega_", omega_);
   adv.loadAttribute("smooth_", smooth_);

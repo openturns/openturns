@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *  @brief AbdoRackwitz is an actual implementation for
- *         OptimizationSolver using the AbdoRackwitz algorithm.
+ *         OptimizationAlgorithm using the AbdoRackwitz algorithm.
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -23,7 +23,7 @@
 #define OPENTURNS_ABDORACKWITZ_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/OptimizationSolverImplementation.hxx"
+#include "openturns/OptimizationAlgorithmImplementation.hxx"
 #include "openturns/OptimizationProblem.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/NumericalMathFunction.hxx"
@@ -33,10 +33,10 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class AbdoRackwitz
  * AbdoRackwitz is an actual implementation for
- * OptimizationSolver
+ * OptimizationAlgorithm
  */
 class OT_API AbdoRackwitz :
-  public OptimizationSolverImplementation
+  public OptimizationAlgorithmImplementation
 {
   CLASSNAME;
 public:

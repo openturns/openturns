@@ -24,7 +24,7 @@ try:
 
     # Cauchy model
     model = ExponentialCauchy(scale, amplitude)
-    myProcess = TemporalNormalProcess(model, timeGrid)
+    myProcess = GaussianProcess(model, timeGrid)
 
     # Create a Process sample of size N
     N = 10000

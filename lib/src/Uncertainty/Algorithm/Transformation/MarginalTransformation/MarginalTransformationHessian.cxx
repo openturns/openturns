@@ -56,7 +56,7 @@ SymmetricTensor MarginalTransformationHessian::hessian(const NumericalPoint & in
   SymmetricTensor result(dimension, dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    if (evaluation_.getSimplifications()[i] && evaluation_.getExpressions()[i].getHessian()->getClassName() == "AnalyticalNumericalMathHessianImplementation") result(i, i, i) = evaluation_.getExpressions()[i].hessian(NumericalPoint(1, inP[i]))(0, 0, 0);
+    if (evaluation_.getSimplifications()[i] && evaluation_.getExpressions()[i].getHessian()->getClassName() == "SymbolicHessian") result(i, i, i) = evaluation_.getExpressions()[i].hessian(NumericalPoint(1, inP[i]))(0, 0, 0);
     else
     {
       // (`@`(-(`@`((D@@2)(G), 1/G))/(`@`(D(G), 1/G))^3, F))*D(F)^2+(`@`(1/(`@`(D(G), 1/G)), F))*(D@@2)(F)

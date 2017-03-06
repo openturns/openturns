@@ -369,7 +369,7 @@ int main(int argc, char *argv[])
     cobyla.setMaximumConstraintError(1.0e-10);
 
     // Create a TNC algorithm
-    OptimizationSolver tnc(new TNC());
+    OptimizationAlgorithm tnc(new TNC());
     {
       Interval bounds(NumericalPoint(3, -3.0), NumericalPoint(3, 5.0));
       Description input2(3);
@@ -614,9 +614,9 @@ int main(int argc, char *argv[])
     SecondOrderModel secondOrderModel(absoluteExponential, cauchyModel);
     study.add("secondOrderModel", secondOrderModel);
 
-    // Create a SpectralNormalProcess
-    SpectralNormalProcess spectralNormalProcess(exponentialCauchy, regularGrid);
-    study.add("spectralNormalProcess", spectralNormalProcess);
+    // Create a SpectralGaussianProcess
+    SpectralGaussianProcess spectralGaussianProcess(exponentialCauchy, regularGrid);
+    study.add("spectralGaussianProcess", spectralGaussianProcess);
 
     // Create an  UserDefinedSpectralModel
     UserDefinedSpectralModel userDefinedSpectralModel;
@@ -630,9 +630,9 @@ int main(int argc, char *argv[])
     }
     study.add("userDefinedSpectralModel", userDefinedSpectralModel);
 
-    // Create a TemporalNormalProcess
-    TemporalNormalProcess temporalNormalProcess(exponentialCauchy, regularGrid);
-    study.add("temporalNormalProcess", temporalNormalProcess);
+    // Create a GaussianProcess
+    GaussianProcess gaussianProcess(exponentialCauchy, regularGrid);
+    study.add("gaussianProcess", gaussianProcess);
 
     // Create a CompositeProcess Object
     CompositeProcess compositeProcess;
@@ -646,7 +646,7 @@ int main(int argc, char *argv[])
       Description inputDescription(1, "x");
       Description formula(1, "2 * x + 5");
       NumericalMathFunction myOneDimensionalFunction(inputDescription, formula);
-      SpatialFunction myFunction(myOneDimensionalFunction);
+      ValueFunction myFunction(myOneDimensionalFunction);
       compositeProcess = CompositeProcess (myFunction, myARMAProcess);
     }
     study.add("compositeProcess", compositeProcess);
@@ -996,7 +996,7 @@ int main(int argc, char *argv[])
     compare<AbdoRackwitz >( abdoRackwitz, study2 );
     compare<SQP >( sqp, study2, "sqp" );
     compare<Cobyla >( cobyla, study2, "cobyla" );
-    compare<OptimizationSolver >( tnc, study2, "tnc" );
+    compare<OptimizationAlgorithm >( tnc, study2, "tnc" );
 
     // Model
     compare<Event >( event, study2 );
@@ -1066,8 +1066,8 @@ int main(int argc, char *argv[])
     compare<AbsoluteExponential >( absoluteExponential, study2 );
     compare<SecondOrderModel >( secondOrderModel, study2 );
     compare<CompositeProcess >( compositeProcess, study2 );
-    compare<SpectralNormalProcess >( spectralNormalProcess, study2 );
-    compare<TemporalNormalProcess >( temporalNormalProcess, study2 );
+    compare<SpectralGaussianProcess >( spectralGaussianProcess, study2 );
+    compare<GaussianProcess >( gaussianProcess, study2 );
     compare<Domain >( domain, study2 );
     compare<EventDomainImplementation >( eventDomainImplementation, study2 );
     compare<EventProcess >( eventProcess, study2 );

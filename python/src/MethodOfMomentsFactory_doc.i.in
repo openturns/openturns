@@ -38,22 +38,22 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::MethodOfMomentsFactory::setOptimizationSolver
+%feature("docstring") OT::MethodOfMomentsFactory::setOptimizationAlgorithm
 "Accessor to the solver.
 
 Parameters
 ----------
-solver : :class:`~openturns.OptimizationSolver`
+solver : :class:`~openturns.OptimizationAlgorithm`
     The solver used for numerical optimization of the moments."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::MethodOfMomentsFactory::getOptimizationSolver
+%feature("docstring") OT::MethodOfMomentsFactory::getOptimizationAlgorithm
 "Accessor to the solver.
 
 Returns
 -------
-solver : :class:`~openturns.OptimizationSolver`
+solver : :class:`~openturns.OptimizationAlgorithm`
     The solver used for numerical optimization of the moments."
 
 // ---------------------------------------------------------------------

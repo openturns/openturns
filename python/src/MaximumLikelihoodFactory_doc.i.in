@@ -26,22 +26,22 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::MaximumLikelihoodFactory::setOptimizationSolver
+%feature("docstring") OT::MaximumLikelihoodFactory::setOptimizationAlgorithm
 "Accessor to the solver.
 
 Parameters
 ----------
-solver : :class:`~openturns.OptimizationSolver`
+solver : :class:`~openturns.OptimizationAlgorithm`
     The solver used for numerical optimization of the likelihood."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::MaximumLikelihoodFactory::getOptimizationSolver
+%feature("docstring") OT::MaximumLikelihoodFactory::getOptimizationAlgorithm
 "Accessor to the solver.
 
 Returns
 -------
-solver : :class:`~openturns.OptimizationSolver`
+solver : :class:`~openturns.OptimizationAlgorithm`
     The solver used for numerical optimization of the likelihood."
 
 // ---------------------------------------------------------------------

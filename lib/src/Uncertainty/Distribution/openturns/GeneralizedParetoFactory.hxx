@@ -24,7 +24,7 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/DistributionFactoryImplementation.hxx"
 #include "openturns/GeneralizedPareto.hxx"
-#include "openturns/OptimizationSolver.hxx"
+#include "openturns/OptimizationAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -54,8 +54,12 @@ public:
   GeneralizedPareto buildAsGeneralizedPareto() const;
 
   /** Optimization solver accessor */
-  OptimizationSolver getOptimizationSolver() const;
-  void setOptimizationSolver(const OptimizationSolver & solver);
+  OptimizationAlgorithm getOptimizationAlgorithm() const;
+  void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
+
+  // @deprecated
+  OptimizationAlgorithm getOptimizationSolver() const;
+  void setOptimizationSolver(const OptimizationAlgorithm & solver);
 
 protected:
 
@@ -69,7 +73,7 @@ protected:
   GeneralizedPareto buildMethodOfProbabilityWeightedMoments(const NumericalSample & sample) const;
 
   /** Optimization solver */
-  mutable OptimizationSolver  solver_;
+  mutable OptimizationAlgorithm  solver_;
 
 }; /* class GeneralizedParetoFactory */
 

@@ -26,7 +26,7 @@
 #include "openturns/KrigingGradient.hxx"
 #include "openturns/KrigingAlgorithm.hxx"
 #include "openturns/KrigingResult.hxx"
-#include "openturns/GeneralizedLinearModelResult.hxx"
-#include "openturns/GeneralizedLinearModelAlgorithm.hxx"
+#include "openturns/GeneralLinearModelResult.hxx"
+#include "openturns/GeneralLinearModelAlgorithm.hxx"
 
 #endif /* OPENTURNS_OTKRIGING_HXX */

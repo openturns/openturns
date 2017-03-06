@@ -1,0 +1,397 @@
+%define OT_OptimizationAlgorithm_doc
+"Base class for optimization wrappers.
+
+Available constructors:
+    OptimizationAlgorithm(*problem, verbose=False*)
+
+Parameters
+----------
+problem : :class:`~openturns.OptimizationProblem`
+    Optimization problem.
+verbose : bool
+    Let solver be more verbose.
+
+Notes
+-----
+
+Class :class:`~openturns.OptimizationAlgorithm` is an abstract class, which has several implementations.
+The default implementation is :class:`~openturns.Cobyla`, but there are also
+:class:`~openturns.AbdoRackwitz`, :class:`~openturns.SQP` and :class:`~openturns.TNC`.
+
+Examples
+--------
+
+Define an optimization problem to find the minimum of the Rosenbrock function:
+
+>>> import openturns as ot
+>>> rosenbrock = ot.SymbolicFunction(['x1', 'x2'], ['(1-x1)^2+100*(x2-x1^2)^2'])
+>>> problem = ot.OptimizationProblem(rosenbrock)
+>>> solver = ot.OptimizationAlgorithm(problem)
+>>> solver.setStartingPoint([0, 0])
+>>> solver.setMaximumResidualError(1.e-3)
+>>> solver.setMaximumIterationNumber(100)
+>>> solver.run()
+>>> result = solver.getResult()"
+
+%enddef
+
+%feature("docstring") OT::OptimizationAlgorithmImplementation
+OT_OptimizationAlgorithm_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_computeLagrangeMultipliers_doc
+"Compute the Lagrange multipliers of a problem at a given point.
+
+Parameters
+----------
+x : sequence of float
+    Point at which the Lagrange multipliers are computed.
+
+Returns
+-------
+lagrangeMultiplier : sequence of float
+    Lagrange multipliers of the problem at the given point.
+
+Notes
+-----
+The Lagrange multipliers :math:`\vect{\lambda}` are associated with the following Lagrangian formulation of the optimization problem:
+
+.. math::
+
+    \cL(\vect{x}, \vect{\lambda}_{eq}, \vect{\lambda}_{\ell}, \vect{\lambda}_{u}, \vect{\lambda}_{ineq}) = J(\vect{x}) + \Tr{\vect{\lambda}}_{eq} g(\vect{x}) + \Tr{\vect{\lambda}}_{\ell} (\vect{x}-\vect{\ell})^{+} + \Tr{\vect{\lambda}}_{u} (\vect{u}-\vect{x})^{+} + \Tr{\vect{\lambda}}_{ineq}  h^{+}(\vect{x})
+
+where :math:`\vect{\alpha}^{+}=(\max(0,\alpha_1),\hdots,\max(0,\alpha_n))`.
+
+The Lagrange multipliers are stored as :math:`(\vect{\lambda}_{eq}, \vect{\lambda}_{\ell}, \vect{\lambda}_{u}, \vect{\lambda}_{ineq})`, where:
+    - :math:`\vect{\lambda}_{eq}` is of dimension 0 if there is no equality
+      constraint, else of dimension the dimension of :math:`g(\vect{x})` ie the number of scalar equality constraints
+    - :math:`\vect{\lambda}_{\ell}` and :math:`\vect{\lambda}_{u}` are of dimension 0 if there is no bound constraint, else of dimension of :math:`\vect{x}`
+    - :math:`\vect{\lambda}_{eq}` is of dimension 0 if there is no inequality constraint, else of dimension the dimension of :math:`h(\vect{x})` ie the number of scalar inequality constraints
+
+The vector :math:`\vect{\lambda}` is solution of the following linear system:
+
+.. math::
+
+    \Tr{\vect{\lambda}}_{eq}\left[\dfrac{\partial g}{\partial\vect{x}}(\vect{x})\right]+
+    \Tr{\vect{\lambda}}_{\ell}\left[\dfrac{\partial (\vect{x}-\vect{\ell})^{+}}{\partial\vect{x}}(\vect{x})\right]+
+    \Tr{\vect{\lambda}}_{u}\left[\dfrac{\partial (\vect{u}-\vect{x})^{+}}{\partial\vect{x}}(\vect{x})\right]+
+    \Tr{\vect{\lambda}}_{ineq}\left[\dfrac{\partial h}{\partial\vect{x}}(\vect{x})\right]=-\dfrac{\partial J}{\partial\vect{x}}(\vect{x})
+
+If there is no constraint of any kind, :math:`\vect{\lambda}` is of dimension 0, as well as if no constraint is active.
+"
+
+%enddef
+
+%feature("docstring") OT::OptimizationAlgorithmImplementation::computeLagrangeMultipliers
+OT_OptimizationAlgorithm_computeLagrangeMultipliers_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_getMaximumAbsoluteError_doc
+"Accessor to maximum allowed absolute error.
+
+Returns
+-------
+maximumAbsoluteError : float
+    Maximum allowed absolute error."
+
+%enddef
+
+%feature("docstring") OT::OptimizationAlgorithmImplementation::getMaximumAbsoluteError
+OT_OptimizationAlgorithm_getMaximumAbsoluteError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_getMaximumConstraintError_doc
+"Accessor to maximum allowed constraint error.
+
+Returns
+-------
+maximumConstraintError : float
+    Maximum allowed constraint error."
+
+%enddef
+
+%feature("docstring") OT::OptimizationAlgorithmImplementation::getMaximumConstraintError
+OT_OptimizationAlgorithm_getMaximumConstraintError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_getMaximumIterationNumber_doc
+"Accessor to maximum allowed number of iterations.
+
+Returns
+-------
+N : int
+    Maximum allowed number of iterations."
+
+%enddef
+
+%feature("docstring") OT::OptimizationAlgorithmImplementation::getMaximumIterationNumber
+OT_OptimizationAlgorithm_getMaximumIterationNumber_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_getMaximumEvaluationNumber_doc
+"Accessor to maximum allowed number of evaluations.
+
+Returns
+-------
+N : int
+    Maximum allowed number of evaluations."
+
+%enddef
+
+%feature("docstring") OT::OptimizationAlgorithmImplementation::getMaximumEvaluationNumber
+OT_OptimizationAlgorithm_getMaximumEvaluationNumber_doc
+
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_getMaximumRelativeError_doc
+"Accessor to maximum allowed relative error.
+
+Returns
+-------
+maximumRelativeError : float
+    Maximum allowed relative error."
+
+%enddef
+
+%feature("docstring") OT::OptimizationAlgorithmImplementation::getMaximumRelativeError
+OT_OptimizationAlgorithm_getMaximumRelativeError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_getMaximumResidualError_doc
+"Accessor to maximum allowed residual error.
+
+Returns
+-------
+maximumResidualError : float
+    Maximum allowed residual error."
+
+%enddef
+
+%feature("docstring") OT::OptimizationAlgorithmImplementation::getMaximumResidualError
+OT_OptimizationAlgorithm_getMaximumResidualError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_getProblem_doc
+"Accessor to optimization problem.
+
+Returns
+-------
+problem : :class:`~openturns.OptimizationProblem`
+    Optimization problem."
+
+%enddef
+
+%feature("docstring") OT::OptimizationAlgorithmImplementation::getProblem
+OT_OptimizationAlgorithm_getProblem_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_getResult_doc
+"Accessor to optimization result.
+
+Returns
+-------
+result : :class:`~openturns.OptimizationResult`
+    Result class."
+
+%enddef
+
+%feature("docstring") OT::OptimizationAlgorithmImplementation::getResult
+OT_OptimizationAlgorithm_getResult_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_getStartingPoint_doc
+"Accessor to starting point.
+
+Returns
+-------
+startingPoint : :class:`~openturns.NumericalPoint`
+    Starting point."
+
+%enddef
+
+%feature("docstring") OT::OptimizationAlgorithmImplementation::getStartingPoint
+OT_OptimizationAlgorithm_getStartingPoint_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_run_doc
+"Launch the optimization."
+%enddef
+
+%feature("docstring") OT::OptimizationAlgorithmImplementation::run
+OT_OptimizationAlgorithm_run_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_setMaximumAbsoluteError_doc
+"Accessor to maximum allowed absolute error.
+
+Parameters
+----------
+maximumAbsoluteError : float
+    Maximum allowed absolute error."
+
+%enddef
+
+%feature("docstring") OT::OptimizationAlgorithmImplementation::setMaximumAbsoluteError
+OT_OptimizationAlgorithm_setMaximumAbsoluteError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_setMaximumConstraintError_doc
+"Accessor to maximum allowed constraint error.
+
+Parameters
+----------
+maximumConstraintError : float
+    Maximum allowed constraint error."
+
+%enddef
+
+%feature("docstring") OT::OptimizationAlgorithmImplementation::setMaximumConstraintError
+OT_OptimizationAlgorithm_setMaximumConstraintError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_setMaximumIterationNumber_doc
+"Accessor to maximum allowed number of iterations.
+
+Parameters
+----------
+N : int
+    Maximum allowed number of iterations."
+
+%enddef
+
+%feature("docstring") OT::OptimizationAlgorithmImplementation::setMaximumIterationNumber
+OT_OptimizationAlgorithm_setMaximumIterationNumber_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_setMaximumEvaluationNumber_doc
+"Accessor to maximum allowed number of evaluations.
+
+Parameters
+----------
+N : int
+    Maximum allowed number of evaluations."
+
+%enddef
+
+%feature("docstring") OT::OptimizationAlgorithmImplementation::setMaximumEvaluationNumber
+OT_OptimizationAlgorithm_setMaximumEvaluationNumber_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_setMaximumRelativeError_doc
+"Accessor to maximum allowed relative error.
+
+Parameters
+----------
+maximumRelativeError : float
+    Maximum allowed relative error."
+
+%enddef
+
+%feature("docstring") OT::OptimizationAlgorithmImplementation::setMaximumRelativeError
+OT_OptimizationAlgorithm_setMaximumRelativeError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_setMaximumResidualError_doc
+"Accessor to maximum allowed residual error.
+
+Parameters
+----------
+maximumResidualError : float
+    Maximum allowed residual error."
+
+%enddef
+
+%feature("docstring") OT::OptimizationAlgorithmImplementation::setMaximumResidualError
+OT_OptimizationAlgorithm_setMaximumResidualError_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_setProblem_doc
+"Accessor to optimization problem.
+
+Parameters
+----------
+problem : :class:`~openturns.OptimizationProblem`
+    Optimization problem."
+
+%enddef
+
+%feature("docstring") OT::OptimizationAlgorithmImplementation::setProblem
+OT_OptimizationAlgorithm_setProblem_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_setResult_doc
+"Accessor to optimization result.
+
+Parameters
+----------
+result : :class:`~openturns.OptimizationResult`
+    Result class."
+
+%enddef
+
+%feature("docstring") OT::OptimizationAlgorithmImplementation::setResult
+OT_OptimizationAlgorithm_setResult_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_setStartingPoint_doc
+"Accessor to starting point.
+
+Parameters
+----------
+startingPoint : :class:`~openturns.NumericalPoint`
+    Starting point."
+
+%enddef
+
+%feature("docstring") OT::OptimizationAlgorithmImplementation::setStartingPoint
+OT_OptimizationAlgorithm_setStartingPoint_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_setVerbose_doc
+"Accessor to the verbosity flag.
+
+Parameters
+----------
+verbose : bool
+    Verbosity flag state."
+
+%enddef
+
+%feature("docstring") OT::OptimizationAlgorithmImplementation::setVerbose
+OT_OptimizationAlgorithm_setVerbose_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_getVerbose_doc
+"Accessor to the verbosity flag.
+
+Returns
+----------
+verbose : bool
+    Verbosity flag state."
+
+%enddef
+
+%feature("docstring") OT::OptimizationAlgorithmImplementation::getVerbose
+OT_OptimizationAlgorithm_getVerbose_doc

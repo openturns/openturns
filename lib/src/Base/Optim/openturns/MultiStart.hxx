@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_MULTISTART_HXX
 #define OPENTURNS_MULTISTART_HXX
 
-#include "openturns/OptimizationSolverImplementation.hxx"
-#include "openturns/OptimizationSolver.hxx"
+#include "openturns/OptimizationAlgorithmImplementation.hxx"
+#include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/Experiment.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 */
 
 class OT_API MultiStart
-  : public OptimizationSolverImplementation
+  : public OptimizationAlgorithmImplementation
 {
 
   CLASSNAME;
@@ -42,7 +42,7 @@ public:
   typedef OT::PersistentCollection<OT::OptimizationResult> OptimizationResultPersistentCollection;
 
   /** Constructor with parameters */
-  MultiStart(const OptimizationSolver & solver,
+  MultiStart(const OptimizationAlgorithm & solver,
              const NumericalSample & startingPoints);
 
   /** Virtual constructor */
@@ -57,8 +57,13 @@ public:
   /** Problem accessor */
   virtual void setProblem(const OptimizationProblem & problem);
 
-  void setOptimizationSolver(const OptimizationSolver & solver);
-  OptimizationSolver getOptimizationSolver() const;
+  /** Solver accessor */
+  void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
+  OptimizationAlgorithm getOptimizationAlgorithm() const;
+
+  // @deprecated
+  void setOptimizationSolver(const OptimizationAlgorithm & solver);
+  OptimizationAlgorithm getOptimizationSolver() const;  
 
   void setStartingPoints(const NumericalSample & sample);
   NumericalSample getStartingPoints() const;
@@ -81,7 +86,7 @@ protected:
   void checkProblem(const OptimizationProblem & problem) const;
 
 private:
-  OptimizationSolver solver_;
+  OptimizationAlgorithm solver_;
   NumericalSample startingPoints_;
 
   OptimizationResultPersistentCollection resultCollection_;
