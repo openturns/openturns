@@ -24,7 +24,6 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/HermitianMatrix.hxx"
-#include "openturns/RegularGrid.hxx"
 #include "openturns/Graph.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -73,10 +72,6 @@ public:
   /** Standard representative */
   virtual NumericalComplex computeStandardRepresentative(const NumericalScalar frequency) const;
 
-  /** Frequency grid accessors */
-  virtual RegularGrid getFrequencyGrid() const;
-  virtual void setFrequencyGrid(const RegularGrid & frequencyGrid);
-
   /** Amplitude accessor */
   virtual NumericalPoint getAmplitude() const;
 
@@ -105,6 +100,9 @@ public:
   /** Drawing method */
   virtual Graph draw(const UnsignedInteger rowIndex = 0,
                      const UnsignedInteger columnIndex = 0,
+		     const NumericalScalar minimumFrequency = ResourceMap::GetAsNumericalScalar("SpectralModel-DefaultMinimumFrequency"),
+		     const NumericalScalar maximumFrequency = ResourceMap::GetAsNumericalScalar("SpectralModel-DefaultMaximumFrequency"),
+		     const UnsignedInteger frequencyNumber = ResourceMap::GetAsUnsignedInteger("SpectralModel-DefaultFrequencyNumber"),
                      const Bool module = true) const;
 
 protected:
@@ -134,9 +132,6 @@ protected:
 
   /** Flag to tell if the model is diagonal */
   Bool isDiagonal_;
-
-  /** Frequency grid */
-  RegularGrid frequencyGrid_;
 
 } ; /* class SpectralModelImplementation */
 

@@ -459,6 +459,11 @@ void ResourceMap::loadDefaultConfiguration()
   // CovarianceModelImplementation parameters //
   setAsNumericalScalar( "CovarianceModel-DefaultNuggetFactor", 1e-12 );
 
+  // SpectralModel parameters //
+  setAsNumericalScalar( "SpectralModel-DefaultMinimumFrequency", -5.0 );
+  setAsNumericalScalar( "SpectralModel-DefaultMaximumFrequency",  5.0 );
+  setAsUnsignedInteger( "SpectralModel-DefaultFrequencyNumber",  128 );
+
   // FieldImplementation parameters //
   setAsUnsignedInteger( "Field-LevelNumber", 30 );
 

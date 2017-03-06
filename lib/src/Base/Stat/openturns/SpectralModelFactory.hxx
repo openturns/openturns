@@ -36,7 +36,7 @@ class OT_API  SpectralModelFactory
   CLASSNAME;
 public:
 
-  typedef SpectralModelFactoryImplementation::Implementation    Implementation;
+  typedef Pointer<SpectralModelFactoryImplementation> Implementation;
 
   /** Default constructor */
   SpectralModelFactory();
@@ -54,12 +54,6 @@ public:
 
   /** Virtual constructor */
   virtual  SpectralModelFactory * clone() const;
-
-  /** Frequency grid accessor */
-  RegularGrid getFrequencyGrid() const;
-
-  /** Frequency grid accessor */
-  void setFrequencyGrid(const RegularGrid & point);
 
   /** FFT algorithm accessor */
   FFT getFFTAlgorithm() const;

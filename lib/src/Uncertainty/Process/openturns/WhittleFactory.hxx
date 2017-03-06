@@ -22,7 +22,7 @@
 #define OPENTURNS_WHITTLEFACTORY_HXX
 
 #include "openturns/ARMAFactoryImplementation.hxx"
-#include "openturns/SpectralModelFactory.hxx"
+#include "openturns/WelchFactory.hxx"
 #include "openturns/WhittleFactoryState.hxx"
 #include "openturns/OptimizationSolver.hxx"
 
@@ -60,9 +60,9 @@ public:
   String __repr__() const;
   String __str__(const String & offset = "") const;
 
-  /** SpectralModelFactory acccessors - Make easy change of periodogram estimate */
-  SpectralModelFactory getSpectralModelFactory() const;
-  void setSpectralModelFactory(const SpectralModelFactory & factory);
+  /** SpectralModelFactory accessors - Make easy change of periodogram estimate */
+  WelchFactory getSpectralModelFactory() const;
+  void setSpectralModelFactory(const WelchFactory & factory);
 
   /** Build method ==> estimating the coefficients */
   ARMA build(const TimeSeries & timeSeries,
@@ -102,7 +102,7 @@ private :
   ARMA maximizeLogLikelihood(NumericalPoint & InformationCriterion) const;
 
   /** Compute the spectral density at the relevant normalized frequencies */
-  void computeSpectralDensity(const SpectralModel & spectralModel) const;
+  void computeSpectralDensity(const UserDefinedSpectralModel & spectralModel) const;
 
   /** Estimate the periodogram */
   void buildSpectralDensity(const TimeSeries & timeSeries) const;
@@ -111,8 +111,8 @@ private :
   /** Initialize the starting points using the ResourceMap */
   void initializeStartingPoints();
 
-  /** Spectral model factory ==> enables user to set anotherparametrized method*/
-  SpectralModelFactory spectralFactory_;
+  /** Welch factory used to estimate the spectral model */
+  WelchFactory spectralFactory_;
 
   /** Frequency grid to be used in internal */
   mutable NumericalPoint normalizedFrequencies_;

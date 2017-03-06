@@ -29,7 +29,7 @@ myFactory = ot.WelchFactory(ot.Hanning(), mySegmentNumber, myOverlapSize)
 
 # Estimation on a TimeSeries or on a ProcessSample
 #myEstimatedModel_TS = myFactory.build(myTimeSeries)
-myEstimatedModel_PS = myFactory.build(mySample)
+myEstimatedModel_PS = myFactory.buildAsUserDefinedSpectralModel(mySample)
 
 # Change the filtering window
 myFactory.setFilteringWindows(ot.Hamming())

@@ -35,7 +35,7 @@ static const Factory<PersistentCollection<NumericalComplex> > Factory_Persistent
 typedef Collection<CovarianceMatrix>  CovarianceMatrixCollection;
 
 /* Default constructor */
-StationaryCovarianceModelFactory::StationaryCovarianceModelFactory(const SpectralModelFactory & factory)
+StationaryCovarianceModelFactory::StationaryCovarianceModelFactory(const WelchFactory & factory)
   : CovarianceModelFactoryImplementation()
 {
   setSpectralModelFactory(factory);
@@ -56,12 +56,12 @@ String StationaryCovarianceModelFactory::__repr__() const
 }
 
 /* SpectralModelFactory accessors */
-SpectralModelFactory StationaryCovarianceModelFactory::getSpectralModelFactory() const
+WelchFactory StationaryCovarianceModelFactory::getSpectralModelFactory() const
 {
   return spectralFactory_;
 }
 
-void StationaryCovarianceModelFactory::setSpectralModelFactory(const SpectralModelFactory & factory)
+void StationaryCovarianceModelFactory::setSpectralModelFactory(const WelchFactory & factory)
 {
   spectralFactory_ = factory;
 }
@@ -72,13 +72,19 @@ String StationaryCovarianceModelFactory::__str__(const String & offset) const
   return __repr__();
 }
 
-UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUserDefinedStationaryCovarianceModel(const SpectralModel & mySpectralModel) const
+/* Build a covariance model based on a user defined spectral model */
+UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUserDefinedStationaryCovarianceModel(const UserDefinedSpectralModel & mySpectralModel) const
+{
+  return buildAsUserDefinedStationaryCovarianceModel(mySpectralModel, mySpectralModel.getFrequencyGrid());
+}
+
+/* Build a covariance model based on a spectral model and a frequency grid */
+UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUserDefinedStationaryCovarianceModel(const SpectralModel & mySpectralModel,
+														   const RegularGrid & frequencyGrid) const
 {
   // We get the dimension of the model
   const UnsignedInteger dimension = mySpectralModel.getDimension();
   // From the spectral model, we want to evaluate the autocovariance function
-  // We first get the frequency grid : the grid contains only positive frequencies
-  const RegularGrid frequencyGrid(mySpectralModel.getFrequencyGrid());
   const UnsignedInteger N = frequencyGrid.getN();
   const NumericalScalar df = frequencyGrid.getStep();
   const NumericalScalar maximalFrequency = frequencyGrid.getValue(N - 1) + 0.5 * df;
@@ -159,24 +165,28 @@ UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUs
   return UserDefinedStationaryCovarianceModel(timeGrid, collection);
 }
 
+/* Build a covariance model based on a process sample */
 CovarianceModelImplementation::Implementation StationaryCovarianceModelFactory::build(const ProcessSample & sample) const
 {
   return buildAsUserDefinedStationaryCovarianceModel(sample).clone();
 }
 
+/* Build a user defined covariance model based on a process sample */
 UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUserDefinedStationaryCovarianceModel(const ProcessSample & sample) const
 {
-  return buildAsUserDefinedStationaryCovarianceModel(spectralFactory_.build(sample));
+  return buildAsUserDefinedStationaryCovarianceModel(spectralFactory_.buildAsUserDefinedSpectralModel(sample));
 }
 
+/* Build a covariance model based on a field */
 CovarianceModelImplementation::Implementation StationaryCovarianceModelFactory::build(const Field & timeSeries) const
 {
   return buildAsUserDefinedStationaryCovarianceModel(timeSeries).clone();
 }
 
+/* Build a user defined covariance model based on a field */
 UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUserDefinedStationaryCovarianceModel(const Field & timeSeries) const
 {
-  return buildAsUserDefinedStationaryCovarianceModel(spectralFactory_.build(timeSeries));
+  return buildAsUserDefinedStationaryCovarianceModel(spectralFactory_.buildAsUserDefinedSpectralModel(timeSeries));
 }
 
 /* Method save() stores the object through the StorageManager */

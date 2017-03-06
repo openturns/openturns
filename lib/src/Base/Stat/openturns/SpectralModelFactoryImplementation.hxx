@@ -39,19 +39,13 @@ class OT_API SpectralModelFactoryImplementation
   CLASSNAME;
 public:
 
-  typedef Pointer<SpectralModelFactoryImplementation>    Implementation;
+  typedef Pointer<SpectralModelImplementation> Implementation;
 
   /** Default constructor */
   SpectralModelFactoryImplementation();
 
   /** Virtual constructor */
   virtual SpectralModelFactoryImplementation * clone() const;
-
-  /** Frequency grid accessor */
-  RegularGrid getFrequencyGrid() const;
-
-  /** Frequency grid accessor */
-  void setFrequencyGrid(const RegularGrid & grid);
 
   /** FFT algorithm accessor */
   FFT getFFTAlgorithm() const;
@@ -67,10 +61,10 @@ public:
 
   /* Here is the interface that all derived class must implement */
   /** Build a a spectral model based on a sample */
-  virtual SpectralModelImplementation * build(const ProcessSample & sample) const;
+  virtual Implementation build(const ProcessSample & sample) const;
 
   /** Build a a spectral model based on a Field */
-  virtual SpectralModelImplementation * build(const Field & timeSerie) const;
+  virtual Implementation build(const Field & timeSerie) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -79,9 +73,6 @@ public:
   virtual void load(Advocate & adv);
 
 protected:
-
-  /** Frequency grid */
-  RegularGrid frequencyGrid_;
 
   /** FFT algorithm */
   FFT fftAlgorithm_;

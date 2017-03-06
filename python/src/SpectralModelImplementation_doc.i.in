@@ -100,20 +100,6 @@ OT_SpectralModel_draw_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_SpectralModel_get_frequency_grid_doc
-"Return the RegularGrid associated to the SpectralModel.
-
-Returns
--------
-grid : :class:`~openturns.RegularGrid`
-    Associated frequency grid of the SpectralModel."
-
-%enddef
-%feature("docstring") OT::SpectralModelImplementation::getFrequencyGrid
-OT_SpectralModel_get_frequency_grid_doc
-
-// ---------------------------------------------------------------------
-
 %define OT_SpectralModel_getAmplitude_doc
 "Get the amplitude parameter of the spectral density function.
 
@@ -190,20 +176,6 @@ amplitude : :class:`~openturns.NumericalPoint`
 %enddef
 %feature("docstring") OT::SpectralModelImplementation::setAmplitude
 OT_SpectralModel_setAmplitude_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_SpectralModel_set_frequency_grid_doc
-"Set the RegularGrid associated to the SpectralModel.
-
-Parameters
-----------
-grid : :class:`~openturns.RegularGrid`
-    Associated frequency grid of the SpectralModel."
-
-%enddef
-%feature("docstring") OT::SpectralModelImplementation::setFrequencyGrid
-OT_SpectralModel_set_frequency_grid_doc
 
 // ---------------------------------------------------------------------
 

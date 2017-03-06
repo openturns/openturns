@@ -66,11 +66,17 @@ public:
   NumericalScalar getOverlap() const;
   void setOverlap(const NumericalScalar overlap);
 
-  /** Build a a spectral model based on a sample */
-  UserDefinedSpectralModel * build(const ProcessSample & sample) const;
+  /** Build a spectral model based on a sample */
+  Implementation build(const ProcessSample & sample) const;
 
-  /** Build a a spectral model based on a Field */
-  UserDefinedSpectralModel * build(const Field & timeSerie) const;
+  /** Build a spectral model based on a Field */
+  Implementation build(const Field & timeSerie) const;
+
+  /** Build a spectral model based on a sample */
+  UserDefinedSpectralModel buildAsUserDefinedSpectralModel(const ProcessSample & sample) const;
+
+  /** Build a spectral model based on a sample */
+  UserDefinedSpectralModel buildAsUserDefinedSpectralModel(const Field & timeSeries) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
