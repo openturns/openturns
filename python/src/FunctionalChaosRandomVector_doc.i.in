@@ -39,6 +39,9 @@ Parameters
 i : int or list of ints, :math:`0 \leq i < d - 1`
     Indice(s) of the variable(s) we want the associated Sobol indices. :math:`d`
     is the dimension of the input variables.
+out_marginal : int
+    Output marginal
+    Default value is 0
 
 Returns
 -------
@@ -55,6 +58,9 @@ Parameters
 i : int or list of ints, :math:`0 \leq i < d - 1`
     Indice(s) of the variable(s) we want the associated total Sobol indices.
     :math:`d` is the dimension of the input variables.
+out_marginal : int
+    Output marginal
+    Default value is 0
 
 Returns
 -------
