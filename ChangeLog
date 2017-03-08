@@ -18,6 +18,7 @@
  * SymbolicFunction, AggregatedFunction, ComposedFunction, DatabaseFunction, DualLinearCombinationFunction, LinearCombinationFunction, LinearFunction, QuadraticFunction, ParametricFunction
  * DistributionTransformation
  * GeneralizedExtremeValue
+ * UniVariateFunctionFamily, UniVariateFunctionFactory, TensorizedUniVariateFunctionFactory
 
 ==== API changes ====
  * Removed deprecated SLSQP, LBFGS and NelderMead classes
@@ -47,7 +48,7 @@
  * Renamed ProductNumericalMathFunction to ProductFunction
  * Deprecated KarhunenLoeveP1Factory, KarhunenLoeveQuadratureFactory
  * Deprecated GramSchmidtAlgorithm, ChebychevAlgorithm
-
+ * Removed OrthogonalProductFunctionFactory::getFunctionFamilyCollection method
 
 === Python module ===
 

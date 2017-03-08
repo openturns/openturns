@@ -2,7 +2,7 @@
 /**
  *  @brief This an abstract class for 1D function factories
  *
- *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -18,42 +18,40 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_ORTHOGONALUNIVARIATEFUNCTIONFACTORY
-#define OPENTURNS_ORTHOGONALUNIVARIATEFUNCTIONFACTORY
+#ifndef OPENTURNS_UNIVARIATEFUNCTIONFACTORY
+#define OPENTURNS_UNIVARIATEFUNCTIONFACTORY
 
-#include "openturns/UniVariateFunctionFactory.hxx"
-#include "openturns/Distribution.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/UniVariateFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 
 
 /**
- * @class OrthogonalUniVariateFunctionFactory
+ * @class UniVariateFunctionFactory
  *
  * This an abstract class for 1D function factories
  */
 
-class OT_API OrthogonalUniVariateFunctionFactory
-  : public UniVariateFunctionFactory
+class OT_API UniVariateFunctionFactory
+  : public PersistentObject
 {
   CLASSNAME;
 
 public:
 
-  enum ParameterSet { ANALYSIS, PROBABILITY };
-
-  /** Constructor */
-  explicit OrthogonalUniVariateFunctionFactory(const Distribution & measure);
+  typedef Collection<UniVariateFunction> UniVariateFunctionCollection;
 
   /** Virtual constructor */
-  virtual OrthogonalUniVariateFunctionFactory * clone() const;
+  virtual UniVariateFunctionFactory * clone() const;
 
   /** String converter */
   virtual String __repr__() const;
 
-  /** Measure accessor */
-  Distribution getMeasure() const;
+  /** The method to get the function of any order. */
+  virtual UniVariateFunction build(const UnsignedInteger order) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -61,19 +59,21 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
+  /** Default constructor */
+  UniVariateFunctionFactory();
+
 protected:
 
-  friend class Factory<OrthogonalUniVariateFunctionFactory>;
+  friend class Factory<UniVariateFunctionFactory>;
 
-  /** Default constructor */
-  OrthogonalUniVariateFunctionFactory();
+  /** Cache initialization */
+  virtual void initializeCache();
 
-  /** The distribution of the particular Orthonormal polynomial */
-  Distribution measure_;
-
-} ; /* class OrthogonalUniVariateFunctionFactory */
+  /** A cache to save already computed functions */
+  mutable UniVariateFunctionCollection functionsCache_;
+} ; /* class UniVariateFunctionFactory */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_ORTHOGONALUNIVARIATEFUNCTIONFACTORY */
+#endif /* OPENTURNS_UNIVARIATEFUNCTIONFACTORY */

@@ -1,0 +1,42 @@
+%feature("docstring") OT::TensorizedUniVariateFunctionFactory
+"Base class for tensorized multivariate functions.
+
+Available constructors:
+        TensorizedUniVariateFunctionFactory(*functions*)
+
+        TensorizedUniVariateFunctionFactory(*functions, enumerateFunction*)
+
+Parameters
+----------
+functions : list of :class:`~openturns.UniVariateFunctionFamily`
+    List of univariate function factories.
+enumerateFunction : :class:`~openturns.EnumerateFunction`
+    Associates to an integer its multi-index image in the :math:`\Nset^d`
+    dimension, which is the dimension of the basis. This multi-index represents
+    the collection of degrees of the univariate polynomials.
+
+Notes
+-----
+TensorizedUniVariateFunctionFactory allows to create multidimensional functions as the tensor product of univariate
+functions created by their respective factories (i.e. :class:`~openturns.UniVariateFunctionFamily`):
+
+.. math::
+
+   \Phi_n(x_1,\dots,x_d)=\prod_{i=1}^d \phi^i_{enum(n)_i}(x_i)
+
+
+where :math:`\phi^i_k` is the univariate basis of degree :math:`k` associated to the component :math:`x_i`
+and :math:`enum(n)_i` is the ith component of the multi-index :math:`enum(n)`
+
+
+Let's note that the exact hessian and gradient have been implemented
+for the product of polynomials.
+
+Examples
+--------
+>>> import openturns as ot
+>>> funcColl = [ot.HaarWaveletFactory(), ot.FourierSeriesFactory(), ot.MonomialFunctionFactory()]
+>>> dim = len(funcColl)
+>>> enumerateFunction = ot.LinearEnumerateFunction(dim)
+>>> productBasis = ot.TensorizedUniVariateFunctionFactory(funcColl, enumerateFunction)"
+
