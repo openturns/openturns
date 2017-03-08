@@ -18,7 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "openturns/ProductNumericalMathFunction.hxx"
+#include "openturns/ProductFunction.hxx"
 #include "openturns/NoNumericalMathGradientImplementation.hxx"
 #include "openturns/NoNumericalMathHessianImplementation.hxx"
 #include "openturns/ProductNumericalMathEvaluationImplementation.hxx"
@@ -28,12 +28,12 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ProductNumericalMathFunction);
+CLASSNAMEINIT(ProductFunction);
 
-static const Factory<ProductNumericalMathFunction> Factory_ProductNumericalMathFunction;
+static const Factory<ProductFunction> Factory_ProductFunction;
 
 /* Composition constructor */
-ProductNumericalMathFunction::ProductNumericalMathFunction(const Implementation & p_left,
+ProductFunction::ProductFunction(const Implementation & p_left,
     const Implementation & p_right)
   : NumericalMathFunctionImplementation(new ProductNumericalMathEvaluationImplementation(p_left->getEvaluation(), p_right->getEvaluation()),
                                         new NoNumericalMathGradientImplementation(),
@@ -58,22 +58,22 @@ ProductNumericalMathFunction::ProductNumericalMathFunction(const Implementation 
 }
 
 /* Virtual constructor */
-ProductNumericalMathFunction * ProductNumericalMathFunction::clone() const
+ProductFunction * ProductFunction::clone() const
 {
-  return new ProductNumericalMathFunction(*this);
+  return new ProductFunction(*this);
 }
 
 /* Comparison operator */
-Bool ProductNumericalMathFunction::operator ==(const ProductNumericalMathFunction & other) const
+Bool ProductFunction::operator ==(const ProductFunction & other) const
 {
   return true;
 }
 
 /* String converter */
-String ProductNumericalMathFunction::__repr__() const
+String ProductFunction::__repr__() const
 {
   OSS oss(true);
-  oss << "class=" << ProductNumericalMathFunction::GetClassName()
+  oss << "class=" << ProductFunction::GetClassName()
       << " name=" << getName()
       << " description=" << getDescription()
       << " left function=" << p_leftFunction_->__repr__()
@@ -81,10 +81,10 @@ String ProductNumericalMathFunction::__repr__() const
   return oss;
 }
 
-String ProductNumericalMathFunction::__str__(const String & offset) const
+String ProductFunction::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << "class=" << ProductNumericalMathFunction::GetClassName()
+  oss << "class=" << ProductFunction::GetClassName()
       << " name=" << getName()
       << " description=" << getDescription()
       << " left function=" << p_leftFunction_->__str__()
@@ -102,7 +102,7 @@ String ProductNumericalMathFunction::__str__(const String & offset) const
  * dH/dp = [dF/dpf(x, pf) . G(x, pg), dG/dpg(x, pg) . F(x, pf)]
  * and the needed gradient is (dH/dp)^t
  */
-Matrix ProductNumericalMathFunction::parameterGradient(const NumericalPoint & inP) const
+Matrix ProductFunction::parameterGradient(const NumericalPoint & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
@@ -133,7 +133,7 @@ Matrix ProductNumericalMathFunction::parameterGradient(const NumericalPoint & in
 }
 
 /* Method save() stores the object through the StorageManager */
-void ProductNumericalMathFunction::save(Advocate & adv) const
+void ProductFunction::save(Advocate & adv) const
 {
   NumericalMathFunctionImplementation::save(adv);
   adv.saveAttribute( "leftFunction_", *p_leftFunction_ );
@@ -141,7 +141,7 @@ void ProductNumericalMathFunction::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void ProductNumericalMathFunction::load(Advocate & adv)
+void ProductFunction::load(Advocate & adv)
 {
   TypedInterfaceObject<NumericalMathFunctionImplementation> functionValue;
   NumericalMathFunctionImplementation::load(adv);

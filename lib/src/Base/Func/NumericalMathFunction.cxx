@@ -335,9 +335,9 @@ NumericalSample NumericalMathFunction::getInputParameterHistory() const
 }
 
 /* Multiplication operator between two functions with the same input dimension and 1D output dimension */
-ProductNumericalMathFunction NumericalMathFunction::operator * (const NumericalMathFunction & right) const
+ProductFunction NumericalMathFunction::operator * (const NumericalMathFunction & right) const
 {
-  return ProductNumericalMathFunction(getImplementation(), right.getImplementation());
+  return ProductFunction(getImplementation(), right.getImplementation());
 }
 
 /* Addition operator between two functions with the same input dimension and output dimension */

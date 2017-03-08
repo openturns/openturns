@@ -84,7 +84,7 @@
 #include "openturns/PiecewiseLinearEvaluationImplementation.hxx"
 #include "openturns/PiecewiseHermiteEvaluationImplementation.hxx"
 #include "openturns/ProductNumericalMathEvaluationImplementation.hxx"
-#include "openturns/ProductNumericalMathFunction.hxx"
+#include "openturns/ProductFunction.hxx"
 #include "openturns/ProductNumericalMathGradientImplementation.hxx"
 #include "openturns/ProductNumericalMathHessianImplementation.hxx"
 #include "openturns/ProductPolynomialEvaluationImplementation.hxx"

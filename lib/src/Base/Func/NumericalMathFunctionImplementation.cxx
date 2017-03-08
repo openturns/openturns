@@ -29,7 +29,7 @@
 #include "openturns/SymbolicHessian.hxx"
 #endif
 #include "openturns/DatabaseNumericalMathEvaluationImplementation.hxx"
-#include "openturns/ProductNumericalMathFunction.hxx"
+#include "openturns/ProductFunction.hxx"
 #include "openturns/CenteredFiniteDifferenceGradient.hxx"
 #include "openturns/CenteredFiniteDifferenceHessian.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -282,13 +282,13 @@ NumericalSample NumericalMathFunctionImplementation::getInputParameterHistory() 
 /* Multiplication operator between two functions with the same input dimension and 1D output dimension */
 NumericalMathFunctionImplementation NumericalMathFunctionImplementation::operator * (const NumericalMathFunctionImplementation & right) const
 {
-  return ProductNumericalMathFunction(clone(), right.clone());
+  return ProductFunction(clone(), right.clone());
 }
 
 /* Multiplication operator between two functions with the same input dimension and 1D output dimension */
 NumericalMathFunctionImplementation NumericalMathFunctionImplementation::operator * (const Implementation & p_right) const
 {
-  return ProductNumericalMathFunction(clone(), p_right);
+  return ProductFunction(clone(), p_right);
 }
 
 /* Function implementation accessors */
