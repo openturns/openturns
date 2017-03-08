@@ -80,7 +80,6 @@ ifeq ($(PYBASEVER),3.5)
 	xvfb-run winetricks -q vcrun2015
 endif
 
-
 ot-config: ot-check-compiler
 	-mkdir -p $(OT_BUILD)
 	cp $(MINGW_PREFIX)/share/mingw/toolchain-$(TARGET).cmake $(OT_BUILD)
@@ -166,6 +165,7 @@ ot-check-installer: ot-install
 	touch ot-check-installer
 
 ot-module-installer: ot-check-installer
+	sed "s|@version@|$(OT_VERSION)|g" OpenTURNSDoc.url.in > OpenTURNSDoc.url
 	makensis -DOPENTURNS_PREFIX=$(OT_PREFIX) -DPRODUCT_VERSION=$(OT_VERSION) -DPYBASEVER=$(PYBASEVER) -DPYBASEVER_NODOT=$(PYBASEVER_NODOT) -DARCH=$(ARCH) openturns.nsi
 	touch ot-module-installer
 
