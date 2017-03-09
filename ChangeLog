@@ -43,6 +43,7 @@
   * Renamed SpatialFunction to ValueFunction
   * Renamed TemporalFunction to VertexValueFunction
   * Deprecated [gs]etOptimizationSolver methods
+  * Renamed ProductNumericalMathFunction to ProductFunction
 
 === Python module ===
 
@@ -51,6 +52,7 @@
 === Bug fixes ===
  * #729 (KDTree & save)
  * #774 (Exact limits of a normal distribution with unknown mean and variance)
+ * #869 (The ProductNumericalMathFunction class has no example)
  * #871 (GeneralizedExponential P parameter : int or float ?)
  * #872 (Cannot draw a Text drawable using R)
  * #874 (Compatibility between a distribution factory and an alternate parametrization not checked)

@@ -1,4 +1,4 @@
-myFunction= class=ProductNumericalMathFunction name=Unnamed description=[x0,x1,x2,y0,y1] left function=[x0,x1,x2]->[x0^2 + 2 * x1 * x2 + 3 * x2] right function=[x0,x1,x2]->[x2 - x0 + x1,x0 + x1 * x0 + x2]
+myFunction= class=ProductFunction name=Unnamed description=[x0,x1,x2,y0,y1] left function=[x0,x1,x2]->[x0^2 + 2 * x1 * x2 + 3 * x2] right function=[x0,x1,x2]->[x2 - x0 + x1,x0 + x1 * x0 + x2]
 Value at  [1.2,2.3,3.4] =
 [122.76,200.781]
 Gradient at  [1.2,2.3,3.4] =

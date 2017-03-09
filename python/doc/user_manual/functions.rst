@@ -31,6 +31,7 @@ Algebra of functions
     DualLinearCombinationFunction
     LinearCombinationFunction
     ParametricFunction
+    ProductFunction
 
 Dynamical functions
 ===================

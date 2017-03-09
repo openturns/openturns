@@ -23,7 +23,7 @@
 
 #include "openturns/TypedInterfaceObject.hxx"
 #include "openturns/NumericalMathFunctionImplementation.hxx"
-#include "openturns/ProductNumericalMathFunction.hxx"
+#include "openturns/ProductFunction.hxx"
 #include "openturns/ComparisonOperator.hxx"
 #include "openturns/Collection.hxx"
 
@@ -267,7 +267,7 @@ public:
 
 
   /** Multiplication of two 1D output functions with the same input dimension */
-  virtual ProductNumericalMathFunction operator * (const NumericalMathFunction & right) const;
+  virtual ProductFunction operator * (const NumericalMathFunction & right) const;
 
   /** Addition of two functions with the same input and output dimensions */
   virtual NumericalMathFunction operator + (const NumericalMathFunction & right) const;

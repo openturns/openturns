@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_PRODUCTNUMERICALMATHFUNCTION_HXX
-#define OPENTURNS_PRODUCTNUMERICALMATHFUNCTION_HXX
+#ifndef OPENTURNS_PRODUCTFUNCTION_HXX
+#define OPENTURNS_PRODUCTFUNCTION_HXX
 
 #include "openturns/NumericalMathFunctionImplementation.hxx"
 
@@ -29,10 +29,10 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 /**
- * @class ProductNumericalMathFunction
+ * @class ProductFunction
  */
 
-class OT_API ProductNumericalMathFunction
+class OT_API ProductFunction
   : public NumericalMathFunctionImplementation
 {
   CLASSNAME;
@@ -41,14 +41,14 @@ public:
   /* Some typedefs for easy reading */
 
   /** Composition constructor */
-  ProductNumericalMathFunction(const Implementation & p_left,
+  ProductFunction(const Implementation & p_left,
                                const Implementation & p_right);
 
   /** Virtual constructor */
-  virtual ProductNumericalMathFunction * clone() const;
+  virtual ProductFunction * clone() const;
 
   /** Comparison operator */
-  Bool operator ==(const ProductNumericalMathFunction & other) const;
+  Bool operator ==(const ProductFunction & other) const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -67,8 +67,8 @@ public:
 
 protected:
 
-  ProductNumericalMathFunction() {};
-  friend class Factory<ProductNumericalMathFunction>;
+  ProductFunction() {};
+  friend class Factory<ProductFunction>;
 
 private:
 
@@ -78,9 +78,9 @@ private:
   /** The g function in fog */
   Implementation p_rightFunction_;
 
-}; /* class ProductNumericalMathFunction */
+}; /* class ProductFunction */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_PRODUCTNUMERICALMATHFUNCTION_HXX */
+#endif /* OPENTURNS_PRODUCTFUNCTION_HXX */

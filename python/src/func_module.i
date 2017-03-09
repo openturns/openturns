@@ -60,7 +60,7 @@
 %include ProductNumericalMathGradientImplementation.i
 %include ProductNumericalMathHessianImplementation.i
 %include NumericalMathFunctionImplementation.i
-%include ProductNumericalMathFunction.i
+%include ProductFunction.i
 %include NumericalMathFunction.i
 %include AggregatedFunction.i
 %include SymbolicFunction.i
