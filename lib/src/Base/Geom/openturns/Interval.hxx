@@ -100,6 +100,8 @@ public:
   /** Comparison operator */
   Bool operator == (const Interval & other) const;
   Bool operator != (const Interval & other) const;
+  using DomainImplementation::operator ==;
+  using DomainImplementation::operator !=;
 
   /** Lower bound accessor */
   NumericalPoint getLowerBound() const;
