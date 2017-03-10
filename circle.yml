@@ -20,4 +20,8 @@ deployment:
   staging:
     branch: master
     commands:
-      - test "${CIRCLE_PROJECT_USERNAME}" = "openturns" && export GH_TOKEN && ./ci_support/upload_github_io.sh ~/.local/share/openturns/doc/html
+      - export GH_TOKEN && ./ci_support/upload_github_io.sh
+  release:
+    tag: /v.*/
+    commands:
+      - export GH_TOKEN && ./ci_support/upload_github_io.sh

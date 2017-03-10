@@ -10,8 +10,7 @@ semi_parsed = '# ooo\nE=2\nE1=2\nFE1=@F#oo\nZ=@Z@Z\n# ooo\n'
 parsed = '# ooo\nE=1.6\nE1=1.6\nFE1=5#oo\nZ=66\n# ooo\n'
 
 # how many Mo for perf file
-#howbig = 3024
-howbig = 256
+howbig = 128
 max_time = howbig // 5
 # enable it manually, see #600
 max_time = sys.maxsize
@@ -615,4 +614,3 @@ check_get_tokens_skip_perf()
 check_get_line_col_perf()
 
 
-exit(0)
