@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
       // 1D mesh, 1D covariance, uniform weight, automatic centering, more samples
       // than vertices
       AbsoluteExponential cov1D(NumericalPoint(1, 1.0));
-      ProcessSample sample(TemporalNormalProcess(cov1D, mesh).getSample(16));
+      ProcessSample sample(GaussianProcess(cov1D, mesh).getSample(16));
       KarhunenLoeveSVDAlgorithm algo(sample, 0.0);
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
     {
       // 1D mesh, 1D covariance, uniform weight, automatic centering
       AbsoluteExponential cov1D(NumericalPoint(1, 1.0));
-      ProcessSample sample(TemporalNormalProcess(cov1D, mesh).getSample(6));
+      ProcessSample sample(GaussianProcess(cov1D, mesh).getSample(6));
       KarhunenLoeveSVDAlgorithm algo(sample, 0.0);
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
     {
       // 1D mesh, 1D covariance, uniform weight, declared centered
       AbsoluteExponential cov1D(NumericalPoint(1, 1.0));
-      ProcessSample sample(TemporalNormalProcess(cov1D, mesh).getSample(6));
+      ProcessSample sample(GaussianProcess(cov1D, mesh).getSample(6));
       KarhunenLoeveSVDAlgorithm algo(sample, 0.0, true);
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
       // 1D mesh, 1D covariance, nonuniform weight, automatic centering
       AbsoluteExponential cov1D(NumericalPoint(1, 1.0));
       NumericalPoint weights(mesh.computeWeights());
-      ProcessSample sample(TemporalNormalProcess(cov1D, mesh).getSample(6));
+      ProcessSample sample(GaussianProcess(cov1D, mesh).getSample(6));
       KarhunenLoeveSVDAlgorithm algo(sample, weights, 0.0, true);
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
       amplitude[0] = 1.0;
       amplitude[1] = 2.0;
       ExponentialModel cov2D(scale, amplitude, R);
-      ProcessSample sample(TemporalNormalProcess(cov2D, mesh).getSample(6));
+      ProcessSample sample(GaussianProcess(cov2D, mesh).getSample(6));
       KarhunenLoeveSVDAlgorithm algo(sample, 0.0);
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
