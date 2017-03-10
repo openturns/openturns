@@ -256,6 +256,9 @@
   <FisherSnedecorFactory-D2LowerBound            value="1.0e-2"  />
 
   <!-- OT::GeneralizedParetoFactory parameters -->
+  <GeneralizedExtremeValue-XiThreshold              value="1.0e-6"  />
+
+<!-- OT::GeneralizedParetoFactory parameters -->
   <GeneralizedParetoFactory-SmallSize               value="20"      />
   <GeneralizedParetoFactory-MaximumEvaluationNumber value="1000"    />
   <GeneralizedParetoFactory-MaximumAbsoluteError    value="1.0e-10" />

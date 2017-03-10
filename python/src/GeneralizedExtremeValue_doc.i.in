@@ -1,0 +1,146 @@
+%feature("docstring") OT::GeneralizedExtremeValue
+"Generalized ExtremeValue distribution.
+
+Available constructors:
+    GeneralizedExtremeValue(*mu=0.0, sigma=1.0, xi=0.0*)
+
+Parameters
+----------
+mu : float
+    Location parameter :math:`\sigma`.
+sigma : float, :math:`\sigma > 0`
+    Scale parameter :math:`\sigma`.
+xi : float
+    Shape parameter :math:`\xi`.
+
+Notes
+-----
+Its cumulative distribution function is defined as:
+
+.. math::
+
+    F_X(x) = \left\{\begin{array}{ll}
+               \displaystyle \exp\left\{-\left[1+\xi\left(\dfrac{x-\mu}{\sigma}\right)\right]^{-1/\xi}\right\}
+                    & \text{ if } \xi \neq 0 \\
+               \displaystyle \exp\left\{-\left(\dfrac{x-\mu}{\sigma}\right)\right\}
+                    & \text{ if } \xi = 0
+            \end{array}\right.
+
+for :math:`\quad x \in [\mu-\sigma/\xi, +\infty) \text{ if } \xi>0, x \in \Rset \text{ if } \xi=0, x \in (-\infty,\mu-\sigma/\xi] \text{ if } \xi<0.`, with :math:`\sigma > 0` and :math:`\xi \in \Rset`.
+
+:math:`F_X` is zero for :math:`x` less than the lower bound of the support and one for :math:`x` greater than the upper bound of the support.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+    \Expect{X} & = & \left\{\begin{array}{ll}
+                     \mu+\sigma\dfrac{\Gamma(1-\xi)-1}{\xi} & \text{ if } \xi < 1, \xi\neq 0 \\
+                     \mu + \sigma\gamma & \text{ if } \xi= 0 \\
+                     \infty & \text{ if } \xi \geq 1
+                     \end{array}
+                     \right.\\
+        \Var{X} & = &  \left\{\begin{array}{ll}
+                     \sigma^2\dfrac{\Gamma(1-2\xi)-\Gamma^2(1-\xi)}{\xi^2} & \text{ if } \xi < 1/2, \xi\neq 0 \\
+                     \sigma^2\dfrac{\pi^2}{6} & \text{ if } \xi= 0 \\
+                     \infty & \text{ if } \xi \geq 1/2
+                     \end{array}
+                     \right.
+    \end{eqnarray*}
+
+where :math:`\gamma` is Euler's constant.
+
+Link with other distributions: if :math:`X\sim`:class:`~openturns.GeneralizedExtremeValue`:math:`(\mu, \sigma, \xi)`, then :math:`X\sim`:class:`~openturns.Frechet`:math:`(1/\xi, \sigma/\xi, \mu-\sigma/\xi)` if :math:`\xi>0`, :math:`-X\sim`:class:`~openturns.Weibull`:math:`(sigma/\xi, -1/\xi, \sigma/\xi-\mu)` if :math:`\xi<0` (note the minus sign) and :math:`X\sim`:class:`~openturns.Gumbel`:math:`(1/\sigma, \mu)` if :math:`\xi=0`.
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.GeneralizedExtremeValue(1.0, 2.0, -0.2)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(5)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValue::getActualDistribution
+"Accessor to the internal distribution.
+
+Returns
+-------
+distribution : :class:`~openturns.Distribution`
+     The actual distribution in charge of the computation (:class:`~openturns.Weibull`, :class:`~openturns.Frechet`, :class:`~openturns.Gumbel`)."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValue::getMu
+"Accessor to the distribution's location parameter :math:`\mu`.
+
+Returns
+-------
+mu : float
+    Location parameter :math:`\mu`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValue::getSigma
+"Accessor to the distribution's scale parameter :math:`\sigma`.
+
+Returns
+-------
+sigma : float
+    Scale parameter :math:`\sigma`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValue::getXi
+"Accessor to the distribution's shape parameter :math:`\xi`.
+
+Returns
+-------
+xi : float
+    Shape parameter :math:`\xi`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValue::setActualDistribution
+"Accessor to the internal distribution.
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+     The actual distribution in charge of the computation (:class:`~openturns.Weibull`, :class:`~openturns.Frechet`, :class:`~openturns.Gumbel`)."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValue::setMu
+"Accessor to the distribution's location parameter :math:`\mu`.
+
+Parameters
+----------
+mu : float
+    Location parameter :math:`\mu`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValue::setSigma
+"Accessor to the distribution's scale parameter :math:`\sigma`.
+
+Parameters
+----------
+sigma : float, :math:`\sigma > 0`
+    Scale parameter :math:`\sigma`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValue::setXi
+"Accessor to the distribution's shape parameter :math:`\xi`.
+
+Parameters
+----------
+xi : float, :math:`\xi \in \Rset`
+    Shape parameter :math:`\xi`."

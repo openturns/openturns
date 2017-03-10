@@ -522,6 +522,9 @@ void ResourceMap::loadDefaultConfiguration()
   setAsNumericalScalar( "FisherSnedecorFactory-D1LowerBound", 1.0e-2 );
   setAsNumericalScalar( "FisherSnedecorFactory-D2LowerBound", 1.0e-2 );
 
+  // GeneralizedExtremeValue parameters //
+  setAsNumericalScalar( "GeneralizedExtremeValue-XiThreshold", 1.0e-6 );
+
   // GeneralizedParetoFactory parameters //
   setAsUnsignedInteger( "GeneralizedParetoFactory-SmallSize", 20 );
   setAsUnsignedInteger( "GeneralizedParetoFactory-MaximumEvaluationNumber", 1000 );

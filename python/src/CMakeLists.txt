@@ -535,6 +535,7 @@ ot_add_python_module(dist_bundle1 dist_bundle1_module.i
                       Gamma.i Gamma_doc.i.in
                       GammaFactory.i GammaFactory_doc.i.in
                       GammaMuSigma.i GammaMuSigma_doc.i.in
+                      GeneralizedExtremeValue.i GeneralizedExtremeValue_doc.i.in
                       GeneralizedPareto.i GeneralizedPareto_doc.i.in
                       GeneralizedParetoFactory.i GeneralizedParetoFactory_doc.i.in
                       Geometric.i Geometric_doc.i.in
