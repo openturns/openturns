@@ -8,7 +8,7 @@ try:
     # 1D mesh, 1D covariance, uniform weight, automatic centering, more samples
     # than vertices
     cov1D = ot.AbsoluteExponential([1.0])
-    sample = ot.TemporalNormalProcess(cov1D, mesh).getSample(16)
+    sample = ot.GaussianProcess(cov1D, mesh).getSample(16)
     algo = ot.KarhunenLoeveSVDAlgorithm(sample, 0.0)
     algo.run()
     result = algo.getResult()
@@ -23,7 +23,7 @@ try:
     print("KL lift=", result.lift(coefficients[0]))
     print("KL lift as field=", result.liftAsField(coefficients[0]))
     # 1D mesh, 1D covariance, uniform weight, automatic centering
-    sample = ot.TemporalNormalProcess(cov1D, mesh).getSample(6)
+    sample = ot.GaussianProcess(cov1D, mesh).getSample(6)
     algo = ot.KarhunenLoeveSVDAlgorithm(sample, 0.0)
     algo.run()
     result = algo.getResult()
@@ -71,7 +71,7 @@ try:
     scale = [1.0]
     amplitude = [1.0, 2.0]
     cov2D = ot.ExponentialModel(scale, amplitude, R)
-    sample = ot.TemporalNormalProcess(cov2D, mesh).getSample(6)
+    sample = ot.GaussianProcess(cov2D, mesh).getSample(6)
     algo = ot.KarhunenLoeveSVDAlgorithm(sample, 0.0)
     algo.run()
     result = algo.getResult()
