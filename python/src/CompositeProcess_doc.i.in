@@ -4,13 +4,13 @@
 Parameters
 ----------
 fdyn : :class:`~openturns.FieldFunction`
-    A dynamical function.
+    A field function.
 inputProc : :class:`~openturns.Process`
     The input process.
 
 Notes
 -----
-A composite process is the image of  process :math:`X: \Omega \times\cD \mapsto \Rset^d` by the dynamical function :math:`f_{dyn}:\cD \times \Rset^d \rightarrow \cD' \times \Rset^q`:
+A composite process is the image of  process :math:`X: \Omega \times\cD \mapsto \Rset^d` by the field function :math:`f_{dyn}:\cD \times \Rset^d \rightarrow \cD' \times \Rset^q`:
 
 .. math::
 
@@ -39,7 +39,7 @@ Create the process X:
 >>> myMesh = ot.IntervalMesher([100]*2).build(ot.Interval([0.0]*2, [1.0]*2))
 >>> myXProcess = ot.GaussianProcess(myCovModel, myMesh)
 
-Create a spatial  dynamical function :math:`g_{dyn}` associated to :math:`g: \Rset^2 \mapsto \Rset^2` where :math:`g(x_1,x_2)= (x_1^2, x_1+x_2)`:
+Create a spatial field  function :math:`g_{dyn}` associated to :math:`g: \Rset^2 \mapsto \Rset^2` where :math:`g(x_1,x_2)= (x_1^2, x_1+x_2)`:
 
 >>> g = ot.SymbolicFunction(['x1', 'x2'],  ['x1^2', 'x1+x2'])
 >>> nSpat = 2
@@ -80,9 +80,9 @@ XProcess : :class:`~openturns.Process`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::CompositeProcess::getFunction
-"Get the dynamical function.
+"Get the field function.
 
 Returns
 -------
 fdyn : :class:`~openturns.FieldFunction`
-    The dynamical function :math:`f_{dyn}`."
+    The field function :math:`f_{dyn}`."

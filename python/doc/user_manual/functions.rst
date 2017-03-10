@@ -33,8 +33,8 @@ Algebra of functions
     ParametricFunction
     ProductFunction
 
-Dynamical functions
-===================
+Field functions
+===============
 
 .. autosummary::
     :toctree: _generated/
