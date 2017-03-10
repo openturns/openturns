@@ -103,6 +103,7 @@ public:
 
   /** Comparison operator */
   Bool operator ==(const NumericalSample & other) const;
+  using TypedInterfaceObject<NumericalSampleImplementation>::operator ==;
 
   /** Comparison operator */
   Bool operator !=(const NumericalSample & other) const;

@@ -401,6 +401,8 @@ private:
 #ifdef SAVELOAD_CHECKING
     if (savedAttributes_.insert(attributeName).second == false)
       throw InternalException(HERE) << "Attribute '" << attributeName << "' is already saved. Report bug";
+#else
+    (void)attributeName;
 #endif
   }
 }; /* end class Advocate */

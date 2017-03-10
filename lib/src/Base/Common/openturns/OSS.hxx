@@ -69,14 +69,14 @@ struct OSSFormater
 {
   inline
   static
-  void apply(std::ostringstream & oss, T obj, int precision)
+  void apply(std::ostringstream & oss, T obj, int /*precision*/)
   {
     oss << obj;
   }
 
   inline
   static
-  void apply(OStream & OS, T obj, int precision)
+  void apply(OStream & OS, T obj, int /*precision*/)
   {
     OS << obj;
   }
@@ -134,14 +134,14 @@ struct OSSFormater<bool>
 {
   inline
   static
-  void apply(std::ostringstream & oss, bool b, int precision)
+  void apply(std::ostringstream & oss, bool b, int /*precision*/)
   {
     oss << (b ? "true" : "false");
   }
 
   inline
   static
-  void apply(OStream & OS, bool b, int precision)
+  void apply(OStream & OS, bool b, int /*precision*/)
   {
     OS.getStream() << (b ? "true" : "false");
   }
