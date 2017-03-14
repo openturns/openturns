@@ -66,6 +66,7 @@ public:
   virtual MarginalTransformationEvaluation * clone() const;
 
   /** Evaluation */
+  using NumericalMathEvaluationImplementation::operator();
   NumericalPoint operator () (const NumericalPoint & inP) const;
 
   /** Gradient according to the marginal parameters */
