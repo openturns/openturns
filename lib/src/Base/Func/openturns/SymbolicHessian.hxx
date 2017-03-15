@@ -87,7 +87,7 @@ private:
   SymbolicEvaluation evaluation_;
 
   /** A mathematical expression parser from the muParser library */
-  mutable AnalyticalParser parser_;
+  mutable SymbolicParser parser_;
 
 }; /* class SymbolicHessian */
 

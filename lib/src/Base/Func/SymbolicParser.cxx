@@ -19,7 +19,7 @@
  *
  */
 
-#include "openturns/AnalyticalParser.hxx"
+#include "openturns/SymbolicParser.hxx"
 #include "openturns/SpecFunc.hxx"
 
 #include "muParser.h"
@@ -61,13 +61,13 @@ protected:
 };
 
 
-AnalyticalParser::AnalyticalParser()
+SymbolicParser::SymbolicParser()
   : Object()
 {
 }
 
 
-void AnalyticalParser::setVariablesFormulas(const Description & inputVariablesNames,
+void SymbolicParser::setVariablesFormulas(const Description & inputVariablesNames,
     const Description & formulas)
 {
   inputVariablesNames_ = inputVariablesNames;
@@ -75,7 +75,7 @@ void AnalyticalParser::setVariablesFormulas(const Description & inputVariablesNa
 }
 
 
-void AnalyticalParser::initialize() const
+void SymbolicParser::initialize() const
 {
   const UnsignedInteger inputDimension = inputVariablesNames_.getSize();
   const UnsignedInteger outputDimension = formulas_.getSize();
@@ -103,7 +103,7 @@ void AnalyticalParser::initialize() const
 }
 
 
-NumericalPoint AnalyticalParser::operator() (const NumericalPoint & inP) const
+NumericalPoint SymbolicParser::operator() (const NumericalPoint & inP) const
 {
   const UnsignedInteger inputDimension = inputVariablesNames_.getSize();
   const UnsignedInteger outputDimension = formulas_.getSize();
@@ -127,7 +127,7 @@ NumericalPoint AnalyticalParser::operator() (const NumericalPoint & inP) const
 }
 
 
-Description AnalyticalParser::getFormulas() const
+Description SymbolicParser::getFormulas() const
 {
   return formulas_;
 }
