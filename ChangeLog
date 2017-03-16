@@ -45,6 +45,8 @@
   * Deprecated [gs]etOptimizationSolver methods
   * Renamed ProductNumericalMathFunction to ProductFunction
   * Deprecated KarhunenLoeveP1Factory, KarhunenLoeveQuadratureFactory
+  * Deprecated GramSchmidtAlgorithm, ChebychevAlgorithm
+
 
 === Python module ===
 

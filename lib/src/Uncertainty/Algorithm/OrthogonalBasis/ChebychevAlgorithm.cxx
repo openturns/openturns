@@ -64,6 +64,8 @@ ChebychevAlgorithm::ChebychevAlgorithm(const Distribution & measure)
   , monicRecurrenceCoefficients_(0)
   , referenceMonicRecurrenceCoefficients_(0)
 {
+  Log::Warn(OSS() << "ChebychevAlgorithm is deprecated");
+
   // Selection of the best reference factory according to the range of the measure
   // There are 4 possibilities:
   // Range = [a, b]       -> standardized measure has range [-1, 1],      Legendre factory
@@ -108,6 +110,8 @@ ChebychevAlgorithm::ChebychevAlgorithm(const Distribution & measure,
   , monicRecurrenceCoefficients_(0)
   , referenceMonicRecurrenceCoefficients_(0)
 {
+  Log::Warn(OSS() << "ChebychevAlgorithm is deprecated");
+
   // The moment cache must be initialized before the coefficient cache
   standardMoments_.add(1.0);
   modifiedMoments_.add(1.0);

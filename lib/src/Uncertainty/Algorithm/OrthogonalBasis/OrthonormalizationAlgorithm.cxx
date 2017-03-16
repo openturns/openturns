@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/OrthonormalizationAlgorithm.hxx"
-#include "openturns/GramSchmidtAlgorithm.hxx"
+#include "openturns/AdaptiveStieltjesAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -47,7 +47,7 @@ OrthonormalizationAlgorithm::OrthonormalizationAlgorithm(Implementation & p_impl
 
 /* Constructor with parameters */
 OrthonormalizationAlgorithm::OrthonormalizationAlgorithm(const Distribution & measure)
-  : TypedInterfaceObject<OrthonormalizationAlgorithmImplementation>(new GramSchmidtAlgorithm(measure))
+  : TypedInterfaceObject<OrthonormalizationAlgorithmImplementation>(new AdaptiveStieltjesAlgorithm(measure))
 {
   // Nothing to do
 }
