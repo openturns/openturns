@@ -18,7 +18,7 @@ test:
 
 deployment:
   staging:
-    branch: master
+    branch: /.*/
     commands:
       - export GH_TOKEN && ./ci_support/upload_github_io.sh
   release:

@@ -1,5 +1,5 @@
 %define OT_FieldFunction_doc
-"Dynamical function.
+"Field function.
 
 Available constructors:
     FieldFunction(*meshDimension=1*)
@@ -16,13 +16,13 @@ meshDimension : int, :math:`n \geq 0`
 
 Notes
 -----
-Dynamical functions are functions being able to act on fields. OpenTURNS
-defines two particular dynamical functions:
+Field functions are functions being able to act on fields.
+Two particular field functions are defined:
 the :class:`spatial function <openturns.ValueFunction>` and
 the :class:`temporal function <openturns.VertexValueFunction>`.
 
 
-A dynamical function
+A field function
 :math:`f_{dyn}:\cD \times \Rset^d \mapsto \cD' \times \Rset^q`
 where :math:`\cD \in \Rset^n` and :math:`\cD' \in \Rset^p` is defined by:
 
@@ -33,7 +33,7 @@ where :math:`\cD \in \Rset^n` and :math:`\cD' \in \Rset^p` is defined by:
 with :math:`t': \cD \mapsto \cD'` and
 :math:`v': \cD \times \Rset^d \mapsto \Rset^q`.
 
-A dynamical function :math:`f_{dyn}` transforms a multivariate stochastic
+A field function :math:`f_{dyn}` transforms a multivariate stochastic
 process:
 
 .. math::
@@ -56,11 +56,11 @@ such that:
 where the mesh :math:`\cD' \in \Rset^p`  is discretized according to the
 :math:`\cM'`.
 
-A dynamical function :math:`f_{dyn}` also acts on fields and produces fields of
+A field function :math:`f_{dyn}` also acts on fields and produces fields of
 possibly different dimension (:math:`q\neq d`) and mesh (:math:`\cD \neq \cD'`
 or :math:`\cM \neq \cM'`).
 
-OpenTURNS only proposes dynamical functions where :math:`\cD'=\cD` and
+OpenTURNS only proposes field functions where :math:`\cD'=\cD` and
 :math:`\cM'=\cM` which means that :math:`t'=Id` through the *spatial function*
 and the *temporal function*. It follows that the process :math:`Y` shares the
 same mesh with :math:`X`, only its values have changed."
@@ -90,7 +90,7 @@ OT_FieldFunction_getCallsNumber_doc
 Returns
 -------
 inputDescription : :class:`~openturns.Description`
-    Describes the inputs of the dynamical function."
+    Describes the inputs of the function."
 %enddef
 %feature("docstring") OT::FieldFunctionImplementation::getInputDescription
 OT_FieldFunction_getInputDescription_doc
@@ -103,7 +103,7 @@ OT_FieldFunction_getInputDescription_doc
 Returns
 -------
 d : int
-    Input dimension :math:`d` of the dynamical function."
+    Input dimension :math:`d` of the function."
 %enddef
 %feature("docstring") OT::FieldFunctionImplementation::getInputDimension
 OT_FieldFunction_getInputDimension_doc
@@ -121,9 +121,9 @@ i : int or list of ints, :math:`0 \leq i < d`
 
 Returns
 -------
-dynamicalFunction : :class:`~openturns.FieldFunction`
+fieldFunction : :class:`~openturns.FieldFunction`
     FieldFunction restricted to the concerned marginal(s) at the indice(s)
-    :math:`i` of the dynamical function :math:`f_{dyn}`."
+    :math:`i` of the field function :math:`f_{dyn}`."
 %enddef
 %feature("docstring") OT::FieldFunctionImplementation::getMarginal
 OT_FieldFunction_getMarginal_doc
@@ -161,7 +161,7 @@ OT_FieldFunction_getSpatialDimension_doc
 Returns
 -------
 outputDescription : :class:`~openturns.Description`
-    Describes the outputs of the dynamical function."
+    Describes the outputs of the function."
 %enddef
 %feature("docstring") OT::FieldFunctionImplementation::getOutputDescription
 OT_FieldFunction_getOutputDescription_doc
@@ -174,7 +174,7 @@ OT_FieldFunction_getOutputDescription_doc
 Returns
 -------
 q : int
-    Output dimension :math:`q` of the dynamical function."
+    Output dimension :math:`q` of the function."
 %enddef
 %feature("docstring") OT::FieldFunctionImplementation::getOutputDimension
 OT_FieldFunction_getOutputDimension_doc
@@ -187,7 +187,7 @@ OT_FieldFunction_getOutputDimension_doc
 Parameters
 ----------
 inputDescription : sequence of str
-    Describes the inputs of the dynamical function."
+    Describes the inputs of the function."
 
 // ---------------------------------------------------------------------
 
@@ -197,4 +197,4 @@ inputDescription : sequence of str
 Parameters
 ----------
 outputDescription : sequence of str
-    Describes the outputs of the dynamical function."
+    Describes the outputs of the function."
