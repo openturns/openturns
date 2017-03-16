@@ -70,6 +70,8 @@ KarhunenLoeveQuadratureFactory::KarhunenLoeveQuadratureFactory(const Domain & do
   , theta_(0, 0)
   , cholesky_(0)
 {
+  Log::Warn(OSS() << "KarhunenLoeveQuadratureFactory is deprecated");
+
   // Check the arguments
   const UnsignedInteger dimension = domain.getDimension();
   const Distribution distribution(experiment.getDistribution());

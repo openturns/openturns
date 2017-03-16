@@ -193,9 +193,7 @@ Karhunen Loeve decomposition
 
     :template: classWithPlot.rst_t
     KarhunenLoeveP1Algorithm
-    KarhunenLoeveP1Factory
     KarhunenLoeveQuadratureAlgorithm
-    KarhunenLoeveQuadratureFactory
 
     :template: class.rst_t
     KarhunenLoeveResult

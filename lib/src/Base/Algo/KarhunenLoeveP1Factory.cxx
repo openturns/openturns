@@ -54,6 +54,7 @@ KarhunenLoeveP1Factory::KarhunenLoeveP1Factory(const Mesh & mesh,
   , mesh_(mesh)
   , threshold_(threshold)
 {
+  Log::Warn(OSS() << "KarhunenLoeveP1Factory is deprecated");
   // Compute the gram of the mesh
   gram_ = mesh.computeP1Gram();
   const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("KarhunenLoeveP1Factory-RegularizationFactor");
