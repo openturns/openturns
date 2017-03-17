@@ -132,6 +132,7 @@ endif
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libgomp-1.dll $(OT_PREFIX)/bin
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libcblas.dll $(OT_PREFIX)/bin
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libhmat-oss.dll $(OT_PREFIX)/bin
+	tar cjf openturns-mingw-$(OT_VERSION)-py$(PYBASEVER)-$(ARCH).tar.bz2 --directory $(OT_BUILD) install
 	touch ot-install
 
 ot-test: ot-install
