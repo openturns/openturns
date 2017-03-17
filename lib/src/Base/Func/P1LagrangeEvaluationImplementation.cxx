@@ -84,10 +84,9 @@ String P1LagrangeEvaluationImplementation::__str__( const String & offset ) cons
 /* Field accessor */
 void P1LagrangeEvaluationImplementation::setField(const Field & field)
 {
-  mesh_ = field.getMesh();
-  // To be sure that the vertices to simplices map is up to date
-  (void) mesh_.getVerticesToSimplicesMap();
   values_ = field.getValues();
+  // To check for pending vertices
+  setMesh(field.getMesh());
 }
 
 Field P1LagrangeEvaluationImplementation::getField() const
@@ -100,8 +99,16 @@ void P1LagrangeEvaluationImplementation::setMesh(const Mesh & mesh)
 {
   if (mesh.getVerticesNumber() != values_.getSize()) throw InvalidArgumentException(HERE) << "Error: expected a mesh with =" << values_.getSize() << " vertices, got " << mesh_.getVerticesNumber() << " vertices";
   mesh_ = mesh;
-  // To be sure that the vertices to simplices map is up to date
-  (void) mesh_.getVerticesToSimplicesMap();
+  // Check for pending vertices
+  Mesh::IndicesCollection verticesToSimplices(mesh_.getVerticesToSimplicesMap());
+  Indices pendingVertices(0);
+  for (UnsignedInteger i = 0; i < verticesToSimplices.getSize(); ++i)
+    if (verticesToSimplices[i].getSize() == 0) pendingVertices.add(i);
+  if (pendingVertices.getSize() > 0)
+    {
+      LOGWARN(OSS() << "There are " << pendingVertices.getSize() << " pending vertices. Check the simplices of the mesh");
+      LOGDEBUG(OSS() << "The pending vertices indices are " << pendingVertices);
+    }
 }
 
 Mesh P1LagrangeEvaluationImplementation::getMesh() const
