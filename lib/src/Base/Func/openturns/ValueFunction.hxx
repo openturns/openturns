@@ -71,6 +71,7 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** Operator () */
+  using FieldFunctionImplementation::operator();
   Field operator() (const Field & inFld) const;
 
   /** Get the i-th marginal function */
