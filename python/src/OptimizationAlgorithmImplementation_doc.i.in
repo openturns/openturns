@@ -395,3 +395,40 @@ verbose : bool
 
 %feature("docstring") OT::OptimizationAlgorithmImplementation::getVerbose
 OT_OptimizationAlgorithm_getVerbose_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_setProgressCallback_doc
+"Set up a progress callback.
+
+Parameters
+----------
+callback : callable
+    Takes a float as argument as percentage of progress.
+
+Notes
+-----
+May not be implemented by all solvers, refer to the solver documentation.
+"
+%enddef
+
+%feature("docstring") OT::OptimizationAlgorithmImplementation::setProgressCallback
+OT_OptimizationAlgorithm_setProgressCallback_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_setStopCallback_doc
+"Set up a stop callback.
+
+Parameters
+----------
+callback : callable
+    Returns an int deciding whether to stop or continue.
+
+Notes
+-----
+May not be implemented by all solvers, refer to the solver documentation."
+%enddef
+
+%feature("docstring") OT::OptimizationAlgorithmImplementation::setStopCallback
+OT_OptimizationAlgorithm_setStopCallback_doc

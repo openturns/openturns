@@ -251,7 +251,7 @@ void Simulation::run()
     // callbacks
     if (progressCallback_.first)
     {
-      progressCallback_.first((100. * outerSampling) / getMaximumOuterSampling(), progressCallback_.second);
+      progressCallback_.first((100.0 * outerSampling) / getMaximumOuterSampling(), progressCallback_.second);
     }
     if (stopCallback_.first)
     {

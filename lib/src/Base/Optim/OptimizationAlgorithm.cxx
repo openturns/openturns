@@ -191,5 +191,16 @@ void OptimizationAlgorithm::run()
   getImplementation()->run();
 }
 
+void OptimizationAlgorithm::setProgressCallback(ProgressCallback callBack, void * data)
+{
+  getImplementation()->setProgressCallback(callBack, data);
+}
+
+
+void OptimizationAlgorithm::setStopCallback(StopCallback callBack, void * data)
+{
+  getImplementation()->setStopCallback(callBack, data);
+}
+
 
 END_NAMESPACE_OPENTURNS

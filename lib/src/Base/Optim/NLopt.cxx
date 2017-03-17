@@ -123,6 +123,7 @@ void NLopt::SetSeed(const UnsignedInteger seed)
 NLopt::NLopt(const String & algoName)
   : OptimizationAlgorithmImplementation()
   , algoName_(algoName)
+  , p_opt_(0)
 {
   GetAlgorithmCode(algoName);
 }
@@ -131,6 +132,7 @@ NLopt::NLopt(const OptimizationProblem & problem,
              const String & algoName)
   : OptimizationAlgorithmImplementation(problem)
   , algoName_(algoName)
+  , p_opt_(0)
 {
   checkProblem(problem);
 }
@@ -300,6 +302,7 @@ void NLopt::run()
   {
     // The C++ interface of NLopt does not return a code for failures cases.
     // It is either positive (termination criterion) or an exception is thrown.
+    p_opt_ = &opt;
     opt.optimize(x, optimalValue);
   }
   catch (nlopt::roundoff_limited)
@@ -308,10 +311,15 @@ void NLopt::run()
     // of the optimization may be useful even if not at the requested precision
     LOGWARN(OSS() << "NLopt raised a roundoff-limited exception");
   }
+  catch (nlopt::forced_stop)
+  {
+    LOGWARN(OSS() << "NLopt was stopped by user");
+  }
   catch (std::exception & exc)
   {
     throw InternalException(HERE) << "NLopt raised an exception: " << exc.what();
   }
+  p_opt_ = 0;
 
   NumericalPoint optimizer(dimension);
   std::copy(x.begin(), x.end(), optimizer.begin());
@@ -435,6 +443,10 @@ double NLopt::ComputeObjective(const std::vector<double> & x, std::vector<double
   // evaluation
   NumericalPoint outP(algorithm->getProblem().getObjective()(inP));
 
+  // track input/outputs
+  algorithm->evaluationInputHistory_.add(inP);
+  algorithm->evaluationOutputHistory_.add(outP);
+
   // gradient
   if (!grad.empty())
   {
@@ -445,10 +457,20 @@ double NLopt::ComputeObjective(const std::vector<double> & x, std::vector<double
     }
   }
 
-  // track input/outputs
-  algorithm->evaluationInputHistory_.add(inP);
-  algorithm->evaluationOutputHistory_.add(outP);
-
+#ifdef OPENTURNS_HAVE_NLOPT
+  // callbacks
+  if (algorithm->stopCallback_.first)
+  {
+    Bool stop = algorithm->stopCallback_.first(algorithm->stopCallback_.second);
+    nlopt::opt *p_opt = static_cast<nlopt::opt*>(algorithm->p_opt_);
+    if (p_opt)
+    {
+      if (stop) p_opt->force_stop();
+    }
+    else
+      throw InternalException(HERE) << "Null p_opt";
+  }
+#endif
   return outP[0];
 }
 
@@ -474,6 +496,7 @@ double NLopt::ComputeInequalityConstraint(const std::vector< double >& x, std::v
       grad[i] = -gradient(i, marginalIndex);
     }
   }
+
   // nlopt solves h(x)<=0
   return -outP[marginalIndex];
 }

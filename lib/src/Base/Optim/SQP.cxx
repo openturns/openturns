@@ -247,6 +247,20 @@ void SQP::run()
     result_.setLagrangeMultipliers(NumericalPoint(1, currentLambda_));
 
     LOGINFO(getResult().__repr__());
+
+    // callbacks
+    if (progressCallback_.first)
+    {
+      progressCallback_.first((100.0 * iterationNumber) / getMaximumIterationNumber(), progressCallback_.second);
+    }
+    if (stopCallback_.first)
+    {
+      Bool stop = stopCallback_.first(stopCallback_.second);
+      if (stop) {
+        convergence = true;
+        LOGWARN(OSS() << "SQP was stopped by user");
+      }
+    }
   }
 
   /* Check if we converged */

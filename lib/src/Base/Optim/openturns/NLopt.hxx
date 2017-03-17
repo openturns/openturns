@@ -114,6 +114,8 @@ private:
   NumericalSample evaluationInputHistory_;
   NumericalSample evaluationOutputHistory_;
 
+  // internal solver
+  void * p_opt_;
 };
 
 

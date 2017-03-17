@@ -116,12 +116,24 @@ public:
   Bool getVerbose() const;
   void setVerbose(const Bool verbose);
 
+  /** Progress callback */
+  typedef void (*ProgressCallback)(NumericalScalar, void * data);
+  virtual void setProgressCallback(ProgressCallback callBack, void * data = 0);
+
+  /** Stop callback */
+  typedef Bool (*StopCallback)(void * data);
+  virtual void setStopCallback(StopCallback callBack, void * data = 0);
+
 protected:
   /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
   virtual void checkProblem(const OptimizationProblem & problem) const;
 
   /** The result of the algorithm */
   OptimizationResult result_;
+
+  // callbacks
+  std::pair< ProgressCallback, void *> progressCallback_;
+  std::pair< StopCallback, void *> stopCallback_;
 
 private:
   NumericalPoint startingPoint_;
