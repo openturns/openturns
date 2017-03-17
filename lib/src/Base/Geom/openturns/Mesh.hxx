@@ -77,6 +77,10 @@ public:
   /** Get the index of the nearest vertex */
   UnsignedInteger getNearestVertexIndex(const NumericalPoint & point) const;
 
+  /** Get the index of the nearest vertex and the index of the containing simplex if any */
+  Indices getNearestVertexAndSimplexIndicesWithCoordinates(const NumericalPoint & point,
+      NumericalPoint & coordinates) const;
+
   /** Get the nearest vertex */
   NumericalPoint getNearestVertex(const NumericalPoint & point) const;
 
@@ -109,7 +113,7 @@ public:
                                           NumericalPoint & coordinates) const;
 
   /** Vertices accessor */
-  const NumericalSample & getVertices() const;
+  NumericalSample getVertices() const;
   void setVertices(const NumericalSample & vertices);
 
   /** Vertex accessor */
@@ -118,7 +122,7 @@ public:
                  const NumericalPoint & vertex);
 
   /** Simplices accessor */
-  const IndicesCollection & getSimplices() const;
+  IndicesCollection getSimplices() const;
   void setSimplices(const IndicesCollection & simplices);
 
   /** Simplex accessor */
@@ -189,6 +193,9 @@ protected:
 
   // The kd-tree associated to the vertices
   KDTree tree_;
+
+  // The vertices to simplices map
+  mutable IndicesPersistentCollection verticesToSimplices_;
 }; /* class Mesh */
 
 END_NAMESPACE_OPENTURNS

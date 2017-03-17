@@ -44,6 +44,7 @@ Mesh::Mesh(const UnsignedInteger dimension)
   , vertices_(1, dimension) // At least one point
   , simplices_()
   , tree_()
+  , verticesToSimplices_(0)
 {
   // Nothing to do
   if (vertices_.getDescription().isBlank()) vertices_.setDescription(Description::BuildDefault(dimension, "t"));
@@ -55,6 +56,7 @@ Mesh::Mesh(const NumericalSample & vertices)
   , vertices_(0, vertices.getDimension())
   , simplices_(0)
   , tree_()
+  , verticesToSimplices_(0)
 {
   // Use the vertices accessor to initialize the kd-tree
   setVertices(vertices);
@@ -67,6 +69,7 @@ Mesh::Mesh(const NumericalSample & vertices,
   , vertices_(0, vertices.getDimension())
   , simplices_(simplices)
   , tree_()
+  , verticesToSimplices_(0)
 {
   // Use the vertices accessor to initialize the kd-tree
   setVertices(vertices);
@@ -85,7 +88,7 @@ Description Mesh::getDescription() const
 }
 
 /* Vertices accessor */
-const NumericalSample & Mesh::getVertices() const
+NumericalSample Mesh::getVertices() const
 {
   return vertices_;
 }
@@ -113,14 +116,18 @@ void Mesh::setVertex(const UnsignedInteger index,
 }
 
 /* Simplices accessor */
-const Mesh::IndicesCollection & Mesh::getSimplices() const
+Mesh::IndicesCollection Mesh::getSimplices() const
 {
   return simplices_;
 }
 
 void Mesh::setSimplices(const IndicesCollection & simplices)
 {
-  simplices_ = simplices;
+  if (!(simplices == simplices_))
+    {
+      simplices_ = simplices;
+      verticesToSimplices_ = IndicesCollection(0);
+    }
 }
 
 /* Simplex accessor */
@@ -264,6 +271,31 @@ UnsignedInteger Mesh::getNearestVertexIndex(const NumericalPoint & point) const
   NearestFunctor functor( *this, point );
   TBB::ParallelReduce( 0, getVerticesNumber(), functor );
   return functor.minIndex_;
+}
+
+/* Get the index of the nearest vertex and the index of the containing simplex if any */
+Indices Mesh::getNearestVertexAndSimplexIndicesWithCoordinates(const NumericalPoint & point,
+    NumericalPoint & coordinates) const
+{
+  if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension " << getDimension() << ", got a point of dimension " << point.getDimension();
+  const UnsignedInteger nearestIndex = getNearestVertexIndex(point);
+  Indices result(1, nearestIndex);
+  // To be sure that the vertices to simplices map is up to date
+  if (verticesToSimplices_.getSize() == 0) (void) getVerticesToSimplicesMap();
+  const Indices simplicesCandidates(verticesToSimplices_[nearestIndex]);
+  coordinates = NumericalPoint(0);
+  for (UnsignedInteger i = 0; i < simplicesCandidates.getSize(); ++i)
+  {
+    const UnsignedInteger simplexIndex = simplicesCandidates[i];
+    if (checkPointInSimplexWithCoordinates(point, simplexIndex, coordinates))
+    {
+      result.add(simplexIndex);
+      break;
+    }
+  } // Loop over the simplices candidates
+  // If no simplex contains the given point, reset the coordinates vector
+  if (result.getSize() == 1) coordinates = NumericalPoint(0);
+  return result;
 }
 
 /* Get the nearest vertex */
@@ -440,19 +472,20 @@ NumericalPoint Mesh::getUpperBound() const
 /* Get the map between vertices and simplices: for each vertex, list the vertices indices it belongs to */
 Mesh::IndicesCollection Mesh::getVerticesToSimplicesMap() const
 {
+  if (verticesToSimplices_.getSize() > 0) return verticesToSimplices_;
   const UnsignedInteger numSimplices = getSimplicesNumber();
   const UnsignedInteger numVertices = getVerticesNumber();
-  IndicesCollection verticesToSimplices(numVertices, Indices(0));
+  verticesToSimplices_ = IndicesCollection(numVertices, Indices(0));
   for (UnsignedInteger i = 0; i < numSimplices; ++i)
   {
     const Indices simplex(simplices_[i]);
     for (UnsignedInteger j = 0; j < simplex.getSize(); ++j)
     {
       const UnsignedInteger index = simplex[j];
-      verticesToSimplices[index].add(i);
+      verticesToSimplices_[index].add(i);
     }
   } // Loop over simplices
-  return verticesToSimplices;
+  return verticesToSimplices_;
 }
 
 /* Comparison operator */
@@ -839,8 +872,8 @@ void Mesh::save(Advocate & adv) const
   DomainImplementation::save(adv);
   adv.saveAttribute("vertices_", vertices_);
   adv.saveAttribute("simplices_", simplices_);
-  adv.saveAttribute("volume_", volume_);
-  adv.saveAttribute("isAlreadyComputedVolume_", isAlreadyComputedVolume_);
+  adv.saveAttribute("tree_", tree_);
+  adv.saveAttribute("verticesToSimplices_", verticesToSimplices_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -849,8 +882,8 @@ void Mesh::load(Advocate & adv)
   DomainImplementation::load(adv);
   adv.loadAttribute("vertices_", vertices_);
   adv.loadAttribute("simplices_", simplices_);
-  adv.loadAttribute("volume_", volume_);
-  adv.loadAttribute("isAlreadyComputedVolume_", isAlreadyComputedVolume_);
+  adv.loadAttribute("tree_", tree_);
+  adv.loadAttribute("verticesToSimplices_", verticesToSimplices_);
 }
 
 END_NAMESPACE_OPENTURNS
