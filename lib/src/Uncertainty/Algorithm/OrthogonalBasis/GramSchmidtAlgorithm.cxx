@@ -52,7 +52,7 @@ GramSchmidtAlgorithm::GramSchmidtAlgorithm(const Distribution & measure)
   , referenceFamily_()
   , useCanonicalBasis_(true)
 {
-  // Nothing to do
+  Log::Warn(OSS() << "GramSchmidtAlgorithm is deprecated");
 }
 
 
@@ -65,7 +65,7 @@ GramSchmidtAlgorithm::GramSchmidtAlgorithm(const Distribution & measure,
   , referenceFamily_(referenceFamily)
   , useCanonicalBasis_(false)
 {
-  // Nothing to do
+  Log::Warn(OSS() << "GramSchmidtAlgorithm is deprecated");
 }
 
 

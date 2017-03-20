@@ -22,8 +22,6 @@ Orthonormalization algorithms
 
     OrthonormalizationAlgorithm
     AdaptiveStieltjesAlgorithm
-    GramSchmidtAlgorithm
-    ChebychevAlgorithm
 
 Orthogonal univariate polynomial families
 -----------------------------------------
