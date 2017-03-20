@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef OPENTURNS_ANALYTICALPARSER_HXX
-#define OPENTURNS_ANALYTICALPARSER_HXX
+#ifndef OPENTURNS_SYMBOLICPARSER_HXX
+#define OPENTURNS_SYMBOLICPARSER_HXX
 
 #include "openturns/NumericalSample.hxx"
 
@@ -30,11 +30,11 @@ BEGIN_NAMESPACE_OPENTURNS
 
 class MuParser;
 
-class AnalyticalParser : public Object
+class SymbolicParser : public Object
 {
 public:
   /** Default constructor */
-  AnalyticalParser();
+  SymbolicParser();
 
   NumericalPoint operator()(const NumericalPoint & inP) const;
 
@@ -55,4 +55,4 @@ protected:
 
 END_NAMESPACE_OPENTURNS
 
-#endif // OPENTURNS_ANALYTICALPARSER_HXX
+#endif // OPENTURNS_SYMBOLICPARSER_HXX

@@ -23,7 +23,7 @@
 
 #include "openturns/FiniteDifferenceHessian.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Exception.hxx"
+#include "openturns/NoNumericalMathEvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -34,6 +34,7 @@ static const Factory<FiniteDifferenceHessian> Factory_FiniteDifferenceHessian;
 /* Default constructor */
 FiniteDifferenceHessian::FiniteDifferenceHessian()
   : NumericalMathHessianImplementation()
+  , p_evaluation_(new NoNumericalMathEvaluationImplementation)
 {
   // Nothing to do
 }

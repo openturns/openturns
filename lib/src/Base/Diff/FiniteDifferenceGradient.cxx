@@ -23,7 +23,7 @@
 
 #include "openturns/FiniteDifferenceGradient.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Exception.hxx"
+#include "openturns/NoNumericalMathEvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -34,6 +34,7 @@ static const Factory<FiniteDifferenceGradient> Factory_FiniteDifferenceGradient;
 /* Default constructor */
 FiniteDifferenceGradient::FiniteDifferenceGradient()
   : NumericalMathGradientImplementation()
+  , p_evaluation_(new NoNumericalMathEvaluationImplementation)
 {
   // Nothing to do
 }

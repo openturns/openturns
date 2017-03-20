@@ -16,7 +16,7 @@
 #define OPENTURNS_SYMBOLICEVALUATION_HXX
 
 #include "openturns/NumericalMathEvaluationImplementation.hxx"
-#include "openturns/AnalyticalParser.hxx"
+#include "openturns/SymbolicParser.hxx"
 #include "openturns/Pointer.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -93,7 +93,7 @@ private:
   Description formulas_;
 
   /** A mathematical expression parser from the muParser library */
-  mutable AnalyticalParser parser_;
+  mutable SymbolicParser parser_;
 
 }; /* class SymbolicEvaluation */
 
