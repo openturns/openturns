@@ -274,5 +274,19 @@ NumericalPoint SymmetricMatrix::computeEV(SquareMatrix & v,
   return getImplementation()->computeEVSym(*(v.getImplementation()), keepIntact);
 }
 
+/* Comparison operator */
+Bool SymmetricMatrix::operator == (const Matrix & rhs) const
+{
+  // Compare the references
+  if (this == &rhs) return true;
+  // Compare the dimensions
+  const UnsignedInteger dimension = getDimension();
+  if (!(dimension == rhs.getNbRows() && dimension == rhs.getNbColumns())) return false;
+  // Compare the content
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    for (UnsignedInteger j = 0; j <= i; ++j)
+      if (!(*this)(i, j) == rhs(i, j)) return false;
+  return true;
+}
 
 END_NAMESPACE_OPENTURNS
