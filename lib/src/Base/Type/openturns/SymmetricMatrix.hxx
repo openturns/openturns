@@ -150,6 +150,9 @@ public:
   NumericalPoint computeEV(SquareMatrix & v,
                            const Bool keepIntact = true);
 
+  /** Comparison operators */
+  Bool operator == (const Matrix & rhs) const;
+
 protected:
 
 
