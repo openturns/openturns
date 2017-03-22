@@ -1,5 +1,5 @@
 %feature("docstring") OT::VisualTest::DrawHenryLine
-"Draw an Henry plot as an OpenTURNS :class:`~openturns.Graph`.
+"Draw an Henry plot.
 
 Parameters
 ----------
@@ -10,6 +10,11 @@ normal_distribution : :class:`~openturns.Normal`, optional
 
     If not given, this will build a :class:`~openturns.Normal` distribution
     from the given sample using the :class:`~openturns.NormalFactory`.
+
+Returns
+-------
+graph : class:`~openturns.Graph`
+    The graph object
 
 Notes
 -----
@@ -69,7 +74,7 @@ Draw an Henry plot against an inferred Normal distribution:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::VisualTest::DrawQQplot
-"Draw a QQ-plot as an OpenTURNS :class:`~openturns.Graph`.
+"Draw a QQ-plot.
 
 Available usages:
     VisualTest.DrawQQplot(*sample1, sample2, n_points*)
@@ -88,6 +93,11 @@ n_points : int, optional
 
     It will default to *DistributionImplementation-DefaultPointNumber* from
     the :class:`~openturns.ResourceMap`.
+
+Returns
+-------
+graph : class:`~openturns.Graph`
+    The graph object
 
 Notes
 -----
@@ -142,7 +152,7 @@ Draw a two-sample QQ-plot:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::VisualTest::DrawCobWeb
-"Draw a Cobweb plot as an OpenTURNS :class:`~openturns.Graph`.
+"Draw a Cobweb plot.
 
 Available usages:
     VisualTest.DrawCobWeb(*inputSample, outputSample, min, max, color, quantileScale=True*)
@@ -162,6 +172,11 @@ quantileScale : bool
     Flag indicating the scale of the *Ymin* and *Ymax*. If
     *quantileScale=True*, they are expressed in the rank based scale;
     otherwise, they are expressed in the :math:`Y`-values scale.
+
+Returns
+-------
+graph : class:`~openturns.Graph`
+    The graph object
 
 Notes
 -----
@@ -212,7 +227,7 @@ Draw a Cobweb plot:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::VisualTest::DrawHistogram
-"Draw an histogram as an OpenTURNS :class:`~openturns.Graph`.
+"Draw an histogram.
 
 Available usages:
     VisualTest.DrawHistogram(*sample*)
@@ -226,6 +241,11 @@ sample : 2-d sequence of float
 barsNumber : positive int
     Number of barplots used to draw the histogram. If not specified, it is
     automatically determined by OpenTURNS according to the Silverman rule.
+
+Returns
+-------
+graph : class:`~openturns.Graph`
+    The graph object
 
 Examples
 --------
@@ -245,7 +265,7 @@ Draw an histogram:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::VisualTest::DrawEmpiricalCDF
-"Draw an empirical CDF as an OpenTURNS :class:`~openturns.Graph`.
+"Draw an empirical CDF.
 
 Available usages:
     VisualTest.DrawEmpiricalCDF(*sample, Xmin, Xmax*)
@@ -256,6 +276,11 @@ sample : 2-d sequence of float
     Sample to draw.
 Xmin, Xmax : float with *Xmin < Xmax*
     Lower and upper boundaries of the graph.
+
+Returns
+-------
+graph : class:`~openturns.Graph`
+    The graph object
 
 Notes
 -----
@@ -278,3 +303,146 @@ Draw an empirical CDF:
 
 >>> empiricalCDF = ot.VisualTest.DrawEmpiricalCDF(sample, Xmin - 1.0, Xmax + 1.0)
 >>> View(empiricalCDF).show()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawClouds
+"Draw clouds from samples.
+
+Available usages:
+    VisualTest.DrawClouds(*sample, distribution*)
+
+    VisualTest.DrawClouds(*sample, sample2*)
+
+Parameters
+----------
+sample, sample2 : 2-d sequence of float
+    Samples to draw.
+distribution : :class:`~openturns.Distribution`
+    Distribution used to plot the second cloud
+
+Returns
+-------
+graph : class:`~openturns.Graph`
+    The graph object
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> ot.RandomGenerator.SetSeed(0)
+>>> sample1 = ot.Normal(2).getSample(50)
+>>> sample2 = ot.Normal(2).getSample(50)
+>>> clouds = ot.VisualTest.DrawClouds(sample1, sample2)
+>>> View(clouds).show()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawKendallPlot
+"Draw kendall plot.
+
+Available usages:
+    VisualTest.DrawKendallPlot(*sample, distribution*)
+
+    VisualTest.DrawKendallPlot(*sample, sample2*)
+
+Parameters
+----------
+sample, sample2 : 2-d sequence of float
+    Samples to draw.
+distribution : :class:`~openturns.Distribution`
+    Distribution used to plot the second cloud
+
+Returns
+-------
+graph : class:`~openturns.Graph`
+    The graph object
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> ot.RandomGenerator.SetSeed(0)
+>>> size = 100
+>>> copula1 = ot.FrankCopula(1.5)
+>>> copula2 = ot.GumbelCopula(4.5)
+>>> sample1 = copula1.getSample(size)
+>>> sample1.setName('data 1')
+>>> sample2 = copula2.getSample(size)
+>>> sample2.setName('data 2')
+>>> kendallPlot1 = ot.VisualTest.DrawKendallPlot(sample1, copula2)
+>>> View(kendallPlot1).show()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawLinearModel
+"Draw a linear model plot.
+
+Parameters
+----------
+sample1, sample2 : 2-d sequence of float
+    Samples to draw.
+linearModel : :class:`~openturns.LinearModel`
+    Linear model to plot.
+
+Returns
+-------
+graph : class:`~openturns.Graph`
+    The graph object
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> ot.RandomGenerator.SetSeed(0)
+>>> dimension = 2
+>>> R = ot.CorrelationMatrix(dimension)
+>>> R[0, 1] = 0.8
+>>> distribution = ot.Normal([3.0] * dimension, [2.0]* dimension, R)
+>>> size = 100
+>>> sample2D = distribution.getSample(size)
+>>> firstSample = ot.NumericalSample(size, 1)
+>>> secondSample = ot.NumericalSample(size, 1)
+>>> for i in range(size):
+...     firstSample[i] = ot.NumericalPoint(1, sample2D[i, 0])
+...     secondSample[i] = ot.NumericalPoint(1, sample2D[i, 1])
+>>> lmtest = ot.LinearModelFactory().build(firstSample, secondSample)
+>>> drawLinearModelVTest = ot.VisualTest.DrawLinearModel(firstSample, secondSample, lmtest)
+>>> View(drawLinearModelVTest).show()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawLinearModelResidual
+"Draw a linear model residual plot.
+
+Parameters
+----------
+sample1, sample2 : 2-d sequence of float
+    Samples to draw.
+linearModel : :class:`~openturns.LinearModel`
+    Linear model to plot.
+
+Returns
+-------
+graph : class:`~openturns.Graph`
+    The graph object
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> ot.RandomGenerator.SetSeed(0)
+>>> dimension = 2
+>>> R = ot.CorrelationMatrix(dimension)
+>>> R[0, 1] = 0.8
+>>> distribution = ot.Normal([3.0] * dimension, [2.0]* dimension, R)
+>>> size = 100
+>>> sample2D = distribution.getSample(size)
+>>> firstSample = ot.NumericalSample(size, 1)
+>>> secondSample = ot.NumericalSample(size, 1)
+>>> for i in range(size):
+...     firstSample[i] = ot.NumericalPoint(1, sample2D[i, 0])
+...     secondSample[i] = ot.NumericalPoint(1, sample2D[i, 1])
+>>> lmtest = ot.LinearModelFactory().build(firstSample, secondSample)
+>>> drawLinearModelVTest = ot.VisualTest.DrawLinearModelResidual(firstSample, secondSample, lmtest)
+>>> View(drawLinearModelVTest).show()"
