@@ -64,6 +64,7 @@
  * #876 (Bad time grid in StationaryCovarianceModelFactory::build)
  * #878 (Viewer does not take into account labels in Contour)
  * #879 (Incomplete arguments in FunctionalChaosRandomVector docstrings)
+ * #882 (RandomMixture segfaults with Dirac)
 
 == 1.8 release (2016-11-18) == #release-1.8
 

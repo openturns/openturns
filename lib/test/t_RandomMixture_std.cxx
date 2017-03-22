@@ -332,6 +332,12 @@ int main(int argc, char *argv[])
       const NumericalScalar PDF = dist_3D.computePDF(point);
       fullprint << "pdf      =" << PDF << std::endl;
     }
+    // Test for ticket 882 (only one Dirac)
+    // The segfault was triggered during the construction...
+    RandomMixture mixture2(Collection<Distribution>(1, Dirac()));
+    // After what it was impossible to draw the PDF or the CDF due to a lack of support computation
+    Graph graphPDF(mixture2.drawPDF());
+    Graph graphCDF(mixture2.drawCDF());    
   }
   catch (TestFailed & ex)
   {
