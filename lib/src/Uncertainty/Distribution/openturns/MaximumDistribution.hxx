@@ -50,10 +50,10 @@ public:
   MaximumDistribution();
 
   /** Parameters constructor */
-  MaximumDistribution(const Distribution & distribution);
+  explicit MaximumDistribution(const Distribution & distribution);
 
   /** Parameters constructor */
-  MaximumDistribution(const DistributionCollection & collection);
+  explicit MaximumDistribution(const DistributionCollection & collection);
 
   /** Parameters constructor */
   MaximumDistribution(const Distribution & distribution,
