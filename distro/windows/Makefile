@@ -40,6 +40,7 @@ MINGW_PREFIX = $(WINDEPS)/mingw-w64-x86_64/usr
 # Python
 PYBASEVER = 2.7
 PYBASEVER_NODOT = $(shell echo $(PYBASEVER) | sed "s|\.||g")
+PYBASEVER_MAJOR = $(shell echo $(PYBASEVER) | head -c 1)
 PYTHON_EXECUTABLE=$(MINGW_PREFIX)/$(TARGET)/bin/python$(PYBASEVER_NODOT).exe
 export PYTHONHOME := $(MINGW_PREFIX)/$(TARGET)
 export PYTHONPATH := $(MINGW_PREFIX)/$(TARGET)/lib/python$(PYBASEVER_NODOT)
@@ -75,7 +76,7 @@ ot-check-compiler:
 	@ls $(OT_SRC) $(PYTHON_EXECUTABLE) > /dev/null
 	@echo "ok"
 	touch ot-check-compiler
-ifeq ($(PYBASEVER),3.5)
+ifeq ($(PYBASEVER_MAJOR),3)
 	wine wineboot
 	xvfb-run winetricks -q vcrun2015
 endif
@@ -131,6 +132,7 @@ endif
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libgomp-1.dll $(OT_PREFIX)/bin
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libcblas.dll $(OT_PREFIX)/bin
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libhmat-oss.dll $(OT_PREFIX)/bin
+	tar cjf openturns-mingw-$(OT_VERSION)-py$(PYBASEVER)-$(ARCH).tar.bz2 --directory $(OT_BUILD) install
 	touch ot-install
 
 ot-test: ot-install
