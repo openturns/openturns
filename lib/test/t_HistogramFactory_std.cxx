@@ -52,10 +52,23 @@ int main(int argc, char *argv[])
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
-    Histogram estimatedHistogram(factory.buildAsHistogram(sample));
-    fullprint << "Histogram          =" << distribution << std::endl;
-    fullprint << "Estimated histogram=" << estimatedHistogram << std::endl;
-    estimatedHistogram = factory.buildAsHistogram();
+    fullprint << "Silverman bandwidth=" << factory.computeSilvermanBandwidth(sample) << std::endl;
+    {
+      Histogram estimatedHistogram(factory.buildAsHistogram(sample));
+      fullprint << "Histogram          =" << distribution << std::endl;
+      fullprint << "Estimated histogram=" << estimatedHistogram << std::endl;
+    }
+    {
+      Histogram estimatedHistogram(factory.buildAsHistogram(sample, 0.1));
+      fullprint << "Histogram          =" << distribution << std::endl;
+      fullprint << "Estimated histogram=" << estimatedHistogram << std::endl;
+    }
+    {
+      Histogram estimatedHistogram(factory.buildAsHistogram(sample, UnsignedInteger(15)));
+      fullprint << "Histogram          =" << distribution << std::endl;
+      fullprint << "Estimated histogram=" << estimatedHistogram << std::endl;
+    }
+    Histogram estimatedHistogram(factory.buildAsHistogram());
     fullprint << "Default histogram=" << estimatedHistogram << std::endl;
     // Test for constant sample
     sample = NumericalSample(size, NumericalPoint(1, 0.0));

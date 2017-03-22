@@ -51,6 +51,18 @@ HistogramFactory::Implementation HistogramFactory::build(const NumericalSample &
   return buildAsHistogram(sample).clone();
 }
 
+HistogramFactory::Implementation HistogramFactory::build(const NumericalSample & sample,
+							 const NumericalScalar bandwidth) const
+{
+  return buildAsHistogram(sample, bandwidth).clone();
+}
+
+HistogramFactory::Implementation HistogramFactory::build(const NumericalSample & sample,
+							 const UnsignedInteger binNumber) const
+{
+  return buildAsHistogram(sample, binNumber).clone();
+}
+
 HistogramFactory::Implementation HistogramFactory::build() const
 {
   return buildAsHistogram().clone();
@@ -58,7 +70,38 @@ HistogramFactory::Implementation HistogramFactory::build() const
 
 Histogram HistogramFactory::buildAsHistogram(const NumericalSample & sample) const
 {
+  return buildAsHistogram(sample, computeSilvermanBandwidth(sample));
+}
+
+Histogram HistogramFactory::buildAsHistogram(const NumericalSample & sample,
+					     const NumericalScalar bandwidth) const
+{
+  const UnsignedInteger size = sample.getSize();
+  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram based on an empty sample.";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build an Histogram only if dimension equals 1, here dimension=" << sample.getDimension();
+  if (!(bandwidth > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected a positive bandwidth, got bandwidth=" << bandwidth;
+  // Construct the histogram
+  // It will extends from min to max.
+  const NumericalScalar min = sample.getMin()[0];
+  const NumericalScalar max = sample.getMax()[0];
+  if (!SpecFunc::IsNormal(min) || !SpecFunc::IsNormal(max)) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution if data contains NaN or Inf";
+  if (max == min)
+  {
+    Histogram result(min - 0.5 * bandwidth, NumericalPoint(1, bandwidth), NumericalPoint(1, 1.0));
+    result.setDescription(sample.getDescription());
+    return result;
+  }
+  const UnsignedInteger binNumber = static_cast<UnsignedInteger>(ceil((max - min) / bandwidth + 0.5));
+  return buildAsHistogram(sample, binNumber);
+}
+
+Histogram HistogramFactory::buildAsHistogram(const NumericalSample & sample,
+					     const UnsignedInteger binNumber) const
+{
+  const UnsignedInteger size = sample.getSize();
+  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram based on an empty sample.";
+  if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build an Histogram only if dimension equals 1, here dimension=" << sample.getDimension();
+  if (binNumber == 0) throw InvalidArgumentException(HERE) << "Error: expected a positive number of bin, got 0.";
   // Construct the histogram
   // It will extends from min to max.
   const NumericalScalar min = sample.getMin()[0];
@@ -72,26 +115,20 @@ Histogram HistogramFactory::buildAsHistogram(const NumericalSample & sample) con
     result.setDescription(sample.getDescription());
     return result;
   }
-  const UnsignedInteger size = sample.getSize();
-  // First, try to use the robust estimation of dispersion based on inter-quartile
-  NumericalScalar hOpt = (sample.computeQuantilePerComponent(0.75)[0] - sample.computeQuantilePerComponent(0.25)[0]) * std::pow(24.0 * std::sqrt(M_PI) / size, 1.0 / 3.0) / (2.0 * DistFunc::qNormal(0.75));
-  // If we get a zero, try using standard deviation
-  if (hOpt == 0.0) hOpt = sample.computeStandardDeviationPerComponent()[0] * std::pow(24.0 * std::sqrt(M_PI) / size, 1.0 / 3.0);
-  const UnsignedInteger barNumber = static_cast<UnsignedInteger>(ceil((max - min) / hOpt + 0.5));
   // Adjust the bin with in order to match the bin number. Add a small adjustment in order to have bins defined as [x_k, x_k+1[ intervals
   const NumericalScalar delta = ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon") * (max - min);
-  hOpt = ((max - min) + delta) / barNumber;
-  NumericalPoint heights(barNumber, 0.0);
+  const NumericalScalar hOpt = ((max - min) + delta) / binNumber;
+  NumericalPoint heights(binNumber, 0.0);
   const NumericalScalar step = 1.0 / hOpt;
   // Aggregate the realizations into the bins
   for(UnsignedInteger i = 0; i < size; ++i)
   {
-    // The index takes values in [[0, barNumber-1]] because min <= sample[i][0] <= max and step < barNumber / (max - min)
+    // The index takes values in [[0, binNumber-1]] because min <= sample[i][0] <= max and step < binNumber / (max - min)
     const UnsignedInteger index = static_cast<UnsignedInteger>(floor((sample[i][0] - min) * step));
     heights[index] += 1.0;
   }
   const NumericalScalar inverseArea = 1.0 / (hOpt * size);
-  Histogram result(min, NumericalPoint(barNumber, hOpt), heights * inverseArea);
+  Histogram result(min, NumericalPoint(binNumber, hOpt), heights * inverseArea);
   result.setDescription(sample.getDescription());
   return result;
 }
@@ -99,6 +136,32 @@ Histogram HistogramFactory::buildAsHistogram(const NumericalSample & sample) con
 Histogram HistogramFactory::buildAsHistogram() const
 {
   return Histogram();
+}
+
+/* Compute the bandwidth according to Silverman's rule */
+NumericalScalar HistogramFactory::computeSilvermanBandwidth(const NumericalSample & sample,
+							    const Bool useQuantile) const
+{
+  const UnsignedInteger size = sample.getSize();
+  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot compute the Silverman bandwidth based on an empty sample.";
+  NumericalScalar hOpt = 0;
+  if (useQuantile)
+    {
+      // We use the robust estimation of dispersion based on inter-quartile
+      hOpt = (sample.computeQuantilePerComponent(0.75)[0] - sample.computeQuantilePerComponent(0.25)[0]) * std::pow(24.0 * std::sqrt(M_PI) / size, 1.0 / 3.0) / (2.0 * DistFunc::qNormal(0.75));
+      // If the resulting bandwidth is zero it is because a majority of values are repeated in the sample
+      if (hOpt == 0.0) LOGWARN(OSS() << "The first and third quartiles are equal, which means that many values are repeated in the given sample. Switch to the standard deviation-based Silverman bandwidth.");
+    }
+  // Here hOpt == 0.0 either because we asked for the standard deviation based bandwidth or because the quantile based bandwidth is zero
+  if (hOpt == 0.0)
+    {
+      // We use the standard deviation
+      hOpt = sample.computeStandardDeviationPerComponent()[0] * std::pow(24.0 * std::sqrt(M_PI) / size, 1.0 / 3.0);
+      // If we get zero it is due to a constant sample
+      if (hOpt == 0.0) LOGWARN(OSS() << "All the values are equal in the given sample. We switch to a bandwidth equal to QuantileEpsilon.");
+      hOpt =  ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon");
+    }
+  return hOpt;
 }
 
 END_NAMESPACE_OPENTURNS
