@@ -34,6 +34,7 @@
 #include "openturns/Triangular.hxx"
 #include "openturns/Trapezoidal.hxx"
 #include "openturns/Uniform.hxx"
+#include "openturns/Dirac.hxx"
 #include "openturns/ComplexTensor.hxx"
 #include "openturns/FFT.hxx"
 #include "openturns/GaussKronrod.hxx"
@@ -527,8 +528,17 @@ void RandomMixture::setDistributionCollection(const DistributionCollection & col
     weights.add(NumericalPoint(1, 1.0));
   }
 
+  // Special case: distributionCollection_ is empty because all the atoms were Dirac distributions, so they have all been merged into the constant. As we need at least one atom for the algorithms to work we convert the constant back into a unique Dirac distribution. This case can occur only in dimension 1
+  if (distributionCollection_.getSize() == 0)
+    {
+      distributionCollection_.add(Dirac(constant_));
+      weights.add(NumericalPoint(1, 1.0));
+      constant_[0] = 0.0; 
+    }
+  
   if (dimension == 1) setWeights(Matrix(1, distributionCollection_.getSize() , weights.getImplementation()->getData()));
 
+  // We cannot use parallelism if we have more than one atom due to the characteristic function cache
   if (distributionCollection_.getSize() > 1) setParallel(false);
   else setParallel(distributionCollection_[0].getImplementation()->isParallel());
   isAlreadyComputedMean_ = false;
@@ -2678,6 +2688,21 @@ Bool RandomMixture::isIntegral() const
   return true;
 }
 
+/* Get the support of a discrete distribution that intersect a given interval */
+NumericalSample RandomMixture::getSupport(const Interval & interval) const
+{
+  if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
+  if (!isDiscrete()) throw NotDefinedException(HERE) << "Error: the support is defined only for discrete distributions.";
+  const UnsignedInteger size = distributionCollection_.getSize();
+  // The computation of the support is available only if there is one atom
+  // otherwise the computePDF() and computeCDF() methods are not implemented anyway
+  if (size > 1) throw NotYetImplementedException(HERE) << "In RandomMixture::getSupport()";
+  NumericalSample support(0, getDimension());
+  NumericalSample localSupport((distributionCollection_[0].getSupport() * NumericalPoint(*weights_.getImplementation())) + constant_);
+  for (UnsignedInteger j = 0; j < localSupport.getSize(); ++j)
+    if (interval.contains(localSupport[j])) support.add(localSupport[j]);
+  return support;
+}
 
 /* Method save() stores the object through the StorageManager */
 void RandomMixture::save(Advocate & adv) const

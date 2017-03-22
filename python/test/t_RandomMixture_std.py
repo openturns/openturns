@@ -284,6 +284,10 @@ try:
         PDF = dist_3D.computePDF(point)
         print("pdf      = %.6g" % PDF)
 
+    # For ticket 882
+    mixture = RandomMixture([Dirac()])
+    graph = mixture.drawPDF()
+    graph = mixture.drawCDF()
 except:
     import sys
     print("t_RandomMixture_std.py", sys.exc_info()[0], sys.exc_info()[1])
