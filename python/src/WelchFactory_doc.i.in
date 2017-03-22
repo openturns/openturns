@@ -45,7 +45,7 @@ Create a time series from a stationary second order process:
 >>> myNormalProcess = ot.SpectralGaussianProcess(model, myTimeGrid)
 >>> myTimeSeries = myNormalProcess.getRealization()
 
-Estimate the spectral model ith the WelchFactory:
+Estimate the spectral model with WelchFactory:
 
 >>> mySegmentNumber = 10
 >>> myOverlapSize = 0.3
