@@ -52,6 +52,7 @@
 %include Gamma.i
 %include GammaFactory.i
 %include GammaMuSigma.i
+%include GeneralizedExtremeValue.i
 %include GeneralizedPareto.i
 %include GeneralizedParetoFactory.i
 %include Geometric.i

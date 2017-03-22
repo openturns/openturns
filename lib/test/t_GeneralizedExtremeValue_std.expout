@@ -1,0 +1,180 @@
+Testing class GeneralizedExtremeValue
+checkConstructorAndDestructor()
+checkCopyConstructor()
+streamObject(const T & anObject)
+class=GeneralizedExtremeValue name=GeneralizedExtremeValue mu=2 sigma=1.5 xi=-0.5 actual distribution=class=RandomMixture name=RandomMixture distribution collection=[class=Weibull name=Weibull dimension=1 alpha=3 beta=2 gamma=-5] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[-1] constant=class=NumericalPoint name=Unnamed dimension=1 values=[0]
+streamObject(const T & anObject)
+class=GeneralizedExtremeValue name=GeneralizedExtremeValue mu=2 sigma=1.5 xi=-0.5 actual distribution=class=RandomMixture name=RandomMixture distribution collection=[class=Weibull name=Weibull dimension=1 alpha=3 beta=2 gamma=-5] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[-1] constant=class=NumericalPoint name=Unnamed dimension=1 values=[0]
+areSameObjects(const T & firstObject, const T & secondObject)
+areDifferentObjects(const T & firstObject, const T & secondObject)
+Distribution class=GeneralizedExtremeValue name=GeneralizedExtremeValue mu=2 sigma=1.5 xi=-0.15 actual distribution=class=RandomMixture name=RandomMixture distribution collection=[class=Weibull name=Weibull dimension=1 alpha=10 beta=6.66667 gamma=-12] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[-1] constant=class=NumericalPoint name=Unnamed dimension=1 values=[0]
+Distribution GeneralizedExtremeValue(mu=2, sigma=1.5, xi=-0.15)
+Elliptical = false
+Continuous = true
+oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[2.00915]
+oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[0.788048] last=class=NumericalPoint name=Unnamed dimension=1 values=[2.8505]
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[2.65453]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[2.73151]
+Kolmogorov test for the generator, sample size=100 is accepted
+Kolmogorov test for the generator, sample size=1000 is accepted
+Point= class=NumericalPoint name=Unnamed dimension=1 values=[1]
+ddf     =class=NumericalPoint name=Unnamed dimension=1 values=[0.108952]
+ddf (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[0.108952]
+log pdf=-1.75315
+pdf     =0.173227
+pdf (FD)=0.173227
+cdf=0.151408
+ccdf=0.848592
+survival=0.848592
+Inverse survival=class=NumericalPoint name=Unnamed dimension=1 values=[5.59515]
+Survival(inverse survival)=0.05
+pdf gradient     =class=NumericalPoint name=Unnamed dimension=0 values=[]
+pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=3 values=[-0.108952,-0.0428497,0.0749046]
+cdf gradient     =class=NumericalPoint name=Unnamed dimension=0 values=[]
+cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=3 values=[-0.173227,0.115485,-0.0559084]
+quantile=class=NumericalPoint name=Unnamed dimension=1 values=[5.59515]
+cdf(quantile)=0.95
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-0.359967] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[5.97545] finite lower bound=[1] finite upper bound=[1]
+threshold=0.95
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(GeneralizedExtremeValue(mu=2, sigma=1.5, xi=-0.15)) gradientImplementation=MinimumVolumeLevelSetGradient(GeneralizedExtremeValue(mu=2, sigma=1.5, xi=-0.15)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=NumericalPoint name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(GeneralizedExtremeValue(mu=2, sigma=1.5, xi=-0.15)) level=3.31111
+beta=0.0364758
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-0.162817] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[-0.162817] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-4.83649] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[5.59515] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[5.59515] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[12] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[2.66959]
+standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[1.64028]
+skewness=class=NumericalPoint name=Unnamed dimension=1 values=[0.435743]
+kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[3.13766]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[2.69053]
+correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+parameters=[[mu : 2, sigma : 1.5, xi : -0.15]]
+standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[2.66959]
+standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[9.81725]
+standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[42.4963]
+standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[209.086]
+standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[1135.1]
+Standard representative=true
+mu=2
+sigma=1.5
+xi=-0.15
+Actual distribution=class=RandomMixture name=RandomMixture distribution collection=[class=Weibull name=Weibull dimension=1 alpha=10 beta=6.66667 gamma=-12] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[-1] constant=class=NumericalPoint name=Unnamed dimension=1 values=[0]
+Distribution class=GeneralizedExtremeValue name=GeneralizedExtremeValue mu=2 sigma=1.5 xi=0 actual distribution=class=Gumbel name=Gumbel dimension=1 alpha=0.666667 beta=2
+Distribution GeneralizedExtremeValue(mu=2, sigma=1.5, xi=0)
+Elliptical = false
+Continuous = true
+oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[1.37981]
+oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[2.81173] last=class=NumericalPoint name=Unnamed dimension=1 values=[1.71953]
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[2.87466]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[3.75194]
+Kolmogorov test for the generator, sample size=100 is accepted
+Kolmogorov test for the generator, sample size=1000 is accepted
+Point= class=NumericalPoint name=Unnamed dimension=1 values=[1]
+ddf     =class=NumericalPoint name=Unnamed dimension=1 values=[0.116989]
+ddf (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[0.116989]
+log pdf=-1.68653
+pdf     =0.18516
+pdf (FD)=0.18516
+cdf=0.142597
+ccdf=0.857403
+survival=0.857403
+Inverse survival=class=NumericalPoint name=Unnamed dimension=1 values=[0.354217]
+Survival(inverse survival)=0.95
+pdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[0.102258,-0.116989]
+pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=3 values=[-0.116989,-0.0454479,0.0844441]
+cdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[-0.277741,-0.18516]
+cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=3 values=[-0.18516,0.12344,-0.0617202]
+quantile=class=NumericalPoint name=Unnamed dimension=1 values=[6.45529]
+cdf(quantile)=0.95
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-0.341999] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[6.74221] finite lower bound=[1] finite upper bound=[1]
+threshold=0.95
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(GeneralizedExtremeValue(mu=2, sigma=1.5, xi=0)) gradientImplementation=MinimumVolumeLevelSetGradient(GeneralizedExtremeValue(mu=2, sigma=1.5, xi=0)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=NumericalPoint name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(GeneralizedExtremeValue(mu=2, sigma=1.5, xi=0)) level=3.6093
+beta=0.0270708
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.0420159] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[7.51437] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-3.20963] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[6.45529] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.354217] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[50.3543] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[2.86582]
+standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[1.92382]
+skewness=class=NumericalPoint name=Unnamed dimension=1 values=[1.13955]
+kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[5.4]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[3.7011]
+correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+parameters=[[mu : 2, sigma : 1.5, xi : 0]]
+standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.577216]
+standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[1.97811]
+standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[5.44487]
+standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[23.5615]
+standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[117.839]
+Standard representative=true
+mu=2
+sigma=1.5
+xi=0
+Actual distribution=class=Gumbel name=Gumbel dimension=1 alpha=0.666667 beta=2
+Distribution class=GeneralizedExtremeValue name=GeneralizedExtremeValue mu=2 sigma=1.5 xi=0.15 actual distribution=class=Frechet name=Frechet dimension=1 alpha=6.66667 beta=10 gamma=-8
+Distribution GeneralizedExtremeValue(mu=2, sigma=1.5, xi=0.15)
+Elliptical = false
+Continuous = true
+oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[2.16249]
+oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[0.614999] last=class=NumericalPoint name=Unnamed dimension=1 values=[6.02257]
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[3.12347]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[6.04599]
+Kolmogorov test for the generator, sample size=100 is accepted
+Kolmogorov test for the generator, sample size=1000 is accepted
+Point= class=NumericalPoint name=Unnamed dimension=1 values=[1]
+ddf     =class=NumericalPoint name=Unnamed dimension=1 values=[0.127801]
+ddf (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[0.127801]
+log pdf=-1.6163
+pdf     =0.198632
+pdf (FD)=0.198632
+cdf=0.132842
+ccdf=0.867158
+survival=0.867158
+Inverse survival=class=NumericalPoint name=Unnamed dimension=1 values=[0.482513]
+Survival(inverse survival)=0.95
+pdf gradient     =class=NumericalPoint name=Unnamed dimension=3 values=[0.00847762,-0.134884,-0.127801]
+pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=3 values=[-0.127801,-0.0472207,0.095424]
+cdf gradient     =class=NumericalPoint name=Unnamed dimension=3 values=[-0.0282528,-0.178769,-0.198632]
+cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=3 values=[-0.198632,0.132422,-0.0685353]
+quantile=class=NumericalPoint name=Unnamed dimension=1 values=[7.61316]
+cdf(quantile)=0.95
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-0.261956] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[7.81353] finite lower bound=[1] finite upper bound=[1]
+threshold=0.95
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(GeneralizedExtremeValue(mu=2, sigma=1.5, xi=0.15)) gradientImplementation=MinimumVolumeLevelSetGradient(GeneralizedExtremeValue(mu=2, sigma=1.5, xi=0.15)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=NumericalPoint name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(GeneralizedExtremeValue(mu=2, sigma=1.5, xi=0.15)) level=3.47643e+56
+beta=0
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.22178] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[9.35746] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-8] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[7.61316] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.482513] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[1251.08] finite lower bound=[1] finite upper bound=[1]
+beta=0.95
+mean=class=NumericalPoint name=Unnamed dimension=1 values=[3.12484]
+standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[2.45836]
+skewness=class=NumericalPoint name=Unnamed dimension=1 values=[2.53025]
+kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[19.2742]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[6.04353]
+correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+parameters=[[mu : 2, sigma : 1.5, xi : 0.15]]
+standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[1.11248]
+standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[1.29806]
+standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[1.61612]
+standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[2.21815]
+standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[3.62435]
+Standard representative=true
+mu=2
+sigma=1.5
+xi=0.15
+Actual distribution=class=Frechet name=Frechet dimension=1 alpha=6.66667 beta=10 gamma=-8

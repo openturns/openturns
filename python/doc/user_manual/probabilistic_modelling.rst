@@ -34,6 +34,7 @@ Parametric distributions
     FisherSnedecor
     Frechet
     Gamma
+    GeneralizedExtremeValue
     GeneralizedPareto
     Geometric
     Gumbel

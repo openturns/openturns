@@ -17,6 +17,7 @@
  * MethodOfMomentsFactory
  * SymbolicFunction, AggregatedFunction, ComposedFunction, DatabaseFunction, DualLinearCombinationFunction, LinearCombinationFunction, LinearFunction, QuadraticFunction, ParametricFunction
  * DistributionTransformation
+ * GeneralizedExtremeValue
 
 ==== API changes ====
   * Removed deprecated SLSQP, LBFGS and NelderMead classes
