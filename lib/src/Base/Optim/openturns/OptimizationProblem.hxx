@@ -103,6 +103,9 @@ public:
   void setMinimization(Bool minimization);
   Bool isMinimization() const;
 
+  /** isValid method */
+  Bool isValid() const;
+
   /** String converter */
   virtual String __repr__() const;
 

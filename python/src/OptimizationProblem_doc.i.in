@@ -44,4 +44,6 @@ OT_OptimizationProblem_setLevelValue_doc
 OT_OptimizationProblem_setMinimization_doc
 %feature("docstring") OT::OptimizationProblem::setObjective
 OT_OptimizationProblem_setObjective_doc
+%feature("docstring") OT::OptimizationProblem::isValid
+OT_OptimizationProblem_isValid_doc
 

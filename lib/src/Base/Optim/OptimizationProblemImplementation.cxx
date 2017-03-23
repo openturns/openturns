@@ -252,6 +252,45 @@ Bool OptimizationProblemImplementation::isMinimization() const
   return minimization_;
 }
 
+Bool OptimizationProblemImplementation::isValid() const
+{
+  // isValid checks if the optimization problem is 'valid' (all functions have accurate dimension) :
+  // 1) Accurate bounds dimension if defined
+  // 2) Accuracy between equality constraint and objective function input dimensions
+  // 3) Accuracy between inequality constraint and objective function input dimensions
+  // 4) Accuracy between level function and objective function input dimensions
+  if (hasBounds() && (getDimension() != getBounds().getDimension()))
+  {
+    Log::Warn(OSS() << "Bounds have incompatible size with problem's objective input dimension."
+                    << " Objective input dimension = " << getDimension()
+                    << ", wheras bounds size = " << getBounds().getDimension());
+    return false;
+  }
+  // Accuracy between objective and equality constraints
+  if(hasEqualityConstraint() && (getEqualityConstraint().getInputDimension() != getDimension()))
+  {
+    Log::Warn(OSS() << "In OptimizationSolverImplementation::setProblem, problem's objective and equality constraints have differents input dimensions."
+              <<" Objective's input dimension = " << getDimension()
+              <<", equality constraint input dimension = " << getEqualityConstraint().getInputDimension());
+    return false;
+  }
+  if(hasInequalityConstraint() && (getInequalityConstraint().getInputDimension() != getDimension()))
+  {
+    Log::Warn( OSS() << "Objective and inequality constraints have differents input dimensions."
+                     << " Objective's input dimension = " << getDimension()
+                     << ", inequality constraint input dimension = " << getInequalityConstraint().getInputDimension());
+    return false;
+  }
+  if(hasLevelFunction() && (getLevelFunction().getInputDimension() != getDimension()))
+  {
+    Log::Warn( OSS() << "Objective and level function have differents input dimensions."
+                     << " Objective's input dimension = " << getDimension()
+                     << ", level function input dimension = " << getLevelFunction().getInputDimension());
+    return false;
+  }
+  return true;
+}
+
 /* String converter */
 String OptimizationProblemImplementation::__repr__() const
 {
