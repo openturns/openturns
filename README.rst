@@ -12,6 +12,10 @@ OpenTURNS (Open source initiative to Treat Uncertainties, Risks'N Statistics)
 =============================================================================
 
 OpenTURNS is a scientific C++ and Python library including an internal data model and algorithms
+
+
+
+
 dedicated to the treatment of uncertainties. The main function of that library is giving
 to specific applications all the functionalities needed to treat uncertainties in studies.
 Targeted users are all engineers who want to introduce the probabilistic dimension
