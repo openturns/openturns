@@ -21,7 +21,7 @@ basis : collection of :class:`~openturns.Basis`
     Collection of the  :math:`p` functional basis: :math:`(\varphi_j^l: \Rset^d \rightarrow \Rset)_{1 \leq j \leq n_l}` for each :math:`l \in [1, p]`.
     Its size should be equal to zero if the trend is not estimated.
 trendCoefficients : collection of :class:`~openturns.NumericalPoint`
-   The trend coeffient vectors :math:`(\vect{\alpha}^1, \dots, \vect{\alpha}^p)`.
+   The trend coefficients vectors :math:`(\vect{\alpha}^1, \dots, \vect{\alpha}^p)`.
 covarianceModel : :class:`~openturns.CovarianceModel`
     Covariance function of the normal process with its optimized parameters.
 covarianceCholeskyFactor : :class:`~openturns.TriangularMatrix`
@@ -103,7 +103,7 @@ Get the meta model:
 Returns
 -------
 trendCoef : collection of :class:`~openturns.NumericalPoint`
-     The trend coeffient vectors :math:`(\vect{\alpha}^1, \dots, \vect{\alpha}^p)`.
+    The trend coefficients vectors :math:`(\vect{\alpha}^1, \dots, \vect{\alpha}^p)`
 "
 
 // ---------------------------------------------------------------------

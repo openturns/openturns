@@ -108,9 +108,9 @@ Available usages:
 Parameters
 ----------
 s, t : sequences of float
-    Multivariate index :math:`(\vect{s}, \vect{t}) \in \cD \times \cD`.
+    Multivariate index :math:`(\vect{s}, \vect{t}) \in \cD \times \cD`
 tau : sequence of float
-    Multivariate index :math:`\vect{\tau} \in \cD`.
+    Multivariate index :math:`\vect{\tau} \in \cD`
 
 Returns
 -------
@@ -119,8 +119,8 @@ covariance : float
 
 Notes
 -----
-The method makes sense only if the  dimension of the process is :math:`d=1`. It
- evaluates :math:`C(\vect{s}, \vect{t})`.
+The method makes sense only if the dimension of the process is :math:`d=1`.
+It evaluates :math:`C(\vect{s}, \vect{t})`.
 
 In the second usage, the covariance model must be stationary. Then we note
 :math:`C^{stat}(\vect{\tau})` for :math:`C(\vect{s}, \vect{s}+\vect{\tau})` as
@@ -142,9 +142,9 @@ Available usages:
 Parameters
 ----------
 s, t : floats or sequences of float
-    Multivariate index :math:`(\vect{s}, \vect{t}) \in \cD \times \cD`.
+    Multivariate index :math:`(\vect{s}, \vect{t}) \in \cD \times \cD`
 tau : float or sequence of float
-    Multivariate index :math:`\vect{\tau} \in \cD`.
+    Multivariate index :math:`\vect{\tau} \in \cD`
 
 Returns
 -------
@@ -175,7 +175,7 @@ Returns
 -------
 covarianceMatrix : :class:`~openturns.CovarianceMatrix`
     Covariance matrix :math:`\in \cS_{nd}^+(\Rset)` (if the process is of
-    dimension :math:`d`).
+    dimension :math:`d`
 
 Notes
 -----
@@ -233,7 +233,7 @@ Parameters
 meshOrGrid : :class:`~openturns.Mesh` or :class:`~openturns.RegularGrid`
     Mesh or time grid of size :math:`N` associated with the process.
 nuggetFactor: float
-    nugget factor to be added to the discretized matrix
+    Nugget factor to be added to the discretized matrix
 hmatParam : :class:`~openturns.HMatrixParameters`
     Parameter values for the HMatrix
 
@@ -266,7 +266,7 @@ Parameters
 meshOrGrid : :class:`~openturns.Mesh` or :class:`~openturns.RegularGrid`
     Mesh or time grid of size :math:`N` associated with the process.
 nuggetFactor: float
-    nugget factor to be added to the discretized matrix
+    Nugget factor to be added to the discretized matrix
 hmatParam : :class:`~openturns.HMatrixParameters`
     Parameter values for the HMatrix
 
@@ -460,8 +460,8 @@ translation:
     \forall(\vect{s},\vect{t},\vect{h}) \in \cD \times \cD, & \, \quad
     C(\vect{s}, \vect{s}+\vect{h}) = C(\vect{t}, \vect{t}+\vect{h})
 
-We note :math:`C^{stat}(\vect{\tau})` for 
-        :math:`C(\vect{s}, \vect{s}+\vect{\tau})`."
+
+We note :math:`C^{stat}(\vect{\tau})` for :math:`C(\vect{s}, \vect{s}+\vect{\tau})`."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::isStationary
 OT_CovarianceModel_isStationary_doc

@@ -7,7 +7,7 @@ Available constructor:
 Parameters
 ----------
 theta : float
-    Parameter :math:`\theta`, :math:'\theta \geq -1'.
+    Parameter :math:`\theta \geq -1`.
 
 Notes
 -----
