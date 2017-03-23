@@ -58,7 +58,7 @@ P1LagrangeEvaluationImplementation * P1LagrangeEvaluationImplementation::clone()
 Bool P1LagrangeEvaluationImplementation::operator ==(const P1LagrangeEvaluationImplementation & other) const
 {
   if (this == &other) return true;
-  return (field_ == other.field_);
+  return (mesh_ == other.mesh_) && (values_ == other.values_);
 }
 
 
@@ -68,7 +68,8 @@ String P1LagrangeEvaluationImplementation::__repr__() const
   OSS oss(true);
   oss << "class=" << P1LagrangeEvaluationImplementation::GetClassName()
       << " name=" << getName()
-      << " field=" << field_;
+      << " mesh=" << mesh_
+      << " values=" << values_;
   return oss;
 }
 
@@ -76,44 +77,70 @@ String P1LagrangeEvaluationImplementation::__str__( const String & offset ) cons
 {
   OSS oss(false);
   oss << P1LagrangeEvaluationImplementation::GetClassName() << Os::GetEndOfLine()
-      << offset << "field :" << Os::GetEndOfLine() << field_.__str__(offset);
+      << offset << "field :" << Os::GetEndOfLine() << getField().__str__(offset);
   return oss;
 }
 
 /* Field accessor */
 void P1LagrangeEvaluationImplementation::setField(const Field & field)
 {
-  field_ = field;
-  verticesToSimplices_ = field.getMesh().getVerticesToSimplicesMap();
+  mesh_ = field.getMesh();
+  // To be sure that the vertices to simplices map is up to date
+  (void) mesh_.getVerticesToSimplicesMap();
+  values_ = field.getValues();
 }
 
 Field P1LagrangeEvaluationImplementation::getField() const
 {
-  return field_;
+  return Field(mesh_, values_);
+}
+
+/* Mesh accessor */
+void P1LagrangeEvaluationImplementation::setMesh(const Mesh & mesh)
+{
+  if (mesh.getVerticesNumber() != values_.getSize()) throw InvalidArgumentException(HERE) << "Error: expected a mesh with =" << values_.getSize() << " vertices, got " << mesh_.getVerticesNumber() << " vertices";
+  mesh_ = mesh;
+  // To be sure that the vertices to simplices map is up to date
+  (void) mesh_.getVerticesToSimplicesMap();
+}
+
+Mesh P1LagrangeEvaluationImplementation::getMesh() const
+{
+  return mesh_;
 }
 
 /* Vertices accessor */
 void P1LagrangeEvaluationImplementation::setVertices(const NumericalSample & vertices)
 {
-  Mesh mesh(field_.getMesh());
-  mesh.setVertices(vertices);
-  field_ = Field(mesh, field_.getValues());
+  mesh_.setVertices(vertices);
 }
 
 NumericalSample P1LagrangeEvaluationImplementation::getVertices() const
 {
-  return field_.getMesh().getVertices();
+  return mesh_.getVertices();
+}
+
+/* Simplices accessor */
+void P1LagrangeEvaluationImplementation::setSimplices(const IndicesCollection & simplices)
+{
+  mesh_.setSimplices(simplices);
+}
+
+P1LagrangeEvaluationImplementation::IndicesCollection P1LagrangeEvaluationImplementation::getSimplices() const
+{
+  return mesh_.getSimplices();
 }
 
 /* Values accessor */
 void P1LagrangeEvaluationImplementation::setValues(const NumericalSample & values)
 {
-  field_.setValues(values);
+  if (values.getSize() != mesh_.getVerticesNumber()) throw InvalidArgumentException(HERE) << "Error: expected a sample of size=" << mesh_.getVerticesNumber() << ", got size=" << values.getSize();
+  values_ = values;
 }
 
 NumericalSample P1LagrangeEvaluationImplementation::getValues() const
 {
-  return field_.getValues();
+  return values_;
 }
 
 /* Here is the interface that all derived class must implement */
@@ -132,29 +159,7 @@ NumericalPoint P1LagrangeEvaluationImplementation::operator()( const NumericalPo
   }
   else
   {
-    // Here, perform the P1 interpolation
-    // First get the index of the nearest vertex
-    const Mesh & mesh(field_.getMesh());
-    const UnsignedInteger nearestIndex = mesh.getNearestVertexIndex(inP);
-    const Indices simplicesCandidates(verticesToSimplices_[nearestIndex]);
-    const NumericalSample vertices(mesh.getVertices());
-    const Mesh::IndicesCollection & simplices(mesh.getSimplices());
-    const NumericalSample values(field_.getValues());
-    // As a first guess, take the value at the nearest index. It will be the final value if no simplex contains the point
-    result = values[nearestIndex];
-    NumericalPoint coordinates;
-    for (UnsignedInteger i = 0; i < simplicesCandidates.getSize(); ++i)
-    {
-      const UnsignedInteger simplexIndex = simplicesCandidates[i];
-      if (mesh.checkPointInSimplexWithCoordinates(inP, simplexIndex, coordinates))
-      {
-        const Indices simplex(simplices[simplexIndex]);
-        result = values[simplex[0]] * coordinates[0];
-        for (UnsignedInteger j = 1; j < simplex.getSize(); ++j)
-          result += values[simplex[j]] * coordinates[j];
-        break;
-      }
-    } // Loop over the simplices candidates
+    result = evaluate(inP);
   }
   ++ callsNumber_;
   if (isHistoryEnabled_)
@@ -165,43 +170,38 @@ NumericalPoint P1LagrangeEvaluationImplementation::operator()( const NumericalPo
   return result;
 }
 
+/* Evaluation method */
+NumericalPoint P1LagrangeEvaluationImplementation::evaluate( const NumericalPoint & inP ) const
+{
+  NumericalPoint coordinates(0);
+  const Indices vertexAndSimplexIndices(mesh_.getNearestVertexAndSimplexIndicesWithCoordinates(inP, coordinates));
+  // Here, perform the P1 interpolation
+  // First get the index of the nearest vertex
+  const UnsignedInteger nearestIndex = vertexAndSimplexIndices[0];
+  // As a first guess, take the value at the nearest index. It will be the final value if no simplex contains the point
+  NumericalPoint result(values_[nearestIndex]);
+  if (coordinates.getSize() > 0)
+    {
+      const Indices simplex(mesh_.getSimplex(vertexAndSimplexIndices[1]));
+      result = values_[simplex[0]] * coordinates[0];
+      for (UnsignedInteger j = 1; j < simplex.getSize(); ++j)
+	result += values_[simplex[j]] * coordinates[j];
+    }
+  return result;
+}
+
 NumericalSample P1LagrangeEvaluationImplementation::operator()( const NumericalSample & inS ) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inS.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inS.getDimension();
   const UnsignedInteger size = inS.getSize();
-  NumericalSample result(size, field_.getDimension());
+  NumericalSample result(size, values_.getDimension());
   if (size == 0) return result;
-  const Mesh & mesh(field_.getMesh());
-  const NumericalSample vertices(mesh.getVertices());
-  if (inS == vertices) result = field_.getValues();
+  if (inS == mesh_.getVertices()) result = values_;
   else
   {
-    // Here, perform the P1 interpolation
-    // First get the indices of the nearest vertices, in parallel
-    const Mesh::IndicesCollection simplices(mesh.getSimplices());
-    const NumericalSample values(field_.getValues());
-    const Indices nearestIndices(mesh.getNearestVertexIndex(inS));
-    for (UnsignedInteger n = 0; n < size; ++n)
-    {
-      const UnsignedInteger nearestIndex = nearestIndices[n];
-      const Indices simplicesCandidates(verticesToSimplices_[nearestIndex]);
-      // As a first guess, take the value at the nearest index. It will be the final value if no simplex contains the point
-      result[n] = values[nearestIndex];
-      NumericalPoint coordinates;
-      for (UnsignedInteger i = 0; i < simplicesCandidates.getSize(); ++i)
-      {
-        const UnsignedInteger simplexIndex = simplicesCandidates[i];
-        if (mesh.checkPointInSimplexWithCoordinates(inS[n], simplexIndex, coordinates))
-        {
-          const Indices simplex(simplices[simplexIndex]);
-          result[n] = values[simplex[0]] * coordinates[0];
-          for (UnsignedInteger j = 1; j < simplex.getSize(); ++j)
-            result[n] += values[simplex[j]] * coordinates[j];
-          break;
-        }
-      } // Loop over the simplices candidates
-    } // Loop over the input sample
+    const P1LagrangeEvaluationImplementationComputeSamplePolicy policy( inS, result, *this );
+    TBB::ParallelFor( 0, size, policy );
   } // The input sample is different from
   callsNumber_ += size;
   if (isHistoryEnabled_)
@@ -215,14 +215,14 @@ NumericalSample P1LagrangeEvaluationImplementation::operator()( const NumericalS
 /* Accessor for input point dimension */
 UnsignedInteger P1LagrangeEvaluationImplementation::getInputDimension() const
 {
-  return field_.getSpatialDimension();
+  return mesh_.getDimension();
 }
 
 
 /* Accessor for output point dimension */
 UnsignedInteger P1LagrangeEvaluationImplementation::getOutputDimension() const
 {
-  return field_.getDimension();
+  return values_.getDimension();
 }
 
 
@@ -230,14 +230,16 @@ UnsignedInteger P1LagrangeEvaluationImplementation::getOutputDimension() const
 void P1LagrangeEvaluationImplementation::save(Advocate & adv) const
 {
   NumericalMathEvaluationImplementation::save(adv);
-  adv.saveAttribute("field_", field_);
+  adv.saveAttribute("mesh_", mesh_);
+  adv.saveAttribute("values_", values_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void P1LagrangeEvaluationImplementation::load(Advocate & adv)
 {
   NumericalMathEvaluationImplementation::load(adv);
-  adv.loadAttribute("field_", field_);
+  adv.loadAttribute("mesh_", mesh_);
+  adv.loadAttribute("values_", values_);
 }
 
 END_NAMESPACE_OPENTURNS

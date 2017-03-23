@@ -7,6 +7,9 @@ OT::Bool OT::Mesh::checkPointInSimplexWithCoordinates(const OT::NumericalPoint &
 						      const OT::UnsignedInteger index,
 						      OT::NumericalPoint & coordinates) const;
 
+OT::Indices OT::Mesh::getNearestVertexAndSimplexIndicesWithCoordinates(const OT::NumericalPoint & point,
+						      OT::NumericalPoint & coordinates) const;
+
 %{
 #include "openturns/Mesh.hxx"
 %}

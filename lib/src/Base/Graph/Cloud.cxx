@@ -142,9 +142,7 @@ Cloud * Cloud::clone() const
 void Cloud::checkData(const NumericalSample & data) const
 {
   if (data.getDimension() != 2)
-  {
     throw InvalidDimensionException(HERE) << "Expected sample of dimension 2: got " << data.getDimension();
-  }
 }
 
 /* Method save() stores the object through the StorageManager */

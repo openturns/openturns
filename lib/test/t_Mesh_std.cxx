@@ -58,8 +58,20 @@ int main(int argc, char *argv[])
       NumericalPoint p(1);
       p[0] = 1.3;
       fullprint << "is p=" << p << " in mesh? " << mesh1D.contains(p) << std::endl;
-      NumericalPoint point(1, 1.8);
-      fullprint << "Nearest index(" << point << ")=" << mesh1D.getNearestVertexIndex(point) << std::endl;
+      {
+        NumericalPoint point(1, 1.8);
+        fullprint << "Nearest index(" << point << ")=" << mesh1D.getNearestVertexIndex(point) << std::endl;
+        NumericalPoint coordinates;
+        Indices vertexSimplexIndices = mesh1D.getNearestVertexAndSimplexIndicesWithCoordinates(point, coordinates);
+        fullprint << "Nearest index(" << point << "), simplex and coordinates=" << vertexSimplexIndices << ", " << coordinates << std::endl;
+      }
+      {
+        NumericalPoint point(1, -1.8);
+        fullprint << "Nearest index(" << point << ")=" << mesh1D.getNearestVertexIndex(point) << std::endl;
+        NumericalPoint coordinates;
+        Indices vertexSimplexIndices = mesh1D.getNearestVertexAndSimplexIndicesWithCoordinates(point, coordinates);
+        fullprint << "Nearest index(" << point << "), simplex and coordinates=" << vertexSimplexIndices << ", " << coordinates << std::endl;
+      }
       NumericalSample points(2, 1);
       points[0] = NumericalPoint(1, -0.25);
       points[1] = NumericalPoint(1, 2.25);

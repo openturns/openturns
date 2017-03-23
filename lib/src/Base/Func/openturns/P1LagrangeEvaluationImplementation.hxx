@@ -37,8 +37,11 @@ class OT_API P1LagrangeEvaluationImplementation
 {
   CLASSNAME;
   friend class NumericalMathFunctionImplementation;
+  friend class P1LagrangeEvaluationImplementationComputeSamplePolicy;
 
 public:
+
+  typedef Mesh::IndicesCollection IndicesCollection;
 
   /** Default constructor */
   P1LagrangeEvaluationImplementation();
@@ -60,9 +63,17 @@ public:
   void setField(const Field & field);
   Field getField() const;
 
+  /** Mesh accessor */
+  void setMesh(const Mesh & mesh);
+  Mesh getMesh() const;
+
   /** Vertices accessor */
   void setVertices(const NumericalSample & vertices);
   NumericalSample getVertices() const;
+
+  /** Simplices accessor */
+  void setSimplices(const IndicesCollection & simplices);
+  IndicesCollection getSimplices() const;
 
   /** Values accessor */
   void setValues(const NumericalSample & values);
@@ -73,6 +84,11 @@ public:
   /** Operator () */
   virtual NumericalPoint operator()(const NumericalPoint & inP) const;
   virtual NumericalSample operator()(const NumericalSample & inS) const;
+
+protected:
+  NumericalPoint evaluate(const NumericalPoint & inP) const;
+
+public:
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;
@@ -88,14 +104,37 @@ public:
 
 
 protected:
-  /* Field defining the P1 Lagrange interpolation */
-  Field field_;
+  /* Mesh of the field defining the P1 Lagrange interpolation */
+  Mesh mesh_;
 
-  /* Collection of indices storing for each vertex the simplices to which it belongs */
-  PersistentCollection< Indices > verticesToSimplices_;
+  /* Values of the field defining the P1 Lagrange interpolation */
+  NumericalSample values_;
 
 private:
 
+  class P1LagrangeEvaluationImplementationComputeSamplePolicy
+  {
+    const NumericalSample & input_;
+    NumericalSample & output_;
+    const P1LagrangeEvaluationImplementation & lagrange_;
+
+  public:
+    P1LagrangeEvaluationImplementationComputeSamplePolicy(const NumericalSample & input,
+        NumericalSample & output,
+        const P1LagrangeEvaluationImplementation & lagrange)
+      : input_(input)
+      , output_(output)
+      , lagrange_(lagrange)
+    {
+      // Nothing to do
+    }
+
+    inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+    {
+      for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+        output_[i] = lagrange_.evaluate(input_[i]);
+    } // operator ()
+  };  // class P1LagrangeEvaluationImplementationComputeSamplePolicy
 
 }; /* class P1LagrangeEvaluationImplementation */
 
