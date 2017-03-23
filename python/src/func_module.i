@@ -82,6 +82,7 @@
 %include QuadraticFunction.i
 %include UniVariateFunctionImplementation.i
 %include UniVariateFunction.i
+%include MonomialFunction.i
 %include UniVariatePolynomialImplementation.i
 %include UniVariatePolynomial.i
 %include AggregatedNumericalMathEvaluationImplementation.i

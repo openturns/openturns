@@ -695,6 +695,7 @@ ot_add_python_module(orthogonalbasis orthogonalbasis_module.i
                       OrthogonalBasis.i OrthogonalBasis_doc.i.in
                       UniVariateFunctionImplementation.i UniVariateFunctionImplementation_doc.i.in
                       UniVariateFunction.i UniVariateFunction_doc.i.in
+                      MonomialFunction.i MonomialFunction_doc.i.in
                       OrthogonalUniVariateFunctionFactory.i OrthogonalUniVariateFunctionFactory_doc.i.in
                       OrthogonalUniVariateFunctionFamily.i OrthogonalUniVariateFunctionFamily_doc.i.in
                       OrthogonalUniVariatePolynomialFunctionFactory.i OrthogonalUniVariatePolynomialFunctionFactory_doc.i.in

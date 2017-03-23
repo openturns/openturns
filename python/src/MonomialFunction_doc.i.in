@@ -1,0 +1,78 @@
+%define OT_MonomialFunction_doc
+"Monomial function class.
+
+Available constructors:
+    MonomialFunction(*degree*)
+
+Parameters
+----------
+degre : int
+    Degree of the monomial function
+
+Notes
+-----
+The *monomial function* defines as :
+
+.. math::
+
+    P(x)  = X^n
+
+
+Examples
+--------
+Create a standard absolute exponential covariance function:
+
+>>> import openturns as ot
+>>> P = ot.MonomialFunction(3)
+
+"
+%enddef
+%feature("docstring") OT::MonomialFunction
+OT_MonomialFunction_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MonomialFunction_gradient_doc
+"Compute the gradient at point :math:`x`.
+
+Returns
+-------
+gradient : float
+    The value of the monomial's first-order derivative at point :math:`x`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> P = ot.MonomialFunction(3)
+>>> print(P.gradient(1.0))
+3.0"
+%enddef
+%feature("docstring") OT::MonomialFunction::gradient
+OT_MonomialFunction_gradient_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MonomialFunction_hessian_doc
+"Compute the hessian at point :math:`x`.
+
+Parameters
+----------
+x : float
+    Input value.
+
+Returns
+-------
+hessian : float
+    The value of the monomial's second-order derivative at point :math:`x`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> P = ot.MonomialFunction(3)
+>>> print(P.hessian(1.0))
+6.0"
+%enddef
+%feature("docstring") OT::MonomialFunction::hessian
+OT_MonomialFunction_hessian_doc
+
+// ---------------------------------------------------------------------

@@ -107,6 +107,7 @@ ot_add_source_file (FunctionalBasis.cxx)
 ot_add_source_file (UniVariateFunctionFamily.cxx)
 ot_add_source_file (UniVariateFunctionFactory.cxx)
 ot_add_source_file (TensorizedUniVariateFunctionFactory.cxx)
+ot_add_source_file (MonomialFunction.cxx)
 
 ot_install_header_file (AggregatedFunction.hxx)
 if (MUPARSER_FOUND)
@@ -214,6 +215,7 @@ ot_install_header_file (FunctionalBasis.hxx)
 ot_install_header_file (UniVariateFunctionFamily.hxx)
 ot_install_header_file (UniVariateFunctionFactory.hxx)
 ot_install_header_file (TensorizedUniVariateFunctionFactory.hxx)
+ot_install_header_file (MonomialFunction.hxx)
 
 # Recurse in subdirectories
 add_subdirectory (SpecFunc)
