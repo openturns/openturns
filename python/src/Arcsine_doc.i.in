@@ -7,9 +7,9 @@ Available constructors:
 Parameters
 ----------
 a : float
-    lower bound (:math:`a`).
+    lower bound.
 b : float
-    upper bound (:math:`b > a`).
+    upper bound, :math:`b > a`
 
 Notes
 -----

@@ -568,7 +568,7 @@ ot_add_python_module(dist_bundle2 dist_bundle2_module.i
                       LogUniform.i LogUniform_doc.i.in
                       LogUniformFactory.i LogUniformFactory_doc.i.in
 		      MarginalDistribution.i
-		      MaximumDistribution.i
+		      MaximumDistribution.i MaximumDistribution_doc.i.in
                       MaximumEntropyOrderStatisticsDistribution.i MaximumEntropyOrderStatisticsDistribution_doc.i.in
                       MaximumEntropyOrderStatisticsCopula.i MaximumEntropyOrderStatisticsCopula_doc.i.in
                       MaximumLikelihoodFactory.i MaximumLikelihoodFactory_doc.i.in

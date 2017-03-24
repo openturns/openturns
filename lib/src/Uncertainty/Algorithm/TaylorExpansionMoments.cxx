@@ -151,7 +151,7 @@ Graph TaylorExpansionMoments::drawImportanceFactors() const
   // To ensure that the importance factors are up to date
   getImportanceFactors();
   OSS oss;
-  oss << "Importance Factors from Quadratic Cumul - " << limitStateVariable_.getDescription()[0];
+  oss << "Importance Factors from Taylor expansions - " << limitStateVariable_.getDescription()[0];
   return SobolIndicesAlgorithmImplementation::DrawImportanceFactors(importanceFactors_, String(oss));
 }
 

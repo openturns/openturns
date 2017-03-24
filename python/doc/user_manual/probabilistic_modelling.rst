@@ -114,6 +114,7 @@ Combining and transforming distributions
     :template: Distribution.rst_t
     ConditionalDistribution
     CumulativeDistributionNetwork
+    MaximumDistribution
 
     :template: classWithPlot.rst_t
     MaximumEntropyOrderStatisticsDistribution

@@ -116,7 +116,7 @@ covCoeff : :class:`~openturns.NumericalSample`
 Returns
 -------
 trendCoef : collection of :class:`~openturns.NumericalPoint`
-    The trend coeffient vectors :math:`(\vect{\alpha}^1, \dots, \vect{\alpha}^p)`.
+    The trend coefficients vectors :math:`(\vect{\alpha}^1, \dots, \vect{\alpha}^p)`
 "
 
 // ---------------------------------------------------------------------

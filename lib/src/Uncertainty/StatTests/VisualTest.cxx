@@ -225,9 +225,6 @@ Graph VisualTest::DrawClouds(const NumericalSample & sample,
   const Cloud sampleCloud(sample, "blue", "fsquare", "Sample Cloud");
   const Cloud distCloud(distSample, "red", "fsquare", "Model Cloud");
 
-  OSS oss;
-  oss << sample.getName() << " 2D Clouds";
-
   Graph myGraph("two samples clouds", "x1", "x2", true, "topright");
   // Then, draw it
   myGraph.add(sampleCloud);
@@ -245,9 +242,6 @@ Graph VisualTest::DrawClouds(const NumericalSample & sample1,
 
   const Cloud sampleCloud1(sample1, "blue", "fsquare", "Sample1 Cloud");
   const Cloud sampleCloud2(sample2, "red", "fsquare", "Sample2 Cloud");
-
-  OSS oss;
-  oss << sample1.getName() << " 2D Clouds";
 
   Graph myGraph("two samples clouds", "x1", "x2", true, "topright");
   // Then, draw it

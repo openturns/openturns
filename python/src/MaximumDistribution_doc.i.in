@@ -1,0 +1,67 @@
+%feature("docstring") OT::MaximumDistribution
+"Maximum distribution.
+
+Available constructors:
+    MaximumDistribution(*distribution*)
+
+    MaximumDistribution(*collection*)
+
+    MaximumDistribution(*distribution, size*)
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    The underlying distribution.
+collection : sequence of :class:`~openturns.Distribution`
+    A collection of pdfs.
+size : int
+    Number of instances of distribution.
+
+Notes
+-----
+The maximum distribution of F is the distribution of :math:`X = max(X_1, ... , X_n)`
+where :math:`(X_1, ... , X_n) \sim F`
+
+.. math::
+
+    \Prob{X\leq x}=\Prob{X_1\leq x,\dots,X_n\leq x}
+
+This simplifies to :math:`\Prob{X\leq x}=\prod_{i=1}^n F_i(x)`
+when :math:`X_1,\dots,X_n` are independent (second constructor) and finally
+it simplifies into :math:`F^n(x)` when the random variables are iid (third
+constructor).
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> coll = [ot.Uniform(-1.0, 1.0), ot.LogUniform(1.0, 1.2), ot.Triangular(3.0, 4.0, 5.0)]
+>>> distribution = ot.MaximumDistribution(coll)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(5)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MaximumDistribution::getDistribution
+"Accessor to the underlying distribution.
+
+Returns
+-------
+distribution : :class:`~openturns.Distribution`
+    The underlying distribution."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MaximumDistribution::setDistribution
+"Accessor to the underlying distribution.
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    The underlying distribution."
+
+// ---------------------------------------------------------------------
+
