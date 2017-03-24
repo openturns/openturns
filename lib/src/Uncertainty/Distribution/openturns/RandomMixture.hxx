@@ -286,6 +286,10 @@ public:
   /** Tell if the distribution is integer valued */
   Bool isIntegral() const;
 
+  /** Get the support of a discrete distribution that intersect a given interval */
+  using DistributionImplementation::getSupport;
+  NumericalSample getSupport(const Interval & interval) const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 
