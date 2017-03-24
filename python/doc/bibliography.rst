@@ -6,6 +6,10 @@ Bibliography
 .. [Au2001] Au, S. K. *Estimation of small failure probabilities in high 
     dimensions by subset simulation*. Prob. Eng. Mech., 2001, 16(4), 263-277.
     `pdf <http://doc.openturns.org/papers/au2001.pdf>`__
+.. [Blatman2009] Blatman, G. *Adaptive sparse polynomial chaos expansions for
+    uncertainty propagation and sensitivity analysis.*, PhD thesis.
+    Blaise Pascal University-Clermont II, France, 2009.
+    `pdf <http://doc.openturns.org/papers/blatman2009.pdf>`__
 .. [Caniou2012] Caniou, Y. *Global sensitivity analysis for nested and
     multiscale modelling.* PhD thesis. Blaise Pascal University-Clermont II,
     France, 2012.
