@@ -107,6 +107,7 @@
 #include "openturns/UniVariateFunctionFactory.hxx"
 #include "openturns/TensorizedUniVariateFunctionFactory.hxx"
 #include "openturns/MonomialFunction.hxx"
+#include "openturns/MonomialFunctionFactory.hxx"
 #include "openturns/OTSpecFunc.hxx"
 #include "openturns/BoxCoxEvaluationImplementation.hxx"
 #include "openturns/BoxCoxGradientImplementation.hxx"

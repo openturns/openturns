@@ -274,6 +274,7 @@ ot_add_python_module(func func_module.i
                       NumericalMathFunction.i NumericalMathFunction_doc.i.in
                       TensorizedUniVariateFunctionFactory.i TensorizedUniVariateFunctionFactory_doc.i.in
                       UniVariateFunctionFactory.i UniVariateFunctionFactory_doc.i.in
+                      MonomialFunctionFactory.i MonomialFunctionFactory_doc.i.in
                       UniVariateFunctionFamily.i UniVariateFunctionFamily_doc.i.in
                       AggregatedFunction.i AggregatedFunction_doc.i.in
                       SymbolicFunction.i SymbolicFunction_doc.i.in

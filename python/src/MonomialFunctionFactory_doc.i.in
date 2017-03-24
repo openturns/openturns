@@ -1,0 +1,42 @@
+%define OT_MonomialFunctionFactory_doc
+"Factory for univariate monomial functions."
+%enddef
+%feature("docstring") OT::MonomialFunctionFactory
+OT_MonomialFunctionFactory_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MonomialFunctionFactory_buildAsMonomialFunction_doc
+"Build the :math:`n`-th order monomial function.
+
+Parameters
+----------
+n : int, :math:`0 \leq n`
+    Function order.
+
+Returns
+-------
+function : :class:`~openturns.MonomialFunction`
+    Requested monomial function."
+%enddef
+%feature("docstring") OT::MonomialFunctionFactory::buildAsMonomialFunction
+OT_MonomialFunctionFactory_buildAsMonomialFunction_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_MonomialFunctionFactory_build_doc
+"Build the :math:`n`-th order univariate function.
+
+Parameters
+----------
+n : int, :math:`0 \leq n`
+    Function order.
+
+Returns
+-------
+function : :class:`~openturns.UniVariateFunction`
+    Requested univariate function."
+%enddef
+%feature("docstring") OT::MonomialFunctionFactory::build
+OT_MonomialFunctionFactory_build_doc
+

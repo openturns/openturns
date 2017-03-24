@@ -110,6 +110,7 @@
 %include BasisSequenceFactoryImplementation.i
 %include BasisSequenceFactory.i
 %include UniVariateFunctionFactory.i
+%include MonomialFunctionFactory.i
 %include UniVariateFunctionFamily.i
 %include TensorizedUniVariateFunctionFactory.i
 %include LARS.i

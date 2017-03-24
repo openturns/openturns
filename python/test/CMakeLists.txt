@@ -173,6 +173,7 @@ ot_pyinstallcheck_test (UniVariatePolynomial_std)
 ot_pyinstallcheck_test (BasisFactory_std)
 ot_pyinstallcheck_test (Field_std)
 ot_pyinstallcheck_test (MonomialFunction_std)
+ot_pyinstallcheck_test (MonomialFunctionFactory_std)
 
 # Stat
 ot_pyinstallcheck_test (NumericalSample_std)
