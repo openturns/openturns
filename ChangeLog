@@ -20,33 +20,33 @@
  * GeneralizedExtremeValue
 
 ==== API changes ====
-  * Removed deprecated SLSQP, LBFGS and NelderMead classes
-  * Removed deprecated QuadraticCumul class
-  * Removed classes UserDefinedPair, HistogramPair
-  * Removed deprecated method WeightedExperiment::getWeight
-  * Removed deprecated method DistributionFactory::build(NumericalSample, CovarianceMatrix&)
-  * Removed deprecated distributions alternative parameters constructors, accessors
-  * Added a generic implementation of the computeLogPDFGradient() method in the DistributionImplementation class.
-  * Allow Box to support bounds
-  * Deprecated LinearNumericalMathFunction in favor of LinearFunction
-  * Deprecated QuadraticNumericalMathFunction in favor of QuadraticFunction
-  * Deprecated NumericalMathFunction::GetValidConstants|GetValidFunctions|GetValidOperators
-  * Renamed ComposedNumericalMathFunction to ComposedFunction
-  * Renamed LinearNumericalMathFunction to LinearFunction
-  * Swap covModel and basis arguments in KrigingAlgorithm constructors
-  * Removed useless keepCholesky argument in KrigingAlgorithm constructors
-  * Renamed OptimizationSolver to OptimizationAlgorithm
-  * Renamed TemporalNormalProcess to GaussianProcess
-  * Renamed SpectralNormalProcess to SpectralGaussianProcess
-  * Renamed GeneralizedLinearModelAlgorithm to GeneralLinearModelAlgorithm
-  * Renamed GeneralizedLinearModelResult to GeneralLinearModelResult
-  * Renamed DynamicalFunction to FieldFunction
-  * Renamed SpatialFunction to ValueFunction
-  * Renamed TemporalFunction to VertexValueFunction
-  * Deprecated [gs]etOptimizationSolver methods
-  * Renamed ProductNumericalMathFunction to ProductFunction
-  * Deprecated KarhunenLoeveP1Factory, KarhunenLoeveQuadratureFactory
-  * Deprecated GramSchmidtAlgorithm, ChebychevAlgorithm
+ * Removed deprecated SLSQP, LBFGS and NelderMead classes
+ * Removed deprecated QuadraticCumul class
+ * Removed classes UserDefinedPair, HistogramPair
+ * Removed deprecated method WeightedExperiment::getWeight
+ * Removed deprecated method DistributionFactory::build(NumericalSample, CovarianceMatrix&)
+ * Removed deprecated distributions alternative parameters constructors, accessors
+ * Added a generic implementation of the computeLogPDFGradient() method in the DistributionImplementation class.
+ * Allow Box to support bounds
+ * Deprecated LinearNumericalMathFunction in favor of LinearFunction
+ * Deprecated QuadraticNumericalMathFunction in favor of QuadraticFunction
+ * Deprecated NumericalMathFunction::GetValidConstants|GetValidFunctions|GetValidOperators
+ * Renamed ComposedNumericalMathFunction to ComposedFunction
+ * Renamed LinearNumericalMathFunction to LinearFunction
+ * Swap covModel and basis arguments in KrigingAlgorithm constructors
+ * Removed useless keepCholesky argument in KrigingAlgorithm constructors
+ * Renamed OptimizationSolver to OptimizationAlgorithm
+ * Renamed TemporalNormalProcess to GaussianProcess
+ * Renamed SpectralNormalProcess to SpectralGaussianProcess
+ * Renamed GeneralizedLinearModelAlgorithm to GeneralLinearModelAlgorithm
+ * Renamed GeneralizedLinearModelResult to GeneralLinearModelResult
+ * Renamed DynamicalFunction to FieldFunction
+ * Renamed SpatialFunction to ValueFunction
+ * Renamed TemporalFunction to VertexValueFunction
+ * Deprecated [gs]etOptimizationSolver methods
+ * Renamed ProductNumericalMathFunction to ProductFunction
+ * Deprecated KarhunenLoeveP1Factory, KarhunenLoeveQuadratureFactory
+ * Deprecated GramSchmidtAlgorithm, ChebychevAlgorithm
 
 
 === Python module ===
@@ -65,6 +65,7 @@
  * #878 (Viewer does not take into account labels in Contour)
  * #879 (Incomplete arguments in FunctionalChaosRandomVector docstrings)
  * #882 (RandomMixture segfaults with Dirac)
+ * #883 (VisualTest.DrawHistogram should rely on Histogram.drawPDF)
 
 == 1.8 release (2016-11-18) == #release-1.8
 

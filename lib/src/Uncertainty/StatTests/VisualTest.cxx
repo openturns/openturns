@@ -22,7 +22,6 @@
 #include "openturns/VisualTest.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/Cloud.hxx"
-#include "openturns/BarPlot.hxx"
 #include "openturns/Staircase.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/Interval.hxx"
@@ -31,6 +30,7 @@
 #include "openturns/ResourceMap.hxx"
 #include "openturns/UserDefined.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/HistogramFactory.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/NormalFactory.hxx"
 
@@ -53,80 +53,27 @@ Graph VisualTest::DrawEmpiricalCDF(const NumericalSample & sample,
 Graph VisualTest::DrawHistogram(const NumericalSample & sample,
                                 const UnsignedInteger binNumber)
 {
-  const UnsignedInteger size = sample.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot draw an Histogram based on an empty sample.";
-  if (sample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw an Histogram only if dimension equals 1, here dimension=" << sample.getDimension();
-  if (binNumber == 0) throw InvalidArgumentException(HERE) << "Error: cannot draw an Histogram with 0 bar";
-
-  // Construct the histogram
-  // It will extends from min to max, with BarNumber bars.
-  NumericalScalar min = sample.getMin()[0];
-  // Small adjustment in order to have classes defined as [x_k, x_k+1[ intervalles
-  NumericalScalar max = sample.getMax()[0];
-  NumericalSample data(binNumber, 2);
-  // If xmax == xmin, it is either because there is only one value in the sample, or because all the values are equal. It is the same problem in both cases: what is a meaningfull bin width?
-  if (max == min)
-  {
-    LOGWARN("You are drawing an Histogram for a sample with constant realizations, which is questionable. The number of bins is set to 1.");
-    data = NumericalSample(1, 2);
-    data[0][0] = 1.0 / size;
-    data[0][1] = size;
-    min -= 0.5 / size;
-  }
-  // Here, we know that size > 1
-  else
-  {
-    NumericalScalar h = -1.0;
-    // Special case: only one bin, we choose a bin width equal to the data range
-    if (binNumber == 1)
-    {
-      h = max - min;
-      data[0][0] = h;
-      data[0][1] = 1.0 / h;
-    }
-    // More than one bin: we cover the data range with
-    else
-    {
-      h = (max - min) / (binNumber - 1);
-      min -= 0.5 * h;
-      for (UnsignedInteger i = 0; i < binNumber; ++i) data[i][0] = h;
-      for (UnsignedInteger i = 0; i < size; ++i)
-      {
-        const UnsignedInteger index = static_cast< UnsignedInteger >((sample[i][0] - min) / h);
-        ++data[index][1];
-      }
-    }
-    const NumericalScalar inverseArea = 1.0 / (h * size);
-    for (UnsignedInteger i = 0; i < binNumber; ++i) data[i][1] *= inverseArea;
-  }
   // Create an empty graph
   Graph graphHist("sample histogram", "realizations", "frequency", true, "topright");
-
+  graphHist.add(HistogramFactory().buildAsHistogram(sample, binNumber).drawPDF());
   // Create the barplot
   OSS oss;
   oss << sample.getName() << " histogram";
-  const BarPlot histHist(data, min, "purple", "shaded", "solid", oss);
-  // Then, draw it
-  graphHist.add(histHist);
+  graphHist.setLegends(Description(1, oss));
   return graphHist;
 }
 
 /* Draw the Histogram of the Sample when its dimension is 1, Normal empirical rule for bin number */
 Graph VisualTest::DrawHistogram(const NumericalSample & sample)
 {
-  if (sample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a Histogram only if dimension equals 1, here dimension=" << sample.getDimension();
-  const NumericalScalar std = sample.computeStandardDeviationPerComponent()[0];
-  UnsignedInteger nBars = 1;
-  if (std == 0.0)
-  {
-    LOGWARN("You are drawing an Histogram for a sample with constant realizations, which is questionable.");
-  }
-  else
-  {
-    const NumericalScalar hOpt = std * pow(24.0 * sqrt(M_PI) / sample.getSize(), 1.0 / 3.0);
-    nBars = (UnsignedInteger)(ceil((sample.getMax()[0] - sample.getMin()[0]) / hOpt + 0.5));
-  }
-  return DrawHistogram(sample, nBars);
+  // Create an empty graph
+  Graph graphHist("sample histogram", "realizations", "frequency", true, "topright");
+  graphHist.add(HistogramFactory().buildAsHistogram(sample).drawPDF());
+  // Create the barplot
+  OSS oss;
+  oss << sample.getName() << " histogram";
+  graphHist.setLegends(Description(1, oss));
+  return graphHist;
 }
 
 /* Draw the QQplot of the two Samples when its dimension is 1 */

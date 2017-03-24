@@ -46,9 +46,21 @@ public:
   using DistributionFactoryImplementation::build;
 
   Implementation build(const NumericalSample & sample) const;
+  Implementation build(const NumericalSample & sample,
+		       const NumericalScalar bandwidth) const;
+  Implementation build(const NumericalSample & sample,
+		       const UnsignedInteger binNumber) const;
   Implementation build() const;
   Histogram buildAsHistogram(const NumericalSample & sample) const;
+  Histogram buildAsHistogram(const NumericalSample & sample,
+		       const NumericalScalar bandwidth) const;
+  Histogram buildAsHistogram(const NumericalSample & sample,
+		       const UnsignedInteger binNumber) const;
   Histogram buildAsHistogram() const;
+
+  /** Compute the bandwidth according to Silverman's rule */
+  NumericalScalar computeSilvermanBandwidth(const NumericalSample & sample,
+					    const Bool useQuantile = true) const;
 
 }; /* class HistogramFactory */
 

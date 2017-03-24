@@ -21,6 +21,12 @@ try:
     estimatedHistogram = factory.buildAsHistogram(sample)
     print("Histogram          =", distribution)
     print("Estimated histogram=", estimatedHistogram)
+    estimatedHistogram = factory.buildAsHistogram(sample, 0.1)
+    print("Histogram          =", distribution)
+    print("Estimated histogram=", estimatedHistogram)
+    estimatedHistogram = factory.buildAsHistogram(sample, 15)
+    print("Histogram          =", distribution)
+    print("Estimated histogram=", estimatedHistogram)
     estimatedHistogram = factory.buildAsHistogram()
     print("Default histogram=", estimatedHistogram)
     sample = [[0.0]] * size
