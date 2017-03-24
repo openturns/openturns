@@ -46,3 +46,7 @@ OT_OptimizationAlgorithm_setStartingPoint_doc
 OT_OptimizationAlgorithm_setVerbose_doc
 %feature("docstring") OT::OptimizationAlgorithm::getVerbose
 OT_OptimizationAlgorithm_getVerbose_doc
+%feature("docstring") OT::OptimizationAlgorithm::setProgressCallback
+OT_OptimizationAlgorithm_setProgressCallback_doc
+%feature("docstring") OT::OptimizationAlgorithm::setStopCallback
+OT_OptimizationAlgorithm_setStopCallback_doc

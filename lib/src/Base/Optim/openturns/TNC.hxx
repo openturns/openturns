@@ -127,6 +127,8 @@ private:
   NumericalSample evaluationInputHistory_;
   NumericalSample evaluationOutputHistory_;
 
+  void * p_nfeval_;
+
 }; /* class TNC */
 
 

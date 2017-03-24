@@ -46,6 +46,7 @@ TNC::TNC()
   , accuracy_(ResourceMap::GetAsNumericalScalar("TNC-DefaultAccuracy"))
   , fmin_(ResourceMap::GetAsNumericalScalar("TNC-DefaultFmin"))
   , rescale_(ResourceMap::GetAsNumericalScalar("TNC-DefaultRescale"))
+  , p_nfeval_(0)
 {
   // Nothing to do
 }
@@ -59,6 +60,7 @@ TNC::TNC(const OptimizationProblem & problem)
   , accuracy_(ResourceMap::GetAsNumericalScalar("TNC-DefaultAccuracy"))
   , fmin_(ResourceMap::GetAsNumericalScalar("TNC-DefaultFmin"))
   , rescale_(ResourceMap::GetAsNumericalScalar("TNC-DefaultRescale"))
+  , p_nfeval_(0)
 {
   checkProblem(problem);
 }
@@ -82,6 +84,7 @@ TNC::TNC (const OptimizationProblem & problem,
   , accuracy_(accuracy)
   , fmin_(fmin)
   , rescale_(rescale)
+  , p_nfeval_(0)
 {
   checkProblem(problem);
 }
@@ -131,7 +134,8 @@ void TNC::run()
   NumericalPoint offset(getOffset());
   double *refScale(scale.getDimension() == 0 ? NULL : &scale[0]);
   double *refOffset(offset.getDimension() == 0 ? NULL : &offset[0]);
-  int nfeval(0);
+  int nfeval = 0;
+  p_nfeval_ = &nfeval;
 
   // clear history
   evaluationInputHistory_ = NumericalSample(0.0, dimension);
@@ -195,6 +199,7 @@ void TNC::run()
    */
 
   int returnCode(tnc(int(dimension), &x[0], &f, NULL, TNC::ComputeObjectiveAndGradient, (void*) this, &low[0], &up[0], refScale, refOffset, message, getMaxCGit(), getMaximumIterationNumber(), getEta(), getStepmx(), getAccuracy(), getFmin(), getMaximumResidualError(), getMaximumAbsoluteError(), getMaximumConstraintError(), getRescale(), &nfeval));
+  p_nfeval_ = 0;
 
   result_ = OptimizationResult();
   result_.setProblem(getProblem());
@@ -430,6 +435,18 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   algorithm->evaluationInputHistory_.add(inPoint);
   algorithm->evaluationOutputHistory_.add(outPoint);
 
+  // callbacks
+  if (algorithm->stopCallback_.first)
+  {
+    Bool stop = algorithm->stopCallback_.first(algorithm->stopCallback_.second);
+    int *p_nfeval = static_cast<int*>(algorithm->p_nfeval_);
+    if (p_nfeval)
+    {
+      if (stop) *p_nfeval = algorithm->getMaximumIterationNumber();
+    }
+    else
+      throw InternalException(HERE) << "Null p_nfeval";
+  }
   return 0;
 }
 

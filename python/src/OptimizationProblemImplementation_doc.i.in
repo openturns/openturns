@@ -368,4 +368,3 @@ dimension in order to keep the problem valid at all time."
 
 %feature("docstring") OT::OptimizationProblemImplementation::setObjective
 OT_OptimizationProblem_setObjective_doc
-

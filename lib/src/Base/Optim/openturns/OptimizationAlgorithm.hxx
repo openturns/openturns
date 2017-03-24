@@ -94,6 +94,14 @@ public:
   Bool getVerbose() const;
   void setVerbose(const Bool verbose);
 
+  /** Progress callback */
+  typedef void (*ProgressCallback)(NumericalScalar, void * data);
+  void setProgressCallback(ProgressCallback callBack, void * data = 0);
+
+  /** Stop callback */
+  typedef Bool (*StopCallback)(void * data);
+  void setStopCallback(StopCallback callBack, void * data = 0);
+
   /** String converter */
   virtual String __repr__() const;
 

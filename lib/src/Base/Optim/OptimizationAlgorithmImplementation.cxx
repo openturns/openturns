@@ -28,6 +28,8 @@ CLASSNAMEINIT(OptimizationAlgorithmImplementation);
 /* Default constructor */
 OptimizationAlgorithmImplementation::OptimizationAlgorithmImplementation()
   : PersistentObject()
+  , progressCallback_(std::make_pair<ProgressCallback, void *>(0, 0))
+  , stopCallback_(std::make_pair<StopCallback, void *>(0, 0))
   , startingPoint_(NumericalPoint(0))
   , maximumIterationNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumIteration"))
   , maximumEvaluationNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumEvaluationNumber"))
@@ -45,6 +47,8 @@ OptimizationAlgorithmImplementation::OptimizationAlgorithmImplementation()
  */
 OptimizationAlgorithmImplementation::OptimizationAlgorithmImplementation(const OptimizationProblem & problem)
   : PersistentObject()
+  , progressCallback_(std::make_pair<ProgressCallback, void *>(0, 0))
+  , stopCallback_(std::make_pair<StopCallback, void *>(0, 0))
   , problem_(problem)
   , maximumIterationNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumIteration"))
   , maximumEvaluationNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumEvaluationNumber"))
@@ -308,5 +312,18 @@ void OptimizationAlgorithmImplementation::load(Advocate & adv)
   adv.loadAttribute( "maximumConstraintError_", maximumConstraintError_);
   adv.loadAttribute( "verbose_", verbose_);
 }
+
+
+void OptimizationAlgorithmImplementation::setProgressCallback(ProgressCallback callBack, void * data)
+{
+  progressCallback_ = std::pair<ProgressCallback, void *>(callBack, data);
+}
+
+
+void OptimizationAlgorithmImplementation::setStopCallback(StopCallback callBack, void * data)
+{
+  stopCallback_ = std::pair<StopCallback, void *>(callBack, data);
+}
+
 
 END_NAMESPACE_OPENTURNS

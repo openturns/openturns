@@ -13,6 +13,10 @@ algoName : str
     The NLopt identifier of the algorithm.
     Use :func:`GetAlgorithmNames()` to list available names.
 
+Notes
+-----
+This solver does not implement the progress callback.
+
 See also
 --------
 AbdoRackwitz, Cobyla, SQP, TNC
