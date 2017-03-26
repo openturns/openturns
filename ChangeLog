@@ -18,7 +18,12 @@
  * SymbolicFunction, AggregatedFunction, ComposedFunction, DatabaseFunction, DualLinearCombinationFunction, LinearCombinationFunction, LinearFunction, QuadraticFunction, ParametricFunction
  * DistributionTransformation
  * GeneralizedExtremeValue
+<<<<<<< HEAD
  * UniVariateFunctionFamily, UniVariateFunctionFactory, TensorizedUniVariateFunctionFactory
+=======
+ * KarhunenLoeveSVDAlgorithm
+ * RankMCovarianceModel
+>>>>>>> Updated Changelog
 
 ==== API changes ====
  * Removed deprecated SLSQP, LBFGS and NelderMead classes
@@ -49,6 +54,8 @@
  * Deprecated KarhunenLoeveP1Factory, KarhunenLoeveQuadratureFactory
  * Deprecated GramSchmidtAlgorithm, ChebychevAlgorithm
  * Removed OrthogonalProductFunctionFactory::getFunctionFamilyCollection method
+ * Added getSobolAggregatedIndices() to FunctionalChaosRandomVector
+ * Added computeWeight() to Mesh
 
 === Python module ===
 
