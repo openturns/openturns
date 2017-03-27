@@ -319,6 +319,7 @@ ot_check_test (KarhunenLoeveP1Factory_std)
 ot_check_test (KarhunenLoeveP1Algorithm_std)
 ot_check_test (LeastSquaresMethod_std)
 ot_check_test (LeastSquaresMethod_weighted)
+ot_check_test (KarhunenLoeveSVDAlgorithm_std)
 
 # Analytical
 ot_check_test (Analytical_std)

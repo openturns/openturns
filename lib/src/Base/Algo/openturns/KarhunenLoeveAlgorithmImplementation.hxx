@@ -55,8 +55,8 @@ public:
   void setThreshold(const NumericalScalar threshold);
 
   /** Covariance model accessors */
-  CovarianceModel getCovarianceModel() const;
-  void setCovarianceModel(const CovarianceModel & covariance);
+  virtual CovarianceModel getCovarianceModel() const;
+  virtual void setCovarianceModel(const CovarianceModel & covariance);
 
   /** Do the computation */
   virtual void run();

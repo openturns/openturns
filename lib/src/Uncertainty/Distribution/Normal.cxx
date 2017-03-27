@@ -115,6 +115,13 @@ Normal::Normal(const NumericalPoint & mean,
   checkIndependentCopula();
 }
 
+/* Comparison operator */
+Bool Normal::operator ==(const Normal & other) const
+{
+  if (this == &other) return true;
+  return EllipticalDistribution::equals(other);
+}
+
 /* String converter */
 String Normal::__repr__() const
 {

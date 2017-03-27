@@ -12,25 +12,26 @@ threshold : float
 
 Notes
 -----
-We suppose that :math:`C:\cD \times \cD \rightarrow  \cS^+_d(\Rset)` is a covariance function defined on :math:`\cD \in \Rset^n`, continuous at :math:`\vect{0}`. 
+The Karhunen-Loeve :math:`P_1` algorithm solves the Fredholm problem  associated to the covariance function :math:`C`: see :class:`~openturns.KarhunenLoeveAlgorithm` to get the notations.
 
-The class :class:`~openturns.KarhunenLoeveP1Algorithm` enables to determine the solutions of the second kind Fredholm equation associated to  :math:`C`, ie to find the :math:`(\lambda_k,  \vect{\varphi}_k)_{k \geq 1}` such that: 
+
+The Karhunen-Loeve :math:`P_1` approximation uses the :math:`P_1` functional basis :math:`(\theta_p)_{1 \leq p \leq N}` where  :math:`\theta_p: \cD_N \mapsto \Rset` are the basis functions of the :math:`P_1` finite element space associated to :math:`\cD_N`, which vertices are :math:`(\vect{s}_i)_{1 \leq i \leq N}`.
+
+The covariance function :math:`\mat{C}` is approximated by its :math:`P_1` approximation :math:`\hat{\mat{C}}` on :math:`\cD_N`:
+
+.. math::
+
+   \hat{\mat{C}}(\vect{s},\vect{t})=\sum_{\vect{s}_i,\vect{s}_j\in\cV_N}\mat{C}(\vect{s}_i,\vect{s}_j)\theta_i(\vect{s})\theta_j(\vect{t}), \quad  \forall \vect{s},\vect{t}\in\cD_N
+
+The Galerkin approach and the collocation one are equivalent in the :math:`P_1` approach and both lead to the following formulation:
 
 .. math::
 
-    \int_{\cD} \mat{C}(\vect{s},\vect{t}) \vect{\varphi}_k(\vect{t})\,  d\vect{t} = \lambda_k  \vect{\varphi}_k(\vect{s}) \quad \forall \vect{s} \in \cD
+    \mat{C}\, \mat{G}\, \mat{\Phi}  =   \mat{\Phi}\, \mat{\Lambda}
 
 
-where :math:`(\lambda_k)_{k \geq 1}` is a nonincreasing sequence of nonnegative values (the **eigenvalues**) and :math:`(\vect{\varphi}_k)_{k \geq 1}` the associated sequence of **eigenfunctions**, normalized by :math:`\int_{\cD}\|\vect{\varphi}_k(\vect{s})\|^2\di{\vect{s}}=1`. They constitue an hilbertian basis of :math:`L^2(\cD, \Rset^d)`.
+where :math:`\mat{G} = (G_{ij})_{1\leq i,j \leq N}` with :math:`G_{i\ell}= \int_{\cD} \theta_i(\vect{s})\theta_\ell(\vect{s})\,  d\vect{s}`, :math:`\mat{\Lambda}=diag(\vect{\lambda})`.
 
-OpenTURNS uses the threshold :math:`s` in order to select the most significant eigenvalues, ie all the eigenvalues such that :math:`\lambda_k \geq s \lambda_1`.
-
-The Karhunen-Loeve P1 approximation consists in replacing the covariance model :math:`\mat{C}` by its P1 approximation :math:`\hat{\mat{C}}` on a mesh :math:`\cD_N` which approximates the domain :math:`\cD`:
-
-.. math::
-    \forall \vect{s},\vect{t}\in\cD_N,\quad \hat{\mat{C}}(\vect{s},\vect{t})=\sum_{\vect{\xi}_i,\vect{\xi}_j\in\cV_N}\mat{C}(\vect{\xi}_i,\vect{\xi}_j)\theta_i(\vect{s})\theta_j(\vect{t})
-
-Where :math:`\theta_n: \cD_N \mapsto \Rset` are the basis functions of the P1 finite element space associated to :math:`\cD_N`.
 
 Examples
 --------

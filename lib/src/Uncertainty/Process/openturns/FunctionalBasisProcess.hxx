@@ -94,6 +94,9 @@ public:
   /** Basis accessor */
   void setBasis(const Basis & basis);
 
+  /** Covariance model accessor */
+  CovarianceModel getCovarianceModel() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 

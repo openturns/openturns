@@ -86,7 +86,7 @@ CovarianceMatrix UserDefinedStationaryCovarianceModel::operator()(const Numerica
 }
 
 /* Time grid/mesh accessor */
-const Mesh & UserDefinedStationaryCovarianceModel::getMesh() const
+Mesh UserDefinedStationaryCovarianceModel::getMesh() const
 {
   return *p_mesh_;
 }

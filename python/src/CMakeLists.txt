@@ -203,6 +203,7 @@ ot_add_python_module(statistics statistics_module.i
                       MaternModel.i MaternModel_doc.i.in
                       DiracCovarianceModel.i DiracCovarianceModel_doc.i.in
                       ProductCovarianceModel.i ProductCovarianceModel_doc.i.in
+                      RankMCovarianceModel.i RankMCovarianceModel_doc.i.in
                       TensorizedCovarianceModel.i TensorizedCovarianceModel_doc.i.in
                       HMatrixParameters.i HMatrixParameters_doc.i.in
                       HMatrixFactory.i HMatrixFactory_doc.i.in
@@ -407,6 +408,7 @@ ot_add_python_module(algo algo_module.i
 		      KarhunenLoeveResult.i KarhunenLoeveResult_doc.i.in
 		      KarhunenLoeveAlgorithmImplementation.i KarhunenLoeveAlgorithmImplementation_doc.i.in
 		      KarhunenLoeveP1Algorithm.i KarhunenLoeveP1Algorithm_doc.i.in
+		      KarhunenLoeveSVDAlgorithm.i KarhunenLoeveSVDAlgorithm_doc.i.in
 		      KarhunenLoeveAlgorithm.i KarhunenLoeveAlgorithm_doc.i.in
                       BaseAlgoTemplateDefs.i
                    )

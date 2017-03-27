@@ -53,6 +53,10 @@ public:
          const CovarianceMatrix & C);
 
 
+  /** Comparison operator */
+  using EllipticalDistribution::operator==;
+  Bool operator ==(const Normal & other) const;
+
   /** String converter */
   String __repr__() const;
   String __str__(const String & offset = "") const;

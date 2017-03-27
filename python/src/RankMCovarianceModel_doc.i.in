@@ -1,0 +1,81 @@
+%feature("docstring") OT::RankMCovarianceModel
+"Univariate covariance function defined as a rankM.
+
+Parameters
+----------
+coefficients : sequence of float
+    Coefficients
+basis : :class:`~openturns.Basis`
+    Basis
+covariance : 2-d sequence of float, optional
+    Covariance matrix
+
+Notes
+-----
+The *rankM* covariance function is a covariance function whith dimension :math:`d=1`. It defines a covariance model from the given collection as follows.
+
+We consider the scalar stochastic process :math:`X: \Omega \times\cD \rightarrow \Rset`, where :math:`\omega \in \Omega` is an event, :math:`\cD` is a domain of :math:`\Rset^n`.
+
+The rankM covariance function writes:
+
+.. math::
+
+    C(\vect{s}, \vect{t}) = \prod_{k=1}^K  C_k(\vect{s}_k, \vect{t}_k), \quad \forall (\vect{s}, \vect{t}) \in \cD
+
+where :math:`C_k : \cD_k \times \cD_k \rightarrow  \cS_d^+(\Rset)`  with :math:`\cD_k \in \Rset^{d_k}`, :math:`\cD = \cD_1 \times \dots \times \cD_K`, :math:`\cD_k \subset \Rset^{n_k}` and :math:`n1 + \dots + n_K=n`.
+
+:math:`C` also writes:
+
+.. math::
+
+    C(\vect{s}, \vect{t}) =  \sigma^2 \rho\left(\dfrac{\vect{s}}{\theta}, \dfrac{\vect{t}}{\theta}\right), \quad \forall (\vect{s}, \vect{t}) \in \cD
+
+
+where the amplitude is:
+
+.. math::
+
+    \sigma= \prod_{k=1}^K \sigma_k
+
+the scale is:
+
+.. math::
+
+    \Tr{\vect{\theta}}= \left(\Tr{\vect{\theta}}_1, \dots, \Tr{\vect{\theta}}_K \right)
+
+and the correlation function :math:`\rho` is:
+
+.. math::
+
+    \rho \left( \vect{s}, \vect{t} \right) = \prod_{k=1}^K \rho_k\left( \vect{s}_k, \vect{t}_k \right)
+
+
+Examples
+--------
+Create a rankM covariance function from two exponential functions, each one defined on :math:`\Rset \times \Rset \rightarrow \cS_1^+(\Rset)`:
+
+>>> import openturns as ot
+>>> coefficients = [1.0, 2.0]
+>>> basis = ot.LinearBasisFactory().build()
+>>> myCovarianceModel = ot.RankMCovarianceModel(coefficients, basis)"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::RankMCovarianceModel::getBasis
+"Basis accessor.
+
+Returns
+-------
+basis : :class:`~openturns.Basis`
+    The provided basis."
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::RankMCovarianceModel::getFunctions
+"Functions accessor.
+
+Returns
+-------
+functions : :class:`~openturns.NumericalMathFunctionCollection`
+    The collection of functions from the basis."
+
