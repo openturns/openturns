@@ -107,7 +107,6 @@ Bool ComposedDistribution::operator ==(const ComposedDistribution & other) const
     {
       const Distribution left(distributionCollection_[i]);
       const Distribution right(other.distributionCollection_[i]);
-      std::cerr << "Compare left=" << left << " to right=" << right << std::endl;
       if (!(left == right)) return false;
     }
   return true;
@@ -130,7 +129,6 @@ Bool ComposedDistribution::equals(const DistributionImplementation & other) cons
     {
       const Distribution left(distributionCollection_[i]);
       const Distribution right(*other.getMarginal(i));
-      std::cerr << "Equals left=" << left << " to right=" << right << std::endl;
       if (!(left == right)) return false;
     }
   return true;

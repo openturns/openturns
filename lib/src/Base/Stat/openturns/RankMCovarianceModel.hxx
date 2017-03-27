@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -63,8 +63,8 @@ public:
                                  const NumericalPoint & t) const;
 
   /** Basis accessor */
-  const Basis & getBasis() const;
-  const Basis::NumericalMathFunctionCollection & getFunctions() const;
+  Basis getBasis() const;
+  Basis::NumericalMathFunctionCollection getFunctions() const;
 
   /** Is it a stationary covariance model ? */
   virtual Bool isStationary() const;

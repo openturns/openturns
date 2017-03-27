@@ -6,7 +6,7 @@ from math import sqrt
 mesh = ot.IntervalMesher([128]).build(ot.Interval(-1.0, 1.0))
 threshold = 0.001
 model = ot.AbsoluteExponential([1.0])
-sample = ot.TemporalNormalProcess(model, mesh).getSample(100)
+sample = ot.GaussianProcess(model, mesh).getSample(100)
 algo = ot.KarhunenLoeveSVDAlgorithm(sample, threshold)
 algo.run()
 ev = algo.getResult().getEigenValues()

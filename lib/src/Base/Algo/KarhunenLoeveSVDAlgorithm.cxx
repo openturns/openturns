@@ -4,7 +4,7 @@
  *         basis and eigenvalues of a given covariance model based on
  *         SVD decomposition of a process sample.
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -122,7 +122,6 @@ void KarhunenLoeveSVDAlgorithm::run()
   const UnsignedInteger dimension = sample_.getDimension();
   const UnsignedInteger augmentedDimension = verticesNumber * dimension;
   MatrixImplementation designMatrix(augmentedDimension, kTilde);
-  UnsignedInteger shift = 0;
   // Compute the empirical mean if the sample is not centered
   NumericalPoint mean;
   if (!centeredSample_)
@@ -139,6 +138,7 @@ void KarhunenLoeveSVDAlgorithm::run()
   if (uniformVerticesWeights_)
   {
     LOGINFO("Uniform vertices weights");
+    UnsignedInteger shift = 0;
     const NumericalScalar coeff = std::sqrt(verticesWeights_[0]);
     for (UnsignedInteger i = 0; i < kTilde; ++i)
     {

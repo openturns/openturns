@@ -285,7 +285,7 @@ Bool SymmetricMatrix::operator == (const Matrix & rhs) const
   // Compare the content
   for (UnsignedInteger i = 0; i < dimension; ++i)
     for (UnsignedInteger j = 0; j <= i; ++j)
-      if (!(*this)(i, j) == rhs(i, j)) return false;
+      if ((*this)(i, j) != rhs(i, j)) return false;
   return true;
 }
 

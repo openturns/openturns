@@ -45,6 +45,7 @@ Temporal information
 
     :template: class.rst_t
     StationaryCovarianceModel
+    RankMCovarianceModel
 
     :template: classWithPlot.rst_t
     UserDefinedStationaryCovarianceModel

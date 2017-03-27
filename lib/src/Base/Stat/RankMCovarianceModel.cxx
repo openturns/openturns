@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *
- *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -94,9 +94,7 @@ CovarianceMatrix RankMCovarianceModel::operator() (const NumericalPoint & s,
     {
       const MatrixImplementation phiS(dimension_, 1, functions_[i](s));
       const MatrixImplementation phiT(1, dimension_, functions_[i](t) * coefficients_[i]);
-      std::cerr << "i=" << i << ", phiS=" << phiS.transpose() << ", phiT=" << phiT << std::endl;
       result += phiS.genProd(phiT);
-      std::cerr << "result=" << result << std::endl;
     }
   else
   {
@@ -130,8 +128,6 @@ CovarianceMatrix RankMCovarianceModel::discretize(const NumericalSample & vertic
   if (vertices.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has a dimension=" << vertices.getDimension() << " different from the input dimension=" << spatialDimension_;
   const UnsignedInteger size = vertices.getSize();
   const UnsignedInteger fullSize = size * dimension_;
-  std::cerr << "fullSize=" << fullSize << std::endl;
-  std::cerr << "vertices=" << vertices << std::endl;
   MatrixImplementation covarianceMatrix(fullSize, fullSize);
   // Precompute the discretizations of the functions over the vertices
   const UnsignedInteger basisSize = functions_.getSize();
@@ -139,21 +135,16 @@ CovarianceMatrix RankMCovarianceModel::discretize(const NumericalSample & vertic
   // If the coefficients are uncorrelated
   if (covariance_.getDimension() == 0)
     {
-      std::cerr << "No correlation" << std::endl;
       for (UnsignedInteger i = 0; i < basisSize; ++i)
 	{
 	  const NumericalSample data(functions_[i](vertices));
-	  std::cerr << "i=" << i << ", data=" << data << std::endl;
 	  basisDiscretization[i] = MatrixImplementation(fullSize, 1, data.getImplementation()->getData()) * std::sqrt(coefficients_[i]);
-	  std::cerr << "i=" << i << ", basisDiscretization[i]=" << basisDiscretization[i] << std::endl;	  
 	}
       for (UnsignedInteger i = 0; i < basisSize; ++i)
 	  covarianceMatrix += basisDiscretization[i].genProd(basisDiscretization[i], false, true);
       return covarianceMatrix;
     }
-  std::cerr << "Correlation" << std::endl;
   const TriangularMatrix cholesky(const_cast<CovarianceMatrix&>(covariance_).computeCholesky());
-  std::cerr << "cholesky=" << cholesky << std::endl;
   for (UnsignedInteger i = 0; i < basisSize; ++i)
     basisDiscretization[i] = MatrixImplementation(fullSize, 1, (functions_[i](vertices) * cholesky).getImplementation()->getData() * std::sqrt(coefficients_[i]));
   for (UnsignedInteger i = 0; i < basisSize; ++i)
@@ -169,12 +160,12 @@ Bool RankMCovarianceModel::isStationary() const
 }
 
 /* Basis accessor */
-const Basis & RankMCovarianceModel::getBasis() const
+Basis RankMCovarianceModel::getBasis() const
 {
   return basis_;
 }
 
-const Basis::NumericalMathFunctionCollection & RankMCovarianceModel::getFunctions() const
+Basis::NumericalMathFunctionCollection RankMCovarianceModel::getFunctions() const
 {
   return functions_;
 }

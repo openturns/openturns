@@ -143,7 +143,6 @@ void PiecewiseLinearEvaluationImplementation::setLocations(const NumericalPoint 
   for (UnsignedInteger i = 0; i < size; ++i)
     locationsAndValues[i] = std::pair<NumericalScalar, NumericalPoint>(locations[i], values_[i]);
   std::stable_sort(locationsAndValues.begin(), locationsAndValues.end());
-  std::cerr << "locationsAndValues=" << locationsAndValues << std::endl;
   locations_ = NumericalPoint(size);
   for (UnsignedInteger i = 0; i < size; ++i)
     {

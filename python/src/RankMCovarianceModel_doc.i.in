@@ -3,8 +3,12 @@
 
 Parameters
 ----------
-coll : sequence of :class:`~openturns.CovarianceModel`
-    Collection of covariance models :math:`(C_k)_{1 \leq k \leq K}` of dimension :math:`d=1`.
+coefficients : sequence of float
+    Coefficients
+basis : :class:`~openturns.Basis`
+    Basis
+covariance : 2-d sequence of float, optional
+    Covariance matrix
 
 Notes
 -----
@@ -54,3 +58,24 @@ Create a rankM covariance function from two exponential functions, each one defi
 >>> coefficients = [1.0, 2.0]
 >>> basis = ot.LinearBasisFactory().build()
 >>> myCovarianceModel = ot.RankMCovarianceModel(coefficients, basis)"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::RankMCovarianceModel::getBasis
+"Basis accessor.
+
+Returns
+-------
+basis : :class:`~openturns.Basis`
+    The provided basis."
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::RankMCovarianceModel::getFunctions
+"Functions accessor.
+
+Returns
+-------
+functions : :class:`~openturns.NumericalMathFunctionCollection`
+    The collection of functions from the basis."
+

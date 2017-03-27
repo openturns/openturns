@@ -15,7 +15,7 @@ weights : sequence of float
 threshold : float
     The minimal relative amplitude of the eigenvalues to consider in
     the decomposition wrt the maximum eigenvalue. The default value is 0.
-centeredFlag : logical
+centeredFlag : bool
     Flag to tell if the sample is drawn according to a centered
     process or if it has to be centered using the empirical mean. The
     default value is *False*.
@@ -86,7 +86,7 @@ Create a Karhunen-Loeve SVD algorithm:
 >>> mesh = ot.IntervalMesher([10]*2).build(ot.Interval([-1.0]*2, [1.0]*2))
 >>> threshold = 0.01
 >>> model = ot.AbsoluteExponential([1.0]*2)
->>> sample = ot.TemporalNormalProcess(model, mesh).getSample(8)
+>>> sample = ot.GaussianProcess(model, mesh).getSample(8)
 >>> algorithm = ot.KarhunenLoeveSVDAlgorithm(sample, threshold)"
 
 // ---------------------------------------------------------------------
@@ -100,7 +100,7 @@ Examples
 >>> mesh = ot.IntervalMesher([10]*2).build(ot.Interval([-1.0]*2, [1.0]*2))
 >>> threshold = 0.01
 >>> model = ot.AbsoluteExponential([1.0]*2)
->>> sample = ot.TemporalNormalProcess(model, mesh).getSample(8)
+>>> sample = ot.GaussianProcess(model, mesh).getSample(8)
 >>> algorithm = ot.KarhunenLoeveSVDAlgorithm(sample, threshold)
 >>> algorithm.run()
 >>> result = algorithm.getResult()"
