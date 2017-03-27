@@ -93,6 +93,12 @@ int main(int argc, char *argv[])
       }
     }
     fullprint << "myModel.discretize()=" << myModel.discretize(timeGrid) << std::endl;
+    // Test the drawing method as a nonstationary model, in the covariance range
+    Graph graph = myModel.draw(0, 0, 0.0, 2.0, 21, false, false);
+    fullprint << graph << std::endl;
+    // Test the drawing method as a nonstationary model, in the correlation range
+    graph = myModel.draw(0, 0, 0.0, 2.0, 21, false, true);
+    fullprint << graph << std::endl;
   }
   catch (TestFailed & ex)
   {

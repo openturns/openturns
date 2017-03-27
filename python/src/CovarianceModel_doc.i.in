@@ -16,6 +16,8 @@ OT_CovarianceModel_discretizeAndFactorizeHMatrix_doc
 OT_CovarianceModel_discretizeHMatrix_doc
 %feature("docstring") OT::CovarianceModel::discretizeRow
 OT_CovarianceModel_discretizeRow_doc
+%feature("docstring") OT::CovarianceModel::draw
+OT_CovarianceModel_draw_doc
 %feature("docstring") OT::CovarianceModel::getDimension
 OT_CovarianceModel_getDimension_doc
 %feature("docstring") OT::CovarianceModel::getAmplitude

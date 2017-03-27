@@ -26,6 +26,8 @@
 #include "openturns/MatrixImplementation.hxx"
 #include "openturns/HMatrix.hxx"
 #include "openturns/HMatrixFactory.hxx"
+#include "openturns/Contour.hxx"
+#include "openturns/Curve.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -54,7 +56,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteg
   updateSpatialCovariance();
 }
 
-/** Standard constructor with scale and amplitude scale parameter parameter */
+/* Standard constructor with scale and amplitude scale parameter parameter */
 CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoint & scale,
     const NumericalPoint & amplitude)
   : PersistentObject()
@@ -74,7 +76,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoin
   updateSpatialCovariance();
 }
 
-/** Standard constructor with scale, amplitude and spatial correlation parameter parameter */
+/* Standard constructor with scale, amplitude and spatial correlation parameter parameter */
 CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoint & scale,
     const NumericalPoint & amplitude,
     const CorrelationMatrix & spatialCorrelation)
@@ -97,7 +99,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoin
   setSpatialCorrelation(spatialCorrelation);
 }
 
-/** Standard constructor with scale and spatial covariance parameter parameter */
+/* Standard constructor with scale and spatial covariance parameter parameter */
 CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoint & scale,
     const CovarianceMatrix & spatialCovariance)
   : PersistentObject()
@@ -332,7 +334,7 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const Mesh & mesh) co
   return discretize(mesh.getVertices());
 }
 
-/** Discretize and factorize the covariance function on a given TimeGrid/Mesh */
+/* Discretize and factorize the covariance function on a given TimeGrid/Mesh */
 TriangularMatrix CovarianceModelImplementation::discretizeAndFactorize(const RegularGrid & timeGrid) const
 {
   return discretizeAndFactorize(timeGrid.getVertices());
@@ -430,7 +432,7 @@ NumericalSample CovarianceModelImplementation::discretizeRow(const NumericalSamp
   return result;
 }
 
-/** Discretize the covariance function on a given TimeGrid/Mesh using HMatrix */
+/* Discretize the covariance function on a given TimeGrid/Mesh using HMatrix */
 HMatrix CovarianceModelImplementation::discretizeHMatrix(const RegularGrid & timeGrid,
     const NumericalScalar nuggetFactor,
     const HMatrixParameters & parameters) const
@@ -468,7 +470,7 @@ HMatrix CovarianceModelImplementation::discretizeHMatrix(const NumericalSample &
 #endif
 }
 
-/** Discretize and factorize the covariance function on a given TimeGrid/Mesh using HMatrix */
+/* Discretize and factorize the covariance function on a given TimeGrid/Mesh using HMatrix */
 HMatrix CovarianceModelImplementation::discretizeAndFactorizeHMatrix(const RegularGrid & timeGrid,
     const NumericalScalar nuggetFactor,
     const HMatrixParameters & parameters) const
@@ -702,6 +704,89 @@ CovarianceModelImplementation::Implementation CovarianceModelImplementation::get
   if (index >= dimension_) throw InvalidArgumentException(HERE) << "Error: index=" << index << " must be less than output dimension=" << dimension_;
   if (dimension_ != 1) throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::getMarginal(const UnsignedInteger index) const";
   return clone();
+}
+
+/* Drawing method */
+Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
+					  const UnsignedInteger columnIndex,
+					  const NumericalScalar tMin,
+					  const NumericalScalar tMax,
+					  const UnsignedInteger pointNumber,
+					  const Bool asStationary,
+					  const Bool correlationFlag) const
+{
+  if (spatialDimension_ != 1) throw NotDefinedException(HERE) << "Error: can draw covariance models only if spatial dimension=1, here spatial dimension=" << spatialDimension_;
+  if (rowIndex >= dimension_) throw InvalidArgumentException(HERE) << "Error: the given row index must be less than " << dimension_ << ", here rowIndex=" << rowIndex;
+  if (columnIndex >= dimension_) throw InvalidArgumentException(HERE) << "Error: the given column index must be less than " << dimension_ << ", here columnIndex=" << columnIndex;
+  if (pointNumber < 2) throw InvalidArgumentException(HERE) << "Error: cannot draw the model with pointNumber<2, here pointNumber=" << pointNumber;
+  // Check if the model is stationary and if we want to draw it this way
+  if (asStationary && isStationary())
+    {
+      // Here we compute the normalization for the correlation instead of using
+      // the amplitude attribute for models for which it is not given
+      NumericalScalar ratio = 1.0;
+      if (correlationFlag)
+	{
+	  ratio = (*this)(0.0)(rowIndex, columnIndex);
+	  // If ratio == 0, the covariance is zero everywhere
+	  if (ratio == 0.0) ratio = 1.0;
+	}
+      NumericalSample data(pointNumber, 2);
+      for (UnsignedInteger i = 0; i < pointNumber; ++i)
+	{
+	  const NumericalScalar tau = (i * tMin + (pointNumber - i - 1.0) * tMax) / (pointNumber - 1.0);
+	  const NumericalScalar value((*this)(tau)(rowIndex, columnIndex) / ratio);
+	  data[i][0] = tau;
+	  data[i][1] = value;
+	}
+      Graph graph(getName(), "tau", (correlationFlag ? "correlation" : "covariance"), true, "topright");
+      Curve curve(data);
+      curve.setLineWidth(2);
+      curve.setColor("red");
+      graph.add(curve);
+      return graph;
+    }
+  // Here we draw a non-stationary model
+  const NumericalSample gridT = RegularGrid(tMin, (tMax - tMin) / (pointNumber - 1.0), pointNumber).getVertices();
+  CovarianceMatrix matrix(discretize(gridT));
+  // Normalize the data if needed
+  if (correlationFlag)
+    {
+      for (UnsignedInteger j = 0; j < matrix.getDimension(); ++j)
+	{
+	  const NumericalScalar sigmaJ = std::sqrt(matrix(j, j));
+	  for (UnsignedInteger i = 0; i < j; ++i)
+	    {
+	      const NumericalScalar sigmaI = std::sqrt(matrix(i, i));
+	      const NumericalScalar scaling = sigmaI * sigmaJ;
+	      if (scaling == 0.0) matrix(i, j) = 0.0;
+	      else matrix(i, j) /= scaling;
+	    }
+	  matrix(j, j) = 1.0;
+	}
+    }
+  matrix.checkSymmetry();
+  NumericalSample data(pointNumber * pointNumber, 1);
+  data.getImplementation()->setData(*matrix.getImplementation());
+  Graph graph(getName() + (correlationFlag ? String(" correlation") : String (" covariance")), "s", "t", true, "bottomright");
+  graph.setGrid(true);
+  Contour contour(pointNumber, pointNumber, data);
+  Contour isoValues(Contour(gridT, gridT, data, NumericalPoint(0), Description(0), true, ""));
+  isoValues.buildDefaultLevels();
+  isoValues.buildDefaultLabels();
+  const NumericalPoint levels(isoValues.getLevels());
+  const Description labels(isoValues.getLabels());
+  for (UnsignedInteger i = 0; i < levels.getDimension(); ++i)
+  {
+    Contour current(isoValues);
+    current.setLevels(NumericalPoint(1, levels[i]));
+    current.setLabels(Description(1, labels[i]));
+    current.setDrawLabels(false);
+    current.setLegend(labels[i]);
+    current.setColor(Contour::ConvertFromHSV((360.0 * i / levels.getDimension()), 1.0, 1.0));
+    graph.add(current);
+  }
+  return graph;
 }
 
 /* String converter */

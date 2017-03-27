@@ -314,6 +314,18 @@ Bool CovarianceModel::isDiagonal() const
   return getImplementation()->isDiagonal();
 }
 
+/* Drawing method */
+Graph CovarianceModel::draw(const UnsignedInteger rowIndex,
+			    const UnsignedInteger columnIndex,
+			    const NumericalScalar tMin,
+			    const NumericalScalar tMax,
+			    const UnsignedInteger pointNumber,
+			    const Bool asStationary,
+			    const Bool correlationFlag) const
+{
+  return getImplementation()->draw(rowIndex, columnIndex, tMin, tMax, pointNumber, asStationary, correlationFlag);
+}
+
 /* String converter */
 String CovarianceModel::__repr__() const
 {

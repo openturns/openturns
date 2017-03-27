@@ -628,3 +628,36 @@ active : :class:`~openturns.Indices`
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::getActiveParameter
 OT_CovarianceModel_getActiveParameter_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_CovarianceModel_draw_doc
+"Draw a specific component of the covariance model with spatial dimension 1.
+
+Parameters
+----------
+rowIndex : int, :math:`0 \leq rowIndex < dimension`
+    The row index of the component to draw. Default value is 0.
+columnIndex: int, :math:`0 \leq columnIndex < dimension`
+    The column index of the component to draw. Default value is 0.
+tMin : float
+    The lower bound of the range over which the model is plotted. Default value is *CovarianceModel-DefaultTMin* in :class:`~openturns.ResourceMap`.
+tMax : float
+    The upper bound of the range over which the model is plotted. Default value is *CovarianceModel-DefaultTMax* in :class:`~openturns.ResourceMap`.
+pointNumber : int, :math:`pointNumber \geq 2`
+    The discretization of the range :math:`[tMin,tMax]` over which the model is plotted. Default value is *CovarianceModel-DefaultPointNumber* in  class:`~openturns.ResourceMap`.
+asStationary : bool
+    Flag to tell if the model has to be plotted as a stationary model, ie as a function of the lag :math:`\tau=t-s` if equals to *True*, or as a non-stationary model, ie as a function of :math:`(s,t)` if equals to *False*. Default value is *True*.
+correlationFlag : bool
+    Flag to tell if the model has to be plotted as a correlation function if equals to *True* or as a covariance function if equals to *False*. Default value is *False*.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    A graph containing a unique curve if *asStationary=True* and if the model is actually a stationary model, or containing the iso-values of the model if *asStationary=False* or if the model is nonstationary.
+
+"
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::draw
+OT_CovarianceModel_draw_doc
+

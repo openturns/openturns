@@ -82,6 +82,12 @@ int main(int argc, char *argv[])
       fullprint << "myModel = " << myModel(t)(0, 0) << ", referenceModel = " << referenceModel(t)(0 , 0) << std::endl;
     }
 
+    // Test the drawing method as a nonstationary model, in the covariance range
+    Graph graph = myModel.draw(0, 0, -2.0, 2.0, 21, true, false);
+    fullprint << graph << std::endl;
+    // Test the drawing method as a nonstationary model, in the correlation range
+    graph = myModel.draw(0, 0, -2.0, 2.0, 21, true, true);
+    fullprint << graph << std::endl;
   }
   catch (TestFailed & ex)
   {

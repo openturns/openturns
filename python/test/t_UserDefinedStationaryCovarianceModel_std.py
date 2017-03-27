@@ -24,7 +24,7 @@ try:
     spatialCorrelation = CorrelationMatrix(dimension)
     for index in range(dimension):
         # constant amplitude
-        amplitude[index] = 1.0
+        amplitude[index] = 2.0
         scale[index] = (index + 1.0) / dimension
 
     # Sample a ExponentialModel
@@ -50,6 +50,13 @@ try:
         # Because of symmetry, we check the right index computation
         print("t= %.6g" % t, "myModel =  %.6g" %
               myModel(t)[0, 0], ", referenceModel=  %.6g" % referenceModel(t)[0, 0])
+
+    # Test the drawing method as a nonstationary model, in the covariance range
+    graph = myModel.draw(0, 0, -2.0, 2.0, 21, True, False)
+    print(graph)
+    # Test the drawing method as a nonstationary model, in the correlation range
+    graph = myModel.draw(0, 0, -2.0, 2.0, 21, True, True)
+    print(graph)
 
 except:
     import sys
