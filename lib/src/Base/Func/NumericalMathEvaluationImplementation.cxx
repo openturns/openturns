@@ -577,8 +577,8 @@ Graph NumericalMathEvaluationImplementation::draw(const UnsignedInteger firstInp
   Contour isoValues(Contour(x, y, z, NumericalPoint(0), Description(0), true, title));
   isoValues.buildDefaultLevels();
   isoValues.buildDefaultLabels();
-  NumericalPoint levels(isoValues.getLevels());
-  Description labels(isoValues.getLabels());
+  const NumericalPoint levels(isoValues.getLevels());
+  const Description labels(isoValues.getLabels());
   for (UnsignedInteger i = 0; i < levels.getDimension(); ++i)
   {
     Contour current(isoValues);
