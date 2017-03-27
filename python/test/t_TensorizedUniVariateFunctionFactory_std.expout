@@ -1,0 +1,11 @@
+factory= class=TensorizedUniVariateFunctionFactory univariate function collection=[class=UniVariateFunctionFamily implementation=class=MonomialFunctionFactory,class=UniVariateFunctionFamily implementation=class=MonomialFunctionFactory,class=UniVariateFunctionFamily implementation=class=MonomialFunctionFactory] enumerate function=class=LinearEnumerateFunction dimension=3
+i= 0 f(X)= [1]
+i= 1 f(X)= [0.5]
+i= 2 f(X)= [1]
+i= 3 f(X)= [1.5]
+i= 4 f(X)= [0.25]
+i= 5 f(X)= [0.5]
+i= 6 f(X)= [0.75]
+i= 7 f(X)= [1]
+i= 8 f(X)= [1.5]
+i= 9 f(X)= [2.25]

@@ -1,0 +1,12 @@
+Factory=class=TensorizedUniVariateFunctionFactory univariate function collection=[class=UniVariateFunctionFamily implementation=class=MonomialFunctionFactory,class=UniVariateFunctionFamily implementation=class=MonomialFunctionFactory,class=UniVariateFunctionFamily implementation=class=MonomialFunctionFactory] enumerate function=class=LinearEnumerateFunction dimension=3
+point=class=NumericalPoint name=Unnamed dimension=3 values=[0.5,1,1.5]
+i=0 f(point)=class=NumericalPoint name=Unnamed dimension=1 values=[1]
+i=1 f(point)=class=NumericalPoint name=Unnamed dimension=1 values=[0.5]
+i=2 f(point)=class=NumericalPoint name=Unnamed dimension=1 values=[1]
+i=3 f(point)=class=NumericalPoint name=Unnamed dimension=1 values=[1.5]
+i=4 f(point)=class=NumericalPoint name=Unnamed dimension=1 values=[0.25]
+i=5 f(point)=class=NumericalPoint name=Unnamed dimension=1 values=[0.5]
+i=6 f(point)=class=NumericalPoint name=Unnamed dimension=1 values=[0.75]
+i=7 f(point)=class=NumericalPoint name=Unnamed dimension=1 values=[1]
+i=8 f(point)=class=NumericalPoint name=Unnamed dimension=1 values=[1.5]
+i=9 f(point)=class=NumericalPoint name=Unnamed dimension=1 values=[2.25]
