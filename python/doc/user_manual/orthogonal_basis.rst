@@ -12,6 +12,24 @@ Univariate polynomials
     :template: class.rst_t
 
     UniVariatePolynomial
+    MonomialFunction
+
+Univariate polynomial families
+==============================
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    MonomialFunctionFactory
+
+Multivariate polynomial functions
+=================================
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    TensorizedUniVariateFunctionFactory
 
 Orthonormalization algorithms
 -----------------------------
