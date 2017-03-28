@@ -73,27 +73,26 @@ OT_SpectralModel_computeStandardRepresentative_doc
 
 Parameters
 ----------
-rowIndex : int
-    i-th row component to draw.
-    Default value is 0
-
-columnIndex : int
-    j-th column component to draw .
-    Default value is 0
-
+rowIndex : int, :math:`0 \leq rowIndex < dimension`
+    The row index of the component to draw. Default value is 0.
+columnIndex: int, :math:`0 \leq columnIndex < dimension`
+    The column index of the component to draw. Default value is 0.
+minimumFrequency : float
+    The lower bound of the frequency range over which the model is plotted. Default value is *SpectralModel-DefaultMinimumFrequency* in :class:`~openturns.ResourceMap`.
+maximumFrequency : float
+    The upper bound of the frequency range over which the model is plotted. Default value is *SpectralModel-DefaultMaximumFrequency* in :class:`~openturns.ResourceMap`.
+frequencyNumber : int, :math:`pointNumber \geq 2`
+    The discretization of the frequency range :math:`[minimumFrequency, maximumFrequency]` over which the model is plotted. Default value is *SpectralModel-DefaultFrequencyNumber* in  class:`~openturns.ResourceMap`.
 module : bool
-    Tells if module has to be drawn(True) or if it is
-    the argument to be drawn (False).
-    Default value is True.
+    Flag to tell if module has to be drawn (*True*) or if it is
+    the argument to be drawn (*False*).
+    Default value is *True*.
 
 Returns
 -------
 graph : Graph
      Graphic of the specified component
-
-Notes
------
-The method plots a specific component of the spectral density function over a frequency grid. Thus, this last one should be specified thanks to the `setFrequencyGrid` method."
+"
 %enddef
 %feature("docstring") OT::SpectralModelImplementation::draw
 OT_SpectralModel_draw_doc
