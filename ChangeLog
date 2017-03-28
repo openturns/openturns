@@ -52,7 +52,6 @@
  * Renamed ProductNumericalMathFunction to ProductFunction
  * Deprecated KarhunenLoeveP1Factory, KarhunenLoeveQuadratureFactory
  * Deprecated GramSchmidtAlgorithm, ChebychevAlgorithm
- * Removed OrthogonalProductFunctionFactory::getFunctionFamilyCollection method
  * Added getSobolAggregatedIndices() to FunctionalChaosRandomVector
  * Added computeWeight() to Mesh
 

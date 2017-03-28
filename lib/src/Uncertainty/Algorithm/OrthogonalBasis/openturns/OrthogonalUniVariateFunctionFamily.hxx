@@ -46,6 +46,14 @@ public:
   /** Constructor from implementation */
   OrthogonalUniVariateFunctionFamily(const OrthogonalUniVariateFunctionFactory & implementation);
 
+#ifndef SWIG
+  /** Constructor from implementation */
+  OrthogonalUniVariateFunctionFamily(const Implementation & p_implementation);
+
+  /** Constructor from implementation */
+  OrthogonalUniVariateFunctionFamily(OrthogonalUniVariateFunctionFactory * p_implementation);
+#endif
+
   /** String converter */
   virtual String __repr__() const;
 

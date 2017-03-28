@@ -86,6 +86,19 @@ EnumerateFunction OrthogonalProductFunctionFactory::getEnumerateFunction() const
   return tensorizedFunctionFactory_.getEnumerateFunction();
 }
 
+/* Return the collection of univariate orthogonal polynomial families */
+OrthogonalProductFunctionFactory::FunctionFamilyCollection OrthogonalProductFunctionFactory::getFunctionFamilyCollection() const
+{
+  TensorizedUniVariateFunctionFactory::FunctionFamilyCollection functionColl(tensorizedFunctionFactory_.getFunctionFamilyCollection());
+  FunctionFamilyCollection coll;
+  for (UnsignedInteger i = 0; i < functionColl.getSize(); ++ i)
+  {
+    coll.add(dynamic_cast<OrthogonalUniVariateFunctionFactory*>(functionColl[i].getImplementation().get())->clone());
+  }
+  return coll;
+}
+
+
 /* Build the NumericalMathFunction of the given index */
 NumericalMathFunction OrthogonalProductFunctionFactory::build(const UnsignedInteger index) const
 {
@@ -106,7 +119,7 @@ String OrthogonalProductFunctionFactory::__repr__() const
 void OrthogonalProductFunctionFactory::save(Advocate & adv) const
 {
   OrthogonalFunctionFactory::save(adv);
-  adv.saveAttribute( "tensorizedFunctionFactory_", tensorizedFunctionFactory_ );
+  adv.saveAttribute("tensorizedFunctionFactory_", tensorizedFunctionFactory_);
 }
 
 
@@ -114,7 +127,7 @@ void OrthogonalProductFunctionFactory::save(Advocate & adv) const
 void OrthogonalProductFunctionFactory::load(Advocate & adv)
 {
   OrthogonalFunctionFactory::load(adv);
-  adv.loadAttribute( "tensorizedFunctionFactory_", tensorizedFunctionFactory_ );
+  adv.loadAttribute("tensorizedFunctionFactory_", tensorizedFunctionFactory_);
 }
 
 /*  Build product function factory */
