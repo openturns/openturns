@@ -191,11 +191,14 @@
   
   <!-- OT::CovarianceModelImplementation parameters -->
   <CovarianceModel-DefaultNuggetFactor value="1e-12" />
+  <CovarianceModel-DefaultTMin value="-5.0" />
+  <CovarianceModel-DefaultTMax value="5.0" />
+  <CovarianceModel-DefaultPointNumber value="129" />
 
   <!-- OT::SpectralModelImplementation parameters -->
   <SpectralModel-DefaultMinimumFrequency value="-5.0" />
   <SpectralModel-DefaultMaximumFrequency value="5.0" />
-  <SpectralModel-DefaultFrequencyNumber value="128" />
+  <SpectralModel-DefaultFrequencyNumber value="129" />
 
   <!-- OT::FieldImplementation parameters -->
   <Field-LevelNumber value="30" />

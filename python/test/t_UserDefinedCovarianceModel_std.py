@@ -18,14 +18,14 @@ spatialDimension = 1
 amplitude = NumericalPoint(dimension)
 # Scale values
 scale = NumericalPoint(dimension)
-# Spatial correclation
+# Spatial correlation
 spatialCorrelation = CorrelationMatrix(dimension)
 for index in range(dimension):
     # constant amplitude
-    amplitude[index] = 1.0
+    amplitude[index] = 2.0
     scale[index] = (index + 1.0) / dimension
 
-# Sample a ExponentialModel
+# Sample an ExponentialModel
 referenceModel = ExponentialModel(
     scale, amplitude, spatialCorrelation)
 
@@ -53,3 +53,11 @@ for i in range(timeGrid.getN()):
         print("myModel =  %.6g" % myModel(s, t)[
               0, 0], ", referenceModel=  %.6g" % referenceModel(s, t)[0, 0])
 print("myModel.discretize()=", myModel.discretize(timeGrid))
+
+# Test the drawing method as a nonstationary model, in the covariance range
+graph = myModel.draw(0, 0, 0.0, 2.0, 21, False, False)
+print(graph)
+# Test the drawing method as a nonstationary model, in the correlation range
+graph = myModel.draw(0, 0, 0.0, 2.0, 21, False, True)
+print(graph)
+

@@ -30,6 +30,7 @@
 #include "openturns/NumericalMathFunction.hxx"
 #include "openturns/Process.hxx"
 #include "openturns/HMatrix.hxx"
+#include "openturns/Basis.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
