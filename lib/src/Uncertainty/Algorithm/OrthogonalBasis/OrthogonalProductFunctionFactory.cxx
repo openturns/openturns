@@ -47,8 +47,7 @@ typedef ProductUniVariateFunctionEvaluationImplementation::UniVariateFunctionCol
 /* Default constructor */
 OrthogonalProductFunctionFactory::OrthogonalProductFunctionFactory()
   : OrthogonalFunctionFactory()
-  , coll_()
-  , phi_()
+  , tensorizedFunctionFactory_()
 {
   // Nothing to do
 }
@@ -57,22 +56,20 @@ OrthogonalProductFunctionFactory::OrthogonalProductFunctionFactory()
 /* Constructor */
 OrthogonalProductFunctionFactory::OrthogonalProductFunctionFactory(const FunctionFamilyCollection & coll)
   : OrthogonalFunctionFactory()
-  , coll_(coll)
-  , phi_(coll.getSize())
 {
-  buildMeasure();
+  buildTensorizedFunctionFactory(coll, EnumerateFunction(coll.getSize()) );
+  buildMeasure(coll);
 }
 
 
 /* Constructor */
 OrthogonalProductFunctionFactory::OrthogonalProductFunctionFactory(const FunctionFamilyCollection & coll,
     const EnumerateFunction & phi)
-  : OrthogonalFunctionFactory(),
-    coll_(coll),
-    phi_(phi)
+  : OrthogonalFunctionFactory()
 {
   if (coll.getSize() != phi.getDimension()) throw InvalidArgumentException(HERE) << "Error: the enumerate function must have a dimension equal to the collection size";
-  buildMeasure();
+  buildTensorizedFunctionFactory(coll, phi); 
+  buildMeasure(coll); 
 }
 
 
@@ -86,32 +83,13 @@ OrthogonalProductFunctionFactory * OrthogonalProductFunctionFactory::clone() con
 /* Return the enumerate function that translate unidimensional indices into multidimensional indices */
 EnumerateFunction OrthogonalProductFunctionFactory::getEnumerateFunction() const
 {
-  return phi_;
-}
-
-
-/* Return the collection of univariate orthogonal polynomial families */
-OrthogonalProductFunctionFactory::FunctionFamilyCollection OrthogonalProductFunctionFactory::getFunctionFamilyCollection() const
-{
-  return coll_;
+  return tensorizedFunctionFactory_.getEnumerateFunction();
 }
 
 /* Build the NumericalMathFunction of the given index */
 NumericalMathFunction OrthogonalProductFunctionFactory::build(const UnsignedInteger index) const
 {
-  // Compute the multi-indices using the EnumerateFunction
-  Indices indices(phi_(index));
-  const UnsignedInteger size = indices.getSize();
-  // Then build the collection of functions using the collection of factories
-  UniVariateFunctionCollection functions(size);
-  for (UnsignedInteger i = 0; i < size; ++ i)
-  {
-    functions[i] = coll_[i].build(indices[i]);
-  }
-  const Pointer<ProductUniVariateFunctionEvaluationImplementation> p_evaluation(ProductUniVariateFunctionEvaluationImplementation(functions).clone());
-  return NumericalMathFunctionImplementation(p_evaluation,
-         ProductUniVariateFunctionGradientImplementation(p_evaluation).clone(),
-         ProductUniVariateFunctionHessianImplementation(p_evaluation).clone());
+  return tensorizedFunctionFactory_.build(index);
 }
 
 
@@ -119,7 +97,7 @@ NumericalMathFunction OrthogonalProductFunctionFactory::build(const UnsignedInte
 String OrthogonalProductFunctionFactory::__repr__() const
 {
   return OSS() << "class=" << getClassName()
-         << " univariate function collection=" << coll_
+         << " factory=" << tensorizedFunctionFactory_
          << " measure=" << measure_;
 }
 
@@ -128,8 +106,7 @@ String OrthogonalProductFunctionFactory::__repr__() const
 void OrthogonalProductFunctionFactory::save(Advocate & adv) const
 {
   OrthogonalFunctionFactory::save(adv);
-  adv.saveAttribute( "coll_", coll_ );
-  adv.saveAttribute( "phi_", phi_ );
+  adv.saveAttribute( "tensorizedFunctionFactory_", tensorizedFunctionFactory_ );
 }
 
 
@@ -137,18 +114,31 @@ void OrthogonalProductFunctionFactory::save(Advocate & adv) const
 void OrthogonalProductFunctionFactory::load(Advocate & adv)
 {
   OrthogonalFunctionFactory::load(adv);
-  adv.loadAttribute( "coll_", coll_ );
-  adv.loadAttribute( "phi_", phi_ );
+  adv.loadAttribute( "tensorizedFunctionFactory_", tensorizedFunctionFactory_ );
+}
+
+/*  Build product function factory */
+void OrthogonalProductFunctionFactory::buildTensorizedFunctionFactory(const FunctionFamilyCollection & coll,
+     const EnumerateFunction & phi)
+{
+  TensorizedUniVariateFunctionFactory::FunctionFamilyCollection functionColl;
+  const UnsignedInteger size = coll.getSize();
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    functionColl.add(UniVariateFunctionFamily(*coll[i].getImplementation()));
+  }
+  tensorizedFunctionFactory_.setFunctionFamilyCollection(functionColl); 
+  tensorizedFunctionFactory_.setEnumerateFunction(phi);
 }
 
 /* Build the measure based on the one found in the family collection */
-void OrthogonalProductFunctionFactory::buildMeasure()
+void OrthogonalProductFunctionFactory::buildMeasure(const FunctionFamilyCollection & coll)
 {
-  const UnsignedInteger size = coll_.getSize();
+  const UnsignedInteger size = coll.getSize();
   Collection<Distribution> distributions(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    distributions[i] = coll_[i].getMeasure();
+    distributions[i] = coll[i].getMeasure();
   }
   measure_ = ComposedDistribution(distributions);
 }

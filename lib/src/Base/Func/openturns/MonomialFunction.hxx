@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief This an abstract class for 1D function factories
+ *  @brief Monomial function implementation
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,42 +18,50 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_ORTHOGONALUNIVARIATEFUNCTIONFACTORY
-#define OPENTURNS_ORTHOGONALUNIVARIATEFUNCTIONFACTORY
+#ifndef OPENTURNS_MONOMIALFUNCTION_HXX
+#define OPENTURNS_MONOMIALFUNCTION_HXX
 
-#include "openturns/UniVariateFunctionFactory.hxx"
-#include "openturns/Distribution.hxx"
+#include "openturns/UniVariateFunctionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 
 
 /**
- * @class OrthogonalUniVariateFunctionFactory
+ * @class MonomialFunction
  *
- * This an abstract class for 1D function factories
+ * Monomial function implementation
  */
 
-class OT_API OrthogonalUniVariateFunctionFactory
-  : public UniVariateFunctionFactory
+class OT_API MonomialFunction
+  : public UniVariateFunctionImplementation
 {
   CLASSNAME;
-
 public:
 
-  enum ParameterSet { ANALYSIS, PROBABILITY };
+  typedef Pointer<UniVariateFunctionImplementation> Implementation;
 
-  /** Constructor */
-  explicit OrthogonalUniVariateFunctionFactory(const Distribution & measure);
+  /** Default constructor */
+  explicit MonomialFunction();
+
+  /** Standard constructor */
+  MonomialFunction(const UnsignedInteger degree);
 
   /** Virtual constructor */
-  virtual OrthogonalUniVariateFunctionFactory * clone() const;
+  virtual MonomialFunction * clone() const;
 
   /** String converter */
   virtual String __repr__() const;
+  virtual String __str__(const String & offset = "") const;
 
-  /** Measure accessor */
-  Distribution getMeasure() const;
+  /** UniVariateFunctionImplementation are evaluated as functors */
+  NumericalScalar operator() (const NumericalScalar x) const;
+
+  /** UniVariateFunctionImplementation gradient */
+  NumericalScalar gradient(const NumericalScalar x) const;
+
+  /** UniVariateFunctionImplementation hessian */
+  NumericalScalar hessian(const NumericalScalar x) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -61,19 +69,12 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
-protected:
+private:
 
-  friend class Factory<OrthogonalUniVariateFunctionFactory>;
+  UnsignedInteger degree_;
 
-  /** Default constructor */
-  OrthogonalUniVariateFunctionFactory();
-
-  /** The distribution of the particular Orthonormal polynomial */
-  Distribution measure_;
-
-} ; /* class OrthogonalUniVariateFunctionFactory */
-
+} ; /* Class MonomialFunction */
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_ORTHOGONALUNIVARIATEFUNCTIONFACTORY */
+#endif /* OPENTURNS_MONOMIALFUNCTION_HXX */

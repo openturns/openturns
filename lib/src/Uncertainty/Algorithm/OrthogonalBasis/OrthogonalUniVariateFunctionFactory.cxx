@@ -34,9 +34,8 @@ static const Factory<OrthogonalUniVariateFunctionFactory> Factory_OrthogonalUniV
 
 /* Default constructor */
 OrthogonalUniVariateFunctionFactory::OrthogonalUniVariateFunctionFactory()
-  : PersistentObject()
+  : UniVariateFunctionFactory()
   , measure_()
-  , functionsCache_(0)
 {
   // Nothing to do. The derived class will have to call initializeCaches().
 }
@@ -44,9 +43,8 @@ OrthogonalUniVariateFunctionFactory::OrthogonalUniVariateFunctionFactory()
 
 /* Constructor */
 OrthogonalUniVariateFunctionFactory::OrthogonalUniVariateFunctionFactory(const Distribution & measure)
-  : PersistentObject()
+  : UniVariateFunctionFactory()
   , measure_(measure)
-  , functionsCache_(0)
 {
   // Nothing to do. The derived class will have to call initializeCaches().
 }
@@ -66,24 +64,10 @@ String OrthogonalUniVariateFunctionFactory::__repr__() const
          << " measure=" << measure_;
 }
 
-
-/* The method to get the function of any order */
-UniVariateFunction OrthogonalUniVariateFunctionFactory::build(const UnsignedInteger order) const
-{
-  throw NotYetImplementedException(HERE) << "OrthogonalUniVariateFunctionFactory::build";
-}
-
-
 /* Measure accessor */
 Distribution OrthogonalUniVariateFunctionFactory::getMeasure() const
 {
   return measure_;
-}
-
-/* Cache initialization */
-void OrthogonalUniVariateFunctionFactory::initializeCache()
-{
-
 }
 
 /* Method save() stores the object through the StorageManager */

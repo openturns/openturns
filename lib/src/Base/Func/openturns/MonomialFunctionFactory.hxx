@@ -1,8 +1,8 @@
 //                                               -*- C++ -*-
 /**
- *  @brief This an abstract class for 1D function factories
+ *  @brief This a class for 1D monomial function factories
  *
- *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2016 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -18,42 +18,42 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_ORTHOGONALUNIVARIATEFUNCTIONFACTORY
-#define OPENTURNS_ORTHOGONALUNIVARIATEFUNCTIONFACTORY
+#ifndef OPENTURNS_MONOMIALFUNCTIONFACTORY
+#define OPENTURNS_MONOMIALFUNCTIONFACTORY
 
 #include "openturns/UniVariateFunctionFactory.hxx"
-#include "openturns/Distribution.hxx"
+#include "openturns/MonomialFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 /**
- * @class OrthogonalUniVariateFunctionFactory
+ * @class MonomialFunctionFactory
  *
- * This an abstract class for 1D function factories
+ * This a class for 1D monomial function factories
  */
 
-class OT_API OrthogonalUniVariateFunctionFactory
+class OT_API MonomialFunctionFactory
   : public UniVariateFunctionFactory
 {
   CLASSNAME;
 
 public:
 
-  enum ParameterSet { ANALYSIS, PROBABILITY };
+  /** Default constructor */
+  MonomialFunctionFactory();
 
-  /** Constructor */
-  explicit OrthogonalUniVariateFunctionFactory(const Distribution & measure);
 
   /** Virtual constructor */
-  virtual OrthogonalUniVariateFunctionFactory * clone() const;
+  MonomialFunctionFactory * clone() const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const;
 
-  /** Measure accessor */
-  Distribution getMeasure() const;
+  /** The build method to get the function of any order as MonomialFunction. */
+  MonomialFunction buildAsMonomialFunction(const UnsignedInteger order) const;
+
+  /** The method to get the function of any order. */
+  UniVariateFunction build(const UnsignedInteger order) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -61,19 +61,9 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
-protected:
-
-  friend class Factory<OrthogonalUniVariateFunctionFactory>;
-
-  /** Default constructor */
-  OrthogonalUniVariateFunctionFactory();
-
-  /** The distribution of the particular Orthonormal polynomial */
-  Distribution measure_;
-
-} ; /* class OrthogonalUniVariateFunctionFactory */
+} ; /* class MonomialFunctionFactory */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_ORTHOGONALUNIVARIATEFUNCTIONFACTORY */
+#endif /* OPENTURNS_MONOMIALFUNCTIONFACTORY */

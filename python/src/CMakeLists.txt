@@ -272,6 +272,10 @@ ot_add_python_module(func func_module.i
                       NumericalMathFunctionImplementation.i NumericalMathFunctionImplementation_doc.i.in
                       ProductFunction.i ProductFunction_doc.i.in
                       NumericalMathFunction.i NumericalMathFunction_doc.i.in
+                      TensorizedUniVariateFunctionFactory.i TensorizedUniVariateFunctionFactory_doc.i.in
+                      UniVariateFunctionFactory.i UniVariateFunctionFactory_doc.i.in
+                      MonomialFunctionFactory.i MonomialFunctionFactory_doc.i.in
+                      UniVariateFunctionFamily.i UniVariateFunctionFamily_doc.i.in
                       AggregatedFunction.i AggregatedFunction_doc.i.in
                       SymbolicFunction.i SymbolicFunction_doc.i.in
                       ComposedFunction.i ComposedFunction_doc.i.in
@@ -692,6 +696,7 @@ ot_add_python_module(orthogonalbasis orthogonalbasis_module.i
                       OrthogonalBasis.i OrthogonalBasis_doc.i.in
                       UniVariateFunctionImplementation.i UniVariateFunctionImplementation_doc.i.in
                       UniVariateFunction.i UniVariateFunction_doc.i.in
+                      MonomialFunction.i MonomialFunction_doc.i.in
                       OrthogonalUniVariateFunctionFactory.i OrthogonalUniVariateFunctionFactory_doc.i.in
                       OrthogonalUniVariateFunctionFamily.i OrthogonalUniVariateFunctionFamily_doc.i.in
                       OrthogonalUniVariatePolynomialFunctionFactory.i OrthogonalUniVariatePolynomialFunctionFactory_doc.i.in

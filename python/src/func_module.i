@@ -82,6 +82,7 @@
 %include QuadraticFunction.i
 %include UniVariateFunctionImplementation.i
 %include UniVariateFunction.i
+%include MonomialFunction.i
 %include UniVariatePolynomialImplementation.i
 %include UniVariatePolynomial.i
 %include AggregatedNumericalMathEvaluationImplementation.i
@@ -108,6 +109,10 @@
 %include FunctionalBasis.i
 %include BasisSequenceFactoryImplementation.i
 %include BasisSequenceFactory.i
+%include UniVariateFunctionFactory.i
+%include MonomialFunctionFactory.i
+%include UniVariateFunctionFamily.i
+%include TensorizedUniVariateFunctionFactory.i
 %include LARS.i
 %include BoxCoxEvaluationImplementation.i
 %include BoxCoxTransform.i

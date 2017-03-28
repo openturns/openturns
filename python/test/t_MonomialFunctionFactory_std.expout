@@ -1,0 +1,23 @@
+factory =  class=MonomialFunctionFactory
+Build functions for degrees in 1..9
+P_0=[x] -> 1
+P_1=[x] --> x
+P_2=[x] --> x^2
+P_3=[x] --> x^3
+P_4=[x] --> x^4
+P_5=[x] --> x^5
+P_6=[x] --> x^6
+P_7=[x] --> x^7
+P_8=[x] --> x^8
+P_9=[x] --> x^9
+Build as MonomialFunction for degrees in 1..9
+P_0=class=MonomialFunction degree=0
+P_1=class=MonomialFunction degree=1
+P_2=class=MonomialFunction degree=2
+P_3=class=MonomialFunction degree=3
+P_4=class=MonomialFunction degree=4
+P_5=class=MonomialFunction degree=5
+P_6=class=MonomialFunction degree=6
+P_7=class=MonomialFunction degree=7
+P_8=class=MonomialFunction degree=8
+P_9=class=MonomialFunction degree=9

@@ -22,13 +22,11 @@
 #define OPENTURNS_ORTHOGONALPRODUCTFUNCTIONFACTORY_HXX
 
 #include "openturns/OrthogonalFunctionFactory.hxx"
-#include "openturns/Distribution.hxx"
-#include "openturns/Indices.hxx"
-#include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalSample.hxx"
 #include "openturns/NumericalMathFunction.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/OrthogonalUniVariateFunctionFamily.hxx"
+#include "openturns/TensorizedUniVariateFunctionFactory.hxx"
+#include "openturns/EnumerateFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -67,9 +65,6 @@ public:
   /** Return the enumerate function that translate unidimensional indices nto multidimensional indices */
   EnumerateFunction getEnumerateFunction() const;
 
-  /** Return the collection of univariate orthogonal polynomial families */
-  FunctionFamilyCollection getFunctionFamilyCollection() const;
-
   /** Virtual constructor */
   virtual OrthogonalProductFunctionFactory * clone() const;
 
@@ -85,14 +80,15 @@ public:
 protected:
 
 private:
+  /** Build tensorized function factory */
+  void buildTensorizedFunctionFactory(const FunctionFamilyCollection & coll,
+                                      const EnumerateFunction & phi);
+
   /** Build the measure based on the one found in the family collection */
-  void buildMeasure();
+  void buildMeasure(const FunctionFamilyCollection & coll);
 
-  /** The 1D polynomial family collection */
-  FunctionFamilyPersistentCollection coll_;
-
-  /** The Phi function */
-  EnumerateFunction phi_;
+  /** The product function factory */
+  TensorizedUniVariateFunctionFactory tensorizedFunctionFactory_;
 
 } ; /* class OrthogonalProductFunctionFactory */
 
