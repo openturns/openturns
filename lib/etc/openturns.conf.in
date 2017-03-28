@@ -209,7 +209,9 @@
   <SpectralModel-DefaultFrequencyNumber value="129" />
 
   <!-- OT::FieldImplementation parameters -->
-  <Field-LevelNumber value="30" />
+  <Field-LevelNumber  value="30" />
+  <Field-ArrowRatio   value="0.01" />
+  <Field-ArrowScaling value="1.0" />
 
   <!-- OT::NumericalSampleImplementation parameters -->
   <NumericalSample-SmallKendallTau value="23" />

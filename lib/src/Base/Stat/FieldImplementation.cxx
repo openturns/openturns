@@ -386,6 +386,69 @@ Graph FieldImplementation::draw() const
     graph.add(curveSerie);
     return graph;
   }
+  // Specific drawing method for bidimensional fields indexed by a 2d-point
+  if ((getSpatialDimension() == 2) && (getDimension() == 2))
+  {
+    const String title(OSS() << getName());
+    Graph graph(title, description_[0], description_[1], true, "");
+    // Get the bounding box of the mesh to set the head size of the arrow
+    // It must be independent from the values as we want the same size for
+    // all the arrows
+    const NumericalSample vertices(mesh_.getVertices());
+    const NumericalPoint xMin(vertices.getMin());
+    const NumericalPoint xMax(vertices.getMax());
+    const NumericalScalar delta = std::min(xMax[0] - xMin[0], xMax[1] - xMin[1]) * ResourceMap::GetAsNumericalScalar("Field-ArrowRatio");
+    const NumericalScalar rho = ResourceMap::GetAsNumericalScalar("Field-ArrowScaling");
+    const UnsignedInteger size = values_.getSize();
+    NumericalSample normValues(size, 1);
+    for (UnsignedInteger i = 0; i < size; ++i)
+      normValues[i][0] = NumericalPoint(values_[i]).norm();
+    NumericalScalar normMin = normValues.getMin()[0];
+    NumericalScalar normMax = normValues.getMax()[0];
+    if (normMax == normMin) normMax = normMin + 1.0;
+    const UnsignedInteger levelsNumber = ResourceMap::GetAsUnsignedInteger("Field-LevelNumber");
+    Description palette(levelsNumber);
+    for (UnsignedInteger i = 0; i < levelsNumber; ++i)
+      palette[i] = Curve::ConvertFromHSV((270.0 * (levelsNumber - i - 1)) / levelsNumber, 1.0, 1.0);
+    
+    for (UnsignedInteger i = 0; i < values_.getSize(); ++i)
+      {
+	const NumericalPoint x(vertices[i]);
+	NumericalPoint v(values_[i]);
+	NumericalScalar arrowLength = v.norm();
+	const UnsignedInteger paletteIndex = static_cast<UnsignedInteger>((levelsNumber - 0.5) * (arrowLength - normMin) / (normMax - normMin));
+	const String color = palette[paletteIndex];
+	v *= rho;
+	arrowLength *= rho;
+	// Draw the arrow head only if the arrow is large enough
+	if (arrowLength > delta)
+	  {
+	    NumericalSample data(6, 2);
+	    const NumericalPoint u(v / arrowLength);
+	    data[0] = x;
+	    data[1] = x + v - u * delta;
+	    data[2][0] = data[1][0] + u[1] * (-0.5 * delta);
+	    data[2][1] = data[1][1] + u[0] * ( 0.5 * delta);
+	    data[3] = x + v;
+	    data[4][0] = data[1][0] + u[1] * ( 0.5 * delta);
+	    data[4][1] = data[1][1] + u[0] * (-0.5 * delta);
+	    data[5] = data[1];
+	    Curve curve(data);
+	    curve.setColor(color);
+	    graph.add(curve);
+	  } // arrowLength > delta
+	else
+	  {
+	    NumericalSample data(2, 2);
+	    data[0] = x;
+	    data[1] = x + v;
+	    Curve curve(data);
+	    curve.setColor(color);
+	    graph.add(curve);
+	  } // arrowLength <= delta
+      } // for i
+    return graph;
+  }
   return drawMarginal(0, false);
 }
 
@@ -450,6 +513,11 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
           std::swap(v1, v2);
           std::swap(i1, i2);
         }
+        if (v0 > v1)
+        {
+          std::swap(v0, v1);
+          std::swap(i0, i1);
+        }
         // If the current simplex is constant, nothing to draw
         if (v0 == v2) continue;
         // For the current simplex, check all levels
@@ -464,10 +532,18 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
             NumericalSample data(2, 2);
             // The first point is on the [x0, x2] segment as v0 <= level <= v2 and v0 < v2
             data[0] = x0 + ((level - v0) / (v2 - v0)) * (x2 - x0);
-            // if level < v1, the second point is on the [x0, x1] segment
-            if (level < v1) data[1] = x0 + ((level - v0) / (v1 - v0)) * (x1 - x0);
-            else if (v1 == v2) data[1] = 0.5 * (x1 + x2);
-            else data[1] = x2 + ((level - v2) / (v1 - v2)) * (x1 - x2);
+            // if level <= v1, the second point is on the [x0, x1] segment
+            if (level <= v1)
+	      {
+		if (v1 == v0) data[1] = x1;
+		else data[1] = x0 + ((level - v0) / (v1 - v0)) * (x1 - x0);
+	      }
+	    // if level >= v1, the second point is on the [x1, x2] segment
+            else
+	      {
+		if (v2 == v1) data[1] = x1;
+		else data[1] = x2 + ((level - v2) / (v1 - v2)) * (x1 - x2);
+	      }
             graph.add(Curve(data, palette[j], "solid"));
           } // (level >= v0) && (level <= v2)
         } // j

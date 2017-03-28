@@ -476,6 +476,8 @@ void ResourceMap::loadDefaultConfiguration()
 
   // FieldImplementation parameters //
   setAsUnsignedInteger( "Field-LevelNumber", 30 );
+  setAsNumericalScalar( "Field-ArrowRatio", 0.01 );
+  setAsNumericalScalar( "Field-ArrowScaling", 1.0 );
 
   // NumericalSampleImplementation parameters
   setAsUnsignedInteger( "NumericalSample-SmallKendallTau", 23 );
