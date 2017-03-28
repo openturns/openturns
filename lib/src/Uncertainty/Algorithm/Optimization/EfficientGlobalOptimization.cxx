@@ -1,0 +1,542 @@
+//                                               -*- C++ -*-
+/**
+ *  @brief EfficientGlobalOptimization or EGO algorithm
+ *
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+#include "openturns/EfficientGlobalOptimization.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Cobyla.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/KrigingAlgorithm.hxx"
+#include "openturns/MultiStart.hxx"
+#include "openturns/ComposedDistribution.hxx"
+#include "openturns/Uniform.hxx"
+
+BEGIN_NAMESPACE_OPENTURNS
+
+CLASSNAMEINIT(EfficientGlobalOptimization);
+
+static const Factory<EfficientGlobalOptimization> Factory_EfficientGlobalOptimization;
+
+/* Constructor with parameters */
+EfficientGlobalOptimization::EfficientGlobalOptimization()
+  : OptimizationAlgorithmImplementation()
+  , solver_(new Cobyla)
+  , useDefaultSolver_(true)
+  , multiStartExperimentSize_(ResourceMap::GetAsUnsignedInteger("EfficientGlobalOptimization-DefaultMultiStartExperimentSize"))
+  , multiStartNumber_(ResourceMap::GetAsUnsignedInteger("EfficientGlobalOptimization-DefaultMultiStartNumber"))
+  , parameterEstimationPeriod_(ResourceMap::GetAsUnsignedInteger("EfficientGlobalOptimization-DefaultParameterEstimationPeriod"))
+  , improvementFactor_(ResourceMap::GetAsNumericalScalar("EfficientGlobalOptimization-DefaultImprovementFactor"))
+  , correlationLengthFactor_(ResourceMap::GetAsNumericalScalar("EfficientGlobalOptimization-DefaultCorrelationLengthFactor"))
+  , aeiTradeoff_(ResourceMap::GetAsNumericalScalar("EfficientGlobalOptimization-DefaultAEITradeoff"))
+{
+}
+
+/* Constructor with parameters */
+EfficientGlobalOptimization::EfficientGlobalOptimization(const OptimizationProblem & problem,
+                                                         const KrigingResult & krigingResult)
+  : OptimizationAlgorithmImplementation(problem)
+  , krigingResult_(krigingResult)
+  , solver_(new Cobyla)
+  , useDefaultSolver_(true)
+  , multiStartExperimentSize_(ResourceMap::GetAsUnsignedInteger("EfficientGlobalOptimization-DefaultMultiStartExperimentSize"))
+  , multiStartNumber_(ResourceMap::GetAsUnsignedInteger("EfficientGlobalOptimization-DefaultMultiStartNumber"))
+  , parameterEstimationPeriod_(ResourceMap::GetAsUnsignedInteger("EfficientGlobalOptimization-DefaultParameterEstimationPeriod"))
+  , improvementFactor_(ResourceMap::GetAsNumericalScalar("EfficientGlobalOptimization-DefaultImprovementFactor"))
+  , correlationLengthFactor_(ResourceMap::GetAsNumericalScalar("EfficientGlobalOptimization-DefaultCorrelationLengthFactor"))
+  , aeiTradeoff_(ResourceMap::GetAsNumericalScalar("EfficientGlobalOptimization-DefaultAEITradeoff"))
+{
+  checkProblem(problem);
+}
+
+
+class ExpectedImprovementEvaluation : public NumericalMathEvaluationImplementation
+{
+public:
+  ExpectedImprovementEvaluation (const NumericalScalar optimalValue,
+                                      const KrigingResult & metaModelResult,
+                                      const NumericalMathFunction & noiseModel)
+  : NumericalMathEvaluationImplementation()
+  , optimalValue_(optimalValue)
+  , metaModelResult_(metaModelResult)
+  , noiseModel_(noiseModel)
+  {
+  }
+
+  virtual ExpectedImprovementEvaluation * clone() const
+  {
+    return new ExpectedImprovementEvaluation(*this);
+  }
+
+  NumericalPoint operator()(const NumericalPoint & x) const
+  {
+    const NumericalScalar mx = metaModelResult_.getMetaModel()(x)[0];
+    const NumericalScalar fmMk = optimalValue_ - mx;
+    const NumericalScalar sk2 = metaModelResult_.getConditionalCovariance(x)(0, 0);
+    const NumericalScalar sk = sqrt(sk2);
+    if (!SpecFunc::IsNormal(sk)) return NumericalPoint(1, -SpecFunc::MaxNumericalScalar);
+    const NumericalScalar ratio = fmMk / sk;
+    NumericalScalar ei = fmMk * normal_.computeCDF(ratio) + sk * normal_.computePDF(ratio);
+    if (noiseModel_.getOutputDimension() == 1) // if provided
+    {
+      const NumericalScalar noiseVariance = noiseModel_(x)[0];
+      if (!(noiseVariance >= 0.0)) throw InvalidArgumentException(HERE) << "Noise model must be positive";
+      ei *= (1.0 - sqrt(noiseVariance) / sqrt(noiseVariance + sk2));
+    }
+    return NumericalPoint(1, ei);
+  }
+
+  NumericalSample operator()(const NumericalSample & theta) const
+  {
+    const UnsignedInteger size = theta.getSize();
+    NumericalSample outS(size, 1);
+    for (UnsignedInteger i = 0; i < size; ++ i)
+      outS[i] = operator()(theta[i]);
+    return outS;
+  }
+
+  UnsignedInteger getInputDimension() const
+  {
+    return metaModelResult_.getMetaModel().getInputDimension();
+  }
+
+  UnsignedInteger getOutputDimension() const
+  {
+    return 1;
+  }
+
+  Description getInputDescription() const
+  {
+    return metaModelResult_.getMetaModel().getInputDescription();
+  }
+
+  Description getOutputDescription() const
+  {
+    return metaModelResult_.getMetaModel().getOutputDescription();
+  }
+
+protected:
+  Normal normal_;
+  NumericalScalar optimalValue_;
+  KrigingResult metaModelResult_;
+  NumericalMathFunction noiseModel_;
+};
+
+
+
+
+void EfficientGlobalOptimization::run()
+{
+  const OptimizationProblem problem(getProblem());
+  const UnsignedInteger dimension = problem.getDimension();
+  const NumericalMathFunction model(problem.getObjective());
+  NumericalSample inputSample(krigingResult_.getInputSample());
+  NumericalSample outputSample(model(inputSample));
+  UnsignedInteger size = inputSample.getSize();
+  NumericalPoint noise(size);
+  const Bool hasNoise = model.getOutputDimension() == 2;
+  if (hasNoise)
+  {
+    // use noise model to optimize AEI else fallback to objective 2nd marginal
+    if (noiseModel_.getOutputDimension() != 1)
+      noiseModel_ = model.getMarginal(1);
+
+    NumericalSample noiseSample(outputSample.getMarginal(1));
+    outputSample = outputSample.getMarginal(0);
+    for (UnsignedInteger i = 0; i < size; ++ i)
+    {
+      noise[i] = noiseSample[i][0];
+      if (!(noise[i] >= 0.0)) throw InvalidArgumentException(HERE) << "Noise model must be positive";
+    }
+  }
+  UnsignedInteger iterationNumber = 0;
+  Bool convergence = false;
+
+  // select the best feasible point
+  NumericalPoint optimizer;
+  NumericalScalar optimalValue = problem.isMinimization() ? SpecFunc::MaxNumericalScalar : -SpecFunc::MaxNumericalScalar;
+  NumericalPoint optimizerPrev; // previous optimizer
+  NumericalScalar optimalValuePrev = optimalValue;// previous optimal value
+  for (UnsignedInteger index = 0; index < size; ++ index)
+  {
+    if (!problem.hasBounds() || (problem.hasBounds() && problem.getBounds().contains(inputSample[index])))
+      if ((problem.isMinimization() && (outputSample[index][0] < optimalValue))
+      || (!problem.isMinimization() && (outputSample[index][0] > optimalValue)))
+      {
+        optimizerPrev = optimizer;
+        optimalValuePrev = optimalValue;
+
+        optimizer = inputSample[index];
+        optimalValue = outputSample[index][0];
+      }
+  }
+
+  LOGINFO(OSS() << "Optimum so far x=" << optimizer << " f(x)=" << optimalValue);
+
+  // we need the second best to compute convergence criteria
+  if (optimizerPrev.getDimension() == 0)
+  {
+    // then the optimum was the first
+    for (UnsignedInteger index = 1; index < size; ++ index)
+    {
+      if (!problem.hasBounds() || (problem.hasBounds() && problem.getBounds().contains(inputSample[index])))
+        if ((problem.isMinimization() && (outputSample[index][0] < optimalValuePrev))
+        || (!problem.isMinimization() && (outputSample[index][0] > optimalValuePrev)))
+        {
+          optimizerPrev = inputSample[index];
+          optimalValuePrev = outputSample[index][0];
+        }
+    }
+  }
+
+  // compute minimum distance
+  NumericalPoint minimumDistance(dimension, SpecFunc::MaxNumericalScalar);
+  if (!hasNoise)
+  {
+    for (UnsignedInteger i1 = 0; i1 < size; ++ i1)
+    {
+      for (UnsignedInteger i2 = 0; i2 < i1; ++ i2)
+      {
+        for (UnsignedInteger j = 0; j < dimension; ++ j)
+        {
+          NumericalScalar distance = std::abs(inputSample[i1][j] - inputSample[i2][j]);
+          if (distance < minimumDistance[j])
+          {
+            minimumDistance[j] = distance;
+          }
+        }
+      }
+    }
+  }
+
+  OptimizationResult result;
+  result.setProblem(getProblem());
+
+  while ((!convergence) && (iterationNumber < getMaximumIterationNumber()))
+  {
+    // use the provided kriging result at first iteration
+    KrigingResult metaModelResult(krigingResult_);
+    if (iterationNumber > 0)
+    {
+      KrigingAlgorithm algo(inputSample, outputSample, krigingResult_.getCovarianceModel(), krigingResult_.getBasisCollection());
+      LOGINFO(OSS() << "Rebuilding kriging ...");
+      algo.setOptimizeParameters((parameterEstimationPeriod_ > 0) && ((iterationNumber % parameterEstimationPeriod_) == 0));
+      if (hasNoise)
+        algo.setNoise(noise);
+      algo.run();
+      LOGINFO(OSS() << "Rebuilding kriging - done");
+      metaModelResult = algo.getResult();
+    }
+
+    NumericalScalar optimalValueSubstitute = optimalValue;
+    if (hasNoise)
+    {
+      // compute mk(x_min) with x_min = argmin_xi ui
+      // with ui = mk(xi) + c * sk(xi)
+      NumericalScalar optimalU = problem.isMinimization() ? SpecFunc::MaxNumericalScalar : -SpecFunc::MaxNumericalScalar;
+      for (UnsignedInteger i = 0; i < size; ++ i)
+      {
+        const NumericalPoint x(inputSample[i]);
+        const NumericalScalar mx = krigingResult_.getMetaModel()(x)[0];
+        const NumericalScalar sk2 = krigingResult_.getConditionalCovariance(x)(0, 0);
+        const NumericalScalar u = mx + aeiTradeoff_ * sqrt(sk2);
+        if ((problem.isMinimization() && (u < optimalU))
+        || (!problem.isMinimization() && (u > optimalU)))
+        {
+          optimalValueSubstitute = mx;
+          optimalU = u;
+        }
+      }
+    }
+
+    NumericalMathFunction improvementObjective(new ExpectedImprovementEvaluation(optimalValueSubstitute, metaModelResult, noiseModel_));
+
+    if (useDefaultSolver_ && problem.hasBounds())
+    {
+      // Sample uniformly into the bounds
+      const Interval bounds(problem.getBounds());
+      const NumericalPoint lowerBound(bounds.getLowerBound());
+      const NumericalPoint upperBound(bounds.getUpperBound());
+      const Interval::BoolCollection finiteLowerBound(bounds.getFiniteLowerBound());
+      const Interval::BoolCollection finiteUpperBound(bounds.getFiniteUpperBound());
+      ComposedDistribution::DistributionCollection coll;
+      for (UnsignedInteger i = 0; i < dimension; ++ i)
+      {
+        if (!finiteLowerBound[i] || !finiteUpperBound[i])
+          throw InvalidArgumentException(HERE) << "Bounds must be finite";
+        coll.add(Uniform(lowerBound[i], upperBound[i]));
+      }
+      const ComposedDistribution distribution(coll);
+      NumericalSample improvementExperiment(distribution.getSample(multiStartExperimentSize_));
+      // retain best P/N points as starting points
+      improvementExperiment.stack(improvementObjective(improvementExperiment));
+      Indices inputs(dimension);
+      inputs.fill();
+      const NumericalSample sortedImprovement(improvementExperiment.sortAccordingToAComponent(dimension).getMarginal(inputs));
+      // handle multiStartExperimentSize_ < multiStartNumber_
+      const UnsignedInteger pointNumber = std::min(multiStartNumber_, multiStartExperimentSize_);
+      const NumericalSample startingPoints(sortedImprovement, multiStartExperimentSize_ - pointNumber, multiStartExperimentSize_);
+      setOptimizationAlgorithm(MultiStart(solver_, startingPoints));
+    }
+
+    // build problem
+    OptimizationProblem maximizeImprovement;
+    maximizeImprovement.setObjective(improvementObjective);
+    maximizeImprovement.setMinimization(false);
+    if (problem.hasBounds())
+      maximizeImprovement.setBounds(problem.getBounds());
+    solver_.setProblem(maximizeImprovement);
+    solver_.setStartingPoint(optimizer);
+    solver_.run();
+    const OptimizationResult improvementResult(solver_.getResult());
+
+    // store improvement
+    NumericalPoint improvementValue(improvementResult.getOptimalValue());
+    expectedImprovement_.add(improvementValue);
+
+    const NumericalPoint newPoint(improvementResult.getOptimalPoint());
+    const NumericalPoint newOutput(model(newPoint));
+    const NumericalPoint newValue(NumericalPoint(1, newOutput[0]));// noise can be provided on the 2nd marginal
+
+    LOGINFO(OSS() << "New point x=" << newPoint << " f(x)=" << newValue << "iteration=" << iterationNumber + 1);
+
+    if ((problem.isMinimization() && (newValue[0] < optimalValue))
+    || (!problem.isMinimization() && (newValue[0] > optimalValue)))
+    {
+      optimizerPrev = optimizer;
+      optimalValuePrev = optimalValue;
+
+      optimizer = newPoint;
+      optimalValue = newValue[0];
+      LOGINFO(OSS() << "Optimum so far x=" << optimizer << " f(x)=" << optimalValue);
+    }
+
+    // algorithm is global so compute convergence criteria on the last 2 optimum instead of last 2 points
+    const NumericalScalar absoluteError = (optimizer - optimizerPrev).normInf();
+    const NumericalScalar relativeError = absoluteError / optimizer.normInf();
+    const NumericalScalar residualError = std::abs(optimalValue - optimalValuePrev);
+    const NumericalScalar constraintError = -1.0;
+
+    result.store(newPoint, newValue, absoluteError, relativeError, residualError, constraintError);
+
+    // general convergence criteria
+    convergence = ((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError()));
+
+    // minimum distance stopping criterion
+    if (!hasNoise)
+    {
+      // update minimum distance according to the new point
+      for (UnsignedInteger i = 0; i < size; ++ i)
+      {
+        for (UnsignedInteger j = 0; j < dimension; ++ j)
+        {
+          NumericalScalar distance = std::abs(inputSample[i][j] - newPoint[j]);
+          if (distance < minimumDistance[j])
+          {
+            minimumDistance[j] = distance;
+          }
+        }
+      }
+
+      const NumericalPoint scale(metaModelResult.getCovarianceModel().getScale());
+      for (UnsignedInteger j = 0; j < dimension; ++ j)
+      {
+        const Bool minDistStop = scale[j] < minimumDistance[j] / correlationLengthFactor_;
+        if (minDistStop) LOGINFO(OSS() << "Stopped algorithm over the minimum distance criterion");
+        convergence = convergence || minDistStop;
+      }
+    }
+
+    // improvement stopping criterion
+    const Bool improvementStop = (improvementValue[0] < improvementFactor_ * std::abs(optimalValue));
+    if (improvementStop) LOGINFO(OSS() << "Stopped algorithm over the improvement criterion");
+    convergence = convergence || improvementStop;
+
+    // add new point to design
+    inputSample.add(newPoint);
+    outputSample.add(newValue);
+    ++ size;
+
+    if (hasNoise)
+    {
+      if (!(newOutput[1] >= 0.0)) throw InvalidArgumentException(HERE) << "Noise model must be positive";
+      noise.add(newOutput[1]);
+    }
+
+    ++ iterationNumber;
+  }
+  result.setOptimalPoint(optimizer);
+  result.setOptimalValue(NumericalPoint(1, optimalValue));
+  result.setIterationNumber(iterationNumber);
+  setResult(result);
+}
+
+
+/* Virtual constructor */
+EfficientGlobalOptimization * EfficientGlobalOptimization::clone() const
+{
+  return new EfficientGlobalOptimization(*this);
+}
+
+/* String converter */
+String EfficientGlobalOptimization::__repr__() const
+{
+  return OSS();
+}
+
+/* Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
+void EfficientGlobalOptimization::checkProblem(const OptimizationProblem & problem) const
+{
+  if (problem.getObjective().getOutputDimension() > 2) // 2nd marginal can be used as noise
+    throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support multi-objective optimization";
+  if (problem.hasInequalityConstraint() || problem.hasEqualityConstraint())
+    throw InvalidArgumentException(HERE) << "Error : " << this->getClassName() << " does not support constraints";
+}
+
+
+void EfficientGlobalOptimization::setOptimizationAlgorithm(const OptimizationAlgorithm & solver)
+{
+  solver_ = solver;
+  useDefaultSolver_ = false;
+}
+
+OptimizationAlgorithm EfficientGlobalOptimization::getOptimizationAlgorithm() const
+{
+  return solver_;
+}
+
+/* Size of the design to draw starting points */
+UnsignedInteger EfficientGlobalOptimization::getMultiStartExperimentSize() const
+{
+  return multiStartExperimentSize_;
+}
+
+void EfficientGlobalOptimization::setMultiStartExperimentSize(const UnsignedInteger multiStartExperimentSize)
+{
+  multiStartExperimentSize_ = multiStartExperimentSize;
+}
+
+
+/* Number of starting points for the criterion optim */
+UnsignedInteger EfficientGlobalOptimization::getMultiStartNumber() const
+{
+  return multiStartNumber_;
+}
+
+void EfficientGlobalOptimization::setMultiStartNumber(const UnsignedInteger multiStartNumber)
+{
+  multiStartNumber_ = multiStartNumber;
+}
+
+/* Parameter estimation period accessor */
+UnsignedInteger EfficientGlobalOptimization::getParameterEstimationPeriod() const
+{
+  return parameterEstimationPeriod_;
+}
+
+
+void EfficientGlobalOptimization::setParameterEstimationPeriod(const UnsignedInteger parameterEstimationPeriod)
+{
+  parameterEstimationPeriod_ = parameterEstimationPeriod;
+}
+
+/* Expected improvement function */
+NumericalSample EfficientGlobalOptimization::getExpectedImprovement() const
+{
+  return expectedImprovement_;
+}
+
+/* improvement criterion factor accessor */
+void EfficientGlobalOptimization::setImprovementFactor(const NumericalScalar improvementFactor)
+{
+  improvementFactor_ = improvementFactor;
+}
+
+NumericalScalar EfficientGlobalOptimization::getImprovementFactor() const
+{
+  return improvementFactor_;
+}
+
+/* correlation length stopping criterion factor accessor */
+void EfficientGlobalOptimization::setCorrelationLengthFactor(const NumericalScalar correlationLengthFactor)
+{
+  correlationLengthFactor_ = correlationLengthFactor;
+}
+
+NumericalScalar EfficientGlobalOptimization::getCorrelationLengthFactor() const
+{
+  return correlationLengthFactor_;
+}
+
+
+/* AEI tradeoff constant accessor */
+void EfficientGlobalOptimization::setAIETradeoff(const NumericalScalar aeiTradeoff)
+{
+  aeiTradeoff_ = aeiTradeoff;
+}
+
+NumericalScalar EfficientGlobalOptimization::getAIETradeoff() const
+{
+  return aeiTradeoff_;
+}
+
+
+void EfficientGlobalOptimization::setNoiseModel(const NumericalMathFunction & noiseModel)
+{
+  const UnsignedInteger dimension = getProblem().getDimension();
+  if (noiseModel.getInputDimension() != dimension) throw InvalidArgumentException(HERE) << "Noise model must be of dimension " << dimension;
+  if (noiseModel.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Noise model must be 1-d";
+  noiseModel_ = noiseModel;
+}
+
+NumericalMathFunction EfficientGlobalOptimization::getNoiseModel() const
+{
+  return noiseModel_;
+}
+
+/* Method save() stores the object through the StorageManager */
+void EfficientGlobalOptimization::save(Advocate & adv) const
+{
+  OptimizationAlgorithmImplementation::save(adv);
+  adv.saveAttribute("krigingResult_", krigingResult_);
+  adv.saveAttribute("solver_", solver_);
+  adv.saveAttribute("multiStartExperimentSize_", multiStartExperimentSize_);
+  adv.saveAttribute("multiStartNumber_", multiStartNumber_);
+  adv.saveAttribute("parameterEstimationPeriod_", parameterEstimationPeriod_);
+  adv.saveAttribute("improvementFactor_", improvementFactor_);
+  adv.saveAttribute("correlationLengthFactor_", correlationLengthFactor_);
+  adv.saveAttribute("aeiTradeoff_", aeiTradeoff_);
+  adv.saveAttribute("noiseModel_", noiseModel_);
+}
+
+/* Method load() reloads the object from the StorageManager */
+void EfficientGlobalOptimization::load(Advocate & adv)
+{
+  OptimizationAlgorithmImplementation::load(adv);
+  adv.loadAttribute("krigingResult_", krigingResult_);
+  adv.loadAttribute("solver_", solver_);
+  adv.loadAttribute("multiStartExperimentSize_", multiStartExperimentSize_);
+  adv.loadAttribute("multiStartNumber_", multiStartNumber_);
+  adv.loadAttribute("parameterEstimationPeriod_", parameterEstimationPeriod_);
+  adv.loadAttribute("improvementFactor_", improvementFactor_);
+  adv.loadAttribute("correlationLengthFactor_", correlationLengthFactor_);
+  adv.loadAttribute("aeiTradeoff_", aeiTradeoff_);
+  adv.loadAttribute("noiseModel_", noiseModel_);
+}
+
+END_NAMESPACE_OPENTURNS

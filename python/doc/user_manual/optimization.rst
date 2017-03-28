@@ -28,6 +28,7 @@ Optimization solvers
     TNC
     NLopt
     MultiStart
+    EfficientGlobalOptimization
 
 Nearest point assessment
 ========================

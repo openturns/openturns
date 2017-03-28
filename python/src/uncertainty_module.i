@@ -44,8 +44,11 @@
 %import metamodel_module.i
 %import UncertaintyMetaModelTemplateDefs.i
 
-/* Uncertainty/Algorithm/TaylorExpansionMoments */
+/* Uncertainty/Algorithm */
 %include TaylorExpansionMoments.i
+
+/* Uncertainty/Algorithm/Optimization */
+%include EfficientGlobalOptimization.i
 
 /* Uncertainty/Algorithm/Sensitivity */
 %include ANCOVA.i

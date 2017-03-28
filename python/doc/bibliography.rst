@@ -33,6 +33,10 @@ Bibliography
 .. [Johnson1990] Johnson M, Moore L and Ylvisaker D (1990).
     *Minimax and maximin distance design.*
     Journal of Statistical Planning and Inference 26(2): 131-148.
+.. [Jones1998] Donald R. Jones, Matthias Schonlau and William J Welch.
+    *Global optimization of expensive black-box functions*,
+    Journal of Global Optimization, 13(4), 455-492, 1998.
+    `pdf <http://doc.openturns.org/papers/jones1998.pdf>`__
 .. [Knight1966] Knight, W. R. *A Computer Method for Calculating Kendall's Tau
     with Ungrouped Data.* Journal of the American Statistical Association,
     1966, 61(314, Part 1), 436-439.

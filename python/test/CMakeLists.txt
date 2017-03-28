@@ -260,6 +260,7 @@ if (NLOPT_FOUND)
   ot_pyinstallcheck_test (NLopt_std)
 endif ()
 ot_pyinstallcheck_test (MultiStart_std)
+ot_pyinstallcheck_test (EfficientGlobalOptimization_std)
 
 ## Solver
 ot_pyinstallcheck_test (Brent_std)

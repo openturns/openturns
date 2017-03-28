@@ -373,7 +373,7 @@ void ResourceMap::loadDefaultConfiguration()
   setAsNumericalScalar( "AbdoRackwitz-DefaultOmega", 1.0e-4 );
   setAsNumericalScalar( "AbdoRackwitz-DefaultSmooth", 1.2 );
 
-  // OptimizationAlgorithmImplementation parameters //
+  // OptimizationAlgorithm parameters //
   setAsNumericalScalar( "OptimizationAlgorithm-DefaultLevelValue", 0.0 );
   setAsUnsignedInteger( "OptimizationAlgorithm-DefaultMaximumIteration", 100 );
   setAsUnsignedInteger( "OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 100000);
@@ -381,7 +381,14 @@ void ResourceMap::loadDefaultConfiguration()
   setAsNumericalScalar( "OptimizationAlgorithm-DefaultMaximumRelativeError", 1.0e-5 );
   setAsNumericalScalar( "OptimizationAlgorithm-DefaultMaximumResidualError", 1.0e-5 );
   setAsNumericalScalar( "OptimizationAlgorithm-DefaultMaximumConstraintError", 1.0e-5 );
-
+  
+  // EfficientGlobalOptimization parameters //
+  setAsUnsignedInteger( "EfficientGlobalOptimization-DefaultMultiStartExperimentSize", 100);
+  setAsUnsignedInteger( "EfficientGlobalOptimization-DefaultMultiStartNumber", 20);
+  setAsUnsignedInteger( "EfficientGlobalOptimization-DefaultParameterEstimationPeriod", 1);
+  setAsNumericalScalar( "EfficientGlobalOptimization-DefaultImprovementFactor", 1.0);
+  setAsNumericalScalar( "EfficientGlobalOptimization-DefaultCorrelationLengthFactor", 1.0);
+  setAsNumericalScalar( "EfficientGlobalOptimization-DefaultAEITradeoff", 1.0);
 
   // Cobyla parameters //
   setAsNumericalScalar( "Cobyla-DefaultRhoBeg", 0.1 );
