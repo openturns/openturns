@@ -18,12 +18,10 @@
  * SymbolicFunction, AggregatedFunction, ComposedFunction, DatabaseFunction, DualLinearCombinationFunction, LinearCombinationFunction, LinearFunction, QuadraticFunction, ParametricFunction
  * DistributionTransformation
  * GeneralizedExtremeValue
-<<<<<<< HEAD
  * UniVariateFunctionFamily, UniVariateFunctionFactory, TensorizedUniVariateFunctionFactory
-=======
+ * MonomialFunction, MonomialFunctionFactory
  * KarhunenLoeveSVDAlgorithm
  * RankMCovarianceModel
->>>>>>> Updated Changelog
 
 ==== API changes ====
  * Removed deprecated SLSQP, LBFGS and NelderMead classes
