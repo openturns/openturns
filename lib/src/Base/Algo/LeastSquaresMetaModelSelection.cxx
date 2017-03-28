@@ -117,12 +117,8 @@ void LeastSquaresMetaModelSelection::run(const DesignProxy & proxy)
   // for each sub-basis ...
   NumericalScalar minimumError = SpecFunc::MaxNumericalScalar;
 
-  LeastSquaresMethod method;
   const String methodName(ResourceMap::Get("LeastSquaresMetaModelSelection-DecompositionMethod"));
-  if      (methodName == "SVD")      method = SVDMethod(proxy, weight_, currentIndices_);
-  else if (methodName == "Cholesky") method = CholeskyMethod(proxy, weight_, currentIndices_);
-  else if (methodName == "QR")       method = QRMethod(proxy, weight_, currentIndices_);
-  else throw InvalidArgumentException(HERE) << "Error: invalid value for \"LeastSquaresMetaModelSelection-DecompositionMethod\" in ResourceMap";
+  LeastSquaresMethod method(LeastSquaresMethod::Build(methodName, proxy, weight_, currentIndices_));
 
   Indices optimalBasisIndices;
   UnsignedInteger iterations = 0;

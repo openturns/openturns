@@ -107,6 +107,15 @@ public:
   /** Build the Gram matrix */
   Matrix computeWeightedDesign(bool whole = false) const;
 
+  /** Build a method instance from its name */
+  static LeastSquaresMethod Build(const String name,
+                                  const DesignProxy & proxy,
+                                  const NumericalPoint & weight,
+                                  const Indices & indices);
+
+  static LeastSquaresMethod Build(const String name,
+                                  const DesignProxy & proxy,
+                                  const Indices & indices);
 protected:
 
 }; /* class LeastSquaresMethod */

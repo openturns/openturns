@@ -32,3 +32,22 @@ OT_LeastSquaresMethod_getHDiag_doc
 OT_LeastSquaresMethod_trashDecomposition_doc
 %feature("docstring") OT::LeastSquaresMethod::update
 OT_LeastSquaresMethod_update_doc
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LeastSquaresMethod::Build
+"Instanciate a decomposition method from its name.
+
+Parameters
+----------
+proxy : :class:`~openturns.DesignProxy`
+    Input sample
+weight : sequence of float, optional
+    Output weights
+indices : sequence of int
+    Indices allowed in the basis
+
+Returns
+-------
+method : :class:`~openturns.LeastSquaresMethod`
+    The built method"
