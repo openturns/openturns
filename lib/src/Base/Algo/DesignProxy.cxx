@@ -52,11 +52,12 @@ DesignProxy::DesignProxy(const NumericalSample & x,
   , rowFilter_(0)
   , weight_(0)
 {
+  // keep initialization in the ctor for designCache_ to be shared among DesignProxy copies
   initialize();
 }
 
 
-void DesignProxy::initialize()
+void DesignProxy::initialize() const
 {
   // allocate cache
   UnsignedInteger cacheSize = ResourceMap::GetAsUnsignedInteger("DesignProxy-DefaultCacheSize");
@@ -66,7 +67,7 @@ void DesignProxy::initialize()
   UnsignedInteger nbCols = cacheSize / nbRows;
   // The cache stores at least the first function values
   if (nbCols <= 0) nbCols = 1;
-  designCache_ = MatrixImplementation(nbRows, nbCols);
+  designCache_ = Matrix(nbRows, nbCols);
   alreadyComputed_ = Indices(nbCols, 0);
 }
 
@@ -104,7 +105,7 @@ MatrixImplementation DesignProxy::computeDesign(const Indices & indices) const
     } // Exceeds cache capacity
     else
     {
-      MatrixImplementation::iterator startCache(designCache_.begin() + phiIndex * xSize);
+      MatrixImplementation::iterator startCache(designCache_.getImplementation()->begin() + phiIndex * xSize);
       // If the current index is already in the cache
       if (alreadyComputed_[phiIndex])
       {
@@ -118,7 +119,7 @@ MatrixImplementation DesignProxy::computeDesign(const Indices & indices) const
         NumericalPoint column(basis_[phiIndex](x_).getImplementation()->getData());
         // Copy the values in the cache
         alreadyComputed_[phiIndex] = 1;
-        std::copy(column.begin(), column.end(), startCache);
+        std::copy(column.begin(), column.end(), startCache);// copyOnWrite not called
         // And copy the value in the design matrix
         std::copy(column.begin(), column.end(), startDesign);
       } // values stored in the cache

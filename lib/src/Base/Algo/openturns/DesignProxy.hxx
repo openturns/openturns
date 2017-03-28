@@ -78,7 +78,7 @@ public:
   Bool hasWeight() const;
 
 protected:
-  void initialize();
+  void initialize() const;
 
   /** Input sample */
   NumericalSample x_;
@@ -87,7 +87,7 @@ protected:
   Basis basis_;
 
   /** Design matrix cache */
-  mutable MatrixImplementation designCache_;
+  mutable Matrix designCache_;
 
   /** Flags to tell if the column has already been computed */
   mutable Indices alreadyComputed_;
