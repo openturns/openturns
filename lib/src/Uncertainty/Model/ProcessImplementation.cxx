@@ -109,7 +109,7 @@ void ProcessImplementation::setTimeGrid(const RegularGrid & timeGrid)
 }
 
 /* Mesh accessor */
-const Mesh & ProcessImplementation::getMesh() const
+Mesh ProcessImplementation::getMesh() const
 {
   return mesh_;
 }

@@ -37,6 +37,7 @@ ot_add_source_file (KarhunenLoeveAlgorithmImplementation.cxx)
 ot_add_source_file (KarhunenLoeveAlgorithm.cxx)
 ot_add_source_file (KarhunenLoeveP1Factory.cxx)
 ot_add_source_file (KarhunenLoeveP1Algorithm.cxx)
+ot_add_source_file (KarhunenLoeveSVDAlgorithm.cxx)
 
 ot_install_header_file (OTAlgo.hxx)
 ot_install_header_file (ApproximationAlgorithmImplementation.hxx)
@@ -74,4 +75,5 @@ ot_install_header_file (KarhunenLoeveAlgorithmImplementation.hxx)
 ot_install_header_file (KarhunenLoeveAlgorithm.hxx)
 ot_install_header_file (KarhunenLoeveP1Factory.hxx)
 ot_install_header_file (KarhunenLoeveP1Algorithm.hxx)
+ot_install_header_file (KarhunenLoeveSVDAlgorithm.hxx)
 

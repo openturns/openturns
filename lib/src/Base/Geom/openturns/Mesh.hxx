@@ -93,6 +93,11 @@ public:
   /** Get the map between vertices and simplices: for each vertex, list the vertices indices it belongs to */
   IndicesCollection getVerticesToSimplicesMap() const;
 
+  /** Compute weights such that an integral of a function over the mesh
+   * is a weighted sum of its values at the vertices
+   */
+  NumericalPoint computeWeights() const;
+  
   /** Comparison operator */
   Bool operator == (const Mesh & rhs) const;
 

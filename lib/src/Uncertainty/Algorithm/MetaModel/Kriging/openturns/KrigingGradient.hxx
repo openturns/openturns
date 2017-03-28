@@ -23,6 +23,7 @@
 
 #include "openturns/NumericalMathGradientImplementation.hxx"
 #include "openturns/CovarianceModel.hxx"
+#include "openturns/Basis.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS

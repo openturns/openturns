@@ -23,6 +23,7 @@
 #include "openturns/KarhunenLoeveP1Algorithm.hxx"
 #include "openturns/SquareComplexMatrix.hxx"
 #include "openturns/P1LagrangeEvaluationImplementation.hxx"
+#include "openturns/PiecewiseLinearEvaluationImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -82,29 +83,40 @@ KarhunenLoeveP1Algorithm * KarhunenLoeveP1Algorithm::clone() const
 void KarhunenLoeveP1Algorithm::run()
 {
   // Compute the gram of the mesh
+  LOGINFO("Build the Gram matrix");
   CovarianceMatrix gram(mesh_.computeP1Gram());
+  const UnsignedInteger numVertices = mesh_.getVerticesNumber();
+  if (!(gram.getDimension() == numVertices)) throw InternalException(HERE) << "Error: the P1 Gram matrix of the mesh has a dimension=" << gram.getDimension() << " different from the number of vertices=" << numVertices;
   const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("KarhunenLoeveP1Algorithm-RegularizationFactor");
   if (epsilon > 0.0)
     for (UnsignedInteger i = 0; i < gram.getDimension(); ++i) gram(i, i) += epsilon;
-  const UnsignedInteger numVertices = mesh_.getVerticesNumber();
   // Extend the Gram matrix of the mesh
   const UnsignedInteger dimension = covariance_.getDimension();
   const UnsignedInteger augmentedDimension = dimension * numVertices;
-  CovarianceMatrix G(augmentedDimension);
-  for (UnsignedInteger i = 0; i < numVertices; ++i)
-  {
-    for (UnsignedInteger j = 0; j <= i; ++j)
+  CovarianceMatrix G;
+  if (dimension == 1) G = gram;
+  else
     {
-      const NumericalScalar gij = gram(i, j);
-      for (UnsignedInteger k = 0; k < dimension; ++k)
-        G(i * dimension + k, j * dimension + k) = gij;
-    } // Loop over j
-  } // Loop over i
+      G = CovarianceMatrix(augmentedDimension);
+      for (UnsignedInteger i = 0; i < numVertices; ++i)
+	{
+	  for (UnsignedInteger j = 0; j <= i; ++j)
+	    {
+	      const NumericalScalar gij = gram(i, j);
+	      for (UnsignedInteger k = 0; k < dimension; ++k)
+		G(i * dimension + k, j * dimension + k) = gij;
+	    } // Loop over j
+	} // Loop over i
+    }
   // Discretize the covariance model
+  LOGINFO("Discretize the covariance model");
   CovarianceMatrix C(covariance_.discretize(mesh_));
+  LOGINFO("Discretize the Fredholm equation");
   SquareMatrix M((C * G).getImplementation());
+  LOGINFO("Solve the eigenvalue problem");
   SquareComplexMatrix eigenVectorsComplex;
   SquareMatrix::NumericalComplexCollection eigenValuesComplex(M.computeEV(eigenVectorsComplex, false));
+  LOGINFO("Post-process the eigenvalue problem");
   NumericalSample eigenPairs(augmentedDimension, augmentedDimension + 1);
   for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
   {
@@ -119,16 +131,22 @@ void KarhunenLoeveP1Algorithm::run()
     for (UnsignedInteger j = 0; j < augmentedDimension; ++j) eigenVectors(i, j) = eigenPairs[j][i];
     eigenValues[i] = -eigenPairs[i][augmentedDimension];
   }
-  LOGINFO(OSS(false) << "eigenVectors=\n" << eigenVectors << ", eigenValues=" << eigenValues);
+  LOGDEBUG(OSS(false) << "eigenVectors=\n" << eigenVectors << ", eigenValues=" << eigenValues);
+  LOGINFO("Extract the relevant eigenpairs");
   UnsignedInteger K = 0;
-  const NumericalScalar lowerBound = threshold_ * std::abs(eigenValues[0]);
+  NumericalScalar cumulatedVariance = std::abs(eigenValues[0]);
   // Find the cut-off in the eigenvalues
-  while ((K < augmentedDimension) && (eigenValues[K] >= lowerBound)) ++K;
+  while ((K < eigenValues.getSize()) && (eigenValues[K] >= threshold_ * cumulatedVariance))
+    {
+      cumulatedVariance += eigenValues[K];
+      ++K;
+    }
   // Reduce and rescale the eigenvectors
   MatrixImplementation transposedProjection(augmentedDimension, K);
   NumericalPoint selectedEV(K);
   Basis modes(0);
   ProcessSample modesAsProcessSample(mesh_, 0, dimension);
+  const UnsignedInteger meshDimension = mesh_.getDimension();
   NumericalSampleImplementation values(numVertices, dimension);
   UnsignedInteger index = 0;
   for (UnsignedInteger k = 0; k < K; ++k)
@@ -141,7 +159,10 @@ void KarhunenLoeveP1Algorithm::run()
     // Store the eigen modes in two forms
     values.setData(a * factor);
     modesAsProcessSample.add(values);
-    modes.add(P1LagrangeEvaluationImplementation(modesAsProcessSample.getField(k)));
+    if (meshDimension == 1)
+      modes.add(PiecewiseLinearEvaluationImplementation(mesh_.getVertices().getImplementation()->getData(), values));
+    else
+      modes.add(P1LagrangeEvaluationImplementation(modesAsProcessSample.getField(k)));
     // Build the relevant column of the transposed projection matrix
     const MatrixImplementation b(Ga * (factor / sqrt(selectedEV[k])));
     std::copy(b.begin(), b.end(), transposedProjection.begin() + index);

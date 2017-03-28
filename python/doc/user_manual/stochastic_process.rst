@@ -36,6 +36,7 @@ Temporal information
     GeneralizedExponential
     MaternModel
     ProductCovarianceModel
+    RankMCovarianceModel
     SphericalModel
     SquaredExponential
     TensorizedCovarianceModel
@@ -194,6 +195,7 @@ Karhunen Loeve decomposition
     :template: classWithPlot.rst_t
     KarhunenLoeveP1Algorithm
     KarhunenLoeveQuadratureAlgorithm
+    KarhunenLoeveSVDAlgorithm
 
     :template: class.rst_t
     KarhunenLoeveResult

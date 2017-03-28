@@ -66,3 +66,19 @@ Returns
 -------
 s : float
     The total Sobol indice."
+    
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosRandomVector::getSobolTotalIndex
+"Get the aggregated Sobol indices.
+
+Parameters
+----------
+i : int or list of ints, :math:`0 \leq i < d - 1`
+    Indice(s) of the variable(s) we want the associated aggregated Sobol indices.
+    :math:`d` is the dimension of the input variables.
+
+Returns
+-------
+s : float
+    The aggregated Sobol indice."

@@ -1,0 +1,133 @@
+%feature("docstring") OT::KarhunenLoeveSVDAlgorithm
+"Computation of Karhunen-Loeve decomposition using SVD approximation.
+
+Available constructors:
+    KarhunenLoeveSVDAlgorithm(*sample, threshold, centeredFlag*)
+
+    KarhunenLoeveSVDAlgorithm(*sample, verticesWeights, threshold, centeredFlag*)
+
+    KarhunenLoeveSVDAlgorithm(*sample, verticesWeights, sampleWeights, threshold, centeredFlag*)
+
+Parameters
+----------
+sample : :class:`~openturns.ProcessSample`
+    The sample containing the observations.
+verticesWeights : sequence of float
+    The weights associated to the vertices of the mesh defining the sample.
+sampleWeights : sequence of float
+    The weights associated to the fields of the sample.
+threshold : float
+    The minimal relative amplitude of the eigenvalues to consider in
+    the decomposition wrt the sum of the preceeding eigenvalues. The default value is 0.
+centeredFlag : logical
+    Flag to tell if the sample is drawn according to a centered
+    process or if it has to be centered using the empirical mean. The
+    default value is *False*.
+    
+Notes
+-----
+The Karhunen-Loeve SVD algorithm solves the Fredholm problem  associated to the covariance function :math:`C`: see :class:`~openturns.KarhunenLoeveAlgorithm` to get the notations.
+
+The SVD approach is a particular case of the quadrature approach (see :class:`~openturns.KarhunenLoeveQuadratureAlgorithm`)  where we consider the functional basis  :math:`((\vect{\theta}_p^j(\vect{s}))_{1 \leq j \leq d, 1 \leq p \leq P}` of :math:`L^2(\cD, \Rset^d)` defined on :math:`\cD` by:
+
+.. math:: 
+
+    \vect{\theta}_p^j(\vect{s})= \left[\mat{C}(\vect{s}, \vect{s}_p) \right]_{:, j}
+
+The SVD approach is used when the covariance function is not explicitely known but only through :math:`K` fields of the associated stochastic process :math:`\vect{X}`: :math:`(\vect{X}_1, \dots, \vect{X}_K)`.
+
+It consists in :
+
+    - approximating :math:`\mat{C}` by its empirical estimator  :math:`\dfrac{1}{\tilde{K}} \mat{X}\, \Tr{\mat{X}}` where :math:`\mat{X}~=~(\vect{X}_1 | \dots | \vect{X}_K)` and :math:`\tilde{K}=K` if the process is centered and :math:`\tilde{K}=K-1` otherwise;
+    - taking the :math:`L` vertices of the mesh of :math:`\vect{X}` as the :math:`L` quadrature points.
+
+We suppose now that :math:`K < dL`, and we note :math:`\mat{Y} = \sqrt{\mat{W}} \,\mat{X}`.
+
+As the matrix :math:`\mat{\Theta} = \mat{C}` is invertible, the Galerkin and collocation approaches are equivalent and both lead to the following singular value problem for :math:`\mat{Y}`:
+
+.. math::
+    :label: QuadCollDim1_ter
+
+     \mat{Y}\,\Tr{\mat{Y}}\,\mat{\Psi}_k  & = \tilde{K} \lambda_k \mat{\Psi}_k
+
+The SVD decomposition of :math:`\mat{Y}\in \mathcal{M}_{dL,\tilde{K}}(\Rset)` writes:
+
+.. math::
+
+    \mat{Y} = \mat{U}\, \mat{\Sigma} \, \Tr{\mat{V}}
+
+where  we have :math:`\mat{U} \in \mathcal{M}_{dL,\tilde{K}}(\Rset)`, :math:`\mat{\Sigma}\in \mathcal{M}_{\tilde{K},\tilde{K}}(\Rset)`, :math:`\mat{V} \in \mathcal{M}_{\tilde{K},\tilde{K}}(\Rset)` such that :
+
+    - :math:`\Tr{\mat{V}}\mat{V} =\mat{V}\Tr{\mat{V}}= \mat{I}_{\tilde{K}}`,  
+    - :math:`\Tr{\mat{U}}\mat{U} = \mat{I}_{\tilde{K}}` ,
+    - :math:`\mat{\Sigma} = diag(\sigma_1, \dots, \sigma_{\tilde{K}})`.
+
+Then the columns of :math:`\mat{U}` are the eigen vectors of :math:`\mat{Y}\Tr{\mat{Y}}` associated to the eigen values :math:`\sigma_k^2`.
+
+We deduce the modes and eigen values of the Fredholm problem for :math:`k \leq \tilde{K}`:
+
+.. math::
+
+    \begin{align*}
+      \mat{\Phi}_k = \dfrac{1}{\lambda_k} \sqrt{\mat{W}}\, \mat{U}_k
+      \lambda_k = \dfrac{\sigma_k^2}{\tilde{K}}
+    \end{align*}
+
+We have:
+
+.. math::
+
+    \tilde{\vect{\varphi}}_k(\vect{t})= \sum_{\ell=1}^L  C(\vect{t}, \vect{\xi}_\ell) \vect{\phi}_{\ell,k} \quad \mbox{pour} \quad k \leq \tilde{K}
+
+
+
+
+Examples
+--------
+Create a Karhunen-Loeve SVD algorithm:
+
+>>> import openturns as ot
+>>> mesh = ot.IntervalMesher([10]*2).build(ot.Interval([-1.0]*2, [1.0]*2))
+>>> threshold = 0.01
+>>> model = ot.AbsoluteExponential([1.0]*2)
+>>> sample = ot.GaussianProcess(model, mesh).getSample(8)
+>>> algorithm = ot.KarhunenLoeveSVDAlgorithm(sample, threshold)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KarhunenLoeveSVDAlgorithm::run
+"Computation of the eigenvalues and eigen functions values at nodes.
+
+Examples
+--------
+>>> import openturns as ot
+>>> mesh = ot.IntervalMesher([10]*2).build(ot.Interval([-1.0]*2, [1.0]*2))
+>>> threshold = 0.01
+>>> model = ot.AbsoluteExponential([1.0]*2)
+>>> sample = ot.GaussianProcess(model, mesh).getSample(8)
+>>> algorithm = ot.KarhunenLoeveSVDAlgorithm(sample, threshold)
+>>> algorithm.run()
+>>> result = algorithm.getResult()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KarhunenLoeveSVDAlgorithm::getSample
+"Accessor to the process sample.
+
+Returns
+-------
+sample : :class:`~openturns.ProcessSample`
+    The process sample containing the observations of the process.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KarhunenLoeveSVDAlgorithm::getWeights
+"Accessor to the weights.
+
+Returns
+-------
+weights : :class:`~openturns.NumericalPoint`
+    The points defining the quadrature rule supported by the mesh of
+    the sample.
+"

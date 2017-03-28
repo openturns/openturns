@@ -18,6 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#include <algorithm>
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/FunctionalChaosRandomVector.hxx"
 #include "openturns/UsualRandomVector.hxx"
@@ -82,9 +83,9 @@ void FunctionalChaosRandomVector::computeCovariance() const
     for (UnsignedInteger j = 0; j <= i; ++j)
     {
       covariance_(i, j) = 0.0;
-      for (UnsignedInteger k = 0; k < size; ++k) 
-	// Take into account only non-zero indices as the null index is the mean of the vector
-	if (indices[k] > 0) covariance_(i, j) += coefficients[k][i] * coefficients[k][j];
+      for (UnsignedInteger k = 0; k < size; ++k)
+        // Take into account only non-zero indices as the null index is the mean of the vector
+        if (indices[k] > 0) covariance_(i, j) += coefficients[k][i] * coefficients[k][j];
     } // Loop over the second index
   } // Loop over the first index
   isAlreadyComputedCovariance_ = true;
@@ -111,36 +112,38 @@ NumericalScalar FunctionalChaosRandomVector::getSobolIndex(const Indices & varia
   NumericalScalar totalVariance = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    // We don't take into account coefficient of index 0 as it corresponds to the constant function, ie the mean of the random vector
     if (coefficientIndices[i] > 0)
     {
       const NumericalScalar coefficientI = coefficients[i][0];
       if (coefficientI != 0.0)
       {
-        totalVariance += coefficientI * coefficientI;
         Indices multiIndices(enumerateFunction(coefficientIndices[i]));
-        Bool isProperSubset = true;
-        // First check that the exponents associated with the selected variables are > 0
-        for (UnsignedInteger j = 0; j < orderSobolIndice; ++j)
+        // Take into account only nonzero multi indices
+        if (*std::max_element(multiIndices.begin(), multiIndices.end()) > 0)
         {
-          const UnsignedInteger varJ = variableIndices[j];
-          isProperSubset = isProperSubset && (multiIndices[varJ] > 0);
-          // We must set the value of the current variable index to 0 for the next test
-          multiIndices[varJ] = 0;
-        }
-        // At this step, the current index could be associated with a function that does not involve all the variables
-        if (isProperSubset)
-        {
-          // Second, check that the other coefficients are 0
-          for (UnsignedInteger j = 0; j < inputDimension; ++j) isProperSubset = isProperSubset && (multiIndices[j] == 0);
-          // At this step, the current index could be associated with a function that involves more variables than needed
-          if (isProperSubset) covarianceVariables += coefficientI * coefficientI;
-        }
+          totalVariance += coefficientI * coefficientI;
+          Bool isProperSubset = true;
+          // First check that the exponents associated to the selected variables are > 0
+          for (UnsignedInteger j = 0; j < orderSobolIndice; ++j)
+          {
+            const UnsignedInteger varJ = variableIndices[j];
+            isProperSubset = isProperSubset && (multiIndices[varJ] > 0);
+            // We must set the value of the current variable index to 0 for the next test
+            multiIndices[varJ] = 0;
+          }
+          // At this step, the current index could be associated to a function that does not involve all the variables
+          if (isProperSubset)
+          {
+            // Second, check that the other coefficients are 0
+	    if (*std::max_element(multiIndices.begin(), multiIndices.end()) == 0)
+	      covarianceVariables += coefficientI * coefficientI;
+          }
+        } // *std::max_element(multiIndices.begin(), multiIndices.end())s > 0
       } // if coefficientI <> 0
     } // coefficientIndices[i] > 0
   } // Loop over the coefficients
   if (totalVariance > 0.0) return covarianceVariables / totalVariance;
-  else throw NotDefinedException(HERE) << "Error: the total variance of output=" << marginalIndex << " is zero, the Sobol index is undefined.";
+  else return 0.0;
 }
 
 /* Sobol index accessor */
@@ -178,21 +181,25 @@ NumericalScalar FunctionalChaosRandomVector::getSobolTotalIndex(const Indices & 
       const NumericalScalar coefficientI = coefficients[i][0];
       if (coefficientI != 0.0)
       {
-        totalVariance += coefficientI * coefficientI;
         const Indices multiIndices(enumerateFunction(coefficientIndices[i]));
-        Bool isProperSubset = true;
-        // Check that the exponents associated with the selected variables are > 0
-        for (UnsignedInteger j = 0; j < orderSobolIndice; ++j)
+        // Take into account only nonzero multi indices
+        if (*std::max_element(multiIndices.begin(), multiIndices.end()) > 0)
         {
-          const UnsignedInteger varJ = variableIndices[j];
-          isProperSubset = isProperSubset && (multiIndices[varJ] > 0);
-        }
-        if (isProperSubset) covarianceVariables += coefficientI * coefficientI;
+          totalVariance += coefficientI * coefficientI;
+          Bool isProperSubset = true;
+          // Check that the exponents associated to the selected variables are > 0
+          for (UnsignedInteger j = 0; j < orderSobolIndice; ++j)
+          {
+            const UnsignedInteger varJ = variableIndices[j];
+            isProperSubset = isProperSubset && (multiIndices[varJ] > 0);
+          }
+          if (isProperSubset) covarianceVariables += coefficientI * coefficientI;
+        } // *std::max_element(multiIndices.begin(), multiIndices.end()) > 0
       } // if coefficientI <> 0
     } // coefficientIndices[i] > 0
   } // Loop over the coefficients
   if (totalVariance > 0.0) return covarianceVariables / totalVariance;
-  else throw NotDefinedException(HERE) << "Error: the total variance of output=" << marginalIndex << " is zero, the Sobol total index is undefined.";
+  else return 0.0;
 }
 
 /* Sobol total index accessor */
@@ -202,6 +209,60 @@ NumericalScalar FunctionalChaosRandomVector::getSobolTotalIndex(const UnsignedIn
   Indices index(1);
   index[0] = variableIndex;
   return getSobolTotalIndex(index, marginalIndex);
+}
+
+/* Sobol grouped index accessor */
+NumericalScalar FunctionalChaosRandomVector::getSobolGroupedIndex(const Indices & variableIndices,
+    const UnsignedInteger marginalIndex) const
+{
+  const UnsignedInteger inputDimension = getAntecedent()->getDimension();
+  if (!variableIndices.check(inputDimension)) throw InvalidArgumentException(HERE) << "The variable indices of a Sobol indice must be in the range [0, dim-1] and must be different.";
+  if (marginalIndex >= getDimension()) throw InvalidArgumentException(HERE) << "The marginal index must be in the range [0, dim-1].";
+  // Check if the measure defining the basis has an independent copula else
+  // the conditional covariance cannot be extracted from the decomposition
+  if (!functionalChaosResult_.getOrthogonalBasis().getMeasure().hasIndependentCopula()) throw InternalException(HERE) << "Error: cannot compute Sobol indices from a non-tensorized basis.";
+  if (!functionalChaosResult_.getDistribution().hasIndependentCopula()) LOGWARN(OSS(false) << "The Sobol indices are computed wrt the basis measure, and there is no one-to-one transformation between this measure and the input distribution. The interpretation of the indices may be misleading.");
+  const UnsignedInteger orderSobolIndice = variableIndices.getSize();
+  const NumericalSample coefficients(functionalChaosResult_.getCoefficients().getMarginal(marginalIndex));
+  const Indices coefficientIndices(functionalChaosResult_.getIndices());
+  const UnsignedInteger size = coefficients.getSize();
+  NumericalScalar covarianceVariables = 0.0;
+  const EnumerateFunction enumerateFunction(functionalChaosResult_.getOrthogonalBasis().getEnumerateFunction());
+  // Sum the contributions of all the coefficients associated to a basis vector involving only the needed variables
+  NumericalScalar totalVariance = 0.0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    if (coefficientIndices[i] > 0)
+    {
+      const NumericalScalar coefficientI = coefficients[i][0];
+      if (coefficientI != 0.0)
+      {
+        Indices multiIndices(enumerateFunction(coefficientIndices[i]));
+        // Take into account only nonzero multi indices
+        if (*std::max_element(multiIndices.begin(), multiIndices.end()) > 0)
+        {
+          totalVariance += coefficientI * coefficientI;
+          // Set the exponents corresponding to the group to zero
+          for (UnsignedInteger j = 0; j < orderSobolIndice; ++j)
+            multiIndices[variableIndices[j]] = 0;
+          // Now check that all the indices are zero
+          if (*std::max_element(multiIndices.begin(), multiIndices.end()) == 0)
+            covarianceVariables += coefficientI * coefficientI;
+        } // *std::max_element(multiIndices.begin(), multiIndices.end()) > 0
+      } // if coefficientI <> 0
+    } // coefficientIndices[i] > 0
+  } // Loop over the coefficients
+  if (totalVariance > 0.0) return covarianceVariables / totalVariance;
+  else return 0.0;
+}
+
+/* Sobol index accessor */
+NumericalScalar FunctionalChaosRandomVector::getSobolGroupedIndex(const UnsignedInteger variableIndex,
+    const UnsignedInteger marginalIndex) const
+{
+  Indices index(1);
+  index[0] = variableIndex;
+  return getSobolGroupedIndex(index, marginalIndex);
 }
 
 /* Functional chaos result accessor */

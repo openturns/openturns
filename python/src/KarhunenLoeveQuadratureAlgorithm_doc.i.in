@@ -23,25 +23,14 @@ marginalDegree : integer
 mustScale : boolean
     Flag to tell if the bounding box of the weighted experiment and the domain have to be maped or not.
 threshold : float
-    The minimal relative amplitude of the eigenvalues to consider in the decomposition wrt the maximum eigenvalue. Default value is 0.
+    The minimal relative amplitude of the eigenvalues to consider in
+    the decomposition wrt the sum of the preceeding eigenvalues. The default value is 0.
 
 Notes
 -----
-We suppose that :math:`C:\cD \times \cD \rightarrow  \cS^+_d(\Rset)` is a covariance function defined on :math:`\cD \in \Rset^n`, continuous at :math:`\vect{0}`. 
+The Karhunen-Loeve quadrature algorithm solves the Fredholm problem  associated to the covariance function :math:`C`: see :class:`~openturns.KarhunenLoeveAlgorithm` to get the notations.
 
-The class :class:`~openturns.KarhunenLoeveQuadratureAlgorithm` enables to determine the solutions of the second kind Fredholm equation associated to  :math:`C`, ie to find the :math:`(\lambda_k,  \vect{\varphi}_k)_{k \geq 1}` such that: 
-
-.. math::
-    :label: fredholmQuadrature
-
-    \int_{\cD} \mat{C}(\vect{s},\vect{t}) \vect{\varphi}_k(\vect{t})\,  d\vect{t} = \lambda_k  \vect{\varphi}_k(\vect{s}) \quad \forall \vect{s} \in \cD
-
-
-where :math:`(\lambda_k)_{k \geq 1}` is a nonincreasing sequence of nonnegative values (the **eigenvalues**) and :math:`(\vect{\varphi}_k)_{k \geq 1}` the   associated sequence of **eigenfunctions**, normalized by :math:`\int_{\cD}\|\vect{\varphi}_k(\vect{s})\|^2\di{\vect{s}}=1`. They constitue an hilbertian basis of :math:`L^2(\cD, \Rset^d)`.
-
-OpenTURNS uses the threshold :math:`s` in order to select the most significant eigenvalues, ie all the eigenvalues such that :math:`\lambda_k \geq s \lambda_1`.
-
-The Karhunen-Loeve Quadrature approximation consists in replacing the integral of :eq:`fredholmQuadrature` by a quadrature approximation: if :math:`(\omega_\ell, \vect{\xi}_\ell)_{1 \leq \ell \leq L}` is the weighted experiment (see :class:`~openturns.WeightedExperiment`) associated to the measure :math:`\mu`, then for all functions measurable wrt :math:`\mu`, we have:
+The Karhunen-Loeve quadrature approximation consists in replacing the integral by a quadrature approximation: if :math:`(\omega_\ell, \vect{\xi}_\ell)_{1 \leq \ell \leq L}` is the weighted experiment (see :class:`~openturns.WeightedExperiment`) associated to the measure :math:`\mu`, then for all functions measurable wrt :math:`\mu`, we have:
 
 .. math::
 
@@ -55,7 +44,38 @@ If we note :math:`\eta_{\ell}=\omega_{\ell}\dfrac{1_{\cD}(\vect{\xi}_{\ell})}{\m
 
 where only the points :math:`\vect{\xi}_\ell \in \cD` are considered. 
 
-The second constructor is a short-hand to the first one, where *basis* is the tensorized Legendre basis, see :class:`~openturns.OrthogonalProductPolynomialFactory` and :class:`~openturns.LegendreFactory`, *experiment* is a tensorized Gauss-Legendre quadrature, see :class:`~openturns.GaussProductExperiment`, *basisSize* is equal to *marginalDegree* to the power the dimension of *domain* and *mustScale* is set to *True*.
+We introduce the matrices :math:`\mat{\Theta}=(\mat{\Theta}_{ij})_{1 \leq i \leq L, 1 \leq j \leq P} \in \cM_{Ld, Pd}(\Rset)` such that :math:`\mat{\Theta}_{ij} = \theta_{j}(\vect{\xi}_i)\mat{I}_d`, :math:`\mat{C}_{\ell, \ell'} =  \mat{C}(\vect{\xi}_{\ell},\vect{\xi}_{\ell'})` and :math:`\mat{W}= \mathrm{diag} (\mat{W}_{ii})_{1 \leq i \leq L} \in \cM_{Ld, Ld}(\Rset)` such that :math:`\mat{W}_{ii} = \eta_i \mat{I}_d`.
+
+The normalisation constraint :math:`\|\vect{\varphi}_k\|^2_{L^2(\cD, \Rset^d)}=1` ang the orthogonality of the :math:`\vect{\varphi}_k` in :math:`L^2(\cD, \Rset^d)` leads to:
+
+.. math::
+    :label: contNorm
+    
+      \Tr{\vect{\Phi}} \,\Tr{\mat{\Theta}} \,\mat{W}\, \mat{\Theta} \,\vect{\Phi}=\mat{I}
+
+
+The  **Galerkin** approach leads to the following generalized eigen value problem:
+
+.. math::
+    :label: EqFinQuadGalerkin
+
+     \Tr{\mat{\Theta}} \,\mat{W} \,\mat{C}  \,\mat{W} \,\mat{\Theta}\,\vect{\Phi}_k = \lambda_k  \Tr{\mat{\Theta}}\, \mat{W}\,\mat{\Theta}\,\vect{\Phi}_k
+
+where :math:`\Tr{\mat{\Theta}}\, \mat{W} \,\mat{C} \, \mat{W}\, \mat{\Theta}` and :math:`\Tr{\mat{\Theta}}\, \mat{W}\, \mat{\Theta}\in \cM_{Pd,Pd}(\Rset)`.
+
+The  **collocation** approach leads to the following generalized eigen value problem:
+
+.. math::
+    :label: EqFinQuadCollocation
+
+     \mat{C}\, \mat{W} \,\mat{\Theta}\, \vect{\Phi}_k = \lambda_k \mat{\Theta}\,\vect{\Phi}_k
+
+Equations :eq:`EqFinQuadGalerkin` and  :eq:`EqFinQuadCollocation` are equivalent  when :math:`\mat{\Theta}` is invertible.
+
+OpenTURNS solves the equation :eq:`EqFinQuadGalerkin`.
+
+The second constructor is a short-hand to the first one, where *basis* is the tensorized Legendre basis (see :class:`~openturns.OrthogonalProductPolynomialFactory` and :class:`~openturns.LegendreFactory`), *experiment* is a tensorized Gauss-Legendre quadrature (see :class:`~openturns.GaussProductExperiment`), *basisSize* is equal to *marginalDegree* to the power the dimension of *domain* and *mustScale* is set to *True*.
+
 
 Examples
 --------

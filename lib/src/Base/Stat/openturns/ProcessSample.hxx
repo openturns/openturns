@@ -84,7 +84,7 @@ public:
   RegularGrid getTimeGrid() const;
 
   /** Mesh accessors */
-  const Mesh & getMesh() const;
+  Mesh getMesh() const;
 
   /** Size accessor */
   UnsignedInteger getSize() const;
