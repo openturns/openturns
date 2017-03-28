@@ -8,7 +8,8 @@ mesh : :class:`~openturns.Mesh`
 covariance : :class:`~openturns.CovarianceModel`
     The covariance function to decompose.
 threshold : float
-    The minimal relative amplitude of the eigenvalues to consider in the decomposition wrt the maximum eigenvalue.
+    The minimal relative amplitude of the eigenvalues to consider in
+    the decomposition wrt the sum of the preceeding eigenvalues. The default value is 0.
 
 Notes
 -----

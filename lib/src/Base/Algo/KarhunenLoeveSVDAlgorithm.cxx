@@ -184,10 +184,13 @@ void KarhunenLoeveSVDAlgorithm::run()
     eigenValues[i] = svd[i] * svd[i];
   LOGINFO("Extract the relevant eigenpairs");
   UnsignedInteger K = 0;
-  const NumericalScalar lowerBound = threshold_ * std::abs(eigenValues[0]);
+  NumericalScalar cumulatedVariance = std::abs(eigenValues[0]);
   // Find the cut-off in the eigenvalues
-  while ((K < std::min(kTilde, verticesNumber)) && (eigenValues[K] >= lowerBound)) ++K;
-  LOGDEBUG(OSS() << "Eigenvalues lower bound=" << lowerBound << ", K=" << K);
+  while ((K < eigenValues.getSize()) && (eigenValues[K] >= threshold_ * cumulatedVariance))
+    {
+      cumulatedVariance += eigenValues[K];
+      ++K;
+    }
   LOGINFO("Create eigenmodes values");
   // Stores the eigenmodes values in-place to avoid wasting memory
   MatrixImplementation & eigenModesValues = U;

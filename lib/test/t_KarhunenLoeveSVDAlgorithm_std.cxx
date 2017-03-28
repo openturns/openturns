@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
   TESTPREAMBLE;
   OStream fullprint(std::cout);
   setRandomGenerator();
-
+  Log::Show(Log::ALL);
   try
   {
     Mesh mesh(IntervalMesher(Indices(1, 9)).build(Interval(-1.0, 1.0)));

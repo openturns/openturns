@@ -18,7 +18,7 @@ sampleWeights : sequence of float
     The weights associated to the fields of the sample.
 threshold : float
     The minimal relative amplitude of the eigenvalues to consider in
-    the decomposition wrt the maximum eigenvalue. The default value is 0.
+    the decomposition wrt the sum of the preceeding eigenvalues. The default value is 0.
 centeredFlag : logical
     Flag to tell if the sample is drawn according to a centered
     process or if it has to be centered using the empirical mean. The

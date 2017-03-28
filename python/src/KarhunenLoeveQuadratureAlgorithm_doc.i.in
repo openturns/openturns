@@ -23,7 +23,8 @@ marginalDegree : integer
 mustScale : boolean
     Flag to tell if the bounding box of the weighted experiment and the domain have to be maped or not.
 threshold : float
-    The minimal relative amplitude of the eigenvalues to consider in the decomposition wrt the maximum eigenvalue. Default value is 0.
+    The minimal relative amplitude of the eigenvalues to consider in
+    the decomposition wrt the sum of the preceeding eigenvalues. The default value is 0.
 
 Notes
 -----
