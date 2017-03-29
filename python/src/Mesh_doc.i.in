@@ -209,13 +209,14 @@ graph : :class:`~openturns.Graph`
 Examples
 --------
 >>> import openturns as ot
+>>> from openturns.viewer import View
 >>> vertices = [[0.5], [1.5], [2.1], [2.7]]
 >>> simplices = [[0, 1], [1, 2], [2, 3]]
 >>> mesh1d = ot.Mesh(vertices, simplices)
 >>> # Create a graph
 >>> aGraph = mesh1d.draw1D()
 >>> # Draw the mesh
->>> aGraph.draw('mesh1D')"
+>>> View(aGraph).show()"
 
 // ---------------------------------------------------------------------
 
@@ -230,13 +231,14 @@ graph : :class:`~openturns.Graph`
 Examples
 --------
 >>> import openturns as ot
+>>> from openturns.viewer import View
 >>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [1.5, 1.0]]
 >>> simplices = [[0, 1, 2], [1, 2, 3]]
 >>> mesh2d = ot.Mesh(vertices, simplices)
 >>> # Create a graph
 >>> aGraph = mesh2d.draw2D()
 >>> # Draw the mesh
->>> aGraph.draw('mesh2D')"
+>>> View(aGraph).show()"
 
 // ---------------------------------------------------------------------
 
@@ -278,6 +280,7 @@ graph : :class:`~openturns.Graph`
 Examples
 --------
 >>> import openturns as ot
+>>> from openturns.viewer import View
 >>> from math import cos, sin, pi
 >>> vertices = [[0.0, 0.0, 0.0], [0.0, 0.0, 1.0], [0.0, 1.0, 0.0],
 ...             [0.0, 1.0, 1.0], [1.0, 0.0, 0.0], [1.0, 0.0, 1.0],
@@ -288,7 +291,7 @@ Examples
 >>> # Create a graph
 >>> aGraph = mesh3d.draw3D()
 >>> # Draw the mesh
->>> aGraph.draw('mesh3D_1')
+>>> View(aGraph).show()
 >>> rotation = ot.SquareMatrix(3)
 >>> rotation[0, 0] = cos(pi / 3.0)
 >>> rotation[0, 1] = sin(pi / 3.0)
@@ -298,7 +301,7 @@ Examples
 >>> # Create a graph
 >>> aGraph = mesh3d.draw3D(True, rotation, True, 1.0)
 >>> # Draw the mesh
->>> aGraph.draw('mesh3D_2')"
+>>> View(aGraph).show()"
 
 // ---------------------------------------------------------------------
 
