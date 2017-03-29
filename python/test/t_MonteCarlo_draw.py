@@ -53,7 +53,7 @@ try:
 
     # Draw the convergence graph
     convergenceGraph = myAlgo.drawProbabilityConvergence()
-    convergenceGraph.draw("convergenceMonteCarlo", 640, 480)
+    convergenceGraph.draw("convergenceMonteCarlo.png")
 
 except:
     import sys

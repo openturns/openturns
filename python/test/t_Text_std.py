@@ -53,7 +53,7 @@ try:
     myText.setTextPositions(position)
 
     myGraph.add(myText)
-    myGraph.draw("Graph_Text_a_OT", 640, 480)
+    myGraph.draw("Graph_Text_a_OT.png")
 
 except:
     import sys

@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
       fullprint << "f=" << f << std::endl;
       Graph graph(f.draw(-1.2, 1.2, 32));
       fullprint << "graph=" << graph << std::endl;
-      graph.draw("NMFDraw1D");
+      graph.draw("NMFDraw1D.png");
     }
     // Second, try 2D drawing
     {
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
       fullprint << "f=" << f << std::endl;
       Graph graph(f.draw(NumericalPoint(2, -10.0), NumericalPoint(2, 10.0), Indices(2, 21)));
       fullprint << "graph=" << graph << std::endl;
-      graph.draw("NMFDraw2D");
+      graph.draw("NMFDraw2D.png");
     }
     // Full interfaces
     {
@@ -73,11 +73,11 @@ int main(int argc, char *argv[])
       // First output as a function of first input around central point
       Graph graph1D(f.draw(0, 0, centralPoint, -5.0, 5.0, 32));
       fullprint << "graph1D=" << graph1D << std::endl;
-      graph1D.draw("NMFDraw1DFull");
+      graph1D.draw("NMFDraw1DFull.png");
       // Second output as a function of second and third inputs around central point
       Graph graph2D(f.draw(1, 2, 1, centralPoint, NumericalPoint(2, -5.0), NumericalPoint(2, 5.0), Indices(2, 21)));
       fullprint << "graph1D=" << graph2D << std::endl;
-      graph2D.draw("NMFDraw2DFull");
+      graph2D.draw("NMFDraw2DFull.png");
     }
   }
   catch (TestFailed & ex)
