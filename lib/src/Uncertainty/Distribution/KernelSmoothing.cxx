@@ -367,7 +367,7 @@ KernelSmoothing::Implementation KernelSmoothing::build(const NumericalSample & s
 void KernelSmoothing::setBandwidth(const NumericalPoint & bandwidth) const
 {
   // Check the given bandwidth
-  for (UnsignedInteger i = 0; i < bandwidth.getDimension(); i++) if (bandwidth[i] <= 0.0) throw InvalidArgumentException(HERE) << "Error: the bandwidth must be > 0, here bandwith=" << bandwidth;
+  for (UnsignedInteger i = 0; i < bandwidth.getDimension(); i++) if (!(bandwidth[i] > 0.0)) throw InvalidArgumentException(HERE) << "Error: the bandwidth must be > 0, here bandwith=" << bandwidth;
   bandwidth_ = bandwidth;
 }
 

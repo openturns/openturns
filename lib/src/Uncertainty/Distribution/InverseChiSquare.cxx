@@ -87,7 +87,7 @@ String InverseChiSquare::__str__(const String & offset) const
 /* K accessor */
 void InverseChiSquare::setNu(const NumericalScalar nu)
 {
-  if (nu <= 0.0) throw InvalidArgumentException(HERE) << "Nu MUST be positive";
+  if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Nu MUST be positive";
   if (nu != nu_)
   {
     nu_ = nu;
@@ -254,7 +254,7 @@ NumericalScalar InverseChiSquare::computeScalarQuantile(const NumericalScalar pr
 /* Compute the mean of the distribution */
 void InverseChiSquare::computeMean() const
 {
-  if (nu_ <= 2.0) throw NotDefinedException(HERE) << "InverseChiSquare mean is defined only for nu > 2, here nu=" << nu_;
+  if (!(nu_ > 2.0)) throw NotDefinedException(HERE) << "InverseChiSquare mean is defined only for nu > 2, here nu=" << nu_;
   mean_ = NumericalPoint(1, 1.0 / (nu_ - 2.0));
   isAlreadyComputedMean_ = true;
 }
@@ -262,21 +262,21 @@ void InverseChiSquare::computeMean() const
 /* Get the standard deviation of the distribution */
 NumericalPoint InverseChiSquare::getStandardDeviation() const
 {
-  if (nu_ <= 4.0) throw NotDefinedException(HERE) << "InverseChiSquare standard deviation is defined only for nu > 4, here nu=" << nu_;
+  if (!(nu_ > 4.0)) throw NotDefinedException(HERE) << "InverseChiSquare standard deviation is defined only for nu > 4, here nu=" << nu_;
   return NumericalPoint(1, std::sqrt(getCovariance()(0, 0)));
 }
 
 /* Get the skewness of the distribution */
 NumericalPoint InverseChiSquare::getSkewness() const
 {
-  if (nu_ <= 6.0) throw NotDefinedException(HERE) << "InverseChiSquare skewness is defined only for nu > 6, here nu=" << nu_;
+  if (!(nu_ > 6.0)) throw NotDefinedException(HERE) << "InverseChiSquare skewness is defined only for nu > 6, here nu=" << nu_;
   return NumericalPoint(1, 8.0 * std::sqrt(0.5 * nu_ - 2.0) / (nu_ - 6.0));
 }
 
 /* Get the kurtosis of the distribution */
 NumericalPoint InverseChiSquare::getKurtosis() const
 {
-  if (nu_ <= 8.0) throw NotDefinedException(HERE) << "InverseChiSquare kurtosis is defined only for nu > 8, here nu=" << nu_;
+  if (!(nu_ > 8.0)) throw NotDefinedException(HERE) << "InverseChiSquare kurtosis is defined only for nu > 8, here nu=" << nu_;
   return NumericalPoint(1, 12.0 * (0.5 * nu_ * (0.5 * nu_ + 3.0) - 10.0) / ((nu_ - 6.0) * (nu_ - 8.0)));
 }
 
@@ -296,7 +296,7 @@ InverseChiSquare::Implementation InverseChiSquare::getStandardRepresentative() c
 /* Compute the covariance of the distribution */
 void InverseChiSquare::computeCovariance() const
 {
-  if (nu_ <= 4.0) throw NotDefinedException(HERE) << "InverseChiSquare covariance is defined only for nu > 4, here nu=" << nu_;
+  if (!(nu_ > 4.0)) throw NotDefinedException(HERE) << "InverseChiSquare covariance is defined only for nu > 4, here nu=" << nu_;
   covariance_ = CovarianceMatrix(1);
   covariance_(0, 0) = 2.0 / ((nu_ - 2.0) * (nu_ - 2.0) * (nu_ - 4.0));
   isAlreadyComputedCovariance_ = true;

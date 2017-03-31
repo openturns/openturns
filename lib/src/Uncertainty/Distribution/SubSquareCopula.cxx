@@ -100,7 +100,7 @@ void SubSquareCopula::setPhi(const NumericalMathFunction & phi)
   const NumericalScalar phi0 = phi(NumericalPoint(1, 0.0))[0];
   if (phi0 != 0.0) throw InvalidArgumentException(HERE) << "Error: phi(0) must be null, here phi(0)=" << phi0;
   const NumericalScalar phi1 = phi(NumericalPoint(1, 1.0))[0];
-  if (phi1 > 1.0) throw InvalidArgumentException(HERE) << "Error: phi(1) must be less or equal to 1, here phi(1)=" << phi1;
+  if (!(phi1 <= 1.0)) throw InvalidArgumentException(HERE) << "Error: phi(1) must be less or equal to 1, here phi(1)=" << phi1;
   nullPhi_ = false;
   // Here, we will use the integration algorithm to evaluate phi on a meaningfull grid in order to check if phi is increasing and takes its values in [0, 1]
   phi_ = phi;
@@ -112,14 +112,14 @@ void SubSquareCopula::setPhi(const NumericalMathFunction & phi)
   inputOutput = inputOutput.sortAccordingToAComponent(0);
   NumericalScalar lastX = inputOutput[0][0];
   NumericalScalar lastValue = inputOutput[0][1];
-  if (lastValue < 0.0) throw InvalidArgumentException(HERE) << "Error: phi must be nonnegative, here phi(" << lastX << ")=" << lastValue;
-  if (lastValue > 1.0) throw InvalidArgumentException(HERE) << "Error: phi must be less or equal to 1, here phi(" << lastX << ")=" << lastValue;
+  if (!(lastValue >= 0.0)) throw InvalidArgumentException(HERE) << "Error: phi must be nonnegative, here phi(" << lastX << ")=" << lastValue;
+  if (!(lastValue <= 1.0)) throw InvalidArgumentException(HERE) << "Error: phi must be less or equal to 1, here phi(" << lastX << ")=" << lastValue;
   for (UnsignedInteger i = 1; i < inputOutput.getSize(); ++i)
   {
     const NumericalScalar x = inputOutput[i][0];
     const NumericalScalar value = inputOutput[i][1];
-    if (value < 0.0) throw InvalidArgumentException(HERE) << "Error: phi must be nonnegative, here phi(" << inputOutput[i][0] << ")=" << value;
-    if (lastValue > 1.0) throw InvalidArgumentException(HERE) << "Error: phi must be less or equal to 1, here phi(" << inputOutput[0][0] << ")=" << inputOutput[0][1];
+    if (!(value >= 0.0)) throw InvalidArgumentException(HERE) << "Error: phi must be nonnegative, here phi(" << inputOutput[i][0] << ")=" << value;
+    if (!(lastValue <= 1.0)) throw InvalidArgumentException(HERE) << "Error: phi must be less or equal to 1, here phi(" << inputOutput[0][0] << ")=" << inputOutput[0][1];
     if (value < lastValue) throw InvalidArgumentException(HERE) << "Error: phi must be nondecreasing, here phi(" << lastX << ")=" << lastValue << " and phi(" << x << ")=" << value;
     lastX = x;
     lastValue = value;

@@ -236,7 +236,7 @@ void InverseWishart::computeCovariance() const
 {
   const UnsignedInteger p = cholesky_.getDimension();
   const NumericalScalar den = (nu_ - p) * std::pow(nu_ - p - 1.0, 2) * (nu_ - p - 3.0);
-  if (den <= 0.0) throw NotDefinedException(HERE) << "Error: the covariance of the inverse Wishart distribution is defined only if nu > p+3";
+  if (!(den > 0.0)) throw NotDefinedException(HERE) << "Error: the covariance of the inverse Wishart distribution is defined only if nu > p+3";
   const CovarianceMatrix V(getV());
   covariance_ = CovarianceMatrix(getDimension());
   UnsignedInteger indexRow = 0;
@@ -268,7 +268,7 @@ NumericalPoint InverseWishart::getStandardDeviation() const /*throw(NotDefinedEx
   // else compute only the standard deviation as the covariance may be huge
   const UnsignedInteger p = cholesky_.getDimension();
   const NumericalScalar den = (nu_ - p) * std::pow(nu_ - p - 1.0, 2) * (nu_ - p - 3.0);
-  if (den <= 0.0) throw NotDefinedException(HERE) << "Error: the standard deviation of the inverse Wishart distribution is defined only if nu > p+3";
+  if (!(den > 0.0)) throw NotDefinedException(HERE) << "Error: the standard deviation of the inverse Wishart distribution is defined only if nu > p+3";
   const CovarianceMatrix V(getV());
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < p; ++i)

@@ -178,7 +178,7 @@ NumericalScalar MaternModel::getNu() const
 
 void MaternModel::setNu(const NumericalScalar nu)
 {
-  if (nu <= 0.0) throw InvalidArgumentException(HERE) << "Error: nu must be positive.";
+  if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Error: nu must be positive.";
   if (!(nu == nu_))
   {
     nu_ = nu;

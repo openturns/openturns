@@ -354,7 +354,7 @@ NumericalScalar Logistic::getAlpha() const
 /* Beta accessor */
 void Logistic::setBeta(const NumericalScalar beta)
 {
-  if (beta <= 0.) throw InvalidArgumentException(HERE) << "Beta MUST be positive, here beta=" << beta;
+  if (!(beta > 0.0)) throw InvalidArgumentException(HERE) << "Beta MUST be positive, here beta=" << beta;
   if (beta != beta_)
   {
     beta_ = beta;

@@ -114,7 +114,7 @@ NumericalScalar VonMises::getMu() const
 /* Kappa accessor */
 void VonMises::setKappa(const NumericalScalar kappa)
 {
-  if (kappa <= 0.0) throw InvalidArgumentException(HERE) << "Error: expected a positive kappa, got kappa=" << kappa;
+  if (!(kappa > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected a positive kappa, got kappa=" << kappa;
   if (kappa != kappa_)
   {
     kappa_ = kappa;

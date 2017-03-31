@@ -514,7 +514,7 @@ NumericalPoint ComposedDistribution::computeCDFGradient(const NumericalPoint & p
 NumericalPoint ComposedDistribution::computeQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
-  if (prob < 0.0 || prob > 1.0) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
+  if (!(prob < 0.0 || prob <= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
   const UnsignedInteger dimension = getDimension();
   if (dimension == 1) return distributionCollection_[0].computeQuantile(prob, tail);
   NumericalPoint quantile(copula_.computeQuantile(prob));

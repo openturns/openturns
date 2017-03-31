@@ -244,7 +244,7 @@ NumericalScalar GeneralizedPareto::computeScalarQuantile(const NumericalScalar p
 /* Compute the mean of the distribution */
 void GeneralizedPareto::computeMean() const
 {
-  if (xi_ >= 1.0) throw NotDefinedException(HERE) << "Error: the mean is defined only for xi<1, here xi=" << xi_;
+  if (!(xi_ < 1.0)) throw NotDefinedException(HERE) << "Error: the mean is defined only for xi<1, here xi=" << xi_;
   mean_ = NumericalPoint(1, sigma_ / (1.0 - xi_));
   isAlreadyComputedMean_ = true;
 }
@@ -326,7 +326,7 @@ Description GeneralizedPareto::getParameterDescription() const
 /* Sigma accessor */
 void GeneralizedPareto::setSigma(const NumericalScalar sigma)
 {
-  if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "Sigma MUST be positive";
+  if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "Sigma MUST be positive";
   if (sigma != sigma_)
   {
     sigma_ = sigma;

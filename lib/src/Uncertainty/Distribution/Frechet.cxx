@@ -223,7 +223,7 @@ NumericalPoint Frechet::computeCDFGradient(const NumericalPoint & point) const
 /* Compute the mean of the distribution */
 void Frechet::computeMean() const
 {
-  if (alpha_ <= 1.0) throw InvalidArgumentException(HERE) << "mean is not defined for alpha <= 1";
+  if (!(alpha_ > 1.0)) throw InvalidArgumentException(HERE) << "mean is not defined for alpha <= 1";
 
   mean_ = NumericalPoint(1, gamma_ + beta_ * SpecFunc::Gamma(1.0 - 1.0 / alpha_));
   isAlreadyComputedMean_ = true;
@@ -238,7 +238,7 @@ NumericalPoint Frechet::getStandardDeviation() const
 /* Compute the covariance of the distribution */
 void Frechet::computeCovariance() const
 {
-  if (alpha_ <= 2.0) throw InvalidArgumentException(HERE) << "covariance is not defined for alpha <= 2";
+  if (!(alpha_ > 2.0)) throw InvalidArgumentException(HERE) << "covariance is not defined for alpha <= 2";
 
   covariance_ = CovarianceMatrix(1);
   const NumericalScalar gammaInvAlpha = SpecFunc::Gamma(1.0 - 1.0 / alpha_);
@@ -250,7 +250,7 @@ void Frechet::computeCovariance() const
 /* Get the skewness of the distribution */
 NumericalPoint Frechet::getSkewness() const
 {
-  if (alpha_ <= 3.0) throw InvalidArgumentException(HERE) << "skewness is not defined for alpha <= 3";
+  if (!(alpha_ > 3.0)) throw InvalidArgumentException(HERE) << "skewness is not defined for alpha <= 3";
 
   const NumericalScalar gammaInvAlpha = SpecFunc::Gamma(1.0 - 1.0 / alpha_);
   const NumericalScalar gamma2InvAlpha = SpecFunc::Gamma(1.0 - 2.0 / alpha_);
@@ -263,7 +263,7 @@ NumericalPoint Frechet::getSkewness() const
 /* Get the kurtosis of the distribution */
 NumericalPoint Frechet::getKurtosis() const
 {
-  if (alpha_ <= 4.0) throw InvalidArgumentException(HERE) << "kurtosis is not defined for alpha <= 4";
+  if (!(alpha_ > 4.0)) throw InvalidArgumentException(HERE) << "kurtosis is not defined for alpha <= 4";
 
   const NumericalScalar gammaInvAlpha = SpecFunc::Gamma(1.0 - 1.0 / alpha_);
   const NumericalScalar gamma2InvAlpha = SpecFunc::Gamma(1.0 - 2.0 / alpha_);
@@ -290,7 +290,7 @@ Frechet::Implementation Frechet::getStandardRepresentative() const
 /* Alpha accessor */
 void Frechet::setAlpha(const NumericalScalar alpha)
 {
-  if (alpha <= 0.) throw InvalidArgumentException(HERE) << "Error: Frechet alpha parameter must be positive";
+  if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "Error: Frechet alpha parameter must be positive";
   if (alpha != alpha_)
   {
     alpha_ = alpha;
@@ -308,7 +308,7 @@ NumericalScalar Frechet::getAlpha() const
 /* Beta accessor */
 void Frechet::setBeta(const NumericalScalar beta)
 {
-  if (beta <= 0.) throw InvalidArgumentException(HERE) << "Error: Frechet beta parameter must be positive";
+  if (!(beta > 0.0)) throw InvalidArgumentException(HERE) << "Error: Frechet beta parameter must be positive";
   if (beta != beta_)
   {
     beta_ = beta;

@@ -61,7 +61,7 @@ SimulationResultImplementation::SimulationResultImplementation(const Event & eve
   // Check if the probability estimate is within the range [0, 1]
   if ((probabilityEstimate < 0) || (probabilityEstimate > 1)) LOGINFO("The probability estimate should be in the range [0, 1]");
   // Check if the variance estimate is >= 0.0
-  if (varianceEstimate < 0.0) throw InvalidArgumentException(HERE) << "The variance estimate must be >= 0";
+  if (!(varianceEstimate >= 0.0)) throw InvalidArgumentException(HERE) << "The variance estimate must be >= 0";
 }
 
 /* Virtual constructor */

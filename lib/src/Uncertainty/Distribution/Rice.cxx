@@ -236,7 +236,7 @@ Description Rice::getParameterDescription() const
 /* Sigma accessor */
 void Rice::setSigma(const NumericalScalar sigma)
 {
-  if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "Sigma MUST be positive";
+  if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "Sigma MUST be positive";
   if (sigma != sigma_)
   {
     sigma_ = sigma;
@@ -254,7 +254,7 @@ NumericalScalar Rice::getSigma() const
 /* Nu accessor */
 void Rice::setNu(const NumericalScalar nu)
 {
-  if (nu < 0.0) throw InvalidArgumentException(HERE) << "Nu MUST be positive";
+  if (!(nu >= 0.0)) throw InvalidArgumentException(HERE) << "Nu MUST be positive";
   if (nu != nu_)
   {
     nu_ = nu;

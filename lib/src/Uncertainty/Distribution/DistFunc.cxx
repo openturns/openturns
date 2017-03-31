@@ -546,8 +546,8 @@ NumericalScalar DistFunc::dNonCentralChiSquare(const NumericalScalar nu,
     const NumericalScalar precision,
     const UnsignedInteger maximumIteration)
 {
-  if (nu < 0.0) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu must be >= 0.";
-  if (lambda < 0.0) throw InvalidArgumentException(HERE) << "Error: the non-centrality parameter lambda must be >= 0.";
+  if (!(nu >= 0.0)) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu must be >= 0.";
+  if (!(lambda >= 0.0)) throw InvalidArgumentException(HERE) << "Error: the non-centrality parameter lambda must be >= 0.";
   if (x <= 0.0) return 0.0;
   const NumericalScalar halfNu = 0.5 * nu;
   // Early exit for lambda == 0, central ChiSquare PDF
@@ -612,8 +612,8 @@ NumericalScalar DistFunc::pNonCentralChiSquare(const NumericalScalar nu,
     const NumericalScalar precision,
     const UnsignedInteger maximumIteration)
 {
-  if (nu < 0.0) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu must be >= 0.";
-  if (lambda < 0.0) throw InvalidArgumentException(HERE) << "Error: the non-centrality parameter lambda must be >= 0.";
+  if (!(nu >= 0.0)) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu must be >= 0.";
+  if (!(lambda >= 0.0)) throw InvalidArgumentException(HERE) << "Error: the non-centrality parameter lambda must be >= 0.";
   if (x <= 0.0) return (tail ? 1.0 : 0.0);
   const NumericalScalar halfNu = 0.5 * nu;
   const NumericalScalar halfX = 0.5 * x;
@@ -690,8 +690,8 @@ NumericalScalar DistFunc::pNonCentralChiSquare(const NumericalScalar nu,
 NumericalScalar DistFunc::rNonCentralChiSquare(const NumericalScalar nu,
     const NumericalScalar lambda)
 {
-  if (nu < 0.0) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu must be >= 0.";
-  if (lambda < 0.0) throw InvalidArgumentException(HERE) << "Error: the non-centrality parameter lambda must be >= 0.";
+  if (!(nu >= 0.0)) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu must be >= 0.";
+  if (!(lambda >= 0.0)) throw InvalidArgumentException(HERE) << "Error: the non-centrality parameter lambda must be >= 0.";
   // If the non-central parameter is zero return a usual chi-square realization
   if (lambda == 0.0) return 2.0 * rGamma(0.5 * nu);
   // Use the decomposition of a zero degree of freedom non-central chisquare and a nu degrees of freedom central chisquare

@@ -96,7 +96,7 @@ SpectralGaussianProcess::SpectralGaussianProcess(const SecondOrderModel & model,
   , alpha_(0)
   , fftAlgorithm_()
 {
-  if (maximalFrequency <= 0.0) throw InvalidArgumentException(HERE) << "Error: the maximal frequency must be positive, here maximalFrequency=" << maximalFrequency;
+  if (!(maximalFrequency > 0.0)) throw InvalidArgumentException(HERE) << "Error: the maximal frequency must be positive, here maximalFrequency=" << maximalFrequency;
   if (nFrequency < 1) throw InvalidArgumentException(HERE) << "Error: the number of frequency points in the positive domain must be at least 1.";
   frequencyStep_ = maximalFrequency_ / nFrequency_;
   // Adapt the time grid to the frequency discretization
@@ -120,7 +120,7 @@ SpectralGaussianProcess::SpectralGaussianProcess(const SpectralModel & spectralM
   , alpha_(0)
   , fftAlgorithm_()
 {
-  if (maximalFrequency <= 0.0) throw InvalidArgumentException(HERE) << "Error: the maximal frequency must be positive, here maximalFrequency=" << maximalFrequency;
+  if (!(maximalFrequency > 0.0)) throw InvalidArgumentException(HERE) << "Error: the maximal frequency must be positive, here maximalFrequency=" << maximalFrequency;
   if (nFrequency < 1) throw InvalidArgumentException(HERE) << "Error: the number of frequency points in the positive domain must be at least 1.";
   frequencyStep_ = maximalFrequency_ / nFrequency_;
   // Adapt the time grid to the frequency discretization

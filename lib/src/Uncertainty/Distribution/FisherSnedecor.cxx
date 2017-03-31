@@ -190,7 +190,7 @@ NumericalScalar FisherSnedecor::computeScalarQuantile(const NumericalScalar prob
 /* Compute the mean of the distribution */
 void FisherSnedecor::computeMean() const
 {
-  if (d2_ <= 2.0) throw NotDefinedException(HERE) << "Error: the mean is defined only when d2 > 2.";
+  if (!(d2_ > 2.0)) throw NotDefinedException(HERE) << "Error: the mean is defined only when d2 > 2.";
   mean_ =  NumericalPoint(1, d2_ / (d2_ - 2));
   isAlreadyComputedMean_ = true;
 }
@@ -204,14 +204,14 @@ NumericalPoint FisherSnedecor::getStandardDeviation() const
 /* Get the skewness of the distribution */
 NumericalPoint FisherSnedecor::getSkewness() const
 {
-  if (d2_ <= 6.0) throw NotDefinedException(HERE) << "Error: the skewness is defined only when d2 > 6.";
+  if (!(d2_ > 6.0)) throw NotDefinedException(HERE) << "Error: the skewness is defined only when d2 > 6.";
   return NumericalPoint(1, (2.0 * d1_ + d2_ - 2.0) * std::sqrt(8.0 * (d2_ - 4.0)) / ((d2_ - 6.0) * std::sqrt(d1_ * (d1_ + d2_ - 2.0))));
 }
 
 /* Get the kurtosis of the distribution */
 NumericalPoint FisherSnedecor::getKurtosis() const
 {
-  if (d2_ <= 8.0) throw NotDefinedException(HERE) << "Error: the kurtosis is defined only when d2 > 6.";
+  if (!(d2_ > 8.0)) throw NotDefinedException(HERE) << "Error: the kurtosis is defined only when d2 > 6.";
   return NumericalPoint(1, 3.0 * (d2_ - 4.0) * (16.0 + d2_ * (-16.0 + 4.0 * d2_) + d1_ * (-20.0 + d2_ * (8.0 + d2_) + d1_ * (10.0 + d2_))) / (d1_ * (d1_ + d2_ - 2.0) * (d2_ - 6.0) * (d2_ - 8.0)));
 }
 
@@ -225,7 +225,7 @@ NumericalPoint FisherSnedecor::getStandardMoment(const UnsignedInteger n) const
 /* Compute the covariance of the distribution */
 void FisherSnedecor::computeCovariance() const
 {
-  if (d2_ <= 4.0) throw NotDefinedException(HERE) << "Error: the covariance is defined only when d2 > 4.";
+  if (!(d2_ > 4.0)) throw NotDefinedException(HERE) << "Error: the covariance is defined only when d2 > 4.";
   covariance_ = CovarianceMatrix(1);
   covariance_(0, 0) = 2.0 * d2_ * d2_ * (d1_ + d2_ - 2.0) / (d1_ * (d2_ - 4.0) * std::pow(d2_ - 2, 2));
   isAlreadyComputedMean_ = true;
@@ -260,7 +260,7 @@ Description FisherSnedecor::getParameterDescription() const
 /* D1 accessor */
 void FisherSnedecor::setD1(const NumericalScalar d1)
 {
-  if (d1 <= 0.0) throw InvalidArgumentException(HERE) << "Error d1 of a FisherSnedecor distribution must be positive";
+  if (!(d1 > 0.0)) throw InvalidArgumentException(HERE) << "Error d1 of a FisherSnedecor distribution must be positive";
   if (d1_ != d1)
   {
     d1_ = d1;
@@ -278,7 +278,7 @@ NumericalScalar FisherSnedecor::getD1() const
 /* D2 accessor */
 void FisherSnedecor::setD2(const NumericalScalar d2)
 {
-  if (d2 <= 0.0) throw InvalidArgumentException(HERE) << "Error d2 of a FisherSnedecor distribution must be positive";
+  if (!(d2 > 0.0)) throw InvalidArgumentException(HERE) << "Error d2 of a FisherSnedecor distribution must be positive";
   if (d2_ != d2)
   {
     d2_ = d2;

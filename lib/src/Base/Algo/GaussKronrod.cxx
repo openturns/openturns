@@ -205,7 +205,7 @@ NumericalScalar GaussKronrod::getMaximumError() const
 
 void GaussKronrod::setMaximumError(const NumericalScalar maximumError)
 {
-  if (maximumError < 0.0) throw InvalidArgumentException(HERE) << "Error: the maximum error must be nonnegative, here maximum error=" << maximumError;
+  if (!(maximumError >= 0.0)) throw InvalidArgumentException(HERE) << "Error: the maximum error must be nonnegative, here maximum error=" << maximumError;
   maximumError_ = maximumError;
 }
 

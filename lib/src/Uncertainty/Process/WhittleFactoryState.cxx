@@ -55,7 +55,7 @@ WhittleFactoryState::WhittleFactoryState(const UnsignedInteger p,
   , timeGrid_(timeGrid)
 {
   // Check the variance
-  if (sigma2_ <= 0.0) throw InvalidArgumentException(HERE) << "Error: the given variance must be positive, here sigma2=" << sigma2;
+  if (!(sigma2_ > 0.0)) throw InvalidArgumentException(HERE) << "Error: the given variance must be positive, here sigma2=" << sigma2;
   // Check the AR order with respect to the number of parameters
   if (p > theta.getSize()) throw InvalidArgumentException(HERE) << "Error: the AR order p=" << p << " is greater than the number of parameters n=" << theta.getSize();
 }

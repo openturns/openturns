@@ -399,9 +399,9 @@ void Histogram::setData(const NumericalPoint & l,
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     NumericalScalar height = h[i];
-    if (height < 0.0) throw InvalidArgumentException(HERE) << "Error: all the heights must be >= 0, here values=" << h;
+    if (!(height >= 0.0)) throw InvalidArgumentException(HERE) << "Error: all the heights must be >= 0, here values=" << h;
     NumericalScalar width = l[i];
-    if (width <= 0.0) throw InvalidArgumentException(HERE) << "Error: all the widths must be > 0, here value=" << l;
+    if (!(width > 0.0)) throw InvalidArgumentException(HERE) << "Error: all the widths must be > 0, here value=" << l;
     surface += height * width;
     cumulatedWidth_[i] = width + (i == 0 ? 0.0 : cumulatedWidth_[i - 1]);
     cumulatedSurface_[i] = surface;

@@ -115,7 +115,7 @@ GraphImplementation::GraphImplementation(const String & title,
   // Check if the given legend position is valid
 
   if (!IsValidLegendPosition(legendPosition)) throw InvalidArgumentException(HERE) << "The given legend position = " << legendPosition << " is invalid";
-  if (legendFontSize <= 0.0) throw InvalidArgumentException(HERE) << "The given legend font size = " << legendFontSize << " is invalid, it must be > 0";
+  if (!(legendFontSize > 0.0)) throw InvalidArgumentException(HERE) << "The given legend font size = " << legendFontSize << " is invalid, it must be > 0";
   legendPosition_ = legendPosition;
 }
 

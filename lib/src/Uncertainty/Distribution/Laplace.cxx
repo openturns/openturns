@@ -297,7 +297,7 @@ NumericalScalar Laplace::getMu() const
 /* Lambda accessor */
 void Laplace::setLambda(const NumericalScalar lambda)
 {
-  if (lambda <= 0.0) throw InvalidArgumentException(HERE) << "Lambda MUST be positive";
+  if (!(lambda > 0.0)) throw InvalidArgumentException(HERE) << "Lambda MUST be positive";
   if (lambda != lambda_)
   {
     lambda_ = lambda;

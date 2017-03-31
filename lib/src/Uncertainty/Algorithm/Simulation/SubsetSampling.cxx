@@ -516,7 +516,7 @@ void SubsetSampling::setISubset(Bool iSubset)
 
 void SubsetSampling::setBetaMin(NumericalScalar betaMin)
 {
-  if (betaMin <= 0.0) throw InvalidArgumentException(HERE) << "Beta min should be positive";
+  if (!(betaMin > 0.0)) throw InvalidArgumentException(HERE) << "Beta min should be positive";
   betaMin_ = betaMin;
 }
 

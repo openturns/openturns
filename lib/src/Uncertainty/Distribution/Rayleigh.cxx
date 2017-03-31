@@ -288,7 +288,7 @@ Description Rayleigh::getParameterDescription() const
 /* Sigma accessor */
 void Rayleigh::setSigma(const NumericalScalar sigma)
 {
-  if (sigma <= 0.) throw InvalidArgumentException(HERE) << "Sigma MUST be positive";
+  if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "Sigma MUST be positive";
   if (sigma != sigma_)
   {
     sigma_ = sigma;

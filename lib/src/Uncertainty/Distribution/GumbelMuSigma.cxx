@@ -42,7 +42,7 @@ GumbelMuSigma::GumbelMuSigma(const NumericalScalar mu, const NumericalScalar sig
   , mu_(mu)
   , sigma_(sigma)
 {
-  if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "Sigma must be > 0, here sigma=" << sigma;
+  if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "Sigma must be > 0, here sigma=" << sigma;
 }
 
 /* Virtual constructor */
@@ -97,7 +97,7 @@ NumericalPoint GumbelMuSigma::operator () (const NumericalPoint & inP) const
   const NumericalScalar mu = inP[0];
   const NumericalScalar sigma = inP[1];
 
-  if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
+  if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
 
   const NumericalScalar alpha = SpecFunc::PI_SQRT6 / sigma;
   const NumericalScalar beta = mu - SpecFunc::EULERSQRT6_PI * sigma;
@@ -116,7 +116,7 @@ NumericalPoint GumbelMuSigma::inverse(const NumericalPoint & inP) const
   const NumericalScalar alpha = inP[0];
   const NumericalScalar beta = inP[1];
 
-  if (alpha <= 0.0) throw InvalidArgumentException(HERE) << "Alpha MUST be positive";
+  if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "Alpha MUST be positive";
 
   const NumericalScalar mu = beta + SpecFunc::EulerConstant / alpha;
   const NumericalScalar sigma = SpecFunc::PI_SQRT6 / alpha;

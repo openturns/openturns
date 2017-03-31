@@ -250,7 +250,7 @@ void AdaptiveDirectionalSampling::setGamma(const NumericalPoint& gamma)
   NumericalScalar sum = 0.0;
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
-    if (gamma[i] <= 0.0) throw InvalidArgumentException(HERE) << "gamma values should be positive";
+    if (!(gamma[i] > 0.0)) throw InvalidArgumentException(HERE) << "gamma values should be positive";
     sum += gamma[i];
   }
   if (std::abs(sum - 1.0) > 1e-6) throw InvalidArgumentException(HERE) << "gamma components do not sum to 1";

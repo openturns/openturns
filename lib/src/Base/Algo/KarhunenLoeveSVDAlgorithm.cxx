@@ -282,7 +282,7 @@ void KarhunenLoeveSVDAlgorithm::setVerticesWeights(const NumericalPoint & vertic
   const NumericalScalar weight0 = verticesWeights[0];
   for (UnsignedInteger i = 0; i < verticesNumber; ++i)
     {
-      if (verticesWeights[i] <= 0.0) throw InvalidArgumentException(HERE) << "Error: expected positive vertices weights, here weights[" << i << "]=" << verticesWeights[i];
+      if (!(verticesWeights[i] > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected positive vertices weights, here weights[" << i << "]=" << verticesWeights[i];
       uniformVerticesWeights_ = uniformVerticesWeights_ && (verticesWeights[i] == weight0);
     }
   verticesWeights_ = verticesWeights;
@@ -302,7 +302,7 @@ void KarhunenLoeveSVDAlgorithm::setSampleWeights(const NumericalPoint & sampleWe
   NumericalScalar weightSum = 0.0;
   for (UnsignedInteger i = 0; i < sampleSize; ++i)
     {
-      if (sampleWeights[i] <= 0.0) throw InvalidArgumentException(HERE) << "Error: expected positive sample weights, here weights[" << i << "]=" << sampleWeights[i];
+      if (!(sampleWeights[i] > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected positive sample weights, here weights[" << i << "]=" << sampleWeights[i];
       uniformSampleWeights_ = uniformSampleWeights_ && (sampleWeights[i] == weight0);
       weightSum += sampleWeights[i];
     }

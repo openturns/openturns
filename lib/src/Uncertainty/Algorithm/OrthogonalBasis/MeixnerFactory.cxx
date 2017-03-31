@@ -50,7 +50,7 @@ MeixnerFactory::MeixnerFactory(const NumericalScalar r,
     r_(r),
     p_(p)
 {
-  if (r <= 0.0) throw InvalidArgumentException(HERE) << "Error: must have r>0 to build Meixner polynomials.";
+  if (!(r > 0.0)) throw InvalidArgumentException(HERE) << "Error: must have r>0 to build Meixner polynomials.";
   if ((p <= 0.0) || (p >= 1.0)) throw InvalidArgumentException(HERE) << "Error: p must be in [0, 1] to build Meixner polynomials.";
   initializeCache();
 }

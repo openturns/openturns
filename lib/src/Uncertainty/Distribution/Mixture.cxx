@@ -213,7 +213,7 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
       // We throw an exception because the collection has distributions of different sizes
       throw InvalidArgumentException(HERE) << "Collection of distributions has distributions of different dimensions";
     NumericalScalar w = weights[i];
-    if (w < 0.0) throw InvalidArgumentException(HERE) << "Distribution " << i << " has a negative weight, w=" << w;
+    if (!(w >= 0.0)) throw InvalidArgumentException(HERE) << "Distribution " << i << " has a negative weight, w=" << w;
     if (w > maximumWeight) maximumWeight = w;
     weightSum += w;
   } /* end for */

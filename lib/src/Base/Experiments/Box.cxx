@@ -123,7 +123,7 @@ void Box::setLevels(const NumericalPoint & levels)
   UnsignedInteger dimension = center_.getDimension();
   UnsignedInteger size = levels.getDimension();
   if (size != dimension) throw InvalidArgumentException(HERE) << "Error: levels dimension must equal center dimension for the Box design of experiment, here levels dimension=" << size << " and center dimension=" << dimension;
-  for (UnsignedInteger i = 0; i < dimension; ++i) if (levels[i] < 0.0) throw InvalidArgumentException(HERE) << "Error: levels values must be greater or equal to 0 for the Box design of experiment";
+  for (UnsignedInteger i = 0; i < dimension; ++i) if (!(levels[i] >= 0.0)) throw InvalidArgumentException(HERE) << "Error: levels values must be greater or equal to 0 for the Box design of experiment";
   StratifiedExperiment::setLevels(levels);
 }
 

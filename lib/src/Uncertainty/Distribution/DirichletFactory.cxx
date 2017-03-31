@@ -76,13 +76,13 @@ Dirichlet DirichletFactory::buildAsDirichlet(const NumericalSample & sample) con
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
       const NumericalScalar xIJ = sample[i][j];
-      if (xIJ <= 0.0) throw InvalidArgumentException(HERE) << "Error: the sample contains points not in the unit simplex: x=" << sample[i];
+      if (!(xIJ > 0.0)) throw InvalidArgumentException(HERE) << "Error: the sample contains points not in the unit simplex: x=" << sample[i];
       sum += xIJ;
       meanLog[j] += std::log(xIJ);
       sumX[j] += xIJ;
       sumX2[j] += xIJ * xIJ;
     }
-    if (sum >= 1.0) throw InvalidArgumentException(HERE) << "Error: the sample contains points not in the unit simplex: x=" << sample[i];
+    if (!(sum < 1.0)) throw InvalidArgumentException(HERE) << "Error: the sample contains points not in the unit simplex: x=" << sample[i];
     meanLog[dimension] += log1p(-sum);
   }
   // Normalize the sum of the logarithms

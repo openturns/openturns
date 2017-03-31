@@ -267,7 +267,7 @@ Description FarlieGumbelMorgensternCopula::getParameterDescription() const
 /* Theta accessor */
 void FarlieGumbelMorgensternCopula::setTheta(const NumericalScalar theta)
 {
-  if (std::abs(theta) > 1.0) throw InvalidArgumentException(HERE) << "Theta MUST be in [-1, 1]";
+  if (!(std::abs(theta) <= 1.0)) throw InvalidArgumentException(HERE) << "Theta MUST be in [-1, 1]";
   theta_ = theta;
 }
 

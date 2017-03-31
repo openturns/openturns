@@ -77,7 +77,7 @@ void LeastSquaresMethodImplementation::setWeight(const NumericalPoint & weight)
   const UnsignedInteger size = weight.getSize();
   // First, check for uniformity
   const NumericalScalar w0 = weight[0];
-  if (w0 <= 0.0) throw InvalidArgumentException(HERE) << "Error: expected positive weights, here w[0]=" << w0;
+  if (!(w0 > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected positive weights, here w[0]=" << w0;
   hasUniformWeight_ = true;
   for (UnsignedInteger i = 1; i < size; ++i)
     if (weight[i] != w0)
@@ -96,7 +96,7 @@ void LeastSquaresMethodImplementation::setWeight(const NumericalPoint & weight)
   weightSqrt_ = NumericalPoint(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    if (weight[i] <= 0.0) throw InvalidArgumentException(HERE) << "Error: expected positive weights, here w[" << i << "]=" << weight[i];
+    if (!(weight[i] > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected positive weights, here w[" << i << "]=" << weight[i];
     weightSqrt_[i] = std::sqrt(weight[i]);
   }
 }

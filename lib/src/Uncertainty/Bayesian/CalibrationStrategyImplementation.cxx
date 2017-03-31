@@ -63,7 +63,7 @@ Interval CalibrationStrategyImplementation::getRange() const
 
 void CalibrationStrategyImplementation::setExpansionFactor(NumericalScalar expansionFactor)
 {
-  if ( expansionFactor <= 1.0) throw InvalidArgumentException(HERE) << "Expansion factor should be > 1. Got " << expansionFactor;
+  if (!( expansionFactor > 1.0)) throw InvalidArgumentException(HERE) << "Expansion factor should be > 1. Got " << expansionFactor;
   expansionFactor_ = expansionFactor;
 }
 

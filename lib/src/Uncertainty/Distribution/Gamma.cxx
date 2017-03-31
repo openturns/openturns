@@ -95,7 +95,7 @@ String Gamma::__str__(const String & offset) const
 /* K accessor */
 void Gamma::setK(const NumericalScalar k)
 {
-  if (k <= 0.0) throw InvalidArgumentException(HERE) << "K MUST be positive";
+  if (!(k > 0.0)) throw InvalidArgumentException(HERE) << "K MUST be positive";
   if (k != k_)
   {
     k_ = k;
@@ -113,7 +113,7 @@ NumericalScalar Gamma::getK() const
 /* Lambda accessor */
 void Gamma::setLambda(const NumericalScalar lambda)
 {
-  if (lambda <= 0.0) throw InvalidArgumentException(HERE) << "Lambda MUST be positive";
+  if (!(lambda > 0.0)) throw InvalidArgumentException(HERE) << "Lambda MUST be positive";
   if (lambda != lambda_)
   {
     lambda_ = lambda;
@@ -131,8 +131,8 @@ NumericalScalar Gamma::getLambda() const
 void Gamma::setKLambda(const NumericalScalar k,
                        const NumericalScalar lambda)
 {
-  if (k <= 0.0) throw InvalidArgumentException(HERE) << "K MUST be positive";
-  if (lambda <= 0.0) throw InvalidArgumentException(HERE) << "Lambda MUST be positive";
+  if (!(k > 0.0)) throw InvalidArgumentException(HERE) << "K MUST be positive";
+  if (!(lambda > 0.0)) throw InvalidArgumentException(HERE) << "Lambda MUST be positive";
   if ((k != k_) || (lambda != lambda_))
   {
     k_ = k;

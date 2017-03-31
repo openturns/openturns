@@ -91,7 +91,7 @@ String InverseGamma::__str__(const String & offset) const
 /* K accessor */
 void InverseGamma::setK(const NumericalScalar k)
 {
-  if (k <= 0.0) throw InvalidArgumentException(HERE) << "K MUST be positive";
+  if (!(k > 0.0)) throw InvalidArgumentException(HERE) << "K MUST be positive";
   if (k != k_)
   {
     k_ = k;
@@ -109,7 +109,7 @@ NumericalScalar InverseGamma::getK() const
 /* Lambda accessor */
 void InverseGamma::setLambda(const NumericalScalar lambda)
 {
-  if (lambda <= 0.0) throw InvalidArgumentException(HERE) << "Lambda MUST be positive";
+  if (!(lambda > 0.0)) throw InvalidArgumentException(HERE) << "Lambda MUST be positive";
   if (lambda != lambda_)
   {
     lambda_ = lambda;
@@ -127,8 +127,8 @@ NumericalScalar InverseGamma::getLambda() const
 void InverseGamma::setKLambda(const NumericalScalar k,
                               const NumericalScalar lambda)
 {
-  if (k <= 0.0) throw InvalidArgumentException(HERE) << "K MUST be positive";
-  if (lambda <= 0.0) throw InvalidArgumentException(HERE) << "Lambda MUST be positive";
+  if (!(k > 0.0)) throw InvalidArgumentException(HERE) << "K MUST be positive";
+  if (!(lambda > 0.0)) throw InvalidArgumentException(HERE) << "Lambda MUST be positive";
   if ((k != k_) || (lambda != lambda_))
   {
     k_ = k;
@@ -289,7 +289,7 @@ NumericalScalar InverseGamma::computeScalarQuantile(const NumericalScalar prob,
 /* Compute the mean of the distribution */
 void InverseGamma::computeMean() const
 {
-  if (k_ <= 1.0) throw NotDefinedException(HERE) << "InverseGamma mean is defined only for k > 1, here k=" << k_;
+  if (!(k_ > 1.0)) throw NotDefinedException(HERE) << "InverseGamma mean is defined only for k > 1, here k=" << k_;
   mean_ = NumericalPoint(1, 1.0 / (lambda_ * (k_ - 1.0)));
   isAlreadyComputedMean_ = true;
 }
@@ -297,21 +297,21 @@ void InverseGamma::computeMean() const
 /* Get the standard deviation of the distribution */
 NumericalPoint InverseGamma::getStandardDeviation() const
 {
-  if (k_ <= 2.0) throw NotDefinedException(HERE) << "InverseGamma standard deviation is defined only for k > 2, here k=" << k_;
+  if (!(k_ > 2.0)) throw NotDefinedException(HERE) << "InverseGamma standard deviation is defined only for k > 2, here k=" << k_;
   return NumericalPoint(1, std::sqrt(getCovariance()(0, 0)));
 }
 
 /* Get the skewness of the distribution */
 NumericalPoint InverseGamma::getSkewness() const
 {
-  if (k_ <= 3.0) throw NotDefinedException(HERE) << "InverseGamma skewness is defined only for k > 3, here k=" << k_;
+  if (!(k_ > 3.0)) throw NotDefinedException(HERE) << "InverseGamma skewness is defined only for k > 3, here k=" << k_;
   return NumericalPoint(1, 4.0 * std::sqrt(k_ - 2.0) / (k_ - 3.0));
 }
 
 /* Get the kurtosis of the distribution */
 NumericalPoint InverseGamma::getKurtosis() const
 {
-  if (k_ <= 4.0) throw NotDefinedException(HERE) << "InverseGamma kurtosis is defined only for k > 4, here k=" << k_;
+  if (!(k_ > 4.0)) throw NotDefinedException(HERE) << "InverseGamma kurtosis is defined only for k > 4, here k=" << k_;
   return NumericalPoint(1, 3.0 * (k_ * (k_ + 3.0) - 10.0) / ((k_ - 3.0) * (k_ - 4.0)));
 }
 
@@ -331,7 +331,7 @@ InverseGamma::Implementation InverseGamma::getStandardRepresentative() const
 /* Compute the covariance of the distribution */
 void InverseGamma::computeCovariance() const
 {
-  if (k_ <= 2.0) throw NotDefinedException(HERE) << "InverseGamma covariance is defined only for k > 2, here k=" << k_;
+  if (!(k_ > 2.0)) throw NotDefinedException(HERE) << "InverseGamma covariance is defined only for k > 2, here k=" << k_;
   covariance_ = CovarianceMatrix(1);
   covariance_(0, 0) = 1.0 / (lambda_ * lambda_ * (k_ - 1.0) * (k_ - 1.0) * (k_ - 2.0));
   isAlreadyComputedCovariance_ = true;

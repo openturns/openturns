@@ -163,7 +163,7 @@ void OrdinalSumCopula::setBounds(const NumericalPoint & bounds)
   {
     const NumericalScalar currentBound = bounds[i];
     if (currentBound < lastBound) throw InvalidArgumentException(HERE) << "Error: bound[" << i << "]=" << currentBound << " and should be greater than " << lastBound;
-    if (currentBound > 1.0) throw InvalidArgumentException(HERE) << "Error: bound[" << i << "]=" << currentBound << " and should be less than 1";
+    if (!(currentBound <= 1.0)) throw InvalidArgumentException(HERE) << "Error: bound[" << i << "]=" << currentBound << " and should be less than 1";
     const NumericalScalar length = currentBound - lastBound;
     if (length > 0.0)
     {

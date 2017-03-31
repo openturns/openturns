@@ -2344,7 +2344,7 @@ UnsignedInteger RandomMixture::getMaxSize() const
 /* Alpha accessor */
 void RandomMixture::setAlpha(const NumericalScalar alpha)
 {
-  if (alpha <= 0.0) throw InvalidArgumentException(HERE) << "Error: the alpha parameter must be strictly positive";
+  if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "Error: the alpha parameter must be strictly positive";
   alpha_ = alpha;
   computeRange();
   computeReferenceBandwidth();

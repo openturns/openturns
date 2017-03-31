@@ -47,7 +47,7 @@ CharlierFactory::CharlierFactory(const NumericalScalar lambda)
   : OrthogonalUniVariatePolynomialFactory( Poisson(lambda) ),
     lambda_(lambda)
 {
-  if (lambda <= 0.0) throw InvalidArgumentException(HERE) << "Error: must have lambda>0 to build Charlier polynomials.";
+  if (!(lambda > 0.0)) throw InvalidArgumentException(HERE) << "Error: must have lambda>0 to build Charlier polynomials.";
   initializeCache();
 }
 

@@ -56,7 +56,7 @@ struct BurrFactoryParameterConstraint
   NumericalPoint computeConstraint(const NumericalPoint & parameter) const
   {
     const NumericalScalar c = parameter[0];
-    if (c <= 0.0) throw InvalidArgumentException(HERE) << "Error: the c parameter must be positive.";
+    if (!(c > 0.0)) throw InvalidArgumentException(HERE) << "Error: the c parameter must be positive.";
     const UnsignedInteger size = sample_.getSize();
     /* \sum_{i=1}^N \log(1 + x_i^c) */
     NumericalScalar sumLogXC = 0.0;
@@ -110,7 +110,7 @@ Burr BurrFactory::buildAsBurr(const NumericalSample & sample) const
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Burr distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Burr distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
 
-  if (sample.getMin()[0] <= 0.0) throw InvalidArgumentException(HERE) << "Error: cannot build a Burr distribution based on a sample with nonpositive values.";
+  if (!(sample.getMin()[0] > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot build a Burr distribution based on a sample with nonpositive values.";
   BurrFactoryParameterConstraint constraint(sample);
   const NumericalMathFunction f(bindMethod<BurrFactoryParameterConstraint, NumericalPoint, NumericalPoint>(constraint, &BurrFactoryParameterConstraint::computeConstraint, 1, 1));
   // Find a bracketing interval

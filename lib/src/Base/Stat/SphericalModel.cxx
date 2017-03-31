@@ -165,7 +165,7 @@ NumericalScalar SphericalModel::getRadius() const
 
 void SphericalModel::setRadius(const NumericalScalar radius)
 {
-  if (radius <= 0.0) throw InvalidArgumentException(HERE) << "Error: the radius must be positive.";
+  if (!(radius > 0.0)) throw InvalidArgumentException(HERE) << "Error: the radius must be positive.";
   radius_ = radius;
 }
 

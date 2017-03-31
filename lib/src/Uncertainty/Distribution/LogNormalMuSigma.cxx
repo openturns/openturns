@@ -43,7 +43,7 @@ LogNormalMuSigma::LogNormalMuSigma(const NumericalScalar mu, const NumericalScal
   , sigma_(sigma)
   , gamma_(gamma)
 {
-  if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
+  if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
   if (mu <= gamma) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
 }
 
@@ -115,7 +115,7 @@ NumericalPoint LogNormalMuSigma::operator () (const NumericalPoint & inP) const
   const NumericalScalar sigma = inP[1];
   const NumericalScalar gamma = inP[2];
 
-  if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
+  if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
   if (mu <= gamma) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
 
   NumericalPoint nativeParameters(inP);
@@ -135,7 +135,7 @@ NumericalPoint LogNormalMuSigma::inverse(const NumericalPoint & inP) const
   const NumericalScalar sigmaLog = inP[1];
   const NumericalScalar gamma = inP[2];
 
-  if (sigmaLog <= 0.0) throw InvalidArgumentException(HERE) << "SigmaLog MUST be positive, here sigmaLog=" << sigmaLog;
+  if (!(sigmaLog > 0.0)) throw InvalidArgumentException(HERE) << "SigmaLog MUST be positive, here sigmaLog=" << sigmaLog;
 
   const NumericalScalar mu = gamma + std::exp(muLog + 0.5 * sigmaLog * sigmaLog);
   const NumericalScalar expSigmaLog2 = std::exp(sigmaLog * sigmaLog);

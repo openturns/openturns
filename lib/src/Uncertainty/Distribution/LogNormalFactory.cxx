@@ -99,7 +99,7 @@ struct LogNormalFactoryLMLEParameterConstraint
     for (UnsignedInteger i = 0; i < size_; ++i)
     {
       const NumericalScalar delta = sample_[i][0] - gamma;
-      if (delta <= 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a LogNormal distribution based on the given sample using the method of local maximum likelihood, probably because the sample is constant.";
+      if (!(delta > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot estimate a LogNormal distribution based on the given sample using the method of local maximum likelihood, probably because the sample is constant.";
       const NumericalScalar logDelta = std::log(delta);
       const NumericalScalar inverseDelta = 1.0 / delta;
       sums[0] += inverseDelta;
@@ -150,7 +150,7 @@ LogNormal LogNormalFactory::buildMethodOfLocalLikelihoodMaximization(const Numer
   const NumericalPoint sums(constraint.computeMaximumLikelihoodSums(gamma));
   const NumericalScalar mu = sums[1] / size;
   const NumericalScalar sigma2 = sums[2] / size - mu * mu;
-  if (sigma2 <= 0.0) throw InvalidArgumentException(HERE) << "Error: the variance local maximum likelihood estimator should be positive, here sigma2=" << sigma2;
+  if (!(sigma2 > 0.0)) throw InvalidArgumentException(HERE) << "Error: the variance local maximum likelihood estimator should be positive, here sigma2=" << sigma2;
   return LogNormal(mu, std::sqrt(sigma2), gamma);
 }
 
@@ -170,7 +170,7 @@ struct LogNormalFactoryMMEParameterConstraint
   NumericalPoint computeConstraint(const NumericalPoint & parameter) const
   {
     const NumericalScalar omega = parameter[0];
-    if (omega <= 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a LogNormal distribution based on the given sample using the method of modified moments, probably because the sample is constant.";
+    if (!(omega > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot estimate a LogNormal distribution based on the given sample using the method of modified moments, probably because the sample is constant.";
     return NumericalPoint(1, alpha_ * std::pow(std::sqrt(omega) - std::exp(eZ1_ * std::sqrt(std::log(omega))), 2) - omega * (omega - 1.0));
   }
 

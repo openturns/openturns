@@ -70,7 +70,7 @@ Logistic LogisticFactory::buildAsLogistic(const NumericalSample & sample) const
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Logistic distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   NumericalScalar alpha = sample.computeMean()[0];
   NumericalScalar beta = sample.computeStandardDeviationPerComponent()[0] * SpecFunc::SQRT3_PI;
-  if (beta <= 0.0) throw InvalidArgumentException(HERE) << "Error: can build a Logistic distribution only if beta > 0.0, here beta=" << beta;
+  if (!(beta > 0.0)) throw InvalidArgumentException(HERE) << "Error: can build a Logistic distribution only if beta > 0.0, here beta=" << beta;
   Logistic result(alpha, beta);
   result.setDescription(sample.getDescription());
   return result;

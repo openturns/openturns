@@ -78,7 +78,7 @@ Skellam SkellamFactory::buildAsSkellam(const NumericalSample & sample) const
   const NumericalScalar mean = sample.computeMean()[0];
   const NumericalScalar var = sample.computeVariance()[0];
   const NumericalScalar lambda2 = 0.5 * (var - mean);
-  if (lambda2 <= 0.0) throw InvalidArgumentException(HERE) << "Error: can build a skellam distribution only if lambda2 > 0, here lambda2=" << lambda2;
+  if (!(lambda2 > 0.0)) throw InvalidArgumentException(HERE) << "Error: can build a skellam distribution only if lambda2 > 0, here lambda2=" << lambda2;
   const NumericalScalar lambda1 = 0.5 * (var + mean);
   Skellam result(lambda1, lambda2);
   result.setDescription(sample.getDescription());

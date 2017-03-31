@@ -115,7 +115,7 @@ void ApproximationAlgorithmImplementation::setWeight(const NumericalPoint & weig
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     const NumericalScalar wI = weight[i];
-    if (wI <= 0.0) throw InvalidArgumentException(HERE) << "Error: can only use positive weight.";
+    if (!(wI > 0.0)) throw InvalidArgumentException(HERE) << "Error: can only use positive weight.";
     hasUniformWeight_ = hasUniformWeight_ && (wI == firstWeight);
   }
   weight_ = weight;

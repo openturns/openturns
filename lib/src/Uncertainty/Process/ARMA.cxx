@@ -189,7 +189,7 @@ Bool ARMA::isStationary() const
 
 UnsignedInteger ARMA::computeNThermalization(const NumericalScalar epsilon) const
 {
-  if (epsilon <= 0.0) throw InvalidArgumentException(HERE) << "Error: epsilon must be positive, here epsilon=" << epsilon;
+  if (!(epsilon > 0.0)) throw InvalidArgumentException(HERE) << "Error: epsilon must be positive, here epsilon=" << epsilon;
   // MA processes are always stationary. Just do q_ + 1 steps to forget
   // the initial noise values
   if (p_ == 0) return q_ + 1;
@@ -219,7 +219,7 @@ UnsignedInteger ARMA::computeNThermalization(const NumericalScalar epsilon) cons
   NumericalScalar s = std::abs(eigenValues[0]);
   for (UnsignedInteger i = 1; i < eigenValues.getSize() ; ++i) s = std::max(s, std::abs(eigenValues[i]));
   // If the largest eigenvalue is not in the interior of the unit circle, the ARMA process is not stable
-  if (s >= 1.0) throw InvalidArgumentException(HERE) << "Error: the ARMA process is not stationary with the given coefficients. Here, AR coefficients=" << ARCoefficients_ << " and MA coefficients=" << MACoefficients_ << " with largest eigenvalue s=" << s;
+  if (!(s < 1.0)) throw InvalidArgumentException(HERE) << "Error: the ARMA process is not stationary with the given coefficients. Here, AR coefficients=" << ARCoefficients_ << " and MA coefficients=" << MACoefficients_ << " with largest eigenvalue s=" << s;
   return static_cast<UnsignedInteger>(ceil( log(epsilon) / log(s) ) );
 }
 

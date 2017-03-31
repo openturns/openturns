@@ -442,35 +442,35 @@ NumericalScalar Student::getMu() const
 /* Get the mean of the distribution */
 NumericalPoint Student::getMean() const
 {
-  if (nu_ <= 1.0) throw NotDefinedException(HERE) << "Student mean is defined only for nu > 1, here nu=" << nu_;
+  if (!(nu_ > 1.0)) throw NotDefinedException(HERE) << "Student mean is defined only for nu > 1, here nu=" << nu_;
   return EllipticalDistribution::getMean();
 }
 
 /* Get the standard deviation of the distribution */
 NumericalPoint Student::getStandardDeviation() const
 {
-  if (nu_ <= 2.0) throw NotDefinedException(HERE) << "Student standard deviation is defined only for nu > 2, here nu=" << nu_;
+  if (!(nu_ > 2.0)) throw NotDefinedException(HERE) << "Student standard deviation is defined only for nu > 2, here nu=" << nu_;
   return EllipticalDistribution::getStandardDeviation();
 }
 
 /* Get the skewness of the distribution */
 NumericalPoint Student::getSkewness() const
 {
-  if (nu_ <= 3.0) throw NotDefinedException(HERE) << "Student skewness is defined only for nu > 3, here nu=" << nu_;
+  if (!(nu_ > 3.0)) throw NotDefinedException(HERE) << "Student skewness is defined only for nu > 3, here nu=" << nu_;
   return NumericalPoint(getDimension(), 0.0);
 }
 
 /* Get the kurtosis of the distribution */
 NumericalPoint Student::getKurtosis() const
 {
-  if (nu_ <= 4.0) throw NotDefinedException(HERE) << "Student kurtosis is defined only for nu > 4, here nu=" << nu_;
+  if (!(nu_ > 4.0)) throw NotDefinedException(HERE) << "Student kurtosis is defined only for nu > 4, here nu=" << nu_;
   return NumericalPoint(getDimension(), 3.0 + 6.0 / (nu_ - 4.0));
 }
 
 /* Get the covariance of the distribution */
 CovarianceMatrix Student::getCovariance() const
 {
-  if (nu_ <= 2.0) throw NotDefinedException(HERE) << "Student covariance is defined only for nu > 2, here nu=" << nu_;
+  if (!(nu_ > 2.0)) throw NotDefinedException(HERE) << "Student covariance is defined only for nu > 2, here nu=" << nu_;
   return EllipticalDistribution::getCovariance();
 }
 

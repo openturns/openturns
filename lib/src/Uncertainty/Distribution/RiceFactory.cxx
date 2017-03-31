@@ -63,7 +63,7 @@ struct RiceFactoryParameterConstraint
 
   NumericalScalar computeXi(const NumericalScalar u) const
   {
-    if (u <= 0.0) throw InvalidArgumentException(HERE) << "Error: the argument u=" << u << " in the constraint must be positive.";
+    if (!(u > 0.0)) throw InvalidArgumentException(HERE) << "Error: the argument u=" << u << " in the constraint must be positive.";
     const NumericalScalar up2 = u + 2.0;
     const NumericalScalar quarterU = 0.25 * u;
     return up2 - 0.125 * M_PI * std::exp(-0.5 * u + 2.0 * SpecFunc::LogBesselI0(quarterU)) * std::pow(up2 + u * std::exp(SpecFunc::DeltaLogBesselI10(quarterU)), 2.0);

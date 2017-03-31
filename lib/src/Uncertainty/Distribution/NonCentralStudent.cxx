@@ -138,7 +138,7 @@ NumericalPoint NonCentralStudent::computeCDFGradient(const NumericalPoint & poin
 /* Compute the mean of the distribution */
 void NonCentralStudent::computeMean() const
 {
-  if (nu_ <= 1.0) throw NotDefinedException(HERE) << "Error: the mean is defined only for nu > 1 for a non central Student distribution";
+  if (!(nu_ > 1.0)) throw NotDefinedException(HERE) << "Error: the mean is defined only for nu > 1 for a non central Student distribution";
   mean_ = NumericalPoint(1, std::sqrt(0.5 * nu_) * std::exp(SpecFunc::LnGamma(0.5 * (nu_ - 1.0)) - SpecFunc::LnGamma(0.5 * nu_)) * delta_ + gamma_);
   isAlreadyComputedMean_ = true;
 }
@@ -146,7 +146,7 @@ void NonCentralStudent::computeMean() const
 /* Get the standard deviation of the distribution */
 NumericalPoint NonCentralStudent::getStandardDeviation() const
 {
-  if (nu_ <= 2.0) throw NotDefinedException(HERE) << "Error: the standard deviation is defined only for nu > 2 for a non central Student distribution";
+  if (!(nu_ > 2.0)) throw NotDefinedException(HERE) << "Error: the standard deviation is defined only for nu > 2 for a non central Student distribution";
   return NumericalPoint(1, std::sqrt(getCovariance().operator()(0, 0)));
 }
 
@@ -185,7 +185,7 @@ NonCentralStudent::Implementation NonCentralStudent::getStandardRepresentative()
 /* Compute the covariance of the distribution */
 void NonCentralStudent::computeCovariance() const
 {
-  if (nu_ <= 2.0) throw NotDefinedException(HERE) << "Error: the covariance is defined only for nu > 2 for a non central Student distribution";
+  if (!(nu_ > 2.0)) throw NotDefinedException(HERE) << "Error: the covariance is defined only for nu > 2 for a non central Student distribution";
   covariance_ = CovarianceMatrix(1);
   const NumericalScalar mup1 = getMean()[0] - gamma_;
   covariance_(0, 0) =  nu_ / (nu_ - 2.0) * (1.0 + delta_ * delta_) - mup1 * mup1;
@@ -223,7 +223,7 @@ Description NonCentralStudent::getParameterDescription() const
 /* Nu accessor */
 void NonCentralStudent::setNu(const NumericalScalar nu)
 {
-  if (nu <= 0.0) throw InvalidArgumentException(HERE) << "Nu MUST be strictly positive";
+  if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Nu MUST be strictly positive";
   if (nu != nu_)
   {
     nu_ = nu;

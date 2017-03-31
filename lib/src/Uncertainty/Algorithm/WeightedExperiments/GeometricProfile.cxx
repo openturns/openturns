@@ -37,7 +37,7 @@ GeometricProfile::GeometricProfile(const NumericalScalar T0, const NumericalScal
   : TemperatureProfileImplementation(T0, iMax)
     , c_(c)
 {
-  if (c <= 0.0 || c >= 1.0) throw InvalidArgumentException(HERE) << "Argument c must be between 0 and 1 exclusive";
+  if (!(c <= 0.0 || c < 1.0)) throw InvalidArgumentException(HERE) << "Argument c must be between 0 and 1 exclusive";
   logc_ = std::log(c);
 }
 

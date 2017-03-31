@@ -504,7 +504,7 @@ void UserDefined::setData(const NumericalSample & sample,
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalScalar p = weightedData[i][dimension];
-    if (p < 0.0) throw InvalidArgumentException(HERE) << "UserDefined distribution must have positive probabilities";
+    if (!(p >= 0.0)) throw InvalidArgumentException(HERE) << "UserDefined distribution must have positive probabilities";
     sum += p;
     cumulativeProbabilities_[i] = sum;
     hasUniformWeights_ = hasUniformWeights_ && (std::abs(p - firstProbability) < pdfEpsilon_);

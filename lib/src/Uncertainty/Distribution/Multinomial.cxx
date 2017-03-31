@@ -565,7 +565,7 @@ void Multinomial::setP(const NumericalPoint & p)
   for(UnsignedInteger i = 0; i < dimension; ++i)
   {
     NumericalScalar pI = p[i];
-    if (pI < 0.0) throw InvalidArgumentException(HERE) << "P elements MUST be nonnegative";
+    if (!(pI >= 0.0)) throw InvalidArgumentException(HERE) << "P elements MUST be nonnegative";
     sum += pI;
   }
   if (sum > 1.0)

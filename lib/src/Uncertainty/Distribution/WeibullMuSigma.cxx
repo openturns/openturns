@@ -45,7 +45,7 @@ WeibullMuSigma::WeibullMuSigma(const NumericalScalar mu, const NumericalScalar s
   , sigma_(sigma)
   , gamma_(gamma)
 {
-  if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
+  if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
   if (mu <= gamma) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
 }
 
@@ -123,7 +123,7 @@ NumericalPoint WeibullMuSigma::operator () (const NumericalPoint & inP) const
   const NumericalScalar sigma = inP[1];
   const NumericalScalar gamma = inP[2];
 
-  if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
+  if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
   if (mu <= gamma) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
 
   NumericalScalar alpha = 0.;
@@ -192,8 +192,8 @@ NumericalPoint WeibullMuSigma::inverse(const NumericalPoint & inP) const
   const NumericalScalar beta = inP[1];
   const NumericalScalar gamma = inP[2];
 
-  if (alpha <= 0.0) throw InvalidArgumentException(HERE) << "Alpha MUST be positive";
-  if (beta <= 0.0) throw InvalidArgumentException(HERE) << "Beta MUST be positive";
+  if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "Alpha MUST be positive";
+  if (!(beta > 0.0)) throw InvalidArgumentException(HERE) << "Beta MUST be positive";
 
   const NumericalScalar mu = gamma + alpha * SpecFunc::Gamma(1.0 + 1.0 / beta);
   const NumericalScalar sigma = alpha * std::sqrt(SpecFunc::Gamma(1.0 + 2.0 / beta) - std::pow(SpecFunc::Gamma(1.0 + 1.0 / beta), 2.0));

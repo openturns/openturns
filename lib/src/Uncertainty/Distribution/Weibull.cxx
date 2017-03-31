@@ -334,7 +334,7 @@ Description Weibull::getParameterDescription() const
 /* Beta accessor */
 void Weibull::setBeta(const NumericalScalar beta)
 {
-  if (beta <= 0.0) throw InvalidArgumentException(HERE) << "Beta MUST be positive";
+  if (!(beta > 0.0)) throw InvalidArgumentException(HERE) << "Beta MUST be positive";
   if (beta != beta_)
   {
     beta_ = beta;
@@ -353,7 +353,7 @@ NumericalScalar Weibull::getBeta() const
 /* Alpha accessor */
 void Weibull::setAlpha(const NumericalScalar alpha)
 {
-  if (alpha <= 0.0) throw InvalidArgumentException(HERE) << "Alpha MUST be positive";
+  if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "Alpha MUST be positive";
   if (alpha != alpha_)
   {
     alpha_ = alpha;
@@ -372,8 +372,8 @@ NumericalScalar Weibull::getAlpha() const
 void Weibull::setAlphaBeta(const NumericalScalar alpha,
                            const NumericalScalar beta)
 {
-  if (alpha <= 0.0) throw InvalidArgumentException(HERE) << "Alpha MUST be positive";
-  if (beta <= 0.0) throw InvalidArgumentException(HERE) << "Beta MUST be positive";
+  if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "Alpha MUST be positive";
+  if (!(beta > 0.0)) throw InvalidArgumentException(HERE) << "Beta MUST be positive";
   if ((alpha != alpha_) || (beta != beta_))
   {
     alpha_ = alpha;

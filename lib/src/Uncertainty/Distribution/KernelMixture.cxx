@@ -189,7 +189,7 @@ void KernelMixture::setBandwidth(const NumericalPoint & bandwidth)
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const NumericalScalar hi = bandwidth[i];
-    if (hi <= 0.0) throw InvalidArgumentException(HERE) << "Error: the bandwidth components must be > 0, here bandwidth=" << bandwidth;
+    if (!(hi > 0.0)) throw InvalidArgumentException(HERE) << "Error: the bandwidth components must be > 0, here bandwidth=" << bandwidth;
     bandwidthInverse_[i] = 1.0 / hi;
     normalizationFactor_ *= hi;
   }

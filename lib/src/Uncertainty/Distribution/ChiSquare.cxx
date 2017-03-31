@@ -91,7 +91,7 @@ String ChiSquare::__str__(const String & offset) const
 /* Nu accessor */
 void ChiSquare::setNu(const NumericalScalar nu)
 {
-  if (nu <= 0.0) throw InvalidArgumentException(HERE) << "Nu MUST be positive";
+  if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Nu MUST be positive";
   if (nu != nu_)
   {
     nu_ = nu;

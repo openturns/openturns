@@ -565,7 +565,7 @@ NumericalScalar CovarianceModelImplementation::getNuggetFactor() const
 
 void CovarianceModelImplementation::setNuggetFactor(const NumericalScalar nuggetFactor)
 {
-  if (nuggetFactor < 0.0) throw InvalidArgumentException(HERE) << "Error: the nugget factor=" << nuggetFactor << " is negative";
+  if (!(nuggetFactor >= 0.0)) throw InvalidArgumentException(HERE) << "Error: the nugget factor=" << nuggetFactor << " is negative";
   nuggetFactor_ = nuggetFactor;
 }
 

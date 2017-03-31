@@ -140,7 +140,7 @@ String ExponentiallyDampedCosineModel::__str__(const String & offset) const
 /* Frequency accessor */
 void ExponentiallyDampedCosineModel::setFrequency(const NumericalScalar frequency)
 {
-  if (frequency <= 0.0) throw InvalidArgumentException(HERE) << "Error: the frequency must be positive.";
+  if (!(frequency > 0.0)) throw InvalidArgumentException(HERE) << "Error: the frequency must be positive.";
   frequency_ = frequency;
 }
 

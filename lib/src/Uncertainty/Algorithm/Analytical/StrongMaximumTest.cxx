@@ -165,7 +165,7 @@ NumericalScalar StrongMaximumTest::getAccuracyLevel() const
 /* AccuracyLevel accessor */
 void StrongMaximumTest::setAccuracyLevel(const NumericalScalar accuracyLevel)
 {
-  if (accuracyLevel <= 1.0) throw InvalidRangeException(HERE) << "accuracyLevel is not > 1.0";
+  if (!(accuracyLevel > 1.0)) throw InvalidRangeException(HERE) << "accuracyLevel is not > 1.0";
   accuracyLevel_ = accuracyLevel ;
 }
 

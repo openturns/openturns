@@ -78,7 +78,7 @@ NumericalScalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method,
   if (y.getDimension() != 1) throw InvalidArgumentException(HERE) << "Output sample should be unidimensional (dim=" << y.getDimension() << ").";
   if (y.getSize() != sampleSize) throw InvalidArgumentException(HERE) << "Samples should be equally sized (in=" << sampleSize << " out=" << y.getSize() << ").";
   const NumericalScalar variance = y.computeVariance()[0];
-  if (variance <= 0.0) throw InvalidArgumentException(HERE) << "Null output sample variance.";
+  if (!(variance > 0.0)) throw InvalidArgumentException(HERE) << "Null output sample variance.";
 
   const UnsignedInteger basisSize = method.getImplementation()->currentIndices_.getSize();
   if (sampleSize < basisSize) throw InvalidArgumentException(HERE) << "Not enough samples (" << sampleSize << ") required (" << basisSize << ")";

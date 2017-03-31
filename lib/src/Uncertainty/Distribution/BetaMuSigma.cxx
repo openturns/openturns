@@ -145,8 +145,8 @@ NumericalPoint BetaMuSigma::inverse(const NumericalPoint & inP) const
   const NumericalScalar a = inP[2];
   const NumericalScalar b = inP[3];
 
-  if (r <= 0.) throw InvalidArgumentException(HERE) << "R MUST be positive";
-  if (t <= 0.) throw InvalidArgumentException(HERE) << "T MUST be positive";
+  if (!(r > 0.0)) throw InvalidArgumentException(HERE) << "R MUST be positive";
+  if (!(t > 0.0)) throw InvalidArgumentException(HERE) << "T MUST be positive";
   if (t <= r) throw InvalidArgumentException(HERE) << "T MUST be greater than r, here t=" << t << " and r=" << r;
 
   const NumericalScalar mu = a + (b - a) * r / t;

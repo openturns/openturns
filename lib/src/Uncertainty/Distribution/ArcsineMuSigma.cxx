@@ -42,7 +42,7 @@ ArcsineMuSigma::ArcsineMuSigma(const NumericalScalar mu, const NumericalScalar s
   , mu_(mu)
   , sigma_(sigma)
 {
-  if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
+  if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
 }
 
 /* Virtual constructor */
@@ -97,7 +97,7 @@ NumericalPoint ArcsineMuSigma::operator () (const NumericalPoint & inP) const
   const NumericalScalar mu = inP[0];
   const NumericalScalar sigma = inP[1];
 
-  if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
+  if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
 
   const NumericalScalar a = mu - sigma * sqrt(2.0);
   const NumericalScalar b = mu + sigma * sqrt(2.0);

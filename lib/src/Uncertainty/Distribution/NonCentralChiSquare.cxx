@@ -225,7 +225,7 @@ Description NonCentralChiSquare::getParameterDescription() const
 /* Nu accessor */
 void NonCentralChiSquare::setNu(const NumericalScalar nu)
 {
-  if (nu < 0.0) throw InvalidArgumentException(HERE) << "Nu MUST be strictly positive";
+  if (!(nu >= 0.0)) throw InvalidArgumentException(HERE) << "Nu MUST be strictly positive";
   if (nu != nu_)
   {
     nu_ = nu;
@@ -238,8 +238,8 @@ void NonCentralChiSquare::setNu(const NumericalScalar nu)
 void NonCentralChiSquare::setNuLambda(const NumericalScalar nu,
                                       const NumericalScalar lambda)
 {
-  if (nu <= 0.0) throw InvalidArgumentException(HERE) << "Nu MUST be positive";
-  if (lambda < 0.0) throw InvalidArgumentException(HERE) << "Lambda MUST be nonnegative";
+  if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Nu MUST be positive";
+  if (!(lambda >= 0.0)) throw InvalidArgumentException(HERE) << "Lambda MUST be nonnegative";
   if ((nu != nu_) || (lambda != lambda_))
   {
     nu_ = nu;
@@ -260,7 +260,7 @@ NumericalScalar NonCentralChiSquare::getNu() const
 /* Lambda accessor */
 void NonCentralChiSquare::setLambda(const NumericalScalar lambda)
 {
-  if (lambda < 0.0) throw InvalidArgumentException(HERE) << "Lambda MUST be nonnegative";
+  if (!(lambda >= 0.0)) throw InvalidArgumentException(HERE) << "Lambda MUST be nonnegative";
   if (lambda != lambda_)
   {
     lambda_ = lambda;

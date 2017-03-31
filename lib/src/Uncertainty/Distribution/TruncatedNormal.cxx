@@ -75,7 +75,7 @@ TruncatedNormal::TruncatedNormal(const NumericalScalar mu,
   , normalizationFactor_(0.0)
 {
   setName("TruncatedNormal");
-  if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "Error: cannot build a TruncatedNormal distribution with sigma <=0. Here, sigma=" << sigma;
+  if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot build a TruncatedNormal distribution with sigma <=0. Here, sigma=" << sigma;
   if (a >= b) throw InvalidArgumentException(HERE) << "Error: cannot build a TruncatedNormal distribution with a >= b. Here, a=" << a << " and b=" << b;
   setSigma(sigma);
   setDimension(1);
@@ -87,7 +87,7 @@ TruncatedNormal::TruncatedNormal(const NumericalScalar mu,
   NumericalScalar denominator = PhiBNorm_ - PhiANorm_;
   // If left tail truncature, use tail CDF to compute the normalization factor
   if (aNorm_ > 0.0) denominator = DistFunc::pNormal(aNorm_, true) - DistFunc::pNormal(bNorm_, true);
-  if (denominator <= 0.0) throw InvalidArgumentException(HERE) << "Error: the truncation interval has a too small measure. Here, measure=" << denominator;
+  if (!(denominator > 0.0)) throw InvalidArgumentException(HERE) << "Error: the truncation interval has a too small measure. Here, measure=" << denominator;
   normalizationFactor_ = 1.0 / denominator;
   phiANorm_ = SpecFunc::ISQRT2PI * std::exp(-0.5 * aNorm_ * aNorm_);
   phiBNorm_ = SpecFunc::ISQRT2PI * std::exp(-0.5 * bNorm_ * bNorm_);
@@ -491,7 +491,7 @@ NumericalScalar TruncatedNormal::getMu() const
 /* Sigma accessor */
 void TruncatedNormal::setSigma(const NumericalScalar sigma)
 {
-  if (sigma <= 0.) throw InvalidArgumentException(HERE) << "Sigma MUST be positive";
+  if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "Sigma MUST be positive";
   if (sigma != sigma_)
   {
     sigma_ = sigma;
@@ -518,7 +518,7 @@ void TruncatedNormal::setA(const NumericalScalar a)
     NumericalScalar denominator = PhiBNorm_ - PhiANorm_;
     // If left tail truncature, use tail CDF to compute the normalization factor
     if (aNorm_ > 0.0) denominator = DistFunc::pNormal(aNorm_, true) - DistFunc::pNormal(bNorm_, true);
-    if (denominator <= 0.0) throw InvalidArgumentException(HERE) << "Error: the truncation interval has a too small measure. Here, measure=" << denominator;
+    if (!(denominator > 0.0)) throw InvalidArgumentException(HERE) << "Error: the truncation interval has a too small measure. Here, measure=" << denominator;
     normalizationFactor_ = 1.0 / denominator;
     phiANorm_ = SpecFunc::ISQRT2PI * std::exp(-0.5 * aNorm_ * aNorm_);
     isAlreadyComputedMean_ = false;
@@ -543,7 +543,7 @@ void TruncatedNormal::setB(const NumericalScalar b)
     bNorm_ = (b_ - mu_) * iSigma;
     PhiBNorm_ = DistFunc::pNormal(bNorm_);
     NumericalScalar denominator = PhiBNorm_ - PhiANorm_;
-    if (denominator <= 0.0) throw InvalidArgumentException(HERE) << "Error: the truncation interval has a too small measure. Here, measure=" << denominator;
+    if (!(denominator > 0.0)) throw InvalidArgumentException(HERE) << "Error: the truncation interval has a too small measure. Here, measure=" << denominator;
     normalizationFactor_ = 1.0 / denominator;
     phiBNorm_ = SpecFunc::ISQRT2PI * std::exp(-0.5 * bNorm_ * bNorm_);
     isAlreadyComputedMean_ = false;

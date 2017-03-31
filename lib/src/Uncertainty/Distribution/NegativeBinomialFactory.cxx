@@ -61,7 +61,7 @@ struct NegativeBinomialFactoryParameterConstraint
   NumericalPoint computeConstraint(const NumericalPoint & parameter) const
   {
     const NumericalScalar r = parameter[0];
-    if (r <= 0.0) throw InvalidArgumentException(HERE) << "Error: the r parameter must be positive.";
+    if (!(r > 0.0)) throw InvalidArgumentException(HERE) << "Error: the r parameter must be positive.";
     const UnsignedInteger size = sample_.getSize();
     /* \sum_{i=1}^N \psi(x_i + r) */
     NumericalScalar sumPsi = 0.0;

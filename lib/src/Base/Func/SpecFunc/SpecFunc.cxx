@@ -273,7 +273,7 @@ NumericalScalar SpecFunc::DeltaLogBesselI10(const NumericalScalar x)
 NumericalScalar SpecFunc::LogBesselK(const NumericalScalar nu,
                                      const NumericalScalar x)
 {
-  if (x <= 0.0) throw InvalidArgumentException(HERE) << "Error: x must be positive, here x=" << x;
+  if (!(x > 0.0)) throw InvalidArgumentException(HERE) << "Error: x must be positive, here x=" << x;
   // Reflection formula
   if (nu < 0.0) return LogBesselK(-nu, x);
   // Special cases
@@ -322,7 +322,7 @@ NumericalScalar SpecFunc::BesselK(const NumericalScalar nu,
 #ifdef OPENTURNS_HAVE_BOOST
   return boost::math::cyl_bessel_k(nu, x);
 #else
-  if (x <= 0.0) throw InvalidArgumentException(HERE) << "Error: x must be positive, here x=" << x;
+  if (!(x > 0.0)) throw InvalidArgumentException(HERE) << "Error: x must be positive, here x=" << x;
   // Reflection formula
   if (nu < 0.0) return BesselK(-nu, x);
   // First the limit cases
@@ -358,7 +358,7 @@ NumericalScalar SpecFunc::LnBeta(const NumericalScalar a,
                                  const NumericalScalar b)
 {
   const NumericalScalar first = std::min(a, b);
-  if (first <= 0.0) throw InvalidArgumentException(HERE) << "Error: cannot compute the LogBeta function when a or b is nonpositive, a=" << a << ", b=" << b;
+  if (!(first > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute the LogBeta function when a or b is nonpositive, a=" << a << ", b=" << b;
   const NumericalScalar second = std::max(a, b);
   const NumericalScalar sum = a + b;
   // Common case: a and b small
@@ -469,7 +469,7 @@ NumericalScalar SpecFunc::DiLog(const NumericalScalar x)
   // Special case for 0
   if (x == 0.0) return 0.0;
   // No real value on (1, \infty)
-  if (x > 1.0) throw InvalidArgumentException(HERE) << "Error: the DiLog function does not take real values for arguments greater than 1.";
+  if (!(x <= 1.0)) throw InvalidArgumentException(HERE) << "Error: the DiLog function does not take real values for arguments greater than 1.";
   // Use DiLog(x) = -DiLog(1 / x) - \pi^2 / 6 - \log^2(-x) / 2
   // to map (-\infty, -1) into (-1, 0) for the argument
   if (x < -1.0) return -DiLog(1.0 / x) - SpecFunc::PI2_6  - 0.5 * pow(log(-x), 2);
@@ -541,7 +541,7 @@ NumericalScalar SpecFunc::IGamma1pm1(const NumericalScalar a)
 // GammaCorrection(a) = LogGamma(a) - log(sqrt(2.Pi)) + a - (a - 1/2) log(a)
 NumericalScalar SpecFunc::GammaCorrection(const NumericalScalar a)
 {
-  if (a <= 0.0) throw InvalidArgumentException(HERE) << "Error: cannot compute GammaCorrection for nonpositive a, here a=" << a;
+  if (!(a > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute GammaCorrection for nonpositive a, here a=" << a;
   // Use an asymptotic series for large argument
   if (a > 7.7490453948312251620)
   {
@@ -1027,7 +1027,7 @@ NumericalComplex SpecFunc::Expm1(const NumericalComplex & z)
 // Accurate evaluation of log(1-exp(-x)) for all x > 0
 NumericalComplex SpecFunc::Log1MExp(const NumericalScalar x)
 {
-  if (x <= 0.0) throw InvalidArgumentException(HERE) << "Error: x must be positive";
+  if (!(x > 0.0)) throw InvalidArgumentException(HERE) << "Error: x must be positive";
   if (x <= M_LN2) return log(-expm1(-x));
   return log1p(-exp(-x));
 }
@@ -1094,7 +1094,7 @@ UnsignedInteger SpecFunc::BitCount(const Unsigned64BitsInteger n)
 // Missing functions in cmath wrt math.h as of C++98
 NumericalScalar SpecFunc::Acosh(const NumericalScalar x)
 {
-  if (x < 1.0) throw InvalidArgumentException(HERE) << "Error: acosh is not defined for x<1, here x=" << x;
+  if (!(x >= 1.0)) throw InvalidArgumentException(HERE) << "Error: acosh is not defined for x<1, here x=" << x;
   return 2.0 * log(sqrt(0.5 * (x + 1.0)) + sqrt(0.5 * (x - 1.0)));
 }
 

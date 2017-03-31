@@ -46,7 +46,7 @@ NumericalScalar StudentCDF(const NumericalScalar nu,
                            const NumericalScalar x,
                            const Bool tail)
 {
-  if (nu <= 0.0) throw InvalidArgumentException(HERE) << "Error: nu must be positive, here nu=" << nu;
+  if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Error: nu must be positive, here nu=" << nu;
   if (x == 0.0) return 0.5;
   if (nu == 1.0) return (tail ? 0.5 - (std::atan(x) * M_1_PI) : 0.5 + (std::atan(x) * M_1_PI));
   const NumericalScalar x2 = x * x;
@@ -97,7 +97,7 @@ NumericalScalar StudentQuantile(const NumericalScalar nu,
                                 const NumericalScalar p,
                                 const Bool tail)
 {
-  if (nu <= 0.0) throw InvalidArgumentException(HERE) << "Error: nu must be positive, here nu=" << nu;
+  if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Error: nu must be positive, here nu=" << nu;
   if (p == 0.5) return 0.0;
   const NumericalScalar u = std::min(p, 0.5 + (0.5 - p));
   if (nu == 1.0)
@@ -197,7 +197,7 @@ NumericalScalar StudentQuantile(const NumericalScalar nu,
 */
 NumericalScalar StudentRealization(const NumericalScalar nu)
 {
-  if (nu <= 0.0) throw InvalidArgumentException(HERE) << "Error: nu must be positive, here nu=" << nu;
+  if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Error: nu must be positive, here nu=" << nu;
   const NumericalScalar n = DistFunc::rNormal();
   NumericalScalar g = -1.0;
   do
@@ -228,7 +228,7 @@ NumericalScalar NonCentralStudentCDF(const NumericalScalar nu,
                                      const Bool tail)
 {
   // Check nu
-  if (nu <= 0.0) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu=" << nu << " should be strictly positive.";
+  if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu=" << nu << " should be strictly positive.";
   // Special case when |delta| << 1
   if (std::abs(delta) < 4.0 * SpecFunc::Precision * nu) return DistFunc::pStudent(nu, x, tail);
   // Very large nu
@@ -381,7 +381,7 @@ NumericalScalar NonCentralStudentCDFAlt0(const NumericalScalar nu,
     const UnsignedInteger maximumIteration)
 {
   // Check nu
-  if (nu <= 0.0) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu=" << nu << " should be strictly positive.";
+  if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu=" << nu << " should be strictly positive.";
   // Special case when |delta| << 1
   if (std::abs(delta / (4.0 * nu)) < precision) return DistFunc::pStudent(nu, x, tail);
   // Very large nu
@@ -514,7 +514,7 @@ NumericalScalar NonCentralStudentPDF(const NumericalScalar nu,
                                      const NumericalScalar x)
 {
   // Check nu
-  if (nu <= 0.0) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu=" << nu << " should be strictly positive.";
+  if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu=" << nu << " should be strictly positive.";
   // Early exit for delta == 0, central Student PDF
   if (std::abs(delta / (4.0 * nu)) < SpecFunc::Precision) return std::exp(SpecFunc::LnGamma(0.5 * nu + 0.5) - SpecFunc::LnGamma(0.5 * nu) - 0.5 * std::log(M_PI * nu) + (0.5 * nu + 0.5) * std::log(nu / (nu + x * x)));
   if (std::abs(x) < SpecFunc::Precision) return std::exp(SpecFunc::LnGamma(0.5 * nu + 0.5) - SpecFunc::LnGamma(0.5 * nu) - 0.5 * std::log(M_PI * nu) - 0.5 * delta * delta);
@@ -544,7 +544,7 @@ NumericalScalar NonCentralStudentPDFAlt0(const NumericalScalar nu,
     const UnsignedInteger maximumIteration)
 {
   // Check nu
-  if (nu <= 0.0) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu=" << nu << " should be strictly positive.";
+  if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu=" << nu << " should be strictly positive.";
   // Early exit for delta == 0, central Student PDF
   if (std::abs(delta / (4.0 * nu)) < precision) return std::exp(SpecFunc::LnGamma(0.5 * nu + 0.5) - SpecFunc::LnGamma(0.5 * nu) - 0.5 * std::log(M_PI * nu) + (0.5 * nu + 0.5) * std::log(nu / (nu + x * x)));
   // Case delta <> 0

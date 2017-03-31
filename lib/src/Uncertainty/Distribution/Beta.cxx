@@ -330,7 +330,7 @@ Bool Beta::isElliptical() const
 /* R accessor */
 void Beta::setR(const NumericalScalar r)
 {
-  if (r <= 0.) throw InvalidArgumentException(HERE) << "R MUST be positive";
+  if (!(r > 0.0)) throw InvalidArgumentException(HERE) << "R MUST be positive";
   if (t_ <= r) throw InvalidArgumentException(HERE) << "T MUST be greater than r, here t=" << t_ << " and r=" << r;
   if (r != r_)
   {
@@ -368,8 +368,8 @@ void Beta::setRT(const NumericalScalar r,
 {
   if (!SpecFunc::IsNormal(r)) throw InvalidArgumentException(HERE) << "The first shape parameter must be a real value, here r=" << r;
   if (!SpecFunc::IsNormal(t)) throw InvalidArgumentException(HERE) << "The second shape parameter must be a real value, here t=" << t;
-  if (r <= 0.0) throw InvalidArgumentException(HERE) << "R MUST be positive";
-  if (t <= 0.0) throw InvalidArgumentException(HERE) << "T MUST be positive";
+  if (!(r > 0.0)) throw InvalidArgumentException(HERE) << "R MUST be positive";
+  if (!(t > 0.0)) throw InvalidArgumentException(HERE) << "T MUST be positive";
   if (t <= r) throw InvalidArgumentException(HERE) << "T MUST be greater than r, here t=" << t << " and r=" << r;
   if ((r != r_) || (t != t_))
   {

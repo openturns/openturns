@@ -115,11 +115,11 @@ NumericalScalar Normal3DCDF(const NumericalScalar x1,
                             const NumericalScalar rho23,
                             const Bool tail)
 {
-  if (std::abs(rho12) > 1.0) throw InvalidArgumentException(HERE) << "Error: the correlation coefficient rho12 must be in [-1, 1], here rho12=" << rho12;
-  if (std::abs(rho13) > 1.0) throw InvalidArgumentException(HERE) << "Error: the correlation coefficient rho13 must be in [-1, 1], here rho12=" << rho13;
-  if (std::abs(rho23) > 1.0) throw InvalidArgumentException(HERE) << "Error: the correlation coefficient rho23 must be in [-1, 1], here rho23=" << rho23;
+  if (!(std::abs(rho12) <= 1.0)) throw InvalidArgumentException(HERE) << "Error: the correlation coefficient rho12 must be in [-1, 1], here rho12=" << rho12;
+  if (!(std::abs(rho13) <= 1.0)) throw InvalidArgumentException(HERE) << "Error: the correlation coefficient rho13 must be in [-1, 1], here rho12=" << rho13;
+  if (!(std::abs(rho23) <= 1.0)) throw InvalidArgumentException(HERE) << "Error: the correlation coefficient rho23 must be in [-1, 1], here rho23=" << rho23;
   const NumericalScalar delta = rho12 * rho12 + rho13 * rho13 + rho23 * rho23 - 2.0 * rho12 * rho13 * rho23;
-  if (delta > 1.0) throw InvalidArgumentException(HERE) << "Error: delta=rho12^2+rho13^2+rho23^2-2*rho12*rho13*rho23 must be in less or equal to 1, here delta=" << delta;
+  if (!(delta <= 1.0)) throw InvalidArgumentException(HERE) << "Error: delta=rho12^2+rho13^2+rho23^2-2*rho12*rho13*rho23 must be in less or equal to 1, here delta=" << delta;
   if (tail) return Normal3DCDF(-x1, -x2, -x3, rho12, rho13, rho23, false);
   if ((x1 <= NORMAL3DCDF_MINUS_INF) || (x2 <= NORMAL3DCDF_MINUS_INF) || (x3 <= NORMAL3DCDF_MINUS_INF)) return 0.0;
   if (x1 >= NORMAL3DCDF_PLUS_INF)

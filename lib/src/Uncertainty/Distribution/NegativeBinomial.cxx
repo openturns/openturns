@@ -251,7 +251,7 @@ NumericalScalar NegativeBinomial::getP() const
 /* N accessor */
 void NegativeBinomial::setR(const NumericalScalar r)
 {
-  if (r <= 0.0) throw InvalidArgumentException(HERE) << "Error: r must be > 0, here r=" << r;
+  if (!(r > 0.0)) throw InvalidArgumentException(HERE) << "Error: r must be > 0, here r=" << r;
   if (r != r_)
   {
     r_ = r;

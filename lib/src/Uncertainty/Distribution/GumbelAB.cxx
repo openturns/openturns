@@ -41,7 +41,7 @@ GumbelAB::GumbelAB(const NumericalScalar a, const NumericalScalar b)
   , a_(a)
   , b_(b)
 {
-  if (b <= 0.0) throw InvalidArgumentException(HERE) << "b must be > 0, here b=" << b;
+  if (!(b > 0.0)) throw InvalidArgumentException(HERE) << "b must be > 0, here b=" << b;
 }
 
 /* Virtual constructor */
@@ -95,7 +95,7 @@ NumericalPoint GumbelAB::operator () (const NumericalPoint & inP) const
   const NumericalScalar a = inP[0];
   const NumericalScalar b = inP[1];
 
-  if (b <= 0.0) throw InvalidArgumentException(HERE) << "b must be > 0, here b=" << b;
+  if (!(b > 0.0)) throw InvalidArgumentException(HERE) << "b must be > 0, here b=" << b;
 
   const NumericalScalar alpha = 1 / b;
   const NumericalScalar beta = a;
@@ -114,7 +114,7 @@ NumericalPoint GumbelAB::inverse(const NumericalPoint & inP) const
   const NumericalScalar alpha = inP[0];
   const NumericalScalar beta = inP[1];
 
-  if (alpha <= 0.0) throw InvalidArgumentException(HERE) << "alpha must be > 0, here alpha=" << alpha;
+  if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "alpha must be > 0, here alpha=" << alpha;
 
   const NumericalScalar a = beta;
   const NumericalScalar b = 1.0 / alpha;

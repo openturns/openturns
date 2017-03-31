@@ -408,14 +408,14 @@ void Dirichlet::setTheta(const NumericalPoint & theta)
 {
   const UnsignedInteger size = theta.getSize();
   if (size <= 1) throw InvalidArgumentException(HERE) << "Error: the parameter theta must be of size at least 2.";
-  for (UnsignedInteger i = 0; i < size; ++i) if (theta[i] <= 0.0) throw InvalidArgumentException(HERE) << "Error: all the components of theta must be positive";
+  for (UnsignedInteger i = 0; i < size; ++i) if (!(theta[i] > 0.0)) throw InvalidArgumentException(HERE) << "Error: all the components of theta must be positive";
   theta_ = theta;
   sumTheta_ = 0.0;
   normalizationFactor_ = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalScalar thetaI = theta[i];
-    if (thetaI <= 0.0) throw InvalidArgumentException(HERE) << "Error: the vector theta must have positive components, here theta(" << i << ")=" << thetaI;
+    if (!(thetaI > 0.0)) throw InvalidArgumentException(HERE) << "Error: the vector theta must have positive components, here theta(" << i << ")=" << thetaI;
     normalizationFactor_ -= SpecFunc::LnGamma(thetaI);
     sumTheta_ += thetaI;
   }

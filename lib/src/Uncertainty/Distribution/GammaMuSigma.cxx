@@ -47,7 +47,7 @@ GammaMuSigma::GammaMuSigma(const NumericalScalar mu, const NumericalScalar sigma
   , sigma_(sigma)
   , gamma_(gamma)
 {
-  if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
+  if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
 }
 
 /* Virtual constructor */
@@ -112,7 +112,7 @@ NumericalPoint GammaMuSigma::operator () (const NumericalPoint & inP) const
   const NumericalScalar sigma = inP[1];
   const NumericalScalar gamma = inP[2];
 
-  if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
+  if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
 
   NumericalScalar lambda = (mu - gamma) / sigma;
   const NumericalScalar k = lambda * lambda;
@@ -133,8 +133,8 @@ NumericalPoint GammaMuSigma::inverse(const NumericalPoint & inP) const
   const NumericalScalar lambda = inP[1];
   const NumericalScalar gamma = inP[2];
 
-  if (k <= 0.0) throw InvalidArgumentException(HERE) << "K MUST be positive";
-  if (lambda <= 0.0) throw InvalidArgumentException(HERE) << "Lambda MUST be positive";
+  if (!(k > 0.0)) throw InvalidArgumentException(HERE) << "K MUST be positive";
+  if (!(lambda > 0.0)) throw InvalidArgumentException(HERE) << "Lambda MUST be positive";
 
   NumericalScalar mu = gamma + k / lambda;
   const NumericalScalar sigma = std::sqrt(k) / lambda;

@@ -83,7 +83,7 @@ NumericalScalar KFold::run(LeastSquaresMethod & method,
   if (y.getDimension() != 1) throw InvalidArgumentException( HERE ) << "Output sample should be unidimensional (dim=" << y.getDimension() << ").";
   if (y.getSize() != sampleSize) throw InvalidArgumentException( HERE ) << "Samples should be equally sized (in=" << sampleSize << " out=" << y.getSize() << ").";
   if (k_ >= sampleSize) throw InvalidArgumentException( HERE ) << "K (" << k_ << ") should be < size (" << sampleSize << ").";
-  if (variance <= 0.0) throw InvalidArgumentException( HERE ) << "Null output sample variance.";
+  if (!(variance > 0.0)) throw InvalidArgumentException( HERE ) << "Null output sample variance.";
 
   // the size of a subsample
   const UnsignedInteger testSize = sampleSize / k_;

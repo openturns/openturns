@@ -73,7 +73,7 @@ InverseNormal InverseNormalFactory::buildAsInverseNormal(const NumericalSample &
     for (UnsignedInteger i = 0; i < size; ++i)
     {
       const NumericalScalar xI = sample[i][0];
-      if (xI <= 0.0) throw InvalidArgumentException(HERE) << "Error: cannot build an InverseNormal distribution from a sample with non positive values";
+      if (!(xI > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot build an InverseNormal distribution from a sample with non positive values";
       sum += 1.0 / sample[i][0];
     }
     lambda = 1.0 / (sum / size - 1.0 / mu);

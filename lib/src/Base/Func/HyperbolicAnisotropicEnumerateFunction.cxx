@@ -226,7 +226,7 @@ UnsignedInteger HyperbolicAnisotropicEnumerateFunction::getMaximumDegreeStrataIn
 /* Q accessor */
 void HyperbolicAnisotropicEnumerateFunction::setQ(const NumericalScalar q)
 {
-  if (q <= 0.0) throw InvalidRangeException( HERE ) << "q parameter should be positive";
+  if (!(q > 0.0)) throw InvalidRangeException( HERE ) << "q parameter should be positive";
   q_ = q;
 }
 

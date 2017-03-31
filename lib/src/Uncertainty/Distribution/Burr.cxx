@@ -263,7 +263,7 @@ Description Burr::getParameterDescription() const
 /* C accessor */
 void Burr::setC(const NumericalScalar c)
 {
-  if (c <= 0.0) throw InvalidArgumentException(HERE) << "C MUST be positive";
+  if (!(c > 0.0)) throw InvalidArgumentException(HERE) << "C MUST be positive";
   if (c_ != c)
   {
     c_ = c;
@@ -283,7 +283,7 @@ NumericalScalar Burr::getC() const
 /* K accessor */
 void Burr::setK(const NumericalScalar k)
 {
-  if (k <= 0.0) throw InvalidArgumentException(HERE) << "K MUST be positive";
+  if (!(k > 0.0)) throw InvalidArgumentException(HERE) << "K MUST be positive";
   if (k_ != k)
   {
     k_ = k;

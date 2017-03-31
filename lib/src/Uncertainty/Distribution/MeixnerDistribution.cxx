@@ -122,7 +122,7 @@ String MeixnerDistribution::__str__(const String & offset) const
 /* Alpha accessor */
 void MeixnerDistribution::setAlpha(const NumericalScalar alpha)
 {
-  if (alpha <= 0.0) throw InvalidArgumentException(HERE) << "Alpha MUST be positive";
+  if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "Alpha MUST be positive";
   if (alpha != alpha_)
   {
     alpha_ = alpha;
@@ -155,7 +155,7 @@ NumericalScalar MeixnerDistribution::getBeta() const
 /* Delta accessor */
 void MeixnerDistribution::setDelta(const NumericalScalar delta)
 {
-  if (delta <= 0.0) throw InvalidArgumentException(HERE) << "Delta MUST be positive";
+  if (!(delta > 0.0)) throw InvalidArgumentException(HERE) << "Delta MUST be positive";
   if (delta != delta_)
   {
     delta_ = delta;
@@ -172,9 +172,9 @@ void MeixnerDistribution::setAlphaBetaDelta(const NumericalScalar alpha,
     const NumericalScalar beta,
     const NumericalScalar delta)
 {
-  if (alpha <= 0.0) throw InvalidArgumentException(HERE) << "Alpha MUST be positive";
+  if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "Alpha MUST be positive";
   if (std::abs(beta) >= M_PI) throw InvalidArgumentException(HERE) << "Beta MUST be in (-pi, pi)";
-  if (delta <= 0.0) throw InvalidArgumentException(HERE) << "Delta MUST be positive";
+  if (!(delta > 0.0)) throw InvalidArgumentException(HERE) << "Delta MUST be positive";
   if ((alpha != alpha_) || (beta != beta_) || (delta != delta_))
   {
     alpha_ = alpha;

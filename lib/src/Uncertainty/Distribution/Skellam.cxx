@@ -252,8 +252,8 @@ Bool Skellam::isElliptical() const
 void Skellam::setLambda1Lambda2(const NumericalScalar lambda1,
                                 const NumericalScalar lambda2)
 {
-  if (lambda1 <= 0.0) throw InvalidArgumentException(HERE) << "Lambda1 must be positive, here lambda1=" << lambda1;
-  if (lambda2 <= 0.0) throw InvalidArgumentException(HERE) << "Lambda2 must be positive, here lambda2=" << lambda2;
+  if (!(lambda1 > 0.0)) throw InvalidArgumentException(HERE) << "Lambda1 must be positive, here lambda1=" << lambda1;
+  if (!(lambda2 > 0.0)) throw InvalidArgumentException(HERE) << "Lambda2 must be positive, here lambda2=" << lambda2;
   if ((lambda1 != lambda1_) || (lambda2 != lambda2_))
   {
     lambda1_ = lambda1;
@@ -267,7 +267,7 @@ void Skellam::setLambda1Lambda2(const NumericalScalar lambda1,
 /* Lambda1 accessor */
 void Skellam::setLambda1(const NumericalScalar lambda1)
 {
-  if (lambda1 <= 0.0) throw InvalidArgumentException(HERE) << "Lambda1 must be positive, here lambda1=" << lambda1;
+  if (!(lambda1 > 0.0)) throw InvalidArgumentException(HERE) << "Lambda1 must be positive, here lambda1=" << lambda1;
   if (lambda1 != lambda1_)
   {
     lambda1_ = lambda1;
@@ -286,7 +286,7 @@ NumericalScalar Skellam::getLambda1() const
 /* Lambda2 accessor */
 void Skellam::setLambda2(const NumericalScalar lambda2)
 {
-  if (lambda2 <= 0.0) throw InvalidArgumentException(HERE) << "Lambda2 must be positive, here lambda2=" << lambda2;
+  if (!(lambda2 > 0.0)) throw InvalidArgumentException(HERE) << "Lambda2 must be positive, here lambda2=" << lambda2;
   if (lambda2 != lambda2_)
   {
     lambda2_ = lambda2;

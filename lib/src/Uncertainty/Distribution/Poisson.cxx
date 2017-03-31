@@ -247,7 +247,7 @@ Description Poisson::getParameterDescription() const
 /* Lambda accessor */
 void Poisson::setLambda(const NumericalScalar lambda)
 {
-  if (lambda <= 0.0) throw InvalidArgumentException(HERE) << "Lambda must be positive, here lambda=" << lambda;
+  if (!(lambda > 0.0)) throw InvalidArgumentException(HERE) << "Lambda must be positive, here lambda=" << lambda;
   if (lambda != lambda_)
   {
     lambda_ = lambda;

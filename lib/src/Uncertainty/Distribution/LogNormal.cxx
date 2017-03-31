@@ -382,7 +382,7 @@ Description LogNormal::getParameterDescription() const
 void LogNormal::setMuLogSigmaLog(const NumericalScalar muLog,
                                  const NumericalScalar sigmaLog)
 {
-  if (sigmaLog <= 0.0) throw InvalidArgumentException(HERE) << "SigmaLog MUST be positive, here sigmaLog=" << sigmaLog;
+  if (!(sigmaLog > 0.0)) throw InvalidArgumentException(HERE) << "SigmaLog MUST be positive, here sigmaLog=" << sigmaLog;
   if ((muLog != muLog_) || (sigmaLog != sigmaLog_))
   {
     muLog_ = muLog;
@@ -427,7 +427,7 @@ NumericalScalar LogNormal::getMuLog() const
 /* SigmaLog accessor */
 void LogNormal::setSigmaLog(const NumericalScalar sigmaLog)
 {
-  if (sigmaLog <= 0.) throw InvalidArgumentException(HERE) << "SigmaLog MUST be positive, here sigmaLog=" << sigmaLog;
+  if (!(sigmaLog > 0.0)) throw InvalidArgumentException(HERE) << "SigmaLog MUST be positive, here sigmaLog=" << sigmaLog;
   if (sigmaLog != sigmaLog_)
   {
     sigmaLog_ = sigmaLog;

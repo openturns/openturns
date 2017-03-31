@@ -39,7 +39,7 @@ NumericalScalar IncompleteGamma(const NumericalScalar a,
                                 const NumericalScalar x,
                                 const Bool tail)
 {
-  if (a <= 0.0) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
+  if (!(a > 0.0)) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
   return RegularizedIncompleteGamma(a, x, tail) * SpecFunc::Gamma(a);
 }
 
@@ -47,7 +47,7 @@ NumericalScalar IncompleteGammaInverse(const NumericalScalar a,
                                        const NumericalScalar x,
                                        const Bool tail)
 {
-  if (a <= 0.0) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
+  if (!(a > 0.0)) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
   return RegularizedIncompleteGammaInverse(a, x / SpecFunc::Gamma(a), tail);
 }
 
@@ -55,7 +55,7 @@ NumericalScalar RegularizedIncompleteGamma(const NumericalScalar a,
     const NumericalScalar x,
     const Bool tail)
 {
-  if (a <= 0.0) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
+  if (!(a > 0.0)) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
   if (x <= 0.0) return (tail ? 1.0 : 0.0);
 #ifdef OPENTURNS_HAVE_BOOST
   return (tail ? boost::math::gamma_q(a, x) : boost::math::gamma_p(a, x));
@@ -73,7 +73,7 @@ NumericalScalar RegularizedIncompleteGammaInverse(const NumericalScalar a,
     const NumericalScalar x,
     const Bool tail)
 {
-  if (a <= 0.0) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
+  if (!(a > 0.0)) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
 #ifdef OPENTURNS_HAVE_BOOST
   return (tail ? boost::math::gamma_q_inv(a, x) : boost::math::gamma_p_inv(a, x));
 #else

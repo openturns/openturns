@@ -63,9 +63,9 @@ NormalGamma::NormalGamma(const NumericalScalar mu,
   , alpha_(alpha)
   , beta_(beta)
 {
-  if (kappa_ <= 0.0) throw InvalidArgumentException(HERE) << "Error: kappa must be positive, here kappa=" << kappa;
-  if (alpha_ <= 0.0) throw InvalidArgumentException(HERE) << "Error: alpha must be positive, here alpha=" << alpha;
-  if (beta_ <= 0.0) throw InvalidArgumentException(HERE) << "Error: beta must be positive, here beta=" << beta;
+  if (!(kappa_ > 0.0)) throw InvalidArgumentException(HERE) << "Error: kappa must be positive, here kappa=" << kappa;
+  if (!(alpha_ > 0.0)) throw InvalidArgumentException(HERE) << "Error: alpha must be positive, here alpha=" << alpha;
+  if (!(beta_ > 0.0)) throw InvalidArgumentException(HERE) << "Error: beta must be positive, here beta=" << beta;
   setName("NormalGamma");
   const Description inVars(1, "lambda");
   Description formulas(2);
@@ -154,7 +154,7 @@ void NormalGamma::setKappa(const NumericalScalar kappa)
 {
   if (kappa != kappa_)
   {
-    if (kappa_ <= 0.0) throw InvalidArgumentException(HERE) << "Error: kappa must be positive, here kappa=" << kappa;
+    if (!(kappa_ > 0.0)) throw InvalidArgumentException(HERE) << "Error: kappa must be positive, here kappa=" << kappa;
     kappa_ = kappa;
   }
 }
@@ -169,7 +169,7 @@ void NormalGamma::setAlpha(const NumericalScalar alpha)
 {
   if (!(alpha == alpha_))
   {
-    if (alpha_ <= 0.0) throw InvalidArgumentException(HERE) << "Error: alpha must be positive, here alpha=" << alpha;
+    if (!(alpha_ > 0.0)) throw InvalidArgumentException(HERE) << "Error: alpha must be positive, here alpha=" << alpha;
     alpha_ = alpha;
   }
 }
@@ -184,7 +184,7 @@ void NormalGamma::setBeta(const NumericalScalar beta)
 {
   if (!(beta == beta_))
   {
-    if (beta_ <= 0.0) throw InvalidArgumentException(HERE) << "Error: beta must be positive, here beta=" << beta;
+    if (!(beta_ > 0.0)) throw InvalidArgumentException(HERE) << "Error: beta must be positive, here beta=" << beta;
     beta_ = beta;
   }
 }

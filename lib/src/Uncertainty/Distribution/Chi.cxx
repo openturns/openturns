@@ -90,7 +90,7 @@ String Chi::__str__(const String & offset) const
 /* Nu accessor */
 void Chi::setNu(const NumericalScalar nu)
 {
-  if (nu <= 0.0) throw InvalidArgumentException(HERE) << "Nu MUST be positive";
+  if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Nu MUST be positive";
   if (nu_ != nu)
   {
     nu_ = nu;

@@ -143,7 +143,7 @@ UniVariatePolynomial GramSchmidtAlgorithm::buildPolynomial(const UnsignedInteger
     const UniVariatePolynomial qi(buildPolynomial(i));
     v = v - qi * dotProduct(qi, v);
     const NumericalScalar norm2V = dotProduct(v, v);
-    if (norm2V <= 0.0) throw InternalException(HERE) << "Error: the norm of the residual is zero.";
+    if (!(norm2V > 0.0)) throw InternalException(HERE) << "Error: the norm of the residual is zero.";
     q = v * (1.0 / sqrt(norm2V));
   }
   coefficientsCache_.add(q.getCoefficients());

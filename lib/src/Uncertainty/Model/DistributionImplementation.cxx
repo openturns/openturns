@@ -4120,7 +4120,7 @@ DistributionImplementation::Implementation DistributionImplementation::acos() co
   const NumericalScalar a = getRange().getLowerBound()[0];
   if (a < -1.0) throw InvalidArgumentException(HERE) << "Error: cannot take the arc cos of a random variable that takes values less than -1 with positive probability.";
   const NumericalScalar b = getRange().getUpperBound()[0];
-  if (b > 1.0) throw InvalidArgumentException(HERE) << "Error: cannot take the arc cos of a random variable that takes values greater than 1 with positive probability.";
+  if (!(b <= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot take the arc cos of a random variable that takes values greater than 1 with positive probability.";
   NumericalPoint bounds(1, a);
   NumericalPoint values(1, std::acos(a));
   bounds.add(b);
@@ -4134,7 +4134,7 @@ DistributionImplementation::Implementation DistributionImplementation::asin() co
   const NumericalScalar a = getRange().getLowerBound()[0];
   if (a < -1.0) throw InvalidArgumentException(HERE) << "Error: cannot take the arc sin of a random variable that takes values less than -1 with positive probability.";
   const NumericalScalar b = getRange().getUpperBound()[0];
-  if (b > 1.0) throw InvalidArgumentException(HERE) << "Error: cannot take the arc sin of a random variable that takes values greater than 1 with positive probability.";
+  if (!(b <= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot take the arc sin of a random variable that takes values greater than 1 with positive probability.";
   NumericalPoint bounds(1, a);
   NumericalPoint values(1, std::asin(a));
   bounds.add(b);
@@ -4199,7 +4199,7 @@ DistributionImplementation::Implementation DistributionImplementation::acosh() c
 {
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the distribution must be univariate.";
   const NumericalScalar a = getRange().getLowerBound()[0];
-  if (a < 1.0) throw InvalidArgumentException(HERE) << "Error: cannot take the arc cosh of a random variable that takes values less than 1 with positive probability.";
+  if (!(a >= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot take the arc cosh of a random variable that takes values less than 1 with positive probability.";
   const NumericalScalar b = getRange().getUpperBound()[0];
   NumericalPoint bounds(1, a);
   NumericalPoint values(1, SpecFunc::Acosh(a));
@@ -4226,7 +4226,7 @@ DistributionImplementation::Implementation DistributionImplementation::atanh() c
   const NumericalScalar a = getRange().getLowerBound()[0];
   if (a < -1.0) throw InvalidArgumentException(HERE) << "Error: cannot take the arc tanh of a random variable that takes values less than -1 with positive probability.";
   const NumericalScalar b = getRange().getUpperBound()[0];
-  if (b > 1.0) throw InvalidArgumentException(HERE) << "Error: cannot take the arc tanh of a random variable that takes values greater than 1 with positive probability.";
+  if (!(b <= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot take the arc tanh of a random variable that takes values greater than 1 with positive probability.";
   NumericalPoint bounds(1, a);
   // F_Y(y)=P(atanh(X)<y)<->P(X<tanh(y))=F_X(tanh(y))
   // y s.t. F_Y(y)=epsilon<->y=atanh(F_X^{-1}(epsilon))
@@ -4275,7 +4275,7 @@ DistributionImplementation::Implementation DistributionImplementation::log() con
     return Uniform(parameters[0], parameters[1]).clone();
   }
   const NumericalScalar a = getRange().getLowerBound()[0];
-  if (a < 0.0) throw NotDefinedException(HERE) << "Error: cannot take the logarithm of a random variable that takes negative values with positive probability.";
+  if (!(a >= 0.0)) throw NotDefinedException(HERE) << "Error: cannot take the logarithm of a random variable that takes negative values with positive probability.";
   const NumericalScalar b = getRange().getUpperBound()[0];
   NumericalPoint bounds(1, a);
   NumericalPoint values(1, (a == 0.0 ? std::log(computeQuantile(quantileEpsilon_)[0]) : std::log(a)));
@@ -4295,7 +4295,7 @@ DistributionImplementation::Implementation DistributionImplementation::pow(const
   // First, the case where the exponent is integer
   if (trunc(exponent) == exponent) return pow(static_cast< SignedInteger >(trunc(exponent)));
   const NumericalScalar a = getRange().getLowerBound()[0];
-  if (a < 0.0) throw NotDefinedException(HERE) << "Error: cannot take a fractional power of a random variable that takes negative values with positive probability.";
+  if (!(a >= 0.0)) throw NotDefinedException(HERE) << "Error: cannot take a fractional power of a random variable that takes negative values with positive probability.";
 
   SymbolicFunction toPower("x", String(OSS() << (exponent < 0.0 ? "x^(" : "x^") << exponent << (exponent < 0.0 ? ")" : "")));
   NumericalPoint bounds(1, a);
@@ -4431,7 +4431,7 @@ DistributionImplementation::Implementation DistributionImplementation::sqrt() co
     return Chi(parameters[0]).clone();
   }
   const NumericalScalar a = getRange().getLowerBound()[0];
-  if (a < 0.0) throw NotDefinedException(HERE) << "Error: cannot take the square root of a random variable that takes negative values with positive probability.";
+  if (!(a >= 0.0)) throw NotDefinedException(HERE) << "Error: cannot take the square root of a random variable that takes negative values with positive probability.";
   NumericalPoint bounds(1, a);
   NumericalPoint values(1, std::sqrt(a));
   const NumericalScalar b = getRange().getUpperBound()[0];

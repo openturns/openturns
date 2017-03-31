@@ -362,7 +362,7 @@ Bool GumbelCopula::hasIndependentCopula() const
 /* Theta accessor */
 void GumbelCopula::setTheta(const NumericalScalar theta)
 {
-  if (theta < 1.0) throw InvalidArgumentException(HERE) << "Theta MUST be greater or equal to 1";
+  if (!(theta >= 1.0)) throw InvalidArgumentException(HERE) << "Theta MUST be greater or equal to 1";
   theta_ = theta;
 }
 

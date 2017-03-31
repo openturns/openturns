@@ -275,7 +275,7 @@ Description Gumbel::getParameterDescription() const
 /* Alpha accessor */
 void Gumbel::setAlpha(const NumericalScalar alpha)
 {
-  if (alpha <= 0.0) throw InvalidArgumentException(HERE) << "Alpha MUST be positive";
+  if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "Alpha MUST be positive";
   if (alpha != alpha_)
   {
     alpha_ = alpha;

@@ -112,7 +112,7 @@ UnsignedInteger Simulation::getMaximumOuterSampling() const
 void Simulation::setMaximumCoefficientOfVariation(const NumericalScalar maximumCoefficientOfVariation)
 {
   // Check if the given coefficient of variation is >= 0
-  //      if (maximumCoefficientOfVariation < 0.0) throw InvalidArgumentException(HERE) << "The maximum coefficient of variation must be >= 0.0";
+  //      if (!(maximumCoefficientOfVariation >= 0.0)) throw InvalidArgumentException(HERE) << "The maximum coefficient of variation must be >= 0.0";
   maximumCoefficientOfVariation_ = maximumCoefficientOfVariation;
 }
 

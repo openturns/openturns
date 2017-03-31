@@ -190,7 +190,7 @@ NumericalPoint IndependentCopula::computeQuantile(const NumericalScalar prob,
     const Bool tail,
     NumericalScalar & marginalProb) const
 {
-  if (prob < 0.0 || prob > 1.0) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
+  if (!(prob < 0.0 || prob <= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
   const NumericalScalar q = tail ? 1.0 - prob : prob;
   marginalProb = std::pow(q, 1.0 / dimension_);
   if (q == 0.0) return NumericalPoint(dimension_, 0.0);

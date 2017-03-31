@@ -67,7 +67,7 @@ NumericalScalar Normal2DCDF(const NumericalScalar x1,
                             const Bool tail)
 {
   NumericalScalar absRho = std::abs(rho);
-  if (absRho > 1.0) throw InvalidArgumentException(HERE) << "Error: the correlation coefficient must be in [-1,1], here rho=" << rho;
+  if (!(absRho <= 1.0)) throw InvalidArgumentException(HERE) << "Error: the correlation coefficient must be in [-1,1], here rho=" << rho;
   // Use the relation Normal2DCDF(x1, x2, false) = Normal2DCDF(-x1, -x2, true)
   if (!tail) return Normal2DCDF(-x1, -x2, rho, true);
   // The special cases: zero mass, unit mass, marginal mass
