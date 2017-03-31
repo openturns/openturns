@@ -2754,10 +2754,10 @@ void RandomMixture::load(Advocate & adv)
   adv.loadAttribute( "beta_", beta_ );
   adv.loadAttribute( "pdfPrecision_", pdfPrecision_ );
   adv.loadAttribute( "cdfPrecision_", cdfPrecision_ );
-  adv.saveAttribute( "inverseWeights_", inverseWeights_ );
-  adv.saveAttribute( "detWeightsInverse_", detWeightsInverse_ );
-  adv.saveAttribute( "fftAlgorithm_", fftAlgorithm_ );
-  adv.saveAttribute( "isAnalytical_", isAnalytical_ );
+  adv.loadAttribute( "inverseWeights_", inverseWeights_ );
+  adv.loadAttribute( "detWeightsInverse_", detWeightsInverse_ );
+  adv.loadAttribute( "fftAlgorithm_", fftAlgorithm_ );
+  adv.loadAttribute( "isAnalytical_", isAnalytical_ );
   computePositionIndicator();
   computeDispersionIndicator();
   computeRange();
