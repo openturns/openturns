@@ -1,0 +1,21 @@
+%feature("docstring") OT::IndicatorFunction
+"Indicator function.
+
+This function compares the output of another function against a threshold.
+
+Parameters
+----------
+function : :class:`~openturns.NumericalMathFunction`
+    Function from which another function is created.
+comparisonOperator : :class:`~openturns.ComparisonOperator`
+    Comparison operator.
+threshold : float
+    Threshold from which values are compared.
+
+Examples
+--------
+>>> import openturns as ot
+>>> analytical = ot.SymbolicFunction(['x0', 'x1'], ['x0 + x1'])
+>>> indicator = ot.IndicatorFunction(analytical, ot.Less(), 0.0)
+>>> print(indicator([2, 3]))
+[0]"

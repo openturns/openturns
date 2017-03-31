@@ -65,6 +65,7 @@
 #include "openturns/LinearFunction.hxx"
 #include "openturns/IdentityEvaluation.hxx"
 #include "openturns/IdentityFunction.hxx"
+#include "openturns/IndicatorFunction.hxx"
 #include "openturns/QuadraticFunction.hxx"
 #include "openturns/LinearNumericalMathGradientImplementation.hxx"
 #include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"

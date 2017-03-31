@@ -16,7 +16,8 @@
  * LHSResult
  * MultiStart
  * MethodOfMomentsFactory
- * SymbolicFunction, AggregatedFunction, ComposedFunction, DatabaseFunction, DualLinearCombinationFunction, LinearCombinationFunction, LinearFunction, QuadraticFunction, ParametricFunction
+ * SymbolicFunction, AggregatedFunction, ComposedFunction, DatabaseFunction, DualLinearCombinationFunction
+ * LinearCombinationFunction, LinearFunction, QuadraticFunction, ParametricFunction, IndicatorFunction
  * DistributionTransformation
  * GeneralizedExtremeValue
  * UniVariateFunctionFamily, UniVariateFunctionFactory, TensorizedUniVariateFunctionFactory

@@ -29,6 +29,7 @@ Algebra of functions
     AggregatedFunction
     ComposedFunction
     DualLinearCombinationFunction
+    IndicatorFunction
     LinearCombinationFunction
     ParametricFunction
     ProductFunction
