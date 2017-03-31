@@ -86,7 +86,7 @@ NumericalMathFunction::NumericalMathFunction(const NumericalMathFunction & left,
     const NumericalMathFunction & right)
   : TypedInterfaceObject<NumericalMathFunctionImplementation>(new ComposedFunction(left.getImplementation(), right.getImplementation()))
 {
-  // Nothing to do
+  Log::Warn(OSS() << "NumericalMathFunction(NumericalMathFunctionCollection, NumericalSample) is deprecated: use ComposedFunction");
 }
 
 /* Analytical formula constructor */
@@ -103,6 +103,7 @@ NumericalMathFunction::NumericalMathFunction(const Description & inputVariablesN
     const Description & formulas)
   : TypedInterfaceObject<NumericalMathFunctionImplementation>()
 {
+  Log::Warn(OSS() << "NumericalMathFunction(Description, Description) is deprecated: use SymbolicFunction");
   const UnsignedInteger size = formulas.getSize();
   Description outputVariablesNames(size);
   for (UnsignedInteger i = 0; i < size; ++i)
@@ -116,13 +117,14 @@ NumericalMathFunction::NumericalMathFunction(const NumericalMathFunction & funct
     const NumericalScalar threshold)
   : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation(new IndicatorNumericalMathEvaluationImplementation(function.getEvaluation(), comparisonOperator, threshold), new NoNumericalMathGradientImplementation(), new NoNumericalMathHessianImplementation()))
 {
-  // Nothing to do
+  Log::Warn(OSS() << "NumericalMathFunction(NumericalMathFunction, ComparisonOperator, NumericalScalar) is deprecated: use IndicatorFunction");
 }
 
 /* Aggregated function constructor: the output is the aggregation of the several functions */
 NumericalMathFunction::NumericalMathFunction(const NumericalMathFunctionCollection & functionCollection)
   : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation())
 {
+  Log::Warn(OSS() << "NumericalMathFunction(NumericalMathFunctionCollection) is deprecated: use AggregatedFunction");
   const AggregatedNumericalMathEvaluationImplementation evaluation(functionCollection);
   setEvaluation(evaluation.clone());
   setGradient(new AggregatedNumericalMathGradientImplementation(evaluation));
@@ -134,6 +136,7 @@ NumericalMathFunction::NumericalMathFunction(const NumericalMathFunctionCollecti
     const NumericalPoint & coefficients)
   : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation())
 {
+  Log::Warn(OSS() << "NumericalMathFunction(NumericalMathFunctionCollection, NumericalPoint) is deprecated: use LinearCombinationFunction");
   const LinearCombinationEvaluationImplementation evaluation(functionCollection, coefficients);
   setEvaluation(evaluation.clone());
   setGradient(new LinearCombinationGradientImplementation(evaluation));
@@ -145,6 +148,7 @@ NumericalMathFunction::NumericalMathFunction(const NumericalMathFunctionCollecti
     const NumericalSample & coefficients)
   : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation())
 {
+  Log::Warn(OSS() << "NumericalMathFunction(NumericalMathFunctionCollection, NumericalSample) is deprecated: use DualLinearCombinationFunction");
   const DualLinearCombinationEvaluationImplementation evaluation(functionCollection, coefficients);
   setEvaluation(evaluation.clone());
   setGradient(new DualLinearCombinationGradientImplementation(evaluation));
@@ -157,7 +161,7 @@ NumericalMathFunction::NumericalMathFunction(const String & inputVariableName,
     const String & outputVariableName)
   : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation(Description(1, inputVariableName), Description(1, outputVariableName), Description(1, formula)))
 {
-  // Nothing to do
+  Log::Warn(OSS() << "NumericalMathFunction(String, String, String) is deprecated: use SymbolicFunction");
 }
 
 
@@ -183,7 +187,7 @@ NumericalMathFunction::NumericalMathFunction(const NumericalSample & inputSample
     const NumericalSample & outputSample)
   : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation( inputSample, outputSample ))
 {
-  // Nothing to do
+  Log::Warn(OSS() << "NumericalMathFunction(NumericalSample, NumericalSample) is deprecated: use DatabaseFunction");
 }
 
 /* Constructor from field */
@@ -200,6 +204,7 @@ NumericalMathFunction::NumericalMathFunction(const NumericalMathFunction & funct
     const Bool parametersSet)
   : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation())
 {
+  Log::Warn(OSS() << "NumericalMathFunction(NumericalMathFunction, Indices, NumericalPoint, Bool) is deprecated: use ParametricFunction");
   const Pointer<ParametricEvaluationImplementation> p_evaluation = new ParametricEvaluationImplementation(function, set, referencePoint, parametersSet);
   setEvaluation(p_evaluation);
   setGradient(new ParametricGradientImplementation(p_evaluation));

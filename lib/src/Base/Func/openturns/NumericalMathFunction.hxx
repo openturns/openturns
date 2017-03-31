@@ -103,11 +103,13 @@ public:
                         const Description & outputVariablesNames,
                         const Description & formulas);
 
-  /** Same as the previous one, but with default names for the output variables */
+  /** Same as the previous one, but with default names for the output variables
+   * @deprecated */
   NumericalMathFunction(const Description & inputVariablesNames,
                         const Description & formulas);
 
-  /** Indicator function constructor */
+  /** Indicator function constructor
+    * @deprecated */
   NumericalMathFunction(const NumericalMathFunction & function,
                         const ComparisonOperator & comparisonOperator,
                         const NumericalScalar threshold);
@@ -115,7 +117,8 @@ public:
   /** Aggregated function constructor: the output is the aggregation of the several functions */
   NumericalMathFunction(const NumericalMathFunctionCollection & functionCollection);
 
-  /** Linear combination function constructor */
+  /** Linear combination function constructor
+    * @deprecated */
   NumericalMathFunction(const NumericalMathFunctionCollection & functionCollection,
                         const NumericalPoint & coefficients);
 
@@ -123,7 +126,8 @@ public:
   NumericalMathFunction(const NumericalMathFunctionCollection & functionCollection,
                         const NumericalSample & coefficients);
 
-  /** Simplified analytical formula constructor */
+  /** Simplified analytical formula constructor 
+   * @deprecated */
   NumericalMathFunction(const String & inputVariableName,
                         const String & formula,
                         const String & outputVariableName = "outputVariable");
@@ -138,14 +142,16 @@ public:
                         const HessianImplementation  & hessianImplementation);
 #endif
 
-  /** Constructor from samples */
+  /** Constructor from samples
+    * @deprecated */
   NumericalMathFunction(const NumericalSample & inputSample,
                         const NumericalSample & outputSample);
 
   /** Constructor from field using P1 Lagrange interpolation */
   NumericalMathFunction(const Field & field);
 
-  /** Constructor by splitting the input of a function between variables and parameters */
+  /** Constructor by splitting the input of a function between variables and parameters
+   * @deprecated */
   NumericalMathFunction(const NumericalMathFunction & function,
                         const Indices & set,
                         const NumericalPoint & referencePoint,

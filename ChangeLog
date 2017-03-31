@@ -58,6 +58,7 @@
  * Deprecated GramSchmidtAlgorithm, ChebychevAlgorithm
  * Added getSobolAggregatedIndices() to FunctionalChaosRandomVector
  * Added computeWeight() to Mesh
+ * Deprecated NumericalMathFunction ctors
 
 === Python module ===
 
