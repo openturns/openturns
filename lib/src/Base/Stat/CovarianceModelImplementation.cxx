@@ -749,22 +749,24 @@ Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
   // Here we draw a non-stationary model
   const NumericalSample gridT = RegularGrid(tMin, (tMax - tMin) / (pointNumber - 1.0), pointNumber).getVertices();
   CovarianceMatrix matrix(discretize(gridT));
+  const UnsignedInteger dimension = matrix.getDimension();
   // Normalize the data if needed
   if (correlationFlag)
     {
-      for (UnsignedInteger j = 0; j < matrix.getDimension(); ++j)
+      NumericalPoint sigma(dimension);
+      for (UnsignedInteger i = 0; i < dimension; ++i)
+	sigma[i] = std::sqrt(matrix(i, i));
+      for (UnsignedInteger j = 0; j < dimension; ++j)
 	{
-	  const NumericalScalar sigmaJ = std::sqrt(matrix(j, j));
 	  for (UnsignedInteger i = 0; i < j; ++i)
 	    {
-	      const NumericalScalar sigmaI = std::sqrt(matrix(i, i));
-	      const NumericalScalar scaling = sigmaI * sigmaJ;
+	      const NumericalScalar scaling = sigma[i] * sigma[j];
 	      if (scaling == 0.0) matrix(i, j) = 0.0;
 	      else matrix(i, j) /= scaling;
-	    }
+	    } // i
 	  matrix(j, j) = 1.0;
-	}
-    }
+	} // j
+    } // correlationFlag
   matrix.checkSymmetry();
   NumericalSample data(pointNumber * pointNumber, 1);
   data.getImplementation()->setData(*matrix.getImplementation());
