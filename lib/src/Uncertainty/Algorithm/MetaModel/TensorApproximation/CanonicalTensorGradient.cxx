@@ -1,0 +1,171 @@
+//                                               -*- C++ -*-
+/**
+ * @brief Canonical tensor gradient
+ *
+ *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+#include "openturns/CanonicalTensorGradient.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/Os.hxx"
+
+BEGIN_NAMESPACE_OPENTURNS
+
+
+
+CLASSNAMEINIT(CanonicalTensorGradient);
+
+static const Factory<CanonicalTensorGradient> Factory_CanonicalTensorGradient;
+
+/* Default constructor */
+CanonicalTensorGradient::CanonicalTensorGradient()
+  : NumericalMathGradientImplementation()
+  , evaluation_()
+{
+  // Nothing to do
+} // CanonicalTensorGradient
+
+/* Default constructor */
+CanonicalTensorGradient::CanonicalTensorGradient(const CanonicalTensorEvaluation & evaluation)
+  : NumericalMathGradientImplementation()
+  , evaluation_(evaluation)
+{
+  // Nothing to do
+} // CanonicalTensorGradient
+
+
+/* Virtual constructor */
+CanonicalTensorGradient * CanonicalTensorGradient::clone() const
+{
+  return new CanonicalTensorGradient(*this);
+}
+
+
+/* Comparison operator */
+Bool CanonicalTensorGradient::operator ==(const CanonicalTensorGradient & other) const
+{
+  return (evaluation_ == other.evaluation_);
+}
+
+/* String converter */
+String CanonicalTensorGradient::__repr__() const
+{
+  OSS oss(true);
+  oss << "class=" << CanonicalTensorGradient::GetClassName()
+      << " name=" << getName()
+      << " evaluation=" << evaluation_;
+  return oss;
+}
+
+/* String converter */
+String CanonicalTensorGradient::__str__(const String & offset) const
+{
+  return __repr__();
+}
+
+
+/* Gradient */
+Matrix CanonicalTensorGradient::gradient(const NumericalPoint & inP) const
+{
+  const UnsignedInteger inputDimension = getInputDimension();
+  if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a NumericalMathFunction with an argument of invalid dimension";
+  const UnsignedInteger outputDimension = getOutputDimension();
+
+  ++ callsNumber_;
+
+  const UnsignedInteger m = evaluation_.getRank();
+  NumericalPoint prodI(m, 1.0);
+
+  NumericalSample sumRI(m, inputDimension);
+  NumericalSample sumdRI(m, inputDimension);
+
+  for (UnsignedInteger j = 0; j < inputDimension; ++ j)
+  {
+    const NumericalPoint xj(1, inP[j]);
+    const Basis basisI(evaluation_.getBasis(j));
+    const UnsignedInteger basisSize = evaluation_.getDegrees()[j];
+
+    // compute phi_(i,j)(xj), phi_(i,j)'(xj)
+    NumericalPoint phiXj(basisSize);
+    NumericalPoint dphiXj(basisSize);
+    for (UnsignedInteger k = 0; k < basisSize; ++ k)
+    {
+      phiXj[k] = basisI[k](xj)[0];
+      dphiXj[k] = basisI[k].gradient(xj)(0, 0);
+    }
+
+    for (UnsignedInteger i = 0; i < m; ++ i)
+    {
+      const NumericalPoint coeffI(evaluation_.getCoefficients(i, j));
+      NumericalScalar sumI = 0.0;
+      NumericalScalar sumdI = 0.0;
+      for (UnsignedInteger k = 0; k < basisSize; ++ k)
+      {
+        if (coeffI[k] != 0.0)
+        {
+          sumI += coeffI[k] * phiXj[k];
+          sumdI += coeffI[k] * dphiXj[k];
+        }
+      }
+      sumRI[i][j] = sumI;
+      sumdRI[i][j] = sumdI;
+      prodI[i] *= sumI;
+    }
+  }
+
+  Matrix out(inputDimension, outputDimension);
+  for (UnsignedInteger j = 0; j < inputDimension; ++ j)
+  {
+    NumericalScalar dj = 0.0;
+    for (UnsignedInteger i = 0; i < m; ++ i)
+    {
+      dj += prodI[i] * (sumdRI[i][j] / sumRI[i][j]);
+    }
+    out(j, 0) = dj;
+  }
+  return out;
+}
+
+/* Accessor for input point dimension */
+UnsignedInteger CanonicalTensorGradient::getInputDimension() const
+{
+  return evaluation_.getInputDimension();
+}
+
+/* Accessor for output point dimension */
+UnsignedInteger CanonicalTensorGradient::getOutputDimension() const
+{
+  return evaluation_.getOutputDimension();
+}
+
+/* Method save() stores the object through the StorageManager */
+void CanonicalTensorGradient::save(Advocate & adv) const
+{
+  NumericalMathGradientImplementation::save(adv);
+  adv.saveAttribute("evaluation_", evaluation_);
+}
+
+/* Method load() reloads the object from the StorageManager */
+void CanonicalTensorGradient::load(Advocate & adv)
+{
+  NumericalMathGradientImplementation::load(adv);
+  adv.loadAttribute("evaluation_", evaluation_);
+  *this = CanonicalTensorGradient(evaluation_);
+}
+
+END_NAMESPACE_OPENTURNS

@@ -565,6 +565,9 @@ endif ()
 if (NLOPT_FOUND)
   ot_pyinstallcheck_test (GeneralLinearModelAlgorithm_nlopt)
 endif ()
+ot_pyinstallcheck_test (CanonicalTensorEvaluation_std IGNOREOUT)
+ot_pyinstallcheck_test (CanonicalTensorGradient_std IGNOREOUT)
+ot_pyinstallcheck_test (TensorApproximationAlgorithm_std)
 
 ## Sensitivity
 ot_pyinstallcheck_test (ANCOVA_std)

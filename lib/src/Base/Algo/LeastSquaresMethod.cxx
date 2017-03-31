@@ -22,6 +22,8 @@
 #include "openturns/LeastSquaresMethod.hxx"
 #include "openturns/LeastSquaresMethodImplementation.hxx"
 #include "openturns/SVDMethod.hxx"
+#include "openturns/CholeskyMethod.hxx"
+#include "openturns/QRMethod.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -146,5 +148,28 @@ Matrix LeastSquaresMethod::computeWeightedDesign(bool whole) const
   return getImplementation()->computeWeightedDesign(whole);
 }
 
+LeastSquaresMethod LeastSquaresMethod::Build(const String name,
+                                             const DesignProxy & proxy,
+                                             const NumericalPoint & weight,
+                                             const Indices & indices)
+{
+  if      (name == "SVD")      return SVDMethod(proxy, weight, indices);
+  else if (name == "Cholesky") return CholeskyMethod(proxy, weight, indices);
+  else if (name == "QR")       return QRMethod(proxy, weight, indices);
+  else throw InvalidArgumentException(HERE) << "Error: invalid value for decomposition method: " << name;
+  return LeastSquaresMethod();
+}
+
+
+LeastSquaresMethod LeastSquaresMethod::Build(const String name,
+                                             const DesignProxy & proxy,
+                                             const Indices & indices)
+{
+  if      (name == "SVD")      return SVDMethod(proxy, indices);
+  else if (name == "Cholesky") return CholeskyMethod(proxy, indices);
+  else if (name == "QR")       return QRMethod(proxy, indices);
+  else throw InvalidArgumentException(HERE) << "Error: invalid value for decomposition method: " << name;
+  return LeastSquaresMethod();
+}
 
 END_NAMESPACE_OPENTURNS

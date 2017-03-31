@@ -45,6 +45,22 @@ OrthogonalUniVariateFunctionFamily::OrthogonalUniVariateFunctionFamily(const Ort
 }
 
 
+/* Constructor from implementation */
+OrthogonalUniVariateFunctionFamily::OrthogonalUniVariateFunctionFamily(const Implementation & p_implementation)
+  : TypedInterfaceObject<OrthogonalUniVariateFunctionFactory>(p_implementation)
+{
+  // Nothing to do
+}
+
+
+/* Constructor from implementation */
+OrthogonalUniVariateFunctionFamily::OrthogonalUniVariateFunctionFamily(OrthogonalUniVariateFunctionFactory * p_implementation)
+  : TypedInterfaceObject<OrthogonalUniVariateFunctionFactory>(p_implementation)
+{
+  // Nothing to do
+}
+
+
 /* The method to get the function of any order */
 UniVariateFunction OrthogonalUniVariateFunctionFamily::build(const UnsignedInteger order) const
 {

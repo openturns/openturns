@@ -55,7 +55,17 @@ psiAk : :class:`~openturns.Matrix`
 Returns
 -------
 rowFilter : :class:`~openturns.Indices`
-    Sub-indices in of the basis in the current indices"
+    Sub-indices in of the sample in the current indices"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DesignProxy::getSampleSize
+"Sample size accessor.
+
+Returns
+-------
+sampleSize : int
+    Size of sample accounting for row filter"
 
 // ---------------------------------------------------------------------
 
@@ -65,7 +75,7 @@ rowFilter : :class:`~openturns.Indices`
 Parameters
 ----------
 rowFilter : sequence of int
-    Sub-indices in of the basis in the current indices"
+    Sub-indices in of the sample in the current indices"
 
 // ---------------------------------------------------------------------
 

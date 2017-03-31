@@ -386,6 +386,7 @@ ot_add_python_module(algo algo_module.i
                       CholeskyMethod.i CholeskyMethod_doc.i.in
                       QRMethod.i QRMethod_doc.i.in
                       SVDMethod.i SVDMethod_doc.i.in
+                      SparseMethod.i SparseMethod_doc.i.in
                       LeastSquaresMetaModelSelection.i LeastSquaresMetaModelSelection_doc.i.in
                       LeastSquaresMetaModelSelectionFactory.i LeastSquaresMetaModelSelectionFactory_doc.i.in
                       ClassifierImplementation.i ClassifierImplementation_doc.i.in
@@ -705,6 +706,8 @@ ot_add_python_module(orthogonalbasis orthogonalbasis_module.i
                       FourierSeriesFactory.i FourierSeriesFactory_doc.i.in
                       HaarWaveletFactory.i HaarWaveletFactory_doc.i.in
                       OrthogonalProductFunctionFactory.i OrthogonalProductFunctionFactory_doc.i.in
+                      CanonicalTensorEvaluation.i CanonicalTensorEvaluation_doc.i.in
+                      CanonicalTensorGradient.i CanonicalTensorGradient_doc.i.in
                       UncertaintyOrthogonalBasisTemplateDefs.i
                    )
 
@@ -744,6 +747,8 @@ ot_add_python_module(metamodel metamodel_module.i
                       StandardEvent.i StandardEvent_doc.i.in
                       FunctionalChaosRandomVector.i FunctionalChaosRandomVector_doc.i.in
                       KrigingRandomVector.i KrigingRandomVector_doc.i.in
+                      TensorApproximationResult.i TensorApproximationResult_doc.i.in
+                      TensorApproximationAlgorithm.i TensorApproximationAlgorithm_doc.i.in
                       UncertaintyMetaModelTemplateDefs.i
                    )
 

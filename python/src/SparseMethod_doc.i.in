@@ -1,0 +1,20 @@
+%feature("docstring") OT::SparseMethod
+"Least squares solver using a sparse representation.
+
+Available constructors:
+    SparseMethod(*method*)
+
+    SparseMethod(*method, basisSequenceFactory, fittingAlgorithm*)
+
+Parameters
+----------
+method : :class:`~openturns.LeastSquaresMethod`
+    Least squares resolution method
+basisSequenceFactory : :class:`~openturns.BasisSequenceFactory`
+    Basis enumeration algorithm
+fittingAlgorithm : :class:`~openturns.FittingAlgorithm`
+    Validation algorithm
+
+See also
+--------
+LeastSquaresMethod"

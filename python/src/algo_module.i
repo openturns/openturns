@@ -49,6 +49,7 @@
 %include CholeskyMethod.i
 %include QRMethod.i
 %include SVDMethod.i
+%include SparseMethod.i
 %include LeastSquaresMetaModelSelection.i
 %include LeastSquaresMetaModelSelectionFactory.i
 %include PenalizedLeastSquaresAlgorithm.i

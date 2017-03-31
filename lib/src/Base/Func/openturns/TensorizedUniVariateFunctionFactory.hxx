@@ -68,6 +68,7 @@ public:
   void setEnumerateFunction(const EnumerateFunction & phi);
 
   /** set the function familly collection */
+  FunctionFamilyCollection getFunctionFamilyCollection() const;
   void setFunctionFamilyCollection(const FunctionFamilyCollection & coll);
 
   /** Virtual constructor */

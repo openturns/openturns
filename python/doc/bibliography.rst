@@ -84,6 +84,10 @@ Bibliography
     *Design of computer experiments: Space filling and beyond.*
     Statistics and Computing 22(3): 681-701.
     `pdf <http://doc.openturns.org/papers/prontazo2012.pdf>`__
+.. [Rai2015] Rai, P. *Sparse Low Rank Approximation of Multivariate Functions -
+    Applications in Uncertainty Quantification.*, PhD thesis.
+    Ecole Centrale de Nantes, France, 2015.
+    `pdf <http://doc.openturns.org/papers/rai2015.pdf>`__
 .. [Rosenblatt1952] Rosenblatt, M. *Remarks on a multivariate transformation.*
     Ann. Math. Stat., 1952, 23, 470-472.
     `pdf <http://doc.openturns.org/papers/rosenblatt1952.pdf>`__

@@ -103,6 +103,12 @@ void TensorizedUniVariateFunctionFactory::setFunctionFamilyCollection(const Func
   }
 }
 
+TensorizedUniVariateFunctionFactory::FunctionFamilyCollection TensorizedUniVariateFunctionFactory::getFunctionFamilyCollection() const
+{
+  return coll_;
+}
+
+
 /* Build the NumericalMathFunction of the given index */
 NumericalMathFunction TensorizedUniVariateFunctionFactory::build(const UnsignedInteger index) const
 {

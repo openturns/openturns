@@ -67,6 +67,9 @@ public:
   /** Row filter flag accessor */
   Bool hasRowFilter() const;
 
+  /** Effective size of sample */
+  UnsignedInteger getSampleSize() const;
+
   /** Weight accessor */
   void setWeight(const NumericalPoint & weight);
   NumericalPoint getWeight() const;
@@ -75,7 +78,7 @@ public:
   Bool hasWeight() const;
 
 protected:
-  void initialize();
+  void initialize() const;
 
   /** Input sample */
   NumericalSample x_;
@@ -84,7 +87,7 @@ protected:
   Basis basis_;
 
   /** Design matrix cache */
-  mutable MatrixImplementation designCache_;
+  mutable Matrix designCache_;
 
   /** Flags to tell if the column has already been computed */
   mutable Indices alreadyComputed_;

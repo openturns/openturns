@@ -41,6 +41,7 @@ class OT_API BasisSequenceFactoryImplementation
   : public PersistentObject
 {
   friend class LeastSquaresMetaModelSelection;
+  friend class SparseMethod;
   CLASSNAME;
 public:
 
