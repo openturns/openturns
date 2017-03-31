@@ -12,7 +12,7 @@ try:
     print("f=", f)
     graph = f.draw(-1.2, 1.2, 32)
     print("graph=", graph)
-    graph.draw("NMFDraw1D")
+    graph.draw("NMFDraw1D.png")
 
     # Second, try 2D drawing
     f = NumericalMathFunction(
@@ -21,7 +21,7 @@ try:
     graph = f.draw(NumericalPoint(2, -10.0),
                    NumericalPoint(2, 10.0), Indices(2, 21))
     print("graph=", graph)
-    graph.draw("NMFDraw2D")
+    graph.draw("NMFDraw2D.png")
 
     # Full interfaces
     f = NumericalMathFunction(["x0", "x1", "x2"], ["y0", "y1"], [
@@ -30,13 +30,13 @@ try:
     # First output as a function of first input around central point
     graph1D = f.draw(0, 0, centralPoint, -5.0, 5.0, 32)
     print("graph1D=", graph1D)
-    graph1D.draw("NMFDraw1DFull")
+    graph1D.draw("NMFDraw1DFull.png")
     # Second output as a function of second and third inputs around central
     # point
     graph2D = f.draw(1, 2, 1, centralPoint, NumericalPoint(
         2, -5.0), NumericalPoint(2, 5.0), Indices(2, 21))
     print("graph1D=", graph2D)
-    graph2D.draw("NMFDraw2DFull")
+    graph2D.draw("NMFDraw2DFull.png")
 
 except:
     import sys

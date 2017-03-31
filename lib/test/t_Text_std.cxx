@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
 
     // Add it to the graph and draw everything
     myGraph.add(myText);
-    myGraph.draw("Graph_Text_c_OT", 640, 480);
+    myGraph.draw("Graph_Text_c_OT.png");
   }
   catch (TestFailed & ex)
   {

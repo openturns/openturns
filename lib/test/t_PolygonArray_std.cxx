@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     }
     Graph graph("An array of polygons", "x", "y", true, "");
     graph.add(PolygonArray(array));
-    graph.draw("polygon_array", 640, 480);
+    graph.draw("polygon_array.png");
   }
   catch (TestFailed & ex)
   {
