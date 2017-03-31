@@ -2578,7 +2578,9 @@ void DistributionImplementation::computeCovarianceContinuous() const
           // Compute the covariance element
           const CovarianceWrapper kernel(marginalDistribution, muI, muJ);
           const Interval interval(marginalDistribution->getRange());
+	  LOGINFO(OSS() << "Compute covariance(" << rowIndex << ", " << columnIndex << ")");
           const NumericalPoint value(integrator.integrate(kernel, interval));
+	  LOGINFO(OSS() << "covariance(" << rowIndex << ", " << columnIndex << ")="<< value[0]);
           covariance_(rowIndex, columnIndex) = value[0];
         }
       } // loop over column indices
