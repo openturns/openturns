@@ -104,11 +104,11 @@ Bool ComposedDistribution::operator ==(const ComposedDistribution & other) const
   if (!(copula_ == *other.getCopula())) return false;
   // Then the marginals
   for (UnsignedInteger i = 0; i < dimension_; ++i)
-    {
-      const Distribution left(distributionCollection_[i]);
-      const Distribution right(other.distributionCollection_[i]);
-      if (!(left == right)) return false;
-    }
+  {
+    const Distribution left(distributionCollection_[i]);
+    const Distribution right(other.distributionCollection_[i]);
+    if (!(left == right)) return false;
+  }
   return true;
 }
 
@@ -126,11 +126,11 @@ Bool ComposedDistribution::equals(const DistributionImplementation & other) cons
   if (!(copula_ == *other.getCopula())) return false;
   // Then the marginals
   for (UnsignedInteger i = 0; i < dimension_; ++i)
-    {
-      const Distribution left(distributionCollection_[i]);
-      const Distribution right(*other.getMarginal(i));
-      if (!(left == right)) return false;
-    }
+  {
+    const Distribution left(distributionCollection_[i]);
+    const Distribution right(*other.getMarginal(i));
+    if (!(left == right)) return false;
+  }
   return true;
 }
 
@@ -304,10 +304,10 @@ NumericalSample ComposedDistribution::getSampleParallel(const UnsignedInteger si
       const NumericalPoint marginalSample(distributionCollection_[i].getSample(size).getImplementation()->getData());
       UnsignedInteger shift = i;
       for (UnsignedInteger j = 0; j < size; ++j)
-	{
-	  data[shift] = marginalSample[j];
-	  shift += dimension;
-	}
+      {
+        data[shift] = marginalSample[j];
+        shift += dimension;
+      }
     }
     NumericalSampleImplementation result(size, dimension);
     result.setData(data);
@@ -595,8 +595,7 @@ void ComposedDistribution::computeCovariance() const
   covariance_ = CovarianceMatrix(dimension);
   // First the diagonal terms, which are the marginal covariances
   // Compute the marginal standard deviation
-  const NumericalPoint sigma(getStandardDeviation());
-  for(UnsignedInteger component = 0; component < dimension; ++component) covariance_(component, component) = sigma[component] * sigma[component];
+  for(UnsignedInteger component = 0; component < dimension; ++component) covariance_(component, component) = distributionCollection_[component].getCovariance()(0, 0);
   // Off-diagonal terms if the copula is not the independent copula
   if (!hasIndependentCopula())
   {
@@ -604,11 +603,19 @@ void ComposedDistribution::computeCovariance() const
     if (isElliptical())
     {
       const CovarianceMatrix shape(copula_.getShapeMatrix());
+      const NumericalPoint sigma(getStandardDeviation());
       for (UnsignedInteger rowIndex = 0; rowIndex < dimension; ++rowIndex)
         for (UnsignedInteger columnIndex = rowIndex + 1; columnIndex < dimension; ++columnIndex)
           covariance_(rowIndex, columnIndex) = shape(rowIndex, columnIndex) * sigma[rowIndex] * sigma[columnIndex];
       return;
     }
+    if (ResourceMap::GetAsBool("ComposedDistribution-UseGenericCovarianceAlgorithm"))
+    {
+      LOGINFO("ComposedDistribution: using the generic covariance algorithm");
+      DistributionImplementation::computeCovariance();
+      return;
+    }
+    LOGINFO("ComposedDistribution: using the specific covariance algorithm");
     // To ensure that the mean is up to date
     mean_ = getMean();
     // Compute the weights and nodes of the 1D gauss quadrature over [-1, 1]
@@ -638,34 +645,52 @@ void ComposedDistribution::computeCovariance() const
     // We simply use a product gauss quadrature
     // We first loop over the coeeficients because the most expensive task is to get the 2D marginal copulas
     Indices indices(2);
-    for(UnsignedInteger rowIndex = 0; rowIndex < dimension; ++rowIndex)
+    // Prepare the 2D integration nodes and weights in order to use potential parallelism in 2D marginal pdf computation
+    NumericalSample nodes2D(integrationNodesNumber_ * integrationNodesNumber_, 2);
+    NumericalPoint weights2D(integrationNodesNumber_ * integrationNodesNumber_);
+    UnsignedInteger index = 0;
+    for (UnsignedInteger rowNodeIndex = 0; rowNodeIndex < integrationNodesNumber_; ++rowNodeIndex)
+    {
+      const NumericalScalar nodeI = gaussNodes[rowNodeIndex];
+      const NumericalScalar weightI = gaussWeights[rowNodeIndex];
+      for (UnsignedInteger columnNodeIndex = 0; columnNodeIndex < integrationNodesNumber_; ++columnNodeIndex)
+      {
+        const NumericalScalar nodeJ = gaussNodes[columnNodeIndex];
+        const NumericalScalar weightJ = gaussWeights[columnNodeIndex];
+        nodes2D[index][0] = nodeI;
+        nodes2D[index][1] = nodeJ;
+        weights2D[index] = weightI * weightJ;
+        ++index;
+      } // loop over J integration nodes
+    } // loop over I integration nodes
+    // Now perform the integration for each component of the covariance matrix
+    for (UnsignedInteger rowIndex = 0; rowIndex < dimension; ++rowIndex)
     {
       indices[0] = rowIndex;
+      const NumericalScalar muI = mean_[rowIndex];
       // We must fill the upper triangle of the covariance matrix in order to access the 2D marginal distributions
       // of the copula in the correct order for the ComposedCopula
-      for(UnsignedInteger columnIndex = rowIndex + 1; columnIndex < dimension; ++columnIndex)
+      for (UnsignedInteger columnIndex = rowIndex + 1; columnIndex < dimension; ++columnIndex)
       {
         indices[1] = columnIndex;
+	const NumericalScalar muJ = mean_[columnIndex];
         const Distribution marginalCopula(copula_.getMarginal(indices));
         if (!marginalCopula.hasIndependentCopula())
         {
+          LOGINFO(OSS() << "Compute covariance(" << rowIndex << ", " << columnIndex << ")");
+          const NumericalPoint pdf2D(marginalCopula.computePDF(nodes2D).getImplementation()->getData());
           NumericalScalar covarianceIJ = 0.0;
           // Then we loop over the integration points
-          for(UnsignedInteger rowNodeIndex = 0; rowNodeIndex < integrationNodesNumber_; ++rowNodeIndex)
+          index = 0;
+          for (UnsignedInteger rowNodeIndex = 0; rowNodeIndex < integrationNodesNumber_; ++rowNodeIndex)
           {
-            const NumericalScalar nodeI = gaussNodes[rowNodeIndex];
-            const NumericalScalar weightI = gaussWeights[rowNodeIndex];
-            for(UnsignedInteger columnNodeIndex = 0; columnNodeIndex < integrationNodesNumber_; ++columnNodeIndex)
+            for (UnsignedInteger columnNodeIndex = 0; columnNodeIndex < integrationNodesNumber_; ++columnNodeIndex)
             {
-              const NumericalScalar nodeJ = gaussNodes[columnNodeIndex];
-              const NumericalScalar weightJ = gaussWeights[columnNodeIndex];
-              NumericalPoint in(2);
-              in[0] = nodeI;
-              in[1] = nodeJ;
-              covarianceIJ += weightI * weightJ * (marginalQuantiles[rowNodeIndex][rowIndex] - mean_[rowIndex]) *
-                              (marginalQuantiles[columnNodeIndex][columnIndex] - mean_[columnIndex]) * marginalCopula.computePDF(in);
+              covarianceIJ += weights2D[index] * (marginalQuantiles[rowNodeIndex][rowIndex] - muI) * (marginalQuantiles[columnNodeIndex][columnIndex] - muJ) * pdf2D[index];
+	      ++index;
             } // loop over J integration nodes
           } // loop over I integration nodes
+          LOGINFO(OSS() << "Covariance(" << rowIndex << ", " << columnIndex << ")=" << covarianceIJ);
           covariance_(rowIndex, columnIndex) = covarianceIJ;
         }
       } // loop over column indices

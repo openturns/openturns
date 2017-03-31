@@ -522,6 +522,9 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "CompositeDistribution-StepNumber", 256 );
   setAsNumericalScalar( "CompositeDistribution-SolverEpsilon", 1.0e-10 );
 
+  // ComposedDistribution parameters //
+  setAsBool("ComposedDistribution-UseGenericCovarianceAlgorithm", false);
+  
   // DirichletFactory parameters //
   setAsUnsignedInteger( "Dirichlet-DefaultSamplingSize", 500000 );
   setAsUnsignedInteger( "Dirichlet-DefaultIntegrationSize", 50 );

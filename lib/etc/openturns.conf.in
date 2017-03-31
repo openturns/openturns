@@ -252,7 +252,10 @@
   <ConditionalDistribution-MarginalIntegrationNodesNumber value="256" />
   <ConditionalDistribution-MaximumIntegrationNodesNumber value="100000" />
   
-  <!-- OT::CompositeDistribution parameters -->
+  <!-- OT::ComposedDistribution parameters -->
+  <ComposedDistribution-UseGenericCovarianceAlgorithm value="false" />
+
+<!-- OT::CompositeDistribution parameters -->
   <CompositeDistribution-StepNumber    value="256" />
   <CompositeDistribution-SolverEpsilon value="1.0e-10" />
 
