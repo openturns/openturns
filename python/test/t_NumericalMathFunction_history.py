@@ -6,7 +6,7 @@ from openturns import *
 TESTPREAMBLE()
 
 try:
-    f = NumericalMathFunction("x", "x^2", "y")
+    f = SymbolicFunction("x", "x^2")
     size = 4
     inputSample = NumericalSample(size, 1)
     for i in range(size):

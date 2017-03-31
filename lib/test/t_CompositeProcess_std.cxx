@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
     /* We build a 1D function */
     Description inputDescription(1, "x");
     Description formula(1, "2 * x + 5");
-    NumericalMathFunction myOneDimensionalFunction(inputDescription, formula);
+    SymbolicFunction myOneDimensionalFunction(inputDescription, formula);
 
     /* We build a spatial function */
     ValueFunction myFunction(myOneDimensionalFunction);

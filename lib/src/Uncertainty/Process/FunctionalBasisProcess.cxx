@@ -27,6 +27,7 @@
 #include "openturns/Collection.hxx"
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/RankMCovarianceModel.hxx"
+#include "openturns/LinearCombinationFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -148,7 +149,7 @@ Field FunctionalBasisProcess::getRealization() const
 NumericalMathFunction FunctionalBasisProcess::getContinuousRealization() const
 {
   state_ = distribution_.getRealization();
-  return NumericalMathFunction(basis_, state_);
+  return LinearCombinationFunction(basis_, state_);
 }
 
 /* Compute the next steps of the process */

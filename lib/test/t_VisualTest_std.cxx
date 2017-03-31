@@ -135,9 +135,7 @@ int main(int argc, char *argv[])
     OSS oss;
     for (UnsignedInteger i = 0; i < inputDimension; ++i) oss << (i > 0 ? "+" : "") << "cos(" << i + 1 << "*" << inputVar[i] << ")";
     formula[0] = oss;
-    Description outputVar(1);
-    outputVar[0] = "y";
-    NumericalMathFunction model(inputVar, outputVar, formula);
+    SymbolicFunction model(inputVar, formula);
     NumericalSample outputSample(model(inputSample));
     Graph cobwebValue(VisualTest::DrawCobWeb(inputSample, outputSample, 2.5, 3.0, "red", false));
     fullprint << "cobwebValue = " << cobwebValue << std::endl;

@@ -39,15 +39,11 @@ int main(int argc, char *argv[])
     Description input(2);
     input[0] = "x1";
     input[1] = "x2";
-    Description output(3);
-    output[0] = "y1";
-    output[1] = "y2";
-    output[2] = "y3";
     Description formula(3);
     formula[0] = "x1*sin(x2)";
     formula[1] = "cos(x1+x2)";
     formula[2] = "(x2+1)*exp(x1-2*x2)";
-    NumericalMathFunction myFunc(input, output, formula);
+    SymbolicFunction myFunc(input, formula);
 
     /** Copy constructor */
     NumericalMathFunction newFunc(myFunc);

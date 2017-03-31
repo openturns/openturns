@@ -109,10 +109,10 @@ description : :class:`~openturns.Description`
 Examples
 --------
 >>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x1', 'x2'], ['y'],
-...                          ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
+>>> f = ot.SymbolicFunction(['x1', 'x2'],
+...                         ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
 >>> print(f.getDescription())
-[x1,x2,y]"
+[x1,x2,y0]"
 
 // ---------------------------------------------------------------------
 
@@ -167,8 +167,8 @@ description : :class:`~openturns.Description`
 Examples
 --------
 >>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x1', 'x2'], ['y'],
-...                          ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
+>>> f = ot.SymbolicFunction(['x1', 'x2'],
+...                         ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
 >>> print(f.getInputDescription())
 [x1,x2]"
 
@@ -185,8 +185,8 @@ number_inputs : int
 Examples
 --------
 >>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x1', 'x2'], ['y'],
-...                          ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
+>>> f = ot.SymbolicFunction(['x1', 'x2'],
+...                         ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
 >>> print(f.getInputDimension())
 2"
 
@@ -220,10 +220,10 @@ description : :class:`~openturns.Description`
 Examples
 --------
 >>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x1', 'x2'], ['y'],
-...                          ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
+>>> f = ot.SymbolicFunction(['x1', 'x2'],
+...                         ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
 >>> print(f.getOutputDescription())
-[y]"
+[y0]"
 
 // ---------------------------------------------------------------------
 
@@ -238,8 +238,8 @@ number_outputs : int
 Examples
 --------
 >>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x1', 'x2'], ['y'],
-...                          ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
+>>> f = ot.SymbolicFunction(['x1', 'x2'],
+...                         ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
 >>> print(f.getOutputDimension())
 1"
 
@@ -288,10 +288,10 @@ description : sequence of str
 Examples
 --------
 >>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x1', 'x2'], ['y'],
-...                          ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
+>>> f = ot.SymbolicFunction(['x1', 'x2'],
+...                         ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
 >>> print(f.getDescription())
-[x1,x2,y]
+[x1,x2,y0]
 >>> f.setDescription(['a','b','y'])
 >>> print(f.getDescription())
 [a,b,y]"
@@ -442,7 +442,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> from openturns.viewer import View
->>> f = ot.NumericalMathFunction('x', 'sin(2*_pi*x)*exp(-x^2/2)', 'y')
+>>> f = ot.SymbolicFunction(['x'], ['sin(2*_pi*x)*exp(-x^2/2)'])
 >>> graph = f.draw(-1.2, 1.2, 100)
 >>> View(graph).show()"
 

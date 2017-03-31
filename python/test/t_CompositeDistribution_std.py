@@ -8,7 +8,7 @@ RandomGenerator.SetSeed(0)
 
 try:
     # Instanciate one distribution object
-    f = NumericalMathFunction("x", "x^2 + 2 * sin(x)")
+    f = SymbolicFunction("x", "x^2 + 2 * sin(x)")
     distribution = CompositeDistribution(f, Normal())
     print("Distribution ", repr(distribution))
     print("Distribution ", distribution)

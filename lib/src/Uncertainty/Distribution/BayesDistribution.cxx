@@ -24,6 +24,7 @@
 #include "openturns/Uniform.hxx"
 #include "openturns/ConditionalDistribution.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/SymbolicFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -40,11 +41,10 @@ BayesDistribution::BayesDistribution()
   , linkFunction_()
 {
   const Description inVars(Description::BuildDefault(1, "y"));
-  const Description outVars(Description::BuildDefault(2, "theta"));
   Description formulas(2);
   formulas[0] = inVars[0];
   formulas[1] = String(OSS() << inVars[0] << " + 1");
-  setConditionedAndConditioningDistributionsAndLinkFunction(Uniform(), Uniform(), NumericalMathFunction(inVars, outVars, formulas));
+  setConditionedAndConditioningDistributionsAndLinkFunction(Uniform(), Uniform(), SymbolicFunction(inVars, formulas));
   setName("BayesDistribution");
   isParallel_ = false;
 }
@@ -68,7 +68,7 @@ BayesDistribution::BayesDistribution(const Distribution & conditionedDistributio
   : ContinuousDistribution()
   , conditionedDistribution_(conditionedDistribution)
   , conditioningDistribution_(conditioningDistribution)
-  , linkFunction_(NumericalMathFunction(Description::BuildDefault(conditioningDistribution.getDimension(), "x"), Description::BuildDefault(conditioningDistribution.getDimension(), "x")))
+  , linkFunction_(SymbolicFunction(Description::BuildDefault(conditioningDistribution.getDimension(), "x"), Description::BuildDefault(conditioningDistribution.getDimension(), "x")))
 {
   setConditionedAndConditioningDistributionsAndLinkFunction(conditionedDistribution, conditioningDistribution, linkFunction_);
   setName("BayesDistribution");

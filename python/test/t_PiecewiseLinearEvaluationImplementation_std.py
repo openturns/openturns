@@ -3,7 +3,7 @@
 from __future__ import print_function
 from openturns import *
 
-ref = NumericalMathFunction("x", "sin(x)")
+ref = SymbolicFunction("x", "sin(x)")
 size = 12
 locations = NumericalPoint(size)
 values = NumericalPoint(size)

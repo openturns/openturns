@@ -27,6 +27,7 @@
 #include "openturns/IdentityMatrix.hxx"
 #include "openturns/Full.hxx"
 #include "openturns/SymbolicFunction.hxx"
+#include "openturns/ParametricFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -61,7 +62,7 @@ MCMC::MCMC( const Distribution & prior,
   , thinning_(ResourceMap::GetAsUnsignedInteger("MCMC-DefaultThinning"))
 {
   const SymbolicFunction fullFunction(Description::BuildDefault(initialState.getDimension(), "x"), Description::BuildDefault(initialState.getDimension(), "x"));
-  model_ = NumericalMathFunction(fullFunction, Indices(0), NumericalPoint(0));
+  model_ = ParametricFunction(fullFunction, Indices(0), NumericalPoint(0));
   setPrior(prior);
   if (model_.getInputDimension() != prior.getDimension()) throw InvalidDimensionException(HERE) << "The model input dimension (" << model_.getInputDimension() << ") does not match the dimension of the prior (" << prior.getDimension() << ").";
   setParameters(NumericalSample(observations.getSize(), 0));

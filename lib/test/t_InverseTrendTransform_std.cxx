@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     Description formula;
     formula.add("sin(t)");
     formula.add("cos(t)");
-    NumericalMathFunction myFunc(inputVars, formula);
+    SymbolicFunction myFunc(inputVars, formula);
     InverseTrendTransform myInverseTrendFunc(myFunc);
 
     fullprint << "myInverseTrendFunc=" << myInverseTrendFunc << std::endl;

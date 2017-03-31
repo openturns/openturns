@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
     inputVars.add("t");
     inputVars.add("x");
     Description formula(1, "x + t^2");
-    NumericalMathFunction myFunc(inputVars, formula);
+    SymbolicFunction myFunc(inputVars, formula);
     VertexValueFunction myTemporalFunc(myFunc);
 
     fullprint << "myTemporalFunc=" << myTemporalFunc << std::endl;

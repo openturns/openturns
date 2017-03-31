@@ -26,6 +26,7 @@
 #include "openturns/GaussianProcess.hxx"
 #include "openturns/WhiteNoise.hxx"
 #include "openturns/Normal.hxx"
+#include "openturns/DatabaseFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -49,7 +50,7 @@ GeneralLinearModelResult::GeneralLinearModelResult(const NumericalSample & input
     const NumericalPointCollection & trendCoefficients,
     const CovarianceModel & covarianceModel,
     const NumericalScalar optimalLogLikelihood)
-  : MetaModelResult(NumericalMathFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
+  : MetaModelResult(DatabaseFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
   , inputData_(inputSample)
   , inputTransformedData_(inputSample)
   , inputTransformation_()
@@ -80,7 +81,7 @@ GeneralLinearModelResult::GeneralLinearModelResult(const NumericalSample & input
     const NumericalScalar optimalLogLikelihood,
     const TriangularMatrix & covarianceCholeskyFactor,
     const HMatrix & covarianceHMatrix)
-  : MetaModelResult(NumericalMathFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
+  : MetaModelResult(DatabaseFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
   , inputData_(inputSample)
   , inputTransformedData_(inputSample)
   , inputTransformation_()

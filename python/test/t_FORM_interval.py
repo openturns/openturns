@@ -26,7 +26,7 @@ def buildEvent(vector, interval):
             return ot.Event(vector, Less(), upperBound[0])
         if finiteLowerBound[0] and finiteUpperBound[0]:
             print('case 3')
-            testFunction = ot.NumericalMathFunction(
+            testFunction = ot.SymbolicFunction(
                 'x', 'min(x-(' + str(lowerBound[0]) + '), (' + str(upperBound[0]) + ') - x)')
             newVector = ot.RandomVector(ot.NumericalMathFunction(
                 testFunction, vector.getFunction()), vector.getAntecedent())
@@ -35,7 +35,7 @@ def buildEvent(vector, interval):
         # compute
         print('case 4')
         inputDimension = vector.getFunction().getInputDimension()
-        return ot.Event(ot.RandomVector(ot.NumericalMathFunction(ot.Description.BuildDefault(inputDimension, 'x'), ['0.0']), vector.getAntecedent()), Less(), 1.0)
+        return ot.Event(ot.RandomVector(ot.SymbolicFunction(ot.Description.BuildDefault(inputDimension, 'x'), ['0.0']), vector.getAntecedent()), Less(), 1.0)
     # General case
     numConstraints = 0
     inVars = ot.Description.BuildDefault(dimension, 'y')
@@ -50,11 +50,11 @@ def buildEvent(vector, interval):
         # Here we build an event that is always true and much cheaper to
         # compute
         inputDimension = vector.getFunction().getInputDimension()
-        return ot.Event(ot.RandomVector(ot.NumericalMathFunction(ot.Description.BuildDefault(inputDimension, 'x'), ['0.0']), vector.getAntecedent()), Less(), 1.0)
+        return ot.Event(ot.RandomVector(ot.SymbolicFunction(ot.Description.BuildDefault(inputDimension, 'x'), ['0.0']), vector.getAntecedent()), Less(), 1.0)
     # Only one constraint
     if slacks.getSize() == 1:
         print('case 6')
-        testFunction = ot.NumericalMathFunction(inVars, [slacks[0]])
+        testFunction = ot.SymbolicFunction(inVars, [slacks[0]])
     # Several constraints
     else:
         print('case 7')
@@ -62,7 +62,7 @@ def buildEvent(vector, interval):
         for i in range(1, slacks.getSize()):
             formula += ',' + slacks[i]
         formula += ')'
-        testFunction = ot.NumericalMathFunction(inVars, [formula])
+        testFunction = ot.SymbolicFunction(inVars, [formula])
     newVector = ot.RandomVector(ot.NumericalMathFunction(
         testFunction, vector.getFunction()), vector.getAntecedent())
     return ot.Event(newVector, Greater(), 0.0)
@@ -114,7 +114,7 @@ for domain in intervals:
     print('#' * 50)
     print('domain=\n', domain)
     outDim = domain.getDimension()
-    f = ot.NumericalMathFunction(inVars, inVars[0:outDim])
+    f = ot.SymbolicFunction(inVars, inVars[0:outDim])
     Y = ot.RandomVector(f, X)
     #event = buildEvent(Y, domain)
     event = ot.Event(Y, domain)

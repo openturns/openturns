@@ -27,7 +27,7 @@ using namespace OT::Test;
 class TestObject : public CompositeDistribution
 {
 public:
-  TestObject() : CompositeDistribution(NumericalMathFunction("x", "x^2 + 2 * sin(x)"), Normal()) {}
+  TestObject() : CompositeDistribution(SymbolicFunction("x", "x^2 + 2 * sin(x)"), Normal()) {}
   virtual ~TestObject() {}
 };
 
@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     checkClassWithClassName<TestObject>();
 
     // Instanciate one distribution object
-    NumericalMathFunction f("x", "x^2 + 2 * sin(x)");
+    SymbolicFunction f("x", "x^2 + 2 * sin(x)");
     CompositeDistribution distribution(f, Normal());
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;

@@ -54,8 +54,8 @@ int main(int argc, char *argv[])
 
     // Create local experts
     Basis experts(0);
-    experts.add(NumericalMathFunction("x", "-x"));
-    experts.add(NumericalMathFunction("x", "x"));
+    experts.add(SymbolicFunction("x", "-x"));
+    experts.add(SymbolicFunction("x", "x"));
 
     // Create a mixture of experts
     ExpertMixture moe(experts, classifier);

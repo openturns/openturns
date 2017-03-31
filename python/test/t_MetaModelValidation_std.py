@@ -17,7 +17,7 @@ try:
     inputVariables = ["xi1", "xi2", "xi3"]
     formula = [
         "sin(xi1) + (" + str(a) + ") * (sin(xi2)) ^ 2 + (" + str(b) + ") * xi3^4 * sin(xi1)"]
-    model = ot.NumericalMathFunction(inputVariables, formula)
+    model = ot.SymbolicFunction(inputVariables, formula)
 
     # Create the input distribution
     distribution = ot.ComposedDistribution([ot.Uniform(-pi, pi)] * dimension)

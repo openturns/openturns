@@ -17,7 +17,7 @@ myARMAProcess.setTimeGrid(timeGrid)
 print('myAntecedentProcess = ',  myARMAProcess)
 
 # Creation of a function
-f = ot.NumericalMathFunction(['x'], ['2 * x + 5.0'])
+f = ot.SymbolicFunction(['x'], ['2 * x + 5.0'])
 
 # We build a dynamical function
 myFieldFunction = ot.FieldFunction(ot.ValueFunction(f))
@@ -35,7 +35,7 @@ print(myCompositeProcess.getRealization())
 # Create a spatial  dynamical function
 # Create the function g : R^2 --> R^2
 #               (x1,x2) --> (x1^2, x1+x2)
-g = ot.NumericalMathFunction(['x1', 'x2'],  ['x1^2', 'x1+x2'])
+g = ot.SymbolicFunction(['x1', 'x2'],  ['x1^2', 'x1+x2'])
 
 # Convert g : R --> R into a spatial fucntion
 # n is the dimension of the mesh
@@ -52,7 +52,7 @@ myDynFunc = ot.ValueFunction(g, nSpat)
 # defined on a bidimensional mesh
 # fTrend : R^2 --> R^2
 #          (t1, t2) --> (1+2t1, 1+3t2)
-fTrend = ot.NumericalMathFunction(['t1', 't2'], ['1+2*t1', '1+3*t2'])
+fTrend = ot.SymbolicFunction(['t1', 't2'], ['1+2*t1', '1+3*t2'])
 
 
 ##########################################
@@ -76,7 +76,7 @@ myXtProcess_temp = ot.GaussianProcess(myCovModel, myMesh)
 
 # Non linear transformation of myXtProcess
 # to get a positive process
-g2 = ot.NumericalMathFunction(['x1', 'x2'],  ['x1^2', 'abs(x2)'])
+g2 = ot.SymbolicFunction(['x1', 'x2'],  ['x1^2', 'abs(x2)'])
 myDynTransform = ot.ValueFunction(g2, 2)
 myXtProcess = ot.CompositeProcess(myDynTransform, myXtProcess_temp)
 

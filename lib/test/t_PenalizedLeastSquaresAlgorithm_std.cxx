@@ -36,22 +36,20 @@ int main(int argc, char *argv[])
     Description inVar(dimension);
     inVar[0] = "x1";
     inVar[1] = "x2";
-    Description outVar(1);
-    outVar[0] = "y";
     Description formula(1);
     formula[0] = "x1^3+1.5*x2^3-x1*x2";
-    NumericalMathFunction model(inVar, outVar, formula);
+    SymbolicFunction model(inVar, formula);
 
     // Basis upon which we will project the model
     PenalizedLeastSquaresAlgorithm::NumericalMathFunctionCollection coll(4);
     formula[0] = "x1";
-    coll[0] = NumericalMathFunction(inVar, outVar, formula);
+    coll[0] = SymbolicFunction(inVar, formula);
     formula[0] = "x2";
-    coll[1] = NumericalMathFunction(inVar, outVar, formula);
+    coll[1] = SymbolicFunction(inVar, formula);
     formula[0] = "x1^2";
-    coll[2] = NumericalMathFunction(inVar, outVar, formula);
+    coll[2] = SymbolicFunction(inVar, formula);
     formula[0] = "x2^2";
-    coll[3] = NumericalMathFunction(inVar, outVar, formula);
+    coll[3] = SymbolicFunction(inVar, formula);
     Basis basis(coll);
     Indices indices(coll.getSize());
     indices.fill();

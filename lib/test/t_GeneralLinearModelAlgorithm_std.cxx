@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     UnsignedInteger spatialDimension = 1;
 
     // Create the function to estimate
-    NumericalMathFunction model("x0", "x0");
+    SymbolicFunction model("x0", "x0");
 
     NumericalSample X(sampleSize, spatialDimension);
     for (UnsignedInteger i = 0; i < sampleSize; ++ i)

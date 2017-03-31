@@ -56,7 +56,7 @@ try:
           myProcess.getSample(size).computeMean())
 
     # With constant trend
-    trend = TrendTransform(NumericalMathFunction("t", "4.0"))
+    trend = TrendTransform(SymbolicFunction("t", "4.0"))
     myProcess2 = GaussianProcess(trend, myCovModel, myTimeGrid)
     myProcess2.setSamplingMethod(2)
     print("myProcess2 = ", myProcess2)
@@ -65,7 +65,7 @@ try:
           myProcess2.getSample(size).computeMean())
 
     # With varying trend
-    trend3 = TrendTransform(NumericalMathFunction("t", "sin(t)"))
+    trend3 = TrendTransform(SymbolicFunction("t", "sin(t)"))
     myProcess3 = GaussianProcess(trend3, myCovModel, myTimeGrid)
     print("myProcess3 = ", myProcess3)
     print("is stationary? ", myProcess3.isStationary())

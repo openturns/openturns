@@ -7,7 +7,7 @@ TESTPREAMBLE()
 
 try:
     # Create an intance
-    myFunc = NumericalMathFunction(["t", "x"], ["x + t^2"])
+    myFunc = SymbolicFunction(["t", "x"], ["x + t^2"])
     myTemporalFunc = VertexValueFunction(myFunc)
 
     print("myTemporalFunc=", myTemporalFunc)

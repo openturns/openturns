@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
       Basis basis(factory.build());
       std::cout << "basis=" << basis << std::endl;
 
-      NumericalMathFunction f(basis);
+      AggregatedFunction f(basis);
       NumericalPoint y(f(x));
       std::cout << "y=" << y << std::endl;
     }
@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
       Basis basis(factory.build());
       std::cout << "basis=" << basis << std::endl;
 
-      NumericalMathFunction f(basis);
+      AggregatedFunction f(basis);
       NumericalPoint y(f(x));
       std::cout << "y=" << y << std::endl;
     }
@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
       Basis basis(factory.build());
       std::cout << "basis=" << basis << std::endl;
 
-      NumericalMathFunction f(basis);
+      AggregatedFunction f(basis);
       NumericalPoint y(f(x));
       std::cout << "y=" << y << std::endl;
     }

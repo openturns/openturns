@@ -142,8 +142,8 @@ Create a *NumericalMathFunction* from a list of analytical formulas and
 descriptions of the inputs and the outputs :
 
 >>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x0', 'x1'], ['y0', 'y1'],
-...                              ['x0 + x1', 'x0 - x1'])
+>>> f = ot.SymbolicFunction(['x0', 'x1'],
+...                         ['x0 + x1', 'x0 - x1'])
 >>> print(f([1, 2]))
 [3,-1]
 
@@ -151,11 +151,11 @@ descriptions of the inputs and the outputs :
 Create a *NumericalMathFunction* from strings:
 
 >>> import openturns as ot
->>> f = ot.NumericalMathFunction('x', '2.0*sqrt(x)', 'y')
+>>> f = ot.SymbolicFunction('x', '2.0*sqrt(x)')
 >>> print(f(([16],[4])))
-    [ y ]
-0 : [ 8 ]
-1 : [ 4 ]
+    [ y0 ]
+0 : [ 8  ]
+1 : [ 4  ]
 
 
 Create a *NumericalMathFunction* from a Python function:
@@ -173,12 +173,12 @@ See :class:`~openturns.PythonFunction` for further details.
 
 Create a *NumericalMathFunction* from another *NumericalMathFunction*:
 
->>> f = ot.NumericalMathFunction(ot.Description.BuildDefault(4, 'x'),
-...                              ['x0', 'x0 + x1', 'x0 + x2 + x3'])
+>>> f = ot.SymbolicFunction(ot.Description.BuildDefault(4, 'x'),
+...                         ['x0', 'x0 + x1', 'x0 + x2 + x3'])
 
 Then create another function by setting x1=4 and x3=10:
 
->>> g = ot.NumericalMathFunction(f, [3, 1], [10, 4], True)
+>>> g = ot.ParametricFunction(f, [3, 1], [10.0, 4.0], True)
 >>> print(g.getInputDescription())
 [x0,x2]
 >>> print(g((1, 2)))
@@ -186,7 +186,7 @@ Then create another function by setting x1=4 and x3=10:
 
 Or by setting x0=6 and x2=5:
 
->>> g = ot.NumericalMathFunction(f, [3, 1], [6, 5], False)
+>>> g = ot.ParametricFunction(f, [3, 1], [6.0, 5.0], False)
 >>> print(g.getInputDescription())
 [x3,x1]
 >>> print(g((1, 2)))
@@ -196,8 +196,8 @@ Or by setting x0=6 and x2=5:
 Create a *NumericalMathFunction* from another *NumericalMathFunction*
 and by using a comparison operator:
 
->>> analytical = ot.NumericalMathFunction(['x0','x1'], ['y'], ['x0 + x1'])
->>> indicator = ot.NumericalMathFunction(analytical, ot.Less(), 0.0)
+>>> analytical = ot.SymbolicFunction(['x0','x1'], ['x0 + x1'])
+>>> indicator = ot.IndicatorFunction(analytical, ot.Less(), 0.0)
 >>> print(indicator([2, 3]))
 [0]
 >>> print(indicator([2, -3]))
@@ -206,11 +206,11 @@ and by using a comparison operator:
 Create a *NumericalMathFunction* from a collection of functions:
 
 >>> functions = list()
->>> functions.append(ot.NumericalMathFunction(['x1', 'x2', 'x3'], ['y1', 'y2'],
+>>> functions.append(ot.SymbolicFunction(['x1', 'x2', 'x3'],
 ...                                      ['x1^2 + x2', 'x1 + x2 + x3']))
->>> functions.append(ot.NumericalMathFunction(['x1', 'x2', 'x3'], ['y1', 'y2'],
+>>> functions.append(ot.SymbolicFunction(['x1', 'x2', 'x3'],
 ...                                      ['x1 + 2 * x2 + x3', 'x1 + x2 - x3']))
->>> myFunction = ot.NumericalMathFunction(functions)
+>>> myFunction = ot.AggregatedFunction(functions)
 >>> print(myFunction([1.0, 2.0, 3.0]))
 [3,6,8,0]
 
@@ -230,7 +230,7 @@ then the linear combination is:
                   \vect{X} & \mapsto & \displaystyle \sum_i c_if_i (\vect{X})
               \end{array}\right.
 
->>> myFunction2 = ot.NumericalMathFunction(functions, [2.0, 4.0])
+>>> myFunction2 = ot.LinearCombinationFunction(functions, [2.0, 4.0])
 >>> print(myFunction2([1.0, 2.0, 3.0]))
 [38,12]
 
@@ -253,11 +253,11 @@ where :math:`\forall 1 \leq i \leq N, \,   \vect{c}_i \in \Rset^p`
                  \end{array}\right.
 
 >>> functions=list()
->>> functions.append(ot.NumericalMathFunction(['x1', 'x2', 'x3'], ['y1'],
-...                                           ['x1 + 2 * x2 + x3']))
->>> functions.append(ot.NumericalMathFunction(['x1', 'x2', 'x3'], ['y1'],
-...                                           ['x1^2 + x2']))
->>> myFunction2 = ot.NumericalMathFunction(functions, [[2., 4.], [3., 1.]])
+>>> functions.append(ot.SymbolicFunction(['x1', 'x2', 'x3'],
+...                                      ['x1 + 2 * x2 + x3']))
+>>> functions.append(ot.SymbolicFunction(['x1', 'x2', 'x3'],
+...                                      ['x1^2 + x2']))
+>>> myFunction2 = ot.DualLinearCombinationFunction(functions, [[2., 4.], [3., 1.]])
 >>> print(myFunction2([1, 2, 3]))
 [25,35]
 
@@ -266,7 +266,7 @@ Create a *NumericalMathFunction* from values of the inputs and the outputs:
 
 >>> inputSample = [[1.0, 1.0], [2.0, 2.0]]
 >>> outputSample = [[4.0], [5.0]]
->>> database = ot.NumericalMathFunction(inputSample, outputSample)
+>>> database = ot.DatabaseFunction(inputSample, outputSample)
 >>> x = [1.8]*database.getInputDimension()
 >>> print(database(x))
 [5]
@@ -275,10 +275,10 @@ Create a *NumericalMathFunction* from values of the inputs and the outputs:
 Create a *NumericalMathFunction* which is the composition function
 :math:`f\circ g`:
 
->>> g = ot.NumericalMathFunction(['x1', 'x2'], ['y1', 'y2'],
-...                              ['x1 + x2','3 * x1 * x2'])
->>> f = ot.NumericalMathFunction(['x1', 'x2'], ['y'], ['2 * x1 - x2'])
->>> composed = ot.NumericalMathFunction(f, g)
+>>> g = ot.SymbolicFunction(['x1', 'x2'],
+...                         ['x1 + x2','3 * x1 * x2'])
+>>> f = ot.SymbolicFunction(['x1', 'x2'], ['2 * x1 - x2'])
+>>> composed = ot.ComposedFunction(f, g)
 >>> print(composed([3, 4]))
 [-22]"
 %enddef
@@ -563,11 +563,11 @@ function : :class:`~openturns.NumericalMathFunctionImplementation`
 Examples
 --------
 >>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x1', 'x2'], ['y'],
-...                          ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
+>>> f = ot.SymbolicFunction(['x1', 'x2'],
+...                         ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
 >>> print(f.getImplementation())
 input  : [x1,x2]
-output : [y]
+output : [y0]
 evaluation : 2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6
 gradient   :
 | d(y) / d(x1) = (1)+(4*x1)+((-4*((x2)*(sin(x1)))))
@@ -594,8 +594,8 @@ function : :class:`~openturns.NumericalMathEvaluationImplementation`
 Examples
 --------
 >>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x1', 'x2'], ['y'],
-...                          ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
+>>> f = ot.SymbolicFunction(['x1', 'x2'],
+...                         ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
 >>> print(f.getEvaluation())
 [x1,x2]->[2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6]"
 %enddef
@@ -654,7 +654,7 @@ gradient_function : :class:`~openturns.NumericalMathGradientImplementation`
 Examples
 --------
 >>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x1', 'x2'], ['y'],
+>>> f = ot.SymbolicFunction(['x1', 'x2'],
 ...                          ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
 >>> f.setGradient(ot.CenteredFiniteDifferenceGradient(
 ...  ot.ResourceMap.GetAsNumericalScalar('CenteredFiniteDifferenceGradient-DefaultEpsilon'),
@@ -676,8 +676,8 @@ hessian_function : :class:`~openturns.NumericalMathHessianImplementation`
 Examples
 --------
 >>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x1', 'x2'], ['y'],
-...                          ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
+>>> f = ot.SymbolicFunction(['x1', 'x2'],
+...                         ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
 >>> f.setHessian(ot.CenteredFiniteDifferenceHessian(
 ...  ot.ResourceMap.GetAsNumericalScalar('CenteredFiniteDifferenceHessian-DefaultEpsilon'),
 ...  f.getEvaluation()))"
@@ -703,7 +703,7 @@ gradient : :class:`~openturns.Matrix`
 Examples
 --------
 >>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x1', 'x2'], ['y','z'],
+>>> f = ot.SymbolicFunction(['x1', 'x2'],
 ...                ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6','x1 + x2'])
 >>> print(f.gradient([3.14, 4]))
 [[ 13.5345   1       ]
@@ -730,7 +730,7 @@ hessian : :class:`~openturns.SymmetricTensor`
 Examples
 --------
 >>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x1', 'x2'], ['y','z'],
+>>> f = ot.SymbolicFunction(['x1', 'x2'],
 ...                ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6','x1 + x2'])
 >>> print(f.hessian([3.14, 4]))
 sheet #0
@@ -756,10 +756,10 @@ description : :class:`~openturns.Description`
 Examples
 --------
 >>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x1', 'x2'], ['y'],
-...                          ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
+>>> f = ot.SymbolicFunction(['x1', 'x2'],
+...                         ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
 >>> print(f.getDescription())
-[x1,x2,y]"
+[x1,x2,y0]"
 %enddef
 %feature("docstring") OT::NumericalMathFunctionImplementation::getDescription
 OT_NumericalMathFunction_getDescription_doc
@@ -777,10 +777,10 @@ description : sequence of str
 Examples
 --------
 >>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x1', 'x2'], ['y'],
+>>> f = ot.SymbolicFunction(['x1', 'x2'],
 ...                          ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
 >>> print(f.getDescription())
-[x1,x2,y]
+[x1,x2,y0]
 >>> f.setDescription(['a','b','y'])
 >>> print(f.getDescription())
 [a,b,y]"
@@ -801,7 +801,7 @@ description : :class:`~openturns.Description`
 Examples
 --------
 >>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x1', 'x2'], ['y'],
+>>> f = ot.SymbolicFunction(['x1', 'x2'],
 ...                          ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
 >>> print(f.getInputDescription())
 [x1,x2]"
@@ -822,10 +822,10 @@ description : :class:`~openturns.Description`
 Examples
 --------
 >>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x1', 'x2'], ['y'],
+>>> f = ot.SymbolicFunction(['x1', 'x2'],
 ...                          ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
 >>> print(f.getOutputDescription())
-[y]"
+[y0]"
 %enddef
 %feature("docstring") OT::NumericalMathFunctionImplementation::getOutputDescription
 OT_NumericalMathFunction_getOutputDescription_doc
@@ -843,7 +843,7 @@ number_inputs : int
 Examples
 --------
 >>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x1', 'x2'], ['y'],
+>>> f = ot.SymbolicFunction(['x1', 'x2'],
 ...                          ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
 >>> print(f.getInputDimension())
 2"
@@ -864,7 +864,7 @@ number_outputs : int
 Examples
 --------
 >>> import openturns as ot
->>> f = ot.NumericalMathFunction(['x1', 'x2'], ['y'],
+>>> f = ot.SymbolicFunction(['x1', 'x2'],
 ...                          ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
 >>> print(f.getOutputDimension())
 1"
@@ -956,7 +956,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> from openturns.viewer import View
->>> f = ot.NumericalMathFunction('x', 'sin(2*_pi*x)*exp(-x^2/2)', 'y')
+>>> f = ot.SymbolicFunction('x', 'sin(2*_pi*x)*exp(-x^2/2)')
 >>> graph = f.draw(-1.2, 1.2, 100)
 >>> View(graph).show()"
 %enddef

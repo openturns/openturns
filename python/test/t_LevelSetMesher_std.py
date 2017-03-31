@@ -25,7 +25,7 @@ try:
     print("mesher1D=", mesher1D)
 
     level = 0.5
-    function1D = ot.NumericalMathFunction("x", "cos(x)/(1+0.1*x^2)")
+    function1D = ot.SymbolicFunction("x", "cos(x)/(1+0.1*x^2)")
     levelSet1D = ot.LevelSet(function1D, level)
 
     # Automatic bounding box
@@ -40,7 +40,7 @@ try:
     mesher2D = ot.LevelSetMesher([5] * 2)
     print("mesher2D=", mesher2D)
 
-    function2D = ot.NumericalMathFunction(
+    function2D = ot.SymbolicFunction(
         ["x0", "x1"], ["cos(x0 * x1)/(1 + 0.1 * (x0^2 + x1^2))"])
     levelSet2D = ot.LevelSet(function2D, level)
 
@@ -56,7 +56,7 @@ try:
     mesher3D = ot.LevelSetMesher([3] * 3)
     print("mesher3D=", mesher3D)
 
-    function3D = ot.NumericalMathFunction(
+    function3D = ot.SymbolicFunction(
         ["x0", "x1", "x2"], ["cos(x0 * x1 + x2)/(1 + 0.1*(x0^2 + x1^2 + x2^2))"])
     levelSet3D = ot.LevelSet(function3D, level)
 

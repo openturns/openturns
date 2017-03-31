@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     const Description description(Description::BuildDefault(dimension, "x"));
     for(UnsignedInteger i = 0; i < dimension; ++i)
     {
-      coll.add(NumericalMathFunction(description, Description(1, OSS() << "x" << i)));
+      coll.add(SymbolicFunction(description, Description(1, OSS() << "x" << i)));
     }
     Basis psi(coll);
     Indices indices(dimension);

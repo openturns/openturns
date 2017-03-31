@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     // Simplified interfaces
     // First, try 1D drawing
     {
-      NumericalMathFunction f("x", "sin(2*_pi*x)*exp(-x^2/2)", "y");
+      SymbolicFunction f("x", "sin(2*_pi*x)*exp(-x^2/2)");
       fullprint << "f=" << f << std::endl;
       Graph graph(f.draw(-1.2, 1.2, 32));
       fullprint << "graph=" << graph << std::endl;
@@ -46,8 +46,7 @@ int main(int argc, char *argv[])
       inputVar[1] = "y";
       Description formula(1);
       formula[0] = "2.0+x-2*y+x*y-x^2-3*y^2+x*y^2";
-      Description outputVar(1, "z");
-      NumericalMathFunction f(inputVar, outputVar, formula);
+      SymbolicFunction f(inputVar, formula);
       fullprint << "f=" << f << std::endl;
       Graph graph(f.draw(NumericalPoint(2, -10.0), NumericalPoint(2, 10.0), Indices(2, 21)));
       fullprint << "graph=" << graph << std::endl;
@@ -62,10 +61,7 @@ int main(int argc, char *argv[])
       Description formulas(2);
       formulas[0] = "x0 * sin(x1 + 2.0 * x2) - 2.0 * x1 * cos(3.0 * x0 - x2)";
       formulas[1] = "x1 * cos(x2 + 2.0 * x1) + 2.0 * x0 * cos(3.0 * x1 - x0)";
-      Description outputVars(2);
-      outputVars[0] = "y0";
-      outputVars[1] = "y1";
-      NumericalMathFunction f(inputVars, outputVars, formulas);
+      SymbolicFunction f(inputVars, formulas);
       NumericalPoint centralPoint(3);
       centralPoint[0] = 1.0;
       centralPoint[1] = -0.5;

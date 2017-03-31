@@ -25,6 +25,8 @@
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/IdentityMatrix.hxx"
 #include "openturns/ComposedFunction.hxx"
+#include "openturns/LinearCombinationFunction.hxx"
+#include "openturns/P1LagrangeEvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -140,7 +142,7 @@ NumericalPoint KarhunenLoeveResultImplementation::project(const Field & field) c
 {
   if (field.getMesh() == modesAsProcessSample_.getMesh())
     return projection_ * field.getValues().getImplementation()->getData();
-  return project(NumericalMathFunction(field));
+  return project(NumericalMathFunction(P1LagrangeEvaluationImplementation(field).clone()));
 }
 
 struct ProjectBasisPolicy
@@ -215,7 +217,7 @@ NumericalMathFunction KarhunenLoeveResultImplementation::lift(const NumericalPoi
       scaledCoefficients[i] = std::sqrt(eigenvalues_[i]) * coefficients[i];
       functions[i] = modes_.build(i);
     }
-  return NumericalMathFunction(functions, scaledCoefficients);
+  return LinearCombinationFunction(functions, scaledCoefficients);
 }
 
 Field KarhunenLoeveResultImplementation::liftAsField(const NumericalPoint & coefficients) const

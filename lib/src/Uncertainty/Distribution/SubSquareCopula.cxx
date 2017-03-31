@@ -32,7 +32,7 @@ static const Factory<SubSquareCopula> Factory_SubSquareCopula;
 /* Default constructor */
 SubSquareCopula::SubSquareCopula()
   : CopulaImplementation("SubSquareCopula")
-  , phi_(NumericalMathFunction("x", "0.0"))
+  , phi_(SymbolicFunction("x", "0.0"))
   , nullPhi_(true)
   , mass_(1.0)
 {

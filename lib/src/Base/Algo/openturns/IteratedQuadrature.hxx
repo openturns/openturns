@@ -25,6 +25,7 @@
 #include "openturns/IntegrationAlgorithmImplementation.hxx"
 #include "openturns/IntegrationAlgorithm.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/ParametricFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -95,7 +96,7 @@ private:
     {
       // Create the arguments of the local integration problem
       const Indices index(1, 0);
-      const NumericalMathFunction function(function_, index, point);
+      const ParametricFunction function(function_, index, point);
       const UnsignedInteger size = lowerBounds_.getSize() - 1;
       const NumericalScalar a = lowerBounds_[0](point)[0];
       const NumericalScalar b = upperBounds_[0](point)[0];
@@ -103,8 +104,8 @@ private:
       IteratedQuadrature::NumericalMathFunctionCollection upperBounds(size);
       for (UnsignedInteger i = 0; i < size; ++i)
       {
-        lowerBounds[i] = NumericalMathFunction(lowerBounds_[i + 1], index, point);
-        upperBounds[i] = NumericalMathFunction(upperBounds_[i + 1], index, point);
+        lowerBounds[i] = ParametricFunction(lowerBounds_[i + 1], index, point);
+        upperBounds[i] = ParametricFunction(upperBounds_[i + 1], index, point);
       }
       const NumericalPoint value(quadrature_.integrate(function, a, b, lowerBounds, upperBounds, false));
       for (UnsignedInteger i = 0; i < value.getDimension(); ++i)
@@ -127,13 +128,13 @@ private:
       {
         const NumericalPoint x(sample[k]);
         // Create the arguments of the local integration problem
-        const NumericalMathFunction function(function_, index, x);
+        const ParametricFunction function(function_, index, x);
         const NumericalScalar a = sampleA[k][0];
         const NumericalScalar b = sampleB[k][0];
         for (UnsignedInteger i = 0; i < size; ++i)
         {
-          lowerBounds[i] = NumericalMathFunction(lowerBounds_[i + 1], index, x);
-          upperBounds[i] = NumericalMathFunction(upperBounds_[i + 1], index, x);
+          lowerBounds[i] = ParametricFunction(lowerBounds_[i + 1], index, x);
+          upperBounds[i] = ParametricFunction(upperBounds_[i + 1], index, x);
         } // Loop over bound functions
         result[k] = quadrature_.integrate(function, a, b, lowerBounds, upperBounds, false);
         for (UnsignedInteger i = 0; i < outputDimension; ++i)

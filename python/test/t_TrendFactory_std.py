@@ -8,22 +8,11 @@ RandomGenerator.SetSeed(0)
 
 try:
 
-    inVar = Description(1)
-    inVar[0] = "t"
-    outVar = Description(1)
-    outVar[0] = "y"
-    formula = Description(1)
-
+    inVar = ['t']
     functions = []
-
-    formula[0] = "1"
-    functions.append(NumericalMathFunction(inVar, outVar, formula))
-
-    formula[0] = "cos(2 * t)"
-    functions.append(NumericalMathFunction(inVar, outVar, formula))
-
-    formula[0] = "sin(2 * t)"
-    functions.append(NumericalMathFunction(inVar, outVar, formula))
+    functions.append(SymbolicFunction(inVar, ['1']))
+    functions.append(SymbolicFunction(inVar, ['cos(2 * t)']))
+    functions.append(SymbolicFunction(inVar, ['sin(2 * t)']))
 
     # We build the weights
     coefficients = NumericalSample(0, 2)
@@ -39,7 +28,7 @@ try:
     coefficients.add(p)
 
     # Third, build the function
-    myFunction = NumericalMathFunction(functions, coefficients)
+    myFunction = DualLinearCombinationFunction(functions, coefficients)
 
     # Fourth : we build a time series for estimation
     # it issued from a white noise

@@ -33,9 +33,9 @@ try:
             p[i, j] = (-2 + 5. * i / 9.) ** j
     print('p=', p)
 
-    fullModel = NumericalMathFunction(
-        ['p1', 'p2', 'p3', 'x1', 'x2', 'x3'], ['z', 'sigma'], ['p1*x1+p2*x2+p3*x3', '1.0'])
-    model = NumericalMathFunction(fullModel, range(chainDim), [0.0] * chainDim)
+    fullModel = SymbolicFunction(
+        ['p1', 'p2', 'p3', 'x1', 'x2', 'x3'], ['p1*x1+p2*x2+p3*x3', '1.0'])
+    model = ParametricFunction(fullModel, range(chainDim), [0.0] * chainDim)
 
     # calibration parameters
     calibrationColl = CalibrationStrategyCollection(chainDim)

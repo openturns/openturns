@@ -10,7 +10,7 @@ try:
     # Create an intance
     inputVars = Description(["t"])
     formula = Description(["sin(t)", "cos(t)"])
-    myFunc = NumericalMathFunction(inputVars, formula)
+    myFunc = SymbolicFunction(inputVars, formula)
     myTrendFunc = TrendTransform(myFunc)
 
     print("myTrendFunc=", myTrendFunc)

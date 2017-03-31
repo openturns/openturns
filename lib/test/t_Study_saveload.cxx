@@ -304,7 +304,7 @@ int main(int argc, char *argv[])
     formulas[0] = "a+b+c";
     formulas[1] = "a-b*c";
     formulas[2] = "(a+2*b^2+3*c^3)/6";
-    NumericalMathFunction analytical(input, output, formulas);
+    SymbolicFunction analytical(input, formulas);
     analytical.setName("analytical");
     study.add("analytical", analytical);
 
@@ -380,7 +380,7 @@ int main(int argc, char *argv[])
       output2[0] = "d";
       Description formula2(output2.getSize());
       formula2[0] = "(x+2*y^2+3*z^3)/6";
-      NumericalMathFunction model(input2, output2, formula2);
+      SymbolicFunction model(input2, formula2);
       model.setName("complex");
 
       OptimizationProblem problem(model);
@@ -408,7 +408,7 @@ int main(int argc, char *argv[])
       output2[0] = "d";
       Description formula2(1);
       formula2[0] = "y^2-x";
-      NumericalMathFunction model(input2, output2, formula2);
+      SymbolicFunction model(input2, formula2);
       model.setName("sum");
       RandomVector input3(Normal(2));
       input3.setName("input");
@@ -558,7 +558,7 @@ int main(int argc, char *argv[])
       Indices partialBasis[dimension];
       for ( UnsignedInteger j = 0; j < dimension; ++ j )
       {
-        NumericalMathFunction ei(input, output[j], output[j]);
+        SymbolicFunction ei(input, output[j]);
         coll.add(ei);
         cumulBasis.add(j);
         partialBasis[j] = cumulBasis;
@@ -645,7 +645,7 @@ int main(int argc, char *argv[])
       myARMAProcess.setTimeGrid(timeGrid);
       Description inputDescription(1, "x");
       Description formula(1, "2 * x + 5");
-      NumericalMathFunction myOneDimensionalFunction(inputDescription, formula);
+      SymbolicFunction myOneDimensionalFunction(inputDescription, formula);
       ValueFunction myFunction(myOneDimensionalFunction);
       compositeProcess = CompositeProcess (myFunction, myARMAProcess);
     }
@@ -669,7 +669,7 @@ int main(int argc, char *argv[])
       RandomVector X(distribution);
       Description inVars(dim);
       for (UnsignedInteger i = 0; i < dim; ++i) inVars[i] = OSS() << "x" << i;
-      NumericalMathFunction model(inVars, inVars);
+      SymbolicFunction model(inVars, inVars);
       CompositeRandomVector Y(model, X);
       Interval domain(dim);
       eventDomainImplementation = EventDomainImplementation(Y, domain);
@@ -710,7 +710,7 @@ int main(int argc, char *argv[])
       Collection<Distribution> coefficients(basisDimension);
       for (UnsignedInteger i = 0; i < basisDimension; ++i)
       {
-        basis[i] = NumericalMathFunction("x", String(OSS() << "sin(" << i << "*x)"));
+        basis[i] = SymbolicFunction("x", String(OSS() << "sin(" << i << "*x)"));
         coefficients[i] = Normal(0.0, (1.0 + i));
       }
       functionalBasisProcess = FunctionalBasisProcess(ComposedDistribution(coefficients), basis);
@@ -894,8 +894,8 @@ int main(int argc, char *argv[])
       Mixture distribution(aCollection, NumericalPoint(aCollection.getSize(), 1.0));
       MixtureClassifier classifier(distribution);
       Basis experts(0);
-      experts.add(NumericalMathFunction("x", "-x"));
-      experts.add(NumericalMathFunction("x", "x"));
+      experts.add(SymbolicFunction("x", "-x"));
+      experts.add(SymbolicFunction("x", "x"));
       expertMixture = ExpertMixture(experts, classifier);
     }
     study.add("expertMixture", expertMixture);

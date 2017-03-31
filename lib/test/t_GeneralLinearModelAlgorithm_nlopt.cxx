@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     inDescription[0] = "x";
     Description formula(1);
     formula[0] = "x - 0.6 * cos(x/3)";
-    NumericalMathFunction model(inDescription, formula);
+    SymbolicFunction model(inDescription, formula);
     const NumericalSample Y = model(X);
     const Basis basis = QuadraticBasisFactory(spatialDimension).build();
     GeneralLinearModelAlgorithm algo(X, Y, covarianceModel, basis, true);

@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
     input[2] = "z";
     Description formulas(1);
     formulas[0] = "x-1.5*y+2*z";
-    NumericalMathFunction f(input, formulas);
+    SymbolicFunction f(input, formulas);
     /* Must activate the history mechanism if one want to perform sensitivity analysis */
     f.enableHistory();
     /* Sampling */

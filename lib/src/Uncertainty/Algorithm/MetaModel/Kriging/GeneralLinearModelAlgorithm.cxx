@@ -34,7 +34,7 @@
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/IdentityFunction.hxx"
 #include "openturns/ComposedFunction.hxx"
-
+#include "openturns/DualLinearCombinationFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -630,7 +630,7 @@ void GeneralLinearModelAlgorithm::run()
   if (basisCollection_.getSize() > 0)
   {
     // Care ! collection should be non empty
-    metaModel = NumericalMathFunction(allFunctionsCollection, trendCoefficientsSample);
+    metaModel = DualLinearCombinationFunction(allFunctionsCollection, trendCoefficientsSample);
   }
   else
   {

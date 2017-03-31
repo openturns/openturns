@@ -19,7 +19,7 @@ try:
     basis = factory.build()
     print("basis=", basis)
 
-    f = NumericalMathFunction(basis)
+    f = AggregatedFunction(basis)
     y = f(x)
     print("y=", y)
 
@@ -28,7 +28,7 @@ try:
     basis = factory.build()
     print("basis=", basis)
 
-    f = NumericalMathFunction(basis)
+    f = AggregatedFunction(basis)
     y = f(x)
     print("y=", y)
 
@@ -37,7 +37,7 @@ try:
     basis = factory.build()
     print("basis=", basis)
 
-    f = NumericalMathFunction(basis)
+    f = AggregatedFunction(basis)
     y = f(x)
     print("y=", y)
 

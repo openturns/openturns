@@ -81,14 +81,14 @@ int main(int argc, char *argv[])
         for (UnsignedInteger inequality = 0; inequality < 2; ++inequality)
           for (UnsignedInteger equality = 0; equality < 2; ++equality)
           {
-            OptimizationProblem problem(linear, NumericalMathFunction(), NumericalMathFunction(), bounds);
+            OptimizationProblem problem(linear, SymbolicFunction(), SymbolicFunction(), bounds);
             problem.setMinimization(minimization == 0);
             if (inequality == 0)
               // x3 <= x1
-              problem.setInequalityConstraint(NumericalMathFunction(inVars, Description(1, "ineq"), Description(1, "x1-x3")));
+              problem.setInequalityConstraint(SymbolicFunction(inVars, Description(1, "x1-x3")));
             if (equality == 0)
               // x4 = 2
-              problem.setEqualityConstraint(NumericalMathFunction(inVars, Description(1, "eq"), Description(1, "x4-2")));
+              problem.setEqualityConstraint(SymbolicFunction(inVars, Description(1, "x4-2")));
             try
             {
               NLopt::SetSeed(0);

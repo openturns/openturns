@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
 
   Description formula(1);
   formula[0] = "cos(0.5*x) + sin(y)" ;
-  const NumericalMathFunction model(inputDescription, formula);
+  const SymbolicFunction model(inputDescription, formula);
 
   // Build the output sample
   const NumericalSample  outputSample( model(inputSample) );

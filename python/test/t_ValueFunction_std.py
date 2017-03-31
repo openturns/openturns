@@ -7,7 +7,7 @@ TESTPREAMBLE()
 
 try:
     # Create an intance
-    myFunc = NumericalMathFunction("x", "x^2")
+    myFunc = SymbolicFunction("x", "x^2")
     mySpatialFunc = ValueFunction(myFunc)
 
     print("mySpatialFunc=", mySpatialFunc)

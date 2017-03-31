@@ -31,6 +31,7 @@
 #include "openturns/NormalCopula.hxx"
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/ComposedFunction.hxx"
+#include "openturns/AggregatedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -607,7 +608,7 @@ ComposedCopula::IsoProbabilisticTransformation ComposedCopula::getIsoProbabilist
     if (copulaCollection_[i].getStandardDistribution().hasIndependentCopula()) atomTransformations[i] = ComposedFunction(copulaCollection_[i].getIsoProbabilisticTransformation(), projection);
     else atomTransformations[i] = ComposedFunction(RosenblattEvaluation(copulaCollection_[i]), projection);
   }
-  return NumericalMathFunction(atomTransformations);
+  return AggregatedFunction(atomTransformations);
 }
 
 /* Get the inverse isoprobabilist transformation */
@@ -634,7 +635,7 @@ ComposedCopula::InverseIsoProbabilisticTransformation ComposedCopula::getInverse
     if (copulaCollection_[i].getStandardDistribution().hasIndependentCopula()) atomTransformations[i] = ComposedFunction(copulaCollection_[i].getInverseIsoProbabilisticTransformation(), projection);
     else atomTransformations[i] = ComposedFunction(InverseRosenblattEvaluation(copulaCollection_[i]), projection);
   }
-  return NumericalMathFunction(atomTransformations);
+  return AggregatedFunction(atomTransformations);
 }
 
 /* Compute the covariance of the distribution */

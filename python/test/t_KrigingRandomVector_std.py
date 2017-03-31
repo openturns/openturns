@@ -18,7 +18,7 @@ inputSample = box.generate()
 inputSample *= 10
 
 
-model = NumericalMathFunction(['x', 'y'], ['z'], ['cos(0.5*x) + sin(y)'])
+model = SymbolicFunction(['x', 'y'], ['cos(0.5*x) + sin(y)'])
 outputSample = model(inputSample)
 
 # Validation data

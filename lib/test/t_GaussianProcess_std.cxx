@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
     fullprint << "mean over " << size << " realizations=" << myProcess1.getSample(size).computeMean() << std::endl;
 
     /* With constant trend */
-    TrendTransform trend(NumericalMathFunction("t", "4.0"));
+    TrendTransform trend(SymbolicFunction("t", "4.0"));
     GaussianProcess myProcess2(trend, myCovModel, myTimeGrid);
     fullprint << "myProcess2=" << myProcess2 << std::endl;
     fullprint << "is stationary? " << myProcess2.isStationary() << std::endl;
@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
     fullprint << "mean over " << size << " realizations=" << myProcess1.getSample(size).computeMean() << std::endl;
 
     /* With varying trend */
-    TrendTransform trend3(NumericalMathFunction("t", "sin(t)"));
+    TrendTransform trend3(SymbolicFunction("t", "sin(t)"));
     GaussianProcess myProcess3(trend3, myCovModel, myTimeGrid);
     fullprint << "myProcess3=" << myProcess3 << std::endl;
     fullprint << "is stationary? " << myProcess3.isStationary() << std::endl;

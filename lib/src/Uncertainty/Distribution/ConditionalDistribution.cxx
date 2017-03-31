@@ -27,6 +27,7 @@
 #include "openturns/GaussProductExperiment.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/SymbolicFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -57,7 +58,11 @@ ConditionalDistribution::ConditionalDistribution()
   Description formulas(2);
   formulas[0] = inVars[0];
   formulas[1] = String(OSS() << inVars[0] << " + 1");
-  setConditionedAndConditioningDistributionsAndLinkFunction(Uniform(), Uniform(), NumericalMathFunction(inVars, outVars, formulas));
+  SymbolicFunction linkFunction(inVars, formulas);
+  Description description(inVars);
+  description.add(outVars);
+  linkFunction.setDescription(description);
+  setConditionedAndConditioningDistributionsAndLinkFunction(Uniform(), Uniform(), linkFunction);
   isParallel_ = false;
 }
 
@@ -80,7 +85,8 @@ ConditionalDistribution::ConditionalDistribution(const Distribution & conditione
 {
   setName("ConditionalDistribution");
   // The dimension and range are computed using the upper class through this call
-  setConditionedAndConditioningDistributionsAndLinkFunction(conditionedDistribution, conditioningDistribution, NumericalMathFunction(Description::BuildDefault(conditioningDistribution.getDimension(), "y"), Description::BuildDefault(conditioningDistribution.getDimension(), "theta"), Description::BuildDefault(conditioningDistribution.getDimension(), "y")));
+  SymbolicFunction linkFunction(Description::BuildDefault(conditioningDistribution.getDimension(), "y"), Description::BuildDefault(conditioningDistribution.getDimension(), "y"));
+  setConditionedAndConditioningDistributionsAndLinkFunction(conditionedDistribution, conditioningDistribution, linkFunction);
 }
 
 /* Parameters constructor */

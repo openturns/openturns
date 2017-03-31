@@ -29,6 +29,8 @@
 #include "openturns/LinearFunction.hxx"
 #include "openturns/Pointer.hxx"
 #include "openturns/ComposedFunction.hxx"
+#include "openturns/LinearCombinationFunction.hxx"
+#include "openturns/DualLinearCombinationFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -290,12 +292,12 @@ Basis KarhunenLoeveQuadratureFactory::build(const CovarianceModel & covarianceMo
     const NumericalPoint a(*eigenVectors.getColumn(j).getImplementation());
     const NumericalScalar norm = (omega * a).norm();
     if (dimension == 1)
-      resultBasis.add(NumericalMathFunction(coll_, a / norm));
+      resultBasis.add(LinearCombinationFunction(coll_, a / norm));
     else
     {
       NumericalSampleImplementation aSample(basisSize, dimension);
       aSample.setData(a / norm);
-      resultBasis.add(NumericalMathFunction(coll_, aSample));
+      resultBasis.add(DualLinearCombinationFunction(coll_, aSample));
     }
     ++j;
   }

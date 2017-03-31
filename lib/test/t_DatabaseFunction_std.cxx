@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     Description outputDescription(0);
     outputDescription.add("y0");
     outputSample.setDescription(outputDescription);
-    NumericalMathFunction database(inputSample, outputSample);
+    DatabaseFunction database(inputSample, outputSample);
 
 
     fullprint << "database=" << database.__str__() << std::endl << std::endl;

@@ -43,7 +43,7 @@ try:
     # Durbin Watson
     ot.RandomGenerator.SetSeed(5415)
     eps = ot.Normal(0, 20)
-    f = ot.NumericalMathFunction('x', '5+2*x+x^2-0.1*x^3')
+    f = ot.SymbolicFunction('x', '5+2*x+x^2-0.1*x^3')
     N = 15
     x = ot.NumericalSample([[0],[1.42857],[2.85714],[4.28571],[5.71429],[7.14286],
                             [8.57143],[10],[11.4286],[12.8571],[14.2857],[15.7143],

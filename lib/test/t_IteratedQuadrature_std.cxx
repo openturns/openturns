@@ -51,10 +51,10 @@ int main(int argc, char *argv[])
       if (n > 0)
       {
         formula += String("-") + inVars[n - 1] + String("^2");
-        lower.add(NumericalMathFunction(inVarsBounds, Description(1, String("-sqrt(") + formula + String(")"))));
-        upper.add(NumericalMathFunction(inVarsBounds, Description(1, String("sqrt(") + formula + String(")"))));
+        lower.add(SymbolicFunction(inVarsBounds, Description(1, String("-sqrt(") + formula + String(")"))));
+        upper.add(SymbolicFunction(inVarsBounds, Description(1, String("sqrt(") + formula + String(")"))));
       }
-      NumericalMathFunction integrand(inVars, Description(1, "1.0"));
+      SymbolicFunction integrand(inVars, Description(1, "1.0"));
       NumericalScalar value = algo.integrate(integrand, a, b, lower, upper)[0];
       fullprint << "dim=" << n + 1 << ", volume=" << value << ", calls=" << integrand.getCallsNumber() << std::endl;
     }
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
     Description formulas(2);
     formulas[0] = "x0^2 + 2*x1^2 + 3*x2^2";
     formulas[1] = "x2^2 + 2*x1^2 + 3*x0^2";
-    NumericalMathFunction integrand(vars, formulas);
+    SymbolicFunction integrand(vars, formulas);
     NumericalPoint value(algo.integrate(integrand, bounds));
     fullprint << "value=" << value << ", calls=" << integrand.getCallsNumber() << std::endl;
   }

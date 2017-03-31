@@ -36,16 +36,14 @@ int main(int argc, char *argv[])
     Description input(2);
     input[0] = "x0";
     input[1] = "x1";
-    Description output(1);
-    output[0] = "y";
-    Description formulas(output.getSize());
+    Description formulas(1);
     formulas[0] = "x0+x1";
-    NumericalMathFunction analytical(input, output, formulas);
+    SymbolicFunction analytical(input, formulas);
 
     fullprint << "function=" << analytical << std::endl;
 
     /* Create indicator function */
-    NumericalMathFunction indicator(analytical, Less(), 0.0);
+    IndicatorFunction indicator(analytical, Less(), 0.0);
     /* Does it work? */
     NumericalPoint x(NumericalPoint(2, 1.0));
     NumericalScalar value = analytical(x)[0];

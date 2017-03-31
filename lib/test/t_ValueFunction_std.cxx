@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   {
 
     /* Create an intance */
-    NumericalMathFunction myFunc("x", "x^2");
+    SymbolicFunction myFunc("x", "x^2");
     ValueFunction mySpatialFunc(myFunc);
 
     fullprint << "mySpatialFunc=" << mySpatialFunc << std::endl;

@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    NumericalMathFunction f("x", "sin(x)");
+    SymbolicFunction f("x", "sin(x)");
     NumericalScalar a = -2.5;
     NumericalScalar b = 4.5;
     // Default parameters

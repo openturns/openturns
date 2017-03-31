@@ -36,6 +36,8 @@
 #include "openturns/LegendreFactory.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/ComposedFunction.hxx"
+#include "openturns/LinearCombinationFunction.hxx"
+#include "openturns/DualLinearCombinationFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -352,12 +354,12 @@ void KarhunenLoeveQuadratureAlgorithm::run()
     values.setData(modeValues);
     modesAsProcessSample.add(values);
     if (dimension == 1)
-      modes.add(NumericalMathFunction(coll, a * factor));
+      modes.add(LinearCombinationFunction(coll, a * factor));
     else
     {
       NumericalSampleImplementation aSample(basisSize_, dimension);
       aSample.setData(a * factor);
-      modes.add(NumericalMathFunction(coll, aSample));
+      modes.add(DualLinearCombinationFunction(coll, aSample));
     }
     // Build the relevant column of the transposed projection matrix
     // For k=1,...,K K is the number of selected modes

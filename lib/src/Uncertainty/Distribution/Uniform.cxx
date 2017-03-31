@@ -22,6 +22,8 @@
 #include "openturns/Uniform.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SymbolicFunction.hxx"
+
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -175,7 +177,7 @@ Interval Uniform::computeBilateralConfidenceIntervalWithMarginalProbability(cons
 /* Get the minimum volume level set containing a given probability of the distribution */
 LevelSet Uniform::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const
 {
-  const NumericalMathFunction function("x", String(OSS(true) << 2.0 / (b_ - a_) << " * abs(x - (" << 0.5 * (a_ + b_) << "))"));
+  const SymbolicFunction function("x", String(OSS(true) << 2.0 / (b_ - a_) << " * abs(x - (" << 0.5 * (a_ + b_) << "))"));
   threshold = prob;
   return LevelSet(function, threshold);
 }

@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    NumericalMathFunction ref("x", "sin(x)");
+    SymbolicFunction ref("x", "sin(x)");
     UnsignedInteger size = 12;
     NumericalPoint locations(size);
     NumericalPoint values(size);

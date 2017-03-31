@@ -9,7 +9,7 @@ RandomGenerator.SetSeed(0)
 
 try:
     # First, a smooth function
-    f = NumericalMathFunction("x", "sin(x)")
+    f = SymbolicFunction("x", "sin(x)")
     a = -2.5
     b = 4.5
     # Default parameters
@@ -39,7 +39,7 @@ try:
         #g.draw("Smooth_function_adaptation_" + str(i))
 
     # Second, a piecewise smooth function
-    f = NumericalMathFunction("x", "abs(sin(x))")
+    f = SymbolicFunction("x", "abs(sin(x))")
     a = -2.5
     b = 4.5
     algo = GaussKronrod()

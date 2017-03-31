@@ -24,6 +24,7 @@
 #include "openturns/NumericalSample.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ComposedFunction.hxx"
+#include "openturns/DualLinearCombinationFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -72,7 +73,7 @@ FunctionalChaosResult::FunctionalChaosResult(const NumericalMathFunction & model
   , composedMetaModel_()
 {
   // The composed meta model will be a dual linear combination
-  composedMetaModel_ = NumericalMathFunction(Psi_k, alpha_k);
+  composedMetaModel_ = DualLinearCombinationFunction(Psi_k, alpha_k);
   if (transformation.getEvaluation()->getClassName() == "IdentityEvaluation")
     metaModel_ = composedMetaModel_;
   else

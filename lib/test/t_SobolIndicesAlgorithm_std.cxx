@@ -40,12 +40,10 @@ int main(int argc, char *argv[])
     inputName[0] = "X1";
     inputName[1] = "X2";
     inputName[2] = "X3";
-    Description outputName(outputDimension);
-    outputName[0] = "Y";
     Description formula(1);
     formula[0] = "sin(_pi*X1)+7*sin(_pi*X2)*sin(_pi*X2)+0.1*((_pi*X3)*(_pi*X3)*(_pi*X3)*(_pi*X3))*sin(_pi*X1)";
 
-    NumericalMathFunction model(inputName, outputName, formula);
+    SymbolicFunction model(inputName, formula);
 
     ComposedDistribution::DistributionCollection marginals(inputDimension);
     marginals[0] = Uniform(-1.0, 1.0);

@@ -28,6 +28,8 @@
 #include "openturns/Matrix.hxx"
 #include "openturns/Cobyla.hxx"
 #include "openturns/ComposedFunction.hxx"
+#include "openturns/AggregatedFunction.hxx"
+
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -76,7 +78,7 @@ LevelSet LevelSet::intersect(const LevelSet & other) const
   NumericalMathFunction::NumericalMathFunctionCollection coll(2);
   coll[0] = function_;
   coll[1] = other.function_;
-  LevelSet result(ComposedFunction(intersectFunction, NumericalMathFunction(coll)), 0.0);
+  LevelSet result(ComposedFunction(intersectFunction, AggregatedFunction(coll)), 0.0);
   // Check if we can compute a bounding box
   if ((lowerBound_.getDimension() == dimension_) &&
       (upperBound_.getDimension() == dimension_) &&
@@ -102,7 +104,7 @@ LevelSet LevelSet::join(const LevelSet & other) const
   NumericalMathFunction::NumericalMathFunctionCollection coll(2);
   coll[0] = function_;
   coll[1] = other.function_;
-  LevelSet result(ComposedFunction(intersectFunction, NumericalMathFunction(coll)), 0.0);
+  LevelSet result(ComposedFunction(intersectFunction, AggregatedFunction(coll)), 0.0);
   // Check if we can compute a bounding box
   if ((lowerBound_.getDimension() == dimension_) &&
       (upperBound_.getDimension() == dimension_) &&

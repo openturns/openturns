@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
   {
     // First, a smooth function
     {
-      NumericalMathFunction f("x", "sin(x)");
+      SymbolicFunction f("x", "sin(x)");
       NumericalScalar a = -2.5;
       NumericalScalar b = 4.5;
       // Default parameters
@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
     }
     // Second, a piecewise smooth function
     {
-      NumericalMathFunction f("x", "abs(sin(x))");
+      SymbolicFunction f("x", "abs(sin(x))");
       NumericalScalar a = -2.5;
       NumericalScalar b = 4.5;
       GaussKronrod algo;

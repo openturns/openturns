@@ -24,7 +24,7 @@ try:
     X = ot.Normal().getSample(100)
     X = X.sortAccordingToAComponent(0)
     covarianceModel = ot.SquaredExponential([1.0], [1.0])
-    model = ot.NumericalMathFunction(["x"], ["x - 0.6 * cos(x/3)"])
+    model = ot.SymbolicFunction(["x"], ["x - 0.6 * cos(x/3)"])
     Y = model(X)
     basis = ot.QuadraticBasisFactory(spatialDimension).build()
     algo = ot.GeneralLinearModelAlgorithm(X, Y, covarianceModel, basis, True)

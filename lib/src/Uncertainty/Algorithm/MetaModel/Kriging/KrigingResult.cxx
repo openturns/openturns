@@ -22,6 +22,7 @@
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Log.hxx"
+#include "openturns/DatabaseFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -45,7 +46,7 @@ KrigingResult::KrigingResult(const NumericalSample & inputSample,
                              const NumericalPointCollection & trendCoefficients,
                              const CovarianceModel & covarianceModel,
                              const NumericalSample & covarianceCoefficients)
-  : MetaModelResult(NumericalMathFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
+  : MetaModelResult(DatabaseFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
   , inputSample_(inputSample)
   , inputTransformedSample_(inputSample)
   , inputTransformation_()
@@ -79,7 +80,7 @@ KrigingResult::KrigingResult(const NumericalSample & inputSample,
                              const NumericalSample & covarianceCoefficients,
                              const TriangularMatrix & covarianceCholeskyFactor,
                              const HMatrix & covarianceHMatrix)
-  : MetaModelResult(NumericalMathFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
+  : MetaModelResult(DatabaseFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
   , inputSample_(inputSample)
   , inputTransformedSample_(inputSample)
   , inputTransformation_()

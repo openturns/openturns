@@ -20,7 +20,7 @@ try:
     coefficients = DistributionCollection(basisDimension)
 
     for i in range(basisDimension):
-        basis.append(NumericalMathFunction("x", "sin(" + str(i) + "*x)"))
+        basis.append(SymbolicFunction("x", "sin(" + str(i) + "*x)"))
         coefficients[i] = Normal(0.0, (1.0 + i))
 
     process = FunctionalBasisProcess(

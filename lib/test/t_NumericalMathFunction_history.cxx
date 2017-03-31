@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    NumericalMathFunction f("x", "x^2", "y");
+    SymbolicFunction f("x", "x^2");
     UnsignedInteger size = 4;
     NumericalSample input(size, 1);
     for (UnsignedInteger i = 0; i < size; ++i) input[i][0] = i;

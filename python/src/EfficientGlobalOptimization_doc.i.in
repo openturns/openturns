@@ -86,7 +86,7 @@ Examples
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
 >>> dim = 4
->>> model = ot.NumericalMathFunction(['x1', 'x2', 'x3', 'x4'], ['y1'],
+>>> model = ot.SymbolicFunction(['x1', 'x2', 'x3', 'x4'],
 ...     ['x1*x1+x2^3*x1+x3+x4'])
 >>> bounds = ot.Interval([-5.0] * dim, [5.0] * dim)
 >>> problem = ot.OptimizationProblem()

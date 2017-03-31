@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   {
     const UnsignedInteger dimension = 2;
     // Function
-    NumericalMathFunction f("t", "sin(t)");
+    SymbolicFunction f("t", "sin(t)");
 
     TrendEvaluationImplementation myFunction(f);
     myFunction.setName("TrendFunction");

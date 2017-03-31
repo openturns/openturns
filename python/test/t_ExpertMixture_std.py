@@ -22,8 +22,8 @@ classifier = MixtureClassifier(distribution)
 
 # Create local experts
 experts = Basis()
-experts.add(NumericalMathFunction("x", "-x"))
-experts.add(NumericalMathFunction("x", "x"))
+experts.add(SymbolicFunction("x", "-x"))
+experts.add(SymbolicFunction("x", "x"))
 
 # Create a mixture of experts
 moe = ExpertMixture(experts, classifier)

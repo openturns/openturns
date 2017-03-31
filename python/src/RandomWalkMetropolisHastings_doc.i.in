@@ -74,12 +74,12 @@ Examples
 ...     for j in range(chainDim):
 ...         p[i, j] = (-2 + 5.0 * i / 9.0) ** j
 >>> # Model
->>> fullModel = ot.NumericalMathFunction(
-...          ['p1', 'p2', 'p3', 'x1', 'x2', 'x3'], ['z', 'sigma'],
+>>> fullModel = ot.SymbolicFunction(
+...          ['p1', 'p2', 'p3', 'x1', 'x2', 'x3'],
 ...          ['p1*x1+p2*x2+p3*x3', '1.0'])
 >>> parametersSet = range(chainDim)
 >>> parametersValue = [0.0] * len(parametersSet)
->>> model = ot.NumericalMathFunction(fullModel, parametersSet, parametersValue)
+>>> model = ot.ParametricFunction(fullModel, parametersSet, parametersValue)
 >>> # Calibration parameters
 >>> calibrationColl = [ot.CalibrationStrategy()]*chainDim
 >>> # Proposal distribution

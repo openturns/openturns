@@ -76,11 +76,11 @@ int main(int argc, char *argv[])
     Description formulas(0);
     formulas.add("p1*x1+p2*x2+p3*x3");
     formulas.add("1.0");
-    NumericalMathFunction fullModel(fullVariables, formulas);
+    SymbolicFunction fullModel(fullVariables, formulas);
     Indices parametersPosition(chainDim);
     parametersPosition.fill();
     NumericalPoint parametersValue(parametersPosition.getSize(), 0.0);
-    NumericalMathFunction model(fullModel, parametersPosition, parametersValue);
+    ParametricFunction model(fullModel, parametersPosition, parametersValue);
 
     // calibration parameters
     CalibrationStrategyCollection calibrationColl(chainDim);

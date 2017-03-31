@@ -20,7 +20,7 @@ Examples
 >>> input = ['x0', 'x1', 'x2']
 >>> functions = []
 >>> for i in range(dimension):
-...     functions.append(ot.NumericalMathFunction(input, ['y'], [input[i]]))
+...     functions.append(ot.SymbolicFunction(input, [input[i]]))
 >>> basis = ot.Basis(functions)"
 %enddef
 %feature("docstring") OT::BasisImplementation
@@ -43,9 +43,9 @@ Examples
 >>> input = ['x0', 'x1', 'x2']
 >>> functions = []
 >>> for i in range(2):
-...     functions.append(ot.NumericalMathFunction(input, ['y'], [input[i]]))
+...     functions.append(ot.SymbolicFunction(input, [input[i]]))
 >>> basis = ot.Basis(functions)
->>> basis.add(ot.NumericalMathFunction(input, ['y'], [input[2]]))"
+>>> basis.add(ot.SymbolicFunction(input, [input[2]]))"
 %enddef
 %feature("docstring") OT::BasisImplementation::add
 OT_Basis_add_doc
@@ -72,7 +72,7 @@ Examples
 >>> input = ['x0', 'x1', 'x2']
 >>> functions = []
 >>> for i in range(dimension):
-...     functions.append(ot.NumericalMathFunction(input, ['y'], [input[i]]))
+...     functions.append(ot.SymbolicFunction(input, [input[i]]))
 >>> basis = ot.Basis(functions)
 >>> print(basis.build(0).getEvaluation())
 [x0,x1,x2]->[x0]"
@@ -128,7 +128,7 @@ Examples
 >>> input = ['x0', 'x1', 'x2']
 >>> functions = []
 >>> for i in range(dimension):
-...     functions.append(ot.NumericalMathFunction(input, ['y'], [input[i]]))
+...     functions.append(ot.SymbolicFunction(input, [input[i]]))
 >>> basis = ot.Basis(functions)
 >>> subbasis = basis.getSubBasis([1])
 >>> print(subbasis[0].getEvaluation())

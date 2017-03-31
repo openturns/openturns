@@ -24,6 +24,7 @@
 #include "openturns/Exception.hxx"
 #include "openturns/WhiteNoise.hxx"
 #include "openturns/TensorizedCovarianceModel.hxx"
+#include "openturns/AggregatedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -86,7 +87,7 @@ NumericalMathFunction AggregatedProcess::getContinuousRealization() const
   Collection<NumericalMathFunction> continuousRealizations(size);
   for (UnsignedInteger i = 0; i < size; ++i)
     continuousRealizations[i] = processCollection_[i].getContinuousRealization();
-  return NumericalMathFunction(continuousRealizations);
+  return AggregatedFunction(continuousRealizations);
 }
 
 /* Compute the next steps of a random walk */

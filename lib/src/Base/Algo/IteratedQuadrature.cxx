@@ -22,6 +22,7 @@
 #include "openturns/GaussKronrod.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/DatabaseFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -103,8 +104,8 @@ NumericalPoint IteratedQuadrature::integrate(const NumericalMathFunction & funct
   NumericalMathFunctionCollection upperBounds(inputDimension - 1);
   for (UnsignedInteger i = 1; i < inputDimension; ++i)
   {
-    lowerBounds[i - 1] = NumericalMathFunction(NumericalSample(1, i), NumericalSample(1, NumericalPoint(1, lower[i])));
-    upperBounds[i - 1] = NumericalMathFunction(NumericalSample(1, i), NumericalSample(1, NumericalPoint(1, upper[i])));
+    lowerBounds[i - 1] = DatabaseFunction(NumericalSample(1, i), NumericalSample(1, NumericalPoint(1, lower[i])));
+    upperBounds[i - 1] = DatabaseFunction(NumericalSample(1, i), NumericalSample(1, NumericalPoint(1, upper[i])));
   }
   return integrate(function, a, b, lowerBounds, upperBounds, false);
 }

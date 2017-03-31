@@ -24,6 +24,7 @@
 #include "openturns/Normal.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/NumericalPoint.hxx"
+#include "openturns/DatabaseFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -110,7 +111,7 @@ Field WhiteNoise::getRealization() const
 /* Continuous realization accessor */
 NumericalMathFunction WhiteNoise::getContinuousRealization() const
 {
-  return NumericalMathFunction(mesh_.getVertices(), distribution_.getSample(mesh_.getVerticesNumber()));
+  return DatabaseFunction(mesh_.getVertices(), distribution_.getSample(mesh_.getVerticesNumber()));
 }
 
 /* Compute the next steps of a random walk */

@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
     x[0] = 1.0;
     x[1] = 2.0;
     NumericalPoint referencePoint(2, 0.85);
-    NumericalMathFunction g2(f, set, referencePoint, parametersSet);
+    ParametricFunction g2(f, set, referencePoint, parametersSet);
     g2.enableHistory();
     fullprint << "g2=" << g2 << std::endl;
     fullprint << "g2(x)=" << g2(x) << std::endl;

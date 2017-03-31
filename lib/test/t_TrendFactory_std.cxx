@@ -42,13 +42,13 @@ int main(int argc, char *argv[])
     Collection<NumericalMathFunction> functions(3);
 
     formula[0] = "1";
-    functions[0] = NumericalMathFunction(inVar, outVar, formula);
+    functions[0] = SymbolicFunction(inVar, formula);
 
     formula[0] = "cos(2 * t)";
-    functions[1] = NumericalMathFunction(inVar, outVar, formula);
+    functions[1] = SymbolicFunction(inVar, formula);
 
     formula[0] = "sin(2 * t)";
-    functions[2] = NumericalMathFunction(inVar, outVar, formula);
+    functions[2] = SymbolicFunction(inVar, formula);
 
 
     // We build the weights
@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
     coefficients.add(p);
 
     // Third, build the function
-    NumericalMathFunction myFunction(functions, coefficients);
+    DualLinearCombinationFunction myFunction(functions, coefficients);
 
 
     // Fourth : we build a time series for estimation

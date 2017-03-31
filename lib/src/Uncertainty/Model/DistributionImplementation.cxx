@@ -73,6 +73,7 @@
 #include "openturns/TriangularMatrix.hxx"
 #include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
 #include "openturns/SobolSequence.hxx"
+#include "openturns/SymbolicFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -4066,7 +4067,7 @@ DistributionImplementation::Implementation DistributionImplementation::cos() con
   }
   bounds.add(b);
   values.add(std::cos(b));
-  return CompositeDistribution(NumericalMathFunction("x", "cos(x)"), clone(), bounds, values).clone();
+  return CompositeDistribution(SymbolicFunction("x", "cos(x)"), clone(), bounds, values).clone();
 }
 
 DistributionImplementation::Implementation DistributionImplementation::sin() const
@@ -4085,7 +4086,7 @@ DistributionImplementation::Implementation DistributionImplementation::sin() con
   }
   bounds.add(b);
   values.add(std::sin(b));
-  return CompositeDistribution(NumericalMathFunction("x", "sin(x)"), clone(), bounds, values).clone();
+  return CompositeDistribution(SymbolicFunction("x", "sin(x)"), clone(), bounds, values).clone();
 }
 
 DistributionImplementation::Implementation DistributionImplementation::tan() const
@@ -4110,7 +4111,7 @@ DistributionImplementation::Implementation DistributionImplementation::tan() con
   }
   bounds.add(b);
   values.add(std::tan(b));
-  return CompositeDistribution(NumericalMathFunction("x", "tan(x)"), clone(), bounds, values).clone();
+  return CompositeDistribution(SymbolicFunction("x", "tan(x)"), clone(), bounds, values).clone();
 }
 
 DistributionImplementation::Implementation DistributionImplementation::acos() const
@@ -4124,7 +4125,7 @@ DistributionImplementation::Implementation DistributionImplementation::acos() co
   NumericalPoint values(1, std::acos(a));
   bounds.add(b);
   values.add(std::acos(b));
-  return CompositeDistribution(NumericalMathFunction("x", "acos(x)"), clone(), bounds, values).clone();
+  return CompositeDistribution(SymbolicFunction("x", "acos(x)"), clone(), bounds, values).clone();
 }
 
 DistributionImplementation::Implementation DistributionImplementation::asin() const
@@ -4138,7 +4139,7 @@ DistributionImplementation::Implementation DistributionImplementation::asin() co
   NumericalPoint values(1, std::asin(a));
   bounds.add(b);
   values.add(std::asin(b));
-  return CompositeDistribution(NumericalMathFunction("x", "asin(x)"), clone(), bounds, values).clone();
+  return CompositeDistribution(SymbolicFunction("x", "asin(x)"), clone(), bounds, values).clone();
 }
 
 DistributionImplementation::Implementation DistributionImplementation::atan() const
@@ -4150,7 +4151,7 @@ DistributionImplementation::Implementation DistributionImplementation::atan() co
   const NumericalScalar b = getRange().getUpperBound()[0];
   bounds.add(b);
   values.add(std::atan(b));
-  return CompositeDistribution(NumericalMathFunction("x", "atan(x)"), clone(), bounds, values).clone();
+  return CompositeDistribution(SymbolicFunction("x", "atan(x)"), clone(), bounds, values).clone();
 }
 
 DistributionImplementation::Implementation DistributionImplementation::cosh() const
@@ -4167,7 +4168,7 @@ DistributionImplementation::Implementation DistributionImplementation::cosh() co
   }
   bounds.add(b);
   values.add(std::cosh(b));
-  return CompositeDistribution(NumericalMathFunction("x", "cosh(x)"), clone(), bounds, values).clone();
+  return CompositeDistribution(SymbolicFunction("x", "cosh(x)"), clone(), bounds, values).clone();
 }
 
 DistributionImplementation::Implementation DistributionImplementation::sinh() const
@@ -4179,7 +4180,7 @@ DistributionImplementation::Implementation DistributionImplementation::sinh() co
   NumericalPoint values(1, std::sinh(a));
   bounds.add(b);
   values.add(std::sinh(b));
-  return CompositeDistribution(NumericalMathFunction("x", "sinh(x)"), clone(), bounds, values).clone();
+  return CompositeDistribution(SymbolicFunction("x", "sinh(x)"), clone(), bounds, values).clone();
 }
 
 DistributionImplementation::Implementation DistributionImplementation::tanh() const
@@ -4191,7 +4192,7 @@ DistributionImplementation::Implementation DistributionImplementation::tanh() co
   NumericalPoint values(1, std::tanh(a));
   bounds.add(b);
   values.add(std::tanh(b));
-  return CompositeDistribution(NumericalMathFunction("x", "tanh(x)"), clone(), bounds, values).clone();
+  return CompositeDistribution(SymbolicFunction("x", "tanh(x)"), clone(), bounds, values).clone();
 }
 
 DistributionImplementation::Implementation DistributionImplementation::acosh() const
@@ -4204,7 +4205,7 @@ DistributionImplementation::Implementation DistributionImplementation::acosh() c
   NumericalPoint values(1, SpecFunc::Acosh(a));
   bounds.add(b);
   values.add(SpecFunc::Acosh(b));
-  return CompositeDistribution(NumericalMathFunction("x", "acosh(x)"), clone(), bounds, values).clone();
+  return CompositeDistribution(SymbolicFunction("x", "acosh(x)"), clone(), bounds, values).clone();
 }
 
 DistributionImplementation::Implementation DistributionImplementation::asinh() const
@@ -4216,7 +4217,7 @@ DistributionImplementation::Implementation DistributionImplementation::asinh() c
   NumericalPoint values(1, SpecFunc::Asinh(a));
   bounds.add(b);
   values.add(SpecFunc::Asinh(b));
-  return CompositeDistribution(NumericalMathFunction("x", "asinh(x)"), clone(), bounds, values).clone();
+  return CompositeDistribution(SymbolicFunction("x", "asinh(x)"), clone(), bounds, values).clone();
 }
 
 DistributionImplementation::Implementation DistributionImplementation::atanh() const
@@ -4233,7 +4234,7 @@ DistributionImplementation::Implementation DistributionImplementation::atanh() c
   NumericalPoint values(1, a == -1.0 ? SpecFunc::Atanh(computeQuantile(quantileEpsilon_)[0]) : SpecFunc::Atanh(a));
   bounds.add(b);
   values.add(b == 1.0 ? SpecFunc::Atanh(computeQuantile(quantileEpsilon_, true)[0]) : SpecFunc::Atanh(b));
-  return CompositeDistribution(NumericalMathFunction("x", "atanh(x)"), clone(), bounds, values).clone();
+  return CompositeDistribution(SymbolicFunction("x", "atanh(x)"), clone(), bounds, values).clone();
 }
 
 DistributionImplementation::Implementation DistributionImplementation::exp() const
@@ -4256,7 +4257,7 @@ DistributionImplementation::Implementation DistributionImplementation::exp() con
   NumericalPoint values(1, std::exp(a));
   bounds.add(b);
   values.add(std::exp(b));
-  return CompositeDistribution(NumericalMathFunction("x", "exp(x)"), clone(), bounds, values).clone();
+  return CompositeDistribution(SymbolicFunction("x", "exp(x)"), clone(), bounds, values).clone();
 }
 
 DistributionImplementation::Implementation DistributionImplementation::log() const
@@ -4280,7 +4281,7 @@ DistributionImplementation::Implementation DistributionImplementation::log() con
   NumericalPoint values(1, (a == 0.0 ? std::log(computeQuantile(quantileEpsilon_)[0]) : std::log(a)));
   bounds.add(b);
   values.add(std::log(b));
-  return CompositeDistribution(NumericalMathFunction("x", "log(x)"), clone(), bounds, values).clone();
+  return CompositeDistribution(SymbolicFunction("x", "log(x)"), clone(), bounds, values).clone();
 }
 
 DistributionImplementation::Implementation DistributionImplementation::ln() const
@@ -4296,7 +4297,7 @@ DistributionImplementation::Implementation DistributionImplementation::pow(const
   const NumericalScalar a = getRange().getLowerBound()[0];
   if (a < 0.0) throw NotDefinedException(HERE) << "Error: cannot take a fractional power of a random variable that takes negative values with positive probability.";
 
-  NumericalMathFunction toPower("x", String(OSS() << (exponent < 0.0 ? "x^(" : "x^") << exponent << (exponent < 0.0 ? ")" : "")));
+  SymbolicFunction toPower("x", String(OSS() << (exponent < 0.0 ? "x^(" : "x^") << exponent << (exponent < 0.0 ? ")" : "")));
   NumericalPoint bounds(1, a);
   NumericalPoint values(1, (a == 0.0 ? (exponent < 0.0 ? std::pow(computeQuantile(quantileEpsilon_)[0], exponent) : 0.0) : std::pow(a, exponent)));
   const NumericalScalar b = getRange().getUpperBound()[0];
@@ -4310,7 +4311,7 @@ DistributionImplementation::Implementation DistributionImplementation::pow(const
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the distribution must be univariate.";
   if (exponent == 0.0) return Dirac(NumericalPoint(1, 1.0)).clone();
   const NumericalScalar a = getRange().getLowerBound()[0];
-  NumericalMathFunction toPower("x", String(OSS() << (exponent < 0.0 ? "x^(" : "x^") << exponent << (exponent < 0.0 ? ")" : "")));
+  SymbolicFunction toPower("x", String(OSS() << (exponent < 0.0 ? "x^(" : "x^") << exponent << (exponent < 0.0 ? ")" : "")));
   // Easy case: a >= 0
   if (a >= 0.0)
   {
@@ -4349,7 +4350,7 @@ DistributionImplementation::Implementation DistributionImplementation::pow(const
     values.add(SpecFunc::MaxNumericalScalar);
     bounds.add(b);
     values.add(std::pow(b, 1.0 * exponent));
-    return CompositeDistribution(NumericalMathFunction("x", String(OSS() << "x^(" << exponent << ")")), clone(), bounds, values).clone();
+    return CompositeDistribution(SymbolicFunction("x", String(OSS() << "x^(" << exponent << ")")), clone(), bounds, values).clone();
   }
   // For even exponent, the behaviour changes at 0
   bounds.add(0.0);
@@ -4385,7 +4386,7 @@ DistributionImplementation::Implementation DistributionImplementation::inverse()
       values.add(1.0 / b);
     else
       values.add(0.0);
-    return CompositeDistribution(NumericalMathFunction("x", "1.0 / x"), clone(), bounds, values).clone();
+    return CompositeDistribution(SymbolicFunction("x", "1.0 / x"), clone(), bounds, values).clone();
   }
   // Here, a < 0
   NumericalPoint values(1);
@@ -4399,7 +4400,7 @@ DistributionImplementation::Implementation DistributionImplementation::inverse()
   {
     bounds.add(b);
     values.add(b == 0.0 ? 1.0 / computeQuantile(quantileEpsilon_, true)[0] : 1.0 / b);
-    return CompositeDistribution(NumericalMathFunction("x", "1.0 / x"), clone(), bounds, values).clone();
+    return CompositeDistribution(SymbolicFunction("x", "1.0 / x"), clone(), bounds, values).clone();
   }
   // Difficult case: a < 0 < b
   // A singularity at 0
@@ -4417,7 +4418,7 @@ DistributionImplementation::Implementation DistributionImplementation::inverse()
     values.add(1.0 / b);
   else
     values.add(0.0);
-  return CompositeDistribution(NumericalMathFunction("x", "1.0 / x"), clone(), bounds, values).clone();
+  return CompositeDistribution(SymbolicFunction("x", "1.0 / x"), clone(), bounds, values).clone();
 }
 
 DistributionImplementation::Implementation DistributionImplementation::sqrt() const
@@ -4436,7 +4437,7 @@ DistributionImplementation::Implementation DistributionImplementation::sqrt() co
   const NumericalScalar b = getRange().getUpperBound()[0];
   bounds.add(b);
   values.add(std::sqrt(b));
-  return CompositeDistribution(NumericalMathFunction("x", "sqrt(x)"), clone(), bounds, values).clone();
+  return CompositeDistribution(SymbolicFunction("x", "sqrt(x)"), clone(), bounds, values).clone();
 }
 
 DistributionImplementation::Implementation DistributionImplementation::cbrt() const
@@ -4448,7 +4449,7 @@ DistributionImplementation::Implementation DistributionImplementation::cbrt() co
   const NumericalScalar b = getRange().getUpperBound()[0];
   bounds.add(b);
   values.add(SpecFunc::Cbrt(b));
-  return CompositeDistribution(NumericalMathFunction("x", "cbrt(x)"), clone(), bounds, values).clone();
+  return CompositeDistribution(SymbolicFunction("x", "cbrt(x)"), clone(), bounds, values).clone();
 }
 
 DistributionImplementation::Implementation DistributionImplementation::abs() const
@@ -4465,7 +4466,7 @@ DistributionImplementation::Implementation DistributionImplementation::abs() con
   }
   bounds.add(b);
   values.add(std::abs(b));
-  return CompositeDistribution(NumericalMathFunction("x", "abs(x)"), clone(), bounds, values).clone();
+  return CompositeDistribution(SymbolicFunction("x", "abs(x)"), clone(), bounds, values).clone();
 }
 
 END_NAMESPACE_OPENTURNS

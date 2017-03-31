@@ -61,7 +61,7 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.Normal()
 >>> sample = distribution.getSample(30)
->>> func = ot.NumericalMathFunction('x', '2 * x + 1')
+>>> func = ot.SymbolicFunction('x', '2 * x + 1')
 >>> firstSample = sample
 >>> secondSample = func(sample) + ot.Normal().getSample(30)
 >>> test_result = ot.LinearModelTest.LinearModelAdjustedRSquared(firstSample, secondSample)
@@ -131,7 +131,7 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.Normal()
 >>> sample = distribution.getSample(30)
->>> func = ot.NumericalMathFunction('x', '2 * x + 1')
+>>> func = ot.SymbolicFunction('x', '2 * x + 1')
 >>> firstSample = sample
 >>> secondSample = func(sample) + ot.Normal().getSample(30)
 >>> test_result = ot.LinearModelTest.LinearModelFisher(firstSample, secondSample)
@@ -201,7 +201,7 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.Normal()
 >>> sample = distribution.getSample(30)
->>> func = ot.NumericalMathFunction('x', '2 * x + 1')
+>>> func = ot.SymbolicFunction('x', '2 * x + 1')
 >>> firstSample = sample
 >>> secondSample = func(sample) + ot.Normal().getSample(30)
 >>> test_result = ot.LinearModelTest.LinearModelRSquared(firstSample, secondSample)
@@ -271,7 +271,7 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.Normal()
 >>> sample = distribution.getSample(30)
->>> func = ot.NumericalMathFunction('x', '2 * x + 1')
+>>> func = ot.SymbolicFunction('x', '2 * x + 1')
 >>> firstSample = sample
 >>> secondSample = func(sample) + ot.Normal().getSample(30)
 >>> test_result = ot.LinearModelTest.LinearModelResidualMean(firstSample, secondSample)
@@ -346,7 +346,7 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.Normal()
 >>> sample = distribution.getSample(30)
->>> func = ot.NumericalMathFunction('x', '2 * x + 1')
+>>> func = ot.SymbolicFunction('x', '2 * x + 1')
 >>> firstSample = sample
 >>> secondSample = func(sample) + ot.Normal().getSample(30)
 >>> test_result = ot.LinearModelTest.LinearModelHarrisonMcCabe(firstSample, secondSample)
@@ -417,7 +417,7 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.Normal()
 >>> sample = distribution.getSample(30)
->>> func = ot.NumericalMathFunction('x', '2 * x + 1')
+>>> func = ot.SymbolicFunction('x', '2 * x + 1')
 >>> firstSample = sample
 >>> secondSample = func(sample) + ot.Normal().getSample(30)
 >>> test_result = ot.LinearModelTest.LinearModelBreuschPagan(firstSample, secondSample)
@@ -491,7 +491,7 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.Normal()
 >>> sample = distribution.getSample(30)
->>> func = ot.NumericalMathFunction('x', '2 * x + 1')
+>>> func = ot.SymbolicFunction('x', '2 * x + 1')
 >>> firstSample = sample
 >>> secondSample = func(sample) + ot.Normal().getSample(30)
 >>> test_result = ot.LinearModelTest.LinearModelDurbinWatson(firstSample, secondSample)

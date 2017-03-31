@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   NumericalSample y(1, 1);
   NumericalPoint weight(1, 1.0);
   Collection<NumericalMathFunction> coll;
-  coll.add(NumericalMathFunction("x", "x"));
+  coll.add(SymbolicFunction("x", "x"));
   Basis psi(coll);
   Indices indices(coll.getSize());
   indices.fill();

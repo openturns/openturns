@@ -164,8 +164,8 @@ try:
     aCollection.append(ot.Normal(75e3, 5e3))
     myDistribution = ot.ComposedDistribution(aCollection)
     vect = ot.RandomVector(myDistribution)
-    LimitState = ot.NumericalMathFunction(
-        ('R', 'F'), ('G',), ('R-F/(_pi*100.0)',))
+    LimitState = ot.SymbolicFunction(
+        ('R', 'F'), ('R-F/(_pi*100.0)',))
     G = ot.RandomVector(LimitState, vect)
     myEvent = ot.Event(G, ot.Less(), 0.0)
     myAlgo = ot.MonteCarlo(myEvent)

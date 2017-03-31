@@ -11,7 +11,7 @@ try:
     dimension = 2
 
     # function
-    function = NumericalMathFunction("x", "sin(x)")
+    function = SymbolicFunction("x", "sin(x)")
 
     # Init of the function
     myFunction = InverseTrendEvaluationImplementation(function)

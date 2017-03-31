@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
       formulaGSobol[0] = (OSS() << formulaGSobol[0] << " * ((abs(4.0 * X" << i + 1 << " - 2.0) + " << a_i[i] << ") / (1.0 + " << a_i[i] << "))");
     }
     covTh = covTh - 1.0;
-    NumericalMathFunction modelGSobol(inputName, outputName, formulaGSobol);
+    SymbolicFunction modelGSobol(inputName, formulaGSobol);
 
     marginals[0] = Uniform(0., 1.0);
     marginals[1] = Uniform(0., 1.0);

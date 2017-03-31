@@ -22,6 +22,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/LeastSquaresMetaModelSelection.hxx"
 #include "openturns/NumericalPoint.hxx"
+#include "openturns/DualLinearCombinationFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -101,7 +102,7 @@ TrendTransform TrendFactory::build(const Field & field,
     NumericalPoint localCoefficients(selectionAlgo.getCoefficients());
     for (UnsignedInteger k = 0; k < N ; ++k) coefficients[k][d] = localCoefficients[k];
   }
-  const NumericalMathFunction trendFunction(coll, coefficients);
+  const DualLinearCombinationFunction trendFunction(coll, coefficients);
 
   return TrendTransform(trendFunction);
 }

@@ -14,7 +14,7 @@ try:
     formula = [
         'sin(_pi*X1)+7*sin(_pi*X2)*sin(_pi*X2)+0.1*((_pi*X3)*(_pi*X3)*(_pi*X3)*(_pi*X3))*sin(_pi*X1)']
 
-    model = ot.NumericalMathFunction(['X1', 'X2', 'X3'], ['Y'], formula)
+    model = ot.SymbolicFunction(['X1', 'X2', 'X3'], formula)
 
     distribution = ot.ComposedDistribution(
         [ot.Uniform(-1.0, 1.0)] * input_dimension)

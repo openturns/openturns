@@ -14,8 +14,7 @@ try:
     # Model
     inputVar = Description(["x", "y", "z"])
     formulas = Description(["x-1.5*y+2*z"])
-    outputVar = Description(["out"])
-    f = NumericalMathFunction(inputVar, formulas)
+    f = SymbolicFunction(inputVar, formulas)
     # Must activate the history mechanism if one want to perform sensitivity
     # analysis
     f.enableHistory()

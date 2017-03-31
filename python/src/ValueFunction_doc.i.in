@@ -93,7 +93,7 @@ g : :class:`~openturns.NumericalMathEvaluationImplementation`
 Examples
 --------
 >>> import openturns as ot
->>> g = ot.NumericalMathFunction('x', 'x^2')
+>>> g = ot.SymbolicFunction(['x'], ['x^2'])
 >>> n = 1
 >>> myValueFunction = ot.ValueFunction(g, n)
 >>> print(myValueFunction.getEvaluation())

@@ -24,6 +24,7 @@
 #include "openturns/Log.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/SymbolicFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -123,7 +124,7 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
             else oss << xName;
           } // b != 1
           const String formula(oss);
-          expressions_[i] = NumericalMathFunction(xName, formula, yName);
+          expressions_[i] = SymbolicFunction(xName, formula);
           simplifications_[i] = 1;
         } // sameParameters
       } // inputClass == outputClass
@@ -186,7 +187,7 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
             else oss << " + " << -gamma1 << "))";
           }
           const String formula(oss);
-          expressions_[i] = NumericalMathFunction(xName, formula, yName);
+          expressions_[i] = SymbolicFunction(xName, formula);
           simplifications_[i] = 1;
         } // k1 == k2
       } // ChiSquare || Exponential || Gamma vs ChiSquare || Exponential || Gamma
@@ -209,7 +210,7 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
         if (sigma1 != 1.0) oss << " / " << sigma1;
         oss << ")";
         const String formula(oss);
-        expressions_[i] = NumericalMathFunction(xName, formula, yName);
+        expressions_[i] = SymbolicFunction(xName, formula);
         simplifications_[i] = 1;
       } // Normal -> LogNormal simplification
       // LogNormal -> Normal simplification
@@ -231,7 +232,7 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
         if (muLog1 != 0.0) oss << " - " << muLog1 << ")";
         if (sigmaLog1 != 1.0) oss << " / " << sigmaLog1;
         const String formula(oss);
-        expressions_[i] = NumericalMathFunction(xName, formula, yName);
+        expressions_[i] = SymbolicFunction(xName, formula);
         simplifications_[i] = 1;
       } // LogNormal -> Normal simplification
     } // Loop over the components

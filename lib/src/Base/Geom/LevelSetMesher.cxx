@@ -30,6 +30,7 @@
 #include "openturns/CenteredFiniteDifferenceGradient.hxx"
 #include "openturns/NLopt.hxx"
 #include "openturns/ComposedFunction.hxx"
+#include "openturns/ParametricFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -168,7 +169,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
     LinearFunction shiftFunctionBase(NumericalPoint(2 * dimension), NumericalPoint(dimension), linear);
     Indices parameters(dimension);
     parameters.fill();
-    shiftFunction = NumericalMathFunction(shiftFunctionBase, parameters, NumericalPoint(dimension));
+    shiftFunction = ParametricFunction(shiftFunctionBase, parameters, NumericalPoint(dimension));
     problem.setLevelValue(level);
   } // project
   for (UnsignedInteger i = 0; i < numSimplices; ++i)

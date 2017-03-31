@@ -8,7 +8,7 @@ TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    f = NumericalMathFunction("x", "sin(x)")
+    f = SymbolicFunction(["x"], ["sin(x)"])
     a = -2.5
     b = 4.5
     # Default parameters
