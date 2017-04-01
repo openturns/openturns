@@ -137,6 +137,9 @@
   <GaussKronrod-MaximumSubIntervals               value="100"     />
   <GaussKronrod-MaximumError                      value="1.0e-12" />
 
+  <!-- OT::GaussLegendre parameters -->
+  <GaussLegendre-DefaultMarginalIntegrationPointsNumber value="64" />
+
   <!-- OT::IteratedQuadrature parameters -->
   <IteratedQuadrature-MaximumSubIntervals         value="32"     />
   <IteratedQuadrature-MaximumError                value="1.0e-7" />
@@ -542,7 +545,8 @@
   <Distribution-CharacteristicFunctionNMax        value="1000000" />
   <Distribution-MinimumVolumeLevelSetSamplingSize value="1000000" />
   <Distribution-MinimumVolumeLevelSetBySampling   value="false"   />
-
+  <Distribution-UseCovarianceAdaptiveAlgorithm    value="true"    />
+  
   <!-- OT::ContinuousDistribution parameters -->
   <ContinuousDistribution-DefaultIntegrationNodesNumber value="256" />
 

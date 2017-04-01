@@ -403,6 +403,9 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "GaussKronrod-MaximumSubIntervals", 100 );
   setAsNumericalScalar( "GaussKronrod-MaximumError",  1.0e-12 );
 
+  // GaussLegendre parameters //
+  setAsUnsignedInteger( "GaussLegendre-DefaultMarginalIntegrationPointsNumber", 64);
+
   // IteratedQuadrature parameters //
   setAsUnsignedInteger( "IteratedQuadrature-MaximumSubIntervals", 32 );
   setAsNumericalScalar( "IteratedQuadrature-MaximumError",    1.0e-7 );
@@ -807,6 +810,7 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "Distribution-CharacteristicFunctionNMax", 1000000 );
   setAsUnsignedInteger( "Distribution-MinimumVolumeLevelSetSamplingSize", 1000000 );
   setAsBool( "Distribution-MinimumVolumeLevelSetBySampling", false );
+  setAsBool( "Distribution-UseCovarianceAdaptiveAlgorithm", false );
 
   // ContinuousDistribution parameters //
   setAsUnsignedInteger( "ContinuousDistribution-DefaultIntegrationNodesNumber", 256 );

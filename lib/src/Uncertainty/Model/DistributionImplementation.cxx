@@ -27,7 +27,6 @@
 #include "openturns/Distribution.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/Log.hxx"
-#include "openturns/Lapack.hxx"
 #include "openturns/IdentityMatrix.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/RandomGenerator.hxx"
@@ -67,6 +66,7 @@
 #include "openturns/Combinations.hxx"
 #include "openturns/TBB.hxx"
 #include "openturns/GaussKronrod.hxx"
+#include "openturns/GaussLegendre.hxx"
 #include "openturns/IteratedQuadrature.hxx"
 #include "openturns/OptimizationProblem.hxx"
 #include "openturns/TNC.hxx"
@@ -106,7 +106,7 @@ DistributionImplementation::DistributionImplementation()
   , generatingFunction_(0)
   , dimension_(1)
   , weight_(1.0)
-  // The range is empty by default
+    // The range is empty by default
   , range_(Interval(1.0, -1.0))
   , description_(1)
   , isParallel_(ResourceMap::GetAsBool("Distribution-Parallel"))
@@ -2162,7 +2162,7 @@ struct MinimumVolumeIntervalWrapper
   NumericalPoint objective(const NumericalPoint & point) const
   {
     lastB_ = p_distribution_->computeQuantile(prob_ + p_distribution_->computeCDF(point))[0];
-    return NumericalPoint(1, lastB_ - point[0]);    
+    return NumericalPoint(1, lastB_ - point[0]);
   }
 
   NumericalScalar getLastB() const
@@ -2230,11 +2230,11 @@ Interval DistributionImplementation::computeMinimumVolumeIntervalWithMarginalPro
   if (!isContinuous()) throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeMinimumVolumeInterval()";
   // If the distribution is elliptical, the minimum volume interval is equal to the bilateral confidence interval which is much cheaper to compute
   if (isElliptical())
-    {
-      LOGINFO("Compute the minimum volume interval using the bilateral confidence interval (elliptical case)");
-      const Interval result(computeBilateralConfidenceIntervalWithMarginalProbability(prob, marginalProb));
-      return result;
-    }
+  {
+    LOGINFO("Compute the minimum volume interval using the bilateral confidence interval (elliptical case)");
+    const Interval result(computeBilateralConfidenceIntervalWithMarginalProbability(prob, marginalProb));
+    return result;
+  }
   if (prob <= 0.0)
   {
     const NumericalPoint median(computeQuantile(0.5));
@@ -2250,18 +2250,18 @@ Interval DistributionImplementation::computeMinimumVolumeIntervalWithMarginalPro
   {
     // First, the most accurate method, which assumes a continuous PDF
     try
-      {
-	const Interval result(computeUnivariateMinimumVolumeIntervalByRootFinding(prob, marginalProb));
-	LOGINFO("Compute the minimum volume interval by root finding (continuous case)");
-	return result;
-      }
+    {
+      const Interval result(computeUnivariateMinimumVolumeIntervalByRootFinding(prob, marginalProb));
+      LOGINFO("Compute the minimum volume interval by root finding (continuous case)");
+      return result;
+    }
     // Second, the general purpose method
     catch(...)
-      {
-	const Interval result(computeUnivariateMinimumVolumeIntervalByOptimization(prob, marginalProb));
-	LOGINFO("Compute the minimum volume interval by optimization (general case)");
-	return result;
-      }
+    {
+      const Interval result(computeUnivariateMinimumVolumeIntervalByOptimization(prob, marginalProb));
+      LOGINFO("Compute the minimum volume interval by optimization (general case)");
+      return result;
+    }
   }
   Collection<Distribution> marginals(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i) marginals[i] = getMarginal(i);
@@ -2387,11 +2387,11 @@ LevelSet DistributionImplementation::computeMinimumVolumeLevelSetWithThreshold(c
   if (!isContinuous()) throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeMinimumVolumeLevelSet()";
   // 1D special case here to avoid a double construction of minimumVolumeLevelSetFunction
   if ((dimension_ == 1) && (ResourceMap::GetAsBool("Distribution-MinimumVolumeLevelSetBySampling")))
-    {
-      LOGINFO("Compute the minimum volume level set by sampling (QMC)");
-      const LevelSet result(computeUnivariateMinimumVolumeLevelSetByQMC(prob, threshold));
-      return result;
-    }
+  {
+    LOGINFO("Compute the minimum volume level set by sampling (QMC)");
+    const LevelSet result(computeUnivariateMinimumVolumeLevelSetByQMC(prob, threshold));
+    return result;
+  }
   NumericalMathFunction minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
   minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
   // If dimension_ == 1 the threshold can be computed analyticaly
@@ -2416,7 +2416,7 @@ LevelSet DistributionImplementation::computeMinimumVolumeLevelSetWithThreshold(c
 }
 
 LevelSet DistributionImplementation::computeUnivariateMinimumVolumeLevelSetByQMC(const NumericalScalar prob,
-      NumericalScalar & threshold) const
+    NumericalScalar & threshold) const
 {
   NumericalMathFunction minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
   minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
@@ -2428,7 +2428,7 @@ LevelSet DistributionImplementation::computeUnivariateMinimumVolumeLevelSetByQMC
   const NumericalScalar minusLogPDFThreshold = -logPDFSample.computeQuantile(1.0 - prob)[0];
   threshold = std::exp(-minusLogPDFThreshold);
 
-  return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold); 
+  return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold);
 }
 
 /* Get the mathematical and numerical range of the distribution.
@@ -2559,10 +2559,15 @@ void DistributionImplementation::computeCovarianceContinuous() const
   // Off-diagonal terms if the copula is not the independent copula
   if (!hasIndependentCopula())
   {
-    const IteratedQuadrature integrator = IteratedQuadrature(GaussKronrod());
+    // Here we use the following expression of the covariance \Sigma_{i,j}:
+    // \Sigma_{i,j}=\int_{\R^2}(x_i-\mu_i)(x_j-\mu_j)p_{i,j}(x_i,x_j)dx_idx_j
+    // Do we use the adaptive quadrature algorithm?
+    const Bool useAdaptiveAlorithm = ResourceMap::GetAsBool("Distribution-UseCovarianceAdaptiveAlgorithm");
+    IntegrationAlgorithm integrator;
+    if (useAdaptiveAlorithm) integrator = IteratedQuadrature(GaussKronrod());
+    else integrator = GaussLegendre(Indices(2, static_cast<UnsignedInteger>(std::ceil(1.0 * std::sqrt(integrationNodesNumber_)))));
     // Performs the integration for each covariance in the strictly lower triangle of the covariance matrix
     // We loop over the coefficients in the outer loop because the most expensive task is to get the 2D marginal distributions
-
     Indices indices(2);
     for(UnsignedInteger rowIndex = 0; rowIndex < dimension_; ++rowIndex)
     {
@@ -2578,9 +2583,9 @@ void DistributionImplementation::computeCovarianceContinuous() const
           // Compute the covariance element
           const CovarianceWrapper kernel(marginalDistribution, muI, muJ);
           const Interval interval(marginalDistribution->getRange());
-	  LOGINFO(OSS() << "Compute covariance(" << rowIndex << ", " << columnIndex << ")");
+          LOGINFO(OSS() << "Compute covariance(" << rowIndex << ", " << columnIndex << ")");
           const NumericalPoint value(integrator.integrate(kernel, interval));
-	  LOGINFO(OSS() << "covariance(" << rowIndex << ", " << columnIndex << ")="<< value[0]);
+          LOGINFO(OSS() << "covariance(" << rowIndex << ", " << columnIndex << ")=" << value[0]);
           covariance_(rowIndex, columnIndex) = value[0];
         }
       } // loop over column indices
@@ -2796,29 +2801,11 @@ TriangularMatrix DistributionImplementation::getInverseCholesky() const
 /* Compute the nodes and weights for a 1D gauss quadrature over [-1, 1] with respect to the Lebesgue measure */
 void DistributionImplementation::computeGaussNodesAndWeights() const
 {
-  int integrationNodesNumber(integrationNodesNumber_);
-  gaussNodes_ = NumericalPoint(integrationNodesNumber);
-  gaussWeights_ = NumericalPoint(integrationNodesNumber);
-  // First, build a symmetric tridiagonal matrix whose eigenvalues are the nodes of the
-  // gauss integration rule
-  char jobz('V');
-  int ljobz(1);
-  NumericalPoint d(integrationNodesNumber);
-  NumericalPoint e(integrationNodesNumber);
-  for (UnsignedInteger i = 1; i < static_cast<UnsignedInteger>(integrationNodesNumber); ++i) e[i - 1] = 0.5 / std::sqrt(1.0 - std::pow(2.0 * i, -2));
-  int ldz(integrationNodesNumber);
-  SquareMatrix z(integrationNodesNumber);
-  NumericalPoint work(2 * integrationNodesNumber - 2);
-  int info;
-  dstev_(&jobz, &integrationNodesNumber, &d[0], &e[0], &z(0, 0), &ldz, &work[0], &info, &ljobz);
-  if (info != 0) throw InternalException(HERE) << "Lapack DSTEV: error code=" << info;
-  for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(integrationNodesNumber); ++i)
-  {
-    // Nodes
-    gaussNodes_[i] = d[i];
-    // Weights
-    gaussWeights_[i] = 2.0 * std::pow(z(0, i), 2);
-  }
+  const GaussLegendre integrator(Indices(1, integrationNodesNumber_));
+  // Nodes
+  gaussNodes_ = integrator.getNodes().getImplementation()->getData() * 2.0 - NumericalPoint(integrationNodesNumber_, 1.0);
+  // Weights
+  gaussWeights_ = integrator.getWeights() * 2.0;
   isAlreadyComputedGaussNodesAndWeights_ = true;
 }
 
@@ -4482,4 +4469,3 @@ DistributionImplementation::Implementation DistributionImplementation::abs() con
 }
 
 END_NAMESPACE_OPENTURNS
-

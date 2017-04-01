@@ -15,6 +15,7 @@ Integration
     :template: classWithPlot.rst_t
 
     GaussKronrod
+    GaussLegendre
 
 .. autosummary::
     :toctree: _generated/
