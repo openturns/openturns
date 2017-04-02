@@ -276,7 +276,18 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   // track input/outputs
   algorithm->evaluationInputHistory_.add(inPoint);
   algorithm->evaluationOutputHistory_.add(outPoint);
-  return 0;
+  int returnValue = 0;
+  if (algorithm->stopCallback_.first)
+    {
+      Bool stop = algorithm->stopCallback_.first(algorithm->stopCallback_.second);
+      if (stop) {
+	// This value is passed to algocobyla. Any non-zero value should work but 1
+	// is the most standard value.
+        returnValue = 1;
+        LOGWARN(OSS() << "Cobyla was stopped by user");
+      }
+    }
+  return returnValue;
 }
 
 END_NAMESPACE_OPENTURNS
