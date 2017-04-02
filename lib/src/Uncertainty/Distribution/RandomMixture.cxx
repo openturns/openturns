@@ -1901,8 +1901,8 @@ NumericalScalar RandomMixture::computeProbability(const Interval & interval) con
   const Interval clippedInterval(getRange().intersect(interval));
   // Quick return if there is no mass in the clipped interval
   if (clippedInterval.isNumericallyEmpty()) return 0.0;
-  const Bool finiteLowerBound = clippedInterval.getFiniteLowerBound()[0];
-  const Bool finiteUpperBound = clippedInterval.getFiniteUpperBound()[0];
+  const Bool finiteLowerBound = clippedInterval.getFiniteLowerBound()[0] == 1;
+  const Bool finiteUpperBound = clippedInterval.getFiniteUpperBound()[0] == 1;
   // Quick return for integral over the whole real line
   if (!finiteLowerBound && !finiteUpperBound) return 1.0;
   const NumericalScalar lowerBound = clippedInterval.getLowerBound()[0];

@@ -819,8 +819,8 @@ NumericalScalar DistributionImplementation::computeProbability(const Interval & 
   // Generic implementation for univariate distributions
   if (dimension_ == 1)
   {
-    const Bool finiteA = interval.getFiniteLowerBound()[0];
-    const Bool finiteB = interval.getFiniteUpperBound()[0];
+    const Bool finiteA = interval.getFiniteLowerBound()[0] == 1;
+    const Bool finiteB = interval.getFiniteUpperBound()[0] == 1;
     if (finiteA)
     {
       const NumericalScalar a = interval.getLowerBound()[0];
@@ -2565,7 +2565,7 @@ void DistributionImplementation::computeCovarianceContinuous() const
     const Bool useAdaptiveAlorithm = ResourceMap::GetAsBool("Distribution-UseCovarianceAdaptiveAlgorithm");
     IntegrationAlgorithm integrator;
     if (useAdaptiveAlorithm) integrator = IteratedQuadrature(GaussKronrod());
-    else integrator = GaussLegendre(Indices(2, static_cast<UnsignedInteger>(std::ceil(1.0 * std::sqrt(integrationNodesNumber_)))));
+    else integrator = GaussLegendre(Indices(2, static_cast<UnsignedInteger>(std::ceil(std::sqrt(1.0 * integrationNodesNumber_)))));
     // Performs the integration for each covariance in the strictly lower triangle of the covariance matrix
     // We loop over the coefficients in the outer loop because the most expensive task is to get the 2D marginal distributions
     Indices indices(2);
