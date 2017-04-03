@@ -23,7 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/ContinuousDistribution.hxx"
-#include "openturns/PiecewiseHermiteEvaluationImplementation.hxx"
+#include "openturns/PiecewiseHermiteEvaluation.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -185,10 +185,10 @@ private:
   NumericalScalar dc_;
 
   /** CDF approximation */
-  PiecewiseHermiteEvaluationImplementation cdfApproximation_;
+  PiecewiseHermiteEvaluation cdfApproximation_;
 
   /** Complementary CDF approximation */
-  PiecewiseHermiteEvaluationImplementation ccdfApproximation_;
+  PiecewiseHermiteEvaluation ccdfApproximation_;
 
 }; /* class MeixnerDistribution */
 

@@ -98,7 +98,7 @@ MaximumEntropyOrderStatisticsCopula * MaximumEntropyOrderStatisticsCopula::clone
 }
 
 /* Get the kth approximation */
-PiecewiseHermiteEvaluationImplementation MaximumEntropyOrderStatisticsCopula::getApproximation(const UnsignedInteger k) const
+PiecewiseHermiteEvaluation MaximumEntropyOrderStatisticsCopula::getApproximation(const UnsignedInteger k) const
 {
   return distribution_.getApproximation(k);
 }

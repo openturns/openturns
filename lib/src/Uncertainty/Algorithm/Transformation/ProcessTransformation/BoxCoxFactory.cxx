@@ -23,7 +23,7 @@
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Field.hxx"
-#include "openturns/BoxCoxEvaluationImplementation.hxx"
+#include "openturns/BoxCoxEvaluation.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/BoxCoxTransform.hxx"
@@ -83,7 +83,7 @@ public:
   {
     const UnsignedInteger size = sample_.getSize();
     // Define BoxCox trannsformation for sample
-    BoxCoxEvaluationImplementation myBoxFunction(NumericalPoint(1, lambda[0]));
+    BoxCoxEvaluation myBoxFunction(NumericalPoint(1, lambda[0]));
     // compute the mean of the transformed sample using the Box-Cox function
     const NumericalSample outSample(myBoxFunction(sample_));
     const NumericalScalar ratio = 1.0 - 1.0 / size;
@@ -166,7 +166,7 @@ public:
   NumericalPoint computeLogLikelihood(const NumericalPoint & lambda) const
   {
     // Define BoxCox trannsformation for output sample
-    BoxCoxEvaluationImplementation myBoxFunction(lambda);
+    BoxCoxEvaluation myBoxFunction(lambda);
     // compute the mean of the transformed sample using the Box-Cox function
     const NumericalSample transformedOutputSample(myBoxFunction(shiftedOutputSample_));
     // Use of GLM to estimate the best generalized linear model
@@ -413,7 +413,7 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & inputSample,
   BoxCoxGLMOptimization boxCoxOptimization(inputSample, shiftedSample, covarianceModel, basis, solver_);
   const NumericalPoint lambda = boxCoxOptimization.optimizeLogLikelihood();
   // Define BoxCox trannsformation for output sample
-  BoxCoxEvaluationImplementation myBoxFunction(lambda, shift);
+  BoxCoxEvaluation myBoxFunction(lambda, shift);
   // compute the transformed output sample using the Box-Cox function
   const NumericalSample transformedOutputSample = myBoxFunction(outputSample);
   // Build the GeneralLinearModelResult

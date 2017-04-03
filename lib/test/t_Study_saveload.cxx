@@ -661,8 +661,8 @@ int main(int argc, char *argv[])
     }
     study.add("domain", domain);
 
-    // Create an EventDomainImplementation
-    EventDomainImplementation eventDomainImplementation;
+    // Create an EventDomain
+    EventDomain eventDomain;
     {
       UnsignedInteger dim = 2;
       Normal distribution(dim);
@@ -672,9 +672,9 @@ int main(int argc, char *argv[])
       SymbolicFunction model(inVars, inVars);
       CompositeRandomVector Y(model, X);
       Interval domain(dim);
-      eventDomainImplementation = EventDomainImplementation(Y, domain);
+      eventDomain = EventDomain(Y, domain);
     }
-    study.add("eventDomainImplementation", eventDomainImplementation);
+    study.add("eventDomain", eventDomain);
 
     // Create an EventProcess
     EventProcess eventProcess;
@@ -1069,7 +1069,7 @@ int main(int argc, char *argv[])
     compare<SpectralGaussianProcess >( spectralGaussianProcess, study2 );
     compare<GaussianProcess >( gaussianProcess, study2 );
     compare<Domain >( domain, study2 );
-    compare<EventDomainImplementation >( eventDomainImplementation, study2 );
+    compare<EventDomain >( eventDomain, study2 );
     compare<EventProcess >( eventProcess, study2 );
     compare<ConstantStep >( constantStep, study2 );
     compare<BlendedStep >( blendedStep, study2 );

@@ -151,10 +151,10 @@ ARMA factory
     WhittleFactoryState
     WhittleFactory
     ARMALikelihoodFactory
-    BoxCoxEvaluationImplementation
-    InverseBoxCoxEvaluationImplementation
-    TrendEvaluationImplementation
-    InverseTrendEvaluationImplementation
+    BoxCoxEvaluation
+    InverseBoxCoxEvaluation
+    TrendEvaluation
+    InverseTrendEvaluation
 
 RandomWalk
 ==========

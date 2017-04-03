@@ -24,7 +24,7 @@ The Karhunen-Loeve P1 approximation consists in replacing the covariance model :
 .. math::
     \forall \vect{s},\vect{t}\in\cD_N,\quad \hat{\mat{C}}(\vect{s},\vect{t})=\sum_{\vect{\xi}_i,\vect{\xi}_j\in\cV_N}\mat{C}(\vect{\xi}_i,\vect{\xi}_j)\theta_i(\vect{s})\theta_j(\vect{t})
 
-Where :math:`\theta_n: \cD_N \mapsto \Rset` are the basis functions of the P1 finite element space associated to :math:`\cD_N`, see :class:`~openturns.P1LagrangeEvaluationImplementation`.
+Where :math:`\theta_n: \cD_N \mapsto \Rset` are the basis functions of the P1 finite element space associated to :math:`\cD_N`, see :class:`~openturns.P1LagrangeEvaluation`.
 
 Examples
 --------
@@ -49,7 +49,7 @@ ev : :class:`~openturns.NumericalPoint`
 Returns
 -------
 functions : :class:`~openturns.Basis`
-    Eigen functions of the covariance model as a basis of functions using :class:`~openturns.P1LagrangeEvaluationImplementation`.
+    Eigen functions of the covariance model as a basis of functions using :class:`~openturns.P1LagrangeEvaluation`.
 
 Examples
 --------

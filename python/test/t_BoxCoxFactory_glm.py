@@ -23,7 +23,7 @@ outputSample += translate
 
 # Finally inverse transform using an arbitrary lambda
 lamb = [1.8]
-boxCoxFunction = ot.InverseBoxCoxEvaluationImplementation(lamb)
+boxCoxFunction = ot.InverseBoxCoxEvaluation(lamb)
 
 # transform y using BoxCox function
 outputSample = boxCoxFunction(outputSample)

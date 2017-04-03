@@ -69,7 +69,7 @@ public:
   virtual MaximumEntropyOrderStatisticsCopula * clone() const;
 
   /** Get the kth approximation */
-  PiecewiseHermiteEvaluationImplementation getApproximation(const UnsignedInteger k = 0) const;
+  PiecewiseHermiteEvaluation getApproximation(const UnsignedInteger k = 0) const;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
   using CopulaImplementation::getMarginal;

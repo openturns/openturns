@@ -13,7 +13,7 @@ functionsCollection : sequence of :class:`~openturns.NumericalMathFunction`
 
 See also
 --------
-NumericalMathFunction, DatabaseEvaluation, DualLinearCombinationEvaluationImplementation,
+NumericalMathFunction, DatabaseEvaluation, DualLinearCombinationEvaluation,
 LinearFunction
 
 Notes

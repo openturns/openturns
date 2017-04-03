@@ -25,9 +25,9 @@
 #include "openturns/Indices.hxx"
 #include "openturns/ComposedDistribution.hxx"
 #include "openturns/NumericalMathFunctionImplementation.hxx"
-#include "openturns/ProductUniVariateFunctionEvaluationImplementation.hxx"
-#include "openturns/ProductUniVariateFunctionGradientImplementation.hxx"
-#include "openturns/ProductUniVariateFunctionHessianImplementation.hxx"
+#include "openturns/ProductUniVariateFunctionEvaluation.hxx"
+#include "openturns/ProductUniVariateFunctionGradient.hxx"
+#include "openturns/ProductUniVariateFunctionHessian.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -42,7 +42,7 @@ CLASSNAMEINIT(OrthogonalProductFunctionFactory);
 static const Factory<OrthogonalProductFunctionFactory> Factory_OrthogonalProductFunctionFactory;
 
 typedef Collection<NumericalPoint> NumericalPointCollection;
-typedef ProductUniVariateFunctionEvaluationImplementation::UniVariateFunctionCollection UniVariateFunctionCollection;
+typedef ProductUniVariateFunctionEvaluation::UniVariateFunctionCollection UniVariateFunctionCollection;
 
 /* Default constructor */
 OrthogonalProductFunctionFactory::OrthogonalProductFunctionFactory()

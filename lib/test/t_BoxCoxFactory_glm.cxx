@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
 
     // Finally inverse transform using an arbitrary lambda
     const NumericalPoint lambda(1, 1.8);
-    const InverseBoxCoxEvaluationImplementation  boxCoxFunction(lambda);
+    const InverseBoxCoxEvaluation  boxCoxFunction(lambda);
 
     // transform y using BoxCox function
     outputSample = boxCoxFunction(outputSample);

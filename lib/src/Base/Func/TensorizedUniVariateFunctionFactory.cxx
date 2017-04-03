@@ -24,9 +24,9 @@
 #include "openturns/Exception.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/NumericalMathFunctionImplementation.hxx"
-#include "openturns/ProductUniVariateFunctionEvaluationImplementation.hxx"
-#include "openturns/ProductUniVariateFunctionGradientImplementation.hxx"
-#include "openturns/ProductUniVariateFunctionHessianImplementation.hxx"
+#include "openturns/ProductUniVariateFunctionEvaluation.hxx"
+#include "openturns/ProductUniVariateFunctionGradient.hxx"
+#include "openturns/ProductUniVariateFunctionHessian.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -41,7 +41,7 @@ CLASSNAMEINIT(TensorizedUniVariateFunctionFactory);
 static const Factory<TensorizedUniVariateFunctionFactory> Factory_TensorizedUniVariateFunctionFactory;
 
 typedef Collection<NumericalPoint> NumericalPointCollection;
-typedef ProductUniVariateFunctionEvaluationImplementation::UniVariateFunctionCollection UniVariateFunctionCollection;
+typedef ProductUniVariateFunctionEvaluation::UniVariateFunctionCollection UniVariateFunctionCollection;
 
 /* Default constructor */
 TensorizedUniVariateFunctionFactory::TensorizedUniVariateFunctionFactory()
@@ -121,10 +121,10 @@ NumericalMathFunction TensorizedUniVariateFunctionFactory::build(const UnsignedI
   {
     functions[i] = coll_[i].build(indices[i]);
   }
-  const Pointer<ProductUniVariateFunctionEvaluationImplementation> p_evaluation(ProductUniVariateFunctionEvaluationImplementation(functions).clone());
+  const Pointer<ProductUniVariateFunctionEvaluation> p_evaluation(ProductUniVariateFunctionEvaluation(functions).clone());
   return NumericalMathFunctionImplementation(p_evaluation,
-         ProductUniVariateFunctionGradientImplementation(p_evaluation).clone(),
-         ProductUniVariateFunctionHessianImplementation(p_evaluation).clone());
+         ProductUniVariateFunctionGradient(p_evaluation).clone(),
+         ProductUniVariateFunctionHessian(p_evaluation).clone());
 }
 
 

@@ -81,7 +81,7 @@ KernelMixture::KernelMixture(const Distribution & kernel,
   if ((getDimension() == 1) && (sample.getSize() >= ResourceMap::GetAsUnsignedInteger("KernelMixture-SmallSize")) && (sample.getSize() < ResourceMap::GetAsUnsignedInteger("KernelMixture-LargeSize")))
   {
     // Here we use the implementation provided by the DistributionImplementation class instead of the ContinuousDistribution class in order to use both the PDF and the CDF
-    Collection<PiecewiseHermiteEvaluationImplementation> coll(DistributionImplementation::interpolatePDFCDF(ResourceMap::GetAsUnsignedInteger("KernelMixture-PDFCDFDiscretization")));
+    Collection<PiecewiseHermiteEvaluation> coll(DistributionImplementation::interpolatePDFCDF(ResourceMap::GetAsUnsignedInteger("KernelMixture-PDFCDFDiscretization")));
     pdfApproximationCDF_ = coll[0];
     cdfApproximation_ = coll[1];
     pdfApproximationCCDF_ = coll[2];
@@ -162,7 +162,7 @@ void KernelMixture::setInternalSample(const NumericalSample & sample)
   if ((getDimension() == 1) && (sample.getSize() >= ResourceMap::GetAsUnsignedInteger("KernelMixture-SmallSize")) && (sample.getSize() < ResourceMap::GetAsUnsignedInteger("KernelMixture-LargeSize")))
   {
     // Here we use the implementation provided by the DistributionImplementation class instead of the ContinuousDistribution class in order to use both the PDF and the CDF
-    Collection<PiecewiseHermiteEvaluationImplementation> coll(DistributionImplementation::interpolatePDFCDF(ResourceMap::GetAsUnsignedInteger("KernelMixture-PDFCDFDiscretization")));
+    Collection<PiecewiseHermiteEvaluation> coll(DistributionImplementation::interpolatePDFCDF(ResourceMap::GetAsUnsignedInteger("KernelMixture-PDFCDFDiscretization")));
     pdfApproximationCDF_ = coll[0];
     cdfApproximation_ = coll[1];
     pdfApproximationCCDF_ = coll[2];

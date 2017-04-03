@@ -86,18 +86,18 @@ Evaluation functions
     SymbolicEvaluation
     ComposedEvaluation
     DatabaseEvaluation
-    DualLinearCombinationEvaluationImplementation
+    DualLinearCombinationEvaluation
     IndicatorEvaluation
-    LinearCombinationEvaluationImplementation
+    LinearCombinationEvaluation
     LinearEvaluation
     MarginalTransformationEvaluation
     NoEvaluation
-    ParametricEvaluationImplementation
-    PiecewiseHermiteEvaluationImplementation
-    PiecewiseLinearEvaluationImplementation
-    P1LagrangeEvaluationImplementation
+    ParametricEvaluation
+    PiecewiseHermiteEvaluation
+    PiecewiseLinearEvaluation
+    P1LagrangeEvaluation
     ProductEvaluation
-    ProductPolynomialEvaluationImplementation
+    ProductPolynomialEvaluation
     QuadraticEvaluation
 
 Gradient functions
@@ -111,11 +111,11 @@ Gradient functions
     SymbolicGradient
     ComposedGradient
     ConstantGradient
-    DualLinearCombinationGradientImplementation
-    LinearCombinationGradientImplementation
+    DualLinearCombinationGradient
+    LinearCombinationGradient
     LinearGradient
     NoGradient
-    ParametricGradientImplementation
+    ParametricGradient
     ProductGradient
 
 Hessian functions
@@ -129,10 +129,10 @@ Hessian functions
     SymbolicHessian
     ComposedHessian
     ConstantHessian
-    DualLinearCombinationHessianImplementation
-    LinearCombinationHessianImplementation
+    DualLinearCombinationHessian
+    LinearCombinationHessian
     NoHessian
-    ParametricHessianImplementation
+    ParametricHessian
     ProductHessian
 
 Differential equation solvers

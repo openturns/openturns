@@ -24,18 +24,18 @@
 #include "openturns/AggregatedGradient.hxx"
 #include "openturns/AggregatedHessian.hxx"
 #include "openturns/IndicatorEvaluation.hxx"
-#include "openturns/DualLinearCombinationEvaluationImplementation.hxx"
-#include "openturns/DualLinearCombinationGradientImplementation.hxx"
-#include "openturns/DualLinearCombinationHessianImplementation.hxx"
-#include "openturns/LinearCombinationEvaluationImplementation.hxx"
-#include "openturns/LinearCombinationGradientImplementation.hxx"
-#include "openturns/LinearCombinationHessianImplementation.hxx"
+#include "openturns/DualLinearCombinationEvaluation.hxx"
+#include "openturns/DualLinearCombinationGradient.hxx"
+#include "openturns/DualLinearCombinationHessian.hxx"
+#include "openturns/LinearCombinationEvaluation.hxx"
+#include "openturns/LinearCombinationGradient.hxx"
+#include "openturns/LinearCombinationHessian.hxx"
 #include "openturns/NoGradient.hxx"
 #include "openturns/NoHessian.hxx"
-#include "openturns/ParametricEvaluationImplementation.hxx"
-#include "openturns/ParametricGradientImplementation.hxx"
-#include "openturns/ParametricHessianImplementation.hxx"
-#include "openturns/P1LagrangeEvaluationImplementation.hxx"
+#include "openturns/ParametricEvaluation.hxx"
+#include "openturns/ParametricGradient.hxx"
+#include "openturns/ParametricHessian.hxx"
+#include "openturns/P1LagrangeEvaluation.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/Os.hxx"
 
@@ -137,10 +137,10 @@ NumericalMathFunction::NumericalMathFunction(const NumericalMathFunctionCollecti
   : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation())
 {
   Log::Warn(OSS() << "NumericalMathFunction(NumericalMathFunctionCollection, NumericalPoint) is deprecated: use LinearCombinationFunction");
-  const LinearCombinationEvaluationImplementation evaluation(functionCollection, coefficients);
+  const LinearCombinationEvaluation evaluation(functionCollection, coefficients);
   setEvaluation(evaluation.clone());
-  setGradient(new LinearCombinationGradientImplementation(evaluation));
-  setHessian(new LinearCombinationHessianImplementation(evaluation));
+  setGradient(new LinearCombinationGradient(evaluation));
+  setHessian(new LinearCombinationHessian(evaluation));
 }
 
 /* Dual linear combination function constructor */
@@ -149,10 +149,10 @@ NumericalMathFunction::NumericalMathFunction(const NumericalMathFunctionCollecti
   : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation())
 {
   Log::Warn(OSS() << "NumericalMathFunction(NumericalMathFunctionCollection, NumericalSample) is deprecated: use DualLinearCombinationFunction");
-  const DualLinearCombinationEvaluationImplementation evaluation(functionCollection, coefficients);
+  const DualLinearCombinationEvaluation evaluation(functionCollection, coefficients);
   setEvaluation(evaluation.clone());
-  setGradient(new DualLinearCombinationGradientImplementation(evaluation));
-  setHessian(new DualLinearCombinationHessianImplementation(evaluation));
+  setGradient(new DualLinearCombinationGradient(evaluation));
+  setHessian(new DualLinearCombinationHessian(evaluation));
 }
 
 /* Simplified analytical formula constructor */
@@ -192,7 +192,7 @@ NumericalMathFunction::NumericalMathFunction(const NumericalSample & inputSample
 
 /* Constructor from field */
 NumericalMathFunction::NumericalMathFunction(const Field & field)
-  : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation(new P1LagrangeEvaluationImplementation( field )))
+  : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation(new P1LagrangeEvaluation( field )))
 {
   // Nothing to do
 }
@@ -205,10 +205,10 @@ NumericalMathFunction::NumericalMathFunction(const NumericalMathFunction & funct
   : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation())
 {
   Log::Warn(OSS() << "NumericalMathFunction(NumericalMathFunction, Indices, NumericalPoint, Bool) is deprecated: use ParametricFunction");
-  const Pointer<ParametricEvaluationImplementation> p_evaluation = new ParametricEvaluationImplementation(function, set, referencePoint, parametersSet);
+  const Pointer<ParametricEvaluation> p_evaluation = new ParametricEvaluation(function, set, referencePoint, parametersSet);
   setEvaluation(p_evaluation);
-  setGradient(new ParametricGradientImplementation(p_evaluation));
-  setHessian(new ParametricHessianImplementation(p_evaluation));
+  setGradient(new ParametricGradient(p_evaluation));
+  setHessian(new ParametricHessian(p_evaluation));
 }
 
 /* Comparison operator */
@@ -352,8 +352,8 @@ NumericalMathFunction NumericalMathFunction::operator + (const NumericalMathFunc
   NumericalMathFunctionCollection collection(2);
   collection[0] = *this;
   collection[1] = right;
-  const LinearCombinationEvaluationImplementation evaluation(collection, coefficients);
-  return NumericalMathFunction(evaluation.clone(), LinearCombinationGradientImplementation(evaluation).clone(), LinearCombinationHessianImplementation(evaluation).clone());
+  const LinearCombinationEvaluation evaluation(collection, coefficients);
+  return NumericalMathFunction(evaluation.clone(), LinearCombinationGradient(evaluation).clone(), LinearCombinationHessian(evaluation).clone());
 }
 
 /* Soustraction operator between two functions with the same input dimension and output dimension */
@@ -364,8 +364,8 @@ NumericalMathFunction NumericalMathFunction::operator - (const NumericalMathFunc
   NumericalMathFunctionCollection collection(2);
   collection[0] = *this;
   collection[1] = right;
-  const LinearCombinationEvaluationImplementation evaluation(collection, coefficients);
-  return NumericalMathFunction(evaluation.clone(), LinearCombinationGradientImplementation(evaluation).clone(), LinearCombinationHessianImplementation(evaluation).clone());
+  const LinearCombinationEvaluation evaluation(collection, coefficients);
+  return NumericalMathFunction(evaluation.clone(), LinearCombinationGradient(evaluation).clone(), LinearCombinationHessian(evaluation).clone());
 }
 
 /* Function implementation accessors */

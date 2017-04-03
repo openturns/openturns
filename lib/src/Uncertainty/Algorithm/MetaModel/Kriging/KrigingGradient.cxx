@@ -146,7 +146,7 @@ Matrix KrigingGradient::gradient(const NumericalPoint & inP) const
     const NumericalPoint betaBasis(beta_[i]);
     const UnsignedInteger localBasisSize = localBasis.getSize();
     // For the i-th Basis (marginal), take into account the trend
-    // We write explicitely the linear combination instead of using a LinearCombinationGradientImplementation
+    // We write explicitely the linear combination instead of using a LinearCombinationGradient
     for (UnsignedInteger j = 0; j < localBasisSize; ++j)
     {
       const Matrix gradient_bj(localBasis[j].gradient(inP) * betaBasis[j]);

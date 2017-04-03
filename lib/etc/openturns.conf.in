@@ -51,10 +51,10 @@
   <!-- OT::NonCenteredFiniteDifferenceGradient parameters -->
   <NonCenteredFiniteDifferenceGradient-DefaultEpsilon value="1.0e-7" />
 
-  <!-- OT::PiecewiseHermiteEvaluationImplementation parameters -->
+  <!-- OT::PiecewiseHermiteEvaluation parameters -->
   <PiecewiseHermiteEvaluation-EpsilonRegular value="1.0e-12" />
   
-  <!-- OT::PiecewiseHermiteEvaluationImplementation parameters -->
+  <!-- OT::PiecewiseHermiteEvaluation parameters -->
   <PiecewiseLinearEvaluation-EpsilonRegular value="1.0e-12" />
   
   <!-- OT::UniVariatePolynomialImplementation parameters -->
@@ -422,10 +422,10 @@
   <NumericalMathEvaluation-DefaultPointNumber value="129" />
   <NumericalMathEvaluation-ParameterEpsilon value="1.0e-7" />
 
-  <!-- OT::DualLinearCombinationEvaluationImplementation parameters -->
+  <!-- OT::DualLinearCombinationEvaluation parameters -->
   <DualLinearCombinationEvaluation-SmallCoefficient value="0.0" />
 
-  <!-- OT::LinearCombinationEvaluationImplementation parameters -->
+  <!-- OT::LinearCombinationEvaluation parameters -->
   <LinearCombinationEvaluation-SmallCoefficient value="0.0" />
 
   <!-- OT::DistFunc parameters -->

@@ -67,7 +67,7 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
     cotire (${SWIG_MODULE_${MODULENAME}_REAL_NAME})
     add_dependencies (${SWIG_MODULE_${MODULENAME}_REAL_NAME}_unity generate_swig_runtime generate_docstrings)
     add_dependencies (python_unity ${SWIG_MODULE_${MODULENAME}_REAL_NAME}_unity)
-    set_source_files_properties (PythonDistributionImplementation.cxx PythonFieldFunctionImplementation.cxx PROPERTIES COTIRE_EXCLUDED TRUE)
+    set_source_files_properties (PythonDistribution.cxx PythonFieldFunction.cxx PROPERTIES COTIRE_EXCLUDED TRUE)
   endif ()
 
   list (APPEND OPENTURNS_PYTHON_MODULES ${MODULENAME})
@@ -259,13 +259,13 @@ ot_add_python_module(func func_module.i
                       ComposedEvaluation.i
                       ComposedGradient.i
                       ComposedHessian.i
-                      DualLinearCombinationEvaluationImplementation.i DualLinearCombinationEvaluationImplementation_doc.i.in
-                      DualLinearCombinationGradientImplementation.i DualLinearCombinationGradientImplementation_doc.i.in
-                      DualLinearCombinationHessianImplementation.i DualLinearCombinationHessianImplementation_doc.i.in
+                      DualLinearCombinationEvaluation.i DualLinearCombinationEvaluation_doc.i.in
+                      DualLinearCombinationGradient.i DualLinearCombinationGradient_doc.i.in
+                      DualLinearCombinationHessian.i DualLinearCombinationHessian_doc.i.in
                       LinearCombinationFunction.i LinearCombinationFunction_doc.i.in
-                      LinearCombinationEvaluationImplementation.i
-                      LinearCombinationGradientImplementation.i
-                      LinearCombinationHessianImplementation.i
+                      LinearCombinationEvaluation.i
+                      LinearCombinationGradient.i
+                      LinearCombinationHessian.i
                       ParametricFunction.i ParametricFunction_doc.i.in
                       ProductEvaluation.i
                       ProductGradient.i
@@ -298,13 +298,13 @@ ot_add_python_module(func func_module.i
                       DatabaseFunction.i DatabaseFunction_doc.i.in
                       DatabaseEvaluation.i DatabaseEvaluation_doc.i.in
                       IndicatorEvaluation.i
-                      PiecewiseLinearEvaluationImplementation.i
-                      PiecewiseHermiteEvaluationImplementation.i
-                      ProductPolynomialEvaluationImplementation.i ProductPolynomialEvaluationImplementation_doc.i.in
-                      ParametricEvaluationImplementation.i
-                      ParametricGradientImplementation.i
-                      ParametricHessianImplementation.i
-                      P1LagrangeEvaluationImplementation.i P1LagrangeEvaluationImplementation_doc.i.in
+                      PiecewiseLinearEvaluation.i
+                      PiecewiseHermiteEvaluation.i
+                      ProductPolynomialEvaluation.i ProductPolynomialEvaluation_doc.i.in
+                      ParametricEvaluation.i
+                      ParametricGradient.i
+                      ParametricHessian.i
+                      P1LagrangeEvaluation.i P1LagrangeEvaluation_doc.i.in
                       BasisImplementation.i BasisImplementation_doc.i.in
                       Basis.i Basis_doc.i.in
                       BasisSequenceImplementation.i BasisSequenceImplementation_doc.i.in
@@ -312,17 +312,17 @@ ot_add_python_module(func func_module.i
                       BasisSequenceFactoryImplementation.i BasisSequenceFactoryImplementation_doc.i.in
                       BasisSequenceFactory.i BasisSequenceFactory_doc.i.in
                       LARS.i LARS_doc.i.in
-                      BoxCoxEvaluationImplementation.i
+                      BoxCoxEvaluation.i
                       BoxCoxTransform.i BoxCoxTransform_doc.i.in
-                      InverseBoxCoxEvaluationImplementation.i
+                      InverseBoxCoxEvaluation.i
                       PythonEvaluation.cxx
                       PythonGradient.cxx
                       PythonHessian.cxx
-                      PythonFieldFunctionImplementation.cxx
+                      PythonFieldFunction.cxx
                       InverseBoxCoxTransform.i InverseBoxCoxTransform_doc.i.in
-                      TrendEvaluationImplementation.i
+                      TrendEvaluation.i
                       TrendTransform.i TrendTransform_doc.i.in
-                      InverseTrendEvaluationImplementation.i
+                      InverseTrendEvaluation.i
                       InverseTrendTransform.i InverseTrendTransform_doc.i.in
                       FunctionalBasis.i
                       FunctionalBasisImplementation.i
@@ -433,7 +433,7 @@ ot_add_python_module(experiment experiment_module.i
                       Combinations.i Combinations_doc.i.in
                       KPermutations.i KPermutations_doc.i.in
                       Tuples.i Tuples_doc.i.in
-                      PythonExperimentImplementation.cxx
+                      PythonExperiment.cxx
                       BaseExperimentTemplateDefs.i
                    )
 
@@ -474,7 +474,7 @@ ot_add_python_module(model_copula model_copula_module.i
                       ComposedDistribution.i ComposedDistribution_doc.i.in
                       ComposedCopula.i ComposedCopula_doc.i.in
                       CumulativeDistributionNetwork.i CumulativeDistributionNetwork_doc.i.in
-                      PythonDistributionImplementation.cxx
+                      PythonDistribution.cxx
                       UncertaintyModelCopulaCollection.i
                       UncertaintyModelCopulaTemplateDefs.i
                    )
@@ -742,8 +742,8 @@ ot_add_python_module(metamodel metamodel_module.i
                       PythonHessian.cxx
                       PythonRandomVectorImplementation.cxx
                       CompositeRandomVector.i
-                      EventRandomVectorImplementation.i
-                      EventDomainImplementation.i
+                      EventRandomVector.i
+                      EventDomain.i
                       EventProcess.i
                       Event.i Event_doc.i.in
                       StandardEvent.i StandardEvent_doc.i.in

@@ -18,9 +18,9 @@
  *
  */
 #include "openturns/BoxCoxTransform.hxx"
-#include "openturns/BoxCoxEvaluationImplementation.hxx"
-#include "openturns/BoxCoxGradientImplementation.hxx"
-#include "openturns/BoxCoxHessianImplementation.hxx"
+#include "openturns/BoxCoxEvaluation.hxx"
+#include "openturns/BoxCoxGradient.hxx"
+#include "openturns/BoxCoxHessian.hxx"
 #include "openturns/InverseBoxCoxTransform.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -29,7 +29,7 @@ CLASSNAMEINIT(BoxCoxTransform);
 
 /* Default constructor */
 BoxCoxTransform::BoxCoxTransform()
-  : NumericalMathFunction(BoxCoxEvaluationImplementation())
+  : NumericalMathFunction(BoxCoxEvaluation())
 {
   // Nothing to do
 }
@@ -38,10 +38,10 @@ BoxCoxTransform::BoxCoxTransform()
 BoxCoxTransform::BoxCoxTransform(const NumericalPoint & lambda)
   : NumericalMathFunction()
 {
-  const BoxCoxEvaluationImplementation evaluation(lambda);
+  const BoxCoxEvaluation evaluation(lambda);
   setEvaluation(evaluation.clone());
-  setGradient(BoxCoxGradientImplementation(evaluation).clone());
-  setHessian(BoxCoxHessianImplementation(evaluation).clone());
+  setGradient(BoxCoxGradient(evaluation).clone());
+  setHessian(BoxCoxHessian(evaluation).clone());
 }
 
 /* NumericalScalarCollection parameter constructor */
@@ -49,30 +49,30 @@ BoxCoxTransform::BoxCoxTransform(const NumericalPoint & lambda,
                                  const NumericalPoint & shift)
   : NumericalMathFunction()
 {
-  const BoxCoxEvaluationImplementation evaluation(lambda, shift);
+  const BoxCoxEvaluation evaluation(lambda, shift);
   setEvaluation(evaluation.clone());
-  setGradient(BoxCoxGradientImplementation(evaluation).clone());
-  setHessian(BoxCoxHessianImplementation(evaluation).clone());
+  setGradient(BoxCoxGradient(evaluation).clone());
+  setHessian(BoxCoxHessian(evaluation).clone());
 }
 
 /* 1D NumericalScalar parameter constructor */
 BoxCoxTransform::BoxCoxTransform(const NumericalScalar & lambda)
   : NumericalMathFunction()
 {
-  const BoxCoxEvaluationImplementation evaluation(NumericalPoint(1, lambda));
+  const BoxCoxEvaluation evaluation(NumericalPoint(1, lambda));
   setEvaluation(evaluation.clone());
-  setGradient(BoxCoxGradientImplementation(evaluation).clone());
-  setHessian(BoxCoxHessianImplementation(evaluation).clone());
+  setGradient(BoxCoxGradient(evaluation).clone());
+  setHessian(BoxCoxHessian(evaluation).clone());
 }
 
 BoxCoxTransform::BoxCoxTransform(const NumericalScalar & lambda,
                                  const NumericalScalar & shift)
   : NumericalMathFunction()
 {
-  const BoxCoxEvaluationImplementation evaluation(NumericalPoint(1, lambda), NumericalPoint(1, shift));
+  const BoxCoxEvaluation evaluation(NumericalPoint(1, lambda), NumericalPoint(1, shift));
   setEvaluation(evaluation.clone());
-  setGradient(BoxCoxGradientImplementation(evaluation).clone());
-  setHessian(BoxCoxHessianImplementation(evaluation).clone());
+  setGradient(BoxCoxGradient(evaluation).clone());
+  setHessian(BoxCoxHessian(evaluation).clone());
 }
 
 /* Virtual constructor */
@@ -84,13 +84,13 @@ BoxCoxTransform * BoxCoxTransform::clone() const
 /* Lambda accessor */
 NumericalPoint BoxCoxTransform::getLambda() const
 {
-  return dynamic_cast< BoxCoxEvaluationImplementation* >(getEvaluation().get())->getLambda();
+  return dynamic_cast< BoxCoxEvaluation* >(getEvaluation().get())->getLambda();
 }
 
 /* Shift accessor */
 NumericalPoint BoxCoxTransform::getShift() const
 {
-  return dynamic_cast< BoxCoxEvaluationImplementation* >(getEvaluation().get())->getShift();
+  return dynamic_cast< BoxCoxEvaluation* >(getEvaluation().get())->getShift();
 }
 
 /* Inverse accessor */

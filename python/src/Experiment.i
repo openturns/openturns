@@ -2,7 +2,7 @@
 
 %{
 #include "openturns/Experiment.hxx"
-#include "openturns/PythonExperimentImplementation.hxx"
+#include "openturns/PythonExperiment.hxx"
 
 %}
 
@@ -17,7 +17,7 @@ Experiment(const Experiment & other) { return new OT::Experiment(other); }
 
 Experiment(PyObject * pyObj)
 {
-  return new OT::Experiment( new OT::PythonExperimentImplementation(pyObj) );
+  return new OT::Experiment( new OT::PythonExperiment(pyObj) );
 }
 
 

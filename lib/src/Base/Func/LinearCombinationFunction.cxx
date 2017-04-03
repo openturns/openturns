@@ -19,9 +19,9 @@
  *
  */
 #include "openturns/LinearCombinationFunction.hxx"
-#include "openturns/LinearCombinationEvaluationImplementation.hxx"
-#include "openturns/LinearCombinationGradientImplementation.hxx"
-#include "openturns/LinearCombinationHessianImplementation.hxx"
+#include "openturns/LinearCombinationEvaluation.hxx"
+#include "openturns/LinearCombinationGradient.hxx"
+#include "openturns/LinearCombinationHessian.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -39,10 +39,10 @@ LinearCombinationFunction::LinearCombinationFunction (const NumericalMathFunctio
                                                       const NumericalPoint & coefficients)
   : NumericalMathFunction()
 {
-  const LinearCombinationEvaluationImplementation evaluation(functionCollection, coefficients);
+  const LinearCombinationEvaluation evaluation(functionCollection, coefficients);
   setEvaluation(evaluation.clone());
-  setGradient(new LinearCombinationGradientImplementation(evaluation));
-  setHessian(new LinearCombinationHessianImplementation(evaluation));
+  setGradient(new LinearCombinationGradient(evaluation));
+  setHessian(new LinearCombinationHessian(evaluation));
 }
 
 

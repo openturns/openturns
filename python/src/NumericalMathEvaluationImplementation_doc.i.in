@@ -8,7 +8,7 @@ See also
 --------
 NumericalMathFunction, AggregatedEvaluation,
 DatabaseEvaluation,
-DualLinearCombinationEvaluationImplementation, LinearFunction
+DualLinearCombinationEvaluation, LinearFunction
 "
 
 // ---------------------------------------------------------------------

@@ -16,7 +16,7 @@ class GaussianConvolution(ot.OpenTURNSPythonFieldFunction):
     def _exec(self, X):
         inputTG = X.getTimeGrid()
         inputValues = X.getValues()
-        f = ot.NumericalMathFunction(ot.PiecewiseLinearEvaluationImplementation(
+        f = ot.NumericalMathFunction(ot.PiecewiseLinearEvaluation(
             [x[0] for x in inputTG.getVertices()], inputValues))
         outputValues = ot.NumericalSample(0, 1)
         for t in self.outputGrid_.getVertices():

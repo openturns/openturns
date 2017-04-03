@@ -75,7 +75,7 @@ MaximumEntropyOrderStatisticsDistribution::MaximumEntropyOrderStatisticsDistribu
 MaximumEntropyOrderStatisticsDistribution::MaximumEntropyOrderStatisticsDistribution(const DistributionCollection & coll,
     const Indices & partition,
     const Bool useApprox,
-    const Collection<PiecewiseHermiteEvaluationImplementation> & exponentialFactorApproximation,
+    const Collection<PiecewiseHermiteEvaluation> & exponentialFactorApproximation,
     const Description & description)
   : ContinuousDistribution()
   , distributionCollection_(coll)
@@ -333,7 +333,7 @@ NumericalPoint MaximumEntropyOrderStatisticsDistribution::getRealization() const
 }
 
 /* Build a C1 interpolation of the exponential factor between the two given marginals */
-PiecewiseHermiteEvaluationImplementation MaximumEntropyOrderStatisticsDistribution::interpolateExponentialFactor(const UnsignedInteger lower,
+PiecewiseHermiteEvaluation MaximumEntropyOrderStatisticsDistribution::interpolateExponentialFactor(const UnsignedInteger lower,
     const UnsignedInteger upper,
     const UnsignedInteger maximumSubdivision,
     const NumericalScalar shift) const
@@ -372,7 +372,7 @@ PiecewiseHermiteEvaluationImplementation MaximumEntropyOrderStatisticsDistributi
     values[i] = exponentialScalar;
     derivatives[i] = -phiWrapper.computePhi(x)[0] * exponentialScalar;
   }
-  return PiecewiseHermiteEvaluationImplementation(locations, values, derivatives);
+  return PiecewiseHermiteEvaluation(locations, values, derivatives);
 }
 
 /* Build a C1 interpolation of the exponential factors in the PDF */
@@ -381,7 +381,7 @@ void MaximumEntropyOrderStatisticsDistribution::interpolateExponentialFactors()
   // Use exact values to build the approximation
   useApproximation_ = false;
   UnsignedInteger dimension = getDimension();
-  exponentialFactorApproximation_ = Collection<PiecewiseHermiteEvaluationImplementation>(dimension - 1);
+  exponentialFactorApproximation_ = Collection<PiecewiseHermiteEvaluation>(dimension - 1);
   const UnsignedInteger maximumSubdivision = ResourceMap::GetAsUnsignedInteger("MaximumEntropyOrderStatisticsDistribution-MaximumApproximationSubdivision");
   const NumericalScalar shift = ResourceMap::GetAsNumericalScalar("MaximumEntropyOrderStatisticsDistribution-SupportShift");
   for(UnsignedInteger k = 1; k < dimension; ++k)
@@ -395,7 +395,7 @@ void MaximumEntropyOrderStatisticsDistribution::interpolateExponentialFactors()
 }
 
 /* Get the kth approximation */
-PiecewiseHermiteEvaluationImplementation MaximumEntropyOrderStatisticsDistribution::getApproximation(const UnsignedInteger k) const
+PiecewiseHermiteEvaluation MaximumEntropyOrderStatisticsDistribution::getApproximation(const UnsignedInteger k) const
 {
   if (k >= exponentialFactorApproximation_.getSize()) throw InvalidArgumentException(HERE) << "Error: the index=" << k << " must be less than " << exponentialFactorApproximation_.getSize();
   return exponentialFactorApproximation_[k];
@@ -899,7 +899,7 @@ MaximumEntropyOrderStatisticsDistribution MaximumEntropyOrderStatisticsDistribut
   DistributionCollection marginalDistributions(size);
   Description marginalDescription(size);
   const Description description(getDescription());
-  Collection<PiecewiseHermiteEvaluationImplementation> marginalExponentialFactorApproximation(0);
+  Collection<PiecewiseHermiteEvaluation> marginalExponentialFactorApproximation(0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const UnsignedInteger j = indices[i];

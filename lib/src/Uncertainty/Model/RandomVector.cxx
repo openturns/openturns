@@ -22,8 +22,8 @@
 #include "openturns/ConstantRandomVector.hxx"
 #include "openturns/UsualRandomVector.hxx"
 #include "openturns/CompositeRandomVector.hxx"
-#include "openturns/EventRandomVectorImplementation.hxx"
-#include "openturns/EventDomainImplementation.hxx"
+#include "openturns/EventRandomVector.hxx"
+#include "openturns/EventDomain.hxx"
 #include "openturns/EventProcess.hxx"
 #include "openturns/FunctionalChaosRandomVector.hxx"
 #include "openturns/ComparisonOperatorImplementation.hxx"
@@ -110,7 +110,7 @@ RandomVector::RandomVector(const FunctionalChaosResult & functionalChaosResult)
 RandomVector::RandomVector(const RandomVector & antecedent,
                            const ComparisonOperator & op,
                            const NumericalScalar threshold)
-  : TypedInterfaceObject<RandomVectorImplementation>(new EventRandomVectorImplementation(*antecedent.getImplementation(), op, threshold))
+  : TypedInterfaceObject<RandomVectorImplementation>(new EventRandomVector(*antecedent.getImplementation(), op, threshold))
 {
   // Nothing to do
 }
@@ -118,14 +118,14 @@ RandomVector::RandomVector(const RandomVector & antecedent,
 /* Constructor from domain event */
 RandomVector::RandomVector(const RandomVector & antecedent,
                            const Domain & domain)
-  : TypedInterfaceObject<RandomVectorImplementation>(new EventDomainImplementation(*antecedent.getImplementation(), domain))
+  : TypedInterfaceObject<RandomVectorImplementation>(new EventDomain(*antecedent.getImplementation(), domain))
 {
   // Nothing to do
 }
 
 RandomVector::RandomVector(const RandomVector & antecedent,
                            const Interval & interval)
-  : TypedInterfaceObject<RandomVectorImplementation>(new EventDomainImplementation(*antecedent.getImplementation(), interval))
+  : TypedInterfaceObject<RandomVectorImplementation>(new EventDomain(*antecedent.getImplementation(), interval))
 {
 #ifdef OPENTURNS_HAVE_MUPARSER
   UnsignedInteger dimension = interval.getDimension();

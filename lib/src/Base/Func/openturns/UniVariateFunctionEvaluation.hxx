@@ -74,8 +74,8 @@ public:
 protected:
 
   friend class Factory<UniVariateFunctionEvaluation>;
-  friend class ProductUniVariateFunctionGradientImplementation;
-  friend class ProductUniVariateFunctionHessianImplementation;
+  friend class ProductUniVariateFunctionGradient;
+  friend class ProductUniVariateFunctionHessian;
 
   /* Default constructor */
   UniVariateFunctionEvaluation();

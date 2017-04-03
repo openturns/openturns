@@ -1,5 +1,5 @@
 pyDist= PythonDistribution -> #1
-myDist= class=PythonDistributionImplementation name=UniformNdPy description=[X0]
+myDist= class=PythonDistribution name=UniformNdPy description=[X0]
 dimension= 1
 realization= [0.629877]
 sample= 0 : [ 0.882805  ]
@@ -21,10 +21,10 @@ characteristic function= (0.993346653975+0.0996671107938j)
 isElliptical= False
 isCopula= True
 range= [0, 1]
-marginal= class=PythonDistributionImplementation name=UniformNdPy
+marginal= class=PythonDistribution name=UniformNdPy
 quantile= [42]
 pyDist= PythonDistribution -> #2
-myDist= class=PythonDistributionImplementation name=UniformNdPy description=[X0,X1]
+myDist= class=PythonDistribution name=UniformNdPy description=[X0,X1]
 dimension= 2
 realization= [0.92068,0.50304]
 sample= 0 : [ 0.0632061 0.292757  ]
@@ -46,8 +46,8 @@ isElliptical= False
 isCopula= True
 range= [0, 1]
 [0, 1]
-marginal= class=PythonDistributionImplementation name=UniformNdPy
+marginal= class=PythonDistribution name=UniformNdPy
 quantile= [42,42]
-ComposedDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), class=PythonDistributionImplementation name=UniformNdPy)
+ComposedDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), class=PythonDistribution name=UniformNdPy)
 try with another Python distribution
-The construction failed on purpose as class=PythonDistributionImplementation name=UniformNdPy is not a copula
+The construction failed on purpose as class=PythonDistribution name=UniformNdPy is not a copula

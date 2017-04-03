@@ -411,7 +411,7 @@ void MeixnerDistribution::update()
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
   // Third, the CDF and complementary CDF
-  Collection<PiecewiseHermiteEvaluationImplementation> CDFCCDF(interpolateCDF(ResourceMap::GetAsUnsignedInteger("MeixnerDistribution-CDFDiscretization")));
+  Collection<PiecewiseHermiteEvaluation> CDFCCDF(interpolateCDF(ResourceMap::GetAsUnsignedInteger("MeixnerDistribution-CDFDiscretization")));
   cdfApproximation_ = CDFCCDF[0];
   ccdfApproximation_ = CDFCCDF[1];
   // Fourth, the random generator

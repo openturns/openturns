@@ -25,7 +25,7 @@
 #include "openturns/SquareMatrix.hxx"
 #include "openturns/SquareComplexMatrix.hxx"
 #include "openturns/NumericalSample.hxx"
-#include "openturns/P1LagrangeEvaluationImplementation.hxx"
+#include "openturns/P1LagrangeEvaluation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -79,7 +79,7 @@ Basis KarhunenLoeveP1Factory::build(const CovarianceModel & covarianceModel,
   const ProcessSample resultAsProcessSample(buildAsProcessSample(covarianceModel, selectedEV));
   Basis result(0);
   for (UnsignedInteger i = 0; i < resultAsProcessSample.getSize(); ++i)
-    result.add(P1LagrangeEvaluationImplementation(resultAsProcessSample.getField(i)));
+    result.add(P1LagrangeEvaluation(resultAsProcessSample.getField(i)));
   return result;
 }
 

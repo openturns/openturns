@@ -151,7 +151,7 @@ NumericalScalar ContinuousDistribution::computeSurvivalFunction(const NumericalP
 }
 
 /* Build a C1 interpolation of the CDF function for 1D continuous distributions */
-Collection<PiecewiseHermiteEvaluationImplementation> ContinuousDistribution::interpolateCDF(const UnsignedInteger n)
+Collection<PiecewiseHermiteEvaluation> ContinuousDistribution::interpolateCDF(const UnsignedInteger n)
 {
   if (getDimension() != 1) throw NotYetImplementedException(HERE) << "In ContinuousDistribution::interpolateCDF(const UnsignedInteger n): cannot interpolate CDF for multidimensional distributions.";
   const PDFWrapper pdfWrapper(this);
@@ -189,9 +189,9 @@ Collection<PiecewiseHermiteEvaluationImplementation> ContinuousDistribution::int
     xCDFOld = xCDF;
     xCCDFOld = xCCDF;
   }
-  Collection<PiecewiseHermiteEvaluationImplementation> coll(2);
-  coll[0] = PiecewiseHermiteEvaluationImplementation(locationsCDF, valuesCDF, derivativesCDF);
-  coll[1] = PiecewiseHermiteEvaluationImplementation(locationsCCDF, valuesCCDF, derivativesCCDF);
+  Collection<PiecewiseHermiteEvaluation> coll(2);
+  coll[0] = PiecewiseHermiteEvaluation(locationsCDF, valuesCDF, derivativesCDF);
+  coll[1] = PiecewiseHermiteEvaluation(locationsCCDF, valuesCCDF, derivativesCCDF);
   return coll;
 }
 

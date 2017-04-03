@@ -13,7 +13,7 @@ OT::LevelSet OT::DistributionImplementation::computeMinimumVolumeLevelSet(const 
 
 %{
 #include "openturns/Distribution.hxx"
-#include "openturns/PythonDistributionImplementation.hxx"
+#include "openturns/PythonDistribution.hxx"
 %}
 
 %include Distribution_doc.i
@@ -133,7 +133,7 @@ Distribution(const Distribution & other)
 
 Distribution(PyObject * pyObj)
 {
-  return new OT::Distribution( new OT::PythonDistributionImplementation( pyObj ) );
+  return new OT::Distribution( new OT::PythonDistribution( pyObj ) );
 } 
 
 Distribution __add__ (NumericalScalar s)

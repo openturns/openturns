@@ -22,8 +22,8 @@
  */
 #include "openturns/KarhunenLoeveP1Algorithm.hxx"
 #include "openturns/SquareComplexMatrix.hxx"
-#include "openturns/P1LagrangeEvaluationImplementation.hxx"
-#include "openturns/PiecewiseLinearEvaluationImplementation.hxx"
+#include "openturns/P1LagrangeEvaluation.hxx"
+#include "openturns/PiecewiseLinearEvaluation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -160,9 +160,9 @@ void KarhunenLoeveP1Algorithm::run()
     values.setData(a * factor);
     modesAsProcessSample.add(values);
     if (meshDimension == 1)
-      modes.add(PiecewiseLinearEvaluationImplementation(mesh_.getVertices().getImplementation()->getData(), values));
+      modes.add(PiecewiseLinearEvaluation(mesh_.getVertices().getImplementation()->getData(), values));
     else
-      modes.add(P1LagrangeEvaluationImplementation(modesAsProcessSample.getField(k)));
+      modes.add(P1LagrangeEvaluation(modesAsProcessSample.getField(k)));
     // Build the relevant column of the transposed projection matrix
     const MatrixImplementation b(Ga * (factor / sqrt(selectedEV[k])));
     std::copy(b.begin(), b.end(), transposedProjection.begin() + index);

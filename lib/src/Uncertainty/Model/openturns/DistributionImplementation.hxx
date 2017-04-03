@@ -36,7 +36,7 @@
 #include "openturns/NumericalMathGradientImplementation.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/UniVariatePolynomial.hxx"
-#include "openturns/PiecewiseHermiteEvaluationImplementation.hxx"
+#include "openturns/PiecewiseHermiteEvaluation.hxx"
 #include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -741,7 +741,7 @@ protected:
   virtual void computeStandardDistribution() const;
 
   /** Interpolate the PDF and CDF for smooth continuous distributions */
-  virtual Collection<PiecewiseHermiteEvaluationImplementation> interpolatePDFCDF(const UnsignedInteger n);
+  virtual Collection<PiecewiseHermiteEvaluation> interpolatePDFCDF(const UnsignedInteger n);
 
   mutable NumericalPoint mean_;
   mutable CovarianceMatrix covariance_;

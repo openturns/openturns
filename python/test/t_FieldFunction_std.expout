@@ -7,7 +7,7 @@ myFunc output dimension= 0
 myFunc spatial dimension= 1
 called  0  times
 myFunc= FieldFunction :
-class=PythonFieldFunctionImplementation name=OpenTURNSPythonFieldFunction
+class=PythonFieldFunction name=OpenTURNSPythonFieldFunction
 X=     [ v0         v1         v2         X0         X1         X2         ]
 0 : [  0          0          0          0.608202  -1.26617   -0.438266  ]
 1 : [  0          0          1          1.20548   -2.18139    0.350042  ]

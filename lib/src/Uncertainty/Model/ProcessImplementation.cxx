@@ -22,8 +22,8 @@
 #include "openturns/ProcessImplementation.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/NumericalMathFunction.hxx"
-#include "openturns/PiecewiseLinearEvaluationImplementation.hxx"
-#include "openturns/P1LagrangeEvaluationImplementation.hxx"
+#include "openturns/PiecewiseLinearEvaluation.hxx"
+#include "openturns/P1LagrangeEvaluation.hxx"
 #include "openturns/RegularGrid.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -168,9 +168,9 @@ NumericalMathFunction ProcessImplementation::getContinuousRealization() const
   if (getSpatialDimension() == 1)
   {
     const NumericalPoint locations(mesh_.getVertices().getImplementation()->getData());
-    return PiecewiseLinearEvaluationImplementation(locations, values);
+    return PiecewiseLinearEvaluation(locations, values);
   }
-  return P1LagrangeEvaluationImplementation(field);
+  return P1LagrangeEvaluation(field);
 }
 
 ProcessSample ProcessImplementation::getSample(const UnsignedInteger size) const

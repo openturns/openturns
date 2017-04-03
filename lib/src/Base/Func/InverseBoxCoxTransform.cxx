@@ -18,9 +18,9 @@
  *
  */
 #include "openturns/InverseBoxCoxTransform.hxx"
-#include "openturns/InverseBoxCoxEvaluationImplementation.hxx"
-#include "openturns/InverseBoxCoxGradientImplementation.hxx"
-#include "openturns/InverseBoxCoxHessianImplementation.hxx"
+#include "openturns/InverseBoxCoxEvaluation.hxx"
+#include "openturns/InverseBoxCoxGradient.hxx"
+#include "openturns/InverseBoxCoxHessian.hxx"
 #include "openturns/BoxCoxTransform.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -29,7 +29,7 @@ CLASSNAMEINIT(InverseBoxCoxTransform);
 
 /* Default constructor */
 InverseBoxCoxTransform::InverseBoxCoxTransform()
-  : NumericalMathFunction(InverseBoxCoxEvaluationImplementation())
+  : NumericalMathFunction(InverseBoxCoxEvaluation())
 {
   // Nothing to do
 }
@@ -38,10 +38,10 @@ InverseBoxCoxTransform::InverseBoxCoxTransform()
 InverseBoxCoxTransform::InverseBoxCoxTransform(const NumericalPoint & lambda)
   : NumericalMathFunction()
 {
-  const InverseBoxCoxEvaluationImplementation evaluation(lambda);
+  const InverseBoxCoxEvaluation evaluation(lambda);
   setEvaluation(evaluation.clone());
-  setGradient(InverseBoxCoxGradientImplementation(evaluation).clone());
-  setHessian(InverseBoxCoxHessianImplementation(evaluation).clone());
+  setGradient(InverseBoxCoxGradient(evaluation).clone());
+  setHessian(InverseBoxCoxHessian(evaluation).clone());
 }
 
 /* NumericalScalarCollection parameter constructor */
@@ -49,30 +49,30 @@ InverseBoxCoxTransform::InverseBoxCoxTransform(const NumericalPoint & lambda,
     const NumericalPoint & shift)
   : NumericalMathFunction()
 {
-  const InverseBoxCoxEvaluationImplementation evaluation(lambda, shift);
+  const InverseBoxCoxEvaluation evaluation(lambda, shift);
   setEvaluation(evaluation.clone());
-  setGradient(InverseBoxCoxGradientImplementation(evaluation).clone());
-  setHessian(InverseBoxCoxHessianImplementation(evaluation).clone());
+  setGradient(InverseBoxCoxGradient(evaluation).clone());
+  setHessian(InverseBoxCoxHessian(evaluation).clone());
 }
 
 /* 1D NumericalScalar parameter constructor */
 InverseBoxCoxTransform::InverseBoxCoxTransform(const NumericalScalar & lambda)
   : NumericalMathFunction()
 {
-  const InverseBoxCoxEvaluationImplementation evaluation(NumericalPoint(1, lambda));
+  const InverseBoxCoxEvaluation evaluation(NumericalPoint(1, lambda));
   setEvaluation(evaluation.clone());
-  setGradient(InverseBoxCoxGradientImplementation(evaluation).clone());
-  setHessian(InverseBoxCoxHessianImplementation(evaluation).clone());
+  setGradient(InverseBoxCoxGradient(evaluation).clone());
+  setHessian(InverseBoxCoxHessian(evaluation).clone());
 }
 
 InverseBoxCoxTransform::InverseBoxCoxTransform(const NumericalScalar & lambda,
     const NumericalScalar & shift)
   : NumericalMathFunction()
 {
-  const InverseBoxCoxEvaluationImplementation evaluation(NumericalPoint(1, lambda), NumericalPoint(1, shift));
+  const InverseBoxCoxEvaluation evaluation(NumericalPoint(1, lambda), NumericalPoint(1, shift));
   setEvaluation(evaluation.clone());
-  setGradient(InverseBoxCoxGradientImplementation(evaluation).clone());
-  setHessian(InverseBoxCoxHessianImplementation(evaluation).clone());
+  setGradient(InverseBoxCoxGradient(evaluation).clone());
+  setHessian(InverseBoxCoxHessian(evaluation).clone());
 }
 
 /* Virtual constructor */
@@ -84,13 +84,13 @@ InverseBoxCoxTransform * InverseBoxCoxTransform::clone() const
 /* Lambda accessor */
 NumericalPoint InverseBoxCoxTransform::getLambda() const
 {
-  return dynamic_cast<InverseBoxCoxEvaluationImplementation *>(getEvaluation().get())->getLambda();
+  return dynamic_cast<InverseBoxCoxEvaluation *>(getEvaluation().get())->getLambda();
 }
 
 /* Shift accessor */
 NumericalPoint InverseBoxCoxTransform::getShift() const
 {
-  return dynamic_cast<InverseBoxCoxEvaluationImplementation *>(getEvaluation().get())->getShift();
+  return dynamic_cast<InverseBoxCoxEvaluation *>(getEvaluation().get())->getShift();
 }
 
 /* Inverse accessor */

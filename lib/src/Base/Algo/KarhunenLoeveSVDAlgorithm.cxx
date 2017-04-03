@@ -21,8 +21,8 @@
  *
  */
 #include "openturns/KarhunenLoeveSVDAlgorithm.hxx"
-#include "openturns/P1LagrangeEvaluationImplementation.hxx"
-#include "openturns/PiecewiseLinearEvaluationImplementation.hxx"
+#include "openturns/P1LagrangeEvaluation.hxx"
+#include "openturns/PiecewiseLinearEvaluation.hxx"
 #include "openturns/RankMCovarianceModel.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
@@ -229,9 +229,9 @@ void KarhunenLoeveSVDAlgorithm::run()
     values.setData(a * factor);
     modesAsProcessSample.add(values);
     if (meshDimension == 1)
-      modes.add(PiecewiseLinearEvaluationImplementation(sample_.getMesh().getVertices().getImplementation()->getData(), values));
+      modes.add(PiecewiseLinearEvaluation(sample_.getMesh().getVertices().getImplementation()->getData(), values));
     else
-      modes.add(P1LagrangeEvaluationImplementation(modesAsProcessSample.getField(k)));
+      modes.add(P1LagrangeEvaluation(modesAsProcessSample.getField(k)));
     // Build the relevant column of the transposed projection matrix
     // \vect{\alpha}=\diag{1/\sqrt{\lambda}}[(\sqrt{W}^{-1}U)^tW]F
     //              =\diag{1/\sqrt{\lambda}}[(W.eigenModesValues)^t]F

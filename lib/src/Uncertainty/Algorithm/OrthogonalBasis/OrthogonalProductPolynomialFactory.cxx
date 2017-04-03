@@ -25,9 +25,9 @@
 #include "openturns/Indices.hxx"
 #include "openturns/ComposedDistribution.hxx"
 #include "openturns/NumericalMathFunctionImplementation.hxx"
-#include "openturns/ProductPolynomialEvaluationImplementation.hxx"
-#include "openturns/ProductPolynomialGradientImplementation.hxx"
-#include "openturns/ProductPolynomialHessianImplementation.hxx"
+#include "openturns/ProductPolynomialEvaluation.hxx"
+#include "openturns/ProductPolynomialGradient.hxx"
+#include "openturns/ProductPolynomialHessian.hxx"
 #include "openturns/Collection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -43,7 +43,7 @@ CLASSNAMEINIT(OrthogonalProductPolynomialFactory);
 static const Factory<OrthogonalProductPolynomialFactory> Factory_OrthogonalProductPolynomialFactory;
 
 typedef Collection<NumericalPoint> NumericalPointCollection;
-typedef ProductPolynomialEvaluationImplementation::PolynomialCollection PolynomialCollection;
+typedef ProductPolynomialEvaluation::PolynomialCollection PolynomialCollection;
 
 /* Default constructor */
 OrthogonalProductPolynomialFactory::OrthogonalProductPolynomialFactory()
@@ -109,7 +109,7 @@ NumericalMathFunction OrthogonalProductPolynomialFactory::build(const UnsignedIn
   {
     polynomials[i] = coll_[i].build(indices[i]);
   }
-  return NumericalMathFunctionImplementation(ProductPolynomialEvaluationImplementation(polynomials).clone(), ProductPolynomialGradientImplementation(polynomials).clone(), ProductPolynomialHessianImplementation(polynomials).clone());
+  return NumericalMathFunctionImplementation(ProductPolynomialEvaluation(polynomials).clone(), ProductPolynomialGradient(polynomials).clone(), ProductPolynomialHessian(polynomials).clone());
 }
 
 

@@ -23,7 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/ContinuousDistribution.hxx"
-#include "openturns/PiecewiseHermiteEvaluationImplementation.hxx"
+#include "openturns/PiecewiseHermiteEvaluation.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/GaussKronrod.hxx"
 #include "openturns/ResourceMap.hxx"
@@ -135,7 +135,7 @@ public:
   Bool hasIndependentCopula() const;
 
   /** Get the kth approximation */
-  PiecewiseHermiteEvaluationImplementation getApproximation(const UnsignedInteger k = 0) const;
+  PiecewiseHermiteEvaluation getApproximation(const UnsignedInteger k = 0) const;
 
   /* Interface specific to MaximumEntropyOrderStatisticsDistribution */
 
@@ -158,11 +158,11 @@ private:
   MaximumEntropyOrderStatisticsDistribution(const DistributionCollection & coll,
       const Indices & partition,
       const Bool useApproximation,
-      const Collection<PiecewiseHermiteEvaluationImplementation> & exponentialFactorApproximation,
+      const Collection<PiecewiseHermiteEvaluation> & exponentialFactorApproximation,
       const Description & description);
 
   /** Build a C1 interpolation of the exponential factor between two marginals */
-  PiecewiseHermiteEvaluationImplementation interpolateExponentialFactor(const UnsignedInteger lower,
+  PiecewiseHermiteEvaluation interpolateExponentialFactor(const UnsignedInteger lower,
       const UnsignedInteger upper,
       const UnsignedInteger maximumSubdivision = ResourceMap::GetAsUnsignedInteger("MaximumEntropyOrderStatisticsDistribution-MaximumApproximationSubdivision"),
       const NumericalScalar shift = ResourceMap::GetAsNumericalScalar("MaximumEntropyOrderStatisticsDistribution-SupportShift")) const;
@@ -191,7 +191,7 @@ private:
   mutable Bool useApproximation_;
 
   /** interpolation of the exponential factors in the PDF */
-  Collection<PiecewiseHermiteEvaluationImplementation> exponentialFactorApproximation_;
+  Collection<PiecewiseHermiteEvaluation> exponentialFactorApproximation_;
 
   /** Integration algorithm */
   GaussKronrod integrator_;

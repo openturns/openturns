@@ -317,10 +317,10 @@ void ResourceMap::loadDefaultConfiguration()
   // NonCenteredFiniteDifferenceGradient parameters //
   setAsNumericalScalar( "NonCenteredFiniteDifferenceGradient-DefaultEpsilon", 1.0e-7 );
 
-  // PiecewiseHermiteEvaluationImplementation parameters //
+  // PiecewiseHermiteEvaluation parameters //
   setAsNumericalScalar( "PiecewiseHermiteEvaluation-EpsilonRegular", 1.0e-12 );
 
-  // PiecewiseLinearEvaluationImplementation parameters //
+  // PiecewiseLinearEvaluation parameters //
   setAsNumericalScalar( "PiecewiseLinearEvaluation-EpsilonRegular", 1.0e-12 );
 
   // UniVariatePolynomialImplementation parameters //
@@ -687,10 +687,10 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "NumericalMathEvaluation-DefaultPointNumber", 129 );
   setAsNumericalScalar( "NumericalMathEvaluation-ParameterEpsilon", 1.0e-7 );
 
-  // DualLinearCombinationEvaluationImplementation //
+  // DualLinearCombinationEvaluation //
   setAsNumericalScalar( "DualLinearCombinationEvaluation-SmallCoefficient", 0.0);
 
-  // LinearCombinationEvaluationImplementation //
+  // LinearCombinationEvaluation //
   setAsNumericalScalar( "LinearCombinationEvaluation-SmallCoefficient", 0.0);
 
   // DistFunc parameters //

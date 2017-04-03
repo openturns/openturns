@@ -19,9 +19,9 @@
  *
  */
 #include "openturns/DualLinearCombinationFunction.hxx"
-#include "openturns/DualLinearCombinationEvaluationImplementation.hxx"
-#include "openturns/DualLinearCombinationGradientImplementation.hxx"
-#include "openturns/DualLinearCombinationHessianImplementation.hxx"
+#include "openturns/DualLinearCombinationEvaluation.hxx"
+#include "openturns/DualLinearCombinationGradient.hxx"
+#include "openturns/DualLinearCombinationHessian.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -39,10 +39,10 @@ DualLinearCombinationFunction::DualLinearCombinationFunction (const NumericalMat
                                                               const NumericalSample & coefficients)
   : NumericalMathFunction()
 {
-  const DualLinearCombinationEvaluationImplementation evaluation(functionCollection, coefficients);
+  const DualLinearCombinationEvaluation evaluation(functionCollection, coefficients);
   setEvaluation(evaluation.clone());
-  setGradient(new DualLinearCombinationGradientImplementation(evaluation));
-  setHessian(new DualLinearCombinationHessianImplementation(evaluation));
+  setGradient(new DualLinearCombinationGradient(evaluation));
+  setHessian(new DualLinearCombinationHessian(evaluation));
 }
 
 

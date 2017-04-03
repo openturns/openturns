@@ -180,16 +180,16 @@ private:
   UserDefined weightsDistribution_;
 
   /** PDF approximation associated to the CDF approximation */
-  PiecewiseHermiteEvaluationImplementation pdfApproximationCDF_;
+  PiecewiseHermiteEvaluation pdfApproximationCDF_;
 
   /** CDF approximation */
-  PiecewiseHermiteEvaluationImplementation cdfApproximation_;
+  PiecewiseHermiteEvaluation cdfApproximation_;
 
   /** PDF approximation associated to the CCDF approximation */
-  PiecewiseHermiteEvaluationImplementation pdfApproximationCCDF_;
+  PiecewiseHermiteEvaluation pdfApproximationCCDF_;
 
   /** Complementary CDF approximation */
-  PiecewiseHermiteEvaluationImplementation ccdfApproximation_;
+  PiecewiseHermiteEvaluation ccdfApproximation_;
 
   /** Do I have an approximation for the CDF? */
   Bool useApproximatePDFCDF_;

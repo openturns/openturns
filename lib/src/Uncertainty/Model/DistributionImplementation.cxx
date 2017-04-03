@@ -1773,7 +1773,7 @@ NumericalPoint DistributionImplementation::computeCDFGradient(const NumericalPoi
 }
 
 /* Build a C1 interpolation of the CDF function for 1D continuous distributions */
-Collection<PiecewiseHermiteEvaluationImplementation> DistributionImplementation::interpolatePDFCDF(const UnsignedInteger n)
+Collection<PiecewiseHermiteEvaluation> DistributionImplementation::interpolatePDFCDF(const UnsignedInteger n)
 {
   if (!isContinuous()) throw InternalException(HERE) << "Error: cannot interpolate the PDF and CDF of noncontinuous distributions.";
   if (dimension_ != 1) throw NotYetImplementedException(HERE) << "In DistributionImplementation::interpolatePDFCDF(const UnsignedInteger n): cannot interpolate CDF for multidimensional distributions.";
@@ -1798,19 +1798,19 @@ Collection<PiecewiseHermiteEvaluationImplementation> DistributionImplementation:
   NumericalSample locationsCCDF(ai.getSize(), 1);
   locationsCCDF.getImplementation()->setData(ai);
   locationsCCDF = locationsCCDF.sort(0);
-  Collection<PiecewiseHermiteEvaluationImplementation> coll(4);
+  Collection<PiecewiseHermiteEvaluation> coll(4);
   const NumericalSample valuesCDF(computeCDF(locationsCDF));
   const NumericalSample valuesPDF(computePDF(locationsCDF));
   const NumericalSample valuesDDF(computeDDF(locationsCDF));
-  coll[0] = PiecewiseHermiteEvaluationImplementation(locationsCDF.getImplementation()->getData(), valuesPDF, valuesDDF);
-  coll[1] = PiecewiseHermiteEvaluationImplementation(locationsCDF.getImplementation()->getData(), valuesCDF, valuesPDF);
+  coll[0] = PiecewiseHermiteEvaluation(locationsCDF.getImplementation()->getData(), valuesPDF, valuesDDF);
+  coll[1] = PiecewiseHermiteEvaluation(locationsCDF.getImplementation()->getData(), valuesCDF, valuesPDF);
   const NumericalSample valuesCCDF(computeComplementaryCDF(locationsCCDF));
   const NumericalSample valuesCPDF(computePDF(locationsCCDF));
   NumericalSample derivativesCCDF(valuesCPDF);
   derivativesCCDF *= NumericalPoint(1, -1.0);
   const NumericalSample valuesCDDF(computeDDF(locationsCCDF));
-  coll[2] = PiecewiseHermiteEvaluationImplementation(locationsCCDF.getImplementation()->getData(), valuesCPDF, valuesCDDF);
-  coll[3] = PiecewiseHermiteEvaluationImplementation(locationsCCDF.getImplementation()->getData(), valuesCCDF, derivativesCCDF);
+  coll[2] = PiecewiseHermiteEvaluation(locationsCCDF.getImplementation()->getData(), valuesCPDF, valuesCDDF);
+  coll[3] = PiecewiseHermiteEvaluation(locationsCCDF.getImplementation()->getData(), valuesCCDF, derivativesCCDF);
   return coll;
 }
 
