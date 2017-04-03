@@ -22,7 +22,7 @@
 #define OPENTURNS_LEASTSQUARESMETHOD_HXX
 
 #include "openturns/TypedInterfaceObject.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Basis.hxx"
 #include "openturns/LeastSquaresMethodImplementation.hxx"
 
@@ -66,7 +66,7 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Input sample accessor */
-  NumericalSample getInputSample() const;
+  Sample getInputSample() const;
 
   /** Weight accessor */
   NumericalPoint getWeight() const;

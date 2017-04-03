@@ -50,7 +50,7 @@ public:
   String __repr__() const;
 
   /** Compute the block sample */
-  NumericalSample computeBlockSample();
+  Sample computeBlockSample();
 
 } ; /* class PostAnalyticalControlledImportanceSampling */
 

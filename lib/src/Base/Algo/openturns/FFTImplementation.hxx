@@ -25,7 +25,7 @@
 #include "openturns/Collection.hxx"
 #include "openturns/ComplexMatrix.hxx"
 #include "openturns/Matrix.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/ComplexTensor.hxx"
 #include "openturns/Tensor.hxx"
 
@@ -115,7 +115,7 @@ public:
   virtual ComplexMatrix transform2D(const Matrix & matrix) const;
 
   /** FFT 2D transformation on sample */
-  virtual ComplexMatrix transform2D(const NumericalSample & sample) const;
+  virtual ComplexMatrix transform2D(const Sample & sample) const;
 
   /** IFFT 2D transformation on complex */
   virtual ComplexMatrix inverseTransform2D(const ComplexMatrix & complexMatrix) const;
@@ -124,7 +124,7 @@ public:
   virtual ComplexMatrix inverseTransform2D(const Matrix & matrix) const;
 
   /** IFFT 2D transformation on sample */
-  virtual ComplexMatrix inverseTransform2D(const NumericalSample & sample) const;
+  virtual ComplexMatrix inverseTransform2D(const Sample & sample) const;
 
   /** FFT 3D transformation */
   virtual ComplexTensor transform3D(const ComplexTensor & tensor) const;

@@ -41,10 +41,10 @@ KrigingEvaluation::KrigingEvaluation()
 
 /* Constructor with parameters */
 KrigingEvaluation::KrigingEvaluation (const BasisCollection & basis,
-                                      const NumericalSample & inputSample,
+                                      const Sample & inputSample,
                                       const CovarianceModel & covarianceModel,
                                       const NumericalPointCollection & beta,
-                                      const NumericalSample & gamma)
+                                      const Sample & gamma)
   : EvaluationImplementation()
   , basis_(basis)
   , inputSample_(inputSample)
@@ -167,13 +167,13 @@ NumericalPoint KrigingEvaluation::operator()(const NumericalPoint & inP) const
 // Helper for the parallel version of the sample-based evaluation operator
 struct KrigingEvaluationSampleFunctor
 {
-  const NumericalSample & input_;
-  NumericalSample & output_;
+  const Sample & input_;
+  Sample & output_;
   const KrigingEvaluation & evaluation_;
   UnsignedInteger trainingSize_;
 
-  KrigingEvaluationSampleFunctor(const NumericalSample & input,
-                                 NumericalSample & output,
+  KrigingEvaluationSampleFunctor(const Sample & input,
+                                 Sample & output,
                                  const KrigingEvaluation & evaluation)
     : input_(input)
     , output_(output)
@@ -201,19 +201,19 @@ struct KrigingEvaluationSampleFunctor
   } // operator()
 }; // struct KrigingEvaluationSampleFunctor
 
-NumericalSample KrigingEvaluation::operator()(const NumericalSample & inS) const
+Sample KrigingEvaluation::operator()(const Sample & inS) const
 {
   // Evaluation on the sample using parallel functors
   const UnsignedInteger size = inS.getSize();
   const UnsignedInteger dimension = getOutputDimension();
 
-  NumericalSample result(size, dimension);
+  Sample result(size, dimension);
   const KrigingEvaluationSampleFunctor functor( inS, result, *this );
   TBB::ParallelFor( 0, size , functor );
 
   // Evaluate the basis part sequentially
   // Number of basis is 0 or outputDimension
-  NumericalSample trend(size, 0);
+  Sample trend(size, 0);
   for (UnsignedInteger i = 0; i < basis_.getSize(); ++i)
   {
     // Get local basis -> basis_[i]
@@ -221,11 +221,11 @@ NumericalSample KrigingEvaluation::operator()(const NumericalSample & inS) const
     const NumericalPoint betaBasis(beta_[i]);
     const UnsignedInteger basisSize = localBasis.getSize();
     // For the i-th Basis (marginal), take into account the trend
-    NumericalSample fi(size, 1);
+    Sample fi(size, 1);
 
     for (UnsignedInteger j = 0; j < basisSize; ++j)
     {
-      NumericalSample fj(localBasis[j](inS));
+      Sample fj(localBasis[j](inS));
       // scale ==> use of parallelism
       fj *= betaBasis[j];
       // Adding fj to fi

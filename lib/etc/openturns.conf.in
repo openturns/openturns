@@ -216,10 +216,10 @@
   <Field-ArrowRatio   value="0.01" />
   <Field-ArrowScaling value="1.0" />
 
-  <!-- OT::NumericalSampleImplementation parameters -->
-  <NumericalSample-SmallKendallTau value="23" />
-  <NumericalSample-PrintEllipsisThreshold value="1000" />
-  <NumericalSample-PrintEllipsisSize value="3" />
+  <!-- OT::SampleImplementation parameters -->
+  <Sample-SmallKendallTau value="23" />
+  <Sample-PrintEllipsisThreshold value="1000" />
+  <Sample-PrintEllipsisSize value="3" />
 
   <!-- OT::DomainImplementation parameters -->
   <Domain-SmallVolume   value="1.0e-12" />

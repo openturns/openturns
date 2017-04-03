@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
     /* Check if the StandardEvent is really a StandardEvent */
     /* Get a sample from the second antecedent of the standard event */
     UnsignedInteger size = 2000;
-    NumericalSample sample(stdEvent.getImplementation()->getAntecedent()->getSample(size));
+    Sample sample(stdEvent.getImplementation()->getAntecedent()->getSample(size));
     /* Check if the sample mean is nearly the null vector */
     fullprint << "sample mean=" << sample.computeMean() << std::endl;
     /* Check if the sample covariance is nearly the identity matrix */
@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
     fullprint << "Failure probability (Event)=" << myEvent.getSample(size).computeMean() << std::endl;
     fullprint << "Failure probability (StandardEvent)=" << stdEvent.getSample(size).computeMean() << std::endl;
 
-    NumericalSample x(3, dim);
+    Sample x(3, dim);
     NumericalPoint point(dim);
     point[0] = 1.0;
     point[1] = 0.5;

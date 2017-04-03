@@ -35,8 +35,8 @@ int main(int argc, char *argv[])
 
   /* lm build */
   UnsignedInteger size = 20;
-  NumericalSample oneSample(size, 1);
-  NumericalSample twoSample(size, 1);
+  Sample oneSample(size, 1);
+  Sample twoSample(size, 1);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     oneSample[i][0] = 7.0 * sin(-3.5 + (6.5 * i) / (size - 1.0)) + 2.0;

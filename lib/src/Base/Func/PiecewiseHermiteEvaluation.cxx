@@ -54,10 +54,10 @@ PiecewiseHermiteEvaluation::PiecewiseHermiteEvaluation(const NumericalPoint & lo
   , derivatives_(0, 0)
 {
   const UnsignedInteger sizeValues = values.getSize();
-  NumericalSample sampleValues(sizeValues, 1);
+  Sample sampleValues(sizeValues, 1);
   for (UnsignedInteger i = 0; i < sizeValues; ++i) sampleValues[i][0] = values[i];
   const UnsignedInteger sizeDerivatives = derivatives.getSize();
-  NumericalSample sampleDerivatives(sizeDerivatives, 1);
+  Sample sampleDerivatives(sizeDerivatives, 1);
   for (UnsignedInteger i = 0; i < sizeDerivatives; ++i) sampleDerivatives[i][0] = derivatives[i];
   // Check the input
   setLocationsValuesAndDerivatives(locations, sampleValues, sampleDerivatives);
@@ -66,8 +66,8 @@ PiecewiseHermiteEvaluation::PiecewiseHermiteEvaluation(const NumericalPoint & lo
 
 /* Parameters constructor */
 PiecewiseHermiteEvaluation::PiecewiseHermiteEvaluation(const NumericalPoint & locations,
-    const NumericalSample & values,
-    const NumericalSample & derivatives)
+    const Sample & values,
+    const Sample & derivatives)
   : EvaluationImplementation()
   , locations_(0)
   , values_(0, 0)
@@ -199,12 +199,12 @@ void PiecewiseHermiteEvaluation::setLocations(const NumericalPoint & locations)
 }
 
 /* Values accessor */
-NumericalSample PiecewiseHermiteEvaluation::getValues() const
+Sample PiecewiseHermiteEvaluation::getValues() const
 {
   return values_;
 }
 
-void PiecewiseHermiteEvaluation::setValues(const NumericalSample & values)
+void PiecewiseHermiteEvaluation::setValues(const Sample & values)
 {
   const UnsignedInteger size = values.getSize();
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: there must be at least 2 points to build a piecewise Hermite interpolation function.";
@@ -213,12 +213,12 @@ void PiecewiseHermiteEvaluation::setValues(const NumericalSample & values)
 }
 
 /* Derivatives accessor */
-NumericalSample PiecewiseHermiteEvaluation::getDerivatives() const
+Sample PiecewiseHermiteEvaluation::getDerivatives() const
 {
   return derivatives_;
 }
 
-void PiecewiseHermiteEvaluation::setDerivatives(const NumericalSample & derivatives)
+void PiecewiseHermiteEvaluation::setDerivatives(const Sample & derivatives)
 {
   const UnsignedInteger size = derivatives.getSize();
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: there must be at least 2 points to build a piecewise Hermite interpolation function.";
@@ -228,8 +228,8 @@ void PiecewiseHermiteEvaluation::setDerivatives(const NumericalSample & derivati
 
 
 void PiecewiseHermiteEvaluation::setLocationsValuesAndDerivatives(const NumericalPoint & locations,
-    const NumericalSample & values,
-    const NumericalSample & derivatives)
+    const Sample & values,
+    const Sample & derivatives)
 {
   const UnsignedInteger size = locations.getSize();
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: there must be at least 2 points to build a piecewise Hermite interpolation function.";
@@ -238,7 +238,7 @@ void PiecewiseHermiteEvaluation::setLocationsValuesAndDerivatives(const Numerica
   const UnsignedInteger outputDimension = values.getDimension();
   if (outputDimension != derivatives.getDimension()) throw InvalidArgumentException(HERE) << "Error: the dimension of the derivatives=" << derivatives.getDimension() << " must match the dimension of the locations=" << outputDimension;
   // Sort the data in increasing order according to the locations
-  NumericalSample data(size, 1 + 2 * outputDimension);
+  Sample data(size, 1 + 2 * outputDimension);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     data[i][0] = locations[i];
@@ -249,8 +249,8 @@ void PiecewiseHermiteEvaluation::setLocationsValuesAndDerivatives(const Numerica
   }
   data = data.sortAccordingToAComponent(0);
   locations_ = NumericalPoint(size);
-  values_ = NumericalSample(size, outputDimension);
-  derivatives_ = NumericalSample(size, outputDimension);
+  values_ = Sample(size, outputDimension);
+  derivatives_ = Sample(size, outputDimension);
   const NumericalScalar step = data[1][0] - data[0][0];
   const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("PiecewiseHermiteEvaluation-EpsilonRegular") * std::abs(step);
   isRegular_ = true;

@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     sigma[0] = 2.0;
     sigma[1] = 3.0;
 
-    NumericalSample sample(0, dimension);
+    Sample sample(0, dimension);
     // Create a collection of distribution
     Mixture::DistributionCollection aCollection;
 
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
 
     // Test for sampling
     UnsignedInteger size = 100;
-    NumericalSample oneSample = distribution.getSample( size );
+    Sample oneSample = distribution.getSample( size );
     fullprint << "oneSample first=" << oneSample[0] << " last=" << oneSample[size - 1] << std::endl;
     fullprint << "mean=" << oneSample.computeMean() << std::endl;
     fullprint << "covariance=" << oneSample.computeCovariance() << std::endl;
@@ -142,7 +142,7 @@ int main(int argc, char *argv[])
     q[0] = 0.1;
     q[1] = 0.3;
     q[2] = 0.7;
-    NumericalSample y(3, 1);
+    Sample y(3, 1);
     y[0][0] = -0.5;
     y[1][0] =  0.5;
     y[2][0] =  1.5;

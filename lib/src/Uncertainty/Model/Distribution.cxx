@@ -374,7 +374,7 @@ NumericalPoint Distribution::getRealization() const
 }
 
 /* Get a numerical sample whose elements follow the distribution */
-NumericalSample Distribution::getSample(const UnsignedInteger size) const
+Sample Distribution::getSample(const UnsignedInteger size) const
 {
   return getImplementation()->getSample(size);
 }
@@ -456,34 +456,34 @@ NumericalComplex Distribution::computeLogGeneratingFunction(const NumericalCompl
 }
 
 /* Get the DDF of the distribution (for a sample) */
-NumericalSample Distribution::computeDDF(const NumericalSample & sample) const
+Sample Distribution::computeDDF(const Sample & sample) const
 {
   return getImplementation()->computeDDF(sample);
 }
 
 /* Get the PDF of the distribution (for a sample) */
-NumericalSample Distribution::computePDF(const NumericalSample & sample) const
+Sample Distribution::computePDF(const Sample & sample) const
 {
   return getImplementation()->computePDF(sample);
 }
 
-NumericalSample Distribution::computeLogPDF(const NumericalSample & sample) const
+Sample Distribution::computeLogPDF(const Sample & sample) const
 {
   return getImplementation()->computeLogPDF(sample);
 }
 
 /* Get the CDF of the distribution (for a sample) */
-NumericalSample Distribution::computeCDF(const NumericalSample & sample) const
+Sample Distribution::computeCDF(const Sample & sample) const
 {
   return getImplementation()->computeCDF(sample);
 }
 
-NumericalSample Distribution::computeComplementaryCDF(const NumericalSample & sample) const
+Sample Distribution::computeComplementaryCDF(const Sample & sample) const
 {
   return getImplementation()->computeComplementaryCDF(sample);
 }
 
-NumericalSample Distribution::computeSurvivalFunction(const NumericalSample & sample) const
+Sample Distribution::computeSurvivalFunction(const Sample & sample) const
 {
   return getImplementation()->computeSurvivalFunction(sample);
 }
@@ -528,37 +528,37 @@ NumericalScalar Distribution::computeProbability(const Interval & interval) cons
 }
 
 /*  Compute the PDF of 1D distributions over a regular grid */
-NumericalSample Distribution::computePDF(const NumericalScalar xMin,
+Sample Distribution::computePDF(const NumericalScalar xMin,
     const NumericalScalar xMax,
     const UnsignedInteger pointNumber) const
 {
-  NumericalSample grid;
+  Sample grid;
   return getImplementation()->computePDF(xMin, xMax, pointNumber, grid);
 }
 
 /*  Compute the log-PDF of 1D distributions over a regular grid */
-NumericalSample Distribution::computeLogPDF(const NumericalScalar xMin,
+Sample Distribution::computeLogPDF(const NumericalScalar xMin,
     const NumericalScalar xMax,
     const UnsignedInteger pointNumber) const
 {
-  NumericalSample grid;
+  Sample grid;
   return getImplementation()->computeLogPDF(xMin, xMax, pointNumber, grid);
 }
 
 /*  Compute the CDF of 1D distributions over a regular grid */
-NumericalSample Distribution::computeCDF(const NumericalScalar xMin,
+Sample Distribution::computeCDF(const NumericalScalar xMin,
     const NumericalScalar xMax,
     const UnsignedInteger pointNumber) const
 {
-  NumericalSample grid;
+  Sample grid;
   return getImplementation()->computeCDF(xMin, xMax, pointNumber, grid);
 }
 
-NumericalSample Distribution::computeComplementaryCDF(const NumericalScalar xMin,
+Sample Distribution::computeComplementaryCDF(const NumericalScalar xMin,
     const NumericalScalar xMax,
     const UnsignedInteger pointNumber) const
 {
-  NumericalSample grid;
+  Sample grid;
   return getImplementation()->computeComplementaryCDF(xMin, xMax, pointNumber, grid);
 }
 
@@ -568,7 +568,7 @@ NumericalPoint Distribution::computePDFGradient(const NumericalPoint & point) co
   return getImplementation()->computePDFGradient(point);
 }
 
-NumericalSample Distribution::computePDFGradient(const NumericalSample & sample) const
+Sample Distribution::computePDFGradient(const Sample & sample) const
 {
   return getImplementation()->computePDFGradient(sample);
 }
@@ -579,7 +579,7 @@ NumericalPoint Distribution::computeLogPDFGradient(const NumericalPoint & point)
   return getImplementation()->computeLogPDFGradient(point);
 }
 
-NumericalSample Distribution::computeLogPDFGradient(const NumericalSample & sample) const
+Sample Distribution::computeLogPDFGradient(const Sample & sample) const
 {
   return getImplementation()->computeLogPDFGradient(sample);
 }
@@ -591,7 +591,7 @@ NumericalPoint Distribution::computeCDFGradient(const NumericalPoint & point) co
   return getImplementation()->computeCDFGradient(point);
 }
 
-NumericalSample Distribution::computeCDFGradient(const NumericalSample & sample) const
+Sample Distribution::computeCDFGradient(const Sample & sample) const
 {
   return getImplementation()->computeCDFGradient(sample);
 }
@@ -619,7 +619,7 @@ NumericalPoint Distribution::computeQuantile(const NumericalScalar prob,
   return getImplementation()->computeQuantile(prob, tail, marginalProb);
 }
 
-NumericalSample Distribution::computeQuantile(const NumericalPoint & prob,
+Sample Distribution::computeQuantile(const NumericalPoint & prob,
     const Bool tail) const
 {
   return getImplementation()->computeQuantile(prob, tail);
@@ -692,7 +692,7 @@ LevelSet Distribution::computeMinimumVolumeLevelSetWithThreshold(const Numerical
 }
 
 /* Compute the quantile over a regular grid */
-NumericalSample Distribution::computeQuantile(const NumericalScalar qMin,
+Sample Distribution::computeQuantile(const NumericalScalar qMin,
     const NumericalScalar qMax,
     const UnsignedInteger pointNumber,
     const Bool tail) const
@@ -749,13 +749,13 @@ Bool Distribution::hasIndependentCopula() const
 }
 
 /* Get the support of a distribution that intersect a given interval */
-NumericalSample Distribution::getSupport(const Interval & interval) const
+Sample Distribution::getSupport(const Interval & interval) const
 {
   return getImplementation()->getSupport(interval);
 }
 
 /* Get the support on the whole range */
-NumericalSample Distribution::getSupport() const
+Sample Distribution::getSupport() const
 {
   return getImplementation()->getSupport();
 }
@@ -829,7 +829,7 @@ NumericalScalar Distribution::computeConditionalPDF(const NumericalScalar x, con
   return getImplementation()->computeConditionalPDF(x, y);
 }
 
-NumericalPoint Distribution::computeConditionalPDF(const NumericalPoint & x, const NumericalSample & y) const
+NumericalPoint Distribution::computeConditionalPDF(const NumericalPoint & x, const Sample & y) const
 {
   return getImplementation()->computeConditionalPDF(x, y);
 }
@@ -840,7 +840,7 @@ NumericalScalar Distribution::computeConditionalCDF(const NumericalScalar x, con
   return getImplementation()->computeConditionalCDF(x, y);
 }
 
-NumericalPoint Distribution::computeConditionalCDF(const NumericalPoint & x, const NumericalSample & y) const
+NumericalPoint Distribution::computeConditionalCDF(const NumericalPoint & x, const Sample & y) const
 {
   return getImplementation()->computeConditionalCDF(x, y);
 }
@@ -851,7 +851,7 @@ NumericalScalar Distribution::computeConditionalQuantile(const NumericalScalar q
   return getImplementation()->computeConditionalQuantile(q, y);
 }
 
-NumericalPoint Distribution::computeConditionalQuantile(const NumericalPoint & q, const NumericalSample & y) const
+NumericalPoint Distribution::computeConditionalQuantile(const NumericalPoint & q, const Sample & y) const
 {
   return getImplementation()->computeConditionalQuantile(q, y);
 }

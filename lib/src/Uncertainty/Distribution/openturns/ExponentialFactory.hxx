@@ -45,10 +45,10 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build(const NumericalSample & sample) const;
+  Implementation build(const Sample & sample) const;
   Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
-  Exponential buildAsExponential(const NumericalSample & sample) const;
+  Exponential buildAsExponential(const Sample & sample) const;
   Exponential buildAsExponential(const NumericalPoint & parameters) const;
   Exponential buildAsExponential() const;
 

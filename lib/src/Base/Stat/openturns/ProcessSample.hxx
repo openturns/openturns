@@ -25,7 +25,7 @@
 #include "openturns/NumericalPoint.hxx"
 //#include "TimeGrid.hxx"
 #include "openturns/Field.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
 
@@ -44,8 +44,8 @@ class OT_API ProcessSample
 public:
 
   /** Some typedefs to ease reading */
-  typedef Collection<NumericalSample>           NumericalSampleCollection;
-  typedef PersistentCollection<NumericalSample> NumericalSamplePersistentCollection;
+  typedef Collection<Sample>           SampleCollection;
+  typedef PersistentCollection<Sample> SamplePersistentCollection;
 
   /** Default constructor */
   ProcessSample();
@@ -61,15 +61,15 @@ public:
   /** Partial copy constructor */
   void add(const Field & field);
 
-  void add(const NumericalSample & sample);
+  void add(const Sample & sample);
 
 #ifndef SWIG
 
   /** Operators accessors */
   void setField (const Field & field, const UnsignedInteger i);
   Field getField (const UnsignedInteger i) const;
-  NumericalSample & operator[] (const UnsignedInteger i);
-  const NumericalSample & operator[] (const UnsignedInteger i) const;
+  Sample & operator[] (const UnsignedInteger i);
+  const Sample & operator[] (const UnsignedInteger i) const;
 
 #endif
 
@@ -96,10 +96,10 @@ public:
   Field computeMean() const;
 
   /** Temporal mean accessor */
-  NumericalSample computeTemporalMean() const;
+  Sample computeTemporalMean() const;
 
   /** Spatial mean accessor */
-  NumericalSample computeSpatialMean() const;
+  Sample computeSpatialMean() const;
 
   /**  Method computeQuantilePerComponent() gives the quantile per component of the sample */
   Field computeQuantilePerComponent(const NumericalScalar prob) const;
@@ -124,8 +124,8 @@ private:
   /** Mesh on which the ProcessSample focuses */
   Mesh mesh_;
 
-  /** NumericalSample collection of all the fields */
-  NumericalSamplePersistentCollection data_;
+  /** Sample collection of all the fields */
+  SamplePersistentCollection data_;
 
 }; /* class ProcessSample */
 

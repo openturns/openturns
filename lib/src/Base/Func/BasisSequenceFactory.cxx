@@ -66,15 +66,15 @@ Bool BasisSequenceFactory::getVerbose() const
 }
 
 /* Method to create new BasisSequence objects */
-BasisSequence BasisSequenceFactory::build(const NumericalSample & x,
-    const NumericalSample & y,
+BasisSequence BasisSequenceFactory::build(const Sample & x,
+    const Sample & y,
     const Basis & psi,
     const Indices & indices)
 {
   return getImplementation()->build(x, y, psi, indices);
 }
 
-BasisSequence BasisSequenceFactory::build(const NumericalSample & y,
+BasisSequence BasisSequenceFactory::build(const Sample & y,
     const Indices & indices,
     const DesignProxy & proxy)
 {
@@ -82,7 +82,7 @@ BasisSequence BasisSequenceFactory::build(const NumericalSample & y,
 }
 
 BasisSequence BasisSequenceFactory::build(LeastSquaresMethod & method,
-                                          const NumericalSample & y)
+                                          const Sample & y)
 {
   return getImplementation()->build(method, y);
 }
@@ -93,7 +93,7 @@ void BasisSequenceFactory::initialize()
 }
 
 void BasisSequenceFactory::updateBasis(LeastSquaresMethod & method,
-                                       const NumericalSample & y)
+                                       const Sample & y)
 {
   getImplementation()->updateBasis(method, y);
 }

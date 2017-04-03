@@ -52,7 +52,7 @@ public:
   /** Constructor with parameters*/
   RandomWalkMetropolisHastings(const Distribution & prior,
                                const Distribution & conditional,
-                               const NumericalSample & observations,
+                               const Sample & observations,
                                const NumericalPoint & initialState,
                                const DistributionCollection & proposal);
 
@@ -60,8 +60,8 @@ public:
   RandomWalkMetropolisHastings(const Distribution & prior,
                                const Distribution & conditional,
                                const Function & model,
-                               const NumericalSample & parameters,
-                               const NumericalSample & observations,
+                               const Sample & parameters,
+                               const Sample & observations,
                                const NumericalPoint & initialState,
                                const DistributionCollection & proposal);
 

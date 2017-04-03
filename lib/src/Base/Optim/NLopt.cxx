@@ -204,8 +204,8 @@ void NLopt::run()
   const nlopt::algorithm algo = static_cast<nlopt::algorithm>(GetAlgorithmCode(algoName_));
 
   // initialize history
-  evaluationInputHistory_ = NumericalSample(0, dimension);
-  evaluationOutputHistory_ = NumericalSample(0, 1);
+  evaluationInputHistory_ = Sample(0, dimension);
+  evaluationOutputHistory_ = Sample(0, 1);
 
   nlopt::opt opt(algo, dimension);
 

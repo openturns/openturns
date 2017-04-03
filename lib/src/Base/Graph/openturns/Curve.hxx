@@ -22,7 +22,7 @@
 #define OPENTURNS_CURVE_HXX
 
 #include "openturns/DrawableImplementation.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -46,12 +46,12 @@ public:
   explicit Curve(const String & legend = "");
 
   /** Default constructor */
-  explicit Curve(const NumericalSample & data,
+  explicit Curve(const Sample & data,
                  const String & legend = "");
 
   /** Contructor from 2 data sets */
-  Curve(const NumericalSample & dataX,
-        const NumericalSample & dataY,
+  Curve(const Sample & dataX,
+        const Sample & dataY,
         const String & legend = "");
 
   /** Contructor from 2 data sets */
@@ -60,7 +60,7 @@ public:
         const String & legend = "");
 
   /** Constructor with parameters */
-  Curve(const NumericalSample & data,
+  Curve(const Sample & data,
         const String & color,
         const String & lineStyle,
         const UnsignedInteger lineWidth = 1,
@@ -83,7 +83,7 @@ public:
 
 protected:
   /** Check fo data validity */
-  virtual void checkData(const NumericalSample & data) const;
+  virtual void checkData(const Sample & data) const;
 
 private:
 

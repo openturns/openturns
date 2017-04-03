@@ -33,14 +33,14 @@ int main(int argc, char *argv[])
   {
 
     /* Database construction */
-    NumericalSample inputSample(0, 2);
+    Sample inputSample(0, 2);
     inputSample.add(NumericalPoint(2, 1.0));
     inputSample.add(NumericalPoint(2, 2.0));
     Description inputDescription(0);
     inputDescription.add("x0");
     inputDescription.add("x1");
     inputSample.setDescription(inputDescription);
-    NumericalSample outputSample(0, 1);
+    Sample outputSample(0, 1);
     outputSample.add(NumericalPoint(1, 4.0));
     outputSample.add(NumericalPoint(1, 5.0));
     Description outputDescription(0);

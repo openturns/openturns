@@ -117,7 +117,7 @@ void KarhunenLoeveP1Algorithm::run()
   SquareComplexMatrix eigenVectorsComplex;
   SquareMatrix::NumericalComplexCollection eigenValuesComplex(M.computeEV(eigenVectorsComplex, false));
   LOGINFO("Post-process the eigenvalue problem");
-  NumericalSample eigenPairs(augmentedDimension, augmentedDimension + 1);
+  Sample eigenPairs(augmentedDimension, augmentedDimension + 1);
   for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
   {
     for (UnsignedInteger j = 0; j < augmentedDimension; ++j) eigenPairs[i][j] = eigenVectorsComplex(j, i).real();
@@ -147,7 +147,7 @@ void KarhunenLoeveP1Algorithm::run()
   Basis modes(0);
   ProcessSample modesAsProcessSample(mesh_, 0, dimension);
   const UnsignedInteger meshDimension = mesh_.getDimension();
-  NumericalSampleImplementation values(numVertices, dimension);
+  SampleImplementation values(numVertices, dimension);
   UnsignedInteger index = 0;
   for (UnsignedInteger k = 0; k < K; ++k)
   {

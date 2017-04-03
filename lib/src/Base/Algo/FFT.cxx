@@ -117,7 +117,7 @@ ComplexMatrix FFT::transform2D(const Matrix & matrix) const
 }
 
 /** FFT 2D transformation on complex */
-ComplexMatrix FFT::transform2D(const NumericalSample & sample) const
+ComplexMatrix FFT::transform2D(const Sample & sample) const
 {
   return getImplementation()->transform2D(sample);
 }
@@ -194,7 +194,7 @@ ComplexMatrix FFT::inverseTransform2D(const Matrix & matrix) const
 }
 
 /** IFFT 2D transformation on sample */
-ComplexMatrix FFT::inverseTransform2D(const NumericalSample & sample) const
+ComplexMatrix FFT::inverseTransform2D(const Sample & sample) const
 {
   return getImplementation()->inverseTransform2D(sample);
 }

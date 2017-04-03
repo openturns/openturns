@@ -60,7 +60,8 @@
  * Added computeWeight() to Mesh
  * Deprecated NumericalMathFunction ctors
  * Deprecated NumericalMathFunction for Function
-
+ * Deprecated NumericalSample for Sample
+ 
 === Python module ===
 
 === Miscellaneous ===

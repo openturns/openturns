@@ -27,7 +27,7 @@
 #include "openturns/Interval.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Collection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -60,10 +60,10 @@ public:
   virtual NumericalPoint generate() const;
 
   /** Generate a sample of pseudo-random vectors of numbers uniformly distributed over [0, 1) */
-  virtual NumericalSample generate(const UnsignedInteger size) const;
+  virtual Sample generate(const UnsignedInteger size) const;
 
   /** Compute the star discrepancy of a sample uniformly distributed over [0, 1) */
-  static NumericalScalar ComputeStarDiscrepancy(const NumericalSample & sample);
+  static NumericalScalar ComputeStarDiscrepancy(const Sample & sample);
 
   /** String converter */
   virtual String __repr__() const;
@@ -76,7 +76,7 @@ public:
 
 private:
   /** Compute the local discrepancy of a sample, given a multidimensionnal interval */
-  static NumericalScalar ComputeLocalDiscrepancy(const NumericalSample & sample,
+  static NumericalScalar ComputeLocalDiscrepancy(const Sample & sample,
       const Interval & interval);
 
 protected:

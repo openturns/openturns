@@ -69,7 +69,7 @@ public:
   virtual NumericalPoint getRealization() const;
 
   /** Numerical sample accessor */
-  virtual NumericalSample getSample(const UnsignedInteger size) const;
+  virtual Sample getSample(const UnsignedInteger size) const;
 
   /** Mean accessor */
   virtual NumericalPoint getMean() const;

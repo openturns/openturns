@@ -68,13 +68,13 @@ RandomizedQuasiMonteCarlo * RandomizedQuasiMonteCarlo::clone() const
 
 
 /* Compute the block sample */
-NumericalSample RandomizedQuasiMonteCarlo::computeBlockSample()
+Sample RandomizedQuasiMonteCarlo::computeBlockSample()
 {
   // Size of a block
   const UnsignedInteger blockSize = getBlockSize();
 
   // allocate the input sample
-  NumericalSample inputSample(lowDiscrepancySequence_.generate(blockSize));
+  Sample inputSample(lowDiscrepancySequence_.generate(blockSize));
 
   // for each point of the sample
   for(UnsignedInteger index = 0; index < blockSize; ++index)
@@ -90,7 +90,7 @@ NumericalSample RandomizedQuasiMonteCarlo::computeBlockSample()
   } // For index
 
   // Then, evaluate the function on this sample
-  NumericalSample blockSample(event_.getImplementation()->getFunction()(inputSample));
+  Sample blockSample(event_.getImplementation()->getFunction()(inputSample));
   for (UnsignedInteger i = 0; i < blockSize_; ++i) blockSample[i][0] = getEvent().getOperator()(blockSample[i][0], event_.getThreshold());
   return blockSample;
 }

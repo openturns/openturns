@@ -97,12 +97,12 @@ int main(int argc, char *argv[])
 
     // Test for sampling
     UnsignedInteger size = 10;
-    NumericalSample oneSample = distribution.getSample( size );
+    Sample oneSample = distribution.getSample( size );
     fullprint << "oneSample=" << oneSample << std::endl;
 
     // Test for sampling
     size = 10000;
-    NumericalSample anotherSample = distribution.getSample( size );
+    Sample anotherSample = distribution.getSample( size );
     fullprint << "anotherSample mean=" << anotherSample.computeMean() << std::endl;
     fullprint << "anotherSample covariance=" << anotherSample.computeCovariance() << std::endl;
 

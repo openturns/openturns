@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
     LHSExperiment myPlane(distribution, size);
     fullprint << "myPlane = " << myPlane << std::endl;
     NumericalPoint weights(0);
-    NumericalSample sample(myPlane.generateWithWeights(weights));
+    Sample sample(myPlane.generateWithWeights(weights));
     fullprint << "sample  = " << sample << std::endl;
     fullprint << "weights = " << weights << std::endl;
     fullprint << "sample2 = " << myPlane.generate() << std::endl;

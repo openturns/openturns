@@ -15,7 +15,7 @@ try:
             ["x1", "x2", "x3", "x4"], ["y1"], ["x1+2*x2-3*x3+4*x4"])
         myOperator = LessOrEqual()
         threshold = 2.0
-        mySample = NumericalSample(0, levelFunction.getInputDimension())
+        mySample = Sample(0, levelFunction.getInputDimension())
         random = 0.1
 
         for index in range(sampleSize):

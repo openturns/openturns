@@ -53,19 +53,19 @@ BernsteinCopulaFactory * BernsteinCopulaFactory::clone() const
 }
 
 /* Compute the number of bins according to the inverse power rule */
-UnsignedInteger BernsteinCopulaFactory::computeBinNumber(const NumericalSample & sample)
+UnsignedInteger BernsteinCopulaFactory::computeBinNumber(const Sample & sample)
 {
   return static_cast<UnsignedInteger>(1.0 + pow(sample.getSize(), 2.0 / (4.0 + sample.getDimension())));
 }
 
 struct BernsteinCopulaFactoryPolicy
 {
-  const NumericalSample input_;
+  const Sample input_;
   Mixture::DistributionCollection & output_;
   UnsignedInteger binNumber_;
   UnsignedInteger dimension_;
 
-  BernsteinCopulaFactoryPolicy(const NumericalSample & input,
+  BernsteinCopulaFactoryPolicy(const Sample & input,
                                const UnsignedInteger binNumber,
                                Mixture::DistributionCollection & output)
     : input_(input)
@@ -89,13 +89,13 @@ struct BernsteinCopulaFactoryPolicy
 }; /* end struct BernsteinCopulaFactoryPolicy */
 
 /* Build a Bernstein copula based on the given sample. The bin number is computed according to the inverse power rule */
-Distribution BernsteinCopulaFactory::build(const NumericalSample & sample)
+Distribution BernsteinCopulaFactory::build(const Sample & sample)
 {
   return build(sample, computeBinNumber(sample));
 }
 
 /* Build a Bernstein copula based on the given sample */
-Distribution BernsteinCopulaFactory::buildParallel(const NumericalSample & empiricalCopulaSample,
+Distribution BernsteinCopulaFactory::buildParallel(const Sample & empiricalCopulaSample,
     const UnsignedInteger binNumber)
 {
   const UnsignedInteger size = empiricalCopulaSample.getSize();
@@ -108,7 +108,7 @@ Distribution BernsteinCopulaFactory::buildParallel(const NumericalSample & empir
   return result;
 }
 
-Distribution BernsteinCopulaFactory::buildSequential(const NumericalSample & empiricalCopulaSample,
+Distribution BernsteinCopulaFactory::buildSequential(const Sample & empiricalCopulaSample,
     const UnsignedInteger binNumber)
 {
   const UnsignedInteger size = empiricalCopulaSample.getSize();
@@ -129,7 +129,7 @@ Distribution BernsteinCopulaFactory::buildSequential(const NumericalSample & emp
   return result;
 }
 
-Distribution BernsteinCopulaFactory::build(const NumericalSample & sample,
+Distribution BernsteinCopulaFactory::build(const Sample & sample,
     const UnsignedInteger binNumber)
 {
   if (binNumber == 0) throw InvalidDimensionException(HERE) << "Error: the bin number must be positive for the BernsteinCopulaFactory";
@@ -137,7 +137,7 @@ Distribution BernsteinCopulaFactory::build(const NumericalSample & sample,
   if (size == 0) throw InvalidDimensionException(HERE) << "Error: cannot build a copula using the Bernstein copula factory based on an empty sample";
   const UnsignedInteger dimension = sample.getDimension();
   LOGINFO("BernsteinCopulaFactory - Create the empirical copula sample");
-  const NumericalSample empiricalCopulaSample(sample.rank() * NumericalPoint(dimension, (1.0 - SpecFunc::NumericalScalarEpsilon) / size));
+  const Sample empiricalCopulaSample(sample.rank() * NumericalPoint(dimension, (1.0 - SpecFunc::NumericalScalarEpsilon) / size));
   if (isParallel_)
     return buildParallel(empiricalCopulaSample, binNumber);
   return buildSequential(empiricalCopulaSample, binNumber);

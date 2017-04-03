@@ -55,11 +55,11 @@ String SpaceFillingMinDist::__repr__() const
 }
 
 /** Evaluate criterion on a sample */
-NumericalScalar SpaceFillingMinDist::evaluate(const NumericalSample & sample) const
+NumericalScalar SpaceFillingMinDist::evaluate(const Sample & sample) const
 {
   const UnsignedInteger size(sample.getSize());
   const UnsignedInteger dimension(sample.getDimension());
-  const NumericalSample normalizedSample(normalize(sample));
+  const Sample normalizedSample(normalize(sample));
   const NumericalScalar* addr_sample = &normalizedSample[0][0];
   NumericalScalar minDist = std::numeric_limits<NumericalScalar>::max();
   for (UnsignedInteger i = 0; i < size; ++i)

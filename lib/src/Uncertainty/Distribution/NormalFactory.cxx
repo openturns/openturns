@@ -45,7 +45,7 @@ NormalFactory * NormalFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-NormalFactory::Implementation NormalFactory::build(const NumericalSample & sample) const
+NormalFactory::Implementation NormalFactory::build(const Sample & sample) const
 {
   return buildAsNormal(sample).clone();
 }
@@ -60,7 +60,7 @@ NormalFactory::Implementation NormalFactory::build(const NumericalPoint & parame
   return buildAsNormal(parameters).clone();
 }
 
-Normal NormalFactory::buildAsNormal(const NumericalSample & sample) const
+Normal NormalFactory::buildAsNormal(const Sample & sample) const
 {
   if (sample.getSize() < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Normal distribution from a sample of size < 2";
   const NumericalPoint mean(sample.computeMean());
@@ -93,7 +93,7 @@ Normal NormalFactory::buildAsNormal() const
 }
 
 
-DistributionFactoryResult NormalFactory::buildEstimator(const NumericalSample & sample) const
+DistributionFactoryResult NormalFactory::buildEstimator(const Sample & sample) const
 {
   if (sample.getDimension() > 1) return buildBootStrapEstimator(sample);
   Normal distribution(buildAsNormal(sample));

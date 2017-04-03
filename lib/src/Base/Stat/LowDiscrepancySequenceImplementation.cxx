@@ -72,16 +72,16 @@ NumericalPoint LowDiscrepancySequenceImplementation::generate() const
 
 
 /* Generate a sample of pseudo-random vectors of numbers uniformly distributed over [0, 1) */
-NumericalSample LowDiscrepancySequenceImplementation::generate(const UnsignedInteger size) const
+Sample LowDiscrepancySequenceImplementation::generate(const UnsignedInteger size) const
 {
-  NumericalSample sequenceSample(size, dimension_);
+  Sample sequenceSample(size, dimension_);
   for(UnsignedInteger i = 0; i < size ; ++i) sequenceSample[i] = generate();
   return sequenceSample;
 }
 
 
 /* Compute the star discrepancy of a sample uniformly distributed over [0, 1) */
-NumericalScalar LowDiscrepancySequenceImplementation::ComputeStarDiscrepancy(const NumericalSample & sample)
+NumericalScalar LowDiscrepancySequenceImplementation::ComputeStarDiscrepancy(const Sample & sample)
 {
   // computationnaly heavy function : O(N²), let N the size of the sample
   const UnsignedInteger size = sample.getSize();
@@ -126,7 +126,7 @@ void LowDiscrepancySequenceImplementation::load(Advocate & adv)
 
 
 /* Compute the local discrepancy of a sample, given a multidimensionnal interval */
-NumericalScalar LowDiscrepancySequenceImplementation::ComputeLocalDiscrepancy(const NumericalSample & sample,
+NumericalScalar LowDiscrepancySequenceImplementation::ComputeLocalDiscrepancy(const Sample & sample,
     const Interval & interval)
 {
   if (sample.getDimension() != interval.getDimension()) throw InvalidArgumentException(HERE) << "Error: the sample must have the same dimension as the given interval.";

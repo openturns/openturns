@@ -93,7 +93,7 @@ void ConditionedNormalProcess::initialize()
 {
   if (isInitialized_) return;
   // Build the covariance factor
-  NumericalSample vertices(mesh_.getVertices());
+  Sample vertices(mesh_.getVertices());
   // Build the covariance matrix
   CovarianceMatrix covarianceMatrix(krigingResult_.getConditionalCovariance(vertices));
   // Get the Cholesky factor
@@ -124,7 +124,7 @@ void ConditionedNormalProcess::setMesh(const Mesh & mesh)
   // Set the mesh
   isInitialized_ = false;
   ProcessImplementation::setMesh(mesh);
-  trendEvaluationMesh_ = NumericalSample(0, 0);
+  trendEvaluationMesh_ = Sample(0, 0);
   initialize();
 }
 
@@ -154,7 +154,7 @@ Field ConditionedNormalProcess::getRealization() const
   // 2) X <- LX
   gaussianPoint = covarianceCholeskyFactor_ * gaussianPoint;
   const UnsignedInteger size = getMesh().getVerticesNumber();
-  NumericalSample values(size, getDimension());
+  Sample values(size, getDimension());
   values.getImplementation()->setData(gaussianPoint);
 
   // 3) Add the trend part

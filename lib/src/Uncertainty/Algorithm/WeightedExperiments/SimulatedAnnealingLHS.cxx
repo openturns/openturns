@@ -51,7 +51,7 @@ SimulatedAnnealingLHS::SimulatedAnnealingLHS(const LHSExperiment & lhs, const Te
 }
 
 /** SimulatedAnnealingLHS constructor with LHS*/
-SimulatedAnnealingLHS::SimulatedAnnealingLHS (const NumericalSample & initialDesign,
+SimulatedAnnealingLHS::SimulatedAnnealingLHS (const Sample & initialDesign,
                                               const Distribution & distribution,
                                               const TemperatureProfile & profile,
                                               const SpaceFilling & spaceFilling)
@@ -80,13 +80,13 @@ SimulatedAnnealingLHS * SimulatedAnnealingLHS::clone() const
 }
 
 /* Generate design method */
-NumericalSample SimulatedAnnealingLHS::generateWithWeights(NumericalPoint & weights) const
+Sample SimulatedAnnealingLHS::generateWithWeights(NumericalPoint & weights) const
 {
   weights = NumericalPoint(size_, 1.0 / size_);
   return generateWithRestart(0);
 }
 
-NumericalSample SimulatedAnnealingLHS::generateWithRestart(UnsignedInteger nRestart) const
+Sample SimulatedAnnealingLHS::generateWithRestart(UnsignedInteger nRestart) const
 {
   // LHSResult returns resuls for all restarts
   LHSResult result(spaceFilling_, nRestart);
@@ -94,7 +94,7 @@ NumericalSample SimulatedAnnealingLHS::generateWithRestart(UnsignedInteger nRest
   {
     // history has dimension 3 :crit, proba & temperature
     // Total size depends on convergency
-    NumericalSample history(0, 3);
+    Sample history(0, 3);
     Description historyDescription(3);
     historyDescription[0] = spaceFilling_.getImplementation()->getName() + " criterion";
     historyDescription[1] = "Probability";
@@ -103,7 +103,7 @@ NumericalSample SimulatedAnnealingLHS::generateWithRestart(UnsignedInteger nRest
     LOGDEBUG("Starting simulated annealing process");
 
     // Starting sample, in the [0,1]^d space
-    NumericalSample optimalDesign(rankTransform(initialDesign_.getSize() > 0 ? initialDesign_ : lhs_.generate()));
+    Sample optimalDesign(rankTransform(initialDesign_.getSize() > 0 ? initialDesign_ : lhs_.generate()));
 
     // Starting implementation
     UnsignedInteger iteration(0);
@@ -152,7 +152,7 @@ NumericalSample SimulatedAnnealingLHS::generateWithRestart(UnsignedInteger nRest
     }
     LOGDEBUG("End of simulated annealing process");
     // Transform again optimalDesign
-    NumericalSample optimalDesignX(inverseRankTransform(optimalDesign));
+    Sample optimalDesignX(inverseRankTransform(optimalDesign));
     // Add elements to result
     result.add(optimalDesignX, optimalValue, SpaceFillingC2().evaluate(optimalDesign), SpaceFillingPhiP().evaluate(optimalDesign), SpaceFillingMinDist().evaluate(optimalDesign), history);
   }

@@ -31,7 +31,7 @@ static const Factory<PolygonArray> Factory_PolygonArray;
 
 /* Default constructor */
 PolygonArray::PolygonArray(const String & legend)
-  : DrawableImplementation(NumericalSample(0, 2), legend)
+  : DrawableImplementation(Sample(0, 2), legend)
   , verticesNumber_(2)
   , palette_(0)
   , paletteFileName_("")
@@ -42,7 +42,7 @@ PolygonArray::PolygonArray(const String & legend)
 /* Default constructor */
 PolygonArray::PolygonArray(const PolygonCollection & polygons,
                            const String & legend)
-  : DrawableImplementation(NumericalSample(0, 2), legend)
+  : DrawableImplementation(Sample(0, 2), legend)
   , verticesNumber_(2)
   , palette_(0)
   , paletteFileName_("")
@@ -55,11 +55,11 @@ PolygonArray::PolygonArray(const PolygonCollection & polygons,
     // The first polygon gives the number of vertices
     verticesNumber_ = polygons[0].getData().getSize();
     if (verticesNumber_ < 2) throw InvalidArgumentException(HERE) << "Error: cannot have polygons with less than 2 vertices.";
-    data_ = NumericalSample(size * verticesNumber_, 2);
+    data_ = Sample(size * verticesNumber_, 2);
     UnsignedInteger index = 0;
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const NumericalSample polygonData(polygons[i].getData());
+      const Sample polygonData(polygons[i].getData());
       if (polygonData.getSize() != verticesNumber_) throw InvalidArgumentException(HERE) << "Error: expected polygons with " << verticesNumber_ << " but polygon " << i << " has " << polygonData.getSize() << " vertices.";
       for (UnsignedInteger j = 0; j < verticesNumber_; ++j)
       {
@@ -72,11 +72,11 @@ PolygonArray::PolygonArray(const PolygonCollection & polygons,
 }
 
 /* Contructor from 2 data sets */
-PolygonArray::PolygonArray(const NumericalSample & coordinates,
+PolygonArray::PolygonArray(const Sample & coordinates,
                            const UnsignedInteger verticesNumber,
                            const Description & palette,
                            const String & legend)
-  : DrawableImplementation(NumericalSample(0, 2), legend)
+  : DrawableImplementation(Sample(0, 2), legend)
   , verticesNumber_(0)
   , palette_(palette)
   , paletteFileName_("")
@@ -156,7 +156,7 @@ PolygonArray * PolygonArray::clone() const
   return new PolygonArray(*this);
 }
 /* Check validity of data */
-void PolygonArray::checkData(const NumericalSample & data) const
+void PolygonArray::checkData(const Sample & data) const
 {
   if (data.getDimension() != 2)
   {
@@ -177,7 +177,7 @@ Description PolygonArray::getPalette() const
 }
 
 /* Coordinates and vertices number of the vertices of the polygons */
-void PolygonArray::setCoordinatesAndVerticesNumber(const NumericalSample & coordinates,
+void PolygonArray::setCoordinatesAndVerticesNumber(const Sample & coordinates,
     const UnsignedInteger verticesNumber)
 {
   if (verticesNumber < 2) throw InvalidArgumentException(HERE) << "Error: cannot have polygons with less than 2 vertices.";
@@ -187,7 +187,7 @@ void PolygonArray::setCoordinatesAndVerticesNumber(const NumericalSample & coord
 }
 
 /* Coordinates accessor */
-NumericalSample PolygonArray::getCoordinates() const
+Sample PolygonArray::getCoordinates() const
 {
   return getData();
 }

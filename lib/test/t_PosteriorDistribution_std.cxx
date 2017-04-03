@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
       fullprint << "conditioning distribution=" << conditioningDistributionCollection[i].__str__() << std::endl;
       Distribution observationsDistribution(conditionedDistribution);
       observationsDistribution.setParameter(conditioningDistributionCollection[i].getMean());
-      NumericalSample observations(observationsDistribution.getSample(observationsSize));
+      Sample observations(observationsDistribution.getSample(observationsSize));
       PosteriorDistribution distribution(ConditionalDistribution(conditionedDistribution, conditioningDistributionCollection[i]), observations);
       UnsignedInteger dim = distribution.getDimension();
       fullprint << "Distribution " << distribution << std::endl;
@@ -89,12 +89,12 @@ int main(int argc, char *argv[])
 
       // Test for sampling
       UnsignedInteger size = 10;
-      NumericalSample oneSample = distribution.getSample(size);
+      Sample oneSample = distribution.getSample(size);
       fullprint << "oneSample=" << oneSample << std::endl;
 
       // Test for sampling
 //       size = 10000;
-//       NumericalSample anotherSample = distribution.getSample(size);
+//       Sample anotherSample = distribution.getSample(size);
 //       fullprint << "anotherSample mean=" << anotherSample.computeMean() << std::endl;
 //       fullprint << "anotherSample covariance=" << anotherSample.computeCovariance() << std::endl;
 

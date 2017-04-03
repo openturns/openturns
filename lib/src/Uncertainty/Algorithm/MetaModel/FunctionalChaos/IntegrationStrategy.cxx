@@ -62,17 +62,17 @@ IntegrationStrategy::IntegrationStrategy(const Distribution & measure,
 }
 
 /* Parameter constructor */
-IntegrationStrategy::IntegrationStrategy(const NumericalSample & inputSample,
+IntegrationStrategy::IntegrationStrategy(const Sample & inputSample,
     const NumericalPoint & weights,
-    const NumericalSample & outputSample)
+    const Sample & outputSample)
   : ProjectionStrategyImplementation(inputSample, weights, outputSample)
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
-IntegrationStrategy::IntegrationStrategy(const NumericalSample & inputSample,
-    const NumericalSample & outputSample)
+IntegrationStrategy::IntegrationStrategy(const Sample & inputSample,
+    const Sample & outputSample)
   : ProjectionStrategyImplementation(inputSample, NumericalPoint(inputSample.getSize(), 1.0 / inputSample.getSize()), outputSample)
 {
   // Nothing to do

@@ -46,18 +46,18 @@ public:
   virtual LARS * clone() const;
 
   /** Method to create new BasisSequence objects */
-  virtual BasisSequence build(const NumericalSample & x,
-                              const NumericalSample & y,
+  virtual BasisSequence build(const Sample & x,
+                              const Sample & y,
                               const Basis & psi,
                               const Indices & indices);
 #ifndef SWIG
-//   virtual BasisSequence build(const NumericalSample & y,
+//   virtual BasisSequence build(const Sample & y,
 //                               const Indices & indices,
 //                               const DesignProxy & proxy);
 
   virtual void initialize();
   virtual void updateBasis(LeastSquaresMethod & method,
-                            const NumericalSample & y);
+                            const Sample & y);
 #endif
   /** String converter */
   virtual String __repr__() const;

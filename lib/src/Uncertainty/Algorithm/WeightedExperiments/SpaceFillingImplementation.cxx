@@ -46,13 +46,13 @@ SpaceFillingImplementation * SpaceFillingImplementation::clone() const
 }
 
 /** Evaluate criterion on a sample */
-NumericalScalar SpaceFillingImplementation::evaluate(const NumericalSample & sample) const
+NumericalScalar SpaceFillingImplementation::evaluate(const Sample & sample) const
 {
   throw NotYetImplementedException(HERE);
 }
 
 /** Compute criterion when performing an elementary perturbation */
-NumericalScalar SpaceFillingImplementation::perturbLHS(NumericalSample& oldDesign, NumericalScalar oldCriterion,
+NumericalScalar SpaceFillingImplementation::perturbLHS(Sample& oldDesign, NumericalScalar oldCriterion,
     UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const
 {
   // Default method uses O(N*N) computations
@@ -66,7 +66,7 @@ NumericalScalar SpaceFillingImplementation::perturbLHS(NumericalSample& oldDesig
 }
 
 /** Rescale argument if it does not belong to the unit cube */
-NumericalSample SpaceFillingImplementation::normalize(const NumericalSample & sample) const
+Sample SpaceFillingImplementation::normalize(const Sample & sample) const
 {
   const UnsignedInteger dimension(sample.getDimension());
   const NumericalPoint minPoint(sample.getMin());
@@ -84,7 +84,7 @@ NumericalSample SpaceFillingImplementation::normalize(const NumericalSample & sa
 
   LOGWARN(OSS() << "Sample must be normalized");
   const NumericalPoint delta(maxPoint - minPoint);
-  NumericalSample result(sample - minPoint);
+  Sample result(sample - minPoint);
   return result / delta;
 }
 

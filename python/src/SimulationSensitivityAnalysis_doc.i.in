@@ -141,7 +141,7 @@ operator : :class:`~openturns.ComparisonOperator`
 
 Returns
 -------
-inputSample : :class:`~openturns.NumericalSample`
+inputSample : :class:`~openturns.Sample`
     The input sample."
 
 // ---------------------------------------------------------------------
@@ -151,7 +151,7 @@ inputSample : :class:`~openturns.NumericalSample`
 
 Returns
 -------
-outputSample : :class:`~openturns.NumericalSample`
+outputSample : :class:`~openturns.Sample`
     The output sample."
 
 // ---------------------------------------------------------------------

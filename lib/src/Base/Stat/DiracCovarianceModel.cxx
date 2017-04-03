@@ -155,12 +155,12 @@ CovarianceMatrix DiracCovarianceModel::operator() (const NumericalPoint & tau) c
 // The following structure helps to compute the full covariance matrix
 struct DiracCovarianceModelDiscretizePolicy
 {
-  const NumericalSample & input_;
+  const Sample & input_;
   CovarianceMatrix & output_;
   const DiracCovarianceModel & model_;
   const UnsignedInteger dimension_;
 
-  DiracCovarianceModelDiscretizePolicy(const NumericalSample & input,
+  DiracCovarianceModelDiscretizePolicy(const Sample & input,
                                        CovarianceMatrix & output,
                                        const DiracCovarianceModel & model)
     : input_(input)
@@ -181,7 +181,7 @@ struct DiracCovarianceModelDiscretizePolicy
   }
 }; /* end struct DiracCovarianceModelDiscretizePolicy */
 
-CovarianceMatrix DiracCovarianceModel::discretize(const NumericalSample & vertices) const
+CovarianceMatrix DiracCovarianceModel::discretize(const Sample & vertices) const
 {
   if (vertices.getDimension() != spatialDimension_)
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretize, the given sample has a dimension=" << vertices.getDimension()
@@ -204,12 +204,12 @@ CovarianceMatrix DiracCovarianceModel::discretize(const NumericalSample & vertic
 // The following structure helps to compute the full covariance matrix
 struct DiracCovarianceModelDiscretizeAndFactorizePolicy
 {
-  const NumericalSample & input_;
+  const Sample & input_;
   TriangularMatrix & output_;
   const DiracCovarianceModel & model_;
   const UnsignedInteger dimension_;
 
-  DiracCovarianceModelDiscretizeAndFactorizePolicy(const NumericalSample & input,
+  DiracCovarianceModelDiscretizeAndFactorizePolicy(const Sample & input,
       TriangularMatrix & output,
       const DiracCovarianceModel & model)
     : input_(input)
@@ -230,7 +230,7 @@ struct DiracCovarianceModelDiscretizeAndFactorizePolicy
   }
 }; /* end struct DiracCovarianceModelDiscretizeAndFactorizePolicy */
 
-TriangularMatrix DiracCovarianceModel::discretizeAndFactorize(const NumericalSample & vertices) const
+TriangularMatrix DiracCovarianceModel::discretizeAndFactorize(const Sample & vertices) const
 {
   if (vertices.getDimension() != spatialDimension_)
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretize, the given sample has a dimension=" << vertices.getDimension()
@@ -250,7 +250,7 @@ TriangularMatrix DiracCovarianceModel::discretizeAndFactorize(const NumericalSam
   return covarianceFactor;
 }
 
-NumericalSample DiracCovarianceModel::discretizeRow(const NumericalSample & vertices,
+Sample DiracCovarianceModel::discretizeRow(const Sample & vertices,
     const UnsignedInteger p) const
 {
   if (vertices.getDimension() != spatialDimension_)
@@ -263,7 +263,7 @@ NumericalSample DiracCovarianceModel::discretizeRow(const NumericalSample & vert
                                          << ", here, p=" << p;
 
   const UnsignedInteger size = vertices.getSize();
-  NumericalSample result(size * dimension_, dimension_);
+  Sample result(size * dimension_, dimension_);
   for(UnsignedInteger j = 0; j < dimension_; ++j)
     for(UnsignedInteger i = j; i < dimension_; ++i)
       result[p * dimension_ + i][j] = spatialCovariance_(i, j);
@@ -271,7 +271,7 @@ NumericalSample DiracCovarianceModel::discretizeRow(const NumericalSample & vert
 }
 
 // discretize with use of HMatrix
-HMatrix DiracCovarianceModel::discretizeHMatrix(const NumericalSample & vertices,
+HMatrix DiracCovarianceModel::discretizeHMatrix(const Sample & vertices,
     const NumericalScalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {

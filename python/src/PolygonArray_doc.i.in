@@ -54,7 +54,7 @@ verticesNumber : int
 
 Returns
 -------
-coordinates : :class:`~openturns.NumericalSample`
+coordinates : :class:`~openturns.Sample`
     Polygon coordinates."
 
 // ---------------------------------------------------------------------

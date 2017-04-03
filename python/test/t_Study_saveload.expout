@@ -1,5 +1,5 @@
 point =  class=NumericalPoint name=point dimension=2 values=[1000,1000]
-sample =  class=NumericalSample name=mySample implementation=class=NumericalSampleImplementation name=mySample size=3 dimension=2 data=[[100,200],[101,201],[102,202]]
+sample =  class=Sample name=mySample implementation=class=SampleImplementation name=mySample size=3 dimension=2 data=[[100,200],[101,201],[102,202]]
 matrix =  class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=3 values=[0,3,1,4,2,5]
 simulation result =  probabilityEstimate=5.000000e-01 varianceEstimate=1.000000e-02 standard deviation=1.00e-01 coefficient of variation=2.00e-01 confidenceLength(0.95)=3.92e-01 outerSampling=150 blockSize=4
 beta =  Beta(r = 3, t = 5, a = -1, b = 4)

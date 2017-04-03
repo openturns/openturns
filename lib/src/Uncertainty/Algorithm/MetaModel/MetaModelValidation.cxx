@@ -46,8 +46,8 @@ MetaModelValidation::MetaModelValidation()
 }
 
 /* Constructor with parameters */
-MetaModelValidation::MetaModelValidation(const NumericalSample & inputSample,
-    const NumericalSample & outputSample,
+MetaModelValidation::MetaModelValidation(const Sample & inputSample,
+    const Sample & outputSample,
     const Function & metaModel)
   : PersistentObject()
   , inputSample_(inputSample)
@@ -103,12 +103,12 @@ void MetaModelValidation::initialize() const
   isInitialized_ = true;
 }
 
-NumericalSample MetaModelValidation::getInputSample() const
+Sample MetaModelValidation::getInputSample() const
 {
   return inputSample_;
 }
 
-NumericalSample MetaModelValidation::getOutputSample() const
+Sample MetaModelValidation::getOutputSample() const
 {
   return outputSample_;
 }
@@ -120,7 +120,7 @@ NumericalScalar MetaModelValidation::computePredictivityFactor() const
 }
 
 /* Get residual sample */
-NumericalSample MetaModelValidation::getResidualSample() const
+Sample MetaModelValidation::getResidualSample() const
 {
   if (!isInitialized_) initialize();
   return residual_;
@@ -141,7 +141,7 @@ Distribution MetaModelValidation::getResidualDistribution(const Bool smooth) con
 Graph MetaModelValidation::drawValidation() const
 {
   // Build the first drawable
-  const NumericalSample yhat = metaModel_(inputSample_);
+  const Sample yhat = metaModel_(inputSample_);
   Curve curve(outputSample_, outputSample_);
   curve.setColor("blue");
   curve.setLegend("Model");

@@ -39,9 +39,9 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<NumericalSample>);
+TEMPLATE_CLASSNAMEINIT(PersistentCollection<Sample>);
 
-static const Factory<PersistentCollection<NumericalSample> > Factory_PersistentCollection_NumericalSample;
+static const Factory<PersistentCollection<Sample> > Factory_PersistentCollection_Sample;
 
 CLASSNAMEINIT(FieldImplementation);
 
@@ -77,7 +77,7 @@ FieldImplementation::FieldImplementation(const Mesh & mesh,
 
 /* Constructor from a Mesh and a sample */
 FieldImplementation::FieldImplementation(const Mesh & mesh,
-    const NumericalSample & values)
+    const Sample & values)
   : PersistentObject()
   , mesh_(mesh)
   , values_(values)
@@ -274,7 +274,7 @@ String FieldImplementation::__repr__() const
 
 String FieldImplementation::__str__(const String & offset) const
 {
-  NumericalSample data(mesh_.getVertices());
+  Sample data(mesh_.getVertices());
   data.stack(values_);
   return data.__str__(offset);
 }
@@ -341,26 +341,26 @@ NumericalPoint FieldImplementation::getTemporalMean() const
 }
 
 /* Return the values stored in the field as a sample */
-NumericalSample FieldImplementation::getSample() const
+Sample FieldImplementation::getSample() const
 {
   return values_;
 }
 
-NumericalSample FieldImplementation::getValues() const
+Sample FieldImplementation::getValues() const
 {
   return values_;
 }
 
-void FieldImplementation::setValues(const NumericalSample & values)
+void FieldImplementation::setValues(const Sample & values)
 {
   if (values.getSize() != mesh_.getVerticesNumber()) throw InvalidArgumentException(HERE) << "Error: expected a sample of size=" << mesh_.getVerticesNumber() << ", got size=" << values.getSize();
   values_ = values;
 }
 
 /* Return the field as a sample, ie its values and positions */
-NumericalSample FieldImplementation::asSample() const
+Sample FieldImplementation::asSample() const
 {
-  NumericalSample data(mesh_.getVertices());
+  Sample data(mesh_.getVertices());
   data.stack(values_);
   return data;
 }
@@ -369,7 +369,7 @@ NumericalSample FieldImplementation::asSample() const
 Mesh FieldImplementation::asDeformedMesh() const
 {
   if (getDimension() != getSpatialDimension()) throw InternalException(HERE) << "Error: cannot deform the mesh if the dimension of the values=" << values_.getDimension() << " does not match the mesh dimension=" << getSpatialDimension();
-  NumericalSample data(mesh_.getVertices());
+  Sample data(mesh_.getVertices());
   data += values_;
   return Mesh(data, mesh_.getSimplices());
 }
@@ -394,13 +394,13 @@ Graph FieldImplementation::draw() const
     // Get the bounding box of the mesh to set the head size of the arrow
     // It must be independent from the values as we want the same size for
     // all the arrows
-    const NumericalSample vertices(mesh_.getVertices());
+    const Sample vertices(mesh_.getVertices());
     const NumericalPoint xMin(vertices.getMin());
     const NumericalPoint xMax(vertices.getMax());
     const NumericalScalar delta = std::min(xMax[0] - xMin[0], xMax[1] - xMin[1]) * ResourceMap::GetAsNumericalScalar("Field-ArrowRatio");
     const NumericalScalar rho = ResourceMap::GetAsNumericalScalar("Field-ArrowScaling");
     const UnsignedInteger size = values_.getSize();
-    NumericalSample normValues(size, 1);
+    Sample normValues(size, 1);
     for (UnsignedInteger i = 0; i < size; ++i)
       normValues[i][0] = NumericalPoint(values_[i]).norm();
     NumericalScalar normMin = normValues.getMin()[0];
@@ -423,7 +423,7 @@ Graph FieldImplementation::draw() const
 	// Draw the arrow head only if the arrow is large enough
 	if (arrowLength > delta)
 	  {
-	    NumericalSample data(6, 2);
+	    Sample data(6, 2);
 	    const NumericalPoint u(v / arrowLength);
 	    data[0] = x;
 	    data[1] = x + v - u * delta;
@@ -439,7 +439,7 @@ Graph FieldImplementation::draw() const
 	  } // arrowLength > delta
 	else
 	  {
-	    NumericalSample data(2, 2);
+	    Sample data(2, 2);
 	    data[0] = x;
 	    data[1] = x + v;
 	    Curve curve(data);
@@ -458,7 +458,7 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
   if (index >= getDimension() ) throw InvalidArgumentException(HERE) << "Error : indice should be between [0, " << getDimension() - 1 << "]";
   const UnsignedInteger meshDimension = getSpatialDimension();
   if (meshDimension > 2) throw NotYetImplementedException(HERE) << "In FieldImplementation::drawMarginal(const UnsignedInteger index, const Bool interpolate) const: cannot draw a Field of mesh dimension greater than 2. Try the export to VTK for higher dimension.";
-  const NumericalSample marginalValues(values_.getMarginal(index));
+  const Sample marginalValues(values_.getMarginal(index));
   const String title(OSS() << getName() << " - " << index << " marginal" );
   Graph graph(title, description_[0], "Values", true, "topright");
   if (meshDimension == 1)
@@ -529,7 +529,7 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
             const NumericalPoint x0(mesh_.getVertex(i0));
             const NumericalPoint x1(mesh_.getVertex(i1));
             const NumericalPoint x2(mesh_.getVertex(i2));
-            NumericalSample data(2, 2);
+            Sample data(2, 2);
             // The first point is on the [x0, x2] segment as v0 <= level <= v2 and v0 < v2
             data[0] = x0 + ((level - v0) / (v2 - v0)) * (x2 - x0);
             // if level <= v1, the second point is on the [x0, x1] segment
@@ -554,7 +554,7 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
       const NumericalPoint xMin(mesh_.getVertices().getMin());
       for (SignedInteger i = levelsNumber - 1; i >= 0; --i)
       {
-        Cloud point(NumericalSample(1, xMin));
+        Cloud point(Sample(1, xMin));
         point.setPointStyle("none");
         point.setColor(palette[i]);
         if ((i == static_cast<SignedInteger>(levelsNumber) - 1) || (i == 0)) point.setLegend(String(OSS() << 0.001 * round(1000.0 * (minValue + i * (maxValue - minValue) / (levelsNumber - 1)))));
@@ -572,7 +572,7 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
       const UnsignedInteger simplicesNumber = mesh_.getSimplicesNumber();
       if (simplicesNumber > 0)
       {
-        NumericalSample data(0, 2);
+        Sample data(0, 2);
         Description colors(0);
         for (UnsignedInteger i = 0; i < simplicesNumber; ++i)
         {
@@ -591,7 +591,7 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
       {
         for (UnsignedInteger i = 0; i < size; ++i)
         {
-          Cloud point(NumericalSample(1, mesh_.getVertex(i)));
+          Cloud point(Sample(1, mesh_.getVertex(i)));
           const String color(palette[static_cast<UnsignedInteger>(round((size - 1) * (marginalValues[i][0] - minValue) / (maxValue - minValue)))]);
           point.setColor(color);
           point.setPointStyle("bullet");
@@ -602,7 +602,7 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
       const NumericalPoint xMin(mesh_.getVertices().getMin());
       for (SignedInteger i = levelsNumber - 1; i >= 0; --i)
       {
-        Cloud point(NumericalSample(1, xMin));
+        Cloud point(Sample(1, xMin));
         point.setPointStyle("none");
         point.setColor(palette[(i * (size - 1)) / (levelsNumber - 1)]);
         if ((i == static_cast<SignedInteger>(levelsNumber) - 1) || (i == 0)) point.setLegend(String(OSS() << 0.001 * round(1000.0 * (minValue + i * (maxValue - minValue) / (levelsNumber - 1)))));

@@ -29,7 +29,7 @@ The number of points generated is :math:`1 + 2 n_{level}n`.
 
 In order to scale each direction and translate the grid structure onto the
 proper center, use the operator :math:`*=` and :math:`+=` of
-:class:`~openturns.NumericalSample`.
+:class:`~openturns.Sample`.
 
 See also
 --------

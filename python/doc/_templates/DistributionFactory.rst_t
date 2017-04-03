@@ -17,7 +17,7 @@
         if dimension == 1:
             distribution.setDescription(['$t$'])
 	    pdf_graph = distribution.drawPDF(256)
-            cloud = ot.Cloud(sample, ot.NumericalSample(sample.getSize(), 1))
+            cloud = ot.Cloud(sample, ot.Sample(sample.getSize(), 1))
             cloud.setColor('blue')
             cloud.setPointStyle('fcircle')
             pdf_graph.add(cloud)

@@ -8,7 +8,7 @@ TESTPREAMBLE()
 try:
     f = SymbolicFunction("x", "x^2")
     size = 4
-    inputSample = NumericalSample(size, 1)
+    inputSample = Sample(size, 1)
     for i in range(size):
         inputSample[i, 0] = i
     outputSample = f(inputSample)

@@ -64,8 +64,8 @@ public:
   void setKeepEventSample(bool keepEventSample);
 
   /** Event input/output sample accessor */
-  NumericalSample getEventInputSample() const;
-  NumericalSample getEventOutputSample() const;
+  Sample getEventInputSample() const;
+  Sample getEventOutputSample() const;
 
   /** i-subset */
   void setISubset(Bool iSubset);
@@ -85,7 +85,7 @@ public:
 
 private:
   /** Compute the block sample */
-  NumericalSample computeBlockSample();
+  Sample computeBlockSample();
 
   /** Compute the new threshold corresponding to the target failure probability */
   NumericalScalar computeThreshold();
@@ -115,14 +115,14 @@ private:
   NumericalPoint gammaPerStep_;// intermediate gammas
   NumericalPoint coefficientOfVariationPerStep_;// intermediate COVS
   NumericalPoint probabilityEstimatePerStep_;// intermediate PFs
-  NumericalSample eventInputSample_;// event input sample
-  NumericalSample eventOutputSample_;// event output sample
+  Sample eventInputSample_;// event input sample
+  Sample eventOutputSample_;// event output sample
 
   // attributes used for conveniency, not to be saved/loaded
   StandardEvent standardEvent_;// the algorithm happens in U
   UnsignedInteger dimension_;// input dimension
-  NumericalSample currentPointSample_;// X
-  NumericalSample currentLevelSample_;//f(X)
+  Sample currentPointSample_;// X
+  Sample currentLevelSample_;//f(X)
   UnsignedInteger seedNumber_;// number of seed points
   
 } ; /* class SubsetSampling */

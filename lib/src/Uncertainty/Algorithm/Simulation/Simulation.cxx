@@ -205,7 +205,7 @@ void Simulation::run()
   while ((outerSampling < getMaximumOuterSampling()) && ((coefficientOfVariation == -1.0) || (coefficientOfVariation > getMaximumCoefficientOfVariation())) && ((standardDeviation == -1.0) || (standardDeviation > getMaximumStandardDeviation())) && !stop)
   {
     // Perform a block of simulation
-    const NumericalSample blockSample(computeBlockSample());
+    const Sample blockSample(computeBlockSample());
     LOGDEBUG(OSS() << "Simulation::run: blockSample=\n" << blockSample);
     ++outerSampling;
     // Then, actualize the estimates
@@ -261,7 +261,7 @@ void Simulation::run()
 }
 
 /* Compute the block sample and the points that realized the event */
-NumericalSample Simulation::computeBlockSample()
+Sample Simulation::computeBlockSample()
 {
   throw NotYetImplementedException(HERE) << "In Simulation::computeBlockSample()";
 }
@@ -280,11 +280,11 @@ HistoryStrategy Simulation::getConvergenceStrategy() const
 /* Draw the probability convergence at the given level */
 Graph Simulation::drawProbabilityConvergence(const NumericalScalar level) const
 {
-  const NumericalSample convergenceSample(convergenceStrategy_.getSample());
+  const Sample convergenceSample(convergenceStrategy_.getSample());
   const UnsignedInteger size = convergenceSample.getSize();
-  NumericalSample dataEstimate(size, 2);
-  NumericalSample dataLowerBound(0, 2);
-  NumericalSample dataUpperBound(0, 2);
+  Sample dataEstimate(size, 2);
+  Sample dataLowerBound(0, 2);
+  Sample dataUpperBound(0, 2);
   for (UnsignedInteger i = 0; i < size; i++)
   {
     const NumericalScalar probabilityEstimate = convergenceSample[i][0];

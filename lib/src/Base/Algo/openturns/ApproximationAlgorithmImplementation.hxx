@@ -23,7 +23,7 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/DesignProxy.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -45,14 +45,14 @@ public:
   ApproximationAlgorithmImplementation();
 
   /** Default constructor */
-  ApproximationAlgorithmImplementation(const NumericalSample & x,
-                                       const NumericalSample & y,
+  ApproximationAlgorithmImplementation(const Sample & x,
+                                       const Sample & y,
                                        const Basis & psi,
                                        const Indices & indices);
 
   /** Default constructor */
-  ApproximationAlgorithmImplementation(const NumericalSample & x,
-                                       const NumericalSample & y,
+  ApproximationAlgorithmImplementation(const Sample & x,
+                                       const Sample & y,
                                        const NumericalPoint & weight,
                                        const Basis & psi,
                                        const Indices & indices);
@@ -61,8 +61,8 @@ public:
   virtual ApproximationAlgorithmImplementation * clone() const;
 
   /** Sample accessors */
-  NumericalSample getX() const;
-  NumericalSample getY() const;
+  Sample getX() const;
+  Sample getY() const;
 
   /** Weigths accessor */
 protected:
@@ -110,10 +110,10 @@ protected:
   void setRelativeError(const NumericalScalar relativeError);
 
   /** Input sample */
-  NumericalSample x_;
+  Sample x_;
 
   /** Output sample */
-  NumericalSample y_;
+  Sample y_;
 
   /** Weights */
   NumericalPoint weight_;

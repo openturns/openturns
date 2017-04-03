@@ -247,7 +247,7 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
   size = distributionCollection_.getSize();
 
   // We set the member with the collection passed as argument and we renormalize it in place
-  NumericalSample x(size, 1);
+  Sample x(size, 1);
   NumericalPoint p(size);
   Bool parallel = true;
   for (UnsignedInteger i = 0; i < size; ++i)
@@ -591,17 +591,17 @@ Bool Mixture::hasIndependentCopula() const
 }
 
 /* Get the support of a discrete distribution that intersect a given interval */
-NumericalSample Mixture::getSupport(const Interval & interval) const
+Sample Mixture::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
   // Fill a std::set with the points in the support of each atom in order to automatically remove duplicates
   std::set<NumericalPoint> setSupport;
   for (UnsignedInteger i = 0; i < distributionCollection_.getSize(); ++i)
   {
-    const NumericalSample atomSupport(distributionCollection_[i].getSupport(interval));
+    const Sample atomSupport(distributionCollection_[i].getSupport(interval));
     for (UnsignedInteger j = 0; j < atomSupport.getSize(); ++j) setSupport.insert(atomSupport[j]);
   }
-  NumericalSample support(0, getDimension());
+  Sample support(0, getDimension());
   for (std::set<NumericalPoint>::iterator i = setSupport.begin(); i != setSupport.end(); ++i)
     support.add(*i);
   return support;

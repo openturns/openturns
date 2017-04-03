@@ -74,7 +74,7 @@ String AggregatedProcess::__str__(const String & offset) const
 /* Realization accessor */
 Field AggregatedProcess::getRealization() const
 {
-  NumericalSample values(processCollection_[0].getRealization().getValues());
+  Sample values(processCollection_[0].getRealization().getValues());
   for (UnsignedInteger i = 1; i < processCollection_.getSize(); ++i)
     values.stack(processCollection_[i].getRealization().getValues());
   return Field(getMesh(), values);
@@ -107,7 +107,7 @@ TimeSeries AggregatedProcess::getFuture(const UnsignedInteger stepNumber) const
   /* TimeGrid associated with the possible future */
   const NumericalScalar timeStep = timeGrid.getStep();
   const RegularGrid futurTimeGrid(timeGrid.getEnd(), timeStep, stepNumber);
-  NumericalSample values(processCollection_[0].getFuture(stepNumber).getValues());
+  Sample values(processCollection_[0].getFuture(stepNumber).getValues());
   for (UnsignedInteger i = 1; i < processCollection_.getSize(); ++i) values.stack(processCollection_[i].getFuture(stepNumber).getValues());
 
   return TimeSeries(futurTimeGrid, values);

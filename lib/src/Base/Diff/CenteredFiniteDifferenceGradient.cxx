@@ -94,14 +94,14 @@ Matrix CenteredFiniteDifferenceGradient::gradient(const NumericalPoint & inP) co
   NumericalPoint step(finiteDifferenceStep_.operator()(inP));
   if (inputDimension != step.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   /* At which points do we have to compute the evaluation for the centered finite difference. We need 2*dim points. */
-  NumericalSample gridPoints(2 * inputDimension, inP);
+  Sample gridPoints(2 * inputDimension, inP);
   for(UnsignedInteger i = 0; i < inputDimension; ++i)
   {
     gridPoints[2 * i][i] += step[i];
     gridPoints[2 * i + 1][i] -= step[i];
   } // For i
   /* Evaluate the evaluation */
-  NumericalSample gridValues(p_evaluation_->operator()(gridPoints));
+  Sample gridValues(p_evaluation_->operator()(gridPoints));
   /* Compute the gradient */
   Matrix result(p_evaluation_->getInputDimension(), p_evaluation_->getOutputDimension());
   for (UnsignedInteger i = 0; i < result.getNbRows(); ++i)

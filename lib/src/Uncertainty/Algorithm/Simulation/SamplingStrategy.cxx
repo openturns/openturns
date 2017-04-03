@@ -60,7 +60,7 @@ SamplingStrategy::SamplingStrategy(const UnsignedInteger dimension)
 }
 
 /* Generate a set of directions */
-NumericalSample SamplingStrategy::generate() const
+Sample SamplingStrategy::generate() const
 {
   return getImplementation()->generate();
 }

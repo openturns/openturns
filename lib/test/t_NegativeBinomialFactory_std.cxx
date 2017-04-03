@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
   {
     NegativeBinomial distribution(15, 0.7);
     UnsignedInteger size = 10000;
-    NumericalSample sample(distribution.getSample(size));
+    Sample sample(distribution.getSample(size));
     NegativeBinomialFactory factory;
     CovarianceMatrix covariance;
     // Distribution estimatedDistribution(factory.build(sample, covariance));

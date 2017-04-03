@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
     levels[1] = 4;
     Box myPlane(levels);
     fullprint << "myPlane = " << myPlane << std::endl;
-    NumericalSample sample(myPlane.generate());
+    Sample sample(myPlane.generate());
     fullprint << "sample = " << sample << std::endl;
   }
   catch (TestFailed & ex)

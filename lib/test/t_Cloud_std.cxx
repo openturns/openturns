@@ -67,8 +67,8 @@ int main(int argc, char *argv[])
 
     // Test for sampling
     UnsignedInteger size = 200;
-    NumericalSample sample1(distribution1.getSample( size ));
-    NumericalSample sample2(distribution2.getSample( size ));
+    Sample sample1(distribution1.getSample( size ));
+    Sample sample2(distribution2.getSample( size ));
 
     // Create an empty graph
     Graph myGraph("Normal sample", "x1", "x2", true, "topright");

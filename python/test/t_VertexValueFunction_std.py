@@ -23,7 +23,7 @@ try:
           myTemporalFunc.getOutputDimension())
     # Create a TimeSeries
     tg = RegularGrid(0.0, 0.2, 6)
-    data = NumericalSample(tg.getN(), myFunc.getInputDimension() - 1)
+    data = Sample(tg.getN(), myFunc.getInputDimension() - 1)
     for i in range(data.getSize()):
         for j in range(data.getDimension()):
             data[i, j] = i * data.getDimension() + j

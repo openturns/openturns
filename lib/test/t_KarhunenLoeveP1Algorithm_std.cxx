@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
       GaussianProcess process(cov1D, KLModes.getMesh());
-      NumericalSample coefficients(result.project(process.getSample(10)));
+      Sample coefficients(result.project(process.getSample(10)));
       fullprint << "KL coefficients=" << coefficients << std::endl;
       Basis KLFunctions(result.getModes());
       fullprint << "KL functions=" << KLFunctions.__str__() << std::endl;
@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
       GaussianProcess process(cov2D, KLModes.getMesh());
-      NumericalSample coefficients(result.project(process.getSample(10)));
+      Sample coefficients(result.project(process.getSample(10)));
       fullprint << "KL coefficients=" << coefficients << std::endl;
       Basis KLFunctions(result.getModes());
       fullprint << "KL functions=" << KLFunctions.__str__() << std::endl;

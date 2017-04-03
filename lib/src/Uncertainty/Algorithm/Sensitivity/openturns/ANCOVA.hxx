@@ -40,7 +40,7 @@ public:
   typedef Collection<Function>     FunctionCollection;
 
   /** Constructor with model */
-  ANCOVA(const FunctionalChaosResult & functionalChaosResult, const NumericalSample & correlatedInput);
+  ANCOVA(const FunctionalChaosResult & functionalChaosResult, const Sample & correlatedInput);
 
   /** Accessor to ANCOVA indices measuring uncorrelated effects */
   NumericalPoint getUncorrelatedIndices(const UnsignedInteger marginalIndex = 0) const;
@@ -57,16 +57,16 @@ private:
   FunctionalChaosResult functionalChaosResult_;
 
   /** correlated Input */
-  NumericalSample correlatedInput_;
+  Sample correlatedInput_;
 
   /** Flag to check if the indices are already computed*/
   mutable Bool alreadyComputedIndices_;
 
   /** ANCOVA indices measuring uncorrelated effects */
-  mutable NumericalSample uncorrelatedIndices_;
+  mutable Sample uncorrelatedIndices_;
 
   /**  ANCOVA indices: total parts of variance of the output due to each input */
-  mutable NumericalSample indices_;
+  mutable Sample indices_;
 
 }; /* class ANCOVA */
 

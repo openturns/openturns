@@ -187,7 +187,7 @@ String DistributionFactory::__str__(const String & offset) const
 }
 
 /* Here is the interface that all derived class must implement */
-Distribution DistributionFactory::build(const NumericalSample & sample) const
+Distribution DistributionFactory::build(const Sample & sample) const
 {
   return getImplementation()->build(sample);
 }
@@ -202,12 +202,12 @@ Distribution DistributionFactory::build() const
   return getImplementation()->build();
 }
 
-DistributionFactoryResult DistributionFactory::buildEstimator(const NumericalSample & sample) const
+DistributionFactoryResult DistributionFactory::buildEstimator(const Sample & sample) const
 {
   return getImplementation()->buildEstimator(sample);
 }
 
-DistributionFactoryResult DistributionFactory::buildEstimator(const NumericalSample & sample, const DistributionParameters & parameters) const
+DistributionFactoryResult DistributionFactory::buildEstimator(const Sample & sample, const DistributionParameters & parameters) const
 {
   return getImplementation()->buildEstimator(sample, parameters);
 }

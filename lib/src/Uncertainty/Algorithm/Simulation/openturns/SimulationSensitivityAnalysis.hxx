@@ -23,7 +23,7 @@
 
 #include <cmath>
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/NumericalPointWithDescription.hxx"
 #include "openturns/ComparisonOperator.hxx"
 #include "openturns/Function.hxx"
@@ -51,8 +51,8 @@ public:
   SimulationSensitivityAnalysis();
 
   /** Standard constructor */
-  SimulationSensitivityAnalysis(const NumericalSample & inputSample,
-                                const NumericalSample & outputSample,
+  SimulationSensitivityAnalysis(const Sample & inputSample,
+                                const Sample & outputSample,
                                 const IsoProbabilisticTransformation & transformation,
                                 const ComparisonOperator & comparisonOperator,
                                 const NumericalScalar threshold);
@@ -83,10 +83,10 @@ public:
                                    const NumericalScalar upper = SpecFunc::MaxNumericalScalar) const;
 
   /** Input sample accessors */
-  NumericalSample getInputSample() const;
+  Sample getInputSample() const;
 
   /** Output sample accessors */
-  NumericalSample getOutputSample() const;
+  Sample getOutputSample() const;
 
   /** Threshold accessors */
   NumericalScalar getThreshold() const;
@@ -111,10 +111,10 @@ public:
 protected:
 
   /* Input sample of the model */
-  NumericalSample inputSample_;
+  Sample inputSample_;
 
   /* Associated output sample */
-  NumericalSample outputSample_;
+  Sample outputSample_;
 
   /* Iso probabilistic transformation associated with the input sample distribution */
   IsoProbabilisticTransformation transformation_;

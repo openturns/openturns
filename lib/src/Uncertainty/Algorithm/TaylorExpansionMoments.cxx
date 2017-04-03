@@ -23,7 +23,7 @@
 #include "openturns/CompositeRandomVector.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/Pointer.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SobolIndicesAlgorithmImplementation.hxx"
 

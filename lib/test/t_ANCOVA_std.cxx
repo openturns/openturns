@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
 
     // Reference analytical values
     NumericalScalar covTh = a * a + b * b + 2 * a * b * rho;
-    NumericalSample Si(2, 2);
+    Sample Si(2, 2);
     Si[0][0] = (a * a + a * b * rho) / covTh;
     Si[1][0] = (b * b + a * b * rho) / covTh;
     Si[0][1] = a * a / covTh;
@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
     NormalCopula myCopula(R);
     ComposedDistribution myCorrelatedInputDistribution(marginals, myCopula);
 
-    NumericalSample sample(myCorrelatedInputDistribution.getSample(2000));
+    Sample sample(myCorrelatedInputDistribution.getSample(2000));
 
     // Orthogonal basis
     Collection<OrthogonalUniVariatePolynomialFamily> polynomialCollection(dimension);

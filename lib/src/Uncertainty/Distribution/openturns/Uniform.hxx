@@ -66,7 +66,7 @@ public:
 
   /** Get one realization of the distribution */
   NumericalPoint getRealization() const;
-  NumericalSample getSample(const UnsignedInteger size) const;
+  Sample getSample(const UnsignedInteger size) const;
 
   /** Get the DDF of the distribution, i.e. the gradient of its PDF w.r.t. point */
   using ContinuousDistribution::computeDDF;

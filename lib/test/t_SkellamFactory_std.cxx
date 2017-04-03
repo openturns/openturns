@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
   {
     Skellam distribution(10.0, 5.0);
     UnsignedInteger size = 10000;
-    NumericalSample sample(distribution.getSample(size));
+    Sample sample(distribution.getSample(size));
     SkellamFactory factory;
     CovarianceMatrix covariance;
     // Distribution estimatedDistribution(factory.build(sample, covariance));

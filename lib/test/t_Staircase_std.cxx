@@ -50,11 +50,11 @@ int main(int argc, char *argv[])
     // Test for sampling
     UnsignedInteger size = 2000;
     UnsignedInteger nPoints = 20;
-    NumericalSample sample1(distribution1.getSample( size ));
-    NumericalSample sample2(distribution2.getSample( size ));
+    Sample sample1(distribution1.getSample( size ));
+    Sample sample2(distribution2.getSample( size ));
 
     // Construct empirical CDF for each sample
-    NumericalSample data1(nPoints, 2), data2(nPoints, 2);
+    Sample data1(nPoints, 2), data2(nPoints, 2);
     NumericalPoint cursor1(2);
     NumericalPoint cursor2(2);
     NumericalScalar count1;

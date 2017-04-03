@@ -132,11 +132,11 @@ Field FunctionalBasisProcess::getRealization() const
   const UnsignedInteger timeGridSize = mesh_.getVerticesNumber();
   const UnsignedInteger basisSize = basis_.getSize();
   // Loop over the time stamps
-  NumericalSample result(timeGridSize, NumericalPoint(dimension_, 0.0));
+  Sample result(timeGridSize, NumericalPoint(dimension_, 0.0));
   // Loop over the basis
   for (UnsignedInteger j = 0; j < basisSize; ++j)
   {
-    NumericalSample currentBasisContribution(basis_[j](mesh_.getVertices()));
+    Sample currentBasisContribution(basis_[j](mesh_.getVertices()));
     currentBasisContribution *= NumericalPoint(dimension_, state_[j]);
     result += currentBasisContribution;
   }
@@ -171,7 +171,7 @@ TimeSeries FunctionalBasisProcess::getFuture(const UnsignedInteger stepNumber) c
   const RegularGrid futureTimeGrid(timeGrid.getEnd(), timeStep, stepNumber);
   const UnsignedInteger basisSize = basis_.getSize();
   // Loop over the time stamps
-  NumericalSample result(stepNumber, NumericalPoint(dimension_, 0.0));
+  Sample result(stepNumber, NumericalPoint(dimension_, 0.0));
   for (UnsignedInteger i = 0; i  < stepNumber; ++i)
   {
     const NumericalPoint t(1, futureTimeGrid.getValue(i));

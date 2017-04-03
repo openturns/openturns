@@ -45,10 +45,10 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build(const NumericalSample & sample) const;
+  Implementation build(const Sample & sample) const;
   Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
-  NormalCopula buildAsNormalCopula(const NumericalSample & sample) const;
+  NormalCopula buildAsNormalCopula(const Sample & sample) const;
   NormalCopula buildAsNormalCopula(const NumericalPoint & parameters) const;
   NormalCopula buildAsNormalCopula() const;
 

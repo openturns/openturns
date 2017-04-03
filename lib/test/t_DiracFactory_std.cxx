@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
   {
     Dirac distribution(0.7);
     UnsignedInteger size = 10000;
-    NumericalSample sample(distribution.getSample(size));
+    Sample sample(distribution.getSample(size));
     DiracFactory factory;
     CovarianceMatrix covariance;
     // Distribution estimatedDistribution(factory.build(sample, covariance));

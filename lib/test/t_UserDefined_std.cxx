@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   try
   {
     // Instanciate one distribution object
-    NumericalSample x(4, 1);
+    Sample x(4, 1);
     x[0][0] = 1.0;
     x[1][0] = 2.0;
     x[2][0] = 3.0;
@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 
     // Test for sampling
     UnsignedInteger size = 10;
-    NumericalSample oneSample = distribution.getSample( size );
+    Sample oneSample = distribution.getSample( size );
     fullprint << "oneSample=" << oneSample << std::endl;
 
     // Define a point
@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
     fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
     // To prevent automatic compaction
     ResourceMap::SetAsUnsignedInteger("UserDefined-SmallSize", 5);
-    NumericalSample sample(40, 3);
+    Sample sample(40, 3);
     for (UnsignedInteger i = 0; i < 4; ++i)
     {
       for (UnsignedInteger j = 0; j < 3; ++j)

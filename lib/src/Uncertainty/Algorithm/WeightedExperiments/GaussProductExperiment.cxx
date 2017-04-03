@@ -104,7 +104,7 @@ void GaussProductExperiment::setDistribution(const Distribution & distribution)
 }
 
 /* Sample generation */
-NumericalSample GaussProductExperiment::generateWithWeights(NumericalPoint & weights) const
+Sample GaussProductExperiment::generateWithWeights(NumericalPoint & weights) const
 {
   if (!isAlreadyComputedNodesAndWeights_) computeNodesAndWeights();
   weights = weights_;
@@ -159,7 +159,7 @@ void GaussProductExperiment::computeNodesAndWeights() const
     marginalNodes[i] = collection_[i].getNodesAndWeights(dI, marginalWeights[i]);
   }
   // Second, multiplex everything
-  nodes_ = NumericalSample(size_, dimension);
+  nodes_ = Sample(size_, dimension);
   nodes_.setDescription(distribution_.getDescription());
   weights_ = NumericalPoint(size_, 1.0);
   Indices indices(dimension, 0);

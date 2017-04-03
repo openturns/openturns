@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
   try
   {
     {
-      NumericalSample vertices(0, 1);
+      Sample vertices(0, 1);
       vertices.add(NumericalPoint(1, 0.5));
       vertices.add(NumericalPoint(1, 1.5));
       vertices.add(NumericalPoint(1, 2.1));
@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
       fullprint << "mesh 1D ok" << std::endl;
     }
     {
-      NumericalSample vertices(0, 2);
+      Sample vertices(0, 2);
       NumericalPoint p(2);
 
       p[0] = 0.0;
@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
       fullprint << "mesh 2D ok" << std::endl;
     }
     {
-      NumericalSample vertices(0, 3);
+      Sample vertices(0, 3);
       NumericalPoint p(3);
 
       p[0] = 0.0;

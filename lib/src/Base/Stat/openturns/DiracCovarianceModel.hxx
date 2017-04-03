@@ -62,15 +62,15 @@ public:
 
   /** Discretize the covariance function */
   using StationaryCovarianceModel::discretize;
-  CovarianceMatrix discretize(const NumericalSample & vertices) const;
-  NumericalSample discretizeRow(const NumericalSample & vertices,
+  CovarianceMatrix discretize(const Sample & vertices) const;
+  Sample discretizeRow(const Sample & vertices,
                                 const UnsignedInteger p) const;
 
   using StationaryCovarianceModel::discretizeAndFactorize;
-  TriangularMatrix discretizeAndFactorize(const NumericalSample & vertices) const;
+  TriangularMatrix discretizeAndFactorize(const Sample & vertices) const;
   // discretize with use of HMatrix
   using StationaryCovarianceModel::discretizeHMatrix;
-  HMatrix discretizeHMatrix(const NumericalSample & vertices,
+  HMatrix discretizeHMatrix(const Sample & vertices,
                             const NumericalScalar nuggetFactor,
                             const HMatrixParameters & parameters) const;
 

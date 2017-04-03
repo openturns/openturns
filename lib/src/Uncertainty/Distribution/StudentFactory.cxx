@@ -42,7 +42,7 @@ StudentFactory * StudentFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-StudentFactory::Implementation StudentFactory::build(const NumericalSample & sample) const
+StudentFactory::Implementation StudentFactory::build(const Sample & sample) const
 {
   return buildAsStudent(sample).clone();
 }
@@ -57,12 +57,12 @@ StudentFactory::Implementation StudentFactory::build() const
   return buildAsStudent().clone();
 }
 
-DistributionFactoryResult StudentFactory::buildEstimator(const NumericalSample & sample) const
+DistributionFactoryResult StudentFactory::buildEstimator(const Sample & sample) const
 {
   return buildBootStrapEstimator(sample, true);
 }
 
-Student StudentFactory::buildAsStudent(const NumericalSample & sample) const
+Student StudentFactory::buildAsStudent(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Student distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Student distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();

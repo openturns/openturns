@@ -150,7 +150,7 @@ class OpenTURNSPythonFunction(object):
             pt = openturns.typ.NumericalPoint(X)
         except TypeError:
             try:
-                ns = openturns.typ.NumericalSample(X)
+                ns = openturns.typ.Sample(X)
             except TypeError:
                 raise TypeError('Expect a 1-d or 2-d sequence of float as argument')
             else:

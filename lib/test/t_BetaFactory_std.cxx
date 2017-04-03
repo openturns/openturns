@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
   {
     Beta distribution(0.2, 0.6, -1.0, 2.0);
     UnsignedInteger size = 10000;
-    NumericalSample sample(distribution.getSample(size));
+    Sample sample(distribution.getSample(size));
     BetaFactory factory;
     CovarianceMatrix covariance;
     // Distribution estimatedDistribution(factory.build(sample, covariance));
@@ -75,10 +75,10 @@ int main(int argc, char *argv[])
     estimatedBeta = factory.buildAsBeta(distribution.getParameter());
     fullprint << "Beta from parameters=" << estimatedBeta << std::endl;
     // Test for constant sample
-    sample = NumericalSample(size, NumericalPoint(1, 0.0));
+    sample = Sample(size, NumericalPoint(1, 0.0));
     estimatedDistribution = factory.build(sample);
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
-    sample = NumericalSample(size, NumericalPoint(1, 1.0));
+    sample = Sample(size, NumericalPoint(1, 1.0));
     estimatedDistribution = factory.build(sample);
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
   }

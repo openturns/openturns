@@ -94,8 +94,8 @@ void Cobyla::run()
   cobyla_message message((getVerbose() ? COBYLA_MSG_INFO : COBYLA_MSG_NONE));
 
   // initialize history
-  evaluationInputHistory_ = NumericalSample(0, dimension);
-  evaluationOutputHistory_ = NumericalSample(0, 2);
+  evaluationInputHistory_ = Sample(0, dimension);
+  evaluationOutputHistory_ = Sample(0, 2);
 
   /*
    * cobyla : minimize a function subject to constraints

@@ -43,7 +43,7 @@ NormalCopulaFactory * NormalCopulaFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-NormalCopulaFactory::Implementation NormalCopulaFactory::build(const NumericalSample & sample) const
+NormalCopulaFactory::Implementation NormalCopulaFactory::build(const Sample & sample) const
 {
   return buildAsNormalCopula(sample).clone();
 }
@@ -58,7 +58,7 @@ NormalCopulaFactory::Implementation NormalCopulaFactory::build() const
   return buildAsNormalCopula().clone();
 }
 
-NormalCopula NormalCopulaFactory::buildAsNormalCopula(const NumericalSample & sample) const
+NormalCopula NormalCopulaFactory::buildAsNormalCopula(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a NormalCopula distribution from an empty sample";
   try

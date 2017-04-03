@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
   fullprint << "test number zero : default & copy constructors and string converter" << std::endl;
 
   NumericalPoint vectR(1, 12.0);
-  NumericalSample testSample(1, 1);
+  Sample testSample(1, 1);
 
   NumericalScalar begin = -1.0;
   NumericalScalar end = 36.92;
@@ -69,8 +69,8 @@ int main(int argc, char *argv[])
   fullprint << "test number two : get predicted/residual" << std::endl;
   LinearModelFactory lmfact;
   UnsignedInteger size = 20;
-  NumericalSample oneSample(size, 1);
-  NumericalSample twoSample(size, 1);
+  Sample oneSample(size, 1);
+  Sample twoSample(size, 1);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     oneSample[i][0] = 7.0 * sin(-3.5 + (6.5 * i) / (size - 1.0)) + 2.0;

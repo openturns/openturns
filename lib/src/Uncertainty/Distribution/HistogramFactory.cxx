@@ -46,18 +46,18 @@ HistogramFactory * HistogramFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-HistogramFactory::Implementation HistogramFactory::build(const NumericalSample & sample) const
+HistogramFactory::Implementation HistogramFactory::build(const Sample & sample) const
 {
   return buildAsHistogram(sample).clone();
 }
 
-HistogramFactory::Implementation HistogramFactory::build(const NumericalSample & sample,
+HistogramFactory::Implementation HistogramFactory::build(const Sample & sample,
 							 const NumericalScalar bandwidth) const
 {
   return buildAsHistogram(sample, bandwidth).clone();
 }
 
-HistogramFactory::Implementation HistogramFactory::build(const NumericalSample & sample,
+HistogramFactory::Implementation HistogramFactory::build(const Sample & sample,
 							 const UnsignedInteger binNumber) const
 {
   return buildAsHistogram(sample, binNumber).clone();
@@ -68,12 +68,12 @@ HistogramFactory::Implementation HistogramFactory::build() const
   return buildAsHistogram().clone();
 }
 
-Histogram HistogramFactory::buildAsHistogram(const NumericalSample & sample) const
+Histogram HistogramFactory::buildAsHistogram(const Sample & sample) const
 {
   return buildAsHistogram(sample, computeSilvermanBandwidth(sample));
 }
 
-Histogram HistogramFactory::buildAsHistogram(const NumericalSample & sample,
+Histogram HistogramFactory::buildAsHistogram(const Sample & sample,
 					     const NumericalScalar bandwidth) const
 {
   const UnsignedInteger size = sample.getSize();
@@ -95,7 +95,7 @@ Histogram HistogramFactory::buildAsHistogram(const NumericalSample & sample,
   return buildAsHistogram(sample, binNumber);
 }
 
-Histogram HistogramFactory::buildAsHistogram(const NumericalSample & sample,
+Histogram HistogramFactory::buildAsHistogram(const Sample & sample,
 					     const UnsignedInteger binNumber) const
 {
   const UnsignedInteger size = sample.getSize();
@@ -139,7 +139,7 @@ Histogram HistogramFactory::buildAsHistogram() const
 }
 
 /* Compute the bandwidth according to Silverman's rule */
-NumericalScalar HistogramFactory::computeSilvermanBandwidth(const NumericalSample & sample,
+NumericalScalar HistogramFactory::computeSilvermanBandwidth(const Sample & sample,
 							    const Bool useQuantile) const
 {
   const UnsignedInteger size = sample.getSize();

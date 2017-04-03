@@ -24,7 +24,7 @@
 #include "openturns/Exception.hxx"
 #include "openturns/SquareMatrix.hxx"
 #include "openturns/SquareComplexMatrix.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/P1LagrangeEvaluation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
@@ -125,7 +125,7 @@ ProcessSample KarhunenLoeveP1Factory::buildAsProcessSample(const CovarianceModel
   SquareMatrix M((C * G).getImplementation());
   SquareComplexMatrix eigenVectorsComplex;
   SquareMatrix::NumericalComplexCollection eigenValuesComplex(M.computeEV(eigenVectorsComplex, false));
-  NumericalSample eigenPairs(augmentedDimension, augmentedDimension + 1);
+  Sample eigenPairs(augmentedDimension, augmentedDimension + 1);
   for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
   {
     for (UnsignedInteger j = 0; j < augmentedDimension; ++j) eigenPairs[i][j] = eigenVectorsComplex(j, i).real();
@@ -146,7 +146,7 @@ ProcessSample KarhunenLoeveP1Factory::buildAsProcessSample(const CovarianceModel
   while ((j < augmentedDimension) && (eigenValues[j] > threshold_ * std::abs(eigenValues[0])))
   {
     selectedEV.add(eigenValues[j]);
-    NumericalSample values(numVertices, dimension);
+    Sample values(numVertices, dimension);
     const Matrix a(eigenVectors.getColumn(j));
     const NumericalScalar norm = std::sqrt((a.transpose() * (G * a))(0, 0));
     const NumericalScalar factor = eigenVectors(0, j) < 0.0 ? -1.0 / norm : 1.0 / norm;

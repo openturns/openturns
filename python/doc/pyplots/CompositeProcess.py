@@ -18,7 +18,7 @@ class GaussianConvolution(ot.OpenTURNSPythonFieldFunction):
         inputValues = X.getValues()
         f = ot.Function(ot.PiecewiseLinearEvaluation(
             [x[0] for x in inputTG.getVertices()], inputValues))
-        outputValues = ot.NumericalSample(0, 1)
+        outputValues = ot.Sample(0, 1)
         for t in self.outputGrid_.getVertices():
             kernel = ot.Normal(t[0], 0.05)
 

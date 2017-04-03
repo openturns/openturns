@@ -429,11 +429,11 @@ Multinomial::Implementation Multinomial::getMarginal(const Indices & indices) co
 } // getMarginal(Indices)
 
 /* Get the support of a discrete distribution that intersect a given interval */
-NumericalSample Multinomial::getSupport(const Interval & interval) const
+Sample Multinomial::getSupport(const Interval & interval) const
 {
   const UnsignedInteger dimension = getDimension();
   if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
-  NumericalSample support(0, dimension);
+  Sample support(0, dimension);
   // Quick return if the lower bound of the interval is already outside of the support
   const NumericalPoint lowerBound(interval.getLowerBound());
   const NumericalPoint upperBound(interval.getUpperBound());
@@ -448,7 +448,7 @@ NumericalSample Multinomial::getSupport(const Interval & interval) const
   }
   if ((sumLower > n_) || (sumUpper < 0.0)) return support;
   // Here we know that all the components of the upper bound are positive or null
-  const NumericalSample fullSupport(getSupport());
+  const Sample fullSupport(getSupport());
   // Quick return if the interval contains all the support
   // It cannot be possible if the sum of the components of the upper bound is less than n_
   if ((sumUpper >= n_) && (sumLower <= 0.0))
@@ -473,12 +473,12 @@ NumericalSample Multinomial::getSupport(const Interval & interval) const
 }
 
 /* Get the support of a discrete distribution that intersect a given interval */
-NumericalSample Multinomial::getSupport() const
+Sample Multinomial::getSupport() const
 {
   const UnsignedInteger dimension = getDimension();
   LinearEnumerateFunction enumerate(dimension);
   const UnsignedInteger size = enumerate.getStrataCumulatedCardinal(n_);
-  NumericalSample support(0, dimension);
+  Sample support(0, dimension);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     Indices multi(enumerate(i));

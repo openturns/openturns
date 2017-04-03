@@ -40,10 +40,10 @@ int main(int argc, char *argv[])
     // Create the function to estimate
     SymbolicFunction model("x0", "x0");
 
-    NumericalSample X(sampleSize, spatialDimension);
+    Sample X(sampleSize, spatialDimension);
     for (UnsignedInteger i = 0; i < sampleSize; ++ i)
       X[i][0] = 3.0 + (8.0 * i) / sampleSize;
-    NumericalSample Y = model(X);
+    Sample Y = model(X);
 
     // Add a small noise to data
     Y += GaussianProcess(AbsoluteExponential(NumericalPoint(1, 0.1), NumericalPoint(1, 0.2)), Mesh(X)).getRealization().getValues();

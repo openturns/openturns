@@ -123,7 +123,7 @@ NumericalPoint FieldFunctionImplementation::operator() (const NumericalScalar ti
 NumericalPoint FieldFunctionImplementation::operator() (const NumericalPoint & location,
     const NumericalPoint & inP) const
 {
-  return (*this)(Field(Mesh(NumericalSample(1, location), Collection<Indices>(0)), NumericalSample(1, inP))).getValues()[0];
+  return (*this)(Field(Mesh(Sample(1, location), Collection<Indices>(0)), Sample(1, inP))).getValues()[0];
 }
 
 Field FieldFunctionImplementation::operator() (const Field & inFld) const

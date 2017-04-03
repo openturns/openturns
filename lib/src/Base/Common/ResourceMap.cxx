@@ -482,10 +482,10 @@ void ResourceMap::loadDefaultConfiguration()
   setAsNumericalScalar( "Field-ArrowRatio", 0.01 );
   setAsNumericalScalar( "Field-ArrowScaling", 1.0 );
 
-  // NumericalSampleImplementation parameters
-  setAsUnsignedInteger( "NumericalSample-SmallKendallTau", 23 );
-  setAsUnsignedInteger("NumericalSample-PrintEllipsisThreshold", 1000);
-  setAsUnsignedInteger("NumericalSample-PrintEllipsisSize", 3);
+  // SampleImplementation parameters
+  setAsUnsignedInteger( "Sample-SmallKendallTau", 23 );
+  setAsUnsignedInteger("Sample-PrintEllipsisThreshold", 1000);
+  setAsUnsignedInteger("Sample-PrintEllipsisSize", 3);
 
   // DomainImplementation parameters
   setAsNumericalScalar( "Domain-SmallVolume",   1.0e-12 );

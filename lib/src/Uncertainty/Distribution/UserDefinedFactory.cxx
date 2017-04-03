@@ -43,12 +43,12 @@ UserDefinedFactory * UserDefinedFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-UserDefinedFactory::Implementation UserDefinedFactory::build(const NumericalSample & sample) const
+UserDefinedFactory::Implementation UserDefinedFactory::build(const Sample & sample) const
 {
   return buildAsUserDefined(sample, 0.0).clone();
 }
 
-UserDefinedFactory::Implementation UserDefinedFactory::build(const NumericalSample & sample,
+UserDefinedFactory::Implementation UserDefinedFactory::build(const Sample & sample,
     const NumericalScalar epsilon) const
 {
   return buildAsUserDefined(sample, epsilon).clone();
@@ -59,7 +59,7 @@ UserDefinedFactory::Implementation UserDefinedFactory::build() const
   return buildAsUserDefined().clone();
 }
 
-UserDefined UserDefinedFactory::buildAsUserDefined(const NumericalSample & sample,
+UserDefined UserDefinedFactory::buildAsUserDefined(const Sample & sample,
     const NumericalScalar epsilon) const
 {
   const UnsignedInteger size = sample.getSize();

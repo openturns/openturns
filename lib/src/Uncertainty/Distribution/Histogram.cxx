@@ -476,7 +476,7 @@ Graph Histogram::drawPDF(const NumericalScalar xMin,
   // just draw an horizontal line
   if ((xMax < first_) || (xMin > first_ + cumulatedWidth_[size - 1]))
   {
-    NumericalSample data(2, 2);
+    Sample data(2, 2);
     data[0][0] = xMin;
     data[0][1] = 0.0;
     data[1][0] = xMax;
@@ -490,7 +490,7 @@ Graph Histogram::drawPDF(const NumericalScalar xMin,
   // Another special case: the plot range covers only partially a unique bar
   if (first_ + cumulatedWidth_[indexLeft] >= xMax)
   {
-    NumericalSample data(2, 2);
+    Sample data(2, 2);
     data[0][0] = xMin;
     data[0][1] = height_[indexLeft];
     data[1][0] = xMax;
@@ -501,7 +501,7 @@ Graph Histogram::drawPDF(const NumericalScalar xMin,
   // Find the index of the right bar to draw
   UnsignedInteger indexRight = indexLeft;
   UnsignedInteger shiftFull = 0;
-  NumericalSample dataFull(0, 2);
+  Sample dataFull(0, 2);
   while ((indexRight < size) && (first_ + cumulatedWidth_[indexRight] < xMax)) ++indexRight;
   // The graph is made of full bars for the class indices between indexLeft and indexRight
   // The graph can include completely the first class or not. It is checked using first_.
@@ -510,7 +510,7 @@ Graph Histogram::drawPDF(const NumericalScalar xMin,
   // The first class is completely included
   if (xMin <= first_)
   {
-    NumericalSample data(2, 2);
+    Sample data(2, 2);
     data[0][0] = xMin;
     data[0][1] = 0.0;
     data[1][0] = first_;
@@ -520,7 +520,7 @@ Graph Histogram::drawPDF(const NumericalScalar xMin,
   // The first class that appears in the graph is only partially included
   else
   {
-    NumericalSample data(3, 2);
+    Sample data(3, 2);
     data[0][0] = xMin;
     data[0][1] = height_[indexLeft];
     data[1][0] = first_ + cumulatedWidth_[indexLeft];
@@ -535,7 +535,7 @@ Graph Histogram::drawPDF(const NumericalScalar xMin,
   if (indexLeft + shiftFull > 0) startX += cumulatedWidth_[indexLeft + shiftFull];
   for (UnsignedInteger i = indexLeft + shiftFull; i < indexRight; ++i)
   {
-    NumericalSample data(4, 2);
+    Sample data(4, 2);
     data[0][0] = startX;
     data[0][1] = 0.0;
     data[1][0] = startX;
@@ -550,7 +550,7 @@ Graph Histogram::drawPDF(const NumericalScalar xMin,
   // The last class is completely included
   if (indexRight == size)
   {
-    NumericalSample data(2, 2);
+    Sample data(2, 2);
     data[0][0] = first_ + cumulatedWidth_[size - 1];
     data[0][1] = 0.0;
     data[1][0] = xMax;
@@ -560,7 +560,7 @@ Graph Histogram::drawPDF(const NumericalScalar xMin,
   // The last class that appears in the graph is only partially included
   else
   {
-    NumericalSample data(3, 2);
+    Sample data(3, 2);
     data[0][0] = first_ + cumulatedWidth_[indexRight - 1];
     data[0][1] = 0.0;
     data[1][0] = data[0][0];

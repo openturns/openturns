@@ -84,8 +84,8 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Function & model,
 }
 
 /* Constructor */
-FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & inputSample,
-    const NumericalSample & outputSample,
+FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
+    const Sample & outputSample,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy,
     const ProjectionStrategy & projectionStrategy)
@@ -105,9 +105,9 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
 }
 
 /* Constructor */
-FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & inputSample,
+FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     const NumericalPoint & weights,
-    const NumericalSample & outputSample,
+    const Sample & outputSample,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy,
     const ProjectionStrategy & projectionStrategy)
@@ -139,8 +139,8 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Function & model,
 }
 
 /* Constructor */
-FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & inputSample,
-    const NumericalSample & outputSample,
+FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
+    const Sample & outputSample,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy)
   : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample, false))
@@ -153,8 +153,8 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
 }
 
 /* Constructor */
-FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & inputSample,
-    const NumericalSample & outputSample)
+FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
+    const Sample & outputSample)
   : MetaModelAlgorithm(Distribution(), DatabaseFunction(inputSample, outputSample, false))
   , adaptiveStrategy_()
   , projectionStrategy_()
@@ -176,7 +176,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
   {
     TestResult bestResult;
     // Here we remove the duplicate entries in the marginal sample using the automatic compaction of the support in the UserDefined class
-    const NumericalSample marginalSample(UserDefined(inputSample.getMarginal(i)).getSupport());
+    const Sample marginalSample(UserDefined(inputSample.getMarginal(i)).getSupport());
     const Distribution candidate(FittingTest::BestModelKolmogorov(marginalSample, factories, bestResult));
     // This threshold is somewhat arbitrary. It is here to avoid expensive kernel smoothing.
     if (bestResult.getPValue() > ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-PValueThreshold")) marginals[i] = candidate;
@@ -212,9 +212,9 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
 }
 
 /* Constructor */
-FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & inputSample,
+FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     const NumericalPoint & weights,
-    const NumericalSample & outputSample,
+    const Sample & outputSample,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy)
   : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample, false))
@@ -299,7 +299,7 @@ void FunctionalChaosAlgorithm::run()
   if (noTransformation) composedModel_ = model_;
   else composedModel_ = ComposedFunction(model_, inverseTransformation_);
   // If the input and output databases have already been given to the projection strategy, transport them to the measure space
-  const NumericalSample initialInputSample(projectionStrategy_.getImplementation()->inputSample_);
+  const Sample initialInputSample(projectionStrategy_.getImplementation()->inputSample_);
   if (databaseProjection && !noTransformation) projectionStrategy_.getImplementation()->inputSample_ = transformation_(initialInputSample);
   // Second, compute the results for each marginal output and merge
   // these marginal results.
@@ -343,7 +343,7 @@ void FunctionalChaosAlgorithm::run()
   // Full set of indices
   Indices I_k(0);
   // Full set of vectorial coefficients
-  NumericalSample alpha_k(0, outputDimension);
+  Sample alpha_k(0, outputDimension);
   // Full set of partial basis functions.
   FunctionCollection Psi_k(0);
   for (iter = coefficientsMap.begin(); iter != coefficientsMap.end(); ++iter)
@@ -411,13 +411,13 @@ FunctionalChaosResult FunctionalChaosAlgorithm::getResult() const
 }
 
 
-NumericalSample FunctionalChaosAlgorithm::getInputSample() const
+Sample FunctionalChaosAlgorithm::getInputSample() const
 {
   return projectionStrategy_.getInputSample();
 }
 
 
-NumericalSample FunctionalChaosAlgorithm::getOutputSample() const
+Sample FunctionalChaosAlgorithm::getOutputSample() const
 {
   return projectionStrategy_.getOutputSample();
 }

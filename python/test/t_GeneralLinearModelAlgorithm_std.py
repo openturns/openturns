@@ -15,7 +15,7 @@ try:
     # Create the function to estimate
     model = ot.SymbolicFunction(["x0"], ["x0"])
 
-    X = ot.NumericalSample(sampleSize, spatialDimension)
+    X = ot.Sample(sampleSize, spatialDimension)
     for i in range(sampleSize):
         X[i, 0] = 3.0 + (8.0 * i) / sampleSize
     Y = model(X)

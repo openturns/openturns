@@ -147,7 +147,7 @@ public:
 
   /** Get the support of a distribution that intersect a given interval */
   using DistributionImplementation::getSupport;
-  NumericalSample getSupport(const Interval & interval) const;
+  Sample getSupport(const Interval & interval) const;
 
   /** Get the PDF singularities inside of the range - 1D only */
   NumericalPoint getSingularities() const;

@@ -72,7 +72,7 @@ cacheHits : int
 
 Returns
 -------
-cacheInput : :class:`~openturns.NumericalSample`
+cacheInput : :class:`~openturns.Sample`
     All the input numerical points stored in the cache mecanism."
 
 // ---------------------------------------------------------------------
@@ -82,7 +82,7 @@ cacheInput : :class:`~openturns.NumericalSample`
 
 Returns
 -------
-cacheInput : :class:`~openturns.NumericalSample`
+cacheInput : :class:`~openturns.Sample`
     All the output numerical points stored in the cache mecanism."
 
 // ---------------------------------------------------------------------
@@ -121,7 +121,7 @@ Examples
 
 Returns
 -------
-input_history : :class:`~openturns.NumericalSample`
+input_history : :class:`~openturns.Sample`
     All the input numerical points stored in the history mecanism."
 
 // ---------------------------------------------------------------------
@@ -131,7 +131,7 @@ input_history : :class:`~openturns.NumericalSample`
 
 Returns
 -------
-output_history : :class:`~openturns.NumericalSample`
+output_history : :class:`~openturns.Sample`
     All the output numerical points stored in the history mecanism."
 
 // ---------------------------------------------------------------------
@@ -141,7 +141,7 @@ output_history : :class:`~openturns.NumericalSample`
 
 Returns
 -------
-history : :class:`~openturns.NumericalSample`
+history : :class:`~openturns.Sample`
     All the input points stored in the history mecanism."
 
 // ---------------------------------------------------------------------
@@ -151,7 +151,7 @@ history : :class:`~openturns.NumericalSample`
 
 Returns
 -------
-history : :class:`~openturns.NumericalSample`
+history : :class:`~openturns.Sample`
     All the input parameters stored in the history mecanism."
 
 // ---------------------------------------------------------------------

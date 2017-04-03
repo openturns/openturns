@@ -46,8 +46,8 @@ ApproximationAlgorithmImplementationFactory * ApproximationAlgorithmImplementati
 }
 
 
-ApproximationAlgorithmImplementation * ApproximationAlgorithmImplementationFactory::build(const NumericalSample & x,
-    const NumericalSample & y,
+ApproximationAlgorithmImplementation * ApproximationAlgorithmImplementationFactory::build(const Sample & x,
+    const Sample & y,
     const Basis & psi,
     const Indices & indices) const
 {
@@ -55,13 +55,13 @@ ApproximationAlgorithmImplementation * ApproximationAlgorithmImplementationFacto
   return build( x, y, NumericalPoint( size, 1.0 ), psi, indices);
 }
 
-ApproximationAlgorithmImplementation * ApproximationAlgorithmImplementationFactory::build(const NumericalSample & x,
-    const NumericalSample & y,
+ApproximationAlgorithmImplementation * ApproximationAlgorithmImplementationFactory::build(const Sample & x,
+    const Sample & y,
     const NumericalPoint & weight,
     const Basis & psi,
     const Indices & indices) const
 {
-  throw NotYetImplementedException(HERE) << "In ApproximationAlgorithmImplementationFactory::build(const NumericalSample & x, const NumericalSample & y, const NumericalPoint & weight, const Basis & psi, const Indices & indices) const";
+  throw NotYetImplementedException(HERE) << "In ApproximationAlgorithmImplementationFactory::build(const Sample & x, const Sample & y, const NumericalPoint & weight, const Basis & psi, const Indices & indices) const";
   // return new PenalizedLeastSquaresAlgorithm( x, y, weight, psi );
 }
 

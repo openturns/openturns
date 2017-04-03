@@ -111,7 +111,7 @@ String PythonExperiment::__str__(const String & offset) const
 /* Here is the interface that all derived class must implement */
 
 
-NumericalSample PythonExperiment::generate() const
+Sample PythonExperiment::generate() const
 {
   ScopedPyObjectPointer result(PyObject_CallMethod ( pyObj_,
                                const_cast<char *>( "generate" ),
@@ -120,7 +120,7 @@ NumericalSample PythonExperiment::generate() const
   {
     handleException();
   }
-  NumericalSample point(convert<_PySequence_, NumericalSample>(result.get()));
+  Sample point(convert<_PySequence_, Sample>(result.get()));
   return point;
 }
 

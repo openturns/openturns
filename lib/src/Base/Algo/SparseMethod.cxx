@@ -89,7 +89,7 @@ NumericalPoint SparseMethod::solve(const NumericalPoint & rhs)
   Indices optimalBasisIndices;
   UnsignedInteger iterations = 0;
 
-  NumericalSample rhsSample(rhs.getSize(), 1);
+  Sample rhsSample(rhs.getSize(), 1);
   rhsSample.getImplementation()->setData(rhs.getCollection());
 
   basisSequenceFactory_.initialize();
@@ -163,7 +163,7 @@ Indices SparseMethod::getInitialIndices() const
   return method_.getInitialIndices();
 }
 
-NumericalSample SparseMethod::getInputSample() const
+Sample SparseMethod::getInputSample() const
 {
   return method_.getInputSample();
 }

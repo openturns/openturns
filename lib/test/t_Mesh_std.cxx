@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
       fullprint << "Default 1D mesh=" << mesh1D << std::endl;
     }
     {
-      NumericalSample vertices(0, 1);
+      Sample vertices(0, 1);
       vertices.add(NumericalPoint(1, 0.5));
       vertices.add(NumericalPoint(1, 1.5));
       vertices.add(NumericalPoint(1, 2.1));
@@ -72,14 +72,14 @@ int main(int argc, char *argv[])
         Indices vertexSimplexIndices = mesh1D.getNearestVertexAndSimplexIndicesWithCoordinates(point, coordinates);
         fullprint << "Nearest index(" << point << "), simplex and coordinates=" << vertexSimplexIndices << ", " << coordinates << std::endl;
       }
-      NumericalSample points(2, 1);
+      Sample points(2, 1);
       points[0] = NumericalPoint(1, -0.25);
       points[1] = NumericalPoint(1, 2.25);
       fullprint << "Nearest index(" << points << ")=" << mesh1D.getNearestVertexIndex(points) << std::endl;
       fullprint << "P1 Gram=" << mesh1D.computeP1Gram() << std::endl;
     }
     {
-      NumericalSample vertices(0, 2);
+      Sample vertices(0, 2);
       NumericalPoint p(2);
 
       p[0] = 0.0;
@@ -129,14 +129,14 @@ int main(int argc, char *argv[])
       fullprint << "2D mesh=" << mesh2D << std::endl;
       NumericalPoint point(2, 1.8);
       fullprint << "Nearest index(" << point << ")=" << mesh2D.getNearestVertexIndex(point) << std::endl;
-      NumericalSample points(2, 2);
+      Sample points(2, 2);
       points[0] = NumericalPoint(2, -0.25);
       points[1] = NumericalPoint(2, 2.25);
       fullprint << "Nearest index(" << points << ")=" << mesh2D.getNearestVertexIndex(points) << std::endl;
       fullprint << "P1 Gram=" << mesh2D.computeP1Gram() << std::endl;
     }
     {
-      NumericalSample vertices(0, 3);
+      Sample vertices(0, 3);
       NumericalPoint p(3);
 
       p[0] = 0.0;
@@ -214,7 +214,7 @@ int main(int argc, char *argv[])
       fullprint << "3D mesh=" << mesh3D << std::endl;
       NumericalPoint point(3, 1.8);
       fullprint << "Nearest index(" << point << ")=" << mesh3D.getNearestVertexIndex(point) << std::endl;
-      NumericalSample points(2, 3);
+      Sample points(2, 3);
       points[0] = NumericalPoint(3, -0.25);
       points[1] = NumericalPoint(3, 2.25);
       fullprint << "Nearest index(" << points << ")=" << mesh3D.getNearestVertexIndex(points) << std::endl;

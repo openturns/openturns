@@ -99,12 +99,12 @@ NumericalPoint BoxCoxEvaluation::getShift() const
 
 struct BoxCoxEvaluationComputeSamplePolicy
 {
-  const NumericalSample & input_;
-  NumericalSample & output_;
+  const Sample & input_;
+  Sample & output_;
   const BoxCoxEvaluation & evaluation_;
 
-  BoxCoxEvaluationComputeSamplePolicy(const NumericalSample & input,
-                                      NumericalSample & output,
+  BoxCoxEvaluationComputeSamplePolicy(const Sample & input,
+                                      Sample & output,
                                       const BoxCoxEvaluation & evaluation)
     : input_(input)
     , output_(output)
@@ -129,12 +129,12 @@ struct BoxCoxEvaluationComputeSamplePolicy
 };  // struct BoxCoxEvaluationComputeSamplePolicy
 
 /* Operator () */
-NumericalSample BoxCoxEvaluation::operator() (const NumericalSample & inS) const
+Sample BoxCoxEvaluation::operator() (const Sample & inS) const
 {
   const UnsignedInteger inDimension = inS.getDimension();
   if (inDimension != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << getInputDimension() << ", got " << inS.getDimension();
   const UnsignedInteger size = inS.getSize();
-  NumericalSample result(size, inDimension);
+  Sample result(size, inDimension);
   const BoxCoxEvaluationComputeSamplePolicy policy( inS, result, *this );
   TBB::ParallelFor( 0, size, policy );
   result.setDescription(getOutputDescription());

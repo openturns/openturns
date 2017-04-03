@@ -22,7 +22,7 @@
 #define OPENTURNS_LINEARMODELFACTORY_HXX
 
 #include "openturns/LinearModel.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -43,8 +43,8 @@ public:
   LinearModelFactory();
 
   /** LinearModel creation */
-  LinearModel build(const NumericalSample & samplePred,
-                    const NumericalSample & sampleLab,
+  LinearModel build(const Sample & samplePred,
+                    const Sample & sampleLab,
                     const NumericalScalar levelValue = ResourceMap::GetAsNumericalScalar( "LinearModelFactory-DefaultLevelValue" )) const;
 
 }; /* class LinearModelFactory */

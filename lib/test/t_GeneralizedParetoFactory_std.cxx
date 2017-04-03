@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     for (UnsignedInteger i = 0; i < 3; ++i)
     {
       distribution = GeneralizedPareto(2.5, xi[i]);
-      NumericalSample sample(distribution.getSample(size));
+      Sample sample(distribution.getSample(size));
       // Distribution estimatedDistribution(factory.build(sample, covariance));
       Distribution estimatedDistribution(factory.build(sample));
       fullprint << "Distribution          =" << distribution << std::endl;

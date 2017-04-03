@@ -175,7 +175,7 @@ computeSecondOrder : bool
 
 Returns
 -------
-inputDesign : :class:`~openturns.NumericalSample`
+inputDesign : :class:`~openturns.Sample`
     Full input design.
 
 Notes

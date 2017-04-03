@@ -21,7 +21,7 @@
 #include "openturns/FunctionalChaosResult.hxx"
 #include "openturns/Os.hxx"
 #include "openturns/OSS.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/DualLinearCombinationFunction.hxx"
@@ -57,7 +57,7 @@ FunctionalChaosResult::FunctionalChaosResult(const Function & model,
     const Function & composedModel,
     const OrthogonalBasis & orthogonalBasis,
     const Indices & I,
-    const NumericalSample & alpha_k,
+    const Sample & alpha_k,
     const FunctionCollection & Psi_k,
     const NumericalPoint & residuals,
     const NumericalPoint & relativeErrors)
@@ -152,7 +152,7 @@ Indices FunctionalChaosResult::getIndices() const
 }
 
 /* Coefficients accessor */
-NumericalSample FunctionalChaosResult::getCoefficients() const
+Sample FunctionalChaosResult::getCoefficients() const
 {
   return alpha_k_;
 }

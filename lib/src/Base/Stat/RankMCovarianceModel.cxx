@@ -130,7 +130,7 @@ Matrix RankMCovarianceModel::partialGradient(const NumericalPoint & s,
   throw NotYetImplementedException(HERE);
 }
 
-CovarianceMatrix RankMCovarianceModel::discretize(const NumericalSample & vertices) const
+CovarianceMatrix RankMCovarianceModel::discretize(const Sample & vertices) const
 {
   if (vertices.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has a dimension=" << vertices.getDimension() << " different from the input dimension=" << spatialDimension_;
   const UnsignedInteger size = vertices.getSize();

@@ -22,7 +22,7 @@
 #define OPENTURNS_METAMODELALGORITHM_HXX
 
 #include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/MetaModelResult.hxx"
@@ -64,8 +64,8 @@ public:
   virtual void run();
 
   /** Sample accessors */
-  virtual NumericalSample getInputSample() const;
-  virtual NumericalSample getOutputSample() const;
+  virtual Sample getInputSample() const;
+  virtual Sample getOutputSample() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

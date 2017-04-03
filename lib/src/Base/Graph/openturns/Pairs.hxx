@@ -44,10 +44,10 @@ public:
 
 
   /** Default constructor */
-  explicit Pairs(const NumericalSample & data,
+  explicit Pairs(const Sample & data,
                  const String & title = "");
 
-  Pairs(const NumericalSample & data,
+  Pairs(const Sample & data,
         const String & title,
         const Description & labels,
         const String & color,
@@ -57,7 +57,7 @@ public:
   String __repr__() const;
 
   /** Accessor for first coordinate */
-  NumericalSample getData() const;
+  Sample getData() const;
 
   /** Accessor for labels */
   Description getLabels() const;
@@ -88,7 +88,7 @@ public:
 
 protected:
   /** Check for data validity */
-  virtual void checkData(const NumericalSample & data) const;
+  virtual void checkData(const Sample & data) const;
 
 private:
 

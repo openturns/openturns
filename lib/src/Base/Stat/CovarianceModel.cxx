@@ -153,12 +153,12 @@ CovarianceMatrix CovarianceModel::discretize(const Mesh & mesh) const
   return getImplementation()->discretize(mesh);
 }
 
-CovarianceMatrix CovarianceModel::discretize(const NumericalSample & vertices) const
+CovarianceMatrix CovarianceModel::discretize(const Sample & vertices) const
 {
   return getImplementation()->discretize(vertices);
 }
 
-NumericalSample CovarianceModel::discretizeRow(const NumericalSample & vertices,
+Sample CovarianceModel::discretizeRow(const Sample & vertices,
     const UnsignedInteger p) const
 {
   return getImplementation()->discretizeRow(vertices, p);
@@ -175,7 +175,7 @@ TriangularMatrix CovarianceModel::discretizeAndFactorize(const Mesh & mesh) cons
   return getImplementation()->discretizeAndFactorize(mesh);
 }
 
-TriangularMatrix CovarianceModel::discretizeAndFactorize(const NumericalSample & vertices) const
+TriangularMatrix CovarianceModel::discretizeAndFactorize(const Sample & vertices) const
 {
   return getImplementation()->discretizeAndFactorize(vertices);
 }
@@ -196,7 +196,7 @@ HMatrix CovarianceModel::discretizeHMatrix(const Mesh & mesh,
   return getImplementation()->discretizeHMatrix(mesh, nuggetFactor, parameters);
 }
 
-HMatrix CovarianceModel::discretizeHMatrix(const NumericalSample & vertices,
+HMatrix CovarianceModel::discretizeHMatrix(const Sample & vertices,
     const NumericalScalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
@@ -218,7 +218,7 @@ HMatrix CovarianceModel::discretizeAndFactorizeHMatrix(const Mesh & mesh,
   return getImplementation()->discretizeAndFactorizeHMatrix(mesh, nuggetFactor, parameters);
 }
 
-HMatrix CovarianceModel::discretizeAndFactorizeHMatrix(const NumericalSample & vertices,
+HMatrix CovarianceModel::discretizeAndFactorizeHMatrix(const Sample & vertices,
     const NumericalScalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {

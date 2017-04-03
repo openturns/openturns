@@ -22,7 +22,7 @@
 #define OPENTURNS_NEARESTPOINTCHECKERRESULT_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/PersistentObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -43,10 +43,10 @@ public:
   NearestPointCheckerResult();
 
   /** Standard constructor */
-  NearestPointCheckerResult(const NumericalSample & verifyingConstraintPoints,
-                            const NumericalSample & verifyingConstraintValues,
-                            const NumericalSample & violatingConstraintPoints,
-                            const NumericalSample & violatingConstraintValues);
+  NearestPointCheckerResult(const Sample & verifyingConstraintPoints,
+                            const Sample & verifyingConstraintValues,
+                            const Sample & violatingConstraintPoints,
+                            const Sample & violatingConstraintValues);
 
 
   /** Virtual constructor */
@@ -55,24 +55,24 @@ public:
   /** Assigment operator */
 
   /** verifyingConstraintPoints accessor */
-  NumericalSample  getVerifyingConstraintPoints() const;
+  Sample  getVerifyingConstraintPoints() const;
   /** verifyingConstraintValues accessor */
-  NumericalSample  getVerifyingConstraintValues() const;
+  Sample  getVerifyingConstraintValues() const;
   /** violatingConstraintPoints accessor */
-  NumericalSample  getViolatingConstraintPoints() const;
+  Sample  getViolatingConstraintPoints() const;
   /** violatingConstraintValues accessor */
-  NumericalSample  getViolatingConstraintValues() const;
+  Sample  getViolatingConstraintValues() const;
   /** verifyingConstraintPoints accessor */
-  void setVerifyingConstraintPoints(const NumericalSample & verifyingConstraintPoints);
+  void setVerifyingConstraintPoints(const Sample & verifyingConstraintPoints);
 
   /** verifyingConstraintValues accessor */
-  void setVerifyingConstraintValues(const NumericalSample & verifyingConstraintValues);
+  void setVerifyingConstraintValues(const Sample & verifyingConstraintValues);
 
   /** violatingConstraintPoints accessor */
-  void setViolatingConstraintPoints(const NumericalSample & violatingConstraintPoints);
+  void setViolatingConstraintPoints(const Sample & violatingConstraintPoints);
 
   /** violatingConstraintValuess accessor */
-  void setViolatingConstraintValues(const NumericalSample & violatingConstraintValues);
+  void setViolatingConstraintValues(const Sample & violatingConstraintValues);
 
   /** String converter */
   String __repr__() const;
@@ -80,10 +80,10 @@ public:
 private:
 
 
-  NumericalSample verifyingConstraintPoints_;
-  NumericalSample verifyingConstraintValues_;
-  NumericalSample violatingConstraintPoints_;
-  NumericalSample violatingConstraintValues_;
+  Sample verifyingConstraintPoints_;
+  Sample verifyingConstraintValues_;
+  Sample violatingConstraintPoints_;
+  Sample violatingConstraintValues_;
 
 }; // class NearestPointCheckerResult
 

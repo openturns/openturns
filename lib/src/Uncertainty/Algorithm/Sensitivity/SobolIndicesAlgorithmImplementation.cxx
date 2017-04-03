@@ -55,8 +55,8 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation()
 }
 
 /** Constructor with parameters */
-SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const NumericalSample & inputDesign,
-    const NumericalSample & outputDesign,
+SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const Sample & inputDesign,
+    const Sample & outputDesign,
     const UnsignedInteger size)
   : PersistentObject()
   , inputDesign_(inputDesign)
@@ -85,7 +85,7 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const N
     throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation, input and output designs have different size. Input design size=" << inputDesign.getSize()
                                          << ", wheras output design size=" << outputDesign.getSize();
   // Reference sample and its variance
-  NumericalSample outReference(size, outputDesign.getDimension());
+  Sample outReference(size, outputDesign.getDimension());
   for (UnsignedInteger k = 0; k < size; ++k) outReference[k] = outputDesign[k];
   referenceVariance_ = outReference.computeVariance();
 }
@@ -129,7 +129,7 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const D
 
   size_ = size;
   // Reference sample and its variance
-  NumericalSample outReference(size, outputDesign_.getDimension());
+  Sample outReference(size, outputDesign_.getDimension());
   for (UnsignedInteger k = 0; k < size_; ++k) outReference[k] = outputDesign_[k];
   referenceVariance_ = outReference.computeVariance();
 }
@@ -166,27 +166,27 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const W
 
   size_ = experiment.getSize();
   // Reference sample and its variance
-  NumericalSample outReference(size_, outputDesign_.getDimension());
+  Sample outReference(size_, outputDesign_.getDimension());
   for (UnsignedInteger k = 0; k < size_; ++k) outReference[k] = outputDesign_[k];
   referenceVariance_ = outReference.computeVariance();
 }
 
-NumericalSample SobolIndicesAlgorithmImplementation::Generate(const Distribution & distribution,
+Sample SobolIndicesAlgorithmImplementation::Generate(const Distribution & distribution,
     const UnsignedInteger size,
     const Bool computeSecondOrder)
 {
   if (!distribution.hasIndependentCopula())
     throw InvalidDimensionException(HERE) << "In SensistivityAlgorithmImplementation::Generate, distribution should have independent copula";
-  const NumericalSample inputSample1(distribution.getSample(size));
-  const NumericalSample inputSample2(distribution.getSample(size));
+  const Sample inputSample1(distribution.getSample(size));
+  const Sample inputSample2(distribution.getSample(size));
   UnsignedInteger dimension = inputSample1.getDimension();
 
-  NumericalSample design(inputSample1);
+  Sample design(inputSample1);
   design.add(inputSample2);
   // Compute designs of type Saltelli/Martinez for 1st order
   for (UnsignedInteger p = 0; p < dimension; ++p)
   {
-    NumericalSample x(inputSample1);
+    Sample x(inputSample1);
     for (UnsignedInteger k = 0; k < size; ++k) x[k][p] = inputSample2[k][p];
     design.add(x);
   }
@@ -194,7 +194,7 @@ NumericalSample SobolIndicesAlgorithmImplementation::Generate(const Distribution
   {
     for (UnsignedInteger p = 0; p < dimension; ++p)
     {
-      NumericalSample x(inputSample2);
+      Sample x(inputSample2);
       for (UnsignedInteger k = 0; k < size; ++k) x[k][p] = inputSample1[k][p];
       design.add(x);
     }
@@ -203,7 +203,7 @@ NumericalSample SobolIndicesAlgorithmImplementation::Generate(const Distribution
   return design;
 }
 
-NumericalSample SobolIndicesAlgorithmImplementation::Generate(const WeightedExperiment & experiment,
+Sample SobolIndicesAlgorithmImplementation::Generate(const WeightedExperiment & experiment,
     const Bool computeSecondOrder)
 {
   if (!experiment.getDistribution().hasIndependentCopula())
@@ -211,16 +211,16 @@ NumericalSample SobolIndicesAlgorithmImplementation::Generate(const WeightedExpe
   const UnsignedInteger size = experiment.getSize();
   // WeightedExperiment::generate is not const, so we should copy experiment
   WeightedExperiment weightedExperiment(experiment);
-  const NumericalSample inputSample1(weightedExperiment.generate());
-  const NumericalSample inputSample2(weightedExperiment.generate());
+  const Sample inputSample1(weightedExperiment.generate());
+  const Sample inputSample2(weightedExperiment.generate());
   UnsignedInteger dimension = inputSample1.getDimension();
 
-  NumericalSample design(inputSample1);
+  Sample design(inputSample1);
   design.add(inputSample2);
   // Compute designs of type Saltelli/Martinez for 1st order
   for (UnsignedInteger p = 0; p < dimension; ++p)
   {
-    NumericalSample x(inputSample1);
+    Sample x(inputSample1);
     for (UnsignedInteger k = 0; k < size; ++k) x[k][p] = inputSample2[k][p];
     design.add(x);
   }
@@ -228,7 +228,7 @@ NumericalSample SobolIndicesAlgorithmImplementation::Generate(const WeightedExpe
   {
     for (UnsignedInteger p = 0; p < dimension; ++p)
     {
-      NumericalSample x(inputSample2);
+      Sample x(inputSample2);
       for (UnsignedInteger k = 0; k < size; ++k) x[k][p] = inputSample1[k][p];
       design.add(x);
     }
@@ -269,14 +269,14 @@ struct BootstrapPolicy
   const SobolIndicesAlgorithmImplementation & sai_;
   const Indices & indices_;
   const UnsignedInteger size_;
-  NumericalSample & bsFO_;
-  NumericalSample & bsTO_;
+  Sample & bsFO_;
+  Sample & bsTO_;
 
   BootstrapPolicy( const SobolIndicesAlgorithmImplementation & sai,
                    const Indices & indices,
                    const UnsignedInteger size,
-                   NumericalSample & bsFO,
-                   NumericalSample & bsTO)
+                   Sample & bsFO,
+                   Sample & bsTO)
     : sai_(sai)
     , indices_(indices)
     , size_(size)
@@ -287,7 +287,7 @@ struct BootstrapPolicy
   inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
   {
     Indices slice(size_);
-    NumericalSample VTi;
+    Sample VTi;
     NumericalPoint mergedTotal;
 
     for (UnsignedInteger k = r.begin(); k != r.end(); ++k)
@@ -296,13 +296,13 @@ struct BootstrapPolicy
       memcpy(&slice[0], &indices_[k * size_], size_ * sizeof(UnsignedInteger));
 
       // Generate huge random sample using Bootstrap algorithm
-      const NumericalSample randomCollection(sai_.getBootstrapDesign(slice));
+      const Sample randomCollection(sai_.getBootstrapDesign(slice));
       // Pseudo-Reference variance
-      NumericalSample outReference(size_, sai_.outputDesign_.getDimension());
+      Sample outReference(size_, sai_.outputDesign_.getDimension());
       for (UnsignedInteger i = 0; i < size_; ++i) outReference[i] = randomCollection[i];
       const NumericalPoint variance(outReference.computeVariance());
       // Compute indices using this collection
-      const NumericalSample Vi(sai_.computeIndices(randomCollection, VTi));
+      const Sample Vi(sai_.computeIndices(randomCollection, VTi));
       // Compute aggregated indices
       bsFO_[k] = sai_.computeAggregatedIndices(Vi, VTi, variance, mergedTotal);
       // Add to sample
@@ -327,8 +327,8 @@ void SobolIndicesAlgorithmImplementation::computeIndicesInterval() const
   {
     // Temporary samples that stores the first/total indices
     const UnsignedInteger inputDimension = inputDesign_.getDimension();
-    NumericalSample bsFO(0, inputDimension);
-    NumericalSample bsTO(0, inputDimension);
+    Sample bsFO(0, inputDimension);
+    Sample bsTO(0, inputDimension);
     const UnsignedInteger size = size_;
     // To have the exact same results with TBB, we have to precompute
     // RandomGenerator::IntegerGenerate calls and store results in a
@@ -344,8 +344,8 @@ void SobolIndicesAlgorithmImplementation::computeIndicesInterval() const
       // the last block can be smaller
       const UnsignedInteger effectiveBlockSize = (outerSampling + 1) < maximumOuterSampling ? blockSize : lastBlockSize;
 
-      NumericalSample bsFOpartial(effectiveBlockSize, inputDimension);
-      NumericalSample bsTOpartial(effectiveBlockSize, inputDimension);
+      Sample bsFOpartial(effectiveBlockSize, inputDimension);
+      Sample bsTOpartial(effectiveBlockSize, inputDimension);
       const RandomGenerator::UnsignedIntegerCollection randomIndices(RandomGenerator::IntegerGenerate(size * effectiveBlockSize, size));
       const Indices indices(randomIndices.begin(), randomIndices.end());
       const BootstrapPolicy policy( *this, indices, size, bsFOpartial, bsTOpartial );
@@ -538,10 +538,10 @@ String SobolIndicesAlgorithmImplementation::__repr__() const
   return oss;
 }
 
-// Multiplication and sum of two NumericalSamples
-// TODO Write method in NumericalSample ?
-NumericalPoint SobolIndicesAlgorithmImplementation::computeSumDotSamples(const NumericalSample & x,
-    const NumericalSample & y) const
+// Multiplication and sum of two Samples
+// TODO Write method in Sample ?
+NumericalPoint SobolIndicesAlgorithmImplementation::computeSumDotSamples(const Sample & x,
+    const Sample & y) const
 {
   // Internal method
   // Suppose that samples have the same size, same dimension
@@ -559,8 +559,8 @@ NumericalPoint SobolIndicesAlgorithmImplementation::computeSumDotSamples(const N
   return value;
 }
 
-// Multiplication and sum of two NumericalSamples, contained in the sampe sample
-NumericalPoint SobolIndicesAlgorithmImplementation::computeSumDotSamples(const NumericalSample & sample,
+// Multiplication and sum of two Samples, contained in the sampe sample
+NumericalPoint SobolIndicesAlgorithmImplementation::computeSumDotSamples(const Sample & sample,
     const UnsignedInteger size,
     const UnsignedInteger indexX,
     const UnsignedInteger indexY) const
@@ -587,8 +587,8 @@ String SobolIndicesAlgorithmImplementation::__str__(const String & offset) const
 }
 
 /** Internal method that compute Vi/VTi using a collection of samples */
-NumericalSample SobolIndicesAlgorithmImplementation::computeIndices(const NumericalSample & design,
-    NumericalSample & VTi) const
+Sample SobolIndicesAlgorithmImplementation::computeIndices(const Sample & design,
+    Sample & VTi) const
 {
   // Method is defined in Jansan/Saltelli/Martinez/Mauntz classes
   throw new NotYetImplementedException(HERE);
@@ -601,7 +601,7 @@ Graph SobolIndicesAlgorithmImplementation::draw() const
   // Define cloud for first order and total order indices
   const NumericalPoint aggregatedFO(getAggregatedFirstOrderIndices());
   const NumericalPoint aggregatedTO(getAggregatedTotalOrderIndices());
-  NumericalSample data(aggregatedFO.getDimension(), 2);
+  Sample data(aggregatedFO.getDimension(), 2);
   for (UnsignedInteger k = 0; k < aggregatedFO.getDimension(); ++k)
   {
     data[k][0] = k + 1;
@@ -629,7 +629,7 @@ Graph SobolIndicesAlgorithmImplementation::draw() const
     const Interval foInterval(getFirstOrderIndicesInterval());
     const Interval toInterval(getTotalOrderIndicesInterval());
     // transform data
-    data = NumericalSample(2, 2);
+    data = Sample(2, 2);
     for (UnsignedInteger k = 0; k < aggregatedFO.getDimension(); ++k)
     {
       // Relative to FirstOrder
@@ -659,7 +659,7 @@ Graph SobolIndicesAlgorithmImplementation::draw(UnsignedInteger marginalIndex) c
   // Define cloud for first order and total order indices
   const NumericalPoint foIndices(getFirstOrderIndices(marginalIndex));
   const NumericalPoint toIndices(getTotalOrderIndices(marginalIndex));
-  NumericalSample data(foIndices.getDimension(), 2);
+  Sample data(foIndices.getDimension(), 2);
   for (UnsignedInteger k = 0; k < foIndices.getDimension(); ++k)
   {
     data[k][0] = k + 1;
@@ -687,15 +687,15 @@ Graph SobolIndicesAlgorithmImplementation::draw(UnsignedInteger marginalIndex) c
 }
 
 /** Internal method that returns a bootstrap NSC */
-NumericalSample SobolIndicesAlgorithmImplementation::getBootstrapDesign(const Indices & indices) const
+Sample SobolIndicesAlgorithmImplementation::getBootstrapDesign(const Indices & indices) const
 {
   // Bootstrap with huge sample that contains several samples
   const UnsignedInteger inputDimension = inputDesign_.getDimension();
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
-  NumericalSample bootstrapDesign(0, outputDimension);
+  Sample bootstrapDesign(0, outputDimension);
   for (UnsignedInteger p = 0; p < 2 + inputDimension; ++p)
   {
-    NumericalSample y(size_, outputDimension);
+    Sample y(size_, outputDimension);
     NumericalScalar* yPermData = &y[0][0];
 
     const NumericalScalar* yData = &outputDesign_[p * size_][0];
@@ -708,8 +708,8 @@ NumericalSample SobolIndicesAlgorithmImplementation::getBootstrapDesign(const In
 }
 
 /** Function that computes merged indices using Vi/VTi + variance  */
-NumericalPoint SobolIndicesAlgorithmImplementation::computeAggregatedIndices(const NumericalSample & Vi,
-    const NumericalSample & VTi,
+NumericalPoint SobolIndicesAlgorithmImplementation::computeAggregatedIndices(const Sample & Vi,
+    const Sample & VTi,
     const NumericalPoint & variance,
     NumericalPoint & mergedTotal) const
 {

@@ -49,7 +49,7 @@ must return an output sample. For further details on speed optimization
 see paragraph [speedo]. Here is an example using ``_exec_sample``
 function:
 
-The output sample can be a NumericalSample, a Python list of list or a
+The output sample can be a Sample, a Python list of list or a
 Numpy array of array. This function is optional. If ``_exec_sample`` is
 not implemented and  must compute a sample, the ``_exec`` function is
 called several time: once for each point of the sample. On contrary, if

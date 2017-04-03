@@ -42,7 +42,7 @@ frequencyGrid = myEstimatedModel_PS.getFrequencyGrid()
 
 # With the model, we want to compare values
 # We compare values computed with theoritical values
-plotSample = ot.NumericalSample(frequencyGrid.getN(), 3)
+plotSample = ot.Sample(frequencyGrid.getN(), 3)
 
 # Loop of comparison ==> data are saved in plotSample
 for k in range(frequencyGrid.getN()):

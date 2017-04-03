@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_SYMBOLICPARSER_HXX
 #define OPENTURNS_SYMBOLICPARSER_HXX
 
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS

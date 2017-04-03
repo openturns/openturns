@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
     UnsignedInteger maxPoint = 101;
     NumericalScalar xMin = -2.0 * M_PI;
     NumericalScalar xMax = 2.0 * M_PI;
-    NumericalSample data(maxPoint, 2);
+    Sample data(maxPoint, 2);
     for (UnsignedInteger i = 0; i < maxPoint; ++i)
     {
       NumericalScalar x = xMin + (xMax - xMin) * i / (maxPoint - 1.0);

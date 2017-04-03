@@ -9,7 +9,7 @@ ot.PlatformInfo.SetNumericalPrecision(6)
 # 1D example
 mesh1D = ot.Mesh()
 print("Default 1D mesh=", mesh1D)
-vertices = ot.NumericalSample(0, 1)
+vertices = ot.Sample(0, 1)
 vertices.add([0.5])
 vertices.add([1.5])
 vertices.add([2.1])
@@ -49,7 +49,7 @@ print("Nearest index(", points, ")=", mesh2D.getNearestVertexIndex(points))
 print("P1 gram=\n", mesh2D.computeP1Gram())
 # 3D case
 
-vertices = ot.NumericalSample(0, 3)
+vertices = ot.Sample(0, 3)
 
 vertices.add([0.0, 0.0, 0.0])
 vertices.add([0.0, 0.0, 1.0])

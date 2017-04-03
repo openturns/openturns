@@ -111,7 +111,7 @@ protected:
   void setResult(const SimulationResult & result);
 
   /** Compute the block sample and the points that realized the event */
-  virtual NumericalSample computeBlockSample();
+  virtual Sample computeBlockSample();
 
   /** For save/load mechanism*/
   Simulation(const Bool verbose = true,

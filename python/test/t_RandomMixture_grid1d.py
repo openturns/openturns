@@ -32,7 +32,7 @@ try:
     sigma = distribution.getStandardDeviation()
     xMin = mean - 3.9 * sigma
     xMax = mean + 3.9 * sigma
-    grid = NumericalSample()
+    grid = Sample()
     print("distribution = ", repr(distribution))
     print("range = ", distribution.getRange())
     print("mean = ",  distribution.getMean())

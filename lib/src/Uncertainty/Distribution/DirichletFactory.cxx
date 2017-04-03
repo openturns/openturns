@@ -45,7 +45,7 @@ DirichletFactory * DirichletFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-DirichletFactory::Implementation DirichletFactory::build(const NumericalSample & sample) const
+DirichletFactory::Implementation DirichletFactory::build(const Sample & sample) const
 {
   return buildAsDirichlet(sample).clone();
 }
@@ -60,7 +60,7 @@ DirichletFactory::Implementation DirichletFactory::build() const
   return buildAsDirichlet().clone();
 }
 
-Dirichlet DirichletFactory::buildAsDirichlet(const NumericalSample & sample) const
+Dirichlet DirichletFactory::buildAsDirichlet(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Dirichlet distribution from a sample of size < 2";

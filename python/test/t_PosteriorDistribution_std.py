@@ -51,7 +51,7 @@ for conditioning in conditioningDistributionCollection:
 
     # Test for sampling
 #       size = 10000
-#       NumericalSample anotherSample = distribution.getSample(size)
+#       Sample anotherSample = distribution.getSample(size)
 #       print("anotherSample mean=", anotherSample.computeMean())
 #       print("anotherSample covariance=", anotherSample.computeCovariance())
 

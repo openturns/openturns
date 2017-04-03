@@ -106,12 +106,12 @@ NumericalPoint KarhunenLoeveResult::project(const Field & field) const
   return getImplementation()->project(field);
 }
 
-NumericalSample KarhunenLoeveResult::project(const Basis & basis) const
+Sample KarhunenLoeveResult::project(const Basis & basis) const
 {
   return getImplementation()->project(basis);
 }
 
-NumericalSample KarhunenLoeveResult::project(const ProcessSample & sample) const
+Sample KarhunenLoeveResult::project(const ProcessSample & sample) const
 {
   return getImplementation()->project(sample);
 }

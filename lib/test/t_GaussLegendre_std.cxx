@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
     NumericalScalar ref = cos(a) - cos(b);
     fullprint << "value=" << value << ", ref=" << ref << std::endl;
     // Low-level interface
-    NumericalSample adaptedNodes;
+    Sample adaptedNodes;
     value = algo.integrateWithNodes(f, Interval(a, b), adaptedNodes)[0];
     fullprint << "value=" << value << ", ref=" << ref << ", adaptedNodes=" << adaptedNodes << std::endl;
   }

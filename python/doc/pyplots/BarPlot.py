@@ -12,7 +12,7 @@ epsilon = 0.1
 minSample = sample.getMin()[0]
 maxSample = sample.getMax()[0] + 0.1
 nBars = 20
-data = ot.NumericalSample(nBars, [(maxSample - minSample) / nBars, 0])
+data = ot.Sample(nBars, [(maxSample - minSample) / nBars, 0])
 
 for i in range(2000):
     index = int(

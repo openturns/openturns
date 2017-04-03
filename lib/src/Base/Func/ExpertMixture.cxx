@@ -139,22 +139,22 @@ NumericalPoint ExpertMixture::operator() (const NumericalPoint & inP) const
   return bestValue;
 }
 
-NumericalSample ExpertMixture::operator() (const NumericalSample & inS) const
+Sample ExpertMixture::operator() (const Sample & inS) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inS.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << inputDimension << " and got a sample of dimension=" << inS.getDimension();
   const UnsignedInteger size = inS.getSize();
   const UnsignedInteger outputDimension = getOutputDimension();
-  NumericalSample bestValues(size, outputDimension);
+  Sample bestValues(size, outputDimension);
   const UnsignedInteger expertSize = experts_.getSize();
   NumericalPoint bestGrades(size, -SpecFunc::MaxNumericalScalar);
   for (UnsignedInteger classIndex = 0; classIndex < expertSize; ++classIndex)
   {
     // Build the point (x, f(x)) for each other class and grade it according to the classifier
-    NumericalSample mixedSample(inS);
+    Sample mixedSample(inS);
     // Here is the evaluation of the expert over a sample, benefiting from possible
     // parallelism/vectorization
-    const NumericalSample localValues(experts_[classIndex](inS));
+    const Sample localValues(experts_[classIndex](inS));
     mixedSample.stack(localValues);
     const NumericalPoint grades = classifier_.grade(mixedSample, Indices(size, classIndex));
     for (UnsignedInteger i = 0; i < size; ++i)

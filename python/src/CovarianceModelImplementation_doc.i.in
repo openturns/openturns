@@ -247,7 +247,7 @@ Notes
 -----
 This method si similar to the *discretize* method. This method requires that 
 OpenTURNS has been compiled with the hmat library.
-The method is helpfull for very large parameters (Mesh, grid, NumericalSample) 
+The method is helpfull for very large parameters (Mesh, grid, Sample) 
 as its compress data.
 "
 %enddef
@@ -280,7 +280,7 @@ Notes
 -----
 This method si similar to the *discretizeAndFactorize* method. This method 
 requires that OpenTURNS has been compiled with the hmat library.
-The method is helpfull for very large parameters (Mesh, grid, NumericalSample) 
+The method is helpfull for very large parameters (Mesh, grid, Sample) 
 as its compress data.
 "
 %enddef

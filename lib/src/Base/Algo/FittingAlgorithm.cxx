@@ -60,8 +60,8 @@ String FittingAlgorithm::__str__(const String & offset) const
   return getImplementation()->__str__( offset );
 }
 
-NumericalScalar FittingAlgorithm::run(const NumericalSample & x,
-                                      const NumericalSample & y,
+NumericalScalar FittingAlgorithm::run(const Sample & x,
+                                      const Sample & y,
                                       const NumericalPoint & weight,
                                       const Basis & basis,
                                       const Indices & indices) const
@@ -69,15 +69,15 @@ NumericalScalar FittingAlgorithm::run(const NumericalSample & x,
   return getImplementation()->run(x, y, weight, basis, indices);
 }
 
-NumericalScalar FittingAlgorithm::run(const NumericalSample & x,
-                                      const NumericalSample & y,
+NumericalScalar FittingAlgorithm::run(const Sample & x,
+                                      const Sample & y,
                                       const Basis & basis,
                                       const Indices & indices) const
 {
   return getImplementation()->run(x, y, basis, indices);
 }
 
-NumericalScalar FittingAlgorithm::run(const NumericalSample & y,
+NumericalScalar FittingAlgorithm::run(const Sample & y,
                                       const NumericalPoint & weight,
                                       const Indices & indices,
                                       const DesignProxy & proxy) const
@@ -86,7 +86,7 @@ NumericalScalar FittingAlgorithm::run(const NumericalSample & y,
 }
 
 NumericalScalar FittingAlgorithm::run(LeastSquaresMethod & method,
-                                      const NumericalSample & y) const
+                                      const Sample & y) const
 {
   return getImplementation()->run(method, y);
 }

@@ -25,7 +25,7 @@
 #include "openturns/OTconfig.hxx"
 #include "openturns/OTprivate.hxx"
 #include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/CovarianceMatrix.hxx"
 #include "openturns/CovarianceModel.hxx"
 
@@ -202,12 +202,12 @@ class CovarianceAssemblyFunction : public HMatrixRealAssemblyFunction
 {
 private:
   const CovarianceModel covarianceModel_;
-  const NumericalSample vertices_;
+  const Sample vertices_;
   const UnsignedInteger covarianceDimension_;
   const double epsilon_;
 
 public:
-  CovarianceAssemblyFunction(const CovarianceModel & covarianceModel, const NumericalSample & vertices, double epsilon)
+  CovarianceAssemblyFunction(const CovarianceModel & covarianceModel, const Sample & vertices, double epsilon)
     : HMatrixRealAssemblyFunction()
     , covarianceModel_(covarianceModel)
     , vertices_(vertices)
@@ -232,12 +232,12 @@ class CovarianceBlockAssemblyFunction : public HMatrixTensorRealAssemblyFunction
 {
 private:
   const CovarianceModel covarianceModel_;
-  const NumericalSample vertices_;
+  const Sample vertices_;
   const double epsilon_;
   CovarianceMatrix epsilonId_;
 
 public:
-  CovarianceBlockAssemblyFunction(const CovarianceModel & covarianceModel, const NumericalSample & vertices, double epsilon)
+  CovarianceBlockAssemblyFunction(const CovarianceModel & covarianceModel, const Sample & vertices, double epsilon)
     : HMatrixTensorRealAssemblyFunction(covarianceModel.getDimension())
     , covarianceModel_(covarianceModel)
     , vertices_(vertices)

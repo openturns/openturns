@@ -43,8 +43,8 @@ public:
   MartinezSensitivityAlgorithm();
 
   /** Constructor with parameters */
-  MartinezSensitivityAlgorithm(const NumericalSample & inputDesign,
-                               const NumericalSample & outputDesign,
+  MartinezSensitivityAlgorithm(const Sample & inputDesign,
+                               const Sample & outputDesign,
                                const UnsignedInteger size);
 
   /** Constructor with distribution / model parameters */
@@ -79,8 +79,8 @@ public:
 protected:
 
   /** Internal method that compute Vi/VTi using a huge sample */
-  NumericalSample computeIndices(const NumericalSample & sample,
-                                 NumericalSample & VTi) const;
+  Sample computeIndices(const Sample & sample,
+                                 Sample & VTi) const;
 
   // Compute the fisher transform
   void computeAsymptoticInterval() const;

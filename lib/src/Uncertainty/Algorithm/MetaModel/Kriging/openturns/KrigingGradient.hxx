@@ -50,10 +50,10 @@ public:
 
   /** Constructor with parameters */
   KrigingGradient(const BasisCollection & basis,
-                  const NumericalSample & inputSample,
+                  const Sample & inputSample,
                   const CovarianceModel & correlationModel,
                   const NumericalPointCollection & beta,
-                  const NumericalSample & gamma);
+                  const Sample & gamma);
 
   /** Virtual constructor */
   virtual KrigingGradient * clone() const;
@@ -89,14 +89,14 @@ protected:
   BasisPersistentCollection basis_;
 
   /// Training (input) sample
-  NumericalSample inputSample_;
+  Sample inputSample_;
 
   /// Correlation model
   CovarianceModel covarianceModel_;
 
   /// Regression weights
   NumericalPointPersistentCollection beta_;
-  NumericalSample gamma_;
+  Sample gamma_;
 
 };
 

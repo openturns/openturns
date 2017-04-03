@@ -520,7 +520,7 @@ Bool TruncatedDistribution::isIntegral() const
 }
 
 /* Get the support of a distribution that intersect a given interval */
-NumericalSample TruncatedDistribution::getSupport(const Interval & interval) const
+Sample TruncatedDistribution::getSupport(const Interval & interval) const
 {
   return distribution_.getSupport(getRange().intersect(interval));
 }

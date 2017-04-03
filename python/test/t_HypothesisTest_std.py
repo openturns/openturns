@@ -18,8 +18,8 @@ try:
 
     size = 100
     sample = distribution.getSample(size)
-    sampleX = NumericalSample(size, dim - 1)
-    sampleY = NumericalSample(size, 1)
+    sampleX = Sample(size, dim - 1)
+    sampleY = Sample(size, 1)
     for i in range(size):
         sampleY[i] = NumericalPoint(1, sample[i, 0])
         p = NumericalPoint(dim - 1)
@@ -27,7 +27,7 @@ try:
             p[j] = sample[i, j + 1]
         sampleX[i] = p
 
-    sampleZ = NumericalSample(size, 1)
+    sampleZ = Sample(size, 1)
     for i in range(size):
         sampleZ[i] = NumericalPoint(1, sampleY[i, 0] * sampleY[i, 0])
 

@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     Mixture distribution(aCollection, NumericalPoint(aCollection.getSize(), 1.0));
     fullprint << "mixture=" << distribution.__str__() << std::endl;
     Classifier classifier(MixtureClassifier(distribution).clone());
-    NumericalSample inS;
+    Sample inS;
     inS.add(NumericalPoint(1, 2.));
     inS.add(NumericalPoint(1, 4.));
     inS.add(NumericalPoint(1, 6.));

@@ -40,7 +40,7 @@ sampleX : 2-d sequence of float
 
 Returns
 -------
-Y : :class:`~openturns.NumericalSample`
+Y : :class:`~openturns.Sample`
     The response :math:`Y` evaluated through the linear model on the sample
     *sampleX*."
 
@@ -68,5 +68,5 @@ Ysample: 2-d sequence of float
 
 Returns
 -------
-residual : :class:`~openturns.NumericalSample`
+residual : :class:`~openturns.Sample`
     The residuals computed on each point."

@@ -124,8 +124,8 @@ private:
   NumericalScalar rescale_;
 
   /// temporary, used to track input/outputs
-  NumericalSample evaluationInputHistory_;
-  NumericalSample evaluationOutputHistory_;
+  Sample evaluationInputHistory_;
+  Sample evaluationOutputHistory_;
 
   void * p_nfeval_;
 

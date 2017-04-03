@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
     PlatformInfo::SetNumericalPrecision(5);
     FisherSnedecor distribution(4.5, 8.4);
     UnsignedInteger size = 10000;
-    NumericalSample sample(distribution.getSample(size));
+    Sample sample(distribution.getSample(size));
     FisherSnedecorFactory factory;
     CovarianceMatrix covariance;
     // Distribution estimatedDistribution(factory.build(sample, covariance));

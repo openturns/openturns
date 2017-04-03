@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
   {
     Geometric distribution(0.7);
     UnsignedInteger size = 10000;
-    NumericalSample sample(distribution.getSample(size));
+    Sample sample(distribution.getSample(size));
     GeometricFactory factory;
     CovarianceMatrix covariance;
     // Distribution estimatedDistribution(factory.build(sample, covariance));

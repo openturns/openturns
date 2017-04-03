@@ -54,8 +54,8 @@ String KFold::__repr__() const
 
 
 /* Perform cross-validation */
-NumericalScalar KFold::run(const NumericalSample & x,
-                           const NumericalSample & y,
+NumericalScalar KFold::run(const Sample & x,
+                           const Sample & y,
                            const NumericalPoint & weight,
                            const Basis & basis,
                            const Indices & indices) const
@@ -63,7 +63,7 @@ NumericalScalar KFold::run(const NumericalSample & x,
   return FittingAlgorithmImplementation::run(x, y, weight, basis, indices);
 }
 
-NumericalScalar KFold::run(const NumericalSample & y,
+NumericalScalar KFold::run(const Sample & y,
                            const NumericalPoint & weight,
                            const Indices & indices,
                            const DesignProxy & proxy) const
@@ -72,9 +72,9 @@ NumericalScalar KFold::run(const NumericalSample & y,
 }
 
 NumericalScalar KFold::run(LeastSquaresMethod & method,
-                          const NumericalSample & y) const
+                          const Sample & y) const
 {
-  const NumericalSample x(method.getInputSample());
+  const Sample x(method.getInputSample());
   const Basis basis(method.getBasis());
 
   const UnsignedInteger sampleSize = x.getSize();

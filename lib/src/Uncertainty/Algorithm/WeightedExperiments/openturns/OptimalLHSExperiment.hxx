@@ -81,8 +81,8 @@ protected:
   mutable ComposedDistribution::DistributionCollection marginals_;
 
   /** Rank transformation */
-  NumericalSample rankTransform(const NumericalSample design) const;
-  NumericalSample inverseRankTransform(const NumericalSample design) const;
+  Sample rankTransform(const Sample design) const;
+  Sample inverseRankTransform(const Sample design) const;
 
   OptimalLHSExperiment() {};
   friend class Factory<OptimalLHSExperiment>;

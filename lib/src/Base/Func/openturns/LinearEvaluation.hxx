@@ -27,7 +27,7 @@
 
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Matrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -66,7 +66,7 @@ public:
   virtual NumericalPoint operator() (const NumericalPoint & inP) const;
 
   /** Operator () */
-  virtual NumericalSample operator() (const NumericalSample & inS) const;
+  virtual Sample operator() (const Sample & inS) const;
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;

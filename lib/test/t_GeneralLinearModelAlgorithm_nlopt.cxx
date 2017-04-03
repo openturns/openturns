@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     ResourceMap::SetAsNumericalScalar("GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound", 100);
     // Data & estimation
     const UnsignedInteger spatialDimension = 1;
-    NumericalSample X = Normal(0, 1).getSample(100);
+    Sample X = Normal(0, 1).getSample(100);
     X = X.sortAccordingToAComponent(0);
     SquaredExponential covarianceModel(1);
     Description inDescription(1);
@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
     Description formula(1);
     formula[0] = "x - 0.6 * cos(x/3)";
     SymbolicFunction model(inDescription, formula);
-    const NumericalSample Y = model(X);
+    const Sample Y = model(X);
     const Basis basis = QuadraticBasisFactory(spatialDimension).build();
     GeneralLinearModelAlgorithm algo(X, Y, covarianceModel, basis, true);
     NLopt solver("LN_NELDERMEAD");
@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
     GeneralLinearModelResult result = algo.getResult();
     const Function metaModel = result.getMetaModel();
     CovarianceModel conditionalCovariance = result.getCovarianceModel();
-    const NumericalSample residual = metaModel(X) - Y;
+    const Sample residual = metaModel(X) - Y;
     assert_almost_equal(residual.computeCenteredMoment(2), NumericalPoint(1, 1.06e-05), 1e-5, 1e-5);
     NumericalPoint parameter(2);
     parameter[0] = 0.702138;

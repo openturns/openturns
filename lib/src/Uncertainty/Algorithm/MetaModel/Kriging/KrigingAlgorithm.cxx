@@ -57,8 +57,8 @@ KrigingAlgorithm::KrigingAlgorithm()
 
 
 /* Constructor */
-KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
-                                   const NumericalSample & outputSample,
+KrigingAlgorithm::KrigingAlgorithm(const Sample & inputSample,
+                                   const Sample & outputSample,
                                    const CovarianceModel & covarianceModel,
                                    const Basis & basis,
                                    const Bool normalize)
@@ -84,8 +84,8 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
 
 
 /* Constructor */
-KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
-                                   const NumericalSample & outputSample,
+KrigingAlgorithm::KrigingAlgorithm(const Sample & inputSample,
+                                   const Sample & outputSample,
                                    const CovarianceModel & covarianceModel,
                                    const BasisCollection & basisCollection,
                                    const Bool normalize)
@@ -110,9 +110,9 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
 }
 
 /* Constructor */
-KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
+KrigingAlgorithm::KrigingAlgorithm(const Sample & inputSample,
                                    const Function & inputTransformation,
-                                   const NumericalSample & outputSample,
+                                   const Sample & outputSample,
                                    const CovarianceModel & covarianceModel,
                                    const Basis & basis)
   : MetaModelAlgorithm()
@@ -135,9 +135,9 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
 }
 
 /* Constructor */
-KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
+KrigingAlgorithm::KrigingAlgorithm(const Sample & inputSample,
                                    const Function & inputTransformation,
-                                   const NumericalSample & outputSample,
+                                   const Sample & outputSample,
                                    const CovarianceModel & covarianceModel,
                                    const BasisCollection & basisCollection)
   : MetaModelAlgorithm()
@@ -205,11 +205,11 @@ void KrigingAlgorithm::run()
   Function metaModel;
   // We use directly the collection of points
   const BasisCollection basis(glmResult.getBasisCollection());
-  const NumericalSample normalizedInputSample(glmResult.getInputTransformedSample());
+  const Sample normalizedInputSample(glmResult.getInputTransformedSample());
   const CovarianceModel conditionalCovarianceModel(glmResult.getCovarianceModel());
   const Collection<NumericalPoint> trendCoefficients(glmResult.getTrendCoefficients());
   const UnsignedInteger outputDimension = outputSample_.getDimension();
-  NumericalSample covarianceCoefficients(inputSample_.getSize(), outputDimension);
+  Sample covarianceCoefficients(inputSample_.getSize(), outputDimension);
   covarianceCoefficients.getImplementation()->setData(gamma_);
   // Meta model definition
   metaModel.setEvaluation(new KrigingEvaluation(basis, normalizedInputSample, conditionalCovarianceModel, trendCoefficients, covarianceCoefficients));
@@ -220,7 +220,7 @@ void KrigingAlgorithm::run()
   if (normalize_) metaModel = ComposedFunction(metaModel, glmResult.getTransformation());
   // compute residual, relative error
   const NumericalPoint outputVariance(outputSample_.computeVariance());
-  const NumericalSample mY(metaModel(inputSample_));
+  const Sample mY(metaModel(inputSample_));
   const NumericalPoint squaredResiduals((outputSample_ - mY).computeRawMoment(2));
 
   const UnsignedInteger size = inputSample_.getSize();
@@ -248,13 +248,13 @@ String KrigingAlgorithm::__repr__() const
 }
 
 
-NumericalSample KrigingAlgorithm::getInputSample() const
+Sample KrigingAlgorithm::getInputSample() const
 {
   return inputSample_;
 }
 
 
-NumericalSample KrigingAlgorithm::getOutputSample() const
+Sample KrigingAlgorithm::getOutputSample() const
 {
   return outputSample_;
 }

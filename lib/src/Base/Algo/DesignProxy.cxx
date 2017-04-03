@@ -42,7 +42,7 @@ DesignProxy::DesignProxy ()
 }
 
 /* Parameters constructor */
-DesignProxy::DesignProxy(const NumericalSample & x,
+DesignProxy::DesignProxy(const Sample & x,
                          const Basis & basis)
   : Object()
   , x_(x)
@@ -161,7 +161,7 @@ MatrixImplementation DesignProxy::computeDesign(const Indices & indices) const
 }
 
 /* Input sample accessor */
-NumericalSample DesignProxy::getInputSample() const
+Sample DesignProxy::getInputSample() const
 {
   return x_;
 }

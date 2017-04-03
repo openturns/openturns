@@ -16,4 +16,4 @@ OTTypedInterfaceObjectHelper(WeightedExperiment)
 %include openturns/WeightedExperiment.hxx
 namespace OT { %extend WeightedExperiment { WeightedExperiment(const WeightedExperiment & other) { return new OT::WeightedExperiment(other); } } }
 
-%clear OT::NumericalSample & weights;
+%clear OT::Sample & weights;

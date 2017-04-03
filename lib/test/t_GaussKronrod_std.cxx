@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
         // Low-level interface
 //         NumericalPoint ai;
 //         NumericalPoint bi;
-//         NumericalSample fi;
+//         Sample fi;
 //         NumericalPoint ei;
 //         NumericalScalar value2(algo.integrate(f, a, b, error, ai, bi, fi, ei)[0]);
 //         ai.add(b);
@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
         // Low-level interface
 //         NumericalPoint ai;
 //         NumericalPoint bi;
-//         NumericalSample fi;
+//         Sample fi;
 //         NumericalPoint ei;
 //         NumericalScalar value2(algo.integrate(f, a, b, error, ai, bi, fi, ei)[0]);
 //         ai.add(b);

@@ -29,10 +29,10 @@ int main(int argc, char *argv[])
   TESTPREAMBLE;
   OStream fullprint(std::cout);
 
-  NumericalSample sample(Normal(3).getSample(10));
+  Sample sample(Normal(3).getSample(10));
   KDTree tree(sample);
   fullprint << "tree=" << tree << std::endl;
-  NumericalSample test(Normal(3).getSample(20));
+  Sample test(Normal(3).getSample(20));
   for (UnsignedInteger i = 0; i < test.getSize(); ++i)
   {
     UnsignedInteger index = tree.getNearestNeighbourIndex(test[i]);

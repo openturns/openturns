@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
       ProcessSample KLModes(result.getModesAsProcessSample());
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
-      NumericalSample coefficients(result.project(sample));
+      Sample coefficients(result.project(sample));
       fullprint << "KL coefficients=" << coefficients << std::endl;
       Basis KLFunctions(result.getModes());
       fullprint << "KL functions=" << KLFunctions.__str__() << std::endl;
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
       ProcessSample KLModes(result.getModesAsProcessSample());
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
-      NumericalSample coefficients(result.project(sample));
+      Sample coefficients(result.project(sample));
       fullprint << "KL coefficients=" << coefficients << std::endl;
       Basis KLFunctions(result.getModes());
       fullprint << "KL functions=" << KLFunctions.__str__() << std::endl;
@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
       ProcessSample KLModes(result.getModesAsProcessSample());
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
-      NumericalSample coefficients(result.project(sample));
+      Sample coefficients(result.project(sample));
       fullprint << "KL coefficients=" << coefficients << std::endl;
       Basis KLFunctions(result.getModes());
       fullprint << "KL functions=" << KLFunctions.__str__() << std::endl;
@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
       ProcessSample KLModes(result.getModesAsProcessSample());
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
-      NumericalSample coefficients(result.project(sample));
+      Sample coefficients(result.project(sample));
       fullprint << "KL coefficients=" << coefficients << std::endl;
       Basis KLFunctions(result.getModes());
       fullprint << "KL functions=" << KLFunctions.__str__() << std::endl;
@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
       ProcessSample KLModes(result.getModesAsProcessSample());
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
-      NumericalSample coefficients(result.project(sample));
+      Sample coefficients(result.project(sample));
       fullprint << "KL coefficients=" << coefficients << std::endl;
       Basis KLFunctions(result.getModes());
       fullprint << "KL functions=" << KLFunctions.__str__() << std::endl;

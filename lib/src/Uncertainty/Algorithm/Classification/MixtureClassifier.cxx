@@ -78,12 +78,12 @@ UnsignedInteger MixtureClassifier::classify(const NumericalPoint& inP) const
   return bestClass;
 }
 
-Indices MixtureClassifier::classifySequential(const NumericalSample & inS) const
+Indices MixtureClassifier::classifySequential(const Sample & inS) const
 {
   const UnsignedInteger mixtureSize = mixture_.getDistributionCollection().getSize();
   const UnsignedInteger size = inS.getSize();
   NumericalPoint logWeights(mixtureSize);
-  NumericalSample atomsLogPDF(mixtureSize, size);
+  Sample atomsLogPDF(mixtureSize, size);
   // The expansive part: the computation of the log-PDF, here we benefit
   // from possible parallelism in computeLogPDF() for each atom
   for (UnsignedInteger classIndex = 0; classIndex < mixtureSize; ++classIndex)

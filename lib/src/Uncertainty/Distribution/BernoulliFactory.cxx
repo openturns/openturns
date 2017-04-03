@@ -46,7 +46,7 @@ BernoulliFactory * BernoulliFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-BernoulliFactory::Implementation BernoulliFactory::build(const NumericalSample & sample) const
+BernoulliFactory::Implementation BernoulliFactory::build(const Sample & sample) const
 {
   return buildAsBernoulli(sample).clone();
 }
@@ -61,7 +61,7 @@ BernoulliFactory::Implementation BernoulliFactory::build() const
   return buildAsBernoulli().clone();
 }
 
-Bernoulli BernoulliFactory::buildAsBernoulli(const NumericalSample & sample) const
+Bernoulli BernoulliFactory::buildAsBernoulli(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Bernoulli distribution from an empty sample";
@@ -99,7 +99,7 @@ Bernoulli BernoulliFactory::buildAsBernoulli() const
   return Bernoulli();
 }
 
-DistributionFactoryResult BernoulliFactory::buildEstimator(const NumericalSample & sample) const
+DistributionFactoryResult BernoulliFactory::buildEstimator(const Sample & sample) const
 {
   Bernoulli distribution(buildAsBernoulli(sample));
   const UnsignedInteger size = sample.getSize();

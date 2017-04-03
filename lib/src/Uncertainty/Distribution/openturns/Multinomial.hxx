@@ -98,8 +98,8 @@ public:
 
   /** Get the support of a discrete distribution that intersect a given interval */
   using DistributionImplementation::getSupport;
-  NumericalSample getSupport(const Interval & interval) const;
-  NumericalSample getSupport() const;
+  Sample getSupport(const Interval & interval) const;
+  Sample getSupport() const;
 
   /** Parameters value and description accessor */
   NumericalPointWithDescriptionCollection getParametersCollection() const;

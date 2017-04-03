@@ -33,7 +33,7 @@ for k in range(N):
 mySpectralModel = ot.UserDefinedSpectralModel(myFrequencyGrid, myCollection)
 
 # Graph of the spectral function
-x = ot.NumericalSample(N, 2)
+x = ot.Sample(N, 2)
 for k in range(N):
     frequency = myFrequencyGrid.getValue(k)
     x[k, 0] = frequency

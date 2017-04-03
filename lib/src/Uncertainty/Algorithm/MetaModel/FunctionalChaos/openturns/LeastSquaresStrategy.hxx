@@ -62,13 +62,13 @@ public:
                        const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory(true));
 
   /** Parameter constructor */
-  LeastSquaresStrategy(const NumericalSample & inputSample,
+  LeastSquaresStrategy(const Sample & inputSample,
                        const NumericalPoint & weights,
-                       const NumericalSample & outputSample,
+                       const Sample & outputSample,
                        const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory(true));
 
-  LeastSquaresStrategy(const NumericalSample & inputSample,
-                       const NumericalSample & outputSample,
+  LeastSquaresStrategy(const Sample & inputSample,
+                       const Sample & outputSample,
                        const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory(true));
 
   /** Virtual constructor */

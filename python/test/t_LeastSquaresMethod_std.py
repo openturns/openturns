@@ -9,7 +9,7 @@ import math as m
 basisSize = 3
 sampleSize = 5
 
-X = ot.NumericalSample(sampleSize, 1)
+X = ot.Sample(sampleSize, 1)
 for i in range(sampleSize):
     X[i, 0] = i + 1.0
 

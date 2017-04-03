@@ -22,7 +22,7 @@
 #define OPENTURNS_PENALIZEDLEASTSQUARESALGORITHM_HXX
 
 #include "openturns/ApproximationAlgorithmImplementation.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/CovarianceMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -47,16 +47,16 @@ public:
   PenalizedLeastSquaresAlgorithm(const Bool useNormal = true);
 
   /** Parameters constructor, simple least squares problem with default parameters, spherically penalized for general parameters */
-  PenalizedLeastSquaresAlgorithm(const NumericalSample & x,
-                                 const NumericalSample & y,
+  PenalizedLeastSquaresAlgorithm(const Sample & x,
+                                 const Sample & y,
                                  const Basis & psi,
                                  const Indices & indices,
                                  const NumericalScalar penalizationFactor = 0.0,
                                  const Bool useNormal = false);
 
   /** Parameters constructor, simple weighted least squares problem with default parameters, spherically penalized for general parameters */
-  PenalizedLeastSquaresAlgorithm(const NumericalSample & x,
-                                 const NumericalSample & y,
+  PenalizedLeastSquaresAlgorithm(const Sample & x,
+                                 const Sample & y,
                                  const NumericalPoint & weight,
                                  const Basis & psi,
                                  const Indices & indices,
@@ -64,8 +64,8 @@ public:
                                  const Bool useNormal = false);
 
   /** Parameters constructor, general penalized weighted least squares problem */
-  PenalizedLeastSquaresAlgorithm(const NumericalSample & x,
-                                 const NumericalSample & y,
+  PenalizedLeastSquaresAlgorithm(const Sample & x,
+                                 const Sample & y,
                                  const NumericalPoint & weight,
                                  const Basis & psi,
                                  const Indices & indices,

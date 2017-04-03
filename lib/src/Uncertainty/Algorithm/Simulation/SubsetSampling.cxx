@@ -111,13 +111,13 @@ void SubsetSampling::run()
   NumericalScalar coefficientOfVariationSquare = 0.0;
 
   // allocate input/output samples
-  currentPointSample_ = NumericalSample(N, dimension_);
-  currentLevelSample_ = NumericalSample(N, getEvent().getFunction().getOutputDimension());
+  currentPointSample_ = Sample(N, dimension_);
+  currentLevelSample_ = Sample(N, getEvent().getFunction().getOutputDimension());
 
   // Step 1: sampling
   for (UnsignedInteger i = 0; i < maximumOuterSampling; ++ i)
   {
-    NumericalSample inputSample;
+    Sample inputSample;
     if (!iSubset_)
     {
       // crude MC
@@ -128,7 +128,7 @@ void SubsetSampling::run()
       // conditional sampling
       TruncatedDistribution truncatedChiSquare(Chi(dimension_), betaMin_, TruncatedDistribution::LOWER);
       Normal normal(dimension_);
-      inputSample = NumericalSample(0, dimension_);
+      inputSample = Sample(0, dimension_);
       for (UnsignedInteger j = 0; j < blockSize; ++ j)
       {
         NumericalPoint direction(normal.getRealization());
@@ -141,7 +141,7 @@ void SubsetSampling::run()
         inputSample.add(direction * radius);
       }
     }
-    NumericalSample blockSample(standardEvent_.getFunction()(inputSample));
+    Sample blockSample(standardEvent_.getFunction()(inputSample));
     for (UnsignedInteger j = 0 ; j < blockSize; ++ j)
     {
       currentPointSample_[i * blockSize + j] = inputSample[j];
@@ -238,8 +238,8 @@ void SubsetSampling::run()
   // keep the event sample if requested
   if (keepEventSample_)
   {
-    eventInputSample_ = NumericalSample(0, dimension_);
-    eventOutputSample_ = NumericalSample (0, getEvent().getFunction().getOutputDimension());
+    eventInputSample_ = Sample(0, dimension_);
+    eventOutputSample_ = Sample (0, getEvent().getFunction().getOutputDimension());
     for (UnsignedInteger i = 0; i < currentPointSample_.getSize(); ++ i)
     {
       if (getEvent().getOperator()(currentLevelSample_[i][0], getEvent().getThreshold()))
@@ -257,9 +257,9 @@ void SubsetSampling::run()
 
 
 /* Compute the block sample */
-NumericalSample SubsetSampling::computeBlockSample()
+Sample SubsetSampling::computeBlockSample()
 {
-  return NumericalSample();
+  return Sample();
 }
 
 
@@ -388,7 +388,7 @@ void SubsetSampling::generatePoints(NumericalScalar threshold)
 
   for (UnsignedInteger i = 0; i < maximumOuterSampling; ++ i)
   {
-    NumericalSample inputSample(blockSize, dimension_);
+    Sample inputSample(blockSize, dimension_);
     for (UnsignedInteger j = 0; j < blockSize; ++ j)
     {
       // assign the new point to the seed, seed points being regrouped at the beginning of the sample
@@ -419,7 +419,7 @@ void SubsetSampling::generatePoints(NumericalScalar threshold)
       inputSample[j] = newPoint;
     }
 
-    NumericalSample blockSample(standardEvent_.getFunction()(inputSample));
+    Sample blockSample(standardEvent_.getFunction()(inputSample));
 
     for (UnsignedInteger j = 0; j < getBlockSize(); ++ j)
     {
@@ -497,13 +497,13 @@ void SubsetSampling::setKeepEventSample(bool keepEventSample)
 }
 
 
-NumericalSample SubsetSampling::getEventInputSample() const
+Sample SubsetSampling::getEventInputSample() const
 {
   return eventInputSample_;
 }
 
 
-NumericalSample SubsetSampling::getEventOutputSample() const
+Sample SubsetSampling::getEventOutputSample() const
 {
   return eventOutputSample_;
 }

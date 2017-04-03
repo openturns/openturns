@@ -54,7 +54,7 @@ public:
 
   /* Here is the interface that all derived class must implement */
   /** Build a distribution based on a sample */
-  virtual Implementation build(const NumericalSample & sample) const;
+  virtual Implementation build(const Sample & sample) const;
 
   /** Build a distribution based on a set of parameters */
   virtual Implementation build(const NumericalPoint & parameters) const;
@@ -63,10 +63,10 @@ public:
   virtual Implementation build() const;
 
   /** Build the distribution and the parameter distribution */
-  virtual DistributionFactoryResult buildEstimator(const NumericalSample & sample) const;
+  virtual DistributionFactoryResult buildEstimator(const Sample & sample) const;
 
   /** Build the distribution and the parameter distribution in a new parametrization */
-  virtual DistributionFactoryResult buildEstimator(const NumericalSample & sample,
+  virtual DistributionFactoryResult buildEstimator(const Sample & sample,
       const DistributionParameters & parameters) const;
 
   /** Bootstrap size accessor */
@@ -81,10 +81,10 @@ public:
 
 protected:
   /* Bootstrap estimator */
-  virtual DistributionFactoryResult buildBootStrapEstimator(const NumericalSample & sample, const Bool isGaussian = false) const;
+  virtual DistributionFactoryResult buildBootStrapEstimator(const Sample & sample, const Bool isGaussian = false) const;
 
   /* Build the distribution and the parameter distribution */
-  virtual DistributionFactoryResult buildMaximumLikelihoodEstimator(const NumericalSample & sample, const Bool isRegular = false) const;
+  virtual DistributionFactoryResult buildMaximumLikelihoodEstimator(const Sample & sample, const Bool isRegular = false) const;
 
   /* Number of bootstrap resampling for covariance estimation */
   UnsignedInteger bootstrapSize_;

@@ -24,7 +24,7 @@
 #include "openturns/PersistentObject.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/NumericalPointWithDescription.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Interval.hxx"
 #include "openturns/LevelSet.hxx"
@@ -147,61 +147,61 @@ protected:
 
 public:
   /** Get a numerical sample whose elements follow the distributionImplementation */
-  virtual NumericalSample getSample(const UnsignedInteger size) const;
+  virtual Sample getSample(const UnsignedInteger size) const;
  protected:
-  virtual NumericalSample getSampleByInversion(const UnsignedInteger size) const;
-  virtual NumericalSample getSampleByQMC(const UnsignedInteger size) const;
+  virtual Sample getSampleByInversion(const UnsignedInteger size) const;
+  virtual Sample getSampleByQMC(const UnsignedInteger size) const;
 
 public:
   /** Get the DDF of the distribution */
   virtual NumericalScalar computeDDF(const NumericalScalar scalar) const;
   virtual NumericalPoint  computeDDF(const NumericalPoint & point) const;
-  virtual NumericalSample computeDDF(const NumericalSample & sample) const;
+  virtual Sample computeDDF(const Sample & sample) const;
 protected:
-  virtual NumericalSample computeDDFSequential(const NumericalSample & sample) const;
-  virtual NumericalSample computeDDFParallel(const NumericalSample & sample) const;
+  virtual Sample computeDDFSequential(const Sample & sample) const;
+  virtual Sample computeDDFParallel(const Sample & sample) const;
 public:
 
   /** Get the PDF of the distribution */
   virtual NumericalScalar computePDF(const NumericalScalar scalar) const;
   virtual NumericalScalar computePDF(const NumericalPoint & point) const;
-  virtual NumericalSample computePDF(const NumericalSample & sample) const;
+  virtual Sample computePDF(const Sample & sample) const;
 protected:
-  virtual NumericalSample computePDFSequential(const NumericalSample & sample) const;
-  virtual NumericalSample computePDFParallel(const NumericalSample & sample) const;
+  virtual Sample computePDFSequential(const Sample & sample) const;
+  virtual Sample computePDFParallel(const Sample & sample) const;
 public:
 
   virtual NumericalScalar computeLogPDF(const NumericalScalar scalar) const;
   virtual NumericalScalar computeLogPDF(const NumericalPoint & point) const;
-  virtual NumericalSample computeLogPDF(const NumericalSample & sample) const;
+  virtual Sample computeLogPDF(const Sample & sample) const;
 protected:
-  virtual NumericalSample computeLogPDFSequential(const NumericalSample & sample) const;
-  virtual NumericalSample computeLogPDFParallel(const NumericalSample & sample) const;
+  virtual Sample computeLogPDFSequential(const Sample & sample) const;
+  virtual Sample computeLogPDFParallel(const Sample & sample) const;
 public:
 
   /** Compute the PDF of 1D distributions over a regular grid */
-  virtual NumericalSample computePDF(const NumericalScalar xMin,
+  virtual Sample computePDF(const NumericalScalar xMin,
                                      const NumericalScalar xMax,
                                      const UnsignedInteger pointNumber,
-                                     NumericalSample & grid) const;
+                                     Sample & grid) const;
 
   /** Compute the PDF of nD distributions over a regular grid */
-  virtual NumericalSample computePDF(const NumericalPoint & xMin,
+  virtual Sample computePDF(const NumericalPoint & xMin,
                                      const NumericalPoint & xMax,
                                      const Indices & pointNumber,
-                                     NumericalSample & grid) const;
+                                     Sample & grid) const;
 
   /** Compute the log-PDF of 1D distributions over a regular grid */
-  virtual NumericalSample computeLogPDF(const NumericalScalar xMin,
+  virtual Sample computeLogPDF(const NumericalScalar xMin,
 					const NumericalScalar xMax,
 					const UnsignedInteger pointNumber,
-					NumericalSample & grid) const;
+					Sample & grid) const;
 
   /** Compute the log-PDF of nD distributions over a regular grid */
-  virtual NumericalSample computeLogPDF(const NumericalPoint & xMin,
+  virtual Sample computeLogPDF(const NumericalPoint & xMin,
 					const NumericalPoint & xMax,
 					const Indices & pointNumber,
-					NumericalSample & grid) const;
+					Sample & grid) const;
 
   /** Get the CDF of the distribution */
   virtual NumericalScalar computeCDF(const NumericalScalar scalar) const;
@@ -217,37 +217,37 @@ public:
       NumericalScalar & marginalProb) const;
 #endif
 protected:
-  virtual NumericalSample computeCDFSequential(const NumericalSample & sample) const;
-  virtual NumericalSample computeCDFParallel(const NumericalSample & sample) const;
+  virtual Sample computeCDFSequential(const Sample & sample) const;
+  virtual Sample computeCDFParallel(const Sample & sample) const;
 public:
-  virtual NumericalSample computeCDF(const NumericalSample & sample) const;
+  virtual Sample computeCDF(const Sample & sample) const;
 protected:
-  virtual NumericalSample computeSurvivalFunctionSequential(const NumericalSample & sample) const;
-  virtual NumericalSample computeSurvivalFunctionParallel(const NumericalSample & sample) const;
+  virtual Sample computeSurvivalFunctionSequential(const Sample & sample) const;
+  virtual Sample computeSurvivalFunctionParallel(const Sample & sample) const;
 public:
-  virtual NumericalSample computeSurvivalFunction(const NumericalSample & sample) const;
+  virtual Sample computeSurvivalFunction(const Sample & sample) const;
 protected:
-  virtual NumericalSample computeComplementaryCDFSequential(const NumericalSample & sample) const;
-  virtual NumericalSample computeComplementaryCDFParallel(const NumericalSample & sample) const;
+  virtual Sample computeComplementaryCDFSequential(const Sample & sample) const;
+  virtual Sample computeComplementaryCDFParallel(const Sample & sample) const;
 public:
-  virtual NumericalSample computeComplementaryCDF(const NumericalSample & sample) const;
+  virtual Sample computeComplementaryCDF(const Sample & sample) const;
 
   /** Compute the CDF of 1D distributions over a regular grid */
-  virtual NumericalSample computeCDF(const NumericalScalar xMin,
+  virtual Sample computeCDF(const NumericalScalar xMin,
                                      const NumericalScalar xMax,
                                      const UnsignedInteger pointNumber,
-                                     NumericalSample & grid) const;
+                                     Sample & grid) const;
 
   /** Compute the CDF of nD distributions over a regular grid */
-  virtual NumericalSample computeCDF(const NumericalPoint & xMin,
+  virtual Sample computeCDF(const NumericalPoint & xMin,
                                      const NumericalPoint & xMax,
                                      const Indices & pointNumber,
-                                     NumericalSample & grid) const;
+                                     Sample & grid) const;
 
-  virtual NumericalSample computeComplementaryCDF(const NumericalScalar xMin,
+  virtual Sample computeComplementaryCDF(const NumericalScalar xMin,
       const NumericalScalar xMax,
       const UnsignedInteger pointNumber,
-      NumericalSample & grid) const;
+      Sample & grid) const;
 
   /** Get the probability content of an interval */
   virtual NumericalScalar computeProbability(const Interval & interval) const;
@@ -275,20 +275,20 @@ public:
 
   /** Get the PDF gradient of the distribution */
   virtual NumericalPoint computePDFGradient(const NumericalPoint & point) const;
-  virtual NumericalSample computePDFGradient(const NumericalSample & inSample) const;
+  virtual Sample computePDFGradient(const Sample & inSample) const;
 
   /** Get the logPDF gradient of the distribution */
   virtual NumericalPoint computeLogPDFGradient(const NumericalPoint & point) const;
-  virtual NumericalSample computeLogPDFGradient(const NumericalSample & inSample) const;
+  virtual Sample computeLogPDFGradient(const Sample & inSample) const;
 
 protected:
-  virtual NumericalSample computeLogPDFGradientSequential(const NumericalSample & sample) const;
-  virtual NumericalSample computeLogPDFGradientParallel(const NumericalSample & sample) const;
+  virtual Sample computeLogPDFGradientSequential(const Sample & sample) const;
+  virtual Sample computeLogPDFGradientParallel(const Sample & sample) const;
 
  public:
   /** Get the CDF gradient of the distribution */
   virtual NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
-  virtual NumericalSample computeCDFGradient(const NumericalSample & inSample) const;
+  virtual Sample computeCDFGradient(const Sample & inSample) const;
 public:
 
   /** Get the quantile of the distribution */
@@ -301,24 +301,24 @@ public:
 #endif
   /** Get the quantile over a provided grid */
 protected:
-  virtual NumericalSample computeQuantileSequential(const NumericalPoint & prob,
+  virtual Sample computeQuantileSequential(const NumericalPoint & prob,
       const Bool tail = false) const;
-  virtual NumericalSample computeQuantileParallel(const NumericalPoint & prob,
+  virtual Sample computeQuantileParallel(const NumericalPoint & prob,
       const Bool tail = false) const;
 public:
-  virtual NumericalSample computeQuantile(const NumericalPoint & prob,
+  virtual Sample computeQuantile(const NumericalPoint & prob,
                                           const Bool tail = false) const;
 
   /** Compute the quantile over a regular grid */
-  virtual NumericalSample computeQuantile(const NumericalScalar qMin,
+  virtual Sample computeQuantile(const NumericalScalar qMin,
                                           const NumericalScalar qMax,
                                           const UnsignedInteger pointNumber,
                                           const Bool tail = false) const;
 
-  virtual NumericalSample computeQuantile(const NumericalScalar qMin,
+  virtual Sample computeQuantile(const NumericalScalar qMin,
                                           const NumericalScalar qMax,
                                           const UnsignedInteger pointNumber,
-                                          NumericalSample & grid,
+                                          Sample & grid,
                                           const Bool tail = false) const;
 
   /** Get the product minimum volume interval containing a given probability of the distribution */
@@ -438,10 +438,10 @@ public:
   virtual Bool hasIndependentCopula() const;
 
   /** Get the support of a distribution that intersect a given interval */
-  virtual NumericalSample getSupport(const Interval & interval) const;
+  virtual Sample getSupport(const Interval & interval) const;
 
   /** Get the support on the whole range */
-  virtual NumericalSample getSupport() const;
+  virtual Sample getSupport() const;
 
   /** Get the discrete probability levels */
   virtual NumericalPoint getProbabilities() const;
@@ -482,21 +482,21 @@ public:
       const NumericalPoint & y) const;
 
   virtual NumericalPoint computeConditionalPDF(const NumericalPoint & x,
-      const NumericalSample & y) const;
+      const Sample & y) const;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   virtual NumericalScalar computeConditionalCDF(const NumericalScalar x,
       const NumericalPoint & y) const;
 
   virtual NumericalPoint computeConditionalCDF(const NumericalPoint & x,
-      const NumericalSample & y) const;
+      const Sample & y) const;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
   virtual NumericalScalar computeConditionalQuantile(const NumericalScalar q,
       const NumericalPoint & y) const;
 
   virtual NumericalPoint computeConditionalQuantile(const NumericalPoint & q,
-      const NumericalSample & y) const;
+      const Sample & y) const;
 
   /** Get the isoprobabilist transformation */
   virtual IsoProbabilisticTransformation getIsoProbabilisticTransformation() const;
@@ -793,7 +793,7 @@ protected:
       return NumericalPoint(1, p_distribution_->computePDF(point));
     }
 
-    NumericalSample operator() (const NumericalSample & sample) const
+    Sample operator() (const Sample & sample) const
     {
       return p_distribution_->computePDF(sample);
     };
@@ -939,7 +939,7 @@ protected:
       return NumericalPoint(1, value);
     }
 
-    NumericalSample operator() (const NumericalSample & sample) const
+    Sample operator() (const Sample & sample) const
     {
       return p_distribution_->computeLogPDF(sample) * (-1.0);
     }
@@ -1083,10 +1083,10 @@ protected:
       return NumericalPoint(1, (point[0] - muI_) * (point[1] - muJ_) * p_distribution_->computePDF(point));
     }
 
-    NumericalSample operator() (const NumericalSample & sample) const
+    Sample operator() (const Sample & sample) const
     {
       const UnsignedInteger size = sample.getSize();
-      NumericalSample result(p_distribution_->computePDF(sample));
+      Sample result(p_distribution_->computePDF(sample));
       for (UnsignedInteger i = 0; i < size; ++i) result[i][0] *= (sample[i][0] - muI_) * (sample[i][1] - muJ_);
       return result;
     }
@@ -1158,11 +1158,11 @@ protected:
       return NumericalPoint(1, power * pdf);
     };
 
-    NumericalSample operator() (const NumericalSample & sample) const
+    Sample operator() (const Sample & sample) const
     {
       const UnsignedInteger size = sample.getSize();
-      NumericalSample result(size, 1);
-      const NumericalSample pdf(p_distribution_->computePDF(sample));
+      Sample result(size, 1);
+      const Sample pdf(p_distribution_->computePDF(sample));
       for (UnsignedInteger i = 0; i < size; ++i)
         result[i][0] = std::pow(sample[i][0] - shift_, n_) * pdf[i][0];
       return result;
@@ -1222,10 +1222,10 @@ protected:
       return NumericalPoint(1, p_distribution_->computePDF(z));
     };
 
-    NumericalSample operator() (const NumericalSample & sample) const
+    Sample operator() (const Sample & sample) const
     {
       const UnsignedInteger size = sample.getSize();
-      NumericalSample z(size, y_);
+      Sample z(size, y_);
       z.stack(sample);
       return p_distribution_->computePDF(z);
     };

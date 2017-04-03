@@ -73,7 +73,7 @@ ai, bi, ei : :class:`~openturns.NumericalPoint`;
     *bi* the corresponding upper bounds; 
 
     *ei* the associated error estimation. 
-fi : :class:`~openturns.NumericalSample`
+fi : :class:`~openturns.Sample`
     *fi* is the set of :math:`\int_{ai}^{bi} f(t)\di{t}`
 
 Returns
@@ -102,7 +102,7 @@ Use the low-level usage:
 >>> ai = ot.NumericalPoint()
 >>> bi = ot.NumericalPoint()
 >>> ei = ot.NumericalPoint()
->>> fi = ot.NumericalSample()
+>>> fi = ot.Sample()
 >>> value2 = algoGK.integrate(f, a, b, error, ai, bi, fi, ei)[0]
 >>> print(value2)
 4.590..."

@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     theta.add(0.5);
     Dirichlet distribution(theta);
     UnsignedInteger size = 10000;
-    NumericalSample sample(distribution.getSample(size));
+    Sample sample(distribution.getSample(size));
     DirichletFactory factory;
     CovarianceMatrix covariance;
     // Distribution estimatedDistribution(factory.build(sample, covariance));

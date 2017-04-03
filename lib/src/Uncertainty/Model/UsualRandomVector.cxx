@@ -67,9 +67,9 @@ NumericalPoint UsualRandomVector::getRealization() const
 }
 
 /* Numerical sample accessor */
-NumericalSample UsualRandomVector::getSample(const UnsignedInteger size) const
+Sample UsualRandomVector::getSample(const UnsignedInteger size) const
 {
-  NumericalSample sample(distribution_.getSample(size));
+  Sample sample(distribution_.getSample(size));
   sample.setDescription(getDescription());
   return sample;
 }

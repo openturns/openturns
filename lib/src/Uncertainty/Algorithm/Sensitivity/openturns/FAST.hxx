@@ -78,10 +78,10 @@ private:
   UnsignedInteger interferenceFactor_;
 
   /** First order indices */
-  mutable NumericalSample firstOrderIndice_;
+  mutable Sample firstOrderIndice_;
 
   /** Total order indices */
-  mutable NumericalSample totalOrderIndice_;
+  mutable Sample totalOrderIndice_;
 
   /** Store if indices are already computed */
   mutable Bool alreadyComputedIndices_;

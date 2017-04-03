@@ -23,7 +23,7 @@
 
 #include "openturns/MetaModelResult.hxx"
 #include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"

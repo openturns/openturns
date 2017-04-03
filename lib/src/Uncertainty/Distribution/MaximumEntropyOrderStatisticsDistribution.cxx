@@ -345,7 +345,7 @@ PiecewiseHermiteEvaluation MaximumEntropyOrderStatisticsDistribution::interpolat
   const Function phi(bindMethod<MaximumEntropyOrderStatisticsDistributionWrapper, NumericalPoint, NumericalPoint>(phiWrapper, &MaximumEntropyOrderStatisticsDistributionWrapper::computePartialExponentialFactor, 1, 1));
   NumericalPoint lowerBounds;
   NumericalPoint upperBounds;
-  NumericalSample contributions;
+  Sample contributions;
   NumericalPoint localErrors;
   NumericalScalar error = -1.0;
   // We integrate the exponential factor in order to detect all the singularities using polynomial approximations of different order

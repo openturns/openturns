@@ -64,7 +64,7 @@ public:
   virtual String __repr__() const;
 
   /** Sample generation */
-  NumericalSample generateWithWeights(NumericalPoint & weights) const;
+  Sample generateWithWeights(NumericalPoint & weights) const;
 
   /** Marginal degrees accessor */
   void setMarginalDegrees(const Indices & marginalDegrees);
@@ -95,7 +95,7 @@ private:
   Indices marginalDegrees_;
 
   // Integration nodes; weights
-  mutable NumericalSample nodes_;
+  mutable Sample nodes_;
   mutable NumericalPoint weights_;
 
   // Flag to manage the computation of nodes and weights

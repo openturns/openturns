@@ -184,7 +184,7 @@ NumericalPoint MarginalDistribution::getRealization() const
   return realization;
 }
 
-NumericalSample MarginalDistribution::getSample(const UnsignedInteger size) const
+Sample MarginalDistribution::getSample(const UnsignedInteger size) const
 {
   return distribution_.getSample(size).getMarginal(indices_);
 }

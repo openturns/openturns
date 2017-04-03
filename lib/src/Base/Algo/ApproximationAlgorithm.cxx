@@ -43,12 +43,12 @@ ApproximationAlgorithm::ApproximationAlgorithm(const Implementation & p_implemen
 }
 
 /* Accessors */
-NumericalSample ApproximationAlgorithm::getX() const
+Sample ApproximationAlgorithm::getX() const
 {
   return getImplementation()->getX();
 }
 
-NumericalSample ApproximationAlgorithm::getY() const
+Sample ApproximationAlgorithm::getY() const
 {
   return getImplementation()->getY();
 }

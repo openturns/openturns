@@ -6,8 +6,8 @@ from openturns.viewer import View
 size = 50
 cursor = ot.NumericalPoint(2)
 
-data1 = ot.NumericalSample(size, 2)  # polygon y = 2x for x in [-25]
-data2 = ot.NumericalSample(size, 2)  # polygon y = x*x for x in [-11]
+data1 = ot.Sample(size, 2)  # polygon y = 2x for x in [-25]
+data2 = ot.Sample(size, 2)  # polygon y = x*x for x in [-11]
 
 for i in range(size):
     tmp = 7. * i / size + 2

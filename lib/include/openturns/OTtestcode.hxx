@@ -35,7 +35,7 @@
 
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/OStream.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 
 #define TESTPREAMBLE { OT::Test::parseOptions(argc, argv); }
 
@@ -315,7 +315,7 @@ inline void assert_almost_equal(const NumericalPoint & a, const NumericalPoint &
 }
 
 
-inline void assert_almost_equal(const NumericalSample & a, const NumericalSample & b, NumericalScalar rtol = 1.0e-5, NumericalScalar atol = 1.0e-8)
+inline void assert_almost_equal(const Sample & a, const Sample & b, NumericalScalar rtol = 1.0e-5, NumericalScalar atol = 1.0e-8)
 {
   const UnsignedInteger size = a.getSize();
   const UnsignedInteger dimension = a.getDimension();

@@ -47,21 +47,21 @@ MonteCarloLHS * MonteCarloLHS::clone() const
   return new MonteCarloLHS(*this);
 }
 
-/* Generate a NumericalSample. */
-NumericalSample MonteCarloLHS::generateWithWeights(NumericalPoint & weights) const
+/* Generate a Sample. */
+Sample MonteCarloLHS::generateWithWeights(NumericalPoint & weights) const
 {
   LHSResult result(spaceFilling_);
-  NumericalSample history(N_, 1);
+  Sample history(N_, 1);
   Description historyDescription(1);
   historyDescription[0] = spaceFilling_.getImplementation()->getName() + " criterion";
   history.setDescription(historyDescription);
   // initialing algo
-  NumericalSample optimalDesign;
+  Sample optimalDesign;
   NumericalScalar optimalValue = spaceFilling_.isMinimizationProblem() ? SpecFunc::MaxNumericalScalar : -SpecFunc::MaxNumericalScalar;
 
   for (UnsignedInteger i = 0; i < N_; ++i)
   {
-    const NumericalSample design(lhs_.generate());
+    const Sample design(lhs_.generate());
     const NumericalScalar value = spaceFilling_.evaluate(rankTransform(design));
     history[i][0] = value;
     if (spaceFilling_.isMinimizationProblem() && (value < optimalValue))
@@ -75,7 +75,7 @@ NumericalSample MonteCarloLHS::generateWithWeights(NumericalPoint & weights) con
       optimalValue = value;
     }
   }
-  NumericalSample optimalDesignU(rankTransform(optimalDesign));
+  Sample optimalDesignU(rankTransform(optimalDesign));
   result.add(optimalDesign, optimalValue, SpaceFillingC2().evaluate(optimalDesignU), SpaceFillingPhiP().evaluate(optimalDesignU), SpaceFillingMinDist().evaluate(optimalDesignU), history);
   result_ = result;
   weights = NumericalPoint(size_, 1.0 / size_);

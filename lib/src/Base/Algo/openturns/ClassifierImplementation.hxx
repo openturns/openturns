@@ -22,7 +22,7 @@
 #define OPENTURNS_CLASSIFIERIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -41,7 +41,7 @@ public:
   ClassifierImplementation();
 
   /** Default constructor */
-  ClassifierImplementation(const NumericalSample & inputSample,
+  ClassifierImplementation(const Sample & inputSample,
                            const Indices & outClasses);
 
   /** Virtual constructor */
@@ -49,23 +49,23 @@ public:
 
   /** Associate a point with a class */
   virtual UnsignedInteger classify(const NumericalPoint & inP) const;
-  virtual Indices classify(const NumericalSample & inS) const;
+  virtual Indices classify(const Sample & inS) const;
 
 protected:
-  virtual Indices classifyParallel(const NumericalSample & inS) const;
-  virtual Indices classifySequential(const NumericalSample & inS) const;
+  virtual Indices classifyParallel(const Sample & inS) const;
+  virtual Indices classifySequential(const Sample & inS) const;
 public:
 
   /** Grade a point as if it were associated to a class */
   virtual NumericalScalar grade(const NumericalPoint & inP,
                                 const UnsignedInteger outC) const;
-  virtual NumericalPoint grade(const NumericalSample & inS,
+  virtual NumericalPoint grade(const Sample & inS,
                                const Indices & outC) const;
 
 protected:
-  virtual NumericalPoint gradeParallel(const NumericalSample & inS,
+  virtual NumericalPoint gradeParallel(const Sample & inS,
                            const Indices & outC) const;
-  virtual NumericalPoint gradeSequential(const NumericalSample & inS,
+  virtual NumericalPoint gradeSequential(const Sample & inS,
                                   const Indices & outC) const;
 public:
 
@@ -93,7 +93,7 @@ public:
 protected:
 
   /** Input sample */
-  NumericalSample inputSample_;
+  Sample inputSample_;
 
   /** Output sample */
   Indices classes_;

@@ -44,10 +44,10 @@ public:
   UserDefined();
 
   /** Constructor from a sample */
-  explicit UserDefined(const NumericalSample & points);
+  explicit UserDefined(const Sample & points);
 
   /** Constructor from a sample and associated weights */
-  UserDefined(const NumericalSample & points,
+  UserDefined(const Sample & points,
               const NumericalPoint & weights);
 
 
@@ -92,7 +92,7 @@ public:
 
   /** Get the support of a discrete distribution that intersect a given interval */
   using DistributionImplementation::getSupport;
-  NumericalSample getSupport(const Interval & interval) const;
+  Sample getSupport(const Interval & interval) const;
 
   /** Tell if the distribution is integer valued */
   Bool isIntegral() const;
@@ -109,9 +109,9 @@ public:
   /* Interface specific to UserDefined */
 
   /** Data accessors */
-  void setData(const NumericalSample & points,
+  void setData(const Sample & points,
                const NumericalPoint & weights);
-  NumericalSample getX() const;
+  Sample getX() const;
   NumericalPoint getP() const;
 
   /** Get the i-th marginal distribution */
@@ -150,7 +150,7 @@ private:
                                         const Bool tail = false) const;
 
   /** The collection of couple (xi, pi) */
-  NumericalSample points_;
+  Sample points_;
   NumericalPoint probabilities_;
 
   /** The cumulative probabilities si = sum(pk, k=0..i) */

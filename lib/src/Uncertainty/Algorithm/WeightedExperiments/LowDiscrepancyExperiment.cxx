@@ -144,10 +144,10 @@ void LowDiscrepancyExperiment::setRestart(const Bool restart)
 }
 
 /* Sample generation */
-NumericalSample LowDiscrepancyExperiment::generateWithWeights(NumericalPoint & weights) const
+Sample LowDiscrepancyExperiment::generateWithWeights(NumericalPoint & weights) const
 {
   // In-place transformation to reduce memory consumption
-  NumericalSample sample(sequence_.generate(size_));
+  Sample sample(sequence_.generate(size_));
   sample.setDescription(distribution_.getDescription());
   const UnsignedInteger dimension = marginals_.getSize();
   for (UnsignedInteger i = 0; i < size_; ++ i)

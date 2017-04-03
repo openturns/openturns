@@ -51,8 +51,8 @@ int main(int argc, char *argv[])
       formulas[0] = "x0 * sin(x0)";
       Function model(input, foutput, formulas);
 
-      NumericalSample X(sampleSize, dimension);
-      NumericalSample X2(sampleSize, dimension);
+      Sample X(sampleSize, dimension);
+      Sample X2(sampleSize, dimension);
       for ( UnsignedInteger i = 0; i < sampleSize; ++ i )
       {
         X[i][0] = 3.0 + i;
@@ -62,8 +62,8 @@ int main(int argc, char *argv[])
       X[1][0] = 3.0;
       X2[0][0] = 2.0;
       X2[1][0] = 4.0;
-      NumericalSample Y(model(X));
-      NumericalSample Y2(model(X2));
+      Sample Y(model(X));
+      Sample Y2(model(X2));
 
       Basis basis(ConstantBasisFactory(dimension).build());
       SquaredExponential covarianceModel(NumericalPoint(1, 1e-05), NumericalPoint(1, 4.11749));
@@ -105,7 +105,7 @@ int main(int argc, char *argv[])
       Description formulas(1);
       formulas[0] = "5.-x1-0.5*(x0-0.1)^2";
       Function model(input, foutput, formulas);
-      NumericalSample X(sampleSize, dimension);
+      Sample X(sampleSize, dimension);
       X[0][0] = -4.61611719;
       X[0][1] = -6.00099547;
       X[1][0] = 4.10469096;
@@ -122,7 +122,7 @@ int main(int argc, char *argv[])
       X[6][1] = 6.74310541;
       X[7][0] = 5.21301203;
       X[7][1] = 4.26386883;
-      NumericalSample Y(model(X));
+      Sample Y(model(X));
 
       // create algorithm
       Basis basis(ConstantBasisFactory(dimension).build());

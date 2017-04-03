@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     fullprint << sequence << std::endl;
 
     // Create a numerical sample of the sequence
-    NumericalSample faureSample(sequence.generate(10));
+    Sample faureSample(sequence.generate(10));
     fullprint << faureSample << std::endl;
 
     // Create another Faure' sequence of dimension 2 to estimate Pi in [0; 1)^2

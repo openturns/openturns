@@ -43,7 +43,7 @@ DualLinearCombinationEvaluation::DualLinearCombinationEvaluation()
 
 /* Parameters constructor */
 DualLinearCombinationEvaluation::DualLinearCombinationEvaluation(const FunctionCollection & functionsCollection,
-    const NumericalSample & coefficients)
+    const Sample & coefficients)
   : EvaluationImplementation()
   , functionsCollection_(0)
   , coefficients_(0, 0)
@@ -204,19 +204,19 @@ NumericalPoint DualLinearCombinationEvaluation::operator () (const NumericalPoin
   return result;
 }
 
-NumericalSample DualLinearCombinationEvaluation::operator () (const NumericalSample & inS) const
+Sample DualLinearCombinationEvaluation::operator () (const Sample & inS) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inS.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inS.getDimension();
   const UnsignedInteger sampleSize = inS.getSize();
-  NumericalSample result(sampleSize, getOutputDimension());
+  Sample result(sampleSize, getOutputDimension());
   result.setDescription(getOutputDescription());
   if (sampleSize == 0) return result;
   const UnsignedInteger size = functionsCollection_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     // Exploit possible parallelism in the basis functions
-    const NumericalSample basisSample(functionsCollection_[i](inS));
+    const Sample basisSample(functionsCollection_[i](inS));
     // Should be parallelized
     for (UnsignedInteger j = 0; j < sampleSize; ++j) result[j] += coefficients_[i] * basisSample[j][0];
   }
@@ -230,7 +230,7 @@ NumericalSample DualLinearCombinationEvaluation::operator () (const NumericalSam
 }
 
 /* Coefficients accessor */
-NumericalSample DualLinearCombinationEvaluation::getCoefficients() const
+Sample DualLinearCombinationEvaluation::getCoefficients() const
 {
   return coefficients_;
 }
@@ -242,7 +242,7 @@ DualLinearCombinationEvaluation::FunctionCollection DualLinearCombinationEvaluat
 }
 
 void DualLinearCombinationEvaluation::setFunctionsCollectionAndCoefficients(const FunctionCollection & functionsCollection,
-    const NumericalSample & coefficients)
+    const Sample & coefficients)
 {
   const UnsignedInteger size = functionsCollection.getSize();
   // Check for empty functions collection
@@ -257,7 +257,7 @@ void DualLinearCombinationEvaluation::setFunctionsCollectionAndCoefficients(cons
     if (functionsCollection[i].getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given functions must have a one dimensional output.";
   }
   // Keep only the non zero coefficients
-  coefficients_ = NumericalSample(0, coefficients.getDimension());
+  coefficients_ = Sample(0, coefficients.getDimension());
   functionsCollection_ = FunctionCollection(0);
   // First pass, extract the maximum absolute coefficient
   NumericalScalar maximumAbsoluteCoefficient = 0.0;

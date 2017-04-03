@@ -51,14 +51,14 @@ void Full::store(const NumericalPoint & point)
 {
   if (!isInitialized_)
   {
-    sample_ = NumericalSample(0, point.getDimension());
+    sample_ = Sample(0, point.getDimension());
     isInitialized_ = true;
   }
   sample_.add(point);
 }
 
 /* Store the sample according to the strategy */
-void Full::store(const NumericalSample & sample)
+void Full::store(const Sample & sample)
 {
   if (!isInitialized_)
   {

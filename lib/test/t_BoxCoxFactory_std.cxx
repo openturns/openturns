@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
     const CompositeProcess process(ValueFunction(SymbolicFunction("x", "x+2")), whiteNoise);
     // A realization of the process
     const TimeSeries timeSeries(process.getRealization());
-    const NumericalSample sample(timeSeries.getSample());
+    const Sample sample(timeSeries.getSample());
 
     // Now we build the factory
     BoxCoxFactory factory;

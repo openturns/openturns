@@ -96,9 +96,9 @@ int main(int argc, char *argv[])
   Function xToU(evaluationT.clone(), gradientT.clone(), hessianT.clone());
 
   // generate samples
-  NumericalSample x( experiment.generate() );
-  NumericalSample u( xToU(x) );
-  NumericalSample y( model(x) );
+  Sample x( experiment.generate() );
+  Sample u( xToU(x) );
+  Sample y( model(x) );
 
   // build basis
   UnsignedInteger degree = 10;

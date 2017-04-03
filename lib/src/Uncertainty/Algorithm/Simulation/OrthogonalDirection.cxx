@@ -98,7 +98,7 @@ Matrix OrthogonalDirection::getUniformOrientationRealization() const
  * to the coefficients of the linear combination */
 void OrthogonalDirection::computePartialSample(const Indices & indices,
     const Matrix & Q,
-    NumericalSample & result) const
+    Sample & result) const
 {
   // Normalization factor of the linear combination
   const NumericalScalar factor = 1.0 / sqrt(1.0 * size_);
@@ -127,9 +127,9 @@ void OrthogonalDirection::computePartialSample(const Indices & indices,
 }
 
 /* Generate a set of directions */
-NumericalSample OrthogonalDirection::generate() const
+Sample OrthogonalDirection::generate() const
 {
-  NumericalSample result(0, dimension_);
+  Sample result(0, dimension_);
   Matrix Q(getUniformOrientationRealization());
   Indices indices(size_);
   // Start with the first lexicographic combination

@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     Normal distribution(meanPoint, sigma, R);
 
     // Test for sampling
-    NumericalSample sample(distribution.getSample( 30 ));
+    Sample sample(distribution.getSample( 30 ));
 
     // Create an empty graph
     Graph myGraph("Normal sample", "x1", "x2", true, "topright");

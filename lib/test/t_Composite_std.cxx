@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
     levels[2] = 16;
     Composite myPlane(center, levels);
     fullprint << "myPlane = " << myPlane << std::endl;
-    NumericalSample sample(myPlane.generate());
+    Sample sample(myPlane.generate());
     fullprint << "sample = " << sample << std::endl;
   }
   catch (TestFailed & ex)

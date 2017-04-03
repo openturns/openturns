@@ -117,12 +117,12 @@ Mesh P1LagrangeEvaluation::getMesh() const
 }
 
 /* Vertices accessor */
-void P1LagrangeEvaluation::setVertices(const NumericalSample & vertices)
+void P1LagrangeEvaluation::setVertices(const Sample & vertices)
 {
   mesh_.setVertices(vertices);
 }
 
-NumericalSample P1LagrangeEvaluation::getVertices() const
+Sample P1LagrangeEvaluation::getVertices() const
 {
   return mesh_.getVertices();
 }
@@ -139,13 +139,13 @@ P1LagrangeEvaluation::IndicesCollection P1LagrangeEvaluation::getSimplices() con
 }
 
 /* Values accessor */
-void P1LagrangeEvaluation::setValues(const NumericalSample & values)
+void P1LagrangeEvaluation::setValues(const Sample & values)
 {
   if (values.getSize() != mesh_.getVerticesNumber()) throw InvalidArgumentException(HERE) << "Error: expected a sample of size=" << mesh_.getVerticesNumber() << ", got size=" << values.getSize();
   values_ = values;
 }
 
-NumericalSample P1LagrangeEvaluation::getValues() const
+Sample P1LagrangeEvaluation::getValues() const
 {
   return values_;
 }
@@ -197,12 +197,12 @@ NumericalPoint P1LagrangeEvaluation::evaluate( const NumericalPoint & inP ) cons
   return result;
 }
 
-NumericalSample P1LagrangeEvaluation::operator()( const NumericalSample & inS ) const
+Sample P1LagrangeEvaluation::operator()( const Sample & inS ) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inS.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inS.getDimension();
   const UnsignedInteger size = inS.getSize();
-  NumericalSample result(size, values_.getDimension());
+  Sample result(size, values_.getDimension());
   if (size == 0) return result;
   if (inS == mesh_.getVertices()) result = values_;
   else

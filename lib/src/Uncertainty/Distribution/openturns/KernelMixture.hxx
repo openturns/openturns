@@ -43,7 +43,7 @@ public:
   /** Parameters constructor */
   KernelMixture(const Distribution & kernel,
                 const NumericalPoint & bandwidth,
-                const NumericalSample & sample);
+                const Sample & sample);
 
 
   /** Comparison operator */
@@ -66,8 +66,8 @@ public:
   NumericalPoint getBandwidth() const;
 
   /** Sample accessor */
-  void setInternalSample(const NumericalSample & sample);
-  NumericalSample getInternalSample() const;
+  void setInternalSample(const Sample & sample);
+  Sample getInternalSample() const;
 
 
   /* Here is the interface that all derived class must implement */
@@ -182,7 +182,7 @@ private:
   NumericalScalar normalizationFactor_;
 
   /** The sample of the kernelMixture */
-  NumericalSample sample_;
+  Sample sample_;
 
   /** PDF approximation associated to the CDF approximation */
   PiecewiseHermiteEvaluation pdfApproximationCDF_;

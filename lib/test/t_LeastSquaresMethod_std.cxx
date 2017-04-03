@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     const UnsignedInteger dimension = 10;
     const UnsignedInteger size = 20;
 
-    NumericalSample x(Normal(dimension).getSample(size));
+    Sample x(Normal(dimension).getSample(size));
     Collection<Function> coll;
     const Description description(Description::BuildDefault(dimension, "x"));
     for(UnsignedInteger i = 0; i < dimension; ++i)

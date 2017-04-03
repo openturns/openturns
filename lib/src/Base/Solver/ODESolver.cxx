@@ -67,7 +67,7 @@ String ODESolver::__str__(const String & offset) const
 }
 
 /* Perform cross-validation */
-NumericalSample ODESolver::solve(const NumericalPoint & initialState,
+Sample ODESolver::solve(const NumericalPoint & initialState,
                                  const NumericalPoint & timeGrid) const
 {
   return getImplementation()->solve(initialState, timeGrid);

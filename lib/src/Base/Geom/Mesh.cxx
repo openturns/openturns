@@ -51,7 +51,7 @@ Mesh::Mesh(const UnsignedInteger dimension)
 }
 
 /* Parameters constructor, simplified interface for 1D case */
-Mesh::Mesh(const NumericalSample & vertices)
+Mesh::Mesh(const Sample & vertices)
   : DomainImplementation(vertices.getDimension())
   , vertices_(0, vertices.getDimension())
   , simplices_(0)
@@ -63,7 +63,7 @@ Mesh::Mesh(const NumericalSample & vertices)
 }
 
 /* Parameters constructor, simplified interface for 1D case */
-Mesh::Mesh(const NumericalSample & vertices,
+Mesh::Mesh(const Sample & vertices,
            const IndicesCollection & simplices)
   : DomainImplementation(vertices.getDimension())
   , vertices_(0, vertices.getDimension())
@@ -88,12 +88,12 @@ Description Mesh::getDescription() const
 }
 
 /* Vertices accessor */
-NumericalSample Mesh::getVertices() const
+Sample Mesh::getVertices() const
 {
   return vertices_;
 }
 
-void Mesh::setVertices(const NumericalSample & vertices)
+void Mesh::setVertices(const Sample & vertices)
 {
   isAlreadyComputedVolume_ = false;
   vertices_ = vertices;
@@ -307,11 +307,11 @@ NumericalPoint Mesh::getNearestVertex(const NumericalPoint & point) const
 /* TBB policy to speed-up nearest index computation over a sample */
 struct MeshNearestPolicy
 {
-  const NumericalSample & points_;
+  const Sample & points_;
   Indices & indices_;
   const Mesh & mesh_;
 
-  MeshNearestPolicy(const NumericalSample & points,
+  MeshNearestPolicy(const Sample & points,
                     Indices & indices,
                     const Mesh & mesh)
     : points_(points)
@@ -327,7 +327,7 @@ struct MeshNearestPolicy
 }; /* end struct MeshNearestPolicy */
 
 /* Get the index of the nearest vertex for a set of points */
-Indices Mesh::getNearestVertexIndex(const NumericalSample & points) const
+Indices Mesh::getNearestVertexIndex(const Sample & points) const
 {
   if (points.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: expected points of dimension " << getDimension() << ", got points of dimension " << points.getDimension();
   const UnsignedInteger size = points.getSize();
@@ -339,11 +339,11 @@ Indices Mesh::getNearestVertexIndex(const NumericalSample & points) const
 }
 
 /* Get the nearest vertex for a set of points */
-NumericalSample Mesh::getNearestVertex(const NumericalSample & points) const
+Sample Mesh::getNearestVertex(const Sample & points) const
 {
   const Indices indices(getNearestVertexIndex(points));
   const UnsignedInteger size = indices.getSize();
-  NumericalSample neighbours(size, getDimension());
+  Sample neighbours(size, getDimension());
   for (UnsignedInteger i = 0; i < size; ++i)
     neighbours[i] = vertices_[indices[i]];
   return neighbours;
@@ -558,13 +558,13 @@ Graph Mesh::draw1D() const
   if (verticesSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot draw a mesh with no vertex.";
   Graph graph(String(OSS() << "Mesh " << getName()), "x", "y", true, "topright");
   // The vertices
-  Cloud vertices(vertices_, NumericalSample(verticesSize, NumericalPoint(1, 0.0)));
+  Cloud vertices(vertices_, Sample(verticesSize, NumericalPoint(1, 0.0)));
   vertices.setColor("red");
   vertices.setLegend(String(OSS() << verticesSize << " node" << (verticesSize > 1 ? "s" : "")));
   // The simplices
   for (UnsignedInteger i = 0; i < simplicesSize; ++i)
   {
-    NumericalSample data(2, 2);
+    Sample data(2, 2);
     data[0][0] = vertices_[simplices_[i][0]][0];
     data[1][0] = vertices_[simplices_[i][1]][0];
     Curve simplex(data);
@@ -591,7 +591,7 @@ Graph Mesh::draw2D() const
   // The simplices
   for (UnsignedInteger i = 0; i < simplicesSize; ++i)
   {
-    NumericalSample data(4, 2);
+    Sample data(4, 2);
     data[0] = vertices_[simplices_[i][0]];
     data[1] = vertices_[simplices_[i][1]];
     data[2] = vertices_[simplices_[i][2]];
@@ -645,10 +645,10 @@ Graph Mesh::draw3D(const Bool drawEdge,
   if (verticesSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot draw a mesh with no vertex or no simplex.";
   // We use a basic Painter algorithm for the visualization
   // Second, transform the vertices if needed
-  NumericalSample visuVertices(vertices_);
+  Sample visuVertices(vertices_);
   if (!rotation.isDiagonal()) visuVertices *= rotation;
   // Third, split all the simplices into triangles and compute their mean depth
-  NumericalSample trianglesAndDepth(0, 4);
+  Sample trianglesAndDepth(0, 4);
   NumericalPoint triWithDepth(4);
   for (UnsignedInteger i = 0; i < simplicesSize; ++i)
   {
@@ -694,7 +694,7 @@ Graph Mesh::draw3D(const Bool drawEdge,
     const UnsignedInteger i0 = static_cast<UnsignedInteger>(trianglesAndDepth[i - 1][0]);
     const UnsignedInteger i1 = static_cast<UnsignedInteger>(trianglesAndDepth[i - 1][1]);
     const UnsignedInteger i2 = static_cast<UnsignedInteger>(trianglesAndDepth[i - 1][2]);
-    NumericalSample data(3, 2);
+    Sample data(3, 2);
     if (clippedRho < 1.0)
     {
       const NumericalPoint center((visuVertices[i0] + visuVertices[i1] + visuVertices[i2]) / 3.0);
@@ -784,7 +784,7 @@ Mesh Mesh::ImportFromMSHFile(const String & fileName)
   file >> scratch;
   LOGINFO(OSS() << "Number of vertices=" << verticesNumber << ", number of simplices=" << simplicesNumber);
   // Parse the vertices
-  NumericalSample vertices(verticesNumber, 2);
+  Sample vertices(verticesNumber, 2);
   for (UnsignedInteger i = 0; i < verticesNumber; ++i)
   {
     file >> vertices[i][0];

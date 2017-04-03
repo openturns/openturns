@@ -50,16 +50,16 @@ int main(int argc, char *argv[])
     fullprint << "myFunction=" << myFunction << std::endl;
     fullprint << myFunction.getName() << "( " << inPoint << " ) = " << outPoint << std::endl;
 
-    // Creation of a NumericalSample
+    // Creation of a Sample
     const UnsignedInteger size = 10;
-    NumericalSample inSample(size, dimension);
+    Sample inSample(size, dimension);
     for (UnsignedInteger index = 0 ; index < size; ++index)
     {
       inSample[index] = NumericalPoint(dimension, 1.0 / (index + 1));
     }
 
     // result of the function
-    NumericalSample outSample = myFunction( inSample );
+    Sample outSample = myFunction( inSample );
     fullprint << myFunction.getName() << "( " << inSample << " ) = " << outSample << std::endl;
 
   }

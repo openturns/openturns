@@ -28,7 +28,7 @@ try:
         # Low-level interface
         #ai = NumericalPoint()
         #bi = NumericalPoint()
-        #fi = NumericalSample()
+        #fi = Sample()
         #ei = NumericalPoint()
         #value2 = algo.integrate(f, a, b, error, ai, bi, fi, ei)[0]
         # ai.add(b)
@@ -56,7 +56,7 @@ try:
         # Low-level interface
         ## ai = NumericalPoint()
         ## bi = NumericalPoint()
-        ## fi = NumericalSample()
+        ## fi = Sample()
         ## ei = NumericalPoint()
         ## value2 = algo.integrate(f, a, b, error, ai, bi, fi, ei)[0]
         # print "ai=", ai

@@ -52,7 +52,7 @@ PiecewiseLinearEvaluation::PiecewiseLinearEvaluation(const NumericalPoint & loca
 {
   // Convert the values into a sample
   const UnsignedInteger size = values.getSize();
-  NumericalSample sampleValues(size, 1);
+  Sample sampleValues(size, 1);
   for (UnsignedInteger i = 0; i < size; ++i) sampleValues[i][0] = values[i];
   // Check the input
   setLocationsAndValues(locations, sampleValues);
@@ -60,7 +60,7 @@ PiecewiseLinearEvaluation::PiecewiseLinearEvaluation(const NumericalPoint & loca
 
 /* Parameters constructor */
 PiecewiseLinearEvaluation::PiecewiseLinearEvaluation(const NumericalPoint & locations,
-    const NumericalSample & values)
+    const Sample & values)
   : EvaluationImplementation()
   , locations_(0)
   , values_(0, values.getDimension())
@@ -156,7 +156,7 @@ void PiecewiseLinearEvaluation::setLocations(const NumericalPoint & locations)
 }
 
 /* Values accessor */
-NumericalSample PiecewiseLinearEvaluation::getValues() const
+Sample PiecewiseLinearEvaluation::getValues() const
 {
   return values_;
 }
@@ -165,12 +165,12 @@ void PiecewiseLinearEvaluation::setValues(const NumericalPoint & values)
 {
   const UnsignedInteger size = values.getSize();
   if (size != locations_.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of values=" << size << " must match the number of previously set locations=" << locations_.getSize();
-  NumericalSample sampleValues(size, 1);
+  Sample sampleValues(size, 1);
   for (UnsignedInteger i = 0; i < size; ++i) sampleValues[i][0] = values[i];
   values_ = sampleValues;
 }
 
-void PiecewiseLinearEvaluation::setValues(const NumericalSample & values)
+void PiecewiseLinearEvaluation::setValues(const Sample & values)
 {
   const UnsignedInteger size = values.getSize();
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: there must be at least 2 points to build a piecewise linear interpolation function.";
@@ -179,13 +179,13 @@ void PiecewiseLinearEvaluation::setValues(const NumericalSample & values)
 }
 
 void PiecewiseLinearEvaluation::setLocationsAndValues(const NumericalPoint & locations,
-    const NumericalSample & values)
+    const Sample & values)
 {
   const UnsignedInteger size = locations.getSize();
   if (size != values.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of values=" << values.getSize() << " must match the number of locations=" << size;
   // Sort the data in increasing order according to the locations
   const UnsignedInteger dimension = values.getDimension();
-  NumericalSample data(size, 1 + dimension);
+  Sample data(size, 1 + dimension);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     data[i][0] = locations[i];
@@ -194,7 +194,7 @@ void PiecewiseLinearEvaluation::setLocationsAndValues(const NumericalPoint & loc
   }
   data = data.sortAccordingToAComponent(0);
   locations_ = NumericalPoint(size);
-  values_ = NumericalSample(size, dimension);
+  values_ = Sample(size, dimension);
   const NumericalScalar step = data[1][0] - data[0][0];
   const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("PiecewiseLinearEvaluation-EpsilonRegular") * std::abs(step);
   isRegular_ = true;

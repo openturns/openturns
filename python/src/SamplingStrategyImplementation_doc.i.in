@@ -31,7 +31,7 @@ OT_SamplingStrategy_doc
 
 Returns
 -------
-sample : :class:`~openturns.NumericalSample`
+sample : :class:`~openturns.Sample`
     The sample generated according to the sampling strategy."
 %enddef
 %feature("docstring") OT::SamplingStrategyImplementation::generate

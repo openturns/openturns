@@ -24,7 +24,7 @@
 #include <iostream>
 #include "openturns/PersistentObject.hxx"
 #include "openturns/BasisSequence.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/DesignProxy.hxx"
 #include "openturns/LeastSquaresMethod.hxx"
 
@@ -56,23 +56,23 @@ public:
   Bool getVerbose() const;
 
   /** Method to create new BasisSequence objects */
-  virtual BasisSequence build(const NumericalSample & x,
-                              const NumericalSample & y,
+  virtual BasisSequence build(const Sample & x,
+                              const Sample & y,
                               const Basis & psi,
                               const Indices & indices);
 
 #ifndef SWIG
 
-  virtual BasisSequence build(const NumericalSample & y,
+  virtual BasisSequence build(const Sample & y,
                               const Indices & indices,
                               const DesignProxy & proxy);
 
   virtual BasisSequence build(LeastSquaresMethod & method,
-                              const NumericalSample & y);
+                              const Sample & y);
 
   virtual void initialize();
   virtual void updateBasis(LeastSquaresMethod & method,
-                           const NumericalSample & y);
+                           const Sample & y);
 #endif
 
   /** Stopping criterion on the L1-norm of the coefficients accessor */

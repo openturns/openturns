@@ -41,7 +41,7 @@ UniformFactory * UniformFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-UniformFactory::Implementation UniformFactory::build(const NumericalSample & sample) const
+UniformFactory::Implementation UniformFactory::build(const Sample & sample) const
 {
   return buildAsUniform(sample).clone();
 }
@@ -56,7 +56,7 @@ UniformFactory::Implementation UniformFactory::build() const
   return buildAsUniform().clone();
 }
 
-Uniform UniformFactory::buildAsUniform(const NumericalSample & sample) const
+Uniform UniformFactory::buildAsUniform(const Sample & sample) const
 {
   const NumericalScalar size = sample.getSize();
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Uniform distribution from a sample of size < 2";

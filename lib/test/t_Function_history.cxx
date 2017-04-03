@@ -33,9 +33,9 @@ int main(int argc, char *argv[])
   {
     SymbolicFunction f("x", "x^2");
     UnsignedInteger size = 4;
-    NumericalSample input(size, 1);
+    Sample input(size, 1);
     for (UnsignedInteger i = 0; i < size; ++i) input[i][0] = i;
-    NumericalSample output(f(input));
+    Sample output(f(input));
     fullprint << "Is history enabled for f? " << (f.isHistoryEnabled() ? "true" : "false") << std::endl;
     fullprint << "input history=" << f.getHistoryInput() << std::endl;
     fullprint << "output history=" << f.getHistoryOutput() << std::endl;

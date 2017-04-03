@@ -172,10 +172,10 @@ NumericalPoint Normal::getRealization() const
   return cholesky_ * value + mean_;
 }
 
-NumericalSample Normal::getSample(const UnsignedInteger size) const
+Sample Normal::getSample(const UnsignedInteger size) const
 {
   const UnsignedInteger dimension = getDimension();
-  NumericalSample result(size, dimension);
+  Sample result(size, dimension);
   for (UnsignedInteger i = 0; i < size; ++i)
     for (UnsignedInteger j = 0; j < dimension; ++j) result[i][j] = DistFunc::rNormal();
   if (hasIndependentCopula_) result *= sigma_;
@@ -282,7 +282,7 @@ NumericalScalar Normal::computeCDF(const NumericalPoint & point) const
     const UnsignedInteger marginalNodesNumber = kronrodNodes.getDimension();
     const UnsignedInteger size = static_cast< UnsignedInteger >(round(std::pow(1.0 * marginalNodesNumber, static_cast<int>(dimension))));
     Indices indices(dimension, 0);
-    NumericalSample allNodes(size, dimension);
+    Sample allNodes(size, dimension);
     NumericalPoint allWeights(size);
     for (UnsignedInteger linearIndex = 0; linearIndex < size; ++linearIndex)
     {
@@ -305,7 +305,7 @@ NumericalScalar Normal::computeCDF(const NumericalPoint & point) const
       for (UnsignedInteger j = 0; j < dimension - 1; ++j) indices[j] = indices[j] % marginalNodesNumber;
     } // Loop over the n-D nodes
     // Parallel evalusation of the PDF
-    const NumericalSample allPDF(computePDF(allNodes));
+    const Sample allPDF(computePDF(allNodes));
     // Some black magic to use BLAS on the internal representation of samples
     const NumericalScalar probability = dot(allWeights, allPDF.getImplementation()->getData());
     return probability;

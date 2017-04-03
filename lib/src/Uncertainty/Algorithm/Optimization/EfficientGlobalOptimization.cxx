@@ -101,10 +101,10 @@ public:
     return NumericalPoint(1, ei);
   }
 
-  NumericalSample operator()(const NumericalSample & theta) const
+  Sample operator()(const Sample & theta) const
   {
     const UnsignedInteger size = theta.getSize();
-    NumericalSample outS(size, 1);
+    Sample outS(size, 1);
     for (UnsignedInteger i = 0; i < size; ++ i)
       outS[i] = operator()(theta[i]);
     return outS;
@@ -145,8 +145,8 @@ void EfficientGlobalOptimization::run()
   const OptimizationProblem problem(getProblem());
   const UnsignedInteger dimension = problem.getDimension();
   const Function model(problem.getObjective());
-  NumericalSample inputSample(krigingResult_.getInputSample());
-  NumericalSample outputSample(model(inputSample));
+  Sample inputSample(krigingResult_.getInputSample());
+  Sample outputSample(model(inputSample));
   UnsignedInteger size = inputSample.getSize();
   NumericalPoint noise(size);
   const Bool hasNoise = model.getOutputDimension() == 2;
@@ -156,7 +156,7 @@ void EfficientGlobalOptimization::run()
     if (noiseModel_.getOutputDimension() != 1)
       noiseModel_ = model.getMarginal(1);
 
-    NumericalSample noiseSample(outputSample.getMarginal(1));
+    Sample noiseSample(outputSample.getMarginal(1));
     outputSample = outputSample.getMarginal(0);
     for (UnsignedInteger i = 0; i < size; ++ i)
     {
@@ -282,15 +282,15 @@ void EfficientGlobalOptimization::run()
         coll.add(Uniform(lowerBound[i], upperBound[i]));
       }
       const ComposedDistribution distribution(coll);
-      NumericalSample improvementExperiment(distribution.getSample(multiStartExperimentSize_));
+      Sample improvementExperiment(distribution.getSample(multiStartExperimentSize_));
       // retain best P/N points as starting points
       improvementExperiment.stack(improvementObjective(improvementExperiment));
       Indices inputs(dimension);
       inputs.fill();
-      const NumericalSample sortedImprovement(improvementExperiment.sortAccordingToAComponent(dimension).getMarginal(inputs));
+      const Sample sortedImprovement(improvementExperiment.sortAccordingToAComponent(dimension).getMarginal(inputs));
       // handle multiStartExperimentSize_ < multiStartNumber_
       const UnsignedInteger pointNumber = std::min(multiStartNumber_, multiStartExperimentSize_);
-      const NumericalSample startingPoints(sortedImprovement, multiStartExperimentSize_ - pointNumber, multiStartExperimentSize_);
+      const Sample startingPoints(sortedImprovement, multiStartExperimentSize_ - pointNumber, multiStartExperimentSize_);
       setOptimizationAlgorithm(MultiStart(solver_, startingPoints));
     }
 
@@ -456,7 +456,7 @@ void EfficientGlobalOptimization::setParameterEstimationPeriod(const UnsignedInt
 }
 
 /* Expected improvement function */
-NumericalSample EfficientGlobalOptimization::getExpectedImprovement() const
+Sample EfficientGlobalOptimization::getExpectedImprovement() const
 {
   return expectedImprovement_;
 }

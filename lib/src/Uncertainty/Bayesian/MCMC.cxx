@@ -48,7 +48,7 @@ MCMC::MCMC()
 /* Parameters constructor */
 MCMC::MCMC( const Distribution & prior,
             const Distribution & conditional,
-            const NumericalSample & observations,
+            const Sample & observations,
             const NumericalPoint & initialState)
   : SamplerImplementation()
   , initialState_(initialState)
@@ -65,7 +65,7 @@ MCMC::MCMC( const Distribution & prior,
   model_ = ParametricFunction(fullFunction, Indices(0), NumericalPoint(0));
   setPrior(prior);
   if (model_.getInputDimension() != prior.getDimension()) throw InvalidDimensionException(HERE) << "The model input dimension (" << model_.getInputDimension() << ") does not match the dimension of the prior (" << prior.getDimension() << ").";
-  setParameters(NumericalSample(observations.getSize(), 0));
+  setParameters(Sample(observations.getSize(), 0));
   setObservations(observations);
   if (conditional.getParameterDimension() != model_.getOutputDimension()) throw InvalidDimensionException(HERE) << "The parameter dimension" << conditional.getParameterDimension() << " does not match the output dimension of the model (" << model_.getOutputDimension() << ").";
   if (initialState.getDimension() != prior.getDimension()) throw InvalidDimensionException(HERE) << "The initialState state dimension (" << initialState.getDimension() << ") does not match the prior dimension (" << prior.getDimension() << ").";
@@ -77,8 +77,8 @@ MCMC::MCMC( const Distribution & prior,
 MCMC::MCMC( const Distribution & prior,
             const Distribution & conditional,
             const Function & model,
-            const NumericalSample & parameters,
-            const NumericalSample & observations,
+            const Sample & parameters,
+            const Sample & observations,
             const NumericalPoint & initialState)
   : SamplerImplementation()
   , initialState_(initialState)
@@ -170,27 +170,27 @@ Function MCMC::getModel() const
 }
 
 
-void MCMC::setObservations(const NumericalSample& observations)
+void MCMC::setObservations(const Sample& observations)
 {
   if (!(observations.getSize() > 0)) throw InvalidArgumentException(HERE) << "No observation provided.";
   observations_ = observations;
 }
 
 
-NumericalSample MCMC::getObservations() const
+Sample MCMC::getObservations() const
 {
   return observations_;
 }
 
 
-void MCMC::setParameters(const NumericalSample& parameters)
+void MCMC::setParameters(const Sample& parameters)
 {
   if (!(parameters.getSize() > 0)) throw InvalidArgumentException(HERE) << "No parameter provided.";
   parameters_ = parameters;
 }
 
 
-NumericalSample MCMC::getParameters() const
+Sample MCMC::getParameters() const
 {
   return parameters_;
 }

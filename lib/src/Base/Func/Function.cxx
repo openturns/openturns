@@ -86,7 +86,7 @@ Function::Function(const Function & left,
     const Function & right)
   : TypedInterfaceObject<FunctionImplementation>(new ComposedFunction(left.getImplementation(), right.getImplementation()))
 {
-  Log::Warn(OSS() << "Function(FunctionCollection, NumericalSample) is deprecated: use ComposedFunction");
+  Log::Warn(OSS() << "Function(FunctionCollection, Sample) is deprecated: use ComposedFunction");
 }
 
 /* Analytical formula constructor */
@@ -145,10 +145,10 @@ Function::Function(const FunctionCollection & functionCollection,
 
 /* Dual linear combination function constructor */
 Function::Function(const FunctionCollection & functionCollection,
-    const NumericalSample & coefficients)
+    const Sample & coefficients)
   : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation())
 {
-  Log::Warn(OSS() << "Function(FunctionCollection, NumericalSample) is deprecated: use DualLinearCombinationFunction");
+  Log::Warn(OSS() << "Function(FunctionCollection, Sample) is deprecated: use DualLinearCombinationFunction");
   const DualLinearCombinationEvaluation evaluation(functionCollection, coefficients);
   setEvaluation(evaluation.clone());
   setGradient(new DualLinearCombinationGradient(evaluation));
@@ -183,11 +183,11 @@ Function::Function(const EvaluationPointer & evaluationImplementation,
 }
 
 /* Constructor from samples */
-Function::Function(const NumericalSample & inputSample,
-    const NumericalSample & outputSample)
+Function::Function(const Sample & inputSample,
+    const Sample & outputSample)
   : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation( inputSample, outputSample ))
 {
-  Log::Warn(OSS() << "Function(NumericalSample, NumericalSample) is deprecated: use DatabaseFunction");
+  Log::Warn(OSS() << "Function(Sample, Sample) is deprecated: use DatabaseFunction");
 }
 
 /* Constructor from field */
@@ -278,17 +278,17 @@ UnsignedInteger Function::getCacheHits() const
   return getImplementation()->getCacheHits();
 }
 
-void Function::addCacheContent(const NumericalSample & inSample, const NumericalSample & outSample)
+void Function::addCacheContent(const Sample & inSample, const Sample & outSample)
 {
   getImplementation()->addCacheContent(inSample, outSample);
 }
 
-NumericalSample Function::getCacheInput() const
+Sample Function::getCacheInput() const
 {
   return getImplementation()->getCacheInput();
 }
 
-NumericalSample Function::getCacheOutput() const
+Sample Function::getCacheOutput() const
 {
   return getImplementation()->getCacheOutput();
 }
@@ -329,12 +329,12 @@ HistoryStrategy Function::getHistoryOutput() const
   return getImplementation()->getHistoryOutput();
 }
 
-NumericalSample Function::getInputPointHistory() const
+Sample Function::getInputPointHistory() const
 {
   return getImplementation()->getInputPointHistory();
 }
 
-NumericalSample Function::getInputParameterHistory() const
+Sample Function::getInputParameterHistory() const
 {
   return getImplementation()->getInputParameterHistory();
 }
@@ -491,15 +491,15 @@ NumericalPoint Function::operator() (const NumericalPoint & inP,
   return getImplementation()->operator()(inP, parameter);
 }
 
-NumericalSample Function::operator() (const NumericalPoint & inP,
-    const NumericalSample & parameters)
+Sample Function::operator() (const NumericalPoint & inP,
+    const Sample & parameters)
 {
   copyOnWrite();
   return getImplementation()->operator()(inP, parameters);
 }
 
 /* Operator () */
-NumericalSample Function::operator() (const NumericalSample & inSample) const
+Sample Function::operator() (const Sample & inSample) const
 {
   return getImplementation()->operator()(inSample);
 }

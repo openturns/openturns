@@ -148,11 +148,11 @@ NumericalPoint KarhunenLoeveResultImplementation::project(const Field & field) c
 struct ProjectBasisPolicy
 {
   const Basis & basis_;
-  NumericalSample & output_;
+  Sample & output_;
   const KarhunenLoeveResultImplementation & result_;
 
   ProjectBasisPolicy( const Basis & basis,
-                    NumericalSample & output,
+                    Sample & output,
                     const KarhunenLoeveResultImplementation & result)
     : basis_(basis)
     , output_(output)
@@ -166,10 +166,10 @@ struct ProjectBasisPolicy
 
 }; /* end struct ProjectBasisPolicy */
 
-NumericalSample KarhunenLoeveResultImplementation::project(const Basis & basis) const
+Sample KarhunenLoeveResultImplementation::project(const Basis & basis) const
 {
   const UnsignedInteger size = basis.getSize();
-  NumericalSample result(size, projection_.getNbRows());
+  Sample result(size, projection_.getNbRows());
   const ProjectBasisPolicy policy( basis, result, *this );
   TBB::ParallelFor( 0, size, policy );
   return result;
@@ -178,11 +178,11 @@ NumericalSample KarhunenLoeveResultImplementation::project(const Basis & basis) 
 struct ProjectSamplePolicy
 {
   const ProcessSample & sample_;
-  NumericalSample & output_;
+  Sample & output_;
   const KarhunenLoeveResultImplementation & result_;
 
   ProjectSamplePolicy( const ProcessSample & sample,
-                    NumericalSample & output,
+                    Sample & output,
                     const KarhunenLoeveResultImplementation & result)
     : sample_(sample)
     , output_(output)
@@ -197,10 +197,10 @@ struct ProjectSamplePolicy
 
 }; /* end struct ProjectSamplePolicy */
 
-NumericalSample KarhunenLoeveResultImplementation::project(const ProcessSample & sample) const
+Sample KarhunenLoeveResultImplementation::project(const ProcessSample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
-  NumericalSample result(size, projection_.getNbRows());
+  Sample result(size, projection_.getNbRows());
   const ProjectSamplePolicy policy( sample, result, *this );
   TBB::ParallelFor( 0, size, policy );
   return result;  
@@ -223,7 +223,7 @@ Function KarhunenLoeveResultImplementation::lift(const NumericalPoint & coeffici
 Field KarhunenLoeveResultImplementation::liftAsField(const NumericalPoint & coefficients) const
 {
   const UnsignedInteger dimension = eigenvalues_.getDimension();
-  NumericalSample values(modesAsProcessSample_.getMesh().getVerticesNumber(), modesAsProcessSample_.getDimension());
+  Sample values(modesAsProcessSample_.getMesh().getVerticesNumber(), modesAsProcessSample_.getDimension());
   for (UnsignedInteger i = 0; i < dimension; ++i)
     values += modesAsProcessSample_[i] * (std::sqrt(eigenvalues_[i]) * coefficients[i]);
   return Field(modesAsProcessSample_.getMesh(), values);

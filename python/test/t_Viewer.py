@@ -56,8 +56,8 @@ try:
         ot.NumericalPoint(dimension, 3.0), ot.NumericalPoint(dimension, 2.0), R)
     size = 100
     sample2D = distribution.getSample(size)
-    firstSample = ot.NumericalSample(size, 1)
-    secondSample = ot.NumericalSample(size, 1)
+    firstSample = ot.Sample(size, 1)
+    secondSample = ot.Sample(size, 1)
     for i in range(size):
         firstSample[i] = ot.NumericalPoint(1, sample2D[i, 0])
         secondSample[i] = ot.NumericalPoint(1, sample2D[i, 1])
@@ -181,8 +181,8 @@ try:
     # Polygon
     size = 50
     cursor = [0.] * 2
-    data1 = ot.NumericalSample(size, 2)  # polygon y = 2x for x in [-25]
-    data2 = ot.NumericalSample(size, 2)  # polygon y = x*x for x in [-11]
+    data1 = ot.Sample(size, 2)  # polygon y = 2x for x in [-25]
+    data2 = ot.Sample(size, 2)  # polygon y = x*x for x in [-11]
     for i in range(size):
         tmp = 7. * i / size + 2
         cursor[0] = tmp

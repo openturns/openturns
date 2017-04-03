@@ -35,8 +35,8 @@ int main(int argc, char *argv[])
     const UnsignedInteger size = 200;
 
     // input sample
-    const NumericalSample inputSample = Uniform(-1.0, 1.0).getSample(size);
-    NumericalSample outputSample(inputSample);
+    const Sample inputSample = Uniform(-1.0, 1.0).getSample(size);
+    Sample outputSample(inputSample);
 
     // Evaluation of y = ax + b (a: scale, b: translate)
 
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
     outputSample = boxCoxFunction(outputSample);
 
     // Add small noise
-    const NumericalSample epsilon = Normal(0, 1e-2).getSample(size);
+    const Sample epsilon = Normal(0, 1e-2).getSample(size);
     outputSample +=  epsilon;
     // Now we build the factory
     BoxCoxFactory factory;

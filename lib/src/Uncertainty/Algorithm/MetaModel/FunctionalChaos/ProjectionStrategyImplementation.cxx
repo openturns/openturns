@@ -81,9 +81,9 @@ ProjectionStrategyImplementation::ProjectionStrategyImplementation(const Weighte
 }
 
 /* Parameter constructor */
-ProjectionStrategyImplementation::ProjectionStrategyImplementation(const NumericalSample & inputSample,
+ProjectionStrategyImplementation::ProjectionStrategyImplementation(const Sample & inputSample,
     const NumericalPoint & weights,
-    const NumericalSample & outputSample)
+    const Sample & outputSample)
   : PersistentObject()
   , alpha_k_p_(0)
   , residual_p_(0.0)
@@ -143,7 +143,7 @@ void ProjectionStrategyImplementation::setMeasure(const Distribution & measure)
     measure_ = measure;
     // Set the measure as the distribution of the weighted experiment
     weightedExperiment_.setDistribution(measure);
-    inputSample_ = NumericalSample(0, 0);
+    inputSample_ = Sample(0, 0);
   }
 }
 
@@ -159,7 +159,7 @@ void ProjectionStrategyImplementation::setExperiment(const WeightedExperiment & 
   {
     weightedExperiment_ = weightedExperiment;
     weightedExperiment_.setDistribution(getMeasure());
-    inputSample_ = NumericalSample(0, 0);
+    inputSample_ = Sample(0, 0);
   }
 }
 
@@ -169,12 +169,12 @@ WeightedExperiment ProjectionStrategyImplementation::getExperiment() const
 }
 
 /* Sample accessors */
-NumericalSample ProjectionStrategyImplementation::getInputSample() const
+Sample ProjectionStrategyImplementation::getInputSample() const
 {
   return inputSample_;
 }
 
-NumericalSample ProjectionStrategyImplementation::getOutputSample() const
+Sample ProjectionStrategyImplementation::getOutputSample() const
 {
   return outputSample_;
 }

@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
     ComposedDistribution distribution(aCollection, NormalCopula(RCopula));
     // Test for sampling
     UnsignedInteger size = 10000;
-    NumericalSample sample = distribution.getSample( size );
+    Sample sample = distribution.getSample( size );
     fullprint << "sample first=" << sample[0] << " last=" << sample[size - 1] << std::endl;
     // Should be close to [0.5, 1, 0.544439]
     fullprint << "sample mean=" << sample.computeMean() << std::endl;
@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
 
     IsoProbabilisticTransformation transform(distribution.getIsoProbabilisticTransformation());
     fullprint << "isoprobabilistic transformation=" << transform << std::endl;
-    NumericalSample transformedSample(transform(sample));
+    Sample transformedSample(transform(sample));
     fullprint << "transformed sample first=" << transformedSample[0] << " last=" << transformedSample[size - 1] << std::endl;
     fullprint << "transformed sample mean=" << transformedSample.computeMean() << std::endl;
     fullprint << "transformed sample covariance=" << transformedSample.computeCovariance() << std::endl;
@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
     // Test for evaluation
     InverseIsoProbabilisticTransformation inverseTransform(distribution.getInverseIsoProbabilisticTransformation());
     fullprint << "inverse isoprobabilistic transformation=" << inverseTransform << std::endl;
-    NumericalSample transformedBackSample(inverseTransform(transformedSample));
+    Sample transformedBackSample(inverseTransform(transformedSample));
     fullprint << "transformed back sample first=" << transformedBackSample[0] << " last=" << transformedBackSample[size - 1] << std::endl;
     fullprint << "transformed back sample mean=" << transformedBackSample.computeMean() << std::endl;
     fullprint << "transformed back sample covariance=" << transformedBackSample.computeCovariance() << std::endl;

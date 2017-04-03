@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     fullprint << sequence << std::endl;
 
     // Create a numerical sample of the sequence
-    NumericalSample haselgroveSample(sequence.generate(10));
+    Sample haselgroveSample(sequence.generate(10));
     fullprint << haselgroveSample << std::endl;
 
     // Create another Haselgrove' sequence of dimension 2 to estimate Pi in [0; 1)^2

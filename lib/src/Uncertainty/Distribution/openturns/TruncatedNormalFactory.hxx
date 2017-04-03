@@ -46,10 +46,10 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build(const NumericalSample & sample) const;
+  Implementation build(const Sample & sample) const;
   Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
-  TruncatedNormal buildAsTruncatedNormal(const NumericalSample & sample) const;
+  TruncatedNormal buildAsTruncatedNormal(const Sample & sample) const;
   TruncatedNormal buildAsTruncatedNormal(const NumericalPoint & parameters) const;
   TruncatedNormal buildAsTruncatedNormal() const;
 

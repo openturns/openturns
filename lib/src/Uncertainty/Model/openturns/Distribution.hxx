@@ -133,29 +133,29 @@ public:
   NumericalPoint getRealization() const;
 
   /** Get a numerical sample whose elements follow the distribution */
-  NumericalSample getSample(const UnsignedInteger size) const;
+  Sample getSample(const UnsignedInteger size) const;
 
   /** Get the DDF of the distribution */
   NumericalScalar computeDDF(const NumericalScalar scalar) const;
   NumericalPoint  computeDDF(const NumericalPoint & point) const;
-  NumericalSample computeDDF(const NumericalSample & sample) const;
+  Sample computeDDF(const Sample & sample) const;
 
   /** Get the PDF of the distribution */
   NumericalScalar computePDF(const NumericalScalar scalar) const;
   NumericalScalar computePDF(const NumericalPoint & point) const;
-  NumericalSample computePDF(const NumericalSample & sample) const;
+  Sample computePDF(const Sample & sample) const;
 
   NumericalScalar computeLogPDF(const NumericalScalar scalar) const;
   NumericalScalar computeLogPDF(const NumericalPoint & point) const;
-  NumericalSample computeLogPDF(const NumericalSample & sample) const;
+  Sample computeLogPDF(const Sample & sample) const;
 
   /** Compute the PDF of 1D distributions over a regular grid */
-  NumericalSample computePDF(const NumericalScalar xMin,
+  Sample computePDF(const NumericalScalar xMin,
                              const NumericalScalar xMax,
                              const UnsignedInteger pointNumber) const;
 
   /** Compute the log-PDF of 1D distributions over a regular grid */
-  NumericalSample computeLogPDF(const NumericalScalar xMin,
+  Sample computeLogPDF(const NumericalScalar xMin,
 				const NumericalScalar xMax,
 				const UnsignedInteger pointNumber) const;
 
@@ -173,16 +173,16 @@ public:
 						NumericalScalar & marginalProb) const;
 #endif
 
-  NumericalSample computeCDF(const NumericalSample & sample) const;
-  NumericalSample computeComplementaryCDF(const NumericalSample & sample) const;
-  NumericalSample computeSurvivalFunction(const NumericalSample & sample) const;
+  Sample computeCDF(const Sample & sample) const;
+  Sample computeComplementaryCDF(const Sample & sample) const;
+  Sample computeSurvivalFunction(const Sample & sample) const;
 
   /** Compute the CDF of 1D distributions over a regular grid */
-  NumericalSample computeCDF(const NumericalScalar xMin,
+  Sample computeCDF(const NumericalScalar xMin,
                              const NumericalScalar xMax,
                              const UnsignedInteger pointNumber) const;
 
-  NumericalSample computeComplementaryCDF(const NumericalScalar xMin,
+  Sample computeComplementaryCDF(const NumericalScalar xMin,
                                           const NumericalScalar xMax,
                                           const UnsignedInteger pointNumber) const;
 
@@ -202,15 +202,15 @@ public:
 
   /** Get the PDF gradient of the distribution */
   NumericalPoint computePDFGradient(const NumericalPoint & point) const;
-  NumericalSample computePDFGradient(const NumericalSample & sample) const;
+  Sample computePDFGradient(const Sample & sample) const;
 
   /** Get the log(PDFgradient) of the distribution */
   NumericalPoint computeLogPDFGradient(const NumericalPoint & point) const;
-  NumericalSample computeLogPDFGradient(const NumericalSample & sample) const;
+  Sample computeLogPDFGradient(const Sample & sample) const;
 
   /** Get the CDF gradient of the distribution */
   NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
-  NumericalSample computeCDFGradient(const NumericalSample & sample) const;
+  Sample computeCDFGradient(const Sample & sample) const;
 
   /** Get the quantile of the distribution */
   NumericalPoint computeQuantile(const NumericalScalar prob,
@@ -220,10 +220,10 @@ public:
                                  const Bool tail,
 				 NumericalScalar & marginalProb) const;
 #endif
-  NumericalSample computeQuantile(const NumericalPoint & prob,
+  Sample computeQuantile(const NumericalPoint & prob,
                                   const Bool tail = false) const;
   /** Compute the quantile over a regular grid */
-  NumericalSample computeQuantile(const NumericalScalar qMin,
+  Sample computeQuantile(const NumericalScalar qMin,
                                   const NumericalScalar qMax,
                                   const UnsignedInteger pointNumber,
                                   const Bool tail = false) const;
@@ -326,10 +326,10 @@ public:
   Bool hasIndependentCopula() const;
 
   /** Get the support of a distribution that intersect a given interval */
-  NumericalSample getSupport(const Interval & interval) const;
+  Sample getSupport(const Interval & interval) const;
 
   /** Get the support on the whole range */
-  NumericalSample getSupport() const;
+  Sample getSupport() const;
 
   /** Get the discrete probability levels */
   NumericalPoint getProbabilities() const;
@@ -369,19 +369,19 @@ public:
   virtual NumericalScalar computeConditionalPDF(const NumericalScalar x,
       const NumericalPoint & y) const;
   virtual NumericalPoint computeConditionalPDF(const NumericalPoint & x,
-      const NumericalSample & y) const;
+      const Sample & y) const;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   virtual NumericalScalar computeConditionalCDF(const NumericalScalar x,
       const NumericalPoint & y) const;
   virtual NumericalPoint computeConditionalCDF(const NumericalPoint & x,
-      const NumericalSample & y) const;
+      const Sample & y) const;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
   virtual NumericalScalar computeConditionalQuantile(const NumericalScalar q,
       const NumericalPoint & y) const;
   virtual NumericalPoint computeConditionalQuantile(const NumericalPoint & q,
-      const NumericalSample & y) const;
+      const Sample & y) const;
 
   /** Get the isoprobabilist transformation */
   IsoProbabilisticTransformation getIsoProbabilisticTransformation() const;

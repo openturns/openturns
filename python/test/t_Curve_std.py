@@ -13,9 +13,9 @@ try:
     cursor = NumericalPoint(2)
 
     # curve y = 2x for x in [-25]
-    data1 = NumericalSample(size, 2)
+    data1 = Sample(size, 2)
     # curve y = x*x for x in [-11]
-    data2 = NumericalSample(size, 2)
+    data2 = Sample(size, 2)
 
     for i in range(size):
         tmp = 7. * i / size + 2

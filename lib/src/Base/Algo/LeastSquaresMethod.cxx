@@ -133,7 +133,7 @@ Indices LeastSquaresMethod::getInitialIndices() const
   return getImplementation()->getInitialIndices();
 }
 
-NumericalSample LeastSquaresMethod::getInputSample() const
+Sample LeastSquaresMethod::getInputSample() const
 {
   return getImplementation()->getInputSample();
 }

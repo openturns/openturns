@@ -182,7 +182,7 @@ NumericalPoint CumulativeDistributionNetwork::getRealization() const
 }
 
 /* Get many realizations of the CumulativeDistributionNetwork */
-NumericalSample CumulativeDistributionNetwork::getSample(const UnsignedInteger size) const
+Sample CumulativeDistributionNetwork::getSample(const UnsignedInteger size) const
 {
   return DistributionImplementation::getSampleByInversion(size);
 }

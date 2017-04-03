@@ -54,7 +54,7 @@ public:
   virtual String __repr__() const;
 
   /** Sample generation */
-  virtual NumericalSample generate() const;
+  virtual Sample generate() const;
 
   /** Implementation accessor */
   void setImplementation(const Implementation & p_implementation);

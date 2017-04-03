@@ -59,7 +59,7 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Perform cross-validation */
-  NumericalSample solve(const NumericalPoint & initialState,
+  Sample solve(const NumericalPoint & initialState,
                         const NumericalPoint & timeGrid) const;
 
   /** Transition function accessor */

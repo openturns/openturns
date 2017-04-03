@@ -88,7 +88,7 @@ public:
 
 private:
   /** Compute the block sample and the points that realized the event */
-  virtual NumericalSample computeBlockSample();
+  virtual Sample computeBlockSample();
 
   StandardEvent standardEvent_;
 

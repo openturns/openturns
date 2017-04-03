@@ -160,7 +160,7 @@ void KarhunenLoeveSVDAlgorithm::run()
     for (UnsignedInteger i = 0; i < kTilde; ++i)
     {
       const NumericalScalar wI = std::sqrt(sampleWeights_[i]);
-      const NumericalSample currentSample(sample_[i]);
+      const Sample currentSample(sample_[i]);
       for (UnsignedInteger j = 0; j < verticesNumber; ++j)
       {
         const NumericalScalar wJ = coeffs[j];
@@ -217,7 +217,7 @@ void KarhunenLoeveSVDAlgorithm::run()
   Basis modes(0);
   ProcessSample modesAsProcessSample(sample_.getMesh(), 0, dimension);
   const UnsignedInteger meshDimension = sample_.getMesh().getDimension();
-  NumericalSampleImplementation values(verticesNumber, dimension);
+  SampleImplementation values(verticesNumber, dimension);
   UnsignedInteger index = 0;
   LOGINFO("Create modes and projection");
   for (UnsignedInteger k = 0; k < K; ++k)

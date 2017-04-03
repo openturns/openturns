@@ -42,16 +42,16 @@ class OT_API LeastSquaresMetaModelSelection
 public:
 
   /** Default constructor */
-  LeastSquaresMetaModelSelection(const NumericalSample & x,
-                                 const NumericalSample & y,
+  LeastSquaresMetaModelSelection(const Sample & x,
+                                 const Sample & y,
                                  const Basis & psi,
                                  const Indices & indices,
                                  const BasisSequenceFactory & basisSequenceFactory = LARS(),
                                  const FittingAlgorithm & fittingAlgorithm = CorrectedLeaveOneOut());
 
   /** Default constructor */
-  LeastSquaresMetaModelSelection(const NumericalSample & x,
-                                 const NumericalSample & y,
+  LeastSquaresMetaModelSelection(const Sample & x,
+                                 const Sample & y,
                                  const NumericalPoint & weight,
                                  const Basis & psi,
                                  const Indices & indices,

@@ -43,9 +43,9 @@ int main(int argc, char *argv[])
   NumericalPoint mean(dim, 2.0);
   NumericalPoint sigma(dim, 3.0);
   Normal distribution(mean, sigma, R);
-  NumericalSample sample(distribution.getSample(size));
-  NumericalSample sampleX(size, dim - 1);
-  NumericalSample sampleY(size, 1);
+  Sample sample(distribution.getSample(size));
+  Sample sampleX(size, dim - 1);
+  Sample sampleY(size, 1);
   for (UnsignedInteger i = 0; i < size; i++)
   {
     sampleY[i][0] = sample[i][0];
@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
       sampleX[i][j - 1] = sample[i][j];
     }
   }
-  NumericalSample sampleZ(size, 1);
+  Sample sampleZ(size, 1);
   for (UnsignedInteger i = 0; i < size; i++)
   {
     sampleZ[i][0] = sampleY[i][0] * sampleY[i][0];

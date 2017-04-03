@@ -39,7 +39,7 @@ CLASSNAMEINIT(LHSResult);
 LHSResult::LHSResult()
   : PersistentObject()
   , optimalIndex_(0)
-  , criteria_(NumericalSample(0, 4))
+  , criteria_(Sample(0, 4))
 {
   optimalCriterion_ = spaceFilling_.isMinimizationProblem() ? SpecFunc::MaxNumericalScalar : -SpecFunc::MaxNumericalScalar;
 }
@@ -50,7 +50,7 @@ LHSResult::LHSResult(const SpaceFilling & spaceFilling, UnsignedInteger restart)
   , spaceFilling_(spaceFilling)
   , restart_(restart)
   , optimalIndex_(0)
-  , criteria_(NumericalSample(0, 4))
+  , criteria_(Sample(0, 4))
 {
   optimalCriterion_ = spaceFilling_.isMinimizationProblem() ? SpecFunc::MaxNumericalScalar : -SpecFunc::MaxNumericalScalar;
 }
@@ -61,8 +61,8 @@ LHSResult * LHSResult::clone() const
 }
 
 
-void LHSResult::add(const NumericalSample & optimalDesign, NumericalScalar criterion,
-         NumericalScalar C2, NumericalScalar PhiP, NumericalScalar MinDist, const NumericalSample & algoHistory)
+void LHSResult::add(const Sample & optimalDesign, NumericalScalar criterion,
+         NumericalScalar C2, NumericalScalar PhiP, NumericalScalar MinDist, const Sample & algoHistory)
 {
   if (spaceFilling_.isMinimizationProblem() && (criterion < optimalCriterion_))
   {
@@ -94,12 +94,12 @@ UnsignedInteger LHSResult::getNumberOfRestarts() const
 }
 
 /** Attributes for getting elements of result */
-NumericalSample LHSResult::getOptimalDesign() const
+Sample LHSResult::getOptimalDesign() const
 {
   return collDesigns_[optimalIndex_];
 }
 
-NumericalSample LHSResult::getOptimalDesign(UnsignedInteger restart) const
+Sample LHSResult::getOptimalDesign(UnsignedInteger restart) const
 {
   if (restart > restart_)
     throw InvalidArgumentException(HERE) << "The restart number must be in [0," << restart_ << "]";
@@ -118,12 +118,12 @@ NumericalScalar LHSResult::getOptimalValue(UnsignedInteger restart) const
   return criteria_[restart][0];
 }
 
-NumericalSample LHSResult::getAlgoHistory() const
+Sample LHSResult::getAlgoHistory() const
 {
   return collAlgoHistory_[optimalIndex_];
 }
 
-NumericalSample LHSResult::getAlgoHistory(UnsignedInteger restart) const
+Sample LHSResult::getAlgoHistory(UnsignedInteger restart) const
 {
   if (restart > restart_)
     throw InvalidArgumentException(HERE) << "The restart number must be in [0," << restart_ << "]";
@@ -179,7 +179,7 @@ UnsignedInteger LHSResult::findDescription(const char *text) const
   return 0;
 }
 
-Graph LHSResult::drawCurveData(const NumericalSample & data, const String & title) const
+Graph LHSResult::drawCurveData(const Sample & data, const String & title) const
 {
   Curve curve(data);
   curve.setColor("red");
@@ -214,7 +214,7 @@ Graph LHSResult::drawHistoryCriterion(UnsignedInteger restart, const String & ti
   if (collAlgoHistory_[restart].getSize() == 0)
     throw InvalidArgumentException(HERE) << "Could not draw criterion history, data are empty";
 
-  const NumericalSample data(collAlgoHistory_[restart].getMarginal(idx-1));
+  const Sample data(collAlgoHistory_[restart].getMarginal(idx-1));
   String drawTitle(title);
   if (drawTitle.empty()) drawTitle = String(OSS() << data.getDescription()[0] << " history of restart number=" << restart);
   return drawCurveData(data, drawTitle);
@@ -237,7 +237,7 @@ Graph LHSResult::drawHistoryTemperature(UnsignedInteger restart, const String & 
   if (collAlgoHistory_[restart].getSize() == 0)
     throw InvalidArgumentException(HERE) << "Could not draw temperature history, data are empty";
 
-  const NumericalSample data(collAlgoHistory_[restart].getMarginal(idx-1));
+  const Sample data(collAlgoHistory_[restart].getMarginal(idx-1));
   String drawTitle(title);
   if (drawTitle.empty()) drawTitle = String(OSS() << "Temperature history of restart number=" << restart);
   return drawCurveData(data, drawTitle);
@@ -261,7 +261,7 @@ Graph LHSResult::drawHistoryProbability(UnsignedInteger restart, const String & 
     throw InvalidArgumentException(HERE) << "Could not draw probability history, data are empty";
 
   const UnsignedInteger size(collAlgoHistory_[restart].getSize());
-  NumericalSample data(size, 2);
+  Sample data(size, 2);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     data[i][0] = i;

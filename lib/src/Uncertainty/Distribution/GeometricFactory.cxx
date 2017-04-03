@@ -45,7 +45,7 @@ GeometricFactory * GeometricFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-GeometricFactory::Implementation GeometricFactory::build(const NumericalSample & sample) const
+GeometricFactory::Implementation GeometricFactory::build(const Sample & sample) const
 {
   return buildAsGeometric(sample).clone();
 }
@@ -60,7 +60,7 @@ GeometricFactory::Implementation GeometricFactory::build() const
   return buildAsGeometric().clone();
 }
 
-Geometric GeometricFactory::buildAsGeometric(const NumericalSample & sample) const
+Geometric GeometricFactory::buildAsGeometric(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Geometric distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Geometric distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();

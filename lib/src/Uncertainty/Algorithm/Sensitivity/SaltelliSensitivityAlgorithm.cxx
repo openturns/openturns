@@ -37,8 +37,8 @@ SaltelliSensitivityAlgorithm::SaltelliSensitivityAlgorithm()
 }
 
 /** Constructor with parameters */
-SaltelliSensitivityAlgorithm::SaltelliSensitivityAlgorithm(const NumericalSample & inputDesign,
-    const NumericalSample & outputDesign,
+SaltelliSensitivityAlgorithm::SaltelliSensitivityAlgorithm(const Sample & inputDesign,
+    const Sample & outputDesign,
     const UnsignedInteger size)
   : SobolIndicesAlgorithmImplementation(inputDesign, outputDesign, size)
 {
@@ -65,17 +65,17 @@ SaltelliSensitivityAlgorithm::SaltelliSensitivityAlgorithm(const WeightedExperim
 }
 
 /** Internal method that compute Vi/VTi using a huge sample */
-NumericalSample SaltelliSensitivityAlgorithm::computeIndices(const NumericalSample & sample,
-    NumericalSample & VTi) const
+Sample SaltelliSensitivityAlgorithm::computeIndices(const Sample & sample,
+    Sample & VTi) const
 {
   const UnsignedInteger inputDimension = inputDesign_.getDimension();
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
   const UnsignedInteger size = size_;
-  NumericalSample varianceI(outputDimension, inputDimension);
-  VTi = NumericalSample(outputDimension, inputDimension);
+  Sample varianceI(outputDimension, inputDimension);
+  VTi = Sample(outputDimension, inputDimension);
 
   // Compute muA = mean(yA)
-  const NumericalSample yA(sample, 0, size);
+  const Sample yA(sample, 0, size);
   const NumericalPoint muA(yA.computeMean());
 
   // Compute cross mean term

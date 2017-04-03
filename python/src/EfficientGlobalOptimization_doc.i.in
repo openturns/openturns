@@ -276,7 +276,7 @@ c : float
 
 Returns
 -------
-ei : :class:`~openturns.NumericalSample`
+ei : :class:`~openturns.Sample`
     The expected improvement optimal values."
 
 // ---------------------------------------------------------------------

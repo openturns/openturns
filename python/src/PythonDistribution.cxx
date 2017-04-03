@@ -151,7 +151,7 @@ NumericalPoint PythonDistribution::getRealization() const
 }
 
 /* Numerical sample accessor */
-NumericalSample PythonDistribution::getSample(const UnsignedInteger size) const
+Sample PythonDistribution::getSample(const UnsignedInteger size) const
 {
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getSample")))
   {
@@ -164,7 +164,7 @@ NumericalSample PythonDistribution::getSample(const UnsignedInteger size) const
     {
       handleException();
     }
-    NumericalSample result(convert<_PySequence_, NumericalSample>(callResult.get()));
+    Sample result(convert<_PySequence_, Sample>(callResult.get()));
     if (result.getDimension() != getDimension()) throw InvalidDimensionException(HERE) << "Sample returned by PythonDistribution has incorrect dimension. Got " << result.getDimension() << ". Expected" << getDimension();
     if (result.getSize() != size) throw InvalidDimensionException(HERE) << "Sample returned by PythonDistribution has incorrect size. Got " << result.getSize() << ". Expected" << size;
     return result;

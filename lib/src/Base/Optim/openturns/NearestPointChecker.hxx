@@ -24,7 +24,7 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/Pointer.hxx"
 #include "openturns/Function.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/ComparisonOperator.hxx"
 #include "openturns/PersistentObject.hxx"
 #include "openturns/NearestPointCheckerResult.hxx"
@@ -50,7 +50,7 @@ public:
   NearestPointChecker(const Function & levelFunction,
                       const ComparisonOperator & comparisonOperator,
                       const NumericalScalar threshold,
-                      const NumericalSample & sample);
+                      const Sample & sample);
 
 
   /** Virtual constructor */
@@ -81,10 +81,10 @@ public:
   NumericalScalar getThreshold() const;
 
   /** sample accessor */
-  void setSample(const NumericalSample & sample);
+  void setSample(const Sample & sample);
 
   /** sample accessor */
-  const NumericalSample & getSample() const;
+  const Sample & getSample() const;
 
   /** Performs the actual test */
   void  run();
@@ -98,7 +98,7 @@ private:
   NearestPointCheckerResult result_;
   ComparisonOperator comparisonOperator_;
   NumericalScalar threshold_;
-  NumericalSample sample_;
+  Sample sample_;
 } ; /* class NearestPointChecker */
 
 

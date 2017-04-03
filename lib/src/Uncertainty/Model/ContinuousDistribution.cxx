@@ -179,7 +179,7 @@ Collection<PiecewiseHermiteEvaluation> ContinuousDistribution::interpolateCDF(co
     locationsCCDF[n - i - 1] = xCCDF;
     NumericalPoint ai;
     NumericalPoint bi;
-    NumericalSample fi;
+    Sample fi;
     NumericalPoint ei;
     NumericalScalar error = -1.0;
     valuesCDF[i] = valuesCDF[i - 1] + algo.integrate(pdfWrapper, xCDFOld, xCDF, error, ai, bi, fi, ei)[0];

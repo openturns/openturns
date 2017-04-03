@@ -58,7 +58,7 @@ result = optimalLHSAlgorithm.getResult()
 print("Final criteria: C2=%f, PhiP=%f, MinDist=%f" %(result.getC2(), result.getPhiP(), result.getMinDist()))
 
 # 3) Simulated Annealing LHS with geometric temperature profile, PhiP optimization & initial design
-initialDesign = ot.NumericalSample(design)
+initialDesign = ot.Sample(design)
 optimalLHSAlgorithm = ot.SimulatedAnnealingLHS(initialDesign, distribution, geomProfile, spaceFillingPhiP)
 print("lhs=", optimalLHSAlgorithm)
 print("initial design=", initialDesign)

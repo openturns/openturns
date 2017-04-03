@@ -1376,7 +1376,7 @@ NumericalPoint DistFunc::rUniformTriangle(const NumericalPoint & a,
   return result;
 }
 
-NumericalSample DistFunc::rUniformTriangle(const NumericalPoint & a,
+Sample DistFunc::rUniformTriangle(const NumericalPoint & a,
     const NumericalPoint & b,
     const NumericalPoint & c,
     const UnsignedInteger size)
@@ -1385,7 +1385,7 @@ NumericalSample DistFunc::rUniformTriangle(const NumericalPoint & a,
   const UnsignedInteger dimension = a.getDimension();
   if (b.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the second point has a dimension=" << b.getDimension() << ", expected dimension=" << dimension;
   if (c.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the third point has a dimension=" << c.getDimension() << ", expected dimension=" << dimension;
-  NumericalSample result(size, dimension);
+  Sample result(size, dimension);
   for (UnsignedInteger n = 0; n < size; ++n)
   {
     const NumericalScalar u = RandomGenerator::Generate();

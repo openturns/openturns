@@ -49,7 +49,7 @@ FrankCopulaFactory * FrankCopulaFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-FrankCopulaFactory::Implementation FrankCopulaFactory::build(const NumericalSample & sample) const
+FrankCopulaFactory::Implementation FrankCopulaFactory::build(const Sample & sample) const
 {
   return buildAsFrankCopula(sample).clone();
 }
@@ -64,7 +64,7 @@ FrankCopulaFactory::Implementation FrankCopulaFactory::build() const
   return buildAsFrankCopula().clone();
 }
 
-FrankCopula FrankCopulaFactory::buildAsFrankCopula(const NumericalSample & sample) const
+FrankCopula FrankCopulaFactory::buildAsFrankCopula(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a FrankCopula distribution from an empty sample";
   if (sample.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a FrankCopula distribution from a sample of dimension not equal to 2";

@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
     // 2D case now
     const UnsignedInteger N = 8;
     Normal distribution(N);
-    NumericalSample sample(distribution.getSample(2 * N));
+    Sample sample(distribution.getSample(2 * N));
 
     // FFT transform
     const ComplexMatrix transformedSample(myFFT.transform2D(sample));

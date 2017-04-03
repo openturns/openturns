@@ -42,7 +42,7 @@ class KDNearestNeighboursFinder
 public:
 
   /** Constructor */
-  KDNearestNeighboursFinder(const NumericalSample & sample, const UnsignedInteger size)
+  KDNearestNeighboursFinder(const Sample & sample, const UnsignedInteger size)
     : sample_(sample)
     , capacity_(size)
     , size_(0)
@@ -175,7 +175,7 @@ private:
   }
 
   // Points contained in the tree
-  const NumericalSample sample_;
+  const Sample sample_;
   // Maximum heap size
   const UnsignedInteger capacity_;
   // Number of used buckets
@@ -203,7 +203,7 @@ KDTree::KDTree()
 }
 
 /* Parameters constructor */
-KDTree::KDTree(const NumericalSample & points)
+KDTree::KDTree(const Sample & points)
   : PersistentObject()
   , points_(points)
   , p_root_(0)
@@ -287,12 +287,12 @@ Indices KDTree::getNearestNeighboursIndices(const NumericalPoint & x,
 }
 
 /* Get the k nearest neighbours of the given point */
-NumericalSample KDTree::getNearestNeighbours(const NumericalPoint & x,
+Sample KDTree::getNearestNeighbours(const NumericalPoint & x,
     const UnsignedInteger k) const
 {
   if (k > points_.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot return more neighbours than points in the database!";
   const Indices indices(getNearestNeighboursIndices(x, k));
-  NumericalSample result(k, points_.getDimension());
+  Sample result(k, points_.getDimension());
   for (UnsignedInteger i = 0; i < k; ++i) result[i] = points_[indices[i]];
   return result;
 }
@@ -378,7 +378,7 @@ UnsignedInteger KDTree::getNearestNeighbourIndex(const KDNode::KDNodePointer & p
 }
 
 /* Points accessor */
-NumericalSample KDTree::getPoints() const
+Sample KDTree::getPoints() const
 {
   return points_;
 }

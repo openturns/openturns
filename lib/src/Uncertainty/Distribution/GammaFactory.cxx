@@ -44,7 +44,7 @@ GammaFactory * GammaFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-GammaFactory::Implementation GammaFactory::build(const NumericalSample & sample) const
+GammaFactory::Implementation GammaFactory::build(const Sample & sample) const
 {
   return buildAsGamma(sample).clone();
 }
@@ -59,7 +59,7 @@ GammaFactory::Implementation GammaFactory::build() const
   return buildAsGamma().clone();
 }
 
-Gamma GammaFactory::buildAsGamma(const NumericalSample & sample) const
+Gamma GammaFactory::buildAsGamma(const Sample & sample) const
 {
   UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Gamma distribution from an empty sample";

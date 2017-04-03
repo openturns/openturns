@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     UnsignedInteger size = 10;
     Normal realDist(31.0, 1.2);
 
-    NumericalSample data(realDist.getSample(size));
+    Sample data(realDist.getSample(size));
 
     // calibration parameters
     CalibrationStrategyCollection calibrationColl(2);
@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
       std::cout << "  expected posterior ~N(" << w*data.computeMean()[0] + (1. - w)*mu0 << ", " << sqrt(w * pow(sigmay, 2.0) / size) << ")" << std::endl;
 
       // try to generate a sample
-      NumericalSample sample(sampler.getSample(50));
+      Sample sample(sampler.getSample(50));
 
       std::cout << "  obtained posterior ~N(" << sample.computeMean()[0] << ", " << sample.computeStandardDeviationPerComponent()[0] << ")" << std::endl;
 

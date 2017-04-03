@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     ResourceMap::SetAsNumericalScalar( "MeixnerDistribution-MaximumObjectiveError", 1.0e-6 );
     MeixnerDistribution distribution(1.5, 0.5, 2.5, -0.5);
     UnsignedInteger size = 1000;
-    NumericalSample sample(distribution.getSample(size));
+    Sample sample(distribution.getSample(size));
     MeixnerDistributionFactory factory;
     CovarianceMatrix covariance;
     // Distribution estimatedDistribution(factory.build(sample, covariance));

@@ -46,7 +46,7 @@ distribution : :class:`~openturns.Distribution`
 
 Returns
 -------
-inputSample : :class:`~openturns.NumericalSample`
+inputSample : :class:`~openturns.Sample`
     Input sample of a model evaluated apart."
 
 // ---------------------------------------------------------------------
@@ -56,7 +56,7 @@ inputSample : :class:`~openturns.NumericalSample`
 
 Returns
 -------
-outputSample : :class:`~openturns.NumericalSample`
+outputSample : :class:`~openturns.Sample`
     Output sample of a model evaluated apart."
 
 // ---------------------------------------------------------------------

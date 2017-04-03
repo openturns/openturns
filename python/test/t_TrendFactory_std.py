@@ -15,7 +15,7 @@ try:
     functions.append(SymbolicFunction(inVar, ['sin(2 * t)']))
 
     # We build the weights
-    coefficients = NumericalSample(0, 2)
+    coefficients = Sample(0, 2)
     p = NumericalPoint(2)
     p[0] = 1.5
     p[1] = 2.5

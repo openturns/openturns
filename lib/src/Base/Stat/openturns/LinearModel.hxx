@@ -24,7 +24,7 @@
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Description.hxx"
 #include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Interval.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Collection.hxx"
@@ -76,11 +76,11 @@ public:
   NumericalScalarCollection getPValues() const;
 
   /** getPredicted : build an sample of predicted values */
-  NumericalSample getPredicted(const NumericalSample & predictor) const;
+  Sample getPredicted(const Sample & predictor) const;
 
   /** getResidual */
-  NumericalSample getResidual(const NumericalSample & predictor,
-                              const NumericalSample & measured) const;
+  Sample getResidual(const Sample & predictor,
+                              const Sample & measured) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

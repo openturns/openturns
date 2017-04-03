@@ -80,20 +80,20 @@ try:
     distributionNumber = continuousDistributionNumber + \
         discreteDistributionNumber
 
-    # We create a collection of NumericalSample of size "size" and of
+    # We create a collection of Sample of size "size" and of
     # dimension 1 (scalar values) : the collection has distributionNumber
-    # NumericalSamples
-    sampleCollection = [NumericalSample(size, 1)
+    # Samples
+    sampleCollection = [Sample(size, 1)
                         for i in range(distributionNumber)]
-    # We create a collection of NumericalSample of size "size" and of
+    # We create a collection of Sample of size "size" and of
     # dimension 1 (scalar values) : the collection has
-    # continuousDistributionNumber NumericalSamples
-    continuousSampleCollection = [NumericalSample(size, 1)
+    # continuousDistributionNumber Samples
+    continuousSampleCollection = [Sample(size, 1)
                                   for i in range(continuousDistributionNumber)]
-    # We create a collection of NumericalSample of size "size" and of
+    # We create a collection of Sample of size "size" and of
     # dimension 1 (scalar values) : the collection has
-    # discreteDistributionNumber NumericalSamples
-    discreteSampleCollection = [NumericalSample(size, 1)
+    # discreteDistributionNumber Samples
+    discreteSampleCollection = [Sample(size, 1)
                                 for i in range(discreteDistributionNumber)]
 
     for i in range(continuousDistributionNumber):

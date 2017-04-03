@@ -59,7 +59,7 @@ void HistoryStrategy::store(const NumericalPoint & point)
   getImplementation()->store(point);
 }
 
-void HistoryStrategy::store(const NumericalSample & sample)
+void HistoryStrategy::store(const Sample & sample)
 {
   copyOnWrite();
   getImplementation()->store(sample);
@@ -73,7 +73,7 @@ void HistoryStrategy::clear()
 }
 
 /* History sample accessor */
-NumericalSample HistoryStrategy::getSample() const
+Sample HistoryStrategy::getSample() const
 {
   return getImplementation()->getSample();
 }

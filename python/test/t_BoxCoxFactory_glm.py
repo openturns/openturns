@@ -9,7 +9,7 @@ size = 200
 
 # input sample
 inputSample = ot.Uniform(-1.0, 1.0).getSample(size)
-outputSample = ot.NumericalSample(inputSample)
+outputSample = ot.Sample(inputSample)
 
 # Evaluation of y = ax + b (a: scale, b: translate)
 

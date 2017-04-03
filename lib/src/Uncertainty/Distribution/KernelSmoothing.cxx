@@ -84,7 +84,7 @@ KernelSmoothing * KernelSmoothing::clone() const
 }
 
 /* Compute the bandwidth according to Silverman's rule */
-NumericalPoint KernelSmoothing::computeSilvermanBandwidth(const NumericalSample & sample) const
+NumericalPoint KernelSmoothing::computeSilvermanBandwidth(const Sample & sample) const
 {
   UnsignedInteger dimension = sample.getDimension();
   UnsignedInteger size = sample.getSize();
@@ -110,7 +110,7 @@ NumericalPoint KernelSmoothing::computeSilvermanBandwidth(const NumericalSample 
 struct PluginConstraint
 {
   /** Constructor from a sample and a derivative factor estimate */
-  PluginConstraint(const NumericalSample & sample,
+  PluginConstraint(const Sample & sample,
                    const NumericalScalar K,
                    const UnsignedInteger order):
     sample_(sample),
@@ -154,7 +154,7 @@ struct PluginConstraint
     return NumericalPoint(1, res);
   }
 
-  const NumericalSample & sample_;
+  const Sample & sample_;
   UnsignedInteger N_;
   NumericalScalar K_;
   UnsignedInteger order_;
@@ -165,7 +165,7 @@ struct PluginConstraint
    See Vikas Chandrakant Raykar, Ramani Duraiswami, "Very Fast optimal bandwidth selection for univariate kernel density estimation" CS-TR-4774
    We implement only the basic estimator, not the fast version of it.
 */
-NumericalPoint KernelSmoothing::computePluginBandwidth(const NumericalSample & sample) const
+NumericalPoint KernelSmoothing::computePluginBandwidth(const Sample & sample) const
 {
   const UnsignedInteger dimension = sample.getDimension();
   if (dimension != 1) throw InvalidArgumentException(HERE) << "Error: plugin bandwidth is available only for 1D sample";
@@ -207,14 +207,14 @@ NumericalPoint KernelSmoothing::computePluginBandwidth(const NumericalSample & s
  * scale the Silverman bandwidth computed on the full
  * sample with this ratio
  */
-NumericalPoint KernelSmoothing::computeMixedBandwidth(const NumericalSample & sample) const
+NumericalPoint KernelSmoothing::computeMixedBandwidth(const Sample & sample) const
 {
   const UnsignedInteger dimension = sample.getDimension();
   if (dimension != 1) throw InvalidArgumentException(HERE) << "Error: mixed bandwidth is available only for 1D sample";
   const UnsignedInteger size = sample.getSize();
   // Small sample, just return the plugin bandwidth
   if (size <= ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-SmallSize" )) return computePluginBandwidth(sample);
-  NumericalSample smallSample(ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-SmallSize" ), 1);
+  Sample smallSample(ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-SmallSize" ), 1);
   for (UnsignedInteger i = 0; i < ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-SmallSize" ); ++i) smallSample[i][0] = sample[i][0];
   const NumericalScalar h1 = computePluginBandwidth(smallSample)[0];
   const NumericalScalar h2 = computeSilvermanBandwidth(smallSample)[0];
@@ -222,7 +222,7 @@ NumericalPoint KernelSmoothing::computeMixedBandwidth(const NumericalSample & sa
 }
 
 /* Build a Normal kernel mixture based on the given sample. If no bandwith has already been set, Silverman's rule is used */
-KernelSmoothing::Implementation KernelSmoothing::build(const NumericalSample & sample) const
+KernelSmoothing::Implementation KernelSmoothing::build(const Sample & sample) const
 {
   // For 1D sample, use the rule that give the best tradeoff between speed and precision
   if (sample.getDimension() == 1) return build(sample, computeMixedBandwidth(sample));
@@ -235,7 +235,7 @@ KernelSmoothing::Implementation KernelSmoothing::build(const NumericalSample & s
  * If boundary correction: mirroring on the two sides, followed by truncation
  * If binning: condensation on a regular grid
  */
-KernelSmoothing::Implementation KernelSmoothing::build(const NumericalSample & sample,
+KernelSmoothing::Implementation KernelSmoothing::build(const Sample & sample,
     const NumericalPoint & bandwidth) const
 {
   const UnsignedInteger dimension = sample.getDimension();
@@ -294,7 +294,7 @@ KernelSmoothing::Implementation KernelSmoothing::build(const NumericalSample & s
       for (UnsignedInteger j = 0; j < binNumber_; ++j)
       {
         point[1] = y[j];
-        KernelMixture atom(kernel_, bandwidth, NumericalSample(1, point));
+        KernelMixture atom(kernel_, bandwidth, Sample(1, point));
         atoms[i + j * binNumber_] = atom;
       }
     }
@@ -304,7 +304,7 @@ KernelSmoothing::Implementation KernelSmoothing::build(const NumericalSample & s
   } // 2D binning
 
   // Here we are in the 1D case, with at least binning or boundary boundary correction
-  NumericalSample newSample(sample);
+  Sample newSample(sample);
   NumericalScalar xminNew = xmin[0];
   NumericalScalar xmaxNew = xmax[0];
   // If boundary correction,
@@ -349,7 +349,7 @@ KernelSmoothing::Implementation KernelSmoothing::build(const NumericalSample & s
   Collection< Distribution > atoms(binNumber_);
   for (UnsignedInteger i = 0; i < binNumber_; ++i)
   {
-    KernelMixture atom(kernel_, bandwidth, NumericalSample(1, NumericalPoint(1, x[i])));
+    KernelMixture atom(kernel_, bandwidth, Sample(1, NumericalPoint(1, x[i])));
     atoms[i] = atom;
   }
   if (boundaryCorrection_)

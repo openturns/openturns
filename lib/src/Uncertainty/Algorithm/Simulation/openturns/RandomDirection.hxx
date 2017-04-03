@@ -51,7 +51,7 @@ public:
   virtual RandomDirection * clone() const;
 
   /** Generate a set of directions */
-  NumericalSample generate() const;
+  Sample generate() const;
 
   /** String converter */
   String __repr__() const;

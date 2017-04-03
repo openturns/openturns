@@ -48,7 +48,7 @@ Classifier::Classifier(const Implementation & p_implementation)
 }
 
 /* Constructor from implementation */
-Classifier::Classifier(const NumericalSample & inS, const Indices & outC)
+Classifier::Classifier(const Sample & inS, const Indices & outC)
   : TypedInterfaceObject<ClassifierImplementation>( new ClassifierImplementation(inS, outC) )
 {
   // Nothing to do
@@ -61,7 +61,7 @@ UnsignedInteger Classifier::classify(const NumericalPoint & inP) const
 }
 
 /* Classify a sample */
-Indices Classifier::classify(const NumericalSample & inS) const
+Indices Classifier::classify(const Sample & inS) const
 {
   return getImplementation()->classify(inS);
 }
@@ -73,7 +73,7 @@ NumericalScalar Classifier::grade(const NumericalPoint & inP, UnsignedInteger hC
 }
 
 /* Grade a sample */
-NumericalPoint Classifier::grade(const NumericalSample & inS, const Indices & hClass) const
+NumericalPoint Classifier::grade(const Sample & inS, const Indices & hClass) const
 {
   return getImplementation()->grade(inS, hClass);
 }

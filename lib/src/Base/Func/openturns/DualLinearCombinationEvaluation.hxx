@@ -25,7 +25,7 @@
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Function.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -54,7 +54,7 @@ public:
 public:
   /** Parameter constructor */
   DualLinearCombinationEvaluation(const FunctionCollection & functionsCollection,
-      const NumericalSample & coefficients);
+      const Sample & coefficients);
 
   /** Virtual constructor */
   virtual DualLinearCombinationEvaluation * clone() const;
@@ -68,15 +68,15 @@ public:
 
   /** Evaluation operator */
   NumericalPoint operator () (const NumericalPoint & inP) const;
-  NumericalSample operator () (const NumericalSample & inS) const;
+  Sample operator () (const Sample & inS) const;
 
   /** Coefficients accessor */
-  NumericalSample getCoefficients() const;
+  Sample getCoefficients() const;
 
   /** Functions accessor */
   FunctionCollection getFunctionsCollection() const;
   void setFunctionsCollectionAndCoefficients(const FunctionCollection & functionsCollection,
-      const NumericalSample & coefficients);
+      const Sample & coefficients);
 
   /** Input dimension accessor */
   UnsignedInteger getInputDimension() const;
@@ -119,7 +119,7 @@ private:
   FunctionPersistentCollection functionsCollection_;
 
   // The vectors of the combination
-  NumericalSample coefficients_;
+  Sample coefficients_;
 } ; /* class DualLinearCombinationEvaluation */
 
 

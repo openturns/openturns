@@ -163,13 +163,13 @@ Bool EvaluationImplementation::isActualImplementation() const
 /* Here is the interface that all derived class must implement */
 
 /* Operator () */
-NumericalSample EvaluationImplementation::operator() (const NumericalSample & inSample) const
+Sample EvaluationImplementation::operator() (const Sample & inSample) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inSample.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inSample.getDimension();
 
   const UnsignedInteger size = inSample.getSize();
-  NumericalSample outSample(size, getOutputDimension());
+  Sample outSample(size, getOutputDimension());
   // Simple loop over the evaluation operator based on point
   // The calls number is updated by these calls
   for (UnsignedInteger i = 0; i < size; ++i) outSample[i] = operator()(inSample[i]);
@@ -208,7 +208,7 @@ UnsignedInteger EvaluationImplementation::getCacheHits() const
   return p_cache_->getHits();
 }
 
-void EvaluationImplementation::addCacheContent(const NumericalSample& inSample, const NumericalSample& outSample)
+void EvaluationImplementation::addCacheContent(const Sample& inSample, const Sample& outSample)
 {
   p_cache_->enable();
   const UnsignedInteger size = inSample.getSize();
@@ -218,26 +218,26 @@ void EvaluationImplementation::addCacheContent(const NumericalSample& inSample, 
   }
 }
 
-NumericalSample EvaluationImplementation::getCacheInput() const
+Sample EvaluationImplementation::getCacheInput() const
 {
   Bool cacheEnabled = isCacheEnabled();
   enableCache();
   PersistentCollection<CacheKeyType> keyColl( p_cache_->getKeys() );
   if ( ! cacheEnabled )
     disableCache();
-  NumericalSample inSample(0, getInputDimension());
+  Sample inSample(0, getInputDimension());
   for ( UnsignedInteger i = 0; i < keyColl.getSize(); ++ i ) inSample.add( keyColl[i] );
   return inSample;
 }
 
-NumericalSample EvaluationImplementation::getCacheOutput() const
+Sample EvaluationImplementation::getCacheOutput() const
 {
   Bool cacheEnabled = isCacheEnabled();
   enableCache();
   PersistentCollection<CacheValueType> valuesColl( p_cache_->getValues() );
   if ( ! cacheEnabled )
     disableCache();
-  NumericalSample outSample(0, getOutputDimension());
+  Sample outSample(0, getOutputDimension());
   for ( UnsignedInteger i = 0; i < valuesColl.getSize(); ++ i )
   {
     outSample.add( valuesColl[i] );
@@ -283,13 +283,13 @@ HistoryStrategy EvaluationImplementation::getHistoryOutput() const
 }
 
 /* Input point / parameter history accessor */
-NumericalSample EvaluationImplementation::getInputPointHistory() const
+Sample EvaluationImplementation::getInputPointHistory() const
 {
   if (getParameterDimension() == 0) return inputStrategy_.getSample();
   throw NotYetImplementedException(HERE) << "in EvaluationImplementation::getInputPointHistory";
 }
 
-NumericalSample EvaluationImplementation::getInputParameterHistory() const
+Sample EvaluationImplementation::getInputParameterHistory() const
 {
   throw NotYetImplementedException(HERE) << "in EvaluationImplementation::getInputParameterHistory";
 }
@@ -304,14 +304,14 @@ Matrix EvaluationImplementation::parameterGradient(const NumericalPoint & inP) c
 
   const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("NumericalMathEvaluation-ParameterEpsilon");
 
-  NumericalSample inS(parameterDimension + 1, parameter);
+  Sample inS(parameterDimension + 1, parameter);
   for (UnsignedInteger i = 0; i < parameterDimension; ++ i)
   {
     inS[1 + i][i] += epsilon;
   }
   // operator()(x, theta) is non-const as it sets the parameter
   Pointer<EvaluationImplementation> p_evaluation(clone());
-  NumericalSample outS(p_evaluation->operator()(inP, inS));
+  Sample outS(p_evaluation->operator()(inP, inS));
 
   Matrix grad(parameterDimension, outputDimension);
   for (UnsignedInteger i = 0; i < parameterDimension; ++ i)
@@ -360,11 +360,11 @@ NumericalPoint EvaluationImplementation::operator() (const NumericalPoint & inP,
   return (*this)(inP);
 }
 
-NumericalSample EvaluationImplementation::operator() (const NumericalPoint & inP,
-    const NumericalSample & parameters)
+Sample EvaluationImplementation::operator() (const NumericalPoint & inP,
+    const Sample & parameters)
 {
   const UnsignedInteger size = parameters.getSize();
-  NumericalSample outS(size, getOutputDimension());
+  Sample outS(size, getOutputDimension());
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     setParameter(parameters[i]);
@@ -459,7 +459,7 @@ Graph EvaluationImplementation::draw(const UnsignedInteger inputMarginal,
   if (outputMarginal >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the given output marginal index=" << outputMarginal << " must be less than the output dimension=" << getOutputDimension();
   if ((scale != GraphImplementation::NONE) && (scale != GraphImplementation::LOGX)) throw InvalidArgumentException(HERE) << "Error: expected scale=" << GraphImplementation::NONE << " or scale=" << GraphImplementation::LOGX << ", got scale=" << scale;
   if ((scale == GraphImplementation::LOGX) && ((xMin <= 0.0) || (xMax <= 0.0))) throw InvalidArgumentException(HERE) << "Error: cannot use logarithmic scale on an interval containing nonpositive values.";
-  NumericalSample inputData(pointNumber, centralPoint);
+  Sample inputData(pointNumber, centralPoint);
   if (scale == GraphImplementation::NONE)
   {
     const NumericalScalar dx = (xMax - xMin) / (pointNumber - 1.0);
@@ -475,7 +475,7 @@ Graph EvaluationImplementation::draw(const UnsignedInteger inputMarginal,
       inputData[i][inputMarginal] = std::exp(a + i * dLogX);
   }
   // Evaluate the function over all its input in one call in order to benefit from potential parallelism
-  const NumericalSample outputData((*this)(inputData));
+  const Sample outputData((*this)(inputData));
   const Description inputDescription(getInputDescription());
   const Description outputDescription(getOutputDescription());
   const String xName(inputDescription[inputMarginal]);
@@ -515,7 +515,7 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
   const NumericalScalar nX = pointNumber[0] - 2;
   discretization[0] = nX;
   // Discretization of the first component
-  NumericalSample x(Box(NumericalPoint(1, nX)).generate());
+  Sample x(Box(NumericalPoint(1, nX)).generate());
   {
     NumericalScalar a = xMin[0];
     NumericalScalar b = xMax[0];
@@ -535,7 +535,7 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
   const NumericalScalar nY = pointNumber[1] - 2;
   discretization[1] = nY;
   // Discretization of the second component
-  NumericalSample y(Box(NumericalPoint(1, nY)).generate());
+  Sample y(Box(NumericalPoint(1, nY)).generate());
   {
     NumericalScalar a = xMin[1];
     NumericalScalar b = xMax[1];
@@ -553,7 +553,7 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
   if ((scale == GraphImplementation::LOGY) || (scale == GraphImplementation::LOGXY))
     for (UnsignedInteger i = 0; i < y.getDimension(); ++i) y[i][0] = std::exp(y[i][0]);
   // Discretization of the XY plane
-  NumericalSample inputSample((nX + 2) * (nY + 2), centralPoint);
+  Sample inputSample((nX + 2) * (nY + 2), centralPoint);
   // Prepare the input sample
   UnsignedInteger index = 0;
   for (UnsignedInteger j = 0; j < nY + 2; ++j)
@@ -568,7 +568,7 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
     } // i
   } // j
   // Compute the output sample, using possible parallelism
-  const NumericalSample z((*this)(inputSample).getMarginal(outputMarginal));
+  const Sample z((*this)(inputSample).getMarginal(outputMarginal));
   const String xName(getInputDescription()[firstInputMarginal]);
   const String yName(getInputDescription()[secondInputMarginal]);
   String title(OSS() << getOutputDescription()[outputMarginal] << " as a function of (" << xName << "," << yName << ")");

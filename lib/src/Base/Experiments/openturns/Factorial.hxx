@@ -55,7 +55,7 @@ public:
   virtual Factorial * clone() const;
 
   /** Experiment plane generation */
-  virtual NumericalSample generate() const;
+  virtual Sample generate() const;
 
   /** String converter */
   virtual String __repr__() const;

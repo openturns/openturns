@@ -45,10 +45,10 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build(const NumericalSample & sample) const;
+  Implementation build(const Sample & sample) const;
   Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
-  Laplace buildAsLaplace(const NumericalSample & sample) const;
+  Laplace buildAsLaplace(const Sample & sample) const;
   Laplace buildAsLaplace(const NumericalPoint & parameters) const;
   Laplace buildAsLaplace() const;
 

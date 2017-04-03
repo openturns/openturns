@@ -91,8 +91,8 @@ Matrix CanonicalTensorGradient::gradient(const NumericalPoint & inP) const
   const UnsignedInteger m = evaluation_.getRank();
   NumericalPoint prodI(m, 1.0);
 
-  NumericalSample sumRI(m, inputDimension);
-  NumericalSample sumdRI(m, inputDimension);
+  Sample sumRI(m, inputDimension);
+  Sample sumdRI(m, inputDimension);
 
   for (UnsignedInteger j = 0; j < inputDimension; ++ j)
   {

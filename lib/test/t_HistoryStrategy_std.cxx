@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   {
     UnsignedInteger size = 10;
     UnsignedInteger dimension = 2;
-    NumericalSample sample(size, dimension);
+    Sample sample(size, dimension);
     // Fill-in the sample
     for (UnsignedInteger i = 0; i < size; ++i)
     {

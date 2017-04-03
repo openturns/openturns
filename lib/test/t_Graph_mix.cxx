@@ -52,8 +52,8 @@ int main(int argc, char *argv[])
 
     // Test for sampling
     UnsignedInteger size = 200;
-    NumericalSample sample(distribution.getSample( size ));
-    NumericalSample tmp(2, NumericalPoint(2));
+    Sample sample(distribution.getSample( size ));
+    Sample tmp(2, NumericalPoint(2));
     tmp[0][0] = sample.getMin()[0];
     tmp[0][1] = meanPoint[1] - sigma[1] / sigma[0] * (meanPoint[0] - tmp[0][0]);
     tmp[1][0] = sample.getMax()[0];

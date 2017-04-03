@@ -50,7 +50,7 @@ class BoxCoxSampleOptimization
 private:
 
   /** only used to pass data to be used in computeLogLikeliHood */
-  mutable NumericalSample sample_;
+  mutable Sample sample_;
 
   /** only used to pass data to be used in computeLogLikeliHood */
   mutable NumericalScalar sumLog_;
@@ -60,7 +60,7 @@ private:
 
 public:
 
-  BoxCoxSampleOptimization(const NumericalSample & sample,
+  BoxCoxSampleOptimization(const Sample & sample,
                            const NumericalScalar sumLog)
     : sample_(sample)
     , sumLog_(sumLog)
@@ -69,7 +69,7 @@ public:
     // Nothing to do
   }
 
-  BoxCoxSampleOptimization(const NumericalSample & sample,
+  BoxCoxSampleOptimization(const Sample & sample,
                            const OptimizationAlgorithm & solver)
     : sample_(sample)
     , sumLog_(0.0)
@@ -85,7 +85,7 @@ public:
     // Define BoxCox trannsformation for sample
     BoxCoxEvaluation myBoxFunction(NumericalPoint(1, lambda[0]));
     // compute the mean of the transformed sample using the Box-Cox function
-    const NumericalSample outSample(myBoxFunction(sample_));
+    const Sample outSample(myBoxFunction(sample_));
     const NumericalScalar ratio = 1.0 - 1.0 / size;
     const NumericalScalar sigma2 = outSample.computeVariance()[0];
     NumericalScalar result = -0.5 * size * log(sigma2 * ratio);
@@ -137,8 +137,8 @@ class BoxCoxGLMOptimization
 private:
 
   /** only used to pass data to be used in computeLogLikeliHood */
-  mutable NumericalSample inputSample_;
-  mutable NumericalSample shiftedOutputSample_;
+  mutable Sample inputSample_;
+  mutable Sample shiftedOutputSample_;
   mutable CovarianceModel covarianceModel_;
   mutable BasisCollection basis_;
 
@@ -148,8 +148,8 @@ private:
 public:
 
 
-  BoxCoxGLMOptimization(const NumericalSample & inputSample,
-                        const NumericalSample & shiftedOutputSample,
+  BoxCoxGLMOptimization(const Sample & inputSample,
+                        const Sample & shiftedOutputSample,
                         const CovarianceModel & covarianceModel,
                         const BasisCollection & basis,
                         const OptimizationAlgorithm & solver)
@@ -168,7 +168,7 @@ public:
     // Define BoxCox trannsformation for output sample
     BoxCoxEvaluation myBoxFunction(lambda);
     // compute the mean of the transformed sample using the Box-Cox function
-    const NumericalSample transformedOutputSample(myBoxFunction(shiftedOutputSample_));
+    const Sample transformedOutputSample(myBoxFunction(shiftedOutputSample_));
     // Use of GLM to estimate the best generalized linear model
     GeneralLinearModelAlgorithm algo(inputSample_, transformedOutputSample, covarianceModel_, basis_);
     algo.run();
@@ -263,19 +263,19 @@ BoxCoxTransform BoxCoxFactory::build(const Field & timeSeries,
   return build(timeSeries.getSample(), shift, graph);
 }
 
-BoxCoxTransform BoxCoxFactory::build(const NumericalSample & sample) const
+BoxCoxTransform BoxCoxFactory::build(const Sample & sample) const
 {
   return build(sample, NumericalPoint(sample.getDimension()));
 }
 
-BoxCoxTransform BoxCoxFactory::build(const NumericalSample & sample,
+BoxCoxTransform BoxCoxFactory::build(const Sample & sample,
                                      const NumericalPoint & shift) const
 {
   Graph tmp;
   return build(sample, shift, tmp);
 }
 
-BoxCoxTransform BoxCoxFactory::build(const NumericalSample & sample,
+BoxCoxTransform BoxCoxFactory::build(const Sample & sample,
                                      const NumericalPoint & shift,
                                      Graph & graph) const
 {
@@ -295,7 +295,7 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & sample,
   NumericalPoint sumLog(dimension);
 
   // Keep the shifted marginal samples
-  Collection< NumericalSample > marginalSamples(dimension);
+  Collection< Sample > marginalSamples(dimension);
   for (UnsignedInteger d = 0; d < dimension; ++d)
   {
     // Extract the marginal sample and pply the shift
@@ -315,11 +315,11 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & sample,
   const NumericalScalar xMin = std::min(0.0, 0.002 * round(1000.0 * lambdaMin));
   const NumericalScalar xMax = std::max(0.0, 0.002 * round(1000.0 * lambdaMax));
   const UnsignedInteger npts = ResourceMap::GetAsUnsignedInteger("BoxCoxFactory-DefaultPointNumber");
-  NumericalSample lambdaValues(npts, 1);
+  Sample lambdaValues(npts, 1);
   for (UnsignedInteger i = 0; i < npts; ++i) lambdaValues[i][0] = xMin + i * (xMax - xMin) / (npts - 1.0);
   for (UnsignedInteger d = 0; d < dimension; ++d)
   {
-    NumericalSample logLikelihoodValues(npts, 1);
+    Sample logLikelihoodValues(npts, 1);
     BoxCoxSampleOptimization boxCoxOptimization(marginalSamples[d], sumLog[d]);
     for (UnsignedInteger i = 0; i < npts; ++i) logLikelihoodValues[i][0] = boxCoxOptimization.computeLogLikelihood(lambdaValues[i])[0];
     Curve curve(lambdaValues, logLikelihoodValues);
@@ -328,7 +328,7 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & sample,
     NumericalPoint optimum(2);
     optimum[0] = lambda[d];
     optimum[1] = boxCoxOptimization.computeLogLikelihood(optimum)[0];
-    Cloud cloud(NumericalSample(1, optimum));
+    Cloud cloud(Sample(1, optimum));
     cloud.setColor(curve.getColor());
     cloud.setPointStyle("circle");
     cloud.setLegend(String(OSS() << "lambda=" << lambda[d]));
@@ -341,8 +341,8 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & sample,
   return BoxCoxTransform(lambda, shift);
 }
 
-void BoxCoxFactory::checkGLMData(const NumericalSample & inputSample,
-                                 const NumericalSample & outputSample,
+void BoxCoxFactory::checkGLMData(const Sample & inputSample,
+                                 const Sample & outputSample,
                                  const CovarianceModel & covarianceModel,
                                  const BasisCollection & basis)
 {
@@ -370,8 +370,8 @@ void BoxCoxFactory::checkGLMData(const NumericalSample & inputSample,
 
 
 /** Build the factory from data by estimating the best generalized linear model */
-BoxCoxTransform BoxCoxFactory::build(const NumericalSample & inputSample,
-                                     const NumericalSample & outputSample,
+BoxCoxTransform BoxCoxFactory::build(const Sample & inputSample,
+                                     const Sample & outputSample,
                                      const CovarianceModel & covarianceModel,
                                      const Basis & basis,
                                      const NumericalPoint & shift,
@@ -381,8 +381,8 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & inputSample,
   return build(inputSample, outputSample, covarianceModel, basisColl, shift, result);
 }
 
-BoxCoxTransform BoxCoxFactory::build(const NumericalSample & inputSample,
-                                     const NumericalSample & outputSample,
+BoxCoxTransform BoxCoxFactory::build(const Sample & inputSample,
+                                     const Sample & outputSample,
                                      const CovarianceModel & covarianceModel,
                                      const NumericalPoint & shift,
                                      GeneralLinearModelResult & result)
@@ -391,8 +391,8 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & inputSample,
   return build(inputSample, outputSample, covarianceModel, basis, shift, result);
 }
 
-BoxCoxTransform BoxCoxFactory::build(const NumericalSample & inputSample,
-                                     const NumericalSample & outputSample,
+BoxCoxTransform BoxCoxFactory::build(const Sample & inputSample,
+                                     const Sample & outputSample,
                                      const CovarianceModel & covarianceModel,
                                      const BasisCollection & basis,
                                      const NumericalPoint & shift,
@@ -406,7 +406,7 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & inputSample,
     throw InvalidArgumentException(HERE) << "Error: the shift has a dimension=" << shift.getDimension() << " different from the output sample dimension=" << dimension;
 
   // Keep the shifted marginal samples
-  NumericalSample shiftedSample(outputSample);
+  Sample shiftedSample(outputSample);
   shiftedSample += shift;
 
   // optimization process
@@ -415,7 +415,7 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & inputSample,
   // Define BoxCox trannsformation for output sample
   BoxCoxEvaluation myBoxFunction(lambda, shift);
   // compute the transformed output sample using the Box-Cox function
-  const NumericalSample transformedOutputSample = myBoxFunction(outputSample);
+  const Sample transformedOutputSample = myBoxFunction(outputSample);
   // Build the GeneralLinearModelResult
   // Use of GLM to estimate the best generalized linear model
   GeneralLinearModelAlgorithm algo(inputSample, transformedOutputSample, covarianceModel, basis);

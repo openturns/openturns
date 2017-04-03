@@ -56,16 +56,16 @@ public:
                            const ProjectionStrategy & projectionStrategy);
 
   /** Constructor */
-  FunctionalChaosAlgorithm(const NumericalSample & inputSample,
-                           const NumericalSample & outputSample,
+  FunctionalChaosAlgorithm(const Sample & inputSample,
+                           const Sample & outputSample,
                            const Distribution & distribution,
                            const AdaptiveStrategy & adaptiveStrategy,
                            const ProjectionStrategy & projectionStrategy);
 
   /** Constructor */
-  FunctionalChaosAlgorithm(const NumericalSample & inputSample,
+  FunctionalChaosAlgorithm(const Sample & inputSample,
                            const NumericalPoint & weights,
-                           const NumericalSample & outputSample,
+                           const Sample & outputSample,
                            const Distribution & distribution,
                            const AdaptiveStrategy & adaptiveStrategy,
                            const ProjectionStrategy & projectionStrategy);
@@ -76,19 +76,19 @@ public:
                            const AdaptiveStrategy & adaptiveStrategy);
 
   /** Constructor */
-  FunctionalChaosAlgorithm(const NumericalSample & inputSample,
-                           const NumericalSample & outputSample,
+  FunctionalChaosAlgorithm(const Sample & inputSample,
+                           const Sample & outputSample,
                            const Distribution & distribution,
                            const AdaptiveStrategy & adaptiveStrategy);
 
   /** Constructor */
-  FunctionalChaosAlgorithm(const NumericalSample & inputSample,
-                           const NumericalSample & outputSample);
+  FunctionalChaosAlgorithm(const Sample & inputSample,
+                           const Sample & outputSample);
 
   /** Constructor */
-  FunctionalChaosAlgorithm(const NumericalSample & inputSample,
+  FunctionalChaosAlgorithm(const Sample & inputSample,
                            const NumericalPoint & weights,
-                           const NumericalSample & outputSample,
+                           const Sample & outputSample,
                            const Distribution & distribution,
                            const AdaptiveStrategy & adaptiveStrategy);
 
@@ -115,8 +115,8 @@ public:
   FunctionalChaosResult getResult() const;
 
   /** Sample accessors */
-  NumericalSample getInputSample() const;
-  NumericalSample getOutputSample() const;
+  Sample getInputSample() const;
+  Sample getOutputSample() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

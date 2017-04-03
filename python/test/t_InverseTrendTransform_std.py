@@ -26,7 +26,7 @@ try:
           myInverseTrendFunc.getOutputDimension())
     # Create a TimeSeries
     tg = RegularGrid(0.0, 0.1, 11)
-    data = NumericalSample(tg.getN(), formula.getSize())
+    data = Sample(tg.getN(), formula.getSize())
     for i in range(data.getSize()):
         t = tg.getStart() + i * tg.getStep()
         data[i, 0] = i + 1 + sin(t)

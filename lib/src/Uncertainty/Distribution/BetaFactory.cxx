@@ -44,7 +44,7 @@ BetaFactory * BetaFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-BetaFactory::Implementation BetaFactory::build(const NumericalSample & sample) const
+BetaFactory::Implementation BetaFactory::build(const Sample & sample) const
 {
   return buildAsBeta(sample).clone();
 }
@@ -59,7 +59,7 @@ BetaFactory::Implementation BetaFactory::build() const
   return buildAsBeta().clone();
 }
 
-Beta BetaFactory::buildAsBeta(const NumericalSample & sample) const
+Beta BetaFactory::buildAsBeta(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Beta distribution from an empty sample";

@@ -45,10 +45,10 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build(const NumericalSample & sample) const;
+  Implementation build(const Sample & sample) const;
   Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
-  Dirichlet buildAsDirichlet(const NumericalSample & sample) const;
+  Dirichlet buildAsDirichlet(const Sample & sample) const;
   Dirichlet buildAsDirichlet(const NumericalPoint & parameters) const;
   Dirichlet buildAsDirichlet() const;
 

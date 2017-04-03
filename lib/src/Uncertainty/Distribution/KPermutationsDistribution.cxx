@@ -200,7 +200,7 @@ KPermutationsDistribution::Implementation KPermutationsDistribution::getMarginal
 } // getMarginal(Indices)
 
 /* Get the support of a discrete distribution that intersect a given interval */
-NumericalSample KPermutationsDistribution::getSupport(const Interval & interval) const
+Sample KPermutationsDistribution::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
   return KPermutations(k_, n_).generate();

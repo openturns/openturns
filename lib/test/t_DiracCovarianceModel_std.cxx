@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
     // Evaluation on some points
     Indices levels(spatialDimension, 1);
     Box box(levels);
-    const NumericalSample vertices = box.generate();
+    const Sample vertices = box.generate();
     // Two first points of vertices
     // First is 0, second one different from 0
     const NumericalPoint tau1 = vertices[0];

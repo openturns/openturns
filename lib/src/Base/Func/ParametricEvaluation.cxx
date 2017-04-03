@@ -164,20 +164,20 @@ NumericalPoint ParametricEvaluation::operator() (const NumericalPoint & point) c
 }
 
 /* Operator () */
-NumericalSample ParametricEvaluation::operator() (const NumericalSample & inSample) const
+Sample ParametricEvaluation::operator() (const Sample & inSample) const
 {
   const UnsignedInteger size = inSample.getSize();
   const UnsignedInteger inputDimension = function_.getInputDimension();
   const UnsignedInteger sampleDimension = inSample.getDimension();
   const UnsignedInteger parametersDimension = getParameterDimension();
   if (sampleDimension + parametersDimension != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a sample of dimension=" << inputDimension - parametersDimension << ", got dimension=" << sampleDimension;
-  NumericalSample input(size, inputDimension);
+  Sample input(size, inputDimension);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     for (UnsignedInteger j = 0; j < parametersDimension; ++j) input[i][parametersPositions_[j]] = parameter_[j];
     for (UnsignedInteger j = 0; j < sampleDimension; ++j) input[i][inputPositions_[j]] = inSample[i][j];
   }
-  const NumericalSample output(function_(input));
+  const Sample output(function_(input));
   if (isHistoryEnabled_)
   {
     inputStrategy_.store(input);
@@ -187,8 +187,8 @@ NumericalSample ParametricEvaluation::operator() (const NumericalSample & inSamp
   return output;
 }
 
-NumericalSample ParametricEvaluation::operator() (const NumericalPoint & point,
-    const NumericalSample & parameters)
+Sample ParametricEvaluation::operator() (const NumericalPoint & point,
+    const Sample & parameters)
 {
   const UnsignedInteger size = parameters.getSize();
   const UnsignedInteger inputDimension = function_.getInputDimension();
@@ -196,13 +196,13 @@ NumericalSample ParametricEvaluation::operator() (const NumericalPoint & point,
   const UnsignedInteger parametersDimension = getParameterDimension();
   if (point.getDimension() != pointDimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << pointDimension << ", got dimension" << point.getDimension();
   if (parameters.getDimension() != parametersDimension) throw InvalidArgumentException(HERE) << "Error: expected parameters of dimension=" << parametersDimension << ", got dimension=" << parameters.getDimension();
-  NumericalSample input(size, inputDimension);
+  Sample input(size, inputDimension);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     for (UnsignedInteger j = 0; j < parametersDimension; ++j) input[i][parametersPositions_[j]] = parameters[i][j];
     for (UnsignedInteger j = 0; j < pointDimension; ++j) input[i][inputPositions_[j]] = point[j];
   }
-  const NumericalSample output(function_(input));
+  const Sample output(function_(input));
   if (isHistoryEnabled_)
   {
     inputStrategy_.store(input);
@@ -255,16 +255,16 @@ UnsignedInteger ParametricEvaluation::getOutputDimension() const
 }
 
 /* Input point / parameter history accessor */
-NumericalSample ParametricEvaluation::getInputPointHistory() const
+Sample ParametricEvaluation::getInputPointHistory() const
 {
-  NumericalSample sample(inputStrategy_.getSample());
-  return sample.getSize() > 0 ? sample.getMarginal(inputPositions_) : NumericalSample(0, getInputDimension());
+  Sample sample(inputStrategy_.getSample());
+  return sample.getSize() > 0 ? sample.getMarginal(inputPositions_) : Sample(0, getInputDimension());
 }
 
-NumericalSample ParametricEvaluation::getInputParameterHistory() const
+Sample ParametricEvaluation::getInputParameterHistory() const
 {
-  NumericalSample sample(inputStrategy_.getSample());
-  return sample.getSize() > 0 ? sample.getMarginal(parametersPositions_) : NumericalSample(0, getParameterDimension());
+  Sample sample(inputStrategy_.getSample());
+  return sample.getSize() > 0 ? sample.getMarginal(parametersPositions_) : Sample(0, getParameterDimension());
 }
 
 /* String converter */

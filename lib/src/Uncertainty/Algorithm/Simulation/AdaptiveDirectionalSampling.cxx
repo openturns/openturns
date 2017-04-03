@@ -101,8 +101,8 @@ void AdaptiveDirectionalSampling::run()
     NumericalScalar w0SigmaSum = 0.0;
     NumericalPoint sigma(m, 0.0);
 
-    NumericalSample T0(d, m);
-    NumericalSample T1(d, m);
+    Sample T0(d, m);
+    Sample T1(d, m);
 
     // for each subdivision
     for (UnsignedInteger i = 0; i < m; ++ i)
@@ -277,9 +277,9 @@ OT::NumericalPoint AdaptiveDirectionalSampling::getQuadrantOrientation() const
 }
 
 
-NumericalSample AdaptiveDirectionalSampling::computeBlockSample()
+Sample AdaptiveDirectionalSampling::computeBlockSample()
 {
-  return NumericalSample();
+  return Sample();
 }
 
 /* String converter */

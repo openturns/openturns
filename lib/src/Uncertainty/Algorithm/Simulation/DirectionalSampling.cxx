@@ -140,7 +140,7 @@ NumericalScalar DirectionalSampling::computeMeanContribution(const NumericalScal
 }
 
 /* Compute the contribution of a set of directions direction to the probability */
-NumericalScalar DirectionalSampling::computeTotalContribution(const NumericalSample & directionSample)
+NumericalScalar DirectionalSampling::computeTotalContribution(const Sample & directionSample)
 {
   const UnsignedInteger sampleSize = directionSample.getSize();
   const UnsignedInteger dimension = directionSample.getDimension();
@@ -178,15 +178,15 @@ NumericalScalar DirectionalSampling::computeTotalContribution(const NumericalSam
 }
 
 /* Compute the block sample and the points that realized the event */
-NumericalSample DirectionalSampling::computeBlockSample()
+Sample DirectionalSampling::computeBlockSample()
 {
   const UnsignedInteger size = getBlockSize();
-  NumericalSample blockSample(size, 1);
+  Sample blockSample(size, 1);
   // For each entry of the block sample
-  // realizedEventSample = NumericalSample(blockSize_, event_.getImplementation()->getAntecedent()->getDistribution().getDimension());
+  // realizedEventSample = Sample(blockSize_, event_.getImplementation()->getAntecedent()->getDistribution().getDimension());
   for (UnsignedInteger index = 0; index < size; ++index)
   {
-    const NumericalSample directionSample(samplingStrategy_.generate());
+    const Sample directionSample(samplingStrategy_.generate());
     // Compute the contribution of the sub-sample computed according to the sampling strategy
     const NumericalScalar contribution = computeTotalContribution(directionSample);
     blockSample[index][0] = contribution;

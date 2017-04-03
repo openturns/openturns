@@ -14,3 +14,4 @@ Rename AnalyticalNumericalMath*Implementation to SymbolicEvaluation|Gradient|Hes
 Remove deprecated KarhunenLoeveP1Factory, KarhunenLoeveQuadratureFactory
 Remove deprecated GramSchmidtAlgorithm, ChebychevAlgorithm
 Remove deprecated NumericalMathFunction in 1.11
+Remove deprecated NumericalSample in 1.11

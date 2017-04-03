@@ -498,7 +498,7 @@ OT_Drawable_setDrawLabels_doc
 
 Returns
 -------
-firstCoord : :class:`~openturns.NumericalSample`
+firstCoord : :class:`~openturns.Sample`
     Values of the first coordinate."
 %enddef
 %feature("docstring") OT::DrawableImplementation::getX
@@ -524,7 +524,7 @@ OT_Drawable_setX_doc
 
 Returns
 -------
-secondCoord : :class:`~openturns.NumericalSample`
+secondCoord : :class:`~openturns.Sample`
     Values of the second coordinate."
 %enddef
 %feature("docstring") OT::DrawableImplementation::getY
@@ -550,7 +550,7 @@ OT_Drawable_setY_doc
 
 Returns
 -------
-data : :class:`~openturns.NumericalSample`
+data : :class:`~openturns.Sample`
     Data from which the Drawable is built."
 %enddef
 %feature("docstring") OT::DrawableImplementation::getData

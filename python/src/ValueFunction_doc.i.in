@@ -58,7 +58,7 @@ mesh of the field on which :math:`g` will be applied:
 >>> myValueFunction = ot.ValueFunction(g, n)
 >>> # Create a TimeSeries
 >>> tg = ot.RegularGrid(0.0, 0.2, 6)
->>> data = ot.NumericalSample(tg.getN(), g.getInputDimension())
+>>> data = ot.Sample(tg.getN(), g.getInputDimension())
 >>> for i in range(data.getSize()):
 ...     for j in range(data.getDimension()):
 ...         data[i, j] = i * data.getDimension() + j

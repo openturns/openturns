@@ -145,12 +145,12 @@ NumericalPoint LinearCombinationEvaluation::operator () (const NumericalPoint & 
   return result;
 }
 
-NumericalSample LinearCombinationEvaluation::operator () (const NumericalSample & inS) const
+Sample LinearCombinationEvaluation::operator () (const Sample & inS) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inS.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inS.getDimension();
   const UnsignedInteger sampleSize = inS.getSize();
-  NumericalSample result(sampleSize, getOutputDimension());
+  Sample result(sampleSize, getOutputDimension());
   result.setDescription(getOutputDescription());
   if (sampleSize == 0) return result;
 

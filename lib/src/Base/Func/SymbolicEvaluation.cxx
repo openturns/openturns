@@ -103,10 +103,10 @@ NumericalPoint SymbolicEvaluation::operator() (const NumericalPoint & inP) const
 }
 
 /* Operator () */
-NumericalSample SymbolicEvaluation::operator() (const NumericalSample & inS) const
+Sample SymbolicEvaluation::operator() (const Sample & inS) const
 {
   UnsignedInteger size = inS.getSize();
-  NumericalSample outSample(size, getOutputDimension());
+  Sample outSample(size, getOutputDimension());
   for (UnsignedInteger i = 0; i < size; ++ i) outSample[i] = operator()(inS[i]);
   outSample.setDescription(getOutputDescription());
   return outSample;

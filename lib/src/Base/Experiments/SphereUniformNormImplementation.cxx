@@ -23,7 +23,7 @@
 #include "openturns/StorageManager.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -40,10 +40,10 @@ public:
     stepX_ = step[0];
   }
 
-  NumericalSample getPoints(const UnsignedInteger distance) const
+  Sample getPoints(const UnsignedInteger distance) const
   {
     const UnsignedInteger size = getSizeOfLevel(distance);
-    NumericalSample points(size, 1);
+    Sample points(size, 1);
     if (distance == 0)
     {
       points[0] = NumericalPoint(1, 0.0);
@@ -96,14 +96,14 @@ public:
     stepY_ = step[1];
   }
 
-  NumericalSample getPoints(const UnsignedInteger distance) const
+  Sample getPoints(const UnsignedInteger distance) const
   {
-    // Basic method that uses NumericalSample
+    // Basic method that uses Sample
     // TODO use of iterators ?
-    if (distance == 0) return NumericalSample(1, 2);
+    if (distance == 0) return Sample(1, 2);
 
     const UnsignedInteger size = getSizeOfLevel(distance);
-    NumericalSample points(size, 2);
+    Sample points(size, 2);
     UnsignedInteger iterator = 0;
     const NumericalScalar cx = distance * stepX_;
     const NumericalScalar cy = distance * stepY_;
@@ -200,14 +200,14 @@ public:
     stepZ_ = step[2];
   }
 
-  NumericalSample getPoints(const UnsignedInteger distance) const
+  Sample getPoints(const UnsignedInteger distance) const
   {
-    // Basic method that uses NumericalSample
+    // Basic method that uses Sample
     // TODO use of iterators ?
-    if (distance == 0) return NumericalSample(1, 3);
+    if (distance == 0) return Sample(1, 3);
 
     const UnsignedInteger size = getSizeOfLevel(distance);
-    NumericalSample points(size, 3);
+    Sample points(size, 3);
     UnsignedInteger iterator = 0;
     const NumericalScalar cx = distance * stepX_;
     const NumericalScalar cy = distance * stepY_;
@@ -368,7 +368,7 @@ UnsignedInteger SphereUniformNormImplementation::getOffsetLevel(const UnsignedIn
   throw NotYetImplementedException(HERE) << "In SphereUniformNormImplementation::getOffsetLevel(const UnsignedInteger distance) const";
 }
 
-NumericalSample SphereUniformNormImplementation::getPoints(const UnsignedInteger distance) const
+Sample SphereUniformNormImplementation::getPoints(const UnsignedInteger distance) const
 {
   throw NotYetImplementedException(HERE) << "In SphereUniformNormImplementation::getPoints(const UnsignedInteger distance) const";
 }

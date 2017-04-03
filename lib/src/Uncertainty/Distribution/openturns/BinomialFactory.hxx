@@ -45,10 +45,10 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build(const NumericalSample & sample) const;
+  Implementation build(const Sample & sample) const;
   Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
-  Binomial buildAsBinomial(const NumericalSample & sample) const;
+  Binomial buildAsBinomial(const Sample & sample) const;
   Binomial buildAsBinomial(const NumericalPoint & parameters) const;
   Binomial buildAsBinomial() const;
 
@@ -56,7 +56,7 @@ public:
   // Compute the log-likelihood of a sample
   static NumericalScalar ComputeLogLikelihood(const UnsignedInteger n,
       const NumericalScalar p,
-      const NumericalSample & sample);
+      const Sample & sample);
 
 }; /* class BinomialFactory */
 

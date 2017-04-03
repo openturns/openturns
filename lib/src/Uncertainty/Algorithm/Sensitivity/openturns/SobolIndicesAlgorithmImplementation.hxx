@@ -23,7 +23,7 @@
 
 #include "openturns/Distribution.hxx"
 #include "openturns/Indices.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/SymmetricTensor.hxx"
 #include "openturns/WeightedExperiment.hxx"
@@ -48,8 +48,8 @@ public:
   SobolIndicesAlgorithmImplementation();
 
   /** Constructor with parameters */
-  SobolIndicesAlgorithmImplementation(const NumericalSample & inputDesign,
-                                      const NumericalSample & outputDesign,
+  SobolIndicesAlgorithmImplementation(const Sample & inputDesign,
+                                      const Sample & outputDesign,
                                       const UnsignedInteger size);
 
   /** Constructor with distribution / model parameters */
@@ -106,11 +106,11 @@ public:
   /** Method load() reloads the object from the StorageManager */
   virtual void load(Advocate & adv);
 
-  static NumericalSample Generate(const Distribution & distribution,
+  static Sample Generate(const Distribution & distribution,
                                   const UnsignedInteger size,
                                   const Bool computeSecondOrder = true);
 
-  static NumericalSample Generate(const WeightedExperiment & experiment,
+  static Sample Generate(const WeightedExperiment & experiment,
                                   const Bool computeSecondOrder = true);
 
   static Graph DrawImportanceFactors(const NumericalPointWithDescription & importanceFactors,
@@ -130,37 +130,37 @@ protected:
 
 
   /** Internal method that compute Vi/VTi using a collection of samples */
-  virtual NumericalSample computeIndices(const NumericalSample & design,
-                                         NumericalSample & VTi) const;
+  virtual Sample computeIndices(const Sample & design,
+                                         Sample & VTi) const;
 
   /** Internal method that returns a boostrap NS collection of size inputDimension + 2 */
-  NumericalSample getBootstrapDesign(const Indices & indices) const;
+  Sample getBootstrapDesign(const Indices & indices) const;
 
   /** Function that computes merged indices using Vi/VTi + variance  */
-  NumericalPoint computeAggregatedIndices(const NumericalSample & Vi,
-                                          const NumericalSample & VTi,
+  NumericalPoint computeAggregatedIndices(const Sample & Vi,
+                                          const Sample & VTi,
                                           const NumericalPoint & variance,
                                           NumericalPoint & mergedTotal) const;
 
   /** void method that computes confidence interval */
   void computeIndicesInterval() const;
 
-  /** Multiplication and sum of two NumericalSamples */
-  NumericalPoint computeSumDotSamples(const NumericalSample & x,
-                                      const NumericalSample & y) const;
+  /** Multiplication and sum of two Samples */
+  NumericalPoint computeSumDotSamples(const Sample & x,
+                                      const Sample & y) const;
 
-  /** Multiplication and sum of two (sub)samples that are in the same NumericalSamples */
-  NumericalPoint computeSumDotSamples(const NumericalSample & sample,
+  /** Multiplication and sum of two (sub)samples that are in the same Samples */
+  NumericalPoint computeSumDotSamples(const Sample & sample,
                                       const UnsignedInteger size,
                                       const UnsignedInteger indexX,
                                       const UnsignedInteger indexY) const;
 
 
   /** Designs : input & output designs */
-  NumericalSample inputDesign_;
+  Sample inputDesign_;
 
   /** Designs : input & output designs */
-  NumericalSample outputDesign_;
+  Sample outputDesign_;
 
   /** Simulation size */
   UnsignedInteger size_;
@@ -175,10 +175,10 @@ protected:
   NumericalPoint referenceVariance_;
 
   /** Variance conditionnaly to the i-th variable => Si = Vi/Var*/
-  mutable NumericalSample varianceI_;
+  mutable Sample varianceI_;
 
   /** Variance totale of the i-th variable => STi = VTi/Var */
-  mutable NumericalSample varianceTI_;
+  mutable Sample varianceTI_;
 
   /** Aggregated first order indices */
   mutable NumericalPoint mergedFirstOrderIndices_;

@@ -44,7 +44,7 @@ SkellamFactory * SkellamFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-SkellamFactory::Implementation SkellamFactory::build(const NumericalSample & sample) const
+SkellamFactory::Implementation SkellamFactory::build(const Sample & sample) const
 {
   return buildAsSkellam(sample).clone();
 }
@@ -59,12 +59,12 @@ SkellamFactory::Implementation SkellamFactory::build() const
   return buildAsSkellam().clone();
 }
 
-DistributionFactoryResult SkellamFactory::buildEstimator(const NumericalSample & sample) const
+DistributionFactoryResult SkellamFactory::buildEstimator(const Sample & sample) const
 {
   return buildBootStrapEstimator(sample, true);
 }
 
-Skellam SkellamFactory::buildAsSkellam(const NumericalSample & sample) const
+Skellam SkellamFactory::buildAsSkellam(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Skellam distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Skellam distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();

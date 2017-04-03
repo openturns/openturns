@@ -731,7 +731,7 @@ void ARMALikelihoodFactory::defaultInitialize() const
 {
   // Launch d times the WhittleFactory to get initial conditions for the optimization problem
   WhittleFactory factory(currentP_, currentQ_);
-  const NumericalSample values(w_.getSample());
+  const Sample values(w_.getSample());
   const RegularGrid timeGrid(w_.getTimeGrid());
   for (UnsignedInteger d = 0; d < dimension_; ++d)
   {

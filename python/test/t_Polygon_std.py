@@ -11,8 +11,8 @@ try:
     size = 50
     cursor = NumericalPoint(2)
 
-    data1 = NumericalSample(size, 2)  # polygon y = 2x for x in [-25]
-    data2 = NumericalSample(size, 2)  # polygon y = x*x for x in [-11]
+    data1 = Sample(size, 2)  # polygon y = 2x for x in [-25]
+    data2 = Sample(size, 2)  # polygon y = x*x for x in [-11]
 
     for i in range(size):
         tmp = 7. * i / size + 2

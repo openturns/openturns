@@ -52,7 +52,7 @@ public:
 private:
 
   /** Compute the block sample */
-  NumericalSample computeBlockSample();
+  Sample computeBlockSample();
 
 } ; /* class PostAnalyticalImportanceSampling */
 

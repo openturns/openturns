@@ -67,9 +67,9 @@ Examples
 ...      0.0803625289211318, 1.01898069723583, 0.661725805623086,
 ...      -1.57581204592385, -2.95308465670895, -8.8878164296758,
 ...      -13.0812290405651]
->>> y_obs = ot.NumericalSample(y, obsDim)
+>>> y_obs = ot.Sample(y, obsDim)
 >>> # Parameters
->>> p = ot.NumericalSample(obsSize, chainDim)
+>>> p = ot.Sample(obsSize, chainDim)
 >>> for i in range(obsSize):
 ...     for j in range(chainDim):
 ...         p[i, j] = (-2 + 5.0 * i / 9.0) ** j

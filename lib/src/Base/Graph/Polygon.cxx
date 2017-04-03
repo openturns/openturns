@@ -30,7 +30,7 @@ static const Factory<Polygon> Factory_Polygon;
 
 /* Default constructor */
 Polygon::Polygon(const String & legend)
-  : DrawableImplementation(NumericalSample(0, 2), legend)
+  : DrawableImplementation(Sample(0, 2), legend)
   , edgeColor_("")
 {
   // Nothing to do
@@ -38,9 +38,9 @@ Polygon::Polygon(const String & legend)
 }
 
 /* Default constructor */
-Polygon::Polygon(const NumericalSample & data,
+Polygon::Polygon(const Sample & data,
                  const String & legend)
-  : DrawableImplementation(NumericalSample(0, 2), legend)
+  : DrawableImplementation(Sample(0, 2), legend)
   , edgeColor_("")
 {
   // Check data validity
@@ -49,16 +49,16 @@ Polygon::Polygon(const NumericalSample & data,
 }
 
 /* Contructor from 2 data sets */
-Polygon::Polygon(const NumericalSample & dataX,
-                 const NumericalSample & dataY,
+Polygon::Polygon(const Sample & dataX,
+                 const Sample & dataY,
                  const String & legend)
-  : DrawableImplementation(NumericalSample(0, 2), legend)
+  : DrawableImplementation(Sample(0, 2), legend)
   , edgeColor_("")
 {
   const UnsignedInteger size = dataX.getSize();
   if (dataY.getSize() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a Polygon based on two numerical samples with different size.";
   if ((dataX.getDimension() != 1) || (dataY.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: cannot build a Polygon based on two numerical samples of dimension greater than 1.";
-  NumericalSample dataFull(size, 2);
+  Sample dataFull(size, 2);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     dataFull[i][0] = dataX[i][0];
@@ -73,12 +73,12 @@ Polygon::Polygon(const NumericalSample & dataX,
 Polygon::Polygon(const NumericalPoint & dataX,
                  const NumericalPoint & dataY,
                  const String & legend)
-  : DrawableImplementation(NumericalSample(0, 2), legend)
+  : DrawableImplementation(Sample(0, 2), legend)
   , edgeColor_("")
 {
   const UnsignedInteger size = dataX.getDimension();
   if (dataY.getDimension() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a Polygon based on two numerical points with different size.";
-  NumericalSample dataFull(size, 2);
+  Sample dataFull(size, 2);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     dataFull[i][0] = dataX[i];
@@ -90,19 +90,19 @@ Polygon::Polygon(const NumericalPoint & dataX,
 }
 
 /* Constructor with parameters */
-Polygon::Polygon(const NumericalSample & data,
+Polygon::Polygon(const Sample & data,
                  const String & color,
                  const String & edgeColor,
                  const String & legend)
-  : DrawableImplementation(NumericalSample(0, 2), legend)
+  : DrawableImplementation(Sample(0, 2), legend)
   , edgeColor_("")
 {
-  NumericalSample dataFull;
+  Sample dataFull;
   // If data is unidimensional, assume that it means Y values with indices as X values
   if (data.getDimension() == 1)
   {
     const UnsignedInteger size = data.getSize();
-    dataFull = NumericalSample(size, 2);
+    dataFull = Sample(size, 2);
     for (UnsignedInteger i = 0; i < size; ++i)
     {
       dataFull[i][0] = i;
@@ -158,7 +158,7 @@ Polygon * Polygon::clone() const
   return new Polygon(*this);
 }
 /* Check validity of data */
-void Polygon::checkData(const NumericalSample & data) const
+void Polygon::checkData(const Sample & data) const
 {
   if (data.getDimension() != 2)
   {

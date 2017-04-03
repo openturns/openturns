@@ -43,7 +43,7 @@ PosteriorDistribution::PosteriorDistribution()
 {
   setName("PosteriorDistribution");
   // First, set the observations
-  observations_ = NumericalSample(1, conditionalDistribution_.getConditionedDistribution().getMean());
+  observations_ = Sample(1, conditionalDistribution_.getConditionedDistribution().getMean());
   // Then, set the conditional distribution. It also set the dimension.
   setConditionalDistribution(conditionalDistribution_);
   computeRange();
@@ -51,7 +51,7 @@ PosteriorDistribution::PosteriorDistribution()
 
 /* Parameters constructor */
 PosteriorDistribution::PosteriorDistribution(const ConditionalDistribution & conditionalDistribution,
-    const NumericalSample & observations)
+    const Sample & observations)
   : ContinuousDistribution(),
     conditionalDistribution_(),
     observations_(observations)
@@ -177,7 +177,7 @@ ConditionalDistribution PosteriorDistribution::getConditionalDistribution() cons
 
 
 /* Observations accessor */
-void PosteriorDistribution::setObservations(const NumericalSample & observations)
+void PosteriorDistribution::setObservations(const Sample & observations)
 {
   if (observations.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot use a posterior distribution with no observation.";
   if (observations.getDimension() != conditionalDistribution_.getDimension()) throw InvalidArgumentException(HERE) << "Error: the conditioned distribution defining the conditional distribution must have the same dimension as the observations.";
@@ -186,7 +186,7 @@ void PosteriorDistribution::setObservations(const NumericalSample & observations
   isAlreadyComputedCovariance_ = false;
 }
 
-NumericalSample PosteriorDistribution::getObservations() const
+Sample PosteriorDistribution::getObservations() const
 {
   return observations_;
 }

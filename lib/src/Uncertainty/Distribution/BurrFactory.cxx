@@ -47,7 +47,7 @@ BurrFactory * BurrFactory::clone() const
 struct BurrFactoryParameterConstraint
 {
   /** Constructor from a sample and a derivative factor estimate */
-  BurrFactoryParameterConstraint(const NumericalSample & sample):
+  BurrFactoryParameterConstraint(const Sample & sample):
     sample_(sample)
   {
     // Nothing to do
@@ -83,13 +83,13 @@ struct BurrFactoryParameterConstraint
     return NumericalPoint(1, relation);
   }
 
-  const NumericalSample & sample_;
+  const Sample & sample_;
 };
 
 
 /* Here is the interface that all derived class must implement */
 
-BurrFactory::Implementation BurrFactory::build(const NumericalSample & sample) const
+BurrFactory::Implementation BurrFactory::build(const Sample & sample) const
 {
   return buildAsBurr(sample).clone();
 }
@@ -104,7 +104,7 @@ BurrFactory::Implementation BurrFactory::build() const
   return buildAsBurr().clone();
 }
 
-Burr BurrFactory::buildAsBurr(const NumericalSample & sample) const
+Burr BurrFactory::buildAsBurr(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Burr distribution from an empty sample";

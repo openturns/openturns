@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 
     // Test for sampling
     UnsignedInteger size = 10000;
-    NumericalSample oneSample = copula.getSample( size );
+    Sample oneSample = copula.getSample( size );
     fullprint << "oneSample first=" << oneSample[0] << " last=" << oneSample[size - 1] << std::endl;
     fullprint << "mean=" << oneSample.computeMean() << std::endl;
     UnsignedInteger precision = PlatformInfo::GetNumericalPrecision();

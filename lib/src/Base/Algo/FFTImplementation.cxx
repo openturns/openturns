@@ -157,9 +157,9 @@ ComplexMatrix FFTImplementation::transform2D(const Matrix & matrix) const
 }
 
 /** FFT 2D transformation on sample */
-ComplexMatrix FFTImplementation::transform2D(const NumericalSample & sample) const
+ComplexMatrix FFTImplementation::transform2D(const Sample & sample) const
 {
-  throw NotYetImplementedException(HERE) << "In FFTImplementation::transform2D(const NumericalSample & sample) const";
+  throw NotYetImplementedException(HERE) << "In FFTImplementation::transform2D(const Sample & sample) const";
 }
 
 /** FFT 3D transformation on complex */
@@ -187,9 +187,9 @@ ComplexMatrix FFTImplementation::inverseTransform2D(const Matrix & matrix) const
 }
 
 /** IFFT 2D transformation on sample */
-ComplexMatrix FFTImplementation::inverseTransform2D(const NumericalSample & sample) const
+ComplexMatrix FFTImplementation::inverseTransform2D(const Sample & sample) const
 {
-  throw NotYetImplementedException(HERE) << "In FFTImplementation::inverseTransform2D(const NumericalSample & sample) const";
+  throw NotYetImplementedException(HERE) << "In FFTImplementation::inverseTransform2D(const Sample & sample) const";
 }
 
 /** IFFT 3D transformation on complex */

@@ -12,8 +12,8 @@ try:
     p = 6
     q = 4
 
-    lastValues = NumericalSample(p, dim)
-    lastNoiseValues = NumericalSample(q, dim)
+    lastValues = Sample(p, dim)
+    lastNoiseValues = Sample(q, dim)
 
     for j in range(dim):
         # Fill the AR-part (the last p-coefficients X_{-1}, X{-2},..., X_{-p})

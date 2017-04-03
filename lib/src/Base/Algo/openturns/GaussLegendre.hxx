@@ -56,13 +56,13 @@ public:
                            const Interval & interval) const;
   NumericalPoint integrateWithNodes(const Function & function,
                                     const Interval & interval,
-                                    NumericalSample & adaptedNodes) const;
+                                    Sample & adaptedNodes) const;
 
   /** Discretization accessor */
   Indices getDiscretization() const;
 
   /** Nodes accessor */
-  NumericalSample getNodes() const;
+  Sample getNodes() const;
 
   /** Weights accessor */
   NumericalPoint getWeights() const;
@@ -82,7 +82,7 @@ private:
   Indices discretization_;
 
   /* Integration nodes */
-  NumericalSample nodes_;
+  Sample nodes_;
 
   /* Integration weights */
   NumericalPoint weights_;

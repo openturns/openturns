@@ -111,8 +111,8 @@ private:
   static double ComputeEqualityConstraint(const std::vector<double> & x, std::vector<double> & grad, void * f_data);
 
   /// temporary, used to track input/outputs
-  NumericalSample evaluationInputHistory_;
-  NumericalSample evaluationOutputHistory_;
+  Sample evaluationInputHistory_;
+  Sample evaluationOutputHistory_;
 
   // internal solver
   void * p_opt_;

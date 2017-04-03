@@ -50,7 +50,7 @@ public:
                                   const SpaceFilling & spaceFilling = SpaceFillingMinDist());
 
   /** SimulatedAnnealingLHS constructor with LHS*/
-  SimulatedAnnealingLHS(const NumericalSample & initialDesign,
+  SimulatedAnnealingLHS(const Sample & initialDesign,
                         const Distribution & distribution,
                         const TemperatureProfile & profile,
                         const SpaceFilling & spaceFilling);
@@ -59,8 +59,8 @@ public:
   SimulatedAnnealingLHS * clone() const;
 
   /** Compute design method **/
-  virtual NumericalSample generateWithWeights(NumericalPoint & weights) const;
-  NumericalSample generateWithRestart(UnsignedInteger nRestart) const;
+  virtual Sample generateWithWeights(NumericalPoint & weights) const;
+  Sample generateWithRestart(UnsignedInteger nRestart) const;
 
   /** String converter */
   String __repr__() const;
@@ -77,7 +77,7 @@ protected:
   
 private:
    TemperatureProfile profile_;
-   NumericalSample initialDesign_;
+   Sample initialDesign_;
 
 }; /* class SimulatedAnnealingLHS */
 

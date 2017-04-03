@@ -47,10 +47,10 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build(const NumericalSample & sample) const;
+  Implementation build(const Sample & sample) const;
   Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
-  AliMikhailHaqCopula buildAsAliMikhailHaqCopula(const NumericalSample & sample) const;
+  AliMikhailHaqCopula buildAsAliMikhailHaqCopula(const Sample & sample) const;
   AliMikhailHaqCopula buildAsAliMikhailHaqCopula(const NumericalPoint & parameters) const;
   AliMikhailHaqCopula buildAsAliMikhailHaqCopula() const;
 

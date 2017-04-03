@@ -80,7 +80,7 @@ def getCorrelationMatrixFromMap(Vars, Map):
 %include CovarianceMatrix.i
 %include CorrelationMatrix.i 
 %include IdentityMatrix.i 
-%include NumericalSample.i 
+%include Sample.i 
 %include HistoryStrategyImplementation.i 
 %include HistoryStrategy.i
 

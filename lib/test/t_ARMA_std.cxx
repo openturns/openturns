@@ -95,8 +95,8 @@ int main(int argc, char *argv[])
     whiteNoise.setTimeGrid(timeGrid);
 
     /* Last coefficients values */
-    NumericalSample xValues(p, dim);
-    NumericalSample epsilonValues(q, dim);
+    Sample xValues(p, dim);
+    Sample epsilonValues(q, dim);
 
     for(UnsignedInteger j = 0 ; j < dim ; ++j)
     {

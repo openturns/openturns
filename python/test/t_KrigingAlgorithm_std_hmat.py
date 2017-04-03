@@ -16,8 +16,8 @@ dimension = 1
 
 f = Function(['x0'], ['y'], ['x0 * sin(x0)'])
 
-X = NumericalSample(sampleSize, dimension)
-X2 = NumericalSample(sampleSize, dimension)
+X = Sample(sampleSize, dimension)
+X2 = Sample(sampleSize, dimension)
 for i in range(sampleSize):
     X[i, 0] = 3.0 + i
     X2[i, 0] = 2.5 + i

@@ -107,9 +107,9 @@ NumericalPoint Uniform::getRealization() const
 }
 
 /* Get a sample of the distribution */
-NumericalSample Uniform::getSample(const UnsignedInteger size) const
+Sample Uniform::getSample(const UnsignedInteger size) const
 {
-  NumericalSampleImplementation result(size, 1);
+  SampleImplementation result(size, 1);
   result.setData(RandomGenerator::Generate(size));
   result *= NumericalPoint(1, b_ - a_);
   result += NumericalPoint(1, a_);

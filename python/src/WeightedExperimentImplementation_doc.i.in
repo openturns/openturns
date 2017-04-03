@@ -61,7 +61,7 @@ OT_WeightedExperiment_doc
 
 Returns
 -------
-sample : :class:`~openturns.NumericalSample`
+sample : :class:`~openturns.Sample`
     Points :math:`(\Xi_i)_{i \in I}` which constitute the design of experiments
     with :math:`card I = size`. The sampling method is defined by the nature of
     the weighted experiment.
@@ -90,7 +90,7 @@ OT_WeightedExperiment_generate_doc
 
 Returns
 -------
-sample : :class:`~openturns.NumericalSample`
+sample : :class:`~openturns.Sample`
     The points which constitute the design of experiments. The sampling method
     is defined by the nature of the experiment.
 weights : :class:`~openturns.NumericalPoint` of size :math:`cardI`

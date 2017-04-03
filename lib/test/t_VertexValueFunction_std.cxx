@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     fullprint << "myTemporalFunc output dimension=" << myTemporalFunc.getOutputDimension() << std::endl;
     /* Create a TimeSeries */
     RegularGrid tg(0.0, 0.2, 6);
-    NumericalSample data(tg.getN(), myFunc.getInputDimension() - 1);
+    Sample data(tg.getN(), myFunc.getInputDimension() - 1);
     for (UnsignedInteger i = 0; i < data.getSize(); ++i)
       for (UnsignedInteger j = 0; j < data.getDimension(); ++j)
         data(i, j) = i * data.getDimension() + j;

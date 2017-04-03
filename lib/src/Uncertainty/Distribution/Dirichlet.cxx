@@ -277,7 +277,7 @@ NumericalScalar Dirichlet::computeCDF(const NumericalPoint & point) const
   static const UnsignedInteger samplingSize(ResourceMap::GetAsUnsignedInteger("DefaultSamplingSize"));
   RandomGeneratorState initialState(RandomGenerator::GetState());
   RandomGenerator::SetSeed(samplingSize);
-  static const NumericalSample sample(getSample(samplingSize));
+  static const Sample sample(getSample(samplingSize));
   UnsignedInteger successNumber = 0;
   for (UnsignedInteger i = 0; i < samplingSize; ++i)
   {

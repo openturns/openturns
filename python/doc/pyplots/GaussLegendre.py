@@ -10,7 +10,7 @@ algo = ot.GaussLegendre([20])
 value, nodes = algo.integrateWithNodes(f, ot.Interval(a, b))
 
 g = f.draw(a, b, 512)
-lower = ot.Cloud(nodes, ot.NumericalSample(nodes.getSize(), 1))
+lower = ot.Cloud(nodes, ot.Sample(nodes.getSize(), 1))
 lower.setColor("magenta")
 lower.setPointStyle('circle')
 g.add(lower)

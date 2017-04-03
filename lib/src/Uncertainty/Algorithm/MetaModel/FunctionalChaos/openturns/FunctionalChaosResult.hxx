@@ -23,7 +23,7 @@
 
 #include "openturns/MetaModelResult.hxx"
 #include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
@@ -65,7 +65,7 @@ public:
                         const Function & composedModel,
                         const OrthogonalBasis & orthogonalBasis,
                         const Indices & I,
-                        const NumericalSample & alpha_k,
+                        const Sample & alpha_k,
                         const FunctionCollection & Psi_k,
                         const NumericalPoint & residuals,
                         const NumericalPoint & relativeErrors);
@@ -96,7 +96,7 @@ public:
   virtual Indices getIndices() const;
 
   /** Coefficients accessor */
-  virtual NumericalSample getCoefficients() const;
+  virtual Sample getCoefficients() const;
 
   /** Reduced basis accessor */
   virtual FunctionCollection getReducedBasis() const;
@@ -133,7 +133,7 @@ private:
   Indices I_;
 
   /** The collection of Alpha_k coefficients */
-  NumericalSample alpha_k_;
+  Sample alpha_k_;
 
   /** The collection of vectors upon which we project the (composed) model */
   FunctionPersistentCollection Psi_k_;

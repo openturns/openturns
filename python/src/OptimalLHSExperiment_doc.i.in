@@ -15,7 +15,7 @@ OT_OptimalLHS_doc
 
 Returns
 -------
-value : :class:`~openturns.NumericalSample`
+value : :class:`~openturns.Sample`
     The optimal design"
 %enddef
 %feature("docstring") OT::OptimalLHSExperiment::generate

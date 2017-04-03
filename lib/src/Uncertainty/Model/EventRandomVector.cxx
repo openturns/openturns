@@ -107,13 +107,13 @@ NumericalPoint EventRandomVector::getRealization() const
 }
 
 /* Numerical sample accessor */
-NumericalSample EventRandomVector::getSample(const UnsignedInteger size) const
+Sample EventRandomVector::getSample(const UnsignedInteger size) const
 {
   // We don't build the return sample element by element because it doesn't
   // use the potential distribution of the computation. As the returned
   // sample can be huge, we use it twice in place
   // First, it stores a sample of its antecedent
-  NumericalSample returnSample(CompositeRandomVector::getSample(size));
+  Sample returnSample(CompositeRandomVector::getSample(size));
   // Then, we loop over the sample and substitute realizations of the eventRandomVectorImplementation
   // in place of the realizations of the antecedent
   for (UnsignedInteger i = 0; i < size; ++i) returnSample[i][0] = operator_(returnSample[i][0], threshold_);

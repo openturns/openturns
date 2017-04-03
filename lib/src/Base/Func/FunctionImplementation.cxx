@@ -101,8 +101,8 @@ FunctionImplementation::FunctionImplementation(const Description & inputVariable
 
 
 /* Constructor from a wrapper file */
-FunctionImplementation::FunctionImplementation(const NumericalSample & inputSample,
-    const NumericalSample & outputSample)
+FunctionImplementation::FunctionImplementation(const Sample & inputSample,
+    const Sample & outputSample)
   : PersistentObject()
   , p_gradientImplementation_(new NoGradient)
   , p_hessianImplementation_(new NoHessian)
@@ -217,18 +217,18 @@ UnsignedInteger FunctionImplementation::getCacheHits() const
   return p_evaluationImplementation_->getCacheHits();
 }
 
-void FunctionImplementation::addCacheContent(const NumericalSample& inSample,
-    const NumericalSample& outSample)
+void FunctionImplementation::addCacheContent(const Sample& inSample,
+    const Sample& outSample)
 {
   p_evaluationImplementation_->addCacheContent(inSample, outSample);
 }
 
-NumericalSample FunctionImplementation::getCacheInput() const
+Sample FunctionImplementation::getCacheInput() const
 {
   return p_evaluationImplementation_->getCacheInput();
 }
 
-NumericalSample FunctionImplementation::getCacheOutput() const
+Sample FunctionImplementation::getCacheOutput() const
 {
   return p_evaluationImplementation_->getCacheOutput();
 }
@@ -269,12 +269,12 @@ HistoryStrategy FunctionImplementation::getHistoryOutput() const
   return p_evaluationImplementation_->getHistoryOutput();
 }
 
-NumericalSample FunctionImplementation::getInputPointHistory() const
+Sample FunctionImplementation::getInputPointHistory() const
 {
   return p_evaluationImplementation_->getInputPointHistory();
 }
 
-NumericalSample FunctionImplementation::getInputParameterHistory() const
+Sample FunctionImplementation::getInputParameterHistory() const
 {
   return p_evaluationImplementation_->getInputParameterHistory();
 }
@@ -400,14 +400,14 @@ NumericalPoint FunctionImplementation::operator() (const NumericalPoint & inP,
   return p_evaluationImplementation_->operator()(inP);
 }
 
-NumericalSample FunctionImplementation::operator() (const NumericalPoint & inP,
-    const NumericalSample & parameters)
+Sample FunctionImplementation::operator() (const NumericalPoint & inP,
+    const Sample & parameters)
 {
   return p_evaluationImplementation_->operator()(inP, parameters);
 }
 
 /* Operator () */
-NumericalSample FunctionImplementation::operator() (const NumericalSample & inSample) const
+Sample FunctionImplementation::operator() (const Sample & inSample) const
 {
   return p_evaluationImplementation_->operator()(inSample);
 }

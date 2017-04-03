@@ -47,7 +47,7 @@ AliMikhailHaqCopulaFactory * AliMikhailHaqCopulaFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-AliMikhailHaqCopulaFactory::Implementation AliMikhailHaqCopulaFactory::build(const NumericalSample & sample) const
+AliMikhailHaqCopulaFactory::Implementation AliMikhailHaqCopulaFactory::build(const Sample & sample) const
 {
   return buildAsAliMikhailHaqCopula(sample).clone();
 }
@@ -62,7 +62,7 @@ AliMikhailHaqCopulaFactory::Implementation AliMikhailHaqCopulaFactory::build() c
   return buildAsAliMikhailHaqCopula().clone();
 }
 
-AliMikhailHaqCopula AliMikhailHaqCopulaFactory::buildAsAliMikhailHaqCopula(const NumericalSample & sample) const
+AliMikhailHaqCopula AliMikhailHaqCopulaFactory::buildAsAliMikhailHaqCopula(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a AliMikhailHaqCopula distribution from an empty sample";
   if (sample.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a AliMikhailHaqCopula distribution from a sample of dimension not equal to 2";

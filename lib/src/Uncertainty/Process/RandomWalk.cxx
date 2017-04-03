@@ -105,7 +105,7 @@ Bool RandomWalk::isNormal() const
 Field RandomWalk::getRealization() const
 {
   const UnsignedInteger size = mesh_.getVerticesNumber();
-  NumericalSample data(size, origin_);
+  Sample data(size, origin_);
   for (UnsignedInteger i = 1; i < size; ++i) data[i] = data[i - 1] + distribution_.getRealization();
   currentPosition_ = data[data.getSize() - 1];
   data.setDescription(getDescription());
@@ -129,7 +129,7 @@ TimeSeries RandomWalk::getFuture(const UnsignedInteger stepNumber) const
   /* TimeGrid associated with the possible future */
   const NumericalScalar timeStep = RegularGrid(mesh_).getStep();
   const RegularGrid futurTimeGrid(RegularGrid(mesh_).getEnd(), timeStep, stepNumber);
-  NumericalSample data(stepNumber, dimension_);
+  Sample data(stepNumber, dimension_);
   NumericalPoint previous(currentPosition_);
   for (UnsignedInteger i = 0; i < stepNumber; ++i)
   {

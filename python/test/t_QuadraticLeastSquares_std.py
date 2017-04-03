@@ -6,7 +6,7 @@ import openturns as ot
 
 myFunc = ot.Function(['x1', 'x2'], ['f1', 'f2', 'f3'], [
                                   'x1*sin(x2)', 'cos(x1+x2)', '(x2+1)*exp(x1-2*x2)'])
-data = ot.NumericalSample(9, myFunc.getInputDimension())
+data = ot.Sample(9, myFunc.getInputDimension())
 point = ot.NumericalPoint(myFunc.getInputDimension())
 point[0] = 0.5
 point[1] = 0.5

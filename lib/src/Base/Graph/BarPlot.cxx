@@ -30,7 +30,7 @@ CLASSNAMEINIT(BarPlot);
 static const Factory<BarPlot> Factory_BarPlot;
 
 /* Default constructor */
-BarPlot::BarPlot(const NumericalSample & data,
+BarPlot::BarPlot(const Sample & data,
                  const NumericalScalar origin,
                  const String & legend)
   : DrawableImplementation(data, legend)
@@ -41,7 +41,7 @@ BarPlot::BarPlot(const NumericalSample & data,
 }
 
 /* Constructor with parameters */
-BarPlot::BarPlot(const NumericalSample & data,
+BarPlot::BarPlot(const Sample & data,
                  const NumericalScalar origin,
                  const String & color,
                  const String & fillStyle,
@@ -60,7 +60,7 @@ BarPlot::BarPlot(const NumericalSample & data,
 }
 
 /* Constructor with old parameters */
-BarPlot::BarPlot(const NumericalSample & data,
+BarPlot::BarPlot(const Sample & data,
                  const NumericalScalar origin,
                  const String & color,
                  const String & fillStyle,
@@ -148,7 +148,7 @@ BarPlot * BarPlot::clone() const
 }
 
 /* Check validity of data */
-void BarPlot::checkData(const NumericalSample & data) const
+void BarPlot::checkData(const Sample & data) const
 {
   if (data.getDimension() != 2)
   {

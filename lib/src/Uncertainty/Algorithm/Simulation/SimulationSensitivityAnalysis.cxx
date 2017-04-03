@@ -46,8 +46,8 @@ SimulationSensitivityAnalysis::SimulationSensitivityAnalysis()
 }
 
 /* Standard constructor */
-SimulationSensitivityAnalysis::SimulationSensitivityAnalysis(const NumericalSample & inputSample,
-    const NumericalSample & outputSample,
+SimulationSensitivityAnalysis::SimulationSensitivityAnalysis(const Sample & inputSample,
+    const Sample & outputSample,
     const IsoProbabilisticTransformation & transformation,
     const ComparisonOperator & comparisonOperator,
     const NumericalScalar threshold)
@@ -120,7 +120,7 @@ SimulationSensitivityAnalysis * SimulationSensitivityAnalysis::clone() const
 NumericalPoint SimulationSensitivityAnalysis::computeMeanPointInEventDomain(const NumericalScalar threshold) const
 {
   const UnsignedInteger inputSize = inputSample_.getSize();
-  NumericalSample filteredSample(0, inputSample_.getDimension());
+  Sample filteredSample(0, inputSample_.getDimension());
   // Filter the input points with respect to the considered event
   for (UnsignedInteger i = 0; i < inputSize; ++i)
     if (comparisonOperator_(outputSample_[i][0], threshold)) filteredSample.add(inputSample_[i]);
@@ -197,7 +197,7 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
   // + In fact, each curve embeds its data, so the input sample is duplicated and the output data is copied d times
   // + In the case of ties in the output sample, the data stored in the curves are shorter than the initial data
   const UnsignedInteger inputDimension = inputSample_.getDimension();
-  NumericalSample mergedSample(size, inputDimension + 1);
+  Sample mergedSample(size, inputDimension + 1);
   // Use the loop to compute the number of points that compares favorably
   // to the internal threshold
   UnsignedInteger good = 0;
@@ -211,7 +211,7 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
   // Sort the merged sample according to its last component
   mergedSample = mergedSample.sortAccordingToAComponent(inputDimension);
   // Prepare the data for the curves
-  Collection<NumericalSample> dataCollection(inputDimension, NumericalSample(0, 2));
+  Collection<Sample> dataCollection(inputDimension, Sample(0, 2));
   // Now, we can go through the data and accumulate the importance factors. If we just call the computeImportanceFactors() method directly, the cost is O(size^2), which is too expensive for typical situations.
   // Aggregate the points in the event
   NumericalPoint accumulator(inputDimension);
@@ -314,7 +314,7 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
   // Highlight the default threshold importance factors if stable enough
   if ((internalX >= lower) && (internalX <= upper) && (good >= sampleMargin) && (good < size - sampleMargin))
   {
-    NumericalSample data(2, 2);
+    Sample data(2, 2);
     data[0][0] = internalX;
     data[0][1] = 0.0;
     data[1][0] = internalX;
@@ -330,13 +330,13 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
 }
 
 /* Input sample accessors */
-NumericalSample SimulationSensitivityAnalysis::getInputSample() const
+Sample SimulationSensitivityAnalysis::getInputSample() const
 {
   return inputSample_;
 }
 
 /* Output sample accessors */
-NumericalSample SimulationSensitivityAnalysis::getOutputSample() const
+Sample SimulationSensitivityAnalysis::getOutputSample() const
 {
   return outputSample_;
 }

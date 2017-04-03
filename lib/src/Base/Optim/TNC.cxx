@@ -138,8 +138,8 @@ void TNC::run()
   p_nfeval_ = &nfeval;
 
   // clear history
-  evaluationInputHistory_ = NumericalSample(0.0, dimension);
-  evaluationOutputHistory_ = NumericalSample(0.0, 2);
+  evaluationInputHistory_ = Sample(0.0, dimension);
+  evaluationOutputHistory_ = Sample(0.0, 2);
 
   NumericalScalar f = -1.0;
 

@@ -64,15 +64,15 @@ int main(int argc, char *argv[])
 
     // Test for sampling
     UnsignedInteger size = 10000;
-    NumericalSample oneSample = distribution.getSample( size );
+    Sample oneSample = distribution.getSample( size );
     fullprint << "oneSample first=" << oneSample[0] << " last=" << oneSample[size - 1] << std::endl;
     fullprint << "mean=" << oneSample.computeMean() << std::endl;
     fullprint << "covariance=" << oneSample.computeCovariance() << std::endl;
     // Support
-    NumericalSample support(distribution.getSupport());
+    Sample support(distribution.getSupport());
     fullprint << "support=" << support << std::endl;
     Interval interval(NumericalPoint(distribution.getDimension(), 1.0), NumericalPoint(distribution.getDimension(), 3.0));
-    NumericalSample restrictedSupport(distribution.getSupport(interval));
+    Sample restrictedSupport(distribution.getSupport(interval));
     fullprint << "support restricted to the interval=" << interval << " gives=" << restrictedSupport << std::endl;
     // Define a point
     NumericalPoint point( distribution.getDimension(), 1.0 );

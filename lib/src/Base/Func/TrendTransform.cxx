@@ -22,7 +22,7 @@
 #include "openturns/InverseTrendTransform.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/EvaluationImplementation.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -100,7 +100,7 @@ Field TrendTransform::operator() (const Field & inFld) const
 {
   if (inFld.getSpatialDimension() != p_evaluation_->getInputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a Field with mesh dimension=" << p_evaluation_->getInputDimension() << ", got mesh dimension=" << inFld.getSpatialDimension();
   if (inFld.getDimension() != p_evaluation_->getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a Field with dimension=" << p_evaluation_->getOutputDimension() << ", got dimension=" << inFld.getDimension();
-  NumericalSample outputSample((*p_evaluation_)(inFld.getMesh().getVertices()));
+  Sample outputSample((*p_evaluation_)(inFld.getMesh().getVertices()));
   // finally as the function adds a trend, result
   for (UnsignedInteger k = 0; k < outputSample.getSize(); ++k) outputSample[k] = inFld.getValueAtIndex(k) + outputSample[k];
   ++callsNumber_;

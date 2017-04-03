@@ -79,7 +79,7 @@ public:
 
   /** Get one realization of the Normal distribution */
   NumericalPoint getRealization() const;
-  NumericalSample getSample(const UnsignedInteger size) const;
+  Sample getSample(const UnsignedInteger size) const;
 
   /** Get the CDF of the Normal distribution */
   using EllipticalDistribution::computeCDF;

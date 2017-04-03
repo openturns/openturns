@@ -152,7 +152,7 @@ void OrthogonalProductPolynomialFactory::buildMeasure()
 }
 
 /* Nodes and weights of the multivariate polynomial associated with the marginal degrees indices[0], ...,indices[dimension] as the tensor product of the marginal orthogonal univariate polynomials, to build multivariate quadrature rules */
-NumericalSample OrthogonalProductPolynomialFactory::getNodesAndWeights(const Indices & degrees,
+Sample OrthogonalProductPolynomialFactory::getNodesAndWeights(const Indices & degrees,
     NumericalPoint & weights) const
 {
   const UnsignedInteger degreesSize = degrees.getSize();
@@ -173,7 +173,7 @@ NumericalSample OrthogonalProductPolynomialFactory::getNodesAndWeights(const Ind
     marginalWeights.add(w);
   }
   // Perform the tensor product
-  NumericalSample nodes(totalSize, degreesSize);
+  Sample nodes(totalSize, degreesSize);
   weights = NumericalPoint(totalSize, 1.0);
   Indices indices(degreesSize, 0);
   for (UnsignedInteger i = 0; i < totalSize; ++i)

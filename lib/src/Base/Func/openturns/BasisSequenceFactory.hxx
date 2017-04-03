@@ -60,21 +60,21 @@ public:
   Bool getVerbose() const;
 
   /** Method to create new BasisSequence objects */
-  BasisSequence build(const NumericalSample & x,
-                      const NumericalSample & y,
+  BasisSequence build(const Sample & x,
+                      const Sample & y,
                       const Basis & psi,
                       const Indices & indices);
 #ifndef SWIG
-  BasisSequence build(const NumericalSample & y,
+  BasisSequence build(const Sample & y,
                       const Indices & indices,
                       const DesignProxy & proxy);
 
   BasisSequence build(LeastSquaresMethod & method,
-                      const NumericalSample & y);
+                      const Sample & y);
 
   void initialize();
   void updateBasis(LeastSquaresMethod & method,
-                   const NumericalSample & y);
+                   const Sample & y);
 
 #endif
 

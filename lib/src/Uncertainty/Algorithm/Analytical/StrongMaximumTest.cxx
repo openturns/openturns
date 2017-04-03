@@ -209,49 +209,49 @@ void StrongMaximumTest::setPointNumber(const UnsignedInteger pointNumber)
 }
 
 /* NearDesignPointVerifyingEventPoints accessor */
-NumericalSample StrongMaximumTest::getNearDesignPointVerifyingEventPoints() const
+Sample StrongMaximumTest::getNearDesignPointVerifyingEventPoints() const
 {
   return nearDesignPointVerifyingEventPoints_;
 }
 
 /* NearDesignPointVerifyingEventValues accessor */
-NumericalSample StrongMaximumTest::getNearDesignPointVerifyingEventValues() const
+Sample StrongMaximumTest::getNearDesignPointVerifyingEventValues() const
 {
   return nearDesignPointVerifyingEventValues_;
 }
 
 /* FarDesignPointVerifyingEventPoints accessor */
-NumericalSample StrongMaximumTest::getFarDesignPointVerifyingEventPoints() const
+Sample StrongMaximumTest::getFarDesignPointVerifyingEventPoints() const
 {
   return farDesignPointVerifyingEventPoints_;
 }
 
 /* FarDesignPointVerifyingEventValues accessor */
-NumericalSample StrongMaximumTest::getFarDesignPointVerifyingEventValues() const
+Sample StrongMaximumTest::getFarDesignPointVerifyingEventValues() const
 {
   return farDesignPointVerifyingEventValues_;
 }
 
 /* NearDesignPointViolatingEventPoints accessor */
-NumericalSample StrongMaximumTest::getNearDesignPointViolatingEventPoints() const
+Sample StrongMaximumTest::getNearDesignPointViolatingEventPoints() const
 {
   return nearDesignPointViolatingEventPoints_;
 }
 
 /* NearDesignPointViolatingEventValues accessor */
-NumericalSample StrongMaximumTest::getNearDesignPointViolatingEventValues() const
+Sample StrongMaximumTest::getNearDesignPointViolatingEventValues() const
 {
   return nearDesignPointViolatingEventValues_;
 }
 
 /* FarDesignPointViolatingEventPoints accessor */
-NumericalSample StrongMaximumTest::getFarDesignPointViolatingEventPoints() const
+Sample StrongMaximumTest::getFarDesignPointViolatingEventPoints() const
 {
   return farDesignPointViolatingEventPoints_;
 }
 
 /* FarDesignPointViolatingEventValues accessor */
-NumericalSample StrongMaximumTest::getFarDesignPointViolatingEventValues() const
+Sample StrongMaximumTest::getFarDesignPointViolatingEventValues() const
 {
   return farDesignPointViolatingEventValues_;
 }
@@ -451,7 +451,7 @@ void StrongMaximumTest::run()
   /* radius of the sphere to be sampled */
   const NumericalScalar radius = beta * (1.0 + accuracyLevel_ * deltaEpsilon_);
   /* sample of the sphere */
-  const NumericalSample sample(sampleSphere(radius, standardSpaceDesignPoint_.getDimension(), pointNumber_));
+  const Sample sample(sampleSphere(radius, standardSpaceDesignPoint_.getDimension(), pointNumber_));
   /* create a nearestPointChecker, in charge of the evaluation of the level function over the sample and to classify the points according to the operator and the threshold */
   NearestPointChecker nearestPointChecker(event_.getImplementation()->getFunction(), event_.getOperator(), event_.getThreshold(), sample);
   /* access to the inverse isoprobabilistic transformation */
@@ -511,8 +511,8 @@ void StrongMaximumTest::run()
     /* substitute physical points to standard points */
     nearDesignPointVerifyingEventPoints_ = inverseIsoProbabilisticTransformation(nearDesignPointVerifyingEventPoints_);
 
-    /* we build the final two NumericalSamples (points, values) for each group */
-    /* we split the sortedVerifyingConstraintPoints and the sortedVerifyingConstraintValues in 2 NumericalSamples each : one with the left side (points in the vicinity of the design point) and the other with the right side (points not in the vicinity of the design point) */
+    /* we build the final two Samples (points, values) for each group */
+    /* we split the sortedVerifyingConstraintPoints and the sortedVerifyingConstraintValues in 2 Samples each : one with the left side (points in the vicinity of the design point) and the other with the right side (points not in the vicinity of the design point) */
     if (leftCounter < sampleSize)
     {
       farDesignPointVerifyingEventPoints_ = nearDesignPointVerifyingEventPoints_.split(leftCounter);
@@ -555,8 +555,8 @@ void StrongMaximumTest::run()
     /* substitute physical points to standard points */
     farDesignPointViolatingEventPoints_ = inverseIsoProbabilisticTransformation(farDesignPointViolatingEventPoints_);
 
-    /* we build the final two NumericalSamples (points, values) for each group */
-    /* we split the sortedViolatingConstraintPoints and the sortedViolatingConstraintValues in 2 NumericalSamples each : one with the left side (points in the vicinity of the design point) and the other with the right side (points not in the vicinity of the design point) */
+    /* we build the final two Samples (points, values) for each group */
+    /* we split the sortedViolatingConstraintPoints and the sortedViolatingConstraintValues in 2 Samples each : one with the left side (points in the vicinity of the design point) and the other with the right side (points not in the vicinity of the design point) */
     if (leftCounter < sampleSize)
     {
       nearDesignPointViolatingEventPoints_ = farDesignPointViolatingEventPoints_.split(leftCounter);
@@ -566,13 +566,13 @@ void StrongMaximumTest::run()
 }
 
 /* the function that samples the sphere (radius) with N points */
-NumericalSample StrongMaximumTest::sampleSphere(const NumericalScalar radius,
+Sample StrongMaximumTest::sampleSphere(const NumericalScalar radius,
     const UnsignedInteger dimension,
     const UnsignedInteger pointNumber) const
 {
   // First, generate a sample of a standard normal distribution of the proper size and dimension
   const Normal standardNormal(dimension);
-  NumericalSample sample(standardNormal.getSample(pointNumber));
+  Sample sample(standardNormal.getSample(pointNumber));
   // Then, normalize the points to have length radius
   for (UnsignedInteger i = 0; i < pointNumber; ++i)
   {

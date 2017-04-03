@@ -78,7 +78,7 @@ public:
 private:
 
   /** Compute the block sample and the points that realized the event */
-  NumericalSample computeBlockSample();
+  Sample computeBlockSample();
 
   /** Compute the contribution of a direction to the probability given the roots of the performance function along the direction */
   NumericalScalar computeContribution(const NumericalScalarCollection & roots);
@@ -87,7 +87,7 @@ private:
   NumericalScalar computeMeanContribution(const NumericalScalarCollection & roots);
 
   /** Compute the contribution of a set of direction to the probability given the contributions of each direction in the set */
-  NumericalScalar computeTotalContribution(const NumericalSample & directionSample);
+  NumericalScalar computeTotalContribution(const Sample & directionSample);
 
   StandardEvent standardEvent_;
   Function standardFunction_;

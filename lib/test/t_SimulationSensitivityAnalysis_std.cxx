@@ -47,8 +47,8 @@ int main(int argc, char *argv[])
     f.enableHistory();
     /* Sampling */
     UnsignedInteger size = 100;
-    NumericalSample inputSample(distribution.getSample(size));
-    NumericalSample outputSample(f(inputSample));
+    Sample inputSample(distribution.getSample(size));
+    Sample outputSample(f(inputSample));
     Collection<ComparisonOperator> comparisonOperators(4);
     comparisonOperators[0] = Less();
     comparisonOperators[1] = LessOrEqual();

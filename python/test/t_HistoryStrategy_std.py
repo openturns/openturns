@@ -8,7 +8,7 @@ TESTPREAMBLE()
 try:
     size = 10
     dimension = 2
-    sample = NumericalSample(size, dimension)
+    sample = Sample(size, dimension)
     # Fill-in the sample
     for i in range(size):
         p = NumericalPoint(dimension)

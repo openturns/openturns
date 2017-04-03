@@ -639,7 +639,7 @@ def PlotDesign(design, bounds, Nx, Ny, figure=None, axes=[], plot_kwargs={}, axe
     assert(isinstance(text_kwargs, dict))
 
     # retrieve data
-    data = ot.NumericalSample(design)
+    data = ot.Sample(design)
     dim = data.getDimension()
     if dim < 2:
         raise TypeError('Expected designs of dimension >=2')

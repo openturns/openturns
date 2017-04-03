@@ -42,7 +42,7 @@ ARMA::ARMA()
   , noiseDistribution_(Normal())
   , p_(0)
   , q_(0)
-  , state_(NumericalSample(0, 1), NumericalSample(0, 1))
+  , state_(Sample(0, 1), Sample(0, 1))
   , hasComputedNThermalization_(true)
   , nThermalization_(2)
 {
@@ -77,7 +77,7 @@ ARMA::ARMA(const ARMACoefficients & ARCoefficients,
   // This call checks that the given WhiteNoise is based on a RegularGrid
   setTimeGrid(whiteNoise.getTimeGrid());
   // The default state is with null values and noises
-  state_ = ARMAState(NumericalSample(p_, dimension_), NumericalSample(q_, dimension_));
+  state_ = ARMAState(Sample(p_, dimension_), Sample(q_, dimension_));
   // Thermalize
   thermalize();
 }
@@ -248,10 +248,10 @@ void ARMA::setNThermalization(const UnsignedInteger size)
 ARMAState ARMA::computeReccurence(const UnsignedInteger stepNumber) const
 {
   // We extend the state by stepNumber points
-  NumericalSample result(state_.getX());
-  NumericalSample epsilonValues(state_.getEpsilon());
+  Sample result(state_.getX());
+  Sample epsilonValues(state_.getEpsilon());
   // Pre-allocate the room for the stepNumber next values
-  result.add(NumericalSample(stepNumber, dimension_));
+  result.add(Sample(stepNumber, dimension_));
   epsilonValues.add(noiseDistribution_.getSample(stepNumber));
 
   // Consider : X_t = \sum_{i=0}^{p-1} A[i] * X_{t-i-1} + \sum_{i=0}^{q-1} B[i] * \epsilon_{t-i-1} + \epsilon_{t}
@@ -296,7 +296,7 @@ Field ARMA::getRealization() const
   setState(newState);
 
   // Use the X part of the newState to build the realization
-  NumericalSample values(newState.getX().split(p_));
+  Sample values(newState.getX().split(p_));
   values.setDescription(getDescription());
   return Field(mesh_, values);
 }
@@ -337,8 +337,8 @@ ARMAState ARMA::getState() const
 
 void ARMA::setState(const ARMAState & state) const
 {
-  NumericalSample x(state.getX());
-  NumericalSample epsilon(state.getEpsilon());
+  Sample x(state.getX());
+  Sample epsilon(state.getEpsilon());
   if (p_ > x.getSize()) throw InvalidArgumentException(HERE) << "Error:  Size of coefficients of AR part is greater than the size of the last observed values";
   if (q_ > epsilon.getSize()) throw InvalidArgumentException(HERE) << "Error:  Size of coefficients of MA part is greater than the size of the last observed noise";
   // Only the p_ last values of X and the q_ last values of epsilon are needed

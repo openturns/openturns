@@ -24,7 +24,7 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/PersistentObject.hxx"
 #include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -44,12 +44,12 @@ public:
 
 
   /** Constructor with parameters */
-  LinearLeastSquares(const NumericalSample & dataIn,
+  LinearLeastSquares(const Sample & dataIn,
                      const Function & inputFunction);
 
   /** Constructor with parameters */
-  LinearLeastSquares(const NumericalSample & dataIn,
-                     const NumericalSample & dataOut);
+  LinearLeastSquares(const Sample & dataIn,
+                     const Sample & dataOut);
 
 
   /** Virtual constructor */
@@ -74,17 +74,17 @@ public:
   Function getResponseSurface() const;
 
   /** Data in accessor */
-  NumericalSample getDataIn() const;
+  Sample getDataIn() const;
 
   /** Data out accessor */
-  void setDataOut(const NumericalSample & dataOut);
-  NumericalSample getDataOut() const;
+  void setDataOut(const Sample & dataOut);
+  Sample getDataOut() const;
 
 protected:
 
 private:
-  NumericalSample dataIn_;
-  mutable NumericalSample dataOut_;
+  Sample dataIn_;
+  mutable Sample dataOut_;
   Function inputFunction_;
   Function responseSurface_;
   NumericalPoint constant_;

@@ -9,7 +9,7 @@ RandomGenerator.SetSeed(0)
 try:
     size = 5
     dim = 6
-    refSample = NumericalSample(size, dim)
+    refSample = Sample(size, dim)
     for i in range(size):
         p = NumericalPoint(dim)
         for j in range(dim):

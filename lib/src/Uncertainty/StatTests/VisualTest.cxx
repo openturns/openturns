@@ -41,7 +41,7 @@ VisualTest::VisualTest()
 }
 
 /* Draw the empirical CDF of the Sample when its dimension is 1 */
-Graph VisualTest::DrawEmpiricalCDF(const NumericalSample & sample,
+Graph VisualTest::DrawEmpiricalCDF(const Sample & sample,
                                    const NumericalScalar xMin,
                                    const NumericalScalar xMax)
 {
@@ -50,7 +50,7 @@ Graph VisualTest::DrawEmpiricalCDF(const NumericalSample & sample,
 
 
 /* Draw the Histogram of the Sample when its dimension is 1 */
-Graph VisualTest::DrawHistogram(const NumericalSample & sample,
+Graph VisualTest::DrawHistogram(const Sample & sample,
                                 const UnsignedInteger binNumber)
 {
   // Create an empty graph
@@ -64,7 +64,7 @@ Graph VisualTest::DrawHistogram(const NumericalSample & sample,
 }
 
 /* Draw the Histogram of the Sample when its dimension is 1, Normal empirical rule for bin number */
-Graph VisualTest::DrawHistogram(const NumericalSample & sample)
+Graph VisualTest::DrawHistogram(const Sample & sample)
 {
   // Create an empty graph
   Graph graphHist("sample histogram", "realizations", "frequency", true, "topright");
@@ -77,13 +77,13 @@ Graph VisualTest::DrawHistogram(const NumericalSample & sample)
 }
 
 /* Draw the QQplot of the two Samples when its dimension is 1 */
-Graph VisualTest::DrawQQplot(const NumericalSample & sample1,
-                             const NumericalSample & sample2,
+Graph VisualTest::DrawQQplot(const Sample & sample1,
+                             const Sample & sample2,
                              const UnsignedInteger pointNumber)
 {
   if (sample1.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a QQplot only if dimension equals 1, here dimension=" << sample1.getDimension();
   if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a QQplot only if dimension equals 1, here dimension=" << sample2.getDimension();
-  NumericalSample data(pointNumber, 2);
+  Sample data(pointNumber, 2);
   const NumericalScalar step = 1.0 / pointNumber;
   for (UnsignedInteger i = 0; i < pointNumber; ++i)
   {
@@ -97,7 +97,7 @@ Graph VisualTest::DrawQQplot(const NumericalSample & sample1,
   else cloudQQplot.setPointStyle("dot");
   Graph graphQQplot("Two sample QQ-plot", sample1.getDescription()[0], sample2.getDescription()[0], true, "topleft");
   // First, the bisectrice
-  NumericalSample diagonal(2, 2);
+  Sample diagonal(2, 2);
   NumericalPoint point(2);
   diagonal[0][0] = data[0][0];
   diagonal[0][1] = data[0][0];
@@ -122,14 +122,14 @@ Graph VisualTest::DrawQQplot(const NumericalSample & sample1,
 }
 
 /* Draw the QQplot of one Sample and one Distribution when its dimension is 1 */
-Graph VisualTest::DrawQQplot(const NumericalSample & sample,
+Graph VisualTest::DrawQQplot(const Sample & sample,
                              const Distribution & dist)
 {
   if (sample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a QQplot only if dimension equals 1, here dimension=" << sample.getDimension();
   if (dist.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a QQplot only if dimension equals 1, here dimension=" << dist.getDimension();
   const UnsignedInteger size = sample.getSize();
-  const NumericalSample sortedSample(sample.sort(0));
-  NumericalSample data(size, 2);
+  const Sample sortedSample(sample.sort(0));
+  Sample data(size, 2);
   const NumericalScalar step = 1.0 / size;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -142,7 +142,7 @@ Graph VisualTest::DrawQQplot(const NumericalSample & sample,
   else cloudQQplot.setPointStyle("dot");
   Graph graphQQplot("Sample versus model QQ-plot", sample.getDescription()[0], dist.__str__(), true, "topleft");
   // First, the bisectrice
-  NumericalSample diagonal(2, 2);
+  Sample diagonal(2, 2);
   NumericalPoint point(2);
   diagonal[0][0] = data[0][0];
   diagonal[0][1] = data[0][0];
@@ -167,14 +167,14 @@ Graph VisualTest::DrawQQplot(const NumericalSample & sample,
 }
 
 /* Draw the Henry line for a sample when its dimension is 1 */
-Graph VisualTest::DrawHenryLine(const NumericalSample & sample)
+Graph VisualTest::DrawHenryLine(const Sample & sample)
 {
   if (sample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a Henry line only if the sample dimension equals 1, here dimension=" << sample.getDimension();
   return DrawHenryLine(sample, NormalFactory().buildAsNormal(sample));
 }
 
 /* Draw the Henry line for a sample and a given normal distribution when its dimension is 1 */
-Graph VisualTest::DrawHenryLine(const NumericalSample & sample, const Distribution & normal)
+Graph VisualTest::DrawHenryLine(const Sample & sample, const Distribution & normal)
 {
   if (sample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a Henry plot only if the sample dimension equals 1, here dimension=" << sample.getDimension();
   if (normal.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a Henry plot only if the normal distribution dimension equals 1, here dimension=" << normal.getDimension();
@@ -182,12 +182,12 @@ Graph VisualTest::DrawHenryLine(const NumericalSample & sample, const Distributi
 
   Graph graphHenry("Henry plot", "Sample", "Standard normal quantiles", true, "topleft");
   const UnsignedInteger size = sample.getSize();
-  const NumericalSample sortedSample(sample.sort(0));
+  const Sample sortedSample(sample.sort(0));
 
   // First, the Henry line: y = (x - mu) / sigma
   const NumericalScalar mu = normal.getMean()[0];
   const NumericalScalar sigma = normal.getStandardDeviation()[0];
-  NumericalSample henryLinePoints(2, 2);
+  Sample henryLinePoints(2, 2);
   henryLinePoints[0][0] = sortedSample[0][0]; // sample.getMin()[0];
   henryLinePoints[0][1] = (henryLinePoints[0][0] - mu) / sigma;
   henryLinePoints[1][0] = sortedSample[size - 1][0]; // sample.getMax()[0];
@@ -199,7 +199,7 @@ Graph VisualTest::DrawHenryLine(const NumericalSample & sample, const Distributi
 
   // Then, the data
   const Normal standard_normal(0.0, 1.0);
-  NumericalSample data(size, 2);
+  Sample data(size, 2);
   const NumericalScalar step = 1.0 / size;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -214,13 +214,13 @@ Graph VisualTest::DrawHenryLine(const NumericalSample & sample, const Distributi
 
 
 /* Draw the clouds of one Sample and one model when its dimension is 2 */
-Graph VisualTest::DrawClouds(const NumericalSample & sample,
+Graph VisualTest::DrawClouds(const Sample & sample,
                              const Distribution & dist)
 {
   if (sample.getDimension() != 2) throw InvalidDimensionException(HERE) << "Error: can draw sample clouds only if dimension equals 2, here dimension=" << sample.getDimension();
   if (dist.getDimension() != 2) throw InvalidDimensionException(HERE) << "Error: can draw distribution clouds only if dimension equals 2, here dimension=" << dist.getDimension();
 
-  const NumericalSample distSample(dist.getSample(sample.getSize()));
+  const Sample distSample(dist.getSample(sample.getSize()));
 
   const Cloud sampleCloud(sample, "blue", "fsquare", "Sample Cloud");
   const Cloud distCloud(distSample, "red", "fsquare", "Model Cloud");
@@ -234,8 +234,8 @@ Graph VisualTest::DrawClouds(const NumericalSample & sample,
 }
 
 /* Draw the clouds of two Sample and one model when its dimension is 2 */
-Graph VisualTest::DrawClouds(const NumericalSample & sample1,
-                             const NumericalSample & sample2)
+Graph VisualTest::DrawClouds(const Sample & sample1,
+                             const Sample & sample2)
 {
   if (sample1.getDimension() != 2) throw InvalidDimensionException(HERE) << "Error: can draw sample clouds only if dimension equals 2, here dimension=" << sample1.getDimension();
   if (sample2.getDimension() != 2) throw InvalidDimensionException(HERE) << "Error: can draw sample clouds only if dimension equals 2, here dimension=" << sample2.getDimension();
@@ -252,19 +252,19 @@ Graph VisualTest::DrawClouds(const NumericalSample & sample1,
 }
 
 /* Draw the visual test for the LinearModel when its dimension is 1 */
-Graph VisualTest::DrawLinearModel(const NumericalSample & sample1,
-                                  const NumericalSample & sample2,
+Graph VisualTest::DrawLinearModel(const Sample & sample1,
+                                  const Sample & sample2,
                                   const LinearModel & linearModel)
 {
   if (sample1.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel visual test only if dimension equals 1, here dimension=" << sample1.getDimension();
   if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel visual test only if dimension equals 1, here dimension=" << sample2.getDimension();
   if (sample1.getSize() != sample2.getSize()) throw InvalidArgumentException(HERE) << "Error: can draw a LinearModel visual test only if sample 1 and sample 2 have the same size, here sample 1 size=" << sample1.getSize() << " and sample 2 size=" << sample2.getSize();
 
-  const NumericalSample y(linearModel.getPredicted(sample1));
+  const Sample y(linearModel.getPredicted(sample1));
   OSS oss;
   oss << sample1.getName() << " LinearModel visualTest";
   const UnsignedInteger size = sample1.getSize();
-  NumericalSample sample2D(size, 2);
+  Sample sample2D(size, 2);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     NumericalPoint point(2);
@@ -286,17 +286,17 @@ Graph VisualTest::DrawLinearModel(const NumericalSample & sample1,
 }
 
 /* Draw the visual test for the LinearModel residuals */
-Graph VisualTest::DrawLinearModelResidual(const NumericalSample & sample1,
-    const NumericalSample & sample2,
+Graph VisualTest::DrawLinearModelResidual(const Sample & sample1,
+    const Sample & sample2,
     const LinearModel & linearModel)
 {
   if (sample1.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if dimension equals 1, here dimension=" << sample1.getDimension();
   if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if dimension equals 1, here dimension=" << sample2.getDimension();
   if (sample1.getSize() != sample2.getSize()) throw InvalidArgumentException(HERE) << "Error: can draw a LinearModel residual visual test only if sample 1 and sample 2 have the same size, here sample 1 size=" << sample1.getSize() << " and sample 2 size=" << sample2.getSize();
 
-  const NumericalSample y(linearModel.getResidual(sample1, sample2));
+  const Sample y(linearModel.getResidual(sample1, sample2));
   const UnsignedInteger size = sample1.getSize();
-  NumericalSample data(size - 1, 2);
+  Sample data(size - 1, 2);
   for (UnsignedInteger i = 0; i < size - 1; ++i)
   {
     data[i][0] = y[i][0];
@@ -313,8 +313,8 @@ Graph VisualTest::DrawLinearModelResidual(const NumericalSample & sample1,
 }
 
 /* Draw the CobWeb visual test */
-Graph VisualTest::DrawCobWeb(const NumericalSample & inputSample,
-                             const NumericalSample & outputSample,
+Graph VisualTest::DrawCobWeb(const Sample & inputSample,
+                             const Sample & outputSample,
                              const NumericalScalar minValue,
                              const NumericalScalar maxValue,
                              const String & color,
@@ -342,8 +342,8 @@ Graph VisualTest::DrawCobWeb(const NumericalSample & inputSample,
     maxRank = static_cast<UnsignedInteger>(size * maxValue);
   }
   const UnsignedInteger inputDimension = inputSample.getDimension();
-  const NumericalSample rankedInput(inputSample.rank());
-  const NumericalSample rankedOutput(outputSample.rank());
+  const Sample rankedInput(inputSample.rank());
+  const Sample rankedOutput(outputSample.rank());
   // Create the graph
   Graph cobWeb(String(OSS() << "Cobweb graph - " << outputSample.getDescription() << " vs " << inputSample.getDescription()), "", "", false, "topright");
   // First discriminate the filaments: draw the background filaments and memorize the selected ones
@@ -355,7 +355,7 @@ Graph VisualTest::DrawCobWeb(const NumericalSample & inputSample,
       selectedFilaments.add(i);
     else
     {
-      NumericalSample data(inputDimension + 1, 1);
+      Sample data(inputDimension + 1, 1);
       for (UnsignedInteger j = 0; j < inputDimension; ++j) data[j][0] = rankedInput[i][j];
       data[inputDimension][0] = rankedOutput[i][0];
       Curve filament(data);
@@ -367,7 +367,7 @@ Graph VisualTest::DrawCobWeb(const NumericalSample & inputSample,
   const UnsignedInteger selectedSize = selectedFilaments.getSize();
   for (UnsignedInteger i = 0; i < selectedSize; ++i)
   {
-    NumericalSample data(inputDimension + 1, 1);
+    Sample data(inputDimension + 1, 1);
     for (UnsignedInteger j = 0; j < inputDimension; ++j) data[j][0] = rankedInput[selectedFilaments[i]][j];
     data[inputDimension][0] = rankedOutput[selectedFilaments[i]][0];
     Curve filament(data);
@@ -378,7 +378,7 @@ Graph VisualTest::DrawCobWeb(const NumericalSample & inputSample,
   const Description palette(Curve::BuildDefaultPalette(inputDimension));
   for (UnsignedInteger i = 0; i < inputDimension + 1; ++i)
   {
-    NumericalSample data(2, 2);
+    Sample data(2, 2);
     NumericalPoint point(2);
     data[0][0] = i;
     data[1][0] = i;
@@ -409,18 +409,18 @@ Graph VisualTest::DrawCobWeb(const NumericalSample & inputSample,
 }
 
 /* Draw the Kendall plot to assess a copula for a bidimensional sample */
-Graph VisualTest::DrawKendallPlot(const NumericalSample & data,
+Graph VisualTest::DrawKendallPlot(const Sample & data,
                                   const Distribution & copula)
 {
   if (data.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Kendall plot if the data sample is empty.";
   if (data.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Kendall plot if the data sample has a dimension not equal to 2.";
   if (!copula.isCopula()) throw InvalidArgumentException(HERE) << "Error: the given distribution=" << copula << " is not a copula.";
   if (copula.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Kendall plot if the copula has a dimension not equal to 2.";
-  const NumericalSample empiricalStatistics(ComputeKendallPlotEmpiricalStatistics(data));
-  const NumericalSample theoreticalStatistics(ComputeKendallPlotTheoreticalStatistics(copula, data.getSize()));
+  const Sample empiricalStatistics(ComputeKendallPlotEmpiricalStatistics(data));
+  const Sample theoreticalStatistics(ComputeKendallPlotTheoreticalStatistics(copula, data.getSize()));
   Graph graph("Kendall Plot", copula.getName(), data.getName(), true, "topleft");
   // Draw the first diagonal
-  NumericalSample dataDiagonal(0, 2);
+  Sample dataDiagonal(0, 2);
   dataDiagonal.add(NumericalPoint(2, 0.0));
   dataDiagonal.add(NumericalPoint(2, 1.0));
   Curve diagonal(dataDiagonal);
@@ -433,18 +433,18 @@ Graph VisualTest::DrawKendallPlot(const NumericalSample & data,
 }
 
 /* Draw the Kendall plot to assess if two bidimensional samples share the same copula */
-Graph VisualTest::DrawKendallPlot(const NumericalSample & firstSample,
-                                  const NumericalSample & secondSample)
+Graph VisualTest::DrawKendallPlot(const Sample & firstSample,
+                                  const Sample & secondSample)
 {
   if (firstSample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Kendall plot if the first sample is empty.";
   if (secondSample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Kendall plot if the second sample is empty.";
   if (firstSample.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Kendall plot if the first sample has a dimension not equal to 2.";
   if (secondSample.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Kendall plot if the second sample has a dimension not equal to 2.";
-  const NumericalSample firstEmpiricalStatistics(ComputeKendallPlotEmpiricalStatistics(firstSample));
-  const NumericalSample secondEmpiricalStatistics(ComputeKendallPlotEmpiricalStatistics(secondSample));
+  const Sample firstEmpiricalStatistics(ComputeKendallPlotEmpiricalStatistics(firstSample));
+  const Sample secondEmpiricalStatistics(ComputeKendallPlotEmpiricalStatistics(secondSample));
   Graph graph("Kendall Plot", firstSample.getName(), secondSample.getName(), true, "topleft");
   // Draw the first diagonal
-  NumericalSample data(0, 2);
+  Sample data(0, 2);
   data.add(NumericalPoint(2, 0.0));
   data.add(NumericalPoint(2, 1.0));
   Curve diagonal(data);
@@ -457,10 +457,10 @@ Graph VisualTest::DrawKendallPlot(const NumericalSample & firstSample,
 }
 
 /* Compute the Kendall plot empirical statistic associated with a bidimensional sample */
-NumericalSample VisualTest::ComputeKendallPlotEmpiricalStatistics(const NumericalSample & sample)
+Sample VisualTest::ComputeKendallPlotEmpiricalStatistics(const Sample & sample)
 {
   const UnsignedInteger size = sample.getSize();
-  NumericalSample result(size, 1);
+  Sample result(size, 1);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalPoint pointI(sample[i]);
@@ -483,15 +483,15 @@ NumericalSample VisualTest::ComputeKendallPlotEmpiricalStatistics(const Numerica
 }
 
 /* Compute the Kendall plot theoretical statistic associated with a bidimensional copula */
-NumericalSample VisualTest::ComputeKendallPlotTheoreticalStatistics(const Distribution & copula,
+Sample VisualTest::ComputeKendallPlotTheoreticalStatistics(const Distribution & copula,
     const UnsignedInteger size)
 {
   if (!copula.isCopula()) throw InvalidArgumentException(HERE) << "Error: the given distribution=" << copula << " is not a copula.";
   const UnsignedInteger maximumIteration = ResourceMap::GetAsUnsignedInteger( "VisualTest-KendallPlot-MonteCarloSize" );
-  NumericalSample result(size, 1);
+  Sample result(size, 1);
   for (UnsignedInteger i = 0; i < maximumIteration; ++i)
   {
-    const NumericalSample empiricalStatistics(ComputeKendallPlotEmpiricalStatistics(copula.getSample(size)));
+    const Sample empiricalStatistics(ComputeKendallPlotEmpiricalStatistics(copula.getSample(size)));
     for (UnsignedInteger j = 0; j < size; ++j) result[j] = (result[j] * i + empiricalStatistics[j]) / (i + 1);
   }
   return result;

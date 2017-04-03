@@ -24,7 +24,7 @@ try:
     # Test for sampling
     size = 200
     sample = distribution.getSample(size)
-    tmp = NumericalSample(2, NumericalPoint(2))
+    tmp = Sample(2, NumericalPoint(2))
     tmp[0, 0] = sample.getMin()[0]
     tmp[0, 1] = meanPoint[1] - sigma[1] / sigma[0] * (meanPoint[0] - tmp[0, 0])
     tmp[1, 0] = sample.getMax()[0]

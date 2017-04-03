@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
 
     // Test for sampling
     UnsignedInteger size = 1000;
-    NumericalSample oneSample = distribution.getSample( size );
+    Sample oneSample = distribution.getSample( size );
     fullprint << "sample of size " << size << " first=" << oneSample[0] << " last=" << oneSample[oneSample.getSize() - 1] << std::endl;
     NumericalPoint mean(oneSample.computeMean());
     fullprint << "mean error (relative)=" << (mean - meanPoint).norm() / meanPoint.norm() << std::endl;

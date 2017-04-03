@@ -29,19 +29,19 @@ CLASSNAMEINIT(NearestPointCheckerResult);
 /* Default constructor */
 NearestPointCheckerResult::NearestPointCheckerResult():
   PersistentObject(),
-  verifyingConstraintPoints_(NumericalSample(0, 0)),
-  verifyingConstraintValues_(NumericalSample(0, 0)),
-  violatingConstraintPoints_(NumericalSample(0, 0)),
-  violatingConstraintValues_(NumericalSample(0, 0))
+  verifyingConstraintPoints_(Sample(0, 0)),
+  verifyingConstraintValues_(Sample(0, 0)),
+  violatingConstraintPoints_(Sample(0, 0)),
+  violatingConstraintValues_(Sample(0, 0))
 {
   // Nothing to do
 }
 
 /* Standard constructor */
-NearestPointCheckerResult::NearestPointCheckerResult(const NumericalSample & verifyingConstraintPoints,
-    const NumericalSample & verifyingConstraintValues,
-    const NumericalSample & violatingConstraintPoints,
-    const NumericalSample & violatingConstraintValues):
+NearestPointCheckerResult::NearestPointCheckerResult(const Sample & verifyingConstraintPoints,
+    const Sample & verifyingConstraintValues,
+    const Sample & violatingConstraintPoints,
+    const Sample & violatingConstraintValues):
   PersistentObject(),
   verifyingConstraintPoints_(verifyingConstraintPoints),
   verifyingConstraintValues_(verifyingConstraintValues),
@@ -58,49 +58,49 @@ NearestPointCheckerResult * NearestPointCheckerResult::clone() const
 }
 
 /* verifyingConstraintPoints accessor */
-NumericalSample NearestPointCheckerResult::getVerifyingConstraintPoints() const
+Sample NearestPointCheckerResult::getVerifyingConstraintPoints() const
 {
   return verifyingConstraintPoints_;
 }
 
 /* verifyingConstraintValues accessor */
-NumericalSample NearestPointCheckerResult::getVerifyingConstraintValues() const
+Sample NearestPointCheckerResult::getVerifyingConstraintValues() const
 {
   return verifyingConstraintValues_;
 }
 
 /* violatingConstraintPoints accessor */
-NumericalSample NearestPointCheckerResult::getViolatingConstraintPoints() const
+Sample NearestPointCheckerResult::getViolatingConstraintPoints() const
 {
   return violatingConstraintPoints_;
 }
 
 /* violatingConstraintValues accessor */
-NumericalSample NearestPointCheckerResult::getViolatingConstraintValues() const
+Sample NearestPointCheckerResult::getViolatingConstraintValues() const
 {
   return violatingConstraintValues_;
 }
 
 /* verifyingConstraintPoints accessor */
-void NearestPointCheckerResult::setVerifyingConstraintPoints(const NumericalSample & verifyingConstraintPoints)
+void NearestPointCheckerResult::setVerifyingConstraintPoints(const Sample & verifyingConstraintPoints)
 {
   verifyingConstraintPoints_ = verifyingConstraintPoints;
 }
 
 /* verifyingConstraintValues accessor */
-void NearestPointCheckerResult::setVerifyingConstraintValues(const NumericalSample & verifyingConstraintValues)
+void NearestPointCheckerResult::setVerifyingConstraintValues(const Sample & verifyingConstraintValues)
 {
   verifyingConstraintValues_ = verifyingConstraintValues;
 }
 
 /* violatingConstraintPoints accessor */
-void NearestPointCheckerResult::setViolatingConstraintPoints(const NumericalSample & violatingConstraintPoints)
+void NearestPointCheckerResult::setViolatingConstraintPoints(const Sample & violatingConstraintPoints)
 {
   violatingConstraintPoints_ = violatingConstraintPoints;
 }
 
 /* violatingConstraintValues accessor */
-void NearestPointCheckerResult::setViolatingConstraintValues(const NumericalSample & violatingConstraintValues)
+void NearestPointCheckerResult::setViolatingConstraintValues(const Sample & violatingConstraintValues)
 {
   violatingConstraintValues_ = violatingConstraintValues;
 }

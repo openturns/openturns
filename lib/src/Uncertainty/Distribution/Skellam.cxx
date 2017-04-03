@@ -205,12 +205,12 @@ void Skellam::computeCovariance() const
 }
 
 /* Get the support of a discrete distribution that intersect a given interval */
-NumericalSample Skellam::getSupport(const Interval & interval) const
+Sample Skellam::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
   const SignedInteger kMin = static_cast< SignedInteger > (ceil(interval.getLowerBound()[0]));
   const SignedInteger kMax = static_cast< SignedInteger > (floor(interval.getUpperBound()[0]));
-  NumericalSample result(0, 1);
+  Sample result(0, 1);
   for (SignedInteger k = kMin; k <= kMax; ++k)
     result.add(NumericalPoint(1, k));
   return result;

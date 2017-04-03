@@ -73,7 +73,7 @@ NumericalPoint PosteriorRandomVector::getRealization() const
 }
 
 
-NumericalSample PosteriorRandomVector::getSample(const UnsignedInteger size) const
+Sample PosteriorRandomVector::getSample(const UnsignedInteger size) const
 {
   return sampler_.getSample(size);
 }

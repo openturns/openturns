@@ -270,12 +270,12 @@ void ZipfMandelbrot::computeRange()
 }
 
 /* Get the support of a discrete distribution that intersect a given interval */
-NumericalSample ZipfMandelbrot::getSupport(const Interval & interval) const
+Sample ZipfMandelbrot::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
   const UnsignedInteger kMin = static_cast< UnsignedInteger > (std::max(ceil(interval.getLowerBound()[0]), 1.0));
   const UnsignedInteger kMax = static_cast< UnsignedInteger > (std::min(floor(interval.getUpperBound()[0]), NumericalScalar(n_)));
-  NumericalSample result(0, 1);
+  Sample result(0, 1);
   for (UnsignedInteger k = kMin; k <= kMax; ++k) result.add(NumericalPoint(1, k));
   return result;
 }

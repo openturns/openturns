@@ -43,7 +43,7 @@ public:
 
   /** Parameter constructor */
   DualLinearCombinationFunction(const FunctionCollection & functionCollection,
-                                const NumericalSample & coefficients);
+                                const Sample & coefficients);
 
   /** Comparison operator */
   Bool operator ==(const DualLinearCombinationFunction & other) const;

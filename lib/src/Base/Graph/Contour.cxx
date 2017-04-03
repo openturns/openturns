@@ -35,11 +35,11 @@ static const Factory<Contour> Factory_Contour;
 /* Default constructor */
 Contour::Contour(const UnsignedInteger dimX,
                  const UnsignedInteger dimY,
-                 const NumericalSample & data,
+                 const Sample & data,
                  const String & legend)
   : DrawableImplementation(data, legend)
-  , x_(NumericalSample(dimX, 1))
-  , y_(NumericalSample(dimY, 1))
+  , x_(Sample(dimX, 1))
+  , y_(Sample(dimY, 1))
   , levels_(NumericalPoint(ResourceMap::GetAsUnsignedInteger( "Contour-DefaultLevelsNumber" )))
   , labels_(ResourceMap::GetAsUnsignedInteger( "Contour-DefaultLevelsNumber" ))
   , drawLabels_(true)
@@ -60,9 +60,9 @@ Contour::Contour(const UnsignedInteger dimX,
 }
 
 /* Constructor with parameters */
-Contour::Contour(const NumericalSample & x,
-                 const NumericalSample & y,
-                 const NumericalSample & data,
+Contour::Contour(const Sample & x,
+                 const Sample & y,
+                 const Sample & data,
                  const NumericalPoint & levels,
                  const Description & labels,
                  const Bool drawLabels,
@@ -97,23 +97,23 @@ String Contour::__repr__() const
 }
 
 /* Accessor for first coordinate */
-NumericalSample Contour::getX() const
+Sample Contour::getX() const
 {
   return x_;
 }
 
-void Contour::setX(const NumericalSample & x)
+void Contour::setX(const Sample & x)
 {
   x_ = x;
 }
 
 /* Accessor for second coordinate */
-NumericalSample Contour::getY() const
+Sample Contour::getY() const
 {
   return y_;
 }
 
-void Contour::setY(const NumericalSample & y)
+void Contour::setY(const Sample & y)
 {
   y_ = y;
 }
@@ -228,7 +228,7 @@ Contour * Contour::clone() const
 }
 
 /* Check for data validity */
-void Contour::checkData(const NumericalSample & data) const
+void Contour::checkData(const Sample & data) const
 {
   if (data.getDimension() != 1)
   {
@@ -241,7 +241,7 @@ void Contour::checkData(const NumericalSample & data) const
 void Contour::buildDefaultLevels(const UnsignedInteger number)
 {
   // Use the empirical quantiles
-  const NumericalSample sortedData(data_.sort(0));
+  const Sample sortedData(data_.sort(0));
   const UnsignedInteger size = data_.getSize();
   levels_ = NumericalPoint(number);
   for (UnsignedInteger i = 0; i < number; ++i) levels_[i] = sortedData[static_cast<UnsignedInteger>(size * (i + 0.5) / number)][0];

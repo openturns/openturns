@@ -36,7 +36,7 @@ Examples
 >>> minSample = sample.getMin()[0]
 >>> maxSample = sample.getMax()[0] + 0.1
 >>> nBars = 4
->>> data = ot.NumericalSample(nBars, [(maxSample - minSample) / nBars, 0])
+>>> data = ot.Sample(nBars, [(maxSample - minSample) / nBars, 0])
 >>> for i in range(10):
 ...     index = int(floor((sample[i, 0] - minSample) / (maxSample - minSample) * nBars))
 ...     data[index, 1] += 1

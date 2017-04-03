@@ -6,11 +6,11 @@ import openturns as ot
 basisSize = 3
 sampleSize = 3
 
-X = ot.NumericalSample(sampleSize, 1)
+X = ot.Sample(sampleSize, 1)
 for i in range(sampleSize):
     X[i, 0] = i + 1.0
 
-Y = ot.NumericalSample(sampleSize, 1)
+Y = ot.Sample(sampleSize, 1)
 
 phis = []
 for j in range(basisSize):

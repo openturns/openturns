@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     fullprint << sequence << std::endl;
 
     // Create a numerical sample of the sequence
-    NumericalSample sobolSample(sequence.generate(10));
+    Sample sobolSample(sequence.generate(10));
     fullprint << sobolSample << std::endl;
 
     // Create another Sobol' sequence of dimension 2 to estimate Pi in [0; 1)^2

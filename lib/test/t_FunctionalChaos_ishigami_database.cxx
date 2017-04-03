@@ -89,8 +89,8 @@ int main(int argc, char *argv[])
     UnsignedInteger samplingSize = 250;
     Collection<ProjectionStrategy> listProjectionStrategy(0);
     // Monte Carlo sampling
-    NumericalSample inputSample(LowDiscrepancyExperiment(LowDiscrepancySequence(SobolSequence()), distribution, samplingSize).generate());
-    NumericalSample outputSample(model(inputSample));
+    Sample inputSample(LowDiscrepancyExperiment(LowDiscrepancySequence(SobolSequence()), distribution, samplingSize).generate());
+    Sample outputSample(model(inputSample));
     // From here, the model is no more needed
     listProjectionStrategy.add(LeastSquaresStrategy());
     listProjectionStrategy.add(LeastSquaresStrategy(LeastSquaresMetaModelSelectionFactory (LARS(), CorrectedLeaveOneOut())));

@@ -29,7 +29,7 @@
 #include "openturns/Indices.hxx"
 #include "openturns/WeightedExperiment.hxx"
 #include "openturns/Pointer.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Basis.hxx"
 #include "openturns/DesignProxy.hxx"
 
@@ -72,9 +72,9 @@ public:
                                    const WeightedExperiment & weightedExperiment);
 
   /** Parameter constructor */
-  ProjectionStrategyImplementation(const NumericalSample & inputSample,
+  ProjectionStrategyImplementation(const Sample & inputSample,
                                    const NumericalPoint & weights,
-                                   const NumericalSample & outputSample);
+                                   const Sample & outputSample);
 
   /** Virtual constructor */
   virtual ProjectionStrategyImplementation * clone() const;
@@ -87,8 +87,8 @@ public:
   Distribution getMeasure() const;
 
   /** Sample accessors */
-  virtual NumericalSample getInputSample() const;
-  virtual NumericalSample getOutputSample() const;
+  virtual Sample getInputSample() const;
+  virtual Sample getOutputSample() const;
 
   /** Weights accessor */
   virtual NumericalPoint getWeights() const;
@@ -140,13 +140,13 @@ protected:
   WeightedExperiment weightedExperiment_;
 
   // The input sample which will be used for the projection
-  NumericalSample inputSample_;
+  Sample inputSample_;
 
   // The weights associated with the sample
   NumericalPoint weights_;
 
   // The sample value of the model
-  NumericalSample outputSample_;
+  Sample outputSample_;
 
   // Proxy to speed up evaluations of the basis over the input sample
   DesignProxy proxy_;

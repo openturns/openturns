@@ -72,8 +72,8 @@ public:
   /** Projection method */
   NumericalPoint project(const Function & function) const;
   NumericalPoint project(const Field & field) const;
-  NumericalSample project(const Basis & basis) const;
-  NumericalSample project(const ProcessSample & sample) const;
+  Sample project(const Basis & basis) const;
+  Sample project(const ProcessSample & sample) const;
 
   /** Lift method */
   Function lift(const NumericalPoint & coefficients) const;

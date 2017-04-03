@@ -78,12 +78,12 @@ WeightedExperiment ProjectionStrategy::getExperiment() const
 }
 
 /* Sample accessors */
-NumericalSample ProjectionStrategy::getInputSample() const
+Sample ProjectionStrategy::getInputSample() const
 {
   return getImplementation()->getInputSample();
 }
 
-NumericalSample ProjectionStrategy::getOutputSample() const
+Sample ProjectionStrategy::getOutputSample() const
 {
   return getImplementation()->getOutputSample();
 }

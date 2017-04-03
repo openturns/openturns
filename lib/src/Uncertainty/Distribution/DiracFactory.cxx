@@ -44,7 +44,7 @@ DiracFactory * DiracFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-DiracFactory::Implementation DiracFactory::build(const NumericalSample & sample) const
+DiracFactory::Implementation DiracFactory::build(const Sample & sample) const
 {
   return buildAsDirac(sample).clone();
 }
@@ -59,7 +59,7 @@ DiracFactory::Implementation DiracFactory::build() const
   return buildAsDirac().clone();
 }
 
-Dirac DiracFactory::buildAsDirac(const NumericalSample & sample) const
+Dirac DiracFactory::buildAsDirac(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Dirac distribution from an empty sample";

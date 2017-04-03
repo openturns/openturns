@@ -42,7 +42,7 @@ LaplaceFactory * LaplaceFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-LaplaceFactory::Implementation LaplaceFactory::build(const NumericalSample & sample) const
+LaplaceFactory::Implementation LaplaceFactory::build(const Sample & sample) const
 {
   return buildAsLaplace(sample).clone();
 }
@@ -57,7 +57,7 @@ LaplaceFactory::Implementation LaplaceFactory::build() const
   return buildAsLaplace().clone();
 }
 
-Laplace LaplaceFactory::buildAsLaplace(const NumericalSample & sample) const
+Laplace LaplaceFactory::buildAsLaplace(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Laplace distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Laplace distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();

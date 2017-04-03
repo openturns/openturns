@@ -48,7 +48,7 @@ public:
   String __repr__() const;
 
   /** Evaluate criterion on a sample */
-  NumericalScalar evaluate(const NumericalSample& sample) const;
+  NumericalScalar evaluate(const Sample& sample) const;
 
 }; /* class SpaceFillingMinDist */
 

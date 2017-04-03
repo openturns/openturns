@@ -66,7 +66,7 @@ public:
   NumericalPoint getRealization() const;
 
   /** Get a sample of the distribution */
-  NumericalSample getSample(const UnsignedInteger size) const;
+  Sample getSample(const UnsignedInteger size) const;
 
   /** Get the PDF of the distribution */
   using DiscreteDistribution::computePDF;
@@ -99,7 +99,7 @@ public:
 
   /** Get the support of a discrete distribution that intersect a given interval */
   using DistributionImplementation::getSupport;
-  NumericalSample getSupport(const Interval & interval) const;
+  Sample getSupport(const Interval & interval) const;
 
   /** Get the standard deviation of the distribution */
   NumericalPoint getStandardDeviation() const;

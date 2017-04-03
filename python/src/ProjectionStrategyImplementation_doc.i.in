@@ -114,7 +114,7 @@ OT_ProjectionStrategy_getExperiment_doc
 
 Returns
 -------
-X : :class:`~openturns.NumericalSample`
+X : :class:`~openturns.Sample`
     Input Sample."
 %enddef
 %feature("docstring") OT::ProjectionStrategyImplementation::getInputSample
@@ -140,7 +140,7 @@ OT_ProjectionStrategy_getMeasure_doc
 
 Returns
 -------
-Y : :class:`~openturns.NumericalSample`
+Y : :class:`~openturns.Sample`
     Output Sample."
 %enddef
 %feature("docstring") OT::ProjectionStrategyImplementation::getOutputSample

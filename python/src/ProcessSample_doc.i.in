@@ -113,7 +113,7 @@ mean : :class:`~openturns.Field`
 
 Returns
 -------
-spatialMean : :class:`~openturns.NumericalSample`
+spatialMean : :class:`~openturns.Sample`
     Its size is the number `K` of fields in the collection.
     Its dimension is `d`. The `k` numerical point is the spatial mean of the field `k`:
 
@@ -128,7 +128,7 @@ spatialMean : :class:`~openturns.NumericalSample`
 
 Returns
 -------
-spatialMean : :class:`~openturns.NumericalSample`
+spatialMean : :class:`~openturns.Sample`
     Its size is the number `K` of fields in the collection.
     Its dimension is `d`.
     The `k` numerical point is the temporal mean of the field `k`:

@@ -23,7 +23,7 @@
 
 #include "openturns/MetaModelResult.hxx"
 #include "openturns/CovarianceModel.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Basis.hxx"
@@ -57,8 +57,8 @@ public:
   GeneralLinearModelResult();
 
   /** Parameter constructor without any cholesky factor*/
-  GeneralLinearModelResult(const NumericalSample & inputData,
-                               const NumericalSample & outputData,
+  GeneralLinearModelResult(const Sample & inputData,
+                               const Sample & outputData,
                                const Function & metaModel,
                                const NumericalPoint & residuals,
                                const NumericalPoint & relativeErrors,
@@ -68,8 +68,8 @@ public:
 			       const NumericalScalar optimalLogLikelihood);
 
   /** Parameter constructor with Cholesky factor (Lapack)*/
-  GeneralLinearModelResult(const NumericalSample & inputData,
-                               const NumericalSample & outputData,
+  GeneralLinearModelResult(const Sample & inputData,
+                               const Sample & outputData,
                                const Function & metaModel,
                                const NumericalPoint & residuals,
                                const NumericalPoint & relativeErrors,
@@ -124,15 +124,15 @@ protected:
   HMatrix getHMatCholeskyFactor() const;
 
   // Return input sample transformed
-  NumericalSample getInputTransformedSample() const;
+  Sample getInputTransformedSample() const;
 
 private:
 
   /** inputData should be keeped*/
-  NumericalSample inputData_;
+  Sample inputData_;
 
   /** input transformed data: store data*/
-  NumericalSample inputTransformedData_;
+  Sample inputTransformedData_;
 
   /** inputTransformation ==> iso-probabilistic transformation */
   Function inputTransformation_;

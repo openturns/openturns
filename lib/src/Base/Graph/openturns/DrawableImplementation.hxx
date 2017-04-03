@@ -25,7 +25,7 @@
 #include "openturns/Description.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -49,7 +49,7 @@ public:
   typedef NumericalPoint BoundingBox;
 
   /** Default Constructor with legend label */
-  explicit DrawableImplementation(const NumericalSample & data,
+  explicit DrawableImplementation(const Sample & data,
                                   const String & legend = "");
 
   /** String converter */
@@ -67,7 +67,7 @@ public:
   virtual void setLegend(const String & legend);
 
   /** Data accessor */
-  virtual NumericalSample getData() const;
+  virtual Sample getData() const;
 
   /** Line style accessor */
   virtual String getLineStyle() const;
@@ -116,12 +116,12 @@ public:
   virtual void setOrigin(const NumericalScalar origin);
 
   /** Accessor for first coordinate */
-  virtual NumericalSample getX() const;
-  virtual void setX(const NumericalSample & x);
+  virtual Sample getX() const;
+  virtual void setX(const Sample & x);
 
   /** Accessor for second coordinate */
-  virtual NumericalSample getY() const;
-  virtual void setY(const NumericalSample & y);
+  virtual Sample getY() const;
+  virtual void setY(const Sample & y);
 
   /** Accessor for levels */
   virtual NumericalPoint getLevels() const;
@@ -270,18 +270,18 @@ protected:
   static const UnsignedInteger BoundingBoxSize;
 
   /** Data accessor */
-  virtual void setData(const NumericalSample & data);
+  virtual void setData(const Sample & data);
   virtual void setData(const NumericalPoint & data);
 
   /** Check data */
-  virtual void checkData(const NumericalSample & data) const;
+  virtual void checkData(const Sample & data) const;
   virtual void checkData(const NumericalPoint & data) const;
 
   /** The legend of the drawable, to be displayed in the legend of the graph */
   String legend_;
 
   /** The data to be plotted */
-  NumericalSample data_;
+  Sample data_;
 
   /** Color of the curve */
   String color_;

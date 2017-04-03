@@ -21,7 +21,7 @@
 #include "openturns/HMatrixFactory.hxx"
 #include "openturns/HMatrix.hxx"
 #include "openturns/HMatrixImplementation.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Log.hxx"
 
 #ifdef OPENTURNS_HAVE_HMAT
@@ -63,7 +63,7 @@ HMatrixFactory::IsAvailable()
 
 
 HMatrix
-HMatrixFactory::build(const NumericalSample & sample, UnsignedInteger outputDimension, Bool symmetric, const HMatrixParameters & parameters)
+HMatrixFactory::build(const Sample & sample, UnsignedInteger outputDimension, Bool symmetric, const HMatrixParameters & parameters)
 {
 #ifndef OPENTURNS_HAVE_HMAT
   throw NotYetImplementedException(HERE) << "OpenTURNS has been built without HMat support";

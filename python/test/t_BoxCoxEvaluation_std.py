@@ -29,9 +29,9 @@ try:
     print("myFunction=", myFunction)
     print(myFunction.getName(), "( ", inPoint, " ) = ", outPoint)
 
-    # Creation of a NumericalSample
+    # Creation of a Sample
     size = 10
-    inSample = NumericalSample(size, dimension)
+    inSample = Sample(size, dimension)
     for index in range(size):
         inSample[index] = NumericalPoint(dimension, index + 1)
 

@@ -329,7 +329,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> mesh = ot.Mesh()
->>> vertices = ot.NumericalSample([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]])
+>>> vertices = ot.Sample([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]])
 >>> vertices.setDescription(['X', 'Y'])
 >>> mesh.setVertices(vertices)
 >>> print(mesh.getDescription())
@@ -515,7 +515,7 @@ Examples
 
 Returns
 -------
-vertices : :class:`~openturns.NumericalSample`
+vertices : :class:`~openturns.Sample`
     Coordinates in :math:`\Rset^{dim}` of the vertices,
     where :math:`dim` is the dimension of the vertices of the mesh.
 

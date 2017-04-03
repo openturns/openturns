@@ -44,10 +44,10 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build(const NumericalSample & sample) const;
+  Implementation build(const Sample & sample) const;
   Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
-  Rayleigh buildAsRayleigh(const NumericalSample & sample) const;
+  Rayleigh buildAsRayleigh(const Sample & sample) const;
   Rayleigh buildAsRayleigh(const NumericalPoint & parameters) const;
   Rayleigh buildAsRayleigh() const;
 

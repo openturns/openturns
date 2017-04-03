@@ -22,7 +22,7 @@
 #define OPENTURNS_LEASTSQUARESMETHODIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/FunctionalBasis.hxx"
 #include "openturns/DesignProxy.hxx"
 
@@ -62,7 +62,7 @@ public:
   virtual String __repr__() const;
 
   /** Input sample accessor */
-  virtual NumericalSample getInputSample() const;
+  virtual Sample getInputSample() const;
 
   /** Weight accessor */
   virtual NumericalPoint getWeight() const;

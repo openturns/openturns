@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     const UnsignedInteger n = 51;
     const NumericalScalar timeStart = 0.;
     const NumericalScalar timeStep = 0.1;
-    NumericalSample mySample(myDistribution.getSample(n));
+    Sample mySample(myDistribution.getSample(n));
     RegularGrid myTimeGrid(timeStart, timeStep, n);
 
     /* Create a TimeSeries */

@@ -10,10 +10,10 @@ Available constructors:
 
 Parameters
 ----------
-inputDesign : :class:`~openturns.NumericalSample`
+inputDesign : :class:`~openturns.Sample`
     Design for the evaluation of sensitivity indices, obtained
     thanks to the SobolIndicesAlgorithmImplementation.Generate method
-outputDesign : :class:`~openturns.NumericalSample`
+outputDesign : :class:`~openturns.Sample`
     Design for the evaluation of sensitivity indices, obtained as the evaluation
     of a Function (model) on the previous inputDesign
 distribution : :class:`~openturns.Distribution`

@@ -136,7 +136,7 @@ int main(int argc, char *argv[])
     marginals[1] = Uniform(-M_PI, M_PI);
     marginals[2] = Uniform(-M_PI, M_PI);
     ComposedDistribution distribution(marginals);
-    NumericalSample inputsSample(distribution.getSample(100));
+    Sample inputsSample(distribution.getSample(100));
 
     NumericalPoint refResultValues(100, 0.);
     for (UnsignedInteger i = 0; i < 100; ++ i)
@@ -144,7 +144,7 @@ int main(int argc, char *argv[])
       refResultValues[i] = model(inputsSample[i])[0];
     }
 
-    NumericalSample resultSample(model(inputsSample));
+    Sample resultSample(model(inputsSample));
 
     fullprint << "First reference value : " << refResultValues[0] << std::endl;
     fullprint << "First result calculated : " << resultSample[0][0] << std::endl;

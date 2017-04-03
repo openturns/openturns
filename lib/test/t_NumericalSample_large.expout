@@ -1,6 +1,0 @@
-sample=class=NumericalSample name=EmptySample implementation=class=NumericalSampleImplementation name=EmptySample size=0 dimension=2 data=[]
-sample=class=NumericalSample name=SmallSample implementation=class=NumericalSampleImplementation name=SmallSample size=1 dimension=2 data=[[0,0]]
-p=class=NumericalPoint name=Unnamed dimension=2 values=[0,0]
-sample first point=class=NumericalPoint name=Unnamed dimension=2 values=[0,0]
-sample last  point=class=NumericalPoint name=Unnamed dimension=2 values=[999999,999999]
-sample mean  value=class=NumericalPoint name=Unnamed dimension=2 values=[500000,500000]

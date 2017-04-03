@@ -49,8 +49,8 @@ LARS * LARS::clone() const
 }
 
 /* Method to create new BasisSequence objects */
-BasisSequence LARS::build (const NumericalSample & x,
-                           const NumericalSample & y,
+BasisSequence LARS::build (const Sample & x,
+                           const Sample & y,
                            const Basis & basis,
                            const Indices & indices)
 {
@@ -72,9 +72,9 @@ void LARS::initialize()
 
 /* Method to create new BasisSequence objects */
 void LARS::updateBasis(LeastSquaresMethod & method,
-                       const NumericalSample & y)
+                       const Sample & y)
 {
-  NumericalSample x(method.getInputSample());
+  Sample x(method.getInputSample());
 
   const UnsignedInteger sampleSize = x.getSize();
 

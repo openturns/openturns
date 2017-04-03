@@ -116,7 +116,7 @@ prob : bool
 
 Returns
 -------
-inputSample : `~openturns.NumericalSample`
+inputSample : `~openturns.Sample`
     Input sample."
 
 // ---------------------------------------------------------------------------
@@ -126,7 +126,7 @@ inputSample : `~openturns.NumericalSample`
 
 Returns
 -------
-outputSample : `~openturns.NumericalSample`
+outputSample : `~openturns.Sample`
     Ouput sample."
 
 // ---------------------------------------------------------------------------

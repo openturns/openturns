@@ -56,9 +56,9 @@ QuadrantSampling * QuadrantSampling::clone() const
 
 
 /* Generate a set of directions */
-NumericalSample QuadrantSampling::generate() const
+Sample QuadrantSampling::generate() const
 {
-  NumericalSample result(samplingStrategy_.generate());
+  Sample result(samplingStrategy_.generate());
   const UnsignedInteger size = result.getSize();
   const UnsignedInteger strataDimension = strataIndices_.getSize();
 
@@ -159,7 +159,7 @@ void QuadrantSampling::updateRotation()
     }
 
     // Gram-Schmidt algorithm
-    NumericalSample f(p, p);
+    Sample f(p, p);
     // f0 = u* / ||u*||
     f[0] = u / u.norm();
     for (UnsignedInteger k = 1; k < p; ++ k)

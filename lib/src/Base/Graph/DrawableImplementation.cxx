@@ -964,7 +964,7 @@ String DrawableImplementation::ConvertFromHSVA(const NumericalScalar hue,
 }
 
 /* Default constructor */
-DrawableImplementation::DrawableImplementation(const NumericalSample & data,
+DrawableImplementation::DrawableImplementation(const Sample & data,
     const String & legend)
   : PersistentObject(),
     legend_(legend),
@@ -1154,9 +1154,9 @@ Bool DrawableImplementation::IsValidPattern(const String & pattern)
 }
 
 /* Check validity of the data */
-void DrawableImplementation::checkData(const NumericalSample & data) const
+void DrawableImplementation::checkData(const Sample & data) const
 {
-  throw NotYetImplementedException(HERE) << "DrawableImplementation::checkData(const NumericalSample & data) const";
+  throw NotYetImplementedException(HERE) << "DrawableImplementation::checkData(const Sample & data) const";
 }
 
 void DrawableImplementation::checkData(const NumericalPoint & data) const
@@ -1165,13 +1165,13 @@ void DrawableImplementation::checkData(const NumericalPoint & data) const
 }
 
 /* Data Accessor */
-NumericalSample DrawableImplementation::getData() const
+Sample DrawableImplementation::getData() const
 {
   return data_;
 }
 
 /* Data accessor */
-void DrawableImplementation::setData(const NumericalSample & data)
+void DrawableImplementation::setData(const Sample & data)
 {
   checkData(data);
   data_ = data;
@@ -1181,7 +1181,7 @@ void DrawableImplementation::setData(const NumericalPoint & data)
 {
   checkData(data);
   const UnsignedInteger size = data.getDimension();
-  data_ = NumericalSample(size, 1);
+  data_ = Sample(size, 1);
   data_.getImplementation()->setData(data);
 }
 
@@ -1343,23 +1343,23 @@ void DrawableImplementation::setOrigin(const NumericalScalar origin)
 }
 
 /* Accessor for first coordinate */
-NumericalSample DrawableImplementation::getX() const
+Sample DrawableImplementation::getX() const
 {
   throw NotDefinedException(HERE) << "Error: no sample X in " << getClassName();
 }
 
-void DrawableImplementation::setX(const NumericalSample & x)
+void DrawableImplementation::setX(const Sample & x)
 {
   throw NotDefinedException(HERE) << "Error: no sample X in " << getClassName();
 }
 
 /* Accessor for second coordinate */
-NumericalSample DrawableImplementation::getY() const
+Sample DrawableImplementation::getY() const
 {
   throw NotDefinedException(HERE) << "Error: no sample Y in " << getClassName();
 }
 
-void DrawableImplementation::setY(const NumericalSample & y)
+void DrawableImplementation::setY(const Sample & y)
 {
   throw NotDefinedException(HERE) << "Error: no sample Y in " << getClassName();
 }

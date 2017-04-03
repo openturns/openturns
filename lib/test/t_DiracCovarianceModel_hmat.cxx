@@ -30,7 +30,7 @@ hmatrix__str__(const HMatrix & hmat)
 {
   if (hmat.getNbRows() == 0 || hmat.getNbColumns() == 0) return "[]";
 
-  NumericalSample res(hmat.getNbRows(), hmat.getNbColumns());
+  Sample res(hmat.getNbRows(), hmat.getNbColumns());
   for ( UnsignedInteger i = 0; i < hmat.getNbRows(); ++i)
   {
     NumericalPoint x(hmat.getNbColumns());
@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
     // Evaluation on some points
     Indices levels(spatialDimension, 1);
     Box box(levels);
-    const NumericalSample vertices = box.generate();
+    const Sample vertices = box.generate();
     const NumericalScalar nuggetFactor = ResourceMap::GetAsNumericalScalar("CovarianceModel-DefaultNuggetFactor");
     const HMatrixParameters parameters;
 

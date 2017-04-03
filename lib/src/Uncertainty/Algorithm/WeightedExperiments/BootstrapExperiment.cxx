@@ -36,7 +36,7 @@ BootstrapExperiment::BootstrapExperiment():
 }
 
 /* Constructor with parameters */
-BootstrapExperiment::BootstrapExperiment(const NumericalSample & sample):
+BootstrapExperiment::BootstrapExperiment(const Sample & sample):
   WeightedExperimentImplementation(UserDefined(sample), sample.getSize())
 {
   // Nothing to do
@@ -60,7 +60,7 @@ String BootstrapExperiment::__repr__() const
 }
 
 /* Sample generation */
-NumericalSample BootstrapExperiment::generateWithWeights(NumericalPoint & weights) const
+Sample BootstrapExperiment::generateWithWeights(NumericalPoint & weights) const
 {
   weights = NumericalPoint(size_, 1.0 / size_);
   return distribution_.getSample(size_);

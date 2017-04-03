@@ -52,7 +52,7 @@ CanonicalTensorEvaluation::CanonicalTensorEvaluation(const FunctionFamilyCollect
 
   for (UnsignedInteger j = 0; j < dimension; ++ j)
   {
-    coefficients_[j] = NumericalSample(rank, nk[j]);
+    coefficients_[j] = Sample(rank, nk[j]);
     basis_[j] = Basis(nk[j]);
     for (UnsignedInteger k = 0; k < nk[j]; ++ k)
     {
@@ -107,12 +107,12 @@ void CanonicalTensorEvaluation::setRank(const UnsignedInteger rank)
     if (rank > oldRank)
     {
       // add coefficients
-      coefficients_[j].add(NumericalSample(rank - oldRank, degrees_[j]));
+      coefficients_[j].add(Sample(rank - oldRank, degrees_[j]));
     }
     else if (rank < oldRank)
     {
       // remove coefficients
-      coefficients_[j] = NumericalSample(coefficients_[j], 0, rank);
+      coefficients_[j] = Sample(coefficients_[j], 0, rank);
     }
   }
 }

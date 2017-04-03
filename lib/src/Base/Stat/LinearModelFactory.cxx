@@ -39,8 +39,8 @@ LinearModelFactory::LinearModelFactory()
 }
 
 /* LinearModel creation */
-LinearModel LinearModelFactory::build(const NumericalSample & samplePred,
-                                      const NumericalSample & sampleLab,
+LinearModel LinearModelFactory::build(const Sample & samplePred,
+                                      const Sample & sampleLab,
                                       const NumericalScalar levelValue) const
 {
   if (samplePred.getSize() != sampleLab.getSize()) throw InvalidArgumentException(HERE) << "Error: predictors sample must have the same size than the laboratory sample";
@@ -64,7 +64,7 @@ LinearModel LinearModelFactory::build(const NumericalSample & samplePred,
   const String RExecutable(ResourceMap::Get("R-executable-command"));
   OSS systemCommand;
   if (RExecutable != "") systemCommand << RExecutable << " --no-save --silent < \"" << commandFileName << "\"" << Os::GetDeleteCommandOutput();
-  else throw NotYetImplementedException(HERE) << "In LinearModelFactory::build(const NumericalSample & samplePred, const NumericalSample & sampleLab, const NumericalScalar levelValue) const: needs R. Please install it and set the absolute path of the R executable in ResourceMap.";
+  else throw NotYetImplementedException(HERE) << "In LinearModelFactory::build(const Sample & samplePred, const Sample & sampleLab, const NumericalScalar levelValue) const: needs R. Please install it and set the absolute path of the R executable in ResourceMap.";
   int returnCode(Os::ExecuteCommand(systemCommand));
   if (returnCode != 0) throw InternalException(HERE) << "Error: unable to execute the system command " << String(systemCommand) << " returned code is " << returnCode;
   // Parse result file

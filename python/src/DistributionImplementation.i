@@ -1,16 +1,16 @@
 // SWIG file DistributionImplementation.i
 
 // do not pass argument by reference, return it as tuple item
-%typemap(in, numinputs=0) OT::NumericalSample & grid ($*ltype temp) %{ temp = OT::NumericalSample(); $1 = &temp; %}
-%typemap(argout) OT::NumericalSample & grid %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::NumericalSample(*$1), SWIG_TypeQuery("OT::NumericalSample *"), SWIG_POINTER_OWN |  0 )); %}
-OT::NumericalSample OT::DistributionImplementation::computePDF(const OT::NumericalScalar xMin,
+%typemap(in, numinputs=0) OT::Sample & grid ($*ltype temp) %{ temp = OT::Sample(); $1 = &temp; %}
+%typemap(argout) OT::Sample & grid %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::Sample(*$1), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN |  0 )); %}
+OT::Sample OT::DistributionImplementation::computePDF(const OT::NumericalScalar xMin,
                            const OT::NumericalScalar xMax,
                            const OT::UnsignedInteger pointNumber,
-                           OT::NumericalSample & grid) const;
-OT::NumericalSample OT::DistributionImplementation::computePDF(const OT::NumericalPoint & xMin,
+                           OT::Sample & grid) const;
+OT::Sample OT::DistributionImplementation::computePDF(const OT::NumericalPoint & xMin,
                            const OT::NumericalPoint & xMax,
                            const OT::Indices & pointNumber,
-                           OT::NumericalSample & grid) const;
+                           OT::Sample & grid) const;
 
 %typemap(in, numinputs=0) OT::NumericalPoint & weights ($*ltype temp) %{ temp = OT::NumericalPoint(); $1 = &temp; %}
 %typemap(argout) OT::NumericalPoint & weights %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::NumericalPoint(*$1), SWIG_TypeQuery("OT::NumericalPoint *"), SWIG_POINTER_OWN |  0 )); %}

@@ -1,11 +1,11 @@
 // SWIG file GaussLegendre.i
 
 // do not pass argument by reference, return it as tuple item
-%typemap(in, numinputs=0) OT::NumericalSample & adaptedNodes ($*ltype temp) %{ temp = OT::NumericalSample(); $1 = &temp; %}
-%typemap(argout) OT::NumericalSample & adaptedNodes %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::NumericalSample(*$1), SWIG_TypeQuery("OT::NumericalSample *"), SWIG_POINTER_OWN |  0 )); %}
+%typemap(in, numinputs=0) OT::Sample & adaptedNodes ($*ltype temp) %{ temp = OT::Sample(); $1 = &temp; %}
+%typemap(argout) OT::Sample & adaptedNodes %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::Sample(*$1), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN |  0 )); %}
 OT::NumericalPoint OT::GaussLegendre::integrateWithNodes(const OT::Function & function,
                            const OT::Interval & interval,
-                           OT::NumericalSample & adaptedNodes) const;
+                           OT::Sample & adaptedNodes) const;
 
 %{
 #include "openturns/GaussLegendre.hxx"

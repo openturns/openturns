@@ -98,7 +98,7 @@ private:
   NumericalScalar threshold_;
 
   /** Quadrature nodes and weights */
-  NumericalSample nodes_;
+  Sample nodes_;
   NumericalPoint weights_;
 
   /** Scaled design matrix */

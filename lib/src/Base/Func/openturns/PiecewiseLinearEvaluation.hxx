@@ -52,7 +52,7 @@ public:
 
   /** Parameter constructor */
   PiecewiseLinearEvaluation(const NumericalPoint & locations,
-                                          const NumericalSample & values);
+                                          const Sample & values);
 
   /** Virtual constructor */
   virtual PiecewiseLinearEvaluation * clone() const;
@@ -70,13 +70,13 @@ public:
   void setLocations(const NumericalPoint & locations);
 
   /** Values accessor */
-  NumericalSample getValues() const;
+  Sample getValues() const;
   void setValues(const NumericalPoint & values);
-  void setValues(const NumericalSample & values);
+  void setValues(const Sample & values);
 
   /** Simultaneous locations and values acessor */
   void setLocationsAndValues(const NumericalPoint & locations,
-                             const NumericalSample & values);
+                             const Sample & values);
 
   /** Input dimension accessor */
   UnsignedInteger getInputDimension() const;
@@ -98,7 +98,7 @@ private:
   NumericalPoint locations_;
 
   // The values
-  NumericalSample values_;
+  Sample values_;
 
   // Are locations regularly spaced?
   Bool isRegular_;

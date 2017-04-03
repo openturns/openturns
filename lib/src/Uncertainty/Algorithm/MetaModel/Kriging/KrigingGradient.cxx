@@ -45,10 +45,10 @@ KrigingGradient::KrigingGradient()
 
 /* Constructor with parameters */
 KrigingGradient::KrigingGradient(const BasisCollection & basis,
-                                 const NumericalSample & inputSample,
+                                 const Sample & inputSample,
                                  const CovarianceModel & covarianceModel,
                                  const NumericalPointCollection & beta,
-                                 const NumericalSample & gamma)
+                                 const Sample & gamma)
   : GradientImplementation()
   , basis_(basis)
   , inputSample_(inputSample)

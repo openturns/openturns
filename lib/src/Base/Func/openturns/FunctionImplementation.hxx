@@ -24,7 +24,7 @@
 #include "openturns/PersistentObject.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/NumericalPointWithDescription.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Field.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Pointer.hxx"
@@ -77,8 +77,8 @@ public:
                                       const Description & formulas);
 
   /** Database constructor */
-  FunctionImplementation(const NumericalSample & inputSample,
-                                      const NumericalSample & outputSample);
+  FunctionImplementation(const Sample & inputSample,
+                                      const Sample & outputSample);
 
   /** Constructor from implementations */
   FunctionImplementation(const EvaluationPointer & funcImpl,
@@ -131,15 +131,15 @@ public:
 
   /** @brief Add some content to the cache
    */
-  void addCacheContent(const NumericalSample & inSample, const NumericalSample & outSample);
+  void addCacheContent(const Sample & inSample, const Sample & outSample);
 
   /** @brief Returns the cache input
    */
-  NumericalSample getCacheInput() const;
+  Sample getCacheInput() const;
 
   /** @brief Returns the cache output
    */
-  NumericalSample getCacheOutput() const;
+  Sample getCacheOutput() const;
 
   void clearCache() const;
 
@@ -176,8 +176,8 @@ public:
   HistoryStrategy getHistoryOutput() const;
 
   /** Input point / parameter history accessor */
-  virtual NumericalSample getInputPointHistory() const;
-  virtual NumericalSample getInputParameterHistory() const;
+  virtual Sample getInputPointHistory() const;
+  virtual Sample getInputParameterHistory() const;
 
   /** Function implementation accessors */
   void setEvaluation(const EvaluationPointer & evaluation);
@@ -204,10 +204,10 @@ public:
 
   virtual NumericalPoint operator()(const NumericalPoint & inP,
                                     const NumericalPoint & parameter);
-  virtual NumericalSample operator() (const NumericalPoint & point,
-                                      const NumericalSample & parameters);
+  virtual Sample operator() (const NumericalPoint & point,
+                                      const Sample & parameters);
 
-  virtual NumericalSample operator() (const NumericalSample & inS) const;
+  virtual Sample operator() (const Sample & inS) const;
 
   virtual Field operator() (const Field & inField) const;
 

@@ -104,12 +104,12 @@ public:
   void setOrigin(const NumericalScalar origin);
 
   /** Accessor for first coordinate */
-  NumericalSample getX() const;
-  void setX(const NumericalSample & x);
+  Sample getX() const;
+  void setX(const Sample & x);
 
   /** Accessor for second coordinate */
-  NumericalSample getY() const;
-  void setY(const NumericalSample & y);
+  Sample getY() const;
+  void setY(const Sample & y);
 
   /** Accessor for levels */
   NumericalPoint getLevels() const;
@@ -128,7 +128,7 @@ public:
   void setTextPositions(const Description & textPositions);
 
   /** Accessor for data */
-  NumericalSample getData() const;
+  Sample getData() const;
 
   /** Generate R commands for plotting the graphic */
   String draw() const;

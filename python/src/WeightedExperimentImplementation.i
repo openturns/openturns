@@ -14,4 +14,4 @@ OT::NumericalPoint OT::WeightedExperimentImplementation::generateWithWeights(OT:
 %include openturns/WeightedExperimentImplementation.hxx
 namespace OT { %extend WeightedExperimentImplementation { WeightedExperimentImplementation(const WeightedExperimentImplementation & other) { return new OT::WeightedExperimentImplementation(other); } } }
 
-%clear OT::NumericalSample & weights;
+%clear OT::Sample & weights;

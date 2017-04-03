@@ -45,10 +45,10 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build(const NumericalSample & sample) const;
+  Implementation build(const Sample & sample) const;
   Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
-  Uniform buildAsUniform(const NumericalSample & sample) const;
+  Uniform buildAsUniform(const Sample & sample) const;
   Uniform buildAsUniform(const NumericalPoint & parameters) const;
   Uniform buildAsUniform() const;
 

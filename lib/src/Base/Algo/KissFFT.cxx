@@ -202,7 +202,7 @@ ComplexMatrix KissFFT::transform2D(const Matrix & matrix) const
 }
 
 /** FFT 2D transformation on sample */
-ComplexMatrix KissFFT::transform2D(const NumericalSample & sample) const
+ComplexMatrix KissFFT::transform2D(const Sample & sample) const
 {
   const UnsignedInteger rows = sample.getSize();
   const UnsignedInteger columns = sample.getDimension();
@@ -234,7 +234,7 @@ ComplexMatrix KissFFT::inverseTransform2D(const Matrix & matrix) const
 }
 
 /** IFFT 2D transformation on sample */
-ComplexMatrix KissFFT::inverseTransform2D(const NumericalSample & sample) const
+ComplexMatrix KissFFT::inverseTransform2D(const Sample & sample) const
 {
   const UnsignedInteger rows = sample.getSize();
   const UnsignedInteger columns = sample.getDimension();

@@ -21,7 +21,7 @@
 #include "openturns/WelchFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/HermitianMatrix.hxx"
 #include "openturns/NumericalPoint.hxx"

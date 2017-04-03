@@ -16,7 +16,7 @@ try:
     sigma[0] = 2.0
     sigma[1] = 3.0
 
-    sample = NumericalSample(0, dimension)
+    sample = Sample(0, dimension)
     # Create a collection of distribution
     aCollection = DistributionCollection()
 

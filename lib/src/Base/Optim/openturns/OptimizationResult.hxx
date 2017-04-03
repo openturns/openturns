@@ -76,23 +76,23 @@ public:
 
   /** Absolute error accessor */
   NumericalScalar getAbsoluteError() const;
-  NumericalSample getAbsoluteErrorHistory() const;
+  Sample getAbsoluteErrorHistory() const;
 
   /** Relative error accessor */
   NumericalScalar getRelativeError() const;
-  NumericalSample getRelativeErrorHistory() const;
+  Sample getRelativeErrorHistory() const;
 
   /** Residual error accessor */
   NumericalScalar getResidualError() const;
-  NumericalSample getResidualErrorHistory() const;
+  Sample getResidualErrorHistory() const;
 
   /** Constraint error accessor */
   NumericalScalar getConstraintError() const;
-  NumericalSample getConstraintErrorHistory() const;
+  Sample getConstraintErrorHistory() const;
 
   /** Input / output sample accessor */
-  NumericalSample getInputSample() const;
-  NumericalSample getOutputSample() const;
+  Sample getInputSample() const;
+  Sample getOutputSample() const;
 
   /** Problem accessor */
   void setProblem(const OptimizationProblem & problem);
@@ -128,19 +128,19 @@ public:
 protected:
   /** Absolute error accessor */
   void setAbsoluteError(const NumericalScalar absoluteError);
-  void setAbsoluteErrorHistory(const NumericalSample & absoluteError);
+  void setAbsoluteErrorHistory(const Sample & absoluteError);
 
   /** Relative error accessor */
   void setRelativeError(const NumericalScalar relativeError);
-  void setRelativeErrorHistory(const NumericalSample & relativeError);
+  void setRelativeErrorHistory(const Sample & relativeError);
 
   /** Residual error accessor */
   void setResidualError(const NumericalScalar residualError);
-  void setResidualErrorHistory(const NumericalSample & residualError);
+  void setResidualErrorHistory(const Sample & residualError);
 
   /** Constraint error accessor */
   void setConstraintError(const NumericalScalar constraintError);
-  void setConstraintErrorHistory(const NumericalSample & constraintError);
+  void setConstraintErrorHistory(const Sample & constraintError);
 
 private:
 

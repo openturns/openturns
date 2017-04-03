@@ -90,12 +90,12 @@ NumericalPoint EventDomain::getRealization() const
 }
 
 /* Numerical sample accessor */
-NumericalSample EventDomain::getSample(const UnsignedInteger size) const
+Sample EventDomain::getSample(const UnsignedInteger size) const
 {
   // First, compute a sample of the event antecedent
-  const NumericalSample returnSample(CompositeRandomVector::getSample(size));
+  const Sample returnSample(CompositeRandomVector::getSample(size));
   // Then, we loop over the sample to check each point in sequence
-  NumericalSample result(size, 1);
+  Sample result(size, 1);
   for (UnsignedInteger i = 0; i < size; ++i)
     result[i][0] = domain_.contains(returnSample[i]);
   result.setName("EventDomain sample");

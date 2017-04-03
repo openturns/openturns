@@ -139,12 +139,12 @@ NumericalPoint ProductPolynomialEvaluation::operator() (const NumericalPoint & i
 
 struct ProductPolynomialEvaluationComputeSamplePolicy
 {
-  const NumericalSample & input_;
-  NumericalSample & output_;
+  const Sample & input_;
+  Sample & output_;
   const ProductPolynomialEvaluation::PolynomialCollection & polynomials_;
 
-  ProductPolynomialEvaluationComputeSamplePolicy(const NumericalSample & input,
-      NumericalSample & output,
+  ProductPolynomialEvaluationComputeSamplePolicy(const Sample & input,
+      Sample & output,
       const ProductPolynomialEvaluation::PolynomialCollection & polynomials)
     : input_(input)
     , output_(output)
@@ -166,12 +166,12 @@ struct ProductPolynomialEvaluationComputeSamplePolicy
 };  // struct ProductPolynomialEvaluationComputeSamplePolicy
 
 /* Operator (): Evaluate a product of 1D polynomials for one sample */
-NumericalSample ProductPolynomialEvaluation::operator() (const NumericalSample & inS) const
+Sample ProductPolynomialEvaluation::operator() (const Sample & inS) const
 {
   const UnsignedInteger inDimension = inS.getDimension();
   if (inDimension != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a ProductPolynomialFunction with an argument of invalid dimension";
   const UnsignedInteger size = inS.getSize();
-  NumericalSample result(size, getOutputDimension());
+  Sample result(size, getOutputDimension());
   const ProductPolynomialEvaluationComputeSamplePolicy policy( inS, result, polynomials_ );
   TBB::ParallelFor( 0, size, policy );
   result.setDescription(getOutputDescription());

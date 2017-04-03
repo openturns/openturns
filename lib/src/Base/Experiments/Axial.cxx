@@ -58,7 +58,7 @@ Axial * Axial::clone() const
 }
 
 /* Experiment plane generation */
-NumericalSample Axial::generate() const
+Sample Axial::generate() const
 {
   /* Dimension of the realizations */
   const UnsignedInteger dimension = center_.getDimension();
@@ -66,7 +66,7 @@ NumericalSample Axial::generate() const
   const UnsignedInteger levelNumber = levels_.getDimension();
   /* Size of the sample to be generated: 1 + 2 x number of levels x dimension */
   const UnsignedInteger size = 1 + 2 * levelNumber * dimension;
-  NumericalSample axialPlane(size, center_);
+  Sample axialPlane(size, center_);
   axialPlane.setName("Axial plane");
   UnsignedInteger index = 1;
   /* For each level of the axial plane */

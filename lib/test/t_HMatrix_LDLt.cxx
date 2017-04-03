@@ -27,10 +27,10 @@ using namespace OT::Test;
 
 class TestHMatrixRealAssemblyFunction : public HMatrixRealAssemblyFunction
 {
-  const NumericalSample& vertices_;
+  const Sample& vertices_;
   const NumericalScalar scaling_;
 public:
-  TestHMatrixRealAssemblyFunction(const NumericalSample& vertices, NumericalScalar scaling)
+  TestHMatrixRealAssemblyFunction(const Sample& vertices, NumericalScalar scaling)
     : vertices_(vertices)
     , scaling_(scaling)
   {}
@@ -69,8 +69,8 @@ int main(int argc, char *argv[])
     const NumericalPoint lowerBound(2, 0.0);
     const NumericalPoint upperBound(2, 1.0);
     const Mesh mesh2D(intervalMesher.build(Interval(lowerBound, upperBound)));
-    const NumericalSample vertices2D(mesh2D.getVertices());
-    NumericalSample vertices(vertices2D.getSize(), 3);
+    const Sample vertices2D(mesh2D.getVertices());
+    Sample vertices(vertices2D.getSize(), 3);
     for (UnsignedInteger i = 0; i < vertices2D.getSize(); ++i)
     {
       vertices[i][0] = vertices2D[i][0];

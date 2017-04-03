@@ -54,10 +54,10 @@ public:
 
   /* Here is the interface that all derived class must implement */
   /** Build a distribution based on a sample */
-  virtual Implementation build(const NumericalSample & sample) const;
+  virtual Implementation build(const Sample & sample) const;
 
   /** Build a distribution based on a set of parameters */
-  virtual NumericalPoint buildParameter(const NumericalSample & sample) const;
+  virtual NumericalPoint buildParameter(const Sample & sample) const;
 
   /** Solver accessor */
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);

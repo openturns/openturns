@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
     }
     Normal distribution(mean, sigma, R);
     UnsignedInteger size = 10000;
-    NumericalSample sample(distribution.getSample(size));
+    Sample sample(distribution.getSample(size));
     NormalFactory factory;
     CovarianceMatrix covariance;
     // Distribution estimatedDistribution(factory.build(sample, covariance));

@@ -24,7 +24,7 @@
 #include "openturns/PersistentObject.hxx"
 #include "openturns/SphereUniformNormImplementation.hxx"
 #include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -51,7 +51,7 @@ public:
   }
 
   /** Get all points at a certain distance */
-  virtual NumericalSample getPoints(const UnsignedInteger distance) const;
+  virtual Sample getPoints(const UnsignedInteger distance) const;
 
   /** Get index offset, needed by RandomMixture cache */
   virtual UnsignedInteger getOffsetLevel(const UnsignedInteger distance) const;

@@ -196,7 +196,7 @@ private:
   Indices unknownParameterIndices_;
 };
 
-NumericalPoint MethodOfMomentsFactory::buildParameter(const NumericalSample & sample) const
+NumericalPoint MethodOfMomentsFactory::buildParameter(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
@@ -261,7 +261,7 @@ NumericalPoint MethodOfMomentsFactory::buildParameter(const NumericalSample & sa
 }
 
 
-DistributionFactoryImplementation::Implementation MethodOfMomentsFactory::build(const NumericalSample & sample) const
+DistributionFactoryImplementation::Implementation MethodOfMomentsFactory::build(const Sample & sample) const
 {
   Distribution result(distribution_);
   result.setParameter(buildParameter(sample));

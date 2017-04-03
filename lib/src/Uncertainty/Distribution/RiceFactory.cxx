@@ -74,7 +74,7 @@ struct RiceFactoryParameterConstraint
 
 /* Here is the interface that all derived class must implement */
 
-RiceFactory::Implementation RiceFactory::build(const NumericalSample & sample) const
+RiceFactory::Implementation RiceFactory::build(const Sample & sample) const
 {
   return buildAsRice(sample).clone();
 }
@@ -92,7 +92,7 @@ RiceFactory::Implementation RiceFactory::build() const
 /* Parameters estimation using the Koay inversion technique, see:
    Koay, C. G. and Basser, P. J., "Analytically exact correction scheme for signal extraction from noisy magnitude MR signals", Journal of Magnetic Resonance, Vol. 179, 2, pp. 317-322 (2006)
 */
-Rice RiceFactory::buildAsRice(const NumericalSample & sample) const
+Rice RiceFactory::buildAsRice(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Rice distribution from an empty sample";

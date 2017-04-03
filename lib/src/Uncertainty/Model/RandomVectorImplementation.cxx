@@ -89,9 +89,9 @@ NumericalPoint RandomVectorImplementation::getRealization() const
 }
 
 /* Numerical sample accessor */
-NumericalSample RandomVectorImplementation::getSample(const UnsignedInteger size) const
+Sample RandomVectorImplementation::getSample(const UnsignedInteger size) const
 {
-  NumericalSample result(size, getDimension());
+  Sample result(size, getDimension());
   for (UnsignedInteger i = 0; i < size; ++i) result[i] = getRealization();
   result.setDescription(getDescription());
   return result;

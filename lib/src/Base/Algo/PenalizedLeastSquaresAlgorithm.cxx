@@ -42,8 +42,8 @@ PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const Bool useNor
 }
 
 /* Parameters constructor */
-PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const NumericalSample & x,
-    const NumericalSample & y,
+PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const Sample & x,
+    const Sample & y,
     const Basis & psi,
     const Indices & indices,
     const NumericalScalar penalizationFactor,
@@ -63,8 +63,8 @@ PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const NumericalSa
 
 
 /* Parameters constructor */
-PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const NumericalSample & x,
-    const NumericalSample & y,
+PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const Sample & x,
+    const Sample & y,
     const NumericalPoint & weight,
     const Basis & psi,
     const Indices & indices,
@@ -84,8 +84,8 @@ PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const NumericalSa
 }
 
 /* Parameters constructor */
-PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const NumericalSample & x,
-    const NumericalSample & y,
+PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const Sample & x,
+    const Sample & y,
     const NumericalPoint & weight,
     const Basis & psi,
     const Indices & indices,

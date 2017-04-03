@@ -70,7 +70,7 @@ Bool SphereUniformNorm::isSymmetric() const
   return getImplementation()->isSymmetric();
 }
 
-NumericalSample SphereUniformNorm::getPoints(const UnsignedInteger distance) const
+Sample SphereUniformNorm::getPoints(const UnsignedInteger distance) const
 {
   return getImplementation()->getPoints(distance);
 }

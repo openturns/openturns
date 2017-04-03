@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_DESIGNPROXY_HXX
 #define OPENTURNS_DESIGNPROXY_HXX
 
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Basis.hxx"
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Basis.hxx"
@@ -44,7 +44,7 @@ public:
   DesignProxy();
 
   /** Parameters constructor */
-  DesignProxy(const NumericalSample & x,
+  DesignProxy(const Sample & x,
               const Basis & basis);
 
   /** Virtual constructor */
@@ -54,7 +54,7 @@ public:
   virtual String __repr__() const;
 
   /** Accessors */
-  NumericalSample getInputSample() const;
+  Sample getInputSample() const;
   Basis getBasis() const;
 
   /** Compute the design matrix with the provided basis terms indices */
@@ -81,7 +81,7 @@ protected:
   void initialize() const;
 
   /** Input sample */
-  NumericalSample x_;
+  Sample x_;
 
   /** Basis */
   Basis basis_;

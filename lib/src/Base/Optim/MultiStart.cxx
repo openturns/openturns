@@ -41,7 +41,7 @@ MultiStart::MultiStart()
 
 /* Constructor with parameters */
 MultiStart::MultiStart(const OptimizationAlgorithm & solver,
-                       const NumericalSample & startingPoints)
+                       const Sample & startingPoints)
   : OptimizationAlgorithmImplementation(solver.getProblem())
   , solver_(solver)
   , startingPoints_(startingPoints)
@@ -145,13 +145,13 @@ OptimizationAlgorithm MultiStart::getOptimizationSolver() const
 }
 
 
-void MultiStart::setStartingPoints(const NumericalSample & startingPoints)
+void MultiStart::setStartingPoints(const Sample & startingPoints)
 {
   startingPoints_ = startingPoints;
 }
 
 
-NumericalSample MultiStart::getStartingPoints() const
+Sample MultiStart::getStartingPoints() const
 {
   return startingPoints_;
 }

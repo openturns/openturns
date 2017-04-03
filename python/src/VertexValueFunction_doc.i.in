@@ -58,7 +58,7 @@ mesh of the field on which :math:`h` will be applied:
 >>> myVertexValueFunction = ot.VertexValueFunction(h, n)
 >>> # Create a TimeSeries
 >>> tg = ot.RegularGrid(0.0, 0.2, 6)
->>> data = ot.NumericalSample(tg.getN(), h.getInputDimension()-1)
+>>> data = ot.Sample(tg.getN(), h.getInputDimension()-1)
 >>> for i in range(data.getSize()):
 ...     for j in range(data.getDimension()):
 ...         data[i, j] = i * data.getDimension() + j

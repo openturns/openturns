@@ -47,10 +47,10 @@ int main(int argc, char *argv[])
     UnsignedInteger nY = 75;
     discretization[0] = nX;
     discretization[1] = nY;
-    NumericalSample inputData(Box(discretization).generate());
+    Sample inputData(Box(discretization).generate());
     inputData *= NumericalPoint(2, 10.0);
     inputData += NumericalPoint(2, -5.0);
-    NumericalSample data(f(inputData));
+    Sample data(f(inputData));
     UnsignedInteger size = 7;
     NumericalPoint levels(size);
     for (UnsignedInteger i = 0; i < size; i++)

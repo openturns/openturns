@@ -46,10 +46,10 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build( const NumericalSample & sample ) const;
+  Implementation build( const Sample & sample ) const;
   Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
-  Trapezoidal buildAsTrapezoidal( const NumericalSample & sample ) const;
+  Trapezoidal buildAsTrapezoidal( const Sample & sample ) const;
   Trapezoidal buildAsTrapezoidal(const NumericalPoint & parameters) const;
   Trapezoidal buildAsTrapezoidal() const;
 
@@ -69,7 +69,7 @@ protected:
   NumericalPoint computeLogLikelihoodInequalityConstraint( const NumericalPoint & x ) const;
 
   /** only used to pass data to be used in computeLogLikeliHood */
-  mutable NumericalSample sample_;
+  mutable Sample sample_;
 
   /**   OptimizationAlgorithm   */
   mutable OptimizationAlgorithm solver_;

@@ -150,13 +150,13 @@ private:
   NumericalPoint continuousUpperBounds_;
 
   /** Standard continuous integration nodes */
-  NumericalSample continuousNodes_;
+  Sample continuousNodes_;
 
   /** Standard continuous weights */
   NumericalPoint continuousWeights_;
 
   /** Discrete integration nodes */
-  NumericalSample discreteNodes_;
+  Sample discreteNodes_;
 
   /** Values of the Dirac marginals */
   NumericalPoint diracValues_;

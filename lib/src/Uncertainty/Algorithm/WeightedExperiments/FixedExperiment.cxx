@@ -37,7 +37,7 @@ FixedExperiment::FixedExperiment()
 }
 
 /* Constructor with parameters */
-FixedExperiment::FixedExperiment(const NumericalSample & sample)
+FixedExperiment::FixedExperiment(const Sample & sample)
   : WeightedExperimentImplementation(UserDefined(sample), sample.getSize())
   , sample_(sample)
   , weights_(sample.getSize(), 1.0 / sample.getSize())
@@ -45,7 +45,7 @@ FixedExperiment::FixedExperiment(const NumericalSample & sample)
 }
 
 /* Constructor with parameters */
-FixedExperiment::FixedExperiment(const NumericalSample & sample,
+FixedExperiment::FixedExperiment(const Sample & sample,
                                  const NumericalPoint & weights)
   : WeightedExperimentImplementation(UserDefined(sample, weights), sample.getSize())
   , sample_(sample)
@@ -77,7 +77,7 @@ void FixedExperiment::setDistribution(const Distribution & distribution)
 }
 
 /* Sample generation */
-NumericalSample FixedExperiment::generateWithWeights(NumericalPoint & weights) const
+Sample FixedExperiment::generateWithWeights(NumericalPoint & weights) const
 {
   weights = weights_;
   return sample_;

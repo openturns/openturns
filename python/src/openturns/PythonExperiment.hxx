@@ -63,7 +63,7 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Numerical sample accessor */
-  virtual NumericalSample generate() const;
+  virtual Sample generate() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

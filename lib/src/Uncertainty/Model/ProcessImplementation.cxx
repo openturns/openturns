@@ -164,7 +164,7 @@ Function ProcessImplementation::getContinuousRealization() const
 {
   // The continuous realization is obtained by a piecewise linear interpolation
   const Field field(getRealization());
-  const NumericalSample values(field.getValues());
+  const Sample values(field.getValues());
   if (getSpatialDimension() == 1)
   {
     const NumericalPoint locations(mesh_.getVertices().getImplementation()->getData());

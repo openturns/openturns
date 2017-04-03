@@ -23,7 +23,7 @@
 #include "openturns/BipartiteGraph.hxx"
 #include "openturns/Cloud.hxx"
 #include "openturns/Curve.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -64,18 +64,18 @@ Graph BipartiteGraph::draw() const
       blackPoint[0] = (*this)[i][j];
       blackPoint[1] = 1.0;
       // First, the link
-      NumericalSample data(2, 2);
+      Sample data(2, 2);
       data[0] = redPoint;
       data[1] = blackPoint;
       Curve curve(data);
       curve.setColor("blue");
       graph.add(curve);
-      Cloud cloud(NumericalSample(1, blackPoint));
+      Cloud cloud(Sample(1, blackPoint));
       cloud.setColor("black");
       cloud.setPointStyle("fcircle");
       graph.add(cloud);
     }
-    Cloud cloud(NumericalSample(1, redPoint));
+    Cloud cloud(Sample(1, redPoint));
     cloud.setColor("red");
     cloud.setPointStyle("fcircle");
     graph.add(cloud);

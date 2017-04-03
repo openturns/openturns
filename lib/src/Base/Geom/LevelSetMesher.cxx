@@ -139,20 +139,20 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
 
   // First, mesh the bounding box
   const Mesh boundingMesh(IntervalMesher(discretization_).build(boundingBox));
-  NumericalSample boundingVertices(boundingMesh.getVertices());
+  Sample boundingVertices(boundingMesh.getVertices());
   const UnsignedInteger numVertices = boundingVertices.getSize();
   const Mesh::IndicesCollection boundingSimplices(boundingMesh.getSimplices());
   const UnsignedInteger numSimplices = boundingSimplices.getSize();
   // Second, keep only the simplices with a majority of vertices in the level set
   const Function function(levelSet.getFunction());
-  NumericalSample values(function(boundingVertices));
+  Sample values(function(boundingVertices));
   const NumericalScalar level = levelSet.getLevel();
   Mesh::IndicesCollection goodSimplices(0);
-  NumericalSample goodVertices(0, dimension);
+  Sample goodVertices(0, dimension);
   // Flags for the vertices to keep
   Indices flagGoodVertices(numVertices, 0);
   // Vertices that have moved
-  NumericalSample movedVertices(0, dimension);
+  Sample movedVertices(0, dimension);
   // Flag for the vertices that have moved
   Indices flagMovedVertices(0);
   // Prepare the optimization problem for the projection
@@ -193,7 +193,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
       // Check if we have to move some vertices
       if (numGood <= dimension)
       {
-        NumericalSample localVertices(dimension + 1, dimension);
+        Sample localVertices(dimension + 1, dimension);
         NumericalPoint localValues(dimension + 1, dimension);
         for (UnsignedInteger j = 0; j <= dimension; ++j)
         {

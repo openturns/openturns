@@ -74,8 +74,8 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm()
 }
 
 /* Parameters constructor */
-GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const NumericalSample & inputSample,
-    const NumericalSample & outputSample,
+GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSample,
+    const Sample & outputSample,
     const CovarianceModel & covarianceModel,
     const Bool normalize,
     const Bool keepCholeskyFactor)
@@ -128,8 +128,8 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const NumericalSample &
   initializeDefaultOptimizationAlgorithm();
 }
 
-GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const NumericalSample & inputSample,
-    const NumericalSample & outputSample,
+GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSample,
+    const Sample & outputSample,
     const CovarianceModel & covarianceModel,
     const Basis & basis,
     const Bool normalize,
@@ -195,9 +195,9 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const NumericalSample &
 }
 
 /* Parameters constructor */
-GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const NumericalSample & inputSample,
+GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSample,
     const Function & inputTransformation,
-    const NumericalSample & outputSample,
+    const Sample & outputSample,
     const CovarianceModel & covarianceModel,
     const Basis & basis,
     const Bool keepCholeskyFactor)
@@ -250,8 +250,8 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const NumericalSample &
 }
 
 /* Parameters constructor */
-GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const NumericalSample & inputSample,
-    const NumericalSample & outputSample,
+GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSample,
+    const Sample & outputSample,
     const CovarianceModel & covarianceModel,
     const BasisCollection & basisCollection,
     const Bool normalize,
@@ -307,9 +307,9 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const NumericalSample &
 }
 
 /* Parameters constructor */
-GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const NumericalSample & inputSample,
+GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSample,
     const Function & inputTransformation,
-    const NumericalSample & outputSample,
+    const Sample & outputSample,
     const CovarianceModel & covarianceModel,
     const BasisCollection & basisCollection,
     const Bool keepCholeskyFactor)
@@ -351,8 +351,8 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const NumericalSample &
 }
 
 /* set sample  method */
-void GeneralLinearModelAlgorithm::setData(const NumericalSample & inputSample,
-    const NumericalSample & outputSample)
+void GeneralLinearModelAlgorithm::setData(const Sample & inputSample,
+    const Sample & outputSample)
 {
   // Check the sample sizes
   if (inputSample.getSize() != outputSample.getSize())
@@ -478,7 +478,7 @@ void GeneralLinearModelAlgorithm::setBasisCollection(const BasisCollection & bas
   basisCollection_ = basis;
 }
 
-void GeneralLinearModelAlgorithm::checkYCentered(const NumericalSample & Y)
+void GeneralLinearModelAlgorithm::checkYCentered(const Sample & Y)
 {
   const NumericalScalar meanEpsilon = ResourceMap::GetAsNumericalScalar("GeneralLinearModelAlgorithm-MeanEpsilon");
   const NumericalPoint meanY(Y.computeMean());
@@ -551,7 +551,7 @@ void GeneralLinearModelAlgorithm::computeF()
     for (UnsignedInteger j = 0; j < localBasisSize; ++j, ++index )
     {
       // Here we use potential parallelism in the evaluation of the basis functions
-      const NumericalSample basisSample = localBasis[j](normalizedInputSample_);
+      const Sample basisSample = localBasis[j](normalizedInputSample_);
       for (UnsignedInteger i = 0; i < sampleSize; ++i) F_(outputMarginal + i * outputDimension, index) = basisSample[i][0];
     }
   }
@@ -600,9 +600,9 @@ void GeneralLinearModelAlgorithm::run()
   LOGINFO("Store the estimates");
   // Here we do the work twice:
   // 1) To get a collection of NumericalPoint for the result class
-  // 2) To get same results as NumericalSample for the trend NMF
+  // 2) To get same results as Sample for the trend NMF
   Collection<NumericalPoint> trendCoefficients(basisCollection_.getSize());
-  NumericalSample trendCoefficientsSample(beta_.getSize(), reducedCovarianceModel_.getDimension());
+  Sample trendCoefficientsSample(beta_.getSize(), reducedCovarianceModel_.getDimension());
 
   UnsignedInteger cumulatedSize = 0;
   for (UnsignedInteger outputIndex = 0; outputIndex < basisCollection_.getSize(); ++ outputIndex)
@@ -620,7 +620,7 @@ void GeneralLinearModelAlgorithm::run()
 
   LOGINFO("Build the output meta-model");
   // The meta model is of type DualLinearCombination function
-  // We should write the coefficients into a NumericalSample and build the basis into a collection
+  // We should write the coefficients into a Sample and build the basis into a collection
   Collection<Function> allFunctionsCollection;
   for (UnsignedInteger k = 0; k < basisCollection_.getSize(); ++k)
     for (UnsignedInteger l = 0; l < basisCollection_[k].getSize(); ++l)
@@ -638,7 +638,7 @@ void GeneralLinearModelAlgorithm::run()
 #ifdef OPENTURNS_HAVE_MUPARSER
     metaModel = SymbolicFunction(Description::BuildDefault(covarianceModel_.getSpatialDimension(), "x"), Description(covarianceModel_.getDimension(), "0.0"));
 #else
-    metaModel = Function(NumericalSample(1, reducedCovarianceModel_.getSpatialDimension()), NumericalSample(1, reducedCovarianceModel_.getDimension()));
+    metaModel = Function(Sample(1, reducedCovarianceModel_.getSpatialDimension()), Sample(1, reducedCovarianceModel_.getDimension()));
 #endif
   }
 
@@ -647,7 +647,7 @@ void GeneralLinearModelAlgorithm::run()
 
   // compute residual, relative error
   const NumericalPoint outputVariance(outputSample_.computeVariance());
-  const NumericalSample mY(metaModel(inputSample_));
+  const Sample mY(metaModel(inputSample_));
   const NumericalPoint squaredResiduals((outputSample_ - mY).computeRawMoment(2));
 
   NumericalPoint residuals(outputDimension);
@@ -1049,13 +1049,13 @@ String GeneralLinearModelAlgorithm::__repr__() const
 }
 
 
-NumericalSample GeneralLinearModelAlgorithm::getInputSample() const
+Sample GeneralLinearModelAlgorithm::getInputSample() const
 {
   return inputSample_;
 }
 
 
-NumericalSample GeneralLinearModelAlgorithm::getOutputSample() const
+Sample GeneralLinearModelAlgorithm::getOutputSample() const
 {
   return outputSample_;
 }

@@ -24,7 +24,7 @@
 #include "openturns/PersistentObject.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/StandardEvent.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -90,28 +90,28 @@ public:
   void run();
 
   /** NearDesignPointVerifyingEventPoints accessor */
-  NumericalSample getNearDesignPointVerifyingEventPoints() const;
+  Sample getNearDesignPointVerifyingEventPoints() const;
 
   /** FarDesignPointVerifyingEventPoints accessor */
-  NumericalSample getFarDesignPointVerifyingEventPoints() const;
+  Sample getFarDesignPointVerifyingEventPoints() const;
 
   /** NearDesignPointViolatingEventPoints accessor */
-  NumericalSample getNearDesignPointViolatingEventPoints() const;
+  Sample getNearDesignPointViolatingEventPoints() const;
 
   /** FarDesignPointViolatingEventPoints accessor */
-  NumericalSample getFarDesignPointViolatingEventPoints() const;
+  Sample getFarDesignPointViolatingEventPoints() const;
 
   /** NearDesignPointVerifyingEventValues accessor */
-  NumericalSample getNearDesignPointVerifyingEventValues() const;
+  Sample getNearDesignPointVerifyingEventValues() const;
 
   /** FarDesignPointVerifyingEventValues accessor */
-  NumericalSample getFarDesignPointVerifyingEventValues() const;
+  Sample getFarDesignPointVerifyingEventValues() const;
 
   /** NearDesignPointViolatingEventValues accessor */
-  NumericalSample getNearDesignPointViolatingEventValues() const;
+  Sample getNearDesignPointViolatingEventValues() const;
 
   /** FarDesignPointViolatingEventValues accessor */
-  NumericalSample getFarDesignPointViolatingEventValues() const;
+  Sample getFarDesignPointViolatingEventValues() const;
 
   /** String converter */
   String __repr__() const;
@@ -155,7 +155,7 @@ private:
 
 
   /** the function that samples the sphere (radius) with N points */
-  NumericalSample sampleSphere(const NumericalScalar radius,
+  Sample sampleSphere(const NumericalScalar radius,
                                const UnsignedInteger dimension,
                                const UnsignedInteger pointNumber) const;
 
@@ -176,14 +176,14 @@ private:
   NumericalScalar designPointVicinity_; // cosinus of the cone around the standard design point
   UnsignedInteger pointNumber_;
   NumericalScalar deltaEpsilon_;
-  NumericalSample nearDesignPointVerifyingEventPoints_;
-  NumericalSample nearDesignPointVerifyingEventValues_;
-  NumericalSample farDesignPointVerifyingEventPoints_;
-  NumericalSample farDesignPointVerifyingEventValues_;
-  NumericalSample nearDesignPointViolatingEventPoints_;
-  NumericalSample nearDesignPointViolatingEventValues_;
-  NumericalSample farDesignPointViolatingEventPoints_;
-  NumericalSample farDesignPointViolatingEventValues_;
+  Sample nearDesignPointVerifyingEventPoints_;
+  Sample nearDesignPointVerifyingEventValues_;
+  Sample farDesignPointVerifyingEventPoints_;
+  Sample farDesignPointVerifyingEventValues_;
+  Sample nearDesignPointViolatingEventPoints_;
+  Sample nearDesignPointViolatingEventValues_;
+  Sample farDesignPointViolatingEventPoints_;
+  Sample farDesignPointViolatingEventValues_;
 
 }; // class StrongMaximumTest
 

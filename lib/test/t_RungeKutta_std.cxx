@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
       timeGrid[i] = pow(i, 2.0) / pow(nt - 1.0, 2.0);
     }
     fullprint << "time grid=" << timeGrid << std::endl;
-    NumericalSample result(solver.solve(initialState, timeGrid));
+    Sample result(solver.solve(initialState, timeGrid));
     fullprint << "result=" << result << std::endl;
     fullprint << "last value=" << result[nt - 1] << std::endl;
     NumericalPoint ref(2);

@@ -24,7 +24,7 @@
 #define OPENTURNS_LAST_HXX
 
 #include "openturns/HistoryStrategyImplementation.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -56,7 +56,7 @@ public:
   void store(const NumericalPoint & point);
 
   /** Sample accessor */
-  NumericalSample getSample() const;
+  Sample getSample() const;
 
   /** MaximumSize accessor */
   UnsignedInteger getMaximumSize() const;

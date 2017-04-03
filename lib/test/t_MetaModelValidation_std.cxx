@@ -61,13 +61,13 @@ int main(int argc, char *argv[])
 
     // Get input & output sample
     LHSExperiment lhs(distribution, samplingSize);
-    NumericalSample inputSample = lhs.generate();
-    NumericalSample outputSample = model(inputSample);
+    Sample inputSample = lhs.generate();
+    Sample outputSample = model(inputSample);
 
     // Validation of results on independent samples
     const UnsignedInteger validationSize = 10;
-    NumericalSample inputValidation = distribution.getSample(validationSize);
-    NumericalSample outputValidation = model(inputValidation);
+    Sample inputValidation = distribution.getSample(validationSize);
+    Sample outputValidation = model(inputValidation);
 
     // 1) SPC algorithm
     // Create the orthogonal basis

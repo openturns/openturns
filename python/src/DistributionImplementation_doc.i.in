@@ -241,7 +241,7 @@ X : sequence of float, 2-d sequence of float
 
 Returns
 -------
-d : :class:`~openturns.NumericalPoint`, :class:`~openturns.NumericalSample`
+d : :class:`~openturns.NumericalPoint`, :class:`~openturns.Sample`
     DDF value(s) at input(s) `X`.
 
 Notes
@@ -2247,7 +2247,7 @@ size : int
 
 Returns
 -------
-sample : :class:`~openturns.NumericalSample`
+sample : :class:`~openturns.Sample`
     A pseudo-random sample of the distribution.
 
 See Also

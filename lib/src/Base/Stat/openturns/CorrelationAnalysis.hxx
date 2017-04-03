@@ -23,7 +23,7 @@
 #define OPENTURNS_CORRELATIONANALYSIS_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/SymmetricTensor.hxx"
 
@@ -39,30 +39,30 @@ class OT_API CorrelationAnalysis
 public:
 
   /** Compute the Pearson correlation coefficient between the component number index of the input sample and the 1D outputSample */
-  static NumericalScalar PearsonCorrelation(const NumericalSample & inputSample,
-      const NumericalSample & outputSample,
+  static NumericalScalar PearsonCorrelation(const Sample & inputSample,
+      const Sample & outputSample,
       const UnsignedInteger index = 0);
 
   /** Compute the Spearman correlation coefficient between the component number index of the input sample and the 1D outputSample */
-  static NumericalScalar SpearmanCorrelation(const NumericalSample & inputSample,
-      const NumericalSample & outputSample,
+  static NumericalScalar SpearmanCorrelation(const Sample & inputSample,
+      const Sample & outputSample,
       const UnsignedInteger index = 0);
 
   /** Compute the Standard Regression Coefficients (SRC) between the input sample and the output sample */
-  static NumericalPoint SRC(const NumericalSample & inputSample,
-                            const NumericalSample & outputSample);
+  static NumericalPoint SRC(const Sample & inputSample,
+                            const Sample & outputSample);
 
   /** Compute the Partial Correlation Coefficients (PCC) between the input sample and the output sample */
-  static NumericalPoint PCC(const NumericalSample & inputSample,
-                            const NumericalSample & outputSample);
+  static NumericalPoint PCC(const Sample & inputSample,
+                            const Sample & outputSample);
 
   /** Compute the Standard Rank Regression Coefficients (SRRC) between the input sample and the output sample */
-  static NumericalPoint SRRC(const NumericalSample & inputSample,
-                             const NumericalSample & outputSample);
+  static NumericalPoint SRRC(const Sample & inputSample,
+                             const Sample & outputSample);
 
   /** Compute the Partial Rank Correlation Coefficients (PRCC) between the input sample and the output sample */
-  static NumericalPoint PRCC(const NumericalSample & inputSample,
-                             const NumericalSample & outputSample);
+  static NumericalPoint PRCC(const Sample & inputSample,
+                             const Sample & outputSample);
 
 private:
   /** Default constructor */

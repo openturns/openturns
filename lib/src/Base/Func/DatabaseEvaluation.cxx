@@ -44,8 +44,8 @@ DatabaseEvaluation::DatabaseEvaluation()
 }
 
 /* Default constructor */
-DatabaseEvaluation::DatabaseEvaluation(const NumericalSample & inputSample,
-    const NumericalSample & outputSample,
+DatabaseEvaluation::DatabaseEvaluation(const Sample & inputSample,
+    const Sample & outputSample,
     const Bool activateCache)
   : EvaluationImplementation()
 {
@@ -89,31 +89,31 @@ String DatabaseEvaluation::__str__( const String & offset ) const
 }
 
 /* Input sample accessor */
-void DatabaseEvaluation::setInputSample(const NumericalSample &inputSample)
+void DatabaseEvaluation::setInputSample(const Sample &inputSample)
 {
   setSample( inputSample, outputSample_ );
 }
 
-NumericalSample DatabaseEvaluation::getInputSample() const
+Sample DatabaseEvaluation::getInputSample() const
 {
   return inputSample_;
 }
 
 
 /* Output sample accessor */
-void DatabaseEvaluation::setOutputSample(const NumericalSample &outputSample)
+void DatabaseEvaluation::setOutputSample(const Sample &outputSample)
 {
   setSample( inputSample_, outputSample );
 }
 
-NumericalSample DatabaseEvaluation::getOutputSample() const
+Sample DatabaseEvaluation::getOutputSample() const
 {
   return outputSample_;
 }
 
 
-void DatabaseEvaluation::setSample(const NumericalSample & inputSample,
-    const NumericalSample & outputSample,
+void DatabaseEvaluation::setSample(const Sample & inputSample,
+    const Sample & outputSample,
     const Bool activateCache)
 {
   const UnsignedInteger size = inputSample.getSize();
@@ -169,11 +169,11 @@ NumericalPoint DatabaseEvaluation::operator()( const NumericalPoint & inP ) cons
   return result;
 }
 
-NumericalSample DatabaseEvaluation::operator()( const NumericalSample & inS ) const
+Sample DatabaseEvaluation::operator()( const Sample & inS ) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inS.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inS.getDimension();
-  NumericalSample result;
+  Sample result;
   if (inS == inputSample_) result = outputSample_;
   else result = EvaluationImplementation::operator()(inS);
   callsNumber_ += inS.getSize();

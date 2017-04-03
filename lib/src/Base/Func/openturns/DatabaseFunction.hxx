@@ -43,8 +43,8 @@ public:
   DatabaseFunction();
 
   /** Parameter constructor */
-  DatabaseFunction (const NumericalSample & inputSample,
-                    const NumericalSample & outputSample,
+  DatabaseFunction (const Sample & inputSample,
+                    const Sample & outputSample,
                     const Bool enableCache = true);
 
   /** Comparison operator */

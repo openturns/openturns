@@ -80,7 +80,7 @@ public:
   NumericalPoint getRealization() const;
 
   /** Get many realizations of the CumulativeDistributionNetwork */
-  NumericalSample getSample(const UnsignedInteger size) const;
+  Sample getSample(const UnsignedInteger size) const;
 
   /** Get the PDF of the CumulativeDistributionNetwork */
   using DistributionImplementation::computePDF;

@@ -45,10 +45,10 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build(const NumericalSample & sample) const;
+  Implementation build(const Sample & sample) const;
   Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
-  Weibull buildAsWeibull(const NumericalSample & sample) const;
+  Weibull buildAsWeibull(const Sample & sample) const;
   Weibull buildAsWeibull(const NumericalPoint & parameters) const;
   Weibull buildAsWeibull() const;
 

@@ -50,8 +50,8 @@ String CorrectedLeaveOneOut::__repr__() const
 }
 
 /* Perform cross-validation */
-NumericalScalar CorrectedLeaveOneOut::run(const NumericalSample & x,
-    const NumericalSample & y,
+NumericalScalar CorrectedLeaveOneOut::run(const Sample & x,
+    const Sample & y,
     const NumericalPoint & weight,
     const Basis & basis,
     const Indices & indices) const
@@ -60,7 +60,7 @@ NumericalScalar CorrectedLeaveOneOut::run(const NumericalSample & x,
 }
 
 
-NumericalScalar CorrectedLeaveOneOut::run(const NumericalSample & y,
+NumericalScalar CorrectedLeaveOneOut::run(const Sample & y,
     const NumericalPoint & weight,
     const Indices & indices,
     const DesignProxy & proxy) const
@@ -69,9 +69,9 @@ NumericalScalar CorrectedLeaveOneOut::run(const NumericalSample & y,
 }
 
 NumericalScalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method,
-                                          const NumericalSample & y) const
+                                          const Sample & y) const
 {
-  const NumericalSample x(method.getInputSample());
+  const Sample x(method.getInputSample());
 
   const UnsignedInteger sampleSize = y.getSize();
 
@@ -91,7 +91,7 @@ NumericalScalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method,
   // Solve the least squares problem argmin ||psiAk * coefficients - b||^2 using this decomposition
   LOGINFO("Solve the least squares problem");
 
-  // Use the equivalence between NumericalSampleImplementation::data_ and NumericalPoint
+  // Use the equivalence between SampleImplementation::data_ and NumericalPoint
   const NumericalPoint coefficients(method.solve(y.getImplementation()->getData()));
 
   // Compute the empirical error

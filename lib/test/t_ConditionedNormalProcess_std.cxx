@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
   // Define the Box
   Box box(levels);
   // Get the input sample
-  NumericalSample inputSample( box.generate() );
+  Sample inputSample( box.generate() );
   // Scale each direction
   inputSample *= 10;
 
@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
   const SymbolicFunction model(inputDescription, formula);
 
   // Build the output sample
-  const NumericalSample  outputSample( model(inputSample) );
+  const Sample  outputSample( model(inputSample) );
 
   // 2) Definition of exponential model
   NumericalPoint scale(2);
@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
   std::cerr << "result=" << result << std::endl;
   // Build a mesh
   // Start with vertices
-  NumericalSample vertices(0, 2);
+  Sample vertices(0, 2);
   NumericalPoint p(2);
 
   p[0] = 1.0;

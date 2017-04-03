@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(LinearLeastSquares);
 
 /* Constructor with parameters */
-LinearLeastSquares::LinearLeastSquares(const NumericalSample & dataIn,
+LinearLeastSquares::LinearLeastSquares(const Sample & dataIn,
                                        const Function & inputFunction)
   : PersistentObject(),
     dataIn_(dataIn),
@@ -46,8 +46,8 @@ LinearLeastSquares::LinearLeastSquares(const NumericalSample & dataIn,
 }
 
 /* Constructor with parameters */
-LinearLeastSquares::LinearLeastSquares(const NumericalSample & dataIn,
-                                       const NumericalSample & dataOut)
+LinearLeastSquares::LinearLeastSquares(const Sample & dataIn,
+                                       const Sample & dataOut)
   : PersistentObject(),
     dataIn_(dataIn),
     dataOut_(0, dataOut.getDimension()),
@@ -141,20 +141,20 @@ void LinearLeastSquares::run()
 }
 
 /* DataIn accessor */
-NumericalSample LinearLeastSquares::getDataIn() const
+Sample LinearLeastSquares::getDataIn() const
 {
   return dataIn_;
 }
 
 /* DataOut accessor */
-NumericalSample LinearLeastSquares::getDataOut() const
+Sample LinearLeastSquares::getDataOut() const
 {
   // If the response surface has been defined with an input function and the output data have not already been computed, compute them
   if (inputFunction_.getEvaluation()->isActualImplementation() && (dataOut_.getSize() == 0)) dataOut_ = inputFunction_(dataIn_);
   return dataOut_;
 }
 
-void LinearLeastSquares::setDataOut(const NumericalSample & dataOut)
+void LinearLeastSquares::setDataOut(const Sample & dataOut)
 {
   if (inputFunction_.getEvaluation()->isActualImplementation()) throw InvalidArgumentException(HERE) << "Error: cannot set the output data in a response surface defined with a function, here function=" << inputFunction_;
   if (dataOut.getSize() != dataIn_.getSize()) throw InvalidArgumentException(HERE) << "Error: the output data must have the same size than the input data, here output size=" << dataOut.getSize() << " and input size=" << dataIn_.getSize();

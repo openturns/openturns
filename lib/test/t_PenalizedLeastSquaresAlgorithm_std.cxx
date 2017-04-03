@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 
     // Input sample
     UnsignedInteger size = 5;
-    NumericalSample inputSample(size * size, dimension);
+    Sample inputSample(size * size, dimension);
     NumericalPoint weight(inputSample.getSize());
     for (UnsignedInteger i = 0; i < inputSample.getSize(); ++i)
     {

@@ -41,7 +41,7 @@ ClassifierImplementation::ClassifierImplementation()
 }
 
 /* Default constructor */
-ClassifierImplementation::ClassifierImplementation(const NumericalSample & inputSample,
+ClassifierImplementation::ClassifierImplementation(const Sample & inputSample,
     const Indices & classes)
   : PersistentObject()
   , inputSample_(inputSample)
@@ -67,11 +67,11 @@ UnsignedInteger ClassifierImplementation::classify(const NumericalPoint & inP) c
 /* Classify a sample */
 struct ClassifyPolicy
 {
-  const NumericalSample & input_;
+  const Sample & input_;
   Indices & output_;
   const ClassifierImplementation * p_classifier_;
 
-  ClassifyPolicy( const NumericalSample & input,
+  ClassifyPolicy( const Sample & input,
                   Indices & output,
                   const ClassifierImplementation * p_classifier)
     : input_(input)
@@ -87,7 +87,7 @@ struct ClassifyPolicy
 }; /* end struct ClassifyPolicy */
 
 
-Indices ClassifierImplementation::classifyParallel(const NumericalSample & inS) const
+Indices ClassifierImplementation::classifyParallel(const Sample & inS) const
 {
   const UnsignedInteger size = inS.getSize();
   Indices result(size);
@@ -96,7 +96,7 @@ Indices ClassifierImplementation::classifyParallel(const NumericalSample & inS) 
   return result;
 }
 
-Indices ClassifierImplementation::classifySequential(const NumericalSample & inS) const
+Indices ClassifierImplementation::classifySequential(const Sample & inS) const
 {
   const UnsignedInteger size = inS.getSize();
   Indices prediction(size);
@@ -105,7 +105,7 @@ Indices ClassifierImplementation::classifySequential(const NumericalSample & inS
   return prediction;
 }
 
-Indices ClassifierImplementation::classify(const NumericalSample & inS) const
+Indices ClassifierImplementation::classify(const Sample & inS) const
 {
   if (isParallel_)
     return classifyParallel(inS);
@@ -121,12 +121,12 @@ NumericalScalar ClassifierImplementation::grade(const NumericalPoint & inP, cons
 /* Grade a sample */
 struct GradePolicy
 {
-  const NumericalSample & input_;
+  const Sample & input_;
   const Indices & classes_;
   NumericalPoint & output_;
   const ClassifierImplementation * p_classifier_;
 
-  GradePolicy( const NumericalSample & input,
+  GradePolicy( const Sample & input,
                const Indices & classes,
                NumericalPoint & output,
                const ClassifierImplementation * p_classifier)
@@ -145,7 +145,7 @@ struct GradePolicy
 
 
 /* Grade a sample */
-NumericalPoint ClassifierImplementation::gradeParallel(const NumericalSample & inS,
+NumericalPoint ClassifierImplementation::gradeParallel(const Sample & inS,
     const Indices & hClass) const
 {
   const UnsignedInteger size = inS.getSize();
@@ -155,7 +155,7 @@ NumericalPoint ClassifierImplementation::gradeParallel(const NumericalSample & i
   return result;
 }
 
-NumericalPoint ClassifierImplementation::gradeSequential(const NumericalSample & inS,
+NumericalPoint ClassifierImplementation::gradeSequential(const Sample & inS,
     const Indices & hClass) const
 {
   const UnsignedInteger size = inS.getSize();
@@ -165,7 +165,7 @@ NumericalPoint ClassifierImplementation::gradeSequential(const NumericalSample &
   return grades;
 }
 
-NumericalPoint ClassifierImplementation::grade(const NumericalSample & inS, const Indices & hClass) const
+NumericalPoint ClassifierImplementation::grade(const Sample & inS, const Indices & hClass) const
 {
   const UnsignedInteger size = inS.getSize();
   if ( size != hClass.getSize() )

@@ -45,7 +45,7 @@ BinomialFactory * BinomialFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-BinomialFactory::Implementation BinomialFactory::build(const NumericalSample & sample) const
+BinomialFactory::Implementation BinomialFactory::build(const Sample & sample) const
 {
   return buildAsBinomial(sample).clone();
 }
@@ -60,7 +60,7 @@ BinomialFactory::Implementation BinomialFactory::build() const
   return buildAsBinomial().clone();
 }
 
-Binomial BinomialFactory::buildAsBinomial(const NumericalSample & sample) const
+Binomial BinomialFactory::buildAsBinomial(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Binomial distribution from an empty sample";
@@ -139,7 +139,7 @@ Binomial BinomialFactory::buildAsBinomial(const NumericalSample & sample) const
 
 NumericalScalar BinomialFactory::ComputeLogLikelihood(const UnsignedInteger n,
     const NumericalScalar p,
-    const NumericalSample & sample)
+    const Sample & sample)
 {
   std::map<UnsignedInteger, NumericalScalar> logLikelihoodCache;
   const UnsignedInteger size = sample.getSize();

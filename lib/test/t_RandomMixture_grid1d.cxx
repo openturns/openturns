@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     NumericalPoint sigma(distribution.getStandardDeviation());
     NumericalPoint xMin(mean - 3.9 * sigma);
     NumericalPoint xMax(mean + 3.9 * sigma);
-    NumericalSample grid;
+    Sample grid;
     fullprint << "distribution = " << distribution << std::endl;
     fullprint << "distribution = " << distribution.__str__() << std::endl;
     fullprint << "range = " << distribution.getRange() << std::endl;
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
     fullprint << "sigma = " << distribution.getStandardDeviation() << std::endl;
     fullprint << "xMin = " << xMin << std::endl;
     fullprint << "xMax = " << xMax << std::endl;
-    NumericalSample result(distribution.computePDF(xMin, xMax, points, grid));
+    Sample result(distribution.computePDF(xMin, xMax, points, grid));
     for (UnsignedInteger i = 0; i < grid.getSize(); ++i)
       fullprint << grid[i][0] << ";" << result[i][0] << ";" << referenceDistribution.computePDF(grid[i]) << std::endl;
   }

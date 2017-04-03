@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
     NumericalPoint sigma(dist_2D.getStandardDeviation());
     NumericalPoint xMin(mean - 2.9 * sigma);
     NumericalPoint xMax(mean + 2.9 * sigma);
-    NumericalSample grid;
+    Sample grid;
     fullprint << "distribution = " << dist_2D << std::endl;
     fullprint << "distribution = " << dist_2D.__str__() << std::endl;
     fullprint << "range = " << dist_2D.getRange() << std::endl;
@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
     fullprint << "sigma = " << dist_2D.getStandardDeviation() << std::endl;
     fullprint << "xMin = " << xMin << std::endl;
     fullprint << "xMax = " << xMax << std::endl;
-    NumericalSample result(dist_2D.computePDF(xMin, xMax, points, grid));
+    Sample result(dist_2D.computePDF(xMin, xMax, points, grid));
     for (UnsignedInteger i = 0; i < grid.getSize(); ++i)
       fullprint << grid[i][0] << ";" << grid[i][1] << ";" << result[i][0] << std::endl;
     // Defining new case, involving Normal distributions

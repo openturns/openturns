@@ -21,7 +21,7 @@
 #include "openturns/TensorApproximationResult.hxx"
 #include "openturns/Os.hxx"
 #include "openturns/OSS.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/CenteredFiniteDifferenceGradient.hxx"
 #include "openturns/CenteredFiniteDifferenceHessian.hxx"

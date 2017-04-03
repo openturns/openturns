@@ -58,7 +58,7 @@ KernelMixture::KernelMixture()
 /* Parameters constructor */
 KernelMixture::KernelMixture(const Distribution & kernel,
                              const NumericalPoint & bandwidth,
-                             const NumericalSample & sample)
+                             const Sample & sample)
   : ContinuousDistribution()
   , kernel_(kernel)
   , bandwidth_(0)
@@ -153,7 +153,7 @@ Distribution KernelMixture::getKernel() const
 }
 
 /* Sample accessor */
-void KernelMixture::setInternalSample(const NumericalSample & sample)
+void KernelMixture::setInternalSample(const Sample & sample)
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a KernelMixture based on an empty sample.";
   if (sample.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given sample has dimension=" << sample.getDimension() << ", expected dimension=" << getDimension() << ".";
@@ -173,7 +173,7 @@ void KernelMixture::setInternalSample(const NumericalSample & sample)
   isAlreadyComputedCovariance_ = false;
 }
 
-NumericalSample KernelMixture::getInternalSample() const
+Sample KernelMixture::getInternalSample() const
 {
   return sample_;
 }
@@ -219,7 +219,7 @@ NumericalPoint KernelMixture::getRealization() const
   NumericalPoint result(sample_[RandomGenerator::IntegerGenerate(sample_.getSize())]);
   // Then add a random noise according to the product kernel
   const UnsignedInteger dimension = getDimension();
-  const NumericalSample kernelSample(kernel_.getSample(dimension));
+  const Sample kernelSample(kernel_.getSample(dimension));
   for (UnsignedInteger i = 0; i < dimension; ++i) result[i] += bandwidth_[i] * kernelSample[i][0];
   return result;
 }

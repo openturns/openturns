@@ -53,7 +53,7 @@ RegularGrid::RegularGrid(const NumericalScalar start,
   if (n >= 1)
   {
     // The mesh is the description by extension of the grid
-    vertices_ = NumericalSample(n, 1);
+    vertices_ = Sample(n, 1);
     for (UnsignedInteger i = 0; i < n; ++i) vertices_[i][0] = start_ + i * step_;
     // Here we know that n > 0
     simplices_ = IndicesCollection(n - 1);

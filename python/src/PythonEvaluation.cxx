@@ -214,7 +214,7 @@ NumericalPoint PythonEvaluation::operator() (const NumericalPoint & inP) const
 
 
 /* Operator () */
-NumericalSample PythonEvaluation::operator() (const NumericalSample & inS) const
+Sample PythonEvaluation::operator() (const Sample & inS) const
 {
   const UnsignedInteger inDim = inS.getDimension();
 
@@ -225,8 +225,8 @@ NumericalSample PythonEvaluation::operator() (const NumericalSample & inS) const
   const UnsignedInteger outDim = getOutputDimension();
   const bool useCache = p_cache_->isEnabled();
 
-  NumericalSample outS(size, outDim);
-  NumericalSample toDo(0, inDim);
+  Sample outS(size, outDim);
+  Sample toDo(0, inDim);
   if (useCache)
   {
     std::set<NumericalPoint> uniqueValues;

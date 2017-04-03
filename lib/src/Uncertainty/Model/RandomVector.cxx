@@ -263,7 +263,7 @@ NumericalPoint RandomVector::getRealization() const
 }
 
 /* Numerical sample accessor */
-NumericalSample RandomVector::getSample(UnsignedInteger size) const
+Sample RandomVector::getSample(UnsignedInteger size) const
 {
   return getImplementation()->getSample(size);
 }

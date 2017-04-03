@@ -23,7 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/DrawableImplementation.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -43,12 +43,12 @@ class OT_API BarPlot : public DrawableImplementation
 public:
 
   /** Default constructor */
-  BarPlot(const NumericalSample & data,
+  BarPlot(const Sample & data,
           const NumericalScalar origin,
           const String & legend = "");
 
   /** Constructor with parameters */
-  BarPlot(const NumericalSample & data,
+  BarPlot(const Sample & data,
           const NumericalScalar origin,
           const String & color,
           const String & fillStyle,
@@ -57,7 +57,7 @@ public:
           const String & legend = "");
 
   /** Constructor with old parameters */
-  BarPlot(const NumericalSample & data,
+  BarPlot(const Sample & data,
           const NumericalScalar origin,
           const String & color,
           const String & fillStyle,
@@ -89,7 +89,7 @@ public:
 
 protected:
   /** Check fo data validity */
-  virtual void checkData(const NumericalSample & data) const;
+  virtual void checkData(const Sample & data) const;
 
 private:
 

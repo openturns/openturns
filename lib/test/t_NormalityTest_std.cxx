@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
   distributionCollection.add(poisson);
   discreteDistributionCollection.add(poisson);
 
-  NumericalSample x(3, 1);
+  Sample x(3, 1);
   x[0][0] = 1.0;
   x[1][0] = 2.0;
   x[2][0] = 3.0;
@@ -103,9 +103,9 @@ int main(int argc, char *argv[])
   UnsignedInteger continuousDistributionNumber = continuousDistributionCollection.getSize();
   UnsignedInteger discreteDistributionNumber = discreteDistributionCollection.getSize();
   UnsignedInteger distributionNumber = continuousDistributionNumber + discreteDistributionNumber;
-  Collection<NumericalSample> sampleCollection(distributionNumber);
-  Collection<NumericalSample> continuousSampleCollection(continuousDistributionNumber);
-  Collection<NumericalSample> discreteSampleCollection(discreteDistributionNumber);
+  Collection<Sample> sampleCollection(distributionNumber);
+  Collection<Sample> continuousSampleCollection(continuousDistributionNumber);
+  Collection<Sample> discreteSampleCollection(discreteDistributionNumber);
   for (UnsignedInteger i = 0; i < continuousDistributionNumber; i++)
   {
     continuousSampleCollection[i] = continuousDistributionCollection[i].getSample(size);

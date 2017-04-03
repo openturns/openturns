@@ -33,8 +33,8 @@ DatabaseFunction::DatabaseFunction ()
 
 
 /* Parameter constructor */
-DatabaseFunction::DatabaseFunction (const NumericalSample & inputSample,
-                                    const NumericalSample & outputSample,
+DatabaseFunction::DatabaseFunction (const Sample & inputSample,
+                                    const Sample & outputSample,
                                     const Bool enableCache)
   : Function()
 {

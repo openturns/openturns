@@ -44,7 +44,7 @@ PoissonFactory * PoissonFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-PoissonFactory::Implementation PoissonFactory::build(const NumericalSample & sample) const
+PoissonFactory::Implementation PoissonFactory::build(const Sample & sample) const
 {
   return buildAsPoisson(sample).clone();
 }
@@ -59,7 +59,7 @@ PoissonFactory::Implementation PoissonFactory::build() const
   return buildAsPoisson().clone();
 }
 
-Poisson PoissonFactory::buildAsPoisson(const NumericalSample & sample) const
+Poisson PoissonFactory::buildAsPoisson(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Poisson distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Poisson distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();

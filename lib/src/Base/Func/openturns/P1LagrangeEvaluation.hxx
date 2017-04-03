@@ -68,22 +68,22 @@ public:
   Mesh getMesh() const;
 
   /** Vertices accessor */
-  void setVertices(const NumericalSample & vertices);
-  NumericalSample getVertices() const;
+  void setVertices(const Sample & vertices);
+  Sample getVertices() const;
 
   /** Simplices accessor */
   void setSimplices(const IndicesCollection & simplices);
   IndicesCollection getSimplices() const;
 
   /** Values accessor */
-  void setValues(const NumericalSample & values);
-  NumericalSample getValues() const;
+  void setValues(const Sample & values);
+  Sample getValues() const;
 
   /* Here is the interface that all derived class must implement */
 
   /** Operator () */
   virtual NumericalPoint operator()(const NumericalPoint & inP) const;
-  virtual NumericalSample operator()(const NumericalSample & inS) const;
+  virtual Sample operator()(const Sample & inS) const;
 
 protected:
   NumericalPoint evaluate(const NumericalPoint & inP) const;
@@ -108,19 +108,19 @@ protected:
   Mesh mesh_;
 
   /* Values of the field defining the P1 Lagrange interpolation */
-  NumericalSample values_;
+  Sample values_;
 
 private:
 
   class P1LagrangeEvaluationComputeSamplePolicy
   {
-    const NumericalSample & input_;
-    NumericalSample & output_;
+    const Sample & input_;
+    Sample & output_;
     const P1LagrangeEvaluation & lagrange_;
 
   public:
-    P1LagrangeEvaluationComputeSamplePolicy(const NumericalSample & input,
-        NumericalSample & output,
+    P1LagrangeEvaluationComputeSamplePolicy(const Sample & input,
+        Sample & output,
         const P1LagrangeEvaluation & lagrange)
       : input_(input)
       , output_(output)

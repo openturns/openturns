@@ -69,7 +69,7 @@ public:
 protected:
 
   /** Compute the block sample */
-  NumericalSample computeBlockSample();
+  Sample computeBlockSample();
 
   /** Second antecedent dimension */
   UnsignedInteger dimension_;

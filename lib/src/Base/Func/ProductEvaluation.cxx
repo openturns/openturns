@@ -95,14 +95,14 @@ NumericalPoint ProductEvaluation::operator() (const NumericalPoint & inP) const
 }
 
 /* Operator () */
-NumericalSample ProductEvaluation::operator() (const NumericalSample & inSample) const
+Sample ProductEvaluation::operator() (const Sample & inSample) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inSample.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inSample.getDimension();
   const UnsignedInteger size = inSample.getSize();
   callsNumber_ += size;
-  const NumericalSample leftSample(p_leftEvaluation_->operator()(inSample));
-  NumericalSample rightSample(p_rightEvaluation_->operator()(inSample));
+  const Sample leftSample(p_leftEvaluation_->operator()(inSample));
+  Sample rightSample(p_rightEvaluation_->operator()(inSample));
   for (UnsignedInteger i = 0; i < size; ++i) rightSample[i] *= leftSample[i][0];
   rightSample.setDescription(getOutputDescription());
   return rightSample;

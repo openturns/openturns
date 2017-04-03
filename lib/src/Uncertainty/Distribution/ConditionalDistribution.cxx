@@ -239,7 +239,7 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
   // For now, only basic Legendre
   // Gather the indices of the discrete marginals
   // Analyse the marginal distributions
-  Collection< NumericalSample > discreteSupports(0, NumericalSample(0, 1));
+  Collection< Sample > discreteSupports(0, Sample(0, 1));
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
   {
     const Distribution marginal(conditioningDistribution.getMarginal(i));
@@ -253,7 +253,7 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
     // Discrete marginal
     else
     {
-      const NumericalSample support(marginal.getSupport());
+      const Sample support(marginal.getSupport());
       // Special case for Dirac distributions. It can be either a Dirac distribution or a UserDefined distribution, so we check the support directly.
       if (support.getSize() == 1)
       {
@@ -295,9 +295,9 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
   {
     NumericalPoint levels(discreteDimension);
     for (UnsignedInteger i = 0; i < discreteDimension; ++i) levels[i] = discreteSupports[i].getSize() - 2;
-    const NumericalSample fractions(Box(levels).generate());
+    const Sample fractions(Box(levels).generate());
     discreteAtomsNumber = fractions.getSize();
-    discreteNodes_ = NumericalSample(discreteAtomsNumber, discreteDimension);
+    discreteNodes_ = Sample(discreteAtomsNumber, discreteDimension);
     for (UnsignedInteger i = 0; i < discreteAtomsNumber; ++i)
     {
       NumericalPoint discreteNode(discreteDimension);

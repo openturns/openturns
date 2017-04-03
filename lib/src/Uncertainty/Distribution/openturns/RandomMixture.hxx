@@ -73,12 +73,12 @@ public:
 
   /** Parameter constructor - nD */
   RandomMixture(const DistributionCollection & coll,
-                const NumericalSample & weights,
+                const Sample & weights,
                 const NumericalPoint constant);
 
   /** Parameter constructor - nD */
   RandomMixture(const DistributionCollection & coll,
-                const NumericalSample & weights);
+                const Sample & weights);
 
   /** Comparison operator */
   Bool operator ==(const RandomMixture & other) const;
@@ -113,10 +113,10 @@ public:
   NumericalPoint getRealization() const;
 
   /** Get a sample of the RandomMixture */
-  NumericalSample getSample(const UnsignedInteger size) const;
+  Sample getSample(const UnsignedInteger size) const;
 
  protected:
-  virtual NumericalSample getSampleByQMC(const UnsignedInteger size) const;
+  virtual Sample getSampleByQMC(const UnsignedInteger size) const;
  public:
 
   /** Get the DDF of the RandomMixture */
@@ -128,16 +128,16 @@ public:
   NumericalScalar computePDF(const NumericalPoint & point) const;
 
   /** Compute the PDF over a regular grid */
-  NumericalSample computePDF(const NumericalScalar xMin,
+  Sample computePDF(const NumericalScalar xMin,
                              const NumericalScalar xMax,
                              const UnsignedInteger pointNumber,
-                             NumericalSample & grid) const;
+                             Sample & grid) const;
 
   /* Compute the PDF of over a regular grid */
-  NumericalSample computePDF(const NumericalPoint & xMin,
+  Sample computePDF(const NumericalPoint & xMin,
                              const NumericalPoint & xMax,
                              const Indices & pointNumber,
-                             NumericalSample & grid) const;
+                             Sample & grid) const;
 
   /** Get the i-th marginal distribution */
   Implementation getMarginal(const UnsignedInteger i) const;
@@ -163,16 +163,16 @@ private:
   NumericalComplex computeDeltaCharacteristicFunction(const NumericalPoint & x) const;
 
   /** Update cache of the characteristic function */
-  void updateCacheDeltaCharacteristicFunction(const NumericalSample & points) const;
+  void updateCacheDeltaCharacteristicFunction(const Sample & points) const;
 
   /** Contribution to computePDF on a 1D grid */
-  void addPDFOn1DGrid(const Indices & pointNumber, const NumericalPoint & h, const NumericalPoint & tau, NumericalSample & result) const;
+  void addPDFOn1DGrid(const Indices & pointNumber, const NumericalPoint & h, const NumericalPoint & tau, Sample & result) const;
 
   /** Contribution to computePDF on a 2D grid */
-  void addPDFOn2DGrid(const Indices & pointNumber, const NumericalPoint & h, const NumericalPoint & tau, NumericalSample & result) const;
+  void addPDFOn2DGrid(const Indices & pointNumber, const NumericalPoint & h, const NumericalPoint & tau, Sample & result) const;
 
   /** Contribution to computePDF on a 3D grid */
-  void addPDFOn3DGrid(const Indices & pointNumber, const NumericalPoint & h, const NumericalPoint & tau, NumericalSample & result) const;
+  void addPDFOn3DGrid(const Indices & pointNumber, const NumericalPoint & h, const NumericalPoint & tau, Sample & result) const;
 
 public:
   /** Get the CDF of the RandomMixture */
@@ -182,17 +182,17 @@ public:
   NumericalScalar computeComplementaryCDF(const NumericalPoint & point) const;
 
   /** Compute the CDF over a regular grid */
-  NumericalSample computeCDF(const NumericalScalar xMin,
+  Sample computeCDF(const NumericalScalar xMin,
                              const NumericalScalar xMax,
                              const UnsignedInteger pointNumber,
-                             NumericalSample & grid) const;
+                             Sample & grid) const;
 
   /** Get the probability content of an interval */
   NumericalScalar computeProbability(const Interval & interval) const;
 
   /** Compute the quantile over a regular grid */
   using DistributionImplementation::computeQuantile;
-  NumericalSample computeQuantile(const NumericalScalar qMin,
+  Sample computeQuantile(const NumericalScalar qMin,
                                   const NumericalScalar qMax,
                                   const UnsignedInteger pointNumber,
                                   const Bool tail = false) const;
@@ -288,7 +288,7 @@ public:
 
   /** Get the support of a discrete distribution that intersect a given interval */
   using DistributionImplementation::getSupport;
-  NumericalSample getSupport(const Interval & interval) const;
+  Sample getSupport(const Interval & interval) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -302,8 +302,8 @@ private:
   {
   public:
     /** Constructor from a distribution and a data set */
-    KolmogorovProjection(const NumericalSample & dataX,
-                         const NumericalSample & dataY,
+    KolmogorovProjection(const Sample & dataX,
+                         const Sample & dataY,
                          const DistributionFactory & factory):
       dataX_(dataX),
       dataY_(dataY),
@@ -332,8 +332,8 @@ private:
       factory_ = factory;
     }
   private:
-    NumericalSample dataX_;
-    NumericalSample dataY_;
+    Sample dataX_;
+    Sample dataY_;
     DistributionFactory factory_;
   };
 

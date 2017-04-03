@@ -425,9 +425,9 @@ NumericalPoint DistributionImplementation::getRealization() const
 }
 
 /* Get a numerical sample whose elements follow the distributionImplementation */
-NumericalSample DistributionImplementation::getSample(const UnsignedInteger size) const
+Sample DistributionImplementation::getSample(const UnsignedInteger size) const
 {
-  NumericalSample returnSample(size, dimension_);
+  Sample returnSample(size, dimension_);
   for (UnsignedInteger i = 0; i < size; ++ i)
     returnSample[i] = getRealization();
   returnSample.setName(getName());
@@ -453,33 +453,33 @@ NumericalPoint DistributionImplementation::getRealizationByInversion() const
 }
 
 /* Get a numerical sample whose elements follow the distributionImplementation */
-NumericalSample DistributionImplementation::getSampleByInversion(const UnsignedInteger size) const
+Sample DistributionImplementation::getSampleByInversion(const UnsignedInteger size) const
 {
   // Use CDF inversion in the 1D case
   if (dimension_ == 1) return computeQuantile(RandomGenerator::Generate(size));
   // Use conditional CDF inversion in the 1D case
-  NumericalSample result(size, 0);
+  Sample result(size, 0);
   for (UnsignedInteger i = 0; i < dimension_; ++ i)
   {
     const NumericalPoint u(RandomGenerator::Generate(size));
-    NumericalSampleImplementation q(size, 1);
+    SampleImplementation q(size, 1);
     q.setData(computeConditionalQuantile(u, result));
     result.stack(q);
   }
   return result;
 }
 
-NumericalSample DistributionImplementation::getSampleByQMC(const UnsignedInteger size) const
+Sample DistributionImplementation::getSampleByQMC(const UnsignedInteger size) const
 {
   const SobolSequence sequence(1);
   // Use CDF inversion in the 1D case
   if (dimension_ == 1) return computeQuantile(sequence.generate(size).getImplementation()->getData());
   // Use conditional CDF inversion in the 1D case
-  NumericalSample result(size, 0);
+  Sample result(size, 0);
   for (UnsignedInteger i = 0; i < dimension_; ++ i)
   {
     const NumericalPoint u(sequence.generate(size).getImplementation()->getData());
-    NumericalSampleImplementation q(size, 1);
+    SampleImplementation q(size, 1);
     q.setData(computeConditionalQuantile(u, result));
     result.stack(q);
   }
@@ -510,8 +510,8 @@ NumericalPoint DistributionImplementation::computeDDF(const NumericalPoint & poi
 NumericalScalar DistributionImplementation::computePDF(const NumericalPoint & point) const
 {
   const NumericalScalar epsilon = 2.0 * std::pow(cdfEpsilon_, 1.0 / 3.0);
-  const NumericalSample xSample(((Box(Indices(dimension_, 0)).generate() - NumericalPoint(dimension_, 0.5)) * NumericalPoint(dimension_, epsilon)) + point);
-  const NumericalSample cdfSample(computeCDF(xSample));
+  const Sample xSample(((Box(Indices(dimension_, 0)).generate() - NumericalPoint(dimension_, 0.5)) * NumericalPoint(dimension_, epsilon)) + point);
+  const Sample cdfSample(computeCDF(xSample));
   NumericalScalar pdf = 0.0;
   const UnsignedInteger iMax = cdfSample.getSize();
   for (UnsignedInteger i = 0; i < iMax; ++ i)
@@ -672,23 +672,23 @@ NumericalPoint DistributionImplementation::computeInverseSurvivalFunction(const 
   return wrapper.diagonalToSpace(marginalProb);
 }
 
-/* On a NumericalSample */
-NumericalSample DistributionImplementation::computeCDFSequential(const NumericalSample & inSample) const
+/* On a Sample */
+Sample DistributionImplementation::computeCDFSequential(const Sample & inSample) const
 {
   const UnsignedInteger size = inSample.getSize();
-  NumericalSample outSample(size, 1);
+  Sample outSample(size, 1);
   for (UnsignedInteger i = 0; i < size; ++ i) outSample[i][0] = computeCDF(inSample[i]);
   return outSample;
 }
 
 struct ComputeCDFPolicy
 {
-  const NumericalSample & input_;
-  NumericalSample & output_;
+  const Sample & input_;
+  Sample & output_;
   const DistributionImplementation & distribution_;
 
-  ComputeCDFPolicy( const NumericalSample & input,
-                    NumericalSample & output,
+  ComputeCDFPolicy( const Sample & input,
+                    Sample & output,
                     const DistributionImplementation & distribution)
     : input_(input)
     , output_(output)
@@ -702,39 +702,39 @@ struct ComputeCDFPolicy
 
 }; /* end struct ComputeCDFPolicy */
 
-NumericalSample DistributionImplementation::computeCDFParallel(const NumericalSample & inSample) const
+Sample DistributionImplementation::computeCDFParallel(const Sample & inSample) const
 {
   if (inSample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << dimension_ << ", got " << inSample.getDimension();
   const UnsignedInteger size = inSample.getSize();
-  NumericalSample result(size, 1);
+  Sample result(size, 1);
   const ComputeCDFPolicy policy( inSample, result, *this );
   TBB::ParallelFor( 0, size, policy );
   return result;
 }
 
-NumericalSample DistributionImplementation::computeCDF(const NumericalSample & inSample) const
+Sample DistributionImplementation::computeCDF(const Sample & inSample) const
 {
   if (inSample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << dimension_ << ", got " << inSample.getDimension();
   if (isParallel_) return computeCDFParallel(inSample);
   else return computeCDFSequential(inSample);
 }
 
-NumericalSample DistributionImplementation::computeComplementaryCDFSequential(const NumericalSample & inSample) const
+Sample DistributionImplementation::computeComplementaryCDFSequential(const Sample & inSample) const
 {
   const UnsignedInteger size = inSample.getSize();
-  NumericalSample outSample(size, 1);
+  Sample outSample(size, 1);
   for (UnsignedInteger i = 0; i < size; ++ i) outSample[i][0] = computeComplementaryCDF(inSample[i]);
   return outSample;
 }
 
 struct ComputeComplementaryCDFPolicy
 {
-  const NumericalSample & input_;
-  NumericalSample & output_;
+  const Sample & input_;
+  Sample & output_;
   const DistributionImplementation & distribution_;
 
-  ComputeComplementaryCDFPolicy( const NumericalSample & input,
-                                 NumericalSample & output,
+  ComputeComplementaryCDFPolicy( const Sample & input,
+                                 Sample & output,
                                  const DistributionImplementation & distribution)
     : input_(input)
     , output_(output)
@@ -748,39 +748,39 @@ struct ComputeComplementaryCDFPolicy
 
 }; /* end struct ComputeComplementaryCDFPolicy */
 
-NumericalSample DistributionImplementation::computeComplementaryCDFParallel(const NumericalSample & inSample) const
+Sample DistributionImplementation::computeComplementaryCDFParallel(const Sample & inSample) const
 {
   if (inSample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << dimension_ << ", got " << inSample.getDimension();
   const UnsignedInteger size = inSample.getSize();
-  NumericalSample result(size, 1);
+  Sample result(size, 1);
   const ComputeComplementaryCDFPolicy policy( inSample, result, *this );
   TBB::ParallelFor( 0, size, policy );
   return result;
 }
 
-NumericalSample DistributionImplementation::computeComplementaryCDF(const NumericalSample & inSample) const
+Sample DistributionImplementation::computeComplementaryCDF(const Sample & inSample) const
 {
   if (inSample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << dimension_ << ", got " << inSample.getDimension();
   if (isParallel_) return computeComplementaryCDFParallel(inSample);
   else return computeComplementaryCDFSequential(inSample);
 }
 
-NumericalSample DistributionImplementation::computeSurvivalFunctionSequential(const NumericalSample & inSample) const
+Sample DistributionImplementation::computeSurvivalFunctionSequential(const Sample & inSample) const
 {
   const UnsignedInteger size = inSample.getSize();
-  NumericalSample outSample(size, 1);
+  Sample outSample(size, 1);
   for (UnsignedInteger i = 0; i < size; ++ i) outSample[i][0] = computeSurvivalFunction(inSample[i]);
   return outSample;
 }
 
 struct ComputeSurvivalFunctionPolicy
 {
-  const NumericalSample & input_;
-  NumericalSample & output_;
+  const Sample & input_;
+  Sample & output_;
   const DistributionImplementation & distribution_;
 
-  ComputeSurvivalFunctionPolicy( const NumericalSample & input,
-                                 NumericalSample & output,
+  ComputeSurvivalFunctionPolicy( const Sample & input,
+                                 Sample & output,
                                  const DistributionImplementation & distribution)
     : input_(input)
     , output_(output)
@@ -794,17 +794,17 @@ struct ComputeSurvivalFunctionPolicy
 
 }; /* end struct ComputeSurvivalFunctionPolicy */
 
-NumericalSample DistributionImplementation::computeSurvivalFunctionParallel(const NumericalSample & inSample) const
+Sample DistributionImplementation::computeSurvivalFunctionParallel(const Sample & inSample) const
 {
   if (inSample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << dimension_ << ", got " << inSample.getDimension();
   const UnsignedInteger size = inSample.getSize();
-  NumericalSample result(size, 1);
+  Sample result(size, 1);
   const ComputeSurvivalFunctionPolicy policy( inSample, result, *this );
   TBB::ParallelFor( 0, size, policy );
   return result;
 }
 
-NumericalSample DistributionImplementation::computeSurvivalFunction(const NumericalSample & inSample) const
+Sample DistributionImplementation::computeSurvivalFunction(const Sample & inSample) const
 {
   if (inSample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << dimension_ << ", got " << inSample.getDimension();
   if (isParallel_) return computeSurvivalFunctionParallel(inSample);
@@ -908,7 +908,7 @@ NumericalScalar DistributionImplementation::computeProbabilityContinuous(const I
 /* Get the probability content of an interval, discrete case */
 NumericalScalar DistributionImplementation::computeProbabilityDiscrete(const Interval & interval) const
 {
-  const NumericalSample support(getSupport(interval));
+  const Sample support(getSupport(interval));
   NumericalScalar value = 0.0;
   for (UnsignedInteger i = 0; i < support.getSize(); ++i) value += computePDF(support[i]);
   return value;
@@ -991,7 +991,7 @@ NumericalComplex DistributionImplementation::computeCharacteristicFunction(const
       if (!isInitializedCF_)
       {
         //              const UnsignedInteger nMax(ResourceMap::GetAsUnsignedLong("Distribution-CharacteristicFunctionNMax"));
-        NumericalSample locations(Box(Indices(1, 2 * N - 1)).generate());
+        Sample locations(Box(Indices(1, 2 * N - 1)).generate());
         locations *= NumericalPoint(1, b - a);
         locations += NumericalPoint(1, a);
         pdfGrid_ = computePDF(locations).getImplementation()->getData();
@@ -1025,7 +1025,7 @@ NumericalComplex DistributionImplementation::computeCharacteristicFunction(const
     // In the discrete case, we have a reasonably efficient algorithm both in term of speed and precision.
     if (isDiscrete())
     {
-      const NumericalSample support(getSupport());
+      const Sample support(getSupport());
       const UnsignedInteger size = support.getSize();
       for (UnsignedInteger i = 0; i < size; ++i)
       {
@@ -1104,7 +1104,7 @@ NumericalComplex DistributionImplementation::computeGeneratingFunction(const Num
 {
   if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error:  cannot use the computeCharacteristicFunction method with distributions of dimension > 1";
   if (!isDiscrete()) throw NotDefinedException(HERE) << "Error: cannot compute the generating function for non discrete distributions.";
-  const NumericalSample support(getSupport());
+  const Sample support(getSupport());
   const UnsignedInteger size = support.getSize();
   NumericalComplex value(0.0);
   // If the distribution is integral, the generating function is either a polynomial if the support is finite, or can be well approximated by such a polynomial
@@ -1138,10 +1138,10 @@ NumericalComplex DistributionImplementation::computeLogGeneratingFunction(const 
 }
 
 /* Get the DDF of the distribution */
-NumericalSample DistributionImplementation::computeDDFSequential(const NumericalSample & inSample) const
+Sample DistributionImplementation::computeDDFSequential(const Sample & inSample) const
 {
   const UnsignedInteger size = inSample.getSize();
-  NumericalSample outSample(size, 1);
+  Sample outSample(size, 1);
   for (UnsignedInteger i = 0; i < size; ++i) outSample[i] = computeDDF(inSample[i]);
   return outSample;
 }
@@ -1149,12 +1149,12 @@ NumericalSample DistributionImplementation::computeDDFSequential(const Numerical
 /* Get the DDF of the distribution */
 struct ComputeDDFPolicy
 {
-  const NumericalSample & input_;
-  NumericalSample & output_;
+  const Sample & input_;
+  Sample & output_;
   const DistributionImplementation & distribution_;
 
-  ComputeDDFPolicy( const NumericalSample & input,
-                    NumericalSample & output,
+  ComputeDDFPolicy( const Sample & input,
+                    Sample & output,
                     const DistributionImplementation & distribution)
     : input_(input)
     , output_(output)
@@ -1168,17 +1168,17 @@ struct ComputeDDFPolicy
 
 }; /* end struct ComputeDDFPolicy */
 
-NumericalSample DistributionImplementation::computeDDFParallel(const NumericalSample & inSample) const
+Sample DistributionImplementation::computeDDFParallel(const Sample & inSample) const
 {
   if (inSample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << dimension_ << ", got " << inSample.getDimension();
   const UnsignedInteger size = inSample.getSize();
-  NumericalSample result(size, 1);
+  Sample result(size, 1);
   const ComputeDDFPolicy policy( inSample, result, *this );
   TBB::ParallelFor( 0, size, policy );
   return result;
 }
 
-NumericalSample DistributionImplementation::computeDDF(const NumericalSample & inSample) const
+Sample DistributionImplementation::computeDDF(const Sample & inSample) const
 {
   if (inSample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << dimension_ << ", got " << inSample.getDimension();
   if (isParallel_) return computeDDFParallel(inSample);
@@ -1186,10 +1186,10 @@ NumericalSample DistributionImplementation::computeDDF(const NumericalSample & i
 }
 
 /* Get the PDF of the distribution */
-NumericalSample DistributionImplementation::computePDFSequential(const NumericalSample & inSample) const
+Sample DistributionImplementation::computePDFSequential(const Sample & inSample) const
 {
   const UnsignedInteger size = inSample.getSize();
-  NumericalSample outSample(size, 1);
+  Sample outSample(size, 1);
   for (UnsignedInteger i = 0; i < size; ++i) outSample[i][0] = computePDF(inSample[i]);
   return outSample;
 }
@@ -1197,12 +1197,12 @@ NumericalSample DistributionImplementation::computePDFSequential(const Numerical
 /* Get the PDF of the distribution */
 struct ComputePDFPolicy
 {
-  const NumericalSample & input_;
-  NumericalSample & output_;
+  const Sample & input_;
+  Sample & output_;
   const DistributionImplementation & distribution_;
 
-  ComputePDFPolicy( const NumericalSample & input,
-                    NumericalSample & output,
+  ComputePDFPolicy( const Sample & input,
+                    Sample & output,
                     const DistributionImplementation & distribution)
     : input_(input)
     , output_(output)
@@ -1216,17 +1216,17 @@ struct ComputePDFPolicy
 
 }; /* end struct ComputePDFPolicy */
 
-NumericalSample DistributionImplementation::computePDFParallel(const NumericalSample & inSample) const
+Sample DistributionImplementation::computePDFParallel(const Sample & inSample) const
 {
   if (inSample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << dimension_ << ", got " << inSample.getDimension();
   const UnsignedInteger size = inSample.getSize();
-  NumericalSample result(size, 1);
+  Sample result(size, 1);
   const ComputePDFPolicy policy( inSample, result, *this );
   TBB::ParallelFor( 0, size, policy );
   return result;
 }
 
-NumericalSample DistributionImplementation::computePDF(const NumericalSample & inSample) const
+Sample DistributionImplementation::computePDF(const Sample & inSample) const
 {
   if (inSample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << dimension_ << ", got " << inSample.getDimension();
   if (isParallel_) return computePDFParallel(inSample);
@@ -1234,10 +1234,10 @@ NumericalSample DistributionImplementation::computePDF(const NumericalSample & i
 }
 
 /* Get the Log PDF of the distribution */
-NumericalSample DistributionImplementation::computeLogPDFSequential(const NumericalSample & inSample) const
+Sample DistributionImplementation::computeLogPDFSequential(const Sample & inSample) const
 {
   const UnsignedInteger size = inSample.getSize();
-  NumericalSample outSample(size, 1);
+  Sample outSample(size, 1);
   for (UnsignedInteger i = 0; i < size; ++i) outSample[i][0] = computeLogPDF(inSample[i]);
   return outSample;
 }
@@ -1245,12 +1245,12 @@ NumericalSample DistributionImplementation::computeLogPDFSequential(const Numeri
 /* Get the LogPDF of the distribution */
 struct ComputeLogPDFPolicy
 {
-  const NumericalSample & input_;
-  NumericalSample & output_;
+  const Sample & input_;
+  Sample & output_;
   const DistributionImplementation & distribution_;
 
-  ComputeLogPDFPolicy( const NumericalSample & input,
-                       NumericalSample & output,
+  ComputeLogPDFPolicy( const Sample & input,
+                       Sample & output,
                        const DistributionImplementation & distribution)
     : input_(input)
     , output_(output)
@@ -1264,17 +1264,17 @@ struct ComputeLogPDFPolicy
 
 }; /* end struct ComputeLogPDFPolicy */
 
-NumericalSample DistributionImplementation::computeLogPDFParallel(const NumericalSample & inSample) const
+Sample DistributionImplementation::computeLogPDFParallel(const Sample & inSample) const
 {
   if (inSample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << dimension_ << ", got " << inSample.getDimension();
   const UnsignedInteger size = inSample.getSize();
-  NumericalSample result(size, 1);
+  Sample result(size, 1);
   const ComputeLogPDFPolicy policy( inSample, result, *this );
   TBB::ParallelFor( 0, size, policy );
   return result;
 }
 
-NumericalSample DistributionImplementation::computeLogPDF(const NumericalSample & inSample) const
+Sample DistributionImplementation::computeLogPDF(const Sample & inSample) const
 {
   if (inSample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << dimension_ << ", got " << inSample.getDimension();
   if (isParallel_) return computeLogPDFParallel(inSample);
@@ -1321,26 +1321,26 @@ NumericalScalar DistributionImplementation::computeSurvivalFunction(const Numeri
 }
 
 /* Compute the PDF of 1D distributions over a regular grid */
-NumericalSample DistributionImplementation::computePDF(const NumericalScalar xMin,
+Sample DistributionImplementation::computePDF(const NumericalScalar xMin,
     const NumericalScalar xMax,
     const UnsignedInteger pointNumber,
-    NumericalSample & grid) const
+    Sample & grid) const
 {
   return computePDF(NumericalPoint(1, xMin), NumericalPoint(1, xMax), Indices(1, pointNumber), grid);
 }
 
 /* Compute the PDF of nD distributions over a regular grid */
-NumericalSample DistributionImplementation::computePDF(const NumericalPoint & xMin,
+Sample DistributionImplementation::computePDF(const NumericalPoint & xMin,
     const NumericalPoint & xMax,
     const Indices & pointNumber,
-    NumericalSample & grid) const
+    Sample & grid) const
 {
   if (xMin.getDimension() != xMax.getDimension()) throw InvalidArgumentException(HERE) << "Error: the two corner points must have the same dimension. Here, dim(xMin)=" << xMin.getDimension() << " and dim(xMax)=" << xMax.getDimension();
   if (xMin.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the corner points must have the same dimension as the distribution. Here, dim(xMin)=" << xMin.getDimension() << " and distribution dimension=" << dimension_;
   if (dimension_ != pointNumber.getSize()) throw InvalidArgumentException(HERE) << "Error: the discretization must match the distribution dimension. Here, dim(discretization)=" << pointNumber.getSize() << " and distribution dimension=" << dimension_;
   Tuples::IndicesCollection indices(Tuples(pointNumber).generate());
   const UnsignedInteger size = indices.getSize();
-  NumericalSample inputSample(indices.getSize(), dimension_);
+  Sample inputSample(indices.getSize(), dimension_);
   for (UnsignedInteger i = 0; i < size; ++i)
     for (UnsignedInteger j = 0; j < dimension_; ++j) inputSample[i][j] = xMin[j] + indices[i][j] * (xMax[j] - xMin[j]) / (pointNumber[j] - 1.0);
   grid = inputSample;
@@ -1348,26 +1348,26 @@ NumericalSample DistributionImplementation::computePDF(const NumericalPoint & xM
 }
 
 /* Compute the log-PDF of 1D distributions over a regular grid */
-NumericalSample DistributionImplementation::computeLogPDF(const NumericalScalar xMin,
+Sample DistributionImplementation::computeLogPDF(const NumericalScalar xMin,
     const NumericalScalar xMax,
     const UnsignedInteger pointNumber,
-    NumericalSample & grid) const
+    Sample & grid) const
 {
   return computeLogPDF(NumericalPoint(1, xMin), NumericalPoint(1, xMax), Indices(1, pointNumber), grid);
 }
 
 /* Compute the log-PDF of nD distributions over a regular grid */
-NumericalSample DistributionImplementation::computeLogPDF(const NumericalPoint & xMin,
+Sample DistributionImplementation::computeLogPDF(const NumericalPoint & xMin,
     const NumericalPoint & xMax,
     const Indices & pointNumber,
-    NumericalSample & grid) const
+    Sample & grid) const
 {
   if (xMin.getDimension() != xMax.getDimension()) throw InvalidArgumentException(HERE) << "Error: the two corner points must have the same dimension. Here, dim(xMin)=" << xMin.getDimension() << " and dim(xMax)=" << xMax.getDimension();
   if (xMin.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the corner points must have the same dimension as the distribution. Here, dim(xMin)=" << xMin.getDimension() << " and distribution dimension=" << dimension_;
   if (dimension_ != pointNumber.getSize()) throw InvalidArgumentException(HERE) << "Error: the discretization must match the distribution dimension. Here, dim(discretization)=" << pointNumber.getSize() << " and distribution dimension=" << dimension_;
   Tuples::IndicesCollection indices(Tuples(pointNumber).generate());
   const UnsignedInteger size = indices.getSize();
-  NumericalSample inputSample(indices.getSize(), dimension_);
+  Sample inputSample(indices.getSize(), dimension_);
   for (UnsignedInteger i = 0; i < size; ++i)
     for (UnsignedInteger j = 0; j < dimension_; ++j) inputSample[i][j] = xMin[j] + indices[i][j] * (xMax[j] - xMin[j]) / (pointNumber[j] - 1.0);
   grid = inputSample;
@@ -1375,42 +1375,42 @@ NumericalSample DistributionImplementation::computeLogPDF(const NumericalPoint &
 }
 
 /* Compute the CDF of 1D distributions over a regular grid */
-NumericalSample DistributionImplementation::computeCDF(const NumericalScalar xMin,
+Sample DistributionImplementation::computeCDF(const NumericalScalar xMin,
     const NumericalScalar xMax,
     const UnsignedInteger pointNumber,
-    NumericalSample & grid) const
+    Sample & grid) const
 {
   return computeCDF(NumericalPoint(1, xMin), NumericalPoint(1, xMax), Indices(1, pointNumber), grid);
 }
 
 /* Compute the CDF of nD distributions over a regular grid */
-NumericalSample DistributionImplementation::computeCDF(const NumericalPoint & xMin,
+Sample DistributionImplementation::computeCDF(const NumericalPoint & xMin,
     const NumericalPoint & xMax,
     const Indices & pointNumber,
-    NumericalSample & grid) const
+    Sample & grid) const
 {
   if (xMin.getDimension() != xMax.getDimension()) throw InvalidArgumentException(HERE) << "Error: the two corner points must have the same dimension. Here, dim(xMin)=" << xMin.getDimension() << " and dim(xMax)=" << xMax.getDimension();
   if (xMin.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the corner points must have the same dimension as the distribution. Here, dim(xMin)=" << xMin.getDimension() << " and distribution dimension=" << dimension_;
   if (dimension_ != pointNumber.getSize()) throw InvalidArgumentException(HERE) << "Error: the discretization must match the distribution dimension. Here, dim(discretization)=" << pointNumber.getSize() << " and distribution dimension=" << dimension_;
   Tuples::IndicesCollection indices(Tuples(pointNumber).generate());
   const UnsignedInteger size = indices.getSize();
-  NumericalSample inputSample(indices.getSize(), dimension_);
+  Sample inputSample(indices.getSize(), dimension_);
   for (UnsignedInteger i = 0; i < size; ++i)
     for (UnsignedInteger j = 0; j < dimension_; ++j) inputSample[i][j] = xMin[j] + indices[i][j] * (xMax[j] - xMin[j]) / (pointNumber[j] - 1.0);
   grid = inputSample;
   return computeCDF(inputSample);
 }
 
-NumericalSample DistributionImplementation::computeComplementaryCDF(const NumericalScalar xMin,
+Sample DistributionImplementation::computeComplementaryCDF(const NumericalScalar xMin,
     const NumericalScalar xMax,
     const UnsignedInteger pointNumber,
-    NumericalSample & grid) const
+    Sample & grid) const
 {
   if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: cannot compute the CDF over a regular 1D grid if the dimension is > 1";
-  NumericalSample result(pointNumber, 2);
+  Sample result(pointNumber, 2);
   NumericalScalar x = xMin;
   NumericalScalar step = (xMax - xMin) / NumericalScalar(pointNumber - 1.0);
-  grid = NumericalSample(pointNumber, 1);
+  grid = Sample(pointNumber, 1);
   for (UnsignedInteger i = 0; i < pointNumber; ++i)
   {
     grid[i][0] = x;
@@ -1422,34 +1422,34 @@ NumericalSample DistributionImplementation::computeComplementaryCDF(const Numeri
 }
 
 /*  Compute the quantile over a regular grid */
-NumericalSample DistributionImplementation::computeQuantile(const NumericalScalar qMin,
+Sample DistributionImplementation::computeQuantile(const NumericalScalar qMin,
     const NumericalScalar qMax,
     const UnsignedInteger pointNumber,
     const Bool tail) const
 {
-  NumericalSample grid;
+  Sample grid;
   return computeQuantile(qMin, qMax, pointNumber, grid, tail);
 }
 
-NumericalSample DistributionImplementation::computeQuantile(const NumericalScalar qMin,
+Sample DistributionImplementation::computeQuantile(const NumericalScalar qMin,
     const NumericalScalar qMax,
     const UnsignedInteger pointNumber,
-    NumericalSample & grid,
+    Sample & grid,
     const Bool tail) const
 {
   // First, build the regular grid for the quantile levels
-  grid = NumericalSample(pointNumber, 1);
+  grid = Sample(pointNumber, 1);
   for (UnsignedInteger i = 0; i < pointNumber; ++i) grid[i][0] = qMin + i * (qMax - qMin) / (pointNumber - 1.0);
   // Use possible parallelization
   return computeQuantile(grid.getImplementation()->getData(), tail);
 }
 
 /* Compute the quantile over a provided grid */
-NumericalSample DistributionImplementation::computeQuantileSequential(const NumericalPoint & prob,
+Sample DistributionImplementation::computeQuantileSequential(const NumericalPoint & prob,
     const Bool tail) const
 {
   const UnsignedInteger size = prob.getSize();
-  NumericalSample result(size, dimension_);
+  Sample result(size, dimension_);
   for ( UnsignedInteger i = 0; i < size; ++ i ) result[i] = computeQuantile(prob[i], tail);
   return result;
 }
@@ -1457,12 +1457,12 @@ NumericalSample DistributionImplementation::computeQuantileSequential(const Nume
 struct ComputeQuantilePolicy
 {
   const NumericalPoint & prob_;
-  NumericalSample & output_;
+  Sample & output_;
   Bool tail_;
   const DistributionImplementation & distribution_;
 
   ComputeQuantilePolicy( const NumericalPoint & prob,
-                         NumericalSample & output,
+                         Sample & output,
                          const Bool tail,
                          const DistributionImplementation & distribution)
     : prob_(prob)
@@ -1478,17 +1478,17 @@ struct ComputeQuantilePolicy
 
 }; /* end struct ComputeQuantilePolicy */
 
-NumericalSample DistributionImplementation::computeQuantileParallel(const NumericalPoint & prob,
+Sample DistributionImplementation::computeQuantileParallel(const NumericalPoint & prob,
     const Bool tail) const
 {
   const UnsignedInteger size = prob.getSize();
-  NumericalSample result(size, dimension_);
+  Sample result(size, dimension_);
   const ComputeQuantilePolicy policy( prob, result, tail, *this );
   TBB::ParallelFor( 0, size, policy );
   return result;
 }
 
-NumericalSample DistributionImplementation::computeQuantile(const NumericalPoint & prob,
+Sample DistributionImplementation::computeQuantile(const NumericalPoint & prob,
     const Bool tail) const
 {
   if (isParallel_) return computeQuantileParallel(prob, tail);
@@ -1558,8 +1558,8 @@ NumericalPoint DistributionImplementation::computePDFGradient(const NumericalPoi
   return PDFGradient;
 }
 
-/* ComputePDFGradient On a NumericalSample */
-NumericalSample DistributionImplementation::computePDFGradient(const NumericalSample & inSample) const
+/* ComputePDFGradient On a Sample */
+Sample DistributionImplementation::computePDFGradient(const Sample & inSample) const
 {
   if (dimension_ > 1) throw NotYetImplementedException(HERE) << "DistributionImplementation::computePDFGradient(const NumericalPoint & point) const";
   // As we are in 1D, we know that the collection contains exactly one point
@@ -1567,7 +1567,7 @@ NumericalSample DistributionImplementation::computePDFGradient(const NumericalSa
   const UnsignedInteger parametersDimension = initialParameters.getDimension();
   const UnsignedInteger size = inSample.getSize();
   // Empty sample ==> stack for each parameter
-  NumericalSample outSample(size, 0);
+  Sample outSample(size, 0);
   // Clone the distribution
   Implementation cloneDistribution(clone());
   // Increment for centered differences
@@ -1578,7 +1578,7 @@ NumericalSample DistributionImplementation::computePDFGradient(const NumericalSa
   for (UnsignedInteger i = 0; i < parametersDimension; ++i)
   {
     NumericalScalar delta = 0.0;
-    NumericalSample rightPDF;
+    Sample rightPDF;
     // We will try a centered finite difference approximation
     try
     {
@@ -1594,7 +1594,7 @@ NumericalSample DistributionImplementation::computePDFGradient(const NumericalSa
       cloneDistribution->setParameter(newParameters);
       rightPDF = cloneDistribution->computePDF(inSample);
     }
-    NumericalSample leftPDF;
+    Sample leftPDF;
     try
     {
       // If something is wrong with the right point, use non-centered finite differences
@@ -1645,12 +1645,12 @@ NumericalPoint DistributionImplementation::computeLogPDFGradient(const Numerical
 /* Get the LogPDFGradient of the distributionImplementation */
 struct ComputeLogPDFGradientPolicy
 {
-  const NumericalSample & input_;
-  NumericalSample & output_;
+  const Sample & input_;
+  Sample & output_;
   const DistributionImplementation & distribution_;
 
-  ComputeLogPDFGradientPolicy( const NumericalSample & input,
-                               NumericalSample & output,
+  ComputeLogPDFGradientPolicy( const Sample & input,
+                               Sample & output,
                                const DistributionImplementation & distribution)
     : input_(input)
     , output_(output)
@@ -1669,10 +1669,10 @@ struct ComputeLogPDFGradientPolicy
 }; /* end struct ComputeLogPDFGradientPolicy */
 
 /* Get the logPDF gradient of the distribution (sequential implementation) */
-NumericalSample DistributionImplementation::computeLogPDFGradientSequential(const NumericalSample & sample) const
+Sample DistributionImplementation::computeLogPDFGradientSequential(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
-  NumericalSample outSample(size, getParameterDimension());
+  Sample outSample(size, getParameterDimension());
   // Sequential implementation
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -1684,27 +1684,27 @@ NumericalSample DistributionImplementation::computeLogPDFGradientSequential(cons
 }
 
 /* Get the logPDF gradient of the distribution (parallel implementation) */
-NumericalSample DistributionImplementation::computeLogPDFGradientParallel(const NumericalSample & sample) const
+Sample DistributionImplementation::computeLogPDFGradientParallel(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
-  NumericalSample outSample(size, getParameterDimension());
+  Sample outSample(size, getParameterDimension());
   const ComputeLogPDFGradientPolicy policy( sample, outSample, *this );
   TBB::ParallelFor( 0, size, policy );
   return outSample;
 }
 
 /* Get the logPDF gradient of the distribution */
-NumericalSample DistributionImplementation::computeLogPDFGradient(const NumericalSample & inSample) const
+Sample DistributionImplementation::computeLogPDFGradient(const Sample & inSample) const
 {
   if (isParallel_) return computeLogPDFGradientParallel(inSample);
   else return computeLogPDFGradientSequential(inSample);
 }
 
-/* ComputeCDFGradient On a NumericalSample */
-NumericalSample DistributionImplementation::computeCDFGradient(const NumericalSample & inSample) const
+/* ComputeCDFGradient On a Sample */
+Sample DistributionImplementation::computeCDFGradient(const Sample & inSample) const
 {
   const UnsignedInteger size = inSample.getSize();
-  NumericalSample outSample(size, getParameterDimension());
+  Sample outSample(size, getParameterDimension());
   for (UnsignedInteger i = 0; i < size; ++i) outSample[i] = computeCDFGradient(inSample[i]);
   return outSample;
 }
@@ -1786,29 +1786,29 @@ Collection<PiecewiseHermiteEvaluation> DistributionImplementation::interpolatePD
   NumericalScalar error = -1.0;
   NumericalPoint ai;
   NumericalPoint bi;
-  NumericalSample fi;
+  Sample fi;
   NumericalPoint ei;
   algorithm.integrate(pdfWrapper, xMin, mu, error, ai, bi, fi, ei);
   ai.add(mu);
-  NumericalSample locationsCDF(ai.getSize(), 1);
+  Sample locationsCDF(ai.getSize(), 1);
   locationsCDF.getImplementation()->setData(ai);
   locationsCDF = locationsCDF.sort(0);
   algorithm.integrate(pdfWrapper, mu, xMax, error, ai, bi, fi, ei);
   ai.add(xMax);
-  NumericalSample locationsCCDF(ai.getSize(), 1);
+  Sample locationsCCDF(ai.getSize(), 1);
   locationsCCDF.getImplementation()->setData(ai);
   locationsCCDF = locationsCCDF.sort(0);
   Collection<PiecewiseHermiteEvaluation> coll(4);
-  const NumericalSample valuesCDF(computeCDF(locationsCDF));
-  const NumericalSample valuesPDF(computePDF(locationsCDF));
-  const NumericalSample valuesDDF(computeDDF(locationsCDF));
+  const Sample valuesCDF(computeCDF(locationsCDF));
+  const Sample valuesPDF(computePDF(locationsCDF));
+  const Sample valuesDDF(computeDDF(locationsCDF));
   coll[0] = PiecewiseHermiteEvaluation(locationsCDF.getImplementation()->getData(), valuesPDF, valuesDDF);
   coll[1] = PiecewiseHermiteEvaluation(locationsCDF.getImplementation()->getData(), valuesCDF, valuesPDF);
-  const NumericalSample valuesCCDF(computeComplementaryCDF(locationsCCDF));
-  const NumericalSample valuesCPDF(computePDF(locationsCCDF));
-  NumericalSample derivativesCCDF(valuesCPDF);
+  const Sample valuesCCDF(computeComplementaryCDF(locationsCCDF));
+  const Sample valuesCPDF(computePDF(locationsCCDF));
+  Sample derivativesCCDF(valuesCPDF);
   derivativesCCDF *= NumericalPoint(1, -1.0);
-  const NumericalSample valuesCDDF(computeDDF(locationsCCDF));
+  const Sample valuesCDDF(computeDDF(locationsCCDF));
   coll[2] = PiecewiseHermiteEvaluation(locationsCCDF.getImplementation()->getData(), valuesCPDF, valuesCDDF);
   coll[3] = PiecewiseHermiteEvaluation(locationsCCDF.getImplementation()->getData(), valuesCCDF, derivativesCCDF);
   return coll;
@@ -1847,13 +1847,13 @@ NumericalScalar DistributionImplementation::computeConditionalPDF(const Numerica
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 NumericalPoint DistributionImplementation::computeConditionalPDF(const NumericalPoint & x,
-    const NumericalSample & y) const
+    const Sample & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
-  // Convert the values in x into a NumericalSample
+  // Convert the values in x into a Sample
   const UnsignedInteger size = x.getDimension();
-  NumericalSampleImplementation xAsSample(size, 1);
+  SampleImplementation xAsSample(size, 1);
   xAsSample.setData(x);
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula()))
@@ -1864,11 +1864,11 @@ NumericalPoint DistributionImplementation::computeConditionalPDF(const Numerical
   Indices conditioned(conditioning);
   conditioned.add(conditioningDimension);
   const Implementation conditioningDistribution(getMarginal(conditioning));
-  const NumericalSample pdfConditioning(conditioningDistribution->computePDF(y));
-  NumericalSample z(y);
+  const Sample pdfConditioning(conditioningDistribution->computePDF(y));
+  Sample z(y);
   z.stack(xAsSample);
   const Implementation conditionedDistribution(getMarginal(conditioned));
-  const NumericalSample pdfConditioned(conditionedDistribution->computePDF(z));
+  const Sample pdfConditioned(conditionedDistribution->computePDF(z));
   NumericalPoint result(size);
   for (UnsignedInteger i = 0; i < size; ++i)
     if (pdfConditioning[i][0] > 0.0) result[i] = pdfConditioned[i][0] / pdfConditioning[i][0];
@@ -1907,16 +1907,16 @@ NumericalScalar DistributionImplementation::computeConditionalCDF(const Numerica
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 NumericalPoint DistributionImplementation::computeConditionalCDF(const NumericalPoint & x,
-    const NumericalSample & y) const
+    const Sample & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
-  // Convert the values in x into a NumericalSample
+  // Convert the values in x into a Sample
   const UnsignedInteger size = x.getDimension();
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula()))
   {
-    NumericalSampleImplementation xAsSample(size, 1);
+    SampleImplementation xAsSample(size, 1);
     xAsSample.setData(x);
     return getMarginal(conditioningDimension)->computeCDF(xAsSample).getImplementation()->getData();
   }
@@ -1926,7 +1926,7 @@ NumericalPoint DistributionImplementation::computeConditionalCDF(const Numerical
   Indices conditioned(conditioning);
   conditioned.add(conditioningDimension);
   const Implementation conditioningDistribution(getMarginal(conditioning));
-  const NumericalSample pdfConditioning(conditioningDistribution->computePDF(y));
+  const Sample pdfConditioning(conditioningDistribution->computePDF(y));
   const Implementation conditionedDistribution(getMarginal(conditioned));
   const NumericalScalar xMin = conditionedDistribution->getRange().getLowerBound()[conditioningDimension];
   const NumericalScalar xMax = conditionedDistribution->getRange().getUpperBound()[conditioningDimension];
@@ -1953,12 +1953,12 @@ NumericalPoint DistributionImplementation::computeConditionalCDF(const Numerical
 NumericalScalar DistributionImplementation::computeConditionalQuantile(const NumericalScalar q,
     const NumericalPoint & y) const
 {
-  return computeConditionalQuantile(NumericalPoint(1, q), NumericalSample(1, y))[0];
+  return computeConditionalQuantile(NumericalPoint(1, q), Sample(1, y))[0];
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
 NumericalPoint DistributionImplementation::computeConditionalQuantile(const NumericalPoint & q,
-    const NumericalSample & y) const
+    const Sample & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -2407,8 +2407,8 @@ LevelSet DistributionImplementation::computeMinimumVolumeLevelSetWithThreshold(c
   {
     LOGINFO("Compute the minimum volume level set by sampling (Monte Carlo)");
     const UnsignedInteger size = ResourceMap::GetAsUnsignedInteger("Distribution-MinimumVolumeLevelSetSamplingSize");
-    const NumericalSample xSample(getSample(size));
-    const NumericalSample logPDFSample(computeLogPDF(xSample));
+    const Sample xSample(getSample(size));
+    const Sample logPDFSample(computeLogPDF(xSample));
     minusLogPDFThreshold = -logPDFSample.computeQuantile(1.0 - prob)[0];
   } // dimension > 1
   threshold = std::exp(-minusLogPDFThreshold);
@@ -2424,8 +2424,8 @@ LevelSet DistributionImplementation::computeUnivariateMinimumVolumeLevelSetByQMC
   // As we are in 1D and as the function defining the composite distribution can have complex variations,
   // we use an improved sampling method to compute the quantile of the -logPDF(X) distribution
   const UnsignedInteger size = SpecFunc::NextPowerOfTwo(ResourceMap::GetAsUnsignedInteger("Distribution-MinimumVolumeLevelSetSamplingSize"));
-  const NumericalSample xQMC(getSampleByQMC(size));
-  const NumericalSample logPDFSample(computeLogPDF(xQMC));
+  const Sample xQMC(getSampleByQMC(size));
+  const Sample logPDFSample(computeLogPDF(xQMC));
   const NumericalScalar minusLogPDFThreshold = -logPDFSample.computeQuantile(1.0 - prob)[0];
   threshold = std::exp(-minusLogPDFThreshold);
 
@@ -2624,8 +2624,8 @@ void DistributionImplementation::computeCovarianceDiscrete() const
         const Implementation marginalDistribution(getMarginal(indices));
         if (!marginalDistribution->hasIndependentCopula())
         {
-          const NumericalSample support(marginalDistribution->getSupport());
-          const NumericalSample samplePDF(marginalDistribution->computePDF(support));
+          const Sample support(marginalDistribution->getSupport());
+          const Sample samplePDF(marginalDistribution->computePDF(support));
           NumericalScalar value = 0.0;
           const UnsignedInteger size = support.getSize();
           for (UnsignedInteger i = 0; i < size; ++i) value += (support[i][0] - muI) * (support[i][1] - muJ) * samplePDF[i][0];
@@ -2878,8 +2878,8 @@ NumericalPoint DistributionImplementation::computeShiftedMomentDiscrete(const Un
   if (n == 0) throw InvalidArgumentException(HERE) << "Error: the centered moments of order 0 are undefined.";
   if (shift.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the shift dimension must match the distribution dimension.";
   NumericalPoint moment(dimension_);
-  const NumericalSample support(getSupport());
-  const NumericalSample pdfSupport(computePDF(support));
+  const Sample support(getSupport());
+  const Sample pdfSupport(computePDF(support));
   for (UnsignedInteger i = 0; i < support.getSize(); ++i)
     for (UnsignedInteger j = 0; j < dimension_; ++j)
       moment[j] += std::pow(support[i][j] - shift[j], static_cast<int>(n)) * pdfSupport[i][0];
@@ -2993,13 +2993,13 @@ Bool DistributionImplementation::hasIndependentCopula() const
 }
 
 /* Get the support of a distribution that intersect a given interval */
-NumericalSample DistributionImplementation::getSupport(const Interval & interval) const
+Sample DistributionImplementation::getSupport(const Interval & interval) const
 {
   throw NotYetImplementedException(HERE) << "In DistributionImplementation::getSupport(const Interval & interval) const";
 }
 
 /* Get the support on the whole range */
-NumericalSample DistributionImplementation::getSupport() const
+Sample DistributionImplementation::getSupport() const
 {
   return getSupport(getRange());
 }
@@ -3166,15 +3166,15 @@ Graph DistributionImplementation::drawDiscretePDF(const NumericalScalar xMin,
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw the PDF of a multidimensional discrete distribution this way.";
   if (xMax < xMin - ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon")) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax < xMin, here xmin=" << xMin << " and xmax=" << xMax;
   const String title(OSS() << getDescription()[0] << " PDF");
-  const NumericalSample support(getSupport(Interval(xMin, xMax)));
+  const Sample support(getSupport(Interval(xMin, xMax)));
   // First the vertical bars
   const String xName(getDescription()[0]);
   Graph graphPDF(title, xName, "PDF", true, "topright");
   NumericalPoint point(2);
   point[0] = xMin - ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon");
-  const NumericalSample gridY(computePDF(support));
+  const Sample gridY(computePDF(support));
 
-  NumericalSample data(0, 2);
+  Sample data(0, 2);
   data.add(point);
   for (UnsignedInteger i = 0; i < support.getSize(); ++i)
   {
@@ -3209,8 +3209,8 @@ Graph DistributionImplementation::drawPDF(const NumericalScalar xMin,
   if (isDiscrete()) return drawDiscretePDF(xMin, xMax, pointNumber);
   // Discretization of the x axis
   const String title(OSS() << getDescription()[0] << " PDF");
-  NumericalSample gridX;
-  const NumericalSample gridY(computePDF(xMin, xMax, pointNumber, gridX));
+  Sample gridX;
+  const Sample gridY(computePDF(xMin, xMax, pointNumber, gridX));
   Curve curvePDF(gridX, gridY);
   curvePDF.setColor("red");
   curvePDF.setLegend(title);
@@ -3273,7 +3273,7 @@ Graph DistributionImplementation::drawPDF(const NumericalPoint & xMin,
   const NumericalScalar nX = pointNumber[0] - 2;
   discretization[0] = nX;
   // Discretization of the first component
-  NumericalSample x(Box(NumericalPoint(1, nX)).generate());
+  Sample x(Box(NumericalPoint(1, nX)).generate());
   origin[0] = xMin[0];
   scaling[0] = xMax[0] - xMin[0];
   x *= NumericalPoint(1, scaling[0]);
@@ -3281,14 +3281,14 @@ Graph DistributionImplementation::drawPDF(const NumericalPoint & xMin,
   const NumericalScalar nY = pointNumber[1] - 2;
   discretization[1] = nY;
   // Discretization of the second component
-  NumericalSample y(Box(NumericalPoint(1, nY)).generate());
+  Sample y(Box(NumericalPoint(1, nY)).generate());
   origin[1] = xMin[1];
   scaling[1] = xMax[1] - xMin[1];
   y *= NumericalPoint(1, scaling[1]);
   y += NumericalPoint(1, origin[1]);
-  NumericalSample xy;
+  Sample xy;
   // Compute the output sample, using possible parallelism or optimized implementation
-  const NumericalSample z(computePDF(xMin, xMax, pointNumber, xy));
+  const Sample z(computePDF(xMin, xMax, pointNumber, xy));
   const String xName(description_[0]);
   const String yName(description_[1]);
   const String title(OSS() << getDescription() << " iso-PDF");
@@ -3333,7 +3333,7 @@ Graph DistributionImplementation::drawPDF(const Indices & pointNumber) const
   if (isCopula())
   {
     const Drawable drawable(graph.getDrawable(0));
-    NumericalSample data(5, 2);
+    Sample data(5, 2);
     data[1][0] = 1.0;
     data[2]    = NumericalPoint(2, 1.0);
     data[3][1] = 1.0;
@@ -3379,15 +3379,15 @@ Graph DistributionImplementation::drawDiscreteLogPDF(const NumericalScalar xMin,
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw the PDF of a multidimensional discrete distribution this way.";
   if (xMax < xMin - ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon")) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax < xMin, here xmin=" << xMin << " and xmax=" << xMax;
   const String title(OSS() << getDescription()[0] << " PDF");
-  const NumericalSample support(getSupport(Interval(xMin, xMax)));
+  const Sample support(getSupport(Interval(xMin, xMax)));
   // First the vertical bars
   const String xName(getDescription()[0]);
   Graph graphLogPDF(title, xName, "PDF", true, "topright");
   NumericalPoint point(2);
   point[0] = xMin - ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon");
-  const NumericalSample gridY(computeLogPDF(support));
+  const Sample gridY(computeLogPDF(support));
 
-  NumericalSample data(0, 2);
+  Sample data(0, 2);
   data.add(point);
   for (UnsignedInteger i = 0; i < support.getSize(); ++i)
   {
@@ -3422,8 +3422,8 @@ Graph DistributionImplementation::drawLogPDF(const NumericalScalar xMin,
   if (isDiscrete()) return drawDiscreteLogPDF(xMin, xMax, pointNumber);
   // Discretization of the x axis
   const String title(OSS() << getDescription()[0] << " log PDF");
-  NumericalSample gridX;
-  const NumericalSample gridY(computeLogPDF(xMin, xMax, pointNumber, gridX));
+  Sample gridX;
+  const Sample gridY(computeLogPDF(xMin, xMax, pointNumber, gridX));
   Curve curvePDF(gridX, gridY);
   curvePDF.setColor("red");
   curvePDF.setLegend(title);
@@ -3486,7 +3486,7 @@ Graph DistributionImplementation::drawLogPDF(const NumericalPoint & xMin,
   const NumericalScalar nX = pointNumber[0] - 2;
   discretization[0] = nX;
   // Discretization of the first component
-  NumericalSample x(Box(NumericalPoint(1, nX)).generate());
+  Sample x(Box(NumericalPoint(1, nX)).generate());
   origin[0] = xMin[0];
   scaling[0] = xMax[0] - xMin[0];
   x *= NumericalPoint(1, scaling[0]);
@@ -3494,14 +3494,14 @@ Graph DistributionImplementation::drawLogPDF(const NumericalPoint & xMin,
   const NumericalScalar nY = pointNumber[1] - 2;
   discretization[1] = nY;
   // Discretization of the second component
-  NumericalSample y(Box(NumericalPoint(1, nY)).generate());
+  Sample y(Box(NumericalPoint(1, nY)).generate());
   origin[1] = xMin[1];
   scaling[1] = xMax[1] - xMin[1];
   y *= NumericalPoint(1, scaling[1]);
   y += NumericalPoint(1, origin[1]);
-  NumericalSample xy;
+  Sample xy;
   // Compute the output sample, using possible parallelism or optimized implementation
-  const NumericalSample z(computeLogPDF(xMin, xMax, pointNumber, xy));
+  const Sample z(computeLogPDF(xMin, xMax, pointNumber, xy));
   const String xName(description_[0]);
   const String yName(description_[1]);
   const String title(OSS() << getDescription() << " iso-log PDF");
@@ -3546,7 +3546,7 @@ Graph DistributionImplementation::drawLogPDF(const Indices & pointNumber) const
   if (isCopula())
   {
     const Drawable drawable(graph.getDrawable(0));
-    NumericalSample data(5, 2);
+    Sample data(5, 2);
     data[1][0] = 1.0;
     data[2]    = NumericalPoint(2, 1.0);
     data[3][1] = 1.0;
@@ -3601,13 +3601,13 @@ Graph DistributionImplementation::drawDiscreteCDF(const NumericalScalar xMin,
   if (xMax <= xMin) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax >= xMin, here xmin=" << xMin << " and xmax=" << xMax;
   // Create the graph that will store the staircase representing the empirical CDF
   const String title(OSS() << getDescription()[0] << " CDF");
-  const NumericalSample support(getSupport(Interval(xMin, xMax)));
-  const NumericalSample gridY(computeCDF(support));
+  const Sample support(getSupport(Interval(xMin, xMax)));
+  const Sample gridY(computeCDF(support));
   const UnsignedInteger size = support.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "empty range (" << xMin << ", " << xMax << ")" << ", support is (" << getSupport().getMin()[0] << ", " << getSupport().getMax()[0] << ")";
   const String xName(getDescription()[0]);
   Graph graphCDF(title, xName, "CDF", true, "topleft");
-  NumericalSample data(size + 2, 2);
+  Sample data(size + 2, 2);
   data[0][0] = xMin;
   data[0][1] = computeCDF(xMin);
   for (UnsignedInteger i = 0; i < size; ++i)
@@ -3642,8 +3642,8 @@ Graph DistributionImplementation::drawCDF(const NumericalScalar xMin,
   if (pointNumber < 2) throw InvalidArgumentException(HERE) << "Error: cannot draw a CDF with a point number < 2";
   if (isDiscrete()) return drawDiscreteCDF(xMin, xMax, pointNumber);
   const String title(OSS() << getDescription()[0] << " CDF");
-  NumericalSample dataX;
-  const NumericalSample dataY(computeCDF(xMin, xMax, pointNumber, dataX));
+  Sample dataX;
+  const Sample dataY(computeCDF(xMin, xMax, pointNumber, dataX));
   Curve curveCDF(dataX, dataY);
   curveCDF.setColor("red");
   curveCDF.setLegend(title);
@@ -3709,7 +3709,7 @@ Graph DistributionImplementation::drawCDF(const NumericalPoint & xMin,
   const NumericalScalar nX = pointNumber[0] - 2;
   discretization[0] = nX;
   // Discretization of the first component
-  NumericalSample x(Box(NumericalPoint(1, nX)).generate());
+  Sample x(Box(NumericalPoint(1, nX)).generate());
   origin[0] = xMin[0];
   scaling[0] = xMax[0] - xMin[0];
   x *= NumericalPoint(1, scaling[0]);
@@ -3717,17 +3717,17 @@ Graph DistributionImplementation::drawCDF(const NumericalPoint & xMin,
   const NumericalScalar nY = pointNumber[1] - 2;
   discretization[1] = nY;
   // Discretization of the second component
-  NumericalSample y(Box(NumericalPoint(1, nY)).generate());
+  Sample y(Box(NumericalPoint(1, nY)).generate());
   origin[1] = xMin[1];
   scaling[1] = xMax[1] - xMin[1];
   y *= NumericalPoint(1, scaling[1]);
   y += NumericalPoint(1, origin[1]);
   // Discretization of the XY plane
-  NumericalSample xy(Box(discretization).generate());
+  Sample xy(Box(discretization).generate());
   xy *= scaling;
   xy += origin;
   // Compute the output sample, using possible parallelism
-  const NumericalSample z(computeCDF(xy));
+  const Sample z(computeCDF(xy));
   const String xName(description_[0]);
   const String yName(description_[1]);
   const String title(OSS() << getDescription() << " iso-CDF");
@@ -3818,8 +3818,8 @@ Graph DistributionImplementation::drawQuantile1D(const NumericalScalar qMin,
     const UnsignedInteger pointNumber) const
 {
   const String title(OSS() << getDescription()[0] << " Quantile");
-  NumericalSample dataX;
-  const NumericalSample dataY(computeQuantile(qMin, qMax, pointNumber, dataX));
+  Sample dataX;
+  const Sample dataY(computeQuantile(qMin, qMax, pointNumber, dataX));
   Curve curveQuantile(dataX, dataY);
   curveQuantile.setColor("red");
   curveQuantile.setLegend(title);
@@ -3843,7 +3843,7 @@ Graph DistributionImplementation::drawQuantile2D(const NumericalScalar qMin,
     const UnsignedInteger pointNumber) const
 {
   const String title(OSS() << getDescription() << " Quantile");
-  const NumericalSample data(computeQuantile(qMin, qMax, pointNumber));
+  const Sample data(computeQuantile(qMin, qMax, pointNumber));
   Curve curveQuantile(data);
   curveQuantile.setColor("red");
   curveQuantile.setLegend(title);

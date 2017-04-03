@@ -53,8 +53,8 @@ public:
   SobolIndicesAlgorithm(const Implementation & p_implementation);
 
   /** Constructor with parameters */
-  SobolIndicesAlgorithm(const NumericalSample & inputDesign,
-                        const NumericalSample & outputDesign,
+  SobolIndicesAlgorithm(const Sample & inputDesign,
+                        const Sample & outputDesign,
                         const UnsignedInteger size);
 
   /** Constructor with parameters */

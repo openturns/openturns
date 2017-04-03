@@ -37,8 +37,8 @@ MauntzKucherenkoSensitivityAlgorithm::MauntzKucherenkoSensitivityAlgorithm()
 }
 
 /** Constructor with parameters */
-MauntzKucherenkoSensitivityAlgorithm::MauntzKucherenkoSensitivityAlgorithm(const NumericalSample & inputDesign,
-    const NumericalSample & outputDesign,
+MauntzKucherenkoSensitivityAlgorithm::MauntzKucherenkoSensitivityAlgorithm(const Sample & inputDesign,
+    const Sample & outputDesign,
     const UnsignedInteger size)
   : SobolIndicesAlgorithmImplementation(inputDesign, outputDesign, size)
 {
@@ -71,18 +71,18 @@ MauntzKucherenkoSensitivityAlgorithm * MauntzKucherenkoSensitivityAlgorithm::clo
 }
 
 /** Internal method that compute Vi/VTi using a huge sample */
-NumericalSample MauntzKucherenkoSensitivityAlgorithm::computeIndices(const NumericalSample & sample,
-    NumericalSample & VTi) const
+Sample MauntzKucherenkoSensitivityAlgorithm::computeIndices(const Sample & sample,
+    Sample & VTi) const
 {
   const UnsignedInteger inputDimension = inputDesign_.getDimension();
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
   const UnsignedInteger size = size_;
-  NumericalSample varianceI(outputDimension, inputDimension);
-  VTi = NumericalSample(outputDimension, inputDimension);
+  Sample varianceI(outputDimension, inputDimension);
+  VTi = Sample(outputDimension, inputDimension);
 
   // Use reference samples
   // Compute muA = mean(yA)
-  const NumericalSample yA(sample, 0, size);
+  const Sample yA(sample, 0, size);
   const NumericalPoint muA(yA.computeMean());
 
   // Compute crossMean

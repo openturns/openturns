@@ -115,12 +115,12 @@ void OptimalLHSExperiment::load(Advocate & adv)
 }
 
 /* Rank transformation */
-NumericalSample OptimalLHSExperiment::rankTransform(const NumericalSample design) const
+Sample OptimalLHSExperiment::rankTransform(const Sample design) const
 {
   const Distribution distribution(getLHS().getDistribution());
   const UnsignedInteger size = design.getSize();
   const UnsignedInteger dimension = distribution.getDimension();
-  NumericalSample result(size, dimension);
+  Sample result(size, dimension);
   result.setDescription(design.getDescription());
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
@@ -132,12 +132,12 @@ NumericalSample OptimalLHSExperiment::rankTransform(const NumericalSample design
   return result;
 }
 
-NumericalSample OptimalLHSExperiment::inverseRankTransform(const NumericalSample design) const
+Sample OptimalLHSExperiment::inverseRankTransform(const Sample design) const
 {
   const Distribution distribution(getLHS().getDistribution());
   const UnsignedInteger size = design.getSize();
   const UnsignedInteger dimension = distribution.getDimension();
-  NumericalSample result(size, dimension);
+  Sample result(size, dimension);
   result.setDescription(design.getDescription());
   for (UnsignedInteger i = 0; i < size; ++ i)
   {

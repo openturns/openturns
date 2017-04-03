@@ -23,7 +23,7 @@
 #define OPENTURNS_FIELDIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Mesh.hxx"
 #include "openturns/RegularGrid.hxx"
 #include "openturns/TBB.hxx"
@@ -51,7 +51,7 @@ public:
 
   /** Constructor from a Mesh and a sample */
   FieldImplementation(const Mesh & mesh,
-                      const NumericalSample & values);
+                      const Sample & values);
 
   /** Accessor to values */
   NumericalPoint getValueAtIndex(const UnsignedInteger index) const;
@@ -98,9 +98,9 @@ public:
   UnsignedInteger getDimension() const;
 
   /** Return the values stored in the field as a sample */
-  NumericalSample getSample() const;
-  NumericalSample getValues() const;
-  void setValues(const NumericalSample & values);
+  Sample getSample() const;
+  Sample getValues() const;
+  void setValues(const Sample & values);
 
   /** Get the i-th marginal sample */
   FieldImplementation getMarginal(const UnsignedInteger index) const;
@@ -125,7 +125,7 @@ public:
 #endif
 
   /** Return the field as a sample, ie its values and positions */
-  NumericalSample asSample() const;
+  Sample asSample() const;
 
   /** Return the field as a defomed mesh, ie its values are added to the components of the vertices if the dimensions match */
   Mesh asDeformedMesh() const;
@@ -161,7 +161,7 @@ protected:
   Mesh mesh_;
 
   /** The values associated to the field */
-  NumericalSample values_;
+  Sample values_;
 
   /** The description of all components */
   Description description_;

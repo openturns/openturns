@@ -106,12 +106,12 @@ String LHSExperiment::__str__(const String & offset) const
 }
 
 /* Sample generation */
-NumericalSample LHSExperiment::generateWithWeights(NumericalPoint & weights) const
+Sample LHSExperiment::generateWithWeights(NumericalPoint & weights) const
 {
   const UnsignedInteger dimension = distribution_.getDimension();
   // To insure that the shuffle has been initialized
   (void) getShuffle();
-  NumericalSample sample(size_, dimension);
+  Sample sample(size_, dimension);
   sample.setDescription(distribution_.getDescription());
   NumericalPoint u(dimension, 0.5);
   for(UnsignedInteger index = 0; index < size_; ++index)

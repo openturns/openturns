@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     }
     NormalCopula distribution(R);
     UnsignedInteger size = 10000;
-    NumericalSample sample(distribution.getSample(size));
+    Sample sample(distribution.getSample(size));
     NormalCopulaFactory factory;
     CovarianceMatrix covariance;
     // Distribution estimatedDistribution(factory.build(sample, covariance));

@@ -104,7 +104,7 @@ size : int
 
 Returns
 -------
-sample : :class:`~openturns.NumericalSample`
+sample : :class:`~openturns.Sample`
     Sample of pseudo-random vectors of numbers uniformly distributed over
     [0, 1).
 

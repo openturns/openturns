@@ -56,37 +56,37 @@ try:
         print(
             'Conversion from 2d-array => NumericalPoint failed (as expected :)')
 
-    # Check tuple / NumericalSample conversion
+    # Check tuple / Sample conversion
     t0 = ((1., 2.), (3., 4.))
-    s0 = NumericalSample(t0)
-    print("tuple", t0, "=> NumericalSample", s0)
+    s0 = Sample(t0)
+    print("tuple", t0, "=> Sample", s0)
 
     t0 = ([1., 2.], [3., 4.])
-    s0 = NumericalSample(t0)
-    print("tuple", t0, "=> NumericalSample", s0)
+    s0 = Sample(t0)
+    print("tuple", t0, "=> Sample", s0)
 
     t1 = tuple(s0)
-    print("NumericalSample", s0, "=> tuple", t1)
+    print("Sample", s0, "=> tuple", t1)
 
-    # Check list / NumericalSample conversion
+    # Check list / Sample conversion
     l0 = [[1., 2.], [3., 4.]]
-    s0 = NumericalSample(l0)
-    print("list", l0, "=> NumericalSample", s0)
+    s0 = Sample(l0)
+    print("list", l0, "=> Sample", s0)
 
     l0 = [(1., 2.), (3., 4.)]
-    s0 = NumericalSample(l0)
-    print("list", l0, "=> NumericalSample", s0)
+    s0 = Sample(l0)
+    print("list", l0, "=> Sample", s0)
 
     l1 = list(s0)
-    print("NumericalSample", s0, "=> list", l1)
+    print("Sample", s0, "=> list", l1)
 
-    # Check array / NumericalSample conversion
+    # Check array / Sample conversion
     a0 = np.array(((1., 2.), (3., 4.)))
-    s0 = NumericalSample(a0)
-    print("array", a0, "=> NumericalSample", s0)
+    s0 = Sample(a0)
+    print("array", a0, "=> Sample", s0)
 
     a1 = np.array(s0)
-    print("NumericalSample", s0, "=> array", a1)
+    print("Sample", s0, "=> array", a1)
 
     # Check tuple / Function interoperability
     F = Function(
@@ -103,7 +103,7 @@ try:
     a0 = np.array((1., 2., 3., 4.))
     print("NumericalPoint", F(a0), "= F( array", a0, ")")
     a1 = np.array(((1., 2., 3., 4.), (5., 6., 7., 8.)))
-    print("NumericalSample", F(a1), "= F( array", a1, ")")
+    print("Sample", F(a1), "= F( array", a1, ")")
 
     # Check Python function / Function interoperability
     def aFunc(x):
@@ -114,7 +114,7 @@ try:
     print("NumericalPoint", PYNMF(t0), "= PYNMF( tuple", t0, ")")
     print("NumericalPoint", PYNMF(l0), "= PYNMF( list",  l0, ")")
     print("NumericalPoint", PYNMF(a0), "= PYNMF( array", a0, ")")
-    print("NumericalSample", PYNMF(a1), "= PYNMF( array", a1, ")")
+    print("Sample", PYNMF(a1), "= PYNMF( array", a1, ")")
 
     # Check 2-d array which nested dim is size=1 / Function
     # interoperability
@@ -126,7 +126,7 @@ try:
     a0 = np.array(([1.]))
     print("NumericalPoint", PYNMF(a0), "= PYNMF( array", a0, ")")
     a1 = np.array(([1.], [2.], [3.]))
-    print("NumericalSample", PYNMF(a1), "= PYNMF( array", a1, ")")
+    print("Sample", PYNMF(a1), "= PYNMF( array", a1, ")")
 
     # Check tuple / Indices conversion
     t0 = (1, 2)

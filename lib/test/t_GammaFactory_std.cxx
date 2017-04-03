@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
   {
     Gamma distribution(0.2, 1.0, 1.0);
     UnsignedInteger size = 10000;
-    NumericalSample sample(distribution.getSample(size));
+    Sample sample(distribution.getSample(size));
     GammaFactory factory;
     CovarianceMatrix covariance;
     // Distribution estimatedDistribution(factory.build(sample, covariance));
@@ -62,10 +62,10 @@ int main(int argc, char *argv[])
     estimatedGamma = factory.buildAsGamma(distribution.getParameter());
     fullprint << "Gamma from parameters=" << estimatedGamma << std::endl;
     // Test for constant sample
-    sample = NumericalSample(size, NumericalPoint(1, 0.0));
+    sample = Sample(size, NumericalPoint(1, 0.0));
     estimatedDistribution = factory.build(sample);
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
-    sample = NumericalSample(size, NumericalPoint(1, 1.0));
+    sample = Sample(size, NumericalPoint(1, 1.0));
     estimatedDistribution = factory.build(sample);
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
   }

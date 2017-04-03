@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     formula[1] = "cos(x1+x2)";
     formula[2] = "(x2+1)*exp(x1-2*x2)";
     SymbolicFunction myFunc(input, formula);
-    NumericalSample data(9, myFunc.getInputDimension());
+    Sample data(9, myFunc.getInputDimension());
     NumericalPoint point(myFunc.getInputDimension());
     point[0] = 0.5;
     point[1] = 0.5;
@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
       fullprint << "responseSurface(" << in << ")=" << responseSurface(in) << std::endl;
     }
     {
-      NumericalSample dataOut(myFunc(data));
+      Sample dataOut(myFunc(data));
       LinearLeastSquares myLeastSquares(data, dataOut);
       myLeastSquares.run();
       Function responseSurface(myLeastSquares.getResponseSurface());

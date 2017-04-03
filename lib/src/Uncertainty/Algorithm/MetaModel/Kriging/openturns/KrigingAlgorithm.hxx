@@ -51,30 +51,30 @@ public:
   KrigingAlgorithm();
 
   /** Constructor */
-  KrigingAlgorithm (const NumericalSample & inputSample,
-                    const NumericalSample & outputSample,
+  KrigingAlgorithm (const Sample & inputSample,
+                    const Sample & outputSample,
                     const CovarianceModel & covarianceModel,
                     const Basis & basis,
                     const Bool normalize = true);
 
   /** Constructor */
-  KrigingAlgorithm (const NumericalSample & inputSample,
+  KrigingAlgorithm (const Sample & inputSample,
                     const Function & inputTransformation,
-                    const NumericalSample & outputSample,
+                    const Sample & outputSample,
                     const CovarianceModel & covarianceModel,
                     const Basis & basis);
 
   /** Constructor */
-  KrigingAlgorithm (const NumericalSample & inputSample,
-                    const NumericalSample & outputSample,
+  KrigingAlgorithm (const Sample & inputSample,
+                    const Sample & outputSample,
                     const CovarianceModel & covarianceModel,
                     const BasisCollection & basisCollection,
                     const Bool normalize = true);
 
   /** Constructor */
-  KrigingAlgorithm (const NumericalSample & inputSample,
+  KrigingAlgorithm (const Sample & inputSample,
                     const Function & inputTransformation,
-                    const NumericalSample & outputSample,
+                    const Sample & outputSample,
                     const CovarianceModel & covarianceModel,
                     const BasisCollection & basisCollection);
 
@@ -88,8 +88,8 @@ public:
   void run();
 
   /** Sample accessors */
-  NumericalSample getInputSample() const;
-  NumericalSample getOutputSample() const;
+  Sample getInputSample() const;
+  Sample getOutputSample() const;
 
   /** result accessor */
   KrigingResult getResult();
@@ -134,9 +134,9 @@ protected:
 private:
 
   // The input data
-  NumericalSample inputSample_;
+  Sample inputSample_;
   // The associated output data
-  NumericalSample outputSample_;
+  Sample outputSample_;
   Bool normalize_;
   // The covariance model parametric family
   CovarianceModel covarianceModel_;

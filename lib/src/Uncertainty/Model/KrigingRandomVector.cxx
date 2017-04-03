@@ -34,14 +34,14 @@ KrigingRandomVector::KrigingRandomVector(const KrigingResult & krigingResult,
     const NumericalPoint & point)
   : UsualRandomVector(krigingResult(point))
   , krigingResult_(krigingResult)
-  , sample_(NumericalSample(1, point))
+  , sample_(Sample(1, point))
 {
   // Nothing to do
 }
 
 /* Default constructor */
 KrigingRandomVector::KrigingRandomVector(const KrigingResult & krigingResult,
-    const NumericalSample & sample)
+    const Sample & sample)
   : UsualRandomVector(krigingResult(sample))
   , krigingResult_(krigingResult)
   , sample_(sample)
@@ -71,7 +71,7 @@ NumericalPoint KrigingRandomVector::getRealization() const
 }
 
 /** Get a sample of realizations of the process */
-NumericalSample KrigingRandomVector::getSample(const UnsignedInteger size) const
+Sample KrigingRandomVector::getSample(const UnsignedInteger size) const
 {
   return getDistribution().getSample(size);
 }

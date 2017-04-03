@@ -49,8 +49,8 @@ SobolIndicesAlgorithm::SobolIndicesAlgorithm(const Implementation & p_implementa
 /*
  * @brief  Standard constructor
  */
-SobolIndicesAlgorithm::SobolIndicesAlgorithm(const NumericalSample & inputDesign,
-    const NumericalSample & outputDesign,
+SobolIndicesAlgorithm::SobolIndicesAlgorithm(const Sample & inputDesign,
+    const Sample & outputDesign,
     const UnsignedInteger size):
   TypedInterfaceObject<SobolIndicesAlgorithmImplementation>(new MartinezSensitivityAlgorithm(inputDesign, outputDesign, size))
 {

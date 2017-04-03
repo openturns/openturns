@@ -164,12 +164,12 @@ CovarianceMatrix UserDefinedCovarianceModel::discretize(const Mesh & mesh) const
   return covariance;
 }
 
-NumericalSample UserDefinedCovarianceModel::discretizeRow(const NumericalSample & vertices,
+Sample UserDefinedCovarianceModel::discretizeRow(const Sample & vertices,
     const UnsignedInteger p) const
 {
   if (dimension_ != 1) throw InternalException(HERE) << "Error: the discretizeRow() method is not defined if the output dimension is not 1. Here, dimension=" << dimension_;
   const UnsignedInteger size = vertices.getSize();
-  NumericalSample result(size, 1);
+  Sample result(size, 1);
   if (vertices == p_mesh_->getVertices())
   {
     UnsignedInteger index = (p * (p + 1)) / 2;

@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     UnsignedInteger size = 10;
     Normal realDist(31.0, 1.2);
 
-    NumericalSample data(realDist.getSample(size));
+    Sample data(realDist.getSample(size));
 
     // calibration parameters
     CalibrationStrategyCollection calibrationColl(2);
@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
     std::cout << "realization=" << realization << std::endl;
 
     // get a sample
-    NumericalSample sample(randomVector.getSample(10));
+    Sample sample(randomVector.getSample(10));
     std::cout << "sample=" << sample << std::endl;
 
 

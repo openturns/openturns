@@ -57,8 +57,8 @@ Create an ARMA(4,2) process:
 >>> myMACoef = ot.ARMACoefficients([0.4, 0.3])
 >>> myARMAProcess = ot.ARMA(myARCoef, myMACoef, myWhiteNoise)
 
->>> myLastValues = ot.NumericalSample([[0.6], [0.7], [0.3], [0.2]])
->>> myLastNoiseValues = ot.NumericalSample([[1.2], [1.8]])
+>>> myLastValues = ot.Sample([[0.6], [0.7], [0.3], [0.2]])
+>>> myLastNoiseValues = ot.Sample([[1.2], [1.8]])
 >>> myARMAState = ot.ARMAState(myLastValues, myLastNoiseValues)
 >>> myARMAProcessWithState = ot.ARMA(myARCoef, myMACoef, myWhiteNoise, myARMAState)
 

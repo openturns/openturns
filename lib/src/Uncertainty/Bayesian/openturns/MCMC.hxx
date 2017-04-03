@@ -51,15 +51,15 @@ public:
   /** Constructor with parameters*/
   MCMC(const Distribution & prior,
        const Distribution & conditional,
-       const NumericalSample & observations,
+       const Sample & observations,
        const NumericalPoint & initialState);
 
   /** Constructor with parameters*/
   MCMC(const Distribution & prior,
        const Distribution & conditional,
        const Function & model,
-       const NumericalSample & parameters,
-       const NumericalSample & observations,
+       const Sample & parameters,
+       const Sample & observations,
        const NumericalPoint & initialState);
 
   /** String converter */
@@ -79,12 +79,12 @@ public:
   Function getModel() const;
 
   /** Obervations accessor */
-  void setObservations(const NumericalSample & observations);
-  NumericalSample getObservations() const;
+  void setObservations(const Sample & observations);
+  Sample getObservations() const;
 
   /** Parameters accessor */
-  void setParameters(const NumericalSample & parameters);
-  NumericalSample getParameters() const;
+  void setParameters(const Sample & parameters);
+  Sample getParameters() const;
 
   /// Burning accessor
   void setBurnIn(UnsignedInteger burnIn);
@@ -125,8 +125,8 @@ private:
   Distribution conditional_;
 
   mutable Function model_;
-  NumericalSample parameters_;
-  NumericalSample observations_;
+  Sample parameters_;
+  Sample observations_;
 
   UnsignedInteger burnIn_; // number of first samples discarded to reach stationary regime
   UnsignedInteger thinning_; // number of samples skipped at each generation

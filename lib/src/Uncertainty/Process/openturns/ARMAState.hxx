@@ -22,7 +22,7 @@
 #define OPENTURNS_ARMASTATE_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/Field.hxx"
 
@@ -44,8 +44,8 @@ public:
 
   /** Default constructors */
   ARMAState();
-  ARMAState(const NumericalSample & x,
-            const NumericalSample & epsilon);
+  ARMAState(const Sample & x,
+            const Sample & epsilon);
 
   /** Virtual constructor */
   virtual ARMAState * clone() const;
@@ -55,12 +55,12 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Data X accessor */
-  NumericalSample getX() const;
-  void setXEpsilon(const NumericalSample & x,
-                   const NumericalSample & epsilon);
+  Sample getX() const;
+  void setXEpsilon(const Sample & x,
+                   const Sample & epsilon);
 
   /** Noise \epsilon accessor */
-  NumericalSample getEpsilon() const;
+  Sample getEpsilon() const;
 
   /** Dimension accessor */
   UnsignedInteger getDimension() const;
@@ -74,9 +74,9 @@ public:
 private:
 
   /** Store the p last values of an ARMA(p, q) */
-  NumericalSample x_;
+  Sample x_;
   /** Store the q last value of the noise of an ARMA(p, q) */
-  NumericalSample epsilon_;
+  Sample epsilon_;
 
 }; /* class ARMAState */
 

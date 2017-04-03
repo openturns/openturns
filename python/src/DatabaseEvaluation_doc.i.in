@@ -43,7 +43,7 @@ where:
 
 Returns
 -------
-inputSample : :class:`~openturns.NumericalSample`
+inputSample : :class:`~openturns.Sample`
     The input sample defining the function."
 
 // ---------------------------------------------------------------------
@@ -53,7 +53,7 @@ inputSample : :class:`~openturns.NumericalSample`
 
 Returns
 -------
-outputSample : :class:`~openturns.NumericalSample`
+outputSample : :class:`~openturns.Sample`
     The output sample defining the function."
 
 
@@ -64,7 +64,7 @@ outputSample : :class:`~openturns.NumericalSample`
 
 Parameters
 ----------
-inputSample : :class:`~openturns.NumericalSample`
+inputSample : :class:`~openturns.Sample`
     The input sample defining the function."
 
 // ---------------------------------------------------------------------
@@ -74,5 +74,5 @@ inputSample : :class:`~openturns.NumericalSample`
 
 Parameters
 ----------
-outputSample : :class:`~openturns.NumericalSample`
+outputSample : :class:`~openturns.Sample`
     The output sample defining the function."

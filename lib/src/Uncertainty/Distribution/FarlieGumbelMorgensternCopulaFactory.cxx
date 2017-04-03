@@ -47,7 +47,7 @@ FarlieGumbelMorgensternCopulaFactory * FarlieGumbelMorgensternCopulaFactory::clo
 
 /* Here is the interface that all derived class must implement */
 
-FarlieGumbelMorgensternCopulaFactory::Implementation FarlieGumbelMorgensternCopulaFactory::build(const NumericalSample & sample) const
+FarlieGumbelMorgensternCopulaFactory::Implementation FarlieGumbelMorgensternCopulaFactory::build(const Sample & sample) const
 {
   return buildAsFarlieGumbelMorgensternCopula(sample).clone();
 }
@@ -62,7 +62,7 @@ FarlieGumbelMorgensternCopulaFactory::Implementation FarlieGumbelMorgensternCopu
   return buildAsFarlieGumbelMorgensternCopula().clone();
 }
 
-FarlieGumbelMorgensternCopula FarlieGumbelMorgensternCopulaFactory::buildAsFarlieGumbelMorgensternCopula(const NumericalSample & sample) const
+FarlieGumbelMorgensternCopula FarlieGumbelMorgensternCopulaFactory::buildAsFarlieGumbelMorgensternCopula(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a FarlieGumbelMorgensternCopula distribution from an empty sample";
   if (sample.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a FarlieGumbelMorgensternCopula distribution from a sample of dimension not equal to 2";

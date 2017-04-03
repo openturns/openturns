@@ -53,8 +53,8 @@ public:
 
   /** Parameter constructor */
   PiecewiseHermiteEvaluation(const NumericalPoint & locations,
-      const NumericalSample & values,
-      const NumericalSample & derivatives);
+      const Sample & values,
+      const Sample & derivatives);
 
   /** Virtual constructor */
   virtual PiecewiseHermiteEvaluation * clone() const;
@@ -75,17 +75,17 @@ public:
   void setLocations(const NumericalPoint & locations);
 
   /** Values accessor */
-  NumericalSample getValues() const;
-  void setValues(const NumericalSample & values);
+  Sample getValues() const;
+  void setValues(const Sample & values);
 
   /** Derivatives accessor */
-  NumericalSample getDerivatives() const;
-  void setDerivatives(const NumericalSample & derivatives);
+  Sample getDerivatives() const;
+  void setDerivatives(const Sample & derivatives);
 
   /** Simultaneous locations and values acessor */
   void setLocationsValuesAndDerivatives(const NumericalPoint & locations,
-                                        const NumericalSample & values,
-                                        const NumericalSample & derivatives);
+                                        const Sample & values,
+                                        const Sample & derivatives);
 
   /** Input dimension accessor */
   UnsignedInteger getInputDimension() const;
@@ -107,10 +107,10 @@ private:
   NumericalPoint locations_;
 
   // The values
-  NumericalSample values_;
+  Sample values_;
 
   // The derivatives
-  NumericalSample derivatives_;
+  Sample derivatives_;
 
   // Are locations regularly spaced?
   Bool isRegular_;

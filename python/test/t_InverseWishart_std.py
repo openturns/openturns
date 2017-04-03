@@ -142,8 +142,8 @@ class TestInverseWishartMethods(ut.TestCase):
         Identity = ot.CovarianceMatrix(d)
         Scale_wishart = ot.CovarianceMatrix(Scale.solveLinearSystem(Identity))
         inverse_wishart = ot.InverseWishart(Scale, DoF)
-        sample_inverse = ot.NumericalSample(N, (d*(d+1))//2)
-        sample = ot.NumericalSample(N, (d*(d+1))//2)
+        sample_inverse = ot.Sample(N, (d*(d+1))//2)
+        sample = ot.Sample(N, (d*(d+1))//2)
         for i in range(N):
             M_inverse = inverse_wishart.getRealizationAsMatrix()
             M = M_inverse.solveLinearSystem(Identity)

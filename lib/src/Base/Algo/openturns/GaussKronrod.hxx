@@ -66,7 +66,7 @@ public:
                                    NumericalScalar & error,
                                    NumericalPoint & ai,
                                    NumericalPoint & bi,
-                                   NumericalSample & fi,
+                                   Sample & fi,
                                    NumericalPoint & ei) const;
 
 #endif
@@ -78,7 +78,7 @@ public:
                                    NumericalPoint & error,
                                    NumericalPoint & ai,
                                    NumericalPoint & bi,
-                                   NumericalSample & fi,
+                                   Sample & fi,
                                    NumericalPoint & ei) const;
 
   /** Maximum sub-intervals accessor */

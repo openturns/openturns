@@ -117,7 +117,7 @@ OT_ApproximationAlgorithm_getWeight_doc
 
 Returns
 -------
-x : :class:`~openturns.NumericalSample`
+x : :class:`~openturns.Sample`
     Input sample"
 %enddef
 %feature("docstring") OT::ApproximationAlgorithmImplementation::getX
@@ -130,7 +130,7 @@ OT_ApproximationAlgorithm_getX_doc
 
 Returns
 -------
-y : :class:`~openturns.NumericalSample`
+y : :class:`~openturns.Sample`
     Input sample"
 %enddef
 %feature("docstring") OT::ApproximationAlgorithmImplementation::getY

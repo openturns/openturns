@@ -24,7 +24,7 @@
 #include "openturns/Exception.hxx"
 #include "openturns/SquareMatrix.hxx"
 #include "openturns/SquareComplexMatrix.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/LinearFunction.hxx"
 #include "openturns/Pointer.hxx"
@@ -173,14 +173,14 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   NumericalPoint rawWeights;
   WeightedExperiment experimentCopy(experiment_);
   LOGINFO("Generate the weighted experiment");
-  NumericalSample rawNodes(experimentCopy.generateWithWeights(rawWeights));
+  Sample rawNodes(experimentCopy.generateWithWeights(rawWeights));
   LOGINFO(OSS(false) << "Initial number of integration nodes=" << rawNodes.getSize());
   LOGINFO("Generate the pdf");
-  const NumericalSample pdf(distribution.computePDF(rawNodes));
+  const Sample pdf(distribution.computePDF(rawNodes));
   if (!hasSameBounds) rawNodes = scaling(rawNodes);
   // Update the weights in order to match Lebesgue distribution on the domain
   // We keep only the nodes inside of the domain
-  NumericalSample nodes(0, domainDimension);
+  Sample nodes(0, domainDimension);
   NumericalPoint weights(0);
   LOGINFO("Filter the integration nodes");
   for (UnsignedInteger i = 0; i < rawWeights.getDimension(); ++i)
@@ -195,8 +195,8 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   const UnsignedInteger nodesNumber = nodes.getSize();
   // Reduce the scope of quadrature to free the data as soon as possible
   {
-    NumericalSample quadrature(nodes);
-    NumericalSampleImplementation weightsAsSample(nodesNumber, 1);
+    Sample quadrature(nodes);
+    SampleImplementation weightsAsSample(nodesNumber, 1);
     weightsAsSample.setData(weights);
     quadrature.stack(weightsAsSample);
     quadrature = quadrature.sortAccordingToAComponent(0);
@@ -314,7 +314,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   LOGINFO("Get the generalized eigenvectors");
   eigenVectors = choleskyBlock.transpose().solveLinearSystem(eigenVectors, false).getImplementation();
   LOGINFO("Sort the eigenvectors by decreasing eigenvalues");
-  NumericalSample eigenPairs(augmentedDimension, augmentedDimension + 1);
+  Sample eigenPairs(augmentedDimension, augmentedDimension + 1);
   for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
   {
     for (UnsignedInteger j = 0; j < augmentedDimension; ++j) eigenPairs[i][j] = eigenVectors(j, i);
@@ -339,7 +339,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   NumericalPoint selectedEV(K);
   Basis modes(0);
   ProcessSample modesAsProcessSample(Mesh(nodes), 0, dimension);
-  NumericalSampleImplementation values(nodesNumber, dimension);
+  SampleImplementation values(nodesNumber, dimension);
   UnsignedInteger indexProjection = 0;
   for (UnsignedInteger k = 0; k < K; ++k)
   {
@@ -357,7 +357,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
       modes.add(LinearCombinationFunction(coll, a * factor));
     else
     {
-      NumericalSampleImplementation aSample(basisSize_, dimension);
+      SampleImplementation aSample(basisSize_, dimension);
       aSample.setData(a * factor);
       modes.add(DualLinearCombinationFunction(coll, aSample));
     }

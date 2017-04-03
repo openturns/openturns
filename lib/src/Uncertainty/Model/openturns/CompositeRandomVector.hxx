@@ -76,7 +76,7 @@ public:
   NumericalPoint getRealization() const;
 
   /** Numerical sample accessor */
-  NumericalSample getSample(const UnsignedInteger size) const;
+  Sample getSample(const UnsignedInteger size) const;
 
   /** Mean accessor */
   NumericalPoint getMean() const;

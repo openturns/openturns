@@ -39,8 +39,8 @@ MartinezSensitivityAlgorithm::MartinezSensitivityAlgorithm()
 }
 
 /** Constructor with parameters */
-MartinezSensitivityAlgorithm::MartinezSensitivityAlgorithm(const NumericalSample & inputDesign,
-    const NumericalSample & outputDesign,
+MartinezSensitivityAlgorithm::MartinezSensitivityAlgorithm(const Sample & inputDesign,
+    const Sample & outputDesign,
     const UnsignedInteger size)
   : SobolIndicesAlgorithmImplementation(inputDesign, outputDesign, size)
   , useAsymptoticInterval_(ResourceMap::GetAsBool("MartinezSensitivityAlgorithm-UseAsymptoticInterval"))
@@ -75,24 +75,24 @@ MartinezSensitivityAlgorithm * MartinezSensitivityAlgorithm::clone() const
   return new MartinezSensitivityAlgorithm(*this);
 }
 
-NumericalSample MartinezSensitivityAlgorithm::computeIndices(const NumericalSample & sample,
-    NumericalSample & VTi) const
+Sample MartinezSensitivityAlgorithm::computeIndices(const Sample & sample,
+    Sample & VTi) const
 {
   const UnsignedInteger inputDimension = inputDesign_.getDimension();
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
   const UnsignedInteger size = size_;
-  NumericalSample varianceI(outputDimension, inputDimension);
-  VTi = NumericalSample(outputDimension, inputDimension);
+  Sample varianceI(outputDimension, inputDimension);
+  VTi = Sample(outputDimension, inputDimension);
 
   // Use reference samples
   // Reference sample yA
-  NumericalSample yA(sample, 0, size);
+  Sample yA(sample, 0, size);
   const NumericalPoint muA(yA.computeMean());
   const NumericalPoint sigmaA(yA.computeStandardDeviationPerComponent());
   // center sample yA
   yA -= muA;
   // Reference sample yB
-  NumericalSample yB(sample, size, 2 * size);
+  Sample yB(sample, size, 2 * size);
   const NumericalPoint muB(yB.computeMean());
   const NumericalPoint sigmaB(yB.computeStandardDeviationPerComponent());
   // center-reduce sample yB
@@ -101,7 +101,7 @@ NumericalSample MartinezSensitivityAlgorithm::computeIndices(const NumericalSamp
 
   for (UnsignedInteger p = 0; p < inputDimension; ++p)
   {
-    NumericalSample yE(sample, (2 + p) * size, (3 + p) * size);
+    Sample yE(sample, (2 + p) * size, (3 + p) * size);
     const NumericalPoint muE(yE.computeMean());
     const NumericalPoint sigmaE(yE.computeStandardDeviationPerComponent());
     // center-reduce sample yB

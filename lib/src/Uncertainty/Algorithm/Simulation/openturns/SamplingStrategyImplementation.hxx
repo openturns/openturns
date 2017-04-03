@@ -23,7 +23,7 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/PersistentObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -47,7 +47,7 @@ public:
   virtual SamplingStrategyImplementation * clone() const;
 
   /** Generate a set of directions */
-  virtual NumericalSample generate() const;
+  virtual Sample generate() const;
 
   /** Generate a uniform random unit vector */
   NumericalPoint getUniformUnitVectorRealization(const UnsignedInteger dimension) const;

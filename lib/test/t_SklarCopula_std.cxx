@@ -67,12 +67,12 @@ int main(int argc, char *argv[])
 
     // Test for sampling
     UnsignedInteger size = 10;
-    NumericalSample oneSample = copula.getSample( size );
+    Sample oneSample = copula.getSample( size );
     fullprint << "oneSample=" << oneSample << std::endl;
 
     // Test for sampling
     size = 1000;
-    NumericalSample anotherSample = copula.getSample( size );
+    Sample anotherSample = copula.getSample( size );
     fullprint << "anotherSample mean=" << anotherSample.computeMean() << std::endl;
     fullprint << "anotherSample covariance=" << anotherSample.computeCovariance() << std::endl;
 

@@ -126,12 +126,12 @@ NumericalPoint LinearEvaluation::operator() (const NumericalPoint & inP) const
   return result;
 }
 /* Operator () */
-NumericalSample LinearEvaluation::operator() (const NumericalSample & inS) const
+Sample LinearEvaluation::operator() (const Sample & inS) const
 {
   if (inS.getDimension() != center_.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   const UnsignedInteger size = inS.getSize();
-  if (size == 0) return NumericalSample(0, getOutputDimension());
-  NumericalSampleImplementation temporary(inS.getSize(), getOutputDimension());
+  if (size == 0) return Sample(0, getOutputDimension());
+  SampleImplementation temporary(inS.getSize(), getOutputDimension());
   // Some OT black magic
   // + We use the parallelized translation of the input sample inS - center_
   // + We cast the resulting sample into a matrix
@@ -140,7 +140,7 @@ NumericalSample LinearEvaluation::operator() (const NumericalSample & inS) const
   // + Then the resulting matrix is converted into a sample and the final
   //   translation is parallelized
   temporary.setData(*(linear_ * Matrix(getInputDimension(), inS.getSize(), (inS - center_).getImplementation()->getData())).getImplementation());
-  const NumericalSample result(temporary + constant_);
+  const Sample result(temporary + constant_);
   callsNumber_ += size;
   if (isHistoryEnabled_)
   {

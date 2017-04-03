@@ -38,9 +38,9 @@ try:
     max2 = sample2.getMax()[0] + epsilon
     tmp = NumericalPoint(2)
     tmp[0] = (max1 - min1) / nBars
-    data1 = NumericalSample(nBars, tmp)
+    data1 = Sample(nBars, tmp)
     tmp[0] = (max2 - min2) / nBars
-    data2 = NumericalSample(nBars, tmp)
+    data2 = Sample(nBars, tmp)
 
     for i in range(size):
         index = int(floor((sample1[i, 0] - min1) / (max1 - min1) * nBars))

@@ -102,9 +102,9 @@ NumericalPoint CompositeRandomVector::getRealization() const
 }
 
 /* Numerical sample accessor */
-NumericalSample CompositeRandomVector::getSample(const UnsignedInteger size) const
+Sample CompositeRandomVector::getSample(const UnsignedInteger size) const
 {
-  NumericalSample sample(function_(p_antecedent_->getSample(size)));
+  Sample sample(function_(p_antecedent_->getSample(size)));
   const Description description(getDescription());
   // It may append that the description has been overloaded by a child class
   // FIXME: change this ugly hack to something reasonable

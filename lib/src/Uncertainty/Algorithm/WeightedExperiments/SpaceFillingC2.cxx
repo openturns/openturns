@@ -53,9 +53,9 @@ String SpaceFillingC2::__repr__() const
 }
 
 /** Evaluate criterion on a sample */
-NumericalScalar SpaceFillingC2::evaluate(const NumericalSample & sample) const
+NumericalScalar SpaceFillingC2::evaluate(const Sample & sample) const
 {
-  const NumericalSample normalizedSample(normalize(sample));
+  const Sample normalizedSample(normalize(sample));
   const UnsignedInteger size(sample.getSize());
   const UnsignedInteger dimension(sample.getDimension());
   const NumericalScalar* addr_sample = &normalizedSample[0][0];
@@ -92,7 +92,7 @@ NumericalScalar SpaceFillingC2::evaluate(const NumericalSample & sample) const
 }
 
 /** Compute criterion when performing an elementary perturbation */
-NumericalScalar SpaceFillingC2::perturbLHS(NumericalSample& oldDesign, OT::NumericalScalar oldCriterion,
+NumericalScalar SpaceFillingC2::perturbLHS(Sample& oldDesign, OT::NumericalScalar oldCriterion,
     UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const
 {
   const UnsignedInteger size(oldDesign.getSize());

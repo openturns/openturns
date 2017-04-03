@@ -155,9 +155,9 @@ NumericalPoint PythonRandomVectorImplementation::getRealization() const
 
 
 /* Numerical sample accessor */
-NumericalSample PythonRandomVectorImplementation::getSample(const UnsignedInteger size) const
+Sample PythonRandomVectorImplementation::getSample(const UnsignedInteger size) const
 {
-  NumericalSample sample;
+  Sample sample;
 
   if ( PyObject_HasAttrString( pyObj_, const_cast<char *>("getSample") ) )
   {
@@ -168,7 +168,7 @@ NumericalSample PythonRandomVectorImplementation::getSample(const UnsignedIntege
                                  sizeArg.get(), NULL ));
     if ( result.get() )
     {
-      sample = convert<_PySequence_, NumericalSample>(result.get());
+      sample = convert<_PySequence_, Sample>(result.get());
       if (sample.getSize() != size) throw InvalidDimensionException(HERE) << "Sample returned by PythonRandomVector has incorrect size. Got " << sample.getSize() << ". Expected" << size;
     }
   }

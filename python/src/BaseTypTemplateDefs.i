@@ -1,6 +1,6 @@
 // SWIG file BaseTypTemplateDefs.i
 
-%template(NumericalSampleImplementationPointer) OT::Pointer<OT::NumericalSampleImplementation>;
+%template(SampleImplementationPointer) OT::Pointer<OT::SampleImplementation>;
 %template(MatrixImplementationPointer) OT::Pointer<OT::MatrixImplementation>;
 %template(NumericalPointPointer) OT::Pointer<OT::NumericalPoint>;
 %template(TensorImplementationPointer) OT::Pointer<OT::TensorImplementation>;

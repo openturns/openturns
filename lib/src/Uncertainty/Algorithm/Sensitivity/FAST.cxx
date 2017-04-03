@@ -63,8 +63,8 @@ void FAST::run() const
   const UnsignedInteger nbOut = model_.getOutputDimension();
 
   // Allocate indices
-  firstOrderIndice_ = NumericalSample(nbOut, nbIn);
-  totalOrderIndice_ = NumericalSample(nbOut, nbIn);
+  firstOrderIndice_ = Sample(nbOut, nbIn);
+  totalOrderIndice_ = Sample(nbOut, nbIn);
 
   // this avoids to store huge input samples while allowing for multi-threading
   const UnsignedInteger maximumOuterSampling = static_cast<UnsignedInteger>(ceil(1.0 * samplingSize_ / blockSize_));
@@ -96,8 +96,8 @@ void FAST::run() const
   }
 
   // Initializations
-  NumericalSample D_i(nbOut, nbIn);
-  NumericalSample D_l(nbOut, nbIn);
+  Sample D_i(nbOut, nbIn);
+  Sample D_l(nbOut, nbIn);
 
   // For each input, compute first order and total order indices for each model's output
   for (UnsignedInteger inp = 0; inp < nbIn; ++ inp)
@@ -119,7 +119,7 @@ void FAST::run() const
         phi_i[i] = 2. * M_PI * RandomGenerator::Generate();
 
       NumericalPoint xi_s(nbIn);
-      NumericalSample output(0, nbOut);
+      Sample output(0, nbOut);
 
       // for each block ...
       for (UnsignedInteger outerSampling = 0; outerSampling < maximumOuterSampling; ++ outerSampling)
@@ -127,7 +127,7 @@ void FAST::run() const
         // the last block can be smaller
         const UnsignedInteger effectiveBlockSize = outerSampling < (maximumOuterSampling - 1) ? blockSize_ : lastBlockSize;
 
-        NumericalSample inputBlock(effectiveBlockSize, nbIn);
+        Sample inputBlock(effectiveBlockSize, nbIn);
 
         for (UnsignedInteger blockIndex = 0; blockIndex < effectiveBlockSize; ++ blockIndex)
         {

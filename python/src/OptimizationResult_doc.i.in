@@ -42,7 +42,7 @@ absoluteError : float
 
 Returns
 -------
-absoluteErrorHistory : :class:`~openturns.NumericalSample`
+absoluteErrorHistory : :class:`~openturns.Sample`
     Value of the absolute error at each iteration of the solver."
 
 // ---------------------------------------------------------------------
@@ -62,7 +62,7 @@ constraintError : float
 
 Returns
 -------
-constraintErrorHistory : :class:`~openturns.NumericalSample`
+constraintErrorHistory : :class:`~openturns.Sample`
     Value of the constrainte error at each iteration of the solver."
 
 // ---------------------------------------------------------------------
@@ -102,7 +102,7 @@ relativeError : float
 
 Returns
 -------
-relativeErrorHistory : :class:`~openturns.NumericalSample`
+relativeErrorHistory : :class:`~openturns.Sample`
     Value of the relative error at each iteration of the solver."
 
 // ---------------------------------------------------------------------
@@ -122,7 +122,7 @@ residualError : float
 
 Returns
 -------
-residualErrorHistory : :class:`~openturns.NumericalSample`
+residualErrorHistory : :class:`~openturns.Sample`
     Value of the residual error at each iteration of the solver."
 
 // ---------------------------------------------------------------------
@@ -202,7 +202,7 @@ optimalValue : :class:`~openturns.NumericalPoint`
 
 Returns
 -------
-inputSample : :class:`~openturns.NumericalSample`
+inputSample : :class:`~openturns.Sample`
     Input points used by the solver"
 
 // ---------------------------------------------------------------------
@@ -212,7 +212,7 @@ inputSample : :class:`~openturns.NumericalSample`
 
 Returns
 -------
-outputSample : :class:`~openturns.NumericalSample`
+outputSample : :class:`~openturns.Sample`
     Output points used by the solver"
 
 // ---------------------------------------------------------------------

@@ -22,7 +22,7 @@
 #define OPENTURNS_KDTREE_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -46,7 +46,7 @@ public:
   KDTree();
 
   /** Parameter constructor */
-  explicit KDTree(const NumericalSample & sample);
+  explicit KDTree(const Sample & sample);
 
   /** Virtual constructor */
   virtual KDTree * clone() const;
@@ -66,7 +66,7 @@ public:
       const bool sorted  = false) const;
 
   /** Get the k nearest neighbours of the given point */
-  virtual NumericalSample getNearestNeighbours(const NumericalPoint & x,
+  virtual Sample getNearestNeighbours(const NumericalPoint & x,
       const UnsignedInteger k) const;
 
   /** Get the index of the nearest neighbour of the given point */
@@ -76,7 +76,7 @@ public:
   virtual NumericalPoint getNearestNeighbour(const NumericalPoint & x) const;
 
   /** Points accessor */
-  NumericalSample getPoints() const;
+  Sample getPoints() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -137,7 +137,7 @@ protected:
   void initialize();
 
   /** The data organized by the tree */
-  NumericalSample points_;
+  Sample points_;
 
   /** The root of the tree */
   KDNode::KDNodePointer p_root_;

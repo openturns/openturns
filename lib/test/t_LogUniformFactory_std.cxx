@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
   {
     LogUniform distribution(1.0, 2.5);
     UnsignedInteger size = 10000;
-    NumericalSample sample(distribution.getSample(size));
+    Sample sample(distribution.getSample(size));
     LogUniformFactory factory;
     CovarianceMatrix covariance;
     // Distribution estimatedDistribution(factory.build(sample, covariance));
@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
     estimatedLogUniform = factory.buildAsLogUniform(distribution.getParameter());
     fullprint << "LogUniform from parameters=" << estimatedLogUniform << std::endl;
     // Test for constant sample
-    sample = NumericalSample(size, NumericalPoint(1, 1.0));
+    sample = Sample(size, NumericalPoint(1, 1.0));
     estimatedDistribution = factory.build(sample);
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
   }

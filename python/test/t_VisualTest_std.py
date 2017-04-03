@@ -54,8 +54,8 @@ try:
         NumericalPoint(dimension, 3.0), NumericalPoint(dimension, 2.0), R)
     size = 100
     sample2D = distribution.getSample(size)
-    firstSample = NumericalSample(size, 1)
-    secondSample = NumericalSample(size, 1)
+    firstSample = Sample(size, 1)
+    secondSample = Sample(size, 1)
     for i in range(size):
         firstSample[i] = NumericalPoint(1, sample2D[i, 0])
         secondSample[i] = NumericalPoint(1, sample2D[i, 1])
@@ -76,8 +76,8 @@ try:
         NumericalPoint(dimension, 3.0), NumericalPoint(dimension, 2.0), R)
     size = 100
     sample2D = distribution.getSample(size)
-    firstSample = NumericalSample(size, 1)
-    secondSample = NumericalSample(size, 1)
+    firstSample = Sample(size, 1)
+    secondSample = Sample(size, 1)
     for i in range(size):
         firstSample[i] = NumericalPoint(1, sample2D[i, 0])
         secondSample[i] = NumericalPoint(1, sample2D[i, 1])

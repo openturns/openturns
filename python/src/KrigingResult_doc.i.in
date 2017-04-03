@@ -104,7 +104,7 @@ Get the meta model:
 
 Returns
 -------
-covCoeff : :class:`~openturns.NumericalSample`
+covCoeff : :class:`~openturns.Sample`
     The :math:`\vect{\gamma}` defined in :eq:`gammaEq`.
 "
 
@@ -258,7 +258,7 @@ transformation : :class:`~openturns.Function`
 
 Returns
 -------
-inputSample : :class:`~openturns.NumericalSample`
+inputSample : :class:`~openturns.Sample`
     The input sample."
 
 // ---------------------------------------------------------------------
@@ -268,5 +268,5 @@ inputSample : :class:`~openturns.NumericalSample`
 
 Returns
 -------
-outputSample : :class:`~openturns.NumericalSample`
+outputSample : :class:`~openturns.Sample`
     The output sample."

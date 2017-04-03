@@ -54,25 +54,25 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Perform cross-validation */
-  NumericalScalar run(const NumericalSample & x,
-                      const NumericalSample & y,
+  NumericalScalar run(const Sample & x,
+                      const Sample & y,
                       const NumericalPoint & weight,
                       const Basis & psi,
                       const Indices & indices) const;
 
-  NumericalScalar run(const NumericalSample & x,
-                      const NumericalSample & y,
+  NumericalScalar run(const Sample & x,
+                      const Sample & y,
                       const Basis & psi,
                       const Indices & indices) const;
 
 #ifndef SWIG
-  NumericalScalar run(const NumericalSample & y,
+  NumericalScalar run(const Sample & y,
                       const NumericalPoint & weight,
                       const Indices & indices,
                       const DesignProxy & proxy) const;
 
   NumericalScalar run(LeastSquaresMethod & method,
-                      const NumericalSample & y) const;
+                      const Sample & y) const;
 #endif
 
 }; /* class FittingAlgorithm */

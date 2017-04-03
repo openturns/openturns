@@ -43,7 +43,7 @@ GumbelCopulaFactory * GumbelCopulaFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-GumbelCopulaFactory::Implementation GumbelCopulaFactory::build(const NumericalSample & sample) const
+GumbelCopulaFactory::Implementation GumbelCopulaFactory::build(const Sample & sample) const
 {
   return buildAsGumbelCopula(sample).clone();
 }
@@ -58,7 +58,7 @@ GumbelCopulaFactory::Implementation GumbelCopulaFactory::build() const
   return buildAsGumbelCopula().clone();
 }
 
-GumbelCopula GumbelCopulaFactory::buildAsGumbelCopula(const NumericalSample & sample) const
+GumbelCopula GumbelCopulaFactory::buildAsGumbelCopula(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a GumbelCopula distribution from an empty sample";
   if (sample.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a GumbelCopula distribution from a sample of dimension not equal to 2";

@@ -46,11 +46,11 @@ public:
   Staircase();
 
   /** Constructor with parameters */
-  explicit Staircase(const NumericalSample & data,
+  explicit Staircase(const Sample & data,
                      const String & legend = "");
 
   /** Constructor with parameters */
-  Staircase(const NumericalSample & data,
+  Staircase(const Sample & data,
             const String & color,
             const String & lineStyle,
             const UnsignedInteger lineWidth,
@@ -58,7 +58,7 @@ public:
             const String & legend = "");
 
   /** Constructor with old parameters */
-  Staircase(const NumericalSample & data,
+  Staircase(const Sample & data,
             const String & color,
             const String & lineStyle,
             const String & pattern,
@@ -85,7 +85,7 @@ public:
 
 protected:
   /** Check fo data validity */
-  virtual void checkData(const NumericalSample & data) const;
+  virtual void checkData(const Sample & data) const;
 
 private:
   /** Pattern for staircase plotting */

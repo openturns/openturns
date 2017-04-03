@@ -64,7 +64,7 @@ LHS * LHS::clone() const
 }
 
 /* Compute the block sample */
-NumericalSample LHS::computeBlockSample()
+Sample LHS::computeBlockSample()
 {
   // Size of a block
   const UnsignedInteger blockSize = getBlockSize();
@@ -73,7 +73,7 @@ NumericalSample LHS::computeBlockSample()
   // Compute the total sample base position
   UnsignedInteger basePosition = blockIndex_ * blockSize;
   // First, compute the input sub-sample based on the shuffling
-  NumericalSample inputSample(blockSize, NumericalPoint(dimension_));
+  Sample inputSample(blockSize, NumericalPoint(dimension_));
   for(UnsignedInteger index = 0; index < blockSize; ++index)
   {
     const NumericalPoint u(RandomGenerator::Generate(dimension_));
@@ -86,7 +86,7 @@ NumericalSample LHS::computeBlockSample()
     ++basePosition;
   }
   // Then, evaluate the function on this sample
-  NumericalSample blockSample(getEvent().getImplementation()->getFunction()(inputSample));
+  Sample blockSample(getEvent().getImplementation()->getFunction()(inputSample));
   for (UnsignedInteger i = 0; i < blockSize; ++i) blockSample[i][0] = getEvent().getOperator()(blockSample[i][0], event_.getThreshold());
   // Update the block index
   ++blockIndex_;

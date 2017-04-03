@@ -79,7 +79,7 @@ public:
 
   /** Get one realization of the MarginalDistribution */
   NumericalPoint getRealization() const;
-  NumericalSample getSample(const UnsignedInteger size) const;
+  Sample getSample(const UnsignedInteger size) const;
 
   /** Get the CDF of the MarginalDistribution */
   using DistributionImplementation::computeCDF;

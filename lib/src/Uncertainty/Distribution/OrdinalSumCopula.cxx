@@ -42,7 +42,7 @@ OrdinalSumCopula::OrdinalSumCopula()
 {
   setName("OrdinalSumCopula");
   setDimension(2);
-  NumericalSample support(2, 1);
+  Sample support(2, 1);
   support[0][0] = 0.0;
   support[1][0] = 1.0;
   blockDistribution_ = UserDefined(support);
@@ -155,7 +155,7 @@ void OrdinalSumCopula::setBounds(const NumericalPoint & bounds)
   // + the block distribution
   // Here are the parameters of the block distribution
   bounds_ = NumericalPoint(0);
-  NumericalSample support(0, 1);
+  Sample support(0, 1);
   blockLengths_ = NumericalPoint(0);
   NumericalScalar lastBound = 0.0;
   CopulaCollection coll(0);

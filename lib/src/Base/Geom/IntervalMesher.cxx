@@ -97,7 +97,7 @@ Mesh IntervalMesher::build(const Interval & interval,
   {
     // We must insure that the interval bounds will be within the vertices
     const UnsignedInteger n = diamond ? 2 * discretization_[0] - 1 : discretization_[0];
-    NumericalSample vertices(n + 1, 1);
+    Sample vertices(n + 1, 1);
     // First the vertices
     const NumericalScalar a = interval.getLowerBound()[0];
     const NumericalScalar b = interval.getUpperBound()[0];
@@ -120,7 +120,7 @@ Mesh IntervalMesher::build(const Interval & interval,
     const UnsignedInteger m = discretization_[0];
     const UnsignedInteger n = discretization_[1];
     // First the vertices
-    NumericalSample vertices(0, 2);
+    Sample vertices(0, 2);
     NumericalPoint point(2);
     for (UnsignedInteger j = 0; j <= n; ++j)
     {
@@ -188,7 +188,7 @@ Mesh IntervalMesher::build(const Interval & interval,
     const UnsignedInteger n = discretization_[1];
     const UnsignedInteger p = discretization_[2];
     // First the vertices
-    NumericalSample vertices(0, 3);
+    Sample vertices(0, 3);
     NumericalPoint point(3);
     for (UnsignedInteger k = 0; k <= p; ++k)
     {

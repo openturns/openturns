@@ -9,8 +9,8 @@ R[0, 1] = 0.8
 distribution = ot.Normal([3.] * dimension, [2.] * dimension, R)
 size = 100
 sample = distribution.getSample(size)
-firstSample = ot.NumericalSample(size, 1)
-secondSample = ot.NumericalSample(size, 1)
+firstSample = ot.Sample(size, 1)
+secondSample = ot.Sample(size, 1)
 for i in range(size):
     firstSample[i] = ot.NumericalPoint(1, sample[i, 0])
     secondSample[i] = ot.NumericalPoint(1, sample[i, 1])

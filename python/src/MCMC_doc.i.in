@@ -151,7 +151,7 @@ model : :class:`~openturns.Function`
 
 Returns
 -------
-observations : :class:`~openturns.NumericalSample`
+observations : :class:`~openturns.Sample`
     Sample taken into account in the definition of the likelihood, which
     corresponds to the :math:`n`-tuple of the :math:`\vect{y}^i`
     (:math:`1\leq i \leq n`) in equations of the

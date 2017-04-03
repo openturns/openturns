@@ -75,7 +75,7 @@ void FunctionalChaosRandomVector::computeCovariance() const
 {
   const UnsignedInteger dimension = getDimension();
   const Indices indices(functionalChaosResult_.getIndices());
-  const NumericalSample coefficients(functionalChaosResult_.getCoefficients());
+  const Sample coefficients(functionalChaosResult_.getCoefficients());
   const UnsignedInteger size = indices.getSize();
   covariance_ = CovarianceMatrix(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -103,7 +103,7 @@ NumericalScalar FunctionalChaosRandomVector::getSobolIndex(const Indices & varia
   if (!functionalChaosResult_.getOrthogonalBasis().getMeasure().hasIndependentCopula()) throw InternalException(HERE) << "Error: cannot compute Sobol indices from a non-tensorized basis.";
   if (!functionalChaosResult_.getDistribution().hasIndependentCopula()) LOGWARN(OSS(false) << "The Sobol indices are computed wrt the basis measure, and there is no one-to-one transformation between this measure and the input distribution. The interpretation of the indices may be misleading.");
   const UnsignedInteger orderSobolIndice = variableIndices.getSize();
-  const NumericalSample coefficients(functionalChaosResult_.getCoefficients().getMarginal(marginalIndex));
+  const Sample coefficients(functionalChaosResult_.getCoefficients().getMarginal(marginalIndex));
   const Indices coefficientIndices(functionalChaosResult_.getIndices());
   const UnsignedInteger size = coefficients.getSize();
   NumericalScalar covarianceVariables = 0.0;
@@ -167,7 +167,7 @@ NumericalScalar FunctionalChaosRandomVector::getSobolTotalIndex(const Indices & 
   if (!functionalChaosResult_.getOrthogonalBasis().getMeasure().hasIndependentCopula()) throw InternalException(HERE) << "Error: cannot compute Sobol total indices from a non-tensorized basis.";
   if (!functionalChaosResult_.getDistribution().hasIndependentCopula()) LOGWARN(OSS(false) << "The Sobol total indices are computed wrt the basis measure, and there is no one-to-one transformation between this measure and the input distribution. The interpretation of the total indices may be misleading.");
   const UnsignedInteger orderSobolIndice = variableIndices.getSize();
-  const NumericalSample coefficients(functionalChaosResult_.getCoefficients().getMarginal(marginalIndex));
+  const Sample coefficients(functionalChaosResult_.getCoefficients().getMarginal(marginalIndex));
   const Indices coefficientIndices(functionalChaosResult_.getIndices());
   const UnsignedInteger size = coefficients.getSize();
   NumericalScalar covarianceVariables = 0.0;
@@ -223,7 +223,7 @@ NumericalScalar FunctionalChaosRandomVector::getSobolGroupedIndex(const Indices 
   if (!functionalChaosResult_.getOrthogonalBasis().getMeasure().hasIndependentCopula()) throw InternalException(HERE) << "Error: cannot compute Sobol indices from a non-tensorized basis.";
   if (!functionalChaosResult_.getDistribution().hasIndependentCopula()) LOGWARN(OSS(false) << "The Sobol indices are computed wrt the basis measure, and there is no one-to-one transformation between this measure and the input distribution. The interpretation of the indices may be misleading.");
   const UnsignedInteger orderSobolIndice = variableIndices.getSize();
-  const NumericalSample coefficients(functionalChaosResult_.getCoefficients().getMarginal(marginalIndex));
+  const Sample coefficients(functionalChaosResult_.getCoefficients().getMarginal(marginalIndex));
   const Indices coefficientIndices(functionalChaosResult_.getIndices());
   const UnsignedInteger size = coefficients.getSize();
   NumericalScalar covarianceVariables = 0.0;

@@ -45,14 +45,14 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build(const NumericalSample & sample) const;
+  Implementation build(const Sample & sample) const;
   Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
 
   using DistributionFactoryImplementation::buildEstimator;
-  DistributionFactoryResult buildEstimator(const NumericalSample & sample) const;
+  DistributionFactoryResult buildEstimator(const Sample & sample) const;
 
-  Logistic buildAsLogistic(const NumericalSample & sample) const;
+  Logistic buildAsLogistic(const Sample & sample) const;
   Logistic buildAsLogistic(const NumericalPoint & parameters) const;
   Logistic buildAsLogistic() const;
 

@@ -88,7 +88,7 @@ String MaximumLikelihoodFactory::__str__(const String & offset) const
 class LogLikelihoodEvaluation : public EvaluationImplementation
 {
 public:
-  LogLikelihoodEvaluation(const NumericalSample & sample,
+  LogLikelihoodEvaluation(const Sample & sample,
                                         const Distribution & distribution,
                                         const NumericalPoint & knownParameterValues,
                                         const Indices & knownParameterIndices)
@@ -167,14 +167,14 @@ public:
     }
     // Take into account the mean over sample
     // Parallelization (evaluation over a sample) is handeled by distribution_
-    const NumericalSample logPdfSample = distribution.computeLogPDF(sample_);
+    const Sample logPdfSample = distribution.computeLogPDF(sample_);
     const NumericalScalar logPdf = logPdfSample.computeMean()[0];
     result = SpecFunc::IsNormal(logPdf) ? logPdf : SpecFunc::LogMinNumericalScalar;
     return NumericalPoint(1, result);
   }
 
 private:
-  NumericalSample sample_;
+  Sample sample_;
   Distribution distribution_;
   NumericalPoint knownParameterValues_;
   Indices knownParameterIndices_;
@@ -184,7 +184,7 @@ private:
 class LogLikelihoodGradient : public GradientImplementation
 {
 public:
-  LogLikelihoodGradient(const NumericalSample & sample,
+  LogLikelihoodGradient(const Sample & sample,
                         const Distribution & distribution,
                         const NumericalPoint & knownParameterValues,
                         const Indices & knownParameterIndices)
@@ -256,7 +256,7 @@ public:
     // Matrix result
     MatrixImplementation result(parameter.getSize(), 1);
     // Evaluate the gradient
-    const NumericalSample logPdfGradientSample(distribution.computeLogPDFGradient(sample_).getMarginal(unknownParameterIndices_));
+    const Sample logPdfGradientSample(distribution.computeLogPDFGradient(sample_).getMarginal(unknownParameterIndices_));
     const NumericalPoint logPdfGradient(logPdfGradientSample.computeMean());
     // Result as Matrix
     result = MatrixImplementation(getInputDimension(), 1, logPdfGradient);
@@ -264,14 +264,14 @@ public:
   }
 
 private:
-  NumericalSample sample_;
+  Sample sample_;
   Distribution distribution_;
   NumericalPoint knownParameterValues_;
   Indices knownParameterIndices_;
   Indices unknownParameterIndices_;
 };
 
-NumericalPoint MaximumLikelihoodFactory::buildParameter(const NumericalSample & sample) const
+NumericalPoint MaximumLikelihoodFactory::buildParameter(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
@@ -334,7 +334,7 @@ NumericalPoint MaximumLikelihoodFactory::buildParameter(const NumericalSample & 
 }
 
 
-DistributionFactoryImplementation::Implementation MaximumLikelihoodFactory::build(const NumericalSample & sample) const
+DistributionFactoryImplementation::Implementation MaximumLikelihoodFactory::build(const Sample & sample) const
 {
   Distribution result(distribution_);
   result.setParameter(buildParameter(sample));

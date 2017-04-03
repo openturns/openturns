@@ -59,8 +59,8 @@ int main(int argc, char *argv[])
     const UnsignedInteger nr_bootstrap = 100;
     const NumericalScalar confidence_level = 0.95;
 
-    const NumericalSample inputDesign(SobolIndicesAlgorithmImplementation::Generate(maDistribution, size, true));
-    const NumericalSample outputDesign(model(inputDesign));
+    const Sample inputDesign(SobolIndicesAlgorithmImplementation::Generate(maDistribution, size, true));
+    const Sample outputDesign(model(inputDesign));
 
     {
       SaltelliSensitivityAlgorithm sensitivitySobol(inputDesign, outputDesign, size);

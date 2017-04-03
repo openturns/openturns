@@ -40,7 +40,7 @@ OT_LHSResult_doc
 
 Returns
 -------
-design : :class:`~openturns.NumericalSample`
+design : :class:`~openturns.Sample`
     The design that optimizes the criterion.
 
 Examples

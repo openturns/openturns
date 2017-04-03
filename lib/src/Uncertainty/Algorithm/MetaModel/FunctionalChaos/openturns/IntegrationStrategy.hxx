@@ -56,13 +56,13 @@ public:
                       const WeightedExperiment & weightedExperiment);
 
   /** Parameter constructor */
-  IntegrationStrategy(const NumericalSample & inputSample,
+  IntegrationStrategy(const Sample & inputSample,
                       const NumericalPoint & weights,
-                      const NumericalSample & outputSample);
+                      const Sample & outputSample);
 
   /** Parameter constructor */
-  IntegrationStrategy(const NumericalSample & inputSample,
-                      const NumericalSample & outputSample);
+  IntegrationStrategy(const Sample & inputSample,
+                      const Sample & outputSample);
 
   /** Virtual constructor */
   virtual IntegrationStrategy * clone() const;

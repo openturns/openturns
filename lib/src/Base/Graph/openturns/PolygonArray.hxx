@@ -22,7 +22,7 @@
 #define OPENTURNS_POLYGONARRAY_HXX
 
 #include "openturns/DrawableImplementation.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Polygon.hxx"
 #include "openturns/Collection.hxx"
 
@@ -54,7 +54,7 @@ public:
                         const String & legend = "");
 
   /** Construction based on a set of vertices */
-  PolygonArray(const NumericalSample & coordinates,
+  PolygonArray(const Sample & coordinates,
                const UnsignedInteger verticesNumber,
                const Description & palette,
                const String & legend = "");
@@ -74,11 +74,11 @@ public:
   Description getPalette() const;
 
   /** Coordinates and vertices number of the vertices of the polygons */
-  void setCoordinatesAndVerticesNumber(const NumericalSample & coordinates,
+  void setCoordinatesAndVerticesNumber(const Sample & coordinates,
                                        const UnsignedInteger verticesNumber);
 
   /** Coordinates accessor */
-  NumericalSample getCoordinates() const;
+  Sample getCoordinates() const;
 
   /** Vertices number accessor */
   UnsignedInteger getVerticesNumber() const;
@@ -94,7 +94,7 @@ public:
 
 protected:
   /** Check fo data validity */
-  virtual void checkData(const NumericalSample & data) const;
+  virtual void checkData(const Sample & data) const;
 
 private:
 

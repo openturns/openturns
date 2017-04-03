@@ -63,7 +63,7 @@ void Experiment::setImplementation(const Implementation & p_implementation)
 }
 
 /* Sample generation */
-NumericalSample Experiment::generate() const
+Sample Experiment::generate() const
 {
   return getImplementation()->generate();
 }

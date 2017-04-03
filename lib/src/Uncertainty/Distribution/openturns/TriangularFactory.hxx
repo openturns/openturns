@@ -45,10 +45,10 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build(const NumericalSample & sample) const;
+  Implementation build(const Sample & sample) const;
   Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
-  Triangular buildAsTriangular(const NumericalSample & sample) const;
+  Triangular buildAsTriangular(const Sample & sample) const;
   Triangular buildAsTriangular(const NumericalPoint & parameters) const;
   Triangular buildAsTriangular() const;
 

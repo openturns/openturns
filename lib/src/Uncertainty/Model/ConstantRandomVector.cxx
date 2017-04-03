@@ -82,9 +82,9 @@ NumericalPoint ConstantRandomVector::getRealization() const
 }
 
 /* Numerical sample accessor */
-NumericalSample ConstantRandomVector::getSample(const UnsignedInteger size) const
+Sample ConstantRandomVector::getSample(const UnsignedInteger size) const
 {
-  NumericalSample sample(size, point_);
+  Sample sample(size, point_);
   sample.setDescription(getDescription());
   return sample;
 }

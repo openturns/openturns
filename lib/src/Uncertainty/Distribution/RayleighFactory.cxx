@@ -44,7 +44,7 @@ RayleighFactory * RayleighFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-RayleighFactory::Implementation RayleighFactory::build(const NumericalSample & sample) const
+RayleighFactory::Implementation RayleighFactory::build(const Sample & sample) const
 {
   return buildAsRayleigh(sample).clone();
 }
@@ -59,7 +59,7 @@ RayleighFactory::Implementation RayleighFactory::build() const
   return buildAsRayleigh().clone();
 }
 
-Rayleigh RayleighFactory::buildAsRayleigh(const NumericalSample & sample) const
+Rayleigh RayleighFactory::buildAsRayleigh(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Rayleigh distribution from an empty sample";

@@ -44,7 +44,7 @@ TriangularFactory * TriangularFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-TriangularFactory::Implementation TriangularFactory::build(const NumericalSample & sample) const
+TriangularFactory::Implementation TriangularFactory::build(const Sample & sample) const
 {
   return buildAsTriangular(sample).clone();
 }
@@ -59,7 +59,7 @@ TriangularFactory::Implementation TriangularFactory::build(const NumericalPoint 
   return buildAsTriangular(parameters).clone();
 }
 
-Triangular TriangularFactory::buildAsTriangular(const NumericalSample & sample) const
+Triangular TriangularFactory::buildAsTriangular(const Sample & sample) const
 {
   const NumericalScalar size = sample.getSize();
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Triangular distribution from a sample of size < 2";

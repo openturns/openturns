@@ -14,7 +14,7 @@ try:
 
     # observations
     obsSize = 10
-    y_obs = NumericalSample(obsSize, obsDim)
+    y_obs = Sample(obsSize, obsDim)
     y_obs[0, 0] = -9.50794871493506
     y_obs[1, 0] = -3.83296694500105
     y_obs[2, 0] = -2.44545713047953
@@ -27,7 +27,7 @@ try:
     y_obs[9, 0] = -13.0812290405651
     print('y_obs=', y_obs)
 
-    p = NumericalSample(obsSize, chainDim)
+    p = Sample(obsSize, chainDim)
     for i in range(obsSize):
         for j in range(chainDim):
             p[i, j] = (-2 + 5. * i / 9.) ** j

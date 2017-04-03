@@ -125,7 +125,7 @@ NumericalScalar OptimizationResult::getAbsoluteError() const
   return absoluteError_;
 }
 
-NumericalSample OptimizationResult::getAbsoluteErrorHistory() const
+Sample OptimizationResult::getAbsoluteErrorHistory() const
 {
   return absoluteErrorHistory_.getSample();
 }
@@ -142,7 +142,7 @@ NumericalScalar OptimizationResult::getRelativeError() const
   return relativeError_;
 }
 
-NumericalSample OptimizationResult::getRelativeErrorHistory() const
+Sample OptimizationResult::getRelativeErrorHistory() const
 {
   return relativeErrorHistory_.getSample();
 }
@@ -159,7 +159,7 @@ NumericalScalar OptimizationResult::getResidualError() const
   return residualError_;
 }
 
-NumericalSample OptimizationResult::getResidualErrorHistory() const
+Sample OptimizationResult::getResidualErrorHistory() const
 {
   return residualErrorHistory_.getSample();
 }
@@ -176,7 +176,7 @@ NumericalScalar OptimizationResult::getConstraintError() const
   return constraintError_;
 }
 
-NumericalSample OptimizationResult::getConstraintErrorHistory() const
+Sample OptimizationResult::getConstraintErrorHistory() const
 {
   return constraintErrorHistory_.getSample();
 }
@@ -187,12 +187,12 @@ void OptimizationResult::setConstraintError(const NumericalScalar constraintErro
   constraintError_ = constraintError;
 }
 
-NumericalSample OptimizationResult::getInputSample() const
+Sample OptimizationResult::getInputSample() const
 {
   return inputHistory_.getSample();
 }
 
-NumericalSample OptimizationResult::getOutputSample() const
+Sample OptimizationResult::getOutputSample() const
 {
   return outputHistory_.getSample();
 }
@@ -319,7 +319,7 @@ Graph OptimizationResult::drawErrorHistory() const
 // create a sample with the iteration number to be plotted as x data
   const UnsignedInteger size = getAbsoluteErrorHistory().getSize();
   {
-    NumericalSample data(getAbsoluteErrorHistory());
+    Sample data(getAbsoluteErrorHistory());
     for (UnsignedInteger i = 0; i < size; ++i) if (data[i][0] <= 0.0) data[i][0] = SpecFunc::NumericalScalarEpsilon;
     Curve absoluteErrorCurve( data, "absolute error" );
     absoluteErrorCurve.setLegend("absolute error");
@@ -328,7 +328,7 @@ Graph OptimizationResult::drawErrorHistory() const
   }
 // Relative error
   {
-    NumericalSample data(getRelativeErrorHistory());
+    Sample data(getRelativeErrorHistory());
     for (UnsignedInteger i = 0; i < size; ++i) if (data[i][0] <= 0.0) data[i][0] = SpecFunc::NumericalScalarEpsilon;
     Curve relativeErrorCurve( data, "relative error" );
     relativeErrorCurve.setLegend("relative error");
@@ -337,7 +337,7 @@ Graph OptimizationResult::drawErrorHistory() const
   }
 // Residual error
   {
-    NumericalSample data(getResidualErrorHistory());
+    Sample data(getResidualErrorHistory());
     for (UnsignedInteger i = 0; i < size; ++i) if (data[i][0] <= 0.0) data[i][0] = SpecFunc::NumericalScalarEpsilon;
     Curve residualErrorCurve( data, "residual error" );
     residualErrorCurve.setLegend("residual error");
@@ -346,7 +346,7 @@ Graph OptimizationResult::drawErrorHistory() const
   }
 // Constraint error
   {
-    NumericalSample data(getConstraintErrorHistory());
+    Sample data(getConstraintErrorHistory());
     for (UnsignedInteger i = 0; i < size; ++i) if (data[i][0] <= 0.0) data[i][0] = SpecFunc::NumericalScalarEpsilon;
     Curve constraintErrorCurve( data, "constraint error" );
     constraintErrorCurve.setLegend("constraint error");
@@ -363,7 +363,7 @@ Graph OptimizationResult::drawOptimalValueHistory() const
   Graph result("Optimal value history", "Iteration number", "Optimal value", true, "topright", 1.0);
   result.setGrid(true);
   result.setGridColor("black");
-  NumericalSample data(getOutputSample());
+  Sample data(getOutputSample());
   const UnsignedInteger size = data.getSize();
   const Bool minimization = problem_.isMinimization();
   for (UnsignedInteger i = 1; i < size; ++ i)

@@ -640,18 +640,18 @@ convert<_PySequence_, Collection<NumericalComplex> >(PyObject * pyObj)
 
 
 template <>
-struct traitsPythonType< NumericalSample >
+struct traitsPythonType< Sample >
 {
   typedef _PySequence_ Type;
 };
 
 template <>
 inline
-NumericalSample
-convert< _PySequence_, NumericalSample >(PyObject * pyObj)
+Sample
+convert< _PySequence_, Sample >(PyObject * pyObj)
 {
   Pointer<Collection<NumericalPoint> > ptr = buildCollectionFromPySequence<NumericalPoint>(pyObj);
-  return NumericalSample( *ptr );
+  return Sample( *ptr );
 }
 
 template <>
@@ -811,7 +811,7 @@ convert< _PySequence_, MatrixImplementation* >(PyObject * pyObj)
   {
     // try to convert from a sequence of sequences
     Pointer< Collection< NumericalPoint > > ptr = buildCollectionFromPySequence< NumericalPoint >(pyObj);
-    NumericalSample sample( *ptr );
+    Sample sample( *ptr );
     UnsignedInteger nbRows = sample.getSize();
     UnsignedInteger nbColumns = sample.getDimension();
     p_implementation = new MatrixImplementation( nbRows, nbColumns );
@@ -917,7 +917,7 @@ inline
 TensorImplementation*
 convert< _PySequence_, TensorImplementation* >(PyObject * pyObj)
 {
-  Pointer< Collection< NumericalSample > > ptr = buildCollectionFromPySequence< NumericalSample >(pyObj);
+  Pointer< Collection< Sample > > ptr = buildCollectionFromPySequence< Sample >(pyObj);
   UnsignedInteger nbRows = ptr->getSize();
   UnsignedInteger nbColumns = ptr->getSize() > 0 ? (*ptr)[0].getSize() : 0;
   UnsignedInteger nbSheets = ptr->getSize() > 0 ? (*ptr)[0].getDimension() : 0;

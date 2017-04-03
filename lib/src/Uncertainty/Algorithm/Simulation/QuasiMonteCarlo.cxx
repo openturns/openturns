@@ -72,13 +72,13 @@ QuasiMonteCarlo * QuasiMonteCarlo::clone() const
 
 
 /* Compute the block sample */
-NumericalSample QuasiMonteCarlo::computeBlockSample()
+Sample QuasiMonteCarlo::computeBlockSample()
 {
   // Size of a block
   const UnsignedInteger blockSize = getBlockSize();
 
   // allocate the input sample
-  NumericalSample inputSample(lowDiscrepancySequence_.generate(blockSize));
+  Sample inputSample(lowDiscrepancySequence_.generate(blockSize));
 
   // for each point of the sample
   for(UnsignedInteger index = 0; index < blockSize; ++index)
@@ -90,7 +90,7 @@ NumericalSample QuasiMonteCarlo::computeBlockSample()
   } // For index
 
   // Then, evaluate the function on this sample
-  NumericalSample blockSample(event_.getImplementation()->getFunction()(inputSample));
+  Sample blockSample(event_.getImplementation()->getFunction()(inputSample));
   for (UnsignedInteger i = 0; i < blockSize_; ++i)
   {
     const Bool isRealized = getEvent().getOperator()(blockSample[i][0], event_.getThreshold());

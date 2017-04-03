@@ -43,8 +43,8 @@ public:
   JansenSensitivityAlgorithm();
 
   /** Constructor with parameters */
-  JansenSensitivityAlgorithm(const NumericalSample & inputDesign,
-                             const NumericalSample & outputDesign,
+  JansenSensitivityAlgorithm(const Sample & inputDesign,
+                             const Sample & outputDesign,
                              const UnsignedInteger size);
 
   /** Constructor with distribution / model parameters */
@@ -67,8 +67,8 @@ public:
 protected:
 
   /** Internal method that compute Vi/VTi using a huge sample */
-  NumericalSample computeIndices(const NumericalSample & sample,
-                                 NumericalSample & VTi) const;
+  Sample computeIndices(const Sample & sample,
+                                 Sample & VTi) const;
 }; /* class JansenSensitivityAlgorithm */
 
 END_NAMESPACE_OPENTURNS

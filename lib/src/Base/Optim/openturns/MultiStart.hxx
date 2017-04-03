@@ -43,7 +43,7 @@ public:
 
   /** Constructor with parameters */
   MultiStart(const OptimizationAlgorithm & solver,
-             const NumericalSample & startingPoints);
+             const Sample & startingPoints);
 
   /** Virtual constructor */
   virtual MultiStart * clone() const;
@@ -65,8 +65,8 @@ public:
   void setOptimizationSolver(const OptimizationAlgorithm & solver);
   OptimizationAlgorithm getOptimizationSolver() const;  
 
-  void setStartingPoints(const NumericalSample & sample);
-  NumericalSample getStartingPoints() const;
+  void setStartingPoints(const Sample & sample);
+  Sample getStartingPoints() const;
 
   OptimizationResultCollection getResultCollection() const;
 
@@ -87,7 +87,7 @@ protected:
 
 private:
   OptimizationAlgorithm solver_;
-  NumericalSample startingPoints_;
+  Sample startingPoints_;
 
   OptimizationResultPersistentCollection resultCollection_;
 

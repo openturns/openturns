@@ -72,8 +72,8 @@ int main(int argc, char *argv[])
     numericalPoint.setName("point");
     study.add("Good", numericalPoint);
 
-    // Add another PersistentObject to the Study (here a NumericalSample)
-    NumericalSample numericalSample(3, 2);
+    // Add another PersistentObject to the Study (here a Sample)
+    Sample numericalSample(3, 2);
     NumericalPoint p2(2, 0.);
     p2[0] = 100.;
     p2[1] = 200.;
@@ -136,11 +136,11 @@ int main(int argc, char *argv[])
       // Test for sampling
       UnsignedInteger size = 2000;
       UnsignedInteger nPoints = 20;
-      NumericalSample sample1(distribution1.getSample( size ));
-      NumericalSample sample2(distribution2.getSample( size ));
+      Sample sample1(distribution1.getSample( size ));
+      Sample sample2(distribution2.getSample( size ));
 
       // Construct empirical CDF for each sample
-      NumericalSample data1(nPoints, 2), data2(nPoints, 2);
+      Sample data1(nPoints, 2), data2(nPoints, 2);
       NumericalPoint cursor1(2);
       NumericalPoint cursor2(2);
       NumericalScalar count1;
@@ -257,7 +257,7 @@ int main(int argc, char *argv[])
     study.add("truncatedNormal", truncatedNormal);
 
     // Create an UserDefined
-    NumericalSample x(3, 1);
+    Sample x(3, 1);
     x[0][0] = 1.0;
     x[1][0] = 2.0;
     x[2][0] = 3.0;
@@ -464,8 +464,8 @@ int main(int argc, char *argv[])
       const UnsignedInteger dim = 1;
       const UnsignedInteger p = 6;
       const UnsignedInteger q = 4;
-      NumericalSample valuesX(p, dim);
-      NumericalSample valuesEpsilon(q, dim);
+      Sample valuesX(p, dim);
+      Sample valuesEpsilon(q, dim);
       for(UnsignedInteger j = 0 ; j < dim ; ++j)
       {
         for(UnsignedInteger i = 0 ; i < p ; ++i)
@@ -986,7 +986,7 @@ int main(int argc, char *argv[])
     compare<Staircase >( staircase, study2 );
 
     // Stat
-    compare<NumericalSample >( numericalSample, study2, "mySample");
+    compare<Sample >( numericalSample, study2, "mySample");
     compare<RandomGeneratorState>( randomGeneratorState, study2 );
 
     // Func

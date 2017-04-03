@@ -49,8 +49,8 @@ public:
   ApproximationAlgorithm(const Implementation & p_implementation);
 
   /** Sample accessors */
-  NumericalSample getX() const;
-  NumericalSample getY() const;
+  Sample getX() const;
+  Sample getY() const;
 
   /** Weights accessors */
   NumericalPoint getWeight() const;

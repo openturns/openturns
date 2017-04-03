@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
     fullprint << "dg2_0/dtheta(x)=" << g2_0.parameterGradient(x) << std::endl;
 
     // single point, several parameters
-    NumericalSample thetas(3, 2);
+    Sample thetas(3, 2);
     thetas[0] = theta;
     thetas[1] = NumericalPoint(2, 0.3);
     thetas[1] = NumericalPoint(2, 0.4);

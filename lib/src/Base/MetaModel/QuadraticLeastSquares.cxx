@@ -30,11 +30,11 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(QuadraticLeastSquares);
 
 /* Constructor with parameters */
-QuadraticLeastSquares::QuadraticLeastSquares(const NumericalSample & dataIn,
+QuadraticLeastSquares::QuadraticLeastSquares(const Sample & dataIn,
     const Function & inputFunction)
   : PersistentObject(),
     dataIn_(dataIn),
-    dataOut_(NumericalSample(0, inputFunction.getOutputDimension())),
+    dataOut_(Sample(0, inputFunction.getOutputDimension())),
     inputFunction_(inputFunction),
     constant_(NumericalPoint(inputFunction_.getOutputDimension())),
     linear_(Matrix(inputFunction_.getInputDimension(), inputFunction_.getOutputDimension())),
@@ -45,11 +45,11 @@ QuadraticLeastSquares::QuadraticLeastSquares(const NumericalSample & dataIn,
 }
 
 /* Constructor with parameters */
-QuadraticLeastSquares::QuadraticLeastSquares(const NumericalSample & dataIn,
-    const NumericalSample & dataOut)
+QuadraticLeastSquares::QuadraticLeastSquares(const Sample & dataIn,
+    const Sample & dataOut)
   : PersistentObject(),
     dataIn_(dataIn),
-    dataOut_(NumericalSample(0, dataOut.getDimension())),
+    dataOut_(Sample(0, dataOut.getDimension())),
     inputFunction_(Function()),
     constant_(NumericalPoint(dataOut.getDimension())),
     linear_(Matrix(dataIn.getDimension(), dataOut.getDimension())),
@@ -163,20 +163,20 @@ void QuadraticLeastSquares::run()
 }
 
 /* DataIn accessor */
-NumericalSample QuadraticLeastSquares::getDataIn() const
+Sample QuadraticLeastSquares::getDataIn() const
 {
   return dataIn_;
 }
 
 /* DataOut accessor */
-NumericalSample QuadraticLeastSquares::getDataOut()
+Sample QuadraticLeastSquares::getDataOut()
 {
   // If the response surface has been defined with an input function and the output data have not already been computed, compute them
   if (inputFunction_.getEvaluation()->isActualImplementation() && (dataOut_.getSize() == 0)) dataOut_ = inputFunction_(dataIn_);
   return dataOut_;
 }
 
-void QuadraticLeastSquares::setDataOut(const NumericalSample & dataOut)
+void QuadraticLeastSquares::setDataOut(const Sample & dataOut)
 {
   if (inputFunction_.getEvaluation()->isActualImplementation()) throw InvalidArgumentException(HERE) << "Error: cannot set the output data in a response surface defined with a function, here function=" << inputFunction_;
   if (dataOut.getSize() != dataIn_.getSize()) throw InvalidArgumentException(HERE) << "Error: the output data must have the same size than the input data, here output size=" << dataOut.getSize() << " and input size=" << dataIn_.getSize();

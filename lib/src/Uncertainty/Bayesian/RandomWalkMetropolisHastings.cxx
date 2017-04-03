@@ -51,7 +51,7 @@ RandomWalkMetropolisHastings::RandomWalkMetropolisHastings()
 /* Parameters constructor */
 RandomWalkMetropolisHastings::RandomWalkMetropolisHastings( const Distribution & prior,
     const Distribution & conditional,
-    const NumericalSample & observations,
+    const Sample & observations,
     const NumericalPoint & initialState,
     const DistributionCollection & proposal)
   : MCMC(prior, conditional, observations, initialState)
@@ -68,8 +68,8 @@ RandomWalkMetropolisHastings::RandomWalkMetropolisHastings( const Distribution &
 RandomWalkMetropolisHastings::RandomWalkMetropolisHastings( const Distribution & prior,
     const Distribution & conditional,
     const Function & model,
-    const NumericalSample & parameters,
-    const NumericalSample & observations,
+    const Sample & parameters,
+    const Sample & observations,
     const NumericalPoint & initialState,
     const DistributionCollection & proposal)
   : MCMC(prior, conditional, model, parameters, observations, initialState)

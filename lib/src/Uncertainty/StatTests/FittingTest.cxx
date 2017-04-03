@@ -41,7 +41,7 @@ FittingTest::FittingTest()
 }
 
 /* Best model for a given numerical sample by BIC */
-Distribution FittingTest::BestModelBIC(const NumericalSample & sample,
+Distribution FittingTest::BestModelBIC(const Sample & sample,
                                        const DistributionFactoryCollection & factoryCollection)
 {
   const UnsignedInteger size = factoryCollection.getSize();
@@ -79,7 +79,7 @@ Distribution FittingTest::BestModelBIC(const NumericalSample & sample,
 }
 
 /* Best model for a given numerical sample by BIC */
-Distribution FittingTest::BestModelBIC(const NumericalSample  & sample,
+Distribution FittingTest::BestModelBIC(const Sample  & sample,
                                        const DistributionCollection & distributionCollection)
 {
   const UnsignedInteger size = distributionCollection.getSize();
@@ -106,7 +106,7 @@ Distribution FittingTest::BestModelBIC(const NumericalSample  & sample,
 
 
 /* Best model for a given numerical sample by Kolmogorov */
-Distribution FittingTest::BestModelKolmogorov(const NumericalSample & sample,
+Distribution FittingTest::BestModelKolmogorov(const Sample & sample,
     const DistributionFactoryCollection & factoryCollection,
     TestResult & bestResult)
 {
@@ -144,7 +144,7 @@ Distribution FittingTest::BestModelKolmogorov(const NumericalSample & sample,
 }
 
 /* Best model for a given numerical sample by Kolmogorov */
-Distribution FittingTest::BestModelKolmogorov(const NumericalSample & sample,
+Distribution FittingTest::BestModelKolmogorov(const Sample & sample,
     const DistributionCollection & distributionCollection,
     TestResult & bestResult)
 {
@@ -171,7 +171,7 @@ Distribution FittingTest::BestModelKolmogorov(const NumericalSample & sample,
 
 
 /* Best model for a given numerical sample by ChiSquared */
-Distribution FittingTest::BestModelChiSquared(const NumericalSample & sample,
+Distribution FittingTest::BestModelChiSquared(const Sample & sample,
     const DistributionFactoryCollection & factoryCollection,
     TestResult & bestResult)
 {
@@ -195,7 +195,7 @@ Distribution FittingTest::BestModelChiSquared(const NumericalSample & sample,
 }
 
 /* Best model for a given numerical sample by ChiSquared */
-Distribution FittingTest::BestModelChiSquared(const NumericalSample & sample,
+Distribution FittingTest::BestModelChiSquared(const Sample & sample,
     const DistributionCollection & distributionCollection,
     TestResult & bestResult)
 {
@@ -218,7 +218,7 @@ Distribution FittingTest::BestModelChiSquared(const NumericalSample & sample,
 }
 
 /* Bayesian Information Criterion computation */
-NumericalScalar FittingTest::BIC(const NumericalSample & sample,
+NumericalScalar FittingTest::BIC(const Sample & sample,
                                  const Distribution & distribution,
                                  const UnsignedInteger estimatedParameters)
 {
@@ -228,7 +228,7 @@ NumericalScalar FittingTest::BIC(const NumericalSample & sample,
   const UnsignedInteger parametersNumber = distribution.getParameterDimension();
   if (parametersNumber < estimatedParameters) throw InvalidArgumentException(HERE) << "Error: the number of estimated parameters cannot exceed the number of parameters of the distribution";
   NumericalScalar logLikelihood = 0.0;
-  const NumericalSample logPDF(distribution.computeLogPDF(sample));
+  const Sample logPDF(distribution.computeLogPDF(sample));
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     if (logPDF[i][0] == -SpecFunc::MaxNumericalScalar) return SpecFunc::MaxNumericalScalar;
@@ -238,7 +238,7 @@ NumericalScalar FittingTest::BIC(const NumericalSample & sample,
 }
 
 /* Bayesian Information Criterion computation */
-NumericalScalar FittingTest::BIC(const NumericalSample & sample,
+NumericalScalar FittingTest::BIC(const Sample & sample,
                                  const DistributionFactory & factory)
 {
   const Distribution distribution(factory.build(sample));
@@ -247,7 +247,7 @@ NumericalScalar FittingTest::BIC(const NumericalSample & sample,
 
 
 /* Kolmogorov test */
-TestResult FittingTest::Kolmogorov(const NumericalSample & sample,
+TestResult FittingTest::Kolmogorov(const Sample & sample,
                                    const DistributionFactory & factory,
                                    const NumericalScalar level)
 {
@@ -261,7 +261,7 @@ TestResult FittingTest::Kolmogorov(const NumericalSample & sample,
 
 
 /* Kolmogorov test */
-TestResult FittingTest::Kolmogorov(const NumericalSample & sample,
+TestResult FittingTest::Kolmogorov(const Sample & sample,
                                    const Distribution & distribution,
                                    const NumericalScalar level,
                                    const UnsignedInteger estimatedParameters)
@@ -274,7 +274,7 @@ TestResult FittingTest::Kolmogorov(const NumericalSample & sample,
   if (estimatedParameters > 0) LOGINFO("Warning: using Kolmogorov test for a distribution with estimated parameters will result in an overestimated pValue");
   const UnsignedInteger size = sample.getSize();
   NumericalScalar value = 0.0;
-  const NumericalSample cdfValues(distribution.computeCDF(sample.sort(0)));
+  const Sample cdfValues(distribution.computeCDF(sample.sort(0)));
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalScalar cdfValue = cdfValues[i][0];
@@ -288,8 +288,8 @@ TestResult FittingTest::Kolmogorov(const NumericalSample & sample,
 }
 
 /* Two-sample Kolmogorov–Smirnov test */
-TestResult FittingTest::TwoSamplesKolmogorov(const NumericalSample & sample1,
-    const NumericalSample & sample2,
+TestResult FittingTest::TwoSamplesKolmogorov(const Sample & sample1,
+    const Sample & sample2,
     const NumericalScalar level)
 {
   if ((level <= 0.0) || (level >= 1.0)) throw InvalidArgumentException(HERE) << "Error: level must be in ]0, 1[, here level=" << level;
@@ -297,7 +297,7 @@ TestResult FittingTest::TwoSamplesKolmogorov(const NumericalSample & sample1,
   if ((sample1.getSize() == 0) || (sample2.getSize() == 0)) throw InvalidArgumentException(HERE) << "Error: the sample is empty";
   const UnsignedInteger size1 = sample1.getSize();
   const UnsignedInteger size2 = sample2.getSize();
-  NumericalSample sampleAllSorted(sample1.sort());
+  Sample sampleAllSorted(sample1.sort());
   sampleAllSorted.add(sample2.sort());
   NumericalScalar value = 0.0;
   for (UnsignedInteger i = 0; i < size1 + size2; ++ i)
@@ -333,7 +333,7 @@ TestResult FittingTest::TwoSamplesKolmogorov(const NumericalSample & sample1,
 }
 
 /* Chi-squared test */
-TestResult FittingTest::ChiSquared(const NumericalSample & sample,
+TestResult FittingTest::ChiSquared(const Sample & sample,
                                    const DistributionFactory & factory,
                                    const NumericalScalar level)
 {
@@ -348,7 +348,7 @@ TestResult FittingTest::ChiSquared(const NumericalSample & sample,
 
 
 /* Chi-squared test */
-TestResult FittingTest::ChiSquared(const NumericalSample & sample,
+TestResult FittingTest::ChiSquared(const Sample & sample,
                                    const Distribution & distribution,
                                    const NumericalScalar level,
                                    const UnsignedInteger estimatedParameters)
@@ -365,7 +365,7 @@ TestResult FittingTest::ChiSquared(const NumericalSample & sample,
   // The test statistics
   NumericalScalar xi = 0.0;
   // Sort the data
-  const NumericalSample sortedSample(sample.sort(0));
+  const Sample sortedSample(sample.sort(0));
   const UnsignedInteger iMax = static_cast<UnsignedInteger>(round(size / nMin));
   UnsignedInteger dataIndex = 0;
   for (UnsignedInteger i = 1; i <= iMax; ++i)
@@ -383,7 +383,7 @@ TestResult FittingTest::ChiSquared(const NumericalSample & sample,
 }
 
 /* Generic invocation of a R script for testing a distribution against a sample */
-TestResult FittingTest::RunRTest(const NumericalSample & sample,
+TestResult FittingTest::RunRTest(const Sample & sample,
                                  const Distribution & distribution,
                                  const NumericalScalar level,
                                  const UnsignedInteger estimatedParameters,
@@ -412,7 +412,7 @@ TestResult FittingTest::RunRTest(const NumericalSample & sample,
   const String RExecutable(ResourceMap::Get("R-executable-command"));
   OSS systemCommand;
   if (RExecutable != "") systemCommand << RExecutable << " --no-save --silent < \"" << commandFileName << "\"" << Os::GetDeleteCommandOutput();
-  else throw NotYetImplementedException(HERE) << "In FittingTest::RunRTest(const NumericalSample & sample, const Distribution & distribution, const NumericalScalar level, const UnsignedInteger estimatedParameters, const String & testName): needs R. Please install it and set the absolute path of the R executable in ResourceMap.";
+  else throw NotYetImplementedException(HERE) << "In FittingTest::RunRTest(const Sample & sample, const Distribution & distribution, const NumericalScalar level, const UnsignedInteger estimatedParameters, const String & testName): needs R. Please install it and set the absolute path of the R executable in ResourceMap.";
   const int returnCode(Os::ExecuteCommand(systemCommand));
   if (returnCode != 0) throw InternalException(HERE) << "Error: unable to execute the system command " << String(systemCommand) << " returned code is " << returnCode;
   // Parse result file

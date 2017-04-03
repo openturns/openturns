@@ -41,8 +41,8 @@ GeneralLinearModelResult::GeneralLinearModelResult()
 }
 
 /* Constructor with parameters & Cholesky factor */
-GeneralLinearModelResult::GeneralLinearModelResult(const NumericalSample & inputSample,
-    const NumericalSample & outputSample,
+GeneralLinearModelResult::GeneralLinearModelResult(const Sample & inputSample,
+    const Sample & outputSample,
     const Function & metaModel,
     const NumericalPoint & residuals,
     const NumericalPoint & relativeErrors,
@@ -70,8 +70,8 @@ GeneralLinearModelResult::GeneralLinearModelResult(const NumericalSample & input
 
 
 /* Constructor with parameters & Cholesky factor */
-GeneralLinearModelResult::GeneralLinearModelResult(const NumericalSample & inputSample,
-    const NumericalSample & outputSample,
+GeneralLinearModelResult::GeneralLinearModelResult(const Sample & inputSample,
+    const Sample & outputSample,
     const Function & metaModel,
     const NumericalPoint & residuals,
     const NumericalPoint & relativeErrors,
@@ -207,7 +207,7 @@ HMatrix GeneralLinearModelResult::getHMatCholeskyFactor() const
 }
 
 // Return input sample transformed
-NumericalSample GeneralLinearModelResult::getInputTransformedSample() const
+Sample GeneralLinearModelResult::getInputTransformedSample() const
 {
   return inputTransformedData_;
 }

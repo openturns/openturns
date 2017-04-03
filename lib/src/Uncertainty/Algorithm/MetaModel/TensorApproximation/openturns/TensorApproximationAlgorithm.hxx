@@ -44,8 +44,8 @@ class OT_API TensorApproximationAlgorithm
 
 public:
   /** Constructor */
-  TensorApproximationAlgorithm(const NumericalSample & inputSample,
-                               const NumericalSample & outputSample,
+  TensorApproximationAlgorithm(const Sample & inputSample,
+                               const Sample & outputSample,
                                const Distribution & distribution,
                                const OrthogonalProductFunctionFactory & functionFactory,
                                const Indices & nk,
@@ -64,8 +64,8 @@ public:
   TensorApproximationResult getResult() const;
 
   /** Sample accessors */
-  NumericalSample getInputSample() const;
-  NumericalSample getOutputSample() const;
+  Sample getInputSample() const;
+  Sample getOutputSample() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -100,29 +100,29 @@ private:
                    NumericalScalar & marginalRelativeError);
 
   /** Greedy rank-1 algorithm */
-  void greedyRankOne(const NumericalSample & x,
-                     const NumericalSample & y,
+  void greedyRankOne(const Sample & x,
+                     const Sample & y,
                      CanonicalTensorEvaluation & tensor,
                      NumericalScalar & marginalResidual,
                      NumericalScalar & marginalRelativeError);
 
   /** Alternating least-squares algorithm to estimate a rank-1 tensor */
-  void rankOne(const NumericalSample & x,
-               const NumericalSample & y,
+  void rankOne(const Sample & x,
+               const Sample & y,
                CanonicalTensorEvaluation & tensor,
                const UnsignedInteger k,
                NumericalScalar & marginalResidual,
                NumericalScalar & marginalRelativeError);
 
   /** Rank-M algorithm */
-  void rankM (const NumericalSample & x,
-              const NumericalSample & y,
+  void rankM (const Sample & x,
+              const Sample & y,
               CanonicalTensorEvaluation & tensor,
               NumericalScalar & marginalResidual,
               NumericalScalar & marginalRelativeError);
 
-  void rankMComponent (const NumericalSample & x,
-              const NumericalSample & y,
+  void rankMComponent (const Sample & x,
+              const Sample & y,
               CanonicalTensorEvaluation & tensor,
               const UnsignedInteger j);
 
@@ -136,12 +136,12 @@ private:
   Function composedModel_;
 
   // samples
-  NumericalSample inputSample_;
-  NumericalSample outputSample_;
+  Sample inputSample_;
+  Sample outputSample_;
 
   UnsignedInteger maxRank_;
 
-  NumericalSample transformedInputSample_;
+  Sample transformedInputSample_;
 
   // tensorized basis
   OrthogonalProductFunctionFactory basisFactory_;

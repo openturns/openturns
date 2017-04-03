@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     fullprint << "myPlane = " << myPlane << std::endl;
     // Test sampling with weights
     NumericalPoint weights(0);
-    NumericalSample sample(myPlane.generateWithWeights(weights));
+    Sample sample(myPlane.generateWithWeights(weights));
     fullprint << "sample  = " << sample << std::endl;
     fullprint << "weights = " << weights << std::endl;
 

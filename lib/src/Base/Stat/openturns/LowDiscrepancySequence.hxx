@@ -60,10 +60,10 @@ public:
   NumericalPoint generate() const;
 
   /** Generate a sample of pseudo-random vectors of numbers uniformly distributed over [0, 1) */
-  NumericalSample generate(const UnsignedInteger size) const;
+  Sample generate(const UnsignedInteger size) const;
 
   /** Compute the star discrepancy of a sample uniformly distributed over [0, 1) */
-  NumericalScalar computeStarDiscrepancy(const NumericalSample & sample) const;
+  NumericalScalar computeStarDiscrepancy(const Sample & sample) const;
 
   /** String converter */
   String __repr__() const;

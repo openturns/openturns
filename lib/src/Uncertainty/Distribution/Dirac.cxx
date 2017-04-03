@@ -107,9 +107,9 @@ NumericalPoint Dirac::getRealization() const
 }
 
 /* Get a sample of the distribution */
-NumericalSample Dirac::getSample(const UnsignedInteger size) const
+Sample Dirac::getSample(const UnsignedInteger size) const
 {
-  return NumericalSample(size, point_);
+  return Sample(size, point_);
 }
 
 /* Get the PDF of the distribution */
@@ -234,11 +234,11 @@ void Dirac::computeCovariance() const
 }
 
 /* Get the support of a discrete distribution that intersect a given interval */
-NumericalSample Dirac::getSupport(const Interval & interval) const
+Sample Dirac::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
-  if (interval.contains(point_)) return NumericalSample(1, point_);
-  return NumericalSample(0, getDimension());
+  if (interval.contains(point_)) return Sample(1, point_);
+  return Sample(0, getDimension());
 }
 
 /* Parameters value and description accessor */

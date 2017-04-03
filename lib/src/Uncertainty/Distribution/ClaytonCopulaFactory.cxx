@@ -43,7 +43,7 @@ ClaytonCopulaFactory * ClaytonCopulaFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-ClaytonCopulaFactory::Implementation ClaytonCopulaFactory::build(const NumericalSample & sample) const
+ClaytonCopulaFactory::Implementation ClaytonCopulaFactory::build(const Sample & sample) const
 {
   return buildAsClaytonCopula(sample).clone();
 }
@@ -58,7 +58,7 @@ ClaytonCopulaFactory::Implementation ClaytonCopulaFactory::build() const
   return buildAsClaytonCopula().clone();
 }
 
-ClaytonCopula ClaytonCopulaFactory::buildAsClaytonCopula(const NumericalSample & sample) const
+ClaytonCopula ClaytonCopulaFactory::buildAsClaytonCopula(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a ClaytonCopula distribution from an empty sample";
   if (sample.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a ClaytonCopula distribution from a sample of dimension not equal to 2";

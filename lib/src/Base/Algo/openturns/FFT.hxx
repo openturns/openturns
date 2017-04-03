@@ -102,7 +102,7 @@ public:
   ComplexMatrix transform2D(const Matrix & matrix) const;
 
   /** FFT 2D transformation on complex */
-  ComplexMatrix transform2D(const NumericalSample & sample) const;
+  ComplexMatrix transform2D(const Sample & sample) const;
 
   /** FFT 3D transformation
    * Given the real sequence X, compute the sequence Z such that:
@@ -155,7 +155,7 @@ public:
   ComplexMatrix inverseTransform2D(const Matrix & matrix) const;
 
   /** IFFT 2D transformation on sample */
-  ComplexMatrix inverseTransform2D(const NumericalSample & sample) const;
+  ComplexMatrix inverseTransform2D(const Sample & sample) const;
 
   /** FFT inverse transformation
    * Given the complex sequence Z, compute the sequence Y such that:

@@ -44,7 +44,7 @@ public:
 
   /** Parameters constructor */
   PosteriorDistribution(const ConditionalDistribution & conditionalDistribution,
-                        const NumericalSample & observations);
+                        const Sample & observations);
 
   /** Comparison operator */
   Bool operator ==(const PosteriorDistribution & other) const;
@@ -82,8 +82,8 @@ public:
   ConditionalDistribution getConditionalDistribution() const;
 
   /** Observations accessor */
-  void setObservations(const NumericalSample & observations);
-  NumericalSample getObservations() const;
+  void setObservations(const Sample & observations);
+  Sample getObservations() const;
 
   /** Log normalization factor accessor */
   NumericalScalar getLogNormalizationFactor() const;
@@ -128,7 +128,7 @@ private:
   ConditionalDistribution conditionalDistribution_;
 
   /** The observations */
-  NumericalSample observations_;
+  Sample observations_;
 
   /** The Bayes normalization constant */
   NumericalScalar logNormalizationFactor_;

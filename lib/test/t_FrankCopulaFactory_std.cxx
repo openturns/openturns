@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
   {
     FrankCopula distribution(1.5);
     UnsignedInteger size = 1000;
-    NumericalSample sample(distribution.getSample(size));
+    Sample sample(distribution.getSample(size));
     FrankCopulaFactory factory;
     CovarianceMatrix covariance;
     // Distribution estimatedDistribution(factory.build(sample, covariance));

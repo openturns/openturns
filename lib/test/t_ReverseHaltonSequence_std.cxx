@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
     fullprint << sequence << std::endl;
 
     // Create a numerical sample of the sequence
-    NumericalSample reverseHaltonSample(sequence.generate(10));
+    Sample reverseHaltonSample(sequence.generate(10));
     fullprint << reverseHaltonSample << std::endl;
 
     // Create another ReverseHalton' sequence of dimension 2 to estimate Pi in [0; 1)^2

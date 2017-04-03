@@ -45,21 +45,21 @@ public:
   /** Default constructor */
   Contour(const UnsignedInteger dimX,
           const UnsignedInteger dimY,
-          const NumericalSample & data,
+          const Sample & data,
           const String & legend = "");
 
   /** Constructor with parameters */
-  Contour(const NumericalSample & x,
-          const NumericalSample & y,
-          const NumericalSample & data,
+  Contour(const Sample & x,
+          const Sample & y,
+          const Sample & data,
           const NumericalPoint & levels,
           const Description & labels,
           const Bool drawLabels = true,
           const String & legend = "");
 
   /** Constructor with parameters
-      Contour(const NumericalSample & xy,
-      const NumericalSample & data,
+      Contour(const Sample & xy,
+      const Sample & data,
       const NumericalPoint & levels,
       const Description & labels,
       const Bool drawLabels = true,
@@ -69,12 +69,12 @@ public:
   String __repr__() const;
 
   /** Accessor for first coordinate */
-  NumericalSample getX() const;
-  void setX(const NumericalSample & x);
+  Sample getX() const;
+  void setX(const Sample & x);
 
   /** Accessor for second coordinate */
-  NumericalSample getY() const;
-  void setY(const NumericalSample & y);
+  Sample getY() const;
+  void setY(const Sample & y);
 
   /** Accessor for levels */
   NumericalPoint getLevels() const;
@@ -115,7 +115,7 @@ public:
 
 protected:
   /** Check fo data validity */
-  virtual void checkData(const NumericalSample & data) const;
+  virtual void checkData(const Sample & data) const;
 
 private:
 
@@ -123,10 +123,10 @@ private:
   friend class Factory<Contour>;
 
   /** Sample of first coordinate */
-  NumericalSample x_;
+  Sample x_;
 
   /** Sample of second coordinate */
-  NumericalSample y_;
+  Sample y_;
 
   /** Values of the level sets */
   NumericalPoint levels_;

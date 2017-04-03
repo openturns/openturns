@@ -235,7 +235,7 @@ n : int, :math:`n \geq 0`
 
 Returns
 -------
-realizations : :class:`~openturns.NumericalSample`
+realizations : :class:`~openturns.Sample`
     n sequences of values randomly determined from the RandomVector definition.
     In the case of an event: n realizations of the event (considered as a
     Bernoulli variable) which are boolean values (1 for the realization of the

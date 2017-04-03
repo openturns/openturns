@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
   {
     Arcsine distribution(1., 2.5);
     UnsignedInteger size = 10000;
-    NumericalSample sample(distribution.getSample(size));
+    Sample sample(distribution.getSample(size));
     ArcsineFactory factory;
     Distribution estimatedDistribution(factory.build(sample));
     fullprint << "Distribution          =" << distribution << std::endl;

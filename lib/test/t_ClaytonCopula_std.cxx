@@ -54,12 +54,12 @@ int main(int argc, char *argv[])
 
     // Test for sampling
     UnsignedInteger size = 10;
-    NumericalSample oneSample = copula.getSample( size );
+    Sample oneSample = copula.getSample( size );
     fullprint << "oneSample=" << oneSample << std::endl;
 
     // Test for sampling
     size = 10000;
-    NumericalSample anotherSample = copula.getSample( size );
+    Sample anotherSample = copula.getSample( size );
     fullprint << "anotherSample mean=" << anotherSample.computeMean() << std::endl;
     fullprint << "anotherSample covariance=" << anotherSample.computeCovariance() << std::endl;
 
@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
     fullprint << "margins realization=" << margins.getRealization() << std::endl;
 
     // Additional tests for PDF/CDF in extreme cases
-    NumericalSample points(0, 2);
+    Sample points(0, 2);
     points.add(NumericalPoint(2, 1.0e-12));
     points.add(NumericalPoint(2, 1.0e-7));
     points.add(NumericalPoint(2, 0.1));

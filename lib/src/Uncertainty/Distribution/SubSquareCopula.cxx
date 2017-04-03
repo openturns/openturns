@@ -107,7 +107,7 @@ void SubSquareCopula::setPhi(const Function & phi)
   phi_.enableHistory();
   phi_.clearHistory();
   mass_ = 1.0 - GaussKronrod().integrate(phi_, Interval(0.0, 1.0));
-  NumericalSample inputOutput(phi_.getHistoryInput().getSample());
+  Sample inputOutput(phi_.getHistoryInput().getSample());
   inputOutput.stack(phi_.getHistoryOutput().getSample());
   inputOutput = inputOutput.sortAccordingToAComponent(0);
   NumericalScalar lastX = inputOutput[0][0];

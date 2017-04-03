@@ -13,7 +13,7 @@ value = algo.integrate(f, ot.Interval(a, b))[0]
 
 ai = ot.NumericalPoint()
 bi = ot.NumericalPoint()
-fi = ot.NumericalSample()
+fi = ot.Sample()
 ei = ot.NumericalPoint()
 error = ot.NumericalPoint()
 value2 = algo.integrate(f, a, b, error, ai, bi, fi, ei)[0]

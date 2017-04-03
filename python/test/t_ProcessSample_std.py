@@ -11,7 +11,7 @@ try:
     # size of timeGrid
     size = 6
     dimension = 1
-    sample = NumericalSample(size, dimension)
+    sample = Sample(size, dimension)
     for i in range(size):
         for j in range(dimension):
             sample[i, j] = i + j + 1

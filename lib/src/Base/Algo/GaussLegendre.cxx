@@ -67,13 +67,13 @@ GaussLegendre * GaussLegendre::clone() const
 NumericalPoint GaussLegendre::integrate(const Function & function,
                                         const Interval & interval) const
 {
-  NumericalSample adaptedNodes;
+  Sample adaptedNodes;
   return integrateWithNodes(function, interval, adaptedNodes);
 }
 
 NumericalPoint GaussLegendre::integrateWithNodes(const Function & function,
     const Interval & interval,
-    NumericalSample & adaptedNodes) const
+    Sample & adaptedNodes) const
 {
   const UnsignedInteger inputDimension = discretization_.getSize();
   if (interval.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected an interval of dimension=" << inputDimension << ", got dimension=" << interval.getDimension();
@@ -85,7 +85,7 @@ NumericalPoint GaussLegendre::integrateWithNodes(const Function & function,
   // Adapt the nodes to the bounds of the interval
   adaptedNodes = nodes_ * (interval.getUpperBound() - interval.getLowerBound()) + interval.getLowerBound();
   // Compute the function over the adapted nodes
-  const NumericalSample values(function(adaptedNodes));
+  const Sample values(function(adaptedNodes));
   // Compute the integral
   for (UnsignedInteger i = 0; i < values.getSize(); ++i)
     integral += values[i] * weights_[i];
@@ -149,7 +149,7 @@ void GaussLegendre::generateNodesAndWeights()
   // Now, generate the nD rule over [0, 1]^n
   Tuples::IndicesCollection allTuples(Tuples(discretization_).generate());
   const UnsignedInteger size = allTuples.getSize();
-  nodes_ = NumericalSample(size, dimension);
+  nodes_ = Sample(size, dimension);
   weights_ = NumericalPoint(size, 1.0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -169,7 +169,7 @@ Indices GaussLegendre::getDiscretization() const
 }
 
 /* Nodes accessor */
-NumericalSample GaussLegendre::getNodes() const
+Sample GaussLegendre::getNodes() const
 {
   return nodes_;
 }

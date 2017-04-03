@@ -66,7 +66,7 @@ public:
   NumericalPoint getRealization() const;
 
   /** Get a numerical sample whose elements follow the distributionImplementation */
-  NumericalSample getSample(const UnsignedInteger size) const;
+  Sample getSample(const UnsignedInteger size) const;
 
   /** Get the DDF of the distribution */
   NumericalPoint computeDDF(const NumericalPoint & point) const;

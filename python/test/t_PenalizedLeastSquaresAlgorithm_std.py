@@ -27,7 +27,7 @@ coll.append(Function(inVar, outVar, formula))
 basis = Basis(coll)
 indices = list(range(len(coll)))
 size = 5
-inputSample = NumericalSample(size * size, dimension)
+inputSample = Sample(size * size, dimension)
 weight = NumericalPoint(inputSample.getSize(), 1)
 for i in range(inputSample.getSize()):
     inputSample[i] = NumericalPoint(

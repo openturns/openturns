@@ -21,7 +21,7 @@
 #include <cstdlib>
 
 #include "openturns/Last.hxx"
-#include "openturns/NumericalSampleImplementation.hxx"
+#include "openturns/SampleImplementation.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
@@ -67,7 +67,7 @@ void Last::store(const NumericalPoint & point)
 {
   if (!isInitialized_)
   {
-    sample_ = NumericalSample(maximumSize_, point.getDimension());
+    sample_ = Sample(maximumSize_, point.getDimension());
     index_ = 0;
     hasWrapped_ = false;
     isInitialized_ = true;
@@ -82,19 +82,19 @@ void Last::store(const NumericalPoint & point)
 }
 
 /*Sample accessor */
-NumericalSample Last::getSample() const
+Sample Last::getSample() const
 {
   // If nothing has been stored
   if (!isInitialized_) return sample_;
   // If we don't have exhausted the maximum size, return just the stored data
   if (!hasWrapped_)
   {
-    NumericalSample outSample(index_, sample_.getDimension());
+    Sample outSample(index_, sample_.getDimension());
     for (UnsignedInteger i = 0; i < index_; ++i) outSample[i] = sample_[i];
     return outSample;
   }
   // Perform a permutation of the elements:
-  NumericalSample outSample(maximumSize_, sample_.getDimension());
+  Sample outSample(maximumSize_, sample_.getDimension());
   for (UnsignedInteger i = 0; i < maximumSize_; ++i)
   {
     UnsignedInteger circularIndex = (index_ + i) % maximumSize_;

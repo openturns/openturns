@@ -44,8 +44,8 @@ LeastSquaresMetaModelSelection::LeastSquaresMetaModelSelection()
 }
 
 /* Default constructor */
-LeastSquaresMetaModelSelection::LeastSquaresMetaModelSelection(const NumericalSample & x,
-    const NumericalSample & y,
+LeastSquaresMetaModelSelection::LeastSquaresMetaModelSelection(const Sample & x,
+    const Sample & y,
     const Basis & psi,
     const Indices & indices,
     const BasisSequenceFactory & basisSequenceFactory,
@@ -59,8 +59,8 @@ LeastSquaresMetaModelSelection::LeastSquaresMetaModelSelection(const NumericalSa
 }
 
 /* Default constructor */
-LeastSquaresMetaModelSelection::LeastSquaresMetaModelSelection(const NumericalSample & x,
-    const NumericalSample & y,
+LeastSquaresMetaModelSelection::LeastSquaresMetaModelSelection(const Sample & x,
+    const Sample & y,
     const NumericalPoint & weight,
     const Basis & psi,
     const Indices & indices,

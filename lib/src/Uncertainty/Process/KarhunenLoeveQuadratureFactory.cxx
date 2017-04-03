@@ -24,7 +24,7 @@
 #include "openturns/Exception.hxx"
 #include "openturns/SquareMatrix.hxx"
 #include "openturns/SquareComplexMatrix.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/LinearFunction.hxx"
 #include "openturns/Pointer.hxx"
@@ -113,14 +113,14 @@ KarhunenLoeveQuadratureFactory::KarhunenLoeveQuadratureFactory(const Domain & do
   NumericalPoint rawWeights;
   WeightedExperiment experimentCopy(experiment);
   LOGINFO("Generate the weighted experiment");
-  NumericalSample rawNodes(experimentCopy.generateWithWeights(rawWeights));
+  Sample rawNodes(experimentCopy.generateWithWeights(rawWeights));
   LOGINFO(OSS(false) << "Initial number of integration nodes=" << rawNodes.getSize());
   LOGINFO("Generate the pdf");
-  const NumericalSample pdf(distribution.computePDF(rawNodes));
+  const Sample pdf(distribution.computePDF(rawNodes));
   if (!hasSameBounds) rawNodes = scaling(rawNodes);
   // Update the weights in order to match Lebesgue distribution on the domain
   // We keep only the nodes inside of the domain
-  nodes_ = NumericalSample(0, dimension);
+  nodes_ = Sample(0, dimension);
   LOGINFO("Filter the integration nodes");
   for (UnsignedInteger i = 0; i < rawWeights.getDimension(); ++i)
   {
@@ -270,7 +270,7 @@ Basis KarhunenLoeveQuadratureFactory::build(const CovarianceModel & covarianceMo
   LOGINFO("Get the generalized eigenvectors");
   eigenVectors = cholesky.transpose().solveLinearSystem(eigenVectors, false).getImplementation();
   LOGINFO("Sort the eigenvectors by decreasing eigenvalues");
-  NumericalSample eigenPairs(eigenDimension, eigenDimension + 1);
+  Sample eigenPairs(eigenDimension, eigenDimension + 1);
   for (UnsignedInteger i = 0; i < eigenDimension; ++i)
   {
     for (UnsignedInteger j = 0; j < eigenDimension; ++j) eigenPairs[i][j] = eigenVectors(j, i);
@@ -295,7 +295,7 @@ Basis KarhunenLoeveQuadratureFactory::build(const CovarianceModel & covarianceMo
       resultBasis.add(LinearCombinationFunction(coll_, a / norm));
     else
     {
-      NumericalSampleImplementation aSample(basisSize, dimension);
+      SampleImplementation aSample(basisSize, dimension);
       aSample.setData(a / norm);
       resultBasis.add(DualLinearCombinationFunction(coll_, aSample));
     }

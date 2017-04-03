@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_LEASTSQUARESMETAMODELSELECTIONFACTORY_HXX
 #define OPENTURNS_LEASTSQUARESMETAMODELSELECTIONFACTORY_HXX
 
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/ApproximationAlgorithmImplementationFactory.hxx"
 #include "openturns/LeastSquaresMetaModelSelection.hxx"
 #include "openturns/BasisSequenceFactory.hxx"
@@ -54,8 +54,8 @@ public:
   FittingAlgorithm getFittingAlgorithm() const;
 
   /** Method to create new LeastSquaresMetaModelSelection objects */
-  virtual LeastSquaresMetaModelSelection * build (const NumericalSample & x,
-      const NumericalSample & y,
+  virtual LeastSquaresMetaModelSelection * build (const Sample & x,
+      const Sample & y,
       const NumericalPoint & weight,
       const Basis & psi,
       const Indices & indices) const;

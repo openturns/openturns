@@ -17,7 +17,7 @@ try:
     dt = 0.1
     myTimeGrid = RegularGrid(t0, dt, N)
 
-    # Create a NumericalSample
+    # Create a Sample
     # parameters of gaussien impose a few risk to get negative values
     mySample = Uniform().getSample(N)
 

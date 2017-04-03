@@ -28,8 +28,8 @@ try:
     sample2 = distribution2.getSample(size)
 
     # Construct empirical CDF for each sample
-    data1 = NumericalSample(nPoints, 2)
-    data2 = NumericalSample(nPoints, 2)
+    data1 = Sample(nPoints, 2)
+    data2 = Sample(nPoints, 2)
     cursor1 = NumericalPoint(2)
     cursor2 = NumericalPoint(2)
     for i in range(nPoints):

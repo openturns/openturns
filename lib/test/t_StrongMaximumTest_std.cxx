@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-void printSample(String name, NumericalSample sample)
+void printSample(String name, Sample sample)
 {
   OStream fullprint(std::cout);
 

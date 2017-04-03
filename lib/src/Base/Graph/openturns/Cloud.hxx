@@ -23,7 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/DrawableImplementation.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Collection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -43,7 +43,7 @@ public:
   typedef Collection<NumericalComplex>               NumericalComplexCollection;
 
   /** Default constructor */
-  explicit Cloud(const NumericalSample & data,
+  explicit Cloud(const Sample & data,
                  const String & legend = "");
 
   /** Constructor from complex numbers */
@@ -51,8 +51,8 @@ public:
                  const String & legend = "");
 
   /** Contructor from 2 data sets */
-  Cloud(const NumericalSample & dataX,
-        const NumericalSample & dataY,
+  Cloud(const Sample & dataX,
+        const Sample & dataY,
         const String & legend = "");
 
   /** Contructor from 2 data sets */
@@ -61,7 +61,7 @@ public:
         const String & legend = "");
 
   /** Constructor with parameters */
-  Cloud(const NumericalSample & data,
+  Cloud(const Sample & data,
         const String & color,
         const String & pointStyle,
         const String & legend = "");
@@ -84,7 +84,7 @@ public:
 
 protected:
   /** Check for data validity */
-  virtual void checkData(const NumericalSample & data) const;
+  virtual void checkData(const Sample & data) const;
 
 private:
 

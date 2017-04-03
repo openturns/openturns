@@ -38,7 +38,7 @@ OT_LeastSquaresMethod_doc
 
 Returns
 -------
-inputSample : :class:`~openturns.NumericalSample`
+inputSample : :class:`~openturns.Sample`
     Input sample."
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::getInputSample

@@ -35,7 +35,7 @@ It returns a :class:`~openturns.Function` which is the function
 
 Returns
 -------
-coef : :class:`~openturns.NumericalSample`
+coef : :class:`~openturns.Sample`
     The vectorial coefficients :math:`\cC = \{\vect{c}_1, \ldots, \vect{c}_l \}`
     which define the linear combination of :math:`f`."
 

@@ -29,7 +29,7 @@
 #include "openturns/Indices.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Collection.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Graph.hxx"
 #include "openturns/RegularGrid.hxx"
 #include "openturns/FieldImplementation.hxx"
@@ -63,7 +63,7 @@ public:
 
   /** Constructor from a TimeGrid and a sample */
   TimeSeries(const RegularGrid & tg,
-             const NumericalSample & sample);
+             const Sample & sample);
 
   /** Constructor from a Field */
   TimeSeries(const Field & field);
@@ -91,7 +91,7 @@ public:
   TimeSeries & add(const NumericalPoint & point);
 
   /** Append a sample to the collection */
-  TimeSeries & add(const NumericalSample & sample);
+  TimeSeries & add(const Sample & sample);
 
   /** Append another time series to the collection. The time grids must match (one follows the other) */
   TimeSeries & add(const TimeSeries & continuer);

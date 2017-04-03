@@ -57,7 +57,7 @@ Field::Field(const Mesh & mesh,
 
 /* Constructor from a TimeGrid and a sample */
 Field::Field(const Mesh & mesh,
-             const NumericalSample & sample)
+             const Sample & sample)
   : TypedInterfaceObject<FieldImplementation>(new FieldImplementation(mesh, sample))
 {
   // Nothing to do
@@ -219,17 +219,17 @@ UnsignedInteger Field::getDimension() const
 
 
 /* Return the values stored in the field as a sample */
-NumericalSample Field::getSample() const
+Sample Field::getSample() const
 {
   return getImplementation()->getSample();
 }
 
-NumericalSample Field::getValues() const
+Sample Field::getValues() const
 {
   return getImplementation()->getValues();
 }
 
-void Field::setValues(const NumericalSample & values)
+void Field::setValues(const Sample & values)
 {
   getImplementation()->setValues(values);
 }

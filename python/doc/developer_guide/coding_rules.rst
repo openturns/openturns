@@ -33,7 +33,7 @@ the **openturns** Python package*
 ::
 
     from openturns import NumericalPoint
-    from openturns.base import NumericalSample
+    from openturns.base import Sample
     from openturns.uncertainty import RandomVector
 
 File names
@@ -244,9 +244,9 @@ No abbreviations are allowed, except if it is found in the literature, for examp
 
 ::
 
-    class NumericalSample {
+    class Sample {
     ...
-    }; /* end class NumericalSample */
+    }; /* end class Sample */
 
 *Example:*
 
@@ -329,18 +329,18 @@ reason, the underscore is used as a suffix.
 
 ::
 
-    class NumericalSample
+    class Sample
     {
       UnsignedInteger getDimension () const;
       ...
-    }; /* end class NumericalSample */
+    }; /* end class Sample */
 
 *Example:*
 
 ::
 
-    class NumericalSample {
-    }; /* end class NumericalSample */
+    class Sample {
+    }; /* end class Sample */
 
     void removeElement(const UnsignedInteger index);
 
@@ -524,7 +524,7 @@ from A:*
 
 ::
 
-    class NumericalSample {
+    class Sample {
     public :
       //* return the dimension of the sample
       UnsignedInteger getDimension() const;
@@ -538,7 +538,7 @@ from A:*
 
 ::
 
-    class NumericalSample {
+    class Sample {
     public :
       //* return the number of the rod
       inline UnsignedInteger getDimension() const { return dimension_; }
@@ -1111,7 +1111,7 @@ Modules and packages
 Names
 ~~~~~
 
-*Examples: RandomVector, NumericalSample.*
+*Examples: RandomVector, Sample.*
 
 *Examples:*
 
@@ -1124,14 +1124,14 @@ Comments and internal documentation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 *Example of documentation string for the class
-**AnotherNumericalSample**:*
+**AnotherSample**:*
 
 ::
 
     #
     # <detailed description for documentation tools such as HappyDoc>
     #
-    class AnotherNumericalSample :
+    class AnotherSample :
     """
     this class is designed to ...
     """

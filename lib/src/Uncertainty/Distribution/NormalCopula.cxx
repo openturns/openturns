@@ -117,12 +117,12 @@ NumericalPoint NormalCopula::getRealization() const
 
 struct NormalCopulaComputeSamplePolicy
 {
-  const NumericalSample input_;
-  NumericalSample & output_;
+  const Sample input_;
+  Sample & output_;
   UnsignedInteger dimension_;
 
-  NormalCopulaComputeSamplePolicy(const NumericalSample & input,
-                                  NumericalSample & output)
+  NormalCopulaComputeSamplePolicy(const Sample & input,
+                                  Sample & output)
     : input_(input)
     , output_(output)
     , dimension_(input.getDimension())
@@ -138,12 +138,12 @@ struct NormalCopulaComputeSamplePolicy
 }; /* end struct NormalCopulaComputeSamplePolicy */
 
 /* Get a sample of the distribution */
-NumericalSample NormalCopula::getSampleParallel(const UnsignedInteger size) const
+Sample NormalCopula::getSampleParallel(const UnsignedInteger size) const
 {
   if (hasIndependentCopula())
   {
     const UnsignedInteger dimension = getDimension();
-    NumericalSample result(size, dimension);
+    Sample result(size, dimension);
     const NumericalPoint rawData(RandomGenerator::Generate(dimension * size));
     result.getImplementation()->setData(rawData);
     result.setName(getName());
@@ -153,8 +153,8 @@ NumericalSample NormalCopula::getSampleParallel(const UnsignedInteger size) cons
   else
   {
     const UnsignedInteger dimension = getDimension();
-    const NumericalSample normalSample(normal_.getSample(size));
-    NumericalSample result(size, dimension);
+    const Sample normalSample(normal_.getSample(size));
+    Sample result(size, dimension);
     const NormalCopulaComputeSamplePolicy policy( normalSample, result );
     TBB::ParallelFor( 0, size, policy );
     result.setName(getName());
@@ -163,7 +163,7 @@ NumericalSample NormalCopula::getSampleParallel(const UnsignedInteger size) cons
   } // Nonindependente copula
 }
 
-NumericalSample NormalCopula::getSample(const UnsignedInteger size) const
+Sample NormalCopula::getSample(const UnsignedInteger size) const
 {
   if (isParallel_) return getSampleParallel(size);
   return DistributionImplementation::getSample(size);

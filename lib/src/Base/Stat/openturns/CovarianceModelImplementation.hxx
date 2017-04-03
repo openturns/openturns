@@ -115,14 +115,14 @@ public:
   virtual CovarianceMatrix discretize(const RegularGrid & timeGrid) const;
 
   virtual CovarianceMatrix discretize(const Mesh & mesh) const;
-  virtual CovarianceMatrix discretize(const NumericalSample & vertices) const;
-  virtual NumericalSample discretizeRow(const NumericalSample & vertices,
+  virtual CovarianceMatrix discretize(const Sample & vertices) const;
+  virtual Sample discretizeRow(const Sample & vertices,
                                         const UnsignedInteger p) const;
 
   /** Discretize and factorize the covariance function on a given TimeGrid/Mesh */
   virtual TriangularMatrix discretizeAndFactorize(const RegularGrid & timeGrid) const;
   virtual TriangularMatrix discretizeAndFactorize(const Mesh & mesh) const;
-  virtual TriangularMatrix discretizeAndFactorize(const NumericalSample & vertices) const;
+  virtual TriangularMatrix discretizeAndFactorize(const Sample & vertices) const;
 
   /** Discretize the covariance function on a given TimeGrid/Mesh using HMatrix */
   virtual HMatrix discretizeHMatrix(const RegularGrid & timeGrid,
@@ -131,7 +131,7 @@ public:
   virtual HMatrix discretizeHMatrix(const Mesh & mesh,
                                     const NumericalScalar nuggetFactor,
                                     const HMatrixParameters & parameters) const;
-  virtual HMatrix discretizeHMatrix(const NumericalSample & vertices,
+  virtual HMatrix discretizeHMatrix(const Sample & vertices,
                                     const NumericalScalar nuggetFactor,
                                     const HMatrixParameters & parameters) const;
 
@@ -142,7 +142,7 @@ public:
   virtual HMatrix discretizeAndFactorizeHMatrix(const Mesh & mesh,
       const NumericalScalar nuggetFactor,
       const HMatrixParameters & parameters) const;
-  virtual HMatrix discretizeAndFactorizeHMatrix(const NumericalSample & vertices,
+  virtual HMatrix discretizeAndFactorizeHMatrix(const Sample & vertices,
       const NumericalScalar nuggetFactor,
       const HMatrixParameters & parameters) const;
 

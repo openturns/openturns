@@ -25,7 +25,7 @@
 #include "openturns/Distribution.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/OrthogonalUniVariatePolynomialFamily.hxx"
@@ -72,7 +72,7 @@ public:
   virtual OrthogonalProductPolynomialFactory * clone() const;
 
   /** Nodes and weights of the multivariate polynomial associated with the marginal degrees indices[0], ...,indices[dimension] as the tensor product of the marginal orthogonal univariate polynomials, to build multivariate quadrature rules */
-  NumericalSample getNodesAndWeights(const Indices & degrees,
+  Sample getNodesAndWeights(const Indices & degrees,
                                      NumericalPoint & weights) const;
 
   /** String converter */

@@ -52,7 +52,7 @@ GaussianProcess::GaussianProcess()
 #ifdef OPENTURNS_HAVE_MUPARSER
   trend_ = TrendTransform(SymbolicFunction(Description::BuildDefault(covarianceModel_.getSpatialDimension(), "x"), Description(getDimension(), "0.0")));
 #else
-  trend_ = TrendTransform(Function(NumericalSample(1, covarianceModel_.getSpatialDimension()), NumericalSample(1, getDimension())));
+  trend_ = TrendTransform(Function(Sample(1, covarianceModel_.getSpatialDimension()), Sample(1, getDimension())));
 #endif
   setDescription(trend_.getOutputDescription());
 }
@@ -120,7 +120,7 @@ GaussianProcess::GaussianProcess(const SecondOrderModel & model,
 #ifdef OPENTURNS_HAVE_MUPARSER
   trend_ = TrendTransform(SymbolicFunction(Description::BuildDefault(getSpatialDimension(), "x"), Description(getDimension(), "0.0")));
 #else
-  trend_ = TrendTransform(Function(NumericalSample(1, getSpatialDimension()), NumericalSample(1, getDimension())));
+  trend_ = TrendTransform(Function(Sample(1, getSpatialDimension()), Sample(1, getDimension())));
 #endif
   setDescription(trend_.getOutputDescription());
 }
@@ -144,7 +144,7 @@ GaussianProcess::GaussianProcess(const CovarianceModel & covarianceModel,
 #ifdef OPENTURNS_HAVE_MUPARSER
   trend_ = TrendTransform(SymbolicFunction(Description::BuildDefault(getSpatialDimension(), "x"), Description(getDimension(), "0.0")));
 #else
-  trend_ = TrendTransform(Function(NumericalSample(1, getSpatialDimension()), NumericalSample(1, getDimension())));
+  trend_ = TrendTransform(Function(Sample(1, getSpatialDimension()), Sample(1, getDimension())));
 #endif
   setDescription(trend_.getOutputDescription());
 }
@@ -302,7 +302,7 @@ void GaussianProcess::setSamplingMethod(const UnsignedInteger samplingMethod)
 /* Realization generator */
 Field GaussianProcess::getRealization() const
 {
-  NumericalSample values;
+  Sample values;
   if ((getDimension() == 1) && (samplingMethod_ == 2))
     values = getRealizationGibbs();
   else if (samplingMethod_ == 1)
@@ -321,13 +321,13 @@ Field GaussianProcess::getRealization() const
   return trend_(Field(mesh_, values));
 }
 
-NumericalSample GaussianProcess::getRealizationGibbs() const
+Sample GaussianProcess::getRealizationGibbs() const
 {
-  const NumericalSample vertices(getMesh().getVertices());
+  const Sample vertices(getMesh().getVertices());
   const UnsignedInteger size = vertices.getSize();
   const UnsignedInteger nMax = std::max(static_cast<UnsignedInteger>(1), ResourceMap::GetAsUnsignedInteger("GaussianProcess-GibbsMaximumIteration"));
 
-  NumericalSample values(size, 1);
+  Sample values(size, 1);
   NumericalPoint diagonal(size);
   const KPermutationsDistribution permutationDistribution(size, size);
   for (UnsignedInteger n = 0; n < nMax; ++n)
@@ -339,7 +339,7 @@ NumericalSample GaussianProcess::getRealizationGibbs() const
       const UnsignedInteger index = static_cast< UnsignedInteger >(permutation[i]);
       LOGDEBUG(OSS() << "Gibbs sampler - update " << i << " -> component " << index << " over " << size - 1);
       // Here we work on the normalized covariance, ie the correlation
-      NumericalSample covarianceRow(covarianceModel_.discretizeRow(vertices, index));
+      Sample covarianceRow(covarianceModel_.discretizeRow(vertices, index));
       diagonal[index] = covarianceRow[index][0];
       const NumericalPoint delta(1, (DistFunc::rNormal() - values[index][0]) / diagonal[index]);
       values += covarianceRow * delta;
@@ -350,7 +350,7 @@ NumericalSample GaussianProcess::getRealizationGibbs() const
   return values;
 }
 
-NumericalSample GaussianProcess::getRealizationCholesky() const
+Sample GaussianProcess::getRealizationCholesky() const
 {
   if (!isInitialized_) initialize();
   // Constantes values
@@ -358,14 +358,14 @@ NumericalSample GaussianProcess::getRealizationCholesky() const
   const UnsignedInteger fullSize = covarianceCholeskyFactor_.getDimension();
   const NumericalPoint gaussianPoint(DistFunc::rNormal(fullSize));
 
-  NumericalSampleImplementation values(size, dimension_);
+  SampleImplementation values(size, dimension_);
   const NumericalPoint rawResult(covarianceCholeskyFactor_ * gaussianPoint);
   LOGINFO(OSS() << "In GaussianProcess::getRealizationCholesky(), size=" << size << ", fullSize=" << fullSize << ", gaussianPoint dimension=" << gaussianPoint.getDimension() << ", rawResult dimension=" << rawResult.getDimension());
   values.setData(rawResult);
   return values;
 }
 
-NumericalSample GaussianProcess::getRealizationHMatrix() const
+Sample GaussianProcess::getRealizationHMatrix() const
 {
   if (!isInitialized_) initialize();
   const UnsignedInteger size = getMesh().getVerticesNumber();
@@ -374,7 +374,7 @@ NumericalSample GaussianProcess::getRealizationHMatrix() const
 
   NumericalPoint y(fullSize);
   covarianceHMatrix_.gemv('N', 1.0, gaussianPoint, 0.0, y);
-  NumericalSample values(size, dimension_);
+  Sample values(size, dimension_);
   values.getImplementation()->setData(y);
   return values;
 }

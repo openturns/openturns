@@ -47,7 +47,7 @@ public:
   virtual QuadrantSampling * clone() const;
 
   /** Generate a set of directions */
-  virtual NumericalSample generate() const;
+  virtual Sample generate() const;
 
   /** Quadrant index accessor */
   void setQuadrantIndex(const UnsignedInteger quadrantIndex);

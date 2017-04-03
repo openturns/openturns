@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
         fullprint << "sphereUnitNorm = " << sphereUnitNorm << std::endl;
         for (UnsignedInteger distance = 0 ; distance < maxDistance; ++distance)
         {
-          const NumericalSample points(sphereUnitNorm.getPoints(distance));
+          const Sample points(sphereUnitNorm.getPoints(distance));
           fullprint << "distance=" << distance << " -  points = " << points << std::endl;
         }
       }

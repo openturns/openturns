@@ -25,7 +25,7 @@
 #include "openturns/PersistentObject.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/NumericalPointWithDescription.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Field.hxx"
 #include "openturns/HistoryStrategy.hxx"
 #include "openturns/Description.hxx"
@@ -108,8 +108,8 @@ public:
   HistoryStrategy getHistoryOutput() const;
 
   /** Input point / parameter history accessor */
-  virtual NumericalSample getInputPointHistory() const;
-  virtual NumericalSample getInputParameterHistory() const;
+  virtual Sample getInputPointHistory() const;
+  virtual Sample getInputParameterHistory() const;
 
   /** Enable or disable the internal cache */
   void enableCache() const;
@@ -126,15 +126,15 @@ public:
 
   /** @brief Add some content to the cache
    */
-  void addCacheContent(const NumericalSample & inSample, const NumericalSample & outSample);
+  void addCacheContent(const Sample & inSample, const Sample & outSample);
 
   /** @brief Returns the cache input
    */
-  NumericalSample getCacheInput() const;
+  Sample getCacheInput() const;
 
   /** @brief Returns the cache output
    */
-  NumericalSample getCacheOutput() const;
+  Sample getCacheOutput() const;
 
   /** @brief Empty the cache
    */
@@ -149,11 +149,11 @@ public:
   virtual NumericalPoint operator() (const NumericalPoint & inP) const;
   virtual NumericalPoint operator() (const NumericalPoint & inP,
                                      const NumericalPoint & parameters);
-  virtual NumericalSample operator() (const NumericalPoint & point,
-                                      const NumericalSample & parameters);
+  virtual Sample operator() (const NumericalPoint & point,
+                                      const Sample & parameters);
 
   /** Operator () on a sample, not pure virtual because a generic implementation is given */
-  virtual NumericalSample operator() (const NumericalSample & inSample) const;
+  virtual Sample operator() (const Sample & inSample) const;
 
   /** Operator () on a time series, not pure virtual because a generic implementation is given */
   virtual Field operator() (const Field & inField) const;

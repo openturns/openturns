@@ -64,7 +64,7 @@ print(repr(outPt))
 outPt = f1((10., 11.))
 print(repr(outPt))
 
-inSample = ot.NumericalSample(10, 2)
+inSample = ot.Sample(10, 2)
 for i in range(10):
     inSample[i] = ot.NumericalPoint((i, i))
 print(repr(inSample))

@@ -12,7 +12,7 @@ try:
         "test number zero : default & copy constructors and string converter")
 
     vectR = NumericalPoint(1, 12.0)
-    testSample = NumericalSample(1, 1)
+    testSample = Sample(1, 1)
 
     begin = -1.0
     end = 36.92
@@ -46,8 +46,8 @@ try:
     print("test number two : get predicted/residual")
     lmfact = LinearModelFactory()
     size = 20
-    oneSample = NumericalSample(size, 1)
-    twoSample = NumericalSample(size, 1)
+    oneSample = Sample(size, 1)
+    twoSample = Sample(size, 1)
     for i in range(size):
         oneSample[i] = NumericalPoint(
             1, 7.0 * sin(-3.5 + (6.5 * i) / (size - 1.0)) + 2.0)

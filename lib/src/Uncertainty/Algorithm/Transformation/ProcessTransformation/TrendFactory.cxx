@@ -83,10 +83,10 @@ TrendTransform TrendFactory::build(const Field & field,
 
   // Dimension and size of the time series
   const UnsignedInteger dimension = field.getDimension();
-  NumericalSample inputSample(field.getMesh().getVertices());
+  Sample inputSample(field.getMesh().getVertices());
 
   // We need a sample to get coefficients result
-  NumericalSample coefficients(N, dimension);
+  Sample coefficients(N, dimension);
 
   Collection<Function> coll(N);
   Indices indices(N);
@@ -96,7 +96,7 @@ TrendTransform TrendFactory::build(const Field & field,
   for (UnsignedInteger d = 0; d < dimension; ++d)
   {
     // We look for best coefficients by marginal
-    const NumericalSample outputSample(field.getValues().getMarginal(d));
+    const Sample outputSample(field.getValues().getMarginal(d));
     LeastSquaresMetaModelSelection selectionAlgo(inputSample, outputSample, coll, indices, basisSequenceFactory_, fittingAlgorithm_);
     selectionAlgo.run();
     NumericalPoint localCoefficients(selectionAlgo.getCoefficients());

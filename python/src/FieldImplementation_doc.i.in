@@ -175,7 +175,7 @@ OT_Field_getMesh_doc
 
 Returns
 -------
-values : :class:`~openturns.NumericalSample`
+values : :class:`~openturns.Sample`
     Values associated to the mesh. The size of the sample is the number of
     vertices of the mesh and the dimension is the dimension of the values
     (:math:`d`)."
@@ -314,7 +314,7 @@ OT_Field_getValueAtNearestPosition_doc
 
 Returns
 -------
-values : :class:`~openturns.NumericalSample`
+values : :class:`~openturns.Sample`
     Values associated to the mesh. The size of the sample is the number of
     vertices of the mesh and the dimension is the dimension of the values
     (:math:`d`). Identical to :meth:`getSample`."

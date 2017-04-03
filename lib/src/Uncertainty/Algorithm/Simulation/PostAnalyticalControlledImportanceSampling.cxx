@@ -56,7 +56,7 @@ PostAnalyticalControlledImportanceSampling * PostAnalyticalControlledImportanceS
 }
 
 /* Compute the block sample */
-NumericalSample PostAnalyticalControlledImportanceSampling::computeBlockSample()
+Sample PostAnalyticalControlledImportanceSampling::computeBlockSample()
 {
   const UnsignedInteger blockSize = getBlockSize();
   const NumericalPoint standardSpaceDesignPoint(analyticalResult_.getStandardSpaceDesignPoint());
@@ -69,10 +69,10 @@ NumericalSample PostAnalyticalControlledImportanceSampling::computeBlockSample()
   NumericalScalar probability = controlProbability_;
   // First, compute a sample of the importance distribution. It is simply
   // the standard distribution translated to the design point
-  NumericalSample inputSample(standardDistribution_.getSample(blockSize));
+  Sample inputSample(standardDistribution_.getSample(blockSize));
   inputSample += standardSpaceDesignPoint;
   // Then, evaluate the function on this sample
-  NumericalSample blockSample(getEvent().getImplementation()->getFunction()(inputSample));
+  Sample blockSample(getEvent().getImplementation()->getFunction()(inputSample));
   // Then, modify in place this sample to take into account the change in the input distribution
   for (UnsignedInteger i = 0; i < blockSize; ++i)
   {

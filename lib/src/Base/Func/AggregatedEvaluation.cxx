@@ -100,18 +100,18 @@ NumericalPoint AggregatedEvaluation::operator () (const NumericalPoint & inP) co
 }
 
 
-NumericalSample AggregatedEvaluation::operator () (const NumericalSample & inS) const
+Sample AggregatedEvaluation::operator () (const Sample & inS) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inS.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inS.getDimension();
   ++ callsNumber_;
   const UnsignedInteger collectionSize = functionsCollection_.getSize();
   const UnsignedInteger size = inS.getSize();
-  NumericalSample result(size, outputDimension_);
+  Sample result(size, outputDimension_);
   UnsignedInteger outputIndex = 0;
   for ( UnsignedInteger k = 0; k < collectionSize; ++ k )
   {
-    const NumericalSample atomValue(functionsCollection_[k](inS));
+    const Sample atomValue(functionsCollection_[k](inS));
     const UnsignedInteger atomDimension = atomValue.getDimension();
     for ( UnsignedInteger i = 0; i < size; ++ i )
       for ( UnsignedInteger j = 0; j < atomDimension; ++ j )

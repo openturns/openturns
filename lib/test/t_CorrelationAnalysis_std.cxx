@@ -63,8 +63,8 @@ int main(int argc, char *argv[])
     fullprint << "composite=" << composite << std::endl;
 
     // we create two input samples for the function
-    NumericalSample inputSample(randomVector.getSample(sampleSize));
-    NumericalSample outputSample(analytical(inputSample));
+    Sample inputSample(randomVector.getSample(sampleSize));
+    Sample outputSample(analytical(inputSample));
 
     NumericalPoint src(CorrelationAnalysis::SRC(inputSample, outputSample));
     fullprint << "src=" << src << std::endl;

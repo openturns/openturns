@@ -285,12 +285,12 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const RegularGrid & t
 
 struct CovarianceModelDiscretizePolicy
 {
-  const NumericalSample & input_;
+  const Sample & input_;
   CovarianceMatrix & output_;
   const CovarianceModelImplementation & model_;
   const UnsignedInteger dimension_;
 
-  CovarianceModelDiscretizePolicy(const NumericalSample & input,
+  CovarianceModelDiscretizePolicy(const Sample & input,
                                   CovarianceMatrix & output,
                                   const CovarianceModelImplementation & model)
     : input_(input)
@@ -317,7 +317,7 @@ struct CovarianceModelDiscretizePolicy
 }; /* end struct CovarianceModelDiscretizePolicy */
 
 
-CovarianceMatrix CovarianceModelImplementation::discretize(const NumericalSample & vertices) const
+CovarianceMatrix CovarianceModelImplementation::discretize(const Sample & vertices) const
 {
   if (vertices.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has a dimension=" << vertices.getDimension() << " different from the input dimension=" << spatialDimension_;
   const UnsignedInteger size = vertices.getSize();
@@ -345,7 +345,7 @@ TriangularMatrix CovarianceModelImplementation::discretizeAndFactorize(const Mes
   return discretizeAndFactorize(mesh.getVertices());
 }
 
-TriangularMatrix CovarianceModelImplementation::discretizeAndFactorize(const NumericalSample & vertices) const
+TriangularMatrix CovarianceModelImplementation::discretizeAndFactorize(const Sample & vertices) const
 {
   // We suppose that covariance matrix is symmetric positive definite
   // We do not catch InternalException
@@ -358,14 +358,14 @@ TriangularMatrix CovarianceModelImplementation::discretizeAndFactorize(const Num
 
 struct CovarianceModelScalarDiscretizeRowPolicy
 {
-  const NumericalSample & input_;
+  const Sample & input_;
   const NumericalPoint p_;
-  NumericalSample & output_;
+  Sample & output_;
   const CovarianceModelImplementation & model_;
 
-  CovarianceModelScalarDiscretizeRowPolicy(const NumericalSample & input,
+  CovarianceModelScalarDiscretizeRowPolicy(const Sample & input,
       const UnsignedInteger p,
-      NumericalSample & output,
+      Sample & output,
       const CovarianceModelImplementation & model)
     : input_(input)
     , p_(input[p])
@@ -382,15 +382,15 @@ struct CovarianceModelScalarDiscretizeRowPolicy
 
 struct CovarianceModelDiscretizeRowPolicy
 {
-  const NumericalSample & input_;
+  const Sample & input_;
   const NumericalPoint p_;
-  NumericalSample & output_;
+  Sample & output_;
   const CovarianceModelImplementation & model_;
   const UnsignedInteger dimension_;
 
-  CovarianceModelDiscretizeRowPolicy(const NumericalSample & input,
+  CovarianceModelDiscretizeRowPolicy(const Sample & input,
                                      const UnsignedInteger p,
-                                     NumericalSample & output,
+                                     Sample & output,
                                      const CovarianceModelImplementation & model)
     : input_(input)
     , p_(input[p])
@@ -413,12 +413,12 @@ struct CovarianceModelDiscretizeRowPolicy
 
 }; /* end struct CovarianceModelDiscretizeRowPolicy */
 
-NumericalSample CovarianceModelImplementation::discretizeRow(const NumericalSample & vertices,
+Sample CovarianceModelImplementation::discretizeRow(const Sample & vertices,
     const UnsignedInteger p) const
 {
   if (vertices.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has a dimension=" << vertices.getDimension() << " different from the input dimension=" << spatialDimension_;
   const UnsignedInteger size = vertices.getSize();
-  NumericalSample result(size * dimension_, dimension_);
+  Sample result(size * dimension_, dimension_);
   if (dimension_ == 1)
   {
     const CovarianceModelScalarDiscretizeRowPolicy policy( vertices, p, result, *this );
@@ -447,7 +447,7 @@ HMatrix CovarianceModelImplementation::discretizeHMatrix(const Mesh & mesh,
   return discretizeHMatrix(mesh.getVertices(), nuggetFactor, parameters);
 }
 
-HMatrix CovarianceModelImplementation::discretizeHMatrix(const NumericalSample & vertices,
+HMatrix CovarianceModelImplementation::discretizeHMatrix(const Sample & vertices,
     const NumericalScalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
@@ -485,7 +485,7 @@ HMatrix CovarianceModelImplementation::discretizeAndFactorizeHMatrix(const Mesh 
   return discretizeAndFactorizeHMatrix(mesh.getVertices(), nuggetFactor, parameters);
 }
 
-HMatrix CovarianceModelImplementation::discretizeAndFactorizeHMatrix(const NumericalSample & vertices,
+HMatrix CovarianceModelImplementation::discretizeAndFactorizeHMatrix(const Sample & vertices,
     const NumericalScalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
@@ -731,7 +731,7 @@ Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
 	  // If ratio == 0, the covariance is zero everywhere
 	  if (ratio == 0.0) ratio = 1.0;
 	}
-      NumericalSample data(pointNumber, 2);
+      Sample data(pointNumber, 2);
       for (UnsignedInteger i = 0; i < pointNumber; ++i)
 	{
 	  const NumericalScalar tau = (i * tMin + (pointNumber - i - 1.0) * tMax) / (pointNumber - 1.0);
@@ -747,7 +747,7 @@ Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
       return graph;
     }
   // Here we draw a non-stationary model
-  const NumericalSample gridT = RegularGrid(tMin, (tMax - tMin) / (pointNumber - 1.0), pointNumber).getVertices();
+  const Sample gridT = RegularGrid(tMin, (tMax - tMin) / (pointNumber - 1.0), pointNumber).getVertices();
   CovarianceMatrix matrix(discretize(gridT));
   const UnsignedInteger dimension = matrix.getDimension();
   // Normalize the data if needed
@@ -768,7 +768,7 @@ Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
 	} // j
     } // correlationFlag
   matrix.checkSymmetry();
-  NumericalSample data(pointNumber * pointNumber, 1);
+  Sample data(pointNumber * pointNumber, 1);
   data.getImplementation()->setData(*matrix.getImplementation());
   Graph graph(getName() + (correlationFlag ? String(" correlation") : String (" covariance")), "s", "t", true, "bottomright");
   graph.setGrid(true);

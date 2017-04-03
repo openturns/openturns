@@ -23,7 +23,7 @@
 
 #include <iostream>
 #include "openturns/ApproximationAlgorithmImplementation.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Basis.hxx"
 #include "openturns/TypedInterfaceObject.hxx"
 
@@ -49,14 +49,14 @@ public:
   virtual ApproximationAlgorithmImplementationFactory * clone() const;
 
   /** Method to create new ApproximationAlgorithmImplementation objects */
-  virtual ApproximationAlgorithmImplementation * build (const NumericalSample & x,
-      const NumericalSample & y,
+  virtual ApproximationAlgorithmImplementation * build (const Sample & x,
+      const Sample & y,
       const Basis & psi,
       const Indices & indices) const;
 
   /** Method to create new ApproximationAlgorithmImplementation objects */
-  virtual ApproximationAlgorithmImplementation * build (const NumericalSample & x,
-      const NumericalSample & y,
+  virtual ApproximationAlgorithmImplementation * build (const Sample & x,
+      const Sample & y,
       const NumericalPoint & weight,
       const Basis & psi,
       const Indices & indices) const;

@@ -79,7 +79,7 @@ print('ts4=', ts4)
 
 # We append a sample to a time series
 ts5 = ot.TimeSeries(3, dim)
-ns1 = ot.NumericalSample(3, [99.9] * dim)
+ns1 = ot.Sample(3, [99.9] * dim)
 print('ts5=', ts5)
 ts5.add(ns1)
 print('ts5=', ts5)

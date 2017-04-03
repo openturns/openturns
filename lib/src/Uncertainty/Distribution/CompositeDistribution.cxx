@@ -420,8 +420,8 @@ LevelSet CompositeDistribution::computeMinimumVolumeLevelSetWithThreshold(const 
   // we use an improved sampling method to compute the quantile of the -logPDF(X) distribution
   const UnsignedInteger size = SpecFunc::NextPowerOfTwo(ResourceMap::GetAsUnsignedInteger("Distribution-MinimumVolumeLevelSetSamplingSize"));
   const NumericalPoint q(SobolSequence(1).generate(size).getImplementation()->getData());
-  const NumericalSample sampleAntecedent(antecedent_.computeQuantile(q));
-  const NumericalSample minusLogPDFSample(computeLogPDF(function_(sampleAntecedent)) * NumericalPoint(1, -1.0));
+  const Sample sampleAntecedent(antecedent_.computeQuantile(q));
+  const Sample minusLogPDFSample(computeLogPDF(function_(sampleAntecedent)) * NumericalPoint(1, -1.0));
   const NumericalScalar minusLogPDFThreshold = minusLogPDFSample.computeQuantile(prob)[0];
   threshold = std::exp(-minusLogPDFThreshold);
 

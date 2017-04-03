@@ -45,25 +45,25 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalSample & sample,
+  Implementation build(const Sample & sample) const;
+  Implementation build(const Sample & sample,
                        const UnsignedInteger method) const;
   Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
-  LogNormal buildAsLogNormal(const NumericalSample & sample) const;
-  LogNormal buildAsLogNormal(const NumericalSample & sample,
+  LogNormal buildAsLogNormal(const Sample & sample) const;
+  LogNormal buildAsLogNormal(const Sample & sample,
                              const UnsignedInteger method) const;
   LogNormal buildAsLogNormal(const NumericalPoint & parameters) const;
   LogNormal buildAsLogNormal() const;
 
   /** Algorithm associated with the method of moments */
-  LogNormal buildMethodOfMoments(const NumericalSample & sample) const;
+  LogNormal buildMethodOfMoments(const Sample & sample) const;
 
   /** Algoritm associated with the method of local likelihood maximization */
-  LogNormal buildMethodOfLocalLikelihoodMaximization(const NumericalSample & sample) const;
+  LogNormal buildMethodOfLocalLikelihoodMaximization(const Sample & sample) const;
 
   /** Algorithm associated with the method of modified moments */
-  LogNormal buildMethodOfModifiedMoments(const NumericalSample & sample) const;
+  LogNormal buildMethodOfModifiedMoments(const Sample & sample) const;
 
 private:
 

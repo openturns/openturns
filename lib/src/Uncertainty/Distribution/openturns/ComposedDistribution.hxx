@@ -85,9 +85,9 @@ public:
   /** Get one realization of the ComposedDistribution */
   NumericalPoint getRealization() const;
 protected:
-  NumericalSample getSampleParallel(const UnsignedInteger size) const;
+  Sample getSampleParallel(const UnsignedInteger size) const;
 public:
-  NumericalSample getSample(const UnsignedInteger size) const;
+  Sample getSample(const UnsignedInteger size) const;
 
   /** Get the DDF of the ComposedDistribution */
   using DistributionImplementation::computeDDF;

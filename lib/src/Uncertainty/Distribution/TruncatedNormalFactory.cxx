@@ -45,7 +45,7 @@ TruncatedNormalFactory * TruncatedNormalFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-TruncatedNormalFactory::Implementation TruncatedNormalFactory::build(const NumericalSample & sample) const
+TruncatedNormalFactory::Implementation TruncatedNormalFactory::build(const Sample & sample) const
 {
   return buildAsTruncatedNormal(sample).clone();
 }
@@ -61,7 +61,7 @@ TruncatedNormalFactory::Implementation TruncatedNormalFactory::build() const
 }
 
 
-TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const NumericalSample & sample) const
+TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a TruncatedNormal distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
@@ -79,7 +79,7 @@ TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const NumericalSa
   // X_norm = alpha * (X - beta)
   const NumericalScalar alpha = 2.0 / (xMax - xMin);
   const NumericalScalar beta = 0.5 * (xMin + xMax);
-  NumericalSample normalizedSample(sample);
+  Sample normalizedSample(sample);
   normalizedSample -= NumericalPoint(1, beta);
   normalizedSample *= NumericalPoint(1, alpha);
 

@@ -51,39 +51,39 @@ public:
   GeneralLinearModelAlgorithm();
 
   /** Parameters constructor */
-  GeneralLinearModelAlgorithm (const NumericalSample & inputSample,
-                                   const NumericalSample & outputSample,
+  GeneralLinearModelAlgorithm (const Sample & inputSample,
+                                   const Sample & outputSample,
                                    const CovarianceModel & covarianceModel,
                                    const Bool normalize = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-NormalizeData"),
                                    const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
 
-  GeneralLinearModelAlgorithm (const NumericalSample & inputSample,
-                                   const NumericalSample & outputSample,
+  GeneralLinearModelAlgorithm (const Sample & inputSample,
+                                   const Sample & outputSample,
                                    const CovarianceModel & covarianceModel,
                                    const Basis & basis,
                                    const Bool normalize = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-NormalizeData"),
                                    const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
 
   /** Parameters constructor */
-  GeneralLinearModelAlgorithm (const NumericalSample & inputSample,
+  GeneralLinearModelAlgorithm (const Sample & inputSample,
                                    const Function & inputTransformation,
-                                   const NumericalSample & outputSample,
+                                   const Sample & outputSample,
                                    const CovarianceModel & covarianceModel,
                                    const Basis & basis,
                                    const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
 
   /** Parameters constructor */
-  GeneralLinearModelAlgorithm (const NumericalSample & inputSample,
-                                   const NumericalSample & outputSample,
+  GeneralLinearModelAlgorithm (const Sample & inputSample,
+                                   const Sample & outputSample,
                                    const CovarianceModel & covarianceModel,
                                    const BasisCollection & basisCollection,
                                    const Bool normalize = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-NormalizeData"),
                                    const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
 
   /** Parameters constructor */
-  GeneralLinearModelAlgorithm (const NumericalSample & inputSample,
+  GeneralLinearModelAlgorithm (const Sample & inputSample,
                                    const Function & inputTransformation,
-                                   const NumericalSample & outputSample,
+                                   const Sample & outputSample,
                                    const CovarianceModel & covarianceModel,
                                    const BasisCollection & basisCollection,
                                    const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
@@ -102,8 +102,8 @@ public:
   Function getInputTransformation() const;
 
   /** Sample accessors */
-  NumericalSample getInputSample() const;
-  NumericalSample getOutputSample() const;
+  Sample getInputSample() const;
+  Sample getOutputSample() const;
 
   /** result accessor */
   GeneralLinearModelResult getResult();
@@ -236,8 +236,8 @@ private:
   }; // ReducedLogLikelihoodEvaluation
 
   /** set sample  method */
-  void setData(const NumericalSample & inputSample,
-               const NumericalSample & outputSample);
+  void setData(const Sample & inputSample,
+               const Sample & outputSample);
 
   /** Covariance model accessor */
   void setCovarianceModel(const CovarianceModel & covarianceModel);
@@ -248,20 +248,20 @@ private:
   void setBasisCollection(const BasisCollection & basisCollection);
 
   /** check that sample is centered to precison eps */
-  void checkYCentered(const NumericalSample & Y);
+  void checkYCentered(const Sample & Y);
 
   // The input data
-  NumericalSample inputSample_;
+  Sample inputSample_;
 
   // Standardized version of the input data
-  NumericalSample normalizedInputSample_;
+  Sample normalizedInputSample_;
 
   // Standardization function
   Function inputTransformation_;
   mutable Bool normalize_;
 
   // The associated output data
-  NumericalSample outputSample_;
+  Sample outputSample_;
 
   // The covariance model parametric familly
   CovarianceModel covarianceModel_;

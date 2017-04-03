@@ -233,7 +233,7 @@ Graph SpectralModelImplementation::draw(const UnsignedInteger rowIndex,
 {
   if (rowIndex >= dimension_) throw InvalidArgumentException(HERE) << "Error: the given row index must be less than " << dimension_ << ", here rowIndex=" << rowIndex;
   if (columnIndex >= dimension_) throw InvalidArgumentException(HERE) << "Error: the given column index must be less than " << dimension_ << ", here columnIndex=" << columnIndex;
-  NumericalSample data(frequencyNumber, 2);
+  Sample data(frequencyNumber, 2);
   for (UnsignedInteger i = 0; i < frequencyNumber; ++i)
   {
     const NumericalScalar f = (i * minimumFrequency + (frequencyNumber - i - 1.0) * maximumFrequency) / (frequencyNumber - 1.0);

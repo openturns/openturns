@@ -265,13 +265,13 @@ NumericalPoint ComposedDistribution::getRealization() const
 
 struct ComposedDistributionComputeSamplePolicy
 {
-  const NumericalSample input_;
-  NumericalSample & output_;
+  const Sample input_;
+  Sample & output_;
   const Collection<Distribution> distributionCollection_;
   UnsignedInteger dimension_;
 
-  ComposedDistributionComputeSamplePolicy(const NumericalSample & input,
-                                          NumericalSample & output,
+  ComposedDistributionComputeSamplePolicy(const Sample & input,
+                                          Sample & output,
                                           const Collection<Distribution> & distributionCollection)
     : input_(input)
     , output_(output)
@@ -289,7 +289,7 @@ struct ComposedDistributionComputeSamplePolicy
 }; /* end struct ComposedDistributionComputeSamplePolicy */
 
 /* Get a sample of the distribution */
-NumericalSample ComposedDistribution::getSampleParallel(const UnsignedInteger size) const
+Sample ComposedDistribution::getSampleParallel(const UnsignedInteger size) const
 {
   const UnsignedInteger dimension = getDimension();
   // For 1D or independent components, we can only rely on possible parallel
@@ -309,7 +309,7 @@ NumericalSample ComposedDistribution::getSampleParallel(const UnsignedInteger si
         shift += dimension;
       }
     }
-    NumericalSampleImplementation result(size, dimension);
+    SampleImplementation result(size, dimension);
     result.setData(data);
     result.setName(getName());
     result.setDescription(getDescription());
@@ -317,8 +317,8 @@ NumericalSample ComposedDistribution::getSampleParallel(const UnsignedInteger si
   }
   // For dependent components, we can use some parallelism on top
   // of possible parallelism of the getSample() method of the copula
-  const NumericalSample copulaSample(copula_.getSample(size));
-  NumericalSample result(size, dimension);
+  const Sample copulaSample(copula_.getSample(size));
+  Sample result(size, dimension);
   const ComposedDistributionComputeSamplePolicy policy( copulaSample, result, distributionCollection_ );
   TBB::ParallelFor( 0, size, policy );
   result.setName(getName());
@@ -326,7 +326,7 @@ NumericalSample ComposedDistribution::getSampleParallel(const UnsignedInteger si
   return result;
 }
 
-NumericalSample ComposedDistribution::getSample(const UnsignedInteger size) const
+Sample ComposedDistribution::getSample(const UnsignedInteger size) const
 {
   if (isParallel_) return getSampleParallel(size);
   return DistributionImplementation::getSample(size);
@@ -638,8 +638,8 @@ void ComposedDistribution::computeCovariance() const
       gaussWeights[i] *= 0.5;
     }
     // Compute the marginal quantiles at the nodes
-    NumericalSample marginalQuantiles(gaussWeights.getSize(), dimension);
-    NumericalSample marginalPDF(gaussWeights.getSize(), dimension);
+    Sample marginalQuantiles(gaussWeights.getSize(), dimension);
+    Sample marginalPDF(gaussWeights.getSize(), dimension);
     for(UnsignedInteger component = 0; component < dimension; ++component)
     {
       const Distribution marginalDistribution(getMarginal(component));
@@ -656,7 +656,7 @@ void ComposedDistribution::computeCovariance() const
     // We first loop over the coeeficients because the most expensive task is to get the 2D marginal copulas
     Indices indices(2);
     // Prepare the 2D integration nodes and weights in order to use potential parallelism in 2D marginal pdf computation
-    NumericalSample nodes2D(gaussWeights.getSize() * gaussWeights.getSize(), 2);
+    Sample nodes2D(gaussWeights.getSize() * gaussWeights.getSize(), 2);
     NumericalPoint weights2D(gaussWeights.getSize() * gaussWeights.getSize());
     UnsignedInteger index = 0;
     for (UnsignedInteger rowNodeIndex = 0; rowNodeIndex < gaussWeights.getSize(); ++rowNodeIndex)

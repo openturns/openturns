@@ -199,7 +199,7 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
 
 /* Parameter constructor - nD */
 RandomMixture::RandomMixture(const DistributionCollection & coll,
-                             const NumericalSample & weights,
+                             const Sample & weights,
                              const NumericalPoint constant)
   : DistributionImplementation()
   , distributionCollection_()
@@ -232,7 +232,7 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
 
 /* Parameter constructor - nD */
 RandomMixture::RandomMixture(const DistributionCollection & coll,
-                             const NumericalSample & weights)
+                             const Sample & weights)
   : DistributionImplementation()
   , distributionCollection_()
   , weights_()
@@ -390,7 +390,7 @@ void RandomMixture::setDistributionCollection(const DistributionCollection & col
   Bool hasPendingUniform = false;
   Uniform pendingUniform;
   distributionCollection_ = DistributionCollection(0);
-  NumericalSample weights(0, dimension);
+  Sample weights(0, dimension);
   for(UnsignedInteger i = 0; i < size; ++i)
   {
     if (coll[i].getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: a RandomMixture cannot be built from a collection of distributions of dimension not equal to 1";
@@ -613,7 +613,7 @@ NumericalPoint RandomMixture::getRealization() const
 }
 
 /* Get a of the RandomMixture */
-NumericalSample RandomMixture::getSample(const UnsignedInteger size) const
+Sample RandomMixture::getSample(const UnsignedInteger size) const
 {
   const UnsignedInteger atomSize = distributionCollection_.getSize();
   MatrixImplementation sample(atomSize, size);
@@ -624,12 +624,12 @@ NumericalSample RandomMixture::getSample(const UnsignedInteger size) const
       std::copy(atomSample.begin(), atomSample.end(), sample.begin() + index); 
       index += size;
     }
-  NumericalSampleImplementation result(size, getDimension());
+  SampleImplementation result(size, getDimension());
   result.setData(weights_.getImplementation()->genProd(sample).transpose());
   return result + constant_;
 }
 
-NumericalSample RandomMixture::getSampleByQMC(const UnsignedInteger size) const
+Sample RandomMixture::getSampleByQMC(const UnsignedInteger size) const
 {
   const UnsignedInteger atomSize = distributionCollection_.getSize();
   MatrixImplementation sample(atomSize, size);
@@ -641,7 +641,7 @@ NumericalSample RandomMixture::getSampleByQMC(const UnsignedInteger size) const
       std::copy(atomSample.begin(), atomSample.end(), sample.begin() + index); 
       index += size;
     }
-  NumericalSampleImplementation result(size, getDimension());
+  SampleImplementation result(size, getDimension());
   result.setData(weights_.getImplementation()->genProd(sample).transpose());
   return result + constant_;
 }
@@ -810,7 +810,7 @@ NumericalScalar RandomMixture::computePDF(const NumericalPoint & point) const
       } // dimension_ == 1
       else
       {
-        NumericalSample skinPoints(gridMesher_.getPoints(m));
+        Sample skinPoints(gridMesher_.getPoints(m));
         const UnsignedInteger fromIndex = gridMesher_.getOffsetLevel(m);
         const UnsignedInteger lastIndex = gridMesher_.getOffsetLevel(m + 1) - 1;
         if (lastIndex <= maxSize_)
@@ -870,10 +870,10 @@ NumericalScalar RandomMixture::computePDF(const NumericalPoint & point) const
 }
 
 /*  Compute the PDF of 1D distributions over a regular grid. The precision is reduced as this method is for drawing purpose only. */
-NumericalSample RandomMixture::computePDF(const NumericalScalar xMin,
+Sample RandomMixture::computePDF(const NumericalScalar xMin,
     const NumericalScalar xMax,
     const UnsignedInteger pointNumber,
-    NumericalSample & grid) const
+    Sample & grid) const
 {
   if (getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: this method is available only for 1D distribution";
   return computePDF(NumericalPoint(1, xMin), NumericalPoint(1, xMax), Indices(1, pointNumber), grid);
@@ -882,13 +882,13 @@ NumericalSample RandomMixture::computePDF(const NumericalScalar xMin,
 struct EquivalentNormalPDFSumPolicy
 {
   const RandomMixture & mixture_;
-  const NumericalSample & grid_;
+  const Sample & grid_;
   const NumericalPoint & two_b_sigma_;
   const UnsignedInteger levelMax_;
   Collection<NumericalScalar> & output_;
 
   EquivalentNormalPDFSumPolicy(const RandomMixture & mixture,
-                               const NumericalSample & grid,
+                               const Sample & grid,
                                const NumericalPoint & two_b_sigma,
                                const UnsignedInteger levelMax,
                                Collection<NumericalScalar> & output)
@@ -910,10 +910,10 @@ struct EquivalentNormalPDFSumPolicy
 }; /* end struct EquivalentNormalPDFSumPolicy */
 
 /* Compute the PDF of nD distributions over a regular grid */
-NumericalSample RandomMixture::computePDF(const NumericalPoint & xMin,
+Sample RandomMixture::computePDF(const NumericalPoint & xMin,
     const NumericalPoint & xMax,
     const Indices & pointNumber,
-    NumericalSample & grid) const
+    Sample & grid) const
 {
   if (xMin.getDimension() != xMax.getDimension()) throw InvalidArgumentException(HERE) << "Error: the two corner points must have the same dimension. Here, dim(xMin)=" << xMin.getDimension() << " and dim(xMax)=" << xMax.getDimension();
   if (xMin.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the corner points must have the same dimension as the distribution. Here, dim(xMin)=" << xMin.getDimension() << " and distribution dimension=" << dimension_;
@@ -929,8 +929,8 @@ NumericalSample RandomMixture::computePDF(const NumericalPoint & xMin,
     const NumericalScalar a = xMin[0];
     const NumericalScalar b = xMax[0];
     const UnsignedInteger n = pointNumber[0];
-    grid = NumericalSample(n, 1);
-    NumericalSample pdf(n, 1);
+    grid = Sample(n, 1);
+    Sample pdf(n, 1);
     for (UnsignedInteger i = 0; i < n; ++i)
     {
       const NumericalScalar x = a + i * (b - a) / (n - 1);
@@ -961,14 +961,14 @@ NumericalSample RandomMixture::computePDF(const NumericalPoint & xMin,
     tau[i] = mu[i] / b_sigma[i];
   }
   const UnsignedInteger size = indices.getSize();
-  grid = NumericalSample(indices.getSize(), dimension_);
+  grid = Sample(indices.getSize(), dimension_);
   for (UnsignedInteger i = 0; i < size; ++i)
     for (UnsignedInteger j = 0; j < dimension_; ++j)
       grid[i][j] = mu[j] + ((2.0 * indices[i][j] + 1.0) / pointNumber[j] - 1.0) * b_sigma[j];
 
   LOGWARN(OSS() << "Warning! Grid is modified: xMin=" << grid[0] << " xMax=" << grid[size - 1] << " instead of xMin=" << xMin << ", xMax=" << xMax);
 
-  NumericalSample result(size, 1);
+  Sample result(size, 1);
   if (isAnalytical_)
   {
     // compute analytically the pdf
@@ -1036,7 +1036,7 @@ struct AddPDFOn1DGridPolicy
   }
 }; /* end struct AddPDFOn1DGridPolicy */
 
-void RandomMixture::addPDFOn1DGrid(const Indices & pointNumber, const NumericalPoint & h, const NumericalPoint & tau, NumericalSample & result) const
+void RandomMixture::addPDFOn1DGrid(const Indices & pointNumber, const NumericalPoint & h, const NumericalPoint & tau, Sample & result) const
 {
   if (pointNumber.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: the given indices must have dimension=1, here dimension=" << pointNumber.getSize();
 
@@ -1115,7 +1115,7 @@ struct AddPDFOn2DGridPolicy
   }
 }; /* end struct AddPDFOn2DGridPolicy */
 
-void RandomMixture::addPDFOn2DGrid(const Indices & pointNumber, const NumericalPoint & h, const NumericalPoint & tau, NumericalSample & result) const
+void RandomMixture::addPDFOn2DGrid(const Indices & pointNumber, const NumericalPoint & h, const NumericalPoint & tau, Sample & result) const
 {
   if (pointNumber.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: the given indices must have dimension=2, here dimension=" << pointNumber.getSize();
 
@@ -1290,7 +1290,7 @@ struct AddPDFOn3DGridPolicy
   }
 }; /* end struct AddPDFOn3DGridPolicy */
 
-void RandomMixture::addPDFOn3DGrid(const Indices & pointNumber, const NumericalPoint & h, const NumericalPoint & tau, NumericalSample & result) const
+void RandomMixture::addPDFOn3DGrid(const Indices & pointNumber, const NumericalPoint & h, const NumericalPoint & tau, Sample & result) const
 {
   if (pointNumber.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: the given indices must have dimension=3, here dimension=" << pointNumber.getSize();
 
@@ -1829,10 +1829,10 @@ NumericalScalar RandomMixture::computeComplementaryCDF(const NumericalPoint & po
 }
 
 /*  Compute the CDF of 1D distributions over a regular grid. The precision is reduced as this method is for drawing purpose only. */
-NumericalSample RandomMixture::computeCDF(const NumericalScalar xMin,
+Sample RandomMixture::computeCDF(const NumericalScalar xMin,
     const NumericalScalar xMax,
     const UnsignedInteger pointNumber,
-    NumericalSample & grid) const
+    Sample & grid) const
 {
   return DistributionImplementation::computeCDF(xMin, xMax, pointNumber, grid);
 }
@@ -1866,9 +1866,9 @@ NumericalScalar RandomMixture::computeProbability(const Interval & interval) con
     // For now, use a simple mid-point rule
     const NumericalPoint xMin(interval.getLowerBound());
     const NumericalPoint xMax(interval.getUpperBound());
-    NumericalSample gridX;
+    Sample gridX;
     const Indices discretization(dimension, marginalSize);
-    const NumericalSample samplePDF(computePDF(xMin, xMax, discretization, gridX));
+    const Sample samplePDF(computePDF(xMin, xMax, discretization, gridX));
     // Compute the elementary volume
     const UnsignedInteger otherCornerIndex = static_cast<UnsignedInteger>(round((std::pow(marginalSize, dimension) - 1) / (marginalSize - 1)));
     const Interval elementaryInterval(gridX[0], gridX[otherCornerIndex]);
@@ -1939,13 +1939,13 @@ NumericalScalar RandomMixture::computeProbability(const Interval & interval) con
 }
 
 /*  Compute the quantile over a regular grid */
-NumericalSample RandomMixture::computeQuantile(const NumericalScalar qMin,
+Sample RandomMixture::computeQuantile(const NumericalScalar qMin,
     const NumericalScalar qMax,
     const UnsignedInteger pointNumber,
     const Bool tail) const
 {
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot compute the quantile over a regular 1D grid if the dimension is > 1";
-  NumericalSample result(pointNumber, 2);
+  Sample result(pointNumber, 2);
   NumericalScalar q = qMin;
   const NumericalScalar step = (qMax - qMin) / NumericalScalar(pointNumber - 1.0);
   for (UnsignedInteger i = 0; i < pointNumber; ++i)
@@ -1985,7 +1985,7 @@ LevelSet RandomMixture::computeMinimumVolumeLevelSetWithThreshold(const Numerica
   // As we are in 1D and as the function defining the composite distribution can have complex variations,
   // we use an improved sampling method to compute the quantile of the -logPDF(X) distribution
   const UnsignedInteger size = SpecFunc::NextPowerOfTwo(ResourceMap::GetAsUnsignedInteger("Distribution-MinimumVolumeLevelSetSamplingSize"));
-  const NumericalSample minusLogPDFSample(computeLogPDF(getSampleByQMC(size)) * NumericalPoint(1, -1.0));
+  const Sample minusLogPDFSample(computeLogPDF(getSampleByQMC(size)) * NumericalPoint(1, -1.0));
   const NumericalScalar minusLogPDFThreshold = minusLogPDFSample.computeQuantile(prob)[0];
   threshold = std::exp(-minusLogPDFThreshold);
 
@@ -2101,7 +2101,7 @@ NumericalComplex RandomMixture::computeDeltaCharacteristicFunction(const Numeric
 }
 
 /* Update cache */
-void RandomMixture::updateCacheDeltaCharacteristicFunction(const NumericalSample & points) const
+void RandomMixture::updateCacheDeltaCharacteristicFunction(const Sample & points) const
 {
   NumericalPoint x(dimension_);
   for(UnsignedInteger i = 0; i < points.getSize(); ++i)
@@ -2501,7 +2501,7 @@ NumericalScalar RandomMixture::computeEquivalentNormalPDFSum(const NumericalPoin
   NumericalPoint skin2(dimension_);
   for (UnsignedInteger i = 1; (imax == 0 || i < imax) && (delta > gaussian_pdf * epsilon); ++i)
   {
-    const NumericalSample skinPoints(grid.getPoints(i));
+    const Sample skinPoints(grid.getPoints(i));
 
     if (!imax) levelMax = i;
     const NumericalScalar numberOfPoints = skinPoints.getSize();
@@ -2568,7 +2568,7 @@ DistributionCollection RandomMixture::project(const DistributionFactoryCollectio
   // Sample the quantile function uniformly over [mean +/- alpha * sigma]
   const NumericalScalar qMin = computeCDF(mean - alpha_ * sigma);
   const NumericalScalar qMax = computeCDF(mean + alpha_ * sigma);
-  const NumericalSample dataX(computeQuantile(qMin, qMax, size).getMarginal(1));
+  const Sample dataX(computeQuantile(qMin, qMax, size).getMarginal(1));
   // Loop over the factories
   for (UnsignedInteger i = 0; i < factorySize; ++i)
   {
@@ -2689,7 +2689,7 @@ Bool RandomMixture::isIntegral() const
 }
 
 /* Get the support of a discrete distribution that intersect a given interval */
-NumericalSample RandomMixture::getSupport(const Interval & interval) const
+Sample RandomMixture::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
   if (!isDiscrete()) throw NotDefinedException(HERE) << "Error: the support is defined only for discrete distributions.";
@@ -2697,8 +2697,8 @@ NumericalSample RandomMixture::getSupport(const Interval & interval) const
   // The computation of the support is available only if there is one atom
   // otherwise the computePDF() and computeCDF() methods are not implemented anyway
   if (size > 1) throw NotYetImplementedException(HERE) << "In RandomMixture::getSupport()";
-  NumericalSample support(0, getDimension());
-  NumericalSample localSupport((distributionCollection_[0].getSupport() * NumericalPoint(*weights_.getImplementation())) + constant_);
+  Sample support(0, getDimension());
+  Sample localSupport((distributionCollection_[0].getSupport() * NumericalPoint(*weights_.getImplementation())) + constant_);
   for (UnsignedInteger j = 0; j < localSupport.getSize(); ++j)
     if (interval.contains(localSupport[j])) support.add(localSupport[j]);
   return support;

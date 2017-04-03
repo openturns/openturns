@@ -60,8 +60,8 @@ TensorApproximationAlgorithm::TensorApproximationAlgorithm()
 }
 
 /* Constructor */
-TensorApproximationAlgorithm::TensorApproximationAlgorithm(const NumericalSample & inputSample,
-    const NumericalSample & outputSample,
+TensorApproximationAlgorithm::TensorApproximationAlgorithm(const Sample & inputSample,
+    const Sample & outputSample,
     const Distribution & distribution,
     const OrthogonalProductFunctionFactory & basisFactory,
     const Indices & degrees,
@@ -175,13 +175,13 @@ void TensorApproximationAlgorithm::runMarginal(const UnsignedInteger marginalInd
 }
 
 
-void TensorApproximationAlgorithm::greedyRankOne (const NumericalSample & x,
-                                                  const NumericalSample & y,
+void TensorApproximationAlgorithm::greedyRankOne (const Sample & x,
+                                                  const Sample & y,
                                                   CanonicalTensorEvaluation & tensor,
                                                   NumericalScalar & marginalResidual,
                                                   NumericalScalar & marginalRelativeError)
 {
-  NumericalSample yRes(y);
+  Sample yRes(y);
   const UnsignedInteger dimension = x.getDimension();
   for (UnsignedInteger i = 0; i < maxRank_; ++ i)
   {
@@ -240,8 +240,8 @@ void TensorApproximationAlgorithm::greedyRankOne (const NumericalSample & x,
   } // for i
 }
 
-void TensorApproximationAlgorithm::rankOne(const NumericalSample & x,
-                                          const NumericalSample & y,
+void TensorApproximationAlgorithm::rankOne(const Sample & x,
+                                          const Sample & y,
                                           CanonicalTensorEvaluation & tensor,
                                           const UnsignedInteger i,
                                           NumericalScalar & marginalResidual,
@@ -256,7 +256,7 @@ void TensorApproximationAlgorithm::rankOne(const NumericalSample & x,
 
   NumericalScalar currentResidual = SpecFunc::MaxNumericalScalar;
 
-  NumericalSample V(dimension, NumericalPoint(size, 1.0));
+  Sample V(dimension, NumericalPoint(size, 1.0));
 
   UnsignedInteger iteration = 0;
 
@@ -357,8 +357,8 @@ void TensorApproximationAlgorithm::rankOne(const NumericalSample & x,
 }
 
 
-void TensorApproximationAlgorithm::rankM (const NumericalSample & x,
-                                          const NumericalSample & y,
+void TensorApproximationAlgorithm::rankM (const Sample & x,
+                                          const Sample & y,
                                           CanonicalTensorEvaluation & tensor,
                                           NumericalScalar & marginalResidual,
                                           NumericalScalar & marginalRelativeError)
@@ -450,8 +450,8 @@ void TensorApproximationAlgorithm::rankM (const NumericalSample & x,
   }
 }
 
-void TensorApproximationAlgorithm::rankMComponent (const NumericalSample & x,
-                                                  const NumericalSample & y,
+void TensorApproximationAlgorithm::rankMComponent (const Sample & x,
+                                                  const Sample & y,
                                                   CanonicalTensorEvaluation & tensor,
                                                   const UnsignedInteger j)
 {
@@ -460,7 +460,7 @@ void TensorApproximationAlgorithm::rankMComponent (const NumericalSample & x,
   const UnsignedInteger nj = tensor.getDegrees()[j];
 
   const UnsignedInteger m = tensor.getRank();
-  Collection<NumericalSample> V(m, NumericalSample(dimension, NumericalPoint(size, 1.0)));
+  Collection<Sample> V(m, Sample(dimension, NumericalPoint(size, 1.0)));
 
   // compute contributions
   for (UnsignedInteger i = 0; i < m; ++ i)
@@ -522,13 +522,13 @@ TensorApproximationResult TensorApproximationAlgorithm::getResult() const
 }
 
 
-NumericalSample TensorApproximationAlgorithm::getInputSample() const
+Sample TensorApproximationAlgorithm::getInputSample() const
 {
   return inputSample_;
 }
 
 
-NumericalSample TensorApproximationAlgorithm::getOutputSample() const
+Sample TensorApproximationAlgorithm::getOutputSample() const
 {
   return outputSample_;
 }

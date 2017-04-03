@@ -113,17 +113,17 @@ private:
       return value;
     }
 
-    NumericalSample operator()(const NumericalSample & sample) const
+    Sample operator()(const Sample & sample) const
     {
       const UnsignedInteger sampleSize = sample.getSize();
       const UnsignedInteger outputDimension = function_.getOutputDimension();
       const UnsignedInteger size = lowerBounds_.getSize() - 1;
       IteratedQuadrature::FunctionCollection lowerBounds(size);
       IteratedQuadrature::FunctionCollection upperBounds(size);
-      NumericalSample result(sampleSize, outputDimension);
+      Sample result(sampleSize, outputDimension);
       const Indices index(1, 0);
-      const NumericalSample sampleA(lowerBounds_[0](sample));
-      const NumericalSample sampleB(upperBounds_[0](sample));
+      const Sample sampleA(lowerBounds_[0](sample));
+      const Sample sampleB(upperBounds_[0](sample));
       for (UnsignedInteger k = 0; k < sampleSize; ++k)
       {
         const NumericalPoint x(sample[k]);

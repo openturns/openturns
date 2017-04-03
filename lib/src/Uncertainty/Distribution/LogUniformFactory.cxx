@@ -44,7 +44,7 @@ LogUniformFactory * LogUniformFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-LogUniformFactory::Implementation LogUniformFactory::build(const NumericalSample & sample) const
+LogUniformFactory::Implementation LogUniformFactory::build(const Sample & sample) const
 {
   return buildAsLogUniform(sample).clone();
 }
@@ -59,7 +59,7 @@ LogUniformFactory::Implementation LogUniformFactory::build() const
   return buildAsLogUniform().clone();
 }
 
-LogUniform LogUniformFactory::buildAsLogUniform(const NumericalSample & sample) const
+LogUniform LogUniformFactory::buildAsLogUniform(const Sample & sample) const
 {
   const NumericalScalar size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a LogUniform distribution from an empty sample";

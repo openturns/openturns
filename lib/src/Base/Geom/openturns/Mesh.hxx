@@ -53,10 +53,10 @@ public:
   explicit Mesh(const UnsignedInteger dimension = 1);
 
   /** Parameters constructor */
-  explicit Mesh(const NumericalSample & vertices);
+  explicit Mesh(const Sample & vertices);
 
   /** Parameters constructor */
-  Mesh(const NumericalSample & vertices,
+  Mesh(const Sample & vertices,
        const IndicesCollection & simplices);
 
   /** Virtual constructor method */
@@ -85,10 +85,10 @@ public:
   NumericalPoint getNearestVertex(const NumericalPoint & point) const;
 
   /** Get the index of the nearest vertex for a set of points */
-  Indices getNearestVertexIndex(const NumericalSample & points) const;
+  Indices getNearestVertexIndex(const Sample & points) const;
 
   /** Get the nearest vertex for a set of points */
-  NumericalSample getNearestVertex(const NumericalSample & points) const;
+  Sample getNearestVertex(const Sample & points) const;
 
   /** Get the map between vertices and simplices: for each vertex, list the vertices indices it belongs to */
   IndicesCollection getVerticesToSimplicesMap() const;
@@ -118,8 +118,8 @@ public:
                                           NumericalPoint & coordinates) const;
 
   /** Vertices accessor */
-  NumericalSample getVertices() const;
-  void setVertices(const NumericalSample & vertices);
+  Sample getVertices() const;
+  void setVertices(const Sample & vertices);
 
   /** Vertex accessor */
   NumericalPoint getVertex(const UnsignedInteger index) const;
@@ -191,7 +191,7 @@ protected:
 
   // An n-D mesh is a set of vertices with a topology described by a set of simplices
   // The vertices
-  NumericalSample vertices_;
+  Sample vertices_;
 
   // The simplices
   IndicesPersistentCollection simplices_;

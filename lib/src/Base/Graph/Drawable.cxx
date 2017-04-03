@@ -27,7 +27,7 @@ CLASSNAMEINIT(Drawable);
 
 /* Default constructor */
 Drawable::Drawable():
-  TypedInterfaceObject<DrawableImplementation>(Curve(NumericalSample(1, 2)).clone())
+  TypedInterfaceObject<DrawableImplementation>(Curve(Sample(1, 2)).clone())
 {
   // Nothing to do
 }
@@ -218,24 +218,24 @@ void Drawable::setOrigin(const NumericalScalar origin)
 }
 
 /* Accessor for first coordinate */
-NumericalSample Drawable::getX() const
+Sample Drawable::getX() const
 {
   return getImplementation()->getX();
 }
 
-void Drawable::setX(const NumericalSample & x)
+void Drawable::setX(const Sample & x)
 {
   copyOnWrite();
   getImplementation()->setX(x);
 }
 
 /* Accessor for second coordinate */
-NumericalSample Drawable::getY() const
+Sample Drawable::getY() const
 {
   return getImplementation()->getY();
 }
 
-void Drawable::setY(const NumericalSample & y)
+void Drawable::setY(const Sample & y)
 {
   copyOnWrite();
   getImplementation()->setY(y);
@@ -290,7 +290,7 @@ void Drawable::setTextPositions(const Description & textPositions)
 }
 
 /* Accessor for data */
-NumericalSample Drawable::getData() const
+Sample Drawable::getData() const
 {
   return getImplementation()->getData();
 }

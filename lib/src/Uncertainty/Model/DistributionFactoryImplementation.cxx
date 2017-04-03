@@ -66,9 +66,9 @@ String DistributionFactoryImplementation::__str__(const String & offset) const
 /* Here is the interface that all derived class must implement */
 
 /* Build a distribution based on a sample */
-DistributionFactoryImplementation::Implementation DistributionFactoryImplementation::build(const NumericalSample & sample) const
+DistributionFactoryImplementation::Implementation DistributionFactoryImplementation::build(const Sample & sample) const
 {
-  throw NotYetImplementedException(HERE) << "In DistributionFactoryImplementation::build(const NumericalSample & sample) const";
+  throw NotYetImplementedException(HERE) << "In DistributionFactoryImplementation::build(const Sample & sample) const";
 }
 
 /* Build a distribution based on a set of parameters */
@@ -83,12 +83,12 @@ DistributionFactoryImplementation::Implementation DistributionFactoryImplementat
   throw NotYetImplementedException(HERE) << "In DistributionFactoryImplementation::build() const";
 }
 
-DistributionFactoryResult DistributionFactoryImplementation::buildEstimator(const NumericalSample & sample) const
+DistributionFactoryResult DistributionFactoryImplementation::buildEstimator(const Sample & sample) const
 {
   return buildBootStrapEstimator(sample);
 }
 
-DistributionFactoryResult DistributionFactoryImplementation::buildEstimator(const NumericalSample & sample,
+DistributionFactoryResult DistributionFactoryImplementation::buildEstimator(const Sample & sample,
     const DistributionParameters & parameters) const
 {
   String parametersDistributionName(parameters.getDistribution().getImplementation()->getClassName());
@@ -115,10 +115,10 @@ DistributionFactoryResult DistributionFactoryImplementation::buildEstimator(cons
   {
     UnsignedInteger bootstrapSize = getBootstrapSize();
     BootstrapExperiment experiment(sample);
-    NumericalSample parameterSample(0, distribution.getParameterDimension());
+    Sample parameterSample(0, distribution.getParameterDimension());
     for (UnsignedInteger i = 0; i < bootstrapSize; ++ i)
     {
-      NumericalSample bootstrapSample(experiment.generate());
+      Sample bootstrapSample(experiment.generate());
       Distribution estimatedDistribution(build(bootstrapSample));
       NumericalPoint newEstimatedParameter(parameters.inverse(estimatedDistribution.getParameter()));
       parameterSample.add(newEstimatedParameter);
@@ -130,16 +130,16 @@ DistributionFactoryResult DistributionFactoryImplementation::buildEstimator(cons
   return result;
 }
 
-DistributionFactoryResult DistributionFactoryImplementation::buildBootStrapEstimator(const NumericalSample & sample,
+DistributionFactoryResult DistributionFactoryImplementation::buildBootStrapEstimator(const Sample & sample,
     const Bool isGaussian) const
 {
   Distribution distribution(build(sample));
   UnsignedInteger bootstrapSize = getBootstrapSize();
   BootstrapExperiment experiment(sample);
-  NumericalSample parameterSample(0, distribution.getParameterDimension());
+  Sample parameterSample(0, distribution.getParameterDimension());
   for (UnsignedInteger i = 0; i < bootstrapSize; ++ i)
   {
-    NumericalSample bootstrapSample(experiment.generate());
+    Sample bootstrapSample(experiment.generate());
     Distribution estimatedDistribution(build(bootstrapSample));
     parameterSample.add(estimatedDistribution.getParameter());
   }
@@ -158,7 +158,7 @@ DistributionFactoryResult DistributionFactoryImplementation::buildBootStrapEstim
   return result;
 }
 
-DistributionFactoryResult DistributionFactoryImplementation::buildMaximumLikelihoodEstimator (const NumericalSample & sample,
+DistributionFactoryResult DistributionFactoryImplementation::buildMaximumLikelihoodEstimator (const Sample & sample,
     const Bool isRegular) const
 {
   const UnsignedInteger size = sample.getSize();
@@ -168,8 +168,8 @@ DistributionFactoryResult DistributionFactoryImplementation::buildMaximumLikelih
   if (isRegular)
   {
     Matrix theta(parameterDimension, parameterDimension);
-    const NumericalSample pdf(distribution.computePDF(sample));
-    const NumericalSample dpdf(distribution.computePDFGradient(sample));
+    const Sample pdf(distribution.computePDF(sample));
+    const Sample dpdf(distribution.computePDFGradient(sample));
     for (UnsignedInteger i = 0; i < size; ++ i)
     {
       Matrix dpdfi(parameterDimension, 1, dpdf[i].getCollection());
@@ -183,10 +183,10 @@ DistributionFactoryResult DistributionFactoryImplementation::buildMaximumLikelih
   {
     const UnsignedInteger bootstrapSize = getBootstrapSize();
     BootstrapExperiment experiment(sample);
-    NumericalSample parameterSample(0, distribution.getParameterDimension());
+    Sample parameterSample(0, distribution.getParameterDimension());
     for (UnsignedInteger i = 0; i < bootstrapSize; ++ i)
     {
-      NumericalSample bootstrapSample(experiment.generate());
+      Sample bootstrapSample(experiment.generate());
       Distribution estimatedDistribution(build(bootstrapSample));
       parameterSample.add(estimatedDistribution.getParameter());
     }

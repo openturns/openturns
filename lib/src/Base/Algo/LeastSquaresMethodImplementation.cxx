@@ -190,7 +190,7 @@ Indices LeastSquaresMethodImplementation::getInitialIndices() const
   return initialIndices_;
 }
 
-NumericalSample LeastSquaresMethodImplementation::getInputSample() const
+Sample LeastSquaresMethodImplementation::getInputSample() const
 {
   return proxy_.getInputSample();
 }

@@ -47,8 +47,8 @@ public:
   virtual PenalizedLeastSquaresAlgorithmFactory * clone() const;
 
   /** Method to create new ApproximationAlgorithmImplementation objects */
-  virtual PenalizedLeastSquaresAlgorithm * build (const NumericalSample & x,
-      const NumericalSample & y,
+  virtual PenalizedLeastSquaresAlgorithm * build (const Sample & x,
+      const Sample & y,
       const NumericalPoint & weight,
       const Basis & psi,
       const Indices & indices) const;

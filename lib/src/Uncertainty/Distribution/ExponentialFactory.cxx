@@ -43,7 +43,7 @@ ExponentialFactory * ExponentialFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-ExponentialFactory::Implementation ExponentialFactory::build(const NumericalSample & sample) const
+ExponentialFactory::Implementation ExponentialFactory::build(const Sample & sample) const
 {
   return buildAsExponential(sample).clone();
 }
@@ -58,7 +58,7 @@ ExponentialFactory::Implementation ExponentialFactory::build() const
   return buildAsExponential().clone();
 }
 
-Exponential ExponentialFactory::buildAsExponential(const NumericalSample & sample) const
+Exponential ExponentialFactory::buildAsExponential(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Exponential distribution from an empty sample";

@@ -49,15 +49,15 @@ ImportanceSampling * ImportanceSampling::clone() const
 }
 
 /* Compute the block sample */
-NumericalSample ImportanceSampling::computeBlockSample()
+Sample ImportanceSampling::computeBlockSample()
 {
   const UnsignedInteger blockSize = getBlockSize();
   // First, compute a sample of the importance distribution
-  const NumericalSample inputSample(importanceDistribution_.getSample(blockSize));
+  const Sample inputSample(importanceDistribution_.getSample(blockSize));
   // Then, evaluate the function on this sample
-  NumericalSample blockSample(getEvent().getImplementation()->getFunction()(inputSample));
+  Sample blockSample(getEvent().getImplementation()->getFunction()(inputSample));
   // Then, modify in place this sample to take into account the change in the input distribution
-  // realizedEventSample = NumericalSample(blockSize_, inputSample.getDimension());
+  // realizedEventSample = Sample(blockSize_, inputSample.getDimension());
   for (UnsignedInteger i = 0; i < blockSize; i++)
   {
     const Bool isRealized = getEvent().getOperator()(blockSample[i][0], getEvent().getThreshold());

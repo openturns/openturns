@@ -61,8 +61,8 @@ int main(int argc, char *argv[])
     NumericalPoint sigma(distribution.getStandardDeviation());
     NumericalPoint xMin(mean - 2.9 * sigma);
     NumericalPoint xMax(mean + 2.9 * sigma);
-    NumericalSample grid;
-    NumericalSample result(distribution.computePDF(xMin, xMax, points, grid));
+    Sample grid;
+    Sample result(distribution.computePDF(xMin, xMax, points, grid));
     for (UnsignedInteger i = 0; i < grid.getSize(); ++i)
       fullprint << grid[i][0] << ";" << grid[i][1] << ";" << grid[i][2] << ";" << result[i][0] << std::endl;
     // 2) 3D test using FFT

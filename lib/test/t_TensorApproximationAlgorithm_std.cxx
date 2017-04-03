@@ -48,8 +48,8 @@ int main(int argc, char *argv[])
     OrthogonalProductFunctionFactory functionFactory(factoryCollection);
 
     UnsignedInteger size = 1000;
-    NumericalSample X = distribution.getSample(size);
-    NumericalSample Y = model(X);
+    Sample X = distribution.getSample(size);
+    Sample Y = model(X);
     Indices nk(dim, 10);
     UnsignedInteger maxRank = 5;
     TensorApproximationAlgorithm algo(X, Y, distribution, functionFactory, nk, maxRank);

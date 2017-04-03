@@ -67,8 +67,8 @@ try:
     epsilon.setTimeGrid(timeGrid)
 
     # Last coefficients values
-    lastValues = NumericalSample(p, dim)
-    lastNoiseValues = NumericalSample(q, dim)
+    lastValues = Sample(p, dim)
+    lastNoiseValues = Sample(q, dim)
 
     #
     for j in range(dim):

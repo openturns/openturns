@@ -4,4 +4,4 @@ vect dimension= 4
 vect realization (first )= class=NumericalPoint name=Unnamed dimension=4 values=[101,102,103,104]
 vect realization (second)= class=NumericalPoint name=Unnamed dimension=4 values=[101,102,103,104]
 vect realization (third )= class=NumericalPoint name=Unnamed dimension=4 values=[101,102,103,104]
-vect sample = class=NumericalSample name=Unnamed implementation=class=NumericalSampleImplementation name=Unnamed size=5 dimension=4 description=[x0,x1,x2,x3] data=[[101,102,103,104],[101,102,103,104],[101,102,103,104],[101,102,103,104],[101,102,103,104]]
+vect sample = class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=5 dimension=4 description=[x0,x1,x2,x3] data=[[101,102,103,104],[101,102,103,104],[101,102,103,104],[101,102,103,104],[101,102,103,104]]

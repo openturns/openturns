@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
   try
   {
     RegularGrid mesh(0.0, 1.0, 4);
-    NumericalSample values(0, 1);
+    Sample values(0, 1);
     values.add(NumericalPoint(1, 0.5));
     values.add(NumericalPoint(1, 1.5));
     values.add(NumericalPoint(1, 1.0));

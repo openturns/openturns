@@ -52,8 +52,8 @@ String PenalizedLeastSquaresAlgorithmFactory::__repr__() const
 }
 
 /* Method to create new PenalizedLeastSquaresAlgorithm objects */
-PenalizedLeastSquaresAlgorithm * PenalizedLeastSquaresAlgorithmFactory::build(const NumericalSample & x,
-    const NumericalSample & y,
+PenalizedLeastSquaresAlgorithm * PenalizedLeastSquaresAlgorithmFactory::build(const Sample & x,
+    const Sample & y,
     const NumericalPoint & weight,
     const Basis & psi,
     const Indices & indices) const

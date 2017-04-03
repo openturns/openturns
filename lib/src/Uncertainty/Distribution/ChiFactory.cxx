@@ -42,7 +42,7 @@ ChiFactory * ChiFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-ChiFactory::Implementation ChiFactory::build(const NumericalSample & sample) const
+ChiFactory::Implementation ChiFactory::build(const Sample & sample) const
 {
   return buildAsChi(sample).clone();
 }
@@ -57,7 +57,7 @@ ChiFactory::Implementation ChiFactory::build() const
   return buildAsChi().clone();
 }
 
-Chi ChiFactory::buildAsChi(const NumericalSample & sample) const
+Chi ChiFactory::buildAsChi(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Chi distribution from an empty sample";

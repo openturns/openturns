@@ -84,7 +84,7 @@ Graph UniVariateFunctionImplementation::draw(const NumericalScalar xMin,
     const NumericalScalar xMax,
     const UnsignedInteger pointNumber) const
 {
-  NumericalSample data(pointNumber, 2);
+  Sample data(pointNumber, 2);
   for (UnsignedInteger i = 0; i < pointNumber; ++ i)
   {
     const NumericalScalar x = xMin + (xMax - xMin) * i / (1.0 * pointNumber);

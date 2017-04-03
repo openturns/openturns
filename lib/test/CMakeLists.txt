@@ -233,11 +233,11 @@ ot_check_test (Secant_std)
 ot_check_test (RungeKutta_std)
 
 # Stat
-ot_check_test (NumericalSample_std)
-ot_check_test (NumericalSample_split)
-ot_check_test (NumericalSample_large)
-ot_check_test (NumericalSample_computation)
-ot_check_test (NumericalSample_operators)
+ot_check_test (Sample_std)
+ot_check_test (Sample_split)
+ot_check_test (Sample_large)
+ot_check_test (Sample_computation)
+ot_check_test (Sample_operators)
 ot_check_test (HistoryStrategy_std)
 ot_check_test (CovarianceMatrixLapack_std)
 ot_check_test (CorrelationMatrix_std)
@@ -645,7 +645,7 @@ ot_check_test (Function_std)
 ot_check_test (ComposedFunction_std)
 
 # Stat
-ot_check_test (NumericalSample_csv)
+ot_check_test (Sample_csv)
 
 # Diff
 ot_check_test (NonCenteredFiniteDifferenceGradient_std)

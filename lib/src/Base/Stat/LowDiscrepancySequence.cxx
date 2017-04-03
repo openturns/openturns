@@ -80,14 +80,14 @@ NumericalPoint LowDiscrepancySequence::generate() const
 
 
 /* Generate a sample of pseudo-random vectors of numbers uniformly distributed over [0, 1) */
-NumericalSample LowDiscrepancySequence::generate(const UnsignedInteger size) const
+Sample LowDiscrepancySequence::generate(const UnsignedInteger size) const
 {
   return getImplementation()->generate(size);
 }
 
 
 /* Compute the star discrepancy of a sample uniformly distributed over [0, 1) */
-NumericalScalar LowDiscrepancySequence::computeStarDiscrepancy(const NumericalSample & sample) const
+NumericalScalar LowDiscrepancySequence::computeStarDiscrepancy(const Sample & sample) const
 {
   return getImplementation()->ComputeStarDiscrepancy(sample);
 }

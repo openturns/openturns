@@ -23,7 +23,7 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/CovarianceMatrix.hxx"
@@ -75,7 +75,7 @@ public:
   virtual NumericalPoint getRealization() const;
 
   /** Numerical sample accessor */
-  virtual NumericalSample getSample(const UnsignedInteger size) const;
+  virtual Sample getSample(const UnsignedInteger size) const;
 
   /** Mean accessor */
   virtual NumericalPoint getMean() const;

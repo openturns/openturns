@@ -45,14 +45,14 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build(const NumericalSample & sample) const;
+  Implementation build(const Sample & sample) const;
   Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
-  Normal buildAsNormal(const NumericalSample & sample) const;
+  Normal buildAsNormal(const Sample & sample) const;
   Normal buildAsNormal(const NumericalPoint & parameters) const;
   Normal buildAsNormal() const;
 
-  DistributionFactoryResult buildEstimator(const NumericalSample & sample) const;
+  DistributionFactoryResult buildEstimator(const Sample & sample) const;
 
 }; /* class NormalFactory */
 

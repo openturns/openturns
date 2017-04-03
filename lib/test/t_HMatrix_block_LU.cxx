@@ -29,10 +29,10 @@ class TestHMatrixTensorRealAssemblyFunction : public HMatrixTensorRealAssemblyFu
 {
 private:
   const CovarianceModel & covarianceModel_;
-  const NumericalSample & vertices_;
+  const Sample & vertices_;
 
 public:
-  TestHMatrixTensorRealAssemblyFunction(const CovarianceModel & covarianceModel, const NumericalSample & vertices)
+  TestHMatrixTensorRealAssemblyFunction(const CovarianceModel & covarianceModel, const Sample & vertices)
     : HMatrixTensorRealAssemblyFunction(covarianceModel.getDimension())
     , covarianceModel_(covarianceModel)
     , vertices_(vertices)
@@ -69,8 +69,8 @@ int main(int argc, char *argv[])
     const NumericalPoint lowerBound(2, 0.0);
     const NumericalPoint upperBound(2, 1.0);
     const Mesh mesh2D(intervalMesher.build(Interval(lowerBound, upperBound)));
-    const NumericalSample vertices2D(mesh2D.getVertices());
-    NumericalSample vertices(vertices2D.getSize(), 3);
+    const Sample vertices2D(mesh2D.getVertices());
+    Sample vertices(vertices2D.getSize(), 3);
     for (UnsignedInteger i = 0; i < vertices2D.getSize(); ++i)
     {
       vertices[i][0] = vertices2D[i][0];

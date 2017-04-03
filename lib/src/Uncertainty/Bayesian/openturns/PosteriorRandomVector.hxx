@@ -63,7 +63,7 @@ public:
   virtual NumericalPoint getRealization() const;
 
   /** Numerical sample accessor */
-  virtual NumericalSample getSample(const UnsignedInteger size) const;
+  virtual Sample getSample(const UnsignedInteger size) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

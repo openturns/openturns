@@ -50,7 +50,7 @@ NegativeBinomialFactory * NegativeBinomialFactory::clone() const
 struct NegativeBinomialFactoryParameterConstraint
 {
   /** Constructor from a sample and a derivative factor estimate */
-  NegativeBinomialFactoryParameterConstraint(const NumericalSample & sample,
+  NegativeBinomialFactoryParameterConstraint(const Sample & sample,
       const NumericalScalar mean):
     sample_(sample),
     mean_(mean)
@@ -71,12 +71,12 @@ struct NegativeBinomialFactoryParameterConstraint
   }
 
   // The data
-  const NumericalSample & sample_;
+  const Sample & sample_;
   // Mean value
   NumericalScalar mean_;
 };
 
-NegativeBinomialFactory::Implementation NegativeBinomialFactory::build(const NumericalSample & sample) const
+NegativeBinomialFactory::Implementation NegativeBinomialFactory::build(const Sample & sample) const
 {
   return buildAsNegativeBinomial(sample).clone();
 }
@@ -91,7 +91,7 @@ NegativeBinomialFactory::Implementation NegativeBinomialFactory::build() const
   return buildAsNegativeBinomial().clone();
 }
 
-NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const NumericalSample & sample) const
+NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a NegativeBinomial distribution from an empty sample";

@@ -45,10 +45,10 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build(const NumericalSample & sample) const;
+  Implementation build(const Sample & sample) const;
   Implementation build(const NumericalPoint & parameters) const;
   Implementation build() const;
-  Geometric buildAsGeometric(const NumericalSample & sample) const;
+  Geometric buildAsGeometric(const Sample & sample) const;
   Geometric buildAsGeometric(const NumericalPoint & parameters) const;
   Geometric buildAsGeometric() const;
 

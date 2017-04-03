@@ -55,13 +55,13 @@ String RungeKutta::__repr__() const
 }
 
 /* Perform cross-validation */
-NumericalSample RungeKutta::solve(const NumericalPoint & initialState,
+Sample RungeKutta::solve(const NumericalPoint & initialState,
                                   const NumericalPoint & timeGrid) const
 {
   if (initialState.getDimension() != transitionFunction_.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the initial state has a dimension=" << initialState.getDimension() << ", expected dimension=" << transitionFunction_.getInputDimension();
   // Quick return if the time grid is empty
   const UnsignedInteger steps = timeGrid.getSize();
-  NumericalSample result(steps, transitionFunction_.getOutputDimension());
+  Sample result(steps, transitionFunction_.getOutputDimension());
   if (steps == 0) return result;
   NumericalScalar t = timeGrid[0];
   NumericalPoint state(initialState);

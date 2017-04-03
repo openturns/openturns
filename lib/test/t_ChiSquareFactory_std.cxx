@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
   {
     ChiSquare distribution(0.5);
     UnsignedInteger size = 10000;
-    NumericalSample sample(distribution.getSample(size));
+    Sample sample(distribution.getSample(size));
     ChiSquareFactory factory;
     CovarianceMatrix covariance;
     // Distribution estimatedDistribution(factory.build(sample, covariance));

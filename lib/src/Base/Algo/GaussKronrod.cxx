@@ -73,7 +73,7 @@ NumericalPoint GaussKronrod::integrate(const Function & function,
   if (interval.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given interval should be 1D, here dimension=" << interval.getDimension();
   NumericalPoint ai(0);
   NumericalPoint bi(0);
-  NumericalSample fi(0, 0);
+  Sample fi(0, 0);
   NumericalPoint ei(0);
   return integrate(function, interval.getLowerBound()[0], interval.getUpperBound()[0], error, ai, bi, fi, ei);
 }
@@ -84,7 +84,7 @@ NumericalPoint GaussKronrod::integrate(const Function & function,
                                        NumericalScalar & error,
                                        NumericalPoint & ai,
                                        NumericalPoint & bi,
-                                       NumericalSample & fi,
+                                       Sample & fi,
                                        NumericalPoint & ei) const
 {
   if (function.getInputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can integrate only 1D function, here input dimension=" << function.getInputDimension();
@@ -95,7 +95,7 @@ NumericalPoint GaussKronrod::integrate(const Function & function,
   ai[0] = a;
   bi = NumericalPoint(maximumSubIntervals_);
   bi[0] = b;
-  fi = NumericalSample(maximumSubIntervals_, outputDimension);
+  fi = Sample(maximumSubIntervals_, outputDimension);
   ei = NumericalPoint(maximumSubIntervals_);
   UnsignedInteger ip = 0;
   UnsignedInteger im = 0;
@@ -141,7 +141,7 @@ NumericalPoint GaussKronrod::integrate(const Function & function,
                                        NumericalPoint & error,
                                        NumericalPoint & ai,
                                        NumericalPoint & bi,
-                                       NumericalSample & fi,
+                                       Sample & fi,
                                        NumericalPoint & ei) const
 {
   // Here we initialize the error to a 1D NumericalPoint in order to use the interface with scalar error
@@ -158,7 +158,7 @@ NumericalPoint GaussKronrod::computeRule(const Function & function,
   const NumericalScalar width = 0.5 * (b - a);
   const NumericalScalar center = 0.5 * (a + b);
   // Generate the set of points
-  NumericalSample x(2 * rule_.order_ + 1, 1);
+  Sample x(2 * rule_.order_ + 1, 1);
   x[0][0] = center;
   for (UnsignedInteger i = 0; i < rule_.order_; ++i)
   {
@@ -167,7 +167,7 @@ NumericalPoint GaussKronrod::computeRule(const Function & function,
     x[2 * i + 2][0] = center + t;
   }
   // Use possible parallelization of the evaluation
-  const NumericalSample y(function(x));
+  const Sample y(function(x));
   NumericalPoint value(y[0]);
   NumericalPoint resultGauss(value * rule_.zeroGaussWeight_);
   NumericalPoint resultGaussKronrod(value * rule_.zeroKronrodWeight_);

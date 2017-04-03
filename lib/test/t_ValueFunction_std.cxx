@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
     fullprint << "mySpatialFunc output dimension=" << mySpatialFunc.getOutputDimension() << std::endl;
     /* Create a TimeSeries */
     RegularGrid tg(0.0, 0.2, 6);
-    NumericalSample data(tg.getN(), myFunc.getInputDimension());
+    Sample data(tg.getN(), myFunc.getInputDimension());
     for (UnsignedInteger i = 0; i < data.getSize(); ++i)
       for (UnsignedInteger j = 0; j < data.getDimension(); ++j)
         data(i, j) = i * data.getDimension() + j;

@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     fullprint << sequence << std::endl;
 
     // Create a numerical sample of the sequence
-    NumericalSample haltonSample(sequence.generate(10));
+    Sample haltonSample(sequence.generate(10));
     fullprint << haltonSample << std::endl;
 
     // Create another Halton' sequence of dimension 2 to estimate Pi in [0; 1)^2

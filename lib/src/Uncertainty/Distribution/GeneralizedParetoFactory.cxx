@@ -52,7 +52,7 @@ GeneralizedParetoFactory * GeneralizedParetoFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-GeneralizedParetoFactory::Implementation GeneralizedParetoFactory::build(const NumericalSample & sample) const
+GeneralizedParetoFactory::Implementation GeneralizedParetoFactory::build(const Sample & sample) const
 {
   return buildAsGeneralizedPareto(sample).clone();
 }
@@ -67,7 +67,7 @@ GeneralizedParetoFactory::Implementation GeneralizedParetoFactory::build() const
   return buildAsGeneralizedPareto().clone();
 }
 
-GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto(const NumericalSample & sample) const
+GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto(const Sample & sample) const
 {
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a GeneralizedPareto distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const UnsignedInteger size = sample.getSize();
@@ -110,7 +110,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto() const
 }
 
 /* Algorithm associated with the method of moments */
-GeneralizedPareto GeneralizedParetoFactory::buildMethodOfMoments(const NumericalSample & sample) const
+GeneralizedPareto GeneralizedParetoFactory::buildMethodOfMoments(const Sample & sample) const
 {
   const NumericalScalar mean = sample.computeMean()[0];
   const NumericalScalar std = sample.computeStandardDeviationPerComponent()[0];
@@ -126,12 +126,12 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfMoments(const Numerical
 struct GeneralizedParetoFactoryParameterConstraint
 {
   /** Constructor from a sample and a derivative factor estimate */
-  GeneralizedParetoFactoryParameterConstraint(const NumericalSample & sample)
+  GeneralizedParetoFactoryParameterConstraint(const Sample & sample)
     : sampleY_(0, 1)
     , size_(sample.getSize())
   {
-    const NumericalSample sortedSample(sample.sort(0));
-    sampleY_ = NumericalSample(size_ - 2, 1);
+    const Sample sortedSample(sample.sort(0));
+    sampleY_ = Sample(size_ - 2, 1);
     const NumericalScalar xMin = sortedSample[0][0];
     for (UnsignedInteger j = 0; j < size_ - 2; ++j)
     {
@@ -168,12 +168,12 @@ struct GeneralizedParetoFactoryParameterConstraint
     return NumericalPoint(1, -exponentialRegressionLogLikelihood);
   }
 
-  NumericalSample sampleY_;
+  Sample sampleY_;
   UnsignedInteger size_;
 };
 
 /* Algorithm associated with the method of exponential regression */
-GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(const NumericalSample & sample) const
+GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(const Sample & sample) const
 {
   GeneralizedParetoFactoryParameterConstraint constraint(sample);
   Function f(bindMethod<GeneralizedParetoFactoryParameterConstraint, NumericalPoint, NumericalPoint>(constraint, &GeneralizedParetoFactoryParameterConstraint::computeConstraint, 1, 1));
@@ -199,7 +199,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(c
   const NumericalScalar xi = solver_.getResult().getOptimalPoint()[0];
 
   const NumericalScalar mean = sample.computeMean()[0];
-  const NumericalSample sortedSample(sample.sort(0));
+  const Sample sortedSample(sample.sort(0));
   // Compute the first probability weighted moment
   NumericalScalar m = 0.0;
   const UnsignedInteger size = sample.getSize();
@@ -212,10 +212,10 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(c
 }
 
 /* Algorithm associated with the method of modified moments */
-GeneralizedPareto GeneralizedParetoFactory::buildMethodOfProbabilityWeightedMoments(const NumericalSample & sample) const
+GeneralizedPareto GeneralizedParetoFactory::buildMethodOfProbabilityWeightedMoments(const Sample & sample) const
 {
   const NumericalScalar mean = sample.computeMean()[0];
-  const NumericalSample sortedSample(sample.sort(0));
+  const Sample sortedSample(sample.sort(0));
   // Compute the first probability weighted moment
   NumericalScalar m = 0.0;
   const UnsignedInteger size = sample.getSize();

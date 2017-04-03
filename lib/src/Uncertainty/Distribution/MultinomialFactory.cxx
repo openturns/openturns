@@ -45,7 +45,7 @@ MultinomialFactory * MultinomialFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-MultinomialFactory::Implementation MultinomialFactory::build(const NumericalSample & sample) const
+MultinomialFactory::Implementation MultinomialFactory::build(const Sample & sample) const
 {
   return buildAsMultinomial(sample).clone();
 }
@@ -55,7 +55,7 @@ MultinomialFactory::Implementation MultinomialFactory::build() const
   return buildAsMultinomial().clone();
 }
 
-Multinomial MultinomialFactory::buildAsMultinomial(const NumericalSample & sample) const
+Multinomial MultinomialFactory::buildAsMultinomial(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Multinomial distribution from an empty sample";
   // Check if each component of the sample is an integer, compute the mean and extract the maximum value

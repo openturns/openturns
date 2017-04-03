@@ -44,7 +44,7 @@ InverseNormalFactory * InverseNormalFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-InverseNormalFactory::Implementation InverseNormalFactory::build(const NumericalSample & sample) const
+InverseNormalFactory::Implementation InverseNormalFactory::build(const Sample & sample) const
 {
   return buildAsInverseNormal(sample).clone();
 }
@@ -59,7 +59,7 @@ InverseNormalFactory::Implementation InverseNormalFactory::build() const
   return buildAsInverseNormal().clone();
 }
 
-InverseNormal InverseNormalFactory::buildAsInverseNormal(const NumericalSample & sample) const
+InverseNormal InverseNormalFactory::buildAsInverseNormal(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an InverseNormal distribution from an empty sample";

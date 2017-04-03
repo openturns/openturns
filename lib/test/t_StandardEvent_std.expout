@@ -4,7 +4,7 @@ myStandardEvent antecedent realization (as a RandomVector)=class=NumericalPoint 
 myStandardEvent realization=class=NumericalPoint name=Unnamed dimension=1 values=[1]
 myStandardEvent antecedent realization=class=NumericalPoint name=Unnamed dimension=4 values=[-2.29006,-1.28289,-1.31178,-0.0907838]
 myStandardEvent antecedent distribution cdf=0.501067
-myStandardEvent sample=class=NumericalSample name=EventRandomVector sample implementation=class=NumericalSampleImplementation name=EventRandomVector sample size=10 dimension=1 description=[d] data=[[1],[1],[1],[0],[1],[1],[1],[1],[0],[0]]
+myStandardEvent sample=class=Sample name=EventRandomVector sample implementation=class=SampleImplementation name=EventRandomVector sample size=10 dimension=1 description=[d] data=[[1],[1],[1],[0],[1],[1],[1],[1],[0],[0]]
 sample mean=class=NumericalPoint name=Unnamed dimension=4 values=[0.0227422,-0.024877,-0.026565,-0.0219003]
 sample covariance=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[0.986028,-0.018174,-0.0104775,0.00791811,-0.018174,1.01902,-0.0103922,0.00475431,-0.0104775,-0.0103922,0.974754,-0.0277212,0.00791811,0.00475431,-0.0277212,1.04267]
 Failure probability (Event)=class=NumericalPoint name=Unnamed dimension=1 values=[0.864]

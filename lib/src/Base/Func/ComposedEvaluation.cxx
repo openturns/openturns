@@ -98,11 +98,11 @@ NumericalPoint ComposedEvaluation::operator() (const NumericalPoint & inP) const
 }
 
 /* Operator () */
-NumericalSample ComposedEvaluation::operator() (const NumericalSample & inSample) const
+Sample ComposedEvaluation::operator() (const Sample & inSample) const
 {
   callsNumber_ += inSample.getSize();
-  const NumericalSample rightSample(p_rightFunction_->operator()(inSample));
-  NumericalSample leftSample(p_leftFunction_->operator()(rightSample));
+  const Sample rightSample(p_rightFunction_->operator()(inSample));
+  Sample leftSample(p_leftFunction_->operator()(rightSample));
   leftSample.setDescription(getOutputDescription());
   if (isHistoryEnabled_)
   {

@@ -122,17 +122,17 @@ int main(int argc, char *argv[])
 
     // We append a sample to a time series
     TimeSeries ts5(3, DIM);
-    NumericalSample ns1(3, NumericalPoint(DIM, 99.9));
+    Sample ns1(3, NumericalPoint(DIM, 99.9));
     fullprint << "ts5=" << ts5 << std::endl;
     ts5.add( ns1 );
     fullprint << "ts5=" << ts5 << std::endl;
 
     // We retrieve the values of the time series as a sample
-    NumericalSample ns2 = ts5.getSample();
+    Sample ns2 = ts5.getSample();
     fullprint << "ns2=" << ns2 << std::endl;
 
     // We build a time series from a time grid and a sample
-    NumericalSample ns3 = ts4.getSample();
+    Sample ns3 = ts4.getSample();
     TimeSeries ts6( tg2, ns3 );
     fullprint << "ts6=" << ts6 << std::endl;
 

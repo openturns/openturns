@@ -23,7 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/TestResult.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -37,11 +37,11 @@ class OT_API NormalityTest
 public:
 
   /** Anderson Darling normality test for normal distributions. */
-  static TestResult AndersonDarlingNormal(const NumericalSample & sample,
+  static TestResult AndersonDarlingNormal(const Sample & sample,
                                           const NumericalScalar level = 0.95);
 
   /** Cramer Von Mises normality test for normal distributions. */
-  static TestResult CramerVonMisesNormal(const NumericalSample & sample,
+  static TestResult CramerVonMisesNormal(const Sample & sample,
                                          const NumericalScalar level = 0.95);
 
 private:

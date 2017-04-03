@@ -18,7 +18,7 @@ try:
         aCollection, NumericalPoint(aCollection.getSize(), 1.0))
     print("mixture=",  distribution)
     classifier = Classifier(MixtureClassifier(distribution))
-    inS = NumericalSample()
+    inS = Sample()
     inS.add(NumericalPoint(1, 2.))
     inS.add(NumericalPoint(1, 4.))
     inS.add(NumericalPoint(1, 6.))

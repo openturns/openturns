@@ -12,7 +12,7 @@ Available constructors:
 
 Parameters
 ----------
-inputSample, outputSample : :class:`~openturns.NumericalSample` or 2d-array
+inputSample, outputSample : :class:`~openturns.Sample` or 2d-array
     The samples :math:`(\vect{x}_k)_{1 \leq k \leq N} \in \Rset^n` and :math:`(\vect{y}_k)_{1 \leq k \leq N}\in \Rset^d`.
 inputTransformation : :class:`~openturns.Function`
     Function :math:`T` used to normalize the input sample.
@@ -189,7 +189,7 @@ Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
 
 >>> import openturns as ot
 >>> f = ot.SymbolicFunction(['x'], ['x * sin(x)'])
->>> inputSample = ot.NumericalSample([[1.0], [3.0], [5.0], [6.0], [7.0], [8.0]])
+>>> inputSample = ot.Sample([[1.0], [3.0], [5.0], [6.0], [7.0], [8.0]])
 >>> outputSample = f(inputSample)
 
 Create the algorithm:
@@ -245,7 +245,7 @@ result : :class:`~openturns.GeneralLinearModelResult`
 
 Returns
 -------
-inputSample : :class:`~openturns.NumericalSample`
+inputSample : :class:`~openturns.Sample`
     The input sample :math:`(\vect{x}_k)_{1 \leq k \leq N}`."
 
 // ---------------------------------------------------------------------
@@ -255,7 +255,7 @@ inputSample : :class:`~openturns.NumericalSample`
 
 Returns
 -------
-outputSample : :class:`~openturns.NumericalSample`
+outputSample : :class:`~openturns.Sample`
     The output sample :math:`(\vect{y}_k)_{1 \leq k \leq N}` ."
 
 // ---------------------------------------------------------------------
@@ -279,7 +279,7 @@ Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
 
 >>> import openturns as ot
 >>> f = ot.SymbolicFunction(['x0'], ['x0 * sin(x0)'])
->>> inputSample = ot.NumericalSample([[1.0], [3.0], [5.0], [6.0], [7.0], [8.0]])
+>>> inputSample = ot.Sample([[1.0], [3.0], [5.0], [6.0], [7.0], [8.0]])
 >>> outputSample = f(inputSample)
 
 Create the algorithm:

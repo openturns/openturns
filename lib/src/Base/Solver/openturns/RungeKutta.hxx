@@ -49,7 +49,7 @@ public:
   virtual String __repr__() const;
 
   /** Perform cross-validation */
-  NumericalSample solve(const NumericalPoint & initialState,
+  Sample solve(const NumericalPoint & initialState,
                         const NumericalPoint & timeGrid) const;
 
   /** Method save() stores the object through the StorageManager */

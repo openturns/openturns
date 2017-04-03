@@ -39,8 +39,8 @@ HypothesisTest::HypothesisTest()
 
 
 /* Independance test between 2 scalar scalar samples for discrete distributions  */
-TestResult HypothesisTest::ChiSquared(const NumericalSample & firstSample,
-                                      const NumericalSample & secondSample,
+TestResult HypothesisTest::ChiSquared(const Sample & firstSample,
+                                      const Sample & secondSample,
                                       const NumericalScalar level)
 {
   if ((firstSample.getDimension() != 1) || (secondSample.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: the ChiSquared test can be performed only between two 1D samples.";
@@ -48,8 +48,8 @@ TestResult HypothesisTest::ChiSquared(const NumericalSample & firstSample,
 }
 
 /* Independence Pearson test between 2 scalar samples which form a gaussian vector: test the linear relation  */
-TestResult HypothesisTest::Pearson(const NumericalSample & firstSample,
-                                   const NumericalSample & secondSample,
+TestResult HypothesisTest::Pearson(const Sample & firstSample,
+                                   const Sample & secondSample,
                                    const NumericalScalar level)
 {
   if ((firstSample.getDimension() != 1) || (secondSample.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: the Pearson test can be performed only between two 1D samples.";
@@ -57,8 +57,8 @@ TestResult HypothesisTest::Pearson(const NumericalSample & firstSample,
 }
 
 /* Smirnov test if two scalar samples (of sizes not necessarily equal) follow the same distribution (only for continuous distributions)*/
-TestResult HypothesisTest::Smirnov(const NumericalSample & firstSample,
-                                   const NumericalSample & secondSample,
+TestResult HypothesisTest::Smirnov(const Sample & firstSample,
+                                   const Sample & secondSample,
                                    const NumericalScalar level)
 {
   if ((firstSample.getDimension() != 1) || (secondSample.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: the Smirnov test can be performed only between two 1D samples.";
@@ -66,8 +66,8 @@ TestResult HypothesisTest::Smirnov(const NumericalSample & firstSample,
 }
 
 /* Spearman test between 2 scalar samples : test the monotonous relation  (only for continuous distributions) */
-TestResult HypothesisTest::Spearman(const NumericalSample & firstSample,
-                                    const NumericalSample & secondSample,
+TestResult HypothesisTest::Spearman(const Sample & firstSample,
+                                    const Sample & secondSample,
                                     const NumericalScalar level)
 {
   if ((firstSample.getDimension() != 1) || (secondSample.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: the Spearman test can be performed only between two 1D samples.";
@@ -75,8 +75,8 @@ TestResult HypothesisTest::Spearman(const NumericalSample & firstSample,
 }
 
 /* Generic invocation of a R script for executing a test between two 1D samples */
-TestResult HypothesisTest::RunTwoSamplesRTest(const NumericalSample & firstSample,
-    const NumericalSample & secondSample,
+TestResult HypothesisTest::RunTwoSamplesRTest(const Sample & firstSample,
+    const Sample & secondSample,
     const NumericalScalar level,
     const String & testName)
 {
@@ -101,7 +101,7 @@ TestResult HypothesisTest::RunTwoSamplesRTest(const NumericalSample & firstSampl
   const String RExecutable(ResourceMap::Get("R-executable-command"));
   OSS systemCommand;
   if (RExecutable != "") systemCommand << RExecutable << " --no-save --silent < \"" << commandFileName << "\"" << Os::GetDeleteCommandOutput();
-  else throw NotYetImplementedException(HERE) << "In HypothesisTest::RunTwoSamplesRTest(const NumericalSample & firstSample, const NumericalSample & secondSample, const NumericalScalar level, const String & testName): needs R. Please install it and set the absolute path of the R executable in ResourceMap.";
+  else throw NotYetImplementedException(HERE) << "In HypothesisTest::RunTwoSamplesRTest(const Sample & firstSample, const Sample & secondSample, const NumericalScalar level, const String & testName): needs R. Please install it and set the absolute path of the R executable in ResourceMap.";
   const int returnCode(Os::ExecuteCommand(String(systemCommand).c_str()));
   if (returnCode != 0) throw InternalException(HERE) << "Error: unable to execute the system command " << String(systemCommand) << " returned code is " << returnCode;
   // Parse result file
@@ -129,8 +129,8 @@ TestResult HypothesisTest::RunTwoSamplesRTest(const NumericalSample & firstSampl
 }
 
 /* Independence Pearson test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numeriacl sample extracted from firstSample (ith coordinate of each point of the numerical sample), PartialPearson performs the Independence Pearson test simultaneously on firstSample[i] and secondSample, for i in the selection. For all i, it is supposed that the couple (firstSample[i] and secondSample) is issued from a gaussian  vector. */
-HypothesisTest::TestResultCollection HypothesisTest::PartialPearson(const NumericalSample & firstSample,
-    const NumericalSample & secondSample,
+HypothesisTest::TestResultCollection HypothesisTest::PartialPearson(const Sample & firstSample,
+    const Sample & secondSample,
     const Indices & selection,
     const NumericalScalar level)
 {
@@ -140,8 +140,8 @@ HypothesisTest::TestResultCollection HypothesisTest::PartialPearson(const Numeri
 }
 
 /* Regression test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), PartialRegression performs the Regression test simultaneously on all firstSample[i] and secondSample, for i in the selection. The Regression test tests ifthe regression model between two scalar numerical samples is significant. It is based on the deviation analysis of the regression. The Fisher distribution is used. */
-HypothesisTest::TestResultCollection HypothesisTest::PartialRegression(const NumericalSample & firstSample,
-    const NumericalSample & secondSample,
+HypothesisTest::TestResultCollection HypothesisTest::PartialRegression(const Sample & firstSample,
+    const Sample & secondSample,
     const Indices & selection,
     const NumericalScalar level)
 {
@@ -155,8 +155,8 @@ HypothesisTest::TestResultCollection HypothesisTest::PartialRegression(const Num
 }
 
 /* Spearman test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), PartialSpearman performs the Independence Spearman test simultaneously on firstSample[i] and secondSample, for i in the selection. */
-HypothesisTest::TestResultCollection HypothesisTest::PartialSpearman(const NumericalSample & firstSample,
-    const NumericalSample & secondSample,
+HypothesisTest::TestResultCollection HypothesisTest::PartialSpearman(const Sample & firstSample,
+    const Sample & secondSample,
     const Indices & selection,
     const NumericalScalar level)
 {
@@ -166,8 +166,8 @@ HypothesisTest::TestResultCollection HypothesisTest::PartialSpearman(const Numer
 }
 
 /* Independence Pearson test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), FullPearson performs the Independence Pearson test simultaneously on all firstSample[i] and secondSample. For all i, it is supposed that the couple (firstSample[i] and secondSample) is issued from a gaussian  vector. */
-HypothesisTest::TestResultCollection HypothesisTest::FullPearson(const NumericalSample & firstSample,
-    const NumericalSample & secondSample,
+HypothesisTest::TestResultCollection HypothesisTest::FullPearson(const Sample & firstSample,
+    const Sample & secondSample,
     const NumericalScalar level)
 {
   const UnsignedInteger dimension = firstSample.getDimension();
@@ -177,8 +177,8 @@ HypothesisTest::TestResultCollection HypothesisTest::FullPearson(const Numerical
 }
 
 /* Regression test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), FullRegression performs the Regression test simultaneously on all firstSample[i] and secondSample. The Regression test tests if the regression model between two scalar numerical samples is significant. It is based on the deviation analysis of the regression. The Fisher distribution is used. */
-HypothesisTest::TestResultCollection HypothesisTest::FullRegression(const NumericalSample & firstSample,
-    const NumericalSample & secondSample,
+HypothesisTest::TestResultCollection HypothesisTest::FullRegression(const Sample & firstSample,
+    const Sample & secondSample,
     const NumericalScalar level)
 {
   const UnsignedInteger dimension = firstSample.getDimension();
@@ -188,8 +188,8 @@ HypothesisTest::TestResultCollection HypothesisTest::FullRegression(const Numeri
 }
 
 /* Spearman test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), PartialSpearman performs the Independence Spearman test simultaneously on all firstSample[i] and secondSample. */
-HypothesisTest::TestResultCollection HypothesisTest::FullSpearman(const NumericalSample & firstSample,
-    const NumericalSample & secondSample,
+HypothesisTest::TestResultCollection HypothesisTest::FullSpearman(const Sample & firstSample,
+    const Sample & secondSample,
     const NumericalScalar level)
 {
   const UnsignedInteger dimension = firstSample.getDimension();
@@ -199,8 +199,8 @@ HypothesisTest::TestResultCollection HypothesisTest::FullSpearman(const Numerica
 }
 
 /* Generic invocation of a R script for testing the partial correlation between two samples */
-HypothesisTest::TestResultCollection HypothesisTest::RunTwoSamplesASelectionRTest(const NumericalSample & firstSample,
-    const NumericalSample & secondSample,
+HypothesisTest::TestResultCollection HypothesisTest::RunTwoSamplesASelectionRTest(const Sample & firstSample,
+    const Sample & secondSample,
     const Indices & selection,
     const NumericalScalar level,
     const String & testName)
@@ -208,7 +208,7 @@ HypothesisTest::TestResultCollection HypothesisTest::RunTwoSamplesASelectionRTes
   const String firstDataFileName(firstSample.storeToTemporaryFile());
   const String secondDataFileName(secondSample.storeToTemporaryFile());
   const UnsignedInteger size = selection.getSize();
-  NumericalSample selectionSample(size, 1);
+  Sample selectionSample(size, 1);
   for (UnsignedInteger i = 0; i < size; ++ i) selectionSample[i][0] = selection[i] + 1.0;
   const String selectionFileName(selectionSample.storeToTemporaryFile());
   const String resultFileName(Path::BuildTemporaryFileName("RResult.txt.XXXXXX"));
@@ -231,7 +231,7 @@ HypothesisTest::TestResultCollection HypothesisTest::RunTwoSamplesASelectionRTes
   const String RExecutable(ResourceMap::Get("R-executable-command"));
   OSS systemCommand;
   if (RExecutable != "") systemCommand << RExecutable << " --no-save --silent < \"" << commandFileName << "\"" << Os::GetDeleteCommandOutput();
-  else throw NotYetImplementedException(HERE) << "In HypothesisTest::RunTwoSamplesASelectionRTest(const NumericalSample & firstSample, const NumericalSample & secondSample, const Indices & selection, const NumericalScalar level, const String & testName): needs R. Please install it and set the absolute path of the R executable in ResourceMap.";
+  else throw NotYetImplementedException(HERE) << "In HypothesisTest::RunTwoSamplesASelectionRTest(const Sample & firstSample, const Sample & secondSample, const Indices & selection, const NumericalScalar level, const String & testName): needs R. Please install it and set the absolute path of the R executable in ResourceMap.";
   const int returnCode = Os::ExecuteCommand(systemCommand);
   if (returnCode != 0) throw InternalException(HERE) << "Error: unable to execute the system command " << String(systemCommand) << " returned code is " << returnCode;
   // Parse result file

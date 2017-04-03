@@ -44,7 +44,7 @@ WeibullFactory * WeibullFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-WeibullFactory::Implementation WeibullFactory::build(const NumericalSample & sample) const
+WeibullFactory::Implementation WeibullFactory::build(const Sample & sample) const
 {
   return buildAsWeibull(sample).clone();
 }
@@ -59,7 +59,7 @@ WeibullFactory::Implementation WeibullFactory::build() const
   return buildAsWeibull().clone();
 }
 
-Weibull WeibullFactory::buildAsWeibull(const NumericalSample & sample) const
+Weibull WeibullFactory::buildAsWeibull(const Sample & sample) const
 {
   const NumericalScalar size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Weibull distribution from an empty sample";

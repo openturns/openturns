@@ -41,8 +41,8 @@ ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation()
 }
 
 /* Default constructor */
-ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation(const NumericalSample & x,
-    const NumericalSample & y,
+ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation(const Sample & x,
+    const Sample & y,
     const Basis & psi,
     const Indices & indices)
   : PersistentObject()
@@ -64,8 +64,8 @@ ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation(const
 }
 
 /* Default constructor */
-ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation(const NumericalSample & x,
-    const NumericalSample & y,
+ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation(const Sample & x,
+    const Sample & y,
     const NumericalPoint & weight,
     const Basis & psi,
     const Indices & indices)
@@ -96,12 +96,12 @@ ApproximationAlgorithmImplementation * ApproximationAlgorithmImplementation::clo
 }
 
 /* Accessors */
-NumericalSample ApproximationAlgorithmImplementation::getX() const
+Sample ApproximationAlgorithmImplementation::getX() const
 {
   return x_;
 }
 
-NumericalSample ApproximationAlgorithmImplementation::getY() const
+Sample ApproximationAlgorithmImplementation::getY() const
 {
   return y_;
 }

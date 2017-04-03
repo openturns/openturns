@@ -54,7 +54,7 @@ public:
   virtual UnsignedInteger classify(const NumericalPoint & inP) const;
 
  private:
-  Indices classifySequential(const NumericalSample & inS) const;
+  Indices classifySequential(const Sample & inS) const;
  public:
 
   /** Grade a point as if it were associated to a class */

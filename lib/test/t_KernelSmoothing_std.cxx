@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     // Instanciate one distribution object
     Normal distribution(meanPoint, sigma, R);
     UnsignedInteger discretization = 300;
-    NumericalSample sample(distribution.getSample(discretization));
+    Sample sample(distribution.getSample(discretization));
     Collection<Distribution> kernels;
     kernels.add(Normal());
     kernels.add(Epanechnikov());
@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
     Collection<Distribution> distributionCollection(2);
     distributionCollection[0] = Normal(0.0, 1.0);
     distributionCollection[1] = Beta(0.7, 1.6, -1.0, 2.0);
-    Collection<NumericalSample> sampleCollection(2);
+    Collection<Sample> sampleCollection(2);
     sampleCollection[0] = distributionCollection[0].getSample(discretization);
     sampleCollection[1] = distributionCollection[1].getSample(discretization);
     for (UnsignedInteger i = 0; i < kernels.getSize(); ++i)

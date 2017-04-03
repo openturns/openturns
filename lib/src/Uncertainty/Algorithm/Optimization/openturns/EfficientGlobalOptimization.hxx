@@ -89,7 +89,7 @@ public:
   Function getNoiseModel() const;
 
   /** Expected improvement function */
-  NumericalSample getExpectedImprovement() const;
+  Sample getExpectedImprovement() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -133,7 +133,7 @@ private:
   // for the metamodel noise the 2nd marginal of the objective is used
   Function noiseModel_;
 
-  mutable NumericalSample expectedImprovement_;
+  mutable Sample expectedImprovement_;
 
 } ; /* class EfficientGlobalOptimization */
 

@@ -53,7 +53,7 @@ public:
   using EvaluationImplementation::operator();
   NumericalPoint operator() (const NumericalPoint & inP) const;
 
-  NumericalSample operator() (const NumericalSample & inS) const;
+  Sample operator() (const Sample & inS) const;
 
   /** Parameters value accessor */
   virtual NumericalPoint getParameter() const;

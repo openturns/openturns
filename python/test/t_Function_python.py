@@ -46,7 +46,7 @@ print((repr(outPt)))
 outPt = myFunc((10., 11.))
 print((repr(outPt)))
 
-inSample = NumericalSample(10, 2)
+inSample = Sample(10, 2)
 for i in range(10):
     inSample[i] = NumericalPoint((i, i))
 print((repr(inSample)))

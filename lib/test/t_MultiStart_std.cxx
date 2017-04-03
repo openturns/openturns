@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
     // multistart
     Normal distribution(dim);
     LHSExperiment experiment(distribution, 20);
-    NumericalSample startingPoints(experiment.generate());
+    Sample startingPoints(experiment.generate());
     algo = MultiStart(solver, startingPoints);
     algo.run();
     result = algo.getResult();

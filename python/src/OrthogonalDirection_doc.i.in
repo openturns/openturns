@@ -39,5 +39,5 @@ If :math:`k = 1`, we consider all the axes of the standard space."
 
 Returns
 -------
-sample : :class:`~openturns.NumericalSample`
+sample : :class:`~openturns.Sample`
     The sample generated according to the orthogonal direction strategy."

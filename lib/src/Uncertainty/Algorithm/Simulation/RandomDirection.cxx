@@ -54,9 +54,9 @@ RandomDirection * RandomDirection::clone() const
 }
 
 /* Generate a set of directions */
-NumericalSample RandomDirection::generate() const
+Sample RandomDirection::generate() const
 {
-  NumericalSample result(2, dimension_);
+  Sample result(2, dimension_);
   result[0] = getUniformUnitVectorRealization();
   result[1] = -1.0 * result[0];
   LOGDEBUG(OSS() << "RandomDirection::generate: directions=\n" << result);

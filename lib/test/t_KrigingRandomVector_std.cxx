@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     // Define the Box
     Box box(levels);
     // Get the input sample
-    NumericalSample inputSample( box.generate() );
+    Sample inputSample( box.generate() );
     // Scale each direction
     inputSample *= 10;
 
@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
     const SymbolicFunction model(inputDescription, formula);
 
     // Build the output sample
-    const NumericalSample  outputSample( model(inputSample) );
+    const Sample  outputSample( model(inputSample) );
 
     // 2) Definition of exponential model
     NumericalPoint scale(2);
@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
     assert_almost_equal(covariancePoint, NumericalPoint(covariancePoint.getSize()), 1e-6, 1e-6);
 
     // Random vector evaluation
-    NumericalSample unifRealization(Uniform(0.0, 10.0).getSample(2));
+    Sample unifRealization(Uniform(0.0, 10.0).getSample(2));
     NumericalPoint validationPoint(unifRealization.getImplementation()->getData());
     KrigingRandomVector rvector(result, validationPoint);
 
@@ -97,7 +97,7 @@ int main(int argc, char *argv[])
     std::cout << "Realization of the KRV=" << realization << std::endl;
 
     // Get a sample of size 10
-    NumericalSample realizations(rvector.getSample(10));
+    Sample realizations(rvector.getSample(10));
     std::cout << "Sample of realizations of the KRV=" << realizations << std::endl;
   }
 

@@ -48,7 +48,7 @@ SpaceFillingPhiP * SpaceFillingPhiP::clone() const
 }
 
 /** Evaluate criterion on a sample */
-NumericalScalar SpaceFillingPhiP::evaluate(const NumericalSample & sample) const
+NumericalScalar SpaceFillingPhiP::evaluate(const Sample & sample) const
 {
   const UnsignedInteger size(sample.getSize());
   const UnsignedInteger dimension(sample.getDimension());
@@ -74,7 +74,7 @@ NumericalScalar SpaceFillingPhiP::evaluate(const NumericalSample & sample) const
 }
 
 /** Compute criterion when performing an elementary perturbation */
-NumericalScalar SpaceFillingPhiP::perturbLHS(NumericalSample& oldDesign, OT::NumericalScalar oldCriterion,
+NumericalScalar SpaceFillingPhiP::perturbLHS(Sample& oldDesign, OT::NumericalScalar oldCriterion,
     UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const
 {
   if (row1 == row2) return oldCriterion;

@@ -74,7 +74,7 @@ public:
 
   /** Specific discretization method */
   using CovarianceModelImplementation::discretize;
-  CovarianceMatrix discretize(const NumericalSample & vertices) const;
+  CovarianceMatrix discretize(const Sample & vertices) const;
 
   /** String converter */
   String __repr__() const;

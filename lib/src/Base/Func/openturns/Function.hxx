@@ -124,7 +124,7 @@ public:
 
   /** Dual linear combination function constructor */
   Function(const FunctionCollection & functionCollection,
-                        const NumericalSample & coefficients);
+                        const Sample & coefficients);
 
   /** Simplified analytical formula constructor 
    * @deprecated */
@@ -144,8 +144,8 @@ public:
 
   /** Constructor from samples
     * @deprecated */
-  Function(const NumericalSample & inputSample,
-                        const NumericalSample & outputSample);
+  Function(const Sample & inputSample,
+                        const Sample & outputSample);
 
   /** Constructor from field using P1 Lagrange interpolation */
   Function(const Field & field);
@@ -195,15 +195,15 @@ public:
 
   /** @brief Add some content to the cache
    */
-  void addCacheContent(const NumericalSample & inSample, const NumericalSample & outSample);
+  void addCacheContent(const Sample & inSample, const Sample & outSample);
 
   /** @brief Returns the cache input
    */
-  NumericalSample getCacheInput() const;
+  Sample getCacheInput() const;
 
   /** @brief Returns the cache output
    */
-  NumericalSample getCacheOutput() const;
+  Sample getCacheOutput() const;
 
   /** @brief Empty the cache
    */
@@ -242,8 +242,8 @@ public:
   HistoryStrategy getHistoryOutput() const;
 
   /** Input point / parameter history accessor */
-  NumericalSample getInputPointHistory() const;
-  NumericalSample getInputParameterHistory() const;
+  Sample getInputPointHistory() const;
+  Sample getInputParameterHistory() const;
 
   /** Function implementation accessors */
   void setEvaluation(const EvaluationPointer & evaluation);
@@ -285,10 +285,10 @@ public:
   NumericalPoint operator() (const NumericalPoint & inP) const;
   NumericalPoint operator() (const NumericalPoint & inP,
                              const NumericalPoint & parameter);
-  NumericalSample operator() (const NumericalPoint & point,
-                              const NumericalSample & parameters);
+  Sample operator() (const NumericalPoint & point,
+                              const Sample & parameters);
 
-  NumericalSample operator() (const NumericalSample & inS) const;
+  Sample operator() (const Sample & inS) const;
 
   Field operator() (const Field & inTS) const;
 

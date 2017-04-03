@@ -344,7 +344,7 @@ OT_Function_getCacheHits_doc
 
 Returns
 -------
-cacheInput : :class:`~openturns.NumericalSample`
+cacheInput : :class:`~openturns.Sample`
     All the input numerical points stored in the cache mecanism."
 %enddef
 %feature("docstring") OT::FunctionImplementation::getCacheInput
@@ -357,7 +357,7 @@ OT_Function_getCacheInput_doc
 
 Returns
 -------
-cacheInput : :class:`~openturns.NumericalSample`
+cacheInput : :class:`~openturns.Sample`
     All the output numerical points stored in the cache mecanism."
 %enddef
 %feature("docstring") OT::FunctionImplementation::getCacheOutput
@@ -424,7 +424,7 @@ OT_Function_isHistoryEnabled_doc
 
 Returns
 -------
-input_history : :class:`~openturns.NumericalSample`
+input_history : :class:`~openturns.Sample`
     All the input numerical points stored in the history mecanism."
 %enddef
 %feature("docstring") OT::FunctionImplementation::getHistoryInput
@@ -437,7 +437,7 @@ OT_Function_getHistoryInput_doc
 
 Returns
 -------
-output_history : :class:`~openturns.NumericalSample`
+output_history : :class:`~openturns.Sample`
     All the output numerical points stored in the history mecanism."
 %enddef
 %feature("docstring") OT::FunctionImplementation::getHistoryOutput
@@ -450,7 +450,7 @@ OT_Function_getHistoryOutput_doc
 
 Returns
 -------
-history : :class:`~openturns.NumericalSample`
+history : :class:`~openturns.Sample`
     All the input points stored in the history mecanism."
 %enddef
 %feature("docstring") OT::FunctionImplementation::getInputPointHistory
@@ -463,7 +463,7 @@ OT_Function_getInputPointHistory_doc
 
 Returns
 -------
-history : :class:`~openturns.NumericalSample`
+history : :class:`~openturns.Sample`
     All the input parameters stored in the history mecanism."
 %enddef
 %feature("docstring") OT::FunctionImplementation::getInputParameterHistory

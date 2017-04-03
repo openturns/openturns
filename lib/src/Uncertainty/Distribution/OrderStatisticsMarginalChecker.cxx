@@ -83,7 +83,7 @@ void OrderStatisticsMarginalChecker::check() const
     bIm1 = bI;
   }
   // Second test, check the quantiles at regular levels. Store the values for further tests
-  NumericalSample quantiles(size, quantileIteration);
+  Sample quantiles(size, quantileIteration);
   for (UnsignedInteger k = 0; k < quantileIteration; ++ k)
   {
     const NumericalScalar prob = (k + 1.0) / (quantileIteration + 1.0);

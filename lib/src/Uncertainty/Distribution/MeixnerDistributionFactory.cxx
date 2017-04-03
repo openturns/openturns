@@ -44,7 +44,7 @@ MeixnerDistributionFactory * MeixnerDistributionFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-MeixnerDistributionFactory::Implementation MeixnerDistributionFactory::build(const NumericalSample & sample) const
+MeixnerDistributionFactory::Implementation MeixnerDistributionFactory::build(const Sample & sample) const
 {
   return buildAsMeixnerDistribution(sample).clone();
 }
@@ -59,7 +59,7 @@ MeixnerDistributionFactory::Implementation MeixnerDistributionFactory::build() c
   return buildAsMeixnerDistribution().clone();
 }
 
-MeixnerDistribution MeixnerDistributionFactory::buildAsMeixnerDistribution(const NumericalSample & sample) const
+MeixnerDistribution MeixnerDistributionFactory::buildAsMeixnerDistribution(const Sample & sample) const
 {
   UnsignedInteger size = sample.getSize();
   if (size < 4) throw InvalidArgumentException(HERE) << "Error: cannot build a MeixnerDistribution distribution from a sample of size less than 4.";

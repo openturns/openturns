@@ -50,7 +50,7 @@ LogNormalFactory * LogNormalFactory::clone() const
 /* Here is the interface that all derived class must implement */
 
 /* Algorithm associated with the method of moments */
-LogNormal LogNormalFactory::buildMethodOfMoments(const NumericalSample & sample) const
+LogNormal LogNormalFactory::buildMethodOfMoments(const Sample & sample) const
 {
   if (sample.getSize() < 3) throw InvalidArgumentException(HERE) << "Error: cannot build a LogNormal distribution using the method of moments with a sample of size less than 3.";
   // ME
@@ -74,7 +74,7 @@ LogNormal LogNormalFactory::buildMethodOfMoments(const NumericalSample & sample)
 struct LogNormalFactoryLMLEParameterConstraint
 {
   /** Constructor from a sample and a derivative factor estimate */
-  LogNormalFactoryLMLEParameterConstraint(const NumericalSample & sample)
+  LogNormalFactoryLMLEParameterConstraint(const Sample & sample)
     : sample_(sample)
     , size_(sample.getSize())
   {
@@ -111,12 +111,12 @@ struct LogNormalFactoryLMLEParameterConstraint
   }
 
   // The data
-  NumericalSample sample_;
+  Sample sample_;
   UnsignedInteger size_;
 };
 
 /* Algoritm associated with the method of local likelihood maximization */
-LogNormal LogNormalFactory::buildMethodOfLocalLikelihoodMaximization(const NumericalSample & sample) const
+LogNormal LogNormalFactory::buildMethodOfLocalLikelihoodMaximization(const Sample & sample) const
 {
   const NumericalScalar std = sample.computeStandardDeviationPerComponent()[0];
   if (std == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a LogNormal distribution based on a constant sample using the method of local maximum likelihood.";
@@ -185,7 +185,7 @@ struct LogNormalFactoryMMEParameterConstraint
 };
 
 /* Algorithm associated with the method of modified moments */
-LogNormal LogNormalFactory::buildMethodOfModifiedMoments(const NumericalSample & sample) const
+LogNormal LogNormalFactory::buildMethodOfModifiedMoments(const Sample & sample) const
 {
   const NumericalScalar std = sample.computeStandardDeviationPerComponent()[0];
   if (std == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a LogNormal distribution based on a constant sample using the method of modified moments.";
@@ -232,12 +232,12 @@ LogNormal LogNormalFactory::buildMethodOfModifiedMoments(const NumericalSample &
   return LogNormal(mu, sigma, gamma);
 }
 
-LogNormalFactory::Implementation LogNormalFactory::build(const NumericalSample & sample) const
+LogNormalFactory::Implementation LogNormalFactory::build(const Sample & sample) const
 {
   return build(sample, ResourceMap::GetAsUnsignedInteger("LogNormalFactory-EstimationMethod"));
 }
 
-LogNormalFactory::Implementation LogNormalFactory::build(const NumericalSample & sample,
+LogNormalFactory::Implementation LogNormalFactory::build(const Sample & sample,
     const UnsignedInteger method) const
 {
   return buildAsLogNormal(sample, method).clone();
@@ -253,12 +253,12 @@ LogNormalFactory::Implementation LogNormalFactory::build(const NumericalPoint & 
   return buildAsLogNormal(parameters).clone();
 }
 
-LogNormal LogNormalFactory::buildAsLogNormal(const NumericalSample & sample) const
+LogNormal LogNormalFactory::buildAsLogNormal(const Sample & sample) const
 {
   return buildAsLogNormal(sample, ResourceMap::GetAsUnsignedInteger("LogNormalFactory-EstimationMethod"));
 };
 
-LogNormal LogNormalFactory::buildAsLogNormal(const NumericalSample & sample,
+LogNormal LogNormalFactory::buildAsLogNormal(const Sample & sample,
     const UnsignedInteger method) const
 {
   const UnsignedInteger size = sample.getSize();

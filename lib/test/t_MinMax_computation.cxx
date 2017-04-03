@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     levels[2] = 5.;
     levels[3] = 5.;
     Box myPlane(levels);
-    NumericalSample sample(myPlane.generate());
+    Sample sample(myPlane.generate());
     // Then, scale and move the cube to sample around the point of interrest
     NumericalPoint point(inputDimension);
     point[0] = 2.1e11;
@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
     sample *= (0.2 * point);
     sample += (0.9 * point);
     // Compute the model over the sample
-    NumericalSample response(model(sample));
+    Sample response(model(sample));
     // Compute the min and max values taken by the model
     fullprint << "Min=" << response.getMin()[0] << std::endl;
     fullprint << "Max=" << response.getMax()[0] << std::endl;

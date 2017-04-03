@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
 
     // Test for sampling
     UnsignedInteger size = 10;
-    NumericalSample anotherSample = distribution.getSample( size );
+    Sample anotherSample = distribution.getSample( size );
 
     // Define a point
     NumericalPoint zero(dimension, 0.0);
@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
     fullprint << "margins quantile=" << quantile << std::endl;
     fullprint << "margins CDF(quantile)=" << margins.computeCDF(quantile) << std::endl;
     fullprint << "margins realization=" << margins.getRealization() << std::endl;
-    NumericalSample sample(margins.getSample(1000));
+    Sample sample(margins.getSample(1000));
     fullprint << "margins sample mean=" << sample.computeMean() << std::endl;
     fullprint << "margins sample covariance=" << sample.computeCovariance() << std::endl;
   }

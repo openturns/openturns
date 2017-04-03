@@ -45,7 +45,7 @@ UserDefined::UserDefined()
 }
 
 /* Constructor from a sample */
-UserDefined::UserDefined(const NumericalSample & sample)
+UserDefined::UserDefined(const Sample & sample)
   : DiscreteDistribution()
   , points_(0, 0)
   , probabilities_(0)
@@ -62,7 +62,7 @@ UserDefined::UserDefined(const NumericalSample & sample)
 }
 
 /* Constructor from a sample and the associated weights */
-UserDefined::UserDefined(const NumericalSample & sample,
+UserDefined::UserDefined(const Sample & sample,
                          const NumericalPoint & weights)
   : DiscreteDistribution()
   , points_(0, 0)
@@ -315,10 +315,10 @@ void UserDefined::computeRange()
 }
 
 /* Get the support of a discrete distribution that intersect a given interval */
-NumericalSample UserDefined::getSupport(const Interval & interval) const
+Sample UserDefined::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
-  NumericalSample result(0, getDimension());
+  Sample result(0, getDimension());
   const UnsignedInteger size = points_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -474,7 +474,7 @@ UserDefined::Implementation UserDefined::getMarginal(const Indices & indices) co
 
 /* Interface specific to UserDefined */
 
-void UserDefined::setData(const NumericalSample & sample,
+void UserDefined::setData(const Sample & sample,
                           const NumericalPoint & weights)
 {
   const UnsignedInteger size = sample.getSize();
@@ -488,7 +488,7 @@ void UserDefined::setData(const NumericalSample & sample,
   for (UnsignedInteger i = 1; i < size; ++i) if (sample[i].getDimension() != dimension) throw InvalidArgumentException(HERE) << "UserDefined distribution must have all its point with the same dimension";
   setDimension(dimension);
   // First, sort the collection such that the sample made with the first component is in ascending order
-  NumericalSample weightedData(size, dimension + 1);
+  Sample weightedData(size, dimension + 1);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalPoint x(sample[i]);
@@ -516,7 +516,7 @@ void UserDefined::setData(const NumericalSample & sample,
     weightedData[i][dimension] /= sum;
     cumulativeProbabilities_[i] /= sum;
   }
-  points_ = NumericalSample(size, dimension);
+  points_ = Sample(size, dimension);
   probabilities_ = NumericalPoint(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -534,7 +534,7 @@ void UserDefined::setData(const NumericalSample & sample,
 }
 
 
-NumericalSample UserDefined::getX() const
+Sample UserDefined::getX() const
 {
   return points_;
 }
@@ -564,7 +564,7 @@ void UserDefined::compactSupport(const NumericalScalar epsilon)
   const UnsignedInteger size = points_.getSize();
   if (size == 0) return;
   const UnsignedInteger dimension = getDimension();
-  NumericalSample compactX(0, dimension);
+  Sample compactX(0, dimension);
   NumericalPoint compactP(0);
   if (dimension > 1)
   {

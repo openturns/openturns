@@ -48,7 +48,7 @@ SamplingStrategyImplementation * SamplingStrategyImplementation::clone() const
 }
 
 /* Generate a set of directions */
-NumericalSample SamplingStrategyImplementation::generate() const
+Sample SamplingStrategyImplementation::generate() const
 {
   throw NotYetImplementedException(HERE) << "In SamplingStrategyImplementation::generate() const";
 }

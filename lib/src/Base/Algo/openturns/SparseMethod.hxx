@@ -56,7 +56,7 @@ public:
   String __repr__() const;
 
   /** Input sample accessor */
-  virtual NumericalSample getInputSample() const;
+  virtual Sample getInputSample() const;
 
   /** Weight accessor */
   virtual NumericalPoint getWeight() const;

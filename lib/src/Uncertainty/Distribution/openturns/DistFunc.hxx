@@ -25,7 +25,7 @@
 #include "openturns/ResourceMap.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/Indices.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -158,7 +158,7 @@ public:
   static NumericalPoint rUniformTriangle(const NumericalPoint & a,
                                          const NumericalPoint & b,
                                          const NumericalPoint & c);
-  static NumericalSample rUniformTriangle(const NumericalPoint & a,
+  static Sample rUniformTriangle(const NumericalPoint & a,
                                           const NumericalPoint & b,
                                           const NumericalPoint & c,
                                           const UnsignedInteger size);

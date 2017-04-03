@@ -59,14 +59,14 @@ RandomizedLHS * RandomizedLHS::clone() const
 }
 
 /* Compute the block sample */
-NumericalSample RandomizedLHS::computeBlockSample()
+Sample RandomizedLHS::computeBlockSample()
 {
   // Size of a block
   const UnsignedInteger blockSize = getBlockSize();
   // Compute a shuffle of given dimension and blocksize
   const Matrix shuffle(LHSExperiment::ComputeShuffle(dimension_, blockSize));
   // First, compute the input sub-sample based on the shuffling
-  NumericalSample inputSample(blockSize, NumericalPoint(dimension_));
+  Sample inputSample(blockSize, NumericalPoint(dimension_));
   for(UnsignedInteger index = 0; index < blockSize; ++index)
   {
     const NumericalPoint u(RandomGenerator::Generate(dimension_));
@@ -77,7 +77,7 @@ NumericalSample RandomizedLHS::computeBlockSample()
     }
   }
   // Then, evaluate the function on this sample
-  NumericalSample blockSample(getEvent().getImplementation()->getFunction()(inputSample));
+  Sample blockSample(getEvent().getImplementation()->getFunction()(inputSample));
   for (UnsignedInteger i = 0; i < blockSize; ++i) blockSample[i][0] = getEvent().getOperator()(blockSample[i][0], event_.getThreshold());
   return blockSample;
 }

@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 
     // Test for sampling
     UnsignedInteger size = 1000;
-    NumericalSample sample(distribution.getSample( size ));
+    Sample sample(distribution.getSample( size ));
 
     // Create an empty graph
     Graph myGraph("Pairs", " ", " ", true, "topright");

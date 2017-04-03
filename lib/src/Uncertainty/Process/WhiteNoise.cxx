@@ -103,7 +103,7 @@ Bool WhiteNoise::isNormal() const
 /* Realization accessor */
 Field WhiteNoise::getRealization() const
 {
-  NumericalSample values(distribution_.getSample(mesh_.getVerticesNumber()));
+  Sample values(distribution_.getSample(mesh_.getVerticesNumber()));
   values.setDescription(getDescription());
   return Field(mesh_, values);
 }

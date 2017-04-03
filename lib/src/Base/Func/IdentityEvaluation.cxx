@@ -85,7 +85,7 @@ NumericalPoint IdentityEvaluation::operator() (const NumericalPoint & inP) const
   return inP;
 }
 /* Operator () */
-NumericalSample IdentityEvaluation::operator() (const NumericalSample & inS) const
+Sample IdentityEvaluation::operator() (const Sample & inS) const
 {
   if (inS.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   callsNumber_ += inS.getSize();

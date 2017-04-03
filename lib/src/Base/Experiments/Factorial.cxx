@@ -60,7 +60,7 @@ Factorial * Factorial::clone() const
 }
 
 /* Experiment plane generation */
-NumericalSample Factorial::generate() const
+Sample Factorial::generate() const
 {
   /* Dimension of the realizations */
   const UnsignedInteger dimension = center_.getDimension();
@@ -70,7 +70,7 @@ NumericalSample Factorial::generate() const
   const UnsignedInteger levelNumber = levels_.getDimension();
   /* Size of the sample to be generated: 1 + number of levels x 2^dimension */
   const UnsignedInteger size = 1 + levelNumber * verticesNumber;
-  NumericalSample factorialPlane(size, center_);
+  Sample factorialPlane(size, center_);
   factorialPlane.setName("Factorial plane");
   UnsignedInteger index = 1;
   /* For each level of the factorial plane */

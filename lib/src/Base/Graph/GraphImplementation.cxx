@@ -631,7 +631,7 @@ void GraphImplementation::computeBoundingBox() const
     boundingBox_[3] = 1.0;
     return;
   }
-  NumericalSample boxes(size, 4);
+  Sample boxes(size, 4);
 
   // first, get each Drawable's bounding box and drawing command
   for(UnsignedInteger i = 0; i < size; ++i)

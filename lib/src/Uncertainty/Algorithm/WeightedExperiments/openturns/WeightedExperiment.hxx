@@ -64,10 +64,10 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Sample generation */
-  virtual NumericalSample generate() const;
+  virtual Sample generate() const;
 
   /** Sample generation with weights*/
-  virtual NumericalSample generateWithWeights(NumericalPoint & weights) const;
+  virtual Sample generateWithWeights(NumericalPoint & weights) const;
 
 } ; /* class WeightedExperiment */
 

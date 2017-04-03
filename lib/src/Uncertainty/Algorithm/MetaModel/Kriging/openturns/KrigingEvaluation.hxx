@@ -51,10 +51,10 @@ public:
 
   /** Constructor with parameters */
   KrigingEvaluation(const BasisCollection & basis,
-                    const NumericalSample & inputSample,
+                    const Sample & inputSample,
                     const CovarianceModel & correlationModel,
                     const NumericalPointCollection & beta,
-                    const NumericalSample & gamma);
+                    const Sample & gamma);
 
   /** Virtual constructor */
   virtual KrigingEvaluation * clone() const;
@@ -71,7 +71,7 @@ public:
 
   /** Operator () */
   virtual NumericalPoint operator()(const NumericalPoint & inP) const;
-  virtual NumericalSample operator()(const NumericalSample & inS) const;
+  virtual Sample operator()(const Sample & inS) const;
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;
@@ -91,14 +91,14 @@ protected:
   BasisPersistentCollection basis_;
 
   /// Training (input) sample
-  NumericalSample inputSample_;
+  Sample inputSample_;
 
   /// Correlation model
   CovarianceModel covarianceModel_;
 
   /// Regression weights
   NumericalPointPersistentCollection beta_;
-  NumericalSample gamma_;
+  Sample gamma_;
 
 private:
   friend struct KrigingEvaluationPointFunctor;

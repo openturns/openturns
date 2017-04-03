@@ -90,7 +90,7 @@ void TrapezoidalFactory::setOptimizationSolver(const OptimizationAlgorithm & sol
 
 /* Here is the interface that all derived class must implement */
 
-TrapezoidalFactory::Implementation TrapezoidalFactory::build(const NumericalSample & sample) const
+TrapezoidalFactory::Implementation TrapezoidalFactory::build(const Sample & sample) const
 {
   return buildAsTrapezoidal(sample).clone();
 }
@@ -105,7 +105,7 @@ TrapezoidalFactory::Implementation TrapezoidalFactory::build() const
   return buildAsTrapezoidal().clone();
 }
 
-Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const NumericalSample & sample) const
+Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Sample & sample) const
 {
 
   const UnsignedInteger size = sample.getSize();

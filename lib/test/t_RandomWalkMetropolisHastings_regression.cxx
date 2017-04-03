@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
 
     UnsignedInteger obsSize = 10;
 
-    NumericalSample y_obs(obsSize, obsDim);
+    Sample y_obs(obsSize, obsDim);
     y_obs[0][0] = -9.50794871493506;
     y_obs[1][0] = -3.83296694500105;
     y_obs[2][0] = -2.44545713047953;
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
     y_obs[9][0] = -13.0812290405651;
     std::cout << "y_obs=" << y_obs << std::endl;
 
-    NumericalSample p(obsSize, chainDim);
+    Sample p(obsSize, chainDim);
     for (UnsignedInteger i = 0; i < obsSize; ++ i)
     {
       for (UnsignedInteger j = 0; j < chainDim; ++ j)
@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
 
     // try to generate a sample
     UnsignedInteger sampleSize = 1000;
-    NumericalSample sample(sampler.getSample(sampleSize));
+    Sample sample(sampler.getSample(sampleSize));
 
     NumericalPoint x_mu(sample.computeMean());
     NumericalPoint x_sigma(sample.computeStandardDeviationPerComponent());

@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
     /* Generate a Normal sample */
     Normal normal(1);
     UnsignedInteger size = 100;
-    NumericalSample sample(normal.getSample(size));
+    Sample sample(normal.getSample(size));
     Graph sampleCDF(VisualTest::DrawEmpiricalCDF(sample, sample.getMin()[0] - 1.0, sample.getMax()[0] + 1.0));
     fullprint << "sampleCDF = " << sampleCDF << std::endl;
 
@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
   {
     Normal normal(1);
     UnsignedInteger size = 100;
-    NumericalSample sample(normal.getSample(size));
+    Sample sample(normal.getSample(size));
     Graph sampleHist(VisualTest::DrawHistogram(sample, 10));
     fullprint << "sampleHist = " << sampleHist << std::endl;
 
@@ -59,8 +59,8 @@ int main(int argc, char *argv[])
   {
     UnsignedInteger size = 100;
     Normal normal(1);
-    NumericalSample sample(normal.getSample(size));
-    NumericalSample sample2(Gamma(3.0, 4.0, 0.0).getSample(size));
+    Sample sample(normal.getSample(size));
+    Sample sample2(Gamma(3.0, 4.0, 0.0).getSample(size));
     Graph twoSamplesQQPlot(VisualTest::DrawQQplot(sample, sample2, 100));
     fullprint << "twoSamplesQQPlot = " << twoSamplesQQPlot << std::endl;
 
@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
   {
     UnsignedInteger size = 100;
     Normal normal(1);
-    NumericalSample sample(normal.getSample(size));
+    Sample sample(normal.getSample(size));
     Graph henryPlot(VisualTest::DrawHenryLine(sample));
     fullprint << "Henry graph = " << henryPlot << std::endl;
   }
@@ -84,9 +84,9 @@ int main(int argc, char *argv[])
     R(0, 1) = 0.8;
     Normal distribution(NumericalPoint(dimension, 3.0), NumericalPoint(dimension, 2.0), R);
     UnsignedInteger size = 100;
-    NumericalSample sample2D(distribution.getSample(size));
-    NumericalSample firstSample(size, 1);
-    NumericalSample secondSample(size, 1);
+    Sample sample2D(distribution.getSample(size));
+    Sample firstSample(size, 1);
+    Sample secondSample(size, 1);
     for (UnsignedInteger i = 0; i < size; i++)
     {
       firstSample[i][0] = sample2D[i][0];
@@ -107,9 +107,9 @@ int main(int argc, char *argv[])
     R(0, 1) = 0.8;
     Normal distribution(NumericalPoint(dimension, 3.0), NumericalPoint(dimension, 2.0), R);
     UnsignedInteger size = 100;
-    NumericalSample sample2D(distribution.getSample(size));
-    NumericalSample firstSample(size, 1);
-    NumericalSample secondSample(size, 1);
+    Sample sample2D(distribution.getSample(size));
+    Sample firstSample(size, 1);
+    Sample secondSample(size, 1);
     for (UnsignedInteger i = 0; i < size; i++)
     {
       firstSample[i][0] = sample2D[i][0];
@@ -128,7 +128,7 @@ int main(int argc, char *argv[])
   {
     UnsignedInteger size = 100;
     UnsignedInteger inputDimension = 6;
-    NumericalSample inputSample(Normal(inputDimension).getSample(size));
+    Sample inputSample(Normal(inputDimension).getSample(size));
     Description inputVar(inputDimension);
     for (UnsignedInteger i = 0; i < inputDimension; ++i) inputVar[i] = (OSS() << "X" << i);
     Description formula(1);
@@ -136,7 +136,7 @@ int main(int argc, char *argv[])
     for (UnsignedInteger i = 0; i < inputDimension; ++i) oss << (i > 0 ? "+" : "") << "cos(" << i + 1 << "*" << inputVar[i] << ")";
     formula[0] = oss;
     SymbolicFunction model(inputVar, formula);
-    NumericalSample outputSample(model(inputSample));
+    Sample outputSample(model(inputSample));
     Graph cobwebValue(VisualTest::DrawCobWeb(inputSample, outputSample, 2.5, 3.0, "red", false));
     fullprint << "cobwebValue = " << cobwebValue << std::endl;
     Graph cobwebQuantile(VisualTest::DrawCobWeb(inputSample, outputSample, 0.7, 0.9, "red", false));
@@ -148,9 +148,9 @@ int main(int argc, char *argv[])
     UnsignedInteger size = 100;
     FrankCopula copula1(1.5);
     GumbelCopula copula2(4.5);
-    NumericalSample sample1(copula1.getSample(size));
+    Sample sample1(copula1.getSample(size));
     sample1.setName("data 1");
-    NumericalSample sample2(copula2.getSample(size));
+    Sample sample2(copula2.getSample(size));
     sample2.setName("data 2");
     Graph kendallPlot1(VisualTest::DrawKendallPlot(sample1, copula2));
     fullprint << "KendallPlot1 = " << kendallPlot1 << std::endl;

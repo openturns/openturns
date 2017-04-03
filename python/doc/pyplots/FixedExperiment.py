@@ -6,7 +6,7 @@ ot.RandomGenerator.SetSeed(0)
 # Generate sample with the given plane
 size = 20
 dim = 2
-refSample = ot.NumericalSample(size, dim)
+refSample = ot.Sample(size, dim)
 for i in range(size):
     p = ot.NumericalPoint(dim)
     for j in range(dim):

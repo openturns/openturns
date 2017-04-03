@@ -56,8 +56,8 @@ public:
   Distribution getMeasure() const;
 
   /** Sample accessors */
-  virtual NumericalSample getInputSample() const;
-  virtual NumericalSample getOutputSample() const;
+  virtual Sample getInputSample() const;
+  virtual Sample getOutputSample() const;
 
   /** Weights accessor */
   virtual NumericalPoint getWeights() const;

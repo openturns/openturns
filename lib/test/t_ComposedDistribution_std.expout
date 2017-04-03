@@ -7,7 +7,7 @@ Elliptical distribution= true
 Elliptical copula= true
 Independent copula= true
 oneRealization=class=NumericalPoint name=Unnamed dimension=3 values=[2.2164,-1.79852,1.24694]
-oneSample=class=NumericalSample name=myDist implementation=class=NumericalSampleImplementation name=myDist size=10 dimension=3 description=[One,Two,Three] data=[[3.41096,-4.54416,4.40017],[0.289986,6.31175,6.24267],[2.58631,0.588423,4.04407],[-3.58012,-1.84866,-2.24712],[0.818432,4.98738,2.44219],[-0.120411,3.33647,4.2917],[1.89157,-1.11423,-0.426849],[1.94723,1.62351,4.40567],[4.56472,2.21062,-0.125466],[-0.443067,1.27633,-4.15186]]
+oneSample=class=Sample name=myDist implementation=class=SampleImplementation name=myDist size=10 dimension=3 description=[One,Two,Three] data=[[3.41096,-4.54416,4.40017],[0.289986,6.31175,6.24267],[2.58631,0.588423,4.04407],[-3.58012,-1.84866,-2.24712],[0.818432,4.98738,2.44219],[-0.120411,3.33647,4.2917],[1.89157,-1.11423,-0.426849],[1.94723,1.62351,4.40567],[4.56472,2.21062,-0.125466],[-0.443067,1.27633,-4.15186]]
 anotherSample mean=class=NumericalPoint name=Unnamed dimension=3 values=[0.975552,1.97676,3.01562]
 anotherSample covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[3.93888,-0.108482,0.0252497,-0.108482,9.16197,-0.158405,0.0252497,-0.158405,16.281]
 Zero point= class=NumericalPoint name=Unnamed dimension=3 values=[0,0,0] pdf=0.00141116 cdf=0.017655

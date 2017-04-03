@@ -176,7 +176,7 @@ NumericalPoint AdaptiveStieltjesAlgorithm::computeDotProduct(const Function & ke
     }
   if (measure_.isDiscrete())
     {
-      const NumericalSample nodes(measure_.getSupport());
+      const Sample nodes(measure_.getSupport());
       return kernel(nodes).computeMean() * nodes.getSize();
     }
   throw NotYetImplementedException(HERE) << "In AdaptiveStieltjesAlgorithm::computeDotProduct";

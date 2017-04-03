@@ -50,8 +50,8 @@ int main(int argc, char *argv[])
     // Test for sampling
     UnsignedInteger size = 2000;
     UnsignedInteger nBars = 20;
-    NumericalSample sample1(distribution1.getSample( size ));
-    NumericalSample sample2(distribution2.getSample( size ));
+    Sample sample1(distribution1.getSample( size ));
+    Sample sample2(distribution2.getSample( size ));
 
 
     // Construct histograms
@@ -63,9 +63,9 @@ int main(int argc, char *argv[])
     NumericalPoint tmp(2);
     tmp[0] = (max1 - min1) / nBars;
     tmp[1] = 0;
-    NumericalSample data1(nBars, tmp);
+    Sample data1(nBars, tmp);
     tmp[0] = (max2 - min2) / nBars;
-    NumericalSample data2(nBars, tmp);
+    Sample data2(nBars, tmp);
     UnsignedInteger index;
 
     for(UnsignedInteger i = 0; i < size; i++)

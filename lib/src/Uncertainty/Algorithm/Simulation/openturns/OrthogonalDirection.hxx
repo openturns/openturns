@@ -54,7 +54,7 @@ public:
   virtual OrthogonalDirection * clone() const;
 
   /** Generate a set of directions */
-  NumericalSample generate() const;
+  Sample generate() const;
 
   /** String converter */
   String __repr__() const;
@@ -72,7 +72,7 @@ private:
    * to the coefficients of the linear combination */
   void computePartialSample(const Indices & indices,
                             const Matrix & Q,
-                            NumericalSample & result) const;
+                            Sample & result) const;
   /** Size of the direction subset */
   UnsignedInteger size_;
 

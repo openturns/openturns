@@ -103,7 +103,7 @@ Examples
 
 Returns
 -------
-dataIn : :class:`~openturns.NumericalSample`
+dataIn : :class:`~openturns.Sample`
     Input data."
 
 // ---------------------------------------------------------------------
@@ -123,7 +123,7 @@ constantVector : :class:`~openturns.NumericalPoint`
 
 Returns
 -------
-dataOut : :class:`~openturns.NumericalSample`
+dataOut : :class:`~openturns.Sample`
     Output data. If not specified in the constructor, the sample is computed
     such as: :math:`dataOut = h(dataIn)`."
 

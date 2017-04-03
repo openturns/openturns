@@ -80,7 +80,7 @@ protected:
   Indices degrees_;
 
   // subbasis coefficients
-  PersistentCollection<NumericalSample> coefficients_;
+  PersistentCollection<Sample> coefficients_;
 
   PersistentCollection<Basis> basis_;
 

@@ -23,7 +23,7 @@
 
 #include "openturns/Analytical.hxx"
 #include "openturns/Distribution.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/SobolIndicesAlgorithmImplementation.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/BarPlot.hxx"
@@ -430,14 +430,14 @@ Graph AnalyticalResult::drawSensitivity(const Sensitivity & sensitivity,
   // Create an empty graph
   Graph sensitivityGraph("Sensitivity", "parameters", "sensitivities", true, "topright");
 
-  BarPlot sensitivityBarPlot(NumericalSample(0, 2), shift, "");
+  BarPlot sensitivityBarPlot(Sample(0, 2), shift, "");
 
   // Create the barplots
   const UnsignedInteger sensitivitySize = sensitivity.getSize();
   const Description colors(BarPlot::BuildDefaultPalette(sensitivitySize));
   for (UnsignedInteger collectionIndex = 0; collectionIndex < sensitivitySize; ++collectionIndex)
   {
-    NumericalSample data(sensitivity[collectionIndex].getDimension(), 2);
+    Sample data(sensitivity[collectionIndex].getDimension(), 2);
     const UnsignedInteger dataSize = data.getSize();
     for (UnsignedInteger sensitivityIndex = 0; sensitivityIndex < dataSize; ++sensitivityIndex)
     {

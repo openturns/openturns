@@ -114,7 +114,7 @@ FieldFunction CompositeProcess::getFunction() const
 Field CompositeProcess::getRealization() const
 {
   Field result(function_(p_antecedent_->getRealization()));
-  NumericalSample values(result.getValues());
+  Sample values(result.getValues());
   values.setDescription(getDescription());
   result.setValues(values);
   return result;

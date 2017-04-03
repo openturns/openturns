@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
     h[3] = 2.5;
     Histogram distribution(-1.5, l, h);
     UnsignedInteger size = 10000;
-    NumericalSample sample(distribution.getSample(size));
+    Sample sample(distribution.getSample(size));
     HistogramFactory factory;
     Distribution estimatedDistribution(factory.build(sample));
     fullprint << "Distribution          =" << distribution << std::endl;
@@ -71,10 +71,10 @@ int main(int argc, char *argv[])
     Histogram estimatedHistogram(factory.buildAsHistogram());
     fullprint << "Default histogram=" << estimatedHistogram << std::endl;
     // Test for constant sample
-    sample = NumericalSample(size, NumericalPoint(1, 0.0));
+    sample = Sample(size, NumericalPoint(1, 0.0));
     estimatedDistribution = factory.build(sample);
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
-    sample = NumericalSample(size, NumericalPoint(1, 1.0));
+    sample = Sample(size, NumericalPoint(1, 1.0));
     estimatedDistribution = factory.build(sample);
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
   }

@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
 
 
     // We build the weights
-    NumericalSample coefficients(0, 2);
+    Sample coefficients(0, 2);
     NumericalPoint p(2);
     p[0] = 1.5;
     p[1] = 2.5;

@@ -22,8 +22,8 @@ try:
     p1[2] = 12.
     myStudy.add(p1)
 
-    # Add another PersistentObject to the Study (here a NumericalSample)
-    s1 = ot.NumericalSample(3, 2)
+    # Add another PersistentObject to the Study (here a Sample)
+    s1 = ot.Sample(3, 2)
     s1.setName('mySample')
     p2 = ot.NumericalPoint(2, 0.)
     p2.setName('One')
@@ -197,8 +197,8 @@ try:
 
     print('point = ', repr(point))
 
-    # Create a NumericalSample from the one stored in the Study
-    sample = ot.NumericalSample()
+    # Create a Sample from the one stored in the Study
+    sample = ot.Sample()
     myStudy.fillObject('mySample', sample)
 
     print('sample = ', repr(sample))
