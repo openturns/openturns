@@ -82,23 +82,23 @@ Evaluation functions
     :template: class.rst_t
 
     NumericalMathEvaluationImplementation
-    AggregatedNumericalMathEvaluationImplementation
+    AggregatedEvaluation
     SymbolicEvaluation
-    ComposedNumericalMathEvaluationImplementation
-    DatabaseNumericalMathEvaluationImplementation
+    ComposedEvaluation
+    DatabaseEvaluation
     DualLinearCombinationEvaluationImplementation
-    IndicatorNumericalMathEvaluationImplementation
+    IndicatorEvaluation
     LinearCombinationEvaluationImplementation
-    LinearNumericalMathEvaluationImplementation
+    LinearEvaluation
     MarginalTransformationEvaluation
-    NoNumericalMathEvaluationImplementation
+    NoEvaluation
     ParametricEvaluationImplementation
     PiecewiseHermiteEvaluationImplementation
     PiecewiseLinearEvaluationImplementation
     P1LagrangeEvaluationImplementation
-    ProductNumericalMathEvaluationImplementation
+    ProductEvaluation
     ProductPolynomialEvaluationImplementation
-    QuadraticNumericalMathEvaluationImplementation
+    QuadraticEvaluation
 
 Gradient functions
 ==================
@@ -109,14 +109,14 @@ Gradient functions
 
     NumericalMathGradientImplementation
     SymbolicGradient
-    ComposedNumericalMathGradientImplementation
-    ConstantNumericalMathGradientImplementation
+    ComposedGradient
+    ConstantGradient
     DualLinearCombinationGradientImplementation
     LinearCombinationGradientImplementation
-    LinearNumericalMathGradientImplementation
-    NoNumericalMathGradientImplementation
+    LinearGradient
+    NoGradient
     ParametricGradientImplementation
-    ProductNumericalMathGradientImplementation
+    ProductGradient
 
 Hessian functions
 =================
@@ -127,13 +127,13 @@ Hessian functions
 
     NumericalMathHessianImplementation
     SymbolicHessian
-    ComposedNumericalMathHessianImplementation
-    ConstantNumericalMathHessianImplementation
+    ComposedHessian
+    ConstantHessian
     DualLinearCombinationHessianImplementation
     LinearCombinationHessianImplementation
-    NoNumericalMathHessianImplementation
+    NoHessian
     ParametricHessianImplementation
-    ProductNumericalMathHessianImplementation
+    ProductHessian
 
 Differential equation solvers
 =============================

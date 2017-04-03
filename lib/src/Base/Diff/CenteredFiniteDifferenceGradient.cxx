@@ -40,7 +40,7 @@ CenteredFiniteDifferenceGradient::CenteredFiniteDifferenceGradient() :
 
 /* Parameter constructor */
 CenteredFiniteDifferenceGradient::CenteredFiniteDifferenceGradient(const NumericalPoint & epsilon,
-    const EvaluationImplementation & p_evaluation)
+    const EvaluationPointer & p_evaluation)
   : FiniteDifferenceGradient(epsilon, p_evaluation)
 
 {
@@ -48,14 +48,14 @@ CenteredFiniteDifferenceGradient::CenteredFiniteDifferenceGradient(const Numeric
 
 /* Parameter constructor */
 CenteredFiniteDifferenceGradient::CenteredFiniteDifferenceGradient(const NumericalScalar epsilon,
-    const EvaluationImplementation & p_evaluation)
+    const EvaluationPointer & p_evaluation)
   : FiniteDifferenceGradient(epsilon, p_evaluation)
 {
 }
 
 /* Parameter constructor */
 CenteredFiniteDifferenceGradient::CenteredFiniteDifferenceGradient(const FiniteDifferenceStep & step,
-    const EvaluationImplementation & p_evaluation)
+    const EvaluationPointer & p_evaluation)
   : FiniteDifferenceGradient(step, p_evaluation)
 {
   // Nothing to do

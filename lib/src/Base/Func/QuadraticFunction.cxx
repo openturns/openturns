@@ -19,9 +19,9 @@
  *
  */
 #include "openturns/QuadraticFunction.hxx"
-#include "openturns/QuadraticNumericalMathEvaluationImplementation.hxx"
-#include "openturns/LinearNumericalMathGradientImplementation.hxx"
-#include "openturns/ConstantNumericalMathHessianImplementation.hxx"
+#include "openturns/QuadraticEvaluation.hxx"
+#include "openturns/LinearGradient.hxx"
+#include "openturns/ConstantHessian.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -32,9 +32,9 @@ QuadraticFunction::QuadraticFunction (const NumericalPoint & center,
     const NumericalPoint & constant,
     const Matrix & linear,
     const SymmetricTensor & quadratic)
-  : NumericalMathFunction(new QuadraticNumericalMathEvaluationImplementation(center, constant, linear, quadratic),
-                          new LinearNumericalMathGradientImplementation(center, linear, quadratic),
-                          new ConstantNumericalMathHessianImplementation(quadratic))
+  : NumericalMathFunction(new QuadraticEvaluation(center, constant, linear, quadratic),
+                          new LinearGradient(center, linear, quadratic),
+                          new ConstantHessian(quadratic))
 {
   // Nothing to do
 }

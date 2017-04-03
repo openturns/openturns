@@ -37,14 +37,14 @@ static const Factory<InverseNatafEllipticalDistributionHessian> Factory_InverseN
 
 /* Default constructor */
 InverseNatafEllipticalDistributionHessian::InverseNatafEllipticalDistributionHessian():
-  ConstantNumericalMathHessianImplementation()
+  ConstantHessian()
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
 InverseNatafEllipticalDistributionHessian::InverseNatafEllipticalDistributionHessian(const UnsignedInteger dimension):
-  ConstantNumericalMathHessianImplementation(SymmetricTensor(dimension, dimension))
+  ConstantHessian(SymmetricTensor(dimension, dimension))
 {
   // Nothing to do
 }
@@ -64,13 +64,13 @@ String InverseNatafEllipticalDistributionHessian::__repr__() const
 /* Method save() stores the object through the StorageManager */
 void InverseNatafEllipticalDistributionHessian::save(Advocate & adv) const
 {
-  ConstantNumericalMathHessianImplementation::save(adv);
+  ConstantHessian::save(adv);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void InverseNatafEllipticalDistributionHessian::load(Advocate & adv)
 {
-  ConstantNumericalMathHessianImplementation::load(adv);
+  ConstantHessian::load(adv);
 }
 
 END_NAMESPACE_OPENTURNS

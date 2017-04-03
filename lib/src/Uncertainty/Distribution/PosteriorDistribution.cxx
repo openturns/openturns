@@ -23,7 +23,7 @@
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/SymbolicFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

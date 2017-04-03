@@ -42,7 +42,7 @@ class OT_API TrendTransform
   CLASSNAME;
 public:
 
-  typedef NumericalMathEvaluationImplementation::Implementation EvaluationImplementation;
+  typedef NumericalMathEvaluationImplementation::Implementation EvaluationPointer;
 
   /** Default constructor */
   TrendTransform();
@@ -51,7 +51,7 @@ public:
   TrendTransform(const NumericalMathFunction & function);
 
   /** Parameter constructor */
-  TrendTransform(const EvaluationImplementation & p_evaluation);
+  TrendTransform(const EvaluationPointer & p_evaluation);
 
   /** Parameter constructor */
   TrendTransform(const NumericalMathEvaluationImplementation & evaluation);

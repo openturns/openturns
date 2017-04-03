@@ -32,7 +32,7 @@
 #include "openturns/ComposedDistribution.hxx"
 #include "openturns/OrthogonalProductFunctionFactory.hxx"
 #include "openturns/Uniform.hxx"
-#include "openturns/DatabaseNumericalMathEvaluationImplementation.hxx"
+#include "openturns/DatabaseEvaluation.hxx"
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/SparseMethod.hxx"
 #include "openturns/DistributionTransformation.hxx"
@@ -66,7 +66,7 @@ TensorApproximationAlgorithm::TensorApproximationAlgorithm(const NumericalSample
     const OrthogonalProductFunctionFactory & basisFactory,
     const Indices & degrees,
     const UnsignedInteger maxRank)
-  : MetaModelAlgorithm(distribution, NumericalMathFunction(NumericalMathFunctionImplementation(DatabaseNumericalMathEvaluationImplementation(inputSample, outputSample, false).clone())))
+  : MetaModelAlgorithm(distribution, NumericalMathFunction(NumericalMathFunctionImplementation(DatabaseEvaluation(inputSample, outputSample, false).clone())))
   , inputSample_(inputSample)
   , outputSample_(outputSample)
   , maxRank_(maxRank)

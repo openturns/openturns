@@ -21,7 +21,7 @@
 #include "openturns/ValueFunction.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/NumericalMathEvaluationImplementation.hxx"
-#include "openturns/NoNumericalMathEvaluationImplementation.hxx"
+#include "openturns/NoEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -32,7 +32,7 @@ static const Factory<ValueFunction> Factory_ValueFunction;
 /* Default constructor */
 ValueFunction::ValueFunction(const UnsignedInteger meshDimension)
   : FieldFunctionImplementation(meshDimension)
-  , p_evaluation_(new NoNumericalMathEvaluationImplementation)
+  , p_evaluation_(new NoEvaluation)
 {
   // Nothing to do
 }
@@ -49,7 +49,7 @@ ValueFunction::ValueFunction(const NumericalMathFunction & function,
 }
 
 /* Parameter constructor */
-ValueFunction::ValueFunction(const EvaluationImplementation & p_evaluation,
+ValueFunction::ValueFunction(const EvaluationPointer & p_evaluation,
                                  const UnsignedInteger meshDimension)
   : FieldFunctionImplementation(meshDimension)
   , p_evaluation_(p_evaluation)
@@ -127,7 +127,7 @@ void ValueFunction::save(Advocate & adv) const
 }
 
 /* Evaluation accessor */
-ValueFunction::EvaluationImplementation ValueFunction::getEvaluation() const
+ValueFunction::EvaluationPointer ValueFunction::getEvaluation() const
 {
   return p_evaluation_;
 }

@@ -36,7 +36,7 @@ static const Factory<NatafEllipticalDistributionEvaluation> Factory_NatafEllipti
 
 /* Default constructor */
 NatafEllipticalDistributionEvaluation::NatafEllipticalDistributionEvaluation():
-  LinearNumericalMathEvaluationImplementation()
+  LinearEvaluation()
 {
   // Nothing to do
 }
@@ -44,7 +44,7 @@ NatafEllipticalDistributionEvaluation::NatafEllipticalDistributionEvaluation():
 /* Parameter constructor */
 NatafEllipticalDistributionEvaluation::NatafEllipticalDistributionEvaluation(const NumericalPoint & mean,
     const TriangularMatrix & inverseCholesky)
-  : LinearNumericalMathEvaluationImplementation(
+  : LinearEvaluation(
     mean,
     NumericalPoint(mean.getDimension(), 0.0),
     inverseCholesky.transpose()
@@ -108,13 +108,13 @@ Matrix NatafEllipticalDistributionEvaluation::parameterGradient(const NumericalP
 /* Method save() stores the object through the StorageManager */
 void NatafEllipticalDistributionEvaluation::save(Advocate & adv) const
 {
-  LinearNumericalMathEvaluationImplementation::save(adv);
+  LinearEvaluation::save(adv);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void NatafEllipticalDistributionEvaluation::load(Advocate & adv)
 {
-  LinearNumericalMathEvaluationImplementation::load(adv);
+  LinearEvaluation::load(adv);
 }
 
 END_NAMESPACE_OPENTURNS

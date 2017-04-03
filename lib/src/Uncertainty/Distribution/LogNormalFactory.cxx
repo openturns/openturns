@@ -20,7 +20,7 @@
  */
 #include <cmath>
 #include "openturns/LogNormalFactory.hxx"
-#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/Brent.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/SpecFunc.hxx"

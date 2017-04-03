@@ -71,7 +71,7 @@
 #include "openturns/OptimizationProblem.hxx"
 #include "openturns/TNC.hxx"
 #include "openturns/TriangularMatrix.hxx"
-#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/SobolSequence.hxx"
 #include "openturns/SymbolicFunction.hxx"
 
@@ -79,9 +79,9 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(DistributionImplementation);
 
-typedef NumericalMathFunctionImplementation::EvaluationImplementation EvaluationImplementation;
-typedef NumericalMathFunctionImplementation::GradientImplementation   GradientImplementation;
-typedef NumericalMathFunctionImplementation::HessianImplementation    HessianImplementation;
+typedef NumericalMathFunctionImplementation::EvaluationPointer EvaluationPointer;
+typedef NumericalMathFunctionImplementation::GradientPointer   GradientPointer;
+typedef NumericalMathFunctionImplementation::HessianPointer    HessianPointer;
 typedef Collection<Distribution>                                      DistributionCollection;
 
 static const Factory<DistributionImplementation> Factory_DistributionImplementation;
@@ -3078,11 +3078,11 @@ DistributionImplementation::IsoProbabilisticTransformation DistributionImplement
     MarginalTransformationEvaluation evaluation(collection, DistributionCollection(1, Normal()));
     // We have to correct the direction because the output collection corresponds to the standard space, so there is no parameter to take into account.
     evaluation.setDirection(MarginalTransformationEvaluation::FROM);
-    const EvaluationImplementation p_evaluation(evaluation.clone());
+    const EvaluationPointer p_evaluation(evaluation.clone());
     // Get the marginal transformation gradient implementation
-    const GradientImplementation p_gradient = new MarginalTransformationGradient(evaluation);
+    const GradientPointer p_gradient = new MarginalTransformationGradient(evaluation);
     // Get the marginal transformation hessian implementation
-    const HessianImplementation p_hessian = new MarginalTransformationHessian(evaluation);
+    const HessianPointer p_hessian = new MarginalTransformationHessian(evaluation);
     InverseIsoProbabilisticTransformation inverseTransformation(p_evaluation, p_gradient, p_hessian);
     NumericalPointWithDescription parameters(getParameter());
     const UnsignedInteger parametersDimension = parameters.getDimension();
@@ -3109,11 +3109,11 @@ DistributionImplementation::InverseIsoProbabilisticTransformation DistributionIm
     MarginalTransformationEvaluation evaluation(DistributionCollection(1, Normal()), collection);
     // We have to correct the direction because the input collection corresponds to the standard space, so there is no parameter to take into account.
     evaluation.setDirection(MarginalTransformationEvaluation::TO);
-    const EvaluationImplementation p_evaluation(evaluation.clone());
+    const EvaluationPointer p_evaluation(evaluation.clone());
     // Get the marginal transformation gradient implementation
-    const GradientImplementation p_gradient = new MarginalTransformationGradient(evaluation);
+    const GradientPointer p_gradient = new MarginalTransformationGradient(evaluation);
     // Get the marginal transformation hessian implementation
-    const HessianImplementation p_hessian = new MarginalTransformationHessian(evaluation);
+    const HessianPointer p_hessian = new MarginalTransformationHessian(evaluation);
     InverseIsoProbabilisticTransformation inverseTransformation(p_evaluation, p_gradient, p_hessian);
     NumericalPointWithDescription parameters(getParameter());
     const UnsignedInteger parametersDimension = parameters.getDimension();

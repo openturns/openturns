@@ -39,13 +39,13 @@ class OT_API ParametricHessianImplementation
   CLASSNAME;
 
 public:
-  typedef Pointer<ParametricEvaluationImplementation>                EvaluationImplementation;
+  typedef Pointer<ParametricEvaluationImplementation>                EvaluationPointer;
 
   /** Default constructor */
   ParametricHessianImplementation();
 
   /** Parameters constructor */
-  ParametricHessianImplementation(const EvaluationImplementation & p_evaluation);
+  ParametricHessianImplementation(const EvaluationPointer & p_evaluation);
 
   /** Virtual constructor method */
   ParametricHessianImplementation * clone() const;
@@ -77,7 +77,7 @@ public:
 private:
 
   /** The underlying function */
-  EvaluationImplementation p_evaluation_;
+  EvaluationPointer p_evaluation_;
 
 }; /* class ParametricHessianImplementation */
 

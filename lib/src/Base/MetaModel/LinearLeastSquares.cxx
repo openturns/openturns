@@ -20,9 +20,9 @@
  */
 
 #include "openturns/LinearLeastSquares.hxx"
-#include "openturns/LinearNumericalMathEvaluationImplementation.hxx"
-#include "openturns/ConstantNumericalMathGradientImplementation.hxx"
-#include "openturns/ConstantNumericalMathHessianImplementation.hxx"
+#include "openturns/LinearEvaluation.hxx"
+#include "openturns/ConstantGradient.hxx"
+#include "openturns/ConstantHessian.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -135,9 +135,9 @@ void LinearLeastSquares::run()
   } // output components
   const NumericalPoint center(inputDimension, 0.0);
   /* Build the several implementations and set them into the response surface */
-  responseSurface_.setEvaluation(new LinearNumericalMathEvaluationImplementation(center, constant_, linear_));
-  responseSurface_.setGradient(new ConstantNumericalMathGradientImplementation(linear_));
-  responseSurface_.setHessian(new ConstantNumericalMathHessianImplementation(SymmetricTensor(center.getDimension(), constant_.getDimension())));
+  responseSurface_.setEvaluation(new LinearEvaluation(center, constant_, linear_));
+  responseSurface_.setGradient(new ConstantGradient(linear_));
+  responseSurface_.setHessian(new ConstantHessian(SymmetricTensor(center.getDimension(), constant_.getDimension())));
 }
 
 /* DataIn accessor */

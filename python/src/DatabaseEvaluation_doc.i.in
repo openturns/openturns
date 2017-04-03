@@ -1,0 +1,78 @@
+%feature("docstring") OT::DatabaseEvaluation
+"Data based math evaluation implementation.
+
+Available constructors:
+
+    DatabaseEvaluation(*inputSample, outputSample*)
+    
+    DatabaseEvaluation(*inputSample, outputSample, activateCache*)
+
+Parameters
+----------
+inputSample : 2-d sequence of float
+    Sample :math:`\cS^{in}` of size :math:`l` and dimension :math:`n`.
+outputSample : 2-d sequence of float
+    Sample :math:`\cS^{out}` of size :math:`l` and dimension :math:`p`.
+activateCache : bool
+    Flag to enable cache or not.
+
+See also
+--------
+NumericalMathFunction, AggregatedEvaluation, DualLinearCombinationEvaluationImplementation,
+LinearFunction
+
+Notes
+-----
+It returns a :class:`~openturns.NumericalMathFunction` that implements a 
+nearest-neighbor function :math:`f : \Rset^n \rightarrow \Rset^p` based on the 
+input sample :math:`S^{in}` and taking values in the outputSample :math:`S^{out}`:
+
+.. math::
+    \forall \vect{x} \in \Rset^n, f(\vect{x}) = y_{i*}
+
+where:
+
+.. math::
+    i^* = \underset{ \vect{x}_i \in S^{in} }{ \argmin_{i \in \{1, \ldots, l\}} } \|\vect{x} - \vect{x}_i \|
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DatabaseEvaluation::getInputSample
+"Accessor to the input sample defining the functions.
+
+Returns
+-------
+inputSample : :class:`~openturns.NumericalSample`
+    The input sample defining the function."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DatabaseEvaluation::getOutputSample
+"Accessor to the output sample defining the functions.
+
+Returns
+-------
+outputSample : :class:`~openturns.NumericalSample`
+    The output sample defining the function."
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DatabaseEvaluation::setInputSample
+"Accessor to the input sample defining the functions.
+
+Parameters
+----------
+inputSample : :class:`~openturns.NumericalSample`
+    The input sample defining the function."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DatabaseEvaluation::setOutputSample
+"Accessor to the output sample defining the functions.
+
+Parameters
+----------
+outputSample : :class:`~openturns.NumericalSample`
+    The output sample defining the function."

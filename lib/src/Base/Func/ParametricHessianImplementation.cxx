@@ -38,7 +38,7 @@ ParametricHessianImplementation::ParametricHessianImplementation()
 }
 
 /* Parameter constructor */
-ParametricHessianImplementation::ParametricHessianImplementation(const EvaluationImplementation & p_evaluation)
+ParametricHessianImplementation::ParametricHessianImplementation(const EvaluationPointer & p_evaluation)
   : NumericalMathHessianImplementation()
   , p_evaluation_(p_evaluation)
 {

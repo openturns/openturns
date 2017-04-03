@@ -29,7 +29,7 @@
 #include "openturns/UniVariatePolynomial.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/Cobyla.hxx"
-#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/MethodBoundEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

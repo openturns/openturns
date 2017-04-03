@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/BoxCoxFactory.hxx"
-#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Field.hxx"
@@ -32,7 +32,7 @@
 #include "openturns/Cloud.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/Cobyla.hxx"
-#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/GeneralLinearModelAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

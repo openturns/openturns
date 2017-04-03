@@ -19,9 +19,9 @@
  *
  */
 #include "openturns/AggregatedFunction.hxx"
-#include "openturns/AggregatedNumericalMathEvaluationImplementation.hxx"
-#include "openturns/AggregatedNumericalMathGradientImplementation.hxx"
-#include "openturns/AggregatedNumericalMathHessianImplementation.hxx"
+#include "openturns/AggregatedEvaluation.hxx"
+#include "openturns/AggregatedGradient.hxx"
+#include "openturns/AggregatedHessian.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -38,10 +38,10 @@ AggregatedFunction::AggregatedFunction ()
 AggregatedFunction::AggregatedFunction (const NumericalMathFunctionCollection & functionCollection)
   : NumericalMathFunction()
 {
-  const AggregatedNumericalMathEvaluationImplementation evaluation(functionCollection);
+  const AggregatedEvaluation evaluation(functionCollection);
   setEvaluation(evaluation.clone());
-  setGradient(new AggregatedNumericalMathGradientImplementation(evaluation));
-  setHessian(new AggregatedNumericalMathHessianImplementation(evaluation));
+  setGradient(new AggregatedGradient(evaluation));
+  setHessian(new AggregatedHessian(evaluation));
 }
 
 

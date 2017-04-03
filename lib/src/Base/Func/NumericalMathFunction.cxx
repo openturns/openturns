@@ -20,18 +20,18 @@
  */
 #include "openturns/NumericalMathFunction.hxx"
 #include "openturns/ComposedFunction.hxx"
-#include "openturns/AggregatedNumericalMathEvaluationImplementation.hxx"
-#include "openturns/AggregatedNumericalMathGradientImplementation.hxx"
-#include "openturns/AggregatedNumericalMathHessianImplementation.hxx"
-#include "openturns/IndicatorNumericalMathEvaluationImplementation.hxx"
+#include "openturns/AggregatedEvaluation.hxx"
+#include "openturns/AggregatedGradient.hxx"
+#include "openturns/AggregatedHessian.hxx"
+#include "openturns/IndicatorEvaluation.hxx"
 #include "openturns/DualLinearCombinationEvaluationImplementation.hxx"
 #include "openturns/DualLinearCombinationGradientImplementation.hxx"
 #include "openturns/DualLinearCombinationHessianImplementation.hxx"
 #include "openturns/LinearCombinationEvaluationImplementation.hxx"
 #include "openturns/LinearCombinationGradientImplementation.hxx"
 #include "openturns/LinearCombinationHessianImplementation.hxx"
-#include "openturns/NoNumericalMathGradientImplementation.hxx"
-#include "openturns/NoNumericalMathHessianImplementation.hxx"
+#include "openturns/NoGradient.hxx"
+#include "openturns/NoHessian.hxx"
 #include "openturns/ParametricEvaluationImplementation.hxx"
 #include "openturns/ParametricGradientImplementation.hxx"
 #include "openturns/ParametricHessianImplementation.hxx"
@@ -115,7 +115,7 @@ NumericalMathFunction::NumericalMathFunction(const Description & inputVariablesN
 NumericalMathFunction::NumericalMathFunction(const NumericalMathFunction & function,
     const ComparisonOperator & comparisonOperator,
     const NumericalScalar threshold)
-  : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation(new IndicatorNumericalMathEvaluationImplementation(function.getEvaluation(), comparisonOperator, threshold), new NoNumericalMathGradientImplementation(), new NoNumericalMathHessianImplementation()))
+  : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation(new IndicatorEvaluation(function.getEvaluation(), comparisonOperator, threshold), new NoGradient(), new NoHessian()))
 {
   Log::Warn(OSS() << "NumericalMathFunction(NumericalMathFunction, ComparisonOperator, NumericalScalar) is deprecated: use IndicatorFunction");
 }
@@ -125,10 +125,10 @@ NumericalMathFunction::NumericalMathFunction(const NumericalMathFunctionCollecti
   : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation())
 {
   Log::Warn(OSS() << "NumericalMathFunction(NumericalMathFunctionCollection) is deprecated: use AggregatedFunction");
-  const AggregatedNumericalMathEvaluationImplementation evaluation(functionCollection);
+  const AggregatedEvaluation evaluation(functionCollection);
   setEvaluation(evaluation.clone());
-  setGradient(new AggregatedNumericalMathGradientImplementation(evaluation));
-  setHessian(new AggregatedNumericalMathHessianImplementation(evaluation));
+  setGradient(new AggregatedGradient(evaluation));
+  setHessian(new AggregatedHessian(evaluation));
 }
 
 /* Linear combination function constructor */
@@ -166,7 +166,7 @@ NumericalMathFunction::NumericalMathFunction(const String & inputVariableName,
 
 
 /* Constructor from evaluation */
-NumericalMathFunction::NumericalMathFunction(const EvaluationImplementation & evaluationImplementation)
+NumericalMathFunction::NumericalMathFunction(const EvaluationPointer & evaluationImplementation)
   : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation(evaluationImplementation))
 {
   // Nothing to do
@@ -174,9 +174,9 @@ NumericalMathFunction::NumericalMathFunction(const EvaluationImplementation & ev
 
 
 /* Constructor from implementations */
-NumericalMathFunction::NumericalMathFunction(const EvaluationImplementation & evaluationImplementation,
-    const GradientImplementation & gradientImplementation,
-    const HessianImplementation  & hessianImplementation)
+NumericalMathFunction::NumericalMathFunction(const EvaluationPointer & evaluationImplementation,
+    const GradientPointer & gradientImplementation,
+    const HessianPointer  & hessianImplementation)
   : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation(evaluationImplementation, gradientImplementation, hessianImplementation))
 {
   // Nothing to do
@@ -369,13 +369,13 @@ NumericalMathFunction NumericalMathFunction::operator - (const NumericalMathFunc
 }
 
 /* Function implementation accessors */
-void NumericalMathFunction::setEvaluation(const EvaluationImplementation & functionImplementation)
+void NumericalMathFunction::setEvaluation(const EvaluationPointer & functionImplementation)
 {
   copyOnWrite();
   getImplementation()->setEvaluation(functionImplementation);
 }
 
-const NumericalMathFunction::EvaluationImplementation & NumericalMathFunction::getEvaluation() const
+const NumericalMathFunction::EvaluationPointer & NumericalMathFunction::getEvaluation() const
 {
   return getImplementation()->getEvaluation();
 }
@@ -384,16 +384,16 @@ const NumericalMathFunction::EvaluationImplementation & NumericalMathFunction::g
 void NumericalMathFunction::setGradient(const NumericalMathGradientImplementation & gradientImplementation)
 {
   copyOnWrite();
-  getImplementation()->setGradient(GradientImplementation(gradientImplementation.clone()));
+  getImplementation()->setGradient(GradientPointer(gradientImplementation.clone()));
 }
 
-void NumericalMathFunction::setGradient(const GradientImplementation & gradientImplementation)
+void NumericalMathFunction::setGradient(const GradientPointer & gradientImplementation)
 {
   copyOnWrite();
   getImplementation()->setGradient(gradientImplementation);
 }
 
-const NumericalMathFunction::GradientImplementation & NumericalMathFunction::getGradient() const
+const NumericalMathFunction::GradientPointer & NumericalMathFunction::getGradient() const
 {
   return getImplementation()->getGradient();
 }
@@ -402,16 +402,16 @@ const NumericalMathFunction::GradientImplementation & NumericalMathFunction::get
 void NumericalMathFunction::setHessian(const NumericalMathHessianImplementation & hessianImplementation)
 {
   copyOnWrite();
-  getImplementation()->setHessian(HessianImplementation(hessianImplementation.clone()));
+  getImplementation()->setHessian(HessianPointer(hessianImplementation.clone()));
 }
 
-void NumericalMathFunction::setHessian(const HessianImplementation & hessianImplementation)
+void NumericalMathFunction::setHessian(const HessianPointer & hessianImplementation)
 {
   copyOnWrite();
   getImplementation()->setHessian(hessianImplementation);
 }
 
-const NumericalMathFunction::HessianImplementation & NumericalMathFunction::getHessian() const
+const NumericalMathFunction::HessianPointer & NumericalMathFunction::getHessian() const
 {
   return getImplementation()->getHessian();
 }

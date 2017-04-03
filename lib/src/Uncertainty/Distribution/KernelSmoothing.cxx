@@ -26,7 +26,7 @@
 #include "openturns/TruncatedDistribution.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Brent.hxx"
-#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/NumericalMathFunction.hxx"
 #include "openturns/HermiteFactory.hxx"
 #include "openturns/UniVariatePolynomial.hxx"

@@ -24,10 +24,10 @@
 #ifdef OPENTURNS_HAVE_MUPARSER
 #include "openturns/SymbolicEvaluation.hxx"
 #else
-#include "openturns/LinearNumericalMathEvaluationImplementation.hxx"
+#include "openturns/LinearEvaluation.hxx"
 #endif
-#include "openturns/ConstantNumericalMathGradientImplementation.hxx"
-#include "openturns/ComposedNumericalMathGradientImplementation.hxx"
+#include "openturns/ConstantGradient.hxx"
+#include "openturns/ComposedGradient.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -155,15 +155,15 @@ NumericalMathGradientImplementation::Implementation NumericalMathGradientImpleme
   NumericalPoint center(inputDimension);
   Matrix linear(inputDimension, outputDimension);
   NumericalPoint constant(outputDimension);
-  const LinearNumericalMathEvaluationImplementation right(center, constant, linear);
+  const LinearEvaluation right(center, constant, linear);
 #endif
   // A
   const UnsignedInteger marginalOutputDimension = indices.getSize();
   Matrix gradientExtraction(outputDimension, marginalOutputDimension);
   for (UnsignedInteger i = 0; i < marginalOutputDimension; ++i)
     gradientExtraction(indices[i], i) = 1.0;
-  const ConstantNumericalMathGradientImplementation leftGradient(gradientExtraction);
-  return new ComposedNumericalMathGradientImplementation(leftGradient.clone(), right.clone(), clone());
+  const ConstantGradient leftGradient(gradientExtraction);
+  return new ComposedGradient(leftGradient.clone(), right.clone(), clone());
 }
 
 /* Method save() stores the object through the StorageManager */

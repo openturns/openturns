@@ -25,7 +25,7 @@
 #include "openturns/DistFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Brent.hxx"
-#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/MethodBoundEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

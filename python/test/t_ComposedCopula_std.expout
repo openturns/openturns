@@ -39,7 +39,7 @@ isoprobabilistic transformation (general non-normal)= [(RosenblattEvaluation(cla
  [ 0 1 0 ]
  [ 0 0 1 ]])))o([x0,x1,x2,x3,x4,x5,x6]->[x0,x1,x2]),(RosenblattEvaluation(ClaytonCopula(theta = 2)->Normal(2))o([x0,x1,x2,x3,x4,x5,x6]->[x0,x1])]
 isoprobabilistic transformation (independent)= NatafIndependentCopulaEvaluation(IndependentCopula(6)->Normal(6))
-isoprobabilistic transformation (single contributor)= (class=LinearNumericalMathEvaluationImplementation name=Unnamed center=[1,1] constant=[0,0] linear=[[ 0.333333 0        ]
+isoprobabilistic transformation (single contributor)= (class=LinearEvaluation name=Unnamed center=[1,1] constant=[0,0] linear=[[ 0.333333 0        ]
  [ 0        0.333333 ]])o(| y0 = Uniform(a = 0, b = 1) -> y0 : Student(nu = 3, mu = 1, sigma = 3)
 | y1 = Uniform(a = 0, b = 1) -> y1 : Student(nu = 3, mu = 1, sigma = 3)
 )

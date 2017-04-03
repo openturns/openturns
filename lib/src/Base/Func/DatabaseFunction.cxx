@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/DatabaseFunction.hxx"
-#include "openturns/DatabaseNumericalMathEvaluationImplementation.hxx"
+#include "openturns/DatabaseEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -38,7 +38,7 @@ DatabaseFunction::DatabaseFunction (const NumericalSample & inputSample,
                                     const Bool enableCache)
   : NumericalMathFunction()
 {
-  setEvaluation(new DatabaseNumericalMathEvaluationImplementation(inputSample, outputSample, enableCache));
+  setEvaluation(new DatabaseEvaluation(inputSample, outputSample, enableCache));
 }
 
 

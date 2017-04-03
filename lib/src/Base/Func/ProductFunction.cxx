@@ -19,11 +19,11 @@
  *
  */
 #include "openturns/ProductFunction.hxx"
-#include "openturns/NoNumericalMathGradientImplementation.hxx"
-#include "openturns/NoNumericalMathHessianImplementation.hxx"
-#include "openturns/ProductNumericalMathEvaluationImplementation.hxx"
-#include "openturns/ProductNumericalMathGradientImplementation.hxx"
-#include "openturns/ProductNumericalMathHessianImplementation.hxx"
+#include "openturns/NoGradient.hxx"
+#include "openturns/NoHessian.hxx"
+#include "openturns/ProductEvaluation.hxx"
+#include "openturns/ProductGradient.hxx"
+#include "openturns/ProductHessian.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -35,21 +35,21 @@ static const Factory<ProductFunction> Factory_ProductFunction;
 /* Composition constructor */
 ProductFunction::ProductFunction(const Implementation & p_left,
     const Implementation & p_right)
-  : NumericalMathFunctionImplementation(new ProductNumericalMathEvaluationImplementation(p_left->getEvaluation(), p_right->getEvaluation()),
-                                        new NoNumericalMathGradientImplementation(),
-                                        new NoNumericalMathHessianImplementation()),
+  : NumericalMathFunctionImplementation(new ProductEvaluation(p_left->getEvaluation(), p_right->getEvaluation()),
+                                        new NoGradient(),
+                                        new NoHessian()),
   p_leftFunction_(p_left),
   p_rightFunction_(p_right)
 {
   //  try{
-  GradientImplementation p_gradientImplementation(new ProductNumericalMathGradientImplementation(p_leftFunction_->getEvaluation(), p_leftFunction_->getGradient(), p_rightFunction_->getEvaluation(), p_rightFunction_->getGradient()));
+  GradientPointer p_gradientImplementation(new ProductGradient(p_leftFunction_->getEvaluation(), p_leftFunction_->getGradient(), p_rightFunction_->getEvaluation(), p_rightFunction_->getGradient()));
   setGradient(p_gradientImplementation);
   //  }
   //  catch(InvalidArgumentException &) {
   // Nothing to do
   //  }
   //  try{
-  HessianImplementation p_hessianImplementation(new ProductNumericalMathHessianImplementation(p_left->getEvaluation(), p_left->getGradient(), p_left->getHessian(), p_right->getEvaluation(), p_right->getGradient(), p_right->getHessian()));
+  HessianPointer p_hessianImplementation(new ProductHessian(p_left->getEvaluation(), p_left->getGradient(), p_left->getHessian(), p_right->getEvaluation(), p_right->getGradient(), p_right->getHessian()));
   setHessian(p_hessianImplementation);
   //  }
   //  catch(InvalidArgumentException & ex) {

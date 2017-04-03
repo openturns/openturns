@@ -1,9 +1,9 @@
 // SWIG file BaseFuncCollection.i
 
 %{
-#include "openturns/PythonNumericalMathEvaluationImplementation.hxx"
-#include "openturns/PythonNumericalMathGradientImplementation.hxx"
-#include "openturns/PythonNumericalMathHessianImplementation.hxx"
+#include "openturns/PythonEvaluation.hxx"
+#include "openturns/PythonGradient.hxx"
+#include "openturns/PythonHessian.hxx"
 
 
 namespace OT {
@@ -53,14 +53,14 @@ namespace OT {
     } else if (!PyCallable_Check(pyObj)) {
       throw OT::InvalidArgumentException(HERE) << "Argument is not a callable object (function or class) - can not be convertible to a NumericalMathFunction";
     }
-    OT::NumericalMathFunction pythonFunction(new OT::NumericalMathFunctionImplementation(new OT::PythonNumericalMathEvaluationImplementation(pyObj)));
+    OT::NumericalMathFunction pythonFunction(new OT::NumericalMathFunctionImplementation(new OT::PythonEvaluation(pyObj)));
     if (PyObject_HasAttrString( pyObj, const_cast<char *>("_gradient")))
     {
-      pythonFunction.setGradient(new OT::PythonNumericalMathGradientImplementation(pyObj));
+      pythonFunction.setGradient(new OT::PythonGradient(pyObj));
     }
     if (PyObject_HasAttrString(pyObj, const_cast<char *>("_hessian")))
     {
-      pythonFunction.setHessian(new OT::PythonNumericalMathHessianImplementation(pyObj));
+      pythonFunction.setHessian(new OT::PythonHessian(pyObj));
     }
     return pythonFunction;
   }

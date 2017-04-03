@@ -49,21 +49,21 @@ class OT_API CenteredFiniteDifferenceHessian
   CLASSNAME;
 public:
 
-  typedef Pointer<NumericalMathEvaluationImplementation>               EvaluationImplementation;
+  typedef Pointer<NumericalMathEvaluationImplementation>               EvaluationPointer;
 
   /** Default constructor */
   CenteredFiniteDifferenceHessian();
   /** Parameter constructor */
   CenteredFiniteDifferenceHessian(const NumericalPoint & epsilon,
-                                  const EvaluationImplementation & p_evaluation);
+                                  const EvaluationPointer & p_evaluation);
 
   /** Second parameter constructor */
   CenteredFiniteDifferenceHessian(const NumericalScalar epsilon,
-                                  const EvaluationImplementation & p_evaluation);
+                                  const EvaluationPointer & p_evaluation);
 
   /** Constructor with FiniteDifferenceStep */
   CenteredFiniteDifferenceHessian(const FiniteDifferenceStep & finiteDifferenceStep,
-                                  const EvaluationImplementation & p_evaluation);
+                                  const EvaluationPointer & p_evaluation);
 
   /* Virtual constructor */
   virtual CenteredFiniteDifferenceHessian * clone() const;

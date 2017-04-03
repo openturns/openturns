@@ -25,11 +25,11 @@
 #ifdef OPENTURNS_HAVE_MUPARSER
 #include "openturns/SymbolicEvaluation.hxx"
 #else
-#include "openturns/LinearNumericalMathEvaluationImplementation.hxx"
+#include "openturns/LinearEvaluation.hxx"
 #endif
-#include "openturns/ConstantNumericalMathGradientImplementation.hxx"
-#include "openturns/ConstantNumericalMathHessianImplementation.hxx"
-#include "openturns/ComposedNumericalMathHessianImplementation.hxx"
+#include "openturns/ConstantGradient.hxx"
+#include "openturns/ConstantHessian.hxx"
+#include "openturns/ComposedHessian.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -148,19 +148,19 @@ NumericalMathHessianImplementation::Implementation NumericalMathHessianImplement
   NumericalPoint center(inputDimension);
   Matrix linear(inputDimension, outputDimension);
   NumericalPoint constant(outputDimension);
-  const LinearNumericalMathEvaluationImplementation right(center, constant, linear);
+  const LinearEvaluation right(center, constant, linear);
 #endif
   // Fake DF
-  const ConstantNumericalMathGradientImplementation rightGradient(Matrix(inputDimension, outputDimension));
+  const ConstantGradient rightGradient(Matrix(inputDimension, outputDimension));
   // Dg = A
   const UnsignedInteger marginalOutputDimension = indices.getSize();
   Matrix gradientExtraction(outputDimension, marginalOutputDimension);
   for (UnsignedInteger i = 0; i < marginalOutputDimension; ++i)
     gradientExtraction(indices[i], i) = 1.0;
-  const ConstantNumericalMathGradientImplementation leftGradient(gradientExtraction);
+  const ConstantGradient leftGradient(gradientExtraction);
   // D2g = 0
-  const ConstantNumericalMathHessianImplementation leftHessian(SymmetricTensor(outputDimension, marginalOutputDimension));
-  return new ComposedNumericalMathHessianImplementation(leftGradient.clone(), leftHessian.clone(), right.clone(), rightGradient.clone(), clone());
+  const ConstantHessian leftHessian(SymmetricTensor(outputDimension, marginalOutputDimension));
+  return new ComposedHessian(leftGradient.clone(), leftHessian.clone(), right.clone(), rightGradient.clone(), clone());
 }
 
 /* Method save() stores the object through the StorageManager */

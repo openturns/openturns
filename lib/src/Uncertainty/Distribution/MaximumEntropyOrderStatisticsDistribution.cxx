@@ -28,7 +28,7 @@
 #include "openturns/Uniform.hxx"
 #include "openturns/GaussKronrod.hxx"
 #include "openturns/Brent.hxx"
-#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/MethodBoundEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

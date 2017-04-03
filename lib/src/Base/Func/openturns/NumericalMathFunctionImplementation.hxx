@@ -53,9 +53,9 @@ public:
 
   /* Some typedefs for easy reading */
   typedef Pointer<NumericalMathFunctionImplementation>           Implementation;
-  typedef NumericalMathEvaluationImplementation::Implementation  EvaluationImplementation;
-  typedef NumericalMathGradientImplementation::Implementation    GradientImplementation;
-  typedef NumericalMathHessianImplementation::Implementation     HessianImplementation;
+  typedef NumericalMathEvaluationImplementation::Implementation  EvaluationPointer;
+  typedef NumericalMathGradientImplementation::Implementation    GradientPointer;
+  typedef NumericalMathHessianImplementation::Implementation     HessianPointer;
 
 public:
 
@@ -81,12 +81,12 @@ public:
                                       const NumericalSample & outputSample);
 
   /** Constructor from implementations */
-  NumericalMathFunctionImplementation(const EvaluationImplementation & funcImpl,
-                                      const GradientImplementation & gradImpl,
-                                      const HessianImplementation  & hessImpl);
+  NumericalMathFunctionImplementation(const EvaluationPointer & funcImpl,
+                                      const GradientPointer & gradImpl,
+                                      const HessianPointer  & hessImpl);
 
   /** Single function implementation constructor */
-  NumericalMathFunctionImplementation(const EvaluationImplementation & evaluationImplementation);
+  NumericalMathFunctionImplementation(const EvaluationPointer & evaluationImplementation);
 
   /** Multiplication of two 1D output functions with the same input dimension */
   virtual NumericalMathFunctionImplementation operator * (const NumericalMathFunctionImplementation & right) const;
@@ -180,16 +180,16 @@ public:
   virtual NumericalSample getInputParameterHistory() const;
 
   /** Function implementation accessors */
-  void setEvaluation(const EvaluationImplementation & evaluation);
-  const EvaluationImplementation & getEvaluation() const;
+  void setEvaluation(const EvaluationPointer & evaluation);
+  const EvaluationPointer & getEvaluation() const;
 
   /** Gradient implementation accessors */
-  void setGradient(const GradientImplementation & gradient);
-  const GradientImplementation & getGradient() const;
+  void setGradient(const GradientPointer & gradient);
+  const GradientPointer & getGradient() const;
 
   /** Hessian implementation accessors */
-  void setHessian(const HessianImplementation & hessian);
-  const HessianImplementation & getHessian() const;
+  void setHessian(const HessianPointer & hessian);
+  const HessianPointer & getHessian() const;
 
   /** Flag for default gradient accessors */
   Bool getUseDefaultGradientImplementation() const;
@@ -308,13 +308,13 @@ public:
 
 private:
   /** A pointer on the actual numerical math function implementation */
-  EvaluationImplementation p_evaluationImplementation_;
+  EvaluationPointer p_evaluationImplementation_;
 
   /** A pointer on the actual numerical math gradient implementation */
-  GradientImplementation p_gradientImplementation_;
+  GradientPointer p_gradientImplementation_;
 
   /** A pointer on the actual numerical math hessian implementation */
-  HessianImplementation p_hessianImplementation_;
+  HessianPointer p_hessianImplementation_;
 
 protected:
 

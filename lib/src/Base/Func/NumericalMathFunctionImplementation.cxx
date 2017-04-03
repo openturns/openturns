@@ -20,15 +20,15 @@
  */
 #include "openturns/NumericalMathFunction.hxx"
 #include "openturns/NumericalMathFunctionImplementation.hxx"
-#include "openturns/NoNumericalMathEvaluationImplementation.hxx"
-#include "openturns/NoNumericalMathGradientImplementation.hxx"
-#include "openturns/NoNumericalMathHessianImplementation.hxx"
+#include "openturns/NoEvaluation.hxx"
+#include "openturns/NoGradient.hxx"
+#include "openturns/NoHessian.hxx"
 #ifdef OPENTURNS_HAVE_MUPARSER
 #include "openturns/SymbolicEvaluation.hxx"
 #include "openturns/SymbolicGradient.hxx"
 #include "openturns/SymbolicHessian.hxx"
 #endif
-#include "openturns/DatabaseNumericalMathEvaluationImplementation.hxx"
+#include "openturns/DatabaseEvaluation.hxx"
 #include "openturns/ProductFunction.hxx"
 #include "openturns/CenteredFiniteDifferenceGradient.hxx"
 #include "openturns/CenteredFiniteDifferenceHessian.hxx"
@@ -50,9 +50,9 @@ static const Factory<NumericalMathFunctionImplementation> Factory_NumericalMathF
 /* Default constructor */
 NumericalMathFunctionImplementation::NumericalMathFunctionImplementation()
   : PersistentObject()
-  , p_evaluationImplementation_(new NoNumericalMathEvaluationImplementation)
-  , p_gradientImplementation_(new NoNumericalMathGradientImplementation)
-  , p_hessianImplementation_(new NoNumericalMathHessianImplementation)
+  , p_evaluationImplementation_(new NoEvaluation)
+  , p_gradientImplementation_(new NoGradient)
+  , p_hessianImplementation_(new NoHessian)
   , useDefaultGradientImplementation_(false)
   , useDefaultHessianImplementation_(false)
 {
@@ -64,9 +64,9 @@ NumericalMathFunctionImplementation::NumericalMathFunctionImplementation(const D
     const Description & outputVariablesNames,
     const Description & formulas)
   : PersistentObject()
-  , p_evaluationImplementation_(new NoNumericalMathEvaluationImplementation)
-  , p_gradientImplementation_(new NoNumericalMathGradientImplementation)
-  , p_hessianImplementation_(new NoNumericalMathHessianImplementation)
+  , p_evaluationImplementation_(new NoEvaluation)
+  , p_gradientImplementation_(new NoGradient)
+  , p_hessianImplementation_(new NoHessian)
   , useDefaultGradientImplementation_(true)
   , useDefaultHessianImplementation_(true)
 {
@@ -104,17 +104,17 @@ NumericalMathFunctionImplementation::NumericalMathFunctionImplementation(const D
 NumericalMathFunctionImplementation::NumericalMathFunctionImplementation(const NumericalSample & inputSample,
     const NumericalSample & outputSample)
   : PersistentObject()
-  , p_gradientImplementation_(new NoNumericalMathGradientImplementation)
-  , p_hessianImplementation_(new NoNumericalMathHessianImplementation)
+  , p_gradientImplementation_(new NoGradient)
+  , p_hessianImplementation_(new NoHessian)
   , useDefaultGradientImplementation_(false)
   , useDefaultHessianImplementation_(false)
 {
-  p_evaluationImplementation_ = new DatabaseNumericalMathEvaluationImplementation( inputSample, outputSample );
+  p_evaluationImplementation_ = new DatabaseEvaluation( inputSample, outputSample );
 }
 
 
 /* Single function implementation constructor */
-NumericalMathFunctionImplementation::NumericalMathFunctionImplementation(const EvaluationImplementation & evaluationImplementation)
+NumericalMathFunctionImplementation::NumericalMathFunctionImplementation(const EvaluationPointer & evaluationImplementation)
   : PersistentObject()
   , p_evaluationImplementation_(evaluationImplementation)
   , p_gradientImplementation_(new CenteredFiniteDifferenceGradient(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), p_evaluationImplementation_))
@@ -126,9 +126,9 @@ NumericalMathFunctionImplementation::NumericalMathFunctionImplementation(const E
 }
 
 /* Constructor from implementations */
-NumericalMathFunctionImplementation::NumericalMathFunctionImplementation(const EvaluationImplementation & evaluationImplementation,
-    const GradientImplementation & gradientImplementation,
-    const HessianImplementation  & hessianImplementation)
+NumericalMathFunctionImplementation::NumericalMathFunctionImplementation(const EvaluationPointer & evaluationImplementation,
+    const GradientPointer & gradientImplementation,
+    const HessianPointer  & hessianImplementation)
   : PersistentObject()
   , p_evaluationImplementation_(evaluationImplementation)
   , p_gradientImplementation_(gradientImplementation)
@@ -292,36 +292,36 @@ NumericalMathFunctionImplementation NumericalMathFunctionImplementation::operato
 }
 
 /* Function implementation accessors */
-void NumericalMathFunctionImplementation::setEvaluation(const EvaluationImplementation & evaluation)
+void NumericalMathFunctionImplementation::setEvaluation(const EvaluationPointer & evaluation)
 {
   p_evaluationImplementation_ = evaluation;
 }
 
-const NumericalMathFunctionImplementation::EvaluationImplementation & NumericalMathFunctionImplementation::getEvaluation() const
+const NumericalMathFunctionImplementation::EvaluationPointer & NumericalMathFunctionImplementation::getEvaluation() const
 {
   return p_evaluationImplementation_;
 }
 
 /* Gradient implementation accessors */
-void NumericalMathFunctionImplementation::setGradient(const GradientImplementation & gradientImplementation)
+void NumericalMathFunctionImplementation::setGradient(const GradientPointer & gradientImplementation)
 {
   p_gradientImplementation_ = gradientImplementation;
   useDefaultGradientImplementation_ = false;
 }
 
-const NumericalMathFunctionImplementation::GradientImplementation & NumericalMathFunctionImplementation::getGradient() const
+const NumericalMathFunctionImplementation::GradientPointer & NumericalMathFunctionImplementation::getGradient() const
 {
   return p_gradientImplementation_;
 }
 
 /* Hessian implementation accessors */
-void NumericalMathFunctionImplementation::setHessian(const HessianImplementation & hessianImplementation)
+void NumericalMathFunctionImplementation::setHessian(const HessianPointer & hessianImplementation)
 {
   p_hessianImplementation_ = hessianImplementation;
   useDefaultHessianImplementation_ = false;
 }
 
-const NumericalMathFunctionImplementation::HessianImplementation & NumericalMathFunctionImplementation::getHessian() const
+const NumericalMathFunctionImplementation::HessianPointer & NumericalMathFunctionImplementation::getHessian() const
 {
   return p_hessianImplementation_;
 }

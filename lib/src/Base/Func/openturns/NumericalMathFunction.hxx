@@ -48,9 +48,9 @@ public:
 
   /* Some typedefs for easy reading */
   typedef Collection<NumericalMathFunction>                                  NumericalMathFunctionCollection;
-  typedef NumericalMathFunctionImplementation::EvaluationImplementation      EvaluationImplementation;
-  typedef NumericalMathFunctionImplementation::GradientImplementation        GradientImplementation;
-  typedef NumericalMathFunctionImplementation::HessianImplementation         HessianImplementation;
+  typedef NumericalMathFunctionImplementation::EvaluationPointer      EvaluationPointer;
+  typedef NumericalMathFunctionImplementation::GradientPointer        GradientPointer;
+  typedef NumericalMathFunctionImplementation::HessianPointer         HessianPointer;
 
   /** Default constructor */
   NumericalMathFunction();
@@ -134,12 +134,12 @@ public:
 
 #ifndef SWIG
   /** Constructor from evaluation */
-  explicit NumericalMathFunction(const EvaluationImplementation & evaluationImplementation);
+  explicit NumericalMathFunction(const EvaluationPointer & evaluationImplementation);
 
   /** Constructor from implementations */
-  NumericalMathFunction(const EvaluationImplementation & evaluationImplementation,
-                        const GradientImplementation & gradientImplenmentation,
-                        const HessianImplementation  & hessianImplementation);
+  NumericalMathFunction(const EvaluationPointer & evaluationImplementation,
+                        const GradientPointer & gradientImplenmentation,
+                        const HessianPointer  & hessianImplementation);
 #endif
 
   /** Constructor from samples
@@ -246,22 +246,22 @@ public:
   NumericalSample getInputParameterHistory() const;
 
   /** Function implementation accessors */
-  void setEvaluation(const EvaluationImplementation & evaluation);
-  const EvaluationImplementation & getEvaluation() const;
+  void setEvaluation(const EvaluationPointer & evaluation);
+  const EvaluationPointer & getEvaluation() const;
 
   /** Gradient implementation accessors */
   void setGradient(const NumericalMathGradientImplementation & gradient);
 #ifndef SWIG
-  void setGradient(const GradientImplementation & gradient);
+  void setGradient(const GradientPointer & gradient);
 #endif
-  const GradientImplementation & getGradient() const;
+  const GradientPointer & getGradient() const;
 
   /** Hessian implementation accessors */
   void setHessian(const NumericalMathHessianImplementation & hessian);
 #ifndef SWIG
-  void setHessian(const HessianImplementation & hessian);
+  void setHessian(const HessianPointer & hessian);
 #endif
-  const HessianImplementation & getHessian() const;
+  const HessianPointer & getHessian() const;
 
   /** Flag for default gradient accessors */
   Bool getUseDefaultGradientImplementation() const;

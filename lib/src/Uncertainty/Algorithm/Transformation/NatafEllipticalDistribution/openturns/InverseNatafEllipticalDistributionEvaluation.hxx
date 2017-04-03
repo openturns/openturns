@@ -22,7 +22,7 @@
 #define OPENTURNS_INVERSENATAFELLIPTICALDISTRIBUTIONEVALUATION_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/LinearNumericalMathEvaluationImplementation.hxx"
+#include "openturns/LinearEvaluation.hxx"
 #include "openturns/TriangularMatrix.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/StorageManager.hxx"
@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class offers an interface for the InverseNataf function for elliptical distributions
  */
 class OT_API InverseNatafEllipticalDistributionEvaluation
-  : public LinearNumericalMathEvaluationImplementation
+  : public LinearEvaluation
 {
   CLASSNAME;
 public:

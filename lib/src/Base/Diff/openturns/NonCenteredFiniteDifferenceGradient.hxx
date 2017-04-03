@@ -46,22 +46,22 @@ class OT_API NonCenteredFiniteDifferenceGradient
   CLASSNAME;
 public:
 
-  typedef Pointer<NumericalMathEvaluationImplementation>        EvaluationImplementation;
+  typedef Pointer<NumericalMathEvaluationImplementation>        EvaluationPointer;
 
   /** Default constructor */
   NonCenteredFiniteDifferenceGradient();
 
   /** Parameter constructor */
   NonCenteredFiniteDifferenceGradient(const NumericalPoint & epsilon,
-                                      const EvaluationImplementation & p_evaluation);
+                                      const EvaluationPointer & p_evaluation);
 
   /** Second parameter constructor */
   NonCenteredFiniteDifferenceGradient(const NumericalScalar epsilon,
-                                      const EvaluationImplementation & p_evaluation);
+                                      const EvaluationPointer & p_evaluation);
 
   /** Constructor from finite difference step */
   NonCenteredFiniteDifferenceGradient(const FiniteDifferenceStep & step,
-                                      const EvaluationImplementation & p_evaluation);
+                                      const EvaluationPointer & p_evaluation);
 
   /** Virtual constructor */
   virtual NonCenteredFiniteDifferenceGradient * clone() const;

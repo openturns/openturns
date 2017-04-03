@@ -28,7 +28,7 @@
 #include "openturns/Log.hxx"
 #include "openturns/Os.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/TNC.hxx"
 #include "openturns/PersistentObjectFactory.hxx"

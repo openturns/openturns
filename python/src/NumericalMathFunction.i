@@ -2,7 +2,7 @@
 
 %{
 #include "openturns/NumericalMathFunction.hxx"
-#include "openturns/PythonNumericalMathEvaluationImplementation.hxx"
+#include "openturns/PythonEvaluation.hxx"
 %}
 
 %include BaseFuncCollection.i

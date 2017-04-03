@@ -1,0 +1,10 @@
+myHessian=class=ConstantHessian name=constantHessian constant=class=SymmetricTensor implementation=class=TensorImplementation name=Unnamed rows=3 columns=3 sheets=2 values=[7,8,9,0,10,11,0,0,12,-7,-8,-9,0,-10,-11,0,0,-12]
+constantHessian( class=NumericalPoint name=Unnamed dimension=3 values=[7,8,9] ) = class=SymmetricTensor implementation=class=TensorImplementation name=Unnamed rows=3 columns=3 sheets=2 values=[7,8,9,0,10,11,0,0,12,-7,-8,-9,0,-10,-11,0,0,-12]
+constantHessian( class=NumericalPoint name=Unnamed dimension=3 values=[7,8,9] ) = sheet #0
+[[   7   8   9 ]
+ [   8  10  11 ]
+ [   9  11  12 ]]
+sheet #1
+[[  -7  -8  -9 ]
+ [  -8 -10 -11 ]
+ [  -9 -11 -12 ]]

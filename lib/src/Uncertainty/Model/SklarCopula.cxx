@@ -34,9 +34,9 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-typedef NumericalMathFunctionImplementation::EvaluationImplementation EvaluationImplementation;
-typedef NumericalMathFunctionImplementation::GradientImplementation   GradientImplementation;
-typedef NumericalMathFunctionImplementation::HessianImplementation    HessianImplementation;
+typedef NumericalMathFunctionImplementation::EvaluationPointer EvaluationPointer;
+typedef NumericalMathFunctionImplementation::GradientPointer   GradientPointer;
+typedef NumericalMathFunctionImplementation::HessianPointer    HessianPointer;
 
 
 CLASSNAMEINIT(SklarCopula);
@@ -324,11 +324,11 @@ SklarCopula::IsoProbabilisticTransformation SklarCopula::getIsoProbabilisticTran
     const IsoProbabilisticTransformation isoprobabilistic(distribution_.getIsoProbabilisticTransformation());
     // Get the right function implementations
     const MarginalTransformationEvaluation rightEvaluation(marginalCollection_, MarginalTransformationEvaluation::TO);
-    const EvaluationImplementation p_rightFunction(rightEvaluation.clone());
+    const EvaluationPointer p_rightFunction(rightEvaluation.clone());
     // Get the right gradient implementations
-    const GradientImplementation p_rightGradient = new MarginalTransformationGradient(rightEvaluation);
+    const GradientPointer p_rightGradient = new MarginalTransformationGradient(rightEvaluation);
     // Get the right hessian implementations
-    const HessianImplementation p_rightHessian = new MarginalTransformationHessian(rightEvaluation);
+    const HessianPointer p_rightHessian = new MarginalTransformationHessian(rightEvaluation);
     const IsoProbabilisticTransformation right(p_rightFunction, p_rightGradient, p_rightHessian);
     const ComposedFunction transformation(isoprobabilistic, right);
     return transformation;
@@ -347,11 +347,11 @@ SklarCopula::InverseIsoProbabilisticTransformation SklarCopula::getInverseIsoPro
     const InverseIsoProbabilisticTransformation inverseIsoprobabilistic(distribution_.getInverseIsoProbabilisticTransformation());
     // Get the left and right function implementations
     const MarginalTransformationEvaluation leftEvaluation(marginalCollection_);
-    const EvaluationImplementation p_leftFunction(leftEvaluation.clone());
+    const EvaluationPointer p_leftFunction(leftEvaluation.clone());
     // Get the left and right gradient implementations
-    const GradientImplementation p_leftGradient = new MarginalTransformationGradient(leftEvaluation);
+    const GradientPointer p_leftGradient = new MarginalTransformationGradient(leftEvaluation);
     // Get the left and right hessian implementations
-    const HessianImplementation p_leftHessian = new MarginalTransformationHessian(leftEvaluation);
+    const HessianPointer p_leftHessian = new MarginalTransformationHessian(leftEvaluation);
     const InverseIsoProbabilisticTransformation left(p_leftFunction, p_leftGradient, p_leftHessian);
     const ComposedFunction transformation(left, inverseIsoprobabilistic);
     return transformation;

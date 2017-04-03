@@ -25,7 +25,7 @@
 #include "openturns/Distribution.hxx"
 #include "openturns/Brent.hxx"
 #include "openturns/Curve.hxx"
-#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/Combinations.hxx"
 #include "openturns/ComposedDistribution.hxx"
 #include "openturns/GaussKronrod.hxx"

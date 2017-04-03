@@ -49,7 +49,7 @@ TrendTransform::TrendTransform(const NumericalMathFunction & function)
 }
 
 /* Parameter constructor */
-TrendTransform::TrendTransform(const EvaluationImplementation & p_evaluation)
+TrendTransform::TrendTransform(const EvaluationPointer & p_evaluation)
   : VertexValueFunction(p_evaluation->getInputDimension())
 {
   p_evaluation_ = p_evaluation;

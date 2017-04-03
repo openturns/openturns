@@ -1,0 +1,2 @@
+myFunction=class=LinearEvaluation name=linearFunction center=class=NumericalPoint name=Unnamed dimension=3 values=[-1,0.5,1] constant=class=NumericalPoint name=Unnamed dimension=2 values=[-1,2] linear=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=2 values=[1,2,3,4,5,6]
+linearFunction( class=NumericalPoint name=Unnamed dimension=3 values=[7,8,9] ) = class=NumericalPoint name=Unnamed dimension=2 values=[46,119.5]

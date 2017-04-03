@@ -26,7 +26,7 @@
 #include "openturns/Uniform.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/Brent.hxx"
 #include "openturns/SobolSequence.hxx"
 #include "openturns/SymbolicFunction.hxx"

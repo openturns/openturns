@@ -36,14 +36,14 @@ static const Factory<InverseNatafEllipticalDistributionGradient> Factory_Inverse
 
 /* Default constructor */
 InverseNatafEllipticalDistributionGradient::InverseNatafEllipticalDistributionGradient():
-  ConstantNumericalMathGradientImplementation()
+  ConstantGradient()
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
 InverseNatafEllipticalDistributionGradient::InverseNatafEllipticalDistributionGradient(const SquareMatrix & cholesky):
-  ConstantNumericalMathGradientImplementation(cholesky.transpose())
+  ConstantGradient(cholesky.transpose())
 {
   // Nothing to do
 }
@@ -64,13 +64,13 @@ String InverseNatafEllipticalDistributionGradient::__repr__() const
 /* Method save() stores the object through the StorageManager */
 void InverseNatafEllipticalDistributionGradient::save(Advocate & adv) const
 {
-  ConstantNumericalMathGradientImplementation::save(adv);
+  ConstantGradient::save(adv);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void InverseNatafEllipticalDistributionGradient::load(Advocate & adv)
 {
-  ConstantNumericalMathGradientImplementation::load(adv);
+  ConstantGradient::load(adv);
 }
 
 END_NAMESPACE_OPENTURNS

@@ -248,17 +248,17 @@ ot_add_python_module(func func_module.i
                       NumericalMathEvaluationImplementation.i NumericalMathEvaluationImplementation_doc.i.in
                       NumericalMathGradientImplementation.i NumericalMathGradientImplementation_doc.i.in
                       NumericalMathHessianImplementation.i NumericalMathHessianImplementation_doc.i.in
-                      NoNumericalMathEvaluationImplementation.i
-                      NoNumericalMathGradientImplementation.i
-                      NoNumericalMathHessianImplementation.i
-                      LinearNumericalMathEvaluationImplementation.i LinearNumericalMathEvaluationImplementation_doc.i.in
-                      LinearNumericalMathGradientImplementation.i LinearNumericalMathGradientImplementation_doc.i.in
-                      QuadraticNumericalMathEvaluationImplementation.i
-                      ConstantNumericalMathGradientImplementation.i
-                      ConstantNumericalMathHessianImplementation.i
-                      ComposedNumericalMathEvaluationImplementation.i
-                      ComposedNumericalMathGradientImplementation.i
-                      ComposedNumericalMathHessianImplementation.i
+                      NoEvaluation.i
+                      NoGradient.i
+                      NoHessian.i
+                      LinearEvaluation.i LinearEvaluation_doc.i.in
+                      LinearGradient.i LinearGradient_doc.i.in
+                      QuadraticEvaluation.i
+                      ConstantGradient.i
+                      ConstantHessian.i
+                      ComposedEvaluation.i
+                      ComposedGradient.i
+                      ComposedHessian.i
                       DualLinearCombinationEvaluationImplementation.i DualLinearCombinationEvaluationImplementation_doc.i.in
                       DualLinearCombinationGradientImplementation.i DualLinearCombinationGradientImplementation_doc.i.in
                       DualLinearCombinationHessianImplementation.i DualLinearCombinationHessianImplementation_doc.i.in
@@ -267,9 +267,9 @@ ot_add_python_module(func func_module.i
                       LinearCombinationGradientImplementation.i
                       LinearCombinationHessianImplementation.i
                       ParametricFunction.i ParametricFunction_doc.i.in
-                      ProductNumericalMathEvaluationImplementation.i
-                      ProductNumericalMathGradientImplementation.i
-                      ProductNumericalMathHessianImplementation.i
+                      ProductEvaluation.i
+                      ProductGradient.i
+                      ProductHessian.i
                       NumericalMathFunctionImplementation.i NumericalMathFunctionImplementation_doc.i.in
                       ProductFunction.i ProductFunction_doc.i.in
                       NumericalMathFunction.i NumericalMathFunction_doc.i.in
@@ -291,13 +291,13 @@ ot_add_python_module(func func_module.i
                       QuadraticFunction.i QuadraticFunction_doc.i.in
                       UniVariatePolynomialImplementation.i UniVariatePolynomialImplementation_doc.i.in
                       UniVariatePolynomial.i UniVariatePolynomial_doc.i.in
-                      AggregatedNumericalMathEvaluationImplementation.i AggregatedNumericalMathEvaluationImplementation_doc.i.in
+                      AggregatedEvaluation.i AggregatedEvaluation_doc.i.in
                       SymbolicEvaluation.i
                       SymbolicGradient.i
                       SymbolicHessian.i
                       DatabaseFunction.i DatabaseFunction_doc.i.in
-                      DatabaseNumericalMathEvaluationImplementation.i DatabaseNumericalMathEvaluationImplementation_doc.i.in
-                      IndicatorNumericalMathEvaluationImplementation.i
+                      DatabaseEvaluation.i DatabaseEvaluation_doc.i.in
+                      IndicatorEvaluation.i
                       PiecewiseLinearEvaluationImplementation.i
                       PiecewiseHermiteEvaluationImplementation.i
                       ProductPolynomialEvaluationImplementation.i ProductPolynomialEvaluationImplementation_doc.i.in
@@ -315,9 +315,9 @@ ot_add_python_module(func func_module.i
                       BoxCoxEvaluationImplementation.i
                       BoxCoxTransform.i BoxCoxTransform_doc.i.in
                       InverseBoxCoxEvaluationImplementation.i
-                      PythonNumericalMathEvaluationImplementation.cxx
-                      PythonNumericalMathGradientImplementation.cxx
-                      PythonNumericalMathHessianImplementation.cxx
+                      PythonEvaluation.cxx
+                      PythonGradient.cxx
+                      PythonHessian.cxx
                       PythonFieldFunctionImplementation.cxx
                       InverseBoxCoxTransform.i InverseBoxCoxTransform_doc.i.in
                       TrendEvaluationImplementation.i
@@ -399,9 +399,9 @@ ot_add_python_module(algo algo_module.i
                       KFold.i KFold_doc.i.in
                       PenalizedLeastSquaresAlgorithm.i PenalizedLeastSquaresAlgorithm_doc.i.in
                       PenalizedLeastSquaresAlgorithmFactory.i PenalizedLeastSquaresAlgorithmFactory_doc.i.in
-                      PythonNumericalMathEvaluationImplementation.cxx
-                      PythonNumericalMathGradientImplementation.cxx
-                      PythonNumericalMathHessianImplementation.cxx
+                      PythonEvaluation.cxx
+                      PythonGradient.cxx
+                      PythonHessian.cxx
                       KissFFT.i KissFFT_doc.i.in
                       IntegrationAlgorithmImplementation.i IntegrationAlgorithmImplementation_doc.i.in
                       IntegrationAlgorithm.i IntegrationAlgorithm_doc.i.in
@@ -737,9 +737,9 @@ ot_add_python_module(metamodel metamodel_module.i
                       FunctionalChaosAlgorithm.i FunctionalChaosAlgorithm_doc.i.in
                       KrigingAlgorithm.i KrigingAlgorithm_doc.i.in
                       RandomVector.i RandomVector_doc.i.in
-                      PythonNumericalMathEvaluationImplementation.cxx
-                      PythonNumericalMathGradientImplementation.cxx
-                      PythonNumericalMathHessianImplementation.cxx
+                      PythonEvaluation.cxx
+                      PythonGradient.cxx
+                      PythonHessian.cxx
                       PythonRandomVectorImplementation.cxx
                       CompositeRandomVector.i
                       EventRandomVectorImplementation.i

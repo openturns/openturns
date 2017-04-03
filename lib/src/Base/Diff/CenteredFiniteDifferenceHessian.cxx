@@ -40,7 +40,7 @@ CenteredFiniteDifferenceHessian::CenteredFiniteDifferenceHessian()
 
 /* Parameter constructor */
 CenteredFiniteDifferenceHessian::CenteredFiniteDifferenceHessian(const NumericalPoint & epsilon,
-    const EvaluationImplementation & p_evaluation)
+    const EvaluationPointer & p_evaluation)
   : FiniteDifferenceHessian(epsilon, p_evaluation)
 {
   // Nothing to do
@@ -48,7 +48,7 @@ CenteredFiniteDifferenceHessian::CenteredFiniteDifferenceHessian(const Numerical
 
 /* Parameter constructor */
 CenteredFiniteDifferenceHessian::CenteredFiniteDifferenceHessian(const NumericalScalar epsilon,
-    const EvaluationImplementation & p_evaluation)
+    const EvaluationPointer & p_evaluation)
   : FiniteDifferenceHessian(epsilon, p_evaluation)
 {
   // Nothing to do
@@ -56,7 +56,7 @@ CenteredFiniteDifferenceHessian::CenteredFiniteDifferenceHessian(const Numerical
 
 /* Parameter constructor */
 CenteredFiniteDifferenceHessian::CenteredFiniteDifferenceHessian(const FiniteDifferenceStep & finiteDifferenceStep,
-    const EvaluationImplementation & p_evaluation)
+    const EvaluationPointer & p_evaluation)
   : FiniteDifferenceHessian(finiteDifferenceStep, p_evaluation)
 {
   // Nothing to do

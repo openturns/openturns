@@ -44,22 +44,22 @@ class OT_API FiniteDifferenceHessian
   CLASSNAME;
 public:
 
-  typedef Pointer<NumericalMathEvaluationImplementation>                          EvaluationImplementation;
+  typedef Pointer<NumericalMathEvaluationImplementation>                          EvaluationPointer;
 
   /** Default constructor */
   FiniteDifferenceHessian();
 
   /** First Parameter constructor  */
   FiniteDifferenceHessian(const NumericalPoint & epsilon,
-                          const EvaluationImplementation & p_evaluation);
+                          const EvaluationPointer & p_evaluation);
 
   /** SecondParameter constructor */
   FiniteDifferenceHessian(const NumericalScalar epsilon,
-                          const EvaluationImplementation & p_evaluation);
+                          const EvaluationPointer & p_evaluation);
 
   /** Constructor with FiniteDifferenceStep */
   FiniteDifferenceHessian(const FiniteDifferenceStep & finiteDifferenceStep,
-                          const EvaluationImplementation & p_evaluation);
+                          const EvaluationPointer & p_evaluation);
 
   /** Comparison operator */
   virtual Bool operator ==(const FiniteDifferenceHessian & other) const;
@@ -81,7 +81,7 @@ public:
   virtual NumericalPoint getEpsilon() const;
 
   /** Accessor for the evaluation */
-  virtual EvaluationImplementation getEvaluation() const;
+  virtual EvaluationPointer getEvaluation() const;
 
   /** Accessor for the finite difference step */
   virtual void setFiniteDifferenceStep(const FiniteDifferenceStep & finiteDifferenceStep);
@@ -106,7 +106,7 @@ public:
 
 protected:
   /* The underlying evaluation object */
-  EvaluationImplementation p_evaluation_;
+  EvaluationPointer p_evaluation_;
 
   /* The finite difference strategy */
   FiniteDifferenceStep finiteDifferenceStep_;

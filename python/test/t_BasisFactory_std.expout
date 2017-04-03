@@ -1,19 +1,19 @@
 x= [2,3]
 factory= class=ConstantBasisFactory name=Unnamed
-basis= Basis( [class=LinearNumericalMathEvaluationImplementation name=Unnamed center=[0,0] constant=[1] linear=[[ 0 ]
+basis= Basis( [class=LinearEvaluation name=Unnamed center=[0,0] constant=[1] linear=[[ 0 ]
  [ 0 ]]] )
 y= [1]
 factory= class=LinearBasisFactory name=Unnamed
-basis= Basis( [class=LinearNumericalMathEvaluationImplementation name=Unnamed center=[0,0] constant=[1] linear=[[ 0 ]
- [ 0 ]],class=LinearNumericalMathEvaluationImplementation name=Unnamed center=[0,0] constant=[0] linear=[[ 1 ]
- [ 0 ]],class=LinearNumericalMathEvaluationImplementation name=Unnamed center=[0,0] constant=[0] linear=[[ 0 ]
+basis= Basis( [class=LinearEvaluation name=Unnamed center=[0,0] constant=[1] linear=[[ 0 ]
+ [ 0 ]],class=LinearEvaluation name=Unnamed center=[0,0] constant=[0] linear=[[ 1 ]
+ [ 0 ]],class=LinearEvaluation name=Unnamed center=[0,0] constant=[0] linear=[[ 0 ]
  [ 1 ]]] )
 y= [1,2,3]
 factory= class=QuadraticBasisFactory name=Unnamed
-basis= Basis( [class=LinearNumericalMathEvaluationImplementation name=Unnamed center=[0,0] constant=[1] linear=[[ 0 ]
- [ 0 ]],class=LinearNumericalMathEvaluationImplementation name=Unnamed center=[0,0] constant=[0] linear=[[ 1 ]
- [ 0 ]],class=LinearNumericalMathEvaluationImplementation name=Unnamed center=[0,0] constant=[0] linear=[[ 0 ]
- [ 1 ]],QuadraticNumericalMathEvaluationImplementation
+basis= Basis( [class=LinearEvaluation name=Unnamed center=[0,0] constant=[1] linear=[[ 0 ]
+ [ 0 ]],class=LinearEvaluation name=Unnamed center=[0,0] constant=[0] linear=[[ 1 ]
+ [ 0 ]],class=LinearEvaluation name=Unnamed center=[0,0] constant=[0] linear=[[ 0 ]
+ [ 1 ]],QuadraticEvaluation
   center :
 [0,0]
   constant :
@@ -25,7 +25,7 @@ basis= Basis( [class=LinearNumericalMathEvaluationImplementation name=Unnamed ce
 sheet #0
   [[ 1 0 ]
    [ 0 0 ]]
-,QuadraticNumericalMathEvaluationImplementation
+,QuadraticEvaluation
   center :
 [0,0]
   constant :
@@ -37,7 +37,7 @@ sheet #0
 sheet #0
   [[ 0 1 ]
    [ 1 0 ]]
-,QuadraticNumericalMathEvaluationImplementation
+,QuadraticEvaluation
   center :
 [0,0]
   constant :

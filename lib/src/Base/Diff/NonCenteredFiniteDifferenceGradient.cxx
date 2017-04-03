@@ -40,21 +40,21 @@ NonCenteredFiniteDifferenceGradient::NonCenteredFiniteDifferenceGradient() :
 
 /* Parameter constructor */
 NonCenteredFiniteDifferenceGradient::NonCenteredFiniteDifferenceGradient(const NumericalPoint & epsilon,
-    const EvaluationImplementation & p_evaluation)
+    const EvaluationPointer & p_evaluation)
   : FiniteDifferenceGradient(epsilon, p_evaluation)
 {
 }
 
 /* Parameter constructor */
 NonCenteredFiniteDifferenceGradient::NonCenteredFiniteDifferenceGradient(const NumericalScalar epsilon,
-    const EvaluationImplementation & p_evaluation)
+    const EvaluationPointer & p_evaluation)
   : FiniteDifferenceGradient(epsilon, p_evaluation)
 {
 }
 
 /* Parameter constructor */
 NonCenteredFiniteDifferenceGradient::NonCenteredFiniteDifferenceGradient(const FiniteDifferenceStep & step,
-    const EvaluationImplementation & p_evaluation)
+    const EvaluationPointer & p_evaluation)
   : FiniteDifferenceGradient(step, p_evaluation)
 {
   // Nothing to do

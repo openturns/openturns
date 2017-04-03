@@ -41,7 +41,7 @@ class OT_API ValueFunction
   CLASSNAME;
 public:
 
-  typedef NumericalMathEvaluationImplementation::Implementation EvaluationImplementation;
+  typedef NumericalMathEvaluationImplementation::Implementation EvaluationPointer;
 
   /** Default constructor */
   explicit ValueFunction(const UnsignedInteger meshDimension = 1);
@@ -52,7 +52,7 @@ public:
 
 #ifndef SWIG
   /** Parameter constructor */
-  explicit ValueFunction(const EvaluationImplementation & p_evaluation,
+  explicit ValueFunction(const EvaluationPointer & p_evaluation,
                            const UnsignedInteger meshDimension = 1);
 #endif
 
@@ -81,7 +81,7 @@ public:
   Implementation getMarginal(const Indices & indices) const;
 
   /** Evaluation accessor */
-  EvaluationImplementation getEvaluation() const;
+  EvaluationPointer getEvaluation() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -92,7 +92,7 @@ public:
 protected:
 
   /** Pointer to the actual evaluation class */
-  EvaluationImplementation p_evaluation_;
+  EvaluationPointer p_evaluation_;
 
 }; /* class ValueFunction */
 

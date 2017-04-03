@@ -12,7 +12,7 @@ field : :class:`~openturns.Field`
 
 See also
 --------
-NumericalMathFunction, AggregatedNumericalMathEvaluationImplementation, DualLinearCombinationEvaluationImplementation,
+NumericalMathFunction, AggregatedEvaluation, DualLinearCombinationEvaluationImplementation,
 LinearFunction
 
 Notes

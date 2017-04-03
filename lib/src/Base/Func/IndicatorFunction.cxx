@@ -19,9 +19,9 @@
  *
  */
 #include "openturns/IndicatorFunction.hxx"
-#include "openturns/IndicatorNumericalMathEvaluationImplementation.hxx"
-#include "openturns/NoNumericalMathGradientImplementation.hxx"
-#include "openturns/NoNumericalMathHessianImplementation.hxx"
+#include "openturns/IndicatorEvaluation.hxx"
+#include "openturns/NoGradient.hxx"
+#include "openturns/NoHessian.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -40,10 +40,10 @@ IndicatorFunction::IndicatorFunction (const NumericalMathFunction & function,
                                       const NumericalScalar threshold)
   : NumericalMathFunction()
 {
-  const IndicatorNumericalMathEvaluationImplementation evaluation(function.getEvaluation(), comparisonOperator, threshold);
+  const IndicatorEvaluation evaluation(function.getEvaluation(), comparisonOperator, threshold);
   setEvaluation(evaluation.clone());
-  setGradient(NoNumericalMathGradientImplementation().clone());
-  setHessian(NoNumericalMathHessianImplementation().clone());
+  setGradient(NoGradient().clone());
+  setHessian(NoHessian().clone());
 }
 
 

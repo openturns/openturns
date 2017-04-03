@@ -22,12 +22,12 @@
 #include <iterator>
 
 #include "openturns/NumericalMathEvaluationImplementation.hxx"
-#include "openturns/ComposedNumericalMathEvaluationImplementation.hxx"
+#include "openturns/ComposedEvaluation.hxx"
 #include "openturns/OTconfig.hxx"
 #ifdef OPENTURNS_HAVE_MUPARSER
 #include "openturns/SymbolicEvaluation.hxx"
 #endif
-#include "openturns/LinearNumericalMathEvaluationImplementation.hxx"
+#include "openturns/LinearEvaluation.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Full.hxx"
@@ -428,9 +428,9 @@ NumericalMathEvaluationImplementation::Implementation NumericalMathEvaluationImp
   for ( UnsignedInteger index = 0; index < outputDimension; ++ index )
     linear(indices[index], index) = 1.0;
   NumericalPoint constant(outputDimension);
-  const LinearNumericalMathEvaluationImplementation left(center, constant, linear);
+  const LinearEvaluation left(center, constant, linear);
 #endif
-  ComposedNumericalMathEvaluationImplementation marginal(left.clone(), clone());
+  ComposedEvaluation marginal(left.clone(), clone());
   if (isHistoryEnabled())
   {
     marginal.enableHistory();

@@ -39,13 +39,13 @@ class OT_API ParametricGradientImplementation
   CLASSNAME;
 
 public:
-  typedef Pointer<ParametricEvaluationImplementation>                EvaluationImplementation;
+  typedef Pointer<ParametricEvaluationImplementation>                EvaluationPointer;
 
   /** Default constructor */
   ParametricGradientImplementation();
 
   /** Parameters constructor */
-  ParametricGradientImplementation(const EvaluationImplementation & p_evaluation);
+  ParametricGradientImplementation(const EvaluationPointer & p_evaluation);
 
   /** Virtual constructor method */
   ParametricGradientImplementation * clone() const;
@@ -77,7 +77,7 @@ public:
 private:
 
   /** The underlying function */
-  EvaluationImplementation p_evaluation_;
+  EvaluationPointer p_evaluation_;
 
 }; /* class ParametricGradientImplementation */
 

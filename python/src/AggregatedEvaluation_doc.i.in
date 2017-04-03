@@ -1,0 +1,46 @@
+%feature("docstring") OT::AggregatedEvaluation
+"Aggregated numerical math evaluation implementation.
+
+Available constructors:
+    AggregatedEvaluation(*functionsCollection*)
+
+Parameters
+----------
+functionsCollection : sequence of :class:`~openturns.NumericalMathFunction`
+    A collection of functions :math:`(f_i)_{i = 1, \ldots, l}` of size :math:`l`,
+    such that :math:`\forall i \in \{1, \ldots, l\}`, 
+    :math:`f_i : \Rset^n \rightarrow \Rset^{p_i}`.
+
+See also
+--------
+NumericalMathFunction, DatabaseEvaluation, DualLinearCombinationEvaluationImplementation,
+LinearFunction
+
+Notes
+-----
+It implements a :class:`~openturns.NumericalMathFunction`
+:math:`f : \Rset^n \rightarrow \Rset^{p_1 + \ldots + p_l}` defined by:
+
+.. math::
+    \forall \vect{x} \in \Rset^n, f(\vect{x}) = \Tr{(f_1(\vect{x}), \ldots, f_l(\vect{x}))}
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AggregatedEvaluation::getFunctionsCollection
+"Accessor to the collection of functions.
+
+Returns
+-------
+functionCol : :class:`~openturns.NumericalMathFunctionCollection`
+    The collection of functions defining :math:`f`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AggregatedEvaluation::setFunctionsCollection
+"Accessor to the collection of functions.
+
+Parameters
+----------
+functionsCollection : sequence of :class:`~openturns.NumericalMathFunction`
+    The collection of functions :math:`(f_i)_{i = 1, \ldots, l}` of size :math:`l`."

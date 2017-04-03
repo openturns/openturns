@@ -44,22 +44,22 @@ class OT_API FiniteDifferenceGradient
   CLASSNAME;
 public:
 
-  typedef Pointer<NumericalMathEvaluationImplementation>                          EvaluationImplementation;
+  typedef Pointer<NumericalMathEvaluationImplementation>                          EvaluationPointer;
 
   /** Default constructor */
   FiniteDifferenceGradient();
 
   /** First Parameter constructor  */
   FiniteDifferenceGradient(const NumericalPoint & epsilon,
-                           const EvaluationImplementation & p_evaluation);
+                           const EvaluationPointer & p_evaluation);
 
   /** SecondParameter constructor */
   FiniteDifferenceGradient(const NumericalScalar epsilon,
-                           const EvaluationImplementation & p_evaluation);
+                           const EvaluationPointer & p_evaluation);
 
   /** Constructor with FiniteDifferenceStep */
   FiniteDifferenceGradient(const FiniteDifferenceStep & finiteDifferenceStep,
-                           const EvaluationImplementation & p_evaluation);
+                           const EvaluationPointer & p_evaluation);
 
   /** Comparison operator */
   virtual Bool operator ==(const FiniteDifferenceGradient & other) const;
@@ -81,7 +81,7 @@ public:
   virtual NumericalPoint getEpsilon() const;
 
   /** Accessor for the evaluation */
-  virtual EvaluationImplementation getEvaluation() const;
+  virtual EvaluationPointer getEvaluation() const;
 
   /** Accessor for the finite difference step */
   virtual void setFiniteDifferenceStep(const FiniteDifferenceStep & finiteDifferenceStep);
@@ -105,7 +105,7 @@ public:
   virtual Matrix gradient(const NumericalPoint & inP) const;
 
 protected:
-  EvaluationImplementation p_evaluation_;
+  EvaluationPointer p_evaluation_;
   FiniteDifferenceStep finiteDifferenceStep_;
 
 

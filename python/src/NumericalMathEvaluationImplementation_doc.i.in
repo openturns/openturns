@@ -6,8 +6,8 @@ Available constructors:
 
 See also
 --------
-NumericalMathFunction, AggregatedNumericalMathEvaluationImplementation,
-DatabaseNumericalMathEvaluationImplementation,
+NumericalMathFunction, AggregatedEvaluation,
+DatabaseEvaluation,
 DualLinearCombinationEvaluationImplementation, LinearFunction
 "
 

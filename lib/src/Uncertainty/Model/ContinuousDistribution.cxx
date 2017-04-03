@@ -25,7 +25,7 @@
 #include "openturns/Collection.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/GaussKronrod.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

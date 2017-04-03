@@ -23,7 +23,7 @@
 
 #include "openturns/FiniteDifferenceHessian.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/NoNumericalMathEvaluationImplementation.hxx"
+#include "openturns/NoEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -34,7 +34,7 @@ static const Factory<FiniteDifferenceHessian> Factory_FiniteDifferenceHessian;
 /* Default constructor */
 FiniteDifferenceHessian::FiniteDifferenceHessian()
   : NumericalMathHessianImplementation()
-  , p_evaluation_(new NoNumericalMathEvaluationImplementation)
+  , p_evaluation_(new NoEvaluation)
 {
   // Nothing to do
 }
@@ -42,7 +42,7 @@ FiniteDifferenceHessian::FiniteDifferenceHessian()
 /* First Parameter constructor  */
 FiniteDifferenceHessian::FiniteDifferenceHessian(
   const NumericalPoint & epsilon,
-  const EvaluationImplementation & p_evaluation)
+  const EvaluationPointer & p_evaluation)
   : NumericalMathHessianImplementation()
   , p_evaluation_(p_evaluation)
   , finiteDifferenceStep_(epsilon)
@@ -58,7 +58,7 @@ FiniteDifferenceHessian::FiniteDifferenceHessian(
 
 /* SecondParameter constructor */
 FiniteDifferenceHessian::FiniteDifferenceHessian(const NumericalScalar epsilon,
-    const EvaluationImplementation & p_evaluation)
+    const EvaluationPointer & p_evaluation)
   : NumericalMathHessianImplementation()
   , p_evaluation_(p_evaluation)
   , finiteDifferenceStep_(NumericalPoint(p_evaluation->getInputDimension(), epsilon))
@@ -70,7 +70,7 @@ FiniteDifferenceHessian::FiniteDifferenceHessian(const NumericalScalar epsilon,
 /*  Parameter constructor with FiniteDifferenceStep*/
 FiniteDifferenceHessian::FiniteDifferenceHessian(
   const FiniteDifferenceStep & finiteDifferenceStep,
-  const EvaluationImplementation & p_evaluation)
+  const EvaluationPointer & p_evaluation)
   : NumericalMathHessianImplementation()
   , p_evaluation_(p_evaluation)
   , finiteDifferenceStep_(finiteDifferenceStep)
@@ -115,7 +115,7 @@ NumericalPoint FiniteDifferenceHessian::getEpsilon() const
 }
 
 /* Accessor for the evaluation */
-FiniteDifferenceHessian::EvaluationImplementation FiniteDifferenceHessian::getEvaluation() const
+FiniteDifferenceHessian::EvaluationPointer FiniteDifferenceHessian::getEvaluation() const
 {
   return p_evaluation_;
 }

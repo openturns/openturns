@@ -19,11 +19,11 @@
  *
  */
 #include "openturns/ComposedFunction.hxx"
-#include "openturns/NoNumericalMathGradientImplementation.hxx"
-#include "openturns/NoNumericalMathHessianImplementation.hxx"
-#include "openturns/ComposedNumericalMathEvaluationImplementation.hxx"
-#include "openturns/ComposedNumericalMathGradientImplementation.hxx"
-#include "openturns/ComposedNumericalMathHessianImplementation.hxx"
+#include "openturns/NoGradient.hxx"
+#include "openturns/NoHessian.hxx"
+#include "openturns/ComposedEvaluation.hxx"
+#include "openturns/ComposedGradient.hxx"
+#include "openturns/ComposedHessian.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -44,15 +44,15 @@ ComposedFunction::ComposedFunction()
 /* Composition constructor */
 ComposedFunction::ComposedFunction(const Implementation & p_left,
     const Implementation & p_right)
-  : NumericalMathFunctionImplementation(new ComposedNumericalMathEvaluationImplementation(p_left->getEvaluation(), p_right->getEvaluation()),
-                                        new NoNumericalMathGradientImplementation(),
-                                        new NoNumericalMathHessianImplementation())
+  : NumericalMathFunctionImplementation(new ComposedEvaluation(p_left->getEvaluation(), p_right->getEvaluation()),
+                                        new NoGradient(),
+                                        new NoHessian())
   , p_leftFunction_(p_left)
   , p_rightFunction_(p_right)
 {
   try
   {
-    GradientImplementation p_gradientImplementation(new ComposedNumericalMathGradientImplementation(p_left->getGradient(), p_right->getEvaluation(), p_right->getGradient()));
+    GradientPointer p_gradientImplementation(new ComposedGradient(p_left->getGradient(), p_right->getEvaluation(), p_right->getGradient()));
     setGradient(p_gradientImplementation);
     setUseDefaultGradientImplementation(p_left->getUseDefaultGradientImplementation() || p_right->getUseDefaultGradientImplementation());
   }
@@ -62,7 +62,7 @@ ComposedFunction::ComposedFunction(const Implementation & p_left,
   }
   try
   {
-    HessianImplementation p_hessianImplementation(new ComposedNumericalMathHessianImplementation(p_left->getGradient(), p_left->getHessian(), p_right->getEvaluation(), p_right->getGradient(), p_right->getHessian()));
+    HessianPointer p_hessianImplementation(new ComposedHessian(p_left->getGradient(), p_left->getHessian(), p_right->getEvaluation(), p_right->getGradient(), p_right->getHessian()));
     setHessian(p_hessianImplementation);
     setUseDefaultHessianImplementation(p_left->getUseDefaultHessianImplementation() || p_right->getUseDefaultHessianImplementation());
   }
@@ -75,15 +75,15 @@ ComposedFunction::ComposedFunction(const Implementation & p_left,
 /* Composition constructor */
 ComposedFunction::ComposedFunction(const NumericalMathFunction & left,
     const NumericalMathFunction & right)
-  : NumericalMathFunctionImplementation(new ComposedNumericalMathEvaluationImplementation(left.getEvaluation(), right.getEvaluation()),
-                                        new NoNumericalMathGradientImplementation(),
-                                        new NoNumericalMathHessianImplementation())
+  : NumericalMathFunctionImplementation(new ComposedEvaluation(left.getEvaluation(), right.getEvaluation()),
+                                        new NoGradient(),
+                                        new NoHessian())
   , p_leftFunction_(left.getImplementation())
   , p_rightFunction_(right.getImplementation())
 {
   try
   {
-    GradientImplementation p_gradientImplementation(new ComposedNumericalMathGradientImplementation(left.getGradient(), right.getEvaluation(), right.getGradient()));
+    GradientPointer p_gradientImplementation(new ComposedGradient(left.getGradient(), right.getEvaluation(), right.getGradient()));
     setGradient(p_gradientImplementation);
     setUseDefaultGradientImplementation(left.getUseDefaultGradientImplementation() || right.getUseDefaultGradientImplementation());
   }
@@ -93,7 +93,7 @@ ComposedFunction::ComposedFunction(const NumericalMathFunction & left,
   }
   try
   {
-    HessianImplementation p_hessianImplementation(new ComposedNumericalMathHessianImplementation(left.getGradient(), left.getHessian(), right.getEvaluation(), right.getGradient(), right.getHessian()));
+    HessianPointer p_hessianImplementation(new ComposedHessian(left.getGradient(), left.getHessian(), right.getEvaluation(), right.getGradient(), right.getHessian()));
     setHessian(p_hessianImplementation);
     setUseDefaultHessianImplementation(left.getUseDefaultHessianImplementation() || right.getUseDefaultHessianImplementation());
   }

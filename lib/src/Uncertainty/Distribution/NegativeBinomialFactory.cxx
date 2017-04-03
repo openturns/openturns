@@ -20,7 +20,7 @@
  */
 #include "openturns/NegativeBinomialFactory.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/Brent.hxx"
 #include "openturns/DiscreteDistribution.hxx"
 #include "openturns/PersistentObjectFactory.hxx"

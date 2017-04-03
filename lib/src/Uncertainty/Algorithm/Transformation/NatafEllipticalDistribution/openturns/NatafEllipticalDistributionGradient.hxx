@@ -22,7 +22,7 @@
 #define OPENTURNS_NATAFELLIPTICALDISTRIBUTIONGRADIENT_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/ConstantNumericalMathGradientImplementation.hxx"
+#include "openturns/ConstantGradient.hxx"
 #include "openturns/TriangularMatrix.hxx"
 #include "openturns/SymmetricTensor.hxx"
 #include "openturns/StorageManager.hxx"
@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class offers an interface for the Nataf gradient for elliptical distributions
  */
 class OT_API NatafEllipticalDistributionGradient
-  : public ConstantNumericalMathGradientImplementation
+  : public ConstantGradient
 {
   CLASSNAME;
 public:

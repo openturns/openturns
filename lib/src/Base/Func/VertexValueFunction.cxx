@@ -21,7 +21,7 @@
 #include "openturns/VertexValueFunction.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/NumericalMathEvaluationImplementation.hxx"
-#include "openturns/NoNumericalMathEvaluationImplementation.hxx"
+#include "openturns/NoEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -32,7 +32,7 @@ static const Factory<VertexValueFunction> Factory_VertexValueFunction;
 /* Default constructor */
 VertexValueFunction::VertexValueFunction(const UnsignedInteger meshDimension)
   : FieldFunctionImplementation(meshDimension)
-  , p_evaluation_(new NoNumericalMathEvaluationImplementation)
+  , p_evaluation_(new NoEvaluation)
 {
   // Nothing to do
 }
@@ -53,7 +53,7 @@ VertexValueFunction::VertexValueFunction(const NumericalMathFunction & function,
 }
 
 /* Parameter constructor */
-VertexValueFunction::VertexValueFunction(const EvaluationImplementation & p_evaluation,
+VertexValueFunction::VertexValueFunction(const EvaluationPointer & p_evaluation,
                                    const UnsignedInteger meshDimension)
   : FieldFunctionImplementation(meshDimension)
   , p_evaluation_(p_evaluation)
@@ -139,7 +139,7 @@ void VertexValueFunction::save(Advocate & adv) const
 }
 
 /* Evaluation accessor */
-VertexValueFunction::EvaluationImplementation VertexValueFunction::getEvaluation() const
+VertexValueFunction::EvaluationPointer VertexValueFunction::getEvaluation() const
 {
   return p_evaluation_;
 }

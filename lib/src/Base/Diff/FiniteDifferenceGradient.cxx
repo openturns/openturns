@@ -23,7 +23,7 @@
 
 #include "openturns/FiniteDifferenceGradient.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/NoNumericalMathEvaluationImplementation.hxx"
+#include "openturns/NoEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -34,7 +34,7 @@ static const Factory<FiniteDifferenceGradient> Factory_FiniteDifferenceGradient;
 /* Default constructor */
 FiniteDifferenceGradient::FiniteDifferenceGradient()
   : NumericalMathGradientImplementation()
-  , p_evaluation_(new NoNumericalMathEvaluationImplementation)
+  , p_evaluation_(new NoEvaluation)
 {
   // Nothing to do
 }
@@ -42,7 +42,7 @@ FiniteDifferenceGradient::FiniteDifferenceGradient()
 /* First Parameter constructor  */
 FiniteDifferenceGradient::FiniteDifferenceGradient(
   const NumericalPoint & epsilon,
-  const EvaluationImplementation & p_evaluation)
+  const EvaluationPointer & p_evaluation)
   : NumericalMathGradientImplementation()
   , p_evaluation_(p_evaluation)
   , finiteDifferenceStep_(epsilon)
@@ -61,7 +61,7 @@ FiniteDifferenceGradient::FiniteDifferenceGradient(
 
 /* SecondParameter constructor */
 FiniteDifferenceGradient::FiniteDifferenceGradient(const NumericalScalar epsilon,
-    const EvaluationImplementation & p_evaluation)
+    const EvaluationPointer & p_evaluation)
   : NumericalMathGradientImplementation()
   , p_evaluation_(p_evaluation)
   , finiteDifferenceStep_(NumericalPoint(p_evaluation->getInputDimension(), epsilon))
@@ -74,7 +74,7 @@ FiniteDifferenceGradient::FiniteDifferenceGradient(const NumericalScalar epsilon
 /*  Parameter constructor with FiniteDifferenceStep*/
 FiniteDifferenceGradient::FiniteDifferenceGradient(
   const FiniteDifferenceStep & finiteDifferenceStep,
-  const EvaluationImplementation & p_evaluation)
+  const EvaluationPointer & p_evaluation)
   : NumericalMathGradientImplementation()
   , p_evaluation_(p_evaluation)
   , finiteDifferenceStep_(finiteDifferenceStep)
@@ -121,7 +121,7 @@ NumericalPoint FiniteDifferenceGradient::getEpsilon() const
 }
 
 /* Accessor for the evaluation */
-FiniteDifferenceGradient::EvaluationImplementation FiniteDifferenceGradient::getEvaluation() const
+FiniteDifferenceGradient::EvaluationPointer FiniteDifferenceGradient::getEvaluation() const
 {
   return p_evaluation_;
 }

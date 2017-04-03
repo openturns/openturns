@@ -19,9 +19,9 @@
  *
  */
 #include "openturns/LinearFunction.hxx"
-#include "openturns/LinearNumericalMathEvaluationImplementation.hxx"
-#include "openturns/ConstantNumericalMathGradientImplementation.hxx"
-#include "openturns/ConstantNumericalMathHessianImplementation.hxx"
+#include "openturns/LinearEvaluation.hxx"
+#include "openturns/ConstantGradient.hxx"
+#include "openturns/ConstantHessian.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,9 +31,9 @@ CLASSNAMEINIT(LinearFunction);
 LinearFunction::LinearFunction(const NumericalPoint & center,
     const NumericalPoint & constant,
     const Matrix & linear)
-  : NumericalMathFunction(new LinearNumericalMathEvaluationImplementation(center, constant, linear.transpose()),
-                          new ConstantNumericalMathGradientImplementation(linear.transpose()),
-                          new ConstantNumericalMathHessianImplementation(SymmetricTensor(center.getDimension(), constant.getDimension())))
+  : NumericalMathFunction(new LinearEvaluation(center, constant, linear.transpose()),
+                          new ConstantGradient(linear.transpose()),
+                          new ConstantHessian(SymmetricTensor(center.getDimension(), constant.getDimension())))
 {
   // Nothing to do
 }

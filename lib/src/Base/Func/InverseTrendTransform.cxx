@@ -49,7 +49,7 @@ InverseTrendTransform::InverseTrendTransform(const NumericalMathFunction & funct
 }
 
 /* Parameter constructor */
-InverseTrendTransform::InverseTrendTransform(const EvaluationImplementation & p_evaluation)
+InverseTrendTransform::InverseTrendTransform(const EvaluationPointer & p_evaluation)
   : VertexValueFunction(p_evaluation->getInputDimension())
 {
   p_evaluation_ = p_evaluation;

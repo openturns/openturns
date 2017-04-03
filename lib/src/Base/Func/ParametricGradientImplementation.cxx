@@ -38,7 +38,7 @@ ParametricGradientImplementation::ParametricGradientImplementation()
 }
 
 /* Parameter constructor */
-ParametricGradientImplementation::ParametricGradientImplementation(const EvaluationImplementation & p_evaluation)
+ParametricGradientImplementation::ParametricGradientImplementation(const EvaluationPointer & p_evaluation)
   : NumericalMathGradientImplementation()
   , p_evaluation_(p_evaluation)
 {

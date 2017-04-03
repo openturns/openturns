@@ -29,7 +29,7 @@
 #include "openturns/Histogram.hxx"
 #include "openturns/GaussKronrod.hxx"
 #include "openturns/OrthogonalUniVariatePolynomial.hxx"
-#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/Log.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
