@@ -41,7 +41,7 @@ CLASSNAMEINIT(ARMALikelihoodFactory);
 static const Factory<ARMALikelihoodFactory> Factory_ARMALikelihoodFactory;
 
 static int modifiedCholeskyDecomposition(SquareMatrix &matrix,
-    NumericalScalar epsilon);
+    Scalar epsilon);
 
 /* Default constructor */
 ARMALikelihoodFactory::ARMALikelihoodFactory()
@@ -150,7 +150,7 @@ ARMALikelihoodFactory * ARMALikelihoodFactory::clone() const
 
 /* Compute the log-likelihood function */
 
-NumericalScalar ARMALikelihoodFactory::computeLogLikelihood(const Point & beta) const
+Scalar ARMALikelihoodFactory::computeLogLikelihood(const Point & beta) const
 {
   // beta regroups all unknown parameters :
   // p square matrices of dimension m (AR part) ==> m * m * p scalar coefficients
@@ -218,7 +218,7 @@ NumericalScalar ARMALikelihoodFactory::computeLogLikelihood(const Point & beta) 
     rhs[0] /= covarianceMatrixCholesky_(0, 0);
     for (UnsignedInteger k = 1; k < dimension_; ++k)
     {
-      NumericalScalar value = 0.0;
+      Scalar value = 0.0;
       for (UnsignedInteger l = 0; l < k; ++l)
       {
         value += covarianceMatrixCholesky_(k, l) * rhs[l];
@@ -260,7 +260,7 @@ NumericalScalar ARMALikelihoodFactory::computeLogLikelihood(const Point & beta) 
   vector_h[0] /= matrix_L(0, 0);
   for (UnsignedInteger i = 1; i < currentG_ * dimension_; ++i)
   {
-    NumericalScalar value = 0.0;
+    Scalar value = 0.0;
     for (UnsignedInteger j = 0; j < i; ++j)
     {
       value += matrix_L(i, j) * vector_h[j];
@@ -268,7 +268,7 @@ NumericalScalar ARMALikelihoodFactory::computeLogLikelihood(const Point & beta) 
     vector_h[i] = (vector_h[i] - value) / matrix_L(i, i);
   }
   // Step (j): Compute \eta^{T} \eta - \lambda^{T} \lambda
-  NumericalScalar norm1 = 0.0;
+  Scalar norm1 = 0.0;
   const UnsignedInteger size = w_.getSize();
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
@@ -277,22 +277,22 @@ NumericalScalar ARMALikelihoodFactory::computeLogLikelihood(const Point & beta) 
       norm1 += eta(i, j) * eta(i, j);
     }
   }
-  NumericalScalar normSquare = vector_h.normSquare();
+  Scalar normSquare = vector_h.normSquare();
 
-  NumericalScalar f1 = norm1 - normSquare;
+  Scalar f1 = norm1 - normSquare;
 
   // Step (k): compute the exact log-likelihood
-  NumericalScalar determinantL = 1.0;
+  Scalar determinantL = 1.0;
   for (UnsignedInteger i = 0; i < currentG_ * dimension_; ++i)
   {
     determinantL *= matrix_L(i, i);
   }
 
-  NumericalScalar logLikelihood = 0.0;
-  const NumericalScalar n = static_cast<double>(w_.getSize());
-  const NumericalScalar fullSize = static_cast<double>(dimension_ * n);
-  const NumericalScalar lg2pi = log(2.0 * M_PI);
-  const NumericalScalar detQ = covarianceMatrix_.computeDeterminant();
+  Scalar logLikelihood = 0.0;
+  const Scalar n = static_cast<double>(w_.getSize());
+  const Scalar fullSize = static_cast<double>(dimension_ * n);
+  const Scalar lg2pi = log(2.0 * M_PI);
+  const Scalar detQ = covarianceMatrix_.computeDeterminant();
   logLikelihood = -0.5 * (fullSize * (lg2pi + log(sigma2_)) + n * log(detQ) + 2.0 * log(determinantL) + f1 / sigma2_);
   return logLikelihood;
 }
@@ -301,7 +301,7 @@ NumericalScalar ARMALikelihoodFactory::computeLogLikelihood(const Point & beta) 
 
 Point ARMALikelihoodFactory::computeLogLikelihoodInequalityConstraint(const Point & beta) const
 {
-  const NumericalScalar epsilon = ResourceMap::GetAsScalar("ARMALikelihoodFactory-RootEpsilon");
+  const Scalar epsilon = ResourceMap::GetAsScalar("ARMALikelihoodFactory-RootEpsilon");
 
   Point result(nbInequalityConstraint_, 0.0);
 
@@ -335,7 +335,7 @@ Point ARMALikelihoodFactory::computeLogLikelihoodInequalityConstraint(const Poin
     const Collection<NumericalComplex> eigenValues(matrix.computeEigenValues(false));
 
     // Find the largest eigenvalue module
-    NumericalScalar s = std::norm(eigenValues[0]);
+    Scalar s = std::norm(eigenValues[0]);
     for (UnsignedInteger i = 1; i < eigenValues.getSize() ; ++i) s = std::max(s, std::norm(eigenValues[i]));
     // If the largest eigenvalue is not in the interior of the unit circle, the ARMA process is not stable
 
@@ -369,7 +369,7 @@ Point ARMALikelihoodFactory::computeLogLikelihoodInequalityConstraint(const Poin
     const Collection<NumericalComplex> eigenValues(matrix.computeEigenValues(false));
 
     // Find the largest eigenvalue module
-    NumericalScalar s = std::norm(eigenValues[0]);
+    Scalar s = std::norm(eigenValues[0]);
     for (UnsignedInteger i = 1; i < eigenValues.getSize() ; ++i) s = std::max(s, std::norm(eigenValues[i]));
     // If the largest eigenvalue is not in the interior of the unit circle, criteria is not respected
     result[constraintIndex] = 1.0 - std::sqrt(s) - epsilon;
@@ -390,7 +390,7 @@ Point ARMALikelihoodFactory::computeLogLikelihoodInequalityConstraint(const Poin
   const Point eigenValues(covarianceMatrix.computeEigenValues(false));
 
   // Find the largest eigenvalue module
-  NumericalScalar s = eigenValues[0];
+  Scalar s = eigenValues[0];
   for (UnsignedInteger i = 1; i < eigenValues.getSize() ; ++i) s = std::min(s, eigenValues[i]);
   // Constrain is that the min eigenvalue upper than 0
   result[constraintIndex] = s - epsilon;
@@ -401,7 +401,7 @@ Point ARMALikelihoodFactory::computeLogLikelihoodInequalityConstraint(const Poin
 /* Compute the log-likelihood function accessor */
 Function ARMALikelihoodFactory::getLogLikelihoodFunction() const
 {
-  return bindMethod <ARMALikelihoodFactory, NumericalScalar, Point> ( *this, &ARMALikelihoodFactory::computeLogLikelihood, inputDimension_, 1);
+  return bindMethod <ARMALikelihoodFactory, Scalar, Point> ( *this, &ARMALikelihoodFactory::computeLogLikelihood, inputDimension_, 1);
 }
 
 /* Compute the log-likelihood constraint accessor */
@@ -448,10 +448,10 @@ void ARMALikelihoodFactory::setOptimizationSolver(const OptimizationAlgorithm & 
 
 // in-place Cholesky decomposition
 int modifiedCholeskyDecomposition(SquareMatrix &matrix,
-                                  NumericalScalar epsilon)
+                                  Scalar epsilon)
 {
   const UnsignedInteger n = matrix.getDimension();
-  NumericalScalar maxSqrtDiag = std::sqrt(std::abs(matrix(0, 0)));
+  Scalar maxSqrtDiag = std::sqrt(std::abs(matrix(0, 0)));
   for (UnsignedInteger j = 1; j < n; ++j)
   {
     maxSqrtDiag = std::max(maxSqrtDiag, std::sqrt(std::abs(matrix(j, j))));
@@ -464,10 +464,10 @@ int modifiedCholeskyDecomposition(SquareMatrix &matrix,
     return 1;
   }
 
-  const NumericalScalar minValue = maxSqrtDiag * std::sqrt(epsilon);
+  const Scalar minValue = maxSqrtDiag * std::sqrt(epsilon);
   for (UnsignedInteger j = 0; j < n; ++j)
   {
-    NumericalScalar value = matrix(j, j);
+    Scalar value = matrix(j, j);
     for (UnsignedInteger i = 0; i < j; ++i)
     {
       value -= matrix(j, i) * matrix(j, i);
@@ -475,7 +475,7 @@ int modifiedCholeskyDecomposition(SquareMatrix &matrix,
     if (value < - minValue) return 1;
     matrix(j, j) = value;
 
-    NumericalScalar minJ = 0.0;
+    Scalar minJ = 0.0;
     for (UnsignedInteger i = j + 1; i < n; ++i)
     {
       value = matrix(j, i);
@@ -739,20 +739,20 @@ void ARMALikelihoodFactory::defaultInitialize() const
     const TimeSeries marginal_d(timeGrid, values.getMarginal(d));
     ARMA marginalARMAModel(factory.build(marginal_d));
     const WhiteNoise whiteNoise(marginalARMAModel.getWhiteNoise());
-    const NumericalScalar sigma = whiteNoise.getDistribution().getStandardDeviation()[0];
+    const Scalar sigma = whiteNoise.getDistribution().getStandardDeviation()[0];
     covarianceMatrix_(d, d) = sigma * sigma;
     const ARMACoefficients arCoefficients(marginalARMAModel.getARCoefficients());
     const ARMACoefficients maCoefficients(marginalARMAModel.getMACoefficients());
     // fill the coefficients
     for (UnsignedInteger k = 0; k < currentP_; ++k)
     {
-      const NumericalScalar value = arCoefficients[k](0, 0);
+      const Scalar value = arCoefficients[k](0, 0);
       blockPhiTThetaTMatrix_(k * dimension_ + d, d) = -value;
     }
 
     for (UnsignedInteger k = 0; k < currentQ_; ++k)
     {
-      const NumericalScalar value = maCoefficients[k](0, 0);
+      const Scalar value = maCoefficients[k](0, 0);
       blockPhiTThetaTMatrix_((currentP_ + k) * dimension_ + d, d) = -value;
     }
   }
@@ -891,7 +891,7 @@ void ARMALikelihoodFactory::computeCrossCovarianceMatrix() const
         for (UnsignedInteger i = 0; i < dimension_; ++i)
         {
           //  - \theta_{k} * \Sigma in the article
-          NumericalScalar value = 0.0;
+          Scalar value = 0.0;
           for (UnsignedInteger h = 0; h < dimension_; ++h)
           {
             value -= blockPhiTThetaTMatrix_((currentP_ + k - 1) * dimension_ + h, i) * covarianceMatrix_(h, j);
@@ -972,7 +972,7 @@ void ARMALikelihoodFactory::computeAutocovarianceMatrix() const
           for (UnsignedInteger k = 0; k <= l ; ++k)
           {
             const UnsignedInteger columnIndex = l * (l + 1) / 2 + k;
-            NumericalScalar value = 0.0;
+            Scalar value = 0.0;
             if (k == l)
             {
               // Computation of - \sum_{r=1}^{p} \phi_{r}(i, k) \phi_{r}(j, l)
@@ -1002,7 +1002,7 @@ void ARMALikelihoodFactory::computeAutocovarianceMatrix() const
             const UnsignedInteger columnIndex = dimension_ * (dimension_ + 1) / 2 + dimension_ * dimension_ * (s - 1) + dimension_ * l;
             for (UnsignedInteger k = 0; k < dimension_; ++k)
             {
-              NumericalScalar value = 0.0;
+              Scalar value = 0.0;
               // Computation of - \sum_{r=1}^{p-s} \phi_{r+s}(i, k) \phi_{r}(j, l) + \phi_{r+s}(j, k) \phi_{r}(i, l)
               for (UnsignedInteger r = 1; r <= currentP_ - s; ++r)
               {
@@ -1059,7 +1059,7 @@ void ARMALikelihoodFactory::computeAutocovarianceMatrix() const
           // Ws = -\sum_{h=s}^{q} \Lambda_{s-h} \theta_{h}^{T}
           for (UnsignedInteger h = s; h <= currentQ_; ++h)
           {
-            NumericalScalar value = 0.0;
+            Scalar value = 0.0;
             for (UnsignedInteger k = 0; k < dimension_; ++k)
             {
               value += crossCovariance_(j, (h - s) * dimension_ + k) * blockPhiTThetaTMatrix_((h + currentP_ - 1) * dimension_ + k, i);
@@ -1120,7 +1120,7 @@ SquareMatrix ARMALikelihoodFactory::computeW0Matrix() const
       {
         for (UnsignedInteger columnIndex = 0; columnIndex < dimension_; ++columnIndex)
         {
-          NumericalScalar value = 0.0;
+          Scalar value = 0.0;
           for(UnsignedInteger k = 0; k < dimension_; ++k)
           {
             value += blockPhiTThetaTMatrix_((i - 1) * dimension_ + k, rowIndex) * crossCovariance_(k, (j - i) * dimension_ + columnIndex);
@@ -1133,7 +1133,7 @@ SquareMatrix ARMALikelihoodFactory::computeW0Matrix() const
       {
         for (UnsignedInteger rowIndex = 0; rowIndex < dimension_; ++rowIndex)
         {
-          NumericalScalar value = 0.0;
+          Scalar value = 0.0;
           for(UnsignedInteger k = 0; k < dimension_; ++k)
           {
             value += productPhiLambdaT(k, rowIndex) * blockPhiTThetaTMatrix_((j - 1 + currentP_) * dimension_ + k, columnIndex);
@@ -1163,7 +1163,7 @@ SquareMatrix ARMALikelihoodFactory::computeW0Matrix() const
     {
       for (UnsignedInteger rowIndex = 0; rowIndex < dimension_; ++rowIndex)
       {
-        NumericalScalar value = 0.0;
+        Scalar value = 0.0;
         for(UnsignedInteger k = 0; k < dimension_; ++k)
         {
           value += blockPhiTThetaTMatrix_((j - 1 + currentP_) * dimension_ + k, rowIndex) * covarianceMatrix_(k, columnIndex);
@@ -1176,7 +1176,7 @@ SquareMatrix ARMALikelihoodFactory::computeW0Matrix() const
     {
       for (UnsignedInteger rowIndex = 0; rowIndex <= columnIndex; ++rowIndex)
       {
-        NumericalScalar value = 0.0;
+        Scalar value = 0.0;
         for(UnsignedInteger k = 0; k < dimension_; ++k)
         {
           value += matrixB(rowIndex, k) * blockPhiTThetaTMatrix_((j - 1 + currentP_) * dimension_ + k, columnIndex);
@@ -1209,7 +1209,7 @@ SquareMatrix ARMALikelihoodFactory::computeV1_Omega_V1T_Cholesky() const
         {
           for(UnsignedInteger ii = 0; ii < dimension_; ++ii)
           {
-            NumericalScalar value = 0.0;
+            Scalar value = 0.0;
             if (k >= 0)
             {
               for(UnsignedInteger kk = 0; kk < dimension_; ++kk)
@@ -1234,7 +1234,7 @@ SquareMatrix ARMALikelihoodFactory::computeV1_Omega_V1T_Cholesky() const
         {
           for(UnsignedInteger ii = 0; ii < dimension_; ++ii)
           {
-            NumericalScalar value = 0.0;
+            Scalar value = 0.0;
             for(UnsignedInteger kk = 0; kk < dimension_; ++kk)
             {
               value += crossCovariance_(ii, (currentQ_ - currentP_ - k) * dimension_ + kk) * blockPhiTThetaTMatrix_((currentP_ + currentQ_ - k - i + j - 1) * dimension_ + kk, jj);
@@ -1257,7 +1257,7 @@ SquareMatrix ARMALikelihoodFactory::computeV1_Omega_V1T_Cholesky() const
         {
           for(UnsignedInteger ii = 0; ii < dimension_; ++ii)
           {
-            NumericalScalar value = 0.0;
+            Scalar value = 0.0;
             for(UnsignedInteger kk = 0; kk < dimension_; ++kk)
             {
               value += crossCovariance_(kk, (currentQ_ - currentP_ + k) * dimension_ + ii) * blockPhiTThetaTMatrix_((2 * currentP_ - k - i + j - 1) * dimension_ + kk, jj);
@@ -1272,7 +1272,7 @@ SquareMatrix ARMALikelihoodFactory::computeV1_Omega_V1T_Cholesky() const
         {
           for(UnsignedInteger ii = 0; ii < dimension_; ++ii)
           {
-            NumericalScalar value = 0.0;
+            Scalar value = 0.0;
             for(UnsignedInteger kk = 0; kk < dimension_; ++kk)
             {
               value += covarianceMatrix_(ii, kk) * blockPhiTThetaTMatrix_((2 * currentP_ + currentQ_ - i + j - 1) * dimension_ + kk, jj);
@@ -1297,7 +1297,7 @@ SquareMatrix ARMALikelihoodFactory::computeV1_Omega_V1T_Cholesky() const
         {
           for(UnsignedInteger jj = ((i == j) ? ii : 0); jj < dimension_; ++jj)
           {
-            NumericalScalar value = 0.0;
+            Scalar value = 0.0;
             for(UnsignedInteger kk = 0; kk < dimension_; ++kk)
             {
               value += blockPhiTThetaTMatrix_((currentP_ - k - 1) * dimension_ + kk, ii) * omegaV1T((k + i - 1) * dimension_ + kk, (j - 1) * dimension_ + jj);
@@ -1312,7 +1312,7 @@ SquareMatrix ARMALikelihoodFactory::computeV1_Omega_V1T_Cholesky() const
         {
           for(UnsignedInteger jj = ((i == j) ? ii : 0); jj < dimension_; ++jj)
           {
-            NumericalScalar value = 0.0;
+            Scalar value = 0.0;
             for(UnsignedInteger kk = 0; kk < dimension_; ++kk)
             {
               value += blockPhiTThetaTMatrix_((currentP_ + currentQ_ - k - 1) * dimension_ + kk, ii) * omegaV1T((k + currentP_ + i - 1) * dimension_ + kk, (j - 1) * dimension_ + jj);
@@ -1325,7 +1325,7 @@ SquareMatrix ARMALikelihoodFactory::computeV1_Omega_V1T_Cholesky() const
   }
 
   // And compute the Cholesky decomposition
-  NumericalScalar smallestValue = 1.0;
+  Scalar smallestValue = 1.0;
   while (smallestValue + 1.0 > 1.0)
   {
     smallestValue *= 0.5;
@@ -1362,7 +1362,7 @@ Matrix ARMALikelihoodFactory::computeRXi() const
       {
         for(UnsignedInteger ii = 0; ii < dimension_; ++ii)
         {
-          NumericalScalar value = 0.0;
+          Scalar value = 0.0;
           for(UnsignedInteger h = 0; h < dimension_; ++h)
           {
             value += blockPhiTThetaTMatrix_((currentP_ + j - 1) * dimension_ + h, ii) * xi(h, (k - j) * dimension_ + jj);
@@ -1397,7 +1397,7 @@ Matrix ARMALikelihoodFactory::computeEta() const
       Point point(w_.getValueAtIndex(i - j - 1));
       for(UnsignedInteger ii = 0; ii < dimension_; ++ii)
       {
-        NumericalScalar value = 0.0;
+        Scalar value = 0.0;
         for(UnsignedInteger h = 0; h < dimension_; ++h)
         {
           value += blockPhiTThetaTMatrix_((j - 1) * dimension_ + h, ii) * point[h];
@@ -1411,7 +1411,7 @@ Matrix ARMALikelihoodFactory::computeEta() const
     {
       for(UnsignedInteger ii = 0; ii < dimension_; ++ii)
       {
-        NumericalScalar value = 0.0;
+        Scalar value = 0.0;
         for(UnsignedInteger h = 0; h < dimension_; ++h)
         {
           value += blockPhiTThetaTMatrix_((currentP_ + j - 1) * dimension_ + h, ii) * a0(h, i - j - 1);
@@ -1454,7 +1454,7 @@ Point ARMALikelihoodFactory::computeVectorh(const Matrix & rxi,
     {
       for(UnsignedInteger jj = 0; jj < dimension_; ++jj)
       {
-        NumericalScalar value = 0.0;
+        Scalar value = 0.0;
         for(UnsignedInteger k = 0; k < dimension_; ++k)
         {
           value += rxi(k, i * dimension_ + jj) * eta(k, i + j - 1);
@@ -1468,7 +1468,7 @@ Point ARMALikelihoodFactory::computeVectorh(const Matrix & rxi,
   Point vector_MTh(dimension_ * currentG_);
   for (UnsignedInteger i = 0; i < dimension_ * currentG_; ++i)
   {
-    NumericalScalar value = 0.0;
+    Scalar value = 0.0;
     for (UnsignedInteger k = 0; k < dimension_ * currentG_; ++k)
     {
       value += matV1_Omega_V1TCholesky(k, i) * vector_h[k];
@@ -1496,7 +1496,7 @@ SymmetricMatrix ARMALikelihoodFactory::computeHTH(const Matrix & rxi) const
     {
       for (UnsignedInteger ii = jj; ii < dimension_; ++ii)
       {
-        NumericalScalar value = 0.0;
+        Scalar value = 0.0;
         for (UnsignedInteger kk = 0; kk < dimension_; ++kk)
         {
           value += rxi(kk, k * dimension_ + ii) * rxi(kk, k * dimension_ + jj);
@@ -1515,7 +1515,7 @@ SymmetricMatrix ARMALikelihoodFactory::computeHTH(const Matrix & rxi) const
       {
         for (UnsignedInteger ii = 0; ii < dimension_; ++ii)
         {
-          NumericalScalar value = 0.0;
+          Scalar value = 0.0;
           for (UnsignedInteger kk = 0; kk < dimension_; ++kk)
           {
             value += rxi(kk, k * dimension_ + ii) * rxi(kk, (k + i - 1) * dimension_ + jj);
@@ -1533,7 +1533,7 @@ SymmetricMatrix ARMALikelihoodFactory::computeHTH(const Matrix & rxi) const
     {
       for (UnsignedInteger ii = jj; ii < dimension_; ++ii)
       {
-        NumericalScalar value = 0.0;
+        Scalar value = 0.0;
         for (UnsignedInteger kk = 0; kk < dimension_; ++kk)
         {
           value += rxi(kk, (size - i + 1) * dimension_ + ii) * rxi(kk, (size - i + 1) * dimension_ + jj);
@@ -1553,7 +1553,7 @@ SymmetricMatrix ARMALikelihoodFactory::computeHTH(const Matrix & rxi) const
       {
         for (UnsignedInteger ii = 0; ii < dimension_; ++ii)
         {
-          NumericalScalar value = 0.0;
+          Scalar value = 0.0;
           for (UnsignedInteger kk = 0; kk < dimension_; ++kk)
           {
             value += rxi(kk, (size - i + 1) * dimension_ + ii) * rxi(kk, (size - j + 1) * dimension_ + jj);

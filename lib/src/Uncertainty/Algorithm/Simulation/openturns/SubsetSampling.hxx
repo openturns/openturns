@@ -37,19 +37,19 @@ public:
 
   /** Constructor with parameters */
   SubsetSampling(const Event & event,
-                 const NumericalScalar proposalRange = ResourceMap::GetAsScalar("SubsetSampling-DefaultProposalRange"),
-                 const NumericalScalar conditionalProbability = ResourceMap::GetAsScalar("SubsetSampling-DefaultConditionalProbability"));
+                 const Scalar proposalRange = ResourceMap::GetAsScalar("SubsetSampling-DefaultProposalRange"),
+                 const Scalar conditionalProbability = ResourceMap::GetAsScalar("SubsetSampling-DefaultConditionalProbability"));
 
   /** Virtual constructor */
   virtual SubsetSampling * clone() const;
 
   /** The range of the uniform proposal pdf */
-  void setProposalRange(NumericalScalar proposalRange);
-  NumericalScalar getProposalRange() const;
+  void setProposalRange(Scalar proposalRange);
+  Scalar getProposalRange() const;
 
   /** Ratio parameter */
-  void setConditionalProbability(NumericalScalar conditionalProbability);
-  NumericalScalar getConditionalProbability() const;
+  void setConditionalProbability(Scalar conditionalProbability);
+  Scalar getConditionalProbability() const;
 
   /** Accessor to the achieved number of steps */
   UnsignedInteger getNumberOfSteps();
@@ -69,7 +69,7 @@ public:
 
   /** i-subset */
   void setISubset(Bool iSubset);
-  void setBetaMin(NumericalScalar betaMin);
+  void setBetaMin(Scalar betaMin);
 
   /** Performs the actual computation. */
   void run();
@@ -88,25 +88,25 @@ private:
   Sample computeBlockSample();
 
   /** Compute the new threshold corresponding to the target failure probability */
-  NumericalScalar computeThreshold();
+  Scalar computeThreshold();
 
   /** compute probability estimate on the current sample */
-  NumericalScalar computeProbability(NumericalScalar probabilityEstimate, NumericalScalar threshold);
+  Scalar computeProbability(Scalar probabilityEstimate, Scalar threshold);
 
   /** Sort new seeds */
-  void initializeSeed(NumericalScalar threshold);
+  void initializeSeed(Scalar threshold);
 
   /** Compute the correlation on markov chains at the current state of the algorithm */
-  NumericalScalar computeVarianceGamma(NumericalScalar currentFailureProbability, NumericalScalar threshold);
+  Scalar computeVarianceGamma(Scalar currentFailureProbability, Scalar threshold);
 
   /** Generate new points in the conditional failure domain */
-  void generatePoints(NumericalScalar threshold);
+  void generatePoints(Scalar threshold);
 
   // some parameters
-  NumericalScalar proposalRange_;// width of the proposal pdf
-  NumericalScalar conditionalProbability_;// target probability at each subset
+  Scalar proposalRange_;// width of the proposal pdf
+  Scalar conditionalProbability_;// target probability at each subset
   Bool iSubset_;// conditional pre-sampling
-  NumericalScalar betaMin_;// pre-sampling hypersphere exclusion radius
+  Scalar betaMin_;// pre-sampling hypersphere exclusion radius
   Bool keepEventSample_;// do we keep the event sample ?
 
   // some results

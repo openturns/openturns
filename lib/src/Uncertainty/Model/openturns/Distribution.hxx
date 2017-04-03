@@ -70,22 +70,22 @@ public:
   /** Addition operator */
   Distribution operator + (const Distribution & other) const;
 
-  Distribution operator + (const NumericalScalar value) const;
+  Distribution operator + (const Scalar value) const;
 
   /** Substraction operator */
   Distribution operator - (const Distribution & other) const;
 
-  Distribution operator - (const NumericalScalar value) const;
+  Distribution operator - (const Scalar value) const;
 
   /** Multiplication operator */
   Distribution operator * (const Distribution & other) const;
 
-  Distribution operator * (const NumericalScalar value) const;
+  Distribution operator * (const Scalar value) const;
 
   /** Division operator */
   Distribution operator / (const Distribution & other) const;
 
-  Distribution operator / (const NumericalScalar value) const;
+  Distribution operator / (const Scalar value) const;
 
   /** Static methods to transform distributions by usual functions */
   Distribution cos() const;
@@ -109,7 +109,7 @@ public:
   Distribution ln() const;
 
   Distribution pow(const SignedInteger exponent) const;
-  Distribution pow(const NumericalScalar exponent) const;
+  Distribution pow(const Scalar exponent) const;
   Distribution inverse() const;
   Distribution sqr() const;
   Distribution sqrt() const;
@@ -121,8 +121,8 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Weight accessor */
-  void setWeight(const NumericalScalar w);
-  NumericalScalar getWeight() const;
+  void setWeight(const Scalar w);
+  Scalar getWeight() const;
 
   /** Dimension accessor */
   UnsignedInteger getDimension() const;
@@ -136,41 +136,41 @@ public:
   Sample getSample(const UnsignedInteger size) const;
 
   /** Get the DDF of the distribution */
-  NumericalScalar computeDDF(const NumericalScalar scalar) const;
+  Scalar computeDDF(const Scalar scalar) const;
   Point  computeDDF(const Point & point) const;
   Sample computeDDF(const Sample & sample) const;
 
   /** Get the PDF of the distribution */
-  NumericalScalar computePDF(const NumericalScalar scalar) const;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Scalar scalar) const;
+  Scalar computePDF(const Point & point) const;
   Sample computePDF(const Sample & sample) const;
 
-  NumericalScalar computeLogPDF(const NumericalScalar scalar) const;
-  NumericalScalar computeLogPDF(const Point & point) const;
+  Scalar computeLogPDF(const Scalar scalar) const;
+  Scalar computeLogPDF(const Point & point) const;
   Sample computeLogPDF(const Sample & sample) const;
 
   /** Compute the PDF of 1D distributions over a regular grid */
-  Sample computePDF(const NumericalScalar xMin,
-                             const NumericalScalar xMax,
+  Sample computePDF(const Scalar xMin,
+                             const Scalar xMax,
                              const UnsignedInteger pointNumber) const;
 
   /** Compute the log-PDF of 1D distributions over a regular grid */
-  Sample computeLogPDF(const NumericalScalar xMin,
-				const NumericalScalar xMax,
+  Sample computeLogPDF(const Scalar xMin,
+				const Scalar xMax,
 				const UnsignedInteger pointNumber) const;
 
   /** Get the CDF of the distribution */
-  NumericalScalar computeCDF(const NumericalScalar scalar) const;
-  NumericalScalar computeComplementaryCDF(const NumericalScalar scalar) const;
-  NumericalScalar computeSurvivalFunction(const NumericalScalar scalar) const;
+  Scalar computeCDF(const Scalar scalar) const;
+  Scalar computeComplementaryCDF(const Scalar scalar) const;
+  Scalar computeSurvivalFunction(const Scalar scalar) const;
 
-  NumericalScalar computeCDF(const Point & point) const;
-  NumericalScalar computeComplementaryCDF(const Point & point) const;
-  NumericalScalar computeSurvivalFunction(const Point & point) const;
-  Point computeInverseSurvivalFunction(const NumericalScalar prob) const;
+  Scalar computeCDF(const Point & point) const;
+  Scalar computeComplementaryCDF(const Point & point) const;
+  Scalar computeSurvivalFunction(const Point & point) const;
+  Point computeInverseSurvivalFunction(const Scalar prob) const;
 #ifndef SWIG
-  Point computeInverseSurvivalFunction(const NumericalScalar prob,
-						NumericalScalar & marginalProb) const;
+  Point computeInverseSurvivalFunction(const Scalar prob,
+						Scalar & marginalProb) const;
 #endif
 
   Sample computeCDF(const Sample & sample) const;
@@ -178,24 +178,24 @@ public:
   Sample computeSurvivalFunction(const Sample & sample) const;
 
   /** Compute the CDF of 1D distributions over a regular grid */
-  Sample computeCDF(const NumericalScalar xMin,
-                             const NumericalScalar xMax,
+  Sample computeCDF(const Scalar xMin,
+                             const Scalar xMax,
                              const UnsignedInteger pointNumber) const;
 
-  Sample computeComplementaryCDF(const NumericalScalar xMin,
-                                          const NumericalScalar xMax,
+  Sample computeComplementaryCDF(const Scalar xMin,
+                                          const Scalar xMax,
                                           const UnsignedInteger pointNumber) const;
 
   /** Get the probability content of an interval */
-  NumericalScalar computeProbability(const Interval & interval) const;
+  Scalar computeProbability(const Interval & interval) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
-  NumericalComplex computeLogCharacteristicFunction(const NumericalScalar x) const;
+  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
+  NumericalComplex computeLogCharacteristicFunction(const Scalar x) const;
 
   /** Compute the generating function, i.e. psi(z) = E(z^X) */
-  NumericalScalar computeGeneratingFunction(const NumericalScalar z) const;
-  NumericalScalar computeLogGeneratingFunction(const NumericalScalar z) const;
+  Scalar computeGeneratingFunction(const Scalar z) const;
+  Scalar computeLogGeneratingFunction(const Scalar z) const;
 
   NumericalComplex computeGeneratingFunction(const NumericalComplex & z) const;
   NumericalComplex computeLogGeneratingFunction(const NumericalComplex & z) const;
@@ -213,36 +213,36 @@ public:
   Sample computeCDFGradient(const Sample & sample) const;
 
   /** Get the quantile of the distribution */
-  Point computeQuantile(const NumericalScalar prob,
+  Point computeQuantile(const Scalar prob,
                                  const Bool tail = false) const;
 #ifndef SWIG
-  Point computeQuantile(const NumericalScalar prob,
+  Point computeQuantile(const Scalar prob,
                                  const Bool tail,
-				 NumericalScalar & marginalProb) const;
+				 Scalar & marginalProb) const;
 #endif
   Sample computeQuantile(const Point & prob,
                                   const Bool tail = false) const;
   /** Compute the quantile over a regular grid */
-  Sample computeQuantile(const NumericalScalar qMin,
-                                  const NumericalScalar qMax,
+  Sample computeQuantile(const Scalar qMin,
+                                  const Scalar qMax,
                                   const UnsignedInteger pointNumber,
                                   const Bool tail = false) const;
 
   /** Get the product minimum volume interval containing a given probability of the distribution */
-  Interval computeMinimumVolumeInterval(const NumericalScalar prob) const;
-  Interval computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
+  Interval computeMinimumVolumeInterval(const Scalar prob) const;
+  Interval computeMinimumVolumeIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const;
 
   /** Get the product bilateral confidence interval containing a given probability of the distribution */
-  Interval computeBilateralConfidenceInterval(const NumericalScalar prob) const;
-  Interval computeBilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
+  Interval computeBilateralConfidenceInterval(const Scalar prob) const;
+  Interval computeBilateralConfidenceIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const;
 
   /** Get the product unilateral confidence interval containing a given probability of the distribution */
-  Interval computeUnilateralConfidenceInterval(const NumericalScalar prob, const Bool tail = false) const;
-  Interval computeUnilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, const Bool tail, NumericalScalar & marginalProb) const;
+  Interval computeUnilateralConfidenceInterval(const Scalar prob, const Bool tail = false) const;
+  Interval computeUnilateralConfidenceIntervalWithMarginalProbability(const Scalar prob, const Bool tail, Scalar & marginalProb) const;
 
   /** Get the minimum volume level set containing a given probability of the distribution */
-  LevelSet computeMinimumVolumeLevelSet(const NumericalScalar prob) const;
-  LevelSet computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const;
+  LevelSet computeMinimumVolumeLevelSet(const Scalar prob) const;
+  LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & threshold) const;
 
   /** Get the mathematical and numerical range of the distribution.
       Its mathematical range is the smallest closed interval outside
@@ -251,7 +251,7 @@ public:
   Interval getRange() const;
 
   /** Get the roughness, i.e. the L2-norm of the PDF */
-  NumericalScalar getRoughness() const;
+  Scalar getRoughness() const;
 
   /** Get the mean of the distribution */
   Point getMean() const;
@@ -340,16 +340,16 @@ public:
   /** Compute the density generator of the elliptical generator, i.e.
    *  the function phi such that the density of the distribution can
    *  be written as p(x) = phi(t(x-mu)R(x-mu))                      */
-  virtual NumericalScalar computeDensityGenerator(const NumericalScalar betaSquare) const;
+  virtual Scalar computeDensityGenerator(const Scalar betaSquare) const;
 
   /** Compute the derivative of the density generator */
-  virtual NumericalScalar computeDensityGeneratorDerivative(const NumericalScalar betaSquare) const;
+  virtual Scalar computeDensityGeneratorDerivative(const Scalar betaSquare) const;
 
   /** Compute the seconde derivative of the density generator */
-  virtual NumericalScalar computeDensityGeneratorSecondDerivative(const NumericalScalar betaSquare) const;
+  virtual Scalar computeDensityGeneratorSecondDerivative(const Scalar betaSquare) const;
 
   /** Compute the radial distribution CDF */
-  virtual NumericalScalar computeRadialDistributionCDF (const NumericalScalar radius,
+  virtual Scalar computeRadialDistributionCDF (const Scalar radius,
       const Bool tail = false) const;
 
   /** Get the i-th marginal distribution */
@@ -362,23 +362,23 @@ public:
   Distribution getCopula() const;
 
   /** Compute the DDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-  virtual NumericalScalar computeConditionalDDF(const NumericalScalar x,
+  virtual Scalar computeConditionalDDF(const Scalar x,
       const Point & y) const;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-  virtual NumericalScalar computeConditionalPDF(const NumericalScalar x,
+  virtual Scalar computeConditionalPDF(const Scalar x,
       const Point & y) const;
   virtual Point computeConditionalPDF(const Point & x,
       const Sample & y) const;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-  virtual NumericalScalar computeConditionalCDF(const NumericalScalar x,
+  virtual Scalar computeConditionalCDF(const Scalar x,
       const Point & y) const;
   virtual Point computeConditionalCDF(const Point & x,
       const Sample & y) const;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-  virtual NumericalScalar computeConditionalQuantile(const NumericalScalar q,
+  virtual Scalar computeConditionalQuantile(const Scalar q,
       const Point & y) const;
   virtual Point computeConditionalQuantile(const Point & q,
       const Sample & y) const;
@@ -399,15 +399,15 @@ public:
   virtual Graph drawPDF() const;
 
   /** Draw the PDF of the distribution when its dimension is 1 */
-  virtual Graph drawPDF(const NumericalScalar xMin,
-                        const NumericalScalar xMax,
+  virtual Graph drawPDF(const Scalar xMin,
+                        const Scalar xMax,
                         const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
   virtual Graph drawPDF(const UnsignedInteger pointNumber) const;
 
   /** Draw the PDF of a 1D marginal */
   virtual Graph drawMarginal1DPDF(const UnsignedInteger marginalIndex,
-                                  const NumericalScalar xMin,
-                                  const NumericalScalar xMax,
+                                  const Scalar xMin,
+                                  const Scalar xMax,
                                   const UnsignedInteger pointNumber) const;
 
   /** Draw the PDF of the distribution when its dimension is 2 */
@@ -429,15 +429,15 @@ public:
   virtual Graph drawLogPDF() const;
 
   /** Draw the log-PDF of the distribution when its dimension is 1 */
-  virtual Graph drawLogPDF(const NumericalScalar xMin,
-			   const NumericalScalar xMax,
+  virtual Graph drawLogPDF(const Scalar xMin,
+			   const Scalar xMax,
 			   const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
   virtual Graph drawLogPDF(const UnsignedInteger pointNumber) const;
   
   /** Draw the log-PDF of a 1D marginal */
   virtual Graph drawMarginal1DLogPDF(const UnsignedInteger marginalIndex,
-				     const NumericalScalar xMin,
-				     const NumericalScalar xMax,
+				     const Scalar xMin,
+				     const Scalar xMax,
 				     const UnsignedInteger pointNumber) const;
   
   /** Draw the log-PDF of the distribution when its dimension is 2 */
@@ -459,8 +459,8 @@ public:
   virtual Graph drawCDF() const;
 
   /** Draw the CDF of the distribution when its dimension is 1 */
-  virtual Graph drawCDF(const NumericalScalar xMin,
-                        const NumericalScalar xMax,
+  virtual Graph drawCDF(const Scalar xMin,
+                        const Scalar xMax,
                         const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
 
   virtual Graph drawCDF(const UnsignedInteger pointNumber) const;
@@ -475,8 +475,8 @@ public:
 
   /** Draw the CDF of a 1D marginal */
   virtual Graph drawMarginal1DCDF(const UnsignedInteger marginalIndex,
-                                  const NumericalScalar xMin,
-                                  const NumericalScalar xMax,
+                                  const Scalar xMin,
+                                  const Scalar xMax,
                                   const UnsignedInteger pointNumber) const;
 
   /** Draw the CDF of a 2D marginal */
@@ -489,8 +489,8 @@ public:
   /** Draw the quantile of the distribution when its dimension is 1 or 2 */
   virtual Graph drawQuantile(const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
 
-  virtual Graph drawQuantile(const NumericalScalar qMin,
-                             const NumericalScalar qMax,
+  virtual Graph drawQuantile(const Scalar qMin,
+                             const Scalar qMax,
                              const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
 
   /** Parameters value and description accessor */
@@ -513,16 +513,16 @@ public:
   Description getDescription() const;
 
   /** Accessor to PDF computation precision */
-  NumericalScalar getPDFEpsilon() const;
+  Scalar getPDFEpsilon() const;
 
   /** Accessor to CDF computation precision */
-  NumericalScalar getCDFEpsilon() const;
+  Scalar getCDFEpsilon() const;
 
   /** Get a positon indicator for a 1D distribution */
-  NumericalScalar getPositionIndicator() const;
+  Scalar getPositionIndicator() const;
 
   /** Get a dispersion indicator for a 1D distribution */
-  NumericalScalar getDispersionIndicator() const;
+  Scalar getDispersionIndicator() const;
 
 }; /* class Distribution */
 

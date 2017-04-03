@@ -76,7 +76,7 @@ String ProductPolynomialEvaluation::__str__(const String & offset) const
   const Description description(getInputDescription());
   if (size == 1) return (oss << polynomials_[0].__str__(description[0], ""));
   Bool allScalar = true;
-  NumericalScalar scalarValue = 1.0;
+  Scalar scalarValue = 1.0;
   Bool onlyOneNotScalar = false;
   UnsignedInteger indexNotScalar = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
@@ -126,7 +126,7 @@ Point ProductPolynomialEvaluation::operator() (const Point & inP) const
 {
   const UnsignedInteger inDimension = inP.getDimension();
   if (inDimension != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a ProductPolynomialFunction with an argument of invalid dimension";
-  NumericalScalar productEvaluation(1.0) ;
+  Scalar productEvaluation(1.0) ;
   for (UnsignedInteger i = 0; i < inDimension; ++i) productEvaluation *= polynomials_[i](inP[i]);
   const Point result(1, productEvaluation);
   if (isHistoryEnabled_)
@@ -157,7 +157,7 @@ struct ProductPolynomialEvaluationComputeSamplePolicy
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
-      NumericalScalar value = polynomials_[0](input_[i][0]);
+      Scalar value = polynomials_[0](input_[i][0]);
       for (UnsignedInteger j = 1; j < polynomials_.getSize(); ++j)
         value *= polynomials_[j](input_[i][j]);
       output_[i][0] = value;

@@ -40,8 +40,8 @@ public:
   VonMises();
 
   /** Parameters constructor */
-  explicit VonMises(const NumericalScalar mu,
-                    const NumericalScalar kappa);
+  explicit VonMises(const Scalar mu,
+                    const Scalar kappa);
 
 
   /** Comparison operator */
@@ -70,9 +70,9 @@ public:
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
   using ContinuousDistribution::computeLogPDF;
-  NumericalScalar computeLogPDF(const Point & point) const;
+  Scalar computeLogPDF(const Point & point) const;
 
   /** Parameters value accessors */
   void setParameter(const Point & parameter);
@@ -87,19 +87,19 @@ public:
   /* Interface specific to VonMises */
 
   /** Mu accessor */
-  void setMu(const NumericalScalar mu);
+  void setMu(const Scalar mu);
 
-  NumericalScalar getMu() const;
+  Scalar getMu() const;
 
   /** Kappa accessor */
-  void setKappa(const NumericalScalar kappa);
+  void setKappa(const Scalar kappa);
 
-  NumericalScalar getKappa() const;
+  Scalar getKappa() const;
 
   /** Circular moments accessor */
-  NumericalScalar getCircularMean() const;
+  Scalar getCircularMean() const;
 
-  NumericalScalar getCircularVariance() const;
+  Scalar getCircularVariance() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -120,10 +120,10 @@ private:
   void update();
 
   /** The main parameter set of the distribution */
-  NumericalScalar mu_;
-  NumericalScalar kappa_;
-  NumericalScalar normalizationFactor_;
-  NumericalScalar ratioOfUniformsBound_;
+  Scalar mu_;
+  Scalar kappa_;
+  Scalar normalizationFactor_;
+  Scalar ratioOfUniformsBound_;
 
 }; /* class VonMises */
 

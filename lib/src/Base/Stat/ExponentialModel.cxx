@@ -75,14 +75,14 @@ ExponentialModel * ExponentialModel::clone() const
  * C_{i,j}(tau) = amplitude_i * R_{i,j} * amplitude_j  * exp(-|tau / scale|)
  * C_{i,i}(tau) = amplitude_i^2  * exp(-|tau / scale|)
  */
-NumericalScalar ExponentialModel::computeStandardRepresentative(const Point & tau) const
+Scalar ExponentialModel::computeStandardRepresentative(const Point & tau) const
 {
   if (tau.getDimension() != spatialDimension_)
     throw InvalidArgumentException(HERE) << "In ExponentialModel::computeStandardRepresentative: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();
   // Absolute value of tau / scale
   Point tauOverTheta(spatialDimension_);
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
-  const NumericalScalar tauOverThetaNorm = tauOverTheta.norm();
+  const Scalar tauOverThetaNorm = tauOverTheta.norm();
   // Return value
   return (tauOverThetaNorm == 0.0 ? 1.0 + nuggetFactor_ : exp(- tauOverThetaNorm ));
 }
@@ -99,10 +99,10 @@ Matrix ExponentialModel::partialGradient(const Point & s,
   if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "ExponentialModel::partialGradient, the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
   if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "ExponentialModel::partialGradient, the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
   const Point tau(s - t);
-  const NumericalScalar absTau = tau.norm();
+  const Scalar absTau = tau.norm();
   Point tauOverTheta(spatialDimension_);
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
-  const NumericalScalar absTauOverTheta = tauOverTheta.norm();
+  const Scalar absTauOverTheta = tauOverTheta.norm();
 
   // TODO check
   if (absTau == 0)
@@ -135,7 +135,7 @@ CovarianceMatrix ExponentialModel::discretize(const RegularGrid & timeGrid) cons
 {
   const UnsignedInteger size = timeGrid.getN();
   const UnsignedInteger fullSize = size * dimension_;
-  const NumericalScalar timeStep = timeGrid.getStep();
+  const Scalar timeStep = timeGrid.getStep();
 
   CovarianceMatrix cov(fullSize);
 

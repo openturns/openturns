@@ -49,7 +49,7 @@ KarhunenLoeveResultImplementation::KarhunenLoeveResultImplementation()
 
 /* Default constructor */
 KarhunenLoeveResultImplementation::KarhunenLoeveResultImplementation(const CovarianceModel & covariance,
-    const NumericalScalar threshold,
+    const Scalar threshold,
     const Point & eigenvalues,
     const Basis & modes,
     const ProcessSample & modesAsProcessSample,
@@ -72,7 +72,7 @@ KarhunenLoeveResultImplementation * KarhunenLoeveResultImplementation::clone() c
 }
 
 /* Threshold accessor */
-NumericalScalar KarhunenLoeveResultImplementation::getThreshold() const
+Scalar KarhunenLoeveResultImplementation::getThreshold() const
 {
   return threshold_;
 }

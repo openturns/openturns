@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-typedef Collection<NumericalScalar> NumericalScalarCollection;
+typedef Collection<Scalar> ScalarCollection;
 
 int main(int argc, char *argv[])
 {
@@ -130,27 +130,27 @@ int main(int argc, char *argv[])
     fullprint << "pt = " << pt << std::endl;
 
     /* Check the product method */
-    NumericalScalarCollection ptResult = triangularMatrix1.operator * ( pt )  ;
+    ScalarCollection ptResult = triangularMatrix1.operator * ( pt )  ;
     fullprint << "ptResult = " << ptResult << std::endl;
 
     /**  MULTIPLICATION WITH A NUMERICAL COMPLEX COLLECTION METHOD */
     fullprint << "test 10 : multiplication with a numerical scalar collection method" << std::endl;
 
     /* Create the numerical point */
-    NumericalScalarCollection ptScalar ;
+    ScalarCollection ptScalar ;
     ptScalar.add(1.) ;
     ptScalar.add(0.) ;
     fullprint << "ptScalar = " << ptScalar << std::endl;
 
     /* Check the product method */
-    NumericalScalarCollection ptResult2 = triangularMatrix1.operator * ( ptScalar )  ;
+    ScalarCollection ptResult2 = triangularMatrix1.operator * ( ptScalar )  ;
     fullprint << "ptResult2 = " << ptResult2 << std::endl;
 
     /** MULTIPLICATION AND DIVISION BY A NUMERICAL SCALAR METHODS */
     fullprint << "test 11 : multiplication and division by a numerical scalar methods" << std::endl;
 
     /* Check the multiplication method */
-    NumericalScalar s = 3.0;
+    Scalar s = 3.0;
     TriangularMatrix scalprod1 = triangularMatrix1.operator * (s) ;
     TriangularMatrix scalprod2 = s * triangularMatrix1 ;
     fullprint << "scalprod1 = " << scalprod1 << std::endl;

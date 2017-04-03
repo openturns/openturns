@@ -134,7 +134,7 @@ public:
   Indices getSimplex(const UnsignedInteger index) const;
 
   /** Compute the volume of a given simplex */
-  NumericalScalar computeSimplexVolume(const UnsignedInteger index) const;
+  Scalar computeSimplexVolume(const UnsignedInteger index) const;
 
   /** Compute P1 gram matrix */
   CovarianceMatrix computeP1Gram() const;
@@ -153,15 +153,15 @@ public:
   Graph draw1D() const;
   Graph draw2D() const;
   Graph draw3D(const Bool drawEdge = true,
-               const NumericalScalar thetaX = 0.0,
-               const NumericalScalar thetaY = 0.0,
-               const NumericalScalar thetaZ = 0.0,
+               const Scalar thetaX = 0.0,
+               const Scalar thetaY = 0.0,
+               const Scalar thetaZ = 0.0,
                const Bool shading = false,
-               const NumericalScalar rho = 1.0) const;
+               const Scalar rho = 1.0) const;
   Graph draw3D(const Bool drawEdge,
                const SquareMatrix & rotation,
                const Bool shading,
-               const NumericalScalar rho) const;
+               const Scalar rho) const;
 
   /** String converter */
   String __repr__() const;

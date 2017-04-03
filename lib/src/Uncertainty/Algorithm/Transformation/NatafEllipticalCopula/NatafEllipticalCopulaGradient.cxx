@@ -88,7 +88,7 @@ Matrix NatafEllipticalCopulaGradient::gradient(const Point & inP) const
   Matrix result(dimension, dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    NumericalScalar quantileDerivative = 1.0 / standardMarginal.computePDF(standardMarginal.computeQuantile(inP[i]));
+    Scalar quantileDerivative = 1.0 / standardMarginal.computePDF(standardMarginal.computeQuantile(inP[i]));
     for (UnsignedInteger j = i; j < dimension; ++j) result(i, j) = inverseCholesky_(j, i) * quantileDerivative;
   }
   return result;

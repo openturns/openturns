@@ -43,8 +43,8 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 const UnsignedInteger    DistFunc::NumberOfBandNormalZigurrat = 129;
-const NumericalScalar DistFunc::NormalZigguratTail = 3.44508288805539135654449538289;
-const NumericalScalar DistFunc::NormalZigguratAbscissa[DistFunc::NumberOfBandNormalZigurrat + 1] =
+const Scalar DistFunc::NormalZigguratTail = 3.44508288805539135654449538289;
+const Scalar DistFunc::NormalZigguratAbscissa[DistFunc::NumberOfBandNormalZigurrat + 1] =
 {
   0.0                             , 0.271599048510693754998163050702, 0.361898145612134821317157669025, 0.425392047157312675983415424660,
   0.476131717888617028166988513439, 0.519219013293501476350033678035, 0.557137093511580298809061311694, 0.591298984443313319787098187809,
@@ -81,7 +81,7 @@ const NumericalScalar DistFunc::NormalZigguratAbscissa[DistFunc::NumberOfBandNor
   3.44508288805539135654449538289 , 3.71537970891694553086615539964
 };
 
-const NumericalScalar DistFunc::NormalZigguratRatio[DistFunc::NumberOfBandNormalZigurrat] =
+const Scalar DistFunc::NormalZigguratRatio[DistFunc::NumberOfBandNormalZigurrat] =
 {
   0.0                             , 0.750484775353838553484969850043, 0.850740271310955168539797476445, 0.893433541969631939167066002439,
   0.917015181837094471851335493153, 0.931941203234046233441298028733, 0.942225689827803086945282581056, 0.949736532992396229158449917333,
@@ -122,17 +122,17 @@ const NumericalScalar DistFunc::NormalZigguratRatio[DistFunc::NumberOfBandNormal
 /* Normalized Beta distribution, i.e. with a PDF equals to x ^ (p1 - 1) . (1 - x) ^ (p2 - 1) / Beta(p1, p2) . (0 < x < 1) */
 /**************************************************************************************************************************/
 /* CDF */
-NumericalScalar DistFunc::pBeta(const NumericalScalar p1,
-                                const NumericalScalar p2,
-                                const NumericalScalar x,
+Scalar DistFunc::pBeta(const Scalar p1,
+                                const Scalar p2,
+                                const Scalar x,
                                 const Bool tail)
 {
   return SpecFunc::RegularizedIncompleteBeta(p1, p2, x, tail);
 }
 /* CDF Inverse */
-NumericalScalar DistFunc::qBeta(const NumericalScalar p1,
-                                const NumericalScalar p2,
-                                const NumericalScalar p,
+Scalar DistFunc::qBeta(const Scalar p1,
+                                const Scalar p2,
+                                const Scalar p,
                                 const Bool tail)
 {
   return SpecFunc::RegularizedIncompleteBetaInverse(p1, p2, p, tail);
@@ -144,8 +144,8 @@ NumericalScalar DistFunc::qBeta(const NumericalScalar p1,
    and with the important errata at:
    http://cg.scs.carleton.ca/~luc/errors.pdf
 */
-NumericalScalar DistFunc::rBeta(const NumericalScalar p1,
-                                const NumericalScalar p2)
+Scalar DistFunc::rBeta(const Scalar p1,
+                                const Scalar p2)
 {
   // Strategy:
   // If (a = 1 and b = 1), Beta(1,1) = Uniform(0,1)
@@ -160,9 +160,9 @@ NumericalScalar DistFunc::rBeta(const NumericalScalar p1,
   if (p1 == 1.0) return 1.0 - std::pow(RandomGenerator::Generate(), 1.0 / p2);
   if (p2 == 1.0) return std::pow(RandomGenerator::Generate(), 1.0 / p1);
   // Now, the more general cases
-  const NumericalScalar minp = std::min(p1, p2);
-  const NumericalScalar maxp = std::max(p1, p2);
-  const NumericalScalar sum = p1 + p2;
+  const Scalar minp = std::min(p1, p2);
+  const Scalar maxp = std::max(p1, p2);
+  const Scalar sum = p1 + p2;
   if (sum <= 1.0) // Johnk
   {
     // Use of logarithms to avoid underflow if minp << 1 (here 1e-3, quite arbitrary). It is the
@@ -172,11 +172,11 @@ NumericalScalar DistFunc::rBeta(const NumericalScalar p1,
     {
       for (;;)
       {
-        const NumericalScalar u = RandomGenerator::Generate();
-        const NumericalScalar v = RandomGenerator::Generate();
-        const NumericalScalar logx = std::log(u) / p1;
-        const NumericalScalar logy = std::log(v) / p2;
-        const NumericalScalar logsum = (logx > logy) ? logx + log1p(std::exp(logy - logx)) : logy + log1p(std::exp(logx - logy));
+        const Scalar u = RandomGenerator::Generate();
+        const Scalar v = RandomGenerator::Generate();
+        const Scalar logx = std::log(u) / p1;
+        const Scalar logy = std::log(v) / p2;
+        const Scalar logsum = (logx > logy) ? logx + log1p(std::exp(logy - logx)) : logy + log1p(std::exp(logx - logy));
         // Acceptation step
         if (logsum <= 0.0) return std::exp(logy - logsum);
       }
@@ -184,10 +184,10 @@ NumericalScalar DistFunc::rBeta(const NumericalScalar p1,
     // Usual form of the algorithm
     for (;;)
     {
-      const NumericalScalar u = RandomGenerator::Generate();
-      const NumericalScalar v = RandomGenerator::Generate();
-      const NumericalScalar x = std::pow(u, 1.0 / p1);
-      const NumericalScalar y = std::pow(v, 1.0 / p2);
+      const Scalar u = RandomGenerator::Generate();
+      const Scalar v = RandomGenerator::Generate();
+      const Scalar x = std::pow(u, 1.0 / p1);
+      const Scalar y = std::pow(v, 1.0 / p2);
       // Acceptation step
       if (x + y <= 1.0) return x / (x + y);
     }
@@ -195,22 +195,22 @@ NumericalScalar DistFunc::rBeta(const NumericalScalar p1,
   // Now, sum > 1 for all the remaining cases
   if (minp > 1.0) // Cheng
   {
-    const NumericalScalar lambda = std::sqrt((sum - 2.0) / (2.0 * p1 * p2 - sum));
-    const NumericalScalar c = minp + 1.0 / lambda;
+    const Scalar lambda = std::sqrt((sum - 2.0) / (2.0 * p1 * p2 - sum));
+    const Scalar c = minp + 1.0 / lambda;
     for (;;)
     {
-      const NumericalScalar u1 = RandomGenerator::Generate();
-      const NumericalScalar u2 = RandomGenerator::Generate();
-      const NumericalScalar v = lambda * std::log(u1 / (1.0 - u1));
-      const NumericalScalar w = minp * std::exp(v);
-      const NumericalScalar z = u1 * u1 * u2;
+      const Scalar u1 = RandomGenerator::Generate();
+      const Scalar u2 = RandomGenerator::Generate();
+      const Scalar v = lambda * std::log(u1 / (1.0 - u1));
+      const Scalar w = minp * std::exp(v);
+      const Scalar z = u1 * u1 * u2;
       // 1.386294361119890618834464 = log(4)
-      const NumericalScalar r = c * v - 1.386294361119890618834464;
-      const NumericalScalar s = minp + r - w;
+      const Scalar r = c * v - 1.386294361119890618834464;
+      const Scalar s = minp + r - w;
       // Quick acceptance steps
       // 2.609437912434100374600759 = 1 + log(5)
       if (s + 2.609437912434100374600759 >= 5.0 * z) return (p1 == minp) ? w / (maxp + w) : maxp / (maxp + w);
-      const NumericalScalar t = std::log(z);
+      const Scalar t = std::log(z);
       if (s > t) return (p1 == minp) ? w / (maxp + w) : maxp / (maxp + w);
       // Acceptance step
       if (r + sum * std::log(sum / (maxp + w)) >= t) return (p1 == minp) ? w / (maxp + w) : maxp / (maxp + w);
@@ -218,50 +218,50 @@ NumericalScalar DistFunc::rBeta(const NumericalScalar p1,
   } // End Cheng
   if (maxp < 1.0) // Atkinson and Whittaker 1
   {
-    const NumericalScalar t = 1.0 / (1.0 + std::sqrt(maxp * (1.0 - maxp) / (minp * (1.0 - minp))));
-    const NumericalScalar tc = 1.0 - t;
-    const NumericalScalar p = maxp * t / (maxp * t + minp * tc);
+    const Scalar t = 1.0 / (1.0 + std::sqrt(maxp * (1.0 - maxp) / (minp * (1.0 - minp))));
+    const Scalar tc = 1.0 - t;
+    const Scalar p = maxp * t / (maxp * t + minp * tc);
     for (;;)
     {
-      const NumericalScalar u = RandomGenerator::Generate();
-      const NumericalScalar e = -std::log(RandomGenerator::Generate());
+      const Scalar u = RandomGenerator::Generate();
+      const Scalar e = -std::log(RandomGenerator::Generate());
       if (u <= p)
       {
-        const NumericalScalar x = t * std::pow(u / p, 1.0 / minp);
+        const Scalar x = t * std::pow(u / p, 1.0 / minp);
         // Acceptation test
         if (e >= (1.0 - maxp) * std::log((1.0 - x) / tc)) return ((p1 == minp) ? x : 1.0 - x);
       }
       else
       {
-        const NumericalScalar x = 1.0 - tc * std::exp(log1p((p - u) / (1.0 - p)) / maxp);
+        const Scalar x = 1.0 - tc * std::exp(log1p((p - u) / (1.0 - p)) / maxp);
         // Acceptation test
         if (e >= (1.0 - minp) * std::log(x / t)) return ((p1 == minp) ? x : 1.0 - x);
       }
     }
   } // End Atkinson and Whittaker 1
   // Remaining case, Atkinson and Whittaker 2
-  const NumericalScalar t = (minp > 1) ? (1.0 - minp) / (maxp + 1.0 - minp) : 0.5;
-  const NumericalScalar tc = 1.0 - t;
-  const NumericalScalar p = maxp * t / (maxp * t + minp * std::pow(tc, maxp));
+  const Scalar t = (minp > 1) ? (1.0 - minp) / (maxp + 1.0 - minp) : 0.5;
+  const Scalar tc = 1.0 - t;
+  const Scalar p = maxp * t / (maxp * t + minp * std::pow(tc, maxp));
   for (;;)
   {
-    const NumericalScalar u = RandomGenerator::Generate();
-    const NumericalScalar e = -std::log(RandomGenerator::Generate());
+    const Scalar u = RandomGenerator::Generate();
+    const Scalar e = -std::log(RandomGenerator::Generate());
     if (u <= p)
     {
-      const NumericalScalar x = t * std::pow(u / p, 1.0 / minp);
+      const Scalar x = t * std::pow(u / p, 1.0 / minp);
       if (e >= (1.0 - maxp) * log1p(-x)) return ((p1 == minp) ? x : 1.0 - x);
     }
     else
     {
-      const NumericalScalar x = 1.0 - tc * std::exp(log1p((p - u) / (1.0 - p)) / maxp);
+      const Scalar x = 1.0 - tc * std::exp(log1p((p - u) / (1.0 - p)) / maxp);
       if (e >= (1.0 - minp) * std::log(x / t)) return ((p1 == minp) ? x : 1.0 - x);
     }
   } // End Atkinson and Whittaker 2
 } // End of rBeta
 
-Point DistFunc::rBeta(const NumericalScalar p1,
-                               const NumericalScalar p2,
+Point DistFunc::rBeta(const Scalar p1,
+                               const Scalar p2,
                                const UnsignedInteger size)
 {
   Point result(size);
@@ -278,7 +278,7 @@ Point DistFunc::rBeta(const NumericalScalar p1,
    Journal of Statistical Computation and Simulation 46, pp. 101-110, 1993
    http://epub.wu.ac.at/1242/
 */
-NumericalScalar DistFunc::fcBinomial(const UnsignedInteger k)
+Scalar DistFunc::fcBinomial(const UnsignedInteger k)
 {
   switch (k)
   {
@@ -313,30 +313,30 @@ NumericalScalar DistFunc::fcBinomial(const UnsignedInteger k)
       return 0.008330563433362871;
       break;
     default:
-      const NumericalScalar kp1Sq = (k + 1) * (k + 1);
+      const Scalar kp1Sq = (k + 1) * (k + 1);
       return (1.0 / 12.0 - (1.0 / 360.0 - 1.0 / 1260. / kp1Sq) / kp1Sq) / (k + 1);
       break;
   } // switch
 }
 
 UnsignedInteger DistFunc::rBinomial(const UnsignedInteger n,
-                                    const NumericalScalar p)
+                                    const Scalar p)
 {
   // Quick return for degenerate cases
   if (p == 0.0) return 0;
   if (p == 1.0) return n;
   // Use symmetry
-  const NumericalScalar q = std::min(p, 1.0 - p);
+  const Scalar q = std::min(p, 1.0 - p);
   const Bool complementary = p > 0.5;
   if (q == 1.0) return (complementary ? 0 : n);
   if (q == 0.0) return (complementary ? n : 0);
   // Small case, use inversion
   if (n * q <= 15)
   {
-    const NumericalScalar r = q / (1.0 - q);
-    NumericalScalar t = std::pow(1.0 - q, static_cast<int>(n));
-    NumericalScalar s = t;
-    const NumericalScalar u = RandomGenerator::Generate();
+    const Scalar r = q / (1.0 - q);
+    Scalar t = std::pow(1.0 - q, static_cast<int>(n));
+    Scalar s = t;
+    const Scalar u = RandomGenerator::Generate();
     for (UnsignedInteger k = 0; k <= n; ++k)
     {
       if (s >= u) return (complementary ? n - k : k);
@@ -348,23 +348,23 @@ UnsignedInteger DistFunc::rBinomial(const UnsignedInteger n,
   }
   // Large case, use the algorithm described in the reference.
   // Setup
-  const NumericalScalar m = floor((n + 1) * q);
-  const NumericalScalar r = q / (1.0 - q);
-  const NumericalScalar nr = (n + 1) * r;
-  const NumericalScalar npq = n * q * (1.0 - q);
-  const NumericalScalar npqSqrt = std::sqrt(npq);
-  const NumericalScalar b = 1.15 + 2.53 * npqSqrt;
-  const NumericalScalar a = -0.0873 + 0.0248 * b + 0.01 * q;
-  const NumericalScalar c = n * q + 0.5;
-  const NumericalScalar alpha = (2.83 + 5.1 / b) * npqSqrt;
-  const NumericalScalar vr = 0.92 - 4.2 / b;
-  const NumericalScalar urvr = 0.86 * vr;
-  NumericalScalar u = 0.0;
-  NumericalScalar k = 0.0;
+  const Scalar m = floor((n + 1) * q);
+  const Scalar r = q / (1.0 - q);
+  const Scalar nr = (n + 1) * r;
+  const Scalar npq = n * q * (1.0 - q);
+  const Scalar npqSqrt = std::sqrt(npq);
+  const Scalar b = 1.15 + 2.53 * npqSqrt;
+  const Scalar a = -0.0873 + 0.0248 * b + 0.01 * q;
+  const Scalar c = n * q + 0.5;
+  const Scalar alpha = (2.83 + 5.1 / b) * npqSqrt;
+  const Scalar vr = 0.92 - 4.2 / b;
+  const Scalar urvr = 0.86 * vr;
+  Scalar u = 0.0;
+  Scalar k = 0.0;
   // Main loop
   for (;;)
   {
-    NumericalScalar v = RandomGenerator::Generate();
+    Scalar v = RandomGenerator::Generate();
     if (v <= urvr)
     {
       u = v / vr - 0.43;
@@ -381,18 +381,18 @@ UnsignedInteger DistFunc::rBinomial(const UnsignedInteger n,
       u = (u < 0.0 ? -0.5 : 0.5) - u;
       v = RandomGenerator::Generate() * vr;
     } // v < vr
-    const NumericalScalar us = 0.5 - std::abs(u);
+    const Scalar us = 0.5 - std::abs(u);
     k = floor((2.0 * a / us + b) * u + c);
     if ((k < 0.0) || (k > n)) continue;
     v = v * alpha / (a / (us * us) + b);
-    const NumericalScalar km = std::abs(k - m);
+    const Scalar km = std::abs(k - m);
     // Recursive evaluation of f(k)
     if (km <= 15)
     {
-      NumericalScalar f = 1.0;
+      Scalar f = 1.0;
       if (m < k)
       {
-        NumericalScalar i = m;
+        Scalar i = m;
         do
         {
           ++i;
@@ -402,7 +402,7 @@ UnsignedInteger DistFunc::rBinomial(const UnsignedInteger n,
       } // m < k
       else if (m > k)
       {
-        NumericalScalar i = k;
+        Scalar i = k;
         do
         {
           ++i;
@@ -415,20 +415,20 @@ UnsignedInteger DistFunc::rBinomial(const UnsignedInteger n,
     } // km <= 15
     // Squeeze-acceptance or rejection
     v = std::log(v);
-    const NumericalScalar rho = km / npq * (((km / 3.0 + 0.625) * km + 1.0 / 6.0) / npq + 0.5);
-    const NumericalScalar t = -km * km / (2.0 * npq);
+    const Scalar rho = km / npq * (((km / 3.0 + 0.625) * km + 1.0 / 6.0) / npq + 0.5);
+    const Scalar t = -km * km / (2.0 * npq);
     if (v < t - rho) return (complementary ? static_cast<UnsignedInteger>(n - k) : static_cast<UnsignedInteger>(k));
     if (v > t + rho) continue;
-    const NumericalScalar nm = n - m + 1;
-    const NumericalScalar h = (m + 0.5) * std::log((m + 1) / (r * nm)) + fcBinomial(static_cast<UnsignedInteger>(m)) + fcBinomial(static_cast<UnsignedInteger>(n - m));
+    const Scalar nm = n - m + 1;
+    const Scalar h = (m + 0.5) * std::log((m + 1) / (r * nm)) + fcBinomial(static_cast<UnsignedInteger>(m)) + fcBinomial(static_cast<UnsignedInteger>(n - m));
     // Final acceptance-rejection
-    const NumericalScalar nk = n - k + 1;
+    const Scalar nk = n - k + 1;
     if (v <= h + (n + 1) * std::log(nm / nk) + (k + 0.5) * std::log(nk * r / (k + 1)) - fcBinomial(static_cast<UnsignedInteger>(k)) - fcBinomial(static_cast<UnsignedInteger>(n - k))) return (complementary ? static_cast<UnsignedInteger>(n - k) : static_cast<UnsignedInteger>(k));
   } // for(;;)
 } // rBinomial
 
 Indices DistFunc::rBinomial(const UnsignedInteger n,
-                            const NumericalScalar p,
+                            const Scalar p,
                             const UnsignedInteger size)
 {
   Indices result(size);
@@ -440,16 +440,16 @@ Indices DistFunc::rBinomial(const UnsignedInteger n,
 /* Normalized Gamma distribution, i.e. with a PDF equals to x ^ (k - 1) . exp(-x) / gamma(k) . (x > 0) */
 /*******************************************************************************************************/
 /* CDF */
-NumericalScalar DistFunc::pGamma(const NumericalScalar k,
-                                 const NumericalScalar x,
+Scalar DistFunc::pGamma(const Scalar k,
+                                 const Scalar x,
                                  const Bool tail)
 {
   return SpecFunc::RegularizedIncompleteGamma(k, x, tail);
 }
 
 /* CDF Inverse */
-NumericalScalar DistFunc::qGamma(const NumericalScalar k,
-                                 const NumericalScalar p,
+Scalar DistFunc::qGamma(const Scalar k,
+                                 const Scalar p,
                                  const Bool tail)
 {
   if (!tail && (p >= 1.0 - SpecFunc::ScalarEpsilon)) return SpecFunc::RegularizedIncompleteGammaInverse(k, 1.0 - SpecFunc::ScalarEpsilon, tail);
@@ -462,20 +462,20 @@ NumericalScalar DistFunc::qGamma(const NumericalScalar k,
    with a small optimization on the beta that appears in the squeezing function (1 + beta * x^4)*exp(-x^2/2).
    We also add the special treatment of the case k < 1
 */
-NumericalScalar DistFunc::rGamma(const NumericalScalar k)
+Scalar DistFunc::rGamma(const Scalar k)
 {
   // Special case k < 1.0
-  NumericalScalar correction = 1.0;
-  NumericalScalar alpha = k;
+  Scalar correction = 1.0;
+  Scalar alpha = k;
   if (alpha < 1.0)
   {
     correction = std::pow(RandomGenerator::Generate(), 1.0 / alpha);
     ++alpha;
   }
-  const NumericalScalar d = alpha - 0.3333333333333333333333333;
-  const NumericalScalar c = 1.0 / std::sqrt(9.0 * d);
-  NumericalScalar x = -1.0;
-  NumericalScalar v = -1.0;
+  const Scalar d = alpha - 0.3333333333333333333333333;
+  const Scalar c = 1.0 / std::sqrt(9.0 * d);
+  Scalar x = -1.0;
+  Scalar v = -1.0;
   for (;;)
   {
     do
@@ -485,8 +485,8 @@ NumericalScalar DistFunc::rGamma(const NumericalScalar k)
     }
     while (v <= 0.0);
     v = v * v * v;
-    const NumericalScalar u = RandomGenerator::Generate();
-    const NumericalScalar x2 = x * x;
+    const Scalar u = RandomGenerator::Generate();
+    const Scalar x2 = x * x;
     // Quick acceptation test
     // 0.03431688782875261396035499 is the numerical solution of the squeezing
     // problem described in
@@ -496,7 +496,7 @@ NumericalScalar DistFunc::rGamma(const NumericalScalar k)
   }
 } // End of rGamma
 
-Point DistFunc::rGamma(const NumericalScalar k,
+Point DistFunc::rGamma(const Scalar k,
                                 const UnsignedInteger size)
 {
   Point result(size);
@@ -512,8 +512,8 @@ Point DistFunc::rGamma(const NumericalScalar k,
    Simard, R. and L'Ecuyer, P. "Computing the Two-Sided Kolmogorov-Smirnov Distribution", Journal of Statistical Software, 2010.
    The implementation is from the first author, initially published under the GPL v3 license but used here with written permission of the author.
 */
-NumericalScalar DistFunc::pKolmogorov(const UnsignedInteger n,
-                                      const NumericalScalar x,
+Scalar DistFunc::pKolmogorov(const UnsignedInteger n,
+                                      const Scalar x,
                                       const Bool tail)
 {
   if (tail) return KSfbar(n, x);
@@ -540,28 +540,28 @@ NumericalScalar DistFunc::pKolmogorov(const UnsignedInteger n,
 /* edition, 1995, Wiley Inter-Science                                                                          */
 /***************************************************************************************************************/
 /* PDF */
-NumericalScalar DistFunc::dNonCentralChiSquare(const NumericalScalar nu,
-    const NumericalScalar lambda,
-    const NumericalScalar x,
-    const NumericalScalar precision,
+Scalar DistFunc::dNonCentralChiSquare(const Scalar nu,
+    const Scalar lambda,
+    const Scalar x,
+    const Scalar precision,
     const UnsignedInteger maximumIteration)
 {
   if (!(nu >= 0.0)) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu must be >= 0.";
   if (!(lambda >= 0.0)) throw InvalidArgumentException(HERE) << "Error: the non-centrality parameter lambda must be >= 0.";
   if (x <= 0.0) return 0.0;
-  const NumericalScalar halfNu = 0.5 * nu;
+  const Scalar halfNu = 0.5 * nu;
   // Early exit for lambda == 0, central ChiSquare PDF
   if (std::abs(lambda) < precision) return std::exp((halfNu - 1.0) * std::log(x) - 0.5 * x - SpecFunc::LnGamma(halfNu) - halfNu * M_LN2);
   // Case lambda <> 0
-  const NumericalScalar halfLambda = 0.5 * lambda;
+  const Scalar halfLambda = 0.5 * lambda;
   // Starting index in the sum: integral part of halfDelta2 and insure that it is at least 1
   const UnsignedInteger k = std::max(1UL, static_cast<UnsignedInteger>(floor(halfLambda)));
   // Loop forward and backward starting from k
   // Initialization
-  NumericalScalar pForward = std::exp(-halfLambda - 0.5 * x + (halfNu + k - 1.0) * std::log(x) - SpecFunc::LogGamma(k + 1.0) - SpecFunc::LogGamma(halfNu + k) - (2.0 * k + halfNu) * M_LN2 + k * std::log(lambda));
-  NumericalScalar pBackward = pForward;
-  NumericalScalar value = pForward;
-  NumericalScalar error = SpecFunc::MaxScalar;
+  Scalar pForward = std::exp(-halfLambda - 0.5 * x + (halfNu + k - 1.0) * std::log(x) - SpecFunc::LogGamma(k + 1.0) - SpecFunc::LogGamma(halfNu + k) - (2.0 * k + halfNu) * M_LN2 + k * std::log(lambda));
+  Scalar pBackward = pForward;
+  Scalar value = pForward;
+  Scalar error = SpecFunc::MaxScalar;
   UnsignedInteger kForward = k;
   UnsignedInteger kBackward = k;
 #define FORWARD_ITERATION                                               \
@@ -605,37 +605,37 @@ NumericalScalar DistFunc::dNonCentralChiSquare(const NumericalScalar nu,
    and the distribution of the square of the sample multiple correlation coefficient",
    Computational Statistics & Data Analysis, 43 (2003) pp 249-267
 */
-NumericalScalar DistFunc::pNonCentralChiSquare(const NumericalScalar nu,
-    const NumericalScalar lambda,
-    const NumericalScalar x,
+Scalar DistFunc::pNonCentralChiSquare(const Scalar nu,
+    const Scalar lambda,
+    const Scalar x,
     const Bool tail,
-    const NumericalScalar precision,
+    const Scalar precision,
     const UnsignedInteger maximumIteration)
 {
   if (!(nu >= 0.0)) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu must be >= 0.";
   if (!(lambda >= 0.0)) throw InvalidArgumentException(HERE) << "Error: the non-centrality parameter lambda must be >= 0.";
   if (x <= 0.0) return (tail ? 1.0 : 0.0);
-  const NumericalScalar halfNu = 0.5 * nu;
-  const NumericalScalar halfX = 0.5 * x;
+  const Scalar halfNu = 0.5 * nu;
+  const Scalar halfX = 0.5 * x;
   // Early exit for lambda == 0, central ChiSquare PDF
   if (std::abs(lambda) < precision) return pGamma(halfNu, halfX, tail);
   // Case lambda <> 0
-  const NumericalScalar halfLambda = 0.5 * lambda;
+  const Scalar halfLambda = 0.5 * lambda;
   // Starting index in the sum: integral part of halfDelta2 and insure that it is at least 1
   const UnsignedInteger k = std::max(1UL, static_cast<UnsignedInteger>(floor(halfLambda)));
   // Loop forward and backward starting from k
   // Initialization
-  const NumericalScalar logHalfX = std::log(halfX);
-  NumericalScalar xForward = std::exp((halfNu + k - 1) * logHalfX - halfX - SpecFunc::LogGamma(halfNu + k));
-  NumericalScalar expForward = std::exp(-halfLambda + k * std::log(halfLambda) - SpecFunc::LogGamma(k + 1.0));
-  NumericalScalar gammaForward = pGamma(halfNu + k, halfX);
-  NumericalScalar pForward = expForward * gammaForward;
-  NumericalScalar xBackward = xForward;
-  NumericalScalar expBackward = expForward;
-  NumericalScalar gammaBackward = gammaForward;
-  NumericalScalar pBackward = expBackward * gammaBackward;
-  NumericalScalar value = pForward;
-  NumericalScalar error = SpecFunc::MaxScalar;
+  const Scalar logHalfX = std::log(halfX);
+  Scalar xForward = std::exp((halfNu + k - 1) * logHalfX - halfX - SpecFunc::LogGamma(halfNu + k));
+  Scalar expForward = std::exp(-halfLambda + k * std::log(halfLambda) - SpecFunc::LogGamma(k + 1.0));
+  Scalar gammaForward = pGamma(halfNu + k, halfX);
+  Scalar pForward = expForward * gammaForward;
+  Scalar xBackward = xForward;
+  Scalar expBackward = expForward;
+  Scalar gammaBackward = gammaForward;
+  Scalar pBackward = expBackward * gammaBackward;
+  Scalar value = pForward;
+  Scalar error = SpecFunc::MaxScalar;
   UnsignedInteger kForward = k;
   UnsignedInteger kBackward = k;
 #define FORWARD_ITERATION                       \
@@ -687,20 +687,20 @@ NumericalScalar DistFunc::pNonCentralChiSquare(const NumericalScalar nu,
    If N is Normal(delta, 1) distributed and G is Gamma(nu / 2) distributed,
    sqrt(2 * nu) * N / sqrt(G) is distributed according to NonCentralChiSquare(nu, delta)
 */
-NumericalScalar DistFunc::rNonCentralChiSquare(const NumericalScalar nu,
-    const NumericalScalar lambda)
+Scalar DistFunc::rNonCentralChiSquare(const Scalar nu,
+    const Scalar lambda)
 {
   if (!(nu >= 0.0)) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu must be >= 0.";
   if (!(lambda >= 0.0)) throw InvalidArgumentException(HERE) << "Error: the non-centrality parameter lambda must be >= 0.";
   // If the non-central parameter is zero return a usual chi-square realization
   if (lambda == 0.0) return 2.0 * rGamma(0.5 * nu);
   // Use the decomposition of a zero degree of freedom non-central chisquare and a nu degrees of freedom central chisquare
-  const NumericalScalar n = rPoisson(0.5 * lambda);
+  const Scalar n = rPoisson(0.5 * lambda);
   return 2.0 * rGamma(0.5 * nu + n);
 }
 
-Point DistFunc::rNonCentralChiSquare(const NumericalScalar nu,
-    const NumericalScalar lambda,
+Point DistFunc::rNonCentralChiSquare(const Scalar nu,
+    const Scalar lambda,
     const UnsignedInteger size)
 {
   Point result(size);
@@ -719,9 +719,9 @@ Point DistFunc::rNonCentralChiSquare(const NumericalScalar nu,
 /************************************************************************************************************/
 /* PDF
    We use the relation between the PDF and the CDF in order to reduce the computation of the PDF to two computations of the CDF */
-NumericalScalar DistFunc::dNonCentralStudent(const NumericalScalar nu,
-    const NumericalScalar delta,
-    const NumericalScalar x)
+Scalar DistFunc::dNonCentralStudent(const Scalar nu,
+    const Scalar delta,
+    const Scalar x)
 {
   return StudentFunctions::NonCentralStudentPDF(nu, delta, x);
 }
@@ -742,10 +742,10 @@ NumericalScalar DistFunc::dNonCentralStudent(const NumericalScalar nu,
 /* edition, 1995, Wiley Inter-Science                                                                       */
 /************************************************************************************************************/
 /* PDF */
-NumericalScalar DistFunc::dNonCentralStudentAlt0(const NumericalScalar nu,
-    const NumericalScalar delta,
-    const NumericalScalar x,
-    const NumericalScalar precision,
+Scalar DistFunc::dNonCentralStudentAlt0(const Scalar nu,
+    const Scalar delta,
+    const Scalar x,
+    const Scalar precision,
     const UnsignedInteger maximumIteration)
 {
   return StudentFunctions::NonCentralStudentPDFAlt0(nu, delta, x, precision, maximumIteration);
@@ -755,9 +755,9 @@ NumericalScalar DistFunc::dNonCentralStudentAlt0(const NumericalScalar nu,
    Viktor Witkovsky, "A Note on Computing Extreme Tail Probabilities of the Noncentral T Distribution with Large Noncentrality Parameter"
    Computational Statistics & Data Analysis, 43 (2003) pp 249-267
 */
-NumericalScalar DistFunc::pNonCentralStudent(const NumericalScalar nu,
-    const NumericalScalar delta,
-    const NumericalScalar x,
+Scalar DistFunc::pNonCentralStudent(const Scalar nu,
+    const Scalar delta,
+    const Scalar x,
     const Bool tail)
 {
   return StudentFunctions::NonCentralStudentCDF(nu, delta, x, tail);
@@ -767,14 +767,14 @@ NumericalScalar DistFunc::pNonCentralStudent(const NumericalScalar nu,
    If N is Normal(delta, 1) distributed and G is Gamma(nu / 2) distributed,
    sqrt(2 * nu) * N / sqrt(G) is distributed according to NonCentralStudent(nu, delta)
 */
-NumericalScalar DistFunc::rNonCentralStudent(const NumericalScalar nu,
-    const NumericalScalar delta)
+Scalar DistFunc::rNonCentralStudent(const Scalar nu,
+    const Scalar delta)
 {
   return StudentFunctions::NonCentralStudentRealization(nu, delta);
 }
 
-Point DistFunc::rNonCentralStudent(const NumericalScalar nu,
-    const NumericalScalar delta,
+Point DistFunc::rNonCentralStudent(const Scalar nu,
+    const Scalar delta,
     const UnsignedInteger size)
 {
   Point result(size);
@@ -786,27 +786,27 @@ Point DistFunc::rNonCentralStudent(const NumericalScalar nu,
 /* Normalized Normal distribution, i.e. with a PDF equals to exp(-x^2/2) / sqrt(2.Pi) */
 /**************************************************************************************/
 /* CDF */
-NumericalScalar DistFunc::pNormal(const NumericalScalar x,
+Scalar DistFunc::pNormal(const Scalar x,
                                   const Bool tail)
 {
   if (tail) return 0.5 * SpecFunc::ErfC(x * M_SQRT1_2);
   return 0.5 * SpecFunc::ErfC(-x * M_SQRT1_2);
 }
 
-NumericalScalar DistFunc::pNormal2D(const NumericalScalar x1,
-                                    const NumericalScalar x2,
-                                    const NumericalScalar rho,
+Scalar DistFunc::pNormal2D(const Scalar x1,
+                                    const Scalar x2,
+                                    const Scalar rho,
                                     const Bool tail)
 {
   return Normal2DCDF(x1, x2, rho, tail);
 }
 
-NumericalScalar DistFunc::pNormal3D(const NumericalScalar x1,
-                                    const NumericalScalar x2,
-                                    const NumericalScalar x3,
-                                    const NumericalScalar rho12,
-                                    const NumericalScalar rho13,
-                                    const NumericalScalar rho23,
+Scalar DistFunc::pNormal3D(const Scalar x1,
+                                    const Scalar x2,
+                                    const Scalar x3,
+                                    const Scalar rho12,
+                                    const Scalar rho13,
+                                    const Scalar rho23,
                                     const Bool tail)
 {
   return Normal3DCDF(x1, x2, x3, rho12, rho13, rho23, tail);
@@ -816,41 +816,41 @@ NumericalScalar DistFunc::pNormal3D(const NumericalScalar x1,
    It implements the algorithm of Peter John Acklam, see
    http://home.online.no/~pjacklam/notes/invnorm/index.html
 */
-NumericalScalar DistFunc::qNormal(const NumericalScalar p,
+Scalar DistFunc::qNormal(const Scalar p,
                                   const Bool tail)
 {
   if (p == 0.0) return (tail ? 3.75193793471444863030e+01 : -3.75193793471444863030e+01);
   if (p == 1.0) return (tail ? -8.125890664701906 : 8.125890664701906);
 
-  static const NumericalScalar a[6] =
+  static const Scalar a[6] =
   {
     -3.969683028665376e+01,  2.209460984245205e+02,
     -2.759285104469687e+02,  1.383577518672690e+02,
     -3.066479806614716e+01,  2.506628277459239e+00
   };
-  static const NumericalScalar b[5] =
+  static const Scalar b[5] =
   {
     -5.447609879822406e+01,  1.615858368580409e+02,
     -1.556989798598866e+02,  6.680131188771972e+01,
     -1.328068155288572e+01
   };
-  static const NumericalScalar c[6] =
+  static const Scalar c[6] =
   {
     -7.784894002430293e-03, -3.223964580411365e-01,
     -2.400758277161838e+00, -2.549732539343734e+00,
     4.374664141464968e+00,  2.938163982698783e+00
   };
-  static const NumericalScalar d[4] =
+  static const Scalar d[4] =
   {
     7.784695709041462e-03,  3.224671290700398e-01,
     2.445134137142996e+00,  3.754408661907416e+00
   };
-  NumericalScalar x = -1.0;
+  Scalar x = -1.0;
   // Left tail
   if (p < 0.02425)
   {
     /* Rational approximation for tail region. */
-    const NumericalScalar q = std::sqrt(-2.0 * std::log(p));
+    const Scalar q = std::sqrt(-2.0 * std::log(p));
     x = (((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5])
         / ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1.0);
   }
@@ -858,8 +858,8 @@ NumericalScalar DistFunc::qNormal(const NumericalScalar p,
   else if (p <= 0.97575)
   {
     /* Rational approximation for central region. */
-    const NumericalScalar q = p - 0.5;
-    const NumericalScalar r = q * q;
+    const Scalar q = p - 0.5;
+    const Scalar r = q * q;
     x = q * (((((a[0] * r + a[1]) * r + a[2]) * r + a[3]) * r + a[4]) * r + a[5])
         / (((((b[0] * r + b[1]) * r + b[2]) * r + b[3]) * r + b[4]) * r + 1.0);
   }
@@ -867,7 +867,7 @@ NumericalScalar DistFunc::qNormal(const NumericalScalar p,
   else
   {
     /* Rational approximation for tail region. */
-    const NumericalScalar q = std::sqrt(-2.0 * log1p(-p));
+    const Scalar q = std::sqrt(-2.0 * log1p(-p));
     x = -(((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5])
         / ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1.0);
   }
@@ -875,8 +875,8 @@ NumericalScalar DistFunc::qNormal(const NumericalScalar p,
      than 1.15e-9.  One iteration of Newton's rational method (second
      order) gives full machine precision... */
   // 2.50662827463100050241576528481 = sqrt(2.pi)
-  const NumericalScalar e = pNormal(x) - p;
-  const NumericalScalar u = e * 2.50662827463100050241576528481 * std::exp(0.5 * x * x);
+  const Scalar e = pNormal(x) - p;
+  const Scalar u = e * 2.50662827463100050241576528481 * std::exp(0.5 * x * x);
   x -= u / (1.0 + 0.5 * x * u);
   return (tail ? -x : x);
 }
@@ -887,11 +887,11 @@ NumericalScalar DistFunc::qNormal(const NumericalScalar p,
    Random Samples", mimeo, Nuffield College, University of Oxford,
    and www.doornik.com/research.
 */
-NumericalScalar DistFunc::rNormal()
+Scalar DistFunc::rNormal()
 {
   for (;;)
   {
-    const NumericalScalar u = 2.0 * RandomGenerator::Generate() - 1.0;
+    const Scalar u = 2.0 * RandomGenerator::Generate() - 1.0;
     const UnsignedInteger index = RandomGenerator::IntegerGenerate(DistFunc::NumberOfBandNormalZigurrat);
     /* Are we in a rectangular band of the ziggurat? */
     if (std::abs(u) < DistFunc::NormalZigguratRatio[index]) return u * NormalZigguratAbscissa[index + 1];
@@ -899,8 +899,8 @@ NumericalScalar DistFunc::rNormal()
     /* Are we in the bottom band? Sample from the tail of the Normal distribution */
     if (index == DistFunc::NumberOfBandNormalZigurrat - 1)
     {
-      NumericalScalar x = -1.0;
-      NumericalScalar y = -1.0;
+      Scalar x = -1.0;
+      Scalar y = -1.0;
       /* Marsaglia method */
       do
       {
@@ -911,12 +911,12 @@ NumericalScalar DistFunc::rNormal()
       return (u > 0.0) ? x - DistFunc::NormalZigguratTail : DistFunc::NormalZigguratTail - x;
     }
     /* Are we in the wedges? Basic rejection method */
-    const NumericalScalar xI = NormalZigguratAbscissa[index];
-    const NumericalScalar xIp1 = NormalZigguratAbscissa[index + 1];
-    const NumericalScalar x = u * xIp1;
-    const NumericalScalar pdfX = std::exp(-0.5 * x * x);
-    const NumericalScalar pdfI = std::exp(-0.5 * xI * xI);
-    const NumericalScalar pdfIp1 = std::exp(-0.5 * xIp1 * xIp1);
+    const Scalar xI = NormalZigguratAbscissa[index];
+    const Scalar xIp1 = NormalZigguratAbscissa[index + 1];
+    const Scalar x = u * xIp1;
+    const Scalar pdfX = std::exp(-0.5 * x * x);
+    const Scalar pdfI = std::exp(-0.5 * xI * xI);
+    const Scalar pdfIp1 = std::exp(-0.5 * xIp1 * xIp1);
     if (RandomGenerator::Generate() * (pdfI - pdfIp1) < pdfX - pdfIp1) return x;
   }
 }
@@ -936,11 +936,11 @@ Point DistFunc::rNormal(const UnsignedInteger size)
    Mikes Giles, "Fast evaluation of the inverse Poisson cumulative distribution function", https://people.maths.ox.ac.uk/gilesm/poissinv/paper.pdf
    It is the Author's implementation, used in OpenTURNS with his written permission, see COPYING.poissinv
 */
-NumericalScalar DistFunc::qPoisson(const NumericalScalar lambda,
-                                   const NumericalScalar p,
+Scalar DistFunc::qPoisson(const Scalar lambda,
+                                   const Scalar p,
                                    const Bool tail)
 {
-  NumericalScalar r = tail ? 1.0 - p : p;
+  Scalar r = tail ? 1.0 - p : p;
   if (r <= SpecFunc::MinScalar) r = SpecFunc::MinScalar;
   if (r >= 1.0 - SpecFunc::ScalarEpsilon) r = 1.0 - SpecFunc::ScalarEpsilon;
   // We use the scalar version
@@ -955,16 +955,16 @@ NumericalScalar DistFunc::qPoisson(const NumericalScalar lambda,
    For the large values of lambda, we use the ratio of uniform method described in:
    E. Stadlober, "The ratio of uniforms approach for generating discrete random variates". Journal of Computational and Applied Mathematics, vol. 31, no. 1, 1990, pp. 181-189.
 */
-UnsignedInteger DistFunc::rPoisson(const NumericalScalar lambda)
+UnsignedInteger DistFunc::rPoisson(const Scalar lambda)
 {
-  NumericalScalar mu = floor(lambda);
+  Scalar mu = floor(lambda);
   // Small case. The bound 6 is quite arbitrary, but must be < 80 to avoid overflow.
   if (mu < 6)
   {
     UnsignedInteger x = 0;
-    NumericalScalar sum = std::exp(-lambda);
-    NumericalScalar prod = sum;
-    const NumericalScalar u = RandomGenerator::Generate();
+    Scalar sum = std::exp(-lambda);
+    Scalar prod = sum;
+    const Scalar u = RandomGenerator::Generate();
     for (;;)
     {
       if (u <= sum) return x;
@@ -974,21 +974,21 @@ UnsignedInteger DistFunc::rPoisson(const NumericalScalar lambda)
     }
   } // Small case
   // Large case
-  const NumericalScalar hatCenter = lambda + 0.5;
-  const NumericalScalar mode = floor(lambda);
-  const NumericalScalar logLambda = std::log(lambda);
-  const NumericalScalar pdfMode = mode * logLambda - SpecFunc::LnGamma(mode + 1.0);
+  const Scalar hatCenter = lambda + 0.5;
+  const Scalar mode = floor(lambda);
+  const Scalar logLambda = std::log(lambda);
+  const Scalar pdfMode = mode * logLambda - SpecFunc::LnGamma(mode + 1.0);
   // 2.943035529371538572764190 = 8 / e
   // 0.898916162058898740826254 = 3 - 2 sqr(3 / e)
-  const NumericalScalar hatWidth = std::sqrt(2.943035529371538572764190 * (lambda + 0.5)) + 0.898916162058898740826254;
-  const NumericalScalar safetyBound = hatCenter + 6.0 * hatWidth;
+  const Scalar hatWidth = std::sqrt(2.943035529371538572764190 * (lambda + 0.5)) + 0.898916162058898740826254;
+  const Scalar safetyBound = hatCenter + 6.0 * hatWidth;
   for (;;)
   {
-    const NumericalScalar u = RandomGenerator::Generate();
-    const NumericalScalar x = hatCenter + hatWidth * (RandomGenerator::Generate() - 0.5) / u;
+    const Scalar u = RandomGenerator::Generate();
+    const Scalar x = hatCenter + hatWidth * (RandomGenerator::Generate() - 0.5) / u;
     if (x < 0 || x >= safetyBound) continue;
     const UnsignedInteger k = static_cast< UnsignedInteger >(floor(x));
-    const NumericalScalar logPdf = k * logLambda - SpecFunc::LnGamma(k + 1.0) - pdfMode;
+    const Scalar logPdf = k * logLambda - SpecFunc::LnGamma(k + 1.0) - pdfMode;
     // Quick acceptance
     if (logPdf >= u * (4.0 - u) - 3.0) return k;
     // Quick rejection
@@ -998,7 +998,7 @@ UnsignedInteger DistFunc::rPoisson(const NumericalScalar lambda)
   }
 }
 
-Indices DistFunc::rPoisson(const NumericalScalar lambda,
+Indices DistFunc::rPoisson(const Scalar lambda,
                            const UnsignedInteger size)
 {
   Indices result(size);
@@ -1010,15 +1010,15 @@ Indices DistFunc::rPoisson(const NumericalScalar lambda,
 /* Normalized Student distribution, i.e. with a PDF equals to (1 + x^2 / nu)^(-(1 + nu) / 2) / (sqrt(nu) . Beta(1 / 2, nu / 2)) */
 /********************************************************************************************************************************/
 /* CDF */
-NumericalScalar DistFunc::pStudent(const NumericalScalar nu,
-                                   const NumericalScalar x,
+Scalar DistFunc::pStudent(const Scalar nu,
+                                   const Scalar x,
                                    const Bool tail)
 {
   return StudentFunctions::StudentCDF(nu, x, tail);
 }
 /* CDF inverse */
-NumericalScalar DistFunc::qStudent(const NumericalScalar nu,
-                                   const NumericalScalar p,
+Scalar DistFunc::qStudent(const Scalar nu,
+                                   const Scalar p,
                                    const Bool tail)
 {
   if (!tail && (p > 1.0 - SpecFunc::ScalarEpsilon)) return StudentFunctions::StudentQuantile(nu, 1.0 - SpecFunc::ScalarEpsilon, tail);
@@ -1029,12 +1029,12 @@ NumericalScalar DistFunc::qStudent(const NumericalScalar nu,
    If N is Normal(0, 1) distributed and G is Gamma(nu / 2) distributed,
    sqrt(2 * nu) * N / sqrt(G) is distributed according to Student(nu)
 */
-NumericalScalar DistFunc::rStudent(const NumericalScalar nu)
+Scalar DistFunc::rStudent(const Scalar nu)
 {
   return StudentFunctions::StudentRealization(nu);
 }
 
-Point DistFunc::rStudent(const NumericalScalar nu,
+Point DistFunc::rStudent(const Scalar nu,
                                   const UnsignedInteger size)
 {
   Point result(size);
@@ -1043,11 +1043,11 @@ Point DistFunc::rStudent(const NumericalScalar nu,
 }
 
 /* Compute the expectation of the min of n independent standard normal random variables. Usefull for the modified moment estimator of the LogNormal distribution. */
-NumericalScalar DistFunc::eZ1(const UnsignedInteger n)
+Scalar DistFunc::eZ1(const UnsignedInteger n)
 {
   if (!(n > 0)) throw InvalidArgumentException(HERE) << "Error: n must be strictly positive.";
 
-  static NumericalScalar nodes[128] = {9.8079096926749782026033390e-02, 2.9424096921218469797991561e-01, 4.9041387858718514746809250e-01, 6.8660518909321215660380258e-01, 8.8282227375329345793892660e-01, 1.0790725181825577535496122e+00, 1.2753633242167377696353796e+00, 1.4717021135638638145739759e+00,
+  static Scalar nodes[128] = {9.8079096926749782026033390e-02, 2.9424096921218469797991561e-01, 4.9041387858718514746809250e-01, 6.8660518909321215660380258e-01, 8.8282227375329345793892660e-01, 1.0790725181825577535496122e+00, 1.2753633242167377696353796e+00, 1.4717021135638638145739759e+00,
                                        1.6680963314844359561817086e+00, 1.8645534505054447383309383e+00, 2.0610809741737079558017920e+00, 2.2576864408541048712667240e+00, 2.4543774275784199432866622e+00, 2.6511615539506562785567740e+00, 2.8480464861148453552909053e+00, 3.0450399407915649134290777e+00,
                                        3.2421496893895821993047513e+00, 3.4393835621992660247489466e+00, 3.6367494526746595077587933e+00, 3.8342553218113771844054655e+00, 4.0319092026277868364264334e+00, 4.2297192047572594302912378e+00, 4.4276935191596217359545187e+00, 4.6258404229603273857896694e+00,
                                        4.8241682844262754351411023e+00, 5.0226855680876531919920886e+00, 5.2214008400156647181628365e+00, 5.4203227732665307412164732e+00, 5.6194601535027128016005275e+00, 5.8188218848029276413744931e+00, 6.0184169956731807988206196e+00, 6.2182546452717651529731537e+00,
@@ -1065,7 +1065,7 @@ NumericalScalar DistFunc::eZ1(const UnsignedInteger n)
                                        2.7601671075507827784986288e+01, 2.7996515289006133611177657e+01, 2.8410287565216026379953973e+01, 2.8847623300317097284912261e+01, 2.9315556495648897392258304e+01, 2.9825809458081402413142885e+01, 3.0401117779657764294819147e+01, 3.1100951037096511748801284e+01
                                       };
 
-  static NumericalScalar weights[128] = {7.7880553112849072198766294e-02, 7.4943512919414536910806816e-02, 6.9397141749149403969696237e-02, 6.1836746879648318333389484e-02, 5.3020239572973708333178304e-02, 4.3743820721247411296800373e-02, 3.4726352391828770445416924e-02, 2.6524913163345550162895103e-02,
+  static Scalar weights[128] = {7.7880553112849072198766294e-02, 7.4943512919414536910806816e-02, 6.9397141749149403969696237e-02, 6.1836746879648318333389484e-02, 5.3020239572973708333178304e-02, 4.3743820721247411296800373e-02, 3.4726352391828770445416924e-02, 2.6524913163345550162895103e-02,
                                          1.9493216056892157244261750e-02, 1.3782486012401120501189296e-02, 9.3748300171492664629503913e-03, 6.1343092263553692729419654e-03, 3.8610584455446167914723509e-03, 2.3375177719222513086212317e-03, 1.3610623554229154160050607e-03, 7.6214868374154758836225128e-04,
                                          4.1039424914329114912560963e-04, 2.1248156236438935169486303e-04, 1.0576827089812413493907134e-04, 5.0612366034536501431668631e-05, 2.3279572286335517177399318e-05, 1.0291000375452160655354603e-05, 4.3716822258132265765633340e-06, 1.7843872447157496838756722e-06,
                                          6.9970863752445993319645415e-07, 2.6355296294457982485801659e-07, 9.5339500076719088603559665e-08, 3.3117736286643680141438096e-08, 1.1044763292458927772742952e-08, 3.5357534962409985484084265e-09, 1.0863147662329805097318140e-09, 3.2025234569583239758235623e-10,
@@ -1083,9 +1083,9 @@ NumericalScalar DistFunc::eZ1(const UnsignedInteger n)
                                          5.6754752717640951349146435e-167, 1.0136208941909344983031939e-171, 9.1144573618340727008462260e-177, 3.5359397081504360617642767e-182, 4.6913583190766486697804951e-188, 1.4509334500270392274530570e-194, 5.0208177568884358829526795e-202, 2.9540145871800834681710394e-211
                                         };
 
-  NumericalScalar value = 0.0;
+  Scalar value = 0.0;
   // Least square approximation of eZ1
-  const NumericalScalar z0 = -1.5270815222604243733 - 0.25091814704012410653 * std::log(static_cast<double>(n));
+  const Scalar z0 = -1.5270815222604243733 - 0.25091814704012410653 * std::log(static_cast<double>(n));
   for (UnsignedInteger i = 0; i < 128; ++i)
     value += weights[i] * ((z0 + nodes[i]) * std::exp(-z0 * nodes[i]) * std::pow(pNormal(z0 + nodes[i], true), static_cast<int>(n - 1)) + (z0 - nodes[i]) * std::exp(z0 * nodes[i]) * std::pow(pNormal(z0 - nodes[i], true), static_cast<int>(n - 1)));
   return n * exp(-0.5 * z0 * z0) * value;
@@ -1095,16 +1095,16 @@ NumericalScalar DistFunc::eZ1(const UnsignedInteger n)
 /* Dickey Fuller asymptotic table
    The use of such table allow to make a linear approximation
 */
-NumericalScalar DistFunc::pDickeyFullerTrend(const NumericalScalar x,
+Scalar DistFunc::pDickeyFullerTrend(const Scalar x,
     const Bool tail)
 {
   // Quantiles and values available
-  const NumericalScalar q001 = -3.96;
-  const NumericalScalar q005 = -3.41;
-  const NumericalScalar q010 = -3.13;
-  const NumericalScalar p001 = 0.01;
-  const NumericalScalar p005 = 0.05;
-  const NumericalScalar p010 = 0.10;
+  const Scalar q001 = -3.96;
+  const Scalar q005 = -3.41;
+  const Scalar q010 = -3.13;
+  const Scalar p001 = 0.01;
+  const Scalar p005 = 0.05;
+  const Scalar p010 = 0.10;
   if (x < q001)
   {
     LOGWARN(OSS() <<  "Warning! Result p-value is missing. The return result is the 0.01 quantile level ");
@@ -1116,8 +1116,8 @@ NumericalScalar DistFunc::pDickeyFullerTrend(const NumericalScalar x,
     // Linear approach
     // quantileFunction(q) = a * q + b
     // We use information available : quantile values for levels 0.01 and 0.05
-    const NumericalScalar a = (p005 - p001) / (q005 - q001);
-    const NumericalScalar b = p001 - a * q001;
+    const Scalar a = (p005 - p001) / (q005 - q001);
+    const Scalar b = p001 - a * q001;
     return (a * x + b);
   }
 
@@ -1126,8 +1126,8 @@ NumericalScalar DistFunc::pDickeyFullerTrend(const NumericalScalar x,
     // Linear approach using the same approach
     // quantileFunction(q) = a * q + b
     // We use information available : quantile values for levels 0.05 and 0.10
-    const NumericalScalar a = (p010 - p005) / (q010 - q005);
-    const NumericalScalar b = p005 - a * q005;
+    const Scalar a = (p010 - p005) / (q010 - q005);
+    const Scalar b = p005 - a * q005;
     return (a * x + b);
   }
 
@@ -1136,16 +1136,16 @@ NumericalScalar DistFunc::pDickeyFullerTrend(const NumericalScalar x,
   return p010;
 }
 
-NumericalScalar DistFunc::pDickeyFullerConstant(const NumericalScalar x,
+Scalar DistFunc::pDickeyFullerConstant(const Scalar x,
     const Bool tail)
 {
   // Quantiles and values available
-  const NumericalScalar q001 = -3.43;
-  const NumericalScalar q005 = -2.86;
-  const NumericalScalar q010 = -2.57;
-  const NumericalScalar p001 = 0.01;
-  const NumericalScalar p005 = 0.05;
-  const NumericalScalar p010 = 0.10;
+  const Scalar q001 = -3.43;
+  const Scalar q005 = -2.86;
+  const Scalar q010 = -2.57;
+  const Scalar p001 = 0.01;
+  const Scalar p005 = 0.05;
+  const Scalar p010 = 0.10;
   if (x < q001)
   {
     LOGWARN(OSS() <<  "Warning! Result p-value is missing. The return result is the 0.01 quantile level ");
@@ -1157,8 +1157,8 @@ NumericalScalar DistFunc::pDickeyFullerConstant(const NumericalScalar x,
     // Linear approach
     // quantileFunction(q) = a * q + b
     // We use information available : quantile values for levels 0.01 and 0.05
-    const NumericalScalar a = (p005 - p001) / (q005 - q001);
-    const NumericalScalar b = p001 - a * q001;
+    const Scalar a = (p005 - p001) / (q005 - q001);
+    const Scalar b = p001 - a * q001;
     return (a * x + b);
   }
 
@@ -1167,24 +1167,24 @@ NumericalScalar DistFunc::pDickeyFullerConstant(const NumericalScalar x,
     // Linear approach using the same approach
     // quantileFunction(q) = a * q + b
     // We use information available : quantile values for levels 0.05 and 0.10
-    const NumericalScalar a = (p010 - p005) / (q010 - q005);
-    const NumericalScalar b = p005 - a * q005;
+    const Scalar a = (p010 - p005) / (q010 - q005);
+    const Scalar b = p005 - a * q005;
     return (a * x + b);
   }
   LOGWARN(OSS() <<  "Warning! Result p-value is missing. The return result is the 0.10 quantile levels ");
   return p010;
 }
 
-NumericalScalar DistFunc::pDickeyFullerNoConstant(const NumericalScalar x,
+Scalar DistFunc::pDickeyFullerNoConstant(const Scalar x,
     const Bool tail)
 {
   // Quantiles and values available
-  const NumericalScalar q001 = -2.57;
-  const NumericalScalar q005 = -1.94;
-  const NumericalScalar q010 = -1.62;
-  const NumericalScalar p001 = 0.01;
-  const NumericalScalar p005 = 0.05;
-  const NumericalScalar p010 = 0.10;
+  const Scalar q001 = -2.57;
+  const Scalar q005 = -1.94;
+  const Scalar q010 = -1.62;
+  const Scalar p001 = 0.01;
+  const Scalar p005 = 0.05;
+  const Scalar p010 = 0.10;
   if (x < q001)
   {
     LOGWARN(OSS() <<  "Warning! Result p-value is missing. The return result is the 0.01 quantile level ");
@@ -1196,8 +1196,8 @@ NumericalScalar DistFunc::pDickeyFullerNoConstant(const NumericalScalar x,
     // Linear approach
     // quantileFunction(q) = a * q + b
     // We use information available : quantile values for levels 0.01 and 0.05
-    const NumericalScalar a = (p005 - p001) / (q005 - q001);
-    const NumericalScalar b = p001 - a * q001;
+    const Scalar a = (p005 - p001) / (q005 - q001);
+    const Scalar b = p001 - a * q001;
     return (a * x + b);
   }
 
@@ -1206,8 +1206,8 @@ NumericalScalar DistFunc::pDickeyFullerNoConstant(const NumericalScalar x,
     // Linear approach using the same approach
     // quantileFunction(q) = a * q + b
     // We use information available : quantile values for levels 0.05 and 0.10
-    const NumericalScalar a = (p010 - p005) / (q010 - q005);
-    const NumericalScalar b = p005 - a * q005;
+    const Scalar a = (p010 - p005) / (q010 - q005);
+    const Scalar b = p005 - a * q005;
     return (a * x + b);
   }
 
@@ -1222,14 +1222,14 @@ NumericalScalar DistFunc::pDickeyFullerNoConstant(const NumericalScalar x,
 // if the quantile level is between 0.01 and 0.05, we use a linear interpolation
 // The same result is done if the level seeked is between 0.05 and 0.10
 // Finally if the leval is upper than 0.10 we return the 0.10-quantile value with a warning message
-NumericalScalar DistFunc::qDickeyFullerTrend(const NumericalScalar p,
+Scalar DistFunc::qDickeyFullerTrend(const Scalar p,
     const Bool tail)
 {
   // Asymptotic distribution
   // quantile values for levels 0.01, 0.05 and 0.10
-  const NumericalScalar x001 = -4.96;
-  const NumericalScalar x005 = -3.41;
-  const NumericalScalar x010 = -3.13;
+  const Scalar x001 = -4.96;
+  const Scalar x005 = -3.41;
+  const Scalar x010 = -3.13;
   if (p < 0.01)
   {
     LOGWARN(OSS() <<  "Warning! Result quantile value is missing. The return result is for level 0.01 ");
@@ -1241,8 +1241,8 @@ NumericalScalar DistFunc::qDickeyFullerTrend(const NumericalScalar p,
     // Linear approach
     // quantileFunction(p) = a * p + b
     // We use information available : quantile values for levels 0.01 and 0.05
-    const NumericalScalar a = (x005 - x001) / (0.05 - 0.01);
-    const NumericalScalar b = x001 - a * 0.01;
+    const Scalar a = (x005 - x001) / (0.05 - 0.01);
+    const Scalar b = x001 - a * 0.01;
     return (a * p + b);
   }
 
@@ -1251,8 +1251,8 @@ NumericalScalar DistFunc::qDickeyFullerTrend(const NumericalScalar p,
     // Linear approach using the same approach
     // quantileFunction(p) = a * p + b
     // We use information available : quantile values for levels 0.05 and 0.10
-    const NumericalScalar a = (x010 - x005) / (0.10 - 0.05);
-    const NumericalScalar b = x005 - a * 0.05;
+    const Scalar a = (x010 - x005) / (0.10 - 0.05);
+    const Scalar b = x005 - a * 0.05;
     return (a * p + b);
   }
 
@@ -1262,17 +1262,17 @@ NumericalScalar DistFunc::qDickeyFullerTrend(const NumericalScalar p,
     LOGWARN(OSS() <<  "Warning! Result quantile value is missing. The return result is for level 0.10 ");
     return x010;
   }
-  throw NotYetImplementedException(HERE) << "In DistFunc::pDickeyFullerNoConstant(const NumericalScalar x, const Bool tail): cannot give quantile value for the level " << p << ". Value is missing in table";
+  throw NotYetImplementedException(HERE) << "In DistFunc::pDickeyFullerNoConstant(const Scalar x, const Bool tail): cannot give quantile value for the level " << p << ". Value is missing in table";
 }
 
-NumericalScalar DistFunc::qDickeyFullerConstant(const NumericalScalar p,
+Scalar DistFunc::qDickeyFullerConstant(const Scalar p,
     const Bool tail)
 {
   // Asymptotic distribution
   // quantile values for levels 0.01, 0.05 and 0.10
-  const NumericalScalar x001 = -3.43;
-  const NumericalScalar x005 = -2.86;
-  const NumericalScalar x010 = -2.57;
+  const Scalar x001 = -3.43;
+  const Scalar x005 = -2.86;
+  const Scalar x010 = -2.57;
   if (p < 0.01)
   {
     LOGWARN(OSS() <<  "Warning! Result quantile value is missing. The return result is for level 0.01 ");
@@ -1284,8 +1284,8 @@ NumericalScalar DistFunc::qDickeyFullerConstant(const NumericalScalar p,
     // Linear approach
     // quantileFunction(p) = a * p + b
     // We use information available : quantile values for levels 0.01 and 0.05
-    const NumericalScalar a = (x005 - x001) / (0.05 - 0.01);
-    const NumericalScalar b = x001 - a * 0.01;
+    const Scalar a = (x005 - x001) / (0.05 - 0.01);
+    const Scalar b = x001 - a * 0.01;
     return (a * p + b);
   }
 
@@ -1294,8 +1294,8 @@ NumericalScalar DistFunc::qDickeyFullerConstant(const NumericalScalar p,
     // Linear approach using the same approach
     // quantileFunction(p) = a * p + b
     // We use information available : quantile values for levels 0.05 and 0.10
-    const NumericalScalar a = (x010 - x005) / (0.10 - 0.05);
-    const NumericalScalar b = x005 - a * 0.05;
+    const Scalar a = (x010 - x005) / (0.10 - 0.05);
+    const Scalar b = x005 - a * 0.05;
     return (a * p + b);
   }
 
@@ -1306,17 +1306,17 @@ NumericalScalar DistFunc::qDickeyFullerConstant(const NumericalScalar p,
     return x010;
   }
 
-  throw NotYetImplementedException(HERE) << "In DistFunc::qDickeyFullerConstant(const NumericalScalar p, const Bool tail): cannot give quantile value for the level " << p << ". Value is missing in table";
+  throw NotYetImplementedException(HERE) << "In DistFunc::qDickeyFullerConstant(const Scalar p, const Bool tail): cannot give quantile value for the level " << p << ". Value is missing in table";
 }
 
-NumericalScalar DistFunc::qDickeyFullerNoConstant(const NumericalScalar p,
+Scalar DistFunc::qDickeyFullerNoConstant(const Scalar p,
     const Bool tail)
 {
   // Asymptotic distribution
   // quantile values for levels 0.01, 0.05 and 0.10
-  const NumericalScalar x001 = -2.57;
-  const NumericalScalar x005 = -1.94;
-  const NumericalScalar x010 = -1.62;
+  const Scalar x001 = -2.57;
+  const Scalar x005 = -1.94;
+  const Scalar x010 = -1.62;
   if (p < 0.01)
   {
     LOGWARN(OSS() <<  "Warning! Result quantile value is missing. The return result is for level 0.01 ");
@@ -1328,8 +1328,8 @@ NumericalScalar DistFunc::qDickeyFullerNoConstant(const NumericalScalar p,
     // Linear approach
     // quantileFunction(p) = a * p + b
     // We use information available : quantile values for levels 0.01 and 0.05
-    const NumericalScalar a = (x005 - x001) / (0.05 - 0.01);
-    const NumericalScalar b = x001 - a * 0.01;
+    const Scalar a = (x005 - x001) / (0.05 - 0.01);
+    const Scalar b = x001 - a * 0.01;
     return (a * p + b);
   }
 
@@ -1338,8 +1338,8 @@ NumericalScalar DistFunc::qDickeyFullerNoConstant(const NumericalScalar p,
     // Linear approach using the same approach
     // quantileFunction(p) = a * p + b
     // We use information available : quantile values for levels 0.05 and 0.10
-    const NumericalScalar a = (x010 - x005) / (0.10 - 0.05);
-    const NumericalScalar b = x005 - a * 0.05;
+    const Scalar a = (x010 - x005) / (0.10 - 0.05);
+    const Scalar b = x005 - a * 0.05;
     return (a * p + b);
   }
 
@@ -1349,7 +1349,7 @@ NumericalScalar DistFunc::qDickeyFullerNoConstant(const NumericalScalar p,
     LOGWARN(OSS() <<  "Warning! Result quantile value is missing. The return result is for level 0.10 ");
     return x010;
   }
-  throw NotYetImplementedException(HERE) << "In DistFunc::qDickeyFullerNoConstant(const NumericalScalar p, const Bool tail): cannot give quantile value for the level " << p << ". Value is missing in table";
+  throw NotYetImplementedException(HERE) << "In DistFunc::qDickeyFullerNoConstant(const Scalar p, const Bool tail): cannot give quantile value for the level " << p << ". Value is missing in table";
 }
 
 Point DistFunc::rUniformTriangle(const Point & a,
@@ -1359,12 +1359,12 @@ Point DistFunc::rUniformTriangle(const Point & a,
   const UnsignedInteger dimension = a.getDimension();
   if (b.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the second point has a dimension=" << b.getDimension() << ", expected dimension=" << dimension;
   if (c.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the third point has a dimension=" << c.getDimension() << ", expected dimension=" << dimension;
-  const NumericalScalar u = RandomGenerator::Generate();
-  const NumericalScalar v = RandomGenerator::Generate();
-  const NumericalScalar sqrtU = std::sqrt(u);
-  NumericalScalar x = 1.0 - sqrtU;
-  NumericalScalar y = v * sqrtU;
-  NumericalScalar z = 1.0 - x - y;
+  const Scalar u = RandomGenerator::Generate();
+  const Scalar v = RandomGenerator::Generate();
+  const Scalar sqrtU = std::sqrt(u);
+  Scalar x = 1.0 - sqrtU;
+  Scalar y = v * sqrtU;
+  Scalar z = 1.0 - x - y;
   if (z < 0.0)
   {
     x = sqrtU;
@@ -1388,12 +1388,12 @@ Sample DistFunc::rUniformTriangle(const Point & a,
   Sample result(size, dimension);
   for (UnsignedInteger n = 0; n < size; ++n)
   {
-    const NumericalScalar u = RandomGenerator::Generate();
-    const NumericalScalar v = RandomGenerator::Generate();
-    const NumericalScalar sqrtU = std::sqrt(u);
-    NumericalScalar x = 1.0 - sqrtU;
-    NumericalScalar y = v * sqrtU;
-    NumericalScalar z = 1.0 - x - y;
+    const Scalar u = RandomGenerator::Generate();
+    const Scalar v = RandomGenerator::Generate();
+    const Scalar sqrtU = std::sqrt(u);
+    Scalar x = 1.0 - sqrtU;
+    Scalar y = v * sqrtU;
+    Scalar z = 1.0 - x - y;
     if (z < 0.0)
     {
       x = sqrtU;
@@ -1409,10 +1409,10 @@ Sample DistFunc::rUniformTriangle(const Point & a,
  * see Janiga, I. Miklos, R. "Statistical Tolerance Intervals for a Normal Distribution", Measurement Science Review, 2001.
  * Here we use \alpha instead of 1-\alpha wrt the reference
  */
-NumericalScalar DistFunc::kFactorPooled(const UnsignedInteger n,
+Scalar DistFunc::kFactorPooled(const UnsignedInteger n,
     const UnsignedInteger m,
-    const NumericalScalar p,
-    const NumericalScalar alpha)
+    const Scalar p,
+    const Scalar alpha)
 {
   if (!(n >= 2)) throw InvalidArgumentException(HERE) << "Error: the population size n must be at least 2";
   if (m == 0) throw InvalidArgumentException(HERE) << "Error: the number m of pooled populations must be positive";
@@ -1423,9 +1423,9 @@ NumericalScalar DistFunc::kFactorPooled(const UnsignedInteger n,
  * see Janiga, I. Miklos, R. "Statistical Tolerance Intervals for a Normal Distribution", Measurement Science Review, 2001.
  * Here we use \alpha instead of 1-\alpha wrt the reference
  */
-NumericalScalar DistFunc::kFactor(const UnsignedInteger n,
-    const NumericalScalar p,
-    const NumericalScalar alpha)
+Scalar DistFunc::kFactor(const UnsignedInteger n,
+    const Scalar p,
+    const Scalar alpha)
 {
   if (!(n >= 2)) throw InvalidArgumentException(HERE) << "Error: the population size n must be at least 2";
   return KFactorFunctions::KFactor(n, n - 1, p, 1.0 - alpha);

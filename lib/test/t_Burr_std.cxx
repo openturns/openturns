@@ -76,20 +76,20 @@ int main(int argc, char *argv[])
     fullprint << "Point= " << point << std::endl;
 
     // Show PDF and CDF of point
-    NumericalScalar eps = 1e-5;
+    Scalar eps = 1e-5;
     Point DDF = distribution.computeDDF( point );
     fullprint << "ddf     =" << DDF << std::endl;
     fullprint << "ddf (FD)=" << distribution.ContinuousDistribution::computeDDF(point) << std::endl;
-    NumericalScalar LPDF = distribution.computeLogPDF( point );
+    Scalar LPDF = distribution.computeLogPDF( point );
     fullprint << "log pdf=" << LPDF << std::endl;
-    NumericalScalar PDF = distribution.computePDF( point );
+    Scalar PDF = distribution.computePDF( point );
     fullprint << "pdf     =" << PDF << std::endl;
     fullprint << "pdf (FD)=" << (distribution.computeCDF( point + Point(1, eps) ) - distribution.computeCDF( point  + Point(1, -eps) )) / (2.0 * eps) << std::endl;
-    NumericalScalar CDF = distribution.computeCDF( point );
+    Scalar CDF = distribution.computeCDF( point );
     fullprint << "cdf=" << CDF << std::endl;
-    NumericalScalar CCDF = distribution.computeComplementaryCDF( point );
+    Scalar CCDF = distribution.computeComplementaryCDF( point );
     fullprint << "ccdf=" << CCDF << std::endl;
-    NumericalScalar Survival = distribution.computeSurvivalFunction( point );
+    Scalar Survival = distribution.computeSurvivalFunction( point );
     fullprint << "survival=" << Survival << std::endl;
     Point PDFgr = distribution.computePDFGradient( point );
     fullprint << "pdf gradient     =" << PDFgr << std::endl;

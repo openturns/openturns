@@ -41,7 +41,7 @@ public:
   Poisson();
 
   /** Parameters constructor */
-  explicit Poisson(const NumericalScalar lambda);
+  explicit Poisson(const Scalar lambda);
 
   /** Comparison operator */
   Bool operator ==(const Poisson & other) const;
@@ -65,13 +65,13 @@ public:
 
   /** Get the PDF of the distribution */
   using DiscreteDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using DiscreteDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
   using DiscreteDistribution::computeComplementaryCDF;
-  NumericalScalar computeComplementaryCDF(const Point & point) const;
+  Scalar computeComplementaryCDF(const Point & point) const;
 
   /** Get the PDFGradient of the distribution */
   using DiscreteDistribution::computePDFGradient;
@@ -82,8 +82,8 @@ public:
   Point computeCDFGradient(const Point & point) const;
 
   /** Compute the characteristic function, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
-  NumericalComplex computeLogCharacteristicFunction(const NumericalScalar x) const;
+  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
+  NumericalComplex computeLogCharacteristicFunction(const Scalar x) const;
 
   /** Compute the generating function, i.e. psi(z) = E(z^X) */
   NumericalComplex computeGeneratingFunction(const NumericalComplex & z) const;
@@ -112,8 +112,8 @@ public:
   /* Interface specific to Poisson */
 
   /** Lambda accessor */
-  void setLambda(const NumericalScalar lambda);
-  NumericalScalar getLambda() const;
+  void setLambda(const Scalar lambda);
+  Scalar getLambda() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -132,11 +132,11 @@ private:
   void computeCovariance() const;
 
   /** Get the quantile of the distribution */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+  Scalar computeScalarQuantile(const Scalar prob,
                                         const Bool tail = false) const;
 
   /** The Lambda of the Poisson distribution */
-  NumericalScalar lambda_;
+  Scalar lambda_;
 
 }; /* class Poisson */
 

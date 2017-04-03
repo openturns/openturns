@@ -48,7 +48,7 @@ Distribution FittingTest::BestModelBIC(const Sample & sample,
   if (size == 0) throw InternalException(HERE) << "Error: no model given";
   Bool builtAtLeastOne = false;
   Distribution bestDistribution;
-  NumericalScalar bestConcordanceMeasure = SpecFunc::MaxScalar;
+  Scalar bestConcordanceMeasure = SpecFunc::MaxScalar;
   Bool continuousCase = true;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -59,7 +59,7 @@ Distribution FittingTest::BestModelBIC(const Sample & sample,
       const Distribution distribution(factory.build(sample));
       if (i == 0) continuousCase = distribution.isContinuous();
       else if (distribution.isContinuous() != continuousCase) throw InvalidArgumentException(HERE) << "Error: cannot merge continuous and non-continuous models for BIC selection.";
-      const NumericalScalar concordanceMeasure = BIC(sample, distribution, distribution.getParameterDimension());
+      const Scalar concordanceMeasure = BIC(sample, distribution, distribution.getParameterDimension());
       LOGINFO(OSS(false) << "Resulting distribution=" << distribution << ", BIC=" << concordanceMeasure);
       if (concordanceMeasure < bestConcordanceMeasure)
       {
@@ -85,12 +85,12 @@ Distribution FittingTest::BestModelBIC(const Sample  & sample,
   const UnsignedInteger size = distributionCollection.getSize();
   if (size == 0) throw InternalException(HERE) << "Error: no model given";
   Distribution bestDistribution;
-  NumericalScalar bestConcordanceMeasure = SpecFunc::MaxScalar;
+  Scalar bestConcordanceMeasure = SpecFunc::MaxScalar;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Distribution distribution(distributionCollection[i]);
     LOGINFO(OSS(false) << "Testing distribution " << distribution);
-    const NumericalScalar concordanceMeasure = BIC(sample, distribution);
+    const Scalar concordanceMeasure = BIC(sample, distribution);
     LOGINFO(OSS(false) << "BIC=" << concordanceMeasure);
     if (concordanceMeasure < bestConcordanceMeasure)
     {
@@ -112,10 +112,10 @@ Distribution FittingTest::BestModelKolmogorov(const Sample & sample,
 {
   const UnsignedInteger size = factoryCollection.getSize();
   if (size == 0) throw InternalException(HERE) << "Error: no model given";
-  const NumericalScalar fakeLevel = 0.5;
+  const Scalar fakeLevel = 0.5;
   Bool builtAtLeastOne = false;
   Distribution bestDistribution;
-  NumericalScalar bestPValue = -1.0;
+  Scalar bestPValue = -1.0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const DistributionFactory factory(factoryCollection[i]);
@@ -151,7 +151,7 @@ Distribution FittingTest::BestModelKolmogorov(const Sample & sample,
   const UnsignedInteger size = distributionCollection.getSize();
   if (size == 0) throw InternalException(HERE) << "Error: no model given";
   Distribution bestDistribution;
-  NumericalScalar bestPValue = -1.0;
+  Scalar bestPValue = -1.0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Distribution distribution(distributionCollection[i]);
@@ -177,7 +177,7 @@ Distribution FittingTest::BestModelChiSquared(const Sample & sample,
 {
   const UnsignedInteger size = factoryCollection.getSize();
   if (size == 0) throw InternalException(HERE) << "Error: no model given";
-  const NumericalScalar fakeLevel = 0.5;
+  const Scalar fakeLevel = 0.5;
   Distribution bestDistribution(factoryCollection[0].build(sample));
   bestResult = ChiSquared(sample, bestDistribution, fakeLevel, bestDistribution.getParameterDimension());
   for (UnsignedInteger i = 1; i < size; ++i)
@@ -218,7 +218,7 @@ Distribution FittingTest::BestModelChiSquared(const Sample & sample,
 }
 
 /* Bayesian Information Criterion computation */
-NumericalScalar FittingTest::BIC(const Sample & sample,
+Scalar FittingTest::BIC(const Sample & sample,
                                  const Distribution & distribution,
                                  const UnsignedInteger estimatedParameters)
 {
@@ -227,7 +227,7 @@ NumericalScalar FittingTest::BIC(const Sample & sample,
   const UnsignedInteger size = sample.getSize();
   const UnsignedInteger parametersNumber = distribution.getParameterDimension();
   if (parametersNumber < estimatedParameters) throw InvalidArgumentException(HERE) << "Error: the number of estimated parameters cannot exceed the number of parameters of the distribution";
-  NumericalScalar logLikelihood = 0.0;
+  Scalar logLikelihood = 0.0;
   const Sample logPDF(distribution.computeLogPDF(sample));
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -238,7 +238,7 @@ NumericalScalar FittingTest::BIC(const Sample & sample,
 }
 
 /* Bayesian Information Criterion computation */
-NumericalScalar FittingTest::BIC(const Sample & sample,
+Scalar FittingTest::BIC(const Sample & sample,
                                  const DistributionFactory & factory)
 {
   const Distribution distribution(factory.build(sample));
@@ -249,7 +249,7 @@ NumericalScalar FittingTest::BIC(const Sample & sample,
 /* Kolmogorov test */
 TestResult FittingTest::Kolmogorov(const Sample & sample,
                                    const DistributionFactory & factory,
-                                   const NumericalScalar level)
+                                   const Scalar level)
 {
   if ((level <= 0.0) || (level >= 1.0)) throw InvalidArgumentException(HERE) << "Error: level must be in ]0, 1[, here level=" << level;
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: Kolmogorov test works only with 1D samples";
@@ -263,7 +263,7 @@ TestResult FittingTest::Kolmogorov(const Sample & sample,
 /* Kolmogorov test */
 TestResult FittingTest::Kolmogorov(const Sample & sample,
                                    const Distribution & distribution,
-                                   const NumericalScalar level,
+                                   const Scalar level,
                                    const UnsignedInteger estimatedParameters)
 {
   if ((level <= 0.0) || (level >= 1.0)) throw InvalidArgumentException(HERE) << "Error: level must be in ]0, 1[, here level=" << level;
@@ -273,14 +273,14 @@ TestResult FittingTest::Kolmogorov(const Sample & sample,
   if (distribution.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: Kolmogorov test works only with 1D distribution";
   if (estimatedParameters > 0) LOGINFO("Warning: using Kolmogorov test for a distribution with estimated parameters will result in an overestimated pValue");
   const UnsignedInteger size = sample.getSize();
-  NumericalScalar value = 0.0;
+  Scalar value = 0.0;
   const Sample cdfValues(distribution.computeCDF(sample.sort(0)));
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalScalar cdfValue = cdfValues[i][0];
-    value = std::max(value, std::max(std::abs(NumericalScalar(i) / size - cdfValue), std::abs(cdfValue - NumericalScalar(i + 1) / size)));
+    const Scalar cdfValue = cdfValues[i][0];
+    value = std::max(value, std::max(std::abs(Scalar(i) / size - cdfValue), std::abs(cdfValue - Scalar(i + 1) / size)));
   }
-  const NumericalScalar pValue = DistFunc::pKolmogorov(size, value, true);
+  const Scalar pValue = DistFunc::pKolmogorov(size, value, true);
   TestResult result(OSS(false) << "Kolmogorov" << distribution.getClassName(), (pValue > 1.0 - level), pValue, 1.0 - level);
   result.setDescription(Description(1, String(OSS() << distribution.__str__() << " vs sample " << sample.getName())));
   LOGDEBUG(OSS() << result);
@@ -290,7 +290,7 @@ TestResult FittingTest::Kolmogorov(const Sample & sample,
 /* Two-sample Kolmogorov–Smirnov test */
 TestResult FittingTest::TwoSamplesKolmogorov(const Sample & sample1,
     const Sample & sample2,
-    const NumericalScalar level)
+    const Scalar level)
 {
   if ((level <= 0.0) || (level >= 1.0)) throw InvalidArgumentException(HERE) << "Error: level must be in ]0, 1[, here level=" << level;
   if ((sample1.getDimension() != 1) || (sample2.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: Kolmogorov test works only with 1D samples";
@@ -299,11 +299,11 @@ TestResult FittingTest::TwoSamplesKolmogorov(const Sample & sample1,
   const UnsignedInteger size2 = sample2.getSize();
   Sample sampleAllSorted(sample1.sort());
   sampleAllSorted.add(sample2.sort());
-  NumericalScalar value = 0.0;
+  Scalar value = 0.0;
   for (UnsignedInteger i = 0; i < size1 + size2; ++ i)
   {
-    const NumericalScalar sampleAllSorted_i = sampleAllSorted[i][0];
-    NumericalScalar cdf1 = 0.0;
+    const Scalar sampleAllSorted_i = sampleAllSorted[i][0];
+    Scalar cdf1 = 0.0;
     for (UnsignedInteger j = 0; j < size1; ++ j)
     {
       if (sampleAllSorted[j][0] <= sampleAllSorted_i)
@@ -313,7 +313,7 @@ TestResult FittingTest::TwoSamplesKolmogorov(const Sample & sample1,
       else
         break;
     }
-    NumericalScalar cdf2 = 0.0;
+    Scalar cdf2 = 0.0;
     for (UnsignedInteger j = 0; j < size2; ++ j)
     {
       if (sampleAllSorted[size1 + j][0] <= sampleAllSorted_i)
@@ -325,7 +325,7 @@ TestResult FittingTest::TwoSamplesKolmogorov(const Sample & sample1,
     }
     value = std::max(value, std::abs(cdf1 - cdf2));
   }
-  const NumericalScalar pValue = DistFunc::pKolmogorov((size1 * size2) / (size1 + size2), value, true);
+  const Scalar pValue = DistFunc::pKolmogorov((size1 * size2) / (size1 + size2), value, true);
   TestResult result(OSS(false) << "Kolmogorov " << sample1.getName() << "/" << sample2.getName(), (pValue > 1.0 - level), pValue, 1.0 - level);
   result.setDescription(Description(1, String(OSS() << "sample" << sample1.getName() << " vs sample " << sample2.getName())));
   LOGDEBUG(OSS() << result);
@@ -335,7 +335,7 @@ TestResult FittingTest::TwoSamplesKolmogorov(const Sample & sample1,
 /* Chi-squared test */
 TestResult FittingTest::ChiSquared(const Sample & sample,
                                    const DistributionFactory & factory,
-                                   const NumericalScalar level)
+                                   const Scalar level)
 {
   if ((level <= 0.0) || (level >= 1.0)) throw InvalidArgumentException(HERE) << "Error: level must be in ]0, 1[, here level=" << level;
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: ChiSquared test works only with 1D samples";
@@ -350,7 +350,7 @@ TestResult FittingTest::ChiSquared(const Sample & sample,
 /* Chi-squared test */
 TestResult FittingTest::ChiSquared(const Sample & sample,
                                    const Distribution & distribution,
-                                   const NumericalScalar level,
+                                   const Scalar level,
                                    const UnsignedInteger estimatedParameters)
 {
   if ((level <= 0.0) || (level >= 1.0)) throw InvalidArgumentException(HERE) << "Error: level must be in ]0, 1[, here level=" << level;
@@ -363,14 +363,14 @@ TestResult FittingTest::ChiSquared(const Sample & sample,
   const UnsignedInteger size = sample.getSize();
   if (size < 2 * nMin) throw InvalidArgumentException(HERE) << "Error: ChiSquared test cannot be used with a sample size smaller than " << 2 * nMin << ". Reduce the value of \"FittingTest-ChiSquaredMinFrequency\" below " << size / 2 << " if you really want to do this test.";
   // The test statistics
-  NumericalScalar xi = 0.0;
+  Scalar xi = 0.0;
   // Sort the data
   const Sample sortedSample(sample.sort(0));
   const UnsignedInteger iMax = static_cast<UnsignedInteger>(round(size / nMin));
   UnsignedInteger dataIndex = 0;
   for (UnsignedInteger i = 1; i <= iMax; ++i)
   {
-    const NumericalScalar currentBound = distribution.computeQuantile(i / NumericalScalar(iMax))[0];
+    const Scalar currentBound = distribution.computeQuantile(i / Scalar(iMax))[0];
     UnsignedInteger count = 0;
     while (sample[dataIndex][0] <= currentBound)
     {
@@ -385,7 +385,7 @@ TestResult FittingTest::ChiSquared(const Sample & sample,
 /* Generic invocation of a R script for testing a distribution against a sample */
 TestResult FittingTest::RunRTest(const Sample & sample,
                                  const Distribution & distribution,
-                                 const NumericalScalar level,
+                                 const Scalar level,
                                  const UnsignedInteger estimatedParameters,
                                  const String & testName)
 {
@@ -412,7 +412,7 @@ TestResult FittingTest::RunRTest(const Sample & sample,
   const String RExecutable(ResourceMap::Get("R-executable-command"));
   OSS systemCommand;
   if (RExecutable != "") systemCommand << RExecutable << " --no-save --silent < \"" << commandFileName << "\"" << Os::GetDeleteCommandOutput();
-  else throw NotYetImplementedException(HERE) << "In FittingTest::RunRTest(const Sample & sample, const Distribution & distribution, const NumericalScalar level, const UnsignedInteger estimatedParameters, const String & testName): needs R. Please install it and set the absolute path of the R executable in ResourceMap.";
+  else throw NotYetImplementedException(HERE) << "In FittingTest::RunRTest(const Sample & sample, const Distribution & distribution, const Scalar level, const UnsignedInteger estimatedParameters, const String & testName): needs R. Please install it and set the absolute path of the R executable in ResourceMap.";
   const int returnCode(Os::ExecuteCommand(systemCommand));
   if (returnCode != 0) throw InternalException(HERE) << "Error: unable to execute the system command " << String(systemCommand) << " returned code is " << returnCode;
   // Parse result file
@@ -421,9 +421,9 @@ TestResult FittingTest::RunRTest(const Sample & sample,
   resultFile >> testType;
   Bool testResult;
   resultFile >> testResult;
-  NumericalScalar pThreshold = -1.0;
+  Scalar pThreshold = -1.0;
   resultFile >> pThreshold;
-  NumericalScalar pValue = -1.0;
+  Scalar pValue = -1.0;
   resultFile >> pValue;
 
   // Clean-up everything

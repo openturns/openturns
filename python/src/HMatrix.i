@@ -15,12 +15,12 @@ public:
     }
   }
 
-  virtual OT::NumericalScalar operator() (OT::UnsignedInteger i, OT::UnsignedInteger j) const
+  virtual OT::Scalar operator() (OT::UnsignedInteger i, OT::UnsignedInteger j) const
   {
     OT::ScopedPyObjectPointer index1(OT::convert< OT::UnsignedInteger, OT::_PyInt_ >(i));
     OT::ScopedPyObjectPointer index2(OT::convert< OT::UnsignedInteger, OT::_PyInt_ >(j));
     OT::ScopedPyObjectPointer result(PyObject_CallFunctionObjArgs(pyObj_, index1.get(), index2.get(), NULL));
-    OT::NumericalScalar value = OT::convert<OT::_PyFloat_, OT::NumericalScalar>(result.get());
+    OT::Scalar value = OT::convert<OT::_PyFloat_, OT::Scalar>(result.get());
     return value;
   }
 private:

@@ -87,7 +87,7 @@ Matrix ProductGradient::gradient(const Point & inP) const
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   ++callsNumber_;
-  const NumericalScalar leftValue = p_leftEvaluation_->operator()(inP)[0];
+  const Scalar leftValue = p_leftEvaluation_->operator()(inP)[0];
   const Point rightValue(p_rightEvaluation_->operator()(inP));
   const Matrix leftGradient(p_leftGradient_->gradient(inP));
   const Matrix rightGradient(p_rightGradient_->gradient(inP));

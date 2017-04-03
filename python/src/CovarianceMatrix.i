@@ -28,7 +28,7 @@ namespace OT {
 
 %include CovarianceMatrix_doc.i
 
-%apply const NumericalScalarCollection & { const OT::CovarianceMatrix::NumericalScalarCollection & };
+%apply const ScalarCollection & { const OT::CovarianceMatrix::ScalarCollection & };
 %template(CovarianceMatrixCollection) OT::Collection<OT::CovarianceMatrix>;
 %template(CovarianceMatrixPersistentCollection) OT::PersistentCollection<OT::CovarianceMatrix>;
 

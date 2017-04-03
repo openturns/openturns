@@ -42,8 +42,8 @@ public:
   Laplace();
 
   /** Parameters constructor */
-  explicit Laplace(const NumericalScalar lambda,
-                   const NumericalScalar mu = 0.0);
+  explicit Laplace(const Scalar lambda,
+                   const Scalar mu = 0.0);
 
   /** Comparison operator */
   Bool operator ==(const Laplace & other) const;
@@ -70,21 +70,21 @@ public:
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
   using ContinuousDistribution::computeLogPDF;
-  NumericalScalar computeLogPDF(const Point & point) const;
+  Scalar computeLogPDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the complementary CDF of the distribution */
   using ContinuousDistribution::computeComplementaryCDF;
-  NumericalScalar computeComplementaryCDF(const Point & point) const;
+  Scalar computeComplementaryCDF(const Point & point) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
-  NumericalComplex computeLogCharacteristicFunction(const NumericalScalar x) const;
+  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
+  NumericalComplex computeLogCharacteristicFunction(const Scalar x) const;
 
   /** Get the PDFGradient of the distribution */
   using ContinuousDistribution::computePDFGradient;
@@ -122,12 +122,12 @@ public:
   /* Interface specific to Laplace */
 
   /** Mu accessor */
-  void setMu(const NumericalScalar mu);
-  NumericalScalar getMu() const;
+  void setMu(const Scalar mu);
+  Scalar getMu() const;
 
   /** Lambda accessor */
-  void setLambda(const NumericalScalar lambda);
-  NumericalScalar getLambda() const;
+  void setLambda(const Scalar lambda);
+  Scalar getLambda() const;
 
   /** Get the PDF singularities inside of the range - 1D only */
   Point getSingularities() const;
@@ -150,14 +150,14 @@ private:
   void computeCovariance() const;
 
   /** Get the quantile of the distribution */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+  Scalar computeScalarQuantile(const Scalar prob,
                                         const Bool tail = false) const;
 
   /** The lambda of the Laplace distribution */
-  NumericalScalar lambda_;
+  Scalar lambda_;
 
   /** The mu of the Laplace distribution */
-  NumericalScalar mu_;
+  Scalar mu_;
 
 }; /* class Laplace */
 

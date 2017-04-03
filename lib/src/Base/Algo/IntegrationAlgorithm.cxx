@@ -66,7 +66,7 @@ Point IntegrationAlgorithm::integrate(const Function & function,
 
 Point IntegrationAlgorithm::integrate(const Function & function,
     const Interval & interval,
-    NumericalScalar & error) const
+    Scalar & error) const
 {
   return getImplementation()->integrate(function, interval, error);
 }

@@ -45,69 +45,69 @@ public:
   /** Independance ChiSquared test between 2 scalar samples for discrete distributions */
   static TestResult ChiSquared(const Sample & firstSample,
                                const Sample & secondSample,
-                               const NumericalScalar level = 0.95);
+                               const Scalar level = 0.95);
 
   /** Independence Pearson test between 2 samples which form a gaussian vector: test the linear relation */
   static TestResult Pearson(const Sample & firstSample,
                             const Sample & secondSample,
-                            const NumericalScalar level = 0.95);
+                            const Scalar level = 0.95);
 
   /** Smirnov test if two scalar samples (of sizes not necessarily equal) follow the same distribution (only for continuous distributions) */
   static TestResult Smirnov(const Sample & firstSample,
                             const Sample & secondSample,
-                            const NumericalScalar level = 0.95);
+                            const Scalar level = 0.95);
 
   /** Spearman test between 2 scalar samples : test the monotonous relation   */
   static TestResult Spearman(const Sample & firstSample,
                              const Sample & secondSample,
-                             const NumericalScalar level = 0.95);
+                             const Scalar level = 0.95);
 
 
   /** Independence Pearson test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numeriacl sample extracted from firstSample (ith coordinate of each point of the numerical sample), PartialPearson performs the Independence Pearson test simultaneously on firstSample[i] and secondSample, for i in the selection. For all i, it is supposed that the couple (firstSample[i] and secondSample) is issued from a gaussian  vector. */
   static TestResultCollection PartialPearson(const Sample & firstSample,
       const Sample & secondSample,
       const Indices & selection,
-      const NumericalScalar level = 0.95);
+      const Scalar level = 0.95);
 
   /** Regression test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), PartialRegression performs the Regression test simultaneously on all firstSample[i] and secondSample, for i in the selection. The Regression test tests ifthe regression model between two scalar numerical samples is significant. It is based on the deviation analysis of the regression. The Fisher distribution is used. */
   static TestResultCollection PartialRegression(const Sample & firstSample,
       const Sample & secondSample,
       const Indices & selection,
-      const NumericalScalar level = 0.95);
+      const Scalar level = 0.95);
 
   /** Spearman test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), PartialSpearman performs the Independence Spearman test simultaneously on firstSample[i] and secondSample, for i in the selection.  */
   static TestResultCollection PartialSpearman(const Sample & firstSample,
       const Sample & secondSample,
       const Indices & selection,
-      const NumericalScalar level = 0.95);
+      const Scalar level = 0.95);
 
   /** Independence Pearson test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), FullPearson performs the Independence Pearson test simultaneously on all firstSample[i] and secondSample. For all i, it is supposed that the couple (firstSample[i] and secondSample) is issued from a gaussian  vector. */
   static TestResultCollection FullPearson(const Sample & firstSample,
                                           const Sample & secondSample,
-                                          const NumericalScalar level = 0.95);
+                                          const Scalar level = 0.95);
 
   /** Regression test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), FullRegression performs the Regression test simultaneously on all firstSample[i] and secondSample. The Regression test tests ifthe regression model between two scalar numerical samples is significant. It is based on the deviation analysis of the regression. The Fisher distribution is used. */
   static TestResultCollection FullRegression(const Sample & firstSample,
       const Sample & secondSample,
-      const NumericalScalar level = 0.95);
+      const Scalar level = 0.95);
 
   /** Spearman test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), PartialSpearman performs the Independence Spearman test simultaneously on all firstSample[i] and secondSample. */
   static TestResultCollection FullSpearman(const Sample & firstSample,
       const Sample & secondSample,
-      const NumericalScalar level = 0.95);
+      const Scalar level = 0.95);
 
 protected:
   /** Generic invocation of a R script for executing a partial test between two samples */
   static TestResultCollection RunTwoSamplesASelectionRTest(const Sample & firstSample,
       const Sample & secondSample,
       const Indices & selection,
-      const NumericalScalar level,
+      const Scalar level,
       const String & testName);
 
   /** Generic invocation of a R script for executing a test between two 1D samples */
   static TestResult RunTwoSamplesRTest(const Sample & firstSample,
                                        const Sample & secondSample,
-                                       const NumericalScalar level,
+                                       const Scalar level,
                                        const String & testName);
   HypothesisTest();
 }; /* class HypothesisTest */

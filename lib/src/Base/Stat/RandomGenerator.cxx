@@ -87,7 +87,7 @@ RandomGeneratorState RandomGenerator::GetState()
 }
 
 /* Generate a pseudo-random number uniformly distributed over ]0, 1[ */
-NumericalScalar RandomGenerator::Generate()
+Scalar RandomGenerator::Generate()
 {
   if (!IsInitialized)
   {

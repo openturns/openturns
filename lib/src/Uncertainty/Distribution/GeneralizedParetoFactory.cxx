@@ -72,9 +72,9 @@ GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto(const Sampl
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a GeneralizedPareto distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a GeneralizedPareto distribution from an empty sample";
-  NumericalScalar xMin = sample.getMin()[0];
+  Scalar xMin = sample.getMin()[0];
   if (!(xMin > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot build a GeneralizedPareto distribution based on a sample with nonpositive values.";
-  NumericalScalar smallSize = ResourceMap::GetAsUnsignedInteger( "GeneralizedParetoFactory-SmallSize" );
+  Scalar smallSize = ResourceMap::GetAsUnsignedInteger( "GeneralizedParetoFactory-SmallSize" );
   // The strategy is to use the probability weighted moment method for small size and to switch to the maximum likelihood if the estimator is not defined. For large size, we only use the ML estimator.
   if (size <= smallSize)
   {
@@ -112,12 +112,12 @@ GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto() const
 /* Algorithm associated with the method of moments */
 GeneralizedPareto GeneralizedParetoFactory::buildMethodOfMoments(const Sample & sample) const
 {
-  const NumericalScalar mean = sample.computeMean()[0];
-  const NumericalScalar std = sample.computeStandardDeviationPerComponent()[0];
-  const NumericalScalar xi = 0.5 * (std::pow(mean / std, 2) - 1.0);
+  const Scalar mean = sample.computeMean()[0];
+  const Scalar std = sample.computeStandardDeviationPerComponent()[0];
+  const Scalar xi = 0.5 * (std::pow(mean / std, 2) - 1.0);
   // The moment estimator is valid only if the estimated xi parameter is greater than -1/4
   if (xi <= -0.25) throw InvalidArgumentException(HERE) << "Error: cannot estimate a GeneralizedPareto distribution with the method of moments when the estimated xi parameter=" << xi << " is less than -0.25";
-  const NumericalScalar sigma = 0.5 * mean * (std::pow(mean / std, 2) + 1.0);
+  const Scalar sigma = 0.5 * mean * (std::pow(mean / std, 2) + 1.0);
   GeneralizedPareto result(sigma, xi);
   result.setDescription(sample.getDescription());
   return result;
@@ -132,11 +132,11 @@ struct GeneralizedParetoFactoryParameterConstraint
   {
     const Sample sortedSample(sample.sort(0));
     sampleY_ = Sample(size_ - 2, 1);
-    const NumericalScalar xMin = sortedSample[0][0];
+    const Scalar xMin = sortedSample[0][0];
     for (UnsignedInteger j = 0; j < size_ - 2; ++j)
     {
-      const NumericalScalar xNm1mJ = sortedSample[size_ - 1 - j][0];
-      const NumericalScalar xNm2mJ = sortedSample[size_ - 2 - j][0];
+      const Scalar xNm1mJ = sortedSample[size_ - 1 - j][0];
+      const Scalar xNm2mJ = sortedSample[size_ - 2 - j][0];
       if ((xNm1mJ == xMin) || (xNm2mJ == xMin)) sampleY_[j][0] = (j + 1.0) * SpecFunc::LogMaxScalar;
       else sampleY_[j][0] = (j + 1.0) * std::log((xNm1mJ - xMin) / (xNm2mJ - xMin));
     }
@@ -144,25 +144,25 @@ struct GeneralizedParetoFactoryParameterConstraint
 
   Point computeConstraint(const Point & parameter) const
   {
-    const NumericalScalar gamma = parameter[0];
+    const Scalar gamma = parameter[0];
     // Separate the small gamma case for stability purpose
     if (std::abs(gamma) < 1.0e-4)
     {
-      NumericalScalar exponentialRegressionLogLikelihood = 0.0;
+      Scalar exponentialRegressionLogLikelihood = 0.0;
       for (UnsignedInteger j = 0; j < size_ - 2; ++j)
       {
-        const NumericalScalar logAlphaJ = std::log((j + 1.0) / size_);
-        const NumericalScalar gammaLogAlphaJ = gamma * logAlphaJ;
-        const NumericalScalar yLogAlphaJ = sampleY_[j][0] * logAlphaJ;
+        const Scalar logAlphaJ = std::log((j + 1.0) / size_);
+        const Scalar gammaLogAlphaJ = gamma * logAlphaJ;
+        const Scalar yLogAlphaJ = sampleY_[j][0] * logAlphaJ;
         exponentialRegressionLogLikelihood += std::log(-logAlphaJ) + yLogAlphaJ + 0.5 * gammaLogAlphaJ * (1.0 + yLogAlphaJ + gammaLogAlphaJ * (1.0 / 12.0 + yLogAlphaJ / 3.0 + gammaLogAlphaJ * yLogAlphaJ / 12.0));
       }
       return Point(1, -exponentialRegressionLogLikelihood);
     }
     // Large gamma case
-    NumericalScalar exponentialRegressionLogLikelihood = 0.0;
+    Scalar exponentialRegressionLogLikelihood = 0.0;
     for (UnsignedInteger j = 0; j < size_ - 2; ++j)
     {
-      const NumericalScalar alphaJ = (1.0 - std::pow((j + 1.0) / size_, gamma)) / gamma;
+      const Scalar alphaJ = (1.0 - std::pow((j + 1.0) / size_, gamma)) / gamma;
       exponentialRegressionLogLikelihood += std::log(alphaJ) - alphaJ * sampleY_[j][0];
     }
     return Point(1, -exponentialRegressionLogLikelihood);
@@ -196,16 +196,16 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(c
   solver_.run();
 
   // optimal point
-  const NumericalScalar xi = solver_.getResult().getOptimalPoint()[0];
+  const Scalar xi = solver_.getResult().getOptimalPoint()[0];
 
-  const NumericalScalar mean = sample.computeMean()[0];
+  const Scalar mean = sample.computeMean()[0];
   const Sample sortedSample(sample.sort(0));
   // Compute the first probability weighted moment
-  NumericalScalar m = 0.0;
+  Scalar m = 0.0;
   const UnsignedInteger size = sample.getSize();
   for (UnsignedInteger i = 0; i < size; ++i) m += (size - (i + 0.65)) * sortedSample[i][0];
   m /= size * size;
-  const NumericalScalar sigma = 2.0 * mean * m / (mean - 2.0 * m);
+  const Scalar sigma = 2.0 * mean * m / (mean - 2.0 * m);
   GeneralizedPareto result(sigma, xi);
   result.setDescription(sample.getDescription());
   return result;
@@ -214,16 +214,16 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(c
 /* Algorithm associated with the method of modified moments */
 GeneralizedPareto GeneralizedParetoFactory::buildMethodOfProbabilityWeightedMoments(const Sample & sample) const
 {
-  const NumericalScalar mean = sample.computeMean()[0];
+  const Scalar mean = sample.computeMean()[0];
   const Sample sortedSample(sample.sort(0));
   // Compute the first probability weighted moment
-  NumericalScalar m = 0.0;
+  Scalar m = 0.0;
   const UnsignedInteger size = sample.getSize();
   for (UnsignedInteger i = 0; i < size; ++i) m += (size - (i + 0.65)) * sortedSample[i][0];
   m /= size * size;
-  const NumericalScalar xi = mean / (mean - 2.0 * m) - 2.0;
+  const Scalar xi = mean / (mean - 2.0 * m) - 2.0;
   if (xi <= -0.5) throw InvalidArgumentException(HERE) << "Error: cannot estimate a GeneralizedPareto distribution with the method of probability weighted moments when the estimated xi parameter=" << xi << " is less than -0.5";
-  const NumericalScalar sigma = 2.0 * mean * m / (mean - 2.0 * m);
+  const Scalar sigma = 2.0 * mean * m / (mean - 2.0 * m);
   GeneralizedPareto result(sigma, xi);
   result.setDescription(sample.getDescription());
   return result;

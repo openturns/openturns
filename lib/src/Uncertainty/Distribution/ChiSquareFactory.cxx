@@ -67,7 +67,7 @@ ChiSquare ChiSquareFactory::buildAsChiSquare(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a ChiSquare distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a ChiSquare distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
-  const NumericalScalar mean = sample.computeMean()[0];
+  const Scalar mean = sample.computeMean()[0];
   ChiSquare result(mean);
   result.setDescription(sample.getDescription());
   return result;

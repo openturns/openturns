@@ -52,7 +52,7 @@ public:
 
   /** Computation of the covariance function */
   using CovarianceModelImplementation::computeStandardRepresentative;
-  NumericalScalar computeStandardRepresentative(const Point & s,
+  Scalar computeStandardRepresentative(const Point & s,
       const Point & t) const;
 
   /** Gradient */

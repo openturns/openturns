@@ -874,9 +874,9 @@ String DrawableImplementation::ConvertFromRGBA(const UnsignedInteger red,
 }
 
 /* Convert an RGB triplet to a valid hexadecimal code */
-String DrawableImplementation::ConvertFromRGB(const NumericalScalar red,
-    const NumericalScalar green,
-    const NumericalScalar blue)
+String DrawableImplementation::ConvertFromRGB(const Scalar red,
+    const Scalar green,
+    const Scalar blue)
 {
   return ConvertFromRGB(static_cast<UnsignedInteger>(round(255 * red)),
                         static_cast<UnsignedInteger>(round(255 * green)),
@@ -884,10 +884,10 @@ String DrawableImplementation::ConvertFromRGB(const NumericalScalar red,
 }
 
 /* Convert an RGBA quadruplet to a valid hexadecimal code */
-String DrawableImplementation::ConvertFromRGBA(const NumericalScalar red,
-    const NumericalScalar green,
-    const NumericalScalar blue,
-    const NumericalScalar alpha)
+String DrawableImplementation::ConvertFromRGBA(const Scalar red,
+    const Scalar green,
+    const Scalar blue,
+    const Scalar alpha)
 {
   return ConvertFromRGBA(static_cast<UnsignedInteger>(round(255 * red)),
                          static_cast<UnsignedInteger>(round(255 * green)),
@@ -896,15 +896,15 @@ String DrawableImplementation::ConvertFromRGBA(const NumericalScalar red,
 }
 
 /* Convert an HSV triplet to a valid hexadecimal code */
-Point DrawableImplementation::ConvertFromHSVIntoRGB(const NumericalScalar hue,
-    const NumericalScalar saturation,
-    const NumericalScalar value)
+Point DrawableImplementation::ConvertFromHSVIntoRGB(const Scalar hue,
+    const Scalar saturation,
+    const Scalar value)
 {
   const UnsignedInteger i = static_cast<UnsignedInteger>(hue / 60.0) % 6;
-  const NumericalScalar f = hue / 60.0 - i;
-  const NumericalScalar l = value * (1.0 - saturation);
-  const NumericalScalar m = value * (1.0 - f * saturation);
-  const NumericalScalar n = value * (1.0 - (1.0 - f) * saturation);
+  const Scalar f = hue / 60.0 - i;
+  const Scalar l = value * (1.0 - saturation);
+  const Scalar m = value * (1.0 - f * saturation);
+  const Scalar n = value * (1.0 - (1.0 - f) * saturation);
   Point redGreenBlue(3);
   switch (i)
   {
@@ -945,19 +945,19 @@ Point DrawableImplementation::ConvertFromHSVIntoRGB(const NumericalScalar hue,
 }
 
 /* Convert an HSV triplet to a valid hexadecimal code */
-String DrawableImplementation::ConvertFromHSV(const NumericalScalar hue,
-    const NumericalScalar saturation,
-    const NumericalScalar value)
+String DrawableImplementation::ConvertFromHSV(const Scalar hue,
+    const Scalar saturation,
+    const Scalar value)
 {
   const Point redGreenBlue(ConvertFromHSVIntoRGB(hue, saturation, value));
   return ConvertFromRGB(redGreenBlue[0], redGreenBlue[1], redGreenBlue[2]);
 }
 
 /* Convert an HSVA quadruplet to a valid hexadecimal code */
-String DrawableImplementation::ConvertFromHSVA(const NumericalScalar hue,
-    const NumericalScalar saturation,
-    const NumericalScalar value,
-    const NumericalScalar alpha)
+String DrawableImplementation::ConvertFromHSVA(const Scalar hue,
+    const Scalar saturation,
+    const Scalar value,
+    const Scalar alpha)
 {
   const Point redGreenBlue(ConvertFromHSVIntoRGB(hue, saturation, value));
   return ConvertFromRGBA(redGreenBlue[0], redGreenBlue[1], redGreenBlue[2], alpha);
@@ -1299,12 +1299,12 @@ void DrawableImplementation::setCenter(const Point & center)
 }
 
 /* Accessor for radius */
-NumericalScalar DrawableImplementation::getRadius() const
+Scalar DrawableImplementation::getRadius() const
 {
   throw NotDefinedException(HERE) << "Error: no radius in " << getClassName();
 }
 
-void DrawableImplementation::setRadius(const NumericalScalar radius)
+void DrawableImplementation::setRadius(const Scalar radius)
 {
   throw NotDefinedException(HERE) << "Error: no radius in " << getClassName();
 }
@@ -1332,12 +1332,12 @@ void DrawableImplementation::setPalette(const Description & palette)
 }
 
 /* Accessor for origin */
-NumericalScalar DrawableImplementation::getOrigin() const
+Scalar DrawableImplementation::getOrigin() const
 {
   throw NotDefinedException(HERE) << "Error: no origin in " << getClassName();
 }
 
-void DrawableImplementation::setOrigin(const NumericalScalar origin)
+void DrawableImplementation::setOrigin(const Scalar origin)
 {
   throw NotDefinedException(HERE) << "Error: no origin in " << getClassName();
 }
@@ -1437,16 +1437,16 @@ Description DrawableImplementation::BuildDefaultPalette(const UnsignedInteger si
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the size must be > 0";
   Description palette(size);
   const UnsignedInteger divider = std::min(size + 1, static_cast< UnsignedInteger >(12));
-  const NumericalScalar multiplier = 360.0 / divider;
+  const Scalar multiplier = 360.0 / divider;
   const UnsignedInteger cycles = size / divider + 1;
   UnsignedInteger paletteIndex = 0;
   for (UnsignedInteger iCycle = 0; iCycle < cycles; ++iCycle)
   {
-    const NumericalScalar value = 1.0 - iCycle / static_cast< NumericalScalar >(cycles);
+    const Scalar value = 1.0 - iCycle / static_cast< Scalar >(cycles);
     const UnsignedInteger iHueMax = std::min(size - paletteIndex, static_cast< UnsignedInteger >(12));
     for (UnsignedInteger iHue = 0; iHue < iHueMax; ++iHue)
     {
-      const NumericalScalar hue = multiplier * iHue;
+      const Scalar hue = multiplier * iHue;
       palette[paletteIndex] = ConvertFromHSV(hue, 1.0, value);
       ++paletteIndex;
     }

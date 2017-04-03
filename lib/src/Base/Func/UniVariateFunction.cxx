@@ -68,26 +68,26 @@ String UniVariateFunction::__str__(const String & offset) const
 }
 
 /* UniVariateFunction are evaluated as functors */
-NumericalScalar UniVariateFunction::operator() (const NumericalScalar x) const
+Scalar UniVariateFunction::operator() (const Scalar x) const
 {
   return getImplementation()->operator()(x);
 }
 
 /* UniVariateFunctionImplementation gradient */
-NumericalScalar UniVariateFunction::gradient(const NumericalScalar x) const
+Scalar UniVariateFunction::gradient(const Scalar x) const
 {
   return getImplementation()->gradient(x);
 }
 
 /* UniVariateFunctionImplementation hessian */
-NumericalScalar UniVariateFunction::hessian(const NumericalScalar x) const
+Scalar UniVariateFunction::hessian(const Scalar x) const
 {
   return getImplementation()->hessian(x);
 }
 
 /* Method to draw the graph of the polynomial between given bounds */
-Graph UniVariateFunction::draw(const NumericalScalar xMin,
-                               const NumericalScalar xMax,
+Graph UniVariateFunction::draw(const Scalar xMin,
+                               const Scalar xMax,
                                const UnsignedInteger pointNumber) const
 {
   return getImplementation()->draw(xMin, xMax, pointNumber);

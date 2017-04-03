@@ -72,10 +72,10 @@ Dirichlet DirichletFactory::buildAsDirichlet(const Sample & sample) const
   Point sumX2(dimension, 0.0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    NumericalScalar sum = 0.0;
+    Scalar sum = 0.0;
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
-      const NumericalScalar xIJ = sample[i][j];
+      const Scalar xIJ = sample[i][j];
       if (!(xIJ > 0.0)) throw InvalidArgumentException(HERE) << "Error: the sample contains points not in the unit simplex: x=" << sample[i];
       sum += xIJ;
       meanLog[j] += std::log(xIJ);
@@ -90,23 +90,23 @@ Dirichlet DirichletFactory::buildAsDirichlet(const Sample & sample) const
   // Find the maximum likelihood estimate using a fixed-point strategy
   // First, compute a reasonable initial guess using moments
   Point theta(dimension + 1, 0.0);
-  NumericalScalar sumTheta = 0.0;
+  Scalar sumTheta = 0.0;
   // Estimate the sum of parameters
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const NumericalScalar sumXI = sumX[i];
-    const NumericalScalar sumX2I = sumX2[i];
-    const NumericalScalar numerator = sumXI - sumX2I;
-    const NumericalScalar denominator = sumX2I - sumXI * sumXI / size;
+    const Scalar sumXI = sumX[i];
+    const Scalar sumX2I = sumX2[i];
+    const Scalar numerator = sumXI - sumX2I;
+    const Scalar denominator = sumX2I - sumXI * sumXI / size;
     if (denominator == 0.0) throw InvalidArgumentException(HERE) << "Error: the component " << i << " of the sample is constant (equal to " << sumXI / size << "). Impossible to estimate a Dirichlet distribution.";
     sumTheta += numerator / denominator;
   }
   sumTheta /= dimension;
   // Estimate the parameters from the mean of the sample
-  NumericalScalar lastTheta = sumTheta;
+  Scalar lastTheta = sumTheta;
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const NumericalScalar thetaI = (sumX[i] / size) * sumTheta;
+    const Scalar thetaI = (sumX[i] / size) * sumTheta;
     // If the estimate is positive, use it, if not, use a default value of ResourceMap::GetAsScalar( "DirichletFactory-ParametersEpsilon" )
     theta[i] = (thetaI > 0.0 ? thetaI : ResourceMap::GetAsScalar( "DirichletFactory-ParametersEpsilon" ));
     lastTheta -= theta[i];
@@ -121,12 +121,12 @@ Dirichlet DirichletFactory::buildAsDirichlet(const Sample & sample) const
     ++iteration;
     sumTheta = 0.0;
     for (UnsignedInteger i = 0; i <= dimension; ++i) sumTheta += theta[i];
-    const NumericalScalar diGammaSumTheta = SpecFunc::DiGamma(sumTheta);
-    const NumericalScalar triGammaSumTheta = SpecFunc::TriGamma(sumTheta);
+    const Scalar diGammaSumTheta = SpecFunc::DiGamma(sumTheta);
+    const Scalar triGammaSumTheta = SpecFunc::TriGamma(sumTheta);
     Point g(dimension + 1);
     Point q(dimension + 1);
-    NumericalScalar numerator = 0.0;
-    NumericalScalar denominator = 0.0;
+    Scalar numerator = 0.0;
+    Scalar denominator = 0.0;
     for (UnsignedInteger i = 0; i <= dimension; ++i)
     {
       g[i] = meanLog[i] - SpecFunc::DiGamma(theta[i]) + diGammaSumTheta;
@@ -134,7 +134,7 @@ Dirichlet DirichletFactory::buildAsDirichlet(const Sample & sample) const
       numerator += g[i] / q[i];
       denominator += 1.0 / q[i];
     }
-    const NumericalScalar b = numerator / (1.0 / triGammaSumTheta + denominator);
+    const Scalar b = numerator / (1.0 / triGammaSumTheta + denominator);
     Point delta(dimension + 1);
     for (UnsignedInteger i = 0; i <= dimension; ++i) delta[i] = (g[i] - b) / q[i];
     // Newton update
@@ -148,11 +148,11 @@ Dirichlet DirichletFactory::buildAsDirichlet(const Sample & sample) const
     ++ iteration;
     sumTheta = 0.0;
     for (UnsignedInteger i = 0; i <= dimension; ++i) sumTheta += theta[i];
-    const NumericalScalar psiSumTheta = SpecFunc::DiGamma(sumTheta);
-    NumericalScalar delta = 0.0;
+    const Scalar psiSumTheta = SpecFunc::DiGamma(sumTheta);
+    Scalar delta = 0.0;
     for (UnsignedInteger i = 0; i <= dimension; ++i)
     {
-      const NumericalScalar thetaI = SpecFunc::DiGammaInv(psiSumTheta + meanLog[i]);
+      const Scalar thetaI = SpecFunc::DiGammaInv(psiSumTheta + meanLog[i]);
       delta += std::abs(theta[i] - thetaI);
       theta[i] = thetaI;
     }

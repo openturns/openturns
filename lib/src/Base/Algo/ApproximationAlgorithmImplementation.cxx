@@ -110,11 +110,11 @@ Sample ApproximationAlgorithmImplementation::getY() const
 void ApproximationAlgorithmImplementation::setWeight(const Point & weight)
 {
   const UnsignedInteger size = weight.getSize();
-  const NumericalScalar firstWeight = weight[0];
+  const Scalar firstWeight = weight[0];
   hasUniformWeight_ = true;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    const NumericalScalar wI = weight[i];
+    const Scalar wI = weight[i];
     if (!(wI > 0.0)) throw InvalidArgumentException(HERE) << "Error: can only use positive weight.";
     hasUniformWeight_ = hasUniformWeight_ && (wI == firstWeight);
   }
@@ -175,23 +175,23 @@ Point ApproximationAlgorithmImplementation::getCoefficients()
   return coefficients_;
 }
 
-void ApproximationAlgorithmImplementation::setResidual(const NumericalScalar residual)
+void ApproximationAlgorithmImplementation::setResidual(const Scalar residual)
 {
   residual_ = residual;
 }
 
-NumericalScalar ApproximationAlgorithmImplementation::getResidual()
+Scalar ApproximationAlgorithmImplementation::getResidual()
 {
   if (! isAlreadyComputedCoefficients_) run();
   return residual_;
 }
 
-void ApproximationAlgorithmImplementation::setRelativeError(const NumericalScalar relativeError)
+void ApproximationAlgorithmImplementation::setRelativeError(const Scalar relativeError)
 {
   relativeError_ = relativeError;
 }
 
-NumericalScalar ApproximationAlgorithmImplementation::getRelativeError()
+Scalar ApproximationAlgorithmImplementation::getRelativeError()
 {
   if (! isAlreadyComputedCoefficients_) run();
   return relativeError_;

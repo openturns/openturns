@@ -41,10 +41,10 @@ ComparisonOperatorImplementation * ComparisonOperatorImplementation::clone() con
 }
 
 /* Evaluation operator */
-Bool ComparisonOperatorImplementation::operator() (const NumericalScalar a,
-    const NumericalScalar b) const
+Bool ComparisonOperatorImplementation::operator() (const Scalar a,
+    const Scalar b) const
 {
-  throw NotYetImplementedException(HERE) << "In ComparisonOperatorImplementation::operator() (const NumericalScalar a, const NumericalScalar b) const";
+  throw NotYetImplementedException(HERE) << "In ComparisonOperatorImplementation::operator() (const Scalar a, const Scalar b) const";
 }
 
 /* String converter */

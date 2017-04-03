@@ -37,7 +37,7 @@ BlendedStep::BlendedStep()
 }
 
 /* Parameters constructor */
-BlendedStep::BlendedStep(const Point & epsilon, const NumericalScalar eta)
+BlendedStep::BlendedStep(const Point & epsilon, const Scalar eta)
   : FiniteDifferenceStepImplementation(epsilon)
 {
   setEta( Point( epsilon.getDimension(), eta ) );

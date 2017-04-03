@@ -158,7 +158,7 @@ Domain RandomVectorImplementation::getDomain() const
 }
 
 /* Fake method due to pbs with dynamic_cast and Pointer */
-NumericalScalar RandomVectorImplementation::getThreshold() const
+Scalar RandomVectorImplementation::getThreshold() const
 {
   throw NotYetImplementedException(HERE) << "In RandomVectorImplementation::getThreshold() const";
 }

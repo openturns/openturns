@@ -108,7 +108,7 @@ public:
   virtual Process getProcess() const;
 
   /** Fake method due to pbs with dynamic_cast and Pointer */
-  virtual NumericalScalar getThreshold() const;
+  virtual Scalar getThreshold() const;
 
   /** Description accessor */
   virtual void setDescription(const Description & description);

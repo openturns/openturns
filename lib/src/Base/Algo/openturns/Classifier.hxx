@@ -59,7 +59,7 @@ public:
   Indices classify(const Sample & inS) const;
 
   /** Grade a point as if it were associated to a class */
-  NumericalScalar grade(const Point & inP,
+  Scalar grade(const Point & inP,
                         UnsignedInteger outC) const;
   Point grade(const Sample & inS,
                        const Indices & outC) const;

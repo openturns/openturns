@@ -41,7 +41,7 @@ class OT_API HyperbolicAnisotropicEnumerateFunction
   CLASSNAME;
 public:
 
-  typedef std::pair< Indices , NumericalScalar > ValueType;
+  typedef std::pair< Indices , Scalar > ValueType;
   typedef std::list<ValueType>                   IndiceCache;
   typedef Collection<Indices>                    IndicesCollection;
 
@@ -50,11 +50,11 @@ public:
 
   /** Parameter constructor */
   HyperbolicAnisotropicEnumerateFunction(const UnsignedInteger dimension,
-                                         const NumericalScalar q = ResourceMap::GetAsScalar("HyperbolicAnisotropicEnumerateFunction-DefaultQ"));
+                                         const Scalar q = ResourceMap::GetAsScalar("HyperbolicAnisotropicEnumerateFunction-DefaultQ"));
 
   /** Parameter constructor */
   HyperbolicAnisotropicEnumerateFunction(const Point & weight,
-                                         const NumericalScalar q = ResourceMap::GetAsScalar("HyperbolicAnisotropicEnumerateFunction-DefaultQ"));
+                                         const Scalar q = ResourceMap::GetAsScalar("HyperbolicAnisotropicEnumerateFunction-DefaultQ"));
 
   /** Virtual constrcutor */
   virtual HyperbolicAnisotropicEnumerateFunction * clone() const;
@@ -78,8 +78,8 @@ public:
   virtual UnsignedInteger getMaximumDegreeStrataIndex(const UnsignedInteger maximumDegree) const;
 
   /** Q accessor */
-  void setQ(const NumericalScalar q);
-  NumericalScalar getQ() const;
+  void setQ(const Scalar q);
+  Scalar getQ() const;
 
   /** Weight accessor */
   void setWeight(const Point & weight);
@@ -96,7 +96,7 @@ protected:
   void initialize();
 
   /** Returns the q-norm of the indice set */
-  NumericalScalar qNorm(const Indices & indices) const;
+  Scalar qNorm(const Indices & indices) const;
 
   /** Returns the maximum degree of the indice set */
   UnsignedInteger computeDegree(const Indices & indices) const;
@@ -107,7 +107,7 @@ private:
   Point weight_;
 
   /** Q-Norm q term */
-  NumericalScalar q_;
+  Scalar q_;
 
   /** Cache of already generated indices */
   mutable IndiceCache candidates_;

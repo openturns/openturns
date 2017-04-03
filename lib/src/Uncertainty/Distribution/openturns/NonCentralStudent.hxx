@@ -39,9 +39,9 @@ public:
   typedef Pointer<DistributionImplementation> Implementation;
 
   /** Default constructor */
-  NonCentralStudent(const NumericalScalar nu = 5.0,
-                    const NumericalScalar delta = 0.0,
-                    const NumericalScalar gamma = 0.0);
+  NonCentralStudent(const Scalar nu = 5.0,
+                    const Scalar delta = 0.0,
+                    const Scalar gamma = 0.0);
 
   /** Comparison operator */
   Bool operator ==(const NonCentralStudent & other) const;
@@ -65,11 +65,11 @@ public:
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the PDFGradient of the distribution */
   using ContinuousDistribution::computePDFGradient;
@@ -102,16 +102,16 @@ public:
   Description getParameterDescription() const;
 
   /** Nu accessor */
-  void setNu(const NumericalScalar nu);
-  NumericalScalar getNu() const;
+  void setNu(const Scalar nu);
+  Scalar getNu() const;
 
   /** Delta accessor */
-  void setDelta(const NumericalScalar delta);
-  NumericalScalar getDelta() const;
+  void setDelta(const Scalar delta);
+  Scalar getDelta() const;
 
   /** Gamma accessor */
-  void setGamma(const NumericalScalar gamma);
-  NumericalScalar getGamma() const;
+  void setGamma(const Scalar gamma);
+  Scalar getGamma() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -132,13 +132,13 @@ private:
   void computeCovariance() const;
 
   /** Number of degrees of freedom */
-  NumericalScalar nu_;
+  Scalar nu_;
 
   /** Non-centrality parameter */
-  NumericalScalar delta_;
+  Scalar delta_;
 
   /** Location parameter */
-  NumericalScalar gamma_;
+  Scalar gamma_;
 
 }; /* class NonCentralStudent */
 

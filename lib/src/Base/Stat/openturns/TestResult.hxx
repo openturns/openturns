@@ -49,8 +49,8 @@ public:
   /** Parameters constructor */
   TestResult(const String & type,
              const Bool binMeasure,
-             const NumericalScalar pVal,
-             const NumericalScalar pThreshold);
+             const Scalar pVal,
+             const Scalar pThreshold);
 
 
   /** Virtual constructor */
@@ -65,8 +65,8 @@ public:
 
   /** Elements accessors */
   Bool getBinaryQualityMeasure() const;
-  NumericalScalar getPValue() const;
-  NumericalScalar getThreshold() const;
+  Scalar getPValue() const;
+  Scalar getThreshold() const;
   String getTestType() const;
 
   /** Comparison operator */
@@ -82,8 +82,8 @@ protected:
 
   String testType_;
   Bool binaryQualityMeasure_ ;
-  NumericalScalar pValueThreshold_ ;
-  NumericalScalar pValue_ ;
+  Scalar pValueThreshold_ ;
+  Scalar pValue_ ;
   Description description_;
 
 }

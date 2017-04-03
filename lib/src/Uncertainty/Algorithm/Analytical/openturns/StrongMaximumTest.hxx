@@ -47,15 +47,15 @@ public:
   /** Standard constructor */
   StrongMaximumTest(const StandardEvent & event,
                     const Point & standardSpaceDesignPoint,
-                    const NumericalScalar importanceLevel,
-                    const NumericalScalar accuracyLevel,
-                    const NumericalScalar confidenceLevel);
+                    const Scalar importanceLevel,
+                    const Scalar accuracyLevel,
+                    const Scalar confidenceLevel);
 
   /** Standard constructor */
   StrongMaximumTest(const StandardEvent & event,
                     const Point & standardSpaceDesignPoint,
-                    const NumericalScalar importanceLevel,
-                    const NumericalScalar accuracyLevel,
+                    const Scalar importanceLevel,
+                    const Scalar accuracyLevel,
                     const UnsignedInteger pointNumber);
 
 
@@ -69,22 +69,22 @@ public:
   StandardEvent getEvent() const;
 
   /** ImportanceLevel accessor */
-  NumericalScalar getImportanceLevel() const;
+  Scalar getImportanceLevel() const;
 
   /** AccuracyLevel accessor */
-  NumericalScalar getAccuracyLevel() const;
+  Scalar getAccuracyLevel() const;
 
   /** ConfidenceLevel accessor */
-  NumericalScalar getConfidenceLevel() const;
+  Scalar getConfidenceLevel() const;
 
   /** DesignPointVicinity accessor */
-  NumericalScalar  getDesignPointVicinity() const;
+  Scalar  getDesignPointVicinity() const;
 
   /** PointNumber accessor */
   UnsignedInteger getPointNumber() const;
 
   /** DeltaEpsilon accessor */
-  NumericalScalar getDeltaEpsilon() const;
+  Scalar getDeltaEpsilon() const;
 
   /** The function that runs the Strong Max Test */
   void run();
@@ -127,22 +127,22 @@ protected:
 private:
 
   /** AccuracyLevel accessor */
-  void setAccuracyLevel(const NumericalScalar accuracyLevel);
+  void setAccuracyLevel(const Scalar accuracyLevel);
 
   /** ConfidenceLevel accessor */
-  void setConfidenceLevel( const NumericalScalar confidenceLevel);
+  void setConfidenceLevel( const Scalar confidenceLevel);
 
   /** PointNumber accessor */
   void setPointNumber(const UnsignedInteger pointNumber);
 
   /** ImportanceLevel accessor */
-  void setImportanceLevel(const NumericalScalar importanceLevel);
+  void setImportanceLevel(const Scalar importanceLevel);
 
   /** standardSpaceDesignPoint accessor */
   void setStandardSpaceDesignPoint(const Point & standardSpaceDesignPoint );
 
   /** DesignPointVicinity accessor */
-  void setDesignPointVicinity(const NumericalScalar designPointVicinity);
+  void setDesignPointVicinity(const Scalar designPointVicinity);
 
   /** Event accessor */
   void setEvent(const StandardEvent & event);
@@ -155,27 +155,27 @@ private:
 
 
   /** the function that samples the sphere (radius) with N points */
-  Sample sampleSphere(const NumericalScalar radius,
+  Sample sampleSphere(const Scalar radius,
                                const UnsignedInteger dimension,
                                const UnsignedInteger pointNumber) const;
 
   /**  the function that evaluates the HyperSphereSurfaceRatio (see documentation) */
-  NumericalScalar computeHyperSphereSurfaceRatio();
+  Scalar computeHyperSphereSurfaceRatio();
 
   /**  the function that evaluates delta_epsilon (see documentation) */
-  NumericalScalar computeDeltaEpsilon();
+  Scalar computeDeltaEpsilon();
 
   /** the function that evaluates if a point is in the vicinity of the design point */
   Bool isInTheVicinityOfTheDesignPoint(const Point & numericalPoint);
 
   StandardEvent event_;
   Point standardSpaceDesignPoint_;
-  NumericalScalar importanceLevel_;
-  NumericalScalar accuracyLevel_;
-  NumericalScalar confidenceLevel_;
-  NumericalScalar designPointVicinity_; // cosinus of the cone around the standard design point
+  Scalar importanceLevel_;
+  Scalar accuracyLevel_;
+  Scalar confidenceLevel_;
+  Scalar designPointVicinity_; // cosinus of the cone around the standard design point
   UnsignedInteger pointNumber_;
-  NumericalScalar deltaEpsilon_;
+  Scalar deltaEpsilon_;
   Sample nearDesignPointVerifyingEventPoints_;
   Sample nearDesignPointVerifyingEventValues_;
   Sample farDesignPointVerifyingEventPoints_;

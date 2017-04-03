@@ -72,7 +72,7 @@ public:
   Point getGramInverseDiag() const;
   Point getHDiag() const;
 
-  NumericalScalar getGramInverseTrace() const;
+  Scalar getGramInverseTrace() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

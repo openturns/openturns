@@ -41,8 +41,8 @@ public:
 
   /** Draw the empirical CDF of the Sample when its dimension is 1 */
   static Graph DrawEmpiricalCDF(const Sample & sample,
-                                const NumericalScalar xMin,
-                                const NumericalScalar xMax);
+                                const Scalar xMin,
+                                const Scalar xMax);
 
   /** Draw the Histogram of the Sample when its dimension is 1 */
   static Graph DrawHistogram(const Sample & sample,
@@ -89,8 +89,8 @@ public:
   /** Draw the CobWeb visual test */
   static Graph DrawCobWeb(const Sample & inputSample,
                           const Sample & outputSample,
-                          const NumericalScalar minValue,
-                          const NumericalScalar maxValue,
+                          const Scalar minValue,
+                          const Scalar maxValue,
                           const String & color,
                           const Bool quantileScale = true);
 

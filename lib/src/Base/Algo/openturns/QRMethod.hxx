@@ -63,7 +63,7 @@ public:
   Point getGramInverseDiag() const;
   Point getHDiag() const;
 
-  NumericalScalar getGramInverseTrace() const;
+  Scalar getGramInverseTrace() const;
 
   /** Update */
   void update(const Indices & addedIndices,

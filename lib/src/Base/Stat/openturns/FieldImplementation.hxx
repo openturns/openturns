@@ -63,8 +63,8 @@ public:
                                  const Point & val);
 
   /** Accessor to values */
-  Point getValueAtNearestTime(const NumericalScalar timestamp) const;
-  void setValueAtNearestTime(const NumericalScalar timestamp,
+  Point getValueAtNearestTime(const Scalar timestamp) const;
+  void setValueAtNearestTime(const Scalar timestamp,
                              const Point & val);
 
   /** Virtual constructor */
@@ -114,13 +114,13 @@ public:
   NSI_const_point operator[](const UnsignedInteger index) const;
   NSI_point at(const UnsignedInteger index);
   NSI_const_point at(const UnsignedInteger index) const;
-  NumericalScalar & operator() (const UnsignedInteger i,
+  Scalar & operator() (const UnsignedInteger i,
                                 const UnsignedInteger j);
-  const NumericalScalar & operator() (const UnsignedInteger i,
+  const Scalar & operator() (const UnsignedInteger i,
                                       const UnsignedInteger j) const;
-  NumericalScalar & at(const UnsignedInteger i,
+  Scalar & at(const UnsignedInteger i,
                        const UnsignedInteger j);
-  const NumericalScalar & at(const UnsignedInteger i,
+  const Scalar & at(const UnsignedInteger i,
                              const UnsignedInteger j) const;
 #endif
 

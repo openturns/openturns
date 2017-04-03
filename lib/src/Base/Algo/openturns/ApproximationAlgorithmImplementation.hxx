@@ -87,9 +87,9 @@ public:
   Point getCoefficients();
 
   /** Accessor to the residual of the selected metamodel on the provided basis */
-  NumericalScalar getResidual();
+  Scalar getResidual();
 
-  NumericalScalar getRelativeError();
+  Scalar getRelativeError();
 
   /** Verbosity accessor */
   void setVerbose(const Bool verbose);
@@ -105,9 +105,9 @@ protected:
 
   void setCoefficients(const Point & coefficients);
 
-  void setResidual(const NumericalScalar residual);
+  void setResidual(const Scalar residual);
 
-  void setRelativeError(const NumericalScalar relativeError);
+  void setRelativeError(const Scalar relativeError);
 
   /** Input sample */
   Sample x_;
@@ -132,10 +132,10 @@ private:
   Point coefficients_;
 
   /** Residual */
-  NumericalScalar residual_;
+  Scalar residual_;
 
   /** Relative error */
-  NumericalScalar relativeError_;
+  Scalar relativeError_;
 
   /** Verbosity flag */
   Bool verbose_;

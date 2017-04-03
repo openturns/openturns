@@ -41,7 +41,7 @@ MaternModel::MaternModel(const UnsignedInteger spatialDimension)
 
 /** Parameters constructor */
 MaternModel::MaternModel(const Point & scale,
-                         const NumericalScalar nu)
+                         const Scalar nu)
   : StationaryCovarianceModel(scale, Point(1, 1.0))
   , nu_(0.0)
   , sqrt2nuOverTheta_(Point(scale.getDimension(), 0.0))
@@ -52,7 +52,7 @@ MaternModel::MaternModel(const Point & scale,
 /** Parameters constructor */
 MaternModel::MaternModel(const Point & scale,
                          const Point & amplitude,
-                         const NumericalScalar nu)
+                         const Scalar nu)
   : StationaryCovarianceModel(scale, amplitude)
   , nu_(0.0)
   , sqrt2nuOverTheta_(Point(scale.getDimension(), 0.0))
@@ -70,12 +70,12 @@ MaternModel * MaternModel::clone() const
 }
 
 /* Computation of the covariance  function */
-NumericalScalar MaternModel::computeStandardRepresentative(const Point & tau) const
+Scalar MaternModel::computeStandardRepresentative(const Point & tau) const
 {
   if (tau.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();
   Point scaledTau(spatialDimension_);
   for(UnsignedInteger i = 0; i < spatialDimension_; ++i) scaledTau[i] = tau[i] * sqrt2nuOverTheta_[i];
-  const NumericalScalar scaledPoint = scaledTau.norm();
+  const Scalar scaledPoint = scaledTau.norm();
   if (scaledPoint <= SpecFunc::ScalarEpsilon)
     return 1.0 + nuggetFactor_;
   else
@@ -91,8 +91,8 @@ Matrix MaternModel::partialGradient(const Point & s,
   const Point tau(s - t);
   Point scaledTau(spatialDimension_);
   for(UnsignedInteger i = 0; i < spatialDimension_; ++i) scaledTau[i] = tau[i] * sqrt2nuOverTheta_[i];
-  const NumericalScalar scaledTauNorm = scaledTau.norm();
-  const NumericalScalar norm2 = scaledTauNorm * scaledTauNorm;
+  const Scalar scaledTauNorm = scaledTau.norm();
+  const Scalar norm2 = scaledTauNorm * scaledTauNorm;
   // For zero norm
   if (norm2 == 0.0)
   {
@@ -109,7 +109,7 @@ Matrix MaternModel::partialGradient(const Point & s,
     return Matrix(spatialDimension_, 1);
   }
   // General case
-  const NumericalScalar value = std::exp(logNormalizationFactor_ + nu_ * std::log(scaledTauNorm)) * (nu_ * SpecFunc::BesselK(nu_, scaledTauNorm) + SpecFunc::BesselKDerivative(nu_, scaledTauNorm) * scaledTauNorm) / norm2;
+  const Scalar value = std::exp(logNormalizationFactor_ + nu_ * std::log(scaledTauNorm)) * (nu_ * SpecFunc::BesselK(nu_, scaledTauNorm) + SpecFunc::BesselKDerivative(nu_, scaledTauNorm) * scaledTauNorm) / norm2;
   Point tauDotsquareSqrt2nuOverTheta(spatialDimension_);
   for(UnsignedInteger i = 0; i < spatialDimension_; ++i) tauDotsquareSqrt2nuOverTheta[i] = tau[i] * sqrt2nuOverTheta_[i] * sqrt2nuOverTheta_[i];
   return Matrix(spatialDimension_, 1, tauDotsquareSqrt2nuOverTheta * value) * amplitude_[0] * amplitude_[0];
@@ -171,12 +171,12 @@ String MaternModel::__str__(const String & offset) const
 }
 
 /* Nu accessor */
-NumericalScalar MaternModel::getNu() const
+Scalar MaternModel::getNu() const
 {
   return nu_;
 }
 
-void MaternModel::setNu(const NumericalScalar nu)
+void MaternModel::setNu(const Scalar nu)
 {
   if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Error: nu must be positive.";
   if (!(nu == nu_))

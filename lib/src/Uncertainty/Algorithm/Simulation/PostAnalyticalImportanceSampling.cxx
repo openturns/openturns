@@ -61,7 +61,7 @@ Sample PostAnalyticalImportanceSampling::computeBlockSample()
   const UnsignedInteger blockSize = getBlockSize();
   const Point standardSpaceDesignPoint(analyticalResult_.getStandardSpaceDesignPoint());
   // Get the threshold and the reliability index
-  const NumericalScalar threshold = event_.getThreshold();
+  const Scalar threshold = event_.getThreshold();
   // First, compute a sample of the importance distribution. It is simply
   // the standard distribution translated to the design point
   Sample inputSample(standardDistribution_.getSample(blockSize));
@@ -77,7 +77,7 @@ Sample PostAnalyticalImportanceSampling::computeBlockSample()
     if (isRealized)
     {
       // If the event occured, the value is p_initial(x[i]) / p_importance(x[i])
-      const NumericalScalar weight = standardDistribution_.computePDF(inputSample[i]) / standardDistribution_.computePDF(inputSample[i] - standardSpaceDesignPoint);
+      const Scalar weight = standardDistribution_.computePDF(inputSample[i]) / standardDistribution_.computePDF(inputSample[i] - standardSpaceDesignPoint);
       blockSample[i][0] = weight;
     }
     else blockSample[i][0] = 0.0;

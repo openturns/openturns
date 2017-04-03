@@ -47,7 +47,7 @@ public:
   {
     if (i == j)
     {
-      memcpy( &localValues->getImplementation()->operator[](0), &covarianceMatrix_.getImplementation()->operator[](0), dimension_ * dimension_ * sizeof(NumericalScalar) );
+      memcpy( &localValues->getImplementation()->operator[](0), &covarianceMatrix_.getImplementation()->operator[](0), dimension_ * dimension_ * sizeof(Scalar) );
     }
   }
 };
@@ -272,7 +272,7 @@ Sample DiracCovarianceModel::discretizeRow(const Sample & vertices,
 
 // discretize with use of HMatrix
 HMatrix DiracCovarianceModel::discretizeHMatrix(const Sample & vertices,
-    const NumericalScalar nuggetFactor,
+    const Scalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
 #ifdef OPENTURNS_HAVE_HMAT

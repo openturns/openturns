@@ -141,27 +141,27 @@ void WhittleFactory::computeSpectralDensity(const UserDefinedSpectralModel & spe
     --m_;
     kStart = 1;
   }
-  const NumericalScalar fMax = frequencyGrid.getEnd();
+  const Scalar fMax = frequencyGrid.getEnd();
   normalizedFrequencies_ = Point(m_);
   spectralDensity_ = Point(m_);
-  NumericalScalar dt = timeGrid_.getStep();
+  Scalar dt = timeGrid_.getStep();
   for (UnsignedInteger k = 0; k < m_ ; ++k)
   {
-    const NumericalScalar frequency = frequencyGrid.getValue(k + kStart);
-    const NumericalScalar estimatedValue = std::real(spectralModel(frequency)(0, 0)) / dt;
+    const Scalar frequency = frequencyGrid.getValue(k + kStart);
+    const Scalar estimatedValue = std::real(spectralModel(frequency)(0, 0)) / dt;
     spectralDensity_[k] = estimatedValue;
     normalizedFrequencies_[k] = M_PI * frequency / fMax;
   }
 }
 
 /* Compute the log-likelihood function */
-NumericalScalar WhittleFactory::computeLogLikelihood(const Point & theta) const
+Scalar WhittleFactory::computeLogLikelihood(const Point & theta) const
 {
-  NumericalScalar logTerm = 0.0;
-  NumericalScalar ratioTerm = 0.0;
+  Scalar logTerm = 0.0;
+  Scalar ratioTerm = 0.0;
   for (UnsignedInteger j = 0; j < m_; ++j)
   {
-    const NumericalScalar frequency = normalizedFrequencies_[j];
+    const Scalar frequency = normalizedFrequencies_[j];
     // Gj computation
     const UnsignedInteger n = std::max(currentP_, currentQ_);
     NumericalComplex numerator(1.0, 0.0);
@@ -174,7 +174,7 @@ NumericalScalar WhittleFactory::computeLogLikelihood(const Point & theta) const
       if (i < currentQ_) numerator += theta[currentP_ + i] * z;
       if (i < currentP_) denominator += theta[i] * z;
     }
-    const NumericalScalar gJ = std::norm(numerator) / std::norm(denominator);
+    const Scalar gJ = std::norm(numerator) / std::norm(denominator);
     // Whittle likelihood update
     logTerm += log(gJ);
     ratioTerm += spectralDensity_[j] / gJ;
@@ -187,7 +187,7 @@ NumericalScalar WhittleFactory::computeLogLikelihood(const Point & theta) const
 /* Compute the log-likelihood constraint */
 Point WhittleFactory::computeLogLikelihoodInequalityConstraint(const Point & theta) const
 {
-  const NumericalScalar epsilon = ResourceMap::GetAsScalar("WhittleFactory-RootEpsilon");
+  const Scalar epsilon = ResourceMap::GetAsScalar("WhittleFactory-RootEpsilon");
 
   Point result(nbInequalityConstraint_, 0.0);
 
@@ -202,10 +202,10 @@ Point WhittleFactory::computeLogLikelihoodInequalityConstraint(const Point & the
     if (polynom.getDegree() > 0)
     {
       Collection<NumericalComplex> roots(polynom.getRoots());
-      NumericalScalar minRootModule = std::norm(roots[0]);
+      Scalar minRootModule = std::norm(roots[0]);
       for (UnsignedInteger i = 1; i < currentP_; ++i)
       {
-        const NumericalScalar rootModule = std::norm(roots[i]);
+        const Scalar rootModule = std::norm(roots[i]);
         if (rootModule < minRootModule) minRootModule = rootModule;
       }
       result[constraintIndex] = minRootModule - 1.0 - epsilon;
@@ -224,10 +224,10 @@ Point WhittleFactory::computeLogLikelihoodInequalityConstraint(const Point & the
     if (polynom.getDegree() > 0)
     {
       Collection<NumericalComplex> roots(polynom.getRoots());
-      NumericalScalar minRootModule = std::norm(roots[0]);
+      Scalar minRootModule = std::norm(roots[0]);
       for (UnsignedInteger i = 1; i < currentQ_; ++i)
       {
-        const NumericalScalar rootModule = std::norm(roots[i]);
+        const Scalar rootModule = std::norm(roots[i]);
         if (rootModule < minRootModule) minRootModule = rootModule;
       }
       result[constraintIndex] = minRootModule - 1.0 - epsilon;
@@ -241,7 +241,7 @@ Point WhittleFactory::computeLogLikelihoodInequalityConstraint(const Point & the
 /* Compute the log-likelihood function accessor */
 Function WhittleFactory::getLogLikelihoodFunction() const
 {
-  return bindMethod <WhittleFactory, NumericalScalar, Point> ( *this, &WhittleFactory::computeLogLikelihood, currentP_ + currentQ_ , 1);
+  return bindMethod <WhittleFactory, Scalar, Point> ( *this, &WhittleFactory::computeLogLikelihood, currentP_ + currentQ_ , 1);
 }
 
 
@@ -418,7 +418,7 @@ ARMA WhittleFactory::maximizeLogLikelihood(Point & informationCriteria) const
 
   // Best parameters
   Point bestTheta(0);
-  NumericalScalar bestSigma2 = 0.0;
+  Scalar bestSigma2 = 0.0;
   Point bestInformationCriteria(3, SpecFunc::MaxScalar);
   UnsignedInteger bestP = 0;
   UnsignedInteger bestQ = 0;
@@ -466,7 +466,7 @@ ARMA WhittleFactory::maximizeLogLikelihood(Point & informationCriteria) const
       }
       // Compute the information criteria
       // First, the corrected AIC
-      const NumericalScalar logLikelihood = computeLogLikelihood(theta);
+      const Scalar logLikelihood = computeLogLikelihood(theta);
       Point currentInformationCriteria(3);
       if (m_ > static_cast<UnsignedInteger>(n + 2)) currentInformationCriteria[0] = -2.0 * logLikelihood + 2.0 * (n + 1) * m_ / (m_ - n - 2);
       else
@@ -534,7 +534,7 @@ void WhittleFactory::initializeStartingPoints()
 {
   startingPoints_ = Collection< Point >(0);
   // Initialization of the starting point
-  const NumericalScalar theta0 = ResourceMap::GetAsScalar("WhittleFactory-DefaultStartingPointScale");
+  const Scalar theta0 = ResourceMap::GetAsScalar("WhittleFactory-DefaultStartingPointScale");
   const UnsignedInteger sizeP = p_.getSize();
   const UnsignedInteger sizeQ = q_.getSize();
   for (UnsignedInteger pIndex = 0; pIndex < sizeP; ++pIndex)

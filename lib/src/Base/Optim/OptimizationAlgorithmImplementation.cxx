@@ -108,49 +108,49 @@ UnsignedInteger OptimizationAlgorithmImplementation::getMaximumEvaluationNumber(
 }
 
 /* Maximum absolute error accessor */
-NumericalScalar OptimizationAlgorithmImplementation::getMaximumAbsoluteError() const
+Scalar OptimizationAlgorithmImplementation::getMaximumAbsoluteError() const
 {
   return maximumAbsoluteError_;
 }
 
 /* Maximum absolute error accessor */
-void OptimizationAlgorithmImplementation::setMaximumAbsoluteError(const NumericalScalar maximumAbsoluteError)
+void OptimizationAlgorithmImplementation::setMaximumAbsoluteError(const Scalar maximumAbsoluteError)
 {
   maximumAbsoluteError_ = maximumAbsoluteError;
 }
 
 /* Maximum relative error accessor */
-NumericalScalar OptimizationAlgorithmImplementation::getMaximumRelativeError() const
+Scalar OptimizationAlgorithmImplementation::getMaximumRelativeError() const
 {
   return maximumRelativeError_;
 }
 
 /* Maximum relative error accessor */
-void OptimizationAlgorithmImplementation::setMaximumRelativeError(const NumericalScalar maximumRelativeError)
+void OptimizationAlgorithmImplementation::setMaximumRelativeError(const Scalar maximumRelativeError)
 {
   maximumRelativeError_ = maximumRelativeError;
 }
 
 /* Maximum residual error accessor */
-NumericalScalar OptimizationAlgorithmImplementation::getMaximumResidualError() const
+Scalar OptimizationAlgorithmImplementation::getMaximumResidualError() const
 {
   return maximumResidualError_;
 }
 
 /* Maximum residual error accessor */
-void OptimizationAlgorithmImplementation::setMaximumResidualError(const NumericalScalar maximumResidualError)
+void OptimizationAlgorithmImplementation::setMaximumResidualError(const Scalar maximumResidualError)
 {
   maximumResidualError_ = maximumResidualError;
 }
 
 /* Maximum constraint error accessor */
-NumericalScalar OptimizationAlgorithmImplementation::getMaximumConstraintError() const
+Scalar OptimizationAlgorithmImplementation::getMaximumConstraintError() const
 {
   return maximumConstraintError_;
 }
 
 /* Maximum constraint error accessor */
-void OptimizationAlgorithmImplementation::setMaximumConstraintError(const NumericalScalar maximumConstraintError)
+void OptimizationAlgorithmImplementation::setMaximumConstraintError(const Scalar maximumConstraintError)
 {
   maximumConstraintError_ = maximumConstraintError;
 }

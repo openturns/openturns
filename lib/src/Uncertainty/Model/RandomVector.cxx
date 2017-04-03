@@ -109,7 +109,7 @@ RandomVector::RandomVector(const FunctionalChaosResult & functionalChaosResult)
 /* Constructor from event RandomVector */
 RandomVector::RandomVector(const RandomVector & antecedent,
                            const ComparisonOperator & op,
-                           const NumericalScalar threshold)
+                           const Scalar threshold)
   : TypedInterfaceObject<RandomVectorImplementation>(new EventRandomVector(*antecedent.getImplementation(), op, threshold))
 {
   // Nothing to do
@@ -317,7 +317,7 @@ ComparisonOperator RandomVector::getOperator() const
 }
 
 /* Threshold accessor */
-NumericalScalar RandomVector::getThreshold() const
+Scalar RandomVector::getThreshold() const
 {
   return getImplementation()->getThreshold();
 }

@@ -158,7 +158,7 @@ public:
    */
   virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, Bool value);
   virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, UnsignedInteger value);
-  virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, NumericalScalar value);
+  virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, Scalar value);
   virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, NumericalComplex value);
   virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, const String & value);
   virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, const InterfaceObject & value);
@@ -169,7 +169,7 @@ public:
    */
   virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Bool value);
   virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, UnsignedInteger value);
-  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, NumericalScalar value);
+  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Scalar value);
   virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, NumericalComplex value);
   virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, const String & value);
   virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, const InterfaceObject & value);
@@ -180,7 +180,7 @@ public:
    */
   virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name, Bool & value);
   virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name, UnsignedInteger & value);
-  virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name, NumericalScalar & value);
+  virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name, Scalar & value);
   virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name, NumericalComplex & value);
   virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name, String & value);
   virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name,  InterfaceObject & value);
@@ -191,7 +191,7 @@ public:
    */
   virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Bool & value);
   virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, UnsignedInteger & value);
-  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, NumericalScalar & value);
+  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Scalar & value);
   virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, NumericalComplex & value);
   virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, String & value);
   virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, InterfaceObject & value);

@@ -89,7 +89,7 @@ Point NatafIndependentCopulaEvaluation::operator () (const Point & inP) const
   Point result(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
-    const NumericalScalar x = inP[i];
+    const Scalar x = inP[i];
     if ((x < 0.0) || (x > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot evaluate the NatafIndependentCopulaEvaluation if all the components are not in [0, 1], here in=" << inP;
     result[i] = DistFunc::qNormal(x);
   }

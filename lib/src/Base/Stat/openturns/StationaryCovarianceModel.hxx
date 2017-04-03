@@ -63,16 +63,16 @@ public:
                                        const Point & t) const;
   virtual CovarianceMatrix operator() (const Point & tau) const;
   using CovarianceModelImplementation::computeAsScalar;
-  virtual NumericalScalar computeAsScalar (const Point & s,
+  virtual Scalar computeAsScalar (const Point & s,
       const Point & t) const;
-  virtual NumericalScalar computeAsScalar (const Point & tau) const;
+  virtual Scalar computeAsScalar (const Point & tau) const;
 
   /** Computation of the covariance matrix */
   using CovarianceModelImplementation::computeStandardRepresentative;
-  virtual NumericalScalar computeStandardRepresentative(const Point & s,
+  virtual Scalar computeStandardRepresentative(const Point & s,
       const Point & t) const;
 
-  virtual NumericalScalar computeStandardRepresentative(const Point & tau) const;
+  virtual Scalar computeStandardRepresentative(const Point & tau) const;
 
   /** Discretize the covariance function on a given TimeGrid */
   using CovarianceModelImplementation::discretize;

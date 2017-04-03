@@ -46,7 +46,7 @@ PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const Sample & x,
     const Sample & y,
     const Basis & psi,
     const Indices & indices,
-    const NumericalScalar penalizationFactor,
+    const Scalar penalizationFactor,
     const Bool useNormal)
   : ApproximationAlgorithmImplementation( x, y, psi, indices )
   , penalizationFactor_(penalizationFactor)
@@ -68,7 +68,7 @@ PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const Sample & x,
     const Point & weight,
     const Basis & psi,
     const Indices & indices,
-    const NumericalScalar penalizationFactor,
+    const Scalar penalizationFactor,
     const Bool useNormal)
   : ApproximationAlgorithmImplementation( x, y, weight, psi, indices )
   , penalizationFactor_(penalizationFactor)
@@ -89,7 +89,7 @@ PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const Sample & x,
     const Point & weight,
     const Basis & psi,
     const Indices & indices,
-    const NumericalScalar penalizationFactor,
+    const Scalar penalizationFactor,
     const CovarianceMatrix & penalizationMatrix,
     const Bool useNormal)
   : ApproximationAlgorithmImplementation( x, y, weight, psi, indices )
@@ -180,7 +180,7 @@ void PenalizedLeastSquaresAlgorithm::run(const DesignProxy & proxy)
     // If the weights are uniform, they are taken into account by a change in the penalization factor
     if (hasUniformWeight_)
     {
-      const NumericalScalar rho = std::sqrt(penalizationFactor_ / weight_[0]);
+      const Scalar rho = std::sqrt(penalizationFactor_ / weight_[0]);
       for (UnsignedInteger i = 0; i < basisDimension; ++i)
       {
         // The cholesky factor has to be transposed, thus we fill only the upper triangular part of the trailing block
@@ -190,7 +190,7 @@ void PenalizedLeastSquaresAlgorithm::run(const DesignProxy & proxy)
     } // (hasUniformWeight_)
     else
     {
-      const NumericalScalar rho = std::sqrt(penalizationFactor_);
+      const Scalar rho = std::sqrt(penalizationFactor_);
       // Here the upper part of the matrix and the right-hand side have to be changed to take into account the weights, the lower part to take into account the regularization
       Point weightSqrt(sampleSize);
       for (UnsignedInteger i = 0; i < sampleSize; ++i)
@@ -238,12 +238,12 @@ void PenalizedLeastSquaresAlgorithm::run(const DesignProxy & proxy)
     LOGINFO("In PenalizedLeastSquaresAlgorithm::run(), use QR decomposition");
     setCoefficients(basisMatrix.solveLinearSystemRect(rightHandSide));
   }
-  NumericalScalar quadraticResidual = (basisMatrix.genVectProd(getCoefficients()) - rightHandSide).normSquare();
+  Scalar quadraticResidual = (basisMatrix.genVectProd(getCoefficients()) - rightHandSide).normSquare();
   if (hasUniformWeight_) quadraticResidual *= weight_[0];
   // The residual is the mean L2 norm of the fitting
   setResidual(std::sqrt(quadraticResidual) / sampleSize);
 
-  const NumericalScalar empiricalError = quadraticResidual / sampleSize;
+  const Scalar empiricalError = quadraticResidual / sampleSize;
 
   // The relative error
   setRelativeError(empiricalError / y_.computeVariance()[0]);

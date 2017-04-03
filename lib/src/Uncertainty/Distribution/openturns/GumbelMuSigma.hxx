@@ -40,7 +40,7 @@ public:
   GumbelMuSigma();
 
   /** Constructor with parameters */
-  GumbelMuSigma(const NumericalScalar mu, const NumericalScalar sigma);
+  GumbelMuSigma(const Scalar mu, const Scalar sigma);
 
   /** Virtual constructor */
   virtual GumbelMuSigma * clone() const;
@@ -70,8 +70,8 @@ public:
 
 private:
   /** The main parameter set of the distribution */
-  NumericalScalar mu_;
-  NumericalScalar sigma_;
+  Scalar mu_;
+  Scalar sigma_;
 }; /* class GumbelMuSigma */
 
 

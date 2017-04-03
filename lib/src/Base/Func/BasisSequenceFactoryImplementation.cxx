@@ -120,12 +120,12 @@ void BasisSequenceFactoryImplementation::updateBasis(LeastSquaresMethod & method
 }
 
 /* Stopping criterion on the L1-norm of the coefficients accessor */
-void BasisSequenceFactoryImplementation::setMaximumRelativeConvergence(const NumericalScalar maximumRelativeConvergence)
+void BasisSequenceFactoryImplementation::setMaximumRelativeConvergence(const Scalar maximumRelativeConvergence)
 {
   maximumRelativeConvergence_ = maximumRelativeConvergence;
 }
 
-NumericalScalar BasisSequenceFactoryImplementation::getMaximumRelativeConvergence() const
+Scalar BasisSequenceFactoryImplementation::getMaximumRelativeConvergence() const
 {
   return maximumRelativeConvergence_;
 }

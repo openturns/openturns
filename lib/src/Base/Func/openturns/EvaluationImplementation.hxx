@@ -52,8 +52,8 @@ class OT_API EvaluationImplementation
 public:
 
   typedef Pointer<EvaluationImplementation>      Implementation;
-  typedef PersistentCollection<NumericalScalar>               CacheKeyType;
-  typedef PersistentCollection<NumericalScalar>               CacheValueType;
+  typedef PersistentCollection<Scalar>               CacheKeyType;
+  typedef PersistentCollection<Scalar>               CacheValueType;
   typedef Cache<CacheKeyType, CacheValueType>                 CacheType;
   typedef Pointer<CacheType>                                  CacheImplementation;
 
@@ -191,8 +191,8 @@ public:
   virtual Graph draw(const UnsignedInteger inputMarginal,
                      const UnsignedInteger outputMarginal,
                      const Point & centralPoint,
-                     const NumericalScalar xMin,
-                     const NumericalScalar xMax,
+                     const Scalar xMin,
+                     const Scalar xMax,
                      const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("NumericalMathEvaluation-DefaultPointNumber"),
                      const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
 
@@ -207,8 +207,8 @@ public:
                      const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
 
   /** Draw the output of the function with respect to its input when the input and output dimensions are 1 */
-  virtual Graph draw(const NumericalScalar xMin,
-                     const NumericalScalar xMax,
+  virtual Graph draw(const Scalar xMin,
+                     const Scalar xMax,
                      const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("NumericalMathEvaluation-DefaultPointNumber"),
                      const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
 

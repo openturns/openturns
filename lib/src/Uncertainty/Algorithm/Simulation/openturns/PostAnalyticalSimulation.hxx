@@ -52,7 +52,7 @@ public:
   AnalyticalResult getAnalyticalResult() const;
 
   /** Control probability accessor */
-  NumericalScalar getControlProbability() const;
+  Scalar getControlProbability() const;
 
   /** String converter */
   String __repr__() const;
@@ -75,7 +75,7 @@ protected:
   Distribution standardDistribution_;
 
   /** Probability associated to the control */
-  NumericalScalar controlProbability_;
+  Scalar controlProbability_;
 
 } ; /* class PostAnalyticalSimulation */
 

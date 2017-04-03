@@ -31,8 +31,8 @@ static const Factory<CalibrationStrategyImplementation> Factory_CalibrationStrat
 
 /* Default constructor */
 CalibrationStrategyImplementation::CalibrationStrategyImplementation(const Interval & range,
-    const NumericalScalar expansionFactor,
-    const NumericalScalar shrinkFactor,
+    const Scalar expansionFactor,
+    const Scalar shrinkFactor,
     const UnsignedInteger calibrationStep)
   : PersistentObject()
 {
@@ -61,25 +61,25 @@ Interval CalibrationStrategyImplementation::getRange() const
 }
 
 
-void CalibrationStrategyImplementation::setExpansionFactor(NumericalScalar expansionFactor)
+void CalibrationStrategyImplementation::setExpansionFactor(Scalar expansionFactor)
 {
   if (!( expansionFactor > 1.0)) throw InvalidArgumentException(HERE) << "Expansion factor should be > 1. Got " << expansionFactor;
   expansionFactor_ = expansionFactor;
 }
 
-NumericalScalar CalibrationStrategyImplementation::getExpansionFactor() const
+Scalar CalibrationStrategyImplementation::getExpansionFactor() const
 {
   return expansionFactor_;
 }
 
 
-void CalibrationStrategyImplementation::setShrinkFactor(NumericalScalar shrinkFactor)
+void CalibrationStrategyImplementation::setShrinkFactor(Scalar shrinkFactor)
 {
   if ( (shrinkFactor <= 0.0) || (shrinkFactor >= 1.0) ) throw InvalidArgumentException(HERE) << "Shrink factor should be in (0, 1). Got " << shrinkFactor;
   shrinkFactor_ = shrinkFactor;
 }
 
-NumericalScalar CalibrationStrategyImplementation::getShrinkFactor() const
+Scalar CalibrationStrategyImplementation::getShrinkFactor() const
 {
   return shrinkFactor_;
 }
@@ -94,9 +94,9 @@ CalibrationStrategyImplementation* CalibrationStrategyImplementation::clone() co
 
 /* Here is the interface that all derived class must implement */
 
-NumericalScalar CalibrationStrategyImplementation::computeUpdateFactor(const NumericalScalar rho) const
+Scalar CalibrationStrategyImplementation::computeUpdateFactor(const Scalar rho) const
 {
-  NumericalScalar factor = 1.0;
+  Scalar factor = 1.0;
   // if the acceptance rate it too low, make smaller steps
   if ( rho < range_.getLowerBound()[0] ) factor = shrinkFactor_;
   // if the acceptance rate is too high, make larger steps

@@ -60,7 +60,7 @@ AdaptiveStieltjesAlgorithm::AdaptiveStieltjesAlgorithm(const Distribution & meas
   , isElliptical_(measure.isElliptical())
 {
   // Here we initialize the monic coefficients cache
-  const NumericalScalar mu = measure.getMean()[0];
+  const Scalar mu = measure.getMean()[0];
   monicRecurrenceCoefficients_[0][0] = 1.0;
   // To avoid -0.0 in print, we test for the mean of the distribution.
   if (std::abs(mu) > ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon"))
@@ -100,7 +100,7 @@ AdaptiveStieltjesAlgorithm::Coefficients AdaptiveStieltjesAlgorithm::getRecurren
   // Get the coefficients from the cache if possible
   if (n < cacheSize - 1)
   {
-    const NumericalScalar inverseSqrtBetaNp1 = 1.0 / sqrt(-monicRecurrenceCoefficients_[n + 1][2]);
+    const Scalar inverseSqrtBetaNp1 = 1.0 / sqrt(-monicRecurrenceCoefficients_[n + 1][2]);
     Coefficients coefficients(3);
     coefficients[0] = inverseSqrtBetaNp1;
     if (std::abs(monicRecurrenceCoefficients_[n][1]) > 0.0)
@@ -162,8 +162,8 @@ Point AdaptiveStieltjesAlgorithm::computeDotProduct(const Function & kernel,
       Point bounds(1, measure_.getRange().getLowerBound()[0]);
       bounds.add(measure_.getSingularities());
       bounds.add(measure_.getRange().getUpperBound()[0]);
-      NumericalScalar a = bounds[0];
-      NumericalScalar b = bounds[1];
+      Scalar a = bounds[0];
+      Scalar b = bounds[1];
       Point dotProduct(algo.integrate(kernel, Interval(a, b)));
       for (UnsignedInteger i = 2; i < bounds.getSize(); ++i)
 	{

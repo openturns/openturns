@@ -55,31 +55,31 @@ struct BurrFactoryParameterConstraint
 
   Point computeConstraint(const Point & parameter) const
   {
-    const NumericalScalar c = parameter[0];
+    const Scalar c = parameter[0];
     if (!(c > 0.0)) throw InvalidArgumentException(HERE) << "Error: the c parameter must be positive.";
     const UnsignedInteger size = sample_.getSize();
     /* \sum_{i=1}^N \log(1 + x_i^c) */
-    NumericalScalar sumLogXC = 0.0;
+    Scalar sumLogXC = 0.0;
     /* \sum_{i=1}^N \frac{\log(x_i)}{1+x_i^c} */
-    NumericalScalar sumRatio = 0.0;
+    Scalar sumRatio = 0.0;
     /* \sum_{i=1}^N \frac{x_i^c\log(x_i)}{1+x_i^c} */
-    NumericalScalar sumScaledRatio = 0.0;
+    Scalar sumScaledRatio = 0.0;
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const NumericalScalar x = sample_[i][0];
-      const NumericalScalar xC = std::pow(x , c);
-      const NumericalScalar logX = std::log(x);
-      const NumericalScalar ratio = logX / (1.0 + xC);
+      const Scalar x = sample_[i][0];
+      const Scalar xC = std::pow(x , c);
+      const Scalar logX = std::log(x);
+      const Scalar ratio = logX / (1.0 + xC);
       sumRatio += ratio;
       sumScaledRatio += xC * ratio;
       sumLogXC += log1p(xC);
     }
     /* MLE second parameter */
-    const NumericalScalar k = size / sumLogXC;
+    const Scalar k = size / sumLogXC;
     if (!SpecFunc::IsNormal(k)) throw InvalidArgumentException(HERE) << "Error: cannot estimate the k parameter";
 
     /* MLE equation first parameter */
-    const NumericalScalar relation = 1.0 + (c / size) * (sumRatio - k * sumScaledRatio);
+    const Scalar relation = 1.0 + (c / size) * (sumRatio - k * sumScaledRatio);
     return Point(1, relation);
   }
 
@@ -114,10 +114,10 @@ Burr BurrFactory::buildAsBurr(const Sample & sample) const
   BurrFactoryParameterConstraint constraint(sample);
   const Function f(bindMethod<BurrFactoryParameterConstraint, Point, Point>(constraint, &BurrFactoryParameterConstraint::computeConstraint, 1, 1));
   // Find a bracketing interval
-  NumericalScalar a = 1.0;
-  NumericalScalar b = 2.0;
-  NumericalScalar fA = f(Point(1, a))[0];
-  NumericalScalar fB = f(Point(1, b))[0];
+  Scalar a = 1.0;
+  Scalar b = 2.0;
+  Scalar fA = f(Point(1, a))[0];
+  Scalar fB = f(Point(1, b))[0];
   // While f has the same sign at the two bounds, update the interval
   while ((fA * fB > 0.0))
   {
@@ -130,11 +130,11 @@ Burr BurrFactory::buildAsBurr(const Sample & sample) const
   // Solve the constraint equation
   Brent solver(ResourceMap::GetAsScalar( "BurrFactory-AbsolutePrecision" ), ResourceMap::GetAsScalar( "BurrFactory-RelativePrecision" ), ResourceMap::GetAsScalar( "BurrFactory-ResidualPrecision" ), ResourceMap::GetAsUnsignedInteger( "BurrFactory-MaximumIteration" ));
   // C estimate
-  const NumericalScalar c = solver.solve(f, 0.0, a, b, fA, fB);
+  const Scalar c = solver.solve(f, 0.0, a, b, fA, fB);
   // Corresponding k estimate
-  NumericalScalar sumLogXC = 0.0;
+  Scalar sumLogXC = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i) sumLogXC += log1p(std::pow(sample[i][0], c));
-  const NumericalScalar k = size / sumLogXC;
+  const Scalar k = size / sumLogXC;
   Burr result(c, k);
   result.setDescription(sample.getDescription());
   return result;

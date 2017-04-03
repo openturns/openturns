@@ -64,11 +64,11 @@ UnsignedInteger MixtureClassifier::classify(const Point& inP) const
   const UnsignedInteger size = mixture_.getDistributionCollection().getSize();
   UnsignedInteger bestClass = 0;
   Distribution atom(mixture_.getDistributionCollection()[0]);
-  NumericalScalar bestGrade = log(atom.getWeight()) + atom.computeLogPDF(inP);
+  Scalar bestGrade = log(atom.getWeight()) + atom.computeLogPDF(inP);
   for (UnsignedInteger classIndex = 1; classIndex < size; ++classIndex)
   {
     atom = mixture_.getDistributionCollection()[classIndex];
-    const NumericalScalar gradeValue = log(atom.getWeight()) + atom.computeLogPDF(inP);
+    const Scalar gradeValue = log(atom.getWeight()) + atom.computeLogPDF(inP);
     if (gradeValue > bestGrade)
     {
       bestClass = classIndex;
@@ -101,7 +101,7 @@ Indices MixtureClassifier::classifySequential(const Sample & inS) const
     {
       for (UnsignedInteger i = 0; i < size; ++i)
 	{
-	  const NumericalScalar grade = logWeights[classIndex] + atomsLogPDF[classIndex][i];
+	  const Scalar grade = logWeights[classIndex] + atomsLogPDF[classIndex][i];
 	  if (grade > bestGrades[i])
 	    {
 	      bestGrades[i] = grade;
@@ -112,7 +112,7 @@ Indices MixtureClassifier::classifySequential(const Sample & inS) const
   return bestClasses;
 }
 
-NumericalScalar MixtureClassifier::grade(const Point& inP,
+Scalar MixtureClassifier::grade(const Point& inP,
     const UnsignedInteger outC) const
 {
   const UnsignedInteger size = mixture_.getDistributionCollection().getSize();

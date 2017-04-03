@@ -37,10 +37,10 @@ template <typename Tp_> struct ReturnTypeAdapter
   typedef NO_MATCH_ON_ReturnTypeAdapter Type_;
 };
 
-template <> struct ReturnTypeAdapter< NumericalScalar >
+template <> struct ReturnTypeAdapter< Scalar >
 {
-  typedef NumericalScalar Type_;
-  static inline Point toPoint( const NumericalScalar val )
+  typedef Scalar Type_;
+  static inline Point toPoint( const Scalar val )
   {
     return Point(1, val) ;
   }
@@ -64,10 +64,10 @@ template <typename Tp_> struct ArgumentTypeAdapter
   typedef NO_MATCH_ON_ArgumentTypeAdapter Type_;
 };
 
-template <> struct ArgumentTypeAdapter< NumericalScalar >
+template <> struct ArgumentTypeAdapter< Scalar >
 {
-  typedef const NumericalScalar Type_;
-  static inline NumericalScalar fromPoint( const Point & val )
+  typedef const Scalar Type_;
+  static inline Scalar fromPoint( const Point & val )
   {
     return val[0] ;
   }

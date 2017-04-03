@@ -84,7 +84,7 @@ void FAST::run() const
   w_i_0[0] = omega;
   if ( max_w_l >= nbIn - 1 )
   {
-    const NumericalScalar step = (max_w_l - 1.) / (nbIn - 2.);
+    const Scalar step = (max_w_l - 1.) / (nbIn - 2.);
     for (UnsignedInteger inp = 0; inp < nbIn - 1; ++ inp)
       w_i_0[inp + 1] = inp * step + 1;
     w_i_0[nbIn - 1] = max_w_l;
@@ -134,7 +134,7 @@ void FAST::run() const
           // Search-curve x_i(s)=g_i(w_i,s) definition
           for (UnsignedInteger i = 0; i < nbIn; ++ i)
           {
-            const NumericalScalar ui_s = 0.5 + std::asin(std::sin(w_i[i] * s[outerSampling * blockSize_ + blockIndex] + phi_i[i])) / M_PI;
+            const Scalar ui_s = 0.5 + std::asin(std::sin(w_i[i] * s[outerSampling * blockSize_ + blockIndex] + phi_i[i])) / M_PI;
             inputBlock[blockIndex][i] = inputsDistribution_.getMarginal(i).computeQuantile(ui_s)[0];
           }
         }

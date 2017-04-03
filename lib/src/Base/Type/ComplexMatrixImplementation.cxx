@@ -71,13 +71,13 @@ ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger r
 /* Constructor from external collection */
 ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim,
-    const Collection<NumericalScalar> & elementsValues)
+    const Collection<Scalar> & elementsValues)
   : PersistentCollection<NumericalComplex>(rowDim * colDim, NumericalComplex(0.0, 0.0))
   , nbRows_(rowDim)
   , nbColumns_(colDim)
 {
   const UnsignedInteger matrixSize = std::min(rowDim * colDim, elementsValues.getSize());
-  //  Implicit cast from NumericalScalar into NumericalComplex
+  //  Implicit cast from Scalar into NumericalComplex
   for(UnsignedInteger i = 0; i < matrixSize; ++i) operator[](i) = elementsValues[i];
 }
 
@@ -158,7 +158,7 @@ ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementat
 
 
 /* Set small elements to zero */
-ComplexMatrixImplementation ComplexMatrixImplementation::clean(const NumericalScalar threshold) const
+ComplexMatrixImplementation ComplexMatrixImplementation::clean(const Scalar threshold) const
 {
   // Nothing to do for nonpositive threshold
   if (threshold <= 0.0) return *this;
@@ -167,8 +167,8 @@ ComplexMatrixImplementation ComplexMatrixImplementation::clean(const NumericalSc
     for (UnsignedInteger i = 0; i < nbRows_; ++i)
     {
       const NumericalComplex value((*this)[convertPosition(i, j)]);
-      NumericalScalar realPart = std::real(value);
-      NumericalScalar imagPart = std::imag(value);
+      Scalar realPart = std::real(value);
+      Scalar imagPart = std::imag(value);
       if (std::abs(realPart) < 0.5 * threshold) realPart = 0.0;
       else realPart = threshold * round(realPart / threshold);
       if (std::abs(imagPart) < 0.5 * threshold) imagPart = 0.0;
@@ -179,7 +179,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::clean(const NumericalSc
 }
 
 /* Set small elements to zero */
-ComplexMatrixImplementation ComplexMatrixImplementation::cleanHerm(const NumericalScalar threshold) const
+ComplexMatrixImplementation ComplexMatrixImplementation::cleanHerm(const Scalar threshold) const
 {
   hermitianize();
   return clean(threshold);
@@ -465,7 +465,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::operator * (const Numer
   return scalprod;
 }
 
-/* Division by a NumericalScalar*/
+/* Division by a Scalar*/
 ComplexMatrixImplementation ComplexMatrixImplementation::operator / (const NumericalComplex s) const
 {
   if (std::abs(s) == 0) throw InvalidArgumentException(HERE) ;
@@ -700,8 +700,8 @@ ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementat
   return prod;
 }
 
-/* Multiplications with a NumericalScalarCollection */
-ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementation::genVectProd(const NumericalScalarCollection & pt) const
+/* Multiplications with a ScalarCollection */
+ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementation::genVectProd(const ScalarCollection & pt) const
 {
   if (nbColumns_ != pt.getSize() ) throw InvalidDimensionException(HERE) << "Invalid dimension in matrix/vector product";
 
@@ -762,7 +762,7 @@ ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementat
   return prod;
 }
 
-ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementation::hermVectProd(const NumericalScalarCollection & pt) const
+ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementation::hermVectProd(const ScalarCollection & pt) const
 {
   if (nbColumns_ != pt.getSize() ) throw InvalidDimensionException(HERE) << "Invalid dimension in matrix/vector product";
 
@@ -830,7 +830,7 @@ ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementat
   return x;
 }
 
-ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementation::triangularVectProd(const NumericalScalarCollection & pt,
+ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementation::triangularVectProd(const ScalarCollection & pt,
     const char side) const
 {
   char uplo(side);

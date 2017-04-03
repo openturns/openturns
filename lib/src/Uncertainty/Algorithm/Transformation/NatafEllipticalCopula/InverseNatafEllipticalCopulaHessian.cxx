@@ -96,10 +96,10 @@ SymmetricTensor InverseNatafEllipticalCopulaHessian::hessian(const Point & inP) 
   // Then, apply standard marginal transformation
   for (UnsignedInteger k = 0; k < dimension; ++k)
   {
-    NumericalScalar ddf = standardMarginal.computeDDF(Point(1, point[k]))[0];
+    Scalar ddf = standardMarginal.computeDDF(Point(1, point[k]))[0];
     for (UnsignedInteger i = 0; i <= k; ++i)
     {
-      NumericalScalar factor = ddf * cholesky_(k, i);
+      Scalar factor = ddf * cholesky_(k, i);
       for (UnsignedInteger j = 0; j <= k; ++j)
       {
         result(i, j, k) = cholesky_(k, j) * factor;

@@ -45,7 +45,7 @@ Chi::Chi()
 }
 
 /* Parameters constructor */
-Chi::Chi(const NumericalScalar nu)
+Chi::Chi(const Scalar nu)
   : ContinuousDistribution()
   , nu_(0.0)
   , normalizationFactor_(0.0)
@@ -88,7 +88,7 @@ String Chi::__str__(const String & offset) const
 }
 
 /* Nu accessor */
-void Chi::setNu(const NumericalScalar nu)
+void Chi::setNu(const Scalar nu)
 {
   if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Nu MUST be positive";
   if (nu_ != nu)
@@ -99,7 +99,7 @@ void Chi::setNu(const NumericalScalar nu)
   }
 }
 
-NumericalScalar Chi::getNu() const
+Scalar Chi::getNu() const
 {
   return nu_;
 }
@@ -143,48 +143,48 @@ Point Chi::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if (x <= 0.0) return Point(1, 0.0);
   return Point(1, (( nu_ - 1.0) / x - x) * computePDF(point));
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Chi::computePDF(const Point & point) const
+Scalar Chi::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if (x <= 0.0) return 0.0;
   return std::exp(computeLogPDF(point));
 }
 
-NumericalScalar Chi::computeLogPDF(const Point & point) const
+Scalar Chi::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if (x <= 0.0) return SpecFunc::LogMinScalar;
   return normalizationFactor_ + (nu_ - 1) * std::log(x) - 0.5 * x * x;
 }
 
 
 /* Get the CDF of the distribution */
-NumericalScalar Chi::computeCDF(const Point & point) const
+Scalar Chi::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   // No test here as the CDF is continuous for all nu_
   if (x <= 0.0) return 0.0;
   return DistFunc::pGamma(0.5 * nu_, 0.5 * x * x);
 }
 
-NumericalScalar Chi::computeComplementaryCDF(const Point & point) const
+Scalar Chi::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   // No test here as the CDF is continuous for all nu_
   if (x <= 0.0) return 1.0;
   return DistFunc::pGamma(0.5 * nu_, 0.5 * x * x, true);
@@ -193,11 +193,11 @@ NumericalScalar Chi::computeComplementaryCDF(const Point & point) const
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X))
    Its value here is phi(u) = M(0.5 * \nu, 0.5, -0.5 * u ^ 2) + \sqrt(2) * \Gamma((\nu + 1) * 0.5) * M(1.5 * \nu, 1.5, -0.5 * u^2)/ \Gamma(\nu * 0.5) * \imath where
    M(a, b, c) is the hypergeometric function given by M(p1, q1, x)= sum_{n = 0}^{\infty} [prod_{k = 0} ^ {n - 1} (p1 + k) / (q1 + k)] * x^n / n! */
-NumericalComplex Chi::computeCharacteristicFunction(const NumericalScalar x) const
+NumericalComplex Chi::computeCharacteristicFunction(const Scalar x) const
 {
-  const NumericalScalar t = -0.5 * x * x;
-  const NumericalScalar real = SpecFunc::HyperGeom_1_1(0.5 * nu_, 0.5, t );
-  const NumericalScalar imag = M_SQRT2 * x * std::exp(SpecFunc::LnGamma((nu_ + 1.0) * 0.5) - SpecFunc::LnGamma(0.5 * nu_)) * SpecFunc::HyperGeom_1_1((nu_ + 1.0) * 0.5, 1.5, t);
+  const Scalar t = -0.5 * x * x;
+  const Scalar real = SpecFunc::HyperGeom_1_1(0.5 * nu_, 0.5, t );
+  const Scalar imag = M_SQRT2 * x * std::exp(SpecFunc::LnGamma((nu_ + 1.0) * 0.5) - SpecFunc::LnGamma(0.5 * nu_)) * SpecFunc::HyperGeom_1_1((nu_ + 1.0) * 0.5, 1.5, t);
   const NumericalComplex result(real, imag);
   return result;
 }
@@ -208,9 +208,9 @@ Point Chi::computePDFGradient(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   Point pdfGradient(1, 0.0);
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if (x <= 0.0) return pdfGradient;
-  NumericalScalar pdf = computePDF(point);
+  Scalar pdf = computePDF(point);
   /*        pdfGradient[0] = 0.5 * (2. * std::log(x / sqrt(2)) - SpecFunc::Psi(0.5 * nu_)) * pdf;*/
   pdfGradient[0] = 0.5 * (2. * std::log(x / M_SQRT2) - SpecFunc::Psi(0.5 * nu_)) * pdf;
   return pdfGradient;
@@ -222,15 +222,15 @@ Point Chi::computeCDFGradient(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   Point cdfGradient(1, 0.0);
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if (x <= 0.0) return cdfGradient;
-  NumericalScalar eps = std::pow(cdfEpsilon_, 1.0 / 3.0);
+  Scalar eps = std::pow(cdfEpsilon_, 1.0 / 3.0);
   cdfGradient[0] = (DistFunc::pGamma(0.5 * (nu_ + eps), 0.5 * x * x) - DistFunc::pGamma(0.5 * (nu_ - eps), 0.5 * x * x)) / (2.0 * eps);
   return cdfGradient;
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar Chi::computeScalarQuantile(const NumericalScalar prob,
+Scalar Chi::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
   return M_SQRT2 * std::sqrt(DistFunc::qGamma(0.5 * nu_, prob, tail));
@@ -259,17 +259,17 @@ Point Chi::getStandardDeviation() const
 /* Get the skewness of the distribution */
 Point Chi::getSkewness() const
 {
-  const NumericalScalar mu = getMean()[0];
-  const NumericalScalar sigma = getStandardDeviation()[0];
+  const Scalar mu = getMean()[0];
+  const Scalar sigma = getStandardDeviation()[0];
   return Point(1, mu * (1 - 2.0 * sigma * sigma) / std::pow(sigma, 3.0));
 }
 
 /* Get the kurtosis of the distribution */
 Point Chi::getKurtosis() const
 {
-  const NumericalScalar mu = getMean()[0];
-  const NumericalScalar sigma = getStandardDeviation()[0];
-  const NumericalScalar gamma1 = getSkewness()[0];
+  const Scalar mu = getMean()[0];
+  const Scalar sigma = getStandardDeviation()[0];
+  const Scalar gamma1 = getSkewness()[0];
   return Point(1, 3.0 + 2.0 * (1.0 - sigma * (mu * gamma1 + sigma)) / std::pow(sigma, 2.0));
 }
 
@@ -288,7 +288,7 @@ Point Chi::getParameter() const
 void Chi::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize();
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = Chi(parameter[0]);
   setWeight(w);
 }

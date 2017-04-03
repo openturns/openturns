@@ -56,7 +56,7 @@ Box::Box(const Indices & levels)
   // Check if there is the same number of levels than the dimension of the experiment plane
   const UnsignedInteger size = levels.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the levels dimension must be > 0";
-  setLevels(Collection<NumericalScalar>(levels.begin(), levels.end()));
+  setLevels(Collection<Scalar>(levels.begin(), levels.end()));
 }
 
 Box::Box(const Indices & levels,
@@ -67,7 +67,7 @@ Box::Box(const Indices & levels,
   // Check if there is the same number of levels than the dimension of the experiment plane
   const UnsignedInteger size = levels.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the levels dimension must be > 0";
-  setLevels(Collection<NumericalScalar>(levels.begin(), levels.end()));
+  setLevels(Collection<Scalar>(levels.begin(), levels.end()));
   if (bounds.getDimension() != size) throw InvalidArgumentException(HERE) << "Error: the bounds dimension must match the levels dimension";
 }
 

@@ -65,34 +65,34 @@ HMatrixParameters * HMatrixParameters::clone() const
 }
 
 /** accessor for assembly epsilon */
-void HMatrixParameters::setAssemblyEpsilon(const NumericalScalar assemblyEpsilon)
+void HMatrixParameters::setAssemblyEpsilon(const Scalar assemblyEpsilon)
 {
   assemblyEpsilon_ = assemblyEpsilon;
 }
 
-NumericalScalar HMatrixParameters::getAssemblyEpsilon() const
+Scalar HMatrixParameters::getAssemblyEpsilon() const
 {
   return assemblyEpsilon_;
 }
 
 /** accessor for recompression epsilon */
-void HMatrixParameters::setRecompressionEpsilon(const NumericalScalar recompressionEpsilon)
+void HMatrixParameters::setRecompressionEpsilon(const Scalar recompressionEpsilon)
 {
   recompressionEpsilon_ = recompressionEpsilon;
 }
 
-NumericalScalar HMatrixParameters::getRecompressionEpsilon() const
+Scalar HMatrixParameters::getRecompressionEpsilon() const
 {
   return recompressionEpsilon_;
 }
 
 /** accessor for admissibility factor */
-void HMatrixParameters::setAdmissibilityFactor(const NumericalScalar admissibilityFactor)
+void HMatrixParameters::setAdmissibilityFactor(const Scalar admissibilityFactor)
 {
   admissibilityFactor_ = admissibilityFactor;
 }
 
-NumericalScalar HMatrixParameters::getAdmissibilityFactor() const
+Scalar HMatrixParameters::getAdmissibilityFactor() const
 {
   return admissibilityFactor_;
 }

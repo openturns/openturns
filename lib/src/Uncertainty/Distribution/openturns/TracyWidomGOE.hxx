@@ -61,11 +61,11 @@ public:
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the PDFGradient of the distribution */
   Point computePDFGradient(const Point & point) const;
@@ -74,7 +74,7 @@ public:
   Point computeCDFGradient(const Point & point) const;
 
   /** Get the roughness, i.e. the L2-norm of the PDF */
-  NumericalScalar getRoughness() const;
+  Scalar getRoughness() const;
 
   /** Get the standard deviation of the distribution */
   Point getStandardDeviation() const;
@@ -107,7 +107,7 @@ private:
   void computeCovariance() const;
 
   /** Get the quantile of the distribution */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+  Scalar computeScalarQuantile(const Scalar prob,
                                         const Bool tail = false) const;
 
 }; /* class TracyWidomGOE */

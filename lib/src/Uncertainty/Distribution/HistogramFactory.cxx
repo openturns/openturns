@@ -52,7 +52,7 @@ HistogramFactory::Implementation HistogramFactory::build(const Sample & sample) 
 }
 
 HistogramFactory::Implementation HistogramFactory::build(const Sample & sample,
-							 const NumericalScalar bandwidth) const
+							 const Scalar bandwidth) const
 {
   return buildAsHistogram(sample, bandwidth).clone();
 }
@@ -74,7 +74,7 @@ Histogram HistogramFactory::buildAsHistogram(const Sample & sample) const
 }
 
 Histogram HistogramFactory::buildAsHistogram(const Sample & sample,
-					     const NumericalScalar bandwidth) const
+					     const Scalar bandwidth) const
 {
   const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram based on an empty sample.";
@@ -82,8 +82,8 @@ Histogram HistogramFactory::buildAsHistogram(const Sample & sample,
   if (!(bandwidth > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected a positive bandwidth, got bandwidth=" << bandwidth;
   // Construct the histogram
   // It will extends from min to max.
-  const NumericalScalar min = sample.getMin()[0];
-  const NumericalScalar max = sample.getMax()[0];
+  const Scalar min = sample.getMin()[0];
+  const Scalar max = sample.getMax()[0];
   if (!SpecFunc::IsNormal(min) || !SpecFunc::IsNormal(max)) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution if data contains NaN or Inf";
   if (max == min)
   {
@@ -104,22 +104,22 @@ Histogram HistogramFactory::buildAsHistogram(const Sample & sample,
   if (binNumber == 0) throw InvalidArgumentException(HERE) << "Error: expected a positive number of bin, got 0.";
   // Construct the histogram
   // It will extends from min to max.
-  const NumericalScalar min = sample.getMin()[0];
-  const NumericalScalar max = sample.getMax()[0];
+  const Scalar min = sample.getMin()[0];
+  const Scalar max = sample.getMax()[0];
   if (!SpecFunc::IsNormal(min) || !SpecFunc::IsNormal(max)) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution if data contains NaN or Inf";
   if (max == min)
   {
-    const NumericalScalar epsilon = ResourceMap::GetAsScalar("Distribution-DefaultCDFEpsilon");
-    const NumericalScalar delta = std::max(std::abs(min), 10.0) * epsilon;
+    const Scalar epsilon = ResourceMap::GetAsScalar("Distribution-DefaultCDFEpsilon");
+    const Scalar delta = std::max(std::abs(min), 10.0) * epsilon;
     Histogram result(min - 0.5 * delta, Point(1, delta), Point(1, 1.0));
     result.setDescription(sample.getDescription());
     return result;
   }
   // Adjust the bin with in order to match the bin number. Add a small adjustment in order to have bins defined as [x_k, x_k+1[ intervals
-  const NumericalScalar delta = ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon") * (max - min);
-  const NumericalScalar hOpt = ((max - min) + delta) / binNumber;
+  const Scalar delta = ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon") * (max - min);
+  const Scalar hOpt = ((max - min) + delta) / binNumber;
   Point heights(binNumber, 0.0);
-  const NumericalScalar step = 1.0 / hOpt;
+  const Scalar step = 1.0 / hOpt;
   // Aggregate the realizations into the bins
   for(UnsignedInteger i = 0; i < size; ++i)
   {
@@ -127,7 +127,7 @@ Histogram HistogramFactory::buildAsHistogram(const Sample & sample,
     const UnsignedInteger index = static_cast<UnsignedInteger>(floor((sample[i][0] - min) * step));
     heights[index] += 1.0;
   }
-  const NumericalScalar inverseArea = 1.0 / (hOpt * size);
+  const Scalar inverseArea = 1.0 / (hOpt * size);
   Histogram result(min, Point(binNumber, hOpt), heights * inverseArea);
   result.setDescription(sample.getDescription());
   return result;
@@ -139,12 +139,12 @@ Histogram HistogramFactory::buildAsHistogram() const
 }
 
 /* Compute the bandwidth according to Silverman's rule */
-NumericalScalar HistogramFactory::computeSilvermanBandwidth(const Sample & sample,
+Scalar HistogramFactory::computeSilvermanBandwidth(const Sample & sample,
 							    const Bool useQuantile) const
 {
   const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot compute the Silverman bandwidth based on an empty sample.";
-  NumericalScalar hOpt = 0;
+  Scalar hOpt = 0;
   if (useQuantile)
     {
       // We use the robust estimation of dispersion based on inter-quartile

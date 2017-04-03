@@ -85,7 +85,7 @@ SpectralGaussianProcess::SpectralGaussianProcess(const SpectralModel & spectralM
 
 /* Standard constructor  */
 SpectralGaussianProcess::SpectralGaussianProcess(const SecondOrderModel & model,
-    const NumericalScalar maximalFrequency,
+    const Scalar maximalFrequency,
     const UnsignedInteger nFrequency)
   : ProcessImplementation()
   , spectralModel_(model.getSpectralModel())
@@ -108,7 +108,7 @@ SpectralGaussianProcess::SpectralGaussianProcess(const SecondOrderModel & model,
 
 /* Standard constructor with spectralModel - The timeGrid imposes the frequencies values*/
 SpectralGaussianProcess::SpectralGaussianProcess(const SpectralModel & spectralModel,
-    const NumericalScalar maximalFrequency,
+    const Scalar maximalFrequency,
     const UnsignedInteger nFrequency)
 
   : ProcessImplementation()
@@ -154,16 +154,16 @@ TriangularComplexMatrix SpectralGaussianProcess::computeCholeskyFactor(const Uns
 {
   // Convert the index into a frequency
   // The index k corresponds to the kth positive discretization point in the frequency domain [-f_max, f_max] discretized using the center of the regular partition into 2N cells of the interval.
-  const NumericalScalar frequency = (k + 0.5) * frequencyStep_;
+  const Scalar frequency = (k + 0.5) * frequencyStep_;
   // Compute the DSP matrix
   HermitianMatrix spectralDensityMatrix(spectralModel_(frequency));
   // Flag to tell if the regularization has to be increased
   Bool continuationCondition = true;
   // Scale control values
-  NumericalScalar cumulatedScaling = 0.0;
-  const NumericalScalar startingScaling = ResourceMap::GetAsScalar("SpectralGaussianProcess-StartingScaling");
-  const NumericalScalar maximalScaling = ResourceMap::GetAsScalar("SpectralGaussianProcess-MaximalScaling");
-  NumericalScalar scaling = startingScaling;
+  Scalar cumulatedScaling = 0.0;
+  const Scalar startingScaling = ResourceMap::GetAsScalar("SpectralGaussianProcess-StartingScaling");
+  const Scalar maximalScaling = ResourceMap::GetAsScalar("SpectralGaussianProcess-MaximalScaling");
+  Scalar scaling = startingScaling;
   TriangularComplexMatrix choleskyFactor;
   while (continuationCondition)
   {
@@ -219,7 +219,7 @@ RegularGrid SpectralGaussianProcess::getFrequencyGrid() const
 }
 
 /* Maximal frequency accessor */
-NumericalScalar SpectralGaussianProcess::getMaximalFrequency() const
+Scalar SpectralGaussianProcess::getMaximalFrequency() const
 {
   return maximalFrequency_;
 }
@@ -231,7 +231,7 @@ UnsignedInteger SpectralGaussianProcess::getNFrequency() const
 }
 
 /* Frequency steps accessor */
-NumericalScalar SpectralGaussianProcess::getFrequencyStep() const
+Scalar SpectralGaussianProcess::getFrequencyStep() const
 {
   return frequencyStep_;
 }
@@ -286,11 +286,11 @@ void SpectralGaussianProcess::computeAlpha()
   alpha_ = PersistentNumericalComplexCollection(2 * nFrequency_);
   // Convert the frequency into pulsation, take into account that there are 2*nFrequency points and that
   // a sqrt(2) factor is needed to switch from Box Muller transform to normal complex random variable
-  const NumericalScalar factor = 2.0 * nFrequency_ * sqrt(frequencyStep_);
-  const NumericalScalar beta = -M_PI * (1.0 - 1.0 / (2.0 * nFrequency_));
+  const Scalar factor = 2.0 * nFrequency_ * sqrt(frequencyStep_);
+  const Scalar beta = -M_PI * (1.0 - 1.0 / (2.0 * nFrequency_));
   for (UnsignedInteger index = 0; index < 2 * nFrequency_; ++index)
   {
-    const NumericalScalar theta = beta * index;
+    const Scalar theta = beta * index;
     alpha_[index] = factor * NumericalComplex(cos(theta), sin(theta));
   }
 }
@@ -319,11 +319,11 @@ Field SpectralGaussianProcess::getRealization() const
     {
       // Care! Getting a realization of a random gaussian should be done using two intermediate variables
       // NumericalComplex(DistFunc::rNormal(), DistFunc::rNormal()) is correct but the fill of the complex depends on the os and compiler
-      const NumericalScalar realLeft = DistFunc::rNormal();
-      const NumericalScalar imagLeft = DistFunc::rNormal();
+      const Scalar realLeft = DistFunc::rNormal();
+      const Scalar imagLeft = DistFunc::rNormal();
       left[i] = NumericalComplex(realLeft, imagLeft);
-      const NumericalScalar realRight = DistFunc::rNormal();
-      const NumericalScalar imagRight = DistFunc::rNormal();
+      const Scalar realRight = DistFunc::rNormal();
+      const Scalar imagRight = DistFunc::rNormal();
       right[i] = NumericalComplex(realRight, imagRight);
     }
     // Use an efficient matrix/vector product here
@@ -361,8 +361,8 @@ Bool SpectralGaussianProcess::isNormal() const
 /* Adapt a time grid in order to have a power of two time stamps. Both the starting point and the end point are preserved. */
 RegularGrid SpectralGaussianProcess::AdaptGrid(const RegularGrid & grid)
 {
-  const NumericalScalar start = grid.getStart();
-  const NumericalScalar end = grid.getEnd();
+  const Scalar start = grid.getStart();
+  const Scalar end = grid.getEnd();
   UnsignedInteger powerOfTwo = SpecFunc::NextPowerOfTwo(grid.getN());
   return RegularGrid(start, (end - start) / powerOfTwo, powerOfTwo);
 }

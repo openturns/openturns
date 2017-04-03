@@ -70,9 +70,9 @@ int main(int argc, char *argv[])
     // Show PDF and CDF of point
     Point DDF = distribution.computeDDF( point );
     fullprint << "ddf      =" << DDF << std::endl;
-    NumericalScalar PDF = distribution.computePDF( point );
+    Scalar PDF = distribution.computePDF( point );
     fullprint << "pdf      =" << PDF << std::endl;
-    NumericalScalar CDF = distribution.computeCDF( point );
+    Scalar CDF = distribution.computeCDF( point );
     fullprint << "cdf      =" << CDF << std::endl;
     Point PDFgr = distribution.computePDFGradient( point );
     fullprint << "pdf gradient      =" << clean(PDFgr) << std::endl;

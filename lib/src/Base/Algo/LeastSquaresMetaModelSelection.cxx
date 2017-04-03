@@ -115,7 +115,7 @@ String LeastSquaresMetaModelSelection::__repr__() const
 void LeastSquaresMetaModelSelection::run(const DesignProxy & proxy)
 {
   // for each sub-basis ...
-  NumericalScalar minimumError = SpecFunc::MaxScalar;
+  Scalar minimumError = SpecFunc::MaxScalar;
 
   const String methodName(ResourceMap::Get("LeastSquaresMetaModelSelection-DecompositionMethod"));
   LeastSquaresMethod method(LeastSquaresMethod::Build(methodName, proxy, weight_, currentIndices_));
@@ -127,12 +127,12 @@ void LeastSquaresMetaModelSelection::run(const DesignProxy & proxy)
   basisSequenceFactory_.updateBasis(method, y_);
 
   // for each sub-basis ...
-  const NumericalScalar alpha = std::max(1.0, ResourceMap::GetAsScalar("LeastSquaresMetaModelSelection-MaximumErrorFactor"));
-  const NumericalScalar errorThreshold = std::max(0.0, ResourceMap::GetAsScalar("LeastSquaresMetaModelSelection-ErrorThreshold"));
+  const Scalar alpha = std::max(1.0, ResourceMap::GetAsScalar("LeastSquaresMetaModelSelection-MaximumErrorFactor"));
+  const Scalar errorThreshold = std::max(0.0, ResourceMap::GetAsScalar("LeastSquaresMetaModelSelection-ErrorThreshold"));
   while ((basisSequenceFactory_.getImplementation()->addedPsi_k_ranks_.getSize() > 0) || (basisSequenceFactory_.getImplementation()->removedPsi_k_ranks_.getSize() > 0))
   {
     // retrieve the i-th basis of the sequence
-    const NumericalScalar error = fittingAlgorithm_.run(method, y_);
+    const Scalar error = fittingAlgorithm_.run(method, y_);
     LOGINFO(OSS() << "\nsubbasis=" << iterations << ", size=" << basisSequenceFactory_.getImplementation()->currentIndices_.getSize() << ", error=" << error << ", qSquare=" << 1.0 - error);
 
     if (error < minimumError)
@@ -162,9 +162,9 @@ void LeastSquaresMetaModelSelection::run(const DesignProxy & proxy)
   PenalizedLeastSquaresAlgorithm penalizedLeastSquaresAlgorithm(x_, y_, weight_, method.getBasis(), optimalBasisIndices);
   penalizedLeastSquaresAlgorithm.run(proxy);
   const Point optimalBasisCoefficients(penalizedLeastSquaresAlgorithm.getCoefficients());
-  const NumericalScalar optimalResidual = penalizedLeastSquaresAlgorithm.getResidual();
+  const Scalar optimalResidual = penalizedLeastSquaresAlgorithm.getResidual();
   // New relative error based on cross-validation error
-  const NumericalScalar optimalRelativeError = minimumError / y_.getSize();
+  const Scalar optimalRelativeError = minimumError / y_.getSize();
 
   // compute the coefficients in the master basis from the ones in the optimal sub-basis
   Point optimalCoefficients( currentIndices_.getSize() );

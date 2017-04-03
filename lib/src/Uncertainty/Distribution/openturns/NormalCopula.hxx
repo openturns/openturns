@@ -76,16 +76,16 @@ public:
 
   /** Get the PDF of the NormalCopula distribution */
   using CopulaImplementation::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the NormalCopula distribution */
   using CopulaImplementation::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
   using CopulaImplementation::computeSurvivalFunction;
-  NumericalScalar computeSurvivalFunction(const Point & point) const;
+  Scalar computeSurvivalFunction(const Point & point) const;
 
   /** Get the probability content of an interval */
-  NumericalScalar computeProbability(const Interval & interval) const;
+  Scalar computeProbability(const Interval & interval) const;
 
   /** Get the shape matrix of the copula */
   CorrelationMatrix getShapeMatrix() const;
@@ -101,17 +101,17 @@ public:
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using CopulaImplementation::computeConditionalPDF;
-  NumericalScalar computeConditionalPDF(const NumericalScalar x,
+  Scalar computeConditionalPDF(const Scalar x,
                                         const Point & y) const;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using CopulaImplementation::computeConditionalCDF;
-  NumericalScalar computeConditionalCDF(const NumericalScalar x,
+  Scalar computeConditionalCDF(const Scalar x,
                                         const Point & y) const;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
   using CopulaImplementation::computeConditionalQuantile;
-  NumericalScalar computeConditionalQuantile(const NumericalScalar q,
+  Scalar computeConditionalQuantile(const Scalar q,
       const Point & y) const;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */

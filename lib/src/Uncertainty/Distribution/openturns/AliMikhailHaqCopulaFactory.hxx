@@ -56,7 +56,7 @@ public:
 
 private:
   // Compute Kendall's tau from AliMikhailHaq copula's parameter
-  NumericalScalar KendallTauFromParameter(const NumericalScalar theta) const;
+  Scalar KendallTauFromParameter(const Scalar theta) const;
 
 }; /* class AliMikhailHaqCopulaFactory */
 

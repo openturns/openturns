@@ -41,8 +41,8 @@ int main(int argc, char *argv[])
 
     // get a realization
     const UnsignedInteger n = 51;
-    const NumericalScalar timeStart = 0.;
-    const NumericalScalar timeStep = 0.1;
+    const Scalar timeStart = 0.;
+    const Scalar timeStep = 0.1;
     Sample mySample(myDistribution.getSample(n));
     RegularGrid myTimeGrid(timeStart, timeStep, n);
 

@@ -40,8 +40,8 @@ JacobiFactory::JacobiFactory()
 
 
 /* Parameter constructor: (alpha, beta) is the order of the Jacobi polynomial, associated with the Beta(beta + 1, alpha + beta + 2, -1, 1) distribution in the ANALYSIS parameter set or to the Beta(alpha, beta, -1, 1) distribution in the PROBABILITY parameter set */
-JacobiFactory::JacobiFactory(const NumericalScalar alpha,
-                             const NumericalScalar beta,
+JacobiFactory::JacobiFactory(const Scalar alpha,
+                             const Scalar beta,
                              const ParameterSet parameterization)
   : OrthogonalUniVariatePolynomialFactory((parameterization == ANALYSIS ? Beta(beta + 1.0, alpha + beta + 2.0, -1.0, 1.0) : Beta(alpha, beta, -1.0, 1.0)))
   , alpha_(0.0)
@@ -74,24 +74,24 @@ JacobiFactory::Coefficients JacobiFactory::getRecurrenceCoefficients(const Unsig
   Coefficients recurrenceCoefficients(3, 0.0);
   if (n == 0)
   {
-    const NumericalScalar factor = 0.5 * sqrt((alpha_ + beta_ + 3.0) / ((alpha_ + 1.0) * (beta_ + 1.0)));
+    const Scalar factor = 0.5 * sqrt((alpha_ + beta_ + 3.0) / ((alpha_ + 1.0) * (beta_ + 1.0)));
     recurrenceCoefficients[0] = (alpha_ + beta_ + 2.0) * factor;
     // To avoid spurious -0.0
     if (alpha_ != beta_) recurrenceCoefficients[1] = (alpha_ - beta_) * factor;
     // Conventional value of 0.0 for recurrenceCoefficients[2]
     return recurrenceCoefficients;
   }
-  const NumericalScalar nAlphaP1 = n + alpha_ + 1;
-  const NumericalScalar nBetaP1 = n + beta_ + 1;
-  const NumericalScalar twoNAlphaBetaP2 = nAlphaP1 + nBetaP1;
-  const NumericalScalar factor1 = (twoNAlphaBetaP2 + 1) / ((n + 1) * nAlphaP1 * nBetaP1 * (nAlphaP1 + beta_));
-  const NumericalScalar factor2 = 0.5 * sqrt((twoNAlphaBetaP2 - 1) * factor1);
+  const Scalar nAlphaP1 = n + alpha_ + 1;
+  const Scalar nBetaP1 = n + beta_ + 1;
+  const Scalar twoNAlphaBetaP2 = nAlphaP1 + nBetaP1;
+  const Scalar factor1 = (twoNAlphaBetaP2 + 1) / ((n + 1) * nAlphaP1 * nBetaP1 * (nAlphaP1 + beta_));
+  const Scalar factor2 = 0.5 * sqrt((twoNAlphaBetaP2 - 1) * factor1);
   recurrenceCoefficients[0] = factor2 * twoNAlphaBetaP2;
   // To avoid spurious -0.0
   if (alpha_ != beta_) recurrenceCoefficients[1] = factor2 * (alpha_ - beta_) * (alpha_ + beta_) / (twoNAlphaBetaP2 - 2);
   if (n == 1)
   {
-    const NumericalScalar epsilon = alpha_ + beta_ + 1.0;
+    const Scalar epsilon = alpha_ + beta_ + 1.0;
     // The case where |epsilon| << 1 leads to an indeterminate form 0/0
     // when n==1, which is the only case where such a problem can occur.
     // We use a series expansion, the threshold 1.0e-8 insures that the
@@ -108,13 +108,13 @@ JacobiFactory::Coefficients JacobiFactory::getRecurrenceCoefficients(const Unsig
 }
 
 /* Alpha accessor */
-NumericalScalar JacobiFactory::getAlpha() const
+Scalar JacobiFactory::getAlpha() const
 {
   return alpha_;
 }
 
 /* Beta accessor */
-NumericalScalar JacobiFactory::getBeta() const
+Scalar JacobiFactory::getBeta() const
 {
   return beta_;
 }

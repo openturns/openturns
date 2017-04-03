@@ -42,8 +42,8 @@ VisualTest::VisualTest()
 
 /* Draw the empirical CDF of the Sample when its dimension is 1 */
 Graph VisualTest::DrawEmpiricalCDF(const Sample & sample,
-                                   const NumericalScalar xMin,
-                                   const NumericalScalar xMax)
+                                   const Scalar xMin,
+                                   const Scalar xMax)
 {
   return UserDefined(sample).drawCDF(xMin, xMax);
 }
@@ -84,10 +84,10 @@ Graph VisualTest::DrawQQplot(const Sample & sample1,
   if (sample1.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a QQplot only if dimension equals 1, here dimension=" << sample1.getDimension();
   if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a QQplot only if dimension equals 1, here dimension=" << sample2.getDimension();
   Sample data(pointNumber, 2);
-  const NumericalScalar step = 1.0 / pointNumber;
+  const Scalar step = 1.0 / pointNumber;
   for (UnsignedInteger i = 0; i < pointNumber; ++i)
   {
-    const NumericalScalar q = (i + 0.5) * step;
+    const Scalar q = (i + 0.5) * step;
     data[i][0] = sample1.computeQuantilePerComponent(q)[0];
     data[i][1] = sample2.computeQuantilePerComponent(q)[0];
   }
@@ -111,8 +111,8 @@ Graph VisualTest::DrawQQplot(const Sample & sample1,
   graphQQplot.add(cloudQQplot);
   // Adapt the margins
   Point boundingBox(graphQQplot.getBoundingBox());
-  NumericalScalar width = boundingBox[1] - boundingBox[0];
-  NumericalScalar height = boundingBox[3] - boundingBox[2];
+  Scalar width = boundingBox[1] - boundingBox[0];
+  Scalar height = boundingBox[3] - boundingBox[2];
   boundingBox[0] -= 0.1 * width;
   boundingBox[1] += 0.1 * width;
   boundingBox[2] -= 0.1 * height;
@@ -130,7 +130,7 @@ Graph VisualTest::DrawQQplot(const Sample & sample,
   const UnsignedInteger size = sample.getSize();
   const Sample sortedSample(sample.sort(0));
   Sample data(size, 2);
-  const NumericalScalar step = 1.0 / size;
+  const Scalar step = 1.0 / size;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     data[i][0] = sortedSample[i][0];
@@ -156,8 +156,8 @@ Graph VisualTest::DrawQQplot(const Sample & sample,
   graphQQplot.add(cloudQQplot);
   // Adapt the margins
   Point boundingBox(graphQQplot.getBoundingBox());
-  NumericalScalar width = boundingBox[1] - boundingBox[0];
-  NumericalScalar height = boundingBox[3] - boundingBox[2];
+  Scalar width = boundingBox[1] - boundingBox[0];
+  Scalar height = boundingBox[3] - boundingBox[2];
   boundingBox[0] -= 0.1 * width;
   boundingBox[1] += 0.1 * width;
   boundingBox[2] -= 0.1 * height;
@@ -185,8 +185,8 @@ Graph VisualTest::DrawHenryLine(const Sample & sample, const Distribution & norm
   const Sample sortedSample(sample.sort(0));
 
   // First, the Henry line: y = (x - mu) / sigma
-  const NumericalScalar mu = normal.getMean()[0];
-  const NumericalScalar sigma = normal.getStandardDeviation()[0];
+  const Scalar mu = normal.getMean()[0];
+  const Scalar sigma = normal.getStandardDeviation()[0];
   Sample henryLinePoints(2, 2);
   henryLinePoints[0][0] = sortedSample[0][0]; // sample.getMin()[0];
   henryLinePoints[0][1] = (henryLinePoints[0][0] - mu) / sigma;
@@ -200,7 +200,7 @@ Graph VisualTest::DrawHenryLine(const Sample & sample, const Distribution & norm
   // Then, the data
   const Normal standard_normal(0.0, 1.0);
   Sample data(size, 2);
-  const NumericalScalar step = 1.0 / size;
+  const Scalar step = 1.0 / size;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     data[i][0] = sortedSample[i][0];
@@ -315,8 +315,8 @@ Graph VisualTest::DrawLinearModelResidual(const Sample & sample1,
 /* Draw the CobWeb visual test */
 Graph VisualTest::DrawCobWeb(const Sample & inputSample,
                              const Sample & outputSample,
-                             const NumericalScalar minValue,
-                             const NumericalScalar maxValue,
+                             const Scalar minValue,
+                             const Scalar maxValue,
                              const String & color,
                              const Bool quantileScale)
 {
@@ -330,8 +330,8 @@ Graph VisualTest::DrawCobWeb(const Sample & inputSample,
   UnsignedInteger maxRank = 0;
   if (!quantileScale)
   {
-    const NumericalScalar minCDF = outputSample.computeEmpiricalCDF(Point(1, minValue));
-    const NumericalScalar maxCDF = outputSample.computeEmpiricalCDF(Point(1, maxValue));
+    const Scalar minCDF = outputSample.computeEmpiricalCDF(Point(1, minValue));
+    const Scalar maxCDF = outputSample.computeEmpiricalCDF(Point(1, maxValue));
     minRank = static_cast<UnsignedInteger>(round(size * minCDF));
     maxRank = static_cast<UnsignedInteger>(round(size * maxCDF));
   }
@@ -464,8 +464,8 @@ Sample VisualTest::ComputeKendallPlotEmpiricalStatistics(const Sample & sample)
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Point pointI(sample[i]);
-    const NumericalScalar uI = pointI[0];
-    const NumericalScalar vI = pointI[1];
+    const Scalar uI = pointI[0];
+    const Scalar vI = pointI[1];
     UnsignedInteger cardinal = 0;
     for (UnsignedInteger j = 0; j < i; ++j)
     {
@@ -477,7 +477,7 @@ Sample VisualTest::ComputeKendallPlotEmpiricalStatistics(const Sample & sample)
       const Point pointJ(sample[j]);
       cardinal += (pointJ[0] <= uI) && (pointJ[1] <= vI);
     }
-    result[i] = Point(1, cardinal / static_cast<NumericalScalar>(size - 1));
+    result[i] = Point(1, cardinal / static_cast<Scalar>(size - 1));
   }
   return result.sort(0);
 }

@@ -35,24 +35,24 @@ BEGIN_NAMESPACE_OPENTURNS
 namespace GammaFunctions
 {
 
-NumericalScalar IncompleteGamma(const NumericalScalar a,
-                                const NumericalScalar x,
+Scalar IncompleteGamma(const Scalar a,
+                                const Scalar x,
                                 const Bool tail)
 {
   if (!(a > 0.0)) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
   return RegularizedIncompleteGamma(a, x, tail) * SpecFunc::Gamma(a);
 }
 
-NumericalScalar IncompleteGammaInverse(const NumericalScalar a,
-                                       const NumericalScalar x,
+Scalar IncompleteGammaInverse(const Scalar a,
+                                       const Scalar x,
                                        const Bool tail)
 {
   if (!(a > 0.0)) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
   return RegularizedIncompleteGammaInverse(a, x / SpecFunc::Gamma(a), tail);
 }
 
-NumericalScalar RegularizedIncompleteGamma(const NumericalScalar a,
-    const NumericalScalar x,
+Scalar RegularizedIncompleteGamma(const Scalar a,
+    const Scalar x,
     const Bool tail)
 {
   if (!(a > 0.0)) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
@@ -60,8 +60,8 @@ NumericalScalar RegularizedIncompleteGamma(const NumericalScalar a,
 #ifdef OPENTURNS_HAVE_BOOST
   return (tail ? boost::math::gamma_q(a, x) : boost::math::gamma_p(a, x));
 #else
-  NumericalScalar p = -1.0;
-  NumericalScalar q = -1.0;
+  Scalar p = -1.0;
+  Scalar q = -1.0;
   SignedInteger ierr;
   incgam(a, x, p, q, ierr);
   if (ierr == 1) LOGWARN(OSS() << "underflow or overflow in RegularizedIncompleteGamma for a=" << a << ", x=" << x);
@@ -69,16 +69,16 @@ NumericalScalar RegularizedIncompleteGamma(const NumericalScalar a,
 #endif
 }
 
-NumericalScalar RegularizedIncompleteGammaInverse(const NumericalScalar a,
-    const NumericalScalar x,
+Scalar RegularizedIncompleteGammaInverse(const Scalar a,
+    const Scalar x,
     const Bool tail)
 {
   if (!(a > 0.0)) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
 #ifdef OPENTURNS_HAVE_BOOST
   return (tail ? boost::math::gamma_q_inv(a, x) : boost::math::gamma_p_inv(a, x));
 #else
-  const NumericalScalar y = 0.5 + (0.5 - x);
-  NumericalScalar xr = -1.0;
+  const Scalar y = 0.5 + (0.5 - x);
+  Scalar xr = -1.0;
   SignedInteger ierr;
   invincgam(a, (tail ? y : x), (tail ? x : y), xr, ierr);
   if (ierr == -1) LOGWARN(OSS() << "cannot compute the RegularizedIncompleteGammaInverse funtion to full precision for a=" << a << ", x=" << x << ", tail=" << tail << " because of an overflow.");

@@ -44,7 +44,7 @@ public:
   HistogramPolynomialFactory();
 
   /** Parameter constructor */
-  HistogramPolynomialFactory(const NumericalScalar first,
+  HistogramPolynomialFactory(const Scalar first,
 			     const Point & width,
 			     const Point & height);
 
@@ -56,7 +56,7 @@ public:
   Coefficients getRecurrenceCoefficients(const UnsignedInteger n) const;
 
   /** First accessor */
-  NumericalScalar getFirst() const;
+  Scalar getFirst() const;
 
   /** Width accessor */
   Point getWidth() const;

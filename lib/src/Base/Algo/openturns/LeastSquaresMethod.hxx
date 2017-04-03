@@ -96,7 +96,7 @@ public:
   Point getGramInverseDiag() const;
 
   /** Get the trace of the Gram inverse */
-  NumericalScalar getGramInverseTrace() const;
+  Scalar getGramInverseTrace() const;
 
   /** Update basis */
   void update(const Indices & addedIndices,

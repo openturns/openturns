@@ -199,7 +199,7 @@ Point CumulativeDistributionNetwork::reducePoint(const Point & point,
 }
 
 /* Get the PDF of the CumulativeDistributionNetwork */
-NumericalScalar CumulativeDistributionNetwork::computePDF(const Point & point) const
+Scalar CumulativeDistributionNetwork::computePDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -208,11 +208,11 @@ NumericalScalar CumulativeDistributionNetwork::computePDF(const Point & point) c
 
 
 /* Get the CDF of the CumulativeDistributionNetwork */
-NumericalScalar CumulativeDistributionNetwork::computeCDF(const Point & point) const
+Scalar CumulativeDistributionNetwork::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
-  NumericalScalar cdf = distributionCollection_[0].computeCDF(reducePoint(point, 0));
+  Scalar cdf = distributionCollection_[0].computeCDF(reducePoint(point, 0));
   const UnsignedInteger size = distributionCollection_.getSize();
   for (UnsignedInteger i = 1; i < size; ++i) cdf *= distributionCollection_[i].computeCDF(reducePoint(point, i));
   return cdf;

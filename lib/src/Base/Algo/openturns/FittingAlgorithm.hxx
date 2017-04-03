@@ -54,24 +54,24 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Perform cross-validation */
-  NumericalScalar run(const Sample & x,
+  Scalar run(const Sample & x,
                       const Sample & y,
                       const Point & weight,
                       const Basis & psi,
                       const Indices & indices) const;
 
-  NumericalScalar run(const Sample & x,
+  Scalar run(const Sample & x,
                       const Sample & y,
                       const Basis & psi,
                       const Indices & indices) const;
 
 #ifndef SWIG
-  NumericalScalar run(const Sample & y,
+  Scalar run(const Sample & y,
                       const Point & weight,
                       const Indices & indices,
                       const DesignProxy & proxy) const;
 
-  NumericalScalar run(LeastSquaresMethod & method,
+  Scalar run(LeastSquaresMethod & method,
                       const Sample & y) const;
 #endif
 

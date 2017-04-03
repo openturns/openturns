@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CorrelationAnalysis::CorrelationAnalysis() {}
 
 /* Compute the Pearson correlation coefficient between the component number index of the input sample and the 1D outputSample */
-NumericalScalar CorrelationAnalysis::PearsonCorrelation(const Sample & inputSample,
+Scalar CorrelationAnalysis::PearsonCorrelation(const Sample & inputSample,
     const Sample & outputSample,
     const UnsignedInteger index)
 {
@@ -50,7 +50,7 @@ NumericalScalar CorrelationAnalysis::PearsonCorrelation(const Sample & inputSamp
 }
 
 /* Compute the Spearman correlation coefficient between the component number index of the input sample and the 1D outputSample */
-NumericalScalar CorrelationAnalysis::SpearmanCorrelation(const Sample & inputSample,
+Scalar CorrelationAnalysis::SpearmanCorrelation(const Sample & inputSample,
     const Sample & outputSample,
     const UnsignedInteger index)
 {
@@ -73,7 +73,7 @@ Point CorrelationAnalysis::SRC(const Sample & inputSample,
   // Linear coefficients
   const Point linear(regressionAlgorithm.getLinear() * Point(1, 1.0));
   // Compute the output variance from the regression coefficients
-  NumericalScalar varOutput = 0.0;
+  Scalar varOutput = 0.0;
   Point src(inputSample.computeVariance());
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {

@@ -94,19 +94,19 @@ Point MinCopula::computeDDF(const Point & point) const
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar MinCopula::computePDF(const Point & point) const
+Scalar MinCopula::computePDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  const NumericalScalar u = point[0];
+  const Scalar u = point[0];
   if ((u <= 0.0) || (u > 1.0)) return 0.0;
   for (UnsignedInteger i = 1; i < dimension; ++i) if (u != point[i]) return 0.0;
   return u;
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar MinCopula::computeCDF(const Point & point) const
+Scalar MinCopula::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -115,13 +115,13 @@ NumericalScalar MinCopula::computeCDF(const Point & point) const
 } // computeCDF
 
 /* Compute the survival function */
-NumericalScalar MinCopula::computeSurvivalFunction(const Point & point) const
+Scalar MinCopula::computeSurvivalFunction(const Point & point) const
 {
   return computeCDF(Point(getDimension(), 1.0) - point);
 }
 
 /* Get the quantile of the distribution */
-Point MinCopula::computeQuantile(const NumericalScalar prob,
+Point MinCopula::computeQuantile(const Scalar prob,
     const Bool tail) const
 {
   if ((prob < 0.0) || (prob > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
@@ -135,7 +135,7 @@ Point MinCopula::computeQuantile(const NumericalScalar prob,
 void MinCopula::computeCovariance() const
 {
   const UnsignedInteger dimension = getDimension();
-  covariance_ = CovarianceMatrix(dimension, Collection<NumericalScalar>(dimension * dimension, 1.0 / 12.0));
+  covariance_ = CovarianceMatrix(dimension, Collection<Scalar>(dimension * dimension, 1.0 / 12.0));
   isAlreadyComputedCovariance_ = true;
 }
 
@@ -143,7 +143,7 @@ void MinCopula::computeCovariance() const
 CorrelationMatrix MinCopula::getKendallTau() const
 {
   const UnsignedInteger dimension = getDimension();
-  return CorrelationMatrix(dimension, Collection<NumericalScalar>(dimension * dimension, 1.0));
+  return CorrelationMatrix(dimension, Collection<Scalar>(dimension * dimension, 1.0));
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */

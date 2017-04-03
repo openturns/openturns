@@ -36,9 +36,9 @@ CLASSNAMEINIT(Brent);
 static const Factory<Brent> Factory_Brent;
 
 /* Parameter constructor */
-Brent::Brent(const NumericalScalar absoluteError,
-             const NumericalScalar relativeError,
-             const NumericalScalar residualError,
+Brent::Brent(const Scalar absoluteError,
+             const Scalar relativeError,
+             const Scalar residualError,
              const UnsignedInteger maximumFunctionEvaluation)
   : SolverImplementation(absoluteError, relativeError, residualError, maximumFunctionEvaluation)
 {
@@ -61,31 +61,31 @@ String Brent::__repr__() const
 }
 
 /* Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] given function(infPoint) and function(supPoint) with the Brent method */
-NumericalScalar Brent::solve(const Function & function,
-                             const NumericalScalar value,
-                             const NumericalScalar infPoint,
-                             const NumericalScalar supPoint,
-                             const NumericalScalar infValue,
-                             const NumericalScalar supValue) const
+Scalar Brent::solve(const Function & function,
+                             const Scalar value,
+                             const Scalar infPoint,
+                             const Scalar supPoint,
+                             const Scalar infValue,
+                             const Scalar supValue) const
 {
   if ((function.getInputDimension() != 1) || (function.getOutputDimension() != 1)) throw InvalidDimensionException(HERE) << "Error: Brent's method requires a scalar function, here input dimension=" << function.getInputDimension() << " and output dimension=" << function.getOutputDimension();
   /* We transform the equation function(x) = value into function(x) - value = 0 */
   UnsignedInteger usedFunctionEvaluation = 0;
   const UnsignedInteger maximumFunctionEvaluation = getMaximumFunctionEvaluation();
-  volatile NumericalScalar a = infPoint;
-  NumericalScalar fA = infValue - value;
+  volatile Scalar a = infPoint;
+  Scalar fA = infValue - value;
   if (std::abs(fA) <= getResidualError()) return a;
-  volatile NumericalScalar b = supPoint;
-  NumericalScalar fB = supValue - value;
+  volatile Scalar b = supPoint;
+  Scalar fB = supValue - value;
   if (std::abs(fB) <= getResidualError()) return b;
   if (!(fA * fB <= 0.0)) throw InternalException(HERE) << "Error: Brent method requires that the function takes different signs at the endpoints of the given starting interval, here infPoint=" << infPoint << ", supPoint=" << supPoint << ", value=" << value << ", f(infPoint) - value=" << fA << " and f(supPoint) - value=" << fB;
-  volatile NumericalScalar c = a;
-  NumericalScalar fC = fA;
+  volatile Scalar c = a;
+  Scalar fC = fA;
   // Main loop
   for (;;)
   {
     // Interval length
-    const NumericalScalar oldDelta = b - a;
+    const Scalar oldDelta = b - a;
 
     // B will be the best approximation
     if (std::abs(fC) < std::abs(fB))
@@ -98,10 +98,10 @@ NumericalScalar Brent::solve(const Function & function,
       fC = fA;
     }
     // Current error on the root
-    const NumericalScalar error = 2.0 * getRelativeError() * std::abs(b) + 0.5 * getAbsoluteError();
+    const Scalar error = 2.0 * getRelativeError() * std::abs(b) + 0.5 * getAbsoluteError();
 
     // Bisection step
-    NumericalScalar newDelta = 0.5 * (c - b);
+    Scalar newDelta = 0.5 * (c - b);
 
     // If the current approximation of the root is good enough, return it
     if ((std::abs(newDelta) <= error) || (std::abs(fB) <= getResidualError())) break;
@@ -110,23 +110,23 @@ NumericalScalar Brent::solve(const Function & function,
     if ((std::abs(oldDelta) >= error)  && (std::abs(fA) > std::abs(fB)))
     {
       // The new increment for the root will be p / q with p > 0
-      NumericalScalar p = -1.0;
-      NumericalScalar q = -1.0;
-      const NumericalScalar cb = c - b;
+      Scalar p = -1.0;
+      Scalar q = -1.0;
+      const Scalar cb = c - b;
 
       // We can just perform a linear inverse interpolation here
       if (a == c)
       {
-        const NumericalScalar slopeBA = fB / fA;
+        const Scalar slopeBA = fB / fA;
         p = cb * slopeBA;
         q = 1.0 - slopeBA;
       }
       // Here we can perform an inverse quadratic interpolation
       else
       {
-        const NumericalScalar slopeAC = fA / fC;
-        const NumericalScalar slopeBC = fB / fC;
-        const NumericalScalar slopeBA = fB / fA;
+        const Scalar slopeAC = fA / fC;
+        const Scalar slopeBC = fB / fC;
+        const Scalar slopeBA = fB / fA;
         p = slopeBA * (cb * slopeAC * (slopeAC - slopeBC) - (b - a) * (slopeBC - 1.0));
         q = (slopeAC - 1.0) * (slopeBC - 1.0) * (slopeBA - 1.0);
       }

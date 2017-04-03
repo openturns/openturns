@@ -41,7 +41,7 @@ LinearModelFactory::LinearModelFactory()
 /* LinearModel creation */
 LinearModel LinearModelFactory::build(const Sample & samplePred,
                                       const Sample & sampleLab,
-                                      const NumericalScalar levelValue) const
+                                      const Scalar levelValue) const
 {
   if (samplePred.getSize() != sampleLab.getSize()) throw InvalidArgumentException(HERE) << "Error: predictors sample must have the same size than the laboratory sample";
   String predictorFileName(samplePred.storeToTemporaryFile());
@@ -64,7 +64,7 @@ LinearModel LinearModelFactory::build(const Sample & samplePred,
   const String RExecutable(ResourceMap::Get("R-executable-command"));
   OSS systemCommand;
   if (RExecutable != "") systemCommand << RExecutable << " --no-save --silent < \"" << commandFileName << "\"" << Os::GetDeleteCommandOutput();
-  else throw NotYetImplementedException(HERE) << "In LinearModelFactory::build(const Sample & samplePred, const Sample & sampleLab, const NumericalScalar levelValue) const: needs R. Please install it and set the absolute path of the R executable in ResourceMap.";
+  else throw NotYetImplementedException(HERE) << "In LinearModelFactory::build(const Sample & samplePred, const Sample & sampleLab, const Scalar levelValue) const: needs R. Please install it and set the absolute path of the R executable in ResourceMap.";
   int returnCode(Os::ExecuteCommand(systemCommand));
   if (returnCode != 0) throw InternalException(HERE) << "Error: unable to execute the system command " << String(systemCommand) << " returned code is " << returnCode;
   // Parse result file
@@ -91,7 +91,7 @@ LinearModel LinearModelFactory::build(const Sample & samplePred,
   Interval confidenceIntervals(lowerBounds, upperBounds);
 
   // Read the p-values of the coefficients
-  NumericalScalarPersistentCollection pValues(dimension);
+  ScalarPersistentCollection pValues(dimension);
   for (UnsignedInteger i = 0; i < dimension; i++)
   {
     resultFile >> pValues[i];

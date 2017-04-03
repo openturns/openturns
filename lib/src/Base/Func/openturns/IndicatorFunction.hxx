@@ -44,7 +44,7 @@ public:
   /** Parameter constructor */
   IndicatorFunction(const Function & function,
                     const ComparisonOperator & comparisonOperator,
-                    const NumericalScalar threshold);
+                    const Scalar threshold);
 
   /** Comparison operator */
   Bool operator ==(const IndicatorFunction & other) const;

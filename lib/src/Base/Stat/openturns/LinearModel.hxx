@@ -47,8 +47,8 @@ class OT_API LinearModel :
 
 public:
 
-  typedef Collection<NumericalScalar>                    NumericalScalarCollection;
-  typedef PersistentCollection<NumericalScalar>          NumericalScalarPersistentCollection;
+  typedef Collection<Scalar>                    ScalarCollection;
+  typedef PersistentCollection<Scalar>          ScalarPersistentCollection;
 
 
   /** Default constructor is private */
@@ -57,7 +57,7 @@ public:
   /** Standard constructor */
   LinearModel(const Point & vectorR,
               const Interval & intervals,
-              const NumericalScalarCollection & pValuesOfR);
+              const ScalarCollection & pValuesOfR);
 
   /** Constructor from Point */
   LinearModel(const Point & vectorR);
@@ -73,7 +73,7 @@ public:
   /** get vector, get intervals*/
   Point getRegression() const;
   Interval getConfidenceIntervals() const;
-  NumericalScalarCollection getPValues() const;
+  ScalarCollection getPValues() const;
 
   /** getPredicted : build an sample of predicted values */
   Sample getPredicted(const Sample & predictor) const;
@@ -98,7 +98,7 @@ protected:
   Interval confidenceIntervals_;
 
   /** The p-Values  */
-  NumericalScalarPersistentCollection pValues_;
+  ScalarPersistentCollection pValues_;
 
 
 private:

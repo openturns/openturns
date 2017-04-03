@@ -107,7 +107,7 @@ String PiecewiseHermiteEvaluation::__str__(const String & offset) const
 Point PiecewiseHermiteEvaluation::operator () (const Point & inP) const
 {
   if (inP.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: expected an input point of dimension 1, got dimension=" << inP.getDimension();
-  const NumericalScalar x = inP[0];
+  const Scalar x = inP[0];
   UnsignedInteger iLeft = 0;
   if (x <= locations_[iLeft]) return values_[iLeft];
   UnsignedInteger iRight = locations_.getSize() - 1;
@@ -126,17 +126,17 @@ Point PiecewiseHermiteEvaluation::operator () (const Point & inP) const
       else iLeft = im;
     }
 
-  const NumericalScalar h = locations_[iRight] - locations_[iLeft];
-  const NumericalScalar theta = (x - locations_[iLeft]) / h;
+  const Scalar h = locations_[iRight] - locations_[iLeft];
+  const Scalar theta = (x - locations_[iLeft]) / h;
   const Point vLeft(values_[iLeft]);
   const Point vRight(values_[iRight]);
   const Point dvLeft(derivatives_[iLeft]);
   const Point dvRight(derivatives_[iRight]);
   const UnsignedInteger dimension = getOutputDimension();
   Point value(dimension);
-  const NumericalScalar alpha = 1.0 - theta;
-  const NumericalScalar beta = theta * alpha;
-  const NumericalScalar gamma = 2.0 * theta - 1.0;
+  const Scalar alpha = 1.0 - theta;
+  const Scalar beta = theta * alpha;
+  const Scalar gamma = 2.0 * theta - 1.0;
   for (UnsignedInteger i = 0; i < dimension; ++i) value[i] = alpha * vLeft[i] + theta * vRight[i] + beta * (gamma * (vRight[i] - vLeft[i]) + h * (alpha * dvLeft[i] - theta * dvRight[i]));
   return value;
 }
@@ -145,7 +145,7 @@ Point PiecewiseHermiteEvaluation::operator () (const Point & inP) const
 Point PiecewiseHermiteEvaluation::derivate(const Point & inP) const
 {
   if (inP.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: expected an input point of dimension 1, got dimension=" << inP.getDimension();
-  const NumericalScalar x = inP[0];
+  const Scalar x = inP[0];
   UnsignedInteger iLeft = 0;
   if (x <= locations_[iLeft]) return values_[iLeft];
   UnsignedInteger iRight = locations_.getSize() - 1;
@@ -164,17 +164,17 @@ Point PiecewiseHermiteEvaluation::derivate(const Point & inP) const
       else iLeft = im;
     }
 
-  const NumericalScalar h = locations_[iRight] - locations_[iLeft];
-  const NumericalScalar theta = (x - locations_[iLeft]) / h;
+  const Scalar h = locations_[iRight] - locations_[iLeft];
+  const Scalar theta = (x - locations_[iLeft]) / h;
   const Point vLeft(values_[iLeft]);
   const Point vRight(values_[iRight]);
   const Point dvLeft(derivatives_[iLeft]);
   const Point dvRight(derivatives_[iRight]);
   const UnsignedInteger dimension = getOutputDimension();
   Point value(dimension);
-  const NumericalScalar alpha = 1.0 - theta;
-  const NumericalScalar beta = theta * alpha;
-  const NumericalScalar gamma = 2.0 * theta - 1.0;
+  const Scalar alpha = 1.0 - theta;
+  const Scalar beta = theta * alpha;
+  const Scalar gamma = 2.0 * theta - 1.0;
   for (UnsignedInteger i = 0; i < dimension; ++i) value[i] = (-vLeft[i] + vRight[i] + alpha * (gamma * (vRight[i] - vLeft[i]) + h * (alpha * dvLeft[i] - theta * dvRight[i])) + beta * (2.0 * (vRight[i] - vLeft[i]) + h * (- dvLeft[i] - dvRight[i]))) / h;
   return value;
 }
@@ -190,8 +190,8 @@ void PiecewiseHermiteEvaluation::setLocations(const Point & locations)
   const UnsignedInteger size = locations.getSize();
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: there must be at least 2 points to build a piecewise Hermite interpolation function.";
   if (locations.getSize() != values_.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of locations=" << size << " must match the number of previously set values=" << values_.getSize();
-  const NumericalScalar step = locations_[0] - locations_[0];
-  const NumericalScalar epsilon = ResourceMap::GetAsScalar("PiecewiseHermiteEvaluation-EpsilonRegular") * std::abs(step);
+  const Scalar step = locations_[0] - locations_[0];
+  const Scalar epsilon = ResourceMap::GetAsScalar("PiecewiseHermiteEvaluation-EpsilonRegular") * std::abs(step);
   isRegular_ = true;
   for (UnsignedInteger i = 0; i < size; ++i) isRegular_ = isRegular_ && (std::abs(locations[i] - locations[0] - i * step) < epsilon);
   locations_ = locations;
@@ -251,8 +251,8 @@ void PiecewiseHermiteEvaluation::setLocationsValuesAndDerivatives(const Point & 
   locations_ = Point(size);
   values_ = Sample(size, outputDimension);
   derivatives_ = Sample(size, outputDimension);
-  const NumericalScalar step = data[1][0] - data[0][0];
-  const NumericalScalar epsilon = ResourceMap::GetAsScalar("PiecewiseHermiteEvaluation-EpsilonRegular") * std::abs(step);
+  const Scalar step = data[1][0] - data[0][0];
+  const Scalar epsilon = ResourceMap::GetAsScalar("PiecewiseHermiteEvaluation-EpsilonRegular") * std::abs(step);
   isRegular_ = true;
   for (UnsignedInteger i = 0; i < size; ++i)
   {

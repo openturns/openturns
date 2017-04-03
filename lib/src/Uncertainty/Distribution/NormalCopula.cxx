@@ -183,25 +183,25 @@ Point NormalCopula::computeDDF(const Point & point) const
   }
   Point x(dimension);
   Point marginalPDF(dimension);
-  NumericalScalar marginalPDFProduct = 1.0;
+  Scalar marginalPDFProduct = 1.0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const NumericalScalar xi = DistFunc::qNormal(point[i]);
+    const Scalar xi = DistFunc::qNormal(point[i]);
     x[i] = xi;
     // .398942280401432677939946059934 = 1 / sqrt(2.pi)
-    const NumericalScalar pdfI = 0.398942280401432677939946059934 * std::exp(-0.5 * xi * xi);
+    const Scalar pdfI = 0.398942280401432677939946059934 * std::exp(-0.5 * xi * xi);
     marginalPDF[i] = pdfI;
     marginalPDFProduct *= pdfI;
   }
   const Point ddfNorm(normal_.computeDDF(x));
-  const NumericalScalar pdfNorm = normal_.computePDF(x);
+  const Scalar pdfNorm = normal_.computePDF(x);
   Point ddf(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i) ddf[i] = (ddfNorm[i] + x[i] * pdfNorm) / (marginalPDFProduct * marginalPDF[i]);
   return ddf;
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar NormalCopula::computePDF(const Point & point) const
+Scalar NormalCopula::computePDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
@@ -219,10 +219,10 @@ NumericalScalar NormalCopula::computePDF(const Point & point) const
   // and the PDF of the associated generic normal using the specific form of
   // the standard normal PDF
   Point normalPoint(dimension);
-  NumericalScalar value = 0.0;
+  Scalar value = 0.0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const NumericalScalar yi = DistFunc::qNormal(point[i]);
+    const Scalar yi = DistFunc::qNormal(point[i]);
     normalPoint[i] = yi;
     value += yi * yi;
   }
@@ -232,7 +232,7 @@ NumericalScalar NormalCopula::computePDF(const Point & point) const
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar NormalCopula::computeCDF(const Point & point) const
+Scalar NormalCopula::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
@@ -263,7 +263,7 @@ NumericalScalar NormalCopula::computeCDF(const Point & point) const
 } // computeCDF
 
 /* Get the survival function of the distribution */
-NumericalScalar NormalCopula::computeSurvivalFunction(const Point & point) const
+Scalar NormalCopula::computeSurvivalFunction(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
@@ -294,7 +294,7 @@ NumericalScalar NormalCopula::computeSurvivalFunction(const Point & point) const
 } // computeSurvivalFunction
 
 /* Compute the probability content of an interval */
-NumericalScalar NormalCopula::computeProbability(const Interval & interval) const
+Scalar NormalCopula::computeProbability(const Interval & interval) const
 {
   const UnsignedInteger dimension = getDimension();
   if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension=" << dimension << ", here dimension=" << interval.getDimension();
@@ -390,7 +390,7 @@ Point NormalCopula::computeCDFGradient(const Point & point) const
    This expression simplifies if we use the inverse of the Cholesky factor of the covariance matrix.
    See [Lebrun, Dutfoy, "Rosenblatt and Nataf transformation"]
 */
-NumericalScalar NormalCopula::computeConditionalPDF(const NumericalScalar x,
+Scalar NormalCopula::computeConditionalPDF(const Scalar x,
     const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
@@ -404,7 +404,7 @@ NumericalScalar NormalCopula::computeConditionalPDF(const NumericalScalar x,
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar NormalCopula::computeConditionalCDF(const NumericalScalar x,
+Scalar NormalCopula::computeConditionalCDF(const Scalar x,
     const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
@@ -418,7 +418,7 @@ NumericalScalar NormalCopula::computeConditionalCDF(const NumericalScalar x,
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar NormalCopula::computeConditionalQuantile(const NumericalScalar q,
+Scalar NormalCopula::computeConditionalQuantile(const Scalar q,
     const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
@@ -554,10 +554,10 @@ void NormalCopula::setParameter(const Point & parameter)
 {
   // N = ((d-1)*d)/2
   const UnsignedInteger size = parameter.getSize();
-  NumericalScalar dimReal = 0.5 * std::sqrt(1.0 + 8.0 * size) + 0.5;
+  Scalar dimReal = 0.5 * std::sqrt(1.0 + 8.0 * size) + 0.5;
   if (dimReal != round(dimReal)) throw InvalidArgumentException(HERE) << "Error: invalid value number for NormalCopula";
   const UnsignedInteger dimension = dimReal;
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   if (dimension > 1)
   {
     CorrelationMatrix R(dimension);

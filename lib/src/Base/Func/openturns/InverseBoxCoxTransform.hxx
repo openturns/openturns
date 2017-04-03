@@ -51,11 +51,11 @@ public:
   InverseBoxCoxTransform(const Point & lambda,
                          const Point & shift);
 
-  /** 1D NumericalScalar parameter constructor */
-  InverseBoxCoxTransform(const NumericalScalar & lambda);
+  /** 1D Scalar parameter constructor */
+  InverseBoxCoxTransform(const Scalar & lambda);
 
-  InverseBoxCoxTransform(const NumericalScalar & lambda,
-                         const NumericalScalar & shift);
+  InverseBoxCoxTransform(const Scalar & lambda,
+                         const Scalar & shift);
 
   /** Virtual constructor */
   InverseBoxCoxTransform * clone() const;

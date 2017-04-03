@@ -57,8 +57,8 @@ int main(int argc, char *argv[])
     Sample data1(nPoints, 2), data2(nPoints, 2);
     Point cursor1(2);
     Point cursor2(2);
-    NumericalScalar count1;
-    NumericalScalar count2;
+    Scalar count1;
+    Scalar count2;
 
     for(UnsignedInteger i = 0; i < nPoints; i++)
     {

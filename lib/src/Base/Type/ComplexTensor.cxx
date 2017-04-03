@@ -63,7 +63,7 @@ ComplexTensor::ComplexTensor(const Implementation & i)
 }
 
 /* Set small elements to zero */
-ComplexTensor ComplexTensor::clean(const NumericalScalar & threshold) const
+ComplexTensor ComplexTensor::clean(const Scalar & threshold) const
 {
   return Pointer<ComplexTensorImplementation>(getImplementation()->clean(threshold).clone());
 }

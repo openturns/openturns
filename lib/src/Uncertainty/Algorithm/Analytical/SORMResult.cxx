@@ -109,7 +109,7 @@ void SORMResult::computeSortedCurvatures() const
   const UnsignedInteger dimension = getStandardSpaceDesignPoint().getDimension();
   // If the dimension is zero, throw an exception
   if (dimension == 0) throw NotDefinedException(HERE) << "Error: the curvatures cannot be computed when the dimension is zero.";
-  const NumericalScalar inverseGradientNorm = 1.0 / gradientLimitStateFunction_.norm();
+  const Scalar inverseGradientNorm = 1.0 / gradientLimitStateFunction_.norm();
   const Point unitGradientLimitStateFunction(inverseGradientNorm * gradientLimitStateFunction_);
   SquareMatrix kroneckerUnitGradientLimitStateFunction(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -141,15 +141,15 @@ Point SORMResult::getSortedCurvatures() const
    We use flag values to avoid the explicit management of flags to tell if the probability has
    already been computed or if it cannot be computed. A value of -1.0 means that the value has
    not yet been computed and a value of -2.0 means that the value cannot be computed */
-NumericalScalar SORMResult::getEventProbabilityBreitung() const
+Scalar SORMResult::getEventProbabilityBreitung() const
 {
   /* Quick return if the probability has already been computed */
   if ((eventProbabilityBreitung_ != -1.0) && (eventProbabilityBreitung_ != -2.0)) return eventProbabilityBreitung_;
   /* Make sure the curvatures have been computed*/
   getSortedCurvatures();
-  const NumericalScalar beta = getHasoferReliabilityIndex();
+  const Scalar beta = getHasoferReliabilityIndex();
   const Point minusBeta(1, -beta);
-  const NumericalScalar standardCDFBeta = standardMarginal_.computeCDF(minusBeta);
+  const Scalar standardCDFBeta = standardMarginal_.computeCDF(minusBeta);
 
   /* test if all curvatures verifie 1 + beta * curvature  > 0 */
   /* curvatures are sorted with increasing order and stocked in the attribute SortedCurvatures */
@@ -165,7 +165,7 @@ NumericalScalar SORMResult::getEventProbabilityBreitung() const
   if (getIsStandardPointOriginInFailureSpace()) eventProbabilityBreitung_ = 1.0 - eventProbabilityBreitung_;
   if ((eventProbabilityBreitung_ < 0.0) || (eventProbabilityBreitung_ > 1.0))
   {
-    const NumericalScalar badValue = eventProbabilityBreitung_;
+    const Scalar badValue = eventProbabilityBreitung_;
     eventProbabilityBreitung_ = -2.0;
     throw NotDefinedException(HERE) << "Error: the probability computed using Breitung SORM approximation gives a value outside of [0, 1]:" << badValue;
   }
@@ -173,7 +173,7 @@ NumericalScalar SORMResult::getEventProbabilityBreitung() const
 } // end SORMResult::getEventProbabilityBreitung
 
 /* The function that actually evaluates the event probability with SORM HohenBichler approximation */
-NumericalScalar SORMResult::getEventProbabilityHohenBichler() const
+Scalar SORMResult::getEventProbabilityHohenBichler() const
 {
   /* Quick return if the probability has already been computed */
   if ((eventProbabilityHohenBichler_ != -1.0) && (eventProbabilityHohenBichler_ != -2.0)) return eventProbabilityHohenBichler_;
@@ -187,10 +187,10 @@ NumericalScalar SORMResult::getEventProbabilityHohenBichler() const
   /* Make sure the curvatures have been computed*/
   getSortedCurvatures();
   const Point minusBeta(1, -getHasoferReliabilityIndex());
-  const NumericalScalar standardPDFBeta = standardMarginal_.computePDF(minusBeta);
-  const NumericalScalar standardCDFBeta = standardMarginal_.computeCDF(minusBeta);
+  const Scalar standardPDFBeta = standardMarginal_.computePDF(minusBeta);
+  const Scalar standardCDFBeta = standardMarginal_.computeCDF(minusBeta);
 
-  const NumericalScalar rho = standardPDFBeta / standardCDFBeta;
+  const Scalar rho = standardPDFBeta / standardCDFBeta;
 
   /* test if all curvatures verifie 1 + rho * curvature  > 0 */
   /* curvatures are sorted with increasing order and stocked in the attribute SortedCurvatures */
@@ -207,7 +207,7 @@ NumericalScalar SORMResult::getEventProbabilityHohenBichler() const
   if (getIsStandardPointOriginInFailureSpace()) eventProbabilityHohenBichler_ = 1.0 - eventProbabilityHohenBichler_;
   if ((eventProbabilityHohenBichler_ < 0.0) || (eventProbabilityHohenBichler_ > 1.0))
   {
-    const NumericalScalar badValue = eventProbabilityHohenBichler_;
+    const Scalar badValue = eventProbabilityHohenBichler_;
     eventProbabilityHohenBichler_ = -2.0;
     throw NotDefinedException(HERE) << "Error: the probability computed using HohenBichler SORM approximation gives a value outside of [0, 1]:" << badValue;
   }
@@ -215,7 +215,7 @@ NumericalScalar SORMResult::getEventProbabilityHohenBichler() const
 } // SORMResult::getEventProbabilityHohenBichler
 
 /* The function that actually evaluates the event probability with SORM Tvedtapproximation */
-NumericalScalar SORMResult::getEventProbabilityTvedt() const
+Scalar SORMResult::getEventProbabilityTvedt() const
 {
   /* Quick return if the probability has already been computed */
   if ((eventProbabilityTvedt_ != -1.0) && (eventProbabilityTvedt_ != -2.0)) return eventProbabilityTvedt_;
@@ -229,7 +229,7 @@ NumericalScalar SORMResult::getEventProbabilityTvedt() const
   /* Make sure the curvatures have been computed*/
   getSortedCurvatures();
 
-  const NumericalScalar beta = getHasoferReliabilityIndex();
+  const Scalar beta = getHasoferReliabilityIndex();
   const Point minusBeta(1, -beta);
 
   /* test if all curvatures verifie 1 + (beta+1) * curvature  > 0 */
@@ -240,24 +240,24 @@ NumericalScalar SORMResult::getEventProbabilityTvedt() const
     throw NotDefinedException(HERE) << "Error: impossible to compute Tvedt SORM probability, one of the curvatures is < -1/(1+beta). beta=" << beta << ", curvature=" << sortedCurvatures_[0];
   }
 
-  const NumericalScalar standardPDFBeta = standardMarginal_.computePDF(minusBeta);
-  const NumericalScalar standardCDFBeta = standardMarginal_.computeCDF(minusBeta);
+  const Scalar standardPDFBeta = standardMarginal_.computePDF(minusBeta);
+  const Scalar standardCDFBeta = standardMarginal_.computeCDF(minusBeta);
 
   /* compute the first term A1 */
 
-  NumericalScalar prod1 = 1.0;
+  Scalar prod1 = 1.0;
   const UnsignedInteger dimension = sortedCurvatures_.getDimension();
   for (UnsignedInteger index = 0 ; index < dimension; ++index) prod1 /= sqrt(1.0 + beta * sortedCurvatures_[index]);
-  const NumericalScalar termA1 = standardCDFBeta * prod1;
+  const Scalar termA1 = standardCDFBeta * prod1;
 
   /* compute the second term A2 */
 
-  const NumericalScalar rho = beta * standardCDFBeta - standardPDFBeta;
+  const Scalar rho = beta * standardCDFBeta - standardPDFBeta;
 
-  NumericalScalar prod2 = 1.0;
+  Scalar prod2 = 1.0;
   for (UnsignedInteger index = 0; index < dimension; ++index) prod2 /= sqrt(1.0 + (1.0 + beta) * sortedCurvatures_[index]);
 
-  const NumericalScalar termA2 = rho * (prod1 - prod2);
+  const Scalar termA2 = rho * (prod1 - prod2);
 
   /* compute the second term A3 */
 
@@ -265,7 +265,7 @@ NumericalScalar SORMResult::getEventProbabilityTvedt() const
   NumericalComplex iPlusBeta(beta, 1.0);
 
   for (UnsignedInteger index = 0; index < dimension; ++index) complexProd3 /= sqrt(1.0 + iPlusBeta * sortedCurvatures_[index]);
-  const NumericalScalar termA3 = (beta + 1.0) * rho * (prod1 - complexProd3.real());
+  const Scalar termA3 = (beta + 1.0) * rho * (prod1 - complexProd3.real());
 
   /* compute tvedt probability */
 
@@ -274,7 +274,7 @@ NumericalScalar SORMResult::getEventProbabilityTvedt() const
   if (getIsStandardPointOriginInFailureSpace()) eventProbabilityTvedt_ = 1.0 - eventProbabilityTvedt_;
   if ((eventProbabilityTvedt_ < 0.0) || (eventProbabilityTvedt_ > 1.0))
   {
-    const NumericalScalar badValue = eventProbabilityTvedt_;
+    const Scalar badValue = eventProbabilityTvedt_;
     eventProbabilityTvedt_ = -2.0;
     throw NotDefinedException(HERE) << "Error: the probability computed using Tvedt SORM approximation gives a value outside of [0, 1]:" << badValue;
   }
@@ -282,12 +282,12 @@ NumericalScalar SORMResult::getEventProbabilityTvedt() const
 } // end SORMResult::getEventProbabilityTvedt
 
 /* GeneralisedReliabilityIndexBreitung accessor */
-NumericalScalar SORMResult::getGeneralisedReliabilityIndexBreitung() const
+Scalar SORMResult::getGeneralisedReliabilityIndexBreitung() const
 {
   /* evaluate the GeneralisedReliabilityIndex */
   /* GeneralisedReliabilityIndex is defined by : - Inverse standard marginal CDF (eventProbability) in usual case or : + Inverse standard marginal CDF (eventProbability) in other case */
   // StandardPointOriginInFailureSpace is FALSE : usual case
-  NumericalScalar sign = 1.0;
+  Scalar sign = 1.0;
   if (!getIsStandardPointOriginInFailureSpace()) sign = -1.0;
 
   /* Generalised reliability index with SORM Breitung approximation */
@@ -298,12 +298,12 @@ NumericalScalar SORMResult::getGeneralisedReliabilityIndexBreitung() const
 } // end SORMResult::getGeneralisedReliabilityIndexBreitung
 
 /* GeneralisedReliabilityIndex accessor */
-NumericalScalar SORMResult::getGeneralisedReliabilityIndexHohenBichler() const
+Scalar SORMResult::getGeneralisedReliabilityIndexHohenBichler() const
 {
   /* evaluate the GeneralisedReliabilityIndex */
   /* GeneralisedReliabilityIndex is defined by : - Inverse standard marginal CDF (eventProbability) in usual case or : + Inverse standard marginal CDF (eventProbability) in other case */
   // StandardPointOriginInFailureSpace is FALSE : usual case
-  NumericalScalar sign = 1.0;
+  Scalar sign = 1.0;
   if (!getIsStandardPointOriginInFailureSpace()) sign = -1.0;
 
   /* Generalised reliability index with SORM HohenBichler approximation */
@@ -314,12 +314,12 @@ NumericalScalar SORMResult::getGeneralisedReliabilityIndexHohenBichler() const
 }
 
 /* GeneralisedReliabilityIndex accessor */
-NumericalScalar SORMResult::getGeneralisedReliabilityIndexTvedt() const
+Scalar SORMResult::getGeneralisedReliabilityIndexTvedt() const
 {
   /* evaluate the GeneralisedReliabilityIndex */
   /* GeneralisedReliabilityIndex is defined by : - Inverse standard marginal CDF (eventProbability) in usual case or : + Inverse standard marginal CDF (eventProbability) in other case */
   // StandardPointOriginInFailureSpace is FALSE : usual case
-  NumericalScalar sign = 1.0;
+  Scalar sign = 1.0;
   if (!getIsStandardPointOriginInFailureSpace()) sign = -1.0;
 
   /* Generalised reliability index with SORM Tvedt approximation */

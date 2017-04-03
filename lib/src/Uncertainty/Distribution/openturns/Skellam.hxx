@@ -41,8 +41,8 @@ public:
   Skellam();
 
   /** Parameters constructor */
-  Skellam(const NumericalScalar lambda1,
-          const NumericalScalar lambda2);
+  Skellam(const Scalar lambda1,
+          const Scalar lambda2);
 
 
   /** Comparison operator */
@@ -67,11 +67,11 @@ public:
 
   /** Get the PDF of the distribution */
   using DiscreteDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using DiscreteDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the PDFGradient of the distribution */
   using DiscreteDistribution::computePDFGradient;
@@ -82,15 +82,15 @@ public:
   Point computeCDFGradient(const Point & point) const;
 
   /** Compute the characteristic function, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
-  NumericalComplex computeLogCharacteristicFunction(const NumericalScalar x) const;
+  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
+  NumericalComplex computeLogCharacteristicFunction(const Scalar x) const;
 
   /** Compute the generating function, i.e. psi(z) = E(z^X) */
   NumericalComplex computeGeneratingFunction(const NumericalComplex & z) const;
   NumericalComplex computeLogGeneratingFunction(const NumericalComplex & z) const;
 
   /** Get the quantile of the distribution */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+  Scalar computeScalarQuantile(const Scalar prob,
                                         const Bool tail = false) const;
 
   /** Get the support of a discrete distribution that intersect a given interval */
@@ -119,16 +119,16 @@ public:
   /* Interface specific to Skellam */
 
   /** Lambda1/Lambda2 accessor */
-  void setLambda1Lambda2(const NumericalScalar lambda1,
-                         const NumericalScalar lambda2);
+  void setLambda1Lambda2(const Scalar lambda1,
+                         const Scalar lambda2);
 
   /** Lambda1 accessor */
-  void setLambda1(const NumericalScalar lambda1);
-  NumericalScalar getLambda1() const;
+  void setLambda1(const Scalar lambda1);
+  Scalar getLambda1() const;
 
   /** Lambda2 accessor */
-  void setLambda2(const NumericalScalar lambda2);
-  NumericalScalar getLambda2() const;
+  void setLambda2(const Scalar lambda2);
+  Scalar getLambda2() const;
 
   /** Maximum iterations accessor */
   void setMaximumIteration(const UnsignedInteger maximumIteration);
@@ -151,10 +151,10 @@ private:
   void computeCovariance() const;
 
   /** The Lambda1 of the Skellam distribution */
-  NumericalScalar lambda1_;
+  Scalar lambda1_;
 
   /** The Lambda2 of the Skellam distribution */
-  NumericalScalar lambda2_;
+  Scalar lambda2_;
 
   /** The maximum iterations for the PDF and CDF computations */
   UnsignedInteger maximumIteration_;

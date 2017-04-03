@@ -117,13 +117,13 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Sample & sample) const
 
   // starting point
   Point startingPoint(dimension);
-  const NumericalScalar min = sample.getMin()[0];
-  const NumericalScalar max = sample.getMax()[0];
+  const Scalar min = sample.getMin()[0];
+  const Scalar max = sample.getMax()[0];
   if (!SpecFunc::IsNormal(min) || !SpecFunc::IsNormal(max)) throw InvalidArgumentException(HERE) << "Error: cannot build a Trapezoidal distribution if data contains NaN or Inf";
   //  if (max <= min - std::sqrt(SpecFunc::ScalarEpsilon))
   if (min == max)
   {
-    const NumericalScalar delta = std::max(std::abs(min), 10.0) * SpecFunc::ScalarEpsilon;
+    const Scalar delta = std::max(std::abs(min), 10.0) * SpecFunc::ScalarEpsilon;
     Trapezoidal result(min - delta, min, max, max + delta);
     result.setDescription(sample.getDescription());
     return result;

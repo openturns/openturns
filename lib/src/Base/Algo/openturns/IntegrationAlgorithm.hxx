@@ -65,7 +65,7 @@ public:
 #ifndef SWIG
   Point integrate(const Function & function,
                            const Interval & interval,
-                           NumericalScalar & error) const;
+                           Scalar & error) const;
 #endif
 
   Point integrate(const Function & function,

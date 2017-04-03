@@ -79,11 +79,11 @@ public:
 
   /** Get the PDF of the distribution */
   using DistributionImplementation::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using DistributionImplementation::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Parameters value and description accessor */
   PointWithDescriptionCollection getParametersCollection() const;

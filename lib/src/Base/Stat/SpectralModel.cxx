@@ -69,12 +69,12 @@ UnsignedInteger SpectralModel::getSpatialDimension() const
   return getImplementation()->getSpatialDimension();
 }
 
-HermitianMatrix SpectralModel::operator() (const NumericalScalar frequency) const
+HermitianMatrix SpectralModel::operator() (const Scalar frequency) const
 {
   return getImplementation()->operator()(frequency);
 }
 
-NumericalComplex SpectralModel::computeStandardRepresentative(const NumericalScalar frequency) const
+NumericalComplex SpectralModel::computeStandardRepresentative(const Scalar frequency) const
 {
   return getImplementation()->computeStandardRepresentative(frequency);
 }
@@ -82,8 +82,8 @@ NumericalComplex SpectralModel::computeStandardRepresentative(const NumericalSca
 /* Drawing method */
 Graph SpectralModel::draw(const UnsignedInteger rowIndex,
 			  const UnsignedInteger columnIndex,
-			  const NumericalScalar minimumFrequency,
-			  const NumericalScalar maximumFrequency,
+			  const Scalar minimumFrequency,
+			  const Scalar maximumFrequency,
 			  const UnsignedInteger frequencyNumber,
 			  const Bool module) const
 {

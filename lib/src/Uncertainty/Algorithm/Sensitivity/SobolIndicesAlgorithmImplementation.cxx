@@ -357,8 +357,8 @@ void SobolIndicesAlgorithmImplementation::computeIndicesInterval() const
 
     // Confidence interval elements
     // Sample of indices
-    const NumericalScalar lowerQuantileLevel = 0.5 * (1.0 - confidenceLevel_);
-    const NumericalScalar upperQuantileLevel = 0.5 * (1.0 + confidenceLevel_);
+    const Scalar lowerQuantileLevel = 0.5 * (1.0 - confidenceLevel_);
+    const Scalar upperQuantileLevel = 0.5 * (1.0 + confidenceLevel_);
     // Compute empirical quantiles
     // 1) First order indices
     const Point lowerQuantileFO(bsFO.computeQuantilePerComponent(lowerQuantileLevel));
@@ -514,13 +514,13 @@ void SobolIndicesAlgorithmImplementation::setBootstrapSize(const UnsignedInteger
 }
 
 // Getter for bootstrap confidence level
-NumericalScalar SobolIndicesAlgorithmImplementation::getBootstrapConfidenceLevel() const
+Scalar SobolIndicesAlgorithmImplementation::getBootstrapConfidenceLevel() const
 {
   return confidenceLevel_;
 }
 
 // Setter for bootstrap confidence level
-void SobolIndicesAlgorithmImplementation::setBootstrapConfidenceLevel(const NumericalScalar confidenceLevel)
+void SobolIndicesAlgorithmImplementation::setBootstrapConfidenceLevel(const Scalar confidenceLevel)
 {
   if ((confidenceLevel < 0.0) || (confidenceLevel >= 1.0))
     throw InvalidArgumentException(HERE) << "Confidence level value should be in ]0,1[. Here, confidence level=" << confidenceLevel;
@@ -548,8 +548,8 @@ Point SobolIndicesAlgorithmImplementation::computeSumDotSamples(const Sample & x
   const UnsignedInteger dimension = x.getDimension();
   const UnsignedInteger size = x.getSize();
 
-  const NumericalScalar * xptr(&x[0][0]);
-  const NumericalScalar * yptr(&y[0][0]);
+  const Scalar * xptr(&x[0][0]);
+  const Scalar * yptr(&y[0][0]);
 
 
   Point value(dimension, 0.0);
@@ -569,8 +569,8 @@ Point SobolIndicesAlgorithmImplementation::computeSumDotSamples(const Sample & s
   // Suppose that samples have the same size, same dimension
   const UnsignedInteger dimension = sample.getDimension();
 
-  const NumericalScalar * xptr(&sample[indexX][0]);
-  const NumericalScalar * yptr(&sample[indexY][0]);
+  const Scalar * xptr(&sample[indexX][0]);
+  const Scalar * yptr(&sample[indexY][0]);
 
 
   Point value(dimension, 0.0);
@@ -696,11 +696,11 @@ Sample SobolIndicesAlgorithmImplementation::getBootstrapDesign(const Indices & i
   for (UnsignedInteger p = 0; p < 2 + inputDimension; ++p)
   {
     Sample y(size_, outputDimension);
-    NumericalScalar* yPermData = &y[0][0];
+    Scalar* yPermData = &y[0][0];
 
-    const NumericalScalar* yData = &outputDesign_[p * size_][0];
+    const Scalar* yData = &outputDesign_[p * size_][0];
     for (UnsignedInteger k = 0; k < size_; ++k, yPermData += outputDimension)
-      memcpy(yPermData, &yData[indices[k] * outputDimension], outputDimension * sizeof(NumericalScalar));
+      memcpy(yPermData, &yData[indices[k] * outputDimension], outputDimension * sizeof(Scalar));
     // add samples to the collection
     bootstrapDesign.add(y);
   }
@@ -723,7 +723,7 @@ Point SobolIndicesAlgorithmImplementation::computeAggregatedIndices(const Sample
   }
 
   // Compute sum of Var(Y^k)
-  NumericalScalar sumVariance = variance.norm1();
+  Scalar sumVariance = variance.norm1();
 
   // Compute merged indices
   mergedTotal = VTi.computeMean() * (outputDimension / sumVariance);
@@ -746,7 +746,7 @@ Graph SobolIndicesAlgorithmImplementation::DrawImportanceFactors(const Point & v
   const UnsignedInteger dimension = values.getDimension();
   if (dimension == 0) throw InvalidArgumentException(HERE) << "Error: cannot draw an importance factors pie based on empty data.";
   if ((names.getSize() != 0) && (names.getSize() != dimension)) throw InvalidArgumentException(HERE) << "Error: the names size must match the value dimension.";
-  NumericalScalar l1Norm = 0.0;
+  Scalar l1Norm = 0.0;
   for (UnsignedInteger i = 0; i < dimension; ++i) l1Norm += std::abs(values[i]);
   if (l1Norm == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot draw an importance factors pie based on null data.";
   Point data(dimension);

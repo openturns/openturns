@@ -55,7 +55,7 @@ public:
 
   /** Constructor with parameters */
   OptimizationProblemImplementation(const Function & levelFunction,
-                                    NumericalScalar levelValue);
+                                    Scalar levelValue);
 
   /** Virtual constructor */
   virtual OptimizationProblemImplementation * clone() const;
@@ -86,8 +86,8 @@ public:
   Bool hasLevelFunction() const;
 
   /** Level value accessor */
-  NumericalScalar getLevelValue() const;
-  void setLevelValue(NumericalScalar levelValue);
+  Scalar getLevelValue() const;
+  void setLevelValue(Scalar levelValue);
 
   /** Dimension accessor */
   UnsignedInteger getDimension() const;
@@ -125,7 +125,7 @@ private:
   Function levelFunction_;
 
   // The level value, for nearest point problems
-  NumericalScalar levelValue_;
+  Scalar levelValue_;
 
   // Minimization problem
   Bool minimization_;

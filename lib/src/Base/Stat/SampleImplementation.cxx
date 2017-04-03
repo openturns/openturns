@@ -80,22 +80,22 @@ NSI_point & NSI_point::operator = (const NSI_point & rhs)
 //   return *this;
 // }
 
-NumericalScalar & NSI_point::operator [] (UnsignedInteger i)
+Scalar & NSI_point::operator [] (UnsignedInteger i)
 {
   return p_nsi_->data_[index_ * dimension_ + i];
 }
 
-const NumericalScalar & NSI_point::operator [] (const UnsignedInteger i) const
+const Scalar & NSI_point::operator [] (const UnsignedInteger i) const
 {
   return p_nsi_->data_[index_ * dimension_ + i];
 }
 
-NumericalScalar & NSI_point::at (UnsignedInteger i)
+Scalar & NSI_point::at (UnsignedInteger i)
 {
   return p_nsi_->data_.at(index_ * dimension_ + i);
 }
 
-const NumericalScalar & NSI_point::at (const UnsignedInteger i) const
+const Scalar & NSI_point::at (const UnsignedInteger i) const
 {
   return p_nsi_->data_.at(index_ * dimension_ + i);
 }
@@ -152,13 +152,13 @@ NSI_point & NSI_point::operator -= (const Point & other)
   return *this;
 }
 
-NSI_point & NSI_point::operator *= (const NumericalScalar val)
+NSI_point & NSI_point::operator *= (const Scalar val)
 {
   for(UnsignedInteger i = 0; i < getDimension(); ++i) (*this)[i] *= val;
   return *this;
 }
 
-NSI_point & NSI_point::operator /= (const NumericalScalar val)
+NSI_point & NSI_point::operator /= (const Scalar val)
 {
   for(UnsignedInteger i = 0; i < getDimension(); ++i) (*this)[i] /= val;
   return *this;
@@ -180,7 +180,7 @@ bool operator < (const NSI_point & lhs, const NSI_point & rhs)
 {
   return std::lexicographical_compare(lhs.begin(), lhs.end(),
                                       rhs.begin(), rhs.end(),
-                                      std::less<NumericalScalar>());
+                                      std::less<Scalar>());
 }
 
 bool operator > (const NSI_point & lhs, const NSI_point & rhs)
@@ -192,7 +192,7 @@ bool operator <= (const NSI_point & lhs, const NSI_point & rhs)
 {
   return std::lexicographical_compare(lhs.begin(), lhs.end(),
                                       rhs.begin(), rhs.end(),
-                                      std::less_equal<NumericalScalar>());
+                                      std::less_equal<Scalar>());
 }
 
 bool operator >= (const NSI_point & lhs, const NSI_point & rhs)
@@ -226,12 +226,12 @@ bool operator == (const NSI_const_point & lhs, const NSI_const_point & rhs)
          std::equal(lhs.begin(), lhs.end(), rhs.begin());
 }
 
-const NumericalScalar & NSI_const_point::operator [] (const UnsignedInteger i) const
+const Scalar & NSI_const_point::operator [] (const UnsignedInteger i) const
 {
   return p_nsi_->data_[index_ * dimension_ + i];
 }
 
-const NumericalScalar & NSI_const_point::at (const UnsignedInteger i) const
+const Scalar & NSI_const_point::at (const UnsignedInteger i) const
 {
   return p_nsi_->data_.at(index_ * dimension_ + i);
 }
@@ -245,7 +245,7 @@ bool operator < (const NSI_const_point & lhs, const NSI_const_point & rhs)
 {
   return std::lexicographical_compare(lhs.begin(), lhs.end(),
                                       rhs.begin(), rhs.end(),
-                                      std::less<NumericalScalar>());
+                                      std::less<Scalar>());
 }
 
 bool operator > (const NSI_const_point & lhs, const NSI_const_point & rhs)
@@ -257,7 +257,7 @@ bool operator <= (const NSI_const_point & lhs, const NSI_const_point & rhs)
 {
   return std::lexicographical_compare(lhs.begin(), lhs.end(),
                                       rhs.begin(), rhs.end(),
-                                      std::less_equal<NumericalScalar>());
+                                      std::less_equal<Scalar>());
 }
 
 bool operator >= (const NSI_const_point & lhs, const NSI_const_point & rhs)
@@ -351,7 +351,7 @@ SampleImplementation SampleImplementation::BuildFromTextFile(const FileName & fi
   String line;
   Bool isDescription = false;
   Description description;
-  NumericalScalar f = -1.0;
+  Scalar f = -1.0;
   UnsignedInteger numLine = 1;
 
   // While there are lines to read
@@ -469,7 +469,7 @@ String SampleImplementation::storeToTemporaryFile() const
     String separator = "";
     for (UnsignedInteger j = 0; j < dimension_; ++j, separator = " ")
     {
-      const NumericalScalar value = operator[](i)[j];
+      const Scalar value = operator[](i)[j];
       const Bool isNaN = value != value;
       dataFile << separator << std::setprecision(16) << (isNaN ? "\"" : "") << value << (isNaN ? "\"" : "");
     }
@@ -489,7 +489,7 @@ String SampleImplementation::streamToRFormat() const
   for (UnsignedInteger j = 0; j < dimension_; ++j)
     for (UnsignedInteger i = 0; i < size_; ++i, separator = ",")
     {
-      const NumericalScalar value = operator[](i)[j];
+      const Scalar value = operator[](i)[j];
       const Bool isNaN = value != value;
       oss << separator << (isNaN ? "\"" : "") << value << (isNaN ? "\"" : "");
     }
@@ -620,8 +620,8 @@ Bool operator ==(const SampleImplementation & lhs,
 void SampleImplementation::erase(iterator first,
     iterator last)
 {
-  PersistentCollection<NumericalScalar>::iterator f = data_.begin() + (first - begin()) * dimension_;
-  PersistentCollection<NumericalScalar>::iterator l = data_.begin() + (last - begin()) * dimension_;
+  PersistentCollection<Scalar>::iterator f = data_.begin() + (first - begin()) * dimension_;
+  PersistentCollection<Scalar>::iterator l = data_.begin() + (last - begin()) * dimension_;
   data_.erase( f, l );
   size_ -= last - first;
 }
@@ -629,8 +629,8 @@ void SampleImplementation::erase(iterator first,
 void SampleImplementation::erase(const UnsignedInteger first,
     const UnsignedInteger last)
 {
-  PersistentCollection<NumericalScalar>::iterator f = data_.begin() + first * dimension_;
-  PersistentCollection<NumericalScalar>::iterator l = data_.begin() + last * dimension_;
+  PersistentCollection<Scalar>::iterator f = data_.begin() + first * dimension_;
+  PersistentCollection<Scalar>::iterator l = data_.begin() + last * dimension_;
   data_.erase( f, l );
   size_ -= last - first;
 }
@@ -648,7 +648,7 @@ Point SampleImplementation::getData() const
   return data_;
 }
 
-void SampleImplementation::setData(const Collection<NumericalScalar> & data)
+void SampleImplementation::setData(const Collection<Scalar> & data)
 {
   if (data.getSize() != dimension_ * size_) throw InvalidArgumentException(HERE) << "Error: the given raw data are not compatible with the dimension and size of the sample.";
   data_ = data;
@@ -898,7 +898,7 @@ SampleImplementation & SampleImplementation::add(const SampleImplementation & sa
   //const UnsignedInteger oldSize = size_;
   size_ += sample.getSize();
   data_.resize(size_ * dimension_);
-//   memmove( &data_[oldSize * dimension_], &(sample.data_[0]), sample.getSize() * dimension_ * sizeof(NumericalScalar) );
+//   memmove( &data_[oldSize * dimension_], &(sample.data_[0]), sample.getSize() * dimension_ * sizeof(Scalar) );
   std::copy_backward(sample.begin(), sample.end(), end());
   return *this;
 }
@@ -1017,10 +1017,10 @@ CovarianceMatrix SampleImplementation::computeCovariance() const
     UnsignedInteger baseIndex = 0;
     for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
-      const NumericalScalar deltaI = *(it+i) - mean[i];
+      const Scalar deltaI = *(it+i) - mean[i];
       for (UnsignedInteger j = i; j < dimension_; ++j)
       {
-        const NumericalScalar deltaJ = *(it+j) - mean[j];
+        const Scalar deltaJ = *(it+j) - mean[j];
         accumulated[baseIndex + j] += deltaI * deltaJ;
       }
       baseIndex += dimension_;
@@ -1065,7 +1065,7 @@ Point SampleImplementation::computeVariance() const
   {
     for (UnsignedInteger i = 0; i < dimension_; ++i, ++it)
     {
-      const NumericalScalar val = *it - mean[i];
+      const Scalar val = *it - mean[i];
       accumulated[i] += val * val;
     }
   }
@@ -1120,10 +1120,10 @@ CorrelationMatrix SampleImplementation::computeLinearCorrelation() const
 
 struct Pair
 {
-  NumericalScalar value_;
+  Scalar value_;
   UnsignedInteger index_;
   Pair() : value_(0.0), index_() {}
-  Pair(NumericalScalar value, UnsignedInteger index) : value_(value), index_(index) {}
+  Pair(Scalar value, UnsignedInteger index) : value_(value), index_(index) {}
   Bool operator < (const Pair & other) const
   {
     return value_ < other.value_;
@@ -1159,10 +1159,10 @@ struct Comparison
 
   Bool operator() (const UnsignedInteger i, const UnsignedInteger j) const
   {
-    const NumericalScalar xI = nsi_[ permutation_[i] ][ first_  ];
-    const NumericalScalar xJ = nsi_[ permutation_[j] ][ first_  ];
-    const NumericalScalar yI = nsi_[ permutation_[i] ][ second_ ];
-    const NumericalScalar yJ = nsi_[ permutation_[j] ][ second_ ];
+    const Scalar xI = nsi_[ permutation_[i] ][ first_  ];
+    const Scalar xJ = nsi_[ permutation_[j] ][ first_  ];
+    const Scalar yI = nsi_[ permutation_[i] ][ second_ ];
+    const Scalar yJ = nsi_[ permutation_[j] ][ second_ ];
     hasTies_ |= (xI == xJ);
     return ( (xI < xJ) || ((xI == xJ) && (yI < yJ)) );
   }
@@ -1189,15 +1189,15 @@ SampleImplementation SampleImplementation::rank() const
     // sort
     TBB::ParallelSort(sortedMarginalSamples.begin(), sortedMarginalSamples.end());
     // rank
-    NumericalScalar lastValue = sortedMarginalSamples[0].value_;
+    Scalar lastValue = sortedMarginalSamples[0].value_;
     UnsignedInteger lastIndex = 0;
-    NumericalScalar currentValue = 0.0;
+    Scalar currentValue = 0.0;
     for (UnsignedInteger j = 1; j < size_; ++j)
     {
       currentValue = sortedMarginalSamples[j].value_;
       if (currentValue > lastValue)
       {
-        const NumericalScalar rankValue = 0.5 * (lastIndex + j - 1);
+        const Scalar rankValue = 0.5 * (lastIndex + j - 1);
         for (UnsignedInteger k = lastIndex; k < j; ++k) rankedSample[ sortedMarginalSamples[k].index_ ][i] = rankValue;
         lastIndex = j;
         lastValue = currentValue;
@@ -1206,7 +1206,7 @@ SampleImplementation SampleImplementation::rank() const
     // If we end with a constant range
     if (currentValue == lastValue)
     {
-      const NumericalScalar rankValue = 0.5 * (lastIndex + size_ - 1);
+      const Scalar rankValue = 0.5 * (lastIndex + size_ - 1);
       for (UnsignedInteger k = lastIndex; k < size_; ++k) rankedSample[ sortedMarginalSamples[k].index_ ][i] = rankValue;
     }
   }
@@ -1463,8 +1463,8 @@ struct SkewnessPerComponentPolicy
   {
     for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
-      const NumericalScalar val = point[i] - mean_[i];
-      const NumericalScalar val2 = val * val;
+      const Scalar val = point[i] - mean_[i];
+      const Scalar val2 = val * val;
       var[i] += val2;
       var[i + dimension_] += val2 * val;
     }
@@ -1492,7 +1492,7 @@ Point SampleImplementation::computeSkewness() const
   ReductionFunctor<SkewnessPerComponentPolicy> functor( *this, policy );
   TBB::ParallelReduce( 0, size_, functor );
   Point skewness(dimension_);
-  const NumericalScalar factor = size_ * sqrt(size_ - 1.0) / (size_ - 2);
+  const Scalar factor = size_ * sqrt(size_ - 1.0) / (size_ - 2);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     if (functor.accumulator_[i] == 0.0) throw NotDefinedException(HERE) << "Error: the sample has component " << i << " constant. The skewness is not defined.";
@@ -1520,8 +1520,8 @@ struct KurtosisPerComponentPolicy
   {
     for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
-      const NumericalScalar val = point[i] - mean_[i];
-      const NumericalScalar val2 = val * val;
+      const Scalar val = point[i] - mean_[i];
+      const Scalar val2 = val * val;
       var[i] += val2;
       var[i + dimension_] += val2 * val2;
     }
@@ -1549,8 +1549,8 @@ Point SampleImplementation::computeKurtosis() const
   ReductionFunctor<KurtosisPerComponentPolicy> functor( *this, policy );
   TBB::ParallelReduce( 0, size_, functor );
   Point kurtosis(dimension_);
-  const NumericalScalar factor1 = (size_ + 1.0) * size_ * (size_ - 1.0) / ((size_ - 2.0) * (size_ - 3.0));
-  const NumericalScalar factor2 = -3.0 * (3.0 * size_ - 5.0) / ((size_ - 2.0) * (size_ - 3.0));
+  const Scalar factor1 = (size_ + 1.0) * size_ * (size_ - 1.0) / ((size_ - 2.0) * (size_ - 3.0));
+  const Scalar factor2 = -3.0 * (3.0 * size_ - 5.0) / ((size_ - 2.0) * (size_ - 3.0));
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     if (functor.accumulator_[i] == 0.0) throw NotDefinedException(HERE) << "Error: the sample has component " << i << " constant. The kurtosis is not defined.";
@@ -1579,7 +1579,7 @@ struct CenteredMomentPerComponentPolicy
   {
     for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
-      const NumericalScalar val = point[i] - mean_[i];
+      const Scalar val = point[i] - mean_[i];
       var[i] += pow(val, static_cast<int>(k_));
     }
     return var;
@@ -1636,20 +1636,20 @@ Point SampleImplementation::computeRawMoment(const UnsignedInteger k) const
 /*
  * Gives the quantile per component of the sample
  */
-Point SampleImplementation::computeQuantilePerComponent(const NumericalScalar prob) const
+Point SampleImplementation::computeQuantilePerComponent(const Scalar prob) const
 {
   if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the quantile per component of an empty sample.";
   if (!(prob >= 0.0) || !(prob <= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
 
   // Special case for extremum cases
-  const NumericalScalar scalarIndex = prob * size_ - 0.5;
+  const Scalar scalarIndex = prob * size_ - 0.5;
   if (scalarIndex >= size_ - 1) return getMax();
   // Special case for prob <= 0.0
   if (scalarIndex <= 0.0) return getMin();
 
   const UnsignedInteger index = static_cast<UnsignedInteger>( floor( scalarIndex) );
-  const NumericalScalar beta = scalarIndex - index;
-  const NumericalScalar alpha = 1.0 - beta;
+  const Scalar beta = scalarIndex - index;
+  const Scalar alpha = 1.0 - beta;
   Point quantile(dimension_);
   Point component(size_);
   for (UnsignedInteger j = 0; j < dimension_; ++j)
@@ -1669,17 +1669,17 @@ Point SampleImplementation::computeQuantilePerComponent(const NumericalScalar pr
 /*
  * Gives the N-dimension quantile of the sample
  */
-Point SampleImplementation::computeQuantile(const NumericalScalar prob) const
+Point SampleImplementation::computeQuantile(const Scalar prob) const
 {
   if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the quantile of an empty sample.";
 
   if (getDimension() == 1) return computeQuantilePerComponent(prob);
-  throw NotYetImplementedException(HERE) << "In SampleImplementation::computeQuantile(const NumericalScalar prob) const";
+  throw NotYetImplementedException(HERE) << "In SampleImplementation::computeQuantile(const Scalar prob) const";
 }
 
 struct CDFPolicy
 {
-  typedef NumericalScalar value_type;
+  typedef Scalar value_type;
 
   const Point & point_;
   const Bool tail_;
@@ -1716,7 +1716,7 @@ struct CDFPolicy
 /*
  * Get the empirical CDF of the sample
  */
-NumericalScalar SampleImplementation::computeEmpiricalCDF(const Point & point,
+Scalar SampleImplementation::computeEmpiricalCDF(const Point & point,
     const Bool tail) const
 {
   if (size_ == 0) throw InvalidArgumentException(HERE) << "Cannot compute the empirical CDF of an empty sample.";
@@ -1726,7 +1726,7 @@ NumericalScalar SampleImplementation::computeEmpiricalCDF(const Point & point,
   const CDFPolicy policy( *this, point, tail );
   ReductionFunctor<CDFPolicy> functor( *this, policy );
   TBB::ParallelReduce( 0, size_, functor );
-  return static_cast < NumericalScalar > (functor.accumulator_) / size_;
+  return static_cast < Scalar > (functor.accumulator_) / size_;
 }
 
 struct MaxPerComponentPolicy
@@ -1735,7 +1735,7 @@ struct MaxPerComponentPolicy
 
   static inline value_type GetInvariant(const SampleImplementation & nsi)
   {
-    return value_type(nsi.getDimension(), - std::numeric_limits<NumericalScalar>::max());
+    return value_type(nsi.getDimension(), - std::numeric_limits<Scalar>::max());
   }
 
   template <typename T>
@@ -1753,7 +1753,7 @@ struct MinPerComponentPolicy
 
   static inline value_type GetInvariant(const SampleImplementation & nsi)
   {
-    return value_type(nsi.getDimension(), std::numeric_limits<NumericalScalar>::max());
+    return value_type(nsi.getDimension(), std::numeric_limits<Scalar>::max());
   }
 
   template <typename T>
@@ -1820,7 +1820,7 @@ void SampleImplementation::translate(const Point & translation)
   TBB::ParallelFor( 0, size_, functor );
 }
 
-SampleImplementation & SampleImplementation::operator += (const NumericalScalar translation)
+SampleImplementation & SampleImplementation::operator += (const Scalar translation)
 {
   translate(Point(dimension_, translation));
   return *this;
@@ -1873,7 +1873,7 @@ SampleImplementation & SampleImplementation::operator += (const SampleImplementa
   return *this;
 }
 
-SampleImplementation & SampleImplementation::operator -= (const NumericalScalar translation)
+SampleImplementation & SampleImplementation::operator -= (const Scalar translation)
 {
   return operator +=(-translation);
 }
@@ -1892,7 +1892,7 @@ SampleImplementation & SampleImplementation::operator -= (const SampleImplementa
   return *this;
 }
 
-SampleImplementation SampleImplementation::operator + (const NumericalScalar translation) const
+SampleImplementation SampleImplementation::operator + (const Scalar translation) const
 {
   return operator+(Point(dimension_, translation));
 }
@@ -1913,7 +1913,7 @@ SampleImplementation SampleImplementation::operator + (const SampleImplementatio
   return sample;
 }
 
-SampleImplementation SampleImplementation::operator - (const NumericalScalar translation) const
+SampleImplementation SampleImplementation::operator - (const Scalar translation) const
 {
   return operator-(Point(dimension_, translation));
 }
@@ -1990,7 +1990,7 @@ void SampleImplementation::scale(const Point & scaling)
   TBB::ParallelFor( 0, size_, functor );
 }
 
-SampleImplementation & SampleImplementation::operator *= (const NumericalScalar scaling)
+SampleImplementation & SampleImplementation::operator *= (const Scalar scaling)
 {
   scale(Point(dimension_, scaling));
   return *this;
@@ -2008,7 +2008,7 @@ SampleImplementation & SampleImplementation::operator *= (const SquareMatrix & s
   return *this;
 }
 
-SampleImplementation & SampleImplementation::operator /= (const NumericalScalar scaling)
+SampleImplementation & SampleImplementation::operator /= (const Scalar scaling)
 {
   return operator/=(Point(dimension_, scaling));
 }
@@ -2033,7 +2033,7 @@ SampleImplementation & SampleImplementation::operator /= (const SquareMatrix & s
   return *this;
 }
 
-SampleImplementation SampleImplementation::operator * (const NumericalScalar scaling) const
+SampleImplementation SampleImplementation::operator * (const Scalar scaling) const
 {
   return operator*(Point(dimension_, scaling));
 }
@@ -2054,7 +2054,7 @@ SampleImplementation SampleImplementation::operator * (const SquareMatrix & scal
   return nsi;
 }
 
-SampleImplementation SampleImplementation::operator / (const NumericalScalar scaling) const
+SampleImplementation SampleImplementation::operator / (const Scalar scaling) const
 {
   return operator/(Point(dimension_, scaling));
 }

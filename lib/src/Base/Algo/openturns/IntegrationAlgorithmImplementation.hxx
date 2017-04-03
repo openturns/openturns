@@ -54,7 +54,7 @@ public:
 #ifndef SWIG
   virtual Point integrate(const Function & function,
                                    const Interval & interval,
-                                   NumericalScalar & error) const;
+                                   Scalar & error) const;
 #endif
 
   virtual Point integrate(const Function & function,

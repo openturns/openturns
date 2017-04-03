@@ -87,7 +87,7 @@ Sample LowDiscrepancySequence::generate(const UnsignedInteger size) const
 
 
 /* Compute the star discrepancy of a sample uniformly distributed over [0, 1) */
-NumericalScalar LowDiscrepancySequence::computeStarDiscrepancy(const Sample & sample) const
+Scalar LowDiscrepancySequence::computeStarDiscrepancy(const Sample & sample) const
 {
   return getImplementation()->ComputeStarDiscrepancy(sample);
 }

@@ -68,7 +68,7 @@ KarhunenLoeveQuadratureAlgorithm::KarhunenLoeveQuadratureAlgorithm(const Domain 
     const Basis & basis,
     const UnsignedInteger basisSize,
     const Bool mustScale,
-    const NumericalScalar threshold)
+    const Scalar threshold)
   : KarhunenLoeveAlgorithmImplementation(covariance, threshold)
   , domain_(domain)
   , experiment_(experiment)
@@ -89,7 +89,7 @@ KarhunenLoeveQuadratureAlgorithm::KarhunenLoeveQuadratureAlgorithm(const Domain 
 KarhunenLoeveQuadratureAlgorithm::KarhunenLoeveQuadratureAlgorithm(const Domain & domain,
     const CovarianceModel & covariance,
     const UnsignedInteger marginalDegree,
-    const NumericalScalar threshold)
+    const Scalar threshold)
   : KarhunenLoeveAlgorithmImplementation(covariance, threshold)
   , domain_(domain)
   , experiment_(GaussProductExperiment(ComposedDistribution(Collection<Distribution>(domain.getDimension(), Uniform())), Indices(domain.getDimension(), marginalDegree + 1)))
@@ -148,7 +148,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   Function scaling;
   Function inverseScaling;
   // Normalization factor takes into account the fact that we map the range of the distribution defining the weighted experiment with the bounding box of the domain
-  NumericalScalar normalizationFactor = 1.0;
+  Scalar normalizationFactor = 1.0;
   if (!hasSameBounds)
   {
     TriangularMatrix T(domainDimension);
@@ -224,7 +224,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   // Compute the Cholesky factor L of \theta^t\diag(w_i)^2\theta, ie LL^t=\theta^t\diag(w_i)^2\theta
   LOGINFO("Compute the Cholesky factor of the Gram matrix");
   CovarianceMatrix gram(scaledTheta.computeGram(true));
-  const NumericalScalar epsilon = ResourceMap::GetAsScalar("KarhunenLoeveQuadratureFactory-RegularizationFactor");
+  const Scalar epsilon = ResourceMap::GetAsScalar("KarhunenLoeveQuadratureFactory-RegularizationFactor");
   if (epsilon > 0.0)
     for (UnsignedInteger i = 0; i < gram.getDimension(); ++i) gram(i, i) += epsilon;
   TriangularMatrix cholesky(gram.computeCholesky(false));
@@ -241,7 +241,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
     for (UnsignedInteger j = 0; j < nodesNumber; ++j)
       for (UnsignedInteger i = j; i < nodesNumber; ++i)
       {
-        const NumericalScalar factor = weights[i] * weights[j];
+        const Scalar factor = weights[i] * weights[j];
         C(i, j) *= factor;
       } // i
   } // dimension == 1
@@ -250,7 +250,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
     for (UnsignedInteger j = 0; j < nodesNumber; ++j)
       for (UnsignedInteger i = j; i < nodesNumber; ++i)
       {
-        const NumericalScalar factor = weights[i] * weights[j];
+        const Scalar factor = weights[i] * weights[j];
         for (UnsignedInteger m = 0; m < dimension; ++m)
           for (UnsignedInteger n = 0; n < dimension; ++n)
             C(m + i * dimension, n + j * dimension) *= factor;
@@ -268,7 +268,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
     for (UnsignedInteger j = 0; j < basisSize_; ++j)
       for (UnsignedInteger i = 0; i < nodesNumber; ++i)
       {
-        const NumericalScalar value = scaledTheta(i, j);
+        const Scalar value = scaledTheta(i, j);
         for (UnsignedInteger k = 0; k < dimension; ++k)
           omega(k + i * dimension, k + j * dimension) = value;
       }
@@ -292,7 +292,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
     for (UnsignedInteger j = 0; j < basisSize_; ++j)
       for (UnsignedInteger i = j; i < basisSize_; ++i)
       {
-        const NumericalScalar value = cholesky(i, j);
+        const Scalar value = cholesky(i, j);
         for (UnsignedInteger k = 0; k < dimension; ++k)
           choleskyBlock(k + i * dimension, k + j * dimension) = value;
       }
@@ -327,7 +327,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
     eigenValues[i] = -eigenPairs[i][augmentedDimension];
   }
   UnsignedInteger K = 0;
-  NumericalScalar cumulatedVariance = std::abs(eigenValues[0]);
+  Scalar cumulatedVariance = std::abs(eigenValues[0]);
   // Find the cut-off in the eigenvalues
   while ((K < eigenValues.getSize()) && (eigenValues[K] >= threshold_ * cumulatedVariance))
     {
@@ -345,10 +345,10 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   {
     selectedEV[k] = eigenValues[k];
     const MatrixImplementation a(*eigenVectors.getColumn(k).getImplementation());
-    const NumericalScalar norm = (omega * Point(a)).norm();
+    const Scalar norm = (omega * Point(a)).norm();
     // Store the eigen modes in two forms
     Point modeValues(omega.getImplementation()->genProd(a));
-    const NumericalScalar factor = modeValues[0] < 0.0 ? -1.0 / norm : 1.0 / norm;
+    const Scalar factor = modeValues[0] < 0.0 ? -1.0 / norm : 1.0 / norm;
     // Unscale the values
     for (UnsignedInteger i = 0; i < nodesNumber; ++i) modeValues[i] *= factor / weights[i];
     values.setData(modeValues);
@@ -372,7 +372,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
     UnsignedInteger indexB = 0;
     for (UnsignedInteger i = 0; i < nodesNumber; ++i)
     {
-      const NumericalScalar wI = weights[i];
+      const Scalar wI = weights[i];
       for (UnsignedInteger j = 0; j < dimension; ++j)
       {
         b[indexB] *= wI;

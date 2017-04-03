@@ -62,10 +62,10 @@ Chi ChiFactory::buildAsChi(const Sample & sample) const
   const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Chi distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Chi distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
-  NumericalScalar sumSquares = 0.0;
+  Scalar sumSquares = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalScalar xI = sample[i][0];
+    const Scalar xI = sample[i][0];
     sumSquares += xI * xI;
   }
   try

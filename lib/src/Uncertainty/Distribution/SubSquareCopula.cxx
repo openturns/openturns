@@ -97,9 +97,9 @@ void SubSquareCopula::setPhi(const Function & phi)
 {
   if (phi.getInputDimenson() != 1) throw InvalidArgumentException(HERE) << "Error: phi must have an input dimension equal to 1, here input dimension=" << phi.getInputDimension();
   if (phi.getOutputDimenson() != 1) throw InvalidArgumentException(HERE) << "Error: phi must have an output dimension equal to 1, here output dimension=" << phi.getOutputDimension();
-  const NumericalScalar phi0 = phi(Point(1, 0.0))[0];
+  const Scalar phi0 = phi(Point(1, 0.0))[0];
   if (phi0 != 0.0) throw InvalidArgumentException(HERE) << "Error: phi(0) must be null, here phi(0)=" << phi0;
-  const NumericalScalar phi1 = phi(Point(1, 1.0))[0];
+  const Scalar phi1 = phi(Point(1, 1.0))[0];
   if (!(phi1 <= 1.0)) throw InvalidArgumentException(HERE) << "Error: phi(1) must be less or equal to 1, here phi(1)=" << phi1;
   nullPhi_ = false;
   // Here, we will use the integration algorithm to evaluate phi on a meaningfull grid in order to check if phi is increasing and takes its values in [0, 1]
@@ -110,14 +110,14 @@ void SubSquareCopula::setPhi(const Function & phi)
   Sample inputOutput(phi_.getHistoryInput().getSample());
   inputOutput.stack(phi_.getHistoryOutput().getSample());
   inputOutput = inputOutput.sortAccordingToAComponent(0);
-  NumericalScalar lastX = inputOutput[0][0];
-  NumericalScalar lastValue = inputOutput[0][1];
+  Scalar lastX = inputOutput[0][0];
+  Scalar lastValue = inputOutput[0][1];
   if (!(lastValue >= 0.0)) throw InvalidArgumentException(HERE) << "Error: phi must be nonnegative, here phi(" << lastX << ")=" << lastValue;
   if (!(lastValue <= 1.0)) throw InvalidArgumentException(HERE) << "Error: phi must be less or equal to 1, here phi(" << lastX << ")=" << lastValue;
   for (UnsignedInteger i = 1; i < inputOutput.getSize(); ++i)
   {
-    const NumericalScalar x = inputOutput[i][0];
-    const NumericalScalar value = inputOutput[i][1];
+    const Scalar x = inputOutput[i][0];
+    const Scalar value = inputOutput[i][1];
     if (!(value >= 0.0)) throw InvalidArgumentException(HERE) << "Error: phi must be nonnegative, here phi(" << inputOutput[i][0] << ")=" << value;
     if (!(lastValue <= 1.0)) throw InvalidArgumentException(HERE) << "Error: phi must be less or equal to 1, here phi(" << inputOutput[0][0] << ")=" << inputOutput[0][1];
     if (value < lastValue) throw InvalidArgumentException(HERE) << "Error: phi must be nondecreasing, here phi(" << lastX << ")=" << lastValue << " and phi(" << x << ")=" << value;
@@ -145,7 +145,7 @@ Point SubSquareCopula::getRealization() const
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar SubSquareCopula::computePDF(const Point & point) const
+Scalar SubSquareCopula::computePDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
@@ -160,7 +160,7 @@ NumericalScalar SubSquareCopula::computePDF(const Point & point) const
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar SubSquareCopula::computeCDF(const Point & point) const
+Scalar SubSquareCopula::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
@@ -185,18 +185,18 @@ NumericalScalar SubSquareCopula::computeCDF(const Point & point) const
 } // computeCDF
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar SubSquareCopula::computeConditionalPDF(const NumericalScalar x,
+Scalar SubSquareCopula::computeConditionalPDF(const Scalar x,
     const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return 1.0;
-  throw NotYetImplementedException(HERE) << "In SubSquareCopula::computeConditionalPDF(const NumericalScalar x, const Point & y) const";
+  throw NotYetImplementedException(HERE) << "In SubSquareCopula::computeConditionalPDF(const Scalar x, const Point & y) const";
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar SubSquareCopula::computeConditionalCDF(const NumericalScalar x,
+Scalar SubSquareCopula::computeConditionalCDF(const Scalar x,
     const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
@@ -204,11 +204,11 @@ NumericalScalar SubSquareCopula::computeConditionalCDF(const NumericalScalar x,
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return x;
   // General case
-  throw NotYetImplementedException(HERE) << "In SubSquareCopula::computeConditionalCDF(const NumericalScalar x, const Point & y) const";
+  throw NotYetImplementedException(HERE) << "In SubSquareCopula::computeConditionalCDF(const Scalar x, const Point & y) const";
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar SubSquareCopula::computeConditionalQuantile(const NumericalScalar q,
+Scalar SubSquareCopula::computeConditionalQuantile(const Scalar q,
     const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
@@ -219,7 +219,7 @@ NumericalScalar SubSquareCopula::computeConditionalQuantile(const NumericalScala
   // Special case when no contitioning or independent copula
   if ((conditioningDimension == 0) || hasIndependentCopula()) return q;
   // General case
-  throw NotYetImplementedException(HERE) << "In SubSquareCopula::computeConditionalQuantile(const NumericalScalar q, const Point & y) const";
+  throw NotYetImplementedException(HERE) << "In SubSquareCopula::computeConditionalQuantile(const Scalar q, const Point & y) const";
 }
 
 /* Tell if the distribution has independent copula */

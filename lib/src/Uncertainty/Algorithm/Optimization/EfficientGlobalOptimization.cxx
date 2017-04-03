@@ -68,7 +68,7 @@ EfficientGlobalOptimization::EfficientGlobalOptimization(const OptimizationProbl
 class ExpectedImprovementEvaluation : public EvaluationImplementation
 {
 public:
-  ExpectedImprovementEvaluation (const NumericalScalar optimalValue,
+  ExpectedImprovementEvaluation (const Scalar optimalValue,
                                       const KrigingResult & metaModelResult,
                                       const Function & noiseModel)
   : EvaluationImplementation()
@@ -85,16 +85,16 @@ public:
 
   Point operator()(const Point & x) const
   {
-    const NumericalScalar mx = metaModelResult_.getMetaModel()(x)[0];
-    const NumericalScalar fmMk = optimalValue_ - mx;
-    const NumericalScalar sk2 = metaModelResult_.getConditionalCovariance(x)(0, 0);
-    const NumericalScalar sk = sqrt(sk2);
+    const Scalar mx = metaModelResult_.getMetaModel()(x)[0];
+    const Scalar fmMk = optimalValue_ - mx;
+    const Scalar sk2 = metaModelResult_.getConditionalCovariance(x)(0, 0);
+    const Scalar sk = sqrt(sk2);
     if (!SpecFunc::IsNormal(sk)) return Point(1, -SpecFunc::MaxScalar);
-    const NumericalScalar ratio = fmMk / sk;
-    NumericalScalar ei = fmMk * normal_.computeCDF(ratio) + sk * normal_.computePDF(ratio);
+    const Scalar ratio = fmMk / sk;
+    Scalar ei = fmMk * normal_.computeCDF(ratio) + sk * normal_.computePDF(ratio);
     if (noiseModel_.getOutputDimension() == 1) // if provided
     {
-      const NumericalScalar noiseVariance = noiseModel_(x)[0];
+      const Scalar noiseVariance = noiseModel_(x)[0];
       if (!(noiseVariance >= 0.0)) throw InvalidArgumentException(HERE) << "Noise model must be positive";
       ei *= (1.0 - sqrt(noiseVariance) / sqrt(noiseVariance + sk2));
     }
@@ -132,7 +132,7 @@ public:
 
 protected:
   Normal normal_;
-  NumericalScalar optimalValue_;
+  Scalar optimalValue_;
   KrigingResult metaModelResult_;
   Function noiseModel_;
 };
@@ -169,9 +169,9 @@ void EfficientGlobalOptimization::run()
 
   // select the best feasible point
   Point optimizer;
-  NumericalScalar optimalValue = problem.isMinimization() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
+  Scalar optimalValue = problem.isMinimization() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
   Point optimizerPrev; // previous optimizer
-  NumericalScalar optimalValuePrev = optimalValue;// previous optimal value
+  Scalar optimalValuePrev = optimalValue;// previous optimal value
   for (UnsignedInteger index = 0; index < size; ++ index)
   {
     if (!problem.hasBounds() || (problem.hasBounds() && problem.getBounds().contains(inputSample[index])))
@@ -214,7 +214,7 @@ void EfficientGlobalOptimization::run()
       {
         for (UnsignedInteger j = 0; j < dimension; ++ j)
         {
-          NumericalScalar distance = std::abs(inputSample[i1][j] - inputSample[i2][j]);
+          Scalar distance = std::abs(inputSample[i1][j] - inputSample[i2][j]);
           if (distance < minimumDistance[j])
           {
             minimumDistance[j] = distance;
@@ -243,18 +243,18 @@ void EfficientGlobalOptimization::run()
       metaModelResult = algo.getResult();
     }
 
-    NumericalScalar optimalValueSubstitute = optimalValue;
+    Scalar optimalValueSubstitute = optimalValue;
     if (hasNoise)
     {
       // compute mk(x_min) with x_min = argmin_xi ui
       // with ui = mk(xi) + c * sk(xi)
-      NumericalScalar optimalU = problem.isMinimization() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
+      Scalar optimalU = problem.isMinimization() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
       for (UnsignedInteger i = 0; i < size; ++ i)
       {
         const Point x(inputSample[i]);
-        const NumericalScalar mx = krigingResult_.getMetaModel()(x)[0];
-        const NumericalScalar sk2 = krigingResult_.getConditionalCovariance(x)(0, 0);
-        const NumericalScalar u = mx + aeiTradeoff_ * sqrt(sk2);
+        const Scalar mx = krigingResult_.getMetaModel()(x)[0];
+        const Scalar sk2 = krigingResult_.getConditionalCovariance(x)(0, 0);
+        const Scalar u = mx + aeiTradeoff_ * sqrt(sk2);
         if ((problem.isMinimization() && (u < optimalU))
         || (!problem.isMinimization() && (u > optimalU)))
         {
@@ -327,10 +327,10 @@ void EfficientGlobalOptimization::run()
     }
 
     // algorithm is global so compute convergence criteria on the last 2 optimum instead of last 2 points
-    const NumericalScalar absoluteError = (optimizer - optimizerPrev).normInf();
-    const NumericalScalar relativeError = absoluteError / optimizer.normInf();
-    const NumericalScalar residualError = std::abs(optimalValue - optimalValuePrev);
-    const NumericalScalar constraintError = -1.0;
+    const Scalar absoluteError = (optimizer - optimizerPrev).normInf();
+    const Scalar relativeError = absoluteError / optimizer.normInf();
+    const Scalar residualError = std::abs(optimalValue - optimalValuePrev);
+    const Scalar constraintError = -1.0;
 
     result.store(newPoint, newValue, absoluteError, relativeError, residualError, constraintError);
 
@@ -345,7 +345,7 @@ void EfficientGlobalOptimization::run()
       {
         for (UnsignedInteger j = 0; j < dimension; ++ j)
         {
-          NumericalScalar distance = std::abs(inputSample[i][j] - newPoint[j]);
+          Scalar distance = std::abs(inputSample[i][j] - newPoint[j]);
           if (distance < minimumDistance[j])
           {
             minimumDistance[j] = distance;
@@ -462,35 +462,35 @@ Sample EfficientGlobalOptimization::getExpectedImprovement() const
 }
 
 /* improvement criterion factor accessor */
-void EfficientGlobalOptimization::setImprovementFactor(const NumericalScalar improvementFactor)
+void EfficientGlobalOptimization::setImprovementFactor(const Scalar improvementFactor)
 {
   improvementFactor_ = improvementFactor;
 }
 
-NumericalScalar EfficientGlobalOptimization::getImprovementFactor() const
+Scalar EfficientGlobalOptimization::getImprovementFactor() const
 {
   return improvementFactor_;
 }
 
 /* correlation length stopping criterion factor accessor */
-void EfficientGlobalOptimization::setCorrelationLengthFactor(const NumericalScalar correlationLengthFactor)
+void EfficientGlobalOptimization::setCorrelationLengthFactor(const Scalar correlationLengthFactor)
 {
   correlationLengthFactor_ = correlationLengthFactor;
 }
 
-NumericalScalar EfficientGlobalOptimization::getCorrelationLengthFactor() const
+Scalar EfficientGlobalOptimization::getCorrelationLengthFactor() const
 {
   return correlationLengthFactor_;
 }
 
 
 /* AEI tradeoff constant accessor */
-void EfficientGlobalOptimization::setAIETradeoff(const NumericalScalar aeiTradeoff)
+void EfficientGlobalOptimization::setAIETradeoff(const Scalar aeiTradeoff)
 {
   aeiTradeoff_ = aeiTradeoff;
 }
 
-NumericalScalar EfficientGlobalOptimization::getAIETradeoff() const
+Scalar EfficientGlobalOptimization::getAIETradeoff() const
 {
   return aeiTradeoff_;
 }

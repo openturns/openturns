@@ -52,7 +52,7 @@ class OT_API ComplexMatrixImplementation
 public:
 
   typedef Collection<NumericalComplex>        NumericalComplexCollection;
-  typedef Collection<NumericalScalar>         NumericalScalarCollection;
+  typedef Collection<Scalar>         ScalarCollection;
 
   /** Default constructor */
   ComplexMatrixImplementation();
@@ -83,7 +83,7 @@ public:
   /** or the rest of the matrix is filled with zeros */
   ComplexMatrixImplementation(const UnsignedInteger rowDim,
                               const UnsignedInteger colDim,
-                              const NumericalScalarCollection & elementsValues);
+                              const ScalarCollection & elementsValues);
 
   /** Constructor from MatrixImplementation */
   ComplexMatrixImplementation(const MatrixImplementation & matrix);
@@ -99,9 +99,9 @@ public:
       const Bool keepIntact = true);
 
   /** Set small elements to zero */
-  virtual ComplexMatrixImplementation clean(const NumericalScalar threshold) const;
+  virtual ComplexMatrixImplementation clean(const Scalar threshold) const;
 
-  virtual ComplexMatrixImplementation cleanHerm(const NumericalScalar threshold) const;
+  virtual ComplexMatrixImplementation cleanHerm(const Scalar threshold) const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -182,18 +182,18 @@ public:
 
   /** Multiplications with a NumericalComplexCollection (must have consistent dimensions) */
   NumericalComplexCollection genVectProd (const NumericalComplexCollection & pt) const;
-  NumericalComplexCollection genVectProd (const NumericalScalarCollection & pt) const;
+  NumericalComplexCollection genVectProd (const ScalarCollection & pt) const;
   NumericalComplexCollection genVectProd (const Point & pt) const;
 
   /** Using some optimization (for Hermitian matrix) */
   NumericalComplexCollection hermVectProd (const NumericalComplexCollection & pt) const;
-  NumericalComplexCollection hermVectProd (const NumericalScalarCollection & pt) const;
+  NumericalComplexCollection hermVectProd (const ScalarCollection & pt) const;
   NumericalComplexCollection hermVectProd (const Point & pt) const;
 
   /** Using triangular matrix */
   NumericalComplexCollection triangularVectProd(const NumericalComplexCollection & pt,
       const char side = 'L') const;
-  NumericalComplexCollection triangularVectProd(const NumericalScalarCollection & pt,
+  NumericalComplexCollection triangularVectProd(const ScalarCollection & pt,
       const char side = 'L') const;
 
 

@@ -7,10 +7,10 @@ namespace GammaFunctions
 {
 #define explow -300
 #define exphigh 300
-void incgam(const NumericalScalar a,
-            const NumericalScalar x,
-            NumericalScalar & p,
-            NumericalScalar & q,
+void incgam(const Scalar a,
+            const Scalar x,
+            Scalar & p,
+            Scalar & q,
             SignedInteger & ierr)
 {
   // -------------------------------------------------------------
@@ -40,11 +40,11 @@ void incgam(const NumericalScalar a,
   //  the computation and inversion of the incomplete gamma function ratios",
   //  A. Gil, J. Segura and N.M. Temme, submitted to SIAM J Sci Comput
   // -------------------------------------------------------------------
-  NumericalScalar lnx = -1.0;
+  Scalar lnx = -1.0;
   ierr = 0;
   if (a > alpha(x))
   {
-    const NumericalScalar dp = dompart(a, x, false);
+    const Scalar dp = dompart(a, x, false);
     if (dp < 0.0)
     {
       ierr = 1;
@@ -67,7 +67,7 @@ void incgam(const NumericalScalar a,
   }
   if (x < 1.0)
   {
-    const NumericalScalar dp = dompart(a, x, true);
+    const Scalar dp = dompart(a, x, true);
     if (dp < 0.0)
     {
       ierr = 1;
@@ -79,7 +79,7 @@ void incgam(const NumericalScalar a,
     p = 1.0 - q;
     return;
   } // x < 1.0
-  const NumericalScalar dp = dompart(a, x, false);
+  const Scalar dp = dompart(a, x, false);
   if (dp < 0.0)
   {
     ierr = 1;
@@ -92,10 +92,10 @@ void incgam(const NumericalScalar a,
   p = 1.0 - q;
 } // incgam
 
-void invincgam(const NumericalScalar a,
-               const NumericalScalar p,
-               const NumericalScalar q,
-               NumericalScalar & xr,
+void invincgam(const Scalar a,
+               const Scalar p,
+               const Scalar q,
+               Scalar & xr,
                SignedInteger & ierr)
 {
   // -------------------------------------------------------------
@@ -122,46 +122,46 @@ void invincgam(const NumericalScalar a,
   // ------------------------------------------------------------------
   ierr = 0;
   Bool pcase = true;
-  NumericalScalar porq = p;
-  NumericalScalar s = -1.0;
+  Scalar porq = p;
+  Scalar s = -1.0;
   if (p > 0.5)
   {
     pcase = false;
     porq = q;
     s = 1.0;
   } // p > 0.5
-  const NumericalScalar logr = (1.0 / a) * (log(p) + SpecFunc::LogGamma(a + 1.0));
-  NumericalScalar x = 0.0;
+  const Scalar logr = (1.0 / a) * (log(p) + SpecFunc::LogGamma(a + 1.0));
+  Scalar x = 0.0;
   Bool m0 = true;
-  NumericalScalar eta = 0.0;
+  Scalar eta = 0.0;
   if (logr < log(0.2 * (1.0 + a)))
   {
-    const NumericalScalar r = exp(logr);
-    const NumericalScalar ap1 = a + 1.0;
-    const NumericalScalar ap12 = ap1 * ap1;
-    const NumericalScalar ap13 = ap1 * ap12;
-    const NumericalScalar ap14 = ap12 * ap12;
-    const NumericalScalar ap2 = a + 2.0;
-    const NumericalScalar ap22 = ap2 * ap2;
-    const NumericalScalar ck1 = 1.0 / ap1;
-    const NumericalScalar ck2 = 0.5 * (3.0 * a + 5.0) / (ap12 * ap2);
-    const NumericalScalar ck3 = (31.0 + a * (33.0 + 8.0 * a)) / (3.0 * (ap13 * ap2 * (a + 3.0)));
-    const NumericalScalar ck4 = (2888.0 + a * (5661.0 + a * (3971.0 + a * (1179.0 + 125.0 * a)))) / (24.0 * (ap14 * ap22 * (a + 3.0) * (a + 4.0)));
+    const Scalar r = exp(logr);
+    const Scalar ap1 = a + 1.0;
+    const Scalar ap12 = ap1 * ap1;
+    const Scalar ap13 = ap1 * ap12;
+    const Scalar ap14 = ap12 * ap12;
+    const Scalar ap2 = a + 2.0;
+    const Scalar ap22 = ap2 * ap2;
+    const Scalar ck1 = 1.0 / ap1;
+    const Scalar ck2 = 0.5 * (3.0 * a + 5.0) / (ap12 * ap2);
+    const Scalar ck3 = (31.0 + a * (33.0 + 8.0 * a)) / (3.0 * (ap13 * ap2 * (a + 3.0)));
+    const Scalar ck4 = (2888.0 + a * (5661.0 + a * (3971.0 + a * (1179.0 + 125.0 * a)))) / (24.0 * (ap14 * ap22 * (a + 3.0) * (a + 4.0)));
     x = r * (1.0 + r * (ck1 + r * (ck2 + r * (ck3 + r * ck4))));
   } // logr < log(0.2 * (1 + a))
   else if ((q < std::min(0.02, exp(-1.5 * a) / SpecFunc::Gamma(a))) && (a < 10.0))
   {
-    const NumericalScalar b = 1.0 - a;
+    const Scalar b = 1.0 - a;
     eta = sqrt(-2.0 / a * log(q * gamstar(a) * SpecFunc::SQRT2PI / sqrt(a)));
     x = a * lambdaeta(eta);
-    const NumericalScalar L = log(x);
-    const NumericalScalar r = 1.0 / x;
+    const Scalar L = log(x);
+    const Scalar r = 1.0 / x;
     if ((a > 0.12) || (x > 5.0))
     {
-      const NumericalScalar ck0 = L - 1.0;
-      const NumericalScalar ck1 = 1.0 + 1.5 * b + L * (-b - 1.0 + 0.5 * L);
-      const NumericalScalar ck2 = -2.0 + (-4.0 - 11.0 / 6.0 * b) * b + (2.0 + (4.0 + b) * b + (-1.5 * b - 1.0 + L / 3.0) * L) * L;
-      const NumericalScalar ck3 = 6.0 + (13.5 + (10.0 + 25.0 / 12.0 * b) * b) * b + (-6.0 + (-14.0 + (-9.5 - b) * b) * b + (3.0 + (7.0 + 3.0 * b) * b + (-1.0 - 11.0 / 6.0 * b + 0.25 * L) * L) * L) * L;
+      const Scalar ck0 = L - 1.0;
+      const Scalar ck1 = 1.0 + 1.5 * b + L * (-b - 1.0 + 0.5 * L);
+      const Scalar ck2 = -2.0 + (-4.0 - 11.0 / 6.0 * b) * b + (2.0 + (4.0 + b) * b + (-1.5 * b - 1.0 + L / 3.0) * L) * L;
+      const Scalar ck3 = 6.0 + (13.5 + (10.0 + 25.0 / 12.0 * b) * b) * b + (-6.0 + (-14.0 + (-9.5 - b) * b) * b + (3.0 + (7.0 + 3.0 * b) * b + (-1.0 - 11.0 / 6.0 * b + 0.25 * L) * L) * L) * L;
       x += -L + b * r * (ck0 + r * (ck1 + r * (ck2 + r * ck3)));
     } // (a > 0.12) || (x > 5.0)
     else x += -L + b * r * (L - 1.0);
@@ -173,21 +173,21 @@ void invincgam(const NumericalScalar a,
   {
     // a >= 1.0
     m0 = false;
-    const NumericalScalar r = inverfc(2.0 * porq);
+    const Scalar r = inverfc(2.0 * porq);
     eta = s * r / sqrt(a * 0.5);
     eta += (eps1(eta) + (eps2(eta) + eps3(eta) / a) / a) / a;
     x = a * lambdaeta(eta);
   } // a >= 1.0
-  NumericalScalar t = 1.0;
+  Scalar t = 1.0;
   UnsignedInteger n = 1;
   // Implementation of the high order Newton-like method;
   while ((t > SpecFunc::ScalarEpsilon) && (n < 15))
   {
-    NumericalScalar dx = 0.0;
-    NumericalScalar r = 0.0;
+    Scalar dx = 0.0;
+    Scalar r = 0.0;
     if (m0)
     {
-      const NumericalScalar dlnr = (1.0 - a) * log(x) + x + SpecFunc::LogGamma(a);
+      const Scalar dlnr = (1.0 - a) * log(x) + x + SpecFunc::LogGamma(a);
       if (dlnr > SpecFunc::LogMaxScalar)
       {
         n = 20;
@@ -198,20 +198,20 @@ void invincgam(const NumericalScalar a,
     }
     else r = x * gamstar(a) / (sqrt(a) * SpecFunc::ISQRT2PI * exp(-0.5 * a * eta * eta));
     SignedInteger ierrf;
-    NumericalScalar px = -1.0;
-    NumericalScalar qx = -1.0;
+    Scalar px = -1.0;
+    Scalar qx = -1.0;
     incgam(a, x, px, qx, ierrf);
     r = (pcase ? -r * (px - p) : r * (qx - q));
     if (a <= 0.05) dx = r;
     else
     {
       // a > 0.05
-      const NumericalScalar ck1 = (x - a + 1.0) / (2.0 * x);
+      const Scalar ck1 = (x - a + 1.0) / (2.0 * x);
       if (a <= 0.1) dx = r * (1.0 + r * ck1);
       else
       {
         // a > 0.1
-        const NumericalScalar ck2 = (1.0 + (-3.0 + 2.0 * a) * a + (4.0 - 4.0 * a + 2.0 * x) * x) / (6.0 * x * x);
+        const Scalar ck2 = (1.0 + (-3.0 + 2.0 * a) * a + (4.0 - 4.0 * a + 2.0 * x) * x) / (6.0 * x * x);
         dx = r * (1.0 + r * (ck1 + r * ck2));
       } // a > 0.1
     } // a > 0.05
@@ -223,74 +223,74 @@ void invincgam(const NumericalScalar a,
   xr = x;
 } // invincgam
 
-NumericalScalar exmin1(const NumericalScalar x)
+Scalar exmin1(const Scalar x)
 {
   // computes (exp(x)-1)/x;
   if (std::abs(x) < 3.65e-8) return 1.0 + 0.5 * x;
   return expm1(x) / x;
 } // exmin1
 
-NumericalScalar lnec(const NumericalScalar x)
+Scalar lnec(const Scalar x)
 {
   // x > -1; lnec: = ln1: = ln(1+x)-x
   if (std::abs(x) < 1.3e-5) return x * x * (-0.5 + x * (1.0 / 3.0 - 0.25 * x));
   return log1p(x) - x;
 } // lnec
 
-NumericalScalar alpha(const NumericalScalar x)
+Scalar alpha(const Scalar x)
 {
   if (x > 0.25) return x + 0.25;
   if (x >= SpecFunc::MinScalar) return -0.6931 / log(x);
   return -0.6931 / SpecFunc::LogMinScalar;
 } // alpha
 
-NumericalScalar dompart(const NumericalScalar a,
-                        const NumericalScalar x,
+Scalar dompart(const Scalar a,
+                        const Scalar x,
                         const Bool qt)
 {
   // dompart is approx. of  x^a * exp(-x) / gamma(a+1) ;
-  NumericalScalar r = -1.0;
-  const NumericalScalar lnx = log(x);
+  Scalar r = -1.0;
+  const Scalar lnx = log(x);
   if (a <= 1.0) r = -x + a * lnx;
   else
   {
     if (x == a) r = 0.0;
     else
     {
-      const NumericalScalar la = x / a;
+      const Scalar la = x / a;
       r = a * (1.0 - la + log(la));
     }
     r += -0.5 * log(6.2832 * a);
   }
-  const NumericalScalar dp = r < explow ? 0.0 : exp(r);
+  const Scalar dp = r < explow ? 0.0 : exp(r);
   if (qt) return dp;
   if ((a < 3.0) || (x < 0.2)) return exp(a * lnx - x) / SpecFunc::Gamma(a + 1.0);
-  const NumericalScalar mu = (x - a) / a;
-  const NumericalScalar c = lnec(mu);
+  const Scalar mu = (x - a) / a;
+  const Scalar c = lnec(mu);
   if ((a * c) > SpecFunc::LogMaxScalar) return -100.0;
   return exp(a * c) / (sqrt(a) * SpecFunc::SQRT2PI * gamstar(a));
 } // dompart
 
-NumericalScalar chepolsum(const NumericalScalar x,
+Scalar chepolsum(const Scalar x,
                           const Point & a)
 {
   //{a[0]/2+a[1]T1(x)+...a[n]Tn(x); series of Chebychev polynomials}
   const UnsignedInteger n = a.getDimension() - 1;
   if (n == 0) return 0.5 * a[0];
   if (n == 1) return 0.5 * a[0] + x * a[1];
-  const NumericalScalar tx = x + x;
-  NumericalScalar r = a[n];
-  NumericalScalar h = a[n - 1] + r * tx;
+  const Scalar tx = x + x;
+  Scalar r = a[n];
+  Scalar h = a[n - 1] + r * tx;
   for (UnsignedInteger k = n - 2; k >= 1; --k)
   {
-    const NumericalScalar s = r;
+    const Scalar s = r;
     r = h;
     h = a[k] + r * tx - s;
   }
   return 0.5 * a[0] - r + h * x;
 } // chepolsum
 
-NumericalScalar auxgam(const NumericalScalar x)
+Scalar auxgam(const Scalar x)
 {
   // function g in 1/gamma(x+1) = 1+x*(x-1)*g(x), -1 <= x <= 1
   if (x < 0.0) return -(1.0 + (1.0 + x) * (1.0 + x) * auxgam(1.0 + x)) / (1.0 - x);
@@ -316,7 +316,7 @@ NumericalScalar auxgam(const NumericalScalar x)
   return chepolsum(2.0 * x - 1.0, dr);
 } // auxgam
 
-NumericalScalar gamstar(const NumericalScalar x)
+Scalar gamstar(const Scalar x)
 {
   // gamstar(x) = exp(SpecFunc::GammaCorrection(x)), x > 0; or
   // gamma(x)/(exp(-x+(x-0.5)*ln(x))/sqrt(2pi)
@@ -325,13 +325,13 @@ NumericalScalar gamstar(const NumericalScalar x)
   return SpecFunc::MaxScalar;
 } // gamstar
 
-NumericalScalar fractio(const NumericalScalar x,
+Scalar fractio(const Scalar x,
                         const Point & r,
                         const Point & s)
 {
   const UnsignedInteger n = r.getSize() - 1;
-  NumericalScalar a = r[n];
-  NumericalScalar b = 1.0;
+  Scalar a = r[n];
+  Scalar b = 1.0;
   for (SignedInteger k = n - 1; k >= 0; --k)
   {
     a = a * x + r[k];
@@ -340,30 +340,30 @@ NumericalScalar fractio(const NumericalScalar x,
   return a / b;
 } // fractio
 
-NumericalScalar pqasymp(const NumericalScalar a,
-                        const NumericalScalar x,
-                        const NumericalScalar dp,
+Scalar pqasymp(const Scalar a,
+                        const Scalar x,
+                        const Scalar dp,
                         const Bool p)
 {
   if (dp == 0.0) return (p ? 0.0 : 1.0);
   const SignedInteger s = p ? -1 : 1;
-  const NumericalScalar mu = x / a - 1.0;
-  NumericalScalar y = -lnec(mu);
-  NumericalScalar eta = y < 0.0 ? 0.0 : sqrt(2.0 * y);
+  const Scalar mu = x / a - 1.0;
+  Scalar y = -lnec(mu);
+  Scalar eta = y < 0.0 ? 0.0 : sqrt(2.0 * y);
   y *= a;
-  NumericalScalar v = sqrt(std::abs(y));
+  Scalar v = sqrt(std::abs(y));
   if (mu < 0.0)
   {
     eta = -eta;
     v = -v;
   }
-  const NumericalScalar u = 0.5 * SpecFunc::ErfC(s * v);
+  const Scalar u = 0.5 * SpecFunc::ErfC(s * v);
   v = s * exp(-y) * saeta(a, eta) / (SpecFunc::SQRT2PI * sqrt(a));
   return u + v;
 } // FUNCTION pqasymp;
 
-NumericalScalar saeta(const NumericalScalar a,
-                      const NumericalScalar eta)
+Scalar saeta(const Scalar a,
+                      const Scalar eta)
 {
   Point fm(27);
   fm[0] = 1.0;
@@ -397,9 +397,9 @@ NumericalScalar saeta(const NumericalScalar a,
   bm[25] = fm[26];
   bm[24] = fm[25];
   for (UnsignedInteger m = 24; m > 0; --m) bm[m - 1] = fm[m] + (m + 1) * bm[m + 1] / a;
-  NumericalScalar s = bm[0];
-  NumericalScalar t = s;
-  NumericalScalar y = eta;
+  Scalar s = bm[0];
+  Scalar t = s;
+  Scalar y = eta;
   for (UnsignedInteger m = 1; m < 25; ++m)
   {
     if (std::abs(t / s) <= SpecFunc::ScalarEpsilon) break;
@@ -410,25 +410,25 @@ NumericalScalar saeta(const NumericalScalar a,
   return s / (1.0 + bm[1] / a);
 } // saeta
 
-NumericalScalar qfraction(const NumericalScalar a,
-                          const NumericalScalar x,
-                          const NumericalScalar dp)
+Scalar qfraction(const Scalar a,
+                          const Scalar x,
+                          const Scalar dp)
 {
   if (dp == 0.0) return 0.0;
-  NumericalScalar p = 0.0;
-  NumericalScalar q = (x - 1.0 - a) * (x + 1.0 - a);
-  NumericalScalar r = 4.0 * (x + 1.0 - a);
-  NumericalScalar s = 1.0 - a;
-  NumericalScalar ro = 0.0;
-  NumericalScalar t = 1.0;
-  NumericalScalar g = 1.0;
+  Scalar p = 0.0;
+  Scalar q = (x - 1.0 - a) * (x + 1.0 - a);
+  Scalar r = 4.0 * (x + 1.0 - a);
+  Scalar s = 1.0 - a;
+  Scalar ro = 0.0;
+  Scalar t = 1.0;
+  Scalar g = 1.0;
   while (std::abs(t / g) >= SpecFunc::ScalarEpsilon)
   {
     p += s;
     q += r;
     r += 8.0;
     s += 2.0;
-    const NumericalScalar tau = p * (1.0 + ro);
+    const Scalar tau = p * (1.0 + ro);
     ro = tau / (q - tau);
     t *= ro;
     g += t;
@@ -436,20 +436,20 @@ NumericalScalar qfraction(const NumericalScalar a,
   return (a / (x + 1.0 - a)) * g * dp;
 } // qfraction
 
-NumericalScalar qtaylor(const NumericalScalar a,
-                        const NumericalScalar x,
-                        const NumericalScalar dp)
+Scalar qtaylor(const Scalar a,
+                        const Scalar x,
+                        const Scalar dp)
 {
   if (dp == 0.0) return 0.0;
-  const NumericalScalar lnx = log(x);
-  NumericalScalar r = a * lnx;
-  NumericalScalar q(r * exmin1(r));   // {q = x^a - 1}
-  NumericalScalar s(a * (1.0 - a) * auxgam(a)); // {s = 1 - 1 / Gamma(1 + a)}
+  const Scalar lnx = log(x);
+  Scalar r = a * lnx;
+  Scalar q(r * exmin1(r));   // {q = x^a - 1}
+  Scalar s(a * (1.0 - a) * auxgam(a)); // {s = 1 - 1 / Gamma(1 + a)}
   q *= 1.0 - s;
-  NumericalScalar u(s - q);               // {u = 1 - x^a/Gamma(1+a)}
-  NumericalScalar p = a * x;
-  NumericalScalar t = 1.0;
-  NumericalScalar v = 1.0;
+  Scalar u(s - q);               // {u = 1 - x^a/Gamma(1+a)}
+  Scalar p = a * x;
+  Scalar t = 1.0;
+  Scalar v = 1.0;
   q = a + 1.0;
   r = a + 3.0;
   while (std::abs(t / v) > SpecFunc::ScalarEpsilon)
@@ -464,14 +464,14 @@ NumericalScalar qtaylor(const NumericalScalar a,
   return u + v;
 } // qtaylor
 
-NumericalScalar ptaylor(const NumericalScalar a,
-                        const NumericalScalar x,
-                        const NumericalScalar dp)
+Scalar ptaylor(const Scalar a,
+                        const Scalar x,
+                        const Scalar dp)
 {
   if (dp == 0.0) return 0.0;
-  NumericalScalar p = 1.0;
-  NumericalScalar c = 1.0;
-  NumericalScalar r = a;
+  Scalar p = 1.0;
+  Scalar c = 1.0;
+  Scalar r = a;
   while (c > p * SpecFunc::ScalarEpsilon)
   {
     r += 1.0;
@@ -481,7 +481,7 @@ NumericalScalar ptaylor(const NumericalScalar a,
   return p * dp;
 } // ptaylor
 
-NumericalScalar eps1(const NumericalScalar eta)
+Scalar eps1(const Scalar eta)
 {
   if (std::abs(eta) < 1.0)
   {
@@ -502,12 +502,12 @@ NumericalScalar eps1(const NumericalScalar eta)
   return log(eta / (lambdaeta(eta) - 1.0)) / eta;
 } // eps1
 
-NumericalScalar eps2(const NumericalScalar eta)
+Scalar eps2(const Scalar eta)
 {
   if (eta < -5.0)
   {
-    const NumericalScalar x = eta * eta;
-    const NumericalScalar lnmeta = log(-eta);
+    const Scalar x = eta * eta;
+    const Scalar lnmeta = log(-eta);
     return (12.0 - x - 6.0 * (lnmeta * lnmeta)) / (12.0 * x * eta);
   }
   if (eta < -2.0)
@@ -561,12 +561,12 @@ NumericalScalar eps2(const NumericalScalar eta)
   return -1.0 / (12.0 * eta);
 } // eps2
 
-NumericalScalar eps3(const NumericalScalar eta)
+Scalar eps3(const Scalar eta)
 {
   if (eta < -8.0)
   {
-    const NumericalScalar x = eta * eta;
-    const NumericalScalar y = log(-eta) / eta;
+    const Scalar x = eta * eta;
+    const Scalar y = log(-eta) / eta;
     return (-30.0 + eta * y * (6.0 * x * y * y - 12.0 + x)) / (12.0 * eta * x * x);
   }
   if (eta < -4.0)
@@ -652,41 +652,41 @@ NumericalScalar eps3(const NumericalScalar eta)
   return -log(eta) / (12.0 * eta * eta * eta);
 } // eps3
 
-NumericalScalar lambdaeta(const NumericalScalar eta)
+Scalar lambdaeta(const Scalar eta)
 {
   // lambdaeta is the positive number satisfying;
   // eta^2/2 = lambda-1-ln(lambda);
   // with sign(lambda-1) = sign(eta);
   if (eta == 0.0) return 1.0;
-  const NumericalScalar z = 1.0 + 0.5 * eta * eta;
+  const Scalar z = 1.0 + 0.5 * eta * eta;
   return exp(-z - SpecFunc::LambertW(-exp(-z), eta < 0.0));
 } // lambdaeta
 
-NumericalScalar invq(const NumericalScalar x)
+Scalar invq(const Scalar x)
 {
   //  Abramowitx & Stegun 26.2.23;
-  NumericalScalar t = sqrt(-2 * log(x));
+  Scalar t = sqrt(-2 * log(x));
   return t - (2.515517 + t * (0.802853 + t * 0.010328)) / (1.0 + t * (1.432788 + t * (0.189269 + t * 0.001308)));
 } // invq
 
-NumericalScalar inverfc(const NumericalScalar x)
+Scalar inverfc(const Scalar x)
 {
   if (x > 1.0) return -inverfc(2.0 - x);
-  const NumericalScalar y0 = 0.70710678 * invq(0.5 * x);
-  const NumericalScalar f = SpecFunc::ErfC(y0) - x;
-  const NumericalScalar y02 = y0 * y0;
-  const NumericalScalar fp = -M_2_SQRTPI * exp(-y02);
-  const NumericalScalar c1 = -1.0 / fp;
-  const NumericalScalar c2 = y0;
-  const NumericalScalar c3 = (4.0 * y02 + 1.0) / 3.0;
-  const NumericalScalar c4 = y0 * (12.0 * y02 + 7.0) / 6.0;
-  const NumericalScalar c5 = (8.0 * y02 + 7.0) * (12.0 * y02 + 1.0) / 30.0;
-  const NumericalScalar r = f * c1;
-  const NumericalScalar h = r * (1.0 + r * (c2 + r * (c3 + r * (c4 + r * c5))));
+  const Scalar y0 = 0.70710678 * invq(0.5 * x);
+  const Scalar f = SpecFunc::ErfC(y0) - x;
+  const Scalar y02 = y0 * y0;
+  const Scalar fp = -M_2_SQRTPI * exp(-y02);
+  const Scalar c1 = -1.0 / fp;
+  const Scalar c2 = y0;
+  const Scalar c3 = (4.0 * y02 + 1.0) / 3.0;
+  const Scalar c4 = y0 * (12.0 * y02 + 7.0) / 6.0;
+  const Scalar c5 = (8.0 * y02 + 7.0) * (12.0 * y02 + 1.0) / 30.0;
+  const Scalar r = f * c1;
+  const Scalar h = r * (1.0 + r * (c2 + r * (c3 + r * (c4 + r * c5))));
   return y0 + h;
 } // inverfc
 
-NumericalScalar ratfun(const NumericalScalar x,
+Scalar ratfun(const Scalar x,
                        const Point & ak,
                        const Point & bk)
 {

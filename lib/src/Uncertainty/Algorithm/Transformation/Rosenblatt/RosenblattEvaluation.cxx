@@ -64,7 +64,7 @@ Point RosenblattEvaluation::operator () (const Point & inP) const
   // Apply Phi^{-1} o conditional CDF over the components
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const NumericalScalar conditionalCDF = distribution_.computeConditionalCDF(inP[i], y);
+    const Scalar conditionalCDF = distribution_.computeConditionalCDF(inP[i], y);
     result[i] = DistFunc::qNormal(conditionalCDF);
     y.add(inP[i]);
   }

@@ -43,7 +43,7 @@ Bernoulli::Bernoulli()
 }
 
 /* Parameters constructor */
-Bernoulli::Bernoulli(const NumericalScalar p)
+Bernoulli::Bernoulli(const Scalar p)
   : DiscreteDistribution(),
     p_(-1.0)
 {
@@ -99,11 +99,11 @@ Point Bernoulli::getRealization() const
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Bernoulli::computePDF(const Point & point) const
+Scalar Bernoulli::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
+  const Scalar k = point[0];
   if (std::abs(k) < supportEpsilon_) return 1.0 - p_;
   if (std::abs(k - 1.0) < supportEpsilon_) return p_;
   return 0.0;
@@ -111,11 +111,11 @@ NumericalScalar Bernoulli::computePDF(const Point & point) const
 
 
 /* Get the CDF of the distribution */
-NumericalScalar Bernoulli::computeCDF(const Point & point) const
+Scalar Bernoulli::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
+  const Scalar k = point[0];
   // k < 0.0
   if (k < -supportEpsilon_) return 0.0;
   // k >= 1.0
@@ -129,7 +129,7 @@ Point Bernoulli::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
+  const Scalar k = point[0];
   Point pdfGradient(1, 0.0);
   if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return pdfGradient;
   throw NotYetImplementedException(HERE) << "In Bernoulli::computePDFGradient(const Point & point) const";
@@ -141,13 +141,13 @@ Point Bernoulli::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
+  const Scalar k = point[0];
   if (k < -supportEpsilon_) return Point(1, 0.0);
   throw NotYetImplementedException(HERE) << "In Bernoulli::computeCDFGradient(const Point & point) const";
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar Bernoulli::computeScalarQuantile(const NumericalScalar prob,
+Scalar Bernoulli::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
   if (prob < 1.0 - p_) return (tail ? 1.0 : 0.0);
@@ -155,7 +155,7 @@ NumericalScalar Bernoulli::computeScalarQuantile(const NumericalScalar prob,
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Bernoulli::computeCharacteristicFunction(const NumericalScalar x) const
+NumericalComplex Bernoulli::computeCharacteristicFunction(const Scalar x) const
 {
   const NumericalComplex value(1.0 - p_ + p_ * std::exp(NumericalComplex(0.0, x)));
   return value;
@@ -230,7 +230,7 @@ Point Bernoulli::getParameter() const
 void Bernoulli::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize();
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = Bernoulli(parameter[0]);
   setWeight(w);
 }
@@ -247,7 +247,7 @@ Bool Bernoulli::isElliptical() const
 }
 
 /* P accessor */
-void Bernoulli::setP(const NumericalScalar p)
+void Bernoulli::setP(const Scalar p)
 {
   if ((p < 0.0) || (p > 1.0)) throw InvalidArgumentException(HERE) << "P must be in [0, 1], here p=" << p;
   if (p != p_)
@@ -260,7 +260,7 @@ void Bernoulli::setP(const NumericalScalar p)
 }
 
 /* P accessor */
-NumericalScalar Bernoulli::getP() const
+Scalar Bernoulli::getP() const
 {
   return p_;
 }

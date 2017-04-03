@@ -44,8 +44,8 @@ InverseGamma::InverseGamma()
 }
 
 /* Parameters constructor */
-InverseGamma::InverseGamma(const NumericalScalar k,
-                           const NumericalScalar lambda)
+InverseGamma::InverseGamma(const Scalar k,
+                           const Scalar lambda)
   : ContinuousDistribution()
   , k_(0.0)
   , lambda_(0.0)
@@ -89,7 +89,7 @@ String InverseGamma::__str__(const String & offset) const
 }
 
 /* K accessor */
-void InverseGamma::setK(const NumericalScalar k)
+void InverseGamma::setK(const Scalar k)
 {
   if (!(k > 0.0)) throw InvalidArgumentException(HERE) << "K MUST be positive";
   if (k != k_)
@@ -100,14 +100,14 @@ void InverseGamma::setK(const NumericalScalar k)
   }
 }
 
-NumericalScalar InverseGamma::getK() const
+Scalar InverseGamma::getK() const
 {
   return k_;
 }
 
 
 /* Lambda accessor */
-void InverseGamma::setLambda(const NumericalScalar lambda)
+void InverseGamma::setLambda(const Scalar lambda)
 {
   if (!(lambda > 0.0)) throw InvalidArgumentException(HERE) << "Lambda MUST be positive";
   if (lambda != lambda_)
@@ -118,14 +118,14 @@ void InverseGamma::setLambda(const NumericalScalar lambda)
   }
 }
 
-NumericalScalar InverseGamma::getLambda() const
+Scalar InverseGamma::getLambda() const
 {
   return lambda_;
 }
 
 /* K and lambda accessor */
-void InverseGamma::setKLambda(const NumericalScalar k,
-                              const NumericalScalar lambda)
+void InverseGamma::setKLambda(const Scalar k,
+                              const Scalar lambda)
 {
   if (!(k > 0.0)) throw InvalidArgumentException(HERE) << "K MUST be positive";
   if (!(lambda > 0.0)) throw InvalidArgumentException(HERE) << "Lambda MUST be positive";
@@ -163,9 +163,9 @@ void InverseGamma::update()
   // which is expanded wrt k
   if (k_ >= 6.9707081224932495879)
   {
-    static const NumericalScalar alpha[10] = {0.91893853320467274177, 0.83333333333333333333e-1, -0.27777777777777777778e-2, 0.79365079365079365079e-3, -0.59523809523809523810e-3, 0.84175084175084175084e-3, -0.19175269175269175269e-2, 0.64102564102564102564e-2, -0.29550653594771241830e-1, 0.17964437236883057316};
-    const NumericalScalar ik = 1.0 / k_;
-    const NumericalScalar ik2 = ik * ik;
+    static const Scalar alpha[10] = {0.91893853320467274177, 0.83333333333333333333e-1, -0.27777777777777777778e-2, 0.79365079365079365079e-3, -0.59523809523809523810e-3, 0.84175084175084175084e-3, -0.19175269175269175269e-2, 0.64102564102564102564e-2, -0.29550653594771241830e-1, 0.17964437236883057316};
+    const Scalar ik = 1.0 / k_;
+    const Scalar ik2 = ik * ik;
     normalizationFactor_ = std::log(lambda_) + k_ + 1.5 * std::log(k_) - (alpha[0] + ik * (alpha[1] + ik2 * (alpha[2] + ik2 * (alpha[3] + ik2 * (alpha[4] + ik2 * (alpha[5] + ik2 * (alpha[6] + ik2 * (alpha[7] + ik2 * (alpha[8] + ik2 * alpha[9])))))))));
   }
   // For small k, the normalization factor is:
@@ -189,14 +189,14 @@ Point InverseGamma::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if (x <= 0.0) return Point(1, 0.0);
   return Point(1, (1.0 / (lambda_ * x) - (k_ + 1.0)) * computePDF(point) / x);
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar InverseGamma::computePDF(const Point & point) const
+Scalar InverseGamma::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -204,12 +204,12 @@ NumericalScalar InverseGamma::computePDF(const Point & point) const
   return std::exp(computeLogPDF(point));
 }
 
-NumericalScalar InverseGamma::computeLogPDF(const Point & point) const
+Scalar InverseGamma::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   // From textbook, we have log(PDF(x)) =  log(lambda)-log(Gamma(k))-(k+1)*log(lambda*x)-1/(lambda*x)
-  const NumericalScalar u = lambda_ * point[0];
+  const Scalar u = lambda_ * point[0];
   if (u <= 0.0) return SpecFunc::LogMinScalar;
   // Use asymptotic expansion for large k
   // Here log(PDF(x)) = L - (k-1)*log(k)-(k+1)*log(lambda*x)-1/(lambda*x)
@@ -218,33 +218,33 @@ NumericalScalar InverseGamma::computeLogPDF(const Point & point) const
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar InverseGamma::computeCDF(const Point & point) const
+Scalar InverseGamma::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   // No test here as the CDF is continuous for all k_
   if (x <= 0.0) return 0.0;
   return DistFunc::pGamma(k_, 1.0 / (lambda_ * x), true);
 }
 
-NumericalScalar InverseGamma::computeComplementaryCDF(const Point & point) const
+Scalar InverseGamma::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   // No test here as the CDF is continuous for all k_
   if (x <= 0.0) return 1.0;
   return DistFunc::pGamma(k_, 1.0 / (lambda_ * x));
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex InverseGamma::computeCharacteristicFunction(const NumericalScalar x) const
+NumericalComplex InverseGamma::computeCharacteristicFunction(const Scalar x) const
 {
   return DistributionImplementation::computeCharacteristicFunction(x);
 }
 
-NumericalComplex InverseGamma::computeLogCharacteristicFunction(const NumericalScalar x) const
+NumericalComplex InverseGamma::computeLogCharacteristicFunction(const Scalar x) const
 {
   return DistributionImplementation::computeLogCharacteristicFunction(x);
 }
@@ -255,9 +255,9 @@ Point InverseGamma::computePDFGradient(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   Point pdfGradient(2);
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if (x <= 0.0) return pdfGradient;
-  const NumericalScalar pdf = computePDF(point);
+  const Scalar pdf = computePDF(point);
   pdfGradient[0] = -(std::log(lambda_) + std::log(x) + SpecFunc::DiGamma(k_)) * pdf;
   pdfGradient[1] = (1.0 / (lambda_ * x) - k_) * pdf / lambda_;
   return pdfGradient;
@@ -269,18 +269,18 @@ Point InverseGamma::computeCDFGradient(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   Point cdfGradient(2, 0.0);
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if (x <= 0.0) return cdfGradient;
-  const NumericalScalar lambdaXInverse = 1.0 / (lambda_ * x);
-  const NumericalScalar pdf = computePDF(x);
-  const NumericalScalar eps = std::pow(cdfEpsilon_, 1.0 / 3.0);
+  const Scalar lambdaXInverse = 1.0 / (lambda_ * x);
+  const Scalar pdf = computePDF(x);
+  const Scalar eps = std::pow(cdfEpsilon_, 1.0 / 3.0);
   cdfGradient[0] = (DistFunc::pGamma(k_ + eps, lambdaXInverse, true) - DistFunc::pGamma(k_ - eps, lambdaXInverse, true)) / (2.0 * eps);
   cdfGradient[1] = pdf * x / lambda_;
   return cdfGradient;
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar InverseGamma::computeScalarQuantile(const NumericalScalar prob,
+Scalar InverseGamma::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
   return 1.0 / (lambda_ * DistFunc::qGamma(k_, prob, !tail));
@@ -349,7 +349,7 @@ Point InverseGamma::getParameter() const
 void InverseGamma::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameter.getSize();
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = InverseGamma(parameter[0], parameter[1]);
   setWeight(w);
 }

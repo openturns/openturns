@@ -79,10 +79,10 @@ int main(int argc, char *argv[])
       Point DDF = distributionTestCase.computeDDF( point );
       fullprint << "ddf      =" << DDF << std::endl;
       fullprint << "ddf (ref)=" << referenceDistribution[testCase].computeDDF(point) << std::endl;
-      NumericalScalar PDF = distributionTestCase.computePDF( point );
+      Scalar PDF = distributionTestCase.computePDF( point );
       fullprint << "pdf      =" << PDF << std::endl;
       fullprint << "pdf (ref)=" << referenceDistribution[testCase].computePDF(point) << std::endl;
-      NumericalScalar CDF = distributionTestCase.computeCDF( point );
+      Scalar CDF = distributionTestCase.computeCDF( point );
       fullprint << "cdf      =" << CDF << std::endl;
       fullprint << "cdf (ref)=" << referenceDistribution[testCase].computeCDF(point) << std::endl;
       Point PDFgr = distributionTestCase.computePDFGradient( point );
@@ -117,9 +117,9 @@ int main(int argc, char *argv[])
       fullprint << "Standard representative=" << distributionTestCase.getStandardRepresentative()->__str__() << std::endl;
 
       // Specific to this distribution
-      NumericalScalar lowerBound = distributionTestCase.getLowerBound();
+      Scalar lowerBound = distributionTestCase.getLowerBound();
       fullprint << "lowerBound=" << lowerBound << std::endl;
-      NumericalScalar upperBound = distributionTestCase.getUpperBound();
+      Scalar upperBound = distributionTestCase.getUpperBound();
       fullprint << "upperBound=" << upperBound << std::endl;
 
       // Get/Set parameter

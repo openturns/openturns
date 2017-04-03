@@ -45,9 +45,9 @@ Gamma::Gamma()
 }
 
 /* Parameters constructor */
-Gamma::Gamma(const NumericalScalar k,
-             const NumericalScalar lambda,
-             const NumericalScalar gamma)
+Gamma::Gamma(const Scalar k,
+             const Scalar lambda,
+             const Scalar gamma)
   : ContinuousDistribution()
   , k_(0.0)
   , lambda_(0.0)
@@ -93,7 +93,7 @@ String Gamma::__str__(const String & offset) const
 }
 
 /* K accessor */
-void Gamma::setK(const NumericalScalar k)
+void Gamma::setK(const Scalar k)
 {
   if (!(k > 0.0)) throw InvalidArgumentException(HERE) << "K MUST be positive";
   if (k != k_)
@@ -104,14 +104,14 @@ void Gamma::setK(const NumericalScalar k)
   }
 }
 
-NumericalScalar Gamma::getK() const
+Scalar Gamma::getK() const
 {
   return k_;
 }
 
 
 /* Lambda accessor */
-void Gamma::setLambda(const NumericalScalar lambda)
+void Gamma::setLambda(const Scalar lambda)
 {
   if (!(lambda > 0.0)) throw InvalidArgumentException(HERE) << "Lambda MUST be positive";
   if (lambda != lambda_)
@@ -122,14 +122,14 @@ void Gamma::setLambda(const NumericalScalar lambda)
   }
 }
 
-NumericalScalar Gamma::getLambda() const
+Scalar Gamma::getLambda() const
 {
   return lambda_;
 }
 
 /* K and lambda accessor */
-void Gamma::setKLambda(const NumericalScalar k,
-                       const NumericalScalar lambda)
+void Gamma::setKLambda(const Scalar k,
+                       const Scalar lambda)
 {
   if (!(k > 0.0)) throw InvalidArgumentException(HERE) << "K MUST be positive";
   if (!(lambda > 0.0)) throw InvalidArgumentException(HERE) << "Lambda MUST be positive";
@@ -143,7 +143,7 @@ void Gamma::setKLambda(const NumericalScalar k,
 }
 
 /* Gamma accessor */
-void Gamma::setGamma(const NumericalScalar gamma)
+void Gamma::setGamma(const Scalar gamma)
 {
   if (gamma != gamma_)
   {
@@ -154,7 +154,7 @@ void Gamma::setGamma(const NumericalScalar gamma)
   }
 }
 
-NumericalScalar Gamma::getGamma() const
+Scalar Gamma::getGamma() const
 {
   return gamma_;
 }
@@ -183,9 +183,9 @@ void Gamma::update()
   // which is expanded wrt k
   if (k_ >= 6.9707081224932495879)
   {
-    static const NumericalScalar alpha[10] = {0.91893853320467274177, 0.83333333333333333333e-1, -0.27777777777777777778e-2, 0.79365079365079365079e-3, -0.59523809523809523810e-3, 0.84175084175084175084e-3, -0.19175269175269175269e-2, 0.64102564102564102564e-2, -0.29550653594771241830e-1, 0.17964437236883057316};
-    const NumericalScalar ik = 1.0 / k_;
-    const NumericalScalar ik2 = ik * ik;
+    static const Scalar alpha[10] = {0.91893853320467274177, 0.83333333333333333333e-1, -0.27777777777777777778e-2, 0.79365079365079365079e-3, -0.59523809523809523810e-3, 0.84175084175084175084e-3, -0.19175269175269175269e-2, 0.64102564102564102564e-2, -0.29550653594771241830e-1, 0.17964437236883057316};
+    const Scalar ik = 1.0 / k_;
+    const Scalar ik2 = ik * ik;
     normalizationFactor_ = std::log(lambda_) + k_ - 0.5 * std::log(k_) - (alpha[0] + ik * (alpha[1] + ik2 * (alpha[2] + ik2 * (alpha[3] + ik2 * (alpha[4] + ik2 * (alpha[5] + ik2 * (alpha[6] + ik2 * (alpha[7] + ik2 * (alpha[8] + ik2 * alpha[9])))))))));
   }
   // For small k, the normalization factor is:
@@ -208,28 +208,28 @@ Point Gamma::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0] - gamma_;
+  const Scalar x = point[0] - gamma_;
   if (x <= 0.0) return Point(1, 0.0);
   return Point(1, ((k_ - 1.0) / x - lambda_) * computePDF(point));
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Gamma::computePDF(const Point & point) const
+Scalar Gamma::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0] - gamma_;
+  const Scalar x = point[0] - gamma_;
   if (x <= 0.0) return 0.0;
   return std::exp(computeLogPDF(point));
 }
 
-NumericalScalar Gamma::computeLogPDF(const Point & point) const
+Scalar Gamma::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   // From textbook, we have log(PDF(x)) =  - lambda * (x - gamma) + (k - 1) * log(x - gamma) + k * log(lambda) - log(Gamma(k))
-  const NumericalScalar u = lambda_ * (point[0] - gamma_);
+  const Scalar u = lambda_ * (point[0] - gamma_);
   if (u <= 0.0) return SpecFunc::LogMinScalar;
   // Use asymptotic expansion for large k
   // Here log(PDF(x)) = L - lambda * (x - gamma) + (k - 1) * log(lambda * (x - gamma) / k)
@@ -238,33 +238,33 @@ NumericalScalar Gamma::computeLogPDF(const Point & point) const
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar Gamma::computeCDF(const Point & point) const
+Scalar Gamma::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0] - gamma_;
+  const Scalar x = point[0] - gamma_;
   // No test here as the CDF is continuous for all k_
   if (x <= 0.0) return 0.0;
   return DistFunc::pGamma(k_, lambda_ * x);
 }
 
-NumericalScalar Gamma::computeComplementaryCDF(const Point & point) const
+Scalar Gamma::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0] - gamma_;
+  const Scalar x = point[0] - gamma_;
   // No test here as the CDF is continuous for all k_
   if (x <= 0.0) return 1.0;
   return DistFunc::pGamma(k_, lambda_ * x, true);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Gamma::computeCharacteristicFunction(const NumericalScalar x) const
+NumericalComplex Gamma::computeCharacteristicFunction(const Scalar x) const
 {
   return std::exp(NumericalComplex(0.0, x * gamma_)) * std::pow(NumericalComplex(1.0, -x / lambda_), -k_);
 }
 
-NumericalComplex Gamma::computeLogCharacteristicFunction(const NumericalScalar x) const
+NumericalComplex Gamma::computeLogCharacteristicFunction(const Scalar x) const
 {
   return NumericalComplex(0.0, x * gamma_) - k_ * std::log(NumericalComplex(1.0, -x / lambda_));
 }
@@ -275,9 +275,9 @@ Point Gamma::computePDFGradient(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   Point pdfGradient(3, 0.0);
-  const NumericalScalar x = point[0] - gamma_;
+  const Scalar x = point[0] - gamma_;
   if (x <= 0.0) return pdfGradient;
-  const NumericalScalar pdf = computePDF(point);
+  const Scalar pdf = computePDF(point);
   pdfGradient[0] = (std::log(x) + std::log(lambda_) - SpecFunc::Psi(k_)) * pdf;
   pdfGradient[1] = (k_ / lambda_ - x) * pdf;
   pdfGradient[2] = ((1.0 - k_) / x + lambda_) * pdf;
@@ -290,11 +290,11 @@ Point Gamma::computeCDFGradient(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   Point cdfGradient(3, 0.0);
-  const NumericalScalar x = point[0] - gamma_;
+  const Scalar x = point[0] - gamma_;
   if (x <= 0.0) return cdfGradient;
-  const NumericalScalar lambdaX = lambda_ * x;
-  const NumericalScalar factor = std::exp(k_ * std::log(lambdaX) - SpecFunc::LnGamma(k_) - lambdaX);
-  const NumericalScalar eps = std::pow(cdfEpsilon_, 1.0 / 3.0);
+  const Scalar lambdaX = lambda_ * x;
+  const Scalar factor = std::exp(k_ * std::log(lambdaX) - SpecFunc::LnGamma(k_) - lambdaX);
+  const Scalar eps = std::pow(cdfEpsilon_, 1.0 / 3.0);
   cdfGradient[0] = (DistFunc::pGamma(k_ + eps, lambda_ * x) - DistFunc::pGamma(k_ - eps, lambda_ * x)) / (2.0 * eps);
   cdfGradient[1] = factor / lambda_;
   cdfGradient[2] = -factor / x;
@@ -302,7 +302,7 @@ Point Gamma::computeCDFGradient(const Point & point) const
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar Gamma::computeScalarQuantile(const NumericalScalar prob,
+Scalar Gamma::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
   return gamma_ + DistFunc::qGamma(k_, prob, tail) / lambda_;
@@ -366,7 +366,7 @@ Point Gamma::getParameter() const
 void Gamma::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize();
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = Gamma(parameter[0], parameter[1], parameter[2]);
   setWeight(w);
 }

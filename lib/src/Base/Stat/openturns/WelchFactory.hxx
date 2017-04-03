@@ -43,7 +43,7 @@ public:
   /** Standard constructor using a filtering windows and a frequency limit*/
   WelchFactory(const FilteringWindows & window,
                const UnsignedInteger blockNumber,
-               const NumericalScalar overlap = 0.5);
+               const Scalar overlap = 0.5);
 
   /** Virtual constructor */
   virtual WelchFactory * clone() const;
@@ -63,8 +63,8 @@ public:
   void setBlockNumber(const UnsignedInteger blockNumber);
 
   /** Overlap accessor */
-  NumericalScalar getOverlap() const;
-  void setOverlap(const NumericalScalar overlap);
+  Scalar getOverlap() const;
+  void setOverlap(const Scalar overlap);
 
   /** Build a spectral model based on a sample */
   Implementation build(const ProcessSample & sample) const;
@@ -93,7 +93,7 @@ private:
   UnsignedInteger blockNumber_;
 
   /** Overlap percentage for Welch method */
-  NumericalScalar overlap_;
+  Scalar overlap_;
 
 }; /* class WelchFactory */
 

@@ -145,7 +145,7 @@ String ARMA::__str__(const String & offset) const
     {
       for (UnsignedInteger dimensionComponent = 0; dimensionComponent < dimension_ ; ++dimensionComponent)
       {
-        const NumericalScalar ai = ARCoefficients_[i](d, dimensionComponent);
+        const Scalar ai = ARCoefficients_[i](d, dimensionComponent);
         if (ai > 0) oss << " + " <<  ai << " X_{" << dimensionComponent << ",t-" << i + 1 << "}";
         if (ai < 0) oss << " - " << -ai << " X_{" << dimensionComponent << ",t-" << i + 1 << "}";
       }
@@ -158,7 +158,7 @@ String ARMA::__str__(const String & offset) const
     {
       for (UnsignedInteger dimensionComponent = 0; dimensionComponent < dimension_ ; ++dimensionComponent)
       {
-        const NumericalScalar ai = MACoefficients_[i](d, dimensionComponent);
+        const Scalar ai = MACoefficients_[i](d, dimensionComponent);
         if (ai > 0) oss << " + " <<  ai << " E_{" << dimensionComponent << ",t-" << i + 1 << "}";
         if (ai < 0) oss << " - " << -ai << " E_{" << dimensionComponent << ",t-" << i + 1 << "}";
       }
@@ -187,7 +187,7 @@ Bool ARMA::isStationary() const
 }
 
 
-UnsignedInteger ARMA::computeNThermalization(const NumericalScalar epsilon) const
+UnsignedInteger ARMA::computeNThermalization(const Scalar epsilon) const
 {
   if (!(epsilon > 0.0)) throw InvalidArgumentException(HERE) << "Error: epsilon must be positive, here epsilon=" << epsilon;
   // MA processes are always stationary. Just do q_ + 1 steps to forget
@@ -216,7 +216,7 @@ UnsignedInteger ARMA::computeNThermalization(const NumericalScalar epsilon) cons
   const NumericalComplexCollection eigenValues(matrix.computeEigenValues(false));
 
   // Find the largest eigenvalue module
-  NumericalScalar s = std::abs(eigenValues[0]);
+  Scalar s = std::abs(eigenValues[0]);
   for (UnsignedInteger i = 1; i < eigenValues.getSize() ; ++i) s = std::max(s, std::abs(eigenValues[i]));
   // If the largest eigenvalue is not in the interior of the unit circle, the ARMA process is not stable
   if (!(s < 1.0)) throw InvalidArgumentException(HERE) << "Error: the ARMA process is not stationary with the given coefficients. Here, AR coefficients=" << ARCoefficients_ << " and MA coefficients=" << MACoefficients_ << " with largest eigenvalue s=" << s;
@@ -229,7 +229,7 @@ UnsignedInteger ARMA::getNThermalization() const
   if (!hasComputedNThermalization_)
   {
     // Not yet in SpecFunc
-    nThermalization_ = computeNThermalization(std::numeric_limits<NumericalScalar>::epsilon());
+    nThermalization_ = computeNThermalization(std::numeric_limits<Scalar>::epsilon());
     hasComputedNThermalization_ = true;
   }
   return nThermalization_;
@@ -307,7 +307,7 @@ TimeSeries ARMA::getFuture(const UnsignedInteger stepNumber) const
 {
   if (stepNumber == 0) throw InvalidArgumentException(HERE) << "Error: the number of future steps must be positive.";
   /* TimeGrid associated with the possible future */
-  const NumericalScalar timeStep = RegularGrid(mesh_).getStep();
+  const Scalar timeStep = RegularGrid(mesh_).getStep();
   // The EndTime is not considered to be included in the TimeGrid
   const RegularGrid futurTimeGrid(RegularGrid(mesh_).getEnd(), timeStep, stepNumber);
 

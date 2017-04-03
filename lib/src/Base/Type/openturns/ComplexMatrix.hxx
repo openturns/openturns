@@ -54,7 +54,7 @@ class OT_API ComplexMatrix :
 public:
 
   typedef Collection<NumericalComplex>                       NumericalComplexCollection;
-  typedef Collection<NumericalScalar>                        NumericalScalarCollection;
+  typedef Collection<Scalar>                        ScalarCollection;
   typedef TypedInterfaceObject<ComplexMatrixImplementation>::Implementation     Implementation ;
 
   /** Default constructor */
@@ -92,13 +92,13 @@ public:
   /** or the rest of the matrix is filled with zeros */
   ComplexMatrix(const UnsignedInteger rowDim,
                 const UnsignedInteger colDim,
-                const NumericalScalarCollection & elementsValues);
+                const ScalarCollection & elementsValues);
 
   /** Constructor from hermitian matrix */
   ComplexMatrix(const HermitianMatrix & hermitian);
 
   /** Set small elements to zero */
-  virtual ComplexMatrix clean(const NumericalScalar threshold) const;
+  virtual ComplexMatrix clean(const Scalar threshold) const;
 
   /** Resolution of a linear system */
   ComplexMatrix solveLinearSystem(const ComplexMatrix & b,
@@ -176,8 +176,8 @@ public:
   /** Multiplication with a Point  */
   virtual NumericalComplexCollection operator* (const Point & point) const;
 
-  /** Multiplication with a NumericalScalarCollection  */
-  virtual  NumericalComplexCollection operator* (const NumericalScalarCollection & collection) const;
+  /** Multiplication with a ScalarCollection  */
+  virtual  NumericalComplexCollection operator* (const ScalarCollection & collection) const;
 
   /** Multiplication with a NumericalComplexCollection (must have consistent dimensions) */
   virtual NumericalComplexCollection operator* (const NumericalComplexCollection & collection) const;

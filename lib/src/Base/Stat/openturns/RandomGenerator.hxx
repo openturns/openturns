@@ -52,7 +52,7 @@ public:
   static RandomGeneratorState GetState();
 
   /** Generate a pseudo-random number uniformly distributed over [0, 1[ */
-  static NumericalScalar Generate();
+  static Scalar Generate();
   /** Generate a pseudo-random integer uniformly distributed over [[0,...,n-1]] */
   static UnsignedInteger IntegerGenerate(const UnsignedInteger n);
 

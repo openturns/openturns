@@ -48,8 +48,8 @@ public:
 
   /** Standard constructor */
   SimulationResultImplementation(const Event & event,
-                                 const NumericalScalar probabilityEstimate,
-                                 const NumericalScalar varianceEstimate,
+                                 const Scalar probabilityEstimate,
+                                 const Scalar varianceEstimate,
                                  const UnsignedInteger outerSampling,
                                  const UnsignedInteger blockSize);
 
@@ -61,18 +61,18 @@ public:
   void setEvent(const Event & event);
 
   /** Probability estimate accessor */
-  NumericalScalar getProbabilityEstimate() const;
-  void setProbabilityEstimate(const NumericalScalar probabilityEstimate);
+  Scalar getProbabilityEstimate() const;
+  void setProbabilityEstimate(const Scalar probabilityEstimate);
 
   /** Variance estimate accessor */
-  NumericalScalar getVarianceEstimate() const;
-  void setVarianceEstimate(const NumericalScalar varianceEstimate);
+  Scalar getVarianceEstimate() const;
+  void setVarianceEstimate(const Scalar varianceEstimate);
 
   /** Coefficient of variation estimate accessor */
-  virtual NumericalScalar getCoefficientOfVariation() const;
+  virtual Scalar getCoefficientOfVariation() const;
 
   /** Standard deviation estimate accessor */
-  virtual NumericalScalar getStandardDeviation() const;
+  virtual Scalar getStandardDeviation() const;
 
   /** Mean point conditioned to the event realization accessor */
   Point getMeanPointInEventDomain() const;
@@ -92,7 +92,7 @@ public:
   void setBlockSize(const UnsignedInteger blockSize);
 
   /** Confidence length */
-  virtual NumericalScalar getConfidenceLength(const NumericalScalar level = ResourceMap::GetAsScalar("SimulationResult-DefaultConfidenceLevel")) const;
+  virtual Scalar getConfidenceLength(const Scalar level = ResourceMap::GetAsScalar("SimulationResult-DefaultConfidenceLevel")) const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -107,8 +107,8 @@ protected:
 
   /* The event we are interested in */
   Event event_;
-  NumericalScalar probabilityEstimate_;
-  NumericalScalar varianceEstimate_;
+  Scalar probabilityEstimate_;
+  Scalar varianceEstimate_;
   UnsignedInteger outerSampling_;
   UnsignedInteger blockSize_;
 

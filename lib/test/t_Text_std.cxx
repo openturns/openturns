@@ -54,15 +54,15 @@ int main(int argc, char *argv[])
     // Create an empty graph
     Graph myGraph("Normal sample", "x1", "x2", true, "topright");
     // Display extrema indices
-    NumericalScalar x1min(sample[0][0]);
-    NumericalScalar x1max(x1min);
-    NumericalScalar x2min(sample[0][1]);
-    NumericalScalar x2max(x2min);
+    Scalar x1min(sample[0][0]);
+    Scalar x1max(x1min);
+    Scalar x2min(sample[0][1]);
+    Scalar x2max(x2min);
     Indices idx(4);
     for (UnsignedInteger i = 1; i < sample.getSize(); ++i)
     {
-      const NumericalScalar v1 = sample[i][0];
-      const NumericalScalar v2 = sample[i][1];
+      const Scalar v1 = sample[i][0];
+      const Scalar v2 = sample[i][1];
       if (v1 < x1min)
       {
         x1min = v1;

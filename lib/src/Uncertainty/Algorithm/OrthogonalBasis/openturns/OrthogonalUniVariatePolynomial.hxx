@@ -54,7 +54,7 @@ public:
   virtual OrthogonalUniVariatePolynomial * clone() const;
 
   /** OrthogonalUniVariatePolynomial are evaluated as functors */
-  NumericalScalar operator() (const NumericalScalar x) const;
+  Scalar operator() (const Scalar x) const;
 
   /** Recurrence coefficients accessor */
   CoefficientsCollection getRecurrenceCoefficients() const;

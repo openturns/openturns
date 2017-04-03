@@ -51,7 +51,7 @@ public:
   Pie(const Point & data,
       const Description & labels,
       const Point & center,
-      const NumericalScalar & radius,
+      const Scalar & radius,
       const Description & palette);
 
   /** String converter */
@@ -62,8 +62,8 @@ public:
   void setCenter(const Point & center);
 
   /** Accessor for radius */
-  NumericalScalar getRadius() const;
-  void setRadius(const NumericalScalar radius);
+  Scalar getRadius() const;
+  void setRadius(const Scalar radius);
 
   /** Accessor for labels */
   Description getLabels() const;
@@ -110,7 +110,7 @@ private:
   Description palette_;
 
   /** Radius of the Pie */
-  NumericalScalar radius_;
+  Scalar radius_;
 
   /** Centre of the Pie */
   Point center_;

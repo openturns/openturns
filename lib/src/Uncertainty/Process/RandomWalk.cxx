@@ -127,7 +127,7 @@ TimeSeries RandomWalk::getFuture(const UnsignedInteger stepNumber) const
   }
   if (stepNumber == 0) throw InvalidArgumentException(HERE) << "Error: the number of future steps must be positive.";
   /* TimeGrid associated with the possible future */
-  const NumericalScalar timeStep = RegularGrid(mesh_).getStep();
+  const Scalar timeStep = RegularGrid(mesh_).getStep();
   const RegularGrid futurTimeGrid(RegularGrid(mesh_).getEnd(), timeStep, stepNumber);
   Sample data(stepNumber, dimension_);
   Point previous(currentPosition_);

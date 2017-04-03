@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-inline NumericalScalar clean(NumericalScalar in)
+inline Scalar clean(Scalar in)
 {
   if (std::abs(in) < 1.e-10) in = 0.0;
   return in;
@@ -109,27 +109,27 @@ int main(int argc, char *argv[])
       fullprint << "Point= " << point << std::endl;
 
       // Show PDF and CDF of point
-      NumericalScalar eps = 1e-4;
+      Scalar eps = 1e-4;
       Point DDF = distribution.computeDDF( point );
       fullprint << "ddf     =" << clean(DDF) << std::endl;
       Point ddfFD(distribution.ContinuousDistribution::computeDDF(point));
       fullprint << "ddf (FD)=" << clean(ddfFD) << std::endl;
-      NumericalScalar LPDF = distribution.computeLogPDF( point );
+      Scalar LPDF = distribution.computeLogPDF( point );
       fullprint << "log pdf=" << LPDF << std::endl;
-      NumericalScalar PDF = distribution.computePDF( point );
+      Scalar PDF = distribution.computePDF( point );
       fullprint << "pdf     =" << PDF << std::endl;
       if (dim == 1)
       {
         fullprint << "pdf (FD)=" << clean((distribution.computeCDF( point + Point(1, eps) ) - distribution.computeCDF( point  + Point(1, -eps) )) / (2.0 * eps)) << std::endl;
       }
-      NumericalScalar CDF = distribution.computeCDF( point );
+      Scalar CDF = distribution.computeCDF( point );
       fullprint << "cdf=" << CDF << std::endl;
       if (dim == 1)
       {
-        NumericalScalar CCDF = distribution.computeComplementaryCDF( point );
+        Scalar CCDF = distribution.computeComplementaryCDF( point );
         fullprint << "ccdf=" << CCDF << std::endl;
       }
-      NumericalScalar Survival = distribution.computeSurvivalFunction( point );
+      Scalar Survival = distribution.computeSurvivalFunction( point );
       fullprint << "survival=" << Survival << std::endl;
       Point InverseSurvival = distribution.computeInverseSurvivalFunction(0.95);
       fullprint << "Inverse survival=" << InverseSurvival << std::endl;
@@ -171,10 +171,10 @@ int main(int argc, char *argv[])
       if (distribution.getDimension() <= 2)
       {
         // Confidence regions
-        NumericalScalar threshold;
+        Scalar threshold;
         fullprint << "Minimum volume interval=" << distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95, threshold) << std::endl;
         fullprint << "threshold=" << threshold << std::endl;
-        NumericalScalar beta;
+        Scalar beta;
         LevelSet levelSet(distribution.computeMinimumVolumeLevelSetWithThreshold(0.95, beta));
         fullprint << "Minimum volume level set=" << levelSet << std::endl;
         fullprint << "beta=" << beta << std::endl;
@@ -207,18 +207,18 @@ int main(int argc, char *argv[])
       fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
 
       // Specific to this distribution
-      NumericalScalar beta = point.normSquare();
-      NumericalScalar densityGenerator = distribution.computeDensityGenerator(beta);
+      Scalar beta = point.normSquare();
+      Scalar densityGenerator = distribution.computeDensityGenerator(beta);
       fullprint << "density generator=" << densityGenerator << std::endl;
       fullprint << "pdf via density generator=" << distribution.EllipticalDistribution::computePDF(point) << std::endl;
-      NumericalScalar densityGeneratorDerivative = distribution.computeDensityGeneratorDerivative(beta);
+      Scalar densityGeneratorDerivative = distribution.computeDensityGeneratorDerivative(beta);
       fullprint << "density generator derivative     =" << densityGeneratorDerivative << std::endl;
       fullprint << "density generator derivative (FD)=" << clean((distribution.computeDensityGenerator(beta + eps) - distribution.computeDensityGenerator(beta - eps)) / (2.0 * eps)) << std::endl;
-      NumericalScalar densityGeneratorSecondDerivative = distribution.computeDensityGeneratorSecondDerivative(beta);
+      Scalar densityGeneratorSecondDerivative = distribution.computeDensityGeneratorSecondDerivative(beta);
       fullprint << "density generator second derivative     =" << densityGeneratorSecondDerivative << std::endl;
       fullprint << "density generator second derivative (FD)=" << clean((distribution.computeDensityGeneratorDerivative(beta + eps) - distribution.computeDensityGeneratorDerivative(beta - eps)) / (2.0 * eps)) << std::endl;
       // Compute the radial CDF
-      NumericalScalar radius = 2.0;
+      Scalar radius = 2.0;
       fullprint << "Radial CDF(" << radius << ")=" << distribution.computeRadialDistributionCDF(radius) << std::endl;
       // Extract the marginals
       for (UnsignedInteger i = 0; i < dim; i++)

@@ -87,26 +87,26 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
         const Point inputStandardRepresentativeParameters(inputStandardDistribution.getParametersCollection()[0]);
         const Distribution outputStandardDistribution(outputDistribution.getStandardRepresentative());
         const Point outputStandardRepresentativeParameters(outputStandardDistribution.getParametersCollection()[0]);
-        const NumericalScalar difference = (inputStandardRepresentativeParameters - outputStandardRepresentativeParameters).norm();
+        const Scalar difference = (inputStandardRepresentativeParameters - outputStandardRepresentativeParameters).norm();
         const Bool sameParameters = difference < ResourceMap::GetAsScalar("MarginalTransformationEvaluation-ParametersEpsilon");
         if (sameParameters)
         {
           // The transformation is the composition of two affine transformations: (input distribution->standard representative of input distribution) and (standard representative of output distribution->output distribution)
           // The two affine transformations are obtained using quantiles in order to deal with distributions with no moments
-          const NumericalScalar q25Input = inputDistribution.computeQuantile(0.25)[0];
-          const NumericalScalar q75Input = inputDistribution.computeQuantile(0.75)[0];
-          const NumericalScalar q25Output = outputDistribution.computeQuantile(0.25)[0];
-          const NumericalScalar q75Output = outputDistribution.computeQuantile(0.75)[0];
-          const NumericalScalar a = 0.5 * (q75Output + q25Output);
+          const Scalar q25Input = inputDistribution.computeQuantile(0.25)[0];
+          const Scalar q75Input = inputDistribution.computeQuantile(0.75)[0];
+          const Scalar q25Output = outputDistribution.computeQuantile(0.25)[0];
+          const Scalar q75Output = outputDistribution.computeQuantile(0.75)[0];
+          const Scalar a = 0.5 * (q75Output + q25Output);
           // Here, b > 0 by construction
-          const NumericalScalar b = (q75Output - q25Output) / (q75Input - q25Input);
-          const NumericalScalar c = -0.5 * (q75Input + q25Input);
+          const Scalar b = (q75Output - q25Output) / (q75Input - q25Input);
+          const Scalar c = -0.5 * (q75Input + q25Input);
           OSS oss;
           oss.setPrecision(20);
           // First case, b = 1: we don't need to center the input variable
           if (b == 1.0)
           {
-            const NumericalScalar alpha = a + c;
+            const Scalar alpha = a + c;
             if (alpha != 0.0) oss << alpha << "+";
             oss << xName;
           } // b == 1
@@ -131,9 +131,9 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
       if (((inputClass == "ChiSquare") || (inputClass == "Exponential") || (inputClass == "Gamma")) &&
           ((outputClass == "ChiSquare") || (outputClass == "Exponential") || (outputClass == "Gamma")))
       {
-        NumericalScalar k1 = -1.0;
-        NumericalScalar lambda1 = -1.0;
-        NumericalScalar gamma1 = -1.0;
+        Scalar k1 = -1.0;
+        Scalar lambda1 = -1.0;
+        Scalar gamma1 = -1.0;
         if (inputClass == "ChiSquare")
         {
           k1 = 0.5 * inputParameters[0];
@@ -152,9 +152,9 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
           lambda1 = inputParameters[1];
           gamma1 = inputParameters[2];
         }
-        NumericalScalar k2 = -1.0;
-        NumericalScalar lambda2 = -1.0;
-        NumericalScalar gamma2 = -1.0;
+        Scalar k2 = -1.0;
+        Scalar lambda2 = -1.0;
+        Scalar gamma2 = -1.0;
         if (outputClass == "ChiSquare")
         {
           k2 = 0.5 * outputParameters[0];
@@ -194,11 +194,11 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
       // Normal -> LogNormal simplification
       if ((inputClass == "Normal") && (outputClass == "LogNormal"))
       {
-        const NumericalScalar mu1 = inputParameters[0];
-        const NumericalScalar sigma1 = inputParameters[1];
-        const NumericalScalar muLog2 = outputParameters[0];
-        const NumericalScalar sigmaLog2 = outputParameters[1];
-        const NumericalScalar gamma2 = outputParameters[2];
+        const Scalar mu1 = inputParameters[0];
+        const Scalar sigma1 = inputParameters[1];
+        const Scalar muLog2 = outputParameters[0];
+        const Scalar sigmaLog2 = outputParameters[1];
+        const Scalar gamma2 = outputParameters[2];
         OSS oss;
         oss.setPrecision(20);
         if (gamma2 != 0.0) oss << gamma2 << " + ";
@@ -216,11 +216,11 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
       // LogNormal -> Normal simplification
       if ((inputClass == "LogNormal") && (outputClass == "Normal"))
       {
-        const NumericalScalar muLog1 = inputParameters[0];
-        const NumericalScalar sigmaLog1 = inputParameters[1];
-        const NumericalScalar gamma1 = inputParameters[2];
-        const NumericalScalar mu2 = outputParameters[0];
-        const NumericalScalar sigma2 = outputParameters[1];
+        const Scalar muLog1 = inputParameters[0];
+        const Scalar sigmaLog1 = inputParameters[1];
+        const Scalar gamma1 = inputParameters[2];
+        const Scalar mu2 = outputParameters[0];
+        const Scalar sigma2 = outputParameters[1];
         OSS oss;
         oss.setPrecision(20);
         if (mu2 != 0.0) oss << mu2 << " + ";
@@ -293,19 +293,19 @@ Point MarginalTransformationEvaluation::operator () (const Point & inP) const
   const UnsignedInteger dimension = getOutputDimension();
   Point result(dimension);
   // The marginal transformation apply G^{-1} o F to each component of the input, where F is the ith input CDF and G the ith output CDf
-  const NumericalScalar tailThreshold = ResourceMap::GetAsScalar( "MarginalTransformationEvaluation-DefaultTailThreshold" );
+  const Scalar tailThreshold = ResourceMap::GetAsScalar( "MarginalTransformationEvaluation-DefaultTailThreshold" );
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     if (simplifications_[i]) result[i] = expressions_[i](Point(1, inP[i]))[0];
     else
     {
-      NumericalScalar inputCDF = inputDistributionCollection_[i].computeCDF(inP[i]);
+      Scalar inputCDF = inputDistributionCollection_[i].computeCDF(inP[i]);
       // For accuracy reason, check if we are in the upper tail of the distribution
       const Bool upperTail = inputCDF > tailThreshold;
       if (upperTail) inputCDF = inputDistributionCollection_[i].computeComplementaryCDF(inP[i]);
       // The upper tail CDF is defined by CDF(x, upper) = P(X>x)
       // The upper tail quantile is defined by Quantile(CDF(x, upper), upper) = x
-      const NumericalScalar q = outputDistributionCollection_[i].computeQuantile(inputCDF, upperTail)[0];
+      const Scalar q = outputDistributionCollection_[i].computeQuantile(inputCDF, upperTail)[0];
       result[i] = q;
     }
   }
@@ -373,7 +373,7 @@ Matrix MarginalTransformationEvaluation::parameterGradient(const Point & inP) co
         const Point x(1, inP[j]);
         const Distribution inputMarginal(inputDistributionCollection_[j]);
         const Distribution outputMarginal(outputDistributionCollection_[j]);
-        const NumericalScalar denominator = outputMarginal.computePDF(outputMarginal.computeQuantile(inputMarginal.computeCDF(x)));
+        const Scalar denominator = outputMarginal.computePDF(outputMarginal.computeQuantile(inputMarginal.computeCDF(x)));
         if (denominator > 0.0)
         {
           try
@@ -404,7 +404,7 @@ Matrix MarginalTransformationEvaluation::parameterGradient(const Point & inP) co
         const Distribution inputMarginal(inputDistributionCollection_[j]);
         const Distribution outputMarginal(outputDistributionCollection_[j]);
         const Point q(outputMarginal.computeQuantile(inputMarginal.computeCDF(x)));
-        const NumericalScalar denominator = outputMarginal.computePDF(q);
+        const Scalar denominator = outputMarginal.computePDF(q);
         if (denominator > 0.0)
         {
           try

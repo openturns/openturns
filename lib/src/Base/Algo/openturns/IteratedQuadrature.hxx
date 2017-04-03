@@ -60,8 +60,8 @@ public:
 
   // This method allows to get the estimated integration error as a scalar
   Point integrate(const Function & function,
-                           const NumericalScalar a,
-                           const NumericalScalar b,
+                           const Scalar a,
+                           const Scalar b,
                            const FunctionCollection & lowerBounds,
                            const FunctionCollection & upperBounds,
                            const Bool check = true) const;
@@ -98,8 +98,8 @@ private:
       const Indices index(1, 0);
       const ParametricFunction function(function_, index, point);
       const UnsignedInteger size = lowerBounds_.getSize() - 1;
-      const NumericalScalar a = lowerBounds_[0](point)[0];
-      const NumericalScalar b = upperBounds_[0](point)[0];
+      const Scalar a = lowerBounds_[0](point)[0];
+      const Scalar b = upperBounds_[0](point)[0];
       IteratedQuadrature::FunctionCollection lowerBounds(size);
       IteratedQuadrature::FunctionCollection upperBounds(size);
       for (UnsignedInteger i = 0; i < size; ++i)
@@ -129,8 +129,8 @@ private:
         const Point x(sample[k]);
         // Create the arguments of the local integration problem
         const ParametricFunction function(function_, index, x);
-        const NumericalScalar a = sampleA[k][0];
-        const NumericalScalar b = sampleB[k][0];
+        const Scalar a = sampleA[k][0];
+        const Scalar b = sampleB[k][0];
         for (UnsignedInteger i = 0; i < size; ++i)
         {
           lowerBounds[i] = ParametricFunction(lowerBounds_[i + 1], index, x);

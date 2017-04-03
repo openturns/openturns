@@ -149,7 +149,7 @@ Point BayesDistribution::getRealization() const
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar BayesDistribution::computePDF(const Point & point) const
+Scalar BayesDistribution::computePDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
@@ -157,14 +157,14 @@ NumericalScalar BayesDistribution::computePDF(const Point & point) const
   const UnsignedInteger conditioningDimension = conditioningDistribution_.getDimension();
   Point y(conditioningDimension);
   std::copy(point.begin() + conditionedDimension, point.end(), y.begin());
-  const NumericalScalar conditioningPDF = conditioningDistribution_.computePDF(y);
+  const Scalar conditioningPDF = conditioningDistribution_.computePDF(y);
   if (conditioningPDF == 0.0) return 0.0;
   Distribution deconditioned(conditionedDistribution_);
   const Point parameters(linkFunction_(y));
   deconditioned.setParameter(parameters);
   Point x(conditionedDimension);
   std::copy(point.begin(), point.begin() + conditionedDimension, x.begin());
-  const NumericalScalar deconditionedPDF = deconditioned.computePDF(x);
+  const Scalar deconditionedPDF = deconditioned.computePDF(x);
   return deconditionedPDF * conditioningPDF;
 }
 

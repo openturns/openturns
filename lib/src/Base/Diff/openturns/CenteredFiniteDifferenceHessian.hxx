@@ -58,7 +58,7 @@ public:
                                   const EvaluationPointer & p_evaluation);
 
   /** Second parameter constructor */
-  CenteredFiniteDifferenceHessian(const NumericalScalar epsilon,
+  CenteredFiniteDifferenceHessian(const Scalar epsilon,
                                   const EvaluationPointer & p_evaluation);
 
   /** Constructor with FiniteDifferenceStep */

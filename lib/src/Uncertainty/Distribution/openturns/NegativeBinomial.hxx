@@ -41,8 +41,8 @@ public:
   NegativeBinomial();
 
   /** Parameters constructor */
-  NegativeBinomial(const NumericalScalar r,
-                   const NumericalScalar p);
+  NegativeBinomial(const Scalar r,
+                   const Scalar p);
 
   /** Comparison operator */
   Bool operator ==(const NegativeBinomial & other) const;
@@ -64,13 +64,13 @@ public:
 
   /** Get the PDF of the distribution */
   using DiscreteDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using DiscreteDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
   using DiscreteDistribution::computeComplementaryCDF;
-  NumericalScalar computeComplementaryCDF(const Point & point) const;
+  Scalar computeComplementaryCDF(const Point & point) const;
 
   /** Get the PDFGradient of the distribution */
   using DiscreteDistribution::computePDFGradient;
@@ -81,8 +81,8 @@ public:
   Point computeCDFGradient(const Point & point) const;
 
   /** Compute the characteristic function, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
-  NumericalComplex computeLogCharacteristicFunction(const NumericalScalar x) const;
+  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
+  NumericalComplex computeLogCharacteristicFunction(const Scalar x) const;
 
   /** Compute the generating function, i.e. psi(z) = E(z^X) */
   NumericalComplex computeGeneratingFunction(const NumericalComplex & z) const;
@@ -111,12 +111,12 @@ public:
   /* Interface specific to NegativeBinomial */
 
   /** P accessor */
-  void setP(const NumericalScalar p);
-  NumericalScalar getP() const;
+  void setP(const Scalar p);
+  Scalar getP() const;
 
   /** R accessor */
-  void setR(const NumericalScalar r);
-  NumericalScalar getR() const;
+  void setR(const Scalar r);
+  Scalar getR() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -135,17 +135,17 @@ private:
   void computeCovariance() const;
 
   /** Get the quantile of the distribution */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+  Scalar computeScalarQuantile(const Scalar prob,
                                         const Bool tail = false) const;
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange();
 
   /** The maximum value of the NegativeBinomial distribution */
-  NumericalScalar r_;
+  Scalar r_;
 
   /** The probability parameter of the NegativeBinomial distribution */
-  NumericalScalar p_;
+  Scalar p_;
 
 }; /* class NegativeBinomial */
 

@@ -107,7 +107,7 @@ private:
   /// number of samples accepted
   mutable Indices acceptedNumber_;
 
-  mutable NumericalScalar currentLogLikelihood_;
+  mutable Scalar currentLogLikelihood_;
 }; /* class RandomWalkMetropolisHastings */
 
 

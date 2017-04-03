@@ -11,7 +11,7 @@ OT::SymmetricMatrix OT::SymmetricMatrix::computeEV(OT::SquareMatrix & v, const B
 
 %include SymmetricMatrix_doc.i
 
-%apply const NumericalScalarCollection & { const OT::SymmetricMatrix::NumericalScalarCollection & };
+%apply const ScalarCollection & { const OT::SymmetricMatrix::ScalarCollection & };
 
 %include openturns/SymmetricMatrix.hxx
 
@@ -32,11 +32,11 @@ namespace OT {
 
   OTMatrixAccessors()
 
-  SymmetricMatrix __rmul__(NumericalScalar s) { return s * (*self); }
+  SymmetricMatrix __rmul__(Scalar s) { return s * (*self); }
   Matrix __rmul__(const Matrix & m) { return m * (*self); }
 
 #if SWIG_VERSION < 0x030011
-  SymmetricMatrix __truediv__(NumericalScalar s) { return (*self) / s; }
+  SymmetricMatrix __truediv__(Scalar s) { return (*self) / s; }
 #endif
 
 } // SymmetricMatrix

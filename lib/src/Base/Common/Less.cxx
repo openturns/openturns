@@ -51,8 +51,8 @@ Less * Less::clone() const
 }
 
 /* Return true if comparison succeeds */
-Bool Less::operator() (const NumericalScalar a,
-                       const NumericalScalar b) const
+Bool Less::operator() (const Scalar a,
+                       const Scalar b) const
 {
   return (a < b);
 }

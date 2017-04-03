@@ -46,8 +46,8 @@ FisherSnedecor::FisherSnedecor()
 }
 
 /* Parameters constructor */
-FisherSnedecor::FisherSnedecor(const NumericalScalar d1,
-                               const NumericalScalar d2)
+FisherSnedecor::FisherSnedecor(const Scalar d1,
+                               const Scalar d2)
   : ContinuousDistribution()
   , d1_(d1)
   , d2_(0.0)
@@ -124,30 +124,30 @@ Point FisherSnedecor::getRealization() const
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar FisherSnedecor::computePDF(const Point & point) const
+Scalar FisherSnedecor::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if (x <= 0.0) return 0.0;
   return std::exp(computeLogPDF(point));
 }
 
-NumericalScalar FisherSnedecor::computeLogPDF(const Point & point) const
+Scalar FisherSnedecor::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if (x <= 0.0) return SpecFunc::LogMinScalar;
   return normalizationFactor_ + (0.5 * d1_ - 1.0) * std::log(x) - 0.5 * (d1_ + d2_) * log1p(d1_ * x / d2_);
 }
 
 Point FisherSnedecor::computeLogPDFGradient(const Point & point) const
 {
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   Point logPdfGradient(2, 0.0);
   if (!(x > 0.0)) return logPdfGradient;
-  const NumericalScalar d1xd2 = d1_ * x + d2_;
+  const Scalar d1xd2 = d1_ * x + d2_;
   // First derivate the normlizationFactor as function of d1_, d2_ (see expression above in LogPDF)
   // As the term is a combinations of LnBeta(d1/2, d2/2) := log(Beta(d1/2, d2/2), dLnBeta = dBeta/Beta
   // As dBeta(x,y) = B(x,y) * (DiGamma(X) - DiGamma(x+y)) (see  https://en.wikipedia.org/wiki/Beta_function#Derivatives)
@@ -162,27 +162,27 @@ Point FisherSnedecor::computePDFGradient(const Point & point) const
 {
   // PDF(x) =  exp(LogPDF(x)) thus PDF(x)' = LogPDF(x)' * exp(LogPDF(x))
   Point PdfGradient(computeLogPDFGradient(point));
-  NumericalScalar pdf = computePDF(point);
+  Scalar pdf = computePDF(point);
   return PdfGradient * pdf;
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar FisherSnedecor::computeCDF(const Point & point) const
+Scalar FisherSnedecor::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if (x <= 0) return 0.0;
   return DistFunc::pBeta(0.5 * d1_, 0.5 * d2_, d1_ * x / (d1_ * x + d2_));
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar FisherSnedecor::computeScalarQuantile(const NumericalScalar prob,
+Scalar FisherSnedecor::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
   if (getRange().getUpperBound()[0] < 0.0) return DistributionImplementation::computeScalarQuantile(prob, tail);
-  const NumericalScalar p = tail ? 1.0 - prob : prob;
-  const NumericalScalar q = DistFunc::qBeta(0.5 * d1_, 0.5 * d2_, p);
+  const Scalar p = tail ? 1.0 - prob : prob;
+  const Scalar q = DistFunc::qBeta(0.5 * d1_, 0.5 * d2_, p);
   if (q >= 1.0) return getRange().getUpperBound()[0];
   return d2_ * q / (d1_ * (1.0 - q));
 }
@@ -243,7 +243,7 @@ Point FisherSnedecor::getParameter() const
 void FisherSnedecor::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = FisherSnedecor(parameter[0], parameter[1]);
   setWeight(w);
 }
@@ -258,7 +258,7 @@ Description FisherSnedecor::getParameterDescription() const
 }
 
 /* D1 accessor */
-void FisherSnedecor::setD1(const NumericalScalar d1)
+void FisherSnedecor::setD1(const Scalar d1)
 {
   if (!(d1 > 0.0)) throw InvalidArgumentException(HERE) << "Error d1 of a FisherSnedecor distribution must be positive";
   if (d1_ != d1)
@@ -269,14 +269,14 @@ void FisherSnedecor::setD1(const NumericalScalar d1)
   }
 }
 
-NumericalScalar FisherSnedecor::getD1() const
+Scalar FisherSnedecor::getD1() const
 {
   return d1_;
 }
 
 
 /* D2 accessor */
-void FisherSnedecor::setD2(const NumericalScalar d2)
+void FisherSnedecor::setD2(const Scalar d2)
 {
   if (!(d2 > 0.0)) throw InvalidArgumentException(HERE) << "Error d2 of a FisherSnedecor distribution must be positive";
   if (d2_ != d2)
@@ -287,7 +287,7 @@ void FisherSnedecor::setD2(const NumericalScalar d2)
   }
 }
 
-NumericalScalar FisherSnedecor::getD2() const
+Scalar FisherSnedecor::getD2() const
 {
   return d2_;
 }

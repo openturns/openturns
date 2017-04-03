@@ -75,7 +75,7 @@ OptimizationProblemImplementation::OptimizationProblemImplementation(const Funct
 
 /* Constructor for nearest point problem */
 OptimizationProblemImplementation::OptimizationProblemImplementation(const Function & levelFunction,
-    NumericalScalar levelValue)
+    Scalar levelValue)
   : PersistentObject()
   , objective_()
   , equalityConstraint_()
@@ -206,12 +206,12 @@ Bool OptimizationProblemImplementation::hasLevelFunction() const
 }
 
 /* Level value accessor */
-NumericalScalar OptimizationProblemImplementation::getLevelValue() const
+Scalar OptimizationProblemImplementation::getLevelValue() const
 {
   return levelValue_;
 }
 
-void OptimizationProblemImplementation::setLevelValue(NumericalScalar levelValue)
+void OptimizationProblemImplementation::setLevelValue(Scalar levelValue)
 {
   levelValue_ = levelValue;
   // Update constraints

@@ -82,7 +82,7 @@ String LinearCombinationEvaluation::__str__(const String & offset) const
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Bool isNegative = coefficients_[i] < 0.0;
-    const NumericalScalar absCoefficient = std::abs(coefficients_[i]);
+    const Scalar absCoefficient = std::abs(coefficients_[i]);
     if (i > 0) oss << (isNegative ? " - " : " + ");
     else if (isNegative) oss << "-";
     if (absCoefficient != 1.0) oss << absCoefficient << " * ";
@@ -202,7 +202,7 @@ void LinearCombinationEvaluation::setFunctionsCollectionAndCoefficients(const Fu
   isZero_ = false;
   coefficients_ = Point(0);
   functionsCollection_ = FunctionCollection(0);
-  const NumericalScalar epsilon = ResourceMap::GetAsScalar("LinearCombinationEvaluation-SmallCoefficient");
+  const Scalar epsilon = ResourceMap::GetAsScalar("LinearCombinationEvaluation-SmallCoefficient");
   for (UnsignedInteger i = 0; i < size; ++i)
     if (std::abs(coefficients[i]) > epsilon)
     {
@@ -249,7 +249,7 @@ Matrix LinearCombinationEvaluation::parameterGradient(const Point & inP) const
     const UnsignedInteger rowDimension = atomParametersGradient.getNbRows();
     const UnsignedInteger columnDimension = atomParametersGradient.getNbColumns();
     // Scale the atom gradient and copy it into the result
-    const NumericalScalar coefficient = coefficients_[i];
+    const Scalar coefficient = coefficients_[i];
     for (UnsignedInteger j = 0; j < rowDimension; ++j)
     {
       for (UnsignedInteger k = 0; k < columnDimension; ++k)

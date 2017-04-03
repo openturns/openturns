@@ -42,8 +42,8 @@ Burr::Burr()
 }
 
 /* Parameters constructor */
-Burr::Burr(const NumericalScalar c,
-           const NumericalScalar k)
+Burr::Burr(const Scalar c,
+           const Scalar k)
   : ContinuousDistribution()
   , c_(c)
   , k_(0.)
@@ -116,39 +116,39 @@ Point Burr::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if (x <= 0.0) return Point(1, 0.0);
-  const NumericalScalar xC = std::pow(x, c_);
+  const Scalar xC = std::pow(x, c_);
   return Point(1, -(xC * (c_ * k_ + 1.0) + 1.0 - c_) * computePDF(x) / (x * (1.0 + xC)));
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Burr::computePDF(const Point & point) const
+Scalar Burr::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if (x <= 0.0) return 0.0;
   return std::exp(computeLogPDF(point));
 }
 
-NumericalScalar Burr::computeLogPDF(const Point & point) const
+Scalar Burr::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if (x <= 0.0) return SpecFunc::LogMinScalar;
-  const NumericalScalar logX = std::log(x);
+  const Scalar logX = std::log(x);
   return std::log(c_ * k_) + (c_ - 1.0) * logX - (k_ + 1.0) * log1p(std::exp(c_ * logX));
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar Burr::computeCDF(const Point & point) const
+Scalar Burr::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if (x <= 0.0) return 0.0;
   return -expm1(-k_ * log1p(std::exp(c_ * std::log(x))));
 }
@@ -158,11 +158,11 @@ Point Burr::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   Point pdfGradient(2, 0.0);
   if (x <= 0.0) return pdfGradient;
-  const NumericalScalar pdf = computePDF(point);
-  const NumericalScalar logX = std::log(x);
+  const Scalar pdf = computePDF(point);
+  const Scalar logX = std::log(x);
   pdfGradient[0] = ((1.0 - (1.0 + k_) / (1.0 + std::exp(-c_ * logX))) * logX + 1.0 / c_) * pdf;
   pdfGradient[1] = (1.0 / k_ - log1p(std::pow(x, c_))) * pdf;
   return pdfGradient;
@@ -173,18 +173,18 @@ Point Burr::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   Point cdfGradient(2, 0.0);
   if (x <= 0.0) return cdfGradient;
-  const NumericalScalar cdfC = computeComplementaryCDF(point);
-  const NumericalScalar xC = std::pow(x, c_);
+  const Scalar cdfC = computeComplementaryCDF(point);
+  const Scalar xC = std::pow(x, c_);
   cdfGradient[0] = k_ * xC * std::log(x) * cdfC / (1.0 + xC);
   cdfGradient[1] = log1p(xC) * cdfC;
   return cdfGradient;
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar Burr::computeScalarQuantile(const NumericalScalar prob,
+Scalar Burr::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
   if (tail) return std::exp(std::log(expm1(-std::log(prob) / k_)) / c_);
@@ -207,16 +207,16 @@ Point Burr::getStandardDeviation() const
 /* Get the skewness of the distribution */
 Point Burr::getSkewness() const
 {
-  const NumericalScalar mu = getMean()[0];
-  const NumericalScalar sigma = getStandardDeviation()[0];
+  const Scalar mu = getMean()[0];
+  const Scalar sigma = getStandardDeviation()[0];
   return Point(1, (getStandardMoment(3)[0] - 3.0 * mu * sigma * sigma - mu * mu * mu) / (sigma * sigma * sigma));
 }
 
 /* Get the kurtosis of the distribution */
 Point Burr::getKurtosis() const
 {
-  const NumericalScalar mu = getMean()[0];
-  const NumericalScalar sigma = getStandardDeviation()[0];
+  const Scalar mu = getMean()[0];
+  const Scalar sigma = getStandardDeviation()[0];
   return Point(1, (getStandardMoment(4)[0] - 4.0 * mu * getStandardMoment(3)[0] + 6.0 * sigma * sigma * mu * mu + 3.0 * mu * mu * mu * mu) / (sigma * sigma * sigma * sigma));
 }
 
@@ -246,7 +246,7 @@ Point Burr::getParameter() const
 void Burr::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = Burr(parameter[0], parameter[1]);
   setWeight(w);
 }
@@ -261,7 +261,7 @@ Description Burr::getParameterDescription() const
 }
 
 /* C accessor */
-void Burr::setC(const NumericalScalar c)
+void Burr::setC(const Scalar c)
 {
   if (!(c > 0.0)) throw InvalidArgumentException(HERE) << "C MUST be positive";
   if (c_ != c)
@@ -274,14 +274,14 @@ void Burr::setC(const NumericalScalar c)
 }
 
 /* C accessor */
-NumericalScalar Burr::getC() const
+Scalar Burr::getC() const
 {
   return c_;
 }
 
 
 /* K accessor */
-void Burr::setK(const NumericalScalar k)
+void Burr::setK(const Scalar k)
 {
   if (!(k > 0.0)) throw InvalidArgumentException(HERE) << "K MUST be positive";
   if (k_ != k)
@@ -294,7 +294,7 @@ void Burr::setK(const NumericalScalar k)
 }
 
 /* K accessor */
-NumericalScalar Burr::getK() const
+Scalar Burr::getK() const
 {
   return k_;
 }

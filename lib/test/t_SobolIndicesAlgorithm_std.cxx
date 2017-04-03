@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 
     const UnsignedInteger size = 10000;
     const UnsignedInteger nr_bootstrap = 100;
-    const NumericalScalar confidence_level = 0.95;
+    const Scalar confidence_level = 0.95;
 
     const Sample inputDesign(SobolIndicesAlgorithmImplementation::Generate(maDistribution, size, true));
     const Sample outputDesign(model(inputDesign));

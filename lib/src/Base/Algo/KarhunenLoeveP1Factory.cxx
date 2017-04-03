@@ -49,7 +49,7 @@ KarhunenLoeveP1Factory::KarhunenLoeveP1Factory()
 
 /* Constructor with parameters */
 KarhunenLoeveP1Factory::KarhunenLoeveP1Factory(const Mesh & mesh,
-    const NumericalScalar threshold)
+    const Scalar threshold)
   : PersistentObject()
   , mesh_(mesh)
   , threshold_(threshold)
@@ -57,7 +57,7 @@ KarhunenLoeveP1Factory::KarhunenLoeveP1Factory(const Mesh & mesh,
   Log::Warn(OSS() << "KarhunenLoeveP1Factory is deprecated");
   // Compute the gram of the mesh
   gram_ = mesh.computeP1Gram();
-  const NumericalScalar epsilon = ResourceMap::GetAsScalar("KarhunenLoeveP1Factory-RegularizationFactor");
+  const Scalar epsilon = ResourceMap::GetAsScalar("KarhunenLoeveP1Factory-RegularizationFactor");
   if (epsilon > 0.0)
     for (UnsignedInteger i = 0; i < gram_.getDimension(); ++i) gram_(i, i) += epsilon;
 }
@@ -115,7 +115,7 @@ ProcessSample KarhunenLoeveP1Factory::buildAsProcessSample(const CovarianceModel
   {
     for (UnsignedInteger j = 0; j <= i; ++j)
     {
-      const NumericalScalar gij = gram_(i, j);
+      const Scalar gij = gram_(i, j);
       for (UnsignedInteger k = 0; k < dimension; ++k)
         G(i * dimension + k, j * dimension + k) = gij;
     } // Loop over j
@@ -148,8 +148,8 @@ ProcessSample KarhunenLoeveP1Factory::buildAsProcessSample(const CovarianceModel
     selectedEV.add(eigenValues[j]);
     Sample values(numVertices, dimension);
     const Matrix a(eigenVectors.getColumn(j));
-    const NumericalScalar norm = std::sqrt((a.transpose() * (G * a))(0, 0));
-    const NumericalScalar factor = eigenVectors(0, j) < 0.0 ? -1.0 / norm : 1.0 / norm;
+    const Scalar norm = std::sqrt((a.transpose() * (G * a))(0, 0));
+    const Scalar factor = eigenVectors(0, j) < 0.0 ? -1.0 / norm : 1.0 / norm;
     for (UnsignedInteger i = 0; i < numVertices; ++i)
       for (UnsignedInteger k = 0; k < dimension; ++k)
         values[i][k] = eigenVectors(i * dimension + k, j) * factor;

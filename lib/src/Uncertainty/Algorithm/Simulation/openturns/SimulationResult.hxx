@@ -47,8 +47,8 @@ public:
 
   /** Standard constructor */
   SimulationResult(const Event & event,
-                   const NumericalScalar probabilityEstimate,
-                   const NumericalScalar varianceEstimate,
+                   const Scalar probabilityEstimate,
+                   const Scalar varianceEstimate,
                    const UnsignedInteger outerSampling,
                    const UnsignedInteger blockSize);
 
@@ -62,18 +62,18 @@ public:
   Event getEvent() const;
 
   /** Probability estimate accessor */
-  NumericalScalar getProbabilityEstimate() const;
-  void setProbabilityEstimate(const NumericalScalar probabilityEstimate);
+  Scalar getProbabilityEstimate() const;
+  void setProbabilityEstimate(const Scalar probabilityEstimate);
 
   /** Variance estimate accessor */
-  NumericalScalar getVarianceEstimate() const;
-  void setVarianceEstimate(const NumericalScalar varianceEstimate);
+  Scalar getVarianceEstimate() const;
+  void setVarianceEstimate(const Scalar varianceEstimate);
 
   /** Coefficient of variation estimate accessor */
-  NumericalScalar getCoefficientOfVariation() const;
+  Scalar getCoefficientOfVariation() const;
 
   /** Standard deviation estimate accessor */
-  NumericalScalar getStandardDeviation() const;
+  Scalar getStandardDeviation() const;
 
   /** Mean point conditioned to the event realization accessor */
   Point getMeanPointInEventDomain() const;
@@ -93,7 +93,7 @@ public:
   void setBlockSize(const UnsignedInteger blockSize);
 
   /** Confidence length */
-  NumericalScalar getConfidenceLength(const NumericalScalar level = ResourceMap::GetAsScalar("SimulationResult-DefaultConfidenceLevel")) const;
+  Scalar getConfidenceLength(const Scalar level = ResourceMap::GetAsScalar("SimulationResult-DefaultConfidenceLevel")) const;
 
   /** String converter */
   String __repr__() const;

@@ -65,8 +65,8 @@ int main(int argc, char *argv[])
     Point point(distribution.getDimension(), 2.0);
 
     // Show PDF and CDF of a point
-    NumericalScalar pointPDF = distribution.computePDF( point );
-    NumericalScalar pointCDF = distribution.computeCDF( point );
+    Scalar pointPDF = distribution.computePDF( point );
+    Scalar pointCDF = distribution.computeCDF( point );
     fullprint << "point= " << point
               << " pdf=" << pointPDF
               << " cdf=" << pointCDF

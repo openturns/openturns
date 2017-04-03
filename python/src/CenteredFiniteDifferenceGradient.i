@@ -21,7 +21,7 @@ namespace OT {
    return new OT::CenteredFiniteDifferenceGradient(epsilon, evaluation.clone());
  }
 
- CenteredFiniteDifferenceGradient(const NumericalScalar epsilon,
+ CenteredFiniteDifferenceGradient(const Scalar epsilon,
                                   const EvaluationImplementation & evaluation)
  {
    return new OT::CenteredFiniteDifferenceGradient(epsilon, evaluation.clone());

@@ -42,8 +42,8 @@ public:
   GeneralizedPareto();
 
   /** Parameters constructor */
-  GeneralizedPareto(const NumericalScalar sigma,
-                    const NumericalScalar xi);
+  GeneralizedPareto(const Scalar sigma,
+                    const Scalar xi);
 
   /** Comparison operator */
   Bool operator ==(const GeneralizedPareto & other) const;
@@ -70,25 +70,25 @@ public:
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
   using ContinuousDistribution::computeLogPDF;
-  NumericalScalar computeLogPDF(const Point & point) const;
+  Scalar computeLogPDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
   using ContinuousDistribution::computeComplementaryCDF;
-  NumericalScalar computeComplementaryCDF(const Point & point) const;
+  Scalar computeComplementaryCDF(const Point & point) const;
 
   /** Get the product minimum volume interval containing a given probability of the distribution */
-  Interval computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
+  Interval computeMinimumVolumeIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const;
 
   /** Get the minimum volume level set containing a given probability of the distribution */
-  LevelSet computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const;
+  LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & threshold) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
-  NumericalComplex computeLogCharacteristicFunction(const NumericalScalar x) const;
+  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
+  NumericalComplex computeLogCharacteristicFunction(const Scalar x) const;
 
   /** Get the PDFGradient of the distribution */
   using ContinuousDistribution::computePDFGradient;
@@ -123,12 +123,12 @@ public:
   /* Interface specific to GeneralizedPareto */
 
   /** Sigma accessor */
-  void setSigma(const NumericalScalar sigma);
-  NumericalScalar getSigma() const;
+  void setSigma(const Scalar sigma);
+  Scalar getSigma() const;
 
   /** Xi accessor */
-  void setXi(const NumericalScalar xi);
-  NumericalScalar getXi() const;
+  void setXi(const Scalar xi);
+  Scalar getXi() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -148,17 +148,17 @@ private:
   void computeCovariance() const;
 
   /** Get the quantile of the distribution */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+  Scalar computeScalarQuantile(const Scalar prob,
                                         const Bool tail = false) const;
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange();
 
   /** The scale parameter of the GeneralizedPareto distribution */
-  NumericalScalar sigma_;
+  Scalar sigma_;
 
   /** The shape parameter of the GeneralizedPareto distribution */
-  NumericalScalar xi_;
+  Scalar xi_;
 
 }; /* class GeneralizedPareto */
 

@@ -273,8 +273,8 @@ public:
   virtual Graph draw(const UnsignedInteger inputMarginal,
                      const UnsignedInteger outputMarginal,
                      const Point & centralPoint,
-                     const NumericalScalar xMin,
-                     const NumericalScalar xMax,
+                     const Scalar xMin,
+                     const Scalar xMax,
                      const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("NumericalMathEvaluation-DefaultPointNumber"),
                      const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
 
@@ -289,8 +289,8 @@ public:
                      const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
 
   /** Draw the output of the function with respect to its input when the input and output dimensions are 1 */
-  virtual Graph draw(const NumericalScalar xMin,
-                     const NumericalScalar xMax,
+  virtual Graph draw(const Scalar xMin,
+                     const Scalar xMax,
                      const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("NumericalMathEvaluation-DefaultPointNumber"),
                      const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
 

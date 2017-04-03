@@ -57,9 +57,9 @@ TruncatedDistribution::TruncatedDistribution()
 
 /* Parameters constructor to use when the two bounds are finite */
 TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
-    const NumericalScalar lowerBound,
-    const NumericalScalar upperBound,
-    const NumericalScalar thresholdRealization)
+    const Scalar lowerBound,
+    const Scalar upperBound,
+    const Scalar thresholdRealization)
   : DistributionImplementation()
 {
   setName("TruncatedDistribution");
@@ -82,9 +82,9 @@ TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
 
 /* Parameters constructor to use when one of the bounds is not finite */
 TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
-    const NumericalScalar bound,
+    const Scalar bound,
     const BoundSide side,
-    const NumericalScalar thresholdRealization)
+    const Scalar thresholdRealization)
   : DistributionImplementation()
 {
   setName("TruncatedDistribution");
@@ -133,7 +133,7 @@ TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
 /* Parameters constructor to use when one of the bounds is not finite */
 TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
     const Interval & truncationInterval,
-    const NumericalScalar thresholdRealization)
+    const Scalar thresholdRealization)
   : DistributionImplementation()
 {
   setName("TruncatedDistribution");
@@ -236,40 +236,40 @@ Point TruncatedDistribution::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if ((x <= lowerBound_) || (x > upperBound_)) return Point(1, 0.0);
   return normalizationFactor_ * distribution_.computeDDF(point);
 }
 
 
 /* Get the PDF of the distribution: PDF_trunc = 1[a, b] * PDF / (CDF(b) - CDF(a)) */
-NumericalScalar TruncatedDistribution::computePDF(const Point & point) const
+Scalar TruncatedDistribution::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if ((x < lowerBound_ - quantileEpsilon_) || (x > upperBound_ + quantileEpsilon_)) return 0.0;
   return normalizationFactor_ * distribution_.computePDF(point);
 }
 
 
 /* Get the CDF of the distribution: CDF_trunc = 1[a, b] * (CDF - CDF(a)) / (CDF(b) - CDF(a)) + 1]b, inf] */
-NumericalScalar TruncatedDistribution::computeCDF(const Point & point) const
+Scalar TruncatedDistribution::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if (x <= lowerBound_) return 0.0;
   if (x >= upperBound_) return 1.0;
   // If tail=true, don't call distribution_.computeCDF with tail=true in the next line!
   return normalizationFactor_ * (distribution_.computeCDF(point) - cdfLowerBound_);
 }
 
-NumericalScalar TruncatedDistribution::computeComplementaryCDF(const Point & point) const
+Scalar TruncatedDistribution::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if (x <= lowerBound_) return 1.0;
   if (x > upperBound_) return 0.0;
   // If tail=true, don't call distribution_.computeCDF with tail=true in the next line!
@@ -281,12 +281,12 @@ Point TruncatedDistribution::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if ((x <= lowerBound_) || (x > upperBound_)) return Point(distribution_.getParametersCollection()[0].getDimension() + finiteLowerBound_ + finiteUpperBound_);
   const Point pdfGradientX(distribution_.computePDFGradient(point));
   const Point cdfGradientLowerBound(finiteLowerBound_ ? distribution_.computeCDFGradient(Point(1, lowerBound_)) : Point(distribution_.getParametersCollection()[0].getDimension()));
   const Point cdfGradientUpperBound(finiteUpperBound_ ? distribution_.computeCDFGradient(Point(1, upperBound_)) : Point(distribution_.getParametersCollection()[0].getDimension()));
-  const NumericalScalar pdfPoint = distribution_.computePDF(point);
+  const Scalar pdfPoint = distribution_.computePDF(point);
   Point pdfGradient(normalizationFactor_ * pdfGradientX - pdfPoint * normalizationFactor_ * normalizationFactor_ * (cdfGradientUpperBound - cdfGradientLowerBound));
   // If the lower bound is finite, add a component to the gradient
   if (finiteLowerBound_)
@@ -306,12 +306,12 @@ Point TruncatedDistribution::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if ((x <= lowerBound_) || (x > upperBound_)) return Point(distribution_.getParametersCollection()[0].getDimension() + finiteLowerBound_ + finiteUpperBound_);
   const Point cdfGradientX(distribution_.computeCDFGradient(point));
   const Point cdfGradientLowerBound(finiteLowerBound_ ? distribution_.computeCDFGradient(Point(1, lowerBound_)) : Point(distribution_.getParametersCollection()[0].getDimension()));
   const Point cdfGradientUpperBound(finiteUpperBound_ ? distribution_.computeCDFGradient(Point(1, upperBound_)) : Point(distribution_.getParametersCollection()[0].getDimension()));
-  const NumericalScalar cdfPoint = distribution_.computeCDF(point);
+  const Scalar cdfPoint = distribution_.computeCDF(point);
   Point cdfGradient(normalizationFactor_ * (cdfGradientX - cdfGradientLowerBound) - (cdfPoint - cdfLowerBound_) * normalizationFactor_ * normalizationFactor_ * (cdfGradientUpperBound - cdfGradientLowerBound));
   // If the lower bound is finite, add a component to the gradient
   if (finiteLowerBound_)
@@ -327,7 +327,7 @@ Point TruncatedDistribution::computeCDFGradient(const Point & point) const
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar TruncatedDistribution::computeScalarQuantile(const NumericalScalar prob,
+Scalar TruncatedDistribution::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
   if (tail) return distribution_.computeQuantile(cdfUpperBound_ - prob * (cdfUpperBound_ - cdfLowerBound_))[0];
@@ -354,10 +354,10 @@ void TruncatedDistribution::setParameter(const Point & parameter)
   Distribution newDistribution(distribution_);
   newDistribution.setParameter(newParameters);
   const Bool finiteLowerBound = parameter[parametersSize] == 1.0;
-  const NumericalScalar lowerBound = parameter[parametersSize + 1];
+  const Scalar lowerBound = parameter[parametersSize + 1];
   const Bool finiteUpperBound = parameter[parametersSize + 2] == 1.0;
-  const NumericalScalar upperBound = parameter[parametersSize + 3];
-  const NumericalScalar w = getWeight();
+  const Scalar upperBound = parameter[parametersSize + 3];
+  const Scalar w = getWeight();
   if (finiteLowerBound && finiteUpperBound) *this = TruncatedDistribution(newDistribution, lowerBound, upperBound);
   else if (finiteLowerBound) *this = TruncatedDistribution(newDistribution, lowerBound, LOWER);
   else if (finiteUpperBound) *this = TruncatedDistribution(newDistribution, upperBound, UPPER);
@@ -400,19 +400,19 @@ Distribution TruncatedDistribution::getDistribution() const
 }
 
 /* Realiation threshold accessor */
-void TruncatedDistribution::setThresholdRealization(const NumericalScalar thresholdRealization)
+void TruncatedDistribution::setThresholdRealization(const Scalar thresholdRealization)
 {
   if ((thresholdRealization < 0.0) || (thresholdRealization > 1.0)) throw InvalidArgumentException(HERE) << "Realization threshold must be in [0, 1], here thresholdRealization=" << thresholdRealization;
   thresholdRealization_ = thresholdRealization;
 }
 
-NumericalScalar TruncatedDistribution::getThresholdRealization() const
+Scalar TruncatedDistribution::getThresholdRealization() const
 {
   return thresholdRealization_;
 }
 
 /* Lower bound accessor */
-void TruncatedDistribution::setLowerBound(const NumericalScalar lowerBound)
+void TruncatedDistribution::setLowerBound(const Scalar lowerBound)
 {
   if ((finiteUpperBound_) && (lowerBound > upperBound_)) throw InvalidArgumentException(HERE) << "Error: the lower bound must be strictly less than the upper bound, here lower bound=" << lowerBound << " and upper bound=" << upperBound_;
   cdfLowerBound_ = distribution_.computeCDF(Point(1, lowerBound));
@@ -424,14 +424,14 @@ void TruncatedDistribution::setLowerBound(const NumericalScalar lowerBound)
   computeRange();
 }
 
-NumericalScalar TruncatedDistribution::getLowerBound() const
+Scalar TruncatedDistribution::getLowerBound() const
 {
   return lowerBound_;
 }
 
 
 /* Upper bound accessor */
-void TruncatedDistribution::setUpperBound(const NumericalScalar upperBound)
+void TruncatedDistribution::setUpperBound(const Scalar upperBound)
 {
   if ((finiteLowerBound_) && (upperBound < lowerBound_)) throw InvalidArgumentException(HERE) << "Error: the upper bound must be strictly greater than the lower bound, here upper bound=" << upperBound << " and lower bound=" << lowerBound_;
   cdfUpperBound_ = distribution_.computeCDF(Point(1, upperBound));
@@ -446,7 +446,7 @@ void TruncatedDistribution::setUpperBound(const NumericalScalar upperBound)
   computeRange();
 }
 
-NumericalScalar TruncatedDistribution::getUpperBound() const
+Scalar TruncatedDistribution::getUpperBound() const
 {
   return upperBound_;
 }
@@ -533,7 +533,7 @@ Point TruncatedDistribution::getSingularities() const
   const UnsignedInteger size = nontruncatedSingularities.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalScalar x = nontruncatedSingularities[i];
+    const Scalar x = nontruncatedSingularities[i];
     if (x >= upperBound_) return singularities;
     if (x > lowerBound_) singularities.add(x);
   }

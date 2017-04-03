@@ -87,9 +87,9 @@ private:
     // This method allows to compute <qN, qN>
     Point kernelSym(const Point & point) const
     {
-      const NumericalScalar pdf = weight_.computePDF(point);
-      const NumericalScalar x = point[0];
-      const NumericalScalar qNX = qN_(x);
+      const Scalar pdf = weight_.computePDF(point);
+      const Scalar x = point[0];
+      const Scalar qNX = qN_(x);
       Point result(1);
       result[0] = qNX * qNX * pdf;
       return result;
@@ -98,10 +98,10 @@ private:
     // This method allows to compute <qN, qN> and <x.qN, qN>
     Point kernelGen(const Point & point) const
     {
-      const NumericalScalar pdf = weight_.computePDF(point);
-      const NumericalScalar x = point[0];
-      const NumericalScalar qNX = qN_(x);
-      const NumericalScalar xQNX = x * qNX;
+      const Scalar pdf = weight_.computePDF(point);
+      const Scalar x = point[0];
+      const Scalar qNX = qN_(x);
+      const Scalar xQNX = x * qNX;
       Point result(2);
       result[0] = qNX * qNX * pdf;
       result[1] = xQNX * qNX * pdf;

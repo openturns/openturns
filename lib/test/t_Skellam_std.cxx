@@ -59,17 +59,17 @@ int main(int argc, char *argv[])
     fullprint << "Point= " << point << std::endl;
 
     // Show PDF and CDF of point
-//     NumericalScalar eps(1e-5);
-    NumericalScalar LPDF = distribution.computeLogPDF( point );
+//     Scalar eps(1e-5);
+    Scalar LPDF = distribution.computeLogPDF( point );
     fullprint << "log pdf=" << LPDF << std::endl;
-    NumericalScalar PDF = distribution.computePDF( point );
+    Scalar PDF = distribution.computePDF( point );
     fullprint << "pdf     =" << PDF << std::endl;
     fullprint << "pdf (FD)=" << (distribution.computeCDF( point + Point(1, 0) ) - distribution.computeCDF( point  + Point(1, -1) )) << std::endl;
-    NumericalScalar CDF = distribution.computeCDF( point );
+    Scalar CDF = distribution.computeCDF( point );
     fullprint << "cdf=" << CDF << std::endl;
-    NumericalScalar CCDF = distribution.computeComplementaryCDF( point );
+    Scalar CCDF = distribution.computeComplementaryCDF( point );
     fullprint << "ccdf=" << CCDF << std::endl;
-    NumericalScalar Survival = distribution.computeSurvivalFunction( point );
+    Scalar Survival = distribution.computeSurvivalFunction( point );
     fullprint << "survival=" << Survival << std::endl;
     NumericalComplex CF = distribution.computeCharacteristicFunction( point[0] );
     fullprint << "characteristic function=" << CF << std::endl;

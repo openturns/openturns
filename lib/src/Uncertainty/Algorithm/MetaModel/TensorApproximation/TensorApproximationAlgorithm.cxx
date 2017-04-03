@@ -140,8 +140,8 @@ void TensorApproximationAlgorithm::run()
 
 /* Marginal computation */
 void TensorApproximationAlgorithm::runMarginal(const UnsignedInteger marginalIndex,
-                                               NumericalScalar & marginalResidual,
-                                               NumericalScalar & marginalRelativeError)
+                                               Scalar & marginalResidual,
+                                               Scalar & marginalRelativeError)
 {
   // proxies are reused accross marginals because the basis is the same
   const UnsignedInteger dimension = transformedInputSample_.getDimension();
@@ -178,8 +178,8 @@ void TensorApproximationAlgorithm::runMarginal(const UnsignedInteger marginalInd
 void TensorApproximationAlgorithm::greedyRankOne (const Sample & x,
                                                   const Sample & y,
                                                   CanonicalTensorEvaluation & tensor,
-                                                  NumericalScalar & marginalResidual,
-                                                  NumericalScalar & marginalRelativeError)
+                                                  Scalar & marginalResidual,
+                                                  Scalar & marginalRelativeError)
 {
   Sample yRes(y);
   const UnsignedInteger dimension = x.getDimension();
@@ -244,8 +244,8 @@ void TensorApproximationAlgorithm::rankOne(const Sample & x,
                                           const Sample & y,
                                           CanonicalTensorEvaluation & tensor,
                                           const UnsignedInteger i,
-                                          NumericalScalar & marginalResidual,
-                                          NumericalScalar & marginalRelativeError)
+                                          Scalar & marginalResidual,
+                                          Scalar & marginalRelativeError)
 {
   Bool convergence = false;
   const UnsignedInteger dimension = x.getDimension();
@@ -254,7 +254,7 @@ void TensorApproximationAlgorithm::rankOne(const Sample & x,
 
   Point yFlat(y.getImplementation()->getData());
 
-  NumericalScalar currentResidual = SpecFunc::MaxScalar;
+  Scalar currentResidual = SpecFunc::MaxScalar;
 
   Sample V(dimension, Point(size, 1.0));
 
@@ -262,7 +262,7 @@ void TensorApproximationAlgorithm::rankOne(const Sample & x,
 
   while (!convergence && (iteration < maximumAlternatingLeastSquaresIteration_))
   {
-    const NumericalScalar oldRadius = tensor.getCoefficients(i, 0).norm();
+    const Scalar oldRadius = tensor.getCoefficients(i, 0).norm();
     for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
       Log::Info(OSS() << " j=" << j << "/"<< dimension);
@@ -314,12 +314,12 @@ void TensorApproximationAlgorithm::rankOne(const Sample & x,
         f[p] *= V[j][p];
       }
     }
-    NumericalScalar currentRadius = dot(f, yFlat) / f.normSquare();
+    Scalar currentRadius = dot(f, yFlat) / f.normSquare();
     for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
       Point coefficients(tensor.getCoefficients(i, j));
       coefficients = tensor.getCoefficients(i, j);
-      const NumericalScalar norm = coefficients.norm();
+      const Scalar norm = coefficients.norm();
       currentRadius *= norm;
       coefficients /= norm;
       tensor.setCoefficients(i, j, coefficients);
@@ -327,7 +327,7 @@ void TensorApproximationAlgorithm::rankOne(const Sample & x,
 
     Log::Info(OSS() << "alpha=" << currentRadius);
 
-    const NumericalScalar radiusError = std::abs(oldRadius - currentRadius);
+    const Scalar radiusError = std::abs(oldRadius - currentRadius);
     // report radius on first component
     tensor.setCoefficients(i, 0, currentRadius * tensor.getCoefficients(i, 0));
 
@@ -335,17 +335,17 @@ void TensorApproximationAlgorithm::rankOne(const Sample & x,
     marginalResidual = 0.0;
     for (UnsignedInteger p = 0; p < size; ++ p)
     {
-      NumericalScalar prod = currentRadius;
+      Scalar prod = currentRadius;
       for (UnsignedInteger j = 0; j < dimension; ++ j)
       {
         prod *= V[j][p];
       }
-      const NumericalScalar slack = y[p][0] - prod;
+      const Scalar slack = y[p][0] - prod;
       marginalResidual += slack * slack / size;
     }
     marginalRelativeError = marginalResidual / y.computeVariance()[0];
 
-    const NumericalScalar residualError = std::abs(currentResidual - marginalResidual);
+    const Scalar residualError = std::abs(currentResidual - marginalResidual);
     currentResidual = marginalResidual;
 
     convergence = (residualError < maximumResidualError_) && (radiusError < maximumRadiusError_);
@@ -360,8 +360,8 @@ void TensorApproximationAlgorithm::rankOne(const Sample & x,
 void TensorApproximationAlgorithm::rankM (const Sample & x,
                                           const Sample & y,
                                           CanonicalTensorEvaluation & tensor,
-                                          NumericalScalar & marginalResidual,
-                                          NumericalScalar & marginalRelativeError)
+                                          Scalar & marginalResidual,
+                                          Scalar & marginalRelativeError)
 {
   Bool convergence = false;
   const UnsignedInteger dimension = x.getDimension();
@@ -380,7 +380,7 @@ void TensorApproximationAlgorithm::rankM (const Sample & x,
 
   UnsignedInteger iteration = 0;
 
-  NumericalScalar currentResidual = SpecFunc::MaxScalar;
+  Scalar currentResidual = SpecFunc::MaxScalar;
 
   while (!convergence && (iteration < maximumAlternatingLeastSquaresIteration_))
   {
@@ -392,11 +392,11 @@ void TensorApproximationAlgorithm::rankM (const Sample & x,
     // normalize coefficients
     for (UnsignedInteger i = 0; i < m; ++ i)
     {
-      NumericalScalar radius_i = 1.0;
+      Scalar radius_i = 1.0;
       for (UnsignedInteger j = 0; j < dimension; ++ j)
       {
         Point coefficients(tensor.getCoefficients(i, j));
-        const NumericalScalar norm = coefficients.norm();
+        const Scalar norm = coefficients.norm();
         radius_i *= norm;
         coefficients /= norm;
         tensor.setCoefficients(i, j, coefficients);
@@ -434,12 +434,12 @@ void TensorApproximationAlgorithm::rankM (const Sample & x,
     marginalResidual = 0.0;
     for (UnsignedInteger p = 0; p < size; ++ p)
     {
-      const NumericalScalar slack = y[p][0] - tensor(x[p])[0];
+      const Scalar slack = y[p][0] - tensor(x[p])[0];
       marginalResidual += slack * slack / size;
     }
     marginalRelativeError = marginalResidual / y.computeVariance()[0];
 
-    const NumericalScalar residualError = std::abs(currentResidual - marginalResidual);
+    const Scalar residualError = std::abs(currentResidual - marginalResidual);
     currentResidual = marginalResidual;
 
     convergence = (residualError < maximumResidualError_);// && (radiusError < maximumRadiusError_);
@@ -480,7 +480,7 @@ void TensorApproximationAlgorithm::rankMComponent (const Sample & x,
   {
     for (UnsignedInteger i = 0; i < m; ++ i)
     {
-      NumericalScalar wi = 1.0;
+      Scalar wi = 1.0;
       for (UnsignedInteger j2 = 0; j2 < dimension; ++ j2)
       {
         if (j2 != j) wi *= V[i][j2][p];
@@ -545,23 +545,23 @@ UnsignedInteger TensorApproximationAlgorithm::getMaximumAlternatingLeastSquaresI
 }
 
 /* Radius error accessor */
-void TensorApproximationAlgorithm::setMaximumRadiusError(const NumericalScalar maximumRadiusError)
+void TensorApproximationAlgorithm::setMaximumRadiusError(const Scalar maximumRadiusError)
 {
   maximumRadiusError_ = maximumRadiusError;
 }
 
-NumericalScalar TensorApproximationAlgorithm::getMaximumRadiusError() const
+Scalar TensorApproximationAlgorithm::getMaximumRadiusError() const
 {
   return maximumRadiusError_;
 }
 
 /* Residual error accessor */
-void TensorApproximationAlgorithm::setMaximumResidualError(const NumericalScalar maximumResidualError)
+void TensorApproximationAlgorithm::setMaximumResidualError(const Scalar maximumResidualError)
 {
   maximumResidualError_ = maximumResidualError;
 }
 
-NumericalScalar TensorApproximationAlgorithm::getMaximumResidualError() const
+Scalar TensorApproximationAlgorithm::getMaximumResidualError() const
 {
   return maximumResidualError_;
 }

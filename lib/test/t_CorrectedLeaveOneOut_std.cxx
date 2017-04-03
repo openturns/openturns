@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
   indices.fill();
   FittingAlgorithm fittingAlgo = CorrectedLeaveOneOut();
 
-  NumericalScalar result = fittingAlgo.run(x, y, basis, indices);
+  Scalar result = fittingAlgo.run(x, y, basis, indices);
 
   fullprint << "result = " << result << std::endl;
 

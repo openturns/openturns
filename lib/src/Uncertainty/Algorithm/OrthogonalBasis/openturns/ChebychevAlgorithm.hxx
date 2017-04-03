@@ -44,9 +44,9 @@ class OT_API ChebychevAlgorithm
   CLASSNAME;
 public:
 
-  typedef Collection<NumericalScalar>                 NumericalScalarCollection;
+  typedef Collection<Scalar>                 ScalarCollection;
   typedef Collection<Coefficients>                    CoefficientsCollection;
-  typedef std::map<UnsignedInteger, NumericalScalar>                 NumericalScalarCache;
+  typedef std::map<UnsignedInteger, Scalar>                 ScalarCache;
 
   /** Default constructor */
   ChebychevAlgorithm();
@@ -81,17 +81,17 @@ public:
 private:
 
   /** Return the order-th raw moment of the underlying measure */
-  NumericalScalar getStandardMoment(const UnsignedInteger order) const;
+  Scalar getStandardMoment(const UnsignedInteger order) const;
 
   /** Return the order-th modified moment, i.e. the weighted integral of the order-th
       reference polynomial with respect to the underlying measure */
-  NumericalScalar getModifiedMoment(const UnsignedInteger order) const;
+  Scalar getModifiedMoment(const UnsignedInteger order) const;
 
   /** Methods for the modified Chebichev algorithm */
   /** Mixed moments E[Pj * Qk] where Pj is the j-th monic orthogonal polynomial
       for the given measure and Qk the k-th monic orthogonal polynomial of
       the reference factory */
-  NumericalScalar getMixedMoment(const int j,
+  Scalar getMixedMoment(const int j,
                                  const UnsignedInteger k) const;
 
   /** Recurrence coefficients (alphak, betak) of the monic orthogonal polynomials
@@ -109,13 +109,13 @@ private:
   Bool useCanonicalBasis_;
 
   /** Cache to store the raw moments */
-  mutable NumericalScalarCollection standardMoments_;
+  mutable ScalarCollection standardMoments_;
 
   /** Cache to store the modified moments */
-  mutable NumericalScalarCollection modifiedMoments_;
+  mutable ScalarCollection modifiedMoments_;
 
   /** Cache to store the mixed moments */
-  mutable NumericalScalarCache mixedMoments_;
+  mutable ScalarCache mixedMoments_;
 
   /** Cache to store the monic recurrence coefficients */
   mutable CoefficientsCollection monicRecurrenceCoefficients_;

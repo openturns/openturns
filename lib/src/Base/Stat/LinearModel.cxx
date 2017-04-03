@@ -43,7 +43,7 @@ LinearModel::LinearModel()
 /* Standard constructor */
 LinearModel::LinearModel(const Point & vectorR,
                          const Interval & intervals,
-                         const NumericalScalarCollection & pValuesOfR)
+                         const ScalarCollection & pValuesOfR)
   : PersistentObject(),
     regression_(vectorR),
     confidenceIntervals_(intervals),
@@ -98,7 +98,7 @@ Interval LinearModel::getConfidenceIntervals() const
   return confidenceIntervals_;
 }
 
-LinearModel::NumericalScalarCollection LinearModel::getPValues() const
+LinearModel::ScalarCollection LinearModel::getPValues() const
 {
   return pValues_;
 }

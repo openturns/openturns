@@ -28,18 +28,18 @@ using namespace OT::Test;
 class TestHMatrixRealAssemblyFunction : public HMatrixRealAssemblyFunction
 {
   const Sample& vertices_;
-  const NumericalScalar scaling_;
+  const Scalar scaling_;
 public:
-  TestHMatrixRealAssemblyFunction(const Sample& vertices, NumericalScalar scaling)
+  TestHMatrixRealAssemblyFunction(const Sample& vertices, Scalar scaling)
     : vertices_(vertices)
     , scaling_(scaling)
   {}
-  inline NumericalScalar operator() (Point pt1, Point pt2) const
+  inline Scalar operator() (Point pt1, Point pt2) const
   {
     Point difference(pt1 - pt2);
     return exp(-std::abs(difference.norm()) / scaling_);
   }
-  NumericalScalar operator() (UnsignedInteger i, UnsignedInteger j) const
+  Scalar operator() (UnsignedInteger i, UnsignedInteger j) const
   {
     return operator()(vertices_[i], vertices_[j]);
   }
@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
       rhs[i] = simpleAssembly(vertices[i], mean);
     }
     Point rhsCopy(rhs);
-    NumericalScalar rhsCopyNorm = rhsCopy.norm();
+    Scalar rhsCopyNorm = rhsCopy.norm();
 
     Point result(hmat.solve(rhs));
 
@@ -100,8 +100,8 @@ int main(int argc, char *argv[])
         rhsCopy[i] -= simpleAssembly(i, j) * result[j];
       }
     }
-    NumericalScalar diffNorm = rhsCopy.norm();
-    NumericalScalar threshold = 1.e-4;
+    Scalar diffNorm = rhsCopy.norm();
+    Scalar threshold = 1.e-4;
 
     fullprint << "|| M X - b || / || b ||" << ((diffNorm < threshold * rhsCopyNorm) ? " < " : " > ") << threshold << std::endl;
   }

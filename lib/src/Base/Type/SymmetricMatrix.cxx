@@ -71,7 +71,7 @@ SymmetricMatrix::SymmetricMatrix(const UnsignedInteger dim)
 /* do not match, either the collection is truncated */
 /* or the rest of the matrix is filled with zeros */
 SymmetricMatrix::SymmetricMatrix(const UnsignedInteger dim,
-                                 const Collection<NumericalScalar> & elementsValues)
+                                 const Collection<Scalar> & elementsValues)
   : SquareMatrix(dim, elementsValues)
   , hasBeenSymmetrized_(false)
 {
@@ -130,7 +130,7 @@ String SymmetricMatrix::__str__(const String & offset) const
 /* Operator () gives access to the elements of the matrix (to modify these elements) */
 /* The element of the matrix is designated by its row number i and its column number j */
 /* the first element of the matrix is m(0,0) */
-NumericalScalar & SymmetricMatrix::operator() (const UnsignedInteger i,
+Scalar & SymmetricMatrix::operator() (const UnsignedInteger i,
     const UnsignedInteger j)
 {
   copyOnWrite();
@@ -141,7 +141,7 @@ NumericalScalar & SymmetricMatrix::operator() (const UnsignedInteger i,
 
 /* Operator () gives access to the elements of the matrix (read only) */
 /* The element of the matrix is designated by its row number i and its column number j */
-const NumericalScalar & SymmetricMatrix::operator() (const UnsignedInteger i,
+const Scalar & SymmetricMatrix::operator() (const UnsignedInteger i,
     const UnsignedInteger j)  const
 {
   return (i > j) ? (*getImplementation())(i, j) : (*getImplementation())(j, i) ;
@@ -220,14 +220,14 @@ Point SymmetricMatrix::operator * (const Point & pt) const
 }
 
 
-/* Multiplication with a NumericalScalar */
-SymmetricMatrix SymmetricMatrix::operator * (const NumericalScalar & s) const
+/* Multiplication with a Scalar */
+SymmetricMatrix SymmetricMatrix::operator * (const Scalar & s) const
 {
   return Implementation((*getImplementation() * s ).clone());
 }
 
-/* Division by a NumericalScalar*/
-SymmetricMatrix SymmetricMatrix::operator / (const NumericalScalar & s) const
+/* Division by a Scalar*/
+SymmetricMatrix SymmetricMatrix::operator / (const Scalar & s) const
 {
   return Implementation((*getImplementation() / s ).clone());
 }
@@ -252,13 +252,13 @@ Matrix SymmetricMatrix::solveLinearSystem(const Matrix & b,
 }
 
 /* Compute determinant */
-NumericalScalar SymmetricMatrix::computeLogAbsoluteDeterminant(NumericalScalar & sign,
+Scalar SymmetricMatrix::computeLogAbsoluteDeterminant(Scalar & sign,
     const Bool keepIntact)
 {
   return getImplementation()->computeLogAbsoluteDeterminantSym(sign, keepIntact);
 }
 
-NumericalScalar SymmetricMatrix::computeDeterminant(const Bool keepIntact)
+Scalar SymmetricMatrix::computeDeterminant(const Bool keepIntact)
 {
   return getImplementation()->computeDeterminantSym(keepIntact);
 }

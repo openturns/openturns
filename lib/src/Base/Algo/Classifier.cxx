@@ -67,7 +67,7 @@ Indices Classifier::classify(const Sample & inS) const
 }
 
 /* Grade a point */
-NumericalScalar Classifier::grade(const Point & inP, UnsignedInteger hClass) const
+Scalar Classifier::grade(const Point & inP, UnsignedInteger hClass) const
 {
   return getImplementation()->grade(inP, hClass);
 }

@@ -87,13 +87,13 @@ SymmetricTensor BoxCoxHessian::hessian(const Point & inP) const
   // This last one must be done by user or, as the hessian is used in a stochastic context, in the BoxCoxTransform class
   for (UnsignedInteger index = 0; index < dimension; ++index)
   {
-    const NumericalScalar x = inP[index] + getShift()[index];
+    const Scalar x = inP[index] + getShift()[index];
     if (x <= 0.0)
       throw InvalidArgumentException(HERE) << "Can not apply the Box Cox hessian function to a negative shifted value x=" << x;
 
     // Applying the Box-Cox function
-    const NumericalScalar lambda_i = getLambda()[index];
-    const NumericalScalar logX = log(x);
+    const Scalar lambda_i = getLambda()[index];
+    const Scalar logX = log(x);
     if (std::abs(lambda_i * logX) < 1e-8) result(0, 0, index) = -(1.0 + lambda_i * (logX - 1.0)) / (x * x);
     else result(0, 0, index) = (lambda_i - 1.0) * exp((lambda_i - 2.0) * logX);
   }

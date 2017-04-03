@@ -47,7 +47,7 @@ public:
 
   /** Parameters constructor, simplified for 1D case */
   explicit LevelSet(const Function & function,
-                    const NumericalScalar level = 0.0);
+                    const Scalar level = 0.0);
 
   /** Virtual constructor method */
   virtual LevelSet * clone() const;
@@ -69,8 +69,8 @@ public:
   void setFunction(const Function & function);
 
   /** Level accessor */
-  NumericalScalar getLevel() const;
-  void setLevel(const NumericalScalar level);
+  Scalar getLevel() const;
+  void setLevel(const Scalar level);
 
   /** Lower bound of the bounding box */
   void setLowerBound(const Point & bound);
@@ -102,7 +102,7 @@ private:
   Function function_;
 
   /** Level defining the level set */
-  NumericalScalar level_;
+  Scalar level_;
 
   /** Lower bound of the bounding box */
   mutable Point lowerBound_;

@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 
   FittingAlgorithm fittingAlgo = KFold();
 
-  NumericalScalar result = fittingAlgo.run(x, y, basis, indices);
+  Scalar result = fittingAlgo.run(x, y, basis, indices);
 
   fullprint << "result = " << result << std::endl;
 

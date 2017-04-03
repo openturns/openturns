@@ -40,7 +40,7 @@ KarhunenLoeveAlgorithmImplementation::KarhunenLoeveAlgorithmImplementation()
 
 /* Default constructor */
 KarhunenLoeveAlgorithmImplementation::KarhunenLoeveAlgorithmImplementation(const CovarianceModel & covariance,
-									   const NumericalScalar threshold)
+									   const Scalar threshold)
   : PersistentObject()
   , covariance_(covariance)
   , threshold_(threshold)
@@ -56,12 +56,12 @@ KarhunenLoeveAlgorithmImplementation * KarhunenLoeveAlgorithmImplementation::clo
 }
 
 /* Threshold accessors */
-NumericalScalar KarhunenLoeveAlgorithmImplementation::getThreshold() const
+Scalar KarhunenLoeveAlgorithmImplementation::getThreshold() const
 {
   return threshold_;
 }
 
-void KarhunenLoeveAlgorithmImplementation::setThreshold(const NumericalScalar threshold)
+void KarhunenLoeveAlgorithmImplementation::setThreshold(const Scalar threshold)
 {
   threshold_ = threshold;
 }

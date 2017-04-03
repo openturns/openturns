@@ -42,8 +42,8 @@ Laplace::Laplace()
 }
 
 /* Parameters constructor */
-Laplace::Laplace(const NumericalScalar lambda,
-                 const NumericalScalar mu)
+Laplace::Laplace(const Scalar lambda,
+                 const Scalar mu)
   : ContinuousDistribution()
   , lambda_(lambda)
   , mu_(mu)
@@ -98,7 +98,7 @@ Laplace * Laplace::clone() const
 /* Get one realization of the distribution */
 Point Laplace::getRealization() const
 {
-  const NumericalScalar d = RandomGenerator::Generate() - 0.5;
+  const Scalar d = RandomGenerator::Generate() - 0.5;
   if (d < 0.0) return Point(1, mu_ + log1p(2.0 * d) / lambda_);
   return Point(1, mu_ - log1p(-2.0 * d) / lambda_);
 }
@@ -109,20 +109,20 @@ Point Laplace::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar value = computePDF(point) * lambda_;
+  const Scalar value = computePDF(point) * lambda_;
   return (point[0] < mu_ ? Point(1, value) : Point(1, -value));
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Laplace::computePDF(const Point & point) const
+Scalar Laplace::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   return 0.5 * lambda_ * std::exp(-lambda_ * std::abs(point[0] - mu_));
 }
 
-NumericalScalar Laplace::computeLogPDF(const Point & point) const
+Scalar Laplace::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -130,35 +130,35 @@ NumericalScalar Laplace::computeLogPDF(const Point & point) const
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar Laplace::computeCDF(const Point & point) const
+Scalar Laplace::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar u = lambda_ * (point[0] - mu_);
+  const Scalar u = lambda_ * (point[0] - mu_);
   if (u < 0.0) return 0.5 * std::exp(u);
   return 1.0 - 0.5 * std::exp(-u);
 }
 
 /* Get the complementary CDF of the distribution */
-NumericalScalar Laplace::computeComplementaryCDF(const Point & point) const
+Scalar Laplace::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar u = lambda_ * (point[0] - mu_);
+  const Scalar u = lambda_ * (point[0] - mu_);
   if (u < 0.0) return 1.0 - 0.5 * std::exp(u);
   return 0.5 * std::exp(-u);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Laplace::computeCharacteristicFunction(const NumericalScalar x) const
+NumericalComplex Laplace::computeCharacteristicFunction(const Scalar x) const
 {
-  const NumericalScalar t = x / lambda_;
+  const Scalar t = x / lambda_;
   return std::exp(NumericalComplex(0.0, mu_ * x)) / (1.0 + t * t);
 }
 
-NumericalComplex Laplace::computeLogCharacteristicFunction(const NumericalScalar x) const
+NumericalComplex Laplace::computeLogCharacteristicFunction(const Scalar x) const
 {
-  const NumericalScalar t = x / lambda_;
+  const Scalar t = x / lambda_;
   return NumericalComplex(0.0, mu_ * x) - log1p(t * t);
 }
 
@@ -168,8 +168,8 @@ Point Laplace::computePDFGradient(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   Point pdfGradient(2, 0.0);
-  const NumericalScalar factor = std::abs(point[0] - mu_) * lambda_;
-  const NumericalScalar expFactor = std::exp(-factor);
+  const Scalar factor = std::abs(point[0] - mu_) * lambda_;
+  const Scalar expFactor = std::exp(-factor);
   pdfGradient[0] = 0.5 * expFactor * (1.0 - factor);
   pdfGradient[1] = (point[0] > mu_ ? 0.5 * lambda_ * lambda_ * expFactor : -0.5 * lambda_ * lambda_ * expFactor);
   return pdfGradient;
@@ -181,18 +181,18 @@ Point Laplace::computeCDFGradient(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   Point cdfGradient(2, 0.0);
-  const NumericalScalar factor = std::abs(point[0] - mu_) * lambda_;
-  const NumericalScalar expFactor = std::exp(-factor);
+  const Scalar factor = std::abs(point[0] - mu_) * lambda_;
+  const Scalar expFactor = std::exp(-factor);
   cdfGradient[0] = 0.5 * factor / lambda_ * expFactor;
   cdfGradient[1] = -0.5 * lambda_ * expFactor;
   return cdfGradient;
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar Laplace::computeScalarQuantile(const NumericalScalar prob,
+Scalar Laplace::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
-  const NumericalScalar d = tail ? 0.5 - prob : prob - 0.5;
+  const Scalar d = tail ? 0.5 - prob : prob - 0.5;
   if (d < 0.0) return mu_ + log1p(2.0 * d) / lambda_;
   return mu_ - log1p(-2.0 * d) / lambda_;
 }
@@ -255,7 +255,7 @@ Point Laplace::getParameter() const
 void Laplace::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = Laplace(parameter[0], parameter[1]);
   setWeight(w);
 }
@@ -276,7 +276,7 @@ Bool Laplace::isElliptical() const
 }
 
 /* Mu accessor */
-void Laplace::setMu(const NumericalScalar mu)
+void Laplace::setMu(const Scalar mu)
 {
   if (mu != mu_)
   {
@@ -288,14 +288,14 @@ void Laplace::setMu(const NumericalScalar mu)
 }
 
 /* Mu accessor */
-NumericalScalar Laplace::getMu() const
+Scalar Laplace::getMu() const
 {
   return mu_;
 }
 
 
 /* Lambda accessor */
-void Laplace::setLambda(const NumericalScalar lambda)
+void Laplace::setLambda(const Scalar lambda)
 {
   if (!(lambda > 0.0)) throw InvalidArgumentException(HERE) << "Lambda MUST be positive";
   if (lambda != lambda_)
@@ -308,7 +308,7 @@ void Laplace::setLambda(const NumericalScalar lambda)
 }
 
 /* Lambda accessor */
-NumericalScalar Laplace::getLambda() const
+Scalar Laplace::getLambda() const
 {
   return lambda_;
 }

@@ -44,7 +44,7 @@ class OT_API SquareMatrix :
   CLASSNAME;
 
 #ifndef SWIG
-  friend SquareMatrix operator * (const NumericalScalar s,
+  friend SquareMatrix operator * (const Scalar s,
                                   const SquareMatrix & m);
 #endif
 
@@ -73,7 +73,7 @@ public:
   /** do not correspond, either the collection is truncated */
   /** or the rest of the matrix is filled with zeros */
   SquareMatrix(const UnsignedInteger dim,
-               const NumericalScalarCollection & elementsValues);
+               const ScalarCollection & elementsValues);
 
   /** Constructor from symmetric matrix */
   SquareMatrix(const SymmetricMatrix & symmetric);
@@ -109,16 +109,16 @@ public:
   /** Multiplication with a Point (must have consistent dimensions) */
   Point operator * (const Point & p) const;
 
-  /** Multiplication with a NumericalScalar */
-  SquareMatrix operator * (const NumericalScalar s) const;
+  /** Multiplication with a Scalar */
+  SquareMatrix operator * (const Scalar s) const;
 
   // We import the definitions from the upper class (for Matrix multiplication)
 #ifndef _MSC_VER   // VS2010 does not like 'using' being called after overloads
   using Matrix::operator *;
 #endif
 
-  /** Division by a NumericalScalar*/
-  SquareMatrix operator / (const NumericalScalar s) const;
+  /** Division by a Scalar*/
+  SquareMatrix operator / (const Scalar s) const;
 
   /** Resolution of a linear system */
   Point solveLinearSystem(const Point & b,
@@ -128,12 +128,12 @@ public:
                            const Bool keepIntact = true);
 
   /** Compute determinant */
-  NumericalScalar computeLogAbsoluteDeterminant(NumericalScalar & sign,
+  Scalar computeLogAbsoluteDeterminant(Scalar & sign,
       const Bool keepIntact = true);
-  NumericalScalar computeDeterminant(const Bool keepIntact = true);
+  Scalar computeDeterminant(const Bool keepIntact = true);
 
   /** Compute trace */
-  NumericalScalar computeTrace() const;
+  Scalar computeTrace() const;
 
   /** Compute eigenvalues */
   NumericalComplexCollection computeEigenValues(const Bool keepIntact = true);
@@ -150,7 +150,7 @@ private:
 }; /* class SquareMatrix */
 
 
-inline SquareMatrix operator * (const NumericalScalar s,
+inline SquareMatrix operator * (const Scalar s,
                                 const SquareMatrix & m)
 {
   return m.operator * (s);

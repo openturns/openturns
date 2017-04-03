@@ -44,12 +44,12 @@ public:
 
   /** Default constructor */
   BarPlot(const Sample & data,
-          const NumericalScalar origin,
+          const Scalar origin,
           const String & legend = "");
 
   /** Constructor with parameters */
   BarPlot(const Sample & data,
-          const NumericalScalar origin,
+          const Scalar origin,
           const String & color,
           const String & fillStyle,
           const String & lineStyle,
@@ -58,7 +58,7 @@ public:
 
   /** Constructor with old parameters */
   BarPlot(const Sample & data,
-          const NumericalScalar origin,
+          const Scalar origin,
           const String & color,
           const String & fillStyle,
           const String & lineStyle,
@@ -68,8 +68,8 @@ public:
   String __repr__() const;
 
   /** Accessor for origin */
-  NumericalScalar getOrigin() const;
-  void setOrigin(const NumericalScalar origin);
+  Scalar getOrigin() const;
+  void setOrigin(const Scalar origin);
 
   /** Accessor for boundingbox */
   BoundingBox getBoundingBox() const;
@@ -97,7 +97,7 @@ private:
   friend class Factory<BarPlot>;
 
   /** Origin of the BarPlot */
-  NumericalScalar origin_;
+  Scalar origin_;
 
 }; /* class BarPlot */
 

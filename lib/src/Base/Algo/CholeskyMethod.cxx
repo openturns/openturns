@@ -131,7 +131,7 @@ void CholeskyMethod::update(const Indices & addedIndices,
       // Extract the row giving the update
       for (UnsignedInteger j = 0; j < nbColumns; ++j)
       {
-        const NumericalScalar value = mPsiAk[shift];
+        const Scalar value = mPsiAk[shift];
         vector[j] = value;
         shift += nbRows;
       }
@@ -184,18 +184,18 @@ void CholeskyMethod::update(const Indices & addedIndices,
 
         // update the cholesky decomposition of the Gram matrix
         const Point xk(computeWeightedDesign(addedIndices));
-        const NumericalScalar diagk = xk.normSquare();
+        const Scalar diagk = xk.normSquare();
 
         // solve lower triangular system L*rk=xk'*A to get the extra line panel
         const Point colk(mPsiAk.genVectProd(xk, true));
         const Point rk(l_.solveLinearSystem(colk));
-        const NumericalScalar rk2 = rk.normSquare();
+        const Scalar rk2 = rk.normSquare();
 
         // Check if the pivot is positive
         if (diagk > rk2)
         {
           // the extra diagonal term
-          const NumericalScalar rkk = sqrt(diagk - rk2);
+          const Scalar rkk = sqrt(diagk - rk2);
 
           // reconstitute the whole decomposition matrix
           MatrixImplementation newL(basisSize, basisSize);
@@ -306,7 +306,7 @@ Point CholeskyMethod::getHDiag() const
   MatrixImplementation::const_iterator invLPsiAk_iterator(invLPsiAk.begin());
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
-    NumericalScalar value = 0.0;
+    Scalar value = 0.0;
     for (UnsignedInteger j = 0; j < basisSize; ++ j)
     {
       value += (*invLPsiAk_iterator) * (*invLPsiAk_iterator);
@@ -326,7 +326,7 @@ Point CholeskyMethod::getGramInverseDiag() const
   MatrixImplementation::const_iterator invL_iterator(invL.begin());
   for (UnsignedInteger i = 0; i < basisSize; ++ i)
   {
-    NumericalScalar value = 0.0;
+    Scalar value = 0.0;
     for (UnsignedInteger j = 0; j < basisSize; ++ j)
     {
       value += (*invL_iterator) * (*invL_iterator);
@@ -338,9 +338,9 @@ Point CholeskyMethod::getGramInverseDiag() const
   return diag;
 }
 
-NumericalScalar CholeskyMethod::getGramInverseTrace() const
+Scalar CholeskyMethod::getGramInverseTrace() const
 {
-  NumericalScalar traceInverse = 0.0;
+  Scalar traceInverse = 0.0;
   const UnsignedInteger basisSize = currentIndices_.getSize();
   const MatrixImplementation invL(*l_.solveLinearSystem(IdentityMatrix(basisSize)).getImplementation());
   for (MatrixImplementation::const_iterator it = invL.begin(); it != invL.end(); ++it)

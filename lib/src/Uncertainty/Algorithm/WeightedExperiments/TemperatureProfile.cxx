@@ -58,13 +58,13 @@ TemperatureProfile::TemperatureProfile(TemperatureProfileImplementation * p_impl
 }
 
 /** Compute temperature */
-NumericalScalar TemperatureProfile::operator()(UnsignedInteger i) const
+Scalar TemperatureProfile::operator()(UnsignedInteger i) const
 {
   return getImplementation()->operator()(i);
 }
 
 /** get T0 */
-NumericalScalar TemperatureProfile::getT0() const
+Scalar TemperatureProfile::getT0() const
 {
   return getImplementation()->getT0();
 }

@@ -95,13 +95,13 @@ Point ProjectionStrategy::getWeights() const
 }
 
 /* Residual accessor */
-NumericalScalar ProjectionStrategy::getResidual() const
+Scalar ProjectionStrategy::getResidual() const
 {
   return getImplementation()->getResidual();
 }
 
 /* Relative error accessor */
-NumericalScalar ProjectionStrategy::getRelativeError() const
+Scalar ProjectionStrategy::getRelativeError() const
 {
   return getImplementation()->getRelativeError();
 }

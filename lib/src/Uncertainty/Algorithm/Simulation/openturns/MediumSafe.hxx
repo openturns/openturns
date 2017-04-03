@@ -47,16 +47,16 @@ public:
 
   /** Constructor with parameters */
   MediumSafe(const Solver & solver,
-             const NumericalScalar maximumDistance,
-             const NumericalScalar stepSize);
+             const Scalar maximumDistance,
+             const Scalar stepSize);
 
 
   /** Virtual constructor */
   virtual MediumSafe * clone() const;
 
   /** Solve gives all the roots found applying the root strategy */
-  NumericalScalarCollection solve(const Function & function,
-                                  const NumericalScalar value);
+  ScalarCollection solve(const Function & function,
+                                  const Scalar value);
 
   /** String converter */
   String __repr__() const;

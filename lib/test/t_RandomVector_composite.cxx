@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
       R(i, i) = 1.0;
       for (UnsignedInteger j = 0; j < i; j++)
       {
-        R(i, j) = NumericalScalar(j + 1) / dim;
+        R(i, j) = Scalar(j + 1) / dim;
       }
     }
     Point m(dim, 1.0);

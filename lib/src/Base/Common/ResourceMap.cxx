@@ -101,12 +101,12 @@ UnsignedInteger ResourceMap::GetAsUnsignedInteger(String key)
   return GetInstance().lock().getAsUnsignedInteger( key );
 }
 
-NumericalScalar ResourceMap::GetAsScalar(String key)
+Scalar ResourceMap::GetAsScalar(String key)
 {
   return GetInstance().lock().getAsScalar( key );
 }
 
-NumericalScalar ResourceMap::GetAsNumericalScalar(String key)
+Scalar ResourceMap::GetAsNumericalScalar(String key)
 {
   return GetAsScalar(key);
 }
@@ -133,12 +133,12 @@ void ResourceMap::SetAsUnsignedInteger(String key, UnsignedInteger value)
   GetInstance().lock().setAsUnsignedInteger( key, value );
 }
 
-void ResourceMap::SetAsScalar(String key, NumericalScalar value)
+void ResourceMap::SetAsScalar(String key, Scalar value)
 {
   GetInstance().lock().setAsScalar( key, value );
 }
 
-void ResourceMap::SetAsNumericalScalar(String key, NumericalScalar value)
+void ResourceMap::SetAsNumericalScalar(String key, Scalar value)
 {
   SetAsScalar(key, value);
 }
@@ -181,9 +181,9 @@ UnsignedInteger ResourceMap::getAsUnsignedInteger(String key) const
   return value;
 }
 
-NumericalScalar ResourceMap::getAsScalar(String key) const
+Scalar ResourceMap::getAsScalar(String key) const
 {
-  NumericalScalar value = -1.0;
+  Scalar value = -1.0;
   String st = get( key );
   std::istringstream iss( st );
   iss >> value;
@@ -212,7 +212,7 @@ void ResourceMap::setAsUnsignedInteger(String key, UnsignedInteger value)
   set( key, OSS() << value );
 }
 
-void ResourceMap::setAsScalar(String key, NumericalScalar value)
+void ResourceMap::setAsScalar(String key, Scalar value)
 {
   set( key, OSS() << value );
 }

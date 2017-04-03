@@ -109,8 +109,8 @@ int main(int argc, char *argv[])
     fullprint << "parameters gradient at point=" << transform.parameterGradient(point) << std::endl;
     {
       // Validation using finite difference
-      NumericalScalar eps = 1.0e-5;
-      NumericalScalar factor = 1.0 / (2.0 * eps);
+      Scalar eps = 1.0e-5;
+      Scalar factor = 1.0 / (2.0 * eps);
       Matrix gradient(5, 2);
       Point dTdp;
       {
@@ -174,8 +174,8 @@ int main(int argc, char *argv[])
     fullprint << "(inverse) parameters gradient at point=" << inverseTransform.parameterGradient(point) << std::endl;
     {
       // Validation using finite difference
-      NumericalScalar eps = 1.0e-5;
-      NumericalScalar factor = 1.0 / (2.0 * eps);
+      Scalar eps = 1.0e-5;
+      Scalar factor = 1.0 / (2.0 * eps);
       Matrix gradient(5, 2);
       Point dTdp;
       {

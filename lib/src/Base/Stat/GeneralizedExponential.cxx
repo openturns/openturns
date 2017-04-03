@@ -39,7 +39,7 @@ GeneralizedExponential::GeneralizedExponential(const UnsignedInteger spatialDime
 
 /** Parameters constructor */
 GeneralizedExponential::GeneralizedExponential(const Point & scale,
-    const NumericalScalar p)
+    const Scalar p)
   : StationaryCovarianceModel(scale, Point(1, 1.0))
   , p_(0.0) // To pass the test !(p_ == p)
 {
@@ -49,7 +49,7 @@ GeneralizedExponential::GeneralizedExponential(const Point & scale,
 /** Parameters constructor */
 GeneralizedExponential::GeneralizedExponential(const Point & scale,
     const Point & amplitude,
-    const NumericalScalar p)
+    const Scalar p)
   : StationaryCovarianceModel(scale, amplitude)
   , p_(0.0) // To pass the test !(p_ == p)
 {
@@ -66,12 +66,12 @@ GeneralizedExponential * GeneralizedExponential::clone() const
 }
 
 /* Computation of the covariance density function */
-NumericalScalar GeneralizedExponential::computeStandardRepresentative(const Point & tau) const
+Scalar GeneralizedExponential::computeStandardRepresentative(const Point & tau) const
 {
   if (tau.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();
   Point tauOverTheta(spatialDimension_);
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
-  const NumericalScalar tauOverThetaNorm = tauOverTheta.norm();
+  const Scalar tauOverThetaNorm = tauOverTheta.norm();
   return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-pow(tauOverThetaNorm, p_));
 }
 
@@ -84,7 +84,7 @@ Matrix GeneralizedExponential::partialGradient(const Point & s,
   const Point tau(s - t);
   Point tauOverTheta(spatialDimension_);
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
-  const NumericalScalar norm2 = tauOverTheta.normSquare();
+  const Scalar norm2 = tauOverTheta.normSquare();
   // For zero norm
   if (norm2 == 0.0)
   {
@@ -101,8 +101,8 @@ Matrix GeneralizedExponential::partialGradient(const Point & s,
     return Matrix(spatialDimension_, 1);
   }
   // General case
-  const NumericalScalar exponent = -std::pow(sqrt(norm2), p_);
-  const NumericalScalar value = p_ * exponent * std::exp(exponent) / norm2;
+  const Scalar exponent = -std::pow(sqrt(norm2), p_);
+  const Scalar value = p_ * exponent * std::exp(exponent) / norm2;
   // Needs tau/theta ==> reuse same NP
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] /= scale_[i];
   return Matrix(spatialDimension_, 1, tauOverTheta * value) * amplitude_[0] * amplitude_[0];
@@ -157,12 +157,12 @@ String GeneralizedExponential::__str__(const String & offset) const
 }
 
 /* P accessor */
-NumericalScalar GeneralizedExponential::getP() const
+Scalar GeneralizedExponential::getP() const
 {
   return p_;
 }
 
-void GeneralizedExponential::setP(const NumericalScalar p)
+void GeneralizedExponential::setP(const Scalar p)
 {
   if (!(p > 0.0)) throw InvalidArgumentException(HERE) << "Error: p must be positive.";
   if (!(p <= 2.0)) throw InvalidArgumentException(HERE) << "Error: p must be less or equal to 2.";

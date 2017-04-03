@@ -44,7 +44,7 @@ public:
   /** Default constructor */
   IndicatorEvaluation(const EvaluationPointer & p_evaluation,
       const ComparisonOperator & comparisonOperator,
-      const NumericalScalar threshold);
+      const Scalar threshold);
 
   /** Virtual constructor */
   virtual IndicatorEvaluation * clone() const;
@@ -68,8 +68,8 @@ public:
   void setComparisonOperator(const ComparisonOperator & comparisonOperator);
 
   /** Accessor for the threshold */
-  NumericalScalar getThreshold() const;
-  void setThreshold(const NumericalScalar threshold);
+  Scalar getThreshold() const;
+  void setThreshold(const Scalar threshold);
 
   /** Accessor for input point dimension */
   UnsignedInteger getInputDimension() const;
@@ -87,7 +87,7 @@ private:
 
   EvaluationPointer p_evaluation_;
   ComparisonOperator comparisonOperator_;
-  NumericalScalar threshold_;
+  Scalar threshold_;
 
 }; /* class IndicatorEvaluation */
 

@@ -40,7 +40,7 @@ TemperatureProfileImplementation::TemperatureProfileImplementation()
 }
 
 /** Constructor with temperature T0 & iMax*/
-TemperatureProfileImplementation::TemperatureProfileImplementation(const NumericalScalar T0,
+TemperatureProfileImplementation::TemperatureProfileImplementation(const Scalar T0,
                               const UnsignedInteger iMax)
   : PersistentObject()
   , T0_(T0)
@@ -56,13 +56,13 @@ TemperatureProfileImplementation * TemperatureProfileImplementation::clone() con
 }
 
 /** Compute temperature T(i) */
-NumericalScalar TemperatureProfileImplementation::operator()(UnsignedInteger i) const
+Scalar TemperatureProfileImplementation::operator()(UnsignedInteger i) const
 {
   throw NotYetImplementedException(HERE); 
 }
 
 /** get T0 */
-NumericalScalar TemperatureProfileImplementation::getT0() const
+Scalar TemperatureProfileImplementation::getT0() const
 {
     return T0_;
 }

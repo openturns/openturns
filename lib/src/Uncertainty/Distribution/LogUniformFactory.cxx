@@ -61,16 +61,16 @@ LogUniformFactory::Implementation LogUniformFactory::build() const
 
 LogUniform LogUniformFactory::buildAsLogUniform(const Sample & sample) const
 {
-  const NumericalScalar size = sample.getSize();
+  const Scalar size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a LogUniform distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a LogUniform distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
-  const NumericalScalar xMin = sample.getMin()[0];
-  const NumericalScalar a = xMin - std::abs(xMin) / (2.0 + size);
+  const Scalar xMin = sample.getMin()[0];
+  const Scalar a = xMin - std::abs(xMin) / (2.0 + size);
   if (!(a > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot build a LogUniform distribution from a sample that contains non positive values.";
-  NumericalScalar aLog = std::log(a);
-  const NumericalScalar xMax = sample.getMax()[0];
-  const NumericalScalar b = xMax + std::abs(xMax) / (2.0 + size);
-  NumericalScalar bLog = std::log(b);
+  Scalar aLog = std::log(a);
+  const Scalar xMax = sample.getMax()[0];
+  const Scalar b = xMax + std::abs(xMax) / (2.0 + size);
+  Scalar bLog = std::log(b);
   if (!SpecFunc::IsNormal(aLog) || !SpecFunc::IsNormal(bLog)) throw InvalidArgumentException(HERE) << "Error: cannot build a LogUniform distribution if data contains NaN or Inf";
   if (xMin == xMax)
   {

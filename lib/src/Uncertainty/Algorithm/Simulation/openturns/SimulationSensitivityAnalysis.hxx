@@ -55,7 +55,7 @@ public:
                                 const Sample & outputSample,
                                 const IsoProbabilisticTransformation & transformation,
                                 const ComparisonOperator & comparisonOperator,
-                                const NumericalScalar threshold);
+                                const Scalar threshold);
 
   /** Standard constructor */
   explicit SimulationSensitivityAnalysis(const Event & event);
@@ -68,19 +68,19 @@ public:
 
   /** Mean point in event domain computation */
   Point computeMeanPointInEventDomain() const;
-  Point computeMeanPointInEventDomain(const NumericalScalar threshold) const;
+  Point computeMeanPointInEventDomain(const Scalar threshold) const;
 
   /** Importance factors computation */
   PointWithDescription computeImportanceFactors() const;
-  PointWithDescription computeImportanceFactors(const NumericalScalar threshold) const;
+  PointWithDescription computeImportanceFactors(const Scalar threshold) const;
 
 public:
 
   /** Importance factors drawing */
   Graph drawImportanceFactors() const;
   Graph drawImportanceFactorsRange(const Bool probabilityScale = true,
-                                   const NumericalScalar lower = -SpecFunc::MaxScalar,
-                                   const NumericalScalar upper = SpecFunc::MaxScalar) const;
+                                   const Scalar lower = -SpecFunc::MaxScalar,
+                                   const Scalar upper = SpecFunc::MaxScalar) const;
 
   /** Input sample accessors */
   Sample getInputSample() const;
@@ -89,8 +89,8 @@ public:
   Sample getOutputSample() const;
 
   /** Threshold accessors */
-  NumericalScalar getThreshold() const;
-  void setThreshold(const NumericalScalar threshold);
+  Scalar getThreshold() const;
+  void setThreshold(const Scalar threshold);
 
   /** Iso-probabilistic transformation accessor */
   IsoProbabilisticTransformation getTransformation() const;
@@ -123,7 +123,7 @@ protected:
   ComparisonOperator comparisonOperator_;
 
   /* Main threshold of interest */
-  NumericalScalar threshold_;
+  Scalar threshold_;
 
 }; // class SimulationSensitivityAnalysis
 

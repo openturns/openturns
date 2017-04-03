@@ -45,8 +45,8 @@ public:
 
   /** Standard constructor */
   QuasiMonteCarloResult(const Event & event,
-                        const NumericalScalar probabilityEstimate,
-                        const NumericalScalar varianceEstimate,
+                        const Scalar probabilityEstimate,
+                        const Scalar varianceEstimate,
                         const UnsignedInteger outerSampling,
                         const UnsignedInteger blockSize);
 
@@ -54,13 +54,13 @@ public:
   virtual QuasiMonteCarloResult * clone() const;
 
   /** Coefficient of variation estimate accessor */
-  virtual NumericalScalar getCoefficientOfVariation() const;
+  virtual Scalar getCoefficientOfVariation() const;
 
   /** Standard deviation estimate accessor */
-  virtual NumericalScalar getStandardDeviation() const;
+  virtual Scalar getStandardDeviation() const;
 
   /** Confidence length */
-  virtual NumericalScalar getConfidenceLength(const NumericalScalar level = ResourceMap::GetAsScalar("SimulationResult-DefaultConfidenceLevel")) const;
+  virtual Scalar getConfidenceLength(const Scalar level = ResourceMap::GetAsScalar("SimulationResult-DefaultConfidenceLevel")) const;
 
   /** String converter */
   virtual String __repr__() const;

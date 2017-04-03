@@ -50,7 +50,7 @@ public:
     }
     else
     {
-      const NumericalScalar cx = distance * stepX_;
+      const Scalar cx = distance * stepX_;
       Point element(1, cx);
       element[0] = cx;
       points[0] = element;
@@ -79,7 +79,7 @@ private:
     else return 2;
   }
 
-  NumericalScalar stepX_;
+  Scalar stepX_;
 };
 
 class SphereUniformNorm2D
@@ -105,8 +105,8 @@ public:
     const UnsignedInteger size = getSizeOfLevel(distance);
     Sample points(size, 2);
     UnsignedInteger iterator = 0;
-    const NumericalScalar cx = distance * stepX_;
-    const NumericalScalar cy = distance * stepY_;
+    const Scalar cx = distance * stepX_;
+    const Scalar cy = distance * stepY_;
     if (isSymmetric())
     {
       Point element(2, 0.0);
@@ -180,8 +180,8 @@ private:
       return 8 * distance;
   }
 
-  NumericalScalar stepX_;
-  NumericalScalar stepY_;
+  Scalar stepX_;
+  Scalar stepY_;
 };
 
 class SphereUniformNorm3D
@@ -209,9 +209,9 @@ public:
     const UnsignedInteger size = getSizeOfLevel(distance);
     Sample points(size, 3);
     UnsignedInteger iterator = 0;
-    const NumericalScalar cx = distance * stepX_;
-    const NumericalScalar cy = distance * stepY_;
-    const NumericalScalar cz = distance * stepZ_;
+    const Scalar cx = distance * stepX_;
+    const Scalar cy = distance * stepY_;
+    const Scalar cz = distance * stepZ_;
     if (isSymmetric())
     {
       Point element(3, 0.0);
@@ -321,9 +321,9 @@ private:
       return 24 * distance * distance + 2;
   }
 
-  NumericalScalar stepX_;
-  NumericalScalar stepY_;
-  NumericalScalar stepZ_;
+  Scalar stepX_;
+  Scalar stepY_;
+  Scalar stepZ_;
 
 };
 

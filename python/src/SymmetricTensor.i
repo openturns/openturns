@@ -6,7 +6,7 @@
 
 %include SymmetricTensor_doc.i
 
-%apply const NumericalScalarCollection & { const OT::SymmetricTensor::NumericalScalarCollection & };
+%apply const ScalarCollection & { const OT::SymmetricTensor::ScalarCollection & };
 
 %include openturns/SymmetricTensor.hxx
 
@@ -27,7 +27,7 @@ namespace OT {
 
   SymmetricTensor(PyObject * pyObj) { return new OT::SymmetricTensor( OT::convert<OT::_PySequence_,OT::SymmetricTensor>(pyObj) ); }
 
-  OTTensorAccessors(SymmetricTensor, NumericalScalar, _PyFloat_)
+  OTTensorAccessors(SymmetricTensor, Scalar, _PyFloat_)
 
 } // SymmetricTensor
 } // OT

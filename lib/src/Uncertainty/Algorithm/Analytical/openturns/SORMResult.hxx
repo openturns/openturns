@@ -51,22 +51,22 @@ public:
   virtual SORMResult * clone() const;
 
   /** EventProbabilityBreitung accessor */
-  NumericalScalar getEventProbabilityBreitung() const;
+  Scalar getEventProbabilityBreitung() const;
 
   /** EventProbabilityHohenBichler accessor */
-  NumericalScalar getEventProbabilityHohenBichler() const;
+  Scalar getEventProbabilityHohenBichler() const;
 
   /** EventProbabilityTvedt accessor */
-  NumericalScalar getEventProbabilityTvedt() const;
+  Scalar getEventProbabilityTvedt() const;
 
   /** GeneralisedReliabilityIndexBreitung accessor */
-  NumericalScalar getGeneralisedReliabilityIndexBreitung() const;
+  Scalar getGeneralisedReliabilityIndexBreitung() const;
 
   /** GeneralisedReliabilityIndexHohenBichler accessor */
-  NumericalScalar getGeneralisedReliabilityIndexHohenBichler() const;
+  Scalar getGeneralisedReliabilityIndexHohenBichler() const;
 
   /** GeneralisedReliabilityIndexTvedt accessor */
-  NumericalScalar getGeneralisedReliabilityIndexTvedt() const;
+  Scalar getGeneralisedReliabilityIndexTvedt() const;
 
   /** SortedCurvatures accessor */
   Point getSortedCurvatures() const;
@@ -94,12 +94,12 @@ private:
   Point gradientLimitStateFunction_;
   mutable Point sortedCurvatures_;
   mutable Bool isAlreadyComputedSortedCurvatures_;
-  mutable NumericalScalar eventProbabilityBreitung_;
-  mutable NumericalScalar eventProbabilityHohenBichler_;
-  mutable NumericalScalar eventProbabilityTvedt_;
-  mutable NumericalScalar generalisedReliabilityIndexBreitung_;
-  mutable NumericalScalar generalisedReliabilityIndexHohenBichler_;
-  mutable NumericalScalar generalisedReliabilityIndexTvedt_;
+  mutable Scalar eventProbabilityBreitung_;
+  mutable Scalar eventProbabilityHohenBichler_;
+  mutable Scalar eventProbabilityTvedt_;
+  mutable Scalar generalisedReliabilityIndexBreitung_;
+  mutable Scalar generalisedReliabilityIndexHohenBichler_;
+  mutable Scalar generalisedReliabilityIndexTvedt_;
   Distribution standardDistribution_;
   Distribution standardMarginal_;
 }; // class Result

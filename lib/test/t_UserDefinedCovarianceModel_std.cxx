@@ -67,10 +67,10 @@ int main(int argc, char *argv[])
     UnsignedInteger k = 0;
     for (UnsignedInteger i = 0; i < timeGrid.getN(); ++i)
     {
-      const NumericalScalar t = timeGrid.getValue(i);
+      const Scalar t = timeGrid.getValue(i);
       for (UnsignedInteger j = 0; j <= i; ++j)
       {
-        const NumericalScalar s = timeGrid.getValue(j);
+        const Scalar s = timeGrid.getValue(j);
         covarianceCollection[k] = referenceModel(t, s);
         ++k;
       }
@@ -83,10 +83,10 @@ int main(int argc, char *argv[])
     /* Sample the UserDefinedCovarianceModel */
     for (UnsignedInteger i = 0; i < timeGrid.getN(); ++i)
     {
-      const NumericalScalar t = timeGrid.getValue(i);
+      const Scalar t = timeGrid.getValue(i);
       for (UnsignedInteger j = i; j < timeGrid.getN(); ++j)
       {
-        const NumericalScalar s = timeGrid.getValue(j);
+        const Scalar s = timeGrid.getValue(j);
         // We look for cov(s,t) ==> when adding to the collection, we compute cov(t,s)
         // Because of symmetry, we check the right index computation
         fullprint << "myModel = " << myModel(s, t)(0, 0) << ", referenceModel = " << referenceModel(s, t)(0 , 0) << std::endl;

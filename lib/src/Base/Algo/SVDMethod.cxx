@@ -153,7 +153,7 @@ Point SVDMethod::solveNormal(const Point & rhs)
   Point coefficients(vT_ * b);
   for (UnsignedInteger i = 0; i < basisSize; ++i)
   {
-    const NumericalScalar sv = singularValues_[i];
+    const Scalar sv = singularValues_[i];
     coefficients[i] /= (sv * sv);
   }
   return vT_.getImplementation()->genVectProd(coefficients, true);
@@ -177,9 +177,9 @@ CovarianceMatrix SVDMethod::getGramInverse() const
   return sigmaInvVt.computeGram();
 }
 
-NumericalScalar SVDMethod::getGramInverseTrace() const
+Scalar SVDMethod::getGramInverseTrace() const
 {
-  NumericalScalar traceInverse = 0.0;
+  Scalar traceInverse = 0.0;
   for (UnsignedInteger k = 0; k < singularValues_.getDimension(); ++ k)
   {
     traceInverse += 1.0 / singularValues_[k] / singularValues_[k];
@@ -217,10 +217,10 @@ Point SVDMethod::getGramInverseDiag() const
   Point diag(n);
   for (UnsignedInteger j = 0; j < n; ++j)
   {
-    NumericalScalar diag_value = 0.0;
+    Scalar diag_value = 0.0;
     for (UnsignedInteger i = 0; i < svdSize; ++i)
     {
-      const NumericalScalar val = vTimpl[index] / singularValues_[i];
+      const Scalar val = vTimpl[index] / singularValues_[i];
       diag_value += val * val;
       ++ index;
     }

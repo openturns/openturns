@@ -78,7 +78,7 @@ SymmetricTensor InverseNatafIndependentCopulaHessian::hessian(const Point & inP)
   SymmetricTensor result(dimension_, dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
-    const NumericalScalar x = inP[i];
+    const Scalar x = inP[i];
     // 0.3989422804014326779399462 = 1/sqrt(2*Pi)
     result(i, i, i) = -0.3989422804014326779399462 * x * exp(-0.5 * x * x);
   }

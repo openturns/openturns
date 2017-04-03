@@ -90,8 +90,8 @@ UnsignedInteger SecondOrderModel::getDimension() const
 }
 
 /* Computation of the covariance matrix */
-CovarianceMatrix SecondOrderModel::computeCovariance(const NumericalScalar s,
-    const NumericalScalar t) const
+CovarianceMatrix SecondOrderModel::computeCovariance(const Scalar s,
+    const Scalar t) const
 {
   return getImplementation()->computeCovariance(s, t);
 }
@@ -104,7 +104,7 @@ CovarianceMatrix SecondOrderModel::computeCovariance(const Point & s,
 }
 
 /* Computation of the covariance matrix  */
-CovarianceMatrix SecondOrderModel::computeCovariance(const NumericalScalar tau) const
+CovarianceMatrix SecondOrderModel::computeCovariance(const Scalar tau) const
 {
   return getImplementation()->computeCovariance(tau);
 }
@@ -116,7 +116,7 @@ CovarianceMatrix SecondOrderModel::computeCovariance(const Point & tau) const
 }
 
 /* Computation of the spectral density function */
-HermitianMatrix SecondOrderModel::computeSpectralDensity(const NumericalScalar frequency) const
+HermitianMatrix SecondOrderModel::computeSpectralDensity(const Scalar frequency) const
 {
   return getImplementation()->computeSpectralDensity(frequency);
 }

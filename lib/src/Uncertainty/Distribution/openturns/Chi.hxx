@@ -40,7 +40,7 @@ public:
   Chi();
 
   /** Parameters constructor */
-  explicit Chi(const NumericalScalar nu);
+  explicit Chi(const Scalar nu);
 
 
   /** Comparison operator */
@@ -69,18 +69,18 @@ public:
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
   using ContinuousDistribution::computeLogPDF;
-  NumericalScalar computeLogPDF(const Point & point) const;
+  Scalar computeLogPDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
   using ContinuousDistribution::computeComplementaryCDF;
-  NumericalScalar computeComplementaryCDF(const Point & point) const;
+  Scalar computeComplementaryCDF(const Point & point) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
+  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
 
   /** Get the PDFGradient of the distribution */
   using ContinuousDistribution::computePDFGradient;
@@ -91,7 +91,7 @@ public:
   Point computeCDFGradient(const Point & point) const;
 
   /** Get the quantile of the distribution */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+  Scalar computeScalarQuantile(const Scalar prob,
                                         const Bool tail = false) const;
 
   /** Get the standard deviation of the distribution */
@@ -116,9 +116,9 @@ public:
   /* Interface specific to Chi */
 
   /** Nu accessor */
-  void setNu(const NumericalScalar nu);
+  void setNu(const Scalar nu);
 
-  NumericalScalar getNu() const;
+  Scalar getNu() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -139,8 +139,8 @@ private:
   void update();
 
   /** The main parameter set of the distribution */
-  NumericalScalar nu_;
-  NumericalScalar normalizationFactor_;
+  Scalar nu_;
+  Scalar normalizationFactor_;
 
   /** Get the mean */
   void computeMean() const;

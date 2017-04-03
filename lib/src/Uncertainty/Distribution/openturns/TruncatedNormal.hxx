@@ -43,10 +43,10 @@ public:
   TruncatedNormal();
 
   /** Parameters constructor */
-  TruncatedNormal(const NumericalScalar mu,
-                  const NumericalScalar sigma,
-                  const NumericalScalar a,
-                  const NumericalScalar b);
+  TruncatedNormal(const Scalar mu,
+                  const Scalar sigma,
+                  const Scalar a,
+                  const Scalar b);
 
 
 
@@ -76,27 +76,27 @@ public:
 
   /** Get the PDF of the TruncatedNormal distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the logarithm of the PDF of the TruncatedNormal distribution */
   using ContinuousDistribution::computeLogPDF;
-  NumericalScalar computeLogPDF(const Point & point) const;
+  Scalar computeLogPDF(const Point & point) const;
 
   /** Get the CDF of the TruncatedNormal distribution */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
   using ContinuousDistribution::computeComplementaryCDF;
-  NumericalScalar computeComplementaryCDF(const Point & point) const;
+  Scalar computeComplementaryCDF(const Point & point) const;
 
   /** Get the product minimum volume interval containing a given probability of the distribution */
-  Interval computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
+  Interval computeMinimumVolumeIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const;
 
   /** Get the minimum volume level set containing a given probability of the distribution */
-  LevelSet computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const;
+  LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & threshold) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
-  NumericalComplex computeLogCharacteristicFunction(const NumericalScalar x) const;
+  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
+  NumericalComplex computeLogCharacteristicFunction(const Scalar x) const;
 
   /** Get the PDFGradient of the TruncatedNormal distribution */
   using ContinuousDistribution::computePDFGradient;
@@ -135,20 +135,20 @@ public:
   /* Interface specific to TruncatedNormal */
 
   /** Mu accessor */
-  void setMu(const NumericalScalar mu);
-  NumericalScalar getMu() const;
+  void setMu(const Scalar mu);
+  Scalar getMu() const;
 
   /** Sigma accessor */
-  void setSigma(const NumericalScalar sigma);
-  NumericalScalar getSigma() const;
+  void setSigma(const Scalar sigma);
+  Scalar getSigma() const;
 
   /** A accessor */
-  void setA(const NumericalScalar a);
-  NumericalScalar getA() const;
+  void setA(const Scalar a);
+  Scalar getA() const;
 
   /** B accessor */
-  void setB(const NumericalScalar b);
-  NumericalScalar getB() const;
+  void setB(const Scalar b);
+  Scalar getB() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -168,25 +168,25 @@ private:
   void computeCovariance() const;
 
   /** Get the quantile of the TruncatedNormal distribution */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+  Scalar computeScalarQuantile(const Scalar prob,
                                         const Bool tail = false) const;
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange();
 
   /** The main parameter set of the distribution */
-  NumericalScalar mu_;
-  NumericalScalar sigma_;
-  NumericalScalar a_;
-  NumericalScalar b_;
+  Scalar mu_;
+  Scalar sigma_;
+  Scalar a_;
+  Scalar b_;
   /** Usefull quantities */
-  NumericalScalar aNorm_;
-  NumericalScalar bNorm_;
-  NumericalScalar phiANorm_;
-  NumericalScalar phiBNorm_;
-  NumericalScalar PhiANorm_;
-  NumericalScalar PhiBNorm_;
-  NumericalScalar normalizationFactor_;
+  Scalar aNorm_;
+  Scalar bNorm_;
+  Scalar phiANorm_;
+  Scalar phiBNorm_;
+  Scalar PhiANorm_;
+  Scalar PhiBNorm_;
+  Scalar normalizationFactor_;
 
 }; /* class TruncatedNormal */
 

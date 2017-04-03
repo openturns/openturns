@@ -51,11 +51,11 @@ public:
   BoxCoxTransform(const Point & lambda,
                   const Point & shift);
 
-  /** 1D NumericalScalar parameter constructor */
-  BoxCoxTransform(const NumericalScalar & lambda);
+  /** 1D Scalar parameter constructor */
+  BoxCoxTransform(const Scalar & lambda);
 
-  BoxCoxTransform(const NumericalScalar & lambda,
-                  const NumericalScalar & shift);
+  BoxCoxTransform(const Scalar & lambda,
+                  const Scalar & shift);
 
   /** Virtual constructor */
   BoxCoxTransform * clone() const;

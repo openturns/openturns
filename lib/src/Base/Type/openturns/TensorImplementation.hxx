@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API TensorImplementation
-  : public PersistentCollection<NumericalScalar>
+  : public PersistentCollection<Scalar>
 
 {
   CLASSNAME;
@@ -67,14 +67,14 @@ public:
   TensorImplementation(const UnsignedInteger rowDim,
                        const UnsignedInteger colDim,
                        const UnsignedInteger sheetDim,
-                       const Collection<NumericalScalar> & elementsValues);
+                       const Collection<Scalar> & elementsValues);
 
 
   /** Virtual constructor */
   virtual TensorImplementation * clone() const;
 
   /** Set small elements to zero */
-  TensorImplementation clean(const NumericalScalar threshold) const;
+  TensorImplementation clean(const Scalar threshold) const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -82,13 +82,13 @@ public:
 
   /** Operator () gives access to the elements of the tensor (to modify these elements) */
   /** The element of the tensor is designated by its row number i, its column number j and its sheet number k */
-  NumericalScalar & operator () (const UnsignedInteger i,
+  Scalar & operator () (const UnsignedInteger i,
                                  const UnsignedInteger j,
                                  const UnsignedInteger k);
 
   /** Operator () gives access to the elements of the tensor (read only) */
   /** The element of the tensor is designated by its row number i, its column number j and its sheet number k */
-  const NumericalScalar & operator () (const UnsignedInteger i,
+  const Scalar & operator () (const UnsignedInteger i,
                                        const UnsignedInteger j,
                                        const UnsignedInteger k) const;
 
@@ -134,7 +134,7 @@ public:
 
   // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
   // INTENTIONALY NOT DOCUMENTED
-  const NumericalScalar * __baseaddress__ () const;
+  const Scalar * __baseaddress__ () const;
   UnsignedInteger __elementsize__ () const;
   UnsignedInteger __stride__ (UnsignedInteger dim) const;
 
@@ -159,7 +159,7 @@ TensorImplementation::TensorImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger sheetDim,
     InputIterator first,
     InputIterator last)
-  : PersistentCollection<NumericalScalar>(rowDim * colDim * sheetDim),
+  : PersistentCollection<Scalar>(rowDim * colDim * sheetDim),
     nbRows_(rowDim),
     nbColumns_(colDim),
     nbSheets_(sheetDim)

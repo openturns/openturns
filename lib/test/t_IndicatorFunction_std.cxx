@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     IndicatorFunction indicator(analytical, Less(), 0.0);
     /* Does it work? */
     Point x(Point(2, 1.0));
-    NumericalScalar value = analytical(x)[0];
+    Scalar value = analytical(x)[0];
     fullprint << "Value of the function=" << value << " value of the indicator=" << indicator(x) << std::endl;
     x = Point(2, -1.0);
     value = analytical(x)[0];

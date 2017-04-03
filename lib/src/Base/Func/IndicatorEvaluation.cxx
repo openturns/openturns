@@ -36,7 +36,7 @@ IndicatorEvaluation::IndicatorEvaluation()
 /* Default constructor */
 IndicatorEvaluation::IndicatorEvaluation(const EvaluationPointer & p_evaluation,
     const ComparisonOperator & comparisonOperator,
-    const NumericalScalar threshold)
+    const Scalar threshold)
   : EvaluationImplementation()
   , p_evaluation_()
   , comparisonOperator_(comparisonOperator)
@@ -122,12 +122,12 @@ void IndicatorEvaluation::setComparisonOperator(const ComparisonOperator & compa
 }
 
 /* Accessor for the threshold */
-NumericalScalar IndicatorEvaluation::getThreshold() const
+Scalar IndicatorEvaluation::getThreshold() const
 {
   return threshold_;
 }
 
-void IndicatorEvaluation::setThreshold(const NumericalScalar threshold)
+void IndicatorEvaluation::setThreshold(const Scalar threshold)
 {
   threshold_ = threshold;
 }

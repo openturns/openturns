@@ -130,7 +130,7 @@ int main(int argc, char *argv[])
   {
     for (UnsignedInteger j = 0; j < distributionNumber; j++)
     {
-      const NumericalScalar value = FittingTest::BIC(sampleCollection[i], distributionCollection[j], 0);
+      const Scalar value = FittingTest::BIC(sampleCollection[i], distributionCollection[j], 0);
       resultBIC(i, j) = (std::abs(value) < 1.0e-6 ? 0.0 : value);
     }
   }
@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
   {
     for (UnsignedInteger j = 0; j < continuousDistributionNumber; j++)
     {
-      const NumericalScalar value = FittingTest::Kolmogorov(continuousSampleCollection[i], continuousDistributionCollection[j], 0.95, 0).getPValue();
+      const Scalar value = FittingTest::Kolmogorov(continuousSampleCollection[i], continuousDistributionCollection[j], 0.95, 0).getPValue();
       resultKolmogorov(i, j) = (std::abs(value) < 1.0e-6 ? 0.0 : value);
     }
   }
@@ -150,7 +150,7 @@ int main(int argc, char *argv[])
   {
     for (UnsignedInteger j = 0; j < discreteDistributionNumber - 1; j++)
     {
-      const NumericalScalar value = FittingTest::ChiSquared(discreteSampleCollection[i], discreteDistributionCollection[j], 0.95, 0).getPValue();
+      const Scalar value = FittingTest::ChiSquared(discreteSampleCollection[i], discreteDistributionCollection[j], 0.95, 0).getPValue();
       resultChiSquared(i, j) = (std::abs(value) < 1.0e-6 ? 0.0 : value);
     }
   }

@@ -50,7 +50,7 @@ public:
   KarhunenLoeveResult(const Implementation & p_implementation);
 
   /** Threshold accessor */
-  NumericalScalar getThreshold() const;
+  Scalar getThreshold() const;
 
   /** Covariance model accessor */
   CovarianceModel getCovarianceModel() const;

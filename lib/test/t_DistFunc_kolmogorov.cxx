@@ -75,9 +75,9 @@ int main(int argc, char *argv[])
       const UnsignedInteger n = nValues[i];
       for (UnsignedInteger j = 0; j < xValues.getSize(); ++j)
       {
-        const NumericalScalar x = xValues[j];
-        const NumericalScalar cdf = DistFunc::pKolmogorov(n, x);
-        const NumericalScalar ccdf = DistFunc::pKolmogorov(n, x, true);
+        const Scalar x = xValues[j];
+        const Scalar cdf = DistFunc::pKolmogorov(n, x);
+        const Scalar ccdf = DistFunc::pKolmogorov(n, x, true);
         fullprint << "pKolmogorov(" << n << ", " << x << ")=" << std::fixed << (cdf < 1e-16 ? 0.0 : cdf) << ", complementary=" << (ccdf < 1e-16 ? 0.0 : ccdf) << std::endl;
       }
     }

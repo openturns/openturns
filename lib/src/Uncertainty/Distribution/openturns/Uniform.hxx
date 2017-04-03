@@ -42,8 +42,8 @@ public:
   Uniform();
 
   /** Parameters constructor */
-  Uniform(const NumericalScalar a,
-          const NumericalScalar b);
+  Uniform(const Scalar a,
+          const Scalar b);
 
 
   /** Comparison operator */
@@ -74,25 +74,25 @@ public:
 
   /** Get the PDF of the distribution, i.e. P(point < X < point+dx) = PDF(point)dx + o(dx) */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the distribution, i.e. P(X <= point) = CDF(point) */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
   using ContinuousDistribution::computeComplementaryCDF;
-  NumericalScalar computeComplementaryCDF(const Point & point) const;
+  Scalar computeComplementaryCDF(const Point & point) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
+  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
 
   /** Get the product minimum volume interval containing a given probability of the distribution */
-  Interval computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
+  Interval computeMinimumVolumeIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const;
 
   /** Get the product bilateral confidence interval containing a given probability of the distribution */
-  Interval computeBilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
+  Interval computeBilateralConfidenceIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const;
 
   /** Get the minimum volume level set containing a given probability of the distribution */
-  LevelSet computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const;
+  LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & threshold) const;
 
   /** Get the gradient of the PDF w.r.t the parameters of the distribution */
   using ContinuousDistribution::computePDFGradient;
@@ -103,7 +103,7 @@ public:
   Point computeCDFGradient(const Point & point) const;
 
   /** Get the roughness, i.e. the L2-norm of the PDF */
-  NumericalScalar getRoughness() const;
+  Scalar getRoughness() const;
 
   /** Get the standard deviation of the distribution */
   Point getStandardDeviation() const;
@@ -133,12 +133,12 @@ public:
   /* Interface specific to Uniform */
 
   /** A accessor */
-  void setA(const NumericalScalar a);
-  NumericalScalar getA() const;
+  void setA(const Scalar a);
+  Scalar getA() const;
 
   /** B accessor */
-  void setB(const NumericalScalar b);
-  NumericalScalar getB() const;
+  void setB(const Scalar b);
+  Scalar getB() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -158,15 +158,15 @@ private:
   void computeCovariance() const;
 
   /** Get the quantile of the distribution, i.e the value Xp such that P(X <= Xp) = prob */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+  Scalar computeScalarQuantile(const Scalar prob,
                                         const Bool tail = false) const;
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange();
 
   /** The main parameter set of the distribution */
-  NumericalScalar a_;
-  NumericalScalar b_;
+  Scalar a_;
+  Scalar b_;
 
 }; /* class Uniform */
 

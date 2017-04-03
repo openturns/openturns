@@ -46,8 +46,8 @@ int main(int argc, char *argv[])
     // Create a complex gaussian sample
     for (UnsignedInteger index = 0; index < size; ++index)
     {
-      const NumericalScalar realPart = 0.1 * (1.0 + index) / size;
-      const NumericalScalar imagPart = 0.3 * (1.0 + index) / size;
+      const Scalar realPart = 0.1 * (1.0 + index) / size;
+      const Scalar imagPart = 0.3 * (1.0 + index) / size;
       collection[index] = NumericalComplex(realPart, imagPart);
     }
 
@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
     const NumericalComplexCollection inverseTransformedCollection(myFFT.inverseTransform(transformedCollection));
     fullprint << "FFT back=" << inverseTransformedCollection << std::endl;
 
-    const NumericalScalar threshold = 1e-14;
+    const Scalar threshold = 1e-14;
 
     // 2D case now
     const UnsignedInteger N = 8;

@@ -36,15 +36,15 @@ int main(int argc, char *argv[])
   try
   {
     SymbolicFunction f("x", "sin(x)");
-    NumericalScalar a = -2.5;
-    NumericalScalar b = 4.5;
+    Scalar a = -2.5;
+    Scalar b = 4.5;
     // Default parameters
     GaussLegendre algo;
     fullprint << "Algo=" << algo << std::endl;
     // High-level interface
     algo = GaussLegendre(Indices(1, 20));
-    NumericalScalar value = algo.integrate(f, Interval(a, b))[0];
-    NumericalScalar ref = cos(a) - cos(b);
+    Scalar value = algo.integrate(f, Interval(a, b))[0];
+    Scalar ref = cos(a) - cos(b);
     fullprint << "value=" << value << ", ref=" << ref << std::endl;
     // Low-level interface
     Sample adaptedNodes;

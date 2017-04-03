@@ -44,20 +44,20 @@ public:
 
   /** Parameters constructor to use when the two bounds are finite */
   TruncatedDistribution(const Distribution & distribution,
-                        const NumericalScalar lowerBound,
-                        const NumericalScalar upperBound,
-                        const NumericalScalar thresholdRealization = ResourceMap::GetAsScalar("TruncatedDistribution-DefaultThresholdRealization"));
+                        const Scalar lowerBound,
+                        const Scalar upperBound,
+                        const Scalar thresholdRealization = ResourceMap::GetAsScalar("TruncatedDistribution-DefaultThresholdRealization"));
 
   /** Parameters constructor to use when one of the bounds is not finite */
   TruncatedDistribution(const Distribution & distribution,
-                        const NumericalScalar bound,
+                        const Scalar bound,
                         const BoundSide side = LOWER,
-                        const NumericalScalar thresholdRealization = ResourceMap::GetAsScalar("TruncatedDistribution-DefaultThresholdRealization"));
+                        const Scalar thresholdRealization = ResourceMap::GetAsScalar("TruncatedDistribution-DefaultThresholdRealization"));
 
   /** Parameters constructor to use when the two bounds are finite */
   TruncatedDistribution(const Distribution & distribution,
                         const Interval & truncationInterval,
-                        const NumericalScalar thresholdRealization = ResourceMap::GetAsScalar("TruncatedDistribution-DefaultThresholdRealization"));
+                        const Scalar thresholdRealization = ResourceMap::GetAsScalar("TruncatedDistribution-DefaultThresholdRealization"));
 
   /** Comparison operator */
   using DistributionImplementation::operator ==;
@@ -84,13 +84,13 @@ public:
 
   /** Get the PDF of the distribution */
   using DistributionImplementation::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using DistributionImplementation::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
   using DistributionImplementation::computeComplementaryCDF;
-  NumericalScalar computeComplementaryCDF(const Point & point) const;
+  Scalar computeComplementaryCDF(const Point & point) const;
 
   /** Get the PDFGradient of the distribution */
   using DistributionImplementation::computePDFGradient;
@@ -117,24 +117,24 @@ public:
   Distribution getDistribution() const;
 
   /** Lower bound accessor */
-  void setLowerBound(const NumericalScalar lowerBound);
-  NumericalScalar getLowerBound() const;
+  void setLowerBound(const Scalar lowerBound);
+  Scalar getLowerBound() const;
 
   /** Lower bound finite flag accessor */
   void setFiniteLowerBound(const Bool finiteLowerBound);
   Bool getFiniteLowerBound() const;
 
   /** Upper bound accessor */
-  void setUpperBound(const NumericalScalar upperBound);
-  NumericalScalar getUpperBound() const;
+  void setUpperBound(const Scalar upperBound);
+  Scalar getUpperBound() const;
 
   /** Upper bound finite flag accessor */
   void setFiniteUpperBound(const Bool finiteUpperBound);
   Bool getFiniteUpperBound() const;
 
   /** Threshold realization accessor */
-  void setThresholdRealization(const NumericalScalar thresholdRealization);
-  NumericalScalar getThresholdRealization() const;
+  void setThresholdRealization(const Scalar thresholdRealization);
+  Scalar getThresholdRealization() const;
 
   /** Tell if the distribution is continuous */
   Bool isContinuous() const;
@@ -164,7 +164,7 @@ protected:
 private:
 
   /** Get the quantile of the distribution */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+  Scalar computeScalarQuantile(const Scalar prob,
                                         const Bool tail = false) const;
 
   /** Compute the numerical range of the distribution given the parameters values */
@@ -172,17 +172,17 @@ private:
 
   /** The main parameter set of the distribution */
   Distribution distribution_;
-  NumericalScalar lowerBound_;
+  Scalar lowerBound_;
   Bool finiteLowerBound_;
-  NumericalScalar upperBound_;
+  Scalar upperBound_;
   Bool finiteUpperBound_;
-  NumericalScalar thresholdRealization_;
+  Scalar thresholdRealization_;
   /** Usefull quantities */
-  NumericalScalar pdfLowerBound_;
-  NumericalScalar pdfUpperBound_;
-  NumericalScalar cdfLowerBound_;
-  NumericalScalar cdfUpperBound_;
-  NumericalScalar normalizationFactor_;
+  Scalar pdfLowerBound_;
+  Scalar pdfUpperBound_;
+  Scalar cdfLowerBound_;
+  Scalar cdfUpperBound_;
+  Scalar normalizationFactor_;
 }; /* class TruncatedDistribution */
 
 

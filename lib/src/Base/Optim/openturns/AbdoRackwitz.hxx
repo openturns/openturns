@@ -50,9 +50,9 @@ public:
 
   /** Constructor with parameters */
   AbdoRackwitz(const OptimizationProblem & problem,
-               const NumericalScalar tau,
-               const NumericalScalar omega,
-               const NumericalScalar smooth);
+               const Scalar tau,
+               const Scalar omega,
+               const Scalar smooth);
 
   /** Virtual constructor */
   virtual AbdoRackwitz * clone() const;
@@ -61,16 +61,16 @@ public:
   void run();
 
   /** Tau accessor */
-  NumericalScalar getTau() const;
-  void setTau(const NumericalScalar tau);
+  Scalar getTau() const;
+  void setTau(const Scalar tau);
 
   /** Omega accessor */
-  NumericalScalar getOmega() const;
-  void setOmega(const NumericalScalar tau);
+  Scalar getOmega() const;
+  void setOmega(const Scalar tau);
 
   /** Smooth accessor */
-  NumericalScalar getSmooth() const;
-  void setSmooth(const NumericalScalar tau);
+  Scalar getSmooth() const;
+  void setSmooth(const Scalar tau);
 
   /** String converter */
   String __repr__() const;
@@ -88,22 +88,22 @@ protected:
 private:
 
   /** Perform a line search in the given direction */
-  NumericalScalar computeLineSearch();
+  Scalar computeLineSearch();
 
   /** Initialize internal state */
   void initialize();
 
   /** Multiplicative decrease of linear step */
-  NumericalScalar tau_;
+  Scalar tau_;
 
   /** Armijo factor */
-  NumericalScalar omega_;
+  Scalar omega_;
 
   /** Growing factor in penalization term */
-  NumericalScalar smooth_;
+  Scalar smooth_;
 
   /** Abdo Rackwitz current penalization factor */
-  NumericalScalar currentSigma_;
+  Scalar currentSigma_;
 
   /** Abdo Rackwitz current point */
   Point currentPoint_;
@@ -112,13 +112,13 @@ private:
   Point currentDirection_;
 
   /** Abdo Rackwitz current level value */
-  NumericalScalar currentLevelValue_;
+  Scalar currentLevelValue_;
 
   /** Abdo Rackwitz current gradient as a column vector */
   Point currentGradient_;
 
   /** Abdo Rackwitz current Lagrange multiplier */
-  NumericalScalar currentLambda_;
+  Scalar currentLambda_;
 
 }; /* class AbdoRackwitz */
 

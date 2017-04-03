@@ -50,9 +50,9 @@ Contour::Contour(const UnsignedInteger dimX,
   // Check data validity
   setData(data);
   // By default, x is assumed to be equally spaced in [0, 1]
-  for (UnsignedInteger i = 0; i < dimX; ++i) x_[i][0] = NumericalScalar(i) / (dimX - 1.0);
+  for (UnsignedInteger i = 0; i < dimX; ++i) x_[i][0] = Scalar(i) / (dimX - 1.0);
   // By default, y is assumed to be equally spaced in [0, 1]
-  for (UnsignedInteger i = 0; i < dimY; ++i) y_[i][0] = NumericalScalar(i) / (dimY - 1.0);
+  for (UnsignedInteger i = 0; i < dimY; ++i) y_[i][0] = Scalar(i) / (dimY - 1.0);
   // Build the levels
   buildDefaultLevels();
   // Build the labels

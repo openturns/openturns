@@ -28,18 +28,18 @@ using namespace OT::Test;
 class TestHMatrixRealAssemblyFunction : public HMatrixRealAssemblyFunction
 {
   const Sample& vertices_;
-  const NumericalScalar scaling_;
+  const Scalar scaling_;
 public:
-  TestHMatrixRealAssemblyFunction(const Sample& vertices, NumericalScalar scaling)
+  TestHMatrixRealAssemblyFunction(const Sample& vertices, Scalar scaling)
     : vertices_(vertices)
     , scaling_(scaling)
   {}
-  inline NumericalScalar operator() (Point pt1, Point pt2) const
+  inline Scalar operator() (Point pt1, Point pt2) const
   {
     Point difference(pt1 - pt2);
     return exp(-std::abs(difference.norm()) / scaling_);
   }
-  NumericalScalar operator() (UnsignedInteger i, UnsignedInteger j) const
+  Scalar operator() (UnsignedInteger i, UnsignedInteger j) const
   {
     return operator()(vertices_[i], vertices_[j]);
   }
@@ -82,16 +82,16 @@ int main(int argc, char *argv[])
     hmat.assemble(simpleAssembly, 'L');
 
     HMatrix hmatRef(hmat);
-    const NumericalScalar refNorm = hmatRef.norm();
+    const Scalar refNorm = hmatRef.norm();
 
     hmat.factorize("LLt");
 
     hmatRef.gemm('N', 'T', -1., hmat, hmat, 1.);
-    NumericalScalar threshold = 1.e-10;
+    Scalar threshold = 1.e-10;
     fullprint << "|| M - L Lt || / || M ||" << ((hmatRef.norm() < threshold * refNorm) ? " < " : " > ") << threshold << std::endl;
 
-    const NumericalScalar normL(hmat.norm());
-    const NumericalScalar alpha(0.1);
+    const Scalar normL(hmat.norm());
+    const Scalar alpha(0.1);
     hmat.scale(alpha);
     fullprint << "|| L || - 10.0 * || 0.1 * L || " << ((std::abs(normL - hmat.norm()/alpha) < threshold) ? " < " : " > ") << threshold << std::endl;
   }

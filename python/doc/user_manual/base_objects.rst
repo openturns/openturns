@@ -87,7 +87,7 @@ Vectors
     Point
     PointWithDescription
     NumericalComplexCollection
-    NumericalScalarCollection
+    ScalarCollection
 
 Comparison operators
 ====================

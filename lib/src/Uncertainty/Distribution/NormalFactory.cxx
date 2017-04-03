@@ -97,8 +97,8 @@ DistributionFactoryResult NormalFactory::buildEstimator(const Sample & sample) c
 {
   if (sample.getDimension() > 1) return buildBootStrapEstimator(sample);
   Normal distribution(buildAsNormal(sample));
-  NumericalScalar mu = distribution.getMean()[0];
-  NumericalScalar sigma = distribution.getSigma()[0];
+  Scalar mu = distribution.getMean()[0];
+  Scalar sigma = distribution.getSigma()[0];
   const UnsignedInteger size = sample.getSize();
   ComposedDistribution::DistributionCollection coll;
   Normal muDistribution(mu, sigma / sqrt(1.0 * size));

@@ -53,8 +53,8 @@ public:
   virtual ComparisonOperatorImplementation * clone() const;
 
   /** @copydoc ComparisonOperator::operator()() const */
-  virtual Bool operator() (const NumericalScalar a,
-                           const NumericalScalar b) const;
+  virtual Bool operator() (const Scalar a,
+                           const Scalar b) const;
 
   /* Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

@@ -8,7 +8,7 @@
 
 %template(ComplexMatrixImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::ComplexMatrixImplementation>;
 
-%apply const NumericalScalarCollection & { const OT::ComplexMatrix::NumericalScalarCollection & };
+%apply const ScalarCollection & { const OT::ComplexMatrix::ScalarCollection & };
 %apply const NumericalComplexCollection & { const OT::ComplexMatrix::NumericalComplexCollection & };
 
 %include openturns/ComplexMatrix.hxx

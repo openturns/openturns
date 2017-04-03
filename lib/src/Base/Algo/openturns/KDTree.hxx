@@ -130,7 +130,7 @@ protected:
   /** Get the index of the nearest neighbour of the given point */
   virtual UnsignedInteger getNearestNeighbourIndex(const KDNode::KDNodePointer & p_node,
       const Point & x,
-      NumericalScalar & bestSquaredDistance,
+      Scalar & bestSquaredDistance,
       const UnsignedInteger activeDimension) const;
 
   /** Build the tree */

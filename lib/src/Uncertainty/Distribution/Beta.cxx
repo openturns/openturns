@@ -47,10 +47,10 @@ Beta::Beta()
 }
 
 /* Parameters constructor */
-Beta::Beta(const NumericalScalar r,
-           const NumericalScalar t,
-           const NumericalScalar a,
-           const NumericalScalar b)
+Beta::Beta(const Scalar r,
+           const Scalar t,
+           const Scalar a,
+           const Scalar b)
   : ContinuousDistribution()
   , r_(0.0)
   , t_(0.0)
@@ -133,28 +133,28 @@ Point Beta::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if ((x <= a_) || (x > b_)) return Point(1, 0.0);
   return Point(1, ((r_ - 1.0) / (x - a_) - (t_ - r_ - 1.0) / (b_ - x)) * computePDF(point));
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Beta::computePDF(const Point & point) const
+Scalar Beta::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if ((x == b_) && (t_ - r_ == 1.0)) return 1.0;
   if ((x <= a_) || (x >= b_)) return 0.0;
   return std::exp(computeLogPDF(point));
 }
 
-NumericalScalar Beta::computeLogPDF(const Point & point) const
+Scalar Beta::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if ((x == b_) && (t_ - r_ == 1.0)) return 0.0;
   if ((x <= a_) || (x >= b_)) return SpecFunc::LogMinScalar;
   return normalizationFactor_ + (r_ - 1.0) * std::log(x - a_) + (t_ - r_ - 1.0) * std::log(b_ - x);
@@ -162,11 +162,11 @@ NumericalScalar Beta::computeLogPDF(const Point & point) const
 
 
 /* Get the CDF of the distribution */
-NumericalScalar Beta::computeCDF(const Point & point) const
+Scalar Beta::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if (x <= a_) return 0.0;
   if (x >= b_) return 1.0;
   return DistFunc::pBeta(r_, t_ - r_, (x - a_) / (b_ - a_));
@@ -178,15 +178,15 @@ Point Beta::computePDFGradient(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   Point pdfGradient(4, 0.0);
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if ((x <= a_) || (x > b_)) return pdfGradient;
-  const NumericalScalar pdf = computePDF(point);
-  const NumericalScalar psiTR = SpecFunc::Psi(t_ - r_);
-  const NumericalScalar iBA = 1.0 / (b_ - a_);
-  const NumericalScalar BX = b_ - x;
-  const NumericalScalar iBX = 1.0 / BX;
-  const NumericalScalar XA = x - a_;
-  const NumericalScalar iXA = 1.0 / XA;
+  const Scalar pdf = computePDF(point);
+  const Scalar psiTR = SpecFunc::Psi(t_ - r_);
+  const Scalar iBA = 1.0 / (b_ - a_);
+  const Scalar BX = b_ - x;
+  const Scalar iBX = 1.0 / BX;
+  const Scalar XA = x - a_;
+  const Scalar iXA = 1.0 / XA;
   pdfGradient[0] = pdf * (std::log(XA * iBX) + psiTR - SpecFunc::Psi(r_));
   pdfGradient[1] = pdf * (std::log(BX * iBA) - psiTR + SpecFunc::Psi(t_));
   pdfGradient[2] = pdf * ((t_ - 1.0) * iBA - (r_ - 1.0) * iXA);
@@ -200,15 +200,15 @@ Point Beta::computeCDFGradient(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   Point cdfGradient(4, 0.0);
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if ((x <= a_) || (x > b_)) return cdfGradient;
-  const NumericalScalar cdf = computeCDF(point);
-  const NumericalScalar iBA = 1.0 / (b_ - a_);
-  const NumericalScalar cdfShift = DistFunc::pBeta(r_ + 1.0, t_ - r_ - 1.0, (x - a_) * iBA);
-  const NumericalScalar cdfDiff = cdfShift - cdf;
-  const NumericalScalar factor = r_ * iBA;
-  static const NumericalScalar eps(std::pow(cdfEpsilon_, 1.0 / 3.0));
-  static const NumericalScalar i2Eps(0.5 / eps);
+  const Scalar cdf = computeCDF(point);
+  const Scalar iBA = 1.0 / (b_ - a_);
+  const Scalar cdfShift = DistFunc::pBeta(r_ + 1.0, t_ - r_ - 1.0, (x - a_) * iBA);
+  const Scalar cdfDiff = cdfShift - cdf;
+  const Scalar factor = r_ * iBA;
+  static const Scalar eps(std::pow(cdfEpsilon_, 1.0 / 3.0));
+  static const Scalar i2Eps(0.5 / eps);
   cdfGradient[0] = i2Eps * (DistFunc::pBeta(r_ + eps, t_ - r_ - eps, (x - a_) / (b_ - a_)) - DistFunc::pBeta(r_ - eps, t_ - r_ + eps, (x - a_) / (b_ - a_)));
   cdfGradient[1] = i2Eps * (DistFunc::pBeta(r_, t_ - r_ + eps, (x - a_) / (b_ - a_)) - DistFunc::pBeta(r_, t_ - r_ - eps, (x - a_) / (b_ - a_)));
   cdfGradient[3] = factor * cdfDiff;
@@ -217,26 +217,26 @@ Point Beta::computeCDFGradient(const Point & point) const
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar Beta::computeScalarQuantile(const NumericalScalar prob,
+Scalar Beta::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
   return a_ + (b_ - a_) * DistFunc::qBeta(r_, t_ - r_, prob, tail);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Beta::computeCharacteristicFunction(const NumericalScalar x) const
+NumericalComplex Beta::computeCharacteristicFunction(const Scalar x) const
 {
   if (x == 0.0) return 1.0;
-  const NumericalScalar r1 = std::abs(x * r_ / t_);
+  const Scalar r1 = std::abs(x * r_ / t_);
   // We have numerical stability issues for large values of r1
   if (r1 <= 1.0) return std::exp(NumericalComplex(0.0, a_)) * SpecFunc::HyperGeom_1_1(r_, t_, NumericalComplex(0.0, (b_ - a_) * x));
   return DistributionImplementation::computeCharacteristicFunction(x);
 }
 
 /* Get the roughness, i.e. the L2-norm of the PDF */
-NumericalScalar Beta::getRoughness() const
+Scalar Beta::getRoughness() const
 {
-  const NumericalScalar den = SpecFunc::Beta(r_, t_ - r_);
+  const Scalar den = SpecFunc::Beta(r_, t_ - r_);
   return SpecFunc::Beta(2.0 * r_ - 1.0, 2.0 * (t_ - r_) - 1.0) / (den * den * (b_ - a_));
 }
 
@@ -269,7 +269,7 @@ Point Beta::getKurtosis() const
 void Beta::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
-  const NumericalScalar eta = (b_ - a_) / t_;
+  const Scalar eta = (b_ - a_) / t_;
   covariance_(0, 0) = eta * eta * r_ * (t_ - r_) / (t_ + 1.0);
   isAlreadyComputedCovariance_ = true;
 }
@@ -279,7 +279,7 @@ Point Beta::getStandardMoment(const UnsignedInteger n) const
 {
   if (n == 0) return Point(1, 1.0);
   // Here we have to convert n to a signed type else -n will produce an overflow
-  const NumericalScalar value = (n % 2 == 0 ? 1.0 : -1.0) * SpecFunc::HyperGeom_2_1(r_, -static_cast<NumericalScalar>(n), t_, 2.0);
+  const Scalar value = (n % 2 == 0 ? 1.0 : -1.0) * SpecFunc::HyperGeom_2_1(r_, -static_cast<Scalar>(n), t_, 2.0);
   return Point(1, value);
 }
 
@@ -303,7 +303,7 @@ Point Beta::getParameter() const
 void Beta::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 4) throw InvalidArgumentException(HERE) << "Error: expected 4 values, got " << parameter.getSize();
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = Beta(parameter[0], parameter[1], parameter[2], parameter[3]);
   setWeight(w);
 }
@@ -328,7 +328,7 @@ Bool Beta::isElliptical() const
 
 
 /* R accessor */
-void Beta::setR(const NumericalScalar r)
+void Beta::setR(const Scalar r)
 {
   if (!(r > 0.0)) throw InvalidArgumentException(HERE) << "R MUST be positive";
   if (t_ <= r) throw InvalidArgumentException(HERE) << "T MUST be greater than r, here t=" << t_ << " and r=" << r;
@@ -339,14 +339,14 @@ void Beta::setR(const NumericalScalar r)
   }
 }
 
-NumericalScalar Beta::getR() const
+Scalar Beta::getR() const
 {
   return r_;
 }
 
 
 /* T accessor */
-void Beta::setT(const NumericalScalar t)
+void Beta::setT(const Scalar t)
 {
   if (t <= r_) throw InvalidArgumentException(HERE) << "T MUST be greater than r, here t=" << t << " and r=" << r_;
   if (t != t_)
@@ -356,15 +356,15 @@ void Beta::setT(const NumericalScalar t)
   }
 }
 
-NumericalScalar Beta::getT() const
+Scalar Beta::getT() const
 {
   return t_;
 }
 
 
 /* RT accessor */
-void Beta::setRT(const NumericalScalar r,
-                 const NumericalScalar t)
+void Beta::setRT(const Scalar r,
+                 const Scalar t)
 {
   if (!SpecFunc::IsNormal(r)) throw InvalidArgumentException(HERE) << "The first shape parameter must be a real value, here r=" << r;
   if (!SpecFunc::IsNormal(t)) throw InvalidArgumentException(HERE) << "The second shape parameter must be a real value, here t=" << t;
@@ -380,7 +380,7 @@ void Beta::setRT(const NumericalScalar r,
 }
 
 /* A accessor */
-void Beta::setA(const NumericalScalar a)
+void Beta::setA(const Scalar a)
 {
   if (!SpecFunc::IsNormal(a)) throw InvalidArgumentException(HERE) << "The lower bound must be a real value, here a=" << a;
   if (b_ <= a) throw InvalidArgumentException(HERE) << "The lower bound must be less than the upper bound, here a=" << a << " and b=" << b_;
@@ -392,14 +392,14 @@ void Beta::setA(const NumericalScalar a)
   }
 }
 
-NumericalScalar Beta::getA() const
+Scalar Beta::getA() const
 {
   return a_;
 }
 
 
 /* B accessor */
-void Beta::setB(const NumericalScalar b)
+void Beta::setB(const Scalar b)
 {
   if (!SpecFunc::IsNormal(b)) throw InvalidArgumentException(HERE) << "The upper bound must be a real value, here b=" << b;
   if (b <= a_) throw InvalidArgumentException(HERE) << "The upper bound must be greater than the lower bound, here a=" << a_ << " and b=" << b;
@@ -411,7 +411,7 @@ void Beta::setB(const NumericalScalar b)
   }
 }
 
-NumericalScalar Beta::getB() const
+Scalar Beta::getB() const
 {
   return b_;
 }

@@ -103,13 +103,13 @@ Point ApproximationAlgorithm::getCoefficients()
   return getImplementation()->getCoefficients();
 }
 
-NumericalScalar ApproximationAlgorithm::getResidual()
+Scalar ApproximationAlgorithm::getResidual()
 {
   return getImplementation()->getResidual();
 }
 
 /* Acccessor to the residual of the selected metamodel on the provided basis */
-NumericalScalar ApproximationAlgorithm::getRelativeError()
+Scalar ApproximationAlgorithm::getRelativeError()
 {
   return getImplementation()->getRelativeError();
 }

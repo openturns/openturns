@@ -80,28 +80,28 @@ public:
   UnsignedInteger getMaximumEvaluationNumber() const;
 
   /** Maximum absolute error accessor */
-  NumericalScalar getMaximumAbsoluteError() const;
+  Scalar getMaximumAbsoluteError() const;
 
   /** Maximum absolute error accessor */
-  void setMaximumAbsoluteError(const NumericalScalar maximumAbsoluteError);
+  void setMaximumAbsoluteError(const Scalar maximumAbsoluteError);
 
   /** Maximum relative error accessor */
-  NumericalScalar getMaximumRelativeError() const;
+  Scalar getMaximumRelativeError() const;
 
   /** Maximum relative error accessor */
-  void setMaximumRelativeError(const NumericalScalar maximumRelativeError);
+  void setMaximumRelativeError(const Scalar maximumRelativeError);
 
   /** Maximum residual error accessor */
-  NumericalScalar getMaximumResidualError() const;
+  Scalar getMaximumResidualError() const;
 
   /** Maximum residual error accessor */
-  void setMaximumResidualError(const NumericalScalar maximumResidualError);
+  void setMaximumResidualError(const Scalar maximumResidualError);
 
   /** Maximum constraint error accessor */
-  NumericalScalar getMaximumConstraintError() const;
+  Scalar getMaximumConstraintError() const;
 
   /** Maximum constraint error accessor */
-  void setMaximumConstraintError(const NumericalScalar maximumConstraintError);
+  void setMaximumConstraintError(const Scalar maximumConstraintError);
 
   /** String converter */
   String __repr__() const;
@@ -117,7 +117,7 @@ public:
   void setVerbose(const Bool verbose);
 
   /** Progress callback */
-  typedef void (*ProgressCallback)(NumericalScalar, void * data);
+  typedef void (*ProgressCallback)(Scalar, void * data);
   virtual void setProgressCallback(ProgressCallback callBack, void * data = 0);
 
   /** Stop callback */
@@ -145,10 +145,10 @@ private:
   /** Maximum function calls */
   UnsignedInteger maximumEvaluationNumber_;
 
-  NumericalScalar maximumAbsoluteError_;    /**< Value of ||x_n - x_{n-1}|| */
-  NumericalScalar maximumRelativeError_;    /**< Value of ||x_n - x_{n-1}|| / ||x_n|| */
-  NumericalScalar maximumResidualError_;    /**< Value of ||objectiveFunction(x_n) - objectiveFunction(x_{n-1})|| */
-  NumericalScalar maximumConstraintError_;  /**< Value of ||constraints(x_n)|| for the active constraints */
+  Scalar maximumAbsoluteError_;    /**< Value of ||x_n - x_{n-1}|| */
+  Scalar maximumRelativeError_;    /**< Value of ||x_n - x_{n-1}|| / ||x_n|| */
+  Scalar maximumResidualError_;    /**< Value of ||objectiveFunction(x_n) - objectiveFunction(x_{n-1})|| */
+  Scalar maximumConstraintError_;  /**< Value of ||constraints(x_n)|| for the active constraints */
   Bool verbose_;
 
 } ; /* class OptimizationAlgorithmImplementation */

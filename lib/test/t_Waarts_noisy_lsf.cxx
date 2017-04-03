@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
     sigma[4] = 15.0;
     sigma[5] = 12.0;
 
-    NumericalScalar BorneInf = 0.0;
+    Scalar BorneInf = 0.0;
 
     Description component(1);
 
@@ -197,7 +197,7 @@ int main(int argc, char *argv[])
 
     //   #########################################################################################################;
     //   # Monte Carlo;
-    NumericalScalar CoV_MC = 0.5;
+    Scalar CoV_MC = 0.5;
     MonteCarlo myMC(myEvent);
     myMC.setMaximumOuterSampling(1000);
     myMC.setBlockSize(100);
@@ -206,7 +206,7 @@ int main(int argc, char *argv[])
 
     //   #########################################################################################################;
     //   # LHS;
-    NumericalScalar CoV_LHS = 0.1;
+    Scalar CoV_LHS = 0.1;
     LHS myLHS(myEvent);
     myLHS.setMaximumOuterSampling(1000);
     myLHS.setBlockSize(10);
@@ -215,7 +215,7 @@ int main(int argc, char *argv[])
 
     //   #########################################################################################################
     //   # Directional Sampling
-    NumericalScalar CoV_DS = 0.1;
+    Scalar CoV_DS = 0.1;
     DirectionalSampling myDS1(myEvent, RootStrategy(RiskyAndFast()), SamplingStrategy(RandomDirection()));
     myDS1.setMaximumOuterSampling(1000);
     myDS1.setBlockSize(10);
@@ -279,79 +279,79 @@ int main(int argc, char *argv[])
 
       #########################################################################################################;
       # FORM/SORM Cobyla*/
-    NumericalScalar PfC = resultC.getEventProbability();
-    NumericalScalar Beta_generalizedC = resultC.getGeneralisedReliabilityIndex();
+    Scalar PfC = resultC.getEventProbability();
+    Scalar Beta_generalizedC = resultC.getGeneralisedReliabilityIndex();
     Point u_starC = resultC.getStandardSpaceDesignPoint();
     Point x_starC = resultC.getPhysicalSpaceDesignPoint();
     Bool PtC = resultC.getIsStandardPointOriginInFailureSpace();
     Point gammaC = resultC.getImportanceFactors();
     Point gammaCC = resultC.getImportanceFactors(true);
-    NumericalScalar beta_hasoferC = resultC.getHasoferReliabilityIndex();
+    Scalar beta_hasoferC = resultC.getHasoferReliabilityIndex();
     Analytical::Sensitivity SensitivityC = resultC.getEventProbabilitySensitivity();
 
     //   #########################################################################################################;
     // //   # FORM/SORM Abdo Rackwitz;
-    NumericalScalar PfAR = resultAR.getEventProbability();
-    NumericalScalar Beta_generalizedAR = resultAR.getGeneralisedReliabilityIndex();
+    Scalar PfAR = resultAR.getEventProbability();
+    Scalar Beta_generalizedAR = resultAR.getGeneralisedReliabilityIndex();
     Point u_starAR = resultAR.getStandardSpaceDesignPoint();
     Point x_starAR = resultAR.getPhysicalSpaceDesignPoint();
     Bool PtAR = resultAR.getIsStandardPointOriginInFailureSpace();
     Point gammaAR = resultAR.getImportanceFactors();
     Point gammaCAR = resultAR.getImportanceFactors(true);
-    NumericalScalar beta_hasoferAR = resultAR.getHasoferReliabilityIndex();
+    Scalar beta_hasoferAR = resultAR.getHasoferReliabilityIndex();
     Analytical::Sensitivity SensitivityAR = resultAR.getEventProbabilitySensitivity();
 
 
     //   ######################################/*###################################################################;
     //   # Monte Carlo*/;
     SimulationResult ResultMC = myMC.getResult();
-    NumericalScalar PFMC = ResultMC.getProbabilityEstimate();
-    NumericalScalar CVMC = ResultMC.getCoefficientOfVariation();
-    NumericalScalar Variance_PF_MC = ResultMC.getVarianceEstimate();
-    NumericalScalar length90MC = ResultMC.getConfidenceLength(0.90);
+    Scalar PFMC = ResultMC.getProbabilityEstimate();
+    Scalar CVMC = ResultMC.getCoefficientOfVariation();
+    Scalar Variance_PF_MC = ResultMC.getVarianceEstimate();
+    Scalar length90MC = ResultMC.getConfidenceLength(0.90);
 
     //   #########################################################################################################;
     //   # LHS;
     SimulationResult ResultLHS = myLHS.getResult();
-    NumericalScalar PFLHS = ResultLHS.getProbabilityEstimate();
-    NumericalScalar CVLHS = ResultLHS.getCoefficientOfVariation();
-    NumericalScalar Variance_PF_LHS = ResultLHS.getVarianceEstimate();
-    NumericalScalar length90LHS = ResultLHS.getConfidenceLength(0.90);
+    Scalar PFLHS = ResultLHS.getProbabilityEstimate();
+    Scalar CVLHS = ResultLHS.getCoefficientOfVariation();
+    Scalar Variance_PF_LHS = ResultLHS.getVarianceEstimate();
+    Scalar length90LHS = ResultLHS.getConfidenceLength(0.90);
 
 
     //   ###########################################################################################################
     //   ### Directional Sampling
     SimulationResult ResultDS1 = myDS1.getResult();
-    NumericalScalar PFDS1 = ResultDS1.getProbabilityEstimate();
-    NumericalScalar CVDS1 = ResultDS1.getCoefficientOfVariation();
-    NumericalScalar Variance_PF_DS1 = ResultDS1.getVarianceEstimate();
-    NumericalScalar length90DS1 = ResultDS1.getConfidenceLength(0.90);
+    Scalar PFDS1 = ResultDS1.getProbabilityEstimate();
+    Scalar CVDS1 = ResultDS1.getCoefficientOfVariation();
+    Scalar Variance_PF_DS1 = ResultDS1.getVarianceEstimate();
+    Scalar length90DS1 = ResultDS1.getConfidenceLength(0.90);
 
     SimulationResult ResultDS2 = myDS2.getResult();
-    NumericalScalar PFDS2 = ResultDS2.getProbabilityEstimate();
-    NumericalScalar CVDS2 = ResultDS2.getCoefficientOfVariation();
-    NumericalScalar Variance_PF_DS2 = ResultDS2.getVarianceEstimate();
-    NumericalScalar length90DS2 = ResultDS2.getConfidenceLength(0.90);
+    Scalar PFDS2 = ResultDS2.getProbabilityEstimate();
+    Scalar CVDS2 = ResultDS2.getCoefficientOfVariation();
+    Scalar Variance_PF_DS2 = ResultDS2.getVarianceEstimate();
+    Scalar length90DS2 = ResultDS2.getConfidenceLength(0.90);
 
     SimulationResult ResultDS3 = myDS3.getResult();
-    NumericalScalar PFDS3 = ResultDS3.getProbabilityEstimate();
-    NumericalScalar CVDS3 = ResultDS3.getCoefficientOfVariation();
-    NumericalScalar Variance_PF_DS3 = ResultDS3.getVarianceEstimate();
-    NumericalScalar length90DS3 = ResultDS3.getConfidenceLength(0.90);
+    Scalar PFDS3 = ResultDS3.getProbabilityEstimate();
+    Scalar CVDS3 = ResultDS3.getCoefficientOfVariation();
+    Scalar Variance_PF_DS3 = ResultDS3.getVarianceEstimate();
+    Scalar length90DS3 = ResultDS3.getConfidenceLength(0.90);
 
     //   ##########################################################################################################
     //   ##Importance Sampling
     SimulationResult ResultISS = myISS.getResult();
-    NumericalScalar  PFISS = ResultISS.getProbabilityEstimate();
-    NumericalScalar CVISS = ResultISS.getCoefficientOfVariation();
-    NumericalScalar Variance_PF_ISS = ResultISS.getVarianceEstimate();
-    NumericalScalar length90ISS = ResultISS.getConfidenceLength(0.90);
+    Scalar  PFISS = ResultISS.getProbabilityEstimate();
+    Scalar CVISS = ResultISS.getCoefficientOfVariation();
+    Scalar Variance_PF_ISS = ResultISS.getVarianceEstimate();
+    Scalar length90ISS = ResultISS.getConfidenceLength(0.90);
 
     SimulationResult ResultIS = myIS.getResult();
-    NumericalScalar PFIS = ResultIS.getProbabilityEstimate();
-    NumericalScalar CVIS = ResultIS.getCoefficientOfVariation();
-    NumericalScalar Variance_PF_IS = ResultIS.getVarianceEstimate();
-    NumericalScalar length90IS = ResultIS.getConfidenceLength(0.90);
+    Scalar PFIS = ResultIS.getProbabilityEstimate();
+    Scalar CVIS = ResultIS.getCoefficientOfVariation();
+    Scalar Variance_PF_IS = ResultIS.getVarianceEstimate();
+    Scalar length90IS = ResultIS.getConfidenceLength(0.90);
 
 
 

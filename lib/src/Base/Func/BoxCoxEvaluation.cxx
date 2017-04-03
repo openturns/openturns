@@ -119,8 +119,8 @@ struct BoxCoxEvaluationComputeSamplePolicy
     {
       for (UnsignedInteger j = 0; j < evaluation_.getInputDimension(); ++j)
       {
-        const NumericalScalar lambda_j = evaluation_.getLambda()[j];
-        const NumericalScalar logX = log(input_[i][j] + evaluation_.getShift()[j]);
+        const Scalar lambda_j = evaluation_.getLambda()[j];
+        const Scalar logX = log(input_[i][j] + evaluation_.getShift()[j]);
         if (std::abs(lambda_j * logX) < 1e-8) output_[i][j] = logX * (1.0 + 0.5 * lambda_j * logX);
         else output_[i][j] = expm1(lambda_j * logX) / lambda_j;
       } // j
@@ -159,13 +159,13 @@ Point BoxCoxEvaluation::operator() (const Point & inP) const
   // This last one must be done by user or, as the evaluation is used in a stochastic context, in the BoxCoxTransform class
   for (UnsignedInteger index = 0; index < dimension; ++index)
   {
-    const NumericalScalar x = inP[index] + shift_[index];
+    const Scalar x = inP[index] + shift_[index];
     if (x <= 0.0)
       throw InvalidArgumentException(HERE) << "Can not apply the Box Cox evaluation function to a negative shifted value x=" << x;
 
     // Applying the Box-Cox function
-    const NumericalScalar lambda_i = lambda_[index];
-    const NumericalScalar logX = log(x);
+    const Scalar lambda_i = lambda_[index];
+    const Scalar logX = log(x);
     if (std::abs(lambda_i * logX) < 1e-8) result[index] = logX * (1.0 + 0.5 * lambda_i * logX);
     else result[index] = expm1(lambda_i * logX) / lambda_i;
   }

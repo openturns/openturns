@@ -141,7 +141,7 @@ public:
 
   Point operator() (const Point & parameter) const
   {
-    NumericalScalar result = 0.0;
+    Scalar result = 0.0;
     // Define conditinned distribution
     Distribution distribution(distribution_);
     Point effectiveParameter(distribution.getParameter());
@@ -168,7 +168,7 @@ public:
     // Take into account the mean over sample
     // Parallelization (evaluation over a sample) is handeled by distribution_
     const Sample logPdfSample = distribution.computeLogPDF(sample_);
-    const NumericalScalar logPdf = logPdfSample.computeMean()[0];
+    const Scalar logPdf = logPdfSample.computeMean()[0];
     result = SpecFunc::IsNormal(logPdf) ? logPdf : SpecFunc::LogMinScalar;
     return Point(1, result);
   }

@@ -65,7 +65,7 @@ Sample ImportanceSampling::computeBlockSample()
     {
       // If the event occured, the value is p_initial(x[i]) / p_importance(x[i])
       // Having access to p_initial is a long trip...
-      const NumericalScalar weight = getEvent().getImplementation()->getAntecedent()->getDistribution().computePDF(inputSample[i]) / importanceDistribution_.computePDF(inputSample[i]);
+      const Scalar weight = getEvent().getImplementation()->getAntecedent()->getDistribution().computePDF(inputSample[i]) / importanceDistribution_.computePDF(inputSample[i]);
       blockSample[i][0] = weight;
     }
     else blockSample[i][0] = 0.0;

@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     result = matrix1.solveLinearSystem(pt);
     fullprint << "result = " << result << std::endl;
 
-    NumericalScalar determinant ;
+    Scalar determinant ;
     determinant = matrix1.computeDeterminant();
     fullprint << "determinant = " << determinant << std::endl;
 
@@ -75,8 +75,8 @@ int main(int argc, char *argv[])
     matrix2(2, 2) = 2.5;
 
     fullprint << "matrix2=\n" << matrix2.__str__() << std::endl;
-    NumericalScalar sign;
-    NumericalScalar value = matrix2.computeLogAbsoluteDeterminant(sign);
+    Scalar sign;
+    Scalar value = matrix2.computeLogAbsoluteDeterminant(sign);
     fullprint << "log(|det|)=" << value << ", sign=" << sign << std::endl;
     value = matrix2.computeDeterminant();
     fullprint << "det=" << value << std::endl;

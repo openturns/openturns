@@ -74,15 +74,15 @@ int main(int argc, char *argv[])
 
     // Show DDF, PDF and CDF of point
     Point  pointDDF = copula.computeDDF( point );
-    NumericalScalar pointPDF = copula.computePDF( point );
-    NumericalScalar pointCDF = copula.computeCDF( point );
+    Scalar pointPDF = copula.computePDF( point );
+    Scalar pointCDF = copula.computeCDF( point );
     fullprint << "point= " << point
               << " ddf=" << pointDDF
               << " ddf (FD)=" << copula.ContinuousDistribution::computeDDF(point)
               << " pdf=" << pointPDF
               << " cdf=" << pointCDF
               << std::endl;
-    NumericalScalar Survival = copula.computeSurvivalFunction(point);
+    Scalar Survival = copula.computeSurvivalFunction(point);
     fullprint << "Survival      =" << Survival << std::endl;
     fullprint << "Survival (ref)=" << copula.computeSurvivalFunction(point) << std::endl;
     Point InverseSurvival = copula.computeInverseSurvivalFunction(0.95);
@@ -96,10 +96,10 @@ int main(int argc, char *argv[])
     if (copula.getDimension() <= 2)
     {
       // Confidence regions
-      NumericalScalar threshold;
+      Scalar threshold;
       fullprint << "Minimum volume interval=" << copula.computeMinimumVolumeIntervalWithMarginalProbability(0.95, threshold) << std::endl;
       fullprint << "threshold=" << threshold << std::endl;
-      NumericalScalar beta;
+      Scalar beta;
       LevelSet levelSet(copula.computeMinimumVolumeLevelSetWithThreshold(0.95, beta));
       fullprint << "Minimum volume level set=" << levelSet << std::endl;
       fullprint << "beta=" << beta << std::endl;

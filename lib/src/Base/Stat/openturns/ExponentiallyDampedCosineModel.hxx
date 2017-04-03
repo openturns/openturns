@@ -51,17 +51,17 @@ public:
   /** Standard constructor with scale and amplitude parameters */
   ExponentiallyDampedCosineModel(const Point & scale,
                                  const Point & amplitude,
-                                 const NumericalScalar frequency);
+                                 const Scalar frequency);
 
   /** Virtual copy constructor */
   virtual ExponentiallyDampedCosineModel * clone() const;
 
   /** Computation of the covariance function, stationary interface */
   using StationaryCovarianceModel::computeStandardRepresentative;
-  NumericalScalar computeStandardRepresentative(const Point & tau) const;
+  Scalar computeStandardRepresentative(const Point & tau) const;
   using StationaryCovarianceModel::operator();
   CovarianceMatrix operator() (const Point & tau) const;
-  NumericalScalar computeAsScalar(const Point & tau) const;
+  Scalar computeAsScalar(const Point & tau) const;
 
   /** Discretize the covariance function on a given TimeGrid */
   using StationaryCovarianceModel::discretize;
@@ -77,8 +77,8 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Frequency accessor */
-  void setFrequency(const NumericalScalar frequency);
-  NumericalScalar getFrequency() const;
+  void setFrequency(const Scalar frequency);
+  Scalar getFrequency() const;
 
 protected:
 
@@ -98,7 +98,7 @@ public:
 private :
 
   /** Frequency */
-  NumericalScalar frequency_;
+  Scalar frequency_;
 
 } ; /* class ExponentiallyDampedCosineModel */
 

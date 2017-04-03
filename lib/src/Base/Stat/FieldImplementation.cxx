@@ -137,7 +137,7 @@ NSI_const_point FieldImplementation::operator[](const UnsignedInteger index) con
   return values_[index];
 }
 
-NumericalScalar & FieldImplementation::operator () (const UnsignedInteger i,
+Scalar & FieldImplementation::operator () (const UnsignedInteger i,
     const UnsignedInteger j)
 {
   isAlreadyComputedSpatialMean_ = false;
@@ -149,7 +149,7 @@ NumericalScalar & FieldImplementation::operator () (const UnsignedInteger i,
 #endif /* DEBUG_BOUNDCHECKING */
 }
 
-const NumericalScalar & FieldImplementation::operator () (const UnsignedInteger i,
+const Scalar & FieldImplementation::operator () (const UnsignedInteger i,
     const UnsignedInteger j) const
 {
 #ifdef DEBUG_BOUNDCHECKING
@@ -173,7 +173,7 @@ NSI_const_point FieldImplementation::at (const UnsignedInteger index) const
   return (*this)[index];
 }
 
-NumericalScalar & FieldImplementation::at (const UnsignedInteger i,
+Scalar & FieldImplementation::at (const UnsignedInteger i,
     const UnsignedInteger j)
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
@@ -182,7 +182,7 @@ NumericalScalar & FieldImplementation::at (const UnsignedInteger i,
   return (*this)[i][j];
 }
 
-const NumericalScalar & FieldImplementation::at (const UnsignedInteger i,
+const Scalar & FieldImplementation::at (const UnsignedInteger i,
     const UnsignedInteger j) const
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
@@ -216,12 +216,12 @@ void FieldImplementation::setValueAtNearestPosition(const Point & position,
 }
 
 
-Point FieldImplementation::getValueAtNearestTime(const NumericalScalar timestamp) const
+Point FieldImplementation::getValueAtNearestTime(const Scalar timestamp) const
 {
   return getValueAtNearestPosition(Point(1, timestamp));
 }
 
-void FieldImplementation::setValueAtNearestTime(const NumericalScalar timestamp, const Point & val)
+void FieldImplementation::setValueAtNearestTime(const Scalar timestamp, const Point & val)
 {
   isAlreadyComputedSpatialMean_ = false;
   setValueAtNearestPosition(Point(1, timestamp), val);
@@ -283,7 +283,7 @@ String FieldImplementation::__str__(const String & offset) const
 struct FieldSpatialMeanFunctor
 {
   const FieldImplementation & field_;
-  NumericalScalar volumeAccumulator_;
+  Scalar volumeAccumulator_;
   Point accumulator_;
 
   FieldSpatialMeanFunctor(const FieldImplementation & field)
@@ -298,7 +298,7 @@ struct FieldSpatialMeanFunctor
     const UnsignedInteger dimension = field_.getDimension();
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
-      const NumericalScalar volume = field_.mesh_.computeSimplexVolume(i);
+      const Scalar volume = field_.mesh_.computeSimplexVolume(i);
       const Indices simplex(field_.mesh_.getSimplex(i));
       Point meanValue(dimension, 0.0);
       for (UnsignedInteger j = 0; j <= meshDimension; ++j) meanValue += field_.values_[simplex[j]];
@@ -397,14 +397,14 @@ Graph FieldImplementation::draw() const
     const Sample vertices(mesh_.getVertices());
     const Point xMin(vertices.getMin());
     const Point xMax(vertices.getMax());
-    const NumericalScalar delta = std::min(xMax[0] - xMin[0], xMax[1] - xMin[1]) * ResourceMap::GetAsScalar("Field-ArrowRatio");
-    const NumericalScalar rho = ResourceMap::GetAsScalar("Field-ArrowScaling");
+    const Scalar delta = std::min(xMax[0] - xMin[0], xMax[1] - xMin[1]) * ResourceMap::GetAsScalar("Field-ArrowRatio");
+    const Scalar rho = ResourceMap::GetAsScalar("Field-ArrowScaling");
     const UnsignedInteger size = values_.getSize();
     Sample normValues(size, 1);
     for (UnsignedInteger i = 0; i < size; ++i)
       normValues[i][0] = Point(values_[i]).norm();
-    NumericalScalar normMin = normValues.getMin()[0];
-    NumericalScalar normMax = normValues.getMax()[0];
+    Scalar normMin = normValues.getMin()[0];
+    Scalar normMax = normValues.getMax()[0];
     if (normMax == normMin) normMax = normMin + 1.0;
     const UnsignedInteger levelsNumber = ResourceMap::GetAsUnsignedInteger("Field-LevelNumber");
     Description palette(levelsNumber);
@@ -415,7 +415,7 @@ Graph FieldImplementation::draw() const
       {
 	const Point x(vertices[i]);
 	Point v(values_[i]);
-	NumericalScalar arrowLength = v.norm();
+	Scalar arrowLength = v.norm();
 	const UnsignedInteger paletteIndex = static_cast<UnsignedInteger>((levelsNumber - 0.5) * (arrowLength - normMin) / (normMax - normMin));
 	const String color = palette[paletteIndex];
 	v *= rho;
@@ -487,7 +487,7 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
       Description palette(levelsNumber);
       for (UnsignedInteger i = 0; i < levelsNumber; ++i)
       {
-        const NumericalScalar q = (i + 1.0) / (levelsNumber + 1.0);
+        const Scalar q = (i + 1.0) / (levelsNumber + 1.0);
         levels[i] = marginalValues.computeQuantile(q)[0];
         palette[i] = Curve::ConvertFromHSV((270.0 * (levelsNumber - i - 1)) / levelsNumber, 1.0, 1.0);
       }
@@ -499,9 +499,9 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
         UnsignedInteger i0 = currentSimplex[0];
         UnsignedInteger i1 = currentSimplex[1];
         UnsignedInteger i2 = currentSimplex[2];
-        NumericalScalar v0 = marginalValues[i0][0];
-        NumericalScalar v1 = marginalValues[i1][0];
-        NumericalScalar v2 = marginalValues[i2][0];
+        Scalar v0 = marginalValues[i0][0];
+        Scalar v1 = marginalValues[i1][0];
+        Scalar v2 = marginalValues[i2][0];
         // Sort the vertices such that v0 <= v1 <= v2
         if (v0 > v1)
         {
@@ -523,7 +523,7 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
         // For the current simplex, check all levels
         for (UnsignedInteger j = 0; j < levelsNumber; ++j)
         {
-          const NumericalScalar level = levels[j];
+          const Scalar level = levels[j];
           if ((level >= v0) && (level <= v2))
           {
             const Point x0(mesh_.getVertex(i0));
@@ -549,8 +549,8 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
         } // j
       } // i
       // Simple colorbar
-      const NumericalScalar minValue = marginalValues.getMin()[0];
-      const NumericalScalar maxValue = marginalValues.getMax()[0];
+      const Scalar minValue = marginalValues.getMin()[0];
+      const Scalar maxValue = marginalValues.getMax()[0];
       const Point xMin(mesh_.getVertices().getMin());
       for (SignedInteger i = levelsNumber - 1; i >= 0; --i)
       {
@@ -567,8 +567,8 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
       const UnsignedInteger size = marginalValues.getSize();
       Description palette(size);
       for (UnsignedInteger i = 0; i < size; ++i) palette[i] = Curve::ConvertFromHSV((270.0 * (size - i - 1)) / size, 1.0, 1.0);
-      const NumericalScalar minValue = marginalValues.getMin()[0];
-      const NumericalScalar maxValue = marginalValues.getMax()[0];
+      const Scalar minValue = marginalValues.getMin()[0];
+      const Scalar maxValue = marginalValues.getMax()[0];
       const UnsignedInteger simplicesNumber = mesh_.getSimplicesNumber();
       if (simplicesNumber > 0)
       {
@@ -580,7 +580,7 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
           data.add(mesh_.getVertex(simplex[0]));
           data.add(mesh_.getVertex(simplex[1]));
           data.add(mesh_.getVertex(simplex[2]));
-          const NumericalScalar meanValue = (marginalValues[simplex[0]][0] + marginalValues[simplex[1]][0] + marginalValues[simplex[2]][0]) / 3.0;
+          const Scalar meanValue = (marginalValues[simplex[0]][0] + marginalValues[simplex[1]][0] + marginalValues[simplex[2]][0]) / 3.0;
           const String color(palette[static_cast<UnsignedInteger>(round((size - 1) * (meanValue - minValue) / (maxValue - minValue)))]);
           colors.add(color);
         }

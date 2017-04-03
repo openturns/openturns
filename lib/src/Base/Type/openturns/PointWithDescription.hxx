@@ -45,10 +45,10 @@ public:
 
   /** Constructor with size */
   explicit PointWithDescription(const UnsignedInteger size,
-                                         const NumericalScalar value = 0.0);
+                                         const Scalar value = 0.0);
 
   /** Constructor from a collection */
-  PointWithDescription(const Collection<NumericalScalar> & coll);
+  PointWithDescription(const Collection<Scalar> & coll);
 
   /** Constructor from a base class */
   PointWithDescription(const Pointer<Point> & p_base);

@@ -35,93 +35,93 @@ int main(int argc, char *argv[])
     // Student related functions
     {
       // pStudent
-      NumericalScalar nuMin = 0.2;
-      NumericalScalar nuMax = 100.0;
+      Scalar nuMin = 0.2;
+      Scalar nuMax = 100.0;
       UnsignedInteger n1 = 10;
-      NumericalScalar xMin = -10.0;
-      NumericalScalar xMax = 10.0;
+      Scalar xMin = -10.0;
+      Scalar xMax = 10.0;
       UnsignedInteger nX = 20;
       // First, the special cases: small integer nu
       for (UnsignedInteger nu = 1; nu <= 7; ++nu)
       {
         for (UnsignedInteger iX = 0; iX < nX; ++iX)
         {
-          NumericalScalar x = xMin + (xMax - xMin) * iX / (nX - 1);
+          Scalar x = xMin + (xMax - xMin) * iX / (nX - 1);
           fullprint << "pStudent(" << nu << ", " << x << ")=" << DistFunc::pStudent(nu, x) << ", complementary=" << DistFunc::pStudent(nu, x, true) << std::endl;
         }
       }
       // Second, the general case: medium real nu
       for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
       {
-        NumericalScalar nu = nuMin + (nuMax - nuMin) * i1 / (n1 - 1);
+        Scalar nu = nuMin + (nuMax - nuMin) * i1 / (n1 - 1);
         for (UnsignedInteger iX = 0; iX < nX; ++iX)
         {
-          NumericalScalar x = xMin + (xMax - xMin) * iX / (nX - 1);
+          Scalar x = xMin + (xMax - xMin) * iX / (nX - 1);
           fullprint << "pStudent(" << nu << ", " << x << ")=" << DistFunc::pStudent(nu, x) << ", complementary=" << DistFunc::pStudent(nu, x, true) << std::endl;
         }
       }
       // Third, the extreme case: large real nu
-      NumericalScalar logNuMin = 9.0;
-      NumericalScalar logNuMax = 9.0;
+      Scalar logNuMin = 9.0;
+      Scalar logNuMax = 9.0;
       for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
       {
-        NumericalScalar nu = exp(logNuMin + (logNuMax - logNuMin) * i1 / (n1 - 1));
+        Scalar nu = exp(logNuMin + (logNuMax - logNuMin) * i1 / (n1 - 1));
         for (UnsignedInteger iX = 0; iX < nX; ++iX)
         {
-          NumericalScalar x = xMin + (xMax - xMin) * iX / (nX - 1);
+          Scalar x = xMin + (xMax - xMin) * iX / (nX - 1);
           fullprint << "pStudent(" << nu << ", " << x << ")=" << DistFunc::pStudent(nu, x) << ", complementary=" << DistFunc::pStudent(nu, x, true) << std::endl;
         }
       }
     } // pStudent
     {
       // qStudent
-      NumericalScalar nuMin = 0.2;
-      NumericalScalar nuMax = 5.0;
+      Scalar nuMin = 0.2;
+      Scalar nuMax = 5.0;
       UnsignedInteger n1 = 5;
-      NumericalScalar qMin = 0.1;
-      NumericalScalar qMax = 0.9;
+      Scalar qMin = 0.1;
+      Scalar qMax = 0.9;
       UnsignedInteger nQ = 10;
       // First, the special cases: small integer nu
       for (UnsignedInteger nu = 1; nu <= 6; ++nu)
       {
         for (UnsignedInteger iQ = 0; iQ < nQ; ++iQ)
         {
-          NumericalScalar q = qMin + (qMax - qMin) * iQ / (nQ - 1);
+          Scalar q = qMin + (qMax - qMin) * iQ / (nQ - 1);
           fullprint << "qStudent(" << nu << ", " << q << ")=" << DistFunc::qStudent(nu, q) << ", complementary=" << DistFunc::qStudent(nu, q, true) << std::endl;
         }
       }
       // Second, the general case: medium real nu
       for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
       {
-        NumericalScalar nu = nuMin + (nuMax - nuMin) * i1 / (n1 - 1);
+        Scalar nu = nuMin + (nuMax - nuMin) * i1 / (n1 - 1);
         for (UnsignedInteger iQ = 0; iQ < nQ; ++iQ)
         {
-          NumericalScalar q = qMin + (qMax - qMin) * iQ / (nQ - 1);
+          Scalar q = qMin + (qMax - qMin) * iQ / (nQ - 1);
           fullprint << "qStudent(" << nu << ", " << q << ")=" << DistFunc::qStudent(nu, q) << ", complementary=" << DistFunc::qStudent(nu, q, true) << std::endl;
         }
       }
       // Third, the extreme case: large real nu
-      NumericalScalar logNuMin = 9.0;
-      NumericalScalar logNuMax = 12.0;
+      Scalar logNuMin = 9.0;
+      Scalar logNuMax = 12.0;
       for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
       {
-        NumericalScalar nu = exp(logNuMin + (logNuMax - logNuMin) * i1 / (n1 - 1));
+        Scalar nu = exp(logNuMin + (logNuMax - logNuMin) * i1 / (n1 - 1));
         for (UnsignedInteger iQ = 0; iQ < nQ; ++iQ)
         {
-          NumericalScalar q = qMin + (qMax - qMin) * iQ / (nQ - 1);
+          Scalar q = qMin + (qMax - qMin) * iQ / (nQ - 1);
           fullprint << "qStudent(" << nu << ", " << q << ")=" << DistFunc::qStudent(nu, q) << ", complementary=" << DistFunc::qStudent(nu, q, true) << std::endl;
         }
       }
     } // qStudent
     {
       // rStudent
-      NumericalScalar nuMin = 0.2;
-      NumericalScalar nuMax = 5.0;
+      Scalar nuMin = 0.2;
+      Scalar nuMax = 5.0;
       UnsignedInteger n1 = 5;
       UnsignedInteger nR = 10;
       for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
       {
-        NumericalScalar nu = nuMin + (nuMax - nuMin) * i1 / (n1 - 1);
+        Scalar nu = nuMin + (nuMax - nuMin) * i1 / (n1 - 1);
         for (UnsignedInteger iR = 0; iR < nR; ++iR)
         {
           fullprint << "rStudent(" << nu << ")=" << DistFunc::rStudent(nu) << std::endl;

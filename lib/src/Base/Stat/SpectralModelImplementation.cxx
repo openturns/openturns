@@ -142,7 +142,7 @@ UnsignedInteger SpectralModelImplementation::getSpatialDimension() const
 }
 
 /* Computation of the spectral density function */
-HermitianMatrix SpectralModelImplementation::operator() (const NumericalScalar frequency) const
+HermitianMatrix SpectralModelImplementation::operator() (const Scalar frequency) const
 {
   // Spectral density is given as the Fourier transform of the stationary covariance function
   // With the formal expression of stationary covariance, ie C(x,y) = S * rho( |x- y|/|scale|),
@@ -152,9 +152,9 @@ HermitianMatrix SpectralModelImplementation::operator() (const NumericalScalar f
 }
 
 /** Standard representative */
-NumericalComplex SpectralModelImplementation::computeStandardRepresentative(const NumericalScalar frequency) const
+NumericalComplex SpectralModelImplementation::computeStandardRepresentative(const Scalar frequency) const
 {
-  throw NotYetImplementedException(HERE) << "In SpectralModelImplementation::computeStandardRepresentative(const NumericalScalar frequency) const";
+  throw NotYetImplementedException(HERE) << "In SpectralModelImplementation::computeStandardRepresentative(const Scalar frequency) const";
 }
 
 /* Amplitude accessor */
@@ -226,8 +226,8 @@ String SpectralModelImplementation::__str__(const String & offset) const
 /* Drawing method */
 Graph SpectralModelImplementation::draw(const UnsignedInteger rowIndex,
                                         const UnsignedInteger columnIndex,
-					const NumericalScalar minimumFrequency,
-					const NumericalScalar maximumFrequency,
+					const Scalar minimumFrequency,
+					const Scalar maximumFrequency,
 					const UnsignedInteger frequencyNumber,
                                         const Bool module) const
 {
@@ -236,7 +236,7 @@ Graph SpectralModelImplementation::draw(const UnsignedInteger rowIndex,
   Sample data(frequencyNumber, 2);
   for (UnsignedInteger i = 0; i < frequencyNumber; ++i)
   {
-    const NumericalScalar f = (i * minimumFrequency + (frequencyNumber - i - 1.0) * maximumFrequency) / (frequencyNumber - 1.0);
+    const Scalar f = (i * minimumFrequency + (frequencyNumber - i - 1.0) * maximumFrequency) / (frequencyNumber - 1.0);
     const NumericalComplex value((*this)(f)(rowIndex, columnIndex));
     data[i][0] = f;
     if (module) data[i][1] = std::abs(value);

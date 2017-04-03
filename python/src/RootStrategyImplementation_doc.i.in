@@ -148,7 +148,7 @@ value : float
 
 Returns
 -------
-roots : :class:`~openturns.NumericalScalarCollection`
+roots : :class:`~openturns.ScalarCollection`
     All the roots found applying the root strategy.
 
     - If :class:`~openturns.SafeAndSlow`:

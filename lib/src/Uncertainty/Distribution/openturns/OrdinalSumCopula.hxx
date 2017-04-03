@@ -84,14 +84,14 @@ public:
 
   /** Get the PDF of the OrdinalSumCopula */
   using CopulaImplementation::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the OrdinalSumCopula */
   using CopulaImplementation::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the probability content of an interval */
-  NumericalScalar computeProbability(const Interval & interval) const;
+  Scalar computeProbability(const Interval & interval) const;
 
   /** Get the Kendall concordance of the distribution */
   CorrelationMatrix getKendallTau() const;
@@ -108,15 +108,15 @@ public:
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using CopulaImplementation::computeConditionalPDF;
-  virtual NumericalScalar computeConditionalPDF(const NumericalScalar x, const Point & y) const;
+  virtual Scalar computeConditionalPDF(const Scalar x, const Point & y) const;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using CopulaImplementation::computeConditionalCDF;
-  virtual NumericalScalar computeConditionalCDF(const NumericalScalar x, const Point & y) const;
+  virtual Scalar computeConditionalCDF(const Scalar x, const Point & y) const;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
   using CopulaImplementation::computeConditionalQuantile;
-  virtual NumericalScalar computeConditionalQuantile(const NumericalScalar q, const Point & y) const;
+  virtual Scalar computeConditionalQuantile(const Scalar q, const Point & y) const;
 
   /** Parameters value and description accessor */
   PointWithDescriptionCollection getParametersCollection() const;
@@ -151,7 +151,7 @@ public:
 
 private:
   /** Find the block number of a given real wrt the bounds. Returns -1 if negative and -2 if greater than 1 */
-  SignedInteger findBlock(const NumericalScalar x) const;
+  SignedInteger findBlock(const Scalar x) const;
 
   /** Compute the covariance of the distribution */
   void computeCovariance() const;

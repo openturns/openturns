@@ -70,11 +70,11 @@ TNC::TNC (const OptimizationProblem & problem,
           const Point & scale,
           const Point & offset,
           const UnsignedInteger maxCGit,
-          const NumericalScalar eta,
-          const NumericalScalar stepmx,
-          const NumericalScalar accuracy,
-          const NumericalScalar fmin,
-          const NumericalScalar rescale)
+          const Scalar eta,
+          const Scalar stepmx,
+          const Scalar accuracy,
+          const Scalar fmin,
+          const Scalar rescale)
   : OptimizationAlgorithmImplementation(problem)
   , scale_(scale)
   , offset_(offset)
@@ -141,7 +141,7 @@ void TNC::run()
   evaluationInputHistory_ = Sample(0.0, dimension);
   evaluationOutputHistory_ = Sample(0.0, 2);
 
-  NumericalScalar f = -1.0;
+  Scalar f = -1.0;
 
   /*
    * tnc : minimize a function with variables subject to bounds, using
@@ -207,10 +207,10 @@ void TNC::run()
   // Update the result
   const UnsignedInteger size = evaluationInputHistory_.getSize();
 
-  NumericalScalar absoluteError = -1.0;
-  NumericalScalar relativeError = -1.0;
-  NumericalScalar residualError = -1.0;
-  NumericalScalar constraintError = -1.0;
+  Scalar absoluteError = -1.0;
+  Scalar relativeError = -1.0;
+  Scalar residualError = -1.0;
+  Scalar constraintError = -1.0;
 
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
@@ -241,7 +241,7 @@ void TNC::run()
 
   /* Store the result */
   result_.setOptimalPoint(x);
-  const NumericalScalar sign = getProblem().isMinimization() ? 1.0 : -1.0;
+  const Scalar sign = getProblem().isMinimization() ? 1.0 : -1.0;
   result_.setOptimalValue(Point(1, sign * f));
   result_.setLagrangeMultipliers(computeLagrangeMultipliers(x));
 
@@ -292,56 +292,56 @@ void TNC::setMaxCGit(const UnsignedInteger maxCGit)
 }
 
 /* Eta accessor */
-NumericalScalar TNC::getEta() const
+Scalar TNC::getEta() const
 {
   return eta_;
 }
 
-void TNC::setEta(const NumericalScalar eta)
+void TNC::setEta(const Scalar eta)
 {
   eta_ = eta;
 }
 
 /* Stepmx accessor */
-NumericalScalar TNC::getStepmx() const
+Scalar TNC::getStepmx() const
 {
   return stepmx_;
 }
 
-void TNC::setStepmx(const NumericalScalar stepmx)
+void TNC::setStepmx(const Scalar stepmx)
 {
   stepmx_ = stepmx;
 }
 
 /* Accuracy accessor */
-NumericalScalar TNC::getAccuracy() const
+Scalar TNC::getAccuracy() const
 {
   return accuracy_;
 }
 
-void TNC::setAccuracy(const NumericalScalar accuracy)
+void TNC::setAccuracy(const Scalar accuracy)
 {
   accuracy_ = accuracy;
 }
 
 /* Fmin accessor */
-NumericalScalar TNC::getFmin() const
+Scalar TNC::getFmin() const
 {
   return fmin_;
 }
 
-void TNC::setFmin(const NumericalScalar fmin)
+void TNC::setFmin(const Scalar fmin)
 {
   fmin_ = fmin;
 }
 
 /* Rescale accessor */
-NumericalScalar TNC::getRescale() const
+Scalar TNC::getRescale() const
 {
   return rescale_;
 }
 
-void TNC::setRescale(const NumericalScalar rescale)
+void TNC::setRescale(const Scalar rescale)
 {
   rescale_ = rescale;
 }
@@ -402,17 +402,17 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   /* Convert the input vector in OpenTURNS format */
   const UnsignedInteger dimension = algorithm->getStartingPoint().getDimension();
   Point inPoint(dimension);
-  memcpy(&inPoint[0], &x[0], dimension * sizeof(NumericalScalar));
+  memcpy(&inPoint[0], &x[0], dimension * sizeof(Scalar));
   const OptimizationProblem problem(algorithm->getProblem());
 
   /* Used for history purpose. We store the value of the objective function in the first component and the norm of its gradient in the second component. */
   Point outPoint(2);
 
   /* Compute the objective function at inPoint */
-  const NumericalScalar result = problem.getObjective().operator()(inPoint)[0];
+  const Scalar result = problem.getObjective().operator()(inPoint)[0];
   outPoint[0] = result;
 
-  const NumericalScalar sign = problem.isMinimization() ? 1.0 : -1.0;
+  const Scalar sign = problem.isMinimization() ? 1.0 : -1.0;
   *f = sign * result;
 
   Point objectiveGradient;
@@ -427,7 +427,7 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   }
 
   /* Convert the gradient into the output format */
-  memcpy(&g[0], &objectiveGradient[0], dimension * sizeof(NumericalScalar));
+  memcpy(&g[0], &objectiveGradient[0], dimension * sizeof(Scalar));
 
   outPoint[1] = objectiveGradient.norm();
 

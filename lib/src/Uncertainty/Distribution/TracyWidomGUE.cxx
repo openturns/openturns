@@ -81,7 +81,7 @@ Point TracyWidomGUE::computeDDF(const Point & point) const
 
 
 /* Get the PDF of the distribution */
-NumericalScalar TracyWidomGUE::computePDF(const Point & point) const
+Scalar TracyWidomGUE::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -90,7 +90,7 @@ NumericalScalar TracyWidomGUE::computePDF(const Point & point) const
 
 
 /* Get the CDF of the distribution */
-NumericalScalar TracyWidomGUE::computeCDF(const Point & point) const
+Scalar TracyWidomGUE::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -114,14 +114,14 @@ Point TracyWidomGUE::computeCDFGradient(const Point & point) const
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar TracyWidomGUE::computeScalarQuantile(const NumericalScalar prob,
+Scalar TracyWidomGUE::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
-  throw NotYetImplementedException(HERE) << "In TracyWidomGUE::computeScalarQuantile(const NumericalScalar prob, const Bool tail) const";
+  throw NotYetImplementedException(HERE) << "In TracyWidomGUE::computeScalarQuantile(const Scalar prob, const Bool tail) const";
 }
 
 /* Get the roughness, i.e. the L2-norm of the PDF */
-NumericalScalar TracyWidomGUE::getRoughness() const
+Scalar TracyWidomGUE::getRoughness() const
 {
   throw NotYetImplementedException(HERE) << "In TracyWidomGUE::getRoughness() const";
 }
@@ -159,7 +159,7 @@ Point TracyWidomGUE::getKurtosis() const
 void TracyWidomGUE::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
-  const NumericalScalar sigma = getStandardDeviation()[0];
+  const Scalar sigma = getStandardDeviation()[0];
   covariance_(0, 0) = sigma * sigma;
   isAlreadyComputedCovariance_ = true;
 }

@@ -57,7 +57,7 @@ public:
                                    const EvaluationPointer & p_evaluation);
 
   /** Second parameter constructor */
-  CenteredFiniteDifferenceGradient(const NumericalScalar epsilon,
+  CenteredFiniteDifferenceGradient(const Scalar epsilon,
                                    const EvaluationPointer & p_evaluation);
 
   /** Constructor from finite difference step */

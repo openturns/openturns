@@ -49,7 +49,7 @@ Tensor::Tensor(const UnsignedInteger rowDim,
 Tensor::Tensor(const UnsignedInteger rowDim,
                const UnsignedInteger colDim,
                const UnsignedInteger sheetDim,
-               const Collection<NumericalScalar> & elementsValues)
+               const Collection<Scalar> & elementsValues)
   : TypedInterfaceObject<TensorImplementation>(new TensorImplementation(rowDim, colDim, sheetDim, elementsValues))
 {
   // Nothing to do
@@ -63,7 +63,7 @@ Tensor::Tensor(const Implementation & i)
 }
 
 /* Set small elements to zero */
-Tensor Tensor::clean(const NumericalScalar & threshold) const
+Tensor Tensor::clean(const Scalar & threshold) const
 {
   return Pointer<TensorImplementation>(getImplementation()->clean(threshold).clone());
 }
@@ -126,7 +126,7 @@ String Tensor::__str__(const String & offset) const
 
 /* Operator () gives access to the elements of the tensor (to modify these elements) */
 /* The element of the tensor is designated by its row number i, its column number j and its sheet number k */
-NumericalScalar & Tensor::operator () (const UnsignedInteger i,
+Scalar & Tensor::operator () (const UnsignedInteger i,
                                        const UnsignedInteger j,
                                        const UnsignedInteger k)
 {
@@ -136,7 +136,7 @@ NumericalScalar & Tensor::operator () (const UnsignedInteger i,
 
 /* Operator () gives access to the elements of the tensor (read only) */
 /* The element of the tensor is designated by its row number i, its column number j and its sheet number k */
-const NumericalScalar & Tensor::operator () (const UnsignedInteger i,
+const Scalar & Tensor::operator () (const UnsignedInteger i,
     const UnsignedInteger j,
     const UnsignedInteger k) const
 {
@@ -189,7 +189,7 @@ Bool Tensor::operator == (const Tensor & rhs) const
   return (*(lhs.getImplementation()) == *(rhs.getImplementation()) );
 }
 
-const NumericalScalar* Tensor::__baseaddress__() const
+const Scalar* Tensor::__baseaddress__() const
 {
   return getImplementation()->__baseaddress__();
 }

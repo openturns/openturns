@@ -30,13 +30,13 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Point);
 
-static const Factory<PersistentCollection<NumericalScalar> > Factory_PersistentCollection_NumericalScalar;
+static const Factory<PersistentCollection<Scalar> > Factory_PersistentCollection_Scalar;
 
 static const Factory<Point> Factory_Point;
 
 /* Default constructor */
 Point::Point()
-  : PersistentCollection<NumericalScalar>() //,
+  : PersistentCollection<Scalar>() //,
   // p_description_()
 {
   // Nothing to do
@@ -44,16 +44,16 @@ Point::Point()
 
 /* Constructor with size */
 Point::Point(const UnsignedInteger size,
-                               const NumericalScalar value)
-  : PersistentCollection<NumericalScalar>(size, value)
+                               const Scalar value)
+  : PersistentCollection<Scalar>(size, value)
 {
   // Nothing to do
 }
 
 
 /* Constructor from a collection */
-Point::Point(const Collection<NumericalScalar> & coll)
-  : PersistentCollection<NumericalScalar>(coll)
+Point::Point(const Collection<Scalar> & coll)
+  : PersistentCollection<Scalar>(coll)
 {
   // Nothing to do
 }
@@ -76,7 +76,7 @@ Description Point::getDescription() const
 }
 
 /* Set small elements to zero */
-Point Point::clean(const NumericalScalar threshold) const
+Point Point::clean(const Scalar threshold) const
 {
   // Nothing to do for nonpositive threshold
   if (threshold <= 0.0) return *this;
@@ -84,7 +84,7 @@ Point Point::clean(const NumericalScalar threshold) const
   Point result(size, 0.0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalScalar value = (*this)[i];
+    const Scalar value = (*this)[i];
     // Things are done this way to prevent spurious -0.0
     if (std::abs(value) < 0.5 * threshold) result[i] = 0.0;
     else result[i] = threshold * round(value / threshold);
@@ -99,30 +99,30 @@ String Point::__repr__() const
   return OSS(true) << "class=" << Point::GetClassName()
          << " name=" << getName()
          << " dimension=" << getDimension()
-         << " values=" << PersistentCollection<NumericalScalar>::__repr__();
+         << " values=" << PersistentCollection<Scalar>::__repr__();
 }
 
 String Point::__str__(const String & offset) const
 {
-  return PersistentCollection<NumericalScalar>::__str__(offset);
+  return PersistentCollection<Scalar>::__str__(offset);
 }
 
 /* Erase the elements between first and last */
 Point::iterator Point::erase(const iterator first, const iterator last)
 {
-  return PersistentCollection<NumericalScalar>::erase(first, last);
+  return PersistentCollection<Scalar>::erase(first, last);
 }
 
 /* Erase the element pointed by position */
 Point::iterator Point::erase(iterator position)
 {
-  return PersistentCollection<NumericalScalar>::erase(position);
+  return PersistentCollection<Scalar>::erase(position);
 }
 
 /* Erase the element pointed by position */
 Point::iterator Point::erase(UnsignedInteger position)
 {
-  return PersistentCollection<NumericalScalar>::erase(begin() + position);
+  return PersistentCollection<Scalar>::erase(begin() + position);
 }
 
 
@@ -211,7 +211,7 @@ Point & Point::operator -=(const Point & other)
 
 /* Product operator */
 Point operator *(const Point & point,
-                          const NumericalScalar scalar)
+                          const Scalar scalar)
 {
   int n = point.getDimension();
   double alpha = scalar;
@@ -221,7 +221,7 @@ Point operator *(const Point & point,
   return result;
 }
 
-Point operator *(const NumericalScalar scalar,
+Point operator *(const Scalar scalar,
                           const Point & point)
 {
   int n = point.getDimension();
@@ -233,7 +233,7 @@ Point operator *(const NumericalScalar scalar,
 }
 
 /*  In-place product operator */
-Point & Point::operator *=(const NumericalScalar scalar)
+Point & Point::operator *=(const Scalar scalar)
 {
   int n = getDimension();
   double alpha = scalar;
@@ -244,7 +244,7 @@ Point & Point::operator *=(const NumericalScalar scalar)
 
 /* Division operator */
 Point operator /(const Point & point,
-                          const NumericalScalar scalar)
+                          const Scalar scalar)
 {
   if (scalar == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot divide by 0.";
   int n = point.getDimension();
@@ -256,7 +256,7 @@ Point operator /(const Point & point,
 }
 
 /*  In-place division operator */
-Point & Point::operator /=(const NumericalScalar scalar)
+Point & Point::operator /=(const Scalar scalar)
 {
   if (scalar == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot divide by 0.";
   int n = getDimension();
@@ -268,7 +268,7 @@ Point & Point::operator /=(const NumericalScalar scalar)
 
 
 /* Dot product operator */
-NumericalScalar dot(const Point & lhs,
+Scalar dot(const Point & lhs,
                     const Point & rhs)
 {
   int n = lhs.getDimension();
@@ -288,7 +288,7 @@ NumericalScalar dot(const Point & lhs,
 Bool operator ==(const Point & lhs,
                  const Point & rhs)
 {
-  return static_cast<const PersistentCollection<NumericalScalar> >(lhs) == static_cast<const PersistentCollection<NumericalScalar> >(rhs);
+  return static_cast<const PersistentCollection<Scalar> >(lhs) == static_cast<const PersistentCollection<Scalar> >(rhs);
 }
 
 
@@ -297,13 +297,13 @@ Bool operator ==(const Point & lhs,
 Bool operator <(const Point & lhs,
                 const Point & rhs)
 {
-  return static_cast<const PersistentCollection<NumericalScalar> >(lhs) < static_cast<const PersistentCollection<NumericalScalar> >(rhs);
+  return static_cast<const PersistentCollection<Scalar> >(lhs) < static_cast<const PersistentCollection<Scalar> >(rhs);
 }
 
 
 
 /*  Norm */
-NumericalScalar Point::norm() const
+Scalar Point::norm() const
 {
   int n(getDimension());
   int one(1);
@@ -311,7 +311,7 @@ NumericalScalar Point::norm() const
 }
 
 /* l1-norm */
-NumericalScalar Point::norm1() const
+Scalar Point::norm1() const
 {
   int n(getDimension());
   int one(1);
@@ -319,17 +319,17 @@ NumericalScalar Point::norm1() const
 }
 
 /* linf-norm */
-NumericalScalar Point::normInf() const
+Scalar Point::normInf() const
 {
   const UnsignedInteger dimension = getDimension();
   if (dimension == 0) return 0.0;
-  const NumericalScalar minValue = *std::min_element(begin(), end());
-  const NumericalScalar maxValue = *std::max_element(begin(), end());
+  const Scalar minValue = *std::min_element(begin(), end());
+  const Scalar maxValue = *std::max_element(begin(), end());
   return std::max(maxValue, -minValue);
 }
 
 /*  Norm^2 */
-NumericalScalar Point::normSquare() const
+Scalar Point::normSquare() const
 {
   return dot(*this, *this);
 }
@@ -338,7 +338,7 @@ NumericalScalar Point::normSquare() const
 /*  Normalize */
 Point Point::normalize() const
 {
-  const NumericalScalar theNorm = norm();
+  const Scalar theNorm = norm();
   if (theNorm == 0.0) throw InternalException(HERE) << "Error: cannot normalize a null vector";
   return (*this) / theNorm;
 }
@@ -346,7 +346,7 @@ Point Point::normalize() const
 /*  Square normalize */
 Point Point::normalizeSquare() const
 {
-  const NumericalScalar theNormSquare = normSquare();
+  const Scalar theNormSquare = normSquare();
   if (theNormSquare == 0.0) throw InternalException(HERE) << "Error: cannot square normalize a null vector";
   Point result(getDimension());
   for (UnsignedInteger i = 0; i < getDimension(); ++i) result[i] = pow((*this)[i], 2) / theNormSquare;
@@ -356,14 +356,14 @@ Point Point::normalizeSquare() const
 /* Method save() stores the object through the StorageManager */
 void Point::save(Advocate & adv) const
 {
-  PersistentCollection<NumericalScalar>::save(adv);
+  PersistentCollection<Scalar>::save(adv);
 }
 
 
 /* Method load() reloads the object from the StorageManager */
 void Point::load(Advocate & adv)
 {
-  PersistentCollection<NumericalScalar>::load(adv);
+  PersistentCollection<Scalar>::load(adv);
 }
 
 

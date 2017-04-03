@@ -40,7 +40,7 @@ class OT_API SymmetricMatrix :
   CLASSNAME;
 
 #ifndef SWIG
-  friend SymmetricMatrix operator * (const NumericalScalar & s,
+  friend SymmetricMatrix operator * (const Scalar & s,
                                      const SymmetricMatrix & m);
 #endif
 
@@ -73,7 +73,7 @@ public:
   /** do not correspond, either the collection is truncated */
   /** or the rest of the matrix is filled with zeros */
   SymmetricMatrix(const UnsignedInteger dim,
-                  const NumericalScalarCollection & elementsValues);
+                  const ScalarCollection & elementsValues);
 
   /** Check if the internal representation is actually symmetric */
   void checkSymmetry() const;
@@ -93,12 +93,12 @@ public:
 #ifndef SWIG
   /** Operator () gives access to the elements of the matrix (to modify these elements) */
   /** The element of the matrix is designated by its row number i and its column number j */
-  NumericalScalar & operator () (const UnsignedInteger i,
+  Scalar & operator () (const UnsignedInteger i,
                                  const UnsignedInteger j);
 
   /** Operator () gives access to the elements of the matrix (read only) */
   /** The element of the matrix is designated by its row number i and its column number j */
-  const NumericalScalar & operator () (const UnsignedInteger i,
+  const Scalar & operator () (const UnsignedInteger i,
                                        const UnsignedInteger j) const;
 #endif
 
@@ -127,11 +127,11 @@ public:
   /** Multiplication with a Point (must have consistent dimensions) */
   Point operator * (const Point & p) const;
 
-  /** Multiplication with a NumericalScalar */
-  SymmetricMatrix operator * (const NumericalScalar & s) const;
+  /** Multiplication with a Scalar */
+  SymmetricMatrix operator * (const Scalar & s) const;
 
-  /** Division by a NumericalScalar*/
-  SymmetricMatrix operator / (const NumericalScalar & s) const;
+  /** Division by a Scalar*/
+  SymmetricMatrix operator / (const Scalar & s) const;
 
   /** Resolution of a linear system */
   Point solveLinearSystem(const Point & b,
@@ -141,9 +141,9 @@ public:
                            const Bool keepIntact = true);
 
   /** Compute determinant */
-  NumericalScalar computeLogAbsoluteDeterminant(NumericalScalar & sign,
+  Scalar computeLogAbsoluteDeterminant(Scalar & sign,
       const Bool keepIntact = true);
-  NumericalScalar computeDeterminant(const Bool keepIntact = true);
+  Scalar computeDeterminant(const Bool keepIntact = true);
 
   /** Compute eigenvalues */
   Point computeEigenValues(const Bool keepIntact = true);
@@ -162,7 +162,7 @@ private:
 
 }; /* class SymmetricMatrix */
 
-inline SymmetricMatrix operator * (const NumericalScalar & s,
+inline SymmetricMatrix operator * (const Scalar & s,
                                    const SymmetricMatrix & m)
 {
   return m.operator * (s);

@@ -174,7 +174,7 @@ void ConditionalDistribution::setParameter(const Point & parameter)
 {
   Distribution conditioningDistribution(conditioningDistribution_);
   conditioningDistribution.setParameter(parameter);
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   Distribution conditionedDistribution(conditionedDistribution_);
   *this = ConditionalDistribution(conditionedDistribution, conditioningDistribution);
   setWeight(w);
@@ -284,7 +284,7 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
     setIntegrationNodesNumber(std::min(maximumNumber, candidateNumber));
     // Normalization factor for the weights
     // Not needed as the Mixture will be automatically normalized
-    // const NumericalScalar normalizationFactor(Interval(continuousLowerBounds, continuousUpperBounds).getNumericalVolume());
+    // const Scalar normalizationFactor(Interval(continuousLowerBounds, continuousUpperBounds).getNumericalVolume());
     continuousAtomsNumber = continuousNodes_.getSize();
   } // continuousDimension > 0
 
@@ -303,7 +303,7 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
       Point discreteNode(discreteDimension);
       for (UnsignedInteger j = 0; j < discreteDimension; ++j)
       {
-        const NumericalScalar rho = fractions[i][j];
+        const Scalar rho = fractions[i][j];
         const UnsignedInteger length = discreteSupports[j].getSize();
         const UnsignedInteger index = static_cast<UnsignedInteger>(round(rho * (length - 1)));
         discreteNode[j] = discreteSupports[j][index][0];
@@ -341,7 +341,7 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
       const Point discreteNode(discreteNodes_[i]);
       for (UnsignedInteger j = 0; j < discreteDimension; ++j)
         currentY[discreteMarginalsIndices_[j]] = discreteNode[j];
-      const NumericalScalar w = conditioningDistribution.computePDF(currentY);
+      const Scalar w = conditioningDistribution.computePDF(currentY);
       Distribution dist(conditionedDistribution);
       dist.setWeight(w);
       dist.setParameter(linkFunction_(currentY));
@@ -370,7 +370,7 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
       const Point continuousNode(continuousNodes_[i]);
       for (UnsignedInteger j = 0; j < continuousDimension; ++j)
         currentY[continuousMarginalsIndices_[j]] = continuousLowerBounds_[j] + 0.5 * (1.0 + continuousNode[j]) * (continuousUpperBounds_[j] - continuousLowerBounds_[j]);
-      const NumericalScalar w = conditioningDistribution.computePDF(currentY) * continuousWeights_[i];
+      const Scalar w = conditioningDistribution.computePDF(currentY) * continuousWeights_[i];
       Distribution dist(conditionedDistribution);
       dist.setWeight(w);
       dist.setParameter(linkFunction_(currentY));
@@ -406,7 +406,7 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
       const Point continuousNode(continuousNodes_[j]);
       for (UnsignedInteger k = 0; k < continuousDimension; ++k)
         currentY[continuousMarginalsIndices_[k]] = continuousLowerBounds_[k] + 0.5 * (1.0 + continuousNode[k]) * (continuousUpperBounds_[k] - continuousLowerBounds_[k]);
-      const NumericalScalar w = conditioningDistribution.computePDF(currentY) * continuousWeights_[j];
+      const Scalar w = conditioningDistribution.computePDF(currentY) * continuousWeights_[j];
       Distribution dist(conditionedDistribution);
       dist.setWeight(w);
       dist.setParameter(linkFunction_(currentY));
@@ -422,7 +422,7 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
 Point ConditionalDistribution::computeExpectation(const Function & f,
     const Point & thetaStar) const
 {
-  const NumericalScalar epsilon = ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon");
+  const Scalar epsilon = ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon");
   const UnsignedInteger conditioningDimension = conditioningDistribution_.getDimension();
   if (f.getInputDimension() != conditioningDimension) throw InvalidArgumentException(HERE) << "Error: the given function must have an input dimension=" << f.getInputDimension() << " equal to the conditioning dimension=" << conditioningDimension;
   if (thetaStar.getDimension() != conditioningDimension) throw InvalidArgumentException(HERE) << "Error: the given upper bound must have a dimension=" << thetaStar.getDimension() << " equal to the conditioning dimension=" << conditioningDimension;
@@ -450,7 +450,7 @@ Point ConditionalDistribution::computeExpectation(const Function & f,
     // First, the Dirac components. It can be either a Dirac distribution or a userDefined distribution, so we check the support directly
     for (UnsignedInteger i = 0; i < diracDimension; ++i)
     {
-      const NumericalScalar value = diracValues_[i];
+      const Scalar value = diracValues_[i];
       // If the hyper rectangle does not intersect the manifold that supports the total mass, then value = 0
       if (value > thetaStar[i] + epsilon) return result;
       theta[diracMarginalsIndices_[i]] = value;
@@ -465,14 +465,14 @@ Point ConditionalDistribution::computeExpectation(const Function & f,
       Bool rejectNode = false;
       for (UnsignedInteger j = 0; j < discreteDimension; ++j)
       {
-        const NumericalScalar value = discreteNode[j];
+        const Scalar value = discreteNode[j];
         currentTheta[discreteMarginalsIndices_[j]] = value;
         rejectNode = (value > thetaStar[i] + epsilon);
         if (rejectNode) break;
       }
       // Skip the current integration point if the current sub-manifold is outside of the integration region
       if (rejectNode) continue;
-      const NumericalScalar w = conditioningDistribution_.computePDF(currentTheta);
+      const Scalar w = conditioningDistribution_.computePDF(currentTheta);
       result += w * f(currentTheta);
     } // Discrete measure
     return result;
@@ -490,7 +490,7 @@ Point ConditionalDistribution::computeExpectation(const Function & f,
     // First, the Dirac components
     for (UnsignedInteger i = 0; i < diracDimension; ++i)
     {
-      const NumericalScalar value = diracValues_[i];
+      const Scalar value = diracValues_[i];
       // If the hyper rectangle does not intersect the manifold that supports the total mass, then cdf = 0
       if (value > thetaStar[i] + epsilon) return result;
       theta[diracMarginalsIndices_[i]] = value;
@@ -504,7 +504,7 @@ Point ConditionalDistribution::computeExpectation(const Function & f,
       for (UnsignedInteger j = 0; j < continuousDimension; ++j)
         currentTheta[continuousMarginalsIndices_[j]] = continuousLowerBounds_[j] + 0.5 * (1.0 + continuousNode[j]) * (subPoint[j] - continuousLowerBounds_[j]);
       // Current contribution to the CDF
-      const NumericalScalar w = conditioningDistribution_.computePDF(currentTheta) * continuousWeights_[i];
+      const Scalar w = conditioningDistribution_.computePDF(currentTheta) * continuousWeights_[i];
       const Point fTheta(f(currentTheta));
       result += w * f(currentTheta);
     } // Continuous measure
@@ -521,7 +521,7 @@ Point ConditionalDistribution::computeExpectation(const Function & f,
   // First, the Dirac components
   for (UnsignedInteger i = 0; i < diracDimension; ++i)
   {
-    const NumericalScalar value = diracValues_[i];
+    const Scalar value = diracValues_[i];
     // If the hyper rectangle does not intersect the manifold that supports the total mass, then cdf = 0
     if (value > thetaStar[i] + epsilon) return result;
     theta[diracMarginalsIndices_[i]] = value;
@@ -536,7 +536,7 @@ Point ConditionalDistribution::computeExpectation(const Function & f,
     Bool rejectNode;
     for (UnsignedInteger j = 0; j < discreteDimension; ++j)
     {
-      const NumericalScalar value = discreteNode[j];
+      const Scalar value = discreteNode[j];
       currentTheta[discreteMarginalsIndices_[j]] = value;
       rejectNode = (value > thetaStar[i] + epsilon);
       if (rejectNode) break;
@@ -550,7 +550,7 @@ Point ConditionalDistribution::computeExpectation(const Function & f,
       const Point continuousNode(continuousNodes_[j]);
       for (UnsignedInteger k = 0; k < continuousDimension; ++k)
         currentTheta[continuousMarginalsIndices_[k]] = continuousLowerBounds_[k] + 0.5 * (1.0 + continuousNode[k]) * (subPoint[k] - continuousLowerBounds_[k]);
-      const NumericalScalar w = conditioningDistribution_.computePDF(currentTheta) * continuousWeights_[j];
+      const Scalar w = conditioningDistribution_.computePDF(currentTheta) * continuousWeights_[j];
       const Point fTheta(f(currentTheta));
       result += w * f(currentTheta);
     } // Continuous atoms

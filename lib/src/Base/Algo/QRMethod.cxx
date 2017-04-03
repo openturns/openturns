@@ -176,7 +176,7 @@ Point QRMethod::getGramInverseDiag() const
   MatrixImplementation::const_iterator invRT_iterator(invRT.begin());
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
-    NumericalScalar value = 0.0;
+    Scalar value = 0.0;
     for (UnsignedInteger j = 0; j < basisSize; ++ j)
     {
       value += (*invRT_iterator) * (*invRT_iterator);
@@ -187,14 +187,14 @@ Point QRMethod::getGramInverseDiag() const
   return diag;
 }
 
-NumericalScalar QRMethod::getGramInverseTrace() const
+Scalar QRMethod::getGramInverseTrace() const
 {
   // G^{-1}=R^-1*R*^-T
   const UnsignedInteger dimension = r_.getNbRows();
   const MatrixImplementation b(*IdentityMatrix(dimension).getImplementation());
   const MatrixImplementation invRT(r_.getImplementation()->solveLinearSystemTri(b, true, false, true));
 
-  NumericalScalar traceInverse = 0.0;
+  Scalar traceInverse = 0.0;
   for (MatrixImplementation::const_iterator it = invRT.begin(); it != invRT.end(); ++it)
   {
     traceInverse += (*it) * (*it);

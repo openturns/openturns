@@ -48,8 +48,8 @@ public:
   explicit Interval(const UnsignedInteger dimension = 0);
 
   /** Parameters constructor, simplified for 1D case */
-  Interval(const NumericalScalar lowerBound,
-           const NumericalScalar upperBound);
+  Interval(const Scalar lowerBound,
+           const Scalar upperBound);
 
   /** Parameters constructor */
   Interval(const Point & lowerBound,
@@ -92,10 +92,10 @@ public:
   Interval & operator -=(const Interval & other);
 
   /** Product operator */
-  Interval operator *(const NumericalScalar scalar) const;
+  Interval operator *(const Scalar scalar) const;
 
   /**  In-place product operator */
-  Interval & operator *=(const NumericalScalar scalar);
+  Interval & operator *=(const Scalar scalar);
 
   /** Comparison operator */
   Bool operator == (const Interval & other) const;

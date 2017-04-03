@@ -94,10 +94,10 @@ public:
   virtual Point getWeights() const;
 
   /** Residual accessor */
-  virtual NumericalScalar getResidual() const;
+  virtual Scalar getResidual() const;
 
   /** Relative error accessor */
-  virtual NumericalScalar getRelativeError() const;
+  virtual Scalar getRelativeError() const;
 
   /** Relative error accessor */
   virtual Point getCoefficients() const;
@@ -128,10 +128,10 @@ protected:
   Point alpha_k_p_;
 
   /** Residual */
-  NumericalScalar residual_p_;
+  Scalar residual_p_;
 
   /** Relative error */
-  NumericalScalar relativeError_p_;
+  Scalar relativeError_p_;
 
   /** The measureing function for projection */
   Distribution measure_;

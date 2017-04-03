@@ -38,11 +38,11 @@ public:
 
   /** Anderson Darling normality test for normal distributions. */
   static TestResult AndersonDarlingNormal(const Sample & sample,
-                                          const NumericalScalar level = 0.95);
+                                          const Scalar level = 0.95);
 
   /** Cramer Von Mises normality test for normal distributions. */
   static TestResult CramerVonMisesNormal(const Sample & sample,
-                                         const NumericalScalar level = 0.95);
+                                         const Scalar level = 0.95);
 
 private:
   NormalityTest();

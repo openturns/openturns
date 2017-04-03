@@ -144,13 +144,13 @@ void SobolIndicesAlgorithm::setBootstrapSize(const UnsignedInteger bootstrapSize
 }
 
 // Getter for bootstrap confidence level
-NumericalScalar SobolIndicesAlgorithm::getBootstrapConfidenceLevel() const
+Scalar SobolIndicesAlgorithm::getBootstrapConfidenceLevel() const
 {
   return getImplementation()->getBootstrapConfidenceLevel();
 }
 
 // Setter for bootstrap confidence level
-void SobolIndicesAlgorithm::setBootstrapConfidenceLevel(const NumericalScalar confidenceLevel)
+void SobolIndicesAlgorithm::setBootstrapConfidenceLevel(const Scalar confidenceLevel)
 {
   copyOnWrite();
   getImplementation()->setBootstrapConfidenceLevel(confidenceLevel);

@@ -170,12 +170,12 @@ void Drawable::setCenter(const Point & center)
 }
 
 /* Accessor for radius */
-NumericalScalar Drawable::getRadius() const
+Scalar Drawable::getRadius() const
 {
   return getImplementation()->getRadius();
 }
 
-void Drawable::setRadius(const NumericalScalar radius)
+void Drawable::setRadius(const Scalar radius)
 {
   copyOnWrite();
   getImplementation()->setRadius(radius);
@@ -206,12 +206,12 @@ void Drawable::setPalette(const Description & palette)
 }
 
 /* Accessor for origin */
-NumericalScalar Drawable::getOrigin() const
+Scalar Drawable::getOrigin() const
 {
   return getImplementation()->getOrigin();
 }
 
-void Drawable::setOrigin(const NumericalScalar origin)
+void Drawable::setOrigin(const Scalar origin)
 {
   copyOnWrite();
   getImplementation()->setOrigin(origin);
@@ -373,43 +373,43 @@ String Drawable::ConvertFromRGBA(const UnsignedInteger red,
 }
 
 /* Convert an RGB triplet to a valid hexadecimal code */
-String Drawable::ConvertFromRGB(const NumericalScalar red,
-                                const NumericalScalar green,
-                                const NumericalScalar blue)
+String Drawable::ConvertFromRGB(const Scalar red,
+                                const Scalar green,
+                                const Scalar blue)
 {
   return DrawableImplementation::ConvertFromRGB(red, green, blue);
 }
 
 /* Convert an RGBA quadruplet to a valid hexadecimal code */
-String Drawable::ConvertFromRGBA(const NumericalScalar red,
-                                 const NumericalScalar green,
-                                 const NumericalScalar blue,
-                                 const NumericalScalar alpha)
+String Drawable::ConvertFromRGBA(const Scalar red,
+                                 const Scalar green,
+                                 const Scalar blue,
+                                 const Scalar alpha)
 {
   return DrawableImplementation::ConvertFromRGBA(red, green, blue, alpha);
 }
 
 /* Convert an HSV triplet into an RGB triplet */
-Point Drawable::ConvertFromHSVIntoRGB(const NumericalScalar hue,
-    const NumericalScalar saturation,
-    const NumericalScalar value)
+Point Drawable::ConvertFromHSVIntoRGB(const Scalar hue,
+    const Scalar saturation,
+    const Scalar value)
 {
   return DrawableImplementation::ConvertFromHSVIntoRGB(hue, saturation, value);
 }
 
 /* Convert an HSV triplet to a valid hexadecimal code */
-String Drawable::ConvertFromHSV(const NumericalScalar hue,
-                                const NumericalScalar saturation,
-                                const NumericalScalar value)
+String Drawable::ConvertFromHSV(const Scalar hue,
+                                const Scalar saturation,
+                                const Scalar value)
 {
   return DrawableImplementation::ConvertFromHSV(hue, saturation, value);
 }
 
 /* Convert an HSVA quadruplet to a valid hexadecimal code */
-String Drawable::ConvertFromHSVA(const NumericalScalar hue,
-                                 const NumericalScalar saturation,
-                                 const NumericalScalar value,
-                                 const NumericalScalar alpha)
+String Drawable::ConvertFromHSVA(const Scalar hue,
+                                 const Scalar saturation,
+                                 const Scalar value,
+                                 const Scalar alpha)
 {
   return DrawableImplementation::ConvertFromHSVA(hue, saturation, value, alpha);
 }

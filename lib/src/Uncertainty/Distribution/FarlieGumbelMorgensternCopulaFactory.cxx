@@ -66,7 +66,7 @@ FarlieGumbelMorgensternCopula FarlieGumbelMorgensternCopulaFactory::buildAsFarli
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a FarlieGumbelMorgensternCopula distribution from an empty sample";
   if (sample.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a FarlieGumbelMorgensternCopula distribution from a sample of dimension not equal to 2";
-  NumericalScalar theta = 4.5 * sample.computeKendallTau().operator()(0, 1);
+  Scalar theta = 4.5 * sample.computeKendallTau().operator()(0, 1);
   // If it is not possible to use Kendall's tau to build the copula, try Spearman's rho
   if (std::abs(theta) > 1.0)
   {

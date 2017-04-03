@@ -91,8 +91,8 @@ public:
   void setBootstrapSize(const UnsignedInteger bootstrapSize);
 
   // Setters for bootstrap confidence level
-  NumericalScalar getBootstrapConfidenceLevel() const;
-  void setBootstrapConfidenceLevel(const NumericalScalar confidenceLevel);
+  Scalar getBootstrapConfidenceLevel() const;
+  void setBootstrapConfidenceLevel(const Scalar confidenceLevel);
 
   /** String converter */
   virtual String __repr__() const;
@@ -169,7 +169,7 @@ protected:
   UnsignedInteger bootstrapSize_;
 
   /** Confidence level for Bootstrap */
-  NumericalScalar confidenceLevel_;
+  Scalar confidenceLevel_;
 
   /** Variance of the reference output sample */
   Point referenceVariance_;

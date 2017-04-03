@@ -51,7 +51,7 @@ public:
 
   /** Computation of the covariance function */
   using StationaryCovarianceModel::computeStandardRepresentative;
-  NumericalScalar computeStandardRepresentative(const Point & tau) const;
+  Scalar computeStandardRepresentative(const Point & tau) const;
   /** Gradient */
   virtual Matrix partialGradient(const Point & s,
                                  const Point & t) const;

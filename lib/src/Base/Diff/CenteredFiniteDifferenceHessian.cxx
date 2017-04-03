@@ -47,7 +47,7 @@ CenteredFiniteDifferenceHessian::CenteredFiniteDifferenceHessian(const Point & e
 }
 
 /* Parameter constructor */
-CenteredFiniteDifferenceHessian::CenteredFiniteDifferenceHessian(const NumericalScalar epsilon,
+CenteredFiniteDifferenceHessian::CenteredFiniteDifferenceHessian(const Scalar epsilon,
     const EvaluationPointer & p_evaluation)
   : FiniteDifferenceHessian(epsilon, p_evaluation)
 {
@@ -135,7 +135,7 @@ SymmetricTensor CenteredFiniteDifferenceHessian::hessian(const Point & inP) cons
   UnsignedInteger outputDimension = p_evaluation_->getOutputDimension();
   SymmetricTensor result(inputDimension, outputDimension);
   UnsignedInteger diagonalOffset = 2 * inputDimension * (inputDimension - 1);
-  NumericalScalar scale = -1.0;
+  Scalar scale = -1.0;
   UnsignedInteger offDiagonalOffset = 0;
   for (UnsignedInteger i = 0; i < inputDimension; ++i)
   {

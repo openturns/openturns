@@ -203,8 +203,8 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
   UnsignedInteger size = coll.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Mixture based on an empty distribution collection.";
   if (weights.getSize() != size) throw InvalidArgumentException(HERE) << "Error: the number of weights=" << weights.getSize() << " is different from the number of distributions=" << size << ".";
-  NumericalScalar maximumWeight = weights[0];
-  NumericalScalar weightSum = maximumWeight;
+  Scalar maximumWeight = weights[0];
+  Scalar weightSum = maximumWeight;
   UnsignedInteger dimension = coll[0].getDimension();
   // First loop, check the atoms dimensions and the weigths values
   for(UnsignedInteger i = 1; i < size; ++i)
@@ -212,12 +212,12 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
     if (dimension != coll[i].getDimension())
       // We throw an exception because the collection has distributions of different sizes
       throw InvalidArgumentException(HERE) << "Collection of distributions has distributions of different dimensions";
-    NumericalScalar w = weights[i];
+    Scalar w = weights[i];
     if (!(w >= 0.0)) throw InvalidArgumentException(HERE) << "Distribution " << i << " has a negative weight, w=" << w;
     if (w > maximumWeight) maximumWeight = w;
     weightSum += w;
   } /* end for */
-  const NumericalScalar smallWeight = ResourceMap::GetAsScalar("Mixture-SmallWeight");
+  const Scalar smallWeight = ResourceMap::GetAsScalar("Mixture-SmallWeight");
   if (weightSum < smallWeight)
     // We throw an exception because the collection of distributions has only distributions with small weight: they cannot be renormalized
     throw InvalidArgumentException(HERE) << "Collection of distributions has atoms with too small total weight=" << weightSum << " for a threshold equal to Mixture-SmallWeight=" << smallWeight;
@@ -227,7 +227,7 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
   isCopula_ = true;
   for(UnsignedInteger i = 0; i < size; ++i)
   {
-    NumericalScalar w = weights[i];
+    Scalar w = weights[i];
     if (w < smallWeight * maximumWeight)
     {
       LOGINFO(OSS() << "Warning! The distribution number " << i << " has a too small weight=" << w << " for a relative threshold equal to Mixture-SmallWeight=" << smallWeight << " with respect to the maximum weight=" << maximumWeight << ". It is removed from the collection.");
@@ -252,7 +252,7 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
   Bool parallel = true;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalScalar normalizedWeight = distributionCollection_[i].getWeight() / weightSum;
+    const Scalar normalizedWeight = distributionCollection_[i].getWeight() / weightSum;
     distributionCollection_[i].setWeight(normalizedWeight);
     x[i][0] = i;
     p[i] = normalizedWeight;
@@ -304,7 +304,7 @@ Point Mixture::computeDDF(const Point & point) const
 }
 
 /* Get the PDF of the Mixture */
-NumericalScalar Mixture::computePDF(const Point & point) const
+Scalar Mixture::computePDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -313,7 +313,7 @@ NumericalScalar Mixture::computePDF(const Point & point) const
     if (point[0] < getMean()[0]) return pdfApproximationCDF_.derivate(point)[0];
     else return pdfApproximationCCDF_.derivate(point)[0];
   }
-  NumericalScalar pdfValue = 0.0;
+  Scalar pdfValue = 0.0;
   const UnsignedInteger size = distributionCollection_.getSize();
   if (!getRange().numericallyContains(point)) return pdfValue;
   for(UnsignedInteger i = 0; i < size; ++i) pdfValue += distributionCollection_[i].getWeight() * distributionCollection_[i].computePDF(point);
@@ -321,7 +321,7 @@ NumericalScalar Mixture::computePDF(const Point & point) const
 }
 
 /* Get the CDF of the Mixture */
-NumericalScalar Mixture::computeCDF(const Point & point) const
+Scalar Mixture::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -331,26 +331,26 @@ NumericalScalar Mixture::computeCDF(const Point & point) const
     if (point[0] < getMean()[0]) return cdfApproximation_(point)[0];
     else return 1.0 - ccdfApproximation_(point)[0];
   }
-  NumericalScalar cdfValue = 0.0;
+  Scalar cdfValue = 0.0;
   const UnsignedInteger size = distributionCollection_.getSize();
   for(UnsignedInteger i = 0; i < size; ++i) cdfValue += distributionCollection_[i].getWeight() * distributionCollection_[i].computeCDF(point);
   return cdfValue;
 }
 
 /* Get the survival function of the Mixture */
-NumericalScalar Mixture::computeSurvivalFunction(const Point & point) const
+Scalar Mixture::computeSurvivalFunction(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  NumericalScalar survivalValue = 0.0;
+  Scalar survivalValue = 0.0;
   const UnsignedInteger size = distributionCollection_.getSize();
   for(UnsignedInteger i = 0; i < size; ++i) survivalValue += distributionCollection_[i].getWeight() * distributionCollection_[i].computeSurvivalFunction(point);
   return survivalValue;
 }
 
 /* Compute the probability content of an interval */
-NumericalScalar Mixture::computeProbability(const Interval & interval) const
+Scalar Mixture::computeProbability(const Interval & interval) const
 {
   const UnsignedInteger dimension = getDimension();
   if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension=" << dimension << ", here dimension=" << interval.getDimension();
@@ -362,14 +362,14 @@ NumericalScalar Mixture::computeProbability(const Interval & interval) const
   // If the interval is the range
   if (reducedInterval == getRange()) return 1.0;
 
-  NumericalScalar probability = 0.0;
+  Scalar probability = 0.0;
   const UnsignedInteger size = distributionCollection_.getSize();
   for(UnsignedInteger i = 0; i < size; ++i) probability += distributionCollection_[i].getWeight() * distributionCollection_[i].computeProbability(reducedInterval);
   return probability;
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Mixture::computeCharacteristicFunction(const NumericalScalar x) const
+NumericalComplex Mixture::computeCharacteristicFunction(const Scalar x) const
 {
   NumericalComplex cfValue(0.0);
   UnsignedInteger size = distributionCollection_.getSize();
@@ -460,7 +460,7 @@ void Mixture::computeCovariance() const
   // First, compute E(X.X^t)
   for(UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalScalar weightI = distributionCollection_[i].getWeight();
+    const Scalar weightI = distributionCollection_[i].getWeight();
     const CovarianceMatrix covarianceI(distributionCollection_[i].getCovariance());
     const Point meanI(distributionCollection_[i].getMean());
     for(UnsignedInteger row = 0; row < dimension; ++row)

@@ -157,14 +157,14 @@ void OrdinalSumCopula::setBounds(const Point & bounds)
   bounds_ = Point(0);
   Sample support(0, 1);
   blockLengths_ = Point(0);
-  NumericalScalar lastBound = 0.0;
+  Scalar lastBound = 0.0;
   CopulaCollection coll(0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalScalar currentBound = bounds[i];
+    const Scalar currentBound = bounds[i];
     if (currentBound < lastBound) throw InvalidArgumentException(HERE) << "Error: bound[" << i << "]=" << currentBound << " and should be greater than " << lastBound;
     if (!(currentBound <= 1.0)) throw InvalidArgumentException(HERE) << "Error: bound[" << i << "]=" << currentBound << " and should be less than 1";
-    const NumericalScalar length = currentBound - lastBound;
+    const Scalar length = currentBound - lastBound;
     if (length > 0.0)
     {
       support.add(Point(1, blockLengths_.getSize()));
@@ -204,7 +204,7 @@ Point OrdinalSumCopula::getRealization() const
 }
 
 /* Find the block number of a given real wrt the bounds. Returns -1 if negative and -2 if greater than 1 */
-SignedInteger OrdinalSumCopula::findBlock(const NumericalScalar x) const
+SignedInteger OrdinalSumCopula::findBlock(const Scalar x) const
 {
   if (x < 0.0) return -1;
   if (x >= 1.0) return -2;
@@ -256,7 +256,7 @@ Point OrdinalSumCopula::computeDDF(const Point & point) const
 }
 
 /* Get the PDF of the OrdinalSumCopula */
-NumericalScalar OrdinalSumCopula::computePDF(const Point & point) const
+Scalar OrdinalSumCopula::computePDF(const Point & point) const
 {
   LOGDEBUG(OSS() << "In OrdinalSumCopula::computePDF, point=" << point);
   // If there is only one copula
@@ -265,7 +265,7 @@ NumericalScalar OrdinalSumCopula::computePDF(const Point & point) const
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
   // Compute the candidate block index based on the first coordinate
   const SignedInteger index = findBlock(point[0]);
-  NumericalScalar pdf = 0.0;
+  Scalar pdf = 0.0;
   LOGDEBUG(OSS() << "index=" << index);
   // First, the special cases
   if (index < 0)
@@ -292,7 +292,7 @@ NumericalScalar OrdinalSumCopula::computePDF(const Point & point) const
 }
 
 /* Get the CDF of the OrdinalSumCopula */
-NumericalScalar OrdinalSumCopula::computeCDF(const Point & point) const
+Scalar OrdinalSumCopula::computeCDF(const Point & point) const
 {
   // If there is only one copula
   if (copulaCollection_.getSize() == 1) return copulaCollection_[0].computeCDF(point);
@@ -316,7 +316,7 @@ NumericalScalar OrdinalSumCopula::computeCDF(const Point & point) const
 }
 
 /* Compute the probability content of an interval */
-NumericalScalar OrdinalSumCopula::computeProbability(const Interval & interval) const
+Scalar OrdinalSumCopula::computeProbability(const Interval & interval) const
 {
   const UnsignedInteger dimension = getDimension();
   if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension=" << dimension << ", here dimension=" << interval.getDimension();
@@ -324,7 +324,7 @@ NumericalScalar OrdinalSumCopula::computeProbability(const Interval & interval) 
   // Compute the contribution of the first block
   Point xMin(dimension, 0.0);
   Point xMax(dimension, bounds_[0]);
-  NumericalScalar probability = copulaCollection_[0].computeProbability(interval.intersect(Interval(xMin, xMax)) * (1.0 / blockLengths_[0]));
+  Scalar probability = copulaCollection_[0].computeProbability(interval.intersect(Interval(xMin, xMax)) * (1.0 / blockLengths_[0]));
   // Sum the contribution of all the intermediate blocks
   xMin = xMax;
   const UnsignedInteger size = bounds_.getSize();
@@ -355,15 +355,15 @@ void OrdinalSumCopula::computeCovariance() const
   const UnsignedInteger dimension = getDimension();
   const Point data(dimension * dimension, 0.25);
   const MatrixImplementation mask(dimension, dimension, data.begin(), data.end());
-  NumericalScalar lastAi = bounds_[0];
+  Scalar lastAi = bounds_[0];
   for (UnsignedInteger i = 1; i < size - 1; ++i)
   {
-    const NumericalScalar aI = bounds_[i];
-    const NumericalScalar theta = lastAi / aI;
+    const Scalar aI = bounds_[i];
+    const Scalar theta = lastAi / aI;
     covariance = covariance * std::pow(theta, 3.0) + (*copulaCollection_[i].getCovariance().getImplementation()) * std::pow(1.0 - theta, 3.0) + mask * theta * (1.0 - theta);
     lastAi = aI;
   }
-  const NumericalScalar theta = lastAi;
+  const Scalar theta = lastAi;
   covariance = covariance * std::pow(theta, 3.0) + (*copulaCollection_[size - 1].getCovariance().getImplementation()) * std::pow(1.0 - theta, 3.0) + mask * theta * (1.0 - theta);
   covariance_ = covariance;
   isAlreadyComputedCovariance_ = true;
@@ -378,15 +378,15 @@ CorrelationMatrix OrdinalSumCopula::getKendallTau() const
   const UnsignedInteger dimension = getDimension();
   const Point data(dimension * dimension, 1.0);
   const MatrixImplementation mask(dimension, dimension, data.begin(), data.end());
-  NumericalScalar lastAi = bounds_[0];
+  Scalar lastAi = bounds_[0];
   for (UnsignedInteger i = 1; i < size - 1; ++i)
   {
-    const NumericalScalar aI = bounds_[i];
-    const NumericalScalar theta = lastAi / aI;
+    const Scalar aI = bounds_[i];
+    const Scalar theta = lastAi / aI;
     tauKendall = tauKendall * std::pow(theta, 2.0) + (*copulaCollection_[i].getKendallTau().getImplementation()) * std::pow(1.0 - theta, 2.0) + mask * (2.0 * theta * (1.0 - theta));
     lastAi = aI;
   }
-  const NumericalScalar theta = lastAi;
+  const Scalar theta = lastAi;
   tauKendall = tauKendall * std::pow(theta, 2.0) + (*copulaCollection_[size - 1].getKendallTau().getImplementation()) * std::pow(1.0 - theta, 2.0) + mask * (2.0 * theta * (1.0 - theta));
   return CorrelationMatrix(tauKendall);
 }
@@ -410,21 +410,21 @@ Point OrdinalSumCopula::computeCDFGradient(const Point & point) const
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar OrdinalSumCopula::computeConditionalPDF(const NumericalScalar x, const Point & y) const
+Scalar OrdinalSumCopula::computeConditionalPDF(const Scalar x, const Point & y) const
 {
-  throw NotYetImplementedException(HERE) << "In OrdinalSumCopula::computeConditionalPDF(const NumericalScalar x, const Point & y) const";
+  throw NotYetImplementedException(HERE) << "In OrdinalSumCopula::computeConditionalPDF(const Scalar x, const Point & y) const";
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar OrdinalSumCopula::computeConditionalCDF(const NumericalScalar x, const Point & y) const
+Scalar OrdinalSumCopula::computeConditionalCDF(const Scalar x, const Point & y) const
 {
-  throw NotYetImplementedException(HERE) << "In OrdinalSumCopula::computeConditionalCDF(const NumericalScalar x, const Point & y) const";
+  throw NotYetImplementedException(HERE) << "In OrdinalSumCopula::computeConditionalCDF(const Scalar x, const Point & y) const";
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar OrdinalSumCopula::computeConditionalQuantile(const NumericalScalar q, const Point & y) const
+Scalar OrdinalSumCopula::computeConditionalQuantile(const Scalar q, const Point & y) const
 {
-  throw NotYetImplementedException(HERE) << "In OrdinalSumCopula::computeConditionalQuantile(const NumericalScalar q, const Point & y) const";
+  throw NotYetImplementedException(HERE) << "In OrdinalSumCopula::computeConditionalQuantile(const Scalar q, const Point & y) const";
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */

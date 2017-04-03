@@ -58,10 +58,10 @@ public:
   Bool numericallyContains(const Point & point) const;
 
   /** Get the numerical volume of the discretization of the domain */
-  NumericalScalar getNumericalVolume() const;
+  Scalar getNumericalVolume() const;
 
   /** Get the volume of the domain */
-  NumericalScalar getVolume() const;
+  Scalar getVolume() const;
 
   /** String converter */
   String __repr__() const;
@@ -90,7 +90,7 @@ protected:
   UnsignedInteger dimension_;
 
   // The global volume
-  mutable NumericalScalar volume_;
+  mutable Scalar volume_;
 
   // Flag to tell if the global volume has already been computed
   mutable Bool isAlreadyComputedVolume_;

@@ -41,8 +41,8 @@ public:
   InverseNormal();
 
   /** Parameters constructor */
-  InverseNormal(const NumericalScalar lambda,
-                const NumericalScalar mu);
+  InverseNormal(const Scalar lambda,
+                const Scalar mu);
 
 
   /** Comparison operator */
@@ -66,20 +66,20 @@ public:
 
   /** Get the PDF of the InverseNormal distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
   using ContinuousDistribution::computeLogPDF;
-  NumericalScalar computeLogPDF(const Point & point) const;
+  Scalar computeLogPDF(const Point & point) const;
 
   /** Get the CDF of the InverseNormal distribution */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the minimum volume level set containing a given probability of the distribution */
-  LevelSet computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const;
+  LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & threshold) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
-  NumericalComplex computeLogCharacteristicFunction(const NumericalScalar x) const;
+  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
+  NumericalComplex computeLogCharacteristicFunction(const Scalar x) const;
 
   /** Get the standard deviation of the distribution */
   Point getStandardDeviation() const;
@@ -94,13 +94,13 @@ public:
   Point getStandardMoment(const UnsignedInteger n) const;
 
   /* Interface specific to InverseNormal */
-  void setLambdaMu(const NumericalScalar lambda,
-                   const NumericalScalar mu);
+  void setLambdaMu(const Scalar lambda,
+                   const Scalar mu);
   /** lambda accessor */
-  NumericalScalar getLambda() const;
+  Scalar getLambda() const;
 
   /** mu accessor */
-  NumericalScalar getMu() const;
+  Scalar getMu() const;
 
   /** Parameters value accessors */
   void setParameter(const Point & parameter);
@@ -129,8 +129,8 @@ private:
   void computeCovariance() const;
 
   /** The main parameter set of the distribution */
-  NumericalScalar lambda_;
-  NumericalScalar mu_;
+  Scalar lambda_;
+  Scalar mu_;
 
 }; /* class InverseNormal */
 

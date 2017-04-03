@@ -21,7 +21,7 @@ namespace OT {
     String yTitle;
     Bool showAxes;
     String legendPosition;
-    NumericalScalar legendFontSize = ResourceMap::GetAsScalar("Graph-DefaultLegendFontSize");
+    Scalar legendFontSize = ResourceMap::GetAsScalar("Graph-DefaultLegendFontSize");
 
     check<_PySequence_>( pyObj );
     ScopedPyObjectPointer newPyObj(PySequence_Fast( pyObj, "" ));
@@ -29,7 +29,7 @@ namespace OT {
     switch (PySequence_Fast_GET_SIZE( newPyObj.get() )) {
      case 6: { PyObject * item_5 = PySequence_Fast_GET_ITEM( newPyObj.get(), 5 );
                check<_PyFloat_>( item_5 );
-               legendFontSize = convert<_PyFloat_,NumericalScalar>( item_5 ); }
+               legendFontSize = convert<_PyFloat_,Scalar>( item_5 ); }
      case 5: { PyObject * item_4 = PySequence_Fast_GET_ITEM( newPyObj.get(), 4 );
                check<_PyString_>( item_4 );
                legendPosition = convert<_PyString_,String>( item_4 ); }
@@ -47,7 +47,7 @@ namespace OT {
                showAxes = convert<_PyBool_,Bool>( item_3 ); }
              break;
      default:
-      throw InvalidArgumentException(HERE) << "Sequence passed as argument is not convertible to a Graph. Expected sequence (String, String, String, Bool, String, NumericalScalar)";
+      throw InvalidArgumentException(HERE) << "Sequence passed as argument is not convertible to a Graph. Expected sequence (String, String, String, Bool, String, Scalar)";
     }
 
     return OT::Graph( title, xTitle, yTitle, showAxes, legendPosition, legendFontSize);

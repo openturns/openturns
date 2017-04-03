@@ -75,10 +75,10 @@ public:
                  const SpectralModel & spectralModel);
 
   /** Computation of the covariance matrix */
-  virtual CovarianceMatrix computeCovariance(const NumericalScalar s,
-      const NumericalScalar t) const;
+  virtual CovarianceMatrix computeCovariance(const Scalar s,
+      const Scalar t) const;
 
-  virtual CovarianceMatrix computeCovariance(const NumericalScalar tau) const;
+  virtual CovarianceMatrix computeCovariance(const Scalar tau) const;
 
 
   virtual CovarianceMatrix computeCovariance(const Point & s,
@@ -87,7 +87,7 @@ public:
   virtual CovarianceMatrix computeCovariance(const Point & tau) const;
 
   /** Computation of the spectral density function */
-  virtual HermitianMatrix computeSpectralDensity(const NumericalScalar frequency) const;
+  virtual HermitianMatrix computeSpectralDensity(const Scalar frequency) const;
 
   /** Discretize the covariance function on a given TimeGrid */
   virtual CovarianceMatrix discretize(const RegularGrid & timeGrid) const;

@@ -37,20 +37,20 @@ int main(int argc, char *argv[])
       // kFactor
       UnsignedInteger nMin = 2;
       UnsignedInteger nMax = 3;
-      NumericalScalar pMin = 0.1;
-      NumericalScalar pMax = 0.9;
+      Scalar pMin = 0.1;
+      Scalar pMax = 0.9;
       UnsignedInteger nP = 2;
-      NumericalScalar alphaMin = 0.1;
-      NumericalScalar alphaMax = 0.9;
+      Scalar alphaMin = 0.1;
+      Scalar alphaMax = 0.9;
       UnsignedInteger nAlpha = 2;
       for (UnsignedInteger n = nMin; n <= nMax; ++n)
       {
         for (UnsignedInteger iP = 0; iP <= nP; ++iP)
         {
-          NumericalScalar p = pMin + ((pMax - pMin) * iP) / nP;
+          Scalar p = pMin + ((pMax - pMin) * iP) / nP;
           for (UnsignedInteger iAlpha = 0; iAlpha <= nAlpha; ++iAlpha)
           {
-            NumericalScalar alpha = alphaMin + (alphaMax - alphaMin) * iAlpha / nAlpha;
+            Scalar alpha = alphaMin + (alphaMax - alphaMin) * iAlpha / nAlpha;
             fullprint << "kFactor(" << 2 * n << ", " << p << ", " << alpha << ")=" << DistFunc::kFactor(2 * n, p, alpha) << std::endl;
           } // alpha
         } // p
@@ -62,11 +62,11 @@ int main(int argc, char *argv[])
       UnsignedInteger nMax = 3;
       UnsignedInteger mMin = 1;
       UnsignedInteger mMax = 2;
-      NumericalScalar pMin = 0.1;
-      NumericalScalar pMax = 0.9;
+      Scalar pMin = 0.1;
+      Scalar pMax = 0.9;
       UnsignedInteger nP = 2;
-      NumericalScalar alphaMin = 0.1;
-      NumericalScalar alphaMax = 0.9;
+      Scalar alphaMin = 0.1;
+      Scalar alphaMax = 0.9;
       UnsignedInteger nAlpha = 2;
       for (UnsignedInteger n = nMin; n <= nMax; ++n)
       {
@@ -74,10 +74,10 @@ int main(int argc, char *argv[])
         {
           for (UnsignedInteger iP = 0; iP <= nP; ++iP)
           {
-            NumericalScalar p = pMin + ((pMax - pMin) * iP) / nP;
+            Scalar p = pMin + ((pMax - pMin) * iP) / nP;
             for (UnsignedInteger iAlpha = 0; iAlpha <= nAlpha; ++iAlpha)
             {
-              NumericalScalar alpha = alphaMin + (alphaMax - alphaMin) * iAlpha / nAlpha;
+              Scalar alpha = alphaMin + (alphaMax - alphaMin) * iAlpha / nAlpha;
               fullprint << "kFactorPooled(" << 2 * n << ", " << m << ", " << p << ", " << alpha << ")=" << DistFunc::kFactorPooled(2 * n, m, p, alpha) << std::endl;
             } // alpha
           } // p

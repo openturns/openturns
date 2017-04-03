@@ -50,7 +50,7 @@ LevelSet::LevelSet(const UnsignedInteger dimension)
 
 /* Parameters constructor, simplified interface for 1D case */
 LevelSet::LevelSet(const Function & function,
-                   const NumericalScalar level)
+                   const Scalar level)
   : DomainImplementation(function.getInputDimension())
   , function_(function)
   , level_(level)
@@ -147,12 +147,12 @@ void LevelSet::setFunction(const Function & function)
 }
 
 /* Level accessor */
-NumericalScalar LevelSet::getLevel() const
+Scalar LevelSet::getLevel() const
 {
   return level_;
 }
 
-void LevelSet::setLevel(const NumericalScalar level)
+void LevelSet::setLevel(const Scalar level)
 {
   level_ = level;
 }

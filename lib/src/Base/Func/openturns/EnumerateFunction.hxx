@@ -54,11 +54,11 @@ public:
 
   /** Parameter constructor */
   EnumerateFunction(const UnsignedInteger dimension,
-                    const NumericalScalar q);
+                    const Scalar q);
 
   /** Parameter constructor */
   EnumerateFunction(const Point & weight,
-                    const NumericalScalar q);
+                    const Scalar q);
 
   /** String converter */
   String __repr__() const;

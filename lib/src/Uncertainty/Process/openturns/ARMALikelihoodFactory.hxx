@@ -120,7 +120,7 @@ private :
   mutable Matrix blockPhiTThetaTMatrix_;
 
   /** only used to pass data to be used in computeLogLikeliHood */
-  mutable NumericalScalar sigma2_;
+  mutable Scalar sigma2_;
 
   /** Bool variables */
   mutable Bool hasInitializedARCoefficients_;
@@ -137,7 +137,7 @@ private :
   SquareMatrix computeW0Matrix() const;
 
   /** Likelihood function ==> Compute the reduced form of the likelihood */
-  NumericalScalar computeLogLikelihood(const Point & beta) const;
+  Scalar computeLogLikelihood(const Point & beta) const;
 
   /** Run the default initilization of coefficients / covariance for the optimization */
   void defaultInitialize() const;

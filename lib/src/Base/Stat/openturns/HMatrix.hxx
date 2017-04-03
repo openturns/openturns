@@ -60,19 +60,19 @@ class OT_API HMatrix :
   void factorize(const String& method);
 
   /** Compute this <- alpha * this */
-  void scale(NumericalScalar alpha);
+  void scale(Scalar alpha);
 
   /** Compute y <- alpha op(this) * x + beta * y */
-  void gemv(char trans, NumericalScalar alpha, const Point& x, NumericalScalar beta, Point& y) const;
+  void gemv(char trans, Scalar alpha, const Point& x, Scalar beta, Point& y) const;
 
   /** Compute this <- alpha op(A) * p(B) + beta * this */
-  void gemm(char transA, char transB, NumericalScalar alpha, const HMatrix& a, const HMatrix& b, NumericalScalar beta);
+  void gemm(char transA, char transB, Scalar alpha, const HMatrix& a, const HMatrix& b, Scalar beta);
 
   /** Transpose matrix */
   void transpose();
 
   /** Get the Frobenius norm */
-  NumericalScalar norm() const;
+  Scalar norm() const;
 
   /** Get the diagonal */
   Point getDiagonal() const;

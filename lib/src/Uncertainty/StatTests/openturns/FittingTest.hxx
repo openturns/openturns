@@ -72,46 +72,46 @@ public:
                                           TestResult & bestResult);
 
   /** Bayesian Information Criterion computation */
-  static NumericalScalar BIC(const Sample & sample,
+  static Scalar BIC(const Sample & sample,
                              const Distribution & distribution,
                              const UnsignedInteger estimatedParameters = 0);
 
   /** Bayesian Information Criterion computation */
-  static NumericalScalar BIC(const Sample & sample,
+  static Scalar BIC(const Sample & sample,
                              const DistributionFactory & factory);
 
   /** Kolmogorov fitting test for continuous distributions */
   static TestResult Kolmogorov(const Sample & sample,
                                const Distribution & distribution,
-                               const NumericalScalar level = 0.95,
+                               const Scalar level = 0.95,
                                const UnsignedInteger estimatedParameters = 0);
 
   /** Kolmogorov fitting test for continuous distributions */
   static TestResult Kolmogorov(const Sample & sample,
                                const DistributionFactory & factory,
-                               const NumericalScalar level = 0.95);
+                               const Scalar level = 0.95);
 
   /** Two-sample Kolmogorov–Smirnov test */
   static TestResult TwoSamplesKolmogorov (const Sample & sample1,
                                           const Sample & sample2,
-                                          const NumericalScalar level = 0.95);
+                                          const Scalar level = 0.95);
 
   /** ChiSquared fitting test for discrete distributions */
   static TestResult ChiSquared(const Sample & sample,
                                const Distribution & distribution,
-                               const NumericalScalar level = 0.95,
+                               const Scalar level = 0.95,
                                const UnsignedInteger estimatedParameters = 0);
 
   /** ChiSquared fitting test for discrete distributions */
   static TestResult ChiSquared(const Sample & sample,
                                const DistributionFactory & factory,
-                               const NumericalScalar level = 0.95);
+                               const Scalar level = 0.95);
 
 protected:
   /** Generic invocation of a R script for testing a distribution against a sample */
   static TestResult RunRTest(const Sample & sample,
                              const Distribution & distribution,
-                             const NumericalScalar level,
+                             const Scalar level,
                              const UnsignedInteger estimatedParameters,
                              const String & testName);
 

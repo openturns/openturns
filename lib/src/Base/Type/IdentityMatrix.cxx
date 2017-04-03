@@ -56,7 +56,7 @@ String IdentityMatrix::__repr__() const
 }
 
 /* Operator () : should do nothing, in order to prevent any modification on the matrix */
-NumericalScalar & IdentityMatrix::operator() (const UnsignedInteger i,
+Scalar & IdentityMatrix::operator() (const UnsignedInteger i,
     const UnsignedInteger j)
 {
   copyOnWrite();
@@ -65,7 +65,7 @@ NumericalScalar & IdentityMatrix::operator() (const UnsignedInteger i,
 
 /* Operator () gives access to the elements of the matrix (read only) */
 /* The element of the matrix is designated by its row number i and its column number j */
-const NumericalScalar & IdentityMatrix::operator() (const UnsignedInteger i,
+const Scalar & IdentityMatrix::operator() (const UnsignedInteger i,
     const UnsignedInteger j)  const
 {
   return (*getImplementation())(i, j);
@@ -117,14 +117,14 @@ Matrix IdentityMatrix::solveLinearSystem(const Matrix & b,
 }
 
 /* Compute determinant */
-NumericalScalar IdentityMatrix::computeLogAbsoluteDeterminant(NumericalScalar & sign,
+Scalar IdentityMatrix::computeLogAbsoluteDeterminant(Scalar & sign,
     const Bool keepIntact)
 {
   sign = 1.0;
   return 0.0;
 }
 
-NumericalScalar IdentityMatrix::computeDeterminant(const Bool keepIntact)
+Scalar IdentityMatrix::computeDeterminant(const Bool keepIntact)
 {
   return 1.0;
 }

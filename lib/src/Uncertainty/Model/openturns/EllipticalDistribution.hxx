@@ -47,7 +47,7 @@ public:
   EllipticalDistribution(const Point & mean,
                          const Point & sigma,
                          const CorrelationMatrix & R,
-                         const NumericalScalar covarianceNormalizationFactor);
+                         const Scalar covarianceNormalizationFactor);
 
   /** Virtual copy constructor */
   virtual EllipticalDistribution * clone() const;
@@ -72,7 +72,7 @@ public:
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the PDF gradient of the distribution */
   using ContinuousDistribution::computePDFGradient;
@@ -81,21 +81,21 @@ public:
   /** Compute the density generator of the elliptical distribution, i.e.
    *  the function phi such that the density of the distribution can
    *  be written as p(x) = phi(t(x-mu)R^{-1}(x-mu))                      */
-  virtual NumericalScalar computeDensityGenerator(const NumericalScalar betaSquare) const;
-  virtual NumericalScalar computeLogDensityGenerator(const NumericalScalar betaSquare) const;
+  virtual Scalar computeDensityGenerator(const Scalar betaSquare) const;
+  virtual Scalar computeLogDensityGenerator(const Scalar betaSquare) const;
 
   /** Compute the derivative of the density generator */
-  virtual NumericalScalar computeDensityGeneratorDerivative(const NumericalScalar betaSquare) const;
+  virtual Scalar computeDensityGeneratorDerivative(const Scalar betaSquare) const;
 
   /** Compute the second derivative of the density generator */
-  virtual NumericalScalar computeDensityGeneratorSecondDerivative(const NumericalScalar betaSquare) const;
+  virtual Scalar computeDensityGeneratorSecondDerivative(const Scalar betaSquare) const;
 
   /** Compute the survival function */
   using ContinuousDistribution::computeSurvivalFunction;
-  virtual NumericalScalar computeSurvivalFunction(const Point & point) const;
+  virtual Scalar computeSurvivalFunction(const Point & point) const;
 
   /** Get the minimum volume level set containing a given probability of the distribution */
-  virtual LevelSet computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const;
+  virtual LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & threshold) const;
 
   /** Mean point accessor */
   void setMean(const Point & mean);
@@ -187,10 +187,10 @@ protected:
   TriangularMatrix inverseCholesky_;
 
   /** The normalization factor of the distribution */
-  NumericalScalar normalizationFactor_;
+  Scalar normalizationFactor_;
 
   /** The scaling factor of the covariance matrix covariance = covarianceScalingFactor_ * shape_*/
-  NumericalScalar covarianceScalingFactor_;
+  Scalar covarianceScalingFactor_;
 
 private:
   // Class used to wrap the computeRadialCDF() method for interpolation purpose

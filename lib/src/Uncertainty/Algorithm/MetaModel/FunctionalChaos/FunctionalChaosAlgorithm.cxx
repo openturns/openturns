@@ -242,12 +242,12 @@ String FunctionalChaosAlgorithm::__repr__() const
 
 
 /* Maximum residual accessors */
-void FunctionalChaosAlgorithm::setMaximumResidual(NumericalScalar residual)
+void FunctionalChaosAlgorithm::setMaximumResidual(Scalar residual)
 {
   maximumResidual_ = residual;
 }
 
-NumericalScalar FunctionalChaosAlgorithm::getMaximumResidual() const
+Scalar FunctionalChaosAlgorithm::getMaximumResidual() const
 {
   return maximumResidual_;
 }
@@ -316,8 +316,8 @@ void FunctionalChaosAlgorithm::run()
     LOGINFO(OSS() << "Work on output marginal " << outputIndex << " over " << outputDimension - 1);
     Indices marginalIndices;
     Point marginalAlpha_k;
-    NumericalScalar marginalResidual = -1.0;
-    NumericalScalar marginalRelativeError = -1.0;
+    Scalar marginalResidual = -1.0;
+    Scalar marginalRelativeError = -1.0;
     // Compute the indices, the coefficients, the residual and the relative error of the current marginal output
     runMarginal(outputIndex, marginalIndices, marginalAlpha_k, marginalResidual, marginalRelativeError);
     residuals[outputIndex] = marginalResidual;
@@ -325,7 +325,7 @@ void FunctionalChaosAlgorithm::run()
     for (UnsignedInteger j = 0; j < marginalIndices.getSize(); ++j)
     {
       // Deal only with non-zero coefficients
-      const NumericalScalar marginalAlpha_kj = marginalAlpha_k[j];
+      const Scalar marginalAlpha_kj = marginalAlpha_k[j];
       // To avoid -0.0
       if (std::abs(marginalAlpha_kj) != 0.0)
       {
@@ -368,8 +368,8 @@ void FunctionalChaosAlgorithm::run()
 void FunctionalChaosAlgorithm::runMarginal(const UnsignedInteger marginalIndex,
     Indices & indices,
     Point & coefficients,
-    NumericalScalar & residual,
-    NumericalScalar & relativeError)
+    Scalar & residual,
+    Scalar & relativeError)
 {
   // Initialize the projection basis Phi_k_p_ and I_p_
   LOGINFO("Compute the initial basis");

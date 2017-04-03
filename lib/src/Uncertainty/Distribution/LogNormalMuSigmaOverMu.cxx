@@ -38,7 +38,7 @@ LogNormalMuSigmaOverMu::LogNormalMuSigmaOverMu()
   // Nothing to do
 }
 
-LogNormalMuSigmaOverMu::LogNormalMuSigmaOverMu(const NumericalScalar mu, const NumericalScalar sigmaOverMu, const NumericalScalar gamma)
+LogNormalMuSigmaOverMu::LogNormalMuSigmaOverMu(const Scalar mu, const Scalar sigmaOverMu, const Scalar gamma)
   : DistributionParametersImplementation()
   , mu_(mu)
   , sigmaOverMu_(sigmaOverMu)
@@ -96,9 +96,9 @@ Matrix LogNormalMuSigmaOverMu::gradient() const
 Point LogNormalMuSigmaOverMu::operator () (const Point & inP) const
 {
   if (inP.getDimension() != 3) throw InvalidArgumentException(HERE) << "the given point must have dimension=3, here dimension=" << inP.getDimension();
-  const NumericalScalar mu = inP[0];
-  const NumericalScalar sigmaOverMu = inP[1];
-  const NumericalScalar gamma = inP[2];
+  const Scalar mu = inP[0];
+  const Scalar sigmaOverMu = inP[1];
+  const Scalar gamma = inP[2];
 
   if (mu == 0.0) throw InvalidArgumentException(HERE) << "mu cannot be null in the parameter set (mu, sigmaOverMu)";
   if (!(sigmaOverMu * mu > 0.0)) throw InvalidArgumentException(HERE) << "sigmaOverMu*mu must be > 0, here sigmaOverMu*mu=" << sigmaOverMu*mu;
@@ -116,7 +116,7 @@ Point LogNormalMuSigmaOverMu::inverse(const Point & inP) const
 {
   const LogNormalMuSigma muSigmaParameters;
   Point muSigmaOverMuParameters(muSigmaParameters.inverse(inP));
-  const NumericalScalar mu = muSigmaOverMuParameters[0];
+  const Scalar mu = muSigmaOverMuParameters[0];
   if (mu == 0.0) throw InvalidArgumentException(HERE) << "Error: mu cannot be null in the parameter set (mu, sigmaOverMu)";
   muSigmaOverMuParameters[1] /= mu;
   return muSigmaOverMuParameters;

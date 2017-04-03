@@ -61,12 +61,12 @@ public:
 
   /** Specific constructor  - The frequency parameters impose the time grid */
   SpectralGaussianProcess(const SecondOrderModel & model,
-                        const NumericalScalar maximalFrequency,
+                        const Scalar maximalFrequency,
                         const UnsignedInteger nFrequency);
 
   /** Specific constructor  - The frequency parameters impose the time grid */
   SpectralGaussianProcess(const SpectralModel & spectralModel,
-                        const NumericalScalar maximalFrequency,
+                        const Scalar maximalFrequency,
                         const UnsignedInteger nFrequency);
 
   /** Virtual constructor */
@@ -85,13 +85,13 @@ public:
   RegularGrid getFrequencyGrid() const;
 
   /** Maximal frequency accessor */
-  NumericalScalar getMaximalFrequency() const;
+  Scalar getMaximalFrequency() const;
 
   /** Number of frequency steps accessor */
   UnsignedInteger getNFrequency() const;
 
   /** Frequency step accessor */
-  NumericalScalar getFrequencyStep() const;
+  Scalar getFrequencyStep() const;
 
   /** Spectral model accessor */
   SpectralModel getSpectralModel() const;
@@ -141,13 +141,13 @@ private:
   SpectralModel spectralModel_;
 
   /** Maximal frequency */
-  NumericalScalar maximalFrequency_;
+  Scalar maximalFrequency_;
 
   /** Number of frequencies on the positive axis */
   UnsignedInteger nFrequency_;
 
   /** Frequency step */
-  NumericalScalar frequencyStep_;
+  Scalar frequencyStep_;
 
   /** Cholesky factor  */
   mutable TriangularComplexMatrixPersistentCollection choleskyFactorsCache_;

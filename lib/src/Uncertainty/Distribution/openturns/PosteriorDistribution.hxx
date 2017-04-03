@@ -63,11 +63,11 @@ public:
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Parameters value and description accessor */
   PointWithDescriptionCollection getParametersCollection() const;
@@ -86,7 +86,7 @@ public:
   Sample getObservations() const;
 
   /** Log normalization factor accessor */
-  NumericalScalar getLogNormalizationFactor() const;
+  Scalar getLogNormalizationFactor() const;
 
   /** Get the standard deviation of the distribution */
   Point getStandardDeviation() const;
@@ -131,7 +131,7 @@ private:
   Sample observations_;
 
   /** The Bayes normalization constant */
-  NumericalScalar logNormalizationFactor_;
+  Scalar logNormalizationFactor_;
 
 }; /* class PosteriorDistribution */
 

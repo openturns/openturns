@@ -84,11 +84,11 @@ public:
 
   /** Get the PDF of the CumulativeDistributionNetwork */
   using DistributionImplementation::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the CumulativeDistributionNetwork */
   using DistributionImplementation::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the i-th marginal distribution */
   Implementation getMarginal(const UnsignedInteger i) const;

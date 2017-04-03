@@ -94,8 +94,8 @@ public:
   void setBootstrapSize(const UnsignedInteger bootstrapSize);
 
   // Setters for bootstrap confidence level
-  NumericalScalar getBootstrapConfidenceLevel() const;
-  void setBootstrapConfidenceLevel(const NumericalScalar confidenceLevel);
+  Scalar getBootstrapConfidenceLevel() const;
+  void setBootstrapConfidenceLevel(const Scalar confidenceLevel);
 
   /** Method that draw (plot) the sensitivity graph */
   virtual Graph draw() const;

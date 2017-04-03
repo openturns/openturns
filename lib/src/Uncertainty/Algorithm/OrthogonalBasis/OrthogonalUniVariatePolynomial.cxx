@@ -102,17 +102,17 @@ OrthogonalUniVariatePolynomial * OrthogonalUniVariatePolynomial::clone() const
 
 
 /* OrthogonalUniVariatePolynomial are evaluated as functors */
-NumericalScalar OrthogonalUniVariatePolynomial::operator() (const NumericalScalar x) const
+Scalar OrthogonalUniVariatePolynomial::operator() (const Scalar x) const
 {
   const UnsignedInteger size = recurrenceCoefficients_.getSize();
-  NumericalScalar uN = 1.0;
+  Scalar uN = 1.0;
   // Special case: degree == 0, constant unitary polynomial
   if (size == 0) return uN;
   Coefficients aN(recurrenceCoefficients_[size - 1]);
-  NumericalScalar uNMinus1 = aN[0] * x + aN[1];
+  Scalar uNMinus1 = aN[0] * x + aN[1];
   // Special case: degree == 1, affine polynomial
   if (size == 1) return uNMinus1;
-  NumericalScalar uNMinus2 = 0.0;
+  Scalar uNMinus2 = 0.0;
   // General case, use Clenshaw's algorithm for a stable evaluation of the polynomial
   // The summation must be done in reverse order to get the best stability
   // The three terms recurrence relation is:
@@ -152,7 +152,7 @@ OrthogonalUniVariatePolynomial::NumericalComplexCollection OrthogonalUniVariateP
   Point d(n);
   Point e(n - 1);
   Coefficients recurrenceCoefficientsI(recurrenceCoefficients_[0]);
-  NumericalScalar alphaPrec = recurrenceCoefficientsI[0];
+  Scalar alphaPrec = recurrenceCoefficientsI[0];
   d[0] = -recurrenceCoefficientsI[1] / alphaPrec;
   for (UnsignedInteger i = 1; i < n; ++i)
   {

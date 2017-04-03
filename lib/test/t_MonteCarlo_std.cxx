@@ -30,7 +30,7 @@ static Bool stop(void * p)
   return false;
 }
 
-static void progress(NumericalScalar percent, void * p)
+static void progress(Scalar percent, void * p)
 {
   std::cerr << "-- progress=" << percent << "%" << std::endl;
 }

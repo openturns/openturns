@@ -76,7 +76,7 @@ ComplexTensorImplementation * ComplexTensorImplementation::clone() const
 
 
 /* Set small elements to zero */
-ComplexTensorImplementation ComplexTensorImplementation::clean(const NumericalScalar threshold) const
+ComplexTensorImplementation ComplexTensorImplementation::clean(const Scalar threshold) const
 {
   // Nothing to do for nonpositive threshold
   if (threshold <= 0.0) return *this;

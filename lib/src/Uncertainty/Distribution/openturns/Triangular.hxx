@@ -43,9 +43,9 @@ public:
   Triangular();
 
   /** Parameters constructor */
-  Triangular(const NumericalScalar a,
-             const NumericalScalar m,
-             const NumericalScalar b);
+  Triangular(const Scalar a,
+             const Scalar m,
+             const Scalar b);
 
 
   /** Comparison operator */
@@ -74,15 +74,15 @@ public:
 
   /** Get the PDF of the Triangular distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the Triangular distribution */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
-  NumericalComplex computeLogCharacteristicFunction(const NumericalScalar x) const;
+  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
+  NumericalComplex computeLogCharacteristicFunction(const Scalar x) const;
 
   /** Get the PDFGradient of the Triangular distribution */
   using ContinuousDistribution::computePDFGradient;
@@ -93,7 +93,7 @@ public:
   Point computeCDFGradient(const Point & point) const;
 
   /** Get the roughness, i.e. the L2-norm of the PDF */
-  NumericalScalar getRoughness() const;
+  Scalar getRoughness() const;
 
   /** Get the standard deviation of the distribution */
   Point getStandardDeviation() const;
@@ -123,16 +123,16 @@ public:
   /* Interface specific to Triangular */
 
   /** A accessor */
-  void setAMB(const NumericalScalar a,
-              const NumericalScalar m,
-              const NumericalScalar b);
-  NumericalScalar getA() const;
+  void setAMB(const Scalar a,
+              const Scalar m,
+              const Scalar b);
+  Scalar getA() const;
 
   /** M accessor */
-  NumericalScalar getM() const;
+  Scalar getM() const;
 
   /** B accessor */
-  NumericalScalar getB() const;
+  Scalar getB() const;
 
   /** Get the PDF singularities inside of the range - 1D only */
   Point getSingularities() const;
@@ -155,16 +155,16 @@ private:
   void computeCovariance() const;
 
   /** Get the quantile of the Triangular distribution */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+  Scalar computeScalarQuantile(const Scalar prob,
                                         const Bool tail = false) const;
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange();
 
   /** The main parameter set of the distribution */
-  NumericalScalar a_;
-  NumericalScalar m_;
-  NumericalScalar b_;
+  Scalar a_;
+  Scalar m_;
+  Scalar b_;
 
 }; /* class Triangular */
 

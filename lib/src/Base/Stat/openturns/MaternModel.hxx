@@ -41,18 +41,18 @@ public:
 
   /** Parameters constructor */
   MaternModel(const Point & scale,
-              const NumericalScalar nu);
+              const Scalar nu);
 
   MaternModel(const Point & scale,
               const Point & amplitude,
-              const NumericalScalar nu);
+              const Scalar nu);
 
   /** Virtual copy constructor */
   MaternModel * clone() const;
 
   /** Computation of the covariance function */
   using StationaryCovarianceModel::computeStandardRepresentative;
-  NumericalScalar computeStandardRepresentative(const Point & tau) const;
+  Scalar computeStandardRepresentative(const Point & tau) const;
 
   /** Gradient */
   virtual Matrix partialGradient(const Point & s,
@@ -63,8 +63,8 @@ public:
   void setScale(const Point & scale);
 
   /** Nu accessor */
-  NumericalScalar getNu() const;
-  void setNu(const NumericalScalar nu);
+  Scalar getNu() const;
+  void setNu(const Scalar nu);
 
   /** String converter */
   String __repr__() const;
@@ -90,10 +90,10 @@ private:
   void initialize();
 
   // The shape parameter
-  NumericalScalar nu_;
+  Scalar nu_;
 
   // The normalization factor
-  NumericalScalar logNormalizationFactor_;
+  Scalar logNormalizationFactor_;
 
   // Scaling factor
   Point sqrt2nuOverTheta_;

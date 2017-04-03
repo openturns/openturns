@@ -43,16 +43,16 @@ public:
   virtual HMatrixParameters * clone() const;
 
   /** accessor for assembly epsilon */
-  void setAssemblyEpsilon(const NumericalScalar assemblyEpsilon);
-  NumericalScalar getAssemblyEpsilon() const;
+  void setAssemblyEpsilon(const Scalar assemblyEpsilon);
+  Scalar getAssemblyEpsilon() const;
 
   /** accessor for recompression epsilon */
-  void setRecompressionEpsilon(const NumericalScalar recompressionEpsilon);
-  NumericalScalar getRecompressionEpsilon() const;
+  void setRecompressionEpsilon(const Scalar recompressionEpsilon);
+  Scalar getRecompressionEpsilon() const;
 
   /** accessor for admissibility factor */
-  void setAdmissibilityFactor(const NumericalScalar admissibilityFactor);
-  NumericalScalar getAdmissibilityFactor() const;
+  void setAdmissibilityFactor(const Scalar admissibilityFactor);
+  Scalar getAdmissibilityFactor() const;
 
   /** accessor for clustering algorithm */
   void setClusteringAlgorithm(const String & clusteringAlgorithm);
@@ -74,9 +74,9 @@ public:
   void load(Advocate & adv);
 
 private:
-  NumericalScalar assemblyEpsilon_;
-  NumericalScalar recompressionEpsilon_;
-  NumericalScalar admissibilityFactor_;
+  Scalar assemblyEpsilon_;
+  Scalar recompressionEpsilon_;
+  Scalar admissibilityFactor_;
   String clusteringAlgorithm_;
   String compressionMethod_;
 

@@ -60,12 +60,12 @@ SquaredExponential * SquaredExponential::clone() const
 }
 
 /* Computation of the covariance function */
-NumericalScalar SquaredExponential::computeStandardRepresentative(const Point & tau) const
+Scalar SquaredExponential::computeStandardRepresentative(const Point & tau) const
 {
   if (tau.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();
   Point tauOverTheta(spatialDimension_);
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
-  const NumericalScalar tauOverTheta2 = tauOverTheta.normSquare();
+  const Scalar tauOverTheta2 = tauOverTheta.normSquare();
   return tauOverTheta2 <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-0.5 * tauOverTheta2);
 }
 
@@ -78,11 +78,11 @@ Matrix SquaredExponential::partialGradient(const Point & s,
   const Point tau = s - t;
   Point tauOverTheta(spatialDimension_);
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
-  const NumericalScalar norm2 = tauOverTheta.normSquare();
+  const Scalar norm2 = tauOverTheta.normSquare();
   // For zero norm
   if (norm2 == 0.0) return Matrix(spatialDimension_, 1);
   // General case
-  const NumericalScalar value = -std::exp(-0.5 * norm2);
+  const Scalar value = -std::exp(-0.5 * norm2);
   // Compute tau/theta^2
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] /= scale_[i];
   return Matrix(spatialDimension_, 1, tauOverTheta * value) * amplitude_[0] * amplitude_[0];

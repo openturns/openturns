@@ -58,7 +58,7 @@ public:
  public:
 
   /** Grade a point as if it were associated to a class */
-  virtual NumericalScalar grade(const Point & inP,
+  virtual Scalar grade(const Point & inP,
                                 const UnsignedInteger outC) const;
 
   /** Mixture accessors */

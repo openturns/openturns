@@ -61,8 +61,8 @@ RootStrategyImplementation::RootStrategyImplementation(const Solver & solver)
 
 /* Parameters constructor */
 RootStrategyImplementation::RootStrategyImplementation(const Solver & solver,
-    const NumericalScalar maximumDistance,
-    const NumericalScalar stepSize)
+    const Scalar maximumDistance,
+    const Scalar stepSize)
   : PersistentObject()
   , solver_(solver)
   , maximumDistance_(maximumDistance)
@@ -80,10 +80,10 @@ RootStrategyImplementation * RootStrategyImplementation::clone() const
 }
 
 /* Solve gives all the roots found applying the root strategy */
-RootStrategyImplementation::NumericalScalarCollection RootStrategyImplementation::solve(const Function & function,
-    const NumericalScalar value)
+RootStrategyImplementation::ScalarCollection RootStrategyImplementation::solve(const Function & function,
+    const Scalar value)
 {
-  throw NotYetImplementedException(HERE) << "In RootStrategyImplementation::solve(const Function & function, const NumericalScalar value)";
+  throw NotYetImplementedException(HERE) << "In RootStrategyImplementation::solve(const Function & function, const Scalar value)";
 }
 
 /* Solver accessor */
@@ -98,29 +98,29 @@ Solver RootStrategyImplementation::getSolver() const
 }
 
 /* Maximum distance accessor */
-void RootStrategyImplementation::setMaximumDistance(const NumericalScalar maximumDistance)
+void RootStrategyImplementation::setMaximumDistance(const Scalar maximumDistance)
 {
   maximumDistance_ = maximumDistance;
 }
 
-NumericalScalar RootStrategyImplementation::getMaximumDistance() const
+Scalar RootStrategyImplementation::getMaximumDistance() const
 {
   return maximumDistance_;
 }
 
 /* Step size accessor */
-void RootStrategyImplementation::setStepSize(const NumericalScalar stepSize)
+void RootStrategyImplementation::setStepSize(const Scalar stepSize)
 {
   stepSize_ = stepSize;
 }
 
-NumericalScalar RootStrategyImplementation::getStepSize() const
+Scalar RootStrategyImplementation::getStepSize() const
 {
   return stepSize_;
 }
 
 /* Value of the performance function at the origin accessor */
-void RootStrategyImplementation::setOriginValue(const NumericalScalar originValue)
+void RootStrategyImplementation::setOriginValue(const Scalar originValue)
 {
   originValue_ = originValue;
   isAlreadyComputedOriginValue_ = true;
@@ -130,7 +130,7 @@ void RootStrategyImplementation::setOriginValue(const NumericalScalar originValu
    + to save computations, as this value will be reused for each direction
    + to check if the origin is in the failure space or not, wich change the meaning of the roots
 */
-NumericalScalar RootStrategyImplementation::getOriginValue() const
+Scalar RootStrategyImplementation::getOriginValue() const
 {
   if (!isAlreadyComputedOriginValue_) throw NotDefinedException(HERE);
   return originValue_;

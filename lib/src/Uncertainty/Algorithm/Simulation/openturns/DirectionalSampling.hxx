@@ -40,7 +40,7 @@ class OT_API DirectionalSampling :
   CLASSNAME;
 public:
 
-  typedef Collection<NumericalScalar> NumericalScalarCollection;
+  typedef Collection<Scalar> ScalarCollection;
   typedef Distribution::Implementation            Implementation;
 
   /** for save/load mecanism */
@@ -81,13 +81,13 @@ private:
   Sample computeBlockSample();
 
   /** Compute the contribution of a direction to the probability given the roots of the performance function along the direction */
-  NumericalScalar computeContribution(const NumericalScalarCollection & roots);
+  Scalar computeContribution(const ScalarCollection & roots);
 
   /** Compute the mean point of a direction given the roots of the performance function along the direction */
-  NumericalScalar computeMeanContribution(const NumericalScalarCollection & roots);
+  Scalar computeMeanContribution(const ScalarCollection & roots);
 
   /** Compute the contribution of a set of direction to the probability given the contributions of each direction in the set */
-  NumericalScalar computeTotalContribution(const Sample & directionSample);
+  Scalar computeTotalContribution(const Sample & directionSample);
 
   StandardEvent standardEvent_;
   Function standardFunction_;

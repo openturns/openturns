@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
       Sample oneSample = distribution.getSample( size );
       fullprint << "oneSample first=" << oneSample[0] << " last=" << oneSample[size - 1] << std::endl;
       fullprint << "mean=" << oneSample.computeMean() << std::endl;
-      NumericalScalar sampleCovariance = oneSample.computeCovariance()(0, 0);
+      Scalar sampleCovariance = oneSample.computeCovariance()(0, 0);
       fullprint << "covariance=" << (std::abs(sampleCovariance) < 1.0e-16 ? 0.0 : sampleCovariance) << std::endl;
 
       {
@@ -74,14 +74,14 @@ int main(int argc, char *argv[])
         fullprint << "Point= " << point << std::endl;
 
         // Show PDF and CDF of point
-        NumericalScalar PDF = distribution.computePDF( point );
+        Scalar PDF = distribution.computePDF( point );
         fullprint << "pdf     =" << PDF << std::endl;
         fullprint << "pdf (FD)=" << (distribution.computeCDF( point + Point(1, 0) ) - distribution.computeCDF( point  + Point(1, -1) )) << std::endl;
-        NumericalScalar CDF = distribution.computeCDF( point );
+        Scalar CDF = distribution.computeCDF( point );
         fullprint << "cdf=" << CDF << std::endl;
-        NumericalScalar CCDF = distribution.computeComplementaryCDF( point );
+        Scalar CCDF = distribution.computeComplementaryCDF( point );
         fullprint << "ccdf=" << CCDF << std::endl;
-        NumericalScalar Survival = distribution.computeSurvivalFunction( point );
+        Scalar Survival = distribution.computeSurvivalFunction( point );
         fullprint << "survival=" << Survival << std::endl;
       }
       {
@@ -90,16 +90,16 @@ int main(int argc, char *argv[])
         fullprint << "Point= " << point << std::endl;
 
         // Show PDF and CDF of point
-        NumericalScalar LPDF = distribution.computeLogPDF( point );
+        Scalar LPDF = distribution.computeLogPDF( point );
         fullprint << "log pdf=" << LPDF << std::endl;
-        NumericalScalar PDF = distribution.computePDF( point );
+        Scalar PDF = distribution.computePDF( point );
         fullprint << "pdf     =" << PDF << std::endl;
         fullprint << "pdf (FD)=" << (distribution.computeCDF( point + Point(1, 0) ) - distribution.computeCDF( point  + Point(1, -1) )) << std::endl;
-        NumericalScalar CDF = distribution.computeCDF( point );
+        Scalar CDF = distribution.computeCDF( point );
         fullprint << "cdf=" << CDF << std::endl;
-        NumericalScalar CCDF = distribution.computeComplementaryCDF( point );
+        Scalar CCDF = distribution.computeComplementaryCDF( point );
         fullprint << "ccdf=" << CCDF << std::endl;
-        NumericalScalar Survival = distribution.computeSurvivalFunction( point );
+        Scalar Survival = distribution.computeSurvivalFunction( point );
         fullprint << "survival=" << Survival << std::endl;
       }
       NumericalComplex CF = distribution.computeCharacteristicFunction( 0.5 );
@@ -168,12 +168,12 @@ int main(int argc, char *argv[])
         fullprint << "Point= " << point << std::endl;
 
         // Show PDF and CDF of point
-        NumericalScalar PDF = distribution.computePDF( point );
+        Scalar PDF = distribution.computePDF( point );
         fullprint << "pdf     =" << PDF << std::endl;
         fullprint << "pdf (FD)=" << (distribution.computeCDF( point + Point(dim, 0) ) - distribution.computeCDF( point  + Point(dim, -1) )) << std::endl;
-        NumericalScalar CDF = distribution.computeCDF( point );
+        Scalar CDF = distribution.computeCDF( point );
         fullprint << "cdf=" << CDF << std::endl;
-        NumericalScalar CCDF = distribution.computeComplementaryCDF( point );
+        Scalar CCDF = distribution.computeComplementaryCDF( point );
         fullprint << "ccdf=" << CCDF << std::endl;
       }
       {
@@ -182,14 +182,14 @@ int main(int argc, char *argv[])
         fullprint << "Point= " << point << std::endl;
 
         // Show PDF and CDF of point
-        NumericalScalar LPDF = distribution.computeLogPDF( point );
+        Scalar LPDF = distribution.computeLogPDF( point );
         fullprint << "log pdf=" << LPDF << std::endl;
-        NumericalScalar PDF = distribution.computePDF( point );
+        Scalar PDF = distribution.computePDF( point );
         fullprint << "pdf     =" << PDF << std::endl;
         fullprint << "pdf (FD)=" << (distribution.computeCDF( point + Point(dim, 0) ) - distribution.computeCDF( point  + Point(dim, -1) )) << std::endl;
-        NumericalScalar CDF = distribution.computeCDF( point );
+        Scalar CDF = distribution.computeCDF( point );
         fullprint << "cdf=" << CDF << std::endl;
-        NumericalScalar CCDF = distribution.computeComplementaryCDF( point );
+        Scalar CCDF = distribution.computeComplementaryCDF( point );
         fullprint << "ccdf=" << CCDF << std::endl;
       }
       Point quantile = distribution.computeQuantile( 0.95 );

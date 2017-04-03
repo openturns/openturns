@@ -63,7 +63,7 @@ public:
   virtual ~HMatrixRealAssemblyFunction() {}
 
   // Compute matrix coefficient for degrees of freedom i and j
-  virtual NumericalScalar operator() (UnsignedInteger i, UnsignedInteger j) const = 0;
+  virtual Scalar operator() (UnsignedInteger i, UnsignedInteger j) const = 0;
 };
 
 class OT_API HMatrixTensorRealAssemblyFunction
@@ -139,19 +139,19 @@ public:
   void factorize(const String& method);
 
   /** Compute this <- alpha * this */
-  void scale(NumericalScalar alpha);
+  void scale(Scalar alpha);
 
   /** Compute y <- alpha op(this) * x + beta * y */
-  void gemv(char trans, NumericalScalar alpha, const Point& x, NumericalScalar beta, Point& y) const;
+  void gemv(char trans, Scalar alpha, const Point& x, Scalar beta, Point& y) const;
 
   /** Compute this <- alpha op(A) * p(B) + beta * this */
-  void gemm(char transA, char transB, NumericalScalar alpha, const HMatrixImplementation& a, const HMatrixImplementation& b, NumericalScalar beta);
+  void gemm(char transA, char transB, Scalar alpha, const HMatrixImplementation& a, const HMatrixImplementation& b, Scalar beta);
 
   /** Transpose matrix */
   void transpose();
 
   /** Get the Frobenius norm */
-  NumericalScalar norm() const;
+  Scalar norm() const;
 
   /** Get the diagonal */
   Point getDiagonal() const;
@@ -214,7 +214,7 @@ public:
     , covarianceDimension_(covarianceModel.getDimension())
     , epsilon_(epsilon) {}
 
-  NumericalScalar operator()(UnsignedInteger i, UnsignedInteger j) const
+  Scalar operator()(UnsignedInteger i, UnsignedInteger j) const
   {
     const UnsignedInteger rowIndex = i / covarianceDimension_;
     const UnsignedInteger columnIndex = j / covarianceDimension_;
@@ -253,7 +253,7 @@ public:
     CovarianceMatrix localResult(covarianceModel_( vertices_[i],  vertices_[j] ));
     if (i == j && epsilon_ != 0.0)
       localResult = localResult + epsilonId_;
-    memcpy( &localValues->getImplementation()->operator[](0), &localResult.getImplementation()->operator[](0), dimension_ * dimension_ * sizeof(NumericalScalar) );
+    memcpy( &localValues->getImplementation()->operator[](0), &localResult.getImplementation()->operator[](0), dimension_ * dimension_ * sizeof(Scalar) );
   }
 };
 

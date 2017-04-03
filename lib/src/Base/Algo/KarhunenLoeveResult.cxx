@@ -50,7 +50,7 @@ KarhunenLoeveResult::KarhunenLoeveResult(const Implementation & p_implementation
 }
 
 /* Threshold accessors */
-NumericalScalar KarhunenLoeveResult::getThreshold() const
+Scalar KarhunenLoeveResult::getThreshold() const
 {
   return getImplementation()->getThreshold();
 }

@@ -61,8 +61,8 @@ LHSResult * LHSResult::clone() const
 }
 
 
-void LHSResult::add(const Sample & optimalDesign, NumericalScalar criterion,
-         NumericalScalar C2, NumericalScalar PhiP, NumericalScalar MinDist, const Sample & algoHistory)
+void LHSResult::add(const Sample & optimalDesign, Scalar criterion,
+         Scalar C2, Scalar PhiP, Scalar MinDist, const Sample & algoHistory)
 {
   if (spaceFilling_.isMinimizationProblem() && (criterion < optimalCriterion_))
   {
@@ -106,12 +106,12 @@ Sample LHSResult::getOptimalDesign(UnsignedInteger restart) const
   return collDesigns_[restart];
 }
 
-NumericalScalar LHSResult::getOptimalValue() const
+Scalar LHSResult::getOptimalValue() const
 {
   return criteria_[optimalIndex_][0];
 }
 
-NumericalScalar LHSResult::getOptimalValue(UnsignedInteger restart) const
+Scalar LHSResult::getOptimalValue(UnsignedInteger restart) const
 {
   if (restart > restart_)
     throw InvalidArgumentException(HERE) << "The restart number must be in [0," << restart_ << "]";
@@ -130,36 +130,36 @@ Sample LHSResult::getAlgoHistory(UnsignedInteger restart) const
   return collAlgoHistory_[restart];
 }
 
-NumericalScalar LHSResult::getC2() const
+Scalar LHSResult::getC2() const
 {
   return criteria_[optimalIndex_][1];
 }
 
-NumericalScalar LHSResult::getC2(UnsignedInteger restart) const
+Scalar LHSResult::getC2(UnsignedInteger restart) const
 {
   if (restart > restart_)
     throw InvalidArgumentException(HERE) << "The restart number must be in [0," << restart_ << "]";
   return criteria_[restart][1];
 }
 
-NumericalScalar LHSResult::getPhiP() const
+Scalar LHSResult::getPhiP() const
 {
   return criteria_[optimalIndex_][2];
 }
 
-NumericalScalar LHSResult::getPhiP(UnsignedInteger restart) const
+Scalar LHSResult::getPhiP(UnsignedInteger restart) const
 {
   if (restart > restart_)
     throw InvalidArgumentException(HERE) << "The restart number must be in [0," << restart_ << "]";
   return criteria_[restart][2];
 }
 
-NumericalScalar LHSResult::getMinDist() const
+Scalar LHSResult::getMinDist() const
 {
   return criteria_[optimalIndex_][3];
 }
 
-NumericalScalar LHSResult::getMinDist(UnsignedInteger restart) const
+Scalar LHSResult::getMinDist(UnsignedInteger restart) const
 {
   if (restart > restart_)
     throw InvalidArgumentException(HERE) << "The restart number must be in [0," << restart_ << "]";

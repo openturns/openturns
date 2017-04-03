@@ -116,7 +116,7 @@ struct IntegrationStrategyCoefficientsPolicy
     for (UnsignedInteger j = r.begin(); j != r.end(); ++j)
     {
       const UnsignedInteger indexAdded = addedRanks_[j];
-      NumericalScalar result = 0.0;
+      Scalar result = 0.0;
       MatrixImplementation::const_iterator columnMatrix(designMatrix_.getImplementation()->begin() + indexAdded * designMatrix_.getNbRows());
       for (Point::const_iterator outputSample = weightedOutput_.begin(); outputSample != weightedOutput_.end(); ++outputSample, ++columnMatrix)
       {
@@ -181,7 +181,7 @@ void IntegrationStrategy::computeCoefficients(const Function & function,
   const Point values(designMatrix * alpha_k_p_);
   for (UnsignedInteger i = 0; i < sampleSize; ++i)
   {
-    const NumericalScalar delta = outputSample_[i][marginalIndex] - values[i];
+    const Scalar delta = outputSample_[i][marginalIndex] - values[i];
     residual_p_ += delta * delta;
   }
   residual_p_ = sqrt(residual_p_) / sampleSize;

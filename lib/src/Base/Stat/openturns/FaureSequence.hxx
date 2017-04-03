@@ -72,7 +72,7 @@ private:
   Unsigned64BitsInteger modulus_;
 
   /** Inverse of the modulus */
-  NumericalScalar modulusInverse_;
+  Scalar modulusInverse_;
 
   /** Current seed into the sequence */
   mutable Unsigned64BitsInteger seed_;

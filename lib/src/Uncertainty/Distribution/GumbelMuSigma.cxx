@@ -37,7 +37,7 @@ GumbelMuSigma::GumbelMuSigma()
   // Nothing to do
 }
 
-GumbelMuSigma::GumbelMuSigma(const NumericalScalar mu, const NumericalScalar sigma)
+GumbelMuSigma::GumbelMuSigma(const Scalar mu, const Scalar sigma)
   : DistributionParametersImplementation()
   , mu_(mu)
   , sigma_(sigma)
@@ -74,10 +74,10 @@ Distribution GumbelMuSigma::getDistribution() const
 /* Compute jacobian / native parameters */
 Matrix GumbelMuSigma::gradient() const
 {
-  const NumericalScalar dalphadmu = 0.0;
-  const NumericalScalar dalphadsigma = -SpecFunc::PI_SQRT6 / (sigma_ * sigma_);
-  const NumericalScalar dbetadmu = 1.0;
-  const NumericalScalar dbetadsigma = -SpecFunc::EULERSQRT6_PI;
+  const Scalar dalphadmu = 0.0;
+  const Scalar dalphadsigma = -SpecFunc::PI_SQRT6 / (sigma_ * sigma_);
+  const Scalar dbetadmu = 1.0;
+  const Scalar dbetadsigma = -SpecFunc::EULERSQRT6_PI;
 
   SquareMatrix nativeParametersGradient(IdentityMatrix(2));
   nativeParametersGradient(0, 0) = dalphadmu;
@@ -94,13 +94,13 @@ Matrix GumbelMuSigma::gradient() const
 Point GumbelMuSigma::operator () (const Point & inP) const
 {
   if (inP.getDimension() != 2) throw InvalidArgumentException(HERE) << "the given point must have dimension=2, here dimension=" << inP.getDimension();
-  const NumericalScalar mu = inP[0];
-  const NumericalScalar sigma = inP[1];
+  const Scalar mu = inP[0];
+  const Scalar sigma = inP[1];
 
   if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
 
-  const NumericalScalar alpha = SpecFunc::PI_SQRT6 / sigma;
-  const NumericalScalar beta = mu - SpecFunc::EULERSQRT6_PI * sigma;
+  const Scalar alpha = SpecFunc::PI_SQRT6 / sigma;
+  const Scalar beta = mu - SpecFunc::EULERSQRT6_PI * sigma;
 
   Point nativeParameters(2);
   nativeParameters[0] = alpha;
@@ -113,13 +113,13 @@ Point GumbelMuSigma::operator () (const Point & inP) const
 Point GumbelMuSigma::inverse(const Point & inP) const
 {
   if (inP.getDimension() != 2) throw InvalidArgumentException(HERE) << "the given point must have dimension=2, here dimension=" << inP.getDimension();
-  const NumericalScalar alpha = inP[0];
-  const NumericalScalar beta = inP[1];
+  const Scalar alpha = inP[0];
+  const Scalar beta = inP[1];
 
   if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "Alpha MUST be positive";
 
-  const NumericalScalar mu = beta + SpecFunc::EulerConstant / alpha;
-  const NumericalScalar sigma = SpecFunc::PI_SQRT6 / alpha;
+  const Scalar mu = beta + SpecFunc::EulerConstant / alpha;
+  const Scalar sigma = SpecFunc::PI_SQRT6 / alpha;
 
   Point muSigmaParameters(inP);
   muSigmaParameters[0] = mu;

@@ -57,7 +57,7 @@ FiniteDifferenceHessian::FiniteDifferenceHessian(
 }
 
 /* SecondParameter constructor */
-FiniteDifferenceHessian::FiniteDifferenceHessian(const NumericalScalar epsilon,
+FiniteDifferenceHessian::FiniteDifferenceHessian(const Scalar epsilon,
     const EvaluationPointer & p_evaluation)
   : HessianImplementation()
   , p_evaluation_(p_evaluation)

@@ -74,7 +74,7 @@ public:
   virtual ComplexTensorImplementation * clone() const;
 
   /** Set small elements to zero */
-  ComplexTensorImplementation clean(const NumericalScalar threshold) const;
+  ComplexTensorImplementation clean(const Scalar threshold) const;
 
   /** String converter */
   virtual String __repr__() const;

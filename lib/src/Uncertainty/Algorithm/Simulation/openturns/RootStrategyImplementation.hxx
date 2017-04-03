@@ -39,7 +39,7 @@ class OT_API RootStrategyImplementation
   CLASSNAME;
 public:
 
-  typedef Collection<NumericalScalar> NumericalScalarCollection;
+  typedef Collection<Scalar> ScalarCollection;
 
   /** Default constructor with Brent solver */
   RootStrategyImplementation();
@@ -49,32 +49,32 @@ public:
 
   /** Constructor with parameters */
   RootStrategyImplementation(const Solver & solver,
-                             const NumericalScalar maximumDistance,
-                             const NumericalScalar stepSize);
+                             const Scalar maximumDistance,
+                             const Scalar stepSize);
 
 
   /** Virtual constructor */
   virtual RootStrategyImplementation * clone() const;
 
   /** Solve gives all the roots found applying the root strategy */
-  virtual NumericalScalarCollection solve(const Function & function,
-                                          const NumericalScalar value);
+  virtual ScalarCollection solve(const Function & function,
+                                          const Scalar value);
 
   /** Solver accessor */
   void setSolver(const Solver & solver);
   Solver getSolver() const;
 
   /** Maximum distance accessor */
-  void setMaximumDistance(const NumericalScalar maximumDistance);
-  NumericalScalar getMaximumDistance() const;
+  void setMaximumDistance(const Scalar maximumDistance);
+  Scalar getMaximumDistance() const;
 
   /** Step size accessor */
-  void setStepSize(const NumericalScalar stepSize);
-  NumericalScalar getStepSize() const;
+  void setStepSize(const Scalar stepSize);
+  Scalar getStepSize() const;
 
   /** Value of the performance function at the origin accessor */
-  void setOriginValue(const NumericalScalar originValue);
-  NumericalScalar getOriginValue() const;
+  void setOriginValue(const Scalar originValue);
+  Scalar getOriginValue() const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -91,13 +91,13 @@ private:
   /** Univariate root solver for the localization of zeros along a ray */
   Solver solver_;
   /** Distance beyond which the density is negligible */
-  NumericalScalar maximumDistance_;
+  Scalar maximumDistance_;
   /** Size of the intervals in which we look for zeros */
-  NumericalScalar stepSize_;
+  Scalar stepSize_;
   /** Flag to avoid repeated evaluations of the model at the origin */
   mutable Bool isAlreadyComputedOriginValue_;
   /** Value of the model at the origin */
-  NumericalScalar originValue_;
+  Scalar originValue_;
 
 } ; /* class RootStrategyImplementation */
 

@@ -72,7 +72,7 @@ Sample RandomizedLHS::computeBlockSample()
     const Point u(RandomGenerator::Generate(dimension_));
     for(UnsignedInteger component = 0; component < dimension_; ++component)
     {
-      NumericalScalar xi = (shuffle(component, index) + u[component]) / blockSize;
+      Scalar xi = (shuffle(component, index) + u[component]) / blockSize;
       inputSample[index][component] = marginals_[component].computeQuantile(xi)[0];
     }
   }

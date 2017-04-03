@@ -73,17 +73,17 @@ public:
 
   /** Get the PDF of the distribution */
   using DistributionImplementation::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using DistributionImplementation::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the product minimum volume interval containing a given probability of the distribution */
-  Interval computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
+  Interval computeMinimumVolumeIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const;
 
   /** Get the minimum volume level set containing a given probability of the distribution */
-  virtual LevelSet computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const;
+  virtual LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & threshold) const;
 
   /** Parameters value and description accessor */
   PointWithDescriptionCollection getParametersCollection() const;
@@ -137,7 +137,7 @@ private:
   struct CompositeDistributionShiftedMomentWrapper
   {
     CompositeDistributionShiftedMomentWrapper(const UnsignedInteger n,
-        const NumericalScalar shift,
+        const Scalar shift,
         const CompositeDistribution * p_distribution):
       n_(n),
       shift_(shift),
@@ -145,15 +145,15 @@ private:
 
     Point computeShiftedMomentKernel(const Point & point) const
     {
-      const NumericalScalar y = p_distribution_->function_(point)[0];
-      const NumericalScalar power = std::pow(y - shift_, static_cast<NumericalScalar>(n_));
-      const NumericalScalar pdf = p_distribution_->antecedent_.computePDF(point);
-      const NumericalScalar value = power * pdf;
+      const Scalar y = p_distribution_->function_(point)[0];
+      const Scalar power = std::pow(y - shift_, static_cast<Scalar>(n_));
+      const Scalar pdf = p_distribution_->antecedent_.computePDF(point);
+      const Scalar value = power * pdf;
       return Point(1, value);
     };
 
     const UnsignedInteger n_;
-    const NumericalScalar shift_;
+    const Scalar shift_;
     const CompositeDistribution * p_distribution_;
   }; // struct CompositeDistributionShiftedMomentWrapper
 

@@ -37,15 +37,15 @@ class OT_API ZipfMandelbrot
   CLASSNAME;
 public:
 
-  typedef Collection<NumericalScalar> NumericalScalarCollection;
+  typedef Collection<Scalar> ScalarCollection;
 
   /** Default constructor */
   ZipfMandelbrot();
 
   /** Parameters constructor */
   ZipfMandelbrot(const UnsignedInteger n,
-                 const NumericalScalar q,
-                 const NumericalScalar s);
+                 const Scalar q,
+                 const Scalar s);
 
   /** Comparison operator */
   using DistributionImplementation::operator ==;
@@ -70,11 +70,11 @@ public:
 
   /** Get the PDF of the distribution */
   using DiscreteDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using DiscreteDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the standard deviation of the distribution */
   Point getStandardDeviation() const;
@@ -91,12 +91,12 @@ public:
   /* Interface specific to ZipfMandelbrot */
 
   /** Q accessor */
-  void setQ(const NumericalScalar q);
-  NumericalScalar getQ() const;
+  void setQ(const Scalar q);
+  Scalar getQ() const;
 
   /** S accessor */
-  void setS(const NumericalScalar s);
-  NumericalScalar getS() const;
+  void setS(const Scalar s);
+  Scalar getS() const;
 
   /** N accessor */
   void setN(const UnsignedInteger n);
@@ -122,16 +122,16 @@ public:
 protected:
 
   /* Compute generalized harmonic numbers */
-  NumericalScalar getHarmonicNumbers(UnsignedInteger const) const;
+  Scalar getHarmonicNumbers(UnsignedInteger const) const;
   void computeHarmonicNumbers();
 
-  NumericalScalarCollection harmonicNumbers_;
+  ScalarCollection harmonicNumbers_;
 
 
 private:
 
   /** Get the quantile of the distribution */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+  Scalar computeScalarQuantile(const Scalar prob,
                                         const Bool tail = false) const;
 
   /** Compute the mean of the distribution */
@@ -147,10 +147,10 @@ private:
   UnsignedInteger n_;
 
   /** The q probability parameter of the ZipfMandelbrot distribution */
-  NumericalScalar q_;
+  Scalar q_;
 
   /** The s probability parameter of the ZipfMandelbrot distribution */
-  NumericalScalar s_;
+  Scalar s_;
 
 }; /* class ZipfMandelbrot */
 

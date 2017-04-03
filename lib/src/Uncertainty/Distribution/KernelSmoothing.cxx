@@ -102,7 +102,7 @@ Point KernelSmoothing::computeSilvermanBandwidth(const Sample & sample) const
     }
   }
   // Silverman's Normal rule
-  NumericalScalar factor = std::pow(size, -1.0 / (4.0 + dimension)) / kernel_.getStandardDeviation()[0];
+  Scalar factor = std::pow(size, -1.0 / (4.0 + dimension)) / kernel_.getStandardDeviation()[0];
   // Scott's Normal rule
   return factor * scale;
 }
@@ -111,7 +111,7 @@ struct PluginConstraint
 {
   /** Constructor from a sample and a derivative factor estimate */
   PluginConstraint(const Sample & sample,
-                   const NumericalScalar K,
+                   const Scalar K,
                    const UnsignedInteger order):
     sample_(sample),
     N_(sample.getSize()),
@@ -124,39 +124,39 @@ struct PluginConstraint
   };
 
   /** Compute the derivative estimate based on the given bandwidth */
-  NumericalScalar computePhi(const NumericalScalar h) const
+  Scalar computePhi(const Scalar h) const
   {
     // Quick return for odd order
     if (order_ % 2 == 1) return 0.0;
-    NumericalScalar phi = N_ * hermitePolynomial_(0.0);
-    const NumericalScalar cutOffPlugin = ResourceMap::GetAsScalar( "KernelSmoothing-CutOffPlugin" );
+    Scalar phi = N_ * hermitePolynomial_(0.0);
+    const Scalar cutOffPlugin = ResourceMap::GetAsScalar( "KernelSmoothing-CutOffPlugin" );
     for (UnsignedInteger i = 1; i < N_; ++i)
     {
       for (UnsignedInteger j = 0; j < i; ++j)
       {
-        const NumericalScalar dx = sample_[i][0] - sample_[j][0];
-        const NumericalScalar x = dx / h;
+        const Scalar dx = sample_[i][0] - sample_[j][0];
+        const Scalar x = dx / h;
         // Clipping: if x is large enough, the exponential factor is 0.0
         if (std::abs(x) < cutOffPlugin) phi += 2.0 * hermitePolynomial_(x) * std::exp(-0.5 * x * x);
       }
     }
-    const NumericalScalar res = phi / ((N_ * (N_ - 1.0)) * std::pow(h, order_ + 1.0) * std::sqrt(2.0 * M_PI));
+    const Scalar res = phi / ((N_ * (N_ - 1.0)) * std::pow(h, order_ + 1.0) * std::sqrt(2.0 * M_PI));
     return res;
   }
 
   /** Compute the constraint for the plugin bandwidth */
   Point computeBandwidthConstraint(const Point & x) const
   {
-    const NumericalScalar h = x[0];
-    const NumericalScalar gammaH = K_ * std::pow(h, 5.0 / 7.0);
-    const NumericalScalar phiGammaH = computePhi(gammaH);
-    const NumericalScalar res = h - std::pow(2.0 * std::sqrt(M_PI) * phiGammaH * N_, -1.0 / 5.0);
+    const Scalar h = x[0];
+    const Scalar gammaH = K_ * std::pow(h, 5.0 / 7.0);
+    const Scalar phiGammaH = computePhi(gammaH);
+    const Scalar res = h - std::pow(2.0 * std::sqrt(M_PI) * phiGammaH * N_, -1.0 / 5.0);
     return Point(1, res);
   }
 
   const Sample & sample_;
   UnsignedInteger N_;
-  NumericalScalar K_;
+  Scalar K_;
   UnsignedInteger order_;
   UniVariatePolynomial hermitePolynomial_;
 };
@@ -171,21 +171,21 @@ Point KernelSmoothing::computePluginBandwidth(const Sample & sample) const
   if (dimension != 1) throw InvalidArgumentException(HERE) << "Error: plugin bandwidth is available only for 1D sample";
   const UnsignedInteger size = sample.getSize();
   // Approximate the derivatives by smoothing under the Normal assumption
-  const NumericalScalar sd = sample.computeStandardDeviationPerComponent()[0];
-  const NumericalScalar phi6Normal = -15.0 / (16.0 * std::sqrt(M_PI)) * std::pow(sd, -7.0);
-  const NumericalScalar phi8Normal = 105.0 / (32.0 * std::sqrt(M_PI)) * std::pow(sd, -9.0);
-  const NumericalScalar g1 = std::pow(-6.0 / (std::sqrt(2.0 * M_PI) * phi6Normal * size), 1.0 / 7.0);
-  const NumericalScalar g2 = std::pow(30.0 / (std::sqrt(2.0 * M_PI) * phi8Normal * size), 1.0 / 9.0);
-  const NumericalScalar phi4 = PluginConstraint(sample, 1.0, 4).computePhi(g1);
-  const NumericalScalar phi6 = PluginConstraint(sample, 1.0, 6).computePhi(g2);
-  const NumericalScalar K = std::pow(-6.0 * std::sqrt(2.0) * phi4 / phi6, 1.0 / 7.0);
+  const Scalar sd = sample.computeStandardDeviationPerComponent()[0];
+  const Scalar phi6Normal = -15.0 / (16.0 * std::sqrt(M_PI)) * std::pow(sd, -7.0);
+  const Scalar phi8Normal = 105.0 / (32.0 * std::sqrt(M_PI)) * std::pow(sd, -9.0);
+  const Scalar g1 = std::pow(-6.0 / (std::sqrt(2.0 * M_PI) * phi6Normal * size), 1.0 / 7.0);
+  const Scalar g2 = std::pow(30.0 / (std::sqrt(2.0 * M_PI) * phi8Normal * size), 1.0 / 9.0);
+  const Scalar phi4 = PluginConstraint(sample, 1.0, 4).computePhi(g1);
+  const Scalar phi6 = PluginConstraint(sample, 1.0, 6).computePhi(g2);
+  const Scalar K = std::pow(-6.0 * std::sqrt(2.0) * phi4 / phi6, 1.0 / 7.0);
   PluginConstraint constraint(sample, K, 4);
   const Function f(bindMethod<PluginConstraint, Point, Point>(constraint, &PluginConstraint::computeBandwidthConstraint, 1, 1));
   // Find a bracketing interval
-  NumericalScalar a = g1;
-  NumericalScalar b = g2;
-  NumericalScalar fA = f(Point(1, a))[0];
-  NumericalScalar fB = f(Point(1, b))[0];
+  Scalar a = g1;
+  Scalar b = g2;
+  Scalar fA = f(Point(1, a))[0];
+  Scalar fB = f(Point(1, b))[0];
   // While f has the same sign at the two bounds, update the interval
   while ((fA * fB > 0.0))
   {
@@ -216,8 +216,8 @@ Point KernelSmoothing::computeMixedBandwidth(const Sample & sample) const
   if (size <= ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-SmallSize" )) return computePluginBandwidth(sample);
   Sample smallSample(ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-SmallSize" ), 1);
   for (UnsignedInteger i = 0; i < ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-SmallSize" ); ++i) smallSample[i][0] = sample[i][0];
-  const NumericalScalar h1 = computePluginBandwidth(smallSample)[0];
-  const NumericalScalar h2 = computeSilvermanBandwidth(smallSample)[0];
+  const Scalar h1 = computePluginBandwidth(smallSample)[0];
+  const Scalar h2 = computeSilvermanBandwidth(smallSample)[0];
   return computeSilvermanBandwidth(sample) * (h1 / h2);
 }
 
@@ -265,10 +265,10 @@ KernelSmoothing::Implementation KernelSmoothing::build(const Sample & sample,
     Point reducedData(binNumber_ * binNumber_);
     Point x(binNumber_);
     Point y(binNumber_);
-    const NumericalScalar deltaX = (xmax[0] - xmin[0]) / (binNumber_ - 1);
-    const NumericalScalar deltaY = (xmax[1] - xmin[1]) / (binNumber_ - 1);
-    const NumericalScalar hX = 0.5 * deltaX;
-    const NumericalScalar hY = 0.5 * deltaY;
+    const Scalar deltaX = (xmax[0] - xmin[0]) / (binNumber_ - 1);
+    const Scalar deltaY = (xmax[1] - xmin[1]) / (binNumber_ - 1);
+    const Scalar hX = 0.5 * deltaX;
+    const Scalar hY = 0.5 * deltaY;
     for (UnsignedInteger i = 0; i < binNumber_; ++i)
     {
       x[i] = xmin[0] + i * deltaX;
@@ -277,11 +277,11 @@ KernelSmoothing::Implementation KernelSmoothing::build(const Sample & sample,
     for (UnsignedInteger i = 0; i < size; ++i)
     {
       UnsignedInteger indexX = 0;
-      NumericalScalar sliceX = (sample[i][0] - (xmin[0] - hX)) / deltaX;
+      Scalar sliceX = (sample[i][0] - (xmin[0] - hX)) / deltaX;
       if (sliceX >= 0.0) indexX = static_cast< UnsignedInteger > (trunc(sliceX));
       if (indexX >= binNumber_) indexX = binNumber_ - 1;
       UnsignedInteger indexY = 0;
-      NumericalScalar sliceY = (sample[i][1] - (xmin[1] - hY)) / deltaY;
+      Scalar sliceY = (sample[i][1] - (xmin[1] - hY)) / deltaY;
       if (sliceY >= 0.0) indexY = static_cast< UnsignedInteger > (trunc(sliceY));
       if (indexY >= binNumber_) indexY = binNumber_ - 1;
       ++reducedData[indexX + indexY * binNumber_];
@@ -305,12 +305,12 @@ KernelSmoothing::Implementation KernelSmoothing::build(const Sample & sample,
 
   // Here we are in the 1D case, with at least binning or boundary boundary correction
   Sample newSample(sample);
-  NumericalScalar xminNew = xmin[0];
-  NumericalScalar xmaxNew = xmax[0];
+  Scalar xminNew = xmin[0];
+  Scalar xmaxNew = xmax[0];
   // If boundary correction,
   if (boundaryCorrection_)
   {
-    NumericalScalar h = bandwidth[0];
+    Scalar h = bandwidth[0];
     // Reflect and add points close to the boundaries to the sample
     for (UnsignedInteger i = 0; i < size; i++)
     {
@@ -335,13 +335,13 @@ KernelSmoothing::Implementation KernelSmoothing::build(const Sample & sample,
   // Here, we have to bin the data
   Point reducedData(binNumber_);
   Point x(binNumber_);
-  const NumericalScalar delta = (xmaxNew - xminNew) / (binNumber_ - 1);
-  const NumericalScalar h = 0.5 * delta;
+  const Scalar delta = (xmaxNew - xminNew) / (binNumber_ - 1);
+  const Scalar h = 0.5 * delta;
   for (UnsignedInteger i = 0; i < binNumber_; ++i) x[i] = xminNew + i * delta;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     UnsignedInteger index = 0;
-    NumericalScalar slice = (newSample[i][0] - (xminNew - h)) / delta;
+    Scalar slice = (newSample[i][0] - (xminNew - h)) / delta;
     if (slice >= 0.0) index = static_cast< UnsignedInteger > (trunc(slice));
     if (index >= binNumber_) index = binNumber_ - 1;
     ++reducedData[index];

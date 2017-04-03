@@ -48,7 +48,7 @@ HistogramPolynomialFactory::HistogramPolynomialFactory()
 
 
 /* Parameter constructor */
-HistogramPolynomialFactory::HistogramPolynomialFactory(const NumericalScalar first,
+HistogramPolynomialFactory::HistogramPolynomialFactory(const Scalar first,
     const Point & width,
     const Point & height)
   : OrthogonalUniVariatePolynomialFactory(Histogram(first, width, height))
@@ -94,7 +94,7 @@ HistogramPolynomialFactory::Coefficients HistogramPolynomialFactory::getRecurren
   // Get the coefficients from the cache if possible
   if (n < cacheSize - 1)
   {
-    const NumericalScalar inverseSqrtBetaNp1 = 1.0 / sqrt(-monicRecurrenceCoefficients_[n + 1][2]);
+    const Scalar inverseSqrtBetaNp1 = 1.0 / sqrt(-monicRecurrenceCoefficients_[n + 1][2]);
     Coefficients coefficients(3);
     coefficients[0] = inverseSqrtBetaNp1;
     if (std::abs(monicRecurrenceCoefficients_[n][1]) > 0.0)
@@ -129,23 +129,23 @@ Point HistogramPolynomialFactory::computeDotProduct(const OrthogonalUniVariatePo
   const UnsignedInteger n = qN.getDegree();
   Point weights;
   const Point nodes(legendre_.getNodesAndWeights(n + 1, weights));
-  const NumericalScalar first = p_histogram_->getFirst();
+  const Scalar first = p_histogram_->getFirst();
   const Point width(p_histogram_->getWidth());
   const Point height(p_histogram_->getHeight());
-  NumericalScalar a = first;
+  Scalar a = first;
   Point dotProduct(2);
   for (UnsignedInteger i = 0; i < width.getSize(); ++i)
   {
-    const NumericalScalar ab = width[i];
-    const NumericalScalar b = a + ab;
-    const NumericalScalar c = a + b;
+    const Scalar ab = width[i];
+    const Scalar b = a + ab;
+    const Scalar c = a + b;
     Point value(2);
     // Here we integrate qN^2 and xqN^2 over [a,b]
     for (UnsignedInteger j = 0; j <= n; ++j)
     {
-      const NumericalScalar x = 0.5 * (c + nodes[j] * ab);
-      const NumericalScalar qNX = qN(x);
-      const NumericalScalar qNX2 = qNX * qNX;
+      const Scalar x = 0.5 * (c + nodes[j] * ab);
+      const Scalar qNX = qN(x);
+      const Scalar qNX2 = qNX * qNX;
       value[0] += weights[j] * qNX2;
       value[1] += weights[j] * x * qNX2;
     }
@@ -156,7 +156,7 @@ Point HistogramPolynomialFactory::computeDotProduct(const OrthogonalUniVariatePo
 }
 
 /* First accessor */
-NumericalScalar HistogramPolynomialFactory::getFirst() const
+Scalar HistogramPolynomialFactory::getFirst() const
 {
   return p_histogram_->getFirst();
 }

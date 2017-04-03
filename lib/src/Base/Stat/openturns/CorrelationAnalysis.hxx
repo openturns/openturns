@@ -39,12 +39,12 @@ class OT_API CorrelationAnalysis
 public:
 
   /** Compute the Pearson correlation coefficient between the component number index of the input sample and the 1D outputSample */
-  static NumericalScalar PearsonCorrelation(const Sample & inputSample,
+  static Scalar PearsonCorrelation(const Sample & inputSample,
       const Sample & outputSample,
       const UnsignedInteger index = 0);
 
   /** Compute the Spearman correlation coefficient between the component number index of the input sample and the 1D outputSample */
-  static NumericalScalar SpearmanCorrelation(const Sample & inputSample,
+  static Scalar SpearmanCorrelation(const Sample & inputSample,
       const Sample & outputSample,
       const UnsignedInteger index = 0);
 

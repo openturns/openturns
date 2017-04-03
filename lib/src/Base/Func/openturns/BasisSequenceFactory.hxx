@@ -79,8 +79,8 @@ public:
 #endif
 
   /** Stopping criterion on the L1-norm of the coefficients accessor */
-  void setMaximumRelativeConvergence(const NumericalScalar coefficientsPaths);
-  NumericalScalar getMaximumRelativeConvergence() const;
+  void setMaximumRelativeConvergence(const Scalar coefficientsPaths);
+  Scalar getMaximumRelativeConvergence() const;
 
 }; /* class BasisSequenceFactory */
 

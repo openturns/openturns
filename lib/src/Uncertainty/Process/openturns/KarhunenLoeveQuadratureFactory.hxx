@@ -61,7 +61,7 @@ public:
                                  const Basis & basis,
                                  const UnsignedInteger basisSize,
                                  const Bool mustScale,
-                                 const NumericalScalar threshold);
+                                 const Scalar threshold);
 
   /** Virtual copy constructor */
   virtual KarhunenLoeveQuadratureFactory * clone() const;
@@ -95,7 +95,7 @@ private:
   FunctionPersistentCollection coll_;
 
   /** Threshold for eigenvalues selection */
-  NumericalScalar threshold_;
+  Scalar threshold_;
 
   /** Quadrature nodes and weights */
   Sample nodes_;

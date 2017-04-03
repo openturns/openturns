@@ -58,7 +58,7 @@ CovarianceMatrix::CovarianceMatrix(const UnsignedInteger dim)
 /* do not match, either the collection is truncated */
 /* or the rest of the matrix is filled with zeros */
 CovarianceMatrix::CovarianceMatrix(const UnsignedInteger dim,
-                                   const Collection<NumericalScalar> &elementsValues)
+                                   const Collection<Scalar> &elementsValues)
   : SymmetricMatrix(dim, elementsValues)
 {
   // Nothing to do

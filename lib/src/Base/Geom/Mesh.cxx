@@ -230,7 +230,7 @@ struct NearestFunctor
 {
   const Mesh & mesh_;
   const Point & point_;
-  NumericalScalar minDistance_;
+  Scalar minDistance_;
   UnsignedInteger minIndex_;
 
   NearestFunctor(const Mesh & mesh, const Point & point)
@@ -243,7 +243,7 @@ struct NearestFunctor
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
-      const NumericalScalar d = (point_ - mesh_.getVertices()[i]).normSquare();
+      const Scalar d = (point_ - mesh_.getVertices()[i]).normSquare();
       if (d < minDistance_)
       {
         minDistance_ = d;
@@ -350,30 +350,30 @@ Sample Mesh::getNearestVertex(const Sample & points) const
 }
 
 /* Compute the volume of a given simplex */
-NumericalScalar Mesh::computeSimplexVolume(const UnsignedInteger index) const
+Scalar Mesh::computeSimplexVolume(const UnsignedInteger index) const
 {
   if (index >= getSimplicesNumber()) throw InvalidArgumentException(HERE) << "Error: the simplex index=" << index << " must be less than the number of simplices=" << getSimplicesNumber();
 
   // First special case: 1D simplex
   if (getDimension() == 1)
   {
-    const NumericalScalar x0 = vertices_[simplices_[index][0]][0];
-    const NumericalScalar x1 = vertices_[simplices_[index][1]][0];
+    const Scalar x0 = vertices_[simplices_[index][0]][0];
+    const Scalar x1 = vertices_[simplices_[index][1]][0];
     return std::abs(x1 - x0);
   }
   // Second special case: 2D simplex
   if (getDimension() == 2)
   {
-    const NumericalScalar x0 = vertices_[simplices_[index][0]][0];
-    const NumericalScalar y0 = vertices_[simplices_[index][0]][1];
-    const NumericalScalar x1 = vertices_[simplices_[index][1]][0];
-    const NumericalScalar y1 = vertices_[simplices_[index][1]][1];
-    const NumericalScalar x2 = vertices_[simplices_[index][2]][0];
-    const NumericalScalar y2 = vertices_[simplices_[index][2]][1];
+    const Scalar x0 = vertices_[simplices_[index][0]][0];
+    const Scalar y0 = vertices_[simplices_[index][0]][1];
+    const Scalar x1 = vertices_[simplices_[index][1]][0];
+    const Scalar y1 = vertices_[simplices_[index][1]][1];
+    const Scalar x2 = vertices_[simplices_[index][2]][0];
+    const Scalar y2 = vertices_[simplices_[index][2]][1];
     return 0.5 * std::abs((x2 - x0) * (y1 - y0) - (x0 - x1) * (y2 - y0));
   }
   SquareMatrix matrix(buildSimplexMatrix(index));
-  NumericalScalar sign = 0.0;
+  Scalar sign = 0.0;
   return exp(matrix.computeLogAbsoluteDeterminant(sign, false) - SpecFunc::LogGamma(dimension_ + 1));
 }
 
@@ -391,7 +391,7 @@ CovarianceMatrix Mesh::computeP1Gram() const
   for (UnsignedInteger i = 0; i < simplicesSize; ++i)
   {
     const Indices simplex(getSimplex(i));
-    const NumericalScalar delta = computeSimplexVolume(i);
+    const Scalar delta = computeSimplexVolume(i);
     for (UnsignedInteger j = 0; j < simplexSize; ++j)
     {
       const UnsignedInteger newJ = simplex[j];
@@ -409,7 +409,7 @@ CovarianceMatrix Mesh::computeP1Gram() const
 struct VolumeFunctor
 {
   const Mesh & mesh_;
-  NumericalScalar accumulator_;
+  Scalar accumulator_;
 
   VolumeFunctor(const Mesh & mesh)
     : mesh_(mesh), accumulator_(0.0) {}
@@ -446,8 +446,8 @@ Bool Mesh::isRegular() const
   const UnsignedInteger size = getSimplicesNumber();
   if (size <= 1) return true;
   Bool regular = true;
-  const NumericalScalar epsilon = ResourceMap::GetAsScalar("Mesh-VertexEpsilon");
-  const NumericalScalar step = vertices_[simplices_[0][1]][0] - vertices_[simplices_[0][0]][0];
+  const Scalar epsilon = ResourceMap::GetAsScalar("Mesh-VertexEpsilon");
+  const Scalar step = vertices_[simplices_[0][1]][0] - vertices_[simplices_[0][0]][0];
   for (UnsignedInteger i = 1; i < size; ++i)
   {
     regular = regular && (std::abs(vertices_[simplices_[i][1]][0] - vertices_[simplices_[i][0]][0] - step) < epsilon);
@@ -506,7 +506,7 @@ Point Mesh::computeWeights() const
   for (UnsignedInteger i = 0; i < numVertices; ++i)
     {
       const Indices vertexSimplices(verticesToSimplices[i]);
-      NumericalScalar weight = 0.0;
+      Scalar weight = 0.0;
       for (UnsignedInteger j = 0; j < vertexSimplices.getSize(); ++j)
 	weight += simplicesVolume[vertexSimplices[j]];
       weights[i] = weight;
@@ -606,19 +606,19 @@ Graph Mesh::draw2D() const
 }
 
 Graph Mesh::draw3D(const Bool drawEdge,
-                   const NumericalScalar thetaX,
-                   const NumericalScalar thetaY,
-                   const NumericalScalar thetaZ,
+                   const Scalar thetaX,
+                   const Scalar thetaY,
+                   const Scalar thetaZ,
                    const Bool shading,
-                   const NumericalScalar rho) const
+                   const Scalar rho) const
 {
   SquareMatrix R(3);
-  const NumericalScalar sinThetaX = sin(thetaX);
-  const NumericalScalar cosThetaX = cos(thetaX);
-  const NumericalScalar sinThetaY = sin(thetaY);
-  const NumericalScalar cosThetaY = cos(thetaY);
-  const NumericalScalar sinThetaZ = sin(thetaZ);
-  const NumericalScalar cosThetaZ = cos(thetaZ);
+  const Scalar sinThetaX = sin(thetaX);
+  const Scalar cosThetaX = cos(thetaX);
+  const Scalar sinThetaY = sin(thetaY);
+  const Scalar cosThetaY = cos(thetaY);
+  const Scalar sinThetaZ = sin(thetaZ);
+  const Scalar cosThetaZ = cos(thetaZ);
   R(0, 0) =  cosThetaY * cosThetaZ;
   R(1, 0) = -cosThetaY * sinThetaZ;
   R(2, 0) =  sinThetaY;
@@ -634,7 +634,7 @@ Graph Mesh::draw3D(const Bool drawEdge,
 Graph Mesh::draw3D(const Bool drawEdge,
                    const SquareMatrix & rotation,
                    const Bool shading,
-                   const NumericalScalar rho) const
+                   const Scalar rho) const
 {
   checkValidity();
   // First, check if the matrix is a rotation matrix of R^3
@@ -687,7 +687,7 @@ Graph Mesh::draw3D(const Bool drawEdge,
   // Fourth, draw the triangles in decreasing depth
   Graph graph(String(OSS() << "Mesh " << getName()), "x", "y", true, "topright");
   trianglesAndDepth = trianglesAndDepth.sortAccordingToAComponent(3);
-  NumericalScalar clippedRho = std::min(1.0, std::max(0.0, rho));
+  Scalar clippedRho = std::min(1.0, std::max(0.0, rho));
   if (rho != clippedRho) LOGWARN(OSS() << "The shrinking factor must be in (0,1), here rho=" << rho);
   for (UnsignedInteger i = trianglesAndDepth.getSize(); i > 0; --i)
   {
@@ -725,17 +725,17 @@ Graph Mesh::draw3D(const Bool drawEdge,
     }
     Polygon triangle(data);
 
-    NumericalScalar redFace = 0.0;
-    NumericalScalar greenFace = 0.0;
-    NumericalScalar blueFace = 1.0;
+    Scalar redFace = 0.0;
+    Scalar greenFace = 0.0;
+    Scalar blueFace = 1.0;
 
-    NumericalScalar redEdge = 1.0;
-    NumericalScalar greenEdge = 0.0;
-    NumericalScalar blueEdge = 0.0;
+    Scalar redEdge = 1.0;
+    Scalar greenEdge = 0.0;
+    Scalar blueEdge = 0.0;
 
-    NumericalScalar redLight = 1.0;
-    NumericalScalar greenLight = 1.0;
-    NumericalScalar blueLight = 1.0;
+    Scalar redLight = 1.0;
+    Scalar greenLight = 1.0;
+    Scalar blueLight = 1.0;
 
     if (shading)
     {
@@ -745,10 +745,10 @@ Graph Mesh::draw3D(const Bool drawEdge,
       N[0] = ab[1] * ac[2] - ab[2] * ac[1];
       N[1] = ab[2] * ac[0] - ab[0] * ac[2];
       N[2] = ab[0] * ac[1] - ab[1] * ac[0];
-      const NumericalScalar cosTheta = std::abs(N[2]) / N.norm();
+      const Scalar cosTheta = std::abs(N[2]) / N.norm();
       Point R(N * (2.0 * cosTheta));
       R[2] -= 1.0;
-      const NumericalScalar cosPhi = std::abs(R[2] / R.norm());
+      const Scalar cosPhi = std::abs(R[2] / R.norm());
       redFace     *= 0.1 + 0.7 * cosTheta + 0.2 * pow(cosPhi, 50) * redLight;
       greenFace   *= 0.1 + 0.7 * cosTheta + 0.2 * pow(cosPhi, 50) * greenLight;
       blueFace    *= 0.1 + 0.7 * cosTheta + 0.2 * pow(cosPhi, 50) * blueLight;

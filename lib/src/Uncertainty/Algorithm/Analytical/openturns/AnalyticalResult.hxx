@@ -90,7 +90,7 @@ public:
   Graph drawImportanceFactors(const ImportanceFactorType type = ELLIPTICAL) const;
 
   /**  HasoferReliabilityIndex accessor */
-  NumericalScalar getHasoferReliabilityIndex() const;
+  Scalar getHasoferReliabilityIndex() const;
 
   /**  HasoferReliabilityIndexSensitivity accessor */
   Sensitivity getHasoferReliabilityIndexSensitivity() const;
@@ -100,7 +100,7 @@ public:
   void setOptimizationResult(const OptimizationResult & optimizationResult);
 
   /** HasoferReliabilityIndexSensitivitygraph */
-  GraphCollection drawHasoferReliabilityIndexSensitivity(NumericalScalar width = ResourceMap::GetAsScalar( "AnalyticalResult-DefaultWidth" )) const;
+  GraphCollection drawHasoferReliabilityIndexSensitivity(Scalar width = ResourceMap::GetAsScalar( "AnalyticalResult-DefaultWidth" )) const;
 
   /** String converter */
   String __repr__() const;
@@ -116,7 +116,7 @@ protected:
 
   /** Sensitivitygraph */
   Graph drawSensitivity(const Sensitivity & sensitivity,
-                        const NumericalScalar width) const;
+                        const Scalar width) const;
 
 private:
 
@@ -145,7 +145,7 @@ private:
   void setPhysicalSpaceDesignPoint(const Point & physicalSpaceDesignPoint);
 
   /** HasoferReliabilityIndex accessor */
-  void setHasoferReliabilityIndex(const NumericalScalar & hasoferReliabilityIndex);
+  void setHasoferReliabilityIndex(const Scalar & hasoferReliabilityIndex);
 
   /** Returns the position of the given (value, name) into the Point or the dimension of the Point if failed */
   UnsignedInteger computePosition(const String & marginalName,
@@ -156,7 +156,7 @@ private:
   mutable Point    physicalSpaceDesignPoint_;
   Event             limitStateVariable_;
   Bool isStandardPointOriginInFailureSpace_;
-  mutable NumericalScalar hasoferReliabilityIndex_;
+  mutable Scalar hasoferReliabilityIndex_;
   mutable PointWithDescription importanceFactors_;
   mutable PointWithDescription classicalImportanceFactors_;
   mutable PointWithDescription physicalImportanceFactors_;

@@ -50,7 +50,7 @@ public:
 
   /** Default constructor */
   explicit KarhunenLoeveResultImplementation(const CovarianceModel & covariance,
-					     const NumericalScalar threshold,
+					     const Scalar threshold,
 					     const Point & eigenvalues,
 					     const Basis & modes,
 					     const ProcessSample & modesAsProcessSample,
@@ -60,7 +60,7 @@ public:
   virtual KarhunenLoeveResultImplementation * clone() const;
 
   /** Threshold accessor */
-  NumericalScalar getThreshold() const;
+  Scalar getThreshold() const;
 
   /** Covariance model accessor */
   CovarianceModel getCovarianceModel() const;
@@ -104,7 +104,7 @@ protected:
   CovarianceModel covariance_;
 
   /** Threshold */
-  NumericalScalar threshold_;
+  Scalar threshold_;
 
   /** Eigenvalues */
   Point eigenvalues_;

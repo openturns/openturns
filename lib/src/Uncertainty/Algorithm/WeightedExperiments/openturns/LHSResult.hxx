@@ -62,16 +62,16 @@ public:
   /** Attributes for getting elements of result */
   Sample getOptimalDesign() const;
   Sample getOptimalDesign(UnsignedInteger restart) const;
-  NumericalScalar getOptimalValue() const;
-  NumericalScalar getOptimalValue(UnsignedInteger restart) const;
+  Scalar getOptimalValue() const;
+  Scalar getOptimalValue(UnsignedInteger restart) const;
   Sample getAlgoHistory() const;
   Sample getAlgoHistory(UnsignedInteger restart) const;
-  NumericalScalar getC2() const;
-  NumericalScalar getC2(UnsignedInteger restart) const;
-  NumericalScalar getPhiP() const;
-  NumericalScalar getPhiP(UnsignedInteger restart) const;
-  NumericalScalar getMinDist() const;
-  NumericalScalar getMinDist(UnsignedInteger restart) const;
+  Scalar getC2() const;
+  Scalar getC2(UnsignedInteger restart) const;
+  Scalar getPhiP() const;
+  Scalar getPhiP(UnsignedInteger restart) const;
+  Scalar getMinDist() const;
+  Scalar getMinDist(UnsignedInteger restart) const;
 
   /** Graphical methods - Draw criterion history */
   Graph drawHistoryCriterion(const String & title = "") const;
@@ -82,8 +82,8 @@ public:
   Graph drawHistoryTemperature(UnsignedInteger restart, const String & title = "") const;
 
   /** Add an optimal design with its history */
-  void add(const Sample & optimalDesign, NumericalScalar criterion,
-           NumericalScalar C2, NumericalScalar PhiP, NumericalScalar MinDist,
+  void add(const Sample & optimalDesign, Scalar criterion,
+           Scalar C2, Scalar PhiP, Scalar MinDist,
            const Sample & algoHistory);
 
   /** String converter */
@@ -110,7 +110,7 @@ private:
   UnsignedInteger restart_;
 
   /** Best criterion value */
-  mutable NumericalScalar optimalCriterion_;
+  mutable Scalar optimalCriterion_;
 
   /** Index of the best designs in all restarts */
   mutable UnsignedInteger optimalIndex_;

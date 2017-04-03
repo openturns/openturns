@@ -45,18 +45,18 @@ public:
 
   /** Parameters constructor */
   KarhunenLoeveSVDAlgorithm(const ProcessSample & sample,
-			    const NumericalScalar threshold = 0.0,
+			    const Scalar threshold = 0.0,
 			    const Bool centeredSample = false);
 
   KarhunenLoeveSVDAlgorithm(const ProcessSample & sample,
 			    const Point & verticesWeights,
-			    const NumericalScalar threshold = 0.0,
+			    const Scalar threshold = 0.0,
 			    const Bool centeredSample = false);
 
   KarhunenLoeveSVDAlgorithm(const ProcessSample & sample,
 			    const Point & verticesWeights,
 			    const Point & sampleWeights,
-			    const NumericalScalar threshold = 0.0,
+			    const Scalar threshold = 0.0,
 			    const Bool centeredSample = false);
 
   /** Virtual copy constructor */

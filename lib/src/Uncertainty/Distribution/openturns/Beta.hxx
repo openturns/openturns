@@ -42,10 +42,10 @@ public:
   Beta();
 
   /** Parameters constructor */
-  Beta(const NumericalScalar r,
-       const NumericalScalar t,
-       const NumericalScalar a,
-       const NumericalScalar b);
+  Beta(const Scalar r,
+       const Scalar t,
+       const Scalar a,
+       const Scalar b);
 
   /** Comparison operator */
   Bool operator ==(const Beta & other) const;
@@ -72,13 +72,13 @@ public:
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
   using ContinuousDistribution::computeLogPDF;
-  NumericalScalar computeLogPDF(const Point & point) const;
+  Scalar computeLogPDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the PDFGradient of the distribution */
   using ContinuousDistribution::computePDFGradient;
@@ -89,10 +89,10 @@ public:
   Point computeCDFGradient(const Point & point) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
+  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
 
   /** Get the roughness, i.e. the L2-norm of the PDF */
-  NumericalScalar getRoughness() const;
+  Scalar getRoughness() const;
 
   /** Get the standard deviation of the distribution */
   Point getStandardDeviation() const;
@@ -123,20 +123,20 @@ public:
   /* Interface specific to Beta */
 
   /** R accessor */
-  void setR(const NumericalScalar r);
-  NumericalScalar getR() const;
+  void setR(const Scalar r);
+  Scalar getR() const;
 
   /** T accessor */
-  void setT(const NumericalScalar t);
-  NumericalScalar getT() const;
+  void setT(const Scalar t);
+  Scalar getT() const;
 
   /** A accessor */
-  void setA(const NumericalScalar a);
-  NumericalScalar getA() const;
+  void setA(const Scalar a);
+  Scalar getA() const;
 
   /** B accessor */
-  void setB(const NumericalScalar b);
-  NumericalScalar getB() const;
+  void setB(const Scalar b);
+  Scalar getB() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -157,12 +157,12 @@ private:
   void computeCovariance() const;
 
   /** Get the quantile of the distribution */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+  Scalar computeScalarQuantile(const Scalar prob,
                                         const Bool tail = false) const;
 
   /** RT accessor that avoid a check between the setting of r and the setting of t */
-  void setRT(const NumericalScalar r,
-             const NumericalScalar t);
+  void setRT(const Scalar r,
+             const Scalar t);
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange();
@@ -171,11 +171,11 @@ private:
   void update();
 
   /** The main parameter set of the distribution */
-  NumericalScalar r_;
-  NumericalScalar t_;
-  NumericalScalar a_;
-  NumericalScalar b_;
-  NumericalScalar normalizationFactor_;
+  Scalar r_;
+  Scalar t_;
+  Scalar a_;
+  Scalar b_;
+  Scalar normalizationFactor_;
 }; /* class Beta */
 
 

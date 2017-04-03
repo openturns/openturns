@@ -58,9 +58,9 @@ int main(int argc, char *argv[])
     FAST sensitivityFast(modelIshigami, distributions, 400);
 
     // Comparaison with reference analytical values
-    NumericalScalar a = 7.0;
-    NumericalScalar b = 0.1;
-    NumericalScalar covTh = (pow(b, 2.0) * pow(M_PI, 8.0)) / 18.0 + (b * pow(M_PI, 4.0)) / 5.0 + (pow(a, 2.0)) / 8.0 + 1.0 / 2.0;
+    Scalar a = 7.0;
+    Scalar b = 0.1;
+    Scalar covTh = (pow(b, 2.0) * pow(M_PI, 8.0)) / 18.0 + (b * pow(M_PI, 4.0)) / 5.0 + (pow(a, 2.0)) / 8.0 + 1.0 / 2.0;
     Point sob_1(3);
     sob_1[0] = (b * pow(M_PI, 4.0) / 5.0 + pow(b, 2.0) * pow(M_PI, 8.0) / 50.0 + 1.0 / 2.0) / covTh;
     sob_1[1] = (pow(a, 2.0) / 8.0) / covTh;
@@ -79,13 +79,13 @@ int main(int argc, char *argv[])
     Point totalOrderFastIndices(sensitivityFast.getTotalOrderIndices());
     for(UnsignedInteger i = 0; i < inputDimension; ++i)
     {
-      NumericalScalar value = firstOrderFastIndices[i];
+      Scalar value = firstOrderFastIndices[i];
       fullprint << "Ishigami first order FAST indice " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_1[i]) << std::endl;
     }
     fullprint << std::endl;
     for(UnsignedInteger i = 0; i < inputDimension; ++i)
     {
-      NumericalScalar value = totalOrderFastIndices[i];
+      Scalar value = totalOrderFastIndices[i];
       fullprint << "Ishigami total order FAST indice " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_T1[i]) << std::endl;
     }
     fullprint << std::endl;
@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
     // First-order indices
     Point V_i(inputDimension);
     Point Vtot_i(inputDimension);
-    NumericalScalar prod_V_i = 1.0;
+    Scalar prod_V_i = 1.0;
     for(UnsignedInteger i = 0; i < inputDimension; ++i)
     {
       V_i[i] = 1.0 / (3.0 * pow(1.0 + a_i[i], 2.0));
@@ -130,13 +130,13 @@ int main(int argc, char *argv[])
     // Results
     for(UnsignedInteger i = 0; i < inputDimension; ++i)
     {
-      NumericalScalar value = firstOrderFastIndices[i];
+      Scalar value = firstOrderFastIndices[i];
       fullprint << "G-Sobol first order FAST indice " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - V_i[i]) << std::endl;
     }
     fullprint << std::endl;
     for(UnsignedInteger i = 0; i < inputDimension; ++i)
     {
-      NumericalScalar value = totalOrderFastIndices[i];
+      Scalar value = totalOrderFastIndices[i];
       fullprint << "G-Sobol total order FAST indice " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - Vtot_i[i]) << std::endl;
     }
   }

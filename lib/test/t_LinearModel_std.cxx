@@ -36,12 +36,12 @@ int main(int argc, char *argv[])
   Point vectR(1, 12.0);
   Sample testSample(1, 1);
 
-  NumericalScalar begin = -1.0;
-  NumericalScalar end = 36.92;
+  Scalar begin = -1.0;
+  Scalar end = 36.92;
   Interval testInterval(Point(1, begin), Point(1, end));
   testInterval.setName("testInterval");
 
-  OT::Collection<NumericalScalar> valColl;
+  OT::Collection<Scalar> valColl;
   valColl.add(1.0);
 
   /* Default constructor */

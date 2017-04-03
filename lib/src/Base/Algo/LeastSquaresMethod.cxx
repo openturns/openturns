@@ -100,7 +100,7 @@ Point LeastSquaresMethod::getGramInverseDiag() const
   return getImplementation()->getGramInverseDiag();
 }
 
-NumericalScalar LeastSquaresMethod::getGramInverseTrace() const
+Scalar LeastSquaresMethod::getGramInverseTrace() const
 {
   return getImplementation()->getGramInverseTrace();
 }

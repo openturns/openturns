@@ -37,8 +37,8 @@ int main(int argc, char *argv[])
 
 
     /* Time grid creation */
-    NumericalScalar Tmin = 0.0;
-    NumericalScalar deltaT = 0.1;
+    Scalar Tmin = 0.0;
+    Scalar deltaT = 0.1;
     UnsignedInteger steps = 11;
 
     /* Initialization of the time grid timeGrid1*/

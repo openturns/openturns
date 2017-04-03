@@ -112,8 +112,8 @@ Matrix CanonicalTensorGradient::gradient(const Point & inP) const
     for (UnsignedInteger i = 0; i < m; ++ i)
     {
       const Point coeffI(evaluation_.getCoefficients(i, j));
-      NumericalScalar sumI = 0.0;
-      NumericalScalar sumdI = 0.0;
+      Scalar sumI = 0.0;
+      Scalar sumdI = 0.0;
       for (UnsignedInteger k = 0; k < basisSize; ++ k)
       {
         if (coeffI[k] != 0.0)
@@ -131,7 +131,7 @@ Matrix CanonicalTensorGradient::gradient(const Point & inP) const
   Matrix out(inputDimension, outputDimension);
   for (UnsignedInteger j = 0; j < inputDimension; ++ j)
   {
-    NumericalScalar dj = 0.0;
+    Scalar dj = 0.0;
     for (UnsignedInteger i = 0; i < m; ++ i)
     {
       dj += prodI[i] * (sumdRI[i][j] / sumRI[i][j]);

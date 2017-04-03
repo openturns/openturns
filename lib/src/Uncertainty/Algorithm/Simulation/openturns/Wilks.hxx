@@ -43,13 +43,13 @@ public:
   explicit Wilks(const RandomVector & vector);
 
   /** Maximum sample size accessor */
-  static UnsignedInteger ComputeSampleSize(const NumericalScalar quantileLevel,
-      const NumericalScalar confidenceLevel,
+  static UnsignedInteger ComputeSampleSize(const Scalar quantileLevel,
+      const Scalar confidenceLevel,
       const UnsignedInteger marginIndex = 0);
 
   /* Estimate an upper bound of the quantile of the random vector for the given quantile level and confidence level, using the marginIndex upper statistics */
-  Point computeQuantileBound(const NumericalScalar quantileLevel,
-                                      const NumericalScalar confidenceLevel,
+  Point computeQuantileBound(const Scalar quantileLevel,
+                                      const Scalar confidenceLevel,
                                       const UnsignedInteger marginIndex = 0) const;
 
 private:

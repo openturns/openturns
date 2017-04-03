@@ -119,7 +119,7 @@ Sample LHSExperiment::generateWithWeights(Point & weights) const
     if (randomShift_) u = RandomGenerator::Generate(dimension);
     for(UnsignedInteger component = 0; component < dimension; ++component)
     {
-      const NumericalScalar xi = (shuffle_(component, index) + u[component]) / size_;
+      const Scalar xi = (shuffle_(component, index) + u[component]) / size_;
       sample[index][component] = marginals_[component].computeQuantile(xi)[0];
     }
   }
@@ -146,7 +146,7 @@ Matrix LHSExperiment::ComputeShuffle(const UnsignedInteger dimension,
     for (UnsignedInteger component = 0; component < dimension; ++component)
     {
       const UnsignedInteger newPosition = index + u[component];
-      const NumericalScalar newValue = result(component, newPosition);
+      const Scalar newValue = result(component, newPosition);
       result(component, newPosition) = result(component, index);
       result(component, index) = newValue;
     }

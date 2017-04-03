@@ -71,7 +71,7 @@ UnsignedInteger LinearEnumerateFunction::findBinomialCoefficient(const UnsignedI
   UnsignedInteger n = 0;
   binomialCoefficient = 1;
   // Use floating point arithmetic to avoid overflow
-  NumericalScalar newBinomialCoefficient = 1.0;
+  Scalar newBinomialCoefficient = 1.0;
   // Special treatment to avoid roundoff error during conversion
   while(static_cast<UnsignedInteger>(round(newBinomialCoefficient)) <= index)
   {
@@ -81,7 +81,7 @@ UnsignedInteger LinearEnumerateFunction::findBinomialCoefficient(const UnsignedI
     // newBinomialCoefficient = (newBinomialCoefficient * (n + dimension)) / n;
     // but for large n it should lead to an overflow.
     // Instead, we use floating point arithmetic
-    newBinomialCoefficient *= 1.0 + static_cast<NumericalScalar>(dimension) / static_cast<NumericalScalar>(n);
+    newBinomialCoefficient *= 1.0 + static_cast<Scalar>(dimension) / static_cast<Scalar>(n);
   }
   return n;
 }

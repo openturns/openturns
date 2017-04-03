@@ -54,7 +54,7 @@ String KFold::__repr__() const
 
 
 /* Perform cross-validation */
-NumericalScalar KFold::run(const Sample & x,
+Scalar KFold::run(const Sample & x,
                            const Sample & y,
                            const Point & weight,
                            const Basis & basis,
@@ -63,7 +63,7 @@ NumericalScalar KFold::run(const Sample & x,
   return FittingAlgorithmImplementation::run(x, y, weight, basis, indices);
 }
 
-NumericalScalar KFold::run(const Sample & y,
+Scalar KFold::run(const Sample & y,
                            const Point & weight,
                            const Indices & indices,
                            const DesignProxy & proxy) const
@@ -71,14 +71,14 @@ NumericalScalar KFold::run(const Sample & y,
   return FittingAlgorithmImplementation::run(y, weight, indices, proxy);
 }
 
-NumericalScalar KFold::run(LeastSquaresMethod & method,
+Scalar KFold::run(LeastSquaresMethod & method,
                           const Sample & y) const
 {
   const Sample x(method.getInputSample());
   const Basis basis(method.getBasis());
 
   const UnsignedInteger sampleSize = x.getSize();
-  const NumericalScalar variance = y.computeVariance()[0];
+  const Scalar variance = y.computeVariance()[0];
 
   if (y.getDimension() != 1) throw InvalidArgumentException( HERE ) << "Output sample should be unidimensional (dim=" << y.getDimension() << ").";
   if (y.getSize() != sampleSize) throw InvalidArgumentException( HERE ) << "Samples should be equally sized (in=" << sampleSize << " out=" << y.getSize() << ").";
@@ -87,7 +87,7 @@ NumericalScalar KFold::run(LeastSquaresMethod & method,
 
   // the size of a subsample
   const UnsignedInteger testSize = sampleSize / k_;
-  NumericalScalar quadraticResidual = 0.0;
+  Scalar quadraticResidual = 0.0;
 
   // Store the initial row filter if any
   const Indices initialRowFilter(method.getImplementation()->proxy_.getRowFilter());
@@ -145,9 +145,9 @@ NumericalScalar KFold::run(LeastSquaresMethod & method,
   }
   // Restore the row filter
   method.getImplementation()->proxy_.setRowFilter(initialRowFilter);
-  const NumericalScalar empiricalError = quadraticResidual / (testSize * k_);
+  const Scalar empiricalError = quadraticResidual / (testSize * k_);
 
-  const NumericalScalar relativeError = empiricalError / variance;
+  const Scalar relativeError = empiricalError / variance;
   LOGINFO(OSS() << "Relative error=" << relativeError);
   return relativeError;
 }

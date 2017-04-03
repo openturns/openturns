@@ -31,7 +31,7 @@ static const Factory<BarPlot> Factory_BarPlot;
 
 /* Default constructor */
 BarPlot::BarPlot(const Sample & data,
-                 const NumericalScalar origin,
+                 const Scalar origin,
                  const String & legend)
   : DrawableImplementation(data, legend)
   , origin_(origin)
@@ -42,7 +42,7 @@ BarPlot::BarPlot(const Sample & data,
 
 /* Constructor with parameters */
 BarPlot::BarPlot(const Sample & data,
-                 const NumericalScalar origin,
+                 const Scalar origin,
                  const String & color,
                  const String & fillStyle,
                  const String & lineStyle,
@@ -61,7 +61,7 @@ BarPlot::BarPlot(const Sample & data,
 
 /* Constructor with old parameters */
 BarPlot::BarPlot(const Sample & data,
-                 const NumericalScalar origin,
+                 const Scalar origin,
                  const String & color,
                  const String & fillStyle,
                  const String & lineStyle,
@@ -89,13 +89,13 @@ String BarPlot::__repr__() const
 }
 
 /* Accessor for origin */
-NumericalScalar BarPlot::getOrigin() const
+Scalar BarPlot::getOrigin() const
 {
   return origin_;
 }
 
 /* Accessor for origin */
-void BarPlot::setOrigin(const NumericalScalar origin)
+void BarPlot::setOrigin(const Scalar origin)
 {
   origin_ = origin;
 }

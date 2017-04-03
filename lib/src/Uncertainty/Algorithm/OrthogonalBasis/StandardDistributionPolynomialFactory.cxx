@@ -116,7 +116,7 @@ void StandardDistributionPolynomialFactory::checkSpecificFamily()
   {
     const Point parameter(measure_.getParameter());
     const UnsignedInteger size = (parameter.getSize() - 1) / 2;
-    const NumericalScalar first = parameter[0];
+    const Scalar first = parameter[0];
     Point width(size);
     Point height(size);
     for (UnsignedInteger i = 0; i < size; ++i)
@@ -138,8 +138,8 @@ void StandardDistributionPolynomialFactory::checkSpecificFamily()
   if (measureType == "Beta")
   {
     const Point parameter(measure_.getParameter());
-    const NumericalScalar alpha = parameter[1] - parameter[0] - 1.0;
-    const NumericalScalar beta = parameter[0] - 1.0;
+    const Scalar alpha = parameter[1] - parameter[0] - 1.0;
+    const Scalar beta = parameter[0] - 1.0;
     // Here we set directly the specific family as the reference distribution
     // of the family has a different type (Arcsine) than the given distribution
     if (alpha == -0.5 && beta == -0.5 && parameter[2] == -1.0 && parameter[3] == 1.0)

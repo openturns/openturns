@@ -113,7 +113,7 @@ Sample MetaModelValidation::getOutputSample() const
   return outputSample_;
 }
 
-NumericalScalar MetaModelValidation::computePredictivityFactor() const
+Scalar MetaModelValidation::computePredictivityFactor() const
 {
   if (!isInitialized_) initialize();
   return q2_;

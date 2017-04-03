@@ -42,10 +42,10 @@ public:
   NormalGamma();
 
   /** Parameters constructor */
-  NormalGamma(const NumericalScalar mu,
-              const NumericalScalar kappa,
-              const NumericalScalar alpha,
-              const NumericalScalar beta);
+  NormalGamma(const Scalar mu,
+              const Scalar kappa,
+              const Scalar alpha,
+              const Scalar beta);
 
   /** Comparison operator */
   Bool operator ==(const NormalGamma & other) const;
@@ -65,20 +65,20 @@ public:
   /* Interface specific to NormalGamma */
 
   /** Mu accessor */
-  void setMu(const NumericalScalar mu);
-  NumericalScalar getMu() const;
+  void setMu(const Scalar mu);
+  Scalar getMu() const;
 
   /** Kappa accessor */
-  void setKappa(const NumericalScalar kappa);
-  NumericalScalar getKappa() const;
+  void setKappa(const Scalar kappa);
+  Scalar getKappa() const;
 
   /** Alpha accessor */
-  void setAlpha(const NumericalScalar alpha);
-  NumericalScalar getAlpha() const;
+  void setAlpha(const Scalar alpha);
+  Scalar getAlpha() const;
 
   /** Beta accessor */
-  void setBeta(const NumericalScalar beta);
-  NumericalScalar getBeta() const;
+  void setBeta(const Scalar beta);
+  Scalar getBeta() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -106,16 +106,16 @@ private:
   void computeRange();
 
   /** The prior mean */
-  NumericalScalar mu_;
+  Scalar mu_;
 
   /** The prior precision scale */
-  NumericalScalar kappa_;
+  Scalar kappa_;
 
   /** The prior shape */
-  NumericalScalar alpha_;
+  Scalar alpha_;
 
   /** The prior rate */
-  NumericalScalar beta_;
+  Scalar beta_;
 
 }; /* class NormalGamma */
 

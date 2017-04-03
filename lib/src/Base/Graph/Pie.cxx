@@ -64,7 +64,7 @@ Pie::Pie(const Point & data,
 Pie::Pie(const Point & data,
          const Description & labels,
          const Point & center,
-         const NumericalScalar & radius,
+         const Scalar & radius,
          const Description & palette)
   : DrawableImplementation()
   , palette_()
@@ -103,11 +103,11 @@ void Pie::setCenter(const Point & center)
 }
 
 /* Accessor for radius */
-NumericalScalar Pie::getRadius() const
+Scalar Pie::getRadius() const
 {
   return radius_;
 }
-void Pie::setRadius(const NumericalScalar radius)
+void Pie::setRadius(const Scalar radius)
 {
   radius_ = radius;
 }
@@ -154,7 +154,7 @@ String Pie::draw() const
   oss << DrawableImplementation::draw() << "\n";
   // The specific R command for drawing
   // Labels are drawn only if the associated data shares a sufficient amount of the total
-  NumericalScalar labelThreshold = data_.getMax()[0] * ResourceMap::GetAsScalar("Pie-LabelThreshold");
+  Scalar labelThreshold = data_.getMax()[0] * ResourceMap::GetAsScalar("Pie-LabelThreshold");
   oss << "pie(dataOT[,1],"
       << "center=c(" << center_[0] << "," << center_[1]
       << "),radius=" << radius_;
@@ -206,10 +206,10 @@ void Pie::checkData(const Point & data) const
   }
 
   // Then, check the positivity of the data
-  NumericalScalar max = 0.0;
+  Scalar max = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    NumericalScalar x = data[i];
+    Scalar x = data[i];
     if (x < 0.0)
     {
       throw InvalidArgumentException(HERE) << "Expected positive values";
@@ -237,7 +237,7 @@ void Pie::buildDefaultLabels()
 {
   const UnsignedInteger size = data_.getSize();
   labels_ = Description(size);
-  NumericalScalar sum = 0.0;
+  Scalar sum = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i) sum += data_[i][0];
   for (UnsignedInteger i = 0; i < size; ++i) labels_[i] = String(OSS() << "L" << i << " " << 0.1 * round(1000.0 * data_[i][0] / sum) << "%");
 }

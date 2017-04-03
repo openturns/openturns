@@ -143,8 +143,8 @@ int main(int argc, char *argv[])
       Sample data1(nPoints, 2), data2(nPoints, 2);
       Point cursor1(2);
       Point cursor2(2);
-      NumericalScalar count1;
-      NumericalScalar count2;
+      Scalar count1;
+      Scalar count2;
 
       for(UnsignedInteger i = 0; i < nPoints; i++)
       {
@@ -485,8 +485,8 @@ int main(int argc, char *argv[])
     RegularGrid regularGrid;
     {
       const UnsignedInteger points = 8;
-      const NumericalScalar tMin = 0.0;
-      const NumericalScalar tStep = 1.0 / (points - 1);
+      const Scalar tMin = 0.0;
+      const Scalar tStep = 1.0 / (points - 1);
       regularGrid = RegularGrid(tMin, tStep, points);
     }
     study.add("regularGrid", regularGrid);
@@ -637,8 +637,8 @@ int main(int argc, char *argv[])
     // Create a CompositeProcess Object
     CompositeProcess compositeProcess;
     {
-      NumericalScalar Tmin = 0.0;
-      NumericalScalar deltaT = 0.1;
+      Scalar Tmin = 0.0;
+      Scalar deltaT = 0.1;
       UnsignedInteger steps = 11;
       RegularGrid timeGrid(Tmin, deltaT, steps);
       ARMA myARMAProcess;
@@ -855,8 +855,8 @@ int main(int argc, char *argv[])
     {
       String type = "testResult";
       Bool testBool = 1;
-      NumericalScalar testVal = 0.372;
-      NumericalScalar testThres = 0.42;
+      Scalar testVal = 0.372;
+      Scalar testThres = 0.42;
       testResult = TestResult(type, testBool, testVal, testThres);
     }
     study.add("testResult", testResult);
@@ -871,9 +871,9 @@ int main(int argc, char *argv[])
       designPoint[0] = - sqrt(seuil) + C;
       Point pseudoDesignPoint(dim, 0.0);
       pseudoDesignPoint[0] = sqrt(seuil) + C;
-      NumericalScalar importanceLevel = 0.01;
-      NumericalScalar accuracyLevel = 2;
-      NumericalScalar confidenceLevel = 0.999999;
+      Scalar importanceLevel = 0.01;
+      Scalar accuracyLevel = 2;
+      Scalar confidenceLevel = 0.999999;
       strongMaximumTest = StrongMaximumTest(standardEvent, designPoint, importanceLevel, accuracyLevel, confidenceLevel);
     }
     study.add("strongMaximumTest", strongMaximumTest);
@@ -925,10 +925,10 @@ int main(int argc, char *argv[])
         UnsignedInteger k = 0;
         for (UnsignedInteger i = 0; i < timeGrid.getN(); ++i)
         {
-          const NumericalScalar t = timeGrid.getValue(i);
+          const Scalar t = timeGrid.getValue(i);
           for (UnsignedInteger j = i; j < timeGrid.getN(); ++j)
           {
-            const NumericalScalar s = timeGrid.getValue(j);
+            const Scalar s = timeGrid.getValue(j);
             covarianceCollection[k] = referenceModel(t, s);
             k++;
           }
@@ -939,7 +939,7 @@ int main(int argc, char *argv[])
         UserDefinedStationaryCovarianceModel::CovarianceMatrixCollection covarianceCollection(size);
         for (UnsignedInteger i = 0; i < size; ++i)
         {
-          const NumericalScalar t = timeGrid.getValue(i);
+          const Scalar t = timeGrid.getValue(i);
           covarianceCollection[i] = referenceModel(0, t);
         }
         userDefinedStationaryCovarianceModel = UserDefinedStationaryCovarianceModel(timeGrid, covarianceCollection);

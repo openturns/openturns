@@ -71,203 +71,203 @@ class OT_API SpecFunc
 public:
 
   // 0.39894228040143267 = 1 / sqrt(2.pi)
-  static const NumericalScalar ISQRT2PI;
+  static const Scalar ISQRT2PI;
   // 2.5066282746310005024 = sqrt(2.pi)
-  static const NumericalScalar SQRT2PI;
+  static const Scalar SQRT2PI;
   // 0.91893853320467274177 = log(sqrt(2.pi))
-  static const NumericalScalar LOGSQRT2PI;
+  static const Scalar LOGSQRT2PI;
   // 0.57721566490153286 = Euler constant gamma
-  static const NumericalScalar EulerConstant;
+  static const Scalar EulerConstant;
   // 1.64493406684822643 = pi^2 / 6
-  static const NumericalScalar PI2_6;
+  static const Scalar PI2_6;
   // 1.28254983016118640 = pi / sqrt(6)
-  static const NumericalScalar PI_SQRT6;
+  static const Scalar PI_SQRT6;
   // 0.45005320754569466 = gamma * sqrt(6) / pi
-  static const NumericalScalar EULERSQRT6_PI;
+  static const Scalar EULERSQRT6_PI;
   // 3.28986813369645287 = pi^2 / 3
-  static const NumericalScalar PI2_3;
+  static const Scalar PI2_3;
   // 0.55132889542179204 = sqrt(3) / pi
-  static const NumericalScalar SQRT3_PI;
+  static const Scalar SQRT3_PI;
   // 1.81379936423421785 = pi / sqrt(3)
-  static const NumericalScalar PI_SQRT3;
+  static const Scalar PI_SQRT3;
   // 1.20205690315959429 = Zeta(3)
-  static const NumericalScalar ZETA3;
+  static const Scalar ZETA3;
   // Maximum number of iterations for algorithms
   static const UnsignedInteger MaximumIteration;
   // Maximum precision for algorithms
-  static const NumericalScalar Precision;
+  static const Scalar Precision;
   // Minimum positive real number
-  static const NumericalScalar MinScalar;
-  static const NumericalScalar LogMinScalar;
+  static const Scalar MinScalar;
+  static const Scalar LogMinScalar;
   // Maximum positive real number
-  static const NumericalScalar MaxScalar;
-  static const NumericalScalar LogMaxScalar;
+  static const Scalar MaxScalar;
+  static const Scalar LogMaxScalar;
   // Real number accuracy
-  static const NumericalScalar ScalarEpsilon;
+  static const Scalar ScalarEpsilon;
 
   // @deprecated
-  static const NumericalScalar MinNumericalScalar;
-  static const NumericalScalar LogMinNumericalScalar;
-  static const NumericalScalar MaxNumericalScalar;
-  static const NumericalScalar LogMaxNumericalScalar;
-  static const NumericalScalar NumericalScalarEpsilon;
+  static const Scalar MinNumericalScalar;
+  static const Scalar LogMinNumericalScalar;
+  static const Scalar MaxNumericalScalar;
+  static const Scalar LogMaxNumericalScalar;
+  static const Scalar NumericalScalarEpsilon;
 
   // Some facilities for NaN and inf
-  static Bool IsNaN(const NumericalScalar value);
-  static Bool IsInf(const NumericalScalar value);
-  static Bool IsNormal(const NumericalScalar value);
+  static Bool IsNaN(const Scalar value);
+  static Bool IsInf(const Scalar value);
+  static Bool IsNormal(const Scalar value);
 
   // Modified first kind Bessel function of order 0: BesselI0(x) = \sum_{m=0}\infty\frac{1}{m!^2}\left(\frac{x}{2}\right)^{2m}
 private:
-  static NumericalScalar SmallCaseBesselI0(const NumericalScalar x);
-  static NumericalScalar LargeCaseLogBesselI0(const NumericalScalar x);
+  static Scalar SmallCaseBesselI0(const Scalar x);
+  static Scalar LargeCaseLogBesselI0(const Scalar x);
 public:
-  static NumericalScalar BesselI0(const NumericalScalar x);
-  static NumericalScalar LogBesselI0(const NumericalScalar x);
+  static Scalar BesselI0(const Scalar x);
+  static Scalar LogBesselI0(const Scalar x);
   // Modified first kind Bessel function of order 1: BesselI1(x) = \sum_{m=0}\infty\frac{1}{m!(m+1)!}\left(\frac{x}{2}\right)^{2m+1}
 private:
-  static NumericalScalar SmallCaseBesselI1(const NumericalScalar x);
-  static NumericalScalar LargeCaseLogBesselI1(const NumericalScalar x);
+  static Scalar SmallCaseBesselI1(const Scalar x);
+  static Scalar LargeCaseLogBesselI1(const Scalar x);
 public:
-  static NumericalScalar BesselI1(const NumericalScalar x);
-  static NumericalScalar LogBesselI1(const NumericalScalar x);
+  static Scalar BesselI1(const Scalar x);
+  static Scalar LogBesselI1(const Scalar x);
   // Difference between the logarithms of BesselI1 and BesselI0:
   // DeltaLogBesselI10(x) = log(BesselI1(x)) - log(BesselI0(x))
 private:
-  static NumericalScalar LargeCaseDeltaLogBesselI10(const NumericalScalar x);
+  static Scalar LargeCaseDeltaLogBesselI10(const Scalar x);
 public:
-  static NumericalScalar DeltaLogBesselI10(const NumericalScalar x);
+  static Scalar DeltaLogBesselI10(const Scalar x);
   // Modified second kind Bessel function of order nu: BesselK(nu, x)=\frac{\pi}{2}\frac{I_{-\nu}(x)-I_[\nu}(x)}{\sin{\nu\pi}}
-  static NumericalScalar LogBesselK(const NumericalScalar nu,
-                                    const NumericalScalar x);
-  static NumericalScalar BesselK(const NumericalScalar nu,
-                                 const NumericalScalar x);
-  static NumericalScalar BesselKDerivative(const NumericalScalar nu,
-      const NumericalScalar x);
+  static Scalar LogBesselK(const Scalar nu,
+                                    const Scalar x);
+  static Scalar BesselK(const Scalar nu,
+                                 const Scalar x);
+  static Scalar BesselKDerivative(const Scalar nu,
+      const Scalar x);
   // Beta function: beta(a, b) = \int_0^1 t^{a-1}.(1-t)^{b-1} dt
-  static NumericalScalar Beta(const NumericalScalar a,
-                              const NumericalScalar b);
+  static Scalar Beta(const Scalar a,
+                              const Scalar b);
   // Incomplete beta function: betaInc(a, b, x) = \int_0^x t^{a-1}.(1-t)^{b-1} dt
-  static NumericalScalar IncompleteBeta(const NumericalScalar a,
-                                        const NumericalScalar b,
-                                        const NumericalScalar x,
+  static Scalar IncompleteBeta(const Scalar a,
+                                        const Scalar b,
+                                        const Scalar x,
                                         const Bool tail = false);
   // Incomplete beta function inverse with respect to x
-  static NumericalScalar IncompleteBetaInverse(const NumericalScalar a,
-      const NumericalScalar b,
-      const NumericalScalar x,
+  static Scalar IncompleteBetaInverse(const Scalar a,
+      const Scalar b,
+      const Scalar x,
       const Bool tail = false);
   // Incomplete beta ratio function: betaRatioInc(a, b, x) = \int_0^x t^{a-1}.(1-t)^{b-1} dt / beta(a, b)
-  static NumericalScalar RegularizedIncompleteBeta(const NumericalScalar a,
-      const NumericalScalar b,
-      const NumericalScalar x,
+  static Scalar RegularizedIncompleteBeta(const Scalar a,
+      const Scalar b,
+      const Scalar x,
       const Bool tail = false);
   // Incomplete beta ratio function inverse with respect to x
-  static NumericalScalar RegularizedIncompleteBetaInverse(const NumericalScalar a,
-      const NumericalScalar b,
-      const NumericalScalar x,
+  static Scalar RegularizedIncompleteBetaInverse(const Scalar a,
+      const Scalar b,
+      const Scalar x,
       const Bool tail = false);
   // Natural logarithm of the beta function
-  static NumericalScalar LnBeta(const NumericalScalar a,
-                                const NumericalScalar b);
-  static NumericalScalar LogBeta(const NumericalScalar a,
-                                 const NumericalScalar b);
+  static Scalar LnBeta(const Scalar a,
+                                const Scalar b);
+  static Scalar LogBeta(const Scalar a,
+                                 const Scalar b);
   // Dawson function: Dawson(x) = \exp(-x^2) * \int_0^x \exp(t^2) dt
-  static NumericalScalar Dawson(const NumericalScalar x);
+  static Scalar Dawson(const Scalar x);
   static NumericalComplex Dawson(const NumericalComplex & z);
   // Debye function of order n: DebyeN(x, n) = n / x^n \int_0^x t^n/(\exp(t)-1) dt
-  static NumericalScalar Debye(const NumericalScalar x,
+  static Scalar Debye(const Scalar x,
                                const UnsignedInteger n);
   // DiLog function: Dilog(x) = -\int_0^x \log(1-t)/t dt
-  static NumericalScalar DiLog(const NumericalScalar x);
+  static Scalar DiLog(const Scalar x);
   // Exponential integral function: Ei(x) = -\int_{-x}^{\infty}exp(-t)/t dt
-  static NumericalScalar Ei(const NumericalScalar x);
+  static Scalar Ei(const Scalar x);
   // Complex exponential integral function: Ei(z) = -\int_{-z}^{\infty}exp(-t)/t dt
   static NumericalComplex Ei(const NumericalComplex & z);
   // Complex Faddeeva function: Faddeeva(z) = exp(-z^2)\erfc(-I*z)
   static NumericalComplex Faddeeva(const NumericalComplex & z);
   // Imaginary part of the Faddeeva function: FaddeevaIm(z) = Im(Faddeeva(x))
-  static NumericalScalar FaddeevaIm(const NumericalScalar x);
+  static Scalar FaddeevaIm(const Scalar x);
   // Gamma function: gamma(a) = \int_0^{\infty} t^{a-1}\exp(-t) dt
-  static NumericalScalar Gamma(const NumericalScalar a);
+  static Scalar Gamma(const Scalar a);
   // igamma1pm1(a) = 1 / gamma(1 + a) - 1
-  static NumericalScalar IGamma1pm1(const NumericalScalar a);
+  static Scalar IGamma1pm1(const Scalar a);
   // GammaCorrection(a) = LogGamma(a) - log(sqrt(2.Pi)) + a - (a - 1/2) log(a)
-  static NumericalScalar GammaCorrection(const NumericalScalar a);
+  static Scalar GammaCorrection(const Scalar a);
   // Complex gamma function: gamma(a) = \int_0^{\infty} t^{a-1}\exp(-t) dt
   static NumericalComplex Gamma(const NumericalComplex & a);
   // Natural logarithm of the gamma function
-  static NumericalScalar LnGamma(const NumericalScalar a);
-  static NumericalScalar LogGamma(const NumericalScalar a);
-  static NumericalScalar LogGamma1p(const NumericalScalar a);
+  static Scalar LnGamma(const Scalar a);
+  static Scalar LogGamma(const Scalar a);
+  static Scalar LogGamma1p(const Scalar a);
   static NumericalComplex LogGamma(const NumericalComplex & a);
   // Incomplete gamma function: gamma(a, x) = \int_0^x t^{a-1}\exp(-t) dt
-  static NumericalScalar IncompleteGamma(const NumericalScalar a,
-                                         const NumericalScalar x,
+  static Scalar IncompleteGamma(const Scalar a,
+                                         const Scalar x,
                                          const Bool tail = false);
   // Incomplete gamma function inverse with respect to x
-  static NumericalScalar IncompleteGammaInverse(const NumericalScalar a,
-      const NumericalScalar x,
+  static Scalar IncompleteGammaInverse(const Scalar a,
+      const Scalar x,
       const Bool tail = false);
   // Regularized incomplete gamma function: gamma(a, x) = \int_0^x t^{a-1}\exp(-t) dt / \Gamma(a)
-  static NumericalScalar RegularizedIncompleteGamma(const NumericalScalar a,
-      const NumericalScalar x,
+  static Scalar RegularizedIncompleteGamma(const Scalar a,
+      const Scalar x,
       const Bool tail = false);
   // Regularized incomplete gamma function inverse with respect to x
-  static NumericalScalar RegularizedIncompleteGammaInverse(const NumericalScalar a,
-      const NumericalScalar x,
+  static Scalar RegularizedIncompleteGammaInverse(const Scalar a,
+      const Scalar x,
       const Bool tail = false);
   // Digamma function: psi(x) = ((dgamma/dx) / gamma)(x)
-  static NumericalScalar DiGamma(const NumericalScalar x);
-  static NumericalScalar Psi(const NumericalScalar x);
+  static Scalar DiGamma(const Scalar x);
+  static Scalar Psi(const Scalar x);
   // Inverse of the DiGamma function
-  static NumericalScalar DiGammaInv(const NumericalScalar a);
+  static Scalar DiGammaInv(const Scalar a);
   // Trigamma function: TriGamma(x) = ((d^2gamma/dx^2) / gamma)(x)
-  static NumericalScalar TriGamma(const NumericalScalar x);
+  static Scalar TriGamma(const Scalar x);
   // Hypergeometric function of type (1,1): hyperGeom_1_1(p1, q1, x) = \sum_{n=0}^{\infty} [\prod_{k=0}^{n-1} (p1 + k) / (q1 + k)] * x^n / n!
-  static NumericalScalar HyperGeom_1_1(const NumericalScalar p1,
-                                       const NumericalScalar q1,
-                                       const NumericalScalar x);
+  static Scalar HyperGeom_1_1(const Scalar p1,
+                                       const Scalar q1,
+                                       const Scalar x);
   // Complex hypergeometric function of type (1,1): hyperGeom_1_1(p1, q1, x) = \sum_{n=0}^{\infty} [\prod_{k=0}^{n-1} (p1 + k) / (q1 + k)] * x^n / n!
-  static NumericalComplex HyperGeom_1_1(const NumericalScalar p1,
-                                        const NumericalScalar q1,
+  static NumericalComplex HyperGeom_1_1(const Scalar p1,
+                                        const Scalar q1,
                                         const NumericalComplex & x);
   // Hypergeometric function of type (2,1): hyperGeom_2_1(p1, p2, q1, x) = \sum_{n=0}^{\infty} [\prod_{k=0}^{n-1} (p1 + k) . (p2 + k) / (q1 + k)] * x^n / n!
-  static NumericalScalar HyperGeom_2_1(const NumericalScalar p1,
-                                       const NumericalScalar p2,
-                                       const NumericalScalar q1,
-                                       const NumericalScalar x);
+  static Scalar HyperGeom_2_1(const Scalar p1,
+                                       const Scalar p2,
+                                       const Scalar q1,
+                                       const Scalar x);
   // Hypergeometric function of type (2,2): hyperGeom_2_1(p1, p2, q1, q2, x) = \sum_{n=0}^{\infty} [\prod_{k=0}^{n-1} (p1 + k) . (p2 + k) / (q1 + k) / (q2 + k)] * x^n / n!
-  static NumericalScalar HyperGeom_2_2(const NumericalScalar p1,
-                                       const NumericalScalar p2,
-                                       const NumericalScalar q1,
-                                       const NumericalScalar q2,
-                                       const NumericalScalar x);
+  static Scalar HyperGeom_2_2(const Scalar p1,
+                                       const Scalar p2,
+                                       const Scalar q1,
+                                       const Scalar q2,
+                                       const Scalar x);
   // Erf function erf(x) = 2 / \sqrt(\pi) . \int_0^x \exp(-t^2) dt
-  static NumericalScalar Erf(const NumericalScalar x);
+  static Scalar Erf(const Scalar x);
   static NumericalComplex Erf(const NumericalComplex & z);
   // Erf function erfi(x) = -i.erf(iz)
-  static NumericalScalar ErfI(const NumericalScalar x);
+  static Scalar ErfI(const Scalar x);
   static NumericalComplex ErfI(const NumericalComplex & z);
   // Erf function erfc(x) = 1 - erf(x)
-  static NumericalScalar ErfC(const NumericalScalar x);
+  static Scalar ErfC(const Scalar x);
   static NumericalComplex ErfC(const NumericalComplex & z);
   // Erf function erfcx(x) = exp(x^2).erfc(x)
-  static NumericalScalar ErfCX(const NumericalScalar x);
+  static Scalar ErfCX(const Scalar x);
   static NumericalComplex ErfCX(const NumericalComplex & z);
   // Inverse of the erf function
-  static NumericalScalar ErfInverse(const NumericalScalar x);
+  static Scalar ErfInverse(const Scalar x);
   // Real branch of Lambert W function (principal or secndary)
-  static NumericalScalar LambertW(const NumericalScalar x,
+  static Scalar LambertW(const Scalar x,
                                   const Bool principal = true);
   // Accurate value of log(1+z) for |z|<<1
   static NumericalComplex Log1p(const NumericalComplex & z);
   // Accurate value of exp(z)-1 for |z|<<1
   static NumericalComplex Expm1(const NumericalComplex & z);
   // Accurate value of log(1-exp(-x)) for all x
-  static NumericalComplex Log1MExp(const NumericalScalar x);
+  static NumericalComplex Log1MExp(const Scalar x);
   // MarcumQ- function
-  //      static NumericalScalar MarcumQFunction(const NumericalScalar a,const NumericalScalar b);
+  //      static Scalar MarcumQFunction(const Scalar a,const Scalar b);
 
   // Next power of two
   static UnsignedInteger NextPowerOfTwo(const UnsignedInteger n);
@@ -280,10 +280,10 @@ public:
   static UnsignedInteger BitCount(const Unsigned64BitsInteger n);
 
   // Missing functions in cmath wrt math.h as of C++98
-  static NumericalScalar Acosh(const NumericalScalar x);
-  static NumericalScalar Asinh(const NumericalScalar x);
-  static NumericalScalar Atanh(const NumericalScalar x);
-  static NumericalScalar Cbrt(const NumericalScalar x);
+  static Scalar Acosh(const Scalar x);
+  static Scalar Asinh(const Scalar x);
+  static Scalar Atanh(const Scalar x);
+  static Scalar Cbrt(const Scalar x);
 
   // binomial coefficient C(n, k)
   static UnsignedInteger BinomialCoefficient(const UnsignedInteger n,

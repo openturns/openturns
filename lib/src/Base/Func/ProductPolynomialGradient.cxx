@@ -68,14 +68,14 @@ Matrix ProductPolynomialGradient::gradient (const Point & inP) const
 {
   const UnsignedInteger inDimension = inP.getDimension();
   if (inDimension != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a ProductPolynomialFunction with an argument of invalid dimension";
-  NumericalScalar productEvaluation = 1.0;
+  Scalar productEvaluation = 1.0;
   Point evaluations(inDimension);
   Point derivatives(inDimension);
   for (UnsignedInteger i = 0; i < inDimension; ++i)
   {
-    const NumericalScalar x = inP[i];
-    const NumericalScalar y = polynomials_[i](x);
-    const NumericalScalar dy = polynomials_[i].gradient(x);
+    const Scalar x = inP[i];
+    const Scalar y = polynomials_[i](x);
+    const Scalar dy = polynomials_[i].gradient(x);
     evaluations[i] = y;
     derivatives[i] = dy;
     productEvaluation *= y;

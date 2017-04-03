@@ -41,13 +41,13 @@ int main(int argc, char *argv[])
     input[3] = "x4";
     Function levelFunction(input, Description(1, "y1"), Description(1, "x1+2*x2-3*x3+4*x4"));
     LessOrEqual myOperator;
-    NumericalScalar threshold = 2.0;
+    Scalar threshold = 2.0;
     Sample mySample(0, levelFunction.getInputDimension());
-    NumericalScalar random = 0.1;
+    Scalar random = 0.1;
     for(UnsignedInteger index = 0; index < sampleSize; index++)
     {
       Point point(levelFunction.getInputDimension());
-      NumericalScalar norm = 0.0;
+      Scalar norm = 0.0;
       for(UnsignedInteger coordinate = 0; coordinate < levelFunction.getInputDimension(); coordinate++)
       {
         point[coordinate] = sqrt(-2.0 * log(random));

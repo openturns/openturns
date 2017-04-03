@@ -73,7 +73,7 @@ public:
 
   /** Compute the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /* Interface specific to BayesDistribution */
 

@@ -47,8 +47,8 @@ SimulationResultImplementation::SimulationResultImplementation()
 
 /* Standard constructor */
 SimulationResultImplementation::SimulationResultImplementation(const Event & event,
-    const NumericalScalar probabilityEstimate,
-    const NumericalScalar varianceEstimate,
+    const Scalar probabilityEstimate,
+    const Scalar varianceEstimate,
     const UnsignedInteger outerSampling,
     const UnsignedInteger blockSize)
   : PersistentObject()
@@ -82,29 +82,29 @@ void SimulationResultImplementation::setEvent(const Event & event)
 }
 
 /* Probability estimate accessor */
-NumericalScalar SimulationResultImplementation::getProbabilityEstimate() const
+Scalar SimulationResultImplementation::getProbabilityEstimate() const
 {
   return probabilityEstimate_;
 }
 
-void SimulationResultImplementation::setProbabilityEstimate(const NumericalScalar probabilityEstimate)
+void SimulationResultImplementation::setProbabilityEstimate(const Scalar probabilityEstimate)
 {
   probabilityEstimate_ = probabilityEstimate;
 }
 
 /* Variance estimate accessor */
-NumericalScalar SimulationResultImplementation::getVarianceEstimate() const
+Scalar SimulationResultImplementation::getVarianceEstimate() const
 {
   return varianceEstimate_;
 }
 
-void SimulationResultImplementation::setVarianceEstimate(const NumericalScalar varianceEstimate)
+void SimulationResultImplementation::setVarianceEstimate(const Scalar varianceEstimate)
 {
   varianceEstimate_ = varianceEstimate;
 }
 
 /* Coefficient of variation estimate accessor */
-NumericalScalar SimulationResultImplementation::getCoefficientOfVariation() const
+Scalar SimulationResultImplementation::getCoefficientOfVariation() const
 {
   // The usual case: the variance estimate is > 0.0 and the probability estimate is in ]0,1]
   if ((varianceEstimate_ > 0.0) && (probabilityEstimate_ > 0.0) && (probabilityEstimate_ <= 1.0)) return sqrt(varianceEstimate_) / probabilityEstimate_;
@@ -114,7 +114,7 @@ NumericalScalar SimulationResultImplementation::getCoefficientOfVariation() cons
 }
 
 /* Standard deviation estimate accessor */
-NumericalScalar SimulationResultImplementation::getStandardDeviation() const
+Scalar SimulationResultImplementation::getStandardDeviation() const
 {
   // The usual case: the variance estimate is > 0.0
   if (varianceEstimate_ > 0.0) return sqrt(varianceEstimate_);
@@ -148,7 +148,7 @@ void SimulationResultImplementation::setBlockSize(const UnsignedInteger blockSiz
 /* String converter */
 String SimulationResultImplementation::__repr__() const
 {
-  const NumericalScalar defaultConfidenceLevel = ResourceMap::GetAsScalar("SimulationResult-DefaultConfidenceLevel");
+  const Scalar defaultConfidenceLevel = ResourceMap::GetAsScalar("SimulationResult-DefaultConfidenceLevel");
   OSS oss;
   oss.setPrecision(6);
   oss << std::scientific
@@ -167,12 +167,12 @@ String SimulationResultImplementation::__repr__() const
 }
 
 /* Confidence length */
-NumericalScalar SimulationResultImplementation::getConfidenceLength(const NumericalScalar level) const
+Scalar SimulationResultImplementation::getConfidenceLength(const Scalar level) const
 {
   // Check if the given level is in ]0, 1[
   if ((level <= 0.0) || (level >= 1.0)) throw InvalidArgumentException(HERE) << "Confidence level must be in ]0, 1[";
   // The probability estimate is asymptotically normal
-  const NumericalScalar xq = DistFunc::qNormal(0.5 + 0.5 * level);
+  const Scalar xq = DistFunc::qNormal(0.5 + 0.5 * level);
   return 2.0 * xq * sqrt(varianceEstimate_);
 }
 

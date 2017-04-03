@@ -73,35 +73,35 @@ public:
   virtual UnsignedInteger getDimension() const;
 
   /** Compute the covariance function */
-  virtual CovarianceMatrix operator() (const NumericalScalar s,
-                                       const NumericalScalar t) const;
+  virtual CovarianceMatrix operator() (const Scalar s,
+                                       const Scalar t) const;
   virtual CovarianceMatrix operator() (const Point & s,
                                        const Point & t) const;
 
   // compute standard representative computes the term \rho(s, t)
-  virtual NumericalScalar computeStandardRepresentative(const Point & s,
+  virtual Scalar computeStandardRepresentative(const Point & s,
       const Point & t) const;
 
-  virtual NumericalScalar computeStandardRepresentative(const NumericalScalar & s,
-      const NumericalScalar & t) const;
+  virtual Scalar computeStandardRepresentative(const Scalar & s,
+      const Scalar & t) const;
 
-  virtual NumericalScalar computeStandardRepresentative(const Point & tau) const;
+  virtual Scalar computeStandardRepresentative(const Point & tau) const;
 
-  virtual NumericalScalar computeStandardRepresentative(const NumericalScalar & tau) const;
+  virtual Scalar computeStandardRepresentative(const Scalar & tau) const;
 
   // Special case for 1D model
-  virtual NumericalScalar computeAsScalar (const NumericalScalar s,
-      const NumericalScalar t) const;
+  virtual Scalar computeAsScalar (const Scalar s,
+      const Scalar t) const;
 
-  virtual NumericalScalar computeAsScalar (const Point & s,
+  virtual Scalar computeAsScalar (const Point & s,
       const Point & t) const;
 
-  virtual CovarianceMatrix operator() (const NumericalScalar tau) const;
+  virtual CovarianceMatrix operator() (const Scalar tau) const;
   virtual CovarianceMatrix operator() (const Point & tau) const;
 
   // Special case for 1D model
-  virtual NumericalScalar computeAsScalar (const NumericalScalar tau) const;
-  virtual NumericalScalar computeAsScalar (const Point & tau) const;
+  virtual Scalar computeAsScalar (const Scalar tau) const;
+  virtual Scalar computeAsScalar (const Point & tau) const;
 
   /** Gradient */
   virtual Matrix partialGradient(const Point & s,
@@ -126,24 +126,24 @@ public:
 
   /** Discretize the covariance function on a given TimeGrid/Mesh using HMatrix */
   virtual HMatrix discretizeHMatrix(const RegularGrid & timeGrid,
-                                    const NumericalScalar nuggetFactor,
+                                    const Scalar nuggetFactor,
                                     const HMatrixParameters & parameters) const;
   virtual HMatrix discretizeHMatrix(const Mesh & mesh,
-                                    const NumericalScalar nuggetFactor,
+                                    const Scalar nuggetFactor,
                                     const HMatrixParameters & parameters) const;
   virtual HMatrix discretizeHMatrix(const Sample & vertices,
-                                    const NumericalScalar nuggetFactor,
+                                    const Scalar nuggetFactor,
                                     const HMatrixParameters & parameters) const;
 
   /** Discretize and factorize the covariance function on a given TimeGrid/Mesh using HMatrix */
   virtual HMatrix discretizeAndFactorizeHMatrix(const RegularGrid & timeGrid,
-      const NumericalScalar nuggetFactor,
+      const Scalar nuggetFactor,
       const HMatrixParameters & parameters) const;
   virtual HMatrix discretizeAndFactorizeHMatrix(const Mesh & mesh,
-      const NumericalScalar nuggetFactor,
+      const Scalar nuggetFactor,
       const HMatrixParameters & parameters) const;
   virtual HMatrix discretizeAndFactorizeHMatrix(const Sample & vertices,
-      const NumericalScalar nuggetFactor,
+      const Scalar nuggetFactor,
       const HMatrixParameters & parameters) const;
 
   /** Is it a stationary covariance model ? */
@@ -165,8 +165,8 @@ public:
   virtual void setSpatialCorrelation(const CorrelationMatrix & correlation);
 
   /** Nugget factor accessor */
-  virtual void setNuggetFactor(const NumericalScalar nuggetFactor);
-  virtual NumericalScalar getNuggetFactor() const;
+  virtual void setNuggetFactor(const Scalar nuggetFactor);
+  virtual Scalar getNuggetFactor() const;
 
   /** Parameters accessor */
   virtual void setParameter(const Point & parameter);
@@ -189,8 +189,8 @@ public:
   /** Drawing method */
   virtual Graph draw(const UnsignedInteger rowIndex = 0,
 		     const UnsignedInteger columnIndex = 0,
-		     const NumericalScalar tMin = ResourceMap::GetAsScalar("CovarianceModel-DefaultTMin"),
-		     const NumericalScalar tMax = ResourceMap::GetAsScalar("CovarianceModel-DefaultTMax"),
+		     const Scalar tMin = ResourceMap::GetAsScalar("CovarianceModel-DefaultTMin"),
+		     const Scalar tMax = ResourceMap::GetAsScalar("CovarianceModel-DefaultTMax"),
 		     const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("CovarianceModel-DefaultPointNumber"),
 		     const Bool asStationary = true,
 		     const Bool correlationFlag = false) const;
@@ -231,7 +231,7 @@ protected:
   Bool isDiagonal_;
 
   /** Nugget factor */
-  NumericalScalar nuggetFactor_;
+  Scalar nuggetFactor_;
 
   /** Active parameters */
   Indices activeParameter_;

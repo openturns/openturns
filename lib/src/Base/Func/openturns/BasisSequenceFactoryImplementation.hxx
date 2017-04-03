@@ -76,8 +76,8 @@ public:
 #endif
 
   /** Stopping criterion on the L1-norm of the coefficients accessor */
-  void setMaximumRelativeConvergence(const NumericalScalar coefficientsPaths);
-  NumericalScalar getMaximumRelativeConvergence() const;
+  void setMaximumRelativeConvergence(const Scalar coefficientsPaths);
+  Scalar getMaximumRelativeConvergence() const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -94,7 +94,7 @@ protected:
   Bool verbose_;
 
   /** Stopping criterion on the L1-norm of the coefficients */
-  NumericalScalar maximumRelativeConvergence_;
+  Scalar maximumRelativeConvergence_;
 
   /** The collection of indices of the vectors in the partial basis with respect to the orthogonal basis */
   Indices currentIndices_;

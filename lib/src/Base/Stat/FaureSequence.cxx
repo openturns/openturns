@@ -78,8 +78,8 @@ Point FaureSequence::generate() const
     n /= modulus_;
   }
   // Stores the first component of the point
-  NumericalScalar xI = 0.0;
-  NumericalScalar factor = modulusInverse_;
+  Scalar xI = 0.0;
+  Scalar factor = modulusInverse_;
   for (UnsignedInteger i = 0; i < logSeed_; ++i)
   {
     xI += aI[i] * factor;
@@ -99,7 +99,7 @@ Point FaureSequence::generate() const
       aINew[j] = aINewJ;
     }
     // Compute the current component
-    NumericalScalar xJ = 0.0;
+    Scalar xJ = 0.0;
     factor = modulusInverse_;
     for (UnsignedInteger j = 0; j < logSeed_; ++j)
     {

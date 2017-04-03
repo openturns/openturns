@@ -6,7 +6,7 @@
 
 %include CorrelationMatrix_doc.i
 
-%apply const NumericalScalarCollection & { const OT::CorrelationMatrix::NumericalScalarCollection & };
+%apply const ScalarCollection & { const OT::CorrelationMatrix::ScalarCollection & };
 
 %typemap(in) const CorrelationMatrix & ($1_basetype temp) {
   if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
@@ -38,7 +38,7 @@ namespace OT {
 
   // These should be inherited from CovarianceMatrix 
   Point __mul__(Point p) { return (*self) * p; } 
-  Matrix __mul__(NumericalScalar s) { return (*self) * s; }
+  Matrix __mul__(Scalar s) { return (*self) * s; }
 
 } // CorrelationMatrix
 } // OT

@@ -69,15 +69,15 @@ int main(int argc, char *argv[])
 
     // Show DDF, PDF and CDF of point
     Point  pointDDF = copula.computeDDF( point );
-    NumericalScalar pointPDF = copula.computePDF( point );
-    NumericalScalar pointCDF = copula.computeCDF( point );
+    Scalar pointPDF = copula.computePDF( point );
+    Scalar pointCDF = copula.computeCDF( point );
     fullprint << "point= " << point
               << " ddf=" << pointDDF
               << " ddf (FD)=" << copula.ContinuousDistribution::computeDDF(point)
               << " pdf=" << pointPDF
               << " cdf=" << pointCDF
               << std::endl;
-    NumericalScalar Survival = copula.computeSurvivalFunction(point);
+    Scalar Survival = copula.computeSurvivalFunction(point);
     fullprint << "Survival      =" << Survival << std::endl;
     fullprint << "Survival (ref)=" << copula.computeSurvivalFunction(point) << std::endl;
     Point InverseSurvival = copula.computeInverseSurvivalFunction(0.95);

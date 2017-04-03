@@ -51,18 +51,18 @@ public:
   virtual String __repr__() const;
 
   /** Perform cross-validation */
-  virtual NumericalScalar run(const Sample & x,
+  virtual Scalar run(const Sample & x,
                               const Sample & y,
                               const Point & weight,
                               const Basis & basis,
                               const Indices & indices) const;
 #ifndef SWIG
-  virtual NumericalScalar run(const Sample & y,
+  virtual Scalar run(const Sample & y,
                               const Point & weight,
                               const Indices & indices,
                               const DesignProxy & proxy) const;
 
-  virtual NumericalScalar run(LeastSquaresMethod & method,
+  virtual Scalar run(LeastSquaresMethod & method,
                               const Sample & y) const;
 #endif
 

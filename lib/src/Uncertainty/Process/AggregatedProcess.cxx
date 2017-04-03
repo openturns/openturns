@@ -105,7 +105,7 @@ TimeSeries AggregatedProcess::getFuture(const UnsignedInteger stepNumber) const
   }
   if (stepNumber == 0) throw InvalidArgumentException(HERE) << "Error: the number of future steps must be positive.";
   /* TimeGrid associated with the possible future */
-  const NumericalScalar timeStep = timeGrid.getStep();
+  const Scalar timeStep = timeGrid.getStep();
   const RegularGrid futurTimeGrid(timeGrid.getEnd(), timeStep, stepNumber);
   Sample values(processCollection_[0].getFuture(stepNumber).getValues());
   for (UnsignedInteger i = 1; i < processCollection_.getSize(); ++i) values.stack(processCollection_[i].getFuture(stepNumber).getValues());

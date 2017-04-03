@@ -68,18 +68,18 @@ public:
                          const String & offset) const;
 
   /** UniVariatePolynomial are evaluated as functors */
-  NumericalScalar operator() (const NumericalScalar x) const;
+  Scalar operator() (const Scalar x) const;
   NumericalComplex operator() (const NumericalComplex z) const;
 
   /** UniVariatePolynomialImplementation derivative */
-  NumericalScalar gradient(const NumericalScalar x) const;
-  NumericalScalar hessian(const NumericalScalar x) const;
+  Scalar gradient(const Scalar x) const;
+  Scalar hessian(const Scalar x) const;
 
   /** Compute the derivative of the polynomial */
   UniVariatePolynomial derivate() const;
 
-  /** Multiply the polynomial P by a NumericalScalar */
-  UniVariatePolynomial operator * (const NumericalScalar scalar) const;
+  /** Multiply the polynomial P by a Scalar */
+  UniVariatePolynomial operator * (const Scalar scalar) const;
 
   /** Multiply the polynomial P by a polynomial Q */
   UniVariatePolynomial operator * (const UniVariatePolynomial & uniVariatePolynomial) const;
@@ -104,8 +104,8 @@ public:
   NumericalComplexCollection getRoots() const;
 
   /** Method to draw the graph of the polynomial between given bounds */
-  Graph draw(const NumericalScalar xMin,
-             const NumericalScalar xMax,
+  Graph draw(const Scalar xMin,
+             const Scalar xMax,
              const UnsignedInteger pointNumber) const;
 
 } ; /* class UniVariatePolynomial */

@@ -42,8 +42,8 @@ public:
   Arcsine();
 
   /** Parameters constructor */
-  Arcsine(const NumericalScalar a,
-          const NumericalScalar b);
+  Arcsine(const Scalar a,
+          const Scalar b);
 
   /** Comparison operator */
   Bool operator ==(const Arcsine & other) const;
@@ -69,18 +69,18 @@ public:
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
   using ContinuousDistribution::computeLogPDF;
-  NumericalScalar computeLogPDF(const Point & point) const;
+  Scalar computeLogPDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
   using ContinuousDistribution::computeComplementaryCDF;
-  NumericalScalar computeComplementaryCDF(const Point & point) const;
+  Scalar computeComplementaryCDF(const Point & point) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
+  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
 
   /** Get the PDFGradient of the distribution */
   using ContinuousDistribution::computePDFGradient;
@@ -91,11 +91,11 @@ public:
   Point computeCDFGradient(const Point & point) const;
 
   /** Get the quantile of the distribution */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+  Scalar computeScalarQuantile(const Scalar prob,
                                         const Bool tail = false) const;
 
   /** Get the roughness, i.e. the L2-norm of the PDF */
-  NumericalScalar getRoughness() const;
+  Scalar getRoughness() const;
 
   /** Get the standard deviation of the distribution */
   Point getStandardDeviation() const;
@@ -125,12 +125,12 @@ public:
   /* Interface specific to Arcsine */
 
   /** A accessor */
-  void setA(const NumericalScalar a);
-  NumericalScalar getA() const;
+  void setA(const Scalar a);
+  Scalar getA() const;
 
   /** B accessor */
-  void setB(const NumericalScalar b);
-  NumericalScalar getB() const;
+  void setB(const Scalar b);
+  Scalar getB() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -151,14 +151,14 @@ private:
   void computeCovariance() const;
 
   /** set both parameters */
-  void setAB(const NumericalScalar a, const NumericalScalar b);
+  void setAB(const Scalar a, const Scalar b);
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange();
 
   /** The main parameter set of the distribution */
-  NumericalScalar a_;
-  NumericalScalar b_;
+  Scalar a_;
+  Scalar b_;
 
 }; /* class Arcsine */
 

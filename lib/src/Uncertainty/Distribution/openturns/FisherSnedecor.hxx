@@ -40,8 +40,8 @@ public:
   FisherSnedecor();
 
   /** Parameters constructor */
-  FisherSnedecor(const NumericalScalar d1,
-                 const NumericalScalar d2);
+  FisherSnedecor(const Scalar d1,
+                 const Scalar d2);
 
 
   /** Comparison operator */
@@ -65,9 +65,9 @@ public:
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
   using ContinuousDistribution::computeLogPDF;
-  NumericalScalar computeLogPDF(const Point & point) const;
+  Scalar computeLogPDF(const Point & point) const;
 
   // LogPDFGradient
   using ContinuousDistribution::computeLogPDFGradient;
@@ -79,7 +79,7 @@ public:
 
   /** Get the CDF of the distribution, i.e. P(X <= point) = CDF(point) */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the standard deviation of the distribution */
   Point getStandardDeviation() const;
@@ -103,12 +103,12 @@ public:
   /* Interface specific to FisherSnedecor */
 
   /** D1 accessor */
-  void setD1(const NumericalScalar d1);
-  NumericalScalar getD1() const;
+  void setD1(const Scalar d1);
+  Scalar getD1() const;
 
   /** D2 accessor */
-  void setD2(const NumericalScalar d2);
-  NumericalScalar getD2() const;
+  void setD2(const Scalar d2);
+  Scalar getD2() const;
 
 
   /** Method save() stores the object through the StorageManager */
@@ -131,16 +131,16 @@ private:
   void computeCovariance() const;
 
   /** Get the quantile of the Triangular distribution */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+  Scalar computeScalarQuantile(const Scalar prob,
                                         const Bool tail = false) const;
 
   /** Update the derivative attributes */
   void update();
 
   /** The main parameter set of the distribution */
-  NumericalScalar d1_;
-  NumericalScalar d2_;
-  NumericalScalar normalizationFactor_;
+  Scalar d1_;
+  Scalar d2_;
+  Scalar normalizationFactor_;
 
 }; /* class FisherSnedecor */
 

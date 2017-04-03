@@ -51,7 +51,7 @@ KarhunenLoeveSVDAlgorithm::KarhunenLoeveSVDAlgorithm()
 
 /* Constructor with parameters */
 KarhunenLoeveSVDAlgorithm::KarhunenLoeveSVDAlgorithm(const ProcessSample & sample,
-    const NumericalScalar threshold,
+    const Scalar threshold,
     const Bool centeredSample)
   : KarhunenLoeveAlgorithmImplementation(CovarianceModel(), threshold)
   , sample_(sample)
@@ -68,7 +68,7 @@ KarhunenLoeveSVDAlgorithm::KarhunenLoeveSVDAlgorithm(const ProcessSample & sampl
 /* Constructor with parameters */
 KarhunenLoeveSVDAlgorithm::KarhunenLoeveSVDAlgorithm(const ProcessSample & sample,
     const Point & verticesWeights,
-    const NumericalScalar threshold,
+    const Scalar threshold,
     const Bool centeredSample)
   : KarhunenLoeveAlgorithmImplementation(CovarianceModel(), threshold)
   , sample_(sample)
@@ -86,7 +86,7 @@ KarhunenLoeveSVDAlgorithm::KarhunenLoeveSVDAlgorithm(const ProcessSample & sampl
 KarhunenLoeveSVDAlgorithm::KarhunenLoeveSVDAlgorithm(const ProcessSample & sample,
     const Point & verticesWeights,
     const Point & sampleWeights,
-    const NumericalScalar threshold,
+    const Scalar threshold,
     const Bool centeredSample)
   : KarhunenLoeveAlgorithmImplementation(CovarianceModel(), threshold)
   , sample_(sample)
@@ -127,7 +127,7 @@ void KarhunenLoeveSVDAlgorithm::run()
   if (!centeredSample_)
     {
       LOGINFO("Noncentered sample: compute mean");
-      const NumericalScalar unbiasedRatio = size / (size - 1.0);
+      const Scalar unbiasedRatio = size / (size - 1.0);
       mean = Point(augmentedDimension);
       for (UnsignedInteger i = 0; i < size; ++i)
 	{
@@ -139,7 +139,7 @@ void KarhunenLoeveSVDAlgorithm::run()
   {
     LOGINFO("Uniform vertices weights");
     UnsignedInteger shift = 0;
-    const NumericalScalar coeff = std::sqrt(verticesWeights_[0]);
+    const Scalar coeff = std::sqrt(verticesWeights_[0]);
     for (UnsignedInteger i = 0; i < kTilde; ++i)
     {
       Point data = sample_[i].getImplementation()->getData();
@@ -159,11 +159,11 @@ void KarhunenLoeveSVDAlgorithm::run()
     UnsignedInteger shift = 0;
     for (UnsignedInteger i = 0; i < kTilde; ++i)
     {
-      const NumericalScalar wI = std::sqrt(sampleWeights_[i]);
+      const Scalar wI = std::sqrt(sampleWeights_[i]);
       const Sample currentSample(sample_[i]);
       for (UnsignedInteger j = 0; j < verticesNumber; ++j)
       {
-        const NumericalScalar wJ = coeffs[j];
+        const Scalar wJ = coeffs[j];
 	const Point currentPoint(currentSample[j]);
         for (UnsignedInteger k = 0; k < dimension; ++k)
 	  {
@@ -184,7 +184,7 @@ void KarhunenLoeveSVDAlgorithm::run()
     eigenValues[i] = svd[i] * svd[i];
   LOGINFO("Extract the relevant eigenpairs");
   UnsignedInteger K = 0;
-  NumericalScalar cumulatedVariance = std::abs(eigenValues[0]);
+  Scalar cumulatedVariance = std::abs(eigenValues[0]);
   // Find the cut-off in the eigenvalues
   while ((K < eigenValues.getSize()) && (eigenValues[K] >= threshold_ * cumulatedVariance))
     {
@@ -202,7 +202,7 @@ void KarhunenLoeveSVDAlgorithm::run()
     {
       for (UnsignedInteger i = 0; i < verticesNumber; ++i)
       {
-	const NumericalScalar coefficient = 1.0 / std::sqrt(verticesWeights_[i]);
+	const Scalar coefficient = 1.0 / std::sqrt(verticesWeights_[i]);
 	for (UnsignedInteger k = 0; k < dimension; ++k)
 	  {
 	    eigenModesValues[index] *= coefficient;
@@ -224,7 +224,7 @@ void KarhunenLoeveSVDAlgorithm::run()
   {
     selectedEV[k] = eigenValues[k];
     MatrixImplementation a(eigenModesValues.getColumn(k));
-    const NumericalScalar factor = a[0] < 0.0 ? -1.0 : 1.0;
+    const Scalar factor = a[0] < 0.0 ? -1.0 : 1.0;
     // Store the eigen modes in two forms
     values.setData(a * factor);
     modesAsProcessSample.add(values);
@@ -244,11 +244,11 @@ void KarhunenLoeveSVDAlgorithm::run()
       } // uniformVerticesWeights_
     else
       {
-	const NumericalScalar inverseSqrtLambda = factor / sqrt(selectedEV[k]);
+	const Scalar inverseSqrtLambda = factor / sqrt(selectedEV[k]);
 	UnsignedInteger shift = 0;
 	for (UnsignedInteger i = 0; i < verticesNumber; ++i)
 	  {
-	    const NumericalScalar coefficient = verticesWeights_[i] * inverseSqrtLambda;
+	    const Scalar coefficient = verticesWeights_[i] * inverseSqrtLambda;
 	    for (UnsignedInteger j = 0; j < dimension; ++j)
 	      {
 		transposedProjection[index] = coefficient * a[shift];
@@ -279,7 +279,7 @@ void KarhunenLoeveSVDAlgorithm::setVerticesWeights(const Point & verticesWeights
 {
   const UnsignedInteger verticesNumber = sample_.getMesh().getVerticesNumber();
   if (!(verticesWeights.getSize() == verticesNumber)) throw InvalidArgumentException(HERE) << "Error: expected vertices weights of dimension=" << verticesNumber << ", got dimension=" << verticesWeights.getSize();
-  const NumericalScalar weight0 = verticesWeights[0];
+  const Scalar weight0 = verticesWeights[0];
   for (UnsignedInteger i = 0; i < verticesNumber; ++i)
     {
       if (!(verticesWeights[i] > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected positive vertices weights, here weights[" << i << "]=" << verticesWeights[i];
@@ -298,8 +298,8 @@ void KarhunenLoeveSVDAlgorithm::setSampleWeights(const Point & sampleWeights)
 {
   const UnsignedInteger sampleSize = sample_.getSize();
   if (!(sampleWeights.getSize() == sampleSize)) throw InvalidArgumentException(HERE) << "Error: expected sample weights of dimension=" << sampleSize << ", got dimension=" << sampleWeights.getSize();
-  const NumericalScalar weight0 = sampleWeights[0];
-  NumericalScalar weightSum = 0.0;
+  const Scalar weight0 = sampleWeights[0];
+  Scalar weightSum = 0.0;
   for (UnsignedInteger i = 0; i < sampleSize; ++i)
     {
       if (!(sampleWeights[i] > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected positive sample weights, here weights[" << i << "]=" << sampleWeights[i];

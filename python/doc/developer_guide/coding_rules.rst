@@ -230,7 +230,7 @@ available:*
     #include "openturns/OT.hxx"
     using namespace OT;
 
-    void f(NumericalScalar n);
+    void f(Scalar n);
 
 Names
 ~~~~~
@@ -264,7 +264,7 @@ No abbreviations are allowed, except if it is found in the literature, for examp
     class Environment : public Object {
     ...
     private:
-    NumericalScalar density_; //<! material density in environment (g/cm3)
+    Scalar density_; //<! material density in environment (g/cm3)
     ...
     }; /* end class Environment */
 
@@ -321,7 +321,7 @@ reason, the underscore is used as a suffix.
 
     int main()
     {
-      NumericalScalar reactionRate = 0.0;
+      Scalar reactionRate = 0.0;
       ...
     }
 
@@ -365,8 +365,8 @@ reason, the underscore is used as a suffix.
 
 ::
 
-    NumericalScalar a, k, l, m1, m2, m3;
-    NumericalScalar zzz, zz2;
+    Scalar a, k, l, m1, m2, m3;
+    Scalar zzz, zz2;
     const char *foo, *hello, tempo, bogus;
 
     void adElt(Point pt);
@@ -388,9 +388,9 @@ Class declaration
       static AThing TheThing_;
 
     public :
-      NumericalScalar getValue() const;
+      Scalar getValue() const;
     protected :
-      NumericalScalar theValue_;
+      Scalar theValue_;
     private :
       /* ... */
     }; /* end class Buffer */
@@ -442,17 +442,17 @@ Class declaration
 
     class Vector {
     public :
-      Vector (Bool someProperty, UnsignedInteger size, NumericalScalar elt = 0.);
+      Vector (Bool someProperty, UnsignedInteger size, Scalar elt = 0.);
     private :
       Bool property_;
-      Collection<NumericalScalar> data_;
+      Collection<Scalar> data_;
     };
 
 *Example of a correct definition:*
 
 ::
 
-    Vector::Vector (Bool someProperty, UnsignedInteger size, NumericalScalar elt)
+    Vector::Vector (Bool someProperty, UnsignedInteger size, Scalar elt)
     : property_(someProperty)
     , data_(size, elt)
     { }
@@ -461,15 +461,15 @@ Class declaration
 
 ::
 
-    Vector::Vector (Bool someProperty, UnsignedInteger size, NumericalScalar elt)
+    Vector::Vector (Bool someProperty, UnsignedInteger size, Scalar elt)
     : data_(size, elt)
     , property_(someProperty)     // order of initialization
     { }
 
-    Vector::Vector (Bool someProperty, UnsignedInteger size, NumericalScalar elt)
+    Vector::Vector (Bool someProperty, UnsignedInteger size, Scalar elt)
     {
       property_ = someProperty;
-      data_ = Collection<NumericalScalar>(size, elt);
+      data_ = Collection<Scalar>(size, elt);
       // requires an assignment after the construction
       // processing is longer for complex objects!
     }
@@ -599,13 +599,13 @@ Inheritance
 
     class Point : public std::vector<double> {
     public:
-      Point(NumericalScalar x,
-            NumericalScalar y,
-            NumericalScalar z);
+      Point(Scalar x,
+            Scalar y,
+            Scalar z);
     };
 
-    Point::Point(NumericalScalar x, NumericalScalar y,
-    NumericalScalar z)
+    Point::Point(Scalar x, Scalar y,
+    Scalar z)
     : std::vector<double>(3)
     {
       (*this)[0] = x;
@@ -660,7 +660,7 @@ Function and method declaration
 
     Buffer & append(UnsignedInteger);
     Buffer & append(const String &);
-    Buffer & append(NumericalScalar);
+    Buffer & append(Scalar);
 
 *Incorrect Example:*
 
@@ -683,7 +683,7 @@ This includes initialization of class attributes.
     String         filename (""); // library file name
     UnsignedInteger nbElements = 0; // number of elements into the data file
     UnsignedInteger i = 0;
-    NumericalScalar f = 0.0;
+    Scalar f = 0.0;
 
 *Accepted example:*
 
@@ -709,7 +709,7 @@ explicitely distinguish them from integers.
 
 ::
 
-    const NumericalScalar f = 6.0;
+    const Scalar f = 6.0;
     const UnsignedInteger maximumIterations = 32;
     const char printFormat[] = "%s:line %d, %s";
 
@@ -751,8 +751,8 @@ classes in order to manage the lifecycle of objects in memory.
 ::
 
     {
-      NumericalScalar sections1[MAX]; // a fixed size array
-      vector<NumericalScalar> sections2; // an extensible vector
+      Scalar sections1[MAX]; // a fixed size array
+      vector<Scalar> sections2; // an extensible vector
       list<Volume> volumes; // a list of volumes
 
       /* ... */
@@ -763,7 +763,7 @@ classes in order to manage the lifecycle of objects in memory.
 ::
 
     {
-      NumericalScalar *sections = new NumericalScalar[MAX];
+      Scalar *sections = new Scalar[MAX];
       list<Volume>    *volumes  = new list<Volume>;
 
       /* ... */
@@ -908,9 +908,9 @@ replaced with a conditional structure or a loop.*
 
 ::
 
-    NumericalScalar
+    Scalar
     compute(UnsignedInteger n) {
-      NumericalScalar result;
+      Scalar result;
       if(n < MIN || n > MAX) {
         char msg[BUFSIZ];
         // automatic allocation for the processing
@@ -927,9 +927,9 @@ replaced with a conditional structure or a loop.*
 
 ::
 
-    NumericalScalar
+    Scalar
     compute(UnsignedInteger n) {
-      NumericalScalar result;
+      Scalar result;
       Char    msg[BUFSIF];   // allocation unnecessary if no
       // error
       if(n < MIN || n > MAX)

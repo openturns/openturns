@@ -157,7 +157,7 @@ NSI_const_point Sample::operator [] (const UnsignedInteger index) const
 }
 
 
-NumericalScalar & Sample::operator () (const UnsignedInteger i,
+Scalar & Sample::operator () (const UnsignedInteger i,
     const UnsignedInteger j)
 {
 #ifdef DEBUG_BOUNDCHECKING
@@ -169,7 +169,7 @@ NumericalScalar & Sample::operator () (const UnsignedInteger i,
 #endif /* DEBUG_BOUNDCHECKING */
 }
 
-const NumericalScalar & Sample::operator () (const UnsignedInteger i,
+const Scalar & Sample::operator () (const UnsignedInteger i,
     const UnsignedInteger j) const
 {
 #ifdef DEBUG_BOUNDCHECKING
@@ -193,7 +193,7 @@ NSI_const_point Sample::at (const UnsignedInteger index) const
   return (*getImplementation())[index];
 }
 
-NumericalScalar & Sample::at (const UnsignedInteger i,
+Scalar & Sample::at (const UnsignedInteger i,
                                        const UnsignedInteger j)
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than size (" << getSize() << ")";
@@ -202,7 +202,7 @@ NumericalScalar & Sample::at (const UnsignedInteger i,
   return (*getImplementation())[i][j];
 }
 
-const NumericalScalar & Sample::at (const UnsignedInteger i,
+const Scalar & Sample::at (const UnsignedInteger i,
     const UnsignedInteger j) const
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than size (" << getSize() << ")";
@@ -210,7 +210,7 @@ const NumericalScalar & Sample::at (const UnsignedInteger i,
   return (*getImplementation())[i][j];
 }
 
-const NumericalScalar * Sample::__baseaddress__ () const
+const Scalar * Sample::__baseaddress__ () const
 {
   return getImplementation()->__baseaddress__();
 }
@@ -518,7 +518,7 @@ Point Sample::computeRawMoment(const UnsignedInteger k) const
 /*
  * Method computeQuantilePerComponent() gives the quantile per component of the sample
  */
-Point Sample::computeQuantilePerComponent(const NumericalScalar prob) const
+Point Sample::computeQuantilePerComponent(const Scalar prob) const
 {
   return getImplementation()->computeQuantilePerComponent(prob);
 }
@@ -526,7 +526,7 @@ Point Sample::computeQuantilePerComponent(const NumericalScalar prob) const
 /*
  * Method computeQuantile() gives the N-dimension quantile of the sample
  */
-Point Sample::computeQuantile(const NumericalScalar prob) const
+Point Sample::computeQuantile(const Scalar prob) const
 {
   return getImplementation()->computeQuantile(prob);
 }
@@ -534,7 +534,7 @@ Point Sample::computeQuantile(const NumericalScalar prob) const
 /*
  * Get the empirical CDF of the sample
  */
-NumericalScalar Sample::computeEmpiricalCDF(const Point & point,
+Scalar Sample::computeEmpiricalCDF(const Point & point,
     const Bool tail) const
 {
   return getImplementation()->computeEmpiricalCDF(point, tail);
@@ -552,7 +552,7 @@ UnsignedInteger Sample::find(const Point & point) const
 /*
  * Translate realizations in-place
  */
-Sample & Sample::operator += (const NumericalScalar translation)
+Sample & Sample::operator += (const Scalar translation)
 {
   copyOnWrite();
   if (translation != 0.0) getImplementation()->operator +=(Point(getDimension(), translation));
@@ -573,7 +573,7 @@ Sample & Sample::operator += (const Sample & translation)
   return *this;
 }
 
-Sample & Sample::operator -= (const NumericalScalar translation)
+Sample & Sample::operator -= (const Scalar translation)
 {
   copyOnWrite();
   if (translation != 0.0) getImplementation()->operator -=(Point(getDimension(), translation));
@@ -594,7 +594,7 @@ Sample & Sample::operator -= (const Sample & translation)
   return *this;
 }
 
-Sample Sample::operator + (const NumericalScalar translation) const
+Sample Sample::operator + (const Scalar translation) const
 {
   const Sample sample(getImplementation()->operator + (translation));
   return sample;
@@ -612,7 +612,7 @@ Sample Sample::operator + (const Sample & translation) const
   return sample;
 }
 
-Sample Sample::operator - (const NumericalScalar translation) const
+Sample Sample::operator - (const Scalar translation) const
 {
   const Sample sample(getImplementation()->operator - (translation));
   return sample;
@@ -633,7 +633,7 @@ Sample Sample::operator - (const Sample & translation) const
 /*
  * Scale realizations componentwise in-place
  */
-Sample & Sample::operator *= (const NumericalScalar scaling)
+Sample & Sample::operator *= (const Scalar scaling)
 {
   copyOnWrite();
   getImplementation()->operator *=(scaling);
@@ -654,7 +654,7 @@ Sample & Sample::operator *= (const SquareMatrix & scaling)
   return *this;
 }
 
-Sample & Sample::operator /= (const NumericalScalar scaling)
+Sample & Sample::operator /= (const Scalar scaling)
 {
   copyOnWrite();
   getImplementation()->operator /=(scaling);
@@ -675,7 +675,7 @@ Sample & Sample::operator /= (const SquareMatrix & scaling)
   return *this;
 }
 
-Sample Sample::operator * (const NumericalScalar scaling) const
+Sample Sample::operator * (const Scalar scaling) const
 {
   const Sample sample(getImplementation()->operator * (scaling));
   return sample;
@@ -693,7 +693,7 @@ Sample Sample::operator * (const SquareMatrix & scaling) const
   return sample;
 }
 
-Sample Sample::operator / (const NumericalScalar scaling) const
+Sample Sample::operator / (const Scalar scaling) const
 {
   const Sample sample(getImplementation()->operator / (scaling));
   return sample;

@@ -47,7 +47,7 @@ public:
 
   /** Constructor with parameters */
   Cobyla(const OptimizationProblem & problem,
-         const NumericalScalar rhoBeg);
+         const Scalar rhoBeg);
 
   /** Virtual constructor */
   virtual Cobyla * clone() const;
@@ -56,8 +56,8 @@ public:
   void run();
 
   /** RhoBeg accessor */
-  NumericalScalar getRhoBeg() const;
-  void setRhoBeg(const NumericalScalar rhoBeg);
+  Scalar getRhoBeg() const;
+  void setRhoBeg(const Scalar rhoBeg);
 
   /** String converter */
   String __repr__() const;
@@ -84,7 +84,7 @@ private:
       double *con,
       void *state);
 
-  NumericalScalar rhoBeg_;
+  Scalar rhoBeg_;
 
   /// temporary, used to track input/outputs
   Sample evaluationInputHistory_;

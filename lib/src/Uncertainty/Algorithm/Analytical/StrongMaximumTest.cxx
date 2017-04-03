@@ -66,9 +66,9 @@ StrongMaximumTest::StrongMaximumTest()
 /* Standard constructor */
 StrongMaximumTest::StrongMaximumTest(const StandardEvent & event,
                                      const Point & standardSpaceDesignPoint,
-                                     const NumericalScalar importanceLevel,
-                                     const NumericalScalar accuracyLevel,
-                                     const NumericalScalar confidenceLevel)
+                                     const Scalar importanceLevel,
+                                     const Scalar accuracyLevel,
+                                     const Scalar confidenceLevel)
   : PersistentObject(),
     event_(event),
     standardSpaceDesignPoint_(standardSpaceDesignPoint),
@@ -90,8 +90,8 @@ StrongMaximumTest::StrongMaximumTest(const StandardEvent & event,
 /* Standard constructor */
 StrongMaximumTest::StrongMaximumTest(const StandardEvent & event,
                                      const Point & standardSpaceDesignPoint,
-                                     const NumericalScalar importanceLevel,
-                                     const NumericalScalar accuracyLevel,
+                                     const Scalar importanceLevel,
+                                     const Scalar accuracyLevel,
                                      const UnsignedInteger pointNumber)
   : PersistentObject(),
     event_(event),
@@ -132,7 +132,7 @@ Point StrongMaximumTest::getStandardSpaceDesignPoint() const
 }
 
 /* deltaEpsilon accessor */
-NumericalScalar StrongMaximumTest::getDeltaEpsilon() const
+Scalar StrongMaximumTest::getDeltaEpsilon() const
 {
   return deltaEpsilon_;
 }
@@ -144,52 +144,52 @@ StandardEvent StrongMaximumTest::getEvent() const
 }
 
 /* ImportanceLevel  accessor */
-NumericalScalar StrongMaximumTest::getImportanceLevel() const
+Scalar StrongMaximumTest::getImportanceLevel() const
 {
   return importanceLevel_;
 }
 
 /* ImportanceLevel accessor */
-void StrongMaximumTest::setImportanceLevel(const NumericalScalar importanceLevel)
+void StrongMaximumTest::setImportanceLevel(const Scalar importanceLevel)
 {
   if((importanceLevel >= 1.0) || (importanceLevel <= 0.0)) throw InvalidRangeException(HERE) << "importanceLevel is not within 0.0 and 1.0";
   importanceLevel_ = importanceLevel ;
 }
 
 /* AccuracyLevel  accessor */
-NumericalScalar StrongMaximumTest::getAccuracyLevel() const
+Scalar StrongMaximumTest::getAccuracyLevel() const
 {
   return accuracyLevel_;
 }
 
 /* AccuracyLevel accessor */
-void StrongMaximumTest::setAccuracyLevel(const NumericalScalar accuracyLevel)
+void StrongMaximumTest::setAccuracyLevel(const Scalar accuracyLevel)
 {
   if (!(accuracyLevel > 1.0)) throw InvalidRangeException(HERE) << "accuracyLevel is not > 1.0";
   accuracyLevel_ = accuracyLevel ;
 }
 
 /* ConfidenceLevel accessor */
-NumericalScalar StrongMaximumTest::getConfidenceLevel() const
+Scalar StrongMaximumTest::getConfidenceLevel() const
 {
   return confidenceLevel_;
 }
 
 /* ConfidenceLevel accessor */
-void StrongMaximumTest::setConfidenceLevel(const NumericalScalar confidenceLevel)
+void StrongMaximumTest::setConfidenceLevel(const Scalar confidenceLevel)
 {
   if((confidenceLevel > 1.0) || (confidenceLevel < 0.0)) throw InvalidRangeException(HERE) << "confidenceLevel is not within 0.0 and 1.0";
   confidenceLevel_ = confidenceLevel ;
 }
 
 /* DesignPointVicinity accessor */
-NumericalScalar StrongMaximumTest::getDesignPointVicinity() const
+Scalar StrongMaximumTest::getDesignPointVicinity() const
 {
   return designPointVicinity_;
 }
 
 /* StrongMaxTestDesignPointVicinity accessor */
-void  StrongMaximumTest::setDesignPointVicinity(const NumericalScalar designPointVicinity)
+void  StrongMaximumTest::setDesignPointVicinity(const Scalar designPointVicinity)
 {
   if((designPointVicinity >= 1.0) || (designPointVicinity <= 0.0)) throw InvalidRangeException(HERE) << "designPointVicinity is not within 0.0 and 1.0";
   designPointVicinity_ =  designPointVicinity;
@@ -332,7 +332,7 @@ void StrongMaximumTest::initializeParametersGivenConfidenceLevel()
   deltaEpsilon_ = computeDeltaEpsilon();
 
   /* evaluate the HyperSphereSurfaceRatio (see documentation) */
-  NumericalScalar p = computeHyperSphereSurfaceRatio();
+  Scalar p = computeHyperSphereSurfaceRatio();
   // put eps1 and eps2 instead of 1.0 and 0.0
   if((p >= 1.0) || (p <= 0.0)) throw InvalidRangeException(HERE) << "hyperSphereSurfaceRatio is not strictly within 0.0 and 1.0";
 
@@ -351,7 +351,7 @@ void StrongMaximumTest::initializeParametersGivenPointNumber()
   deltaEpsilon_ = computeDeltaEpsilon();
 
   /* evaluate the HyperSphereSurfaceRatio (see documentation) */
-  NumericalScalar p = computeHyperSphereSurfaceRatio();
+  Scalar p = computeHyperSphereSurfaceRatio();
 
   // put eps1 and eps2 instead of 1.0 and 0.0
   if((p >= 1.0) || (p <= 0.0)) throw InvalidRangeException(HERE) << "hyperSphereSurfaceRatio is not strictly within 0.0 and 1.0";
@@ -364,18 +364,18 @@ void StrongMaximumTest::initializeParametersGivenPointNumber()
 }
 
 /*  the function that evaluates the HyperSphereSurfaceRatio (see documentation) */
-NumericalScalar StrongMaximumTest::computeHyperSphereSurfaceRatio()
+Scalar StrongMaximumTest::computeHyperSphereSurfaceRatio()
 {
   const UnsignedInteger dimension = standardSpaceDesignPoint_.getDimension();
-  const NumericalScalar a = acos((1.0 + deltaEpsilon_) / ( 1.0 + accuracyLevel_ * deltaEpsilon_) );
-  const NumericalScalar sinA = sin(a);
-  const NumericalScalar squareSinA = sinA * sinA;
-  NumericalScalar sum = 0.0;
+  const Scalar a = acos((1.0 + deltaEpsilon_) / ( 1.0 + accuracyLevel_ * deltaEpsilon_) );
+  const Scalar sinA = sin(a);
+  const Scalar squareSinA = sinA * sinA;
+  Scalar sum = 0.0;
   /* even dimension  */
   if (dimension % 2 == 0)
   {
     const UnsignedInteger indexMax = dimension / 2 - 1;
-    NumericalScalar u = sinA;
+    Scalar u = sinA;
     for (UnsignedInteger index = 0; index < indexMax; ++index)
     {
       sum += u;
@@ -388,7 +388,7 @@ NumericalScalar StrongMaximumTest::computeHyperSphereSurfaceRatio()
     /* odd dimension  */
   {
     const UnsignedInteger indexMax = (dimension - 1) / 2;
-    NumericalScalar u = 1.0;
+    Scalar u = 1.0;
     for (UnsignedInteger index = 0; index < indexMax; ++index)
     {
       sum += u;
@@ -399,26 +399,26 @@ NumericalScalar StrongMaximumTest::computeHyperSphereSurfaceRatio()
 }
 
 /*  the function that evaluates the  intermediate parameter delta_epsilon (see documentation) */
-NumericalScalar StrongMaximumTest::computeDeltaEpsilon()
+Scalar StrongMaximumTest::computeDeltaEpsilon()
 {
   /* evaluate the reliability index */
-  const NumericalScalar betaSquare = standardSpaceDesignPoint_.normSquare();
+  const Scalar betaSquare = standardSpaceDesignPoint_.normSquare();
 
   /* get the input distribution in the standard space */
   const DistributionImplementation::Implementation p_inputStandardDistribution(event_.getImplementation()->getAntecedent()->getDistribution().getImplementation());
 
   /* evaluate the generator at beta square */
-  const NumericalScalar pdfMin = importanceLevel_ * p_inputStandardDistribution->computeDensityGenerator(betaSquare);
+  const Scalar pdfMin = importanceLevel_ * p_inputStandardDistribution->computeDensityGenerator(betaSquare);
 
   /* research the interval [deltaMin deltaMax] including the solution */
-  NumericalScalar deltaMax = 1.0;
+  Scalar deltaMax = 1.0;
 
   while ( p_inputStandardDistribution->computeDensityGenerator(betaSquare * pow(1.0 + deltaMax, 2)) > pdfMin ) ++deltaMax;
-  NumericalScalar deltaMin = deltaMax - 1.0;
+  Scalar deltaMin = deltaMax - 1.0;
 
   /* we proceed to the dichotomie on [deltaMin deltaMax] */
-  NumericalScalar deltaMiddle = 0.0;
-  const NumericalScalar deltaEpsilon = ResourceMap::GetAsScalar( "StrongMaximumTest-DefaultDeltaPrecision" );
+  Scalar deltaMiddle = 0.0;
+  const Scalar deltaEpsilon = ResourceMap::GetAsScalar( "StrongMaximumTest-DefaultDeltaPrecision" );
   while ( (deltaMax - deltaMin) > deltaEpsilon )
   {
     /* we evaluate the middle of  [deltaMin deltaMax] */
@@ -447,9 +447,9 @@ void StrongMaximumTest::run()
   /* prepare test parameters */
 
   /* radius of the inner sphere */
-  const NumericalScalar beta = standardSpaceDesignPoint_.norm();
+  const Scalar beta = standardSpaceDesignPoint_.norm();
   /* radius of the sphere to be sampled */
-  const NumericalScalar radius = beta * (1.0 + accuracyLevel_ * deltaEpsilon_);
+  const Scalar radius = beta * (1.0 + accuracyLevel_ * deltaEpsilon_);
   /* sample of the sphere */
   const Sample sample(sampleSphere(radius, standardSpaceDesignPoint_.getDimension(), pointNumber_));
   /* create a nearestPointChecker, in charge of the evaluation of the level function over the sample and to classify the points according to the operator and the threshold */
@@ -566,7 +566,7 @@ void StrongMaximumTest::run()
 }
 
 /* the function that samples the sphere (radius) with N points */
-Sample StrongMaximumTest::sampleSphere(const NumericalScalar radius,
+Sample StrongMaximumTest::sampleSphere(const Scalar radius,
     const UnsignedInteger dimension,
     const UnsignedInteger pointNumber) const
 {
@@ -576,7 +576,7 @@ Sample StrongMaximumTest::sampleSphere(const NumericalScalar radius,
   // Then, normalize the points to have length radius
   for (UnsignedInteger i = 0; i < pointNumber; ++i)
   {
-    NumericalScalar norm = static_cast<Point>(sample[i]).norm();
+    Scalar norm = static_cast<Point>(sample[i]).norm();
     // If the point is the origin, we reject it
     while (norm == 0.0)
     {

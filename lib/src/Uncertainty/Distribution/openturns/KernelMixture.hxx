@@ -84,23 +84,23 @@ public:
 
   /** Get the PDF of the KernelMixture */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the KernelMixture */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
   using ContinuousDistribution::computeComplementaryCDF;
-  NumericalScalar computeComplementaryCDF(const Point & point) const;
+  Scalar computeComplementaryCDF(const Point & point) const;
 
   /** Compute the survival function */
   using ContinuousDistribution::computeSurvivalFunction;
-  NumericalScalar computeSurvivalFunction(const Point & point) const;
+  Scalar computeSurvivalFunction(const Point & point) const;
 
   /** Get the probability content of an interval */
-  NumericalScalar computeProbability(const Interval & interval) const;
+  Scalar computeProbability(const Interval & interval) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
+  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
 
   /** Get the PDF gradient of the distribution */
   using ContinuousDistribution::computePDFGradient;
@@ -152,7 +152,7 @@ protected:
 private:
 
   /** Get the quantile of the distribution, i.e the value Xp such that P(X <= Xp) = prob */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+  Scalar computeScalarQuantile(const Scalar prob,
                                         const Bool tail = false) const;
 
   /** Compute the numerical range of the distribution given the parameters values */
@@ -179,7 +179,7 @@ private:
   Point bandwidthInverse_;
 
   /** The (n\product_{k=1}^{dim}h_k)^{-1} normalization factor */
-  NumericalScalar normalizationFactor_;
+  Scalar normalizationFactor_;
 
   /** The sample of the kernelMixture */
   Sample sample_;

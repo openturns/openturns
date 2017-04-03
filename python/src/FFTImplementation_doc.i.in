@@ -17,7 +17,7 @@ OT_FFT_doc
 
 Parameters
 ----------
-collection : :class:`~openturns.NumericalComplexCollection` or :class:`~openturns.NumericalScalarCollection`, sequence of float
+collection : :class:`~openturns.NumericalComplexCollection` or :class:`~openturns.ScalarCollection`, sequence of float
   Data to transform.
 
 Returns
@@ -54,7 +54,7 @@ OT_FFT_transform_doc
 
 Parameters
 ----------
-collection : :class:`~openturns.NumericalComplexCollection` or :class:`~openturns.NumericalScalarCollection`, sequence of float
+collection : :class:`~openturns.NumericalComplexCollection` or :class:`~openturns.ScalarCollection`, sequence of float
   Data to transform.
 
 Returns

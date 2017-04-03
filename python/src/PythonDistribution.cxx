@@ -204,7 +204,7 @@ Point PythonDistribution::computeDDF(const Point & inP) const
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar PythonDistribution::computePDF(const Point & inP) const
+Scalar PythonDistribution::computePDF(const Point & inP) const
 {
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("computePDF")))
   {
@@ -220,7 +220,7 @@ NumericalScalar PythonDistribution::computePDF(const Point & inP) const
     {
       handleException();
     }
-    NumericalScalar result = convert< _PyFloat_, NumericalScalar >(callResult.get());
+    Scalar result = convert< _PyFloat_, Scalar >(callResult.get());
     return result;
   }
   else
@@ -230,7 +230,7 @@ NumericalScalar PythonDistribution::computePDF(const Point & inP) const
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar PythonDistribution::computeLogPDF(const Point & inP) const
+Scalar PythonDistribution::computeLogPDF(const Point & inP) const
 {
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("computeLogPDF")))
   {
@@ -246,7 +246,7 @@ NumericalScalar PythonDistribution::computeLogPDF(const Point & inP) const
     {
       handleException();
     }
-    NumericalScalar result = convert< _PyFloat_, NumericalScalar >(callResult.get());
+    Scalar result = convert< _PyFloat_, Scalar >(callResult.get());
     return result;
   }
   else
@@ -256,7 +256,7 @@ NumericalScalar PythonDistribution::computeLogPDF(const Point & inP) const
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar PythonDistribution::computeCDF(const Point & inP) const
+Scalar PythonDistribution::computeCDF(const Point & inP) const
 {
   const UnsignedInteger dimension = inP.getDimension();
   if (dimension != getDimension())
@@ -270,13 +270,13 @@ NumericalScalar PythonDistribution::computeCDF(const Point & inP) const
   {
     handleException();
   }
-  NumericalScalar result = convert< _PyFloat_, NumericalScalar >(callResult.get());
+  Scalar result = convert< _PyFloat_, Scalar >(callResult.get());
   return result;
 }
 
 
 /* Get the complementary CDF of the distribution */
-NumericalScalar PythonDistribution::computeComplementaryCDF(const Point & inP) const
+Scalar PythonDistribution::computeComplementaryCDF(const Point & inP) const
 {
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("computeComplementaryCDF") ) )
   {
@@ -292,7 +292,7 @@ NumericalScalar PythonDistribution::computeComplementaryCDF(const Point & inP) c
     {
       handleException();
     }
-    NumericalScalar result = convert< _PyFloat_, NumericalScalar >(callResult.get());
+    Scalar result = convert< _PyFloat_, Scalar >(callResult.get());
     return result;
   }
   else
@@ -303,13 +303,13 @@ NumericalScalar PythonDistribution::computeComplementaryCDF(const Point & inP) c
 
 
 /* Get the PDFGradient of the distribution */
-Point PythonDistribution::computeQuantile(const NumericalScalar prob, const Bool tail) const
+Point PythonDistribution::computeQuantile(const Scalar prob, const Bool tail) const
 {
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("computeQuantile")))
   {
     const UnsignedInteger dimension = getDimension();
     ScopedPyObjectPointer methodName(convert< String, _PyString_>("computeQuantile"));
-    ScopedPyObjectPointer probArg(convert< NumericalScalar, _PyFloat_ >(prob));
+    ScopedPyObjectPointer probArg(convert< Scalar, _PyFloat_ >(prob));
     ScopedPyObjectPointer tailArg(convert< Bool, _PyBool_ >(tail));
     ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
                                      methodName.get(),
@@ -330,12 +330,12 @@ Point PythonDistribution::computeQuantile(const NumericalScalar prob, const Bool
 
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex PythonDistribution::computeCharacteristicFunction(const NumericalScalar x) const
+NumericalComplex PythonDistribution::computeCharacteristicFunction(const Scalar x) const
 {
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("computeCharacteristicFunction")))
   {
     ScopedPyObjectPointer methodName(convert< String, _PyString_>("computeCharacteristicFunction"));
-    ScopedPyObjectPointer cX(convert< NumericalScalar, _PyFloat_ >( x ));
+    ScopedPyObjectPointer cX(convert< Scalar, _PyFloat_ >( x ));
     ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
                                      methodName.get(),
                                      cX.get(), NULL));
@@ -408,13 +408,13 @@ Point PythonDistribution::computeCDFGradient(const Point & inP) const
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar PythonDistribution::computeScalarQuantile(const NumericalScalar prob,
+Scalar PythonDistribution::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("computeScalarQuantile") ) )
   {
     ScopedPyObjectPointer methodName(convert< String, _PyString_>("computeScalarQuantile"));
-    ScopedPyObjectPointer cProb(convert< NumericalScalar, _PyFloat_ >( tail ? 1 - prob : prob ));
+    ScopedPyObjectPointer cProb(convert< Scalar, _PyFloat_ >( tail ? 1 - prob : prob ));
     ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
                                      methodName.get(),
                                      cProb.get(), NULL));
@@ -423,7 +423,7 @@ NumericalScalar PythonDistribution::computeScalarQuantile(const NumericalScalar 
     {
       handleException();
     }
-    NumericalScalar result = convert< _PyFloat_, NumericalScalar >(callResult.get());
+    Scalar result = convert< _PyFloat_, Scalar >(callResult.get());
     return result;
   }
   else
@@ -434,7 +434,7 @@ NumericalScalar PythonDistribution::computeScalarQuantile(const NumericalScalar 
 
 
 /* Get the roughness, i.e. the L2-norm of the PDF */
-NumericalScalar PythonDistribution::getRoughness() const
+Scalar PythonDistribution::getRoughness() const
 {
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getMean")))
   {
@@ -445,7 +445,7 @@ NumericalScalar PythonDistribution::getRoughness() const
     {
       handleException();
     }
-    NumericalScalar result = convert< _PyFloat_, NumericalScalar >(callResult.get());
+    Scalar result = convert< _PyFloat_, Scalar >(callResult.get());
     return result;
   }
   else

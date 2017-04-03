@@ -64,7 +64,7 @@ Point ContinuousDistribution::computeDDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   Point ddf(dimension);
-  const NumericalScalar h = std::pow(pdfEpsilon_, 1.0 / 3.0);
+  const Scalar h = std::pow(pdfEpsilon_, 1.0 / 3.0);
   LOGINFO(OSS() << "h=" << h);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
@@ -72,9 +72,9 @@ Point ContinuousDistribution::computeDDF(const Point & point) const
     left[i] += h;
     Point right(point);
     right[i] -= h;
-    const NumericalScalar denom = left[i] - right[i];
-    const NumericalScalar pdfLeft = computePDF(left);
-    const NumericalScalar pdfRight = computePDF(right);
+    const Scalar denom = left[i] - right[i];
+    const Scalar pdfLeft = computePDF(left);
+    const Scalar pdfRight = computePDF(right);
     ddf[i] = (pdfLeft - pdfRight) / denom;
     LOGINFO(OSS() << "left=" << left << ", right=" << right << ", pdfLeft=" << pdfLeft << ", pdfRight=" << pdfRight);
   }
@@ -82,13 +82,13 @@ Point ContinuousDistribution::computeDDF(const Point & point) const
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar ContinuousDistribution::computePDF(const Point & point) const
+Scalar ContinuousDistribution::computePDF(const Point & point) const
 {
   throw NotYetImplementedException(HERE) << "In ContinuousDistribution::computePDF(const Point & point) const";
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar ContinuousDistribution::computeCDF(const Point & point) const
+Scalar ContinuousDistribution::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   const Point lowerBounds(getRange().getLowerBound());
@@ -98,7 +98,7 @@ NumericalScalar ContinuousDistribution::computeCDF(const Point & point) const
   Point reducedPoint(0);
   for (UnsignedInteger k = 0; k < dimension; ++ k)
   {
-    const NumericalScalar xK = point[k];
+    const Scalar xK = point[k];
     // Early exit if one component is less than its corresponding range lower bound
     if (xK <= lowerBounds[k]) return 0.0;
     // Keep only the indices for which xK is less than its corresponding range upper bound
@@ -133,7 +133,7 @@ NumericalScalar ContinuousDistribution::computeCDF(const Point & point) const
 }
 
 /* Get the survival function of the distribution */
-NumericalScalar ContinuousDistribution::computeSurvivalFunction(const Point & point) const
+Scalar ContinuousDistribution::computeSurvivalFunction(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (dimension == 1) return computeComplementaryCDF(point);
@@ -146,7 +146,7 @@ NumericalScalar ContinuousDistribution::computeSurvivalFunction(const Point & po
     allOutside &= (point[i] <= lowerBounds[i]);
   }
   if (allOutside) return 1.0;
-  const NumericalScalar survival = computeProbability(Interval(point, getRange().getUpperBound()));
+  const Scalar survival = computeProbability(Interval(point, getRange().getUpperBound()));
   return survival;
 }
 
@@ -155,33 +155,33 @@ Collection<PiecewiseHermiteEvaluation> ContinuousDistribution::interpolateCDF(co
 {
   if (getDimension() != 1) throw NotYetImplementedException(HERE) << "In ContinuousDistribution::interpolateCDF(const UnsignedInteger n): cannot interpolate CDF for multidimensional distributions.";
   const PDFWrapper pdfWrapper(this);
-  const NumericalScalar xMin = getRange().getLowerBound()[0];
-  const NumericalScalar xMax = getRange().getUpperBound()[0];
-  const NumericalScalar mu = getMean()[0];
+  const Scalar xMin = getRange().getLowerBound()[0];
+  const Scalar xMax = getRange().getUpperBound()[0];
+  const Scalar mu = getMean()[0];
   Point locationsCDF(n);
   Point locationsCCDF(n);
   Point valuesCDF(n);
   Point valuesCCDF(n);
   Point derivativesCDF(n);
   Point derivativesCCDF(n);
-  NumericalScalar xCDFOld = xMin;
-  NumericalScalar xCCDFOld = xMax;
+  Scalar xCDFOld = xMin;
+  Scalar xCCDFOld = xMax;
   locationsCDF[0] = xMin;
   locationsCCDF[n - 1] = xMax;
   GaussKronrod algo;
-  const NumericalScalar stepCDF = (mu - xMin) / (n - 1.0);
-  const NumericalScalar stepCCDF = (xMax - mu) / (n - 1.0);
+  const Scalar stepCDF = (mu - xMin) / (n - 1.0);
+  const Scalar stepCCDF = (xMax - mu) / (n - 1.0);
   for (UnsignedInteger i = 1; i < n; ++i)
   {
-    const NumericalScalar xCDF = xMin + i * stepCDF;
-    const NumericalScalar xCCDF = xMax - i * stepCCDF;
+    const Scalar xCDF = xMin + i * stepCDF;
+    const Scalar xCCDF = xMax - i * stepCCDF;
     locationsCDF[i] = xCDF;
     locationsCCDF[n - i - 1] = xCCDF;
     Point ai;
     Point bi;
     Sample fi;
     Point ei;
-    NumericalScalar error = -1.0;
+    Scalar error = -1.0;
     valuesCDF[i] = valuesCDF[i - 1] + algo.integrate(pdfWrapper, xCDFOld, xCDF, error, ai, bi, fi, ei)[0];
     valuesCCDF[n - i - 1] = valuesCCDF[n - i] + algo.integrate(pdfWrapper, xCCDF, xCCDFOld, error, ai, bi, fi, ei)[0];
     derivativesCDF[i] = computePDF(xCDF);

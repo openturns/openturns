@@ -56,7 +56,7 @@ public:
 #ifndef SWIG
   /** Operator () gives access to the elements of the matrix (read only) */
   /** The element of the matrix is designated by its row number i and its column number j */
-  const NumericalScalar & operator () (const UnsignedInteger i,
+  const Scalar & operator () (const UnsignedInteger i,
                                        const UnsignedInteger j) const;
 #endif
 
@@ -82,9 +82,9 @@ public:
                            const Bool keepIntact = true);
 
   /** Compute determinant */
-  NumericalScalar computeLogAbsoluteDeterminant(NumericalScalar & sign,
+  Scalar computeLogAbsoluteDeterminant(Scalar & sign,
       const Bool keepIntact = true);
-  NumericalScalar computeDeterminant(const Bool keepIntact = true);
+  Scalar computeDeterminant(const Bool keepIntact = true);
 
   /** Compute eigenvalues */
   Point computeEigenValues(const Bool keepIntact = true);
@@ -115,7 +115,7 @@ private:
 
   /** Operator () gives access to the elements of the matrix (to modify these elements) */
   /** The element of the matrix is designated by its row number i and its column number j */
-  NumericalScalar & operator () (const UnsignedInteger i,
+  Scalar & operator () (const UnsignedInteger i,
                                  const UnsignedInteger j);
 }; /* class IdentityMatrix */
 

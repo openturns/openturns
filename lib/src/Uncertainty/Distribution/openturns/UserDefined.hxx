@@ -73,11 +73,11 @@ public:
 
   /** Get the PDF of the distribution */
   using DiscreteDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using DiscreteDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the PDFGradient of the distribution */
   using DiscreteDistribution::computePDFGradient;
@@ -121,7 +121,7 @@ public:
   Implementation getMarginal(const Indices & indices) const;
 
   /** Merge the identical points of the support */
-  void compactSupport(const NumericalScalar epsilon = ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon"));
+  void compactSupport(const Scalar epsilon = ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon"));
 
   /** Tell if the distribution has elliptical copula */
   Bool hasEllipticalCopula() const;
@@ -146,7 +146,7 @@ private:
   void computeCovariance() const;
 
   /** Quantile computation for dimension=1 */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+  Scalar computeScalarQuantile(const Scalar prob,
                                         const Bool tail = false) const;
 
   /** The collection of couple (xi, pi) */

@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(LARS);
 
-typedef Collection<NumericalScalar>    NumericalScalarCollection;
+typedef Collection<Scalar>    ScalarCollection;
 
 static const Factory<LARS> Factory_LARS;
 
@@ -110,11 +110,11 @@ void LARS::updateBasis(LeastSquaresMethod & method,
     // find the predictor most correlated with the current residual
     const Point cC(mPsiX_.getImplementation()->genVectProd(mY - mu_, true));
     UnsignedInteger candidatePredictor = 0;
-    NumericalScalar cMax = -1.0;
+    Scalar cMax = -1.0;
     for (UnsignedInteger j = 0; j < basisSize; ++ j)
       if (!inPredictors_[j])
       {
-        const NumericalScalar cAbs = std::abs(cC[j]);
+        const Scalar cAbs = std::abs(cC[j]);
         if (cAbs > cMax)
         {
           cMax = cAbs;
@@ -152,7 +152,7 @@ void LARS::updateBasis(LeastSquaresMethod & method,
     if (getVerbose()) LOGINFO( OSS() << "Solved normal equation.");
 
     // normalization coefficient
-    NumericalScalar cNorm = 1.0 / sqrt(dot(sC, ga1));
+    Scalar cNorm = 1.0 / sqrt(dot(sC, ga1));
 
     // descent direction
     const Point descentDirectionAk(cNorm * ga1);
@@ -163,11 +163,11 @@ void LARS::updateBasis(LeastSquaresMethod & method,
       if (!inPredictors_[j]) d.add(d2[j]);
 
     // compute step
-    NumericalScalar step = cMax / cNorm;
+    Scalar step = cMax / cNorm;
     for (UnsignedInteger j = 0; j < basisSize - predictorsSize; ++ j)
     {
-      NumericalScalar lhs = (cMax - cI[j]) / (cNorm - d[j]);
-      NumericalScalar rhs = (cMax + cI[j]) / (cNorm + d[j]);
+      Scalar lhs = (cMax - cI[j]) / (cNorm - d[j]);
+      Scalar rhs = (cMax + cI[j]) / (cNorm + d[j]);
       if (lhs > 0.0)
         step = std::min(step, lhs);
       if (rhs > 0.0)

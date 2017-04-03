@@ -41,7 +41,7 @@ public:
   Dirac();
 
   /** Parameters constructor */
-  explicit Dirac(const NumericalScalar p);
+  explicit Dirac(const Scalar p);
 
   /** Parameters constructor */
   explicit Dirac(const Point & point);
@@ -70,15 +70,15 @@ public:
 
   /** Get the PDF of the distribution */
   using DiscreteDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using DiscreteDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the quantile of the distribution */
   using DistributionImplementation::computeQuantile;
-  Point computeQuantile(const NumericalScalar prob,
+  Point computeQuantile(const Scalar prob,
                                  const Bool tail = false) const;
 
   /** Get the PDFGradient of the distribution */
@@ -90,8 +90,8 @@ public:
   Point computeCDFGradient(const Point & point) const;
 
   /** Compute the characteristic function, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
-  NumericalComplex computeLogCharacteristicFunction(const NumericalScalar x) const;
+  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
+  NumericalComplex computeLogCharacteristicFunction(const Scalar x) const;
 
   /** Compute the generating function, i.e. psi(z) = E(z^X) */
   NumericalComplex computeGeneratingFunction(const NumericalComplex & z) const;
@@ -166,7 +166,7 @@ private:
   void computeRange();
 
   /** Get the quantile of the distribution */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+  Scalar computeScalarQuantile(const Scalar prob,
                                         const Bool tail = false) const;
 
   /** The support of the Dirac distribution */

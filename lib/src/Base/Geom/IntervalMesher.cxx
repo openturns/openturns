@@ -99,8 +99,8 @@ Mesh IntervalMesher::build(const Interval & interval,
     const UnsignedInteger n = diamond ? 2 * discretization_[0] - 1 : discretization_[0];
     Sample vertices(n + 1, 1);
     // First the vertices
-    const NumericalScalar a = interval.getLowerBound()[0];
-    const NumericalScalar b = interval.getUpperBound()[0];
+    const Scalar a = interval.getLowerBound()[0];
+    const Scalar b = interval.getUpperBound()[0];
     vertices[0][0] = a;
     vertices[n][0] = b;
     for (UnsignedInteger i = 1; i < n; ++i) vertices[i][0] = (i * b + (n - i) * a) / n;

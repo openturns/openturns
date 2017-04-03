@@ -96,7 +96,7 @@ public:
 private :
 
   /** Likelihood function ==> Compute the reduced form of the likelihood */
-  NumericalScalar computeLogLikelihood(const Point & theta) const;
+  Scalar computeLogLikelihood(const Point & theta) const;
 
   /** Log likelihood maximization, shared among the different build() methods */
   ARMA maximizeLogLikelihood(Point & InformationCriterion) const;
@@ -127,7 +127,7 @@ private :
   mutable Point spectralDensity_;
 
   /** only used to pass data to be used in computeLogLikeliHood */
-  mutable NumericalScalar sigma2_;
+  mutable Scalar sigma2_;
 
   /** Verbosity control */
   Bool verbose_;

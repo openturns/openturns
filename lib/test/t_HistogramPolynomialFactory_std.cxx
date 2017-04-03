@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    NumericalScalar first = -2.0;
+    Scalar first = -2.0;
     Point width;
     width.add(1.0);
     width.add(2.0);

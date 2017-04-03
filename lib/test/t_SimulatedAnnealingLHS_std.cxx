@@ -38,9 +38,9 @@ int main(int argc, char **argv)
   // --------------------------------------------------
 
   // Geometric profile
-  const NumericalScalar T0(10.0);
+  const Scalar T0(10.0);
   const UnsignedInteger iMax(2000);
-  const NumericalScalar c(0.95);
+  const Scalar c(0.95);
   const GeometricProfile geomProfile(T0, c, iMax);
 
   // 1) Simulated Annealing LHS with geometric temperature profile, C2 optimization

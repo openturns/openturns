@@ -42,9 +42,9 @@ public:
   Weibull();
 
   /** Parameters constructor */
-  Weibull(const NumericalScalar alpha,
-          const NumericalScalar beta,
-          const NumericalScalar gamma = 0.0);
+  Weibull(const Scalar alpha,
+          const Scalar beta,
+          const Scalar gamma = 0.0);
 
   /** Comparison operator */
   Bool operator ==(const Weibull & other) const;
@@ -72,18 +72,18 @@ public:
 
   /** Get the PDF of the distribution, i.e. P(point < X < point+dx) = PDF(point)dx + o(dx) */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
   using ContinuousDistribution::computeLogPDF;
-  NumericalScalar computeLogPDF(const Point & point) const;
+  Scalar computeLogPDF(const Point & point) const;
 
   /** Get the CDF of the distribution, i.e. P(X <= point) = CDF(point). If tail=true, compute P(X >= point) */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
   using ContinuousDistribution::computeComplementaryCDF;
-  NumericalScalar computeComplementaryCDF(const Point & point) const;
+  Scalar computeComplementaryCDF(const Point & point) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
+  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
 
   /** Get the gradient of the PDF w.r.t the parameters of the distribution */
   using ContinuousDistribution::computePDFGradient;
@@ -95,8 +95,8 @@ public:
 
 protected:
   /** Set simultaneously alpha and beta to factorize the call to computeRange() */
-  void setAlphaBeta(const NumericalScalar alpha,
-                    const NumericalScalar beta);
+  void setAlphaBeta(const Scalar alpha,
+                    const Scalar beta);
 
 public:
 
@@ -125,16 +125,16 @@ public:
   /* Interface specific to Weibull */
 
   /** Beta accessor */
-  void setBeta(const NumericalScalar beta);
-  NumericalScalar getBeta() const;
+  void setBeta(const Scalar beta);
+  Scalar getBeta() const;
 
   /** Alpha accessor */
-  void setAlpha(const NumericalScalar alpha);
-  NumericalScalar getAlpha() const;
+  void setAlpha(const Scalar alpha);
+  Scalar getAlpha() const;
 
   /** Gamma accessor */
-  void setGamma(const NumericalScalar gamma);
-  NumericalScalar getGamma() const;
+  void setGamma(const Scalar gamma);
+  Scalar getGamma() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -153,16 +153,16 @@ private:
   void computeCovariance() const;
 
   /** Get the quantile of the distribution, i.e the value Xp such that P(X <= Xp) = prob */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+  Scalar computeScalarQuantile(const Scalar prob,
                                         const Bool tail = false) const;
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange();
 
   /** The main parameter set of the distribution */
-  NumericalScalar alpha_;
-  NumericalScalar beta_;
-  NumericalScalar gamma_;
+  Scalar alpha_;
+  Scalar beta_;
+  Scalar gamma_;
 
 }; /* class Weibull */
 

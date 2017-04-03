@@ -55,10 +55,10 @@ OptimizationResult::OptimizationResult()
 OptimizationResult::OptimizationResult(const Point & optimalPoint,
                                        const Point &  optimalValue,
                                        const UnsignedInteger iterationNumber,
-                                       const NumericalScalar absoluteError,
-                                       const NumericalScalar relativeError,
-                                       const NumericalScalar residualError,
-                                       const NumericalScalar constraintError,
+                                       const Scalar absoluteError,
+                                       const Scalar relativeError,
+                                       const Scalar residualError,
+                                       const Scalar constraintError,
                                        const OptimizationProblem & problem)
   : PersistentObject()
   , optimalPoint_(optimalPoint)
@@ -120,7 +120,7 @@ void OptimizationResult::setIterationNumber(const UnsignedInteger iterationNumbe
 }
 
 /* Absolute error accessor */
-NumericalScalar OptimizationResult::getAbsoluteError() const
+Scalar OptimizationResult::getAbsoluteError() const
 {
   return absoluteError_;
 }
@@ -131,13 +131,13 @@ Sample OptimizationResult::getAbsoluteErrorHistory() const
 }
 
 /* Absolute error accessor */
-void OptimizationResult::setAbsoluteError(const NumericalScalar absoluteError)
+void OptimizationResult::setAbsoluteError(const Scalar absoluteError)
 {
   absoluteError_ = absoluteError;
 }
 
 /* Relative error accessor */
-NumericalScalar OptimizationResult::getRelativeError() const
+Scalar OptimizationResult::getRelativeError() const
 {
   return relativeError_;
 }
@@ -148,13 +148,13 @@ Sample OptimizationResult::getRelativeErrorHistory() const
 }
 
 /* Relative error accessor */
-void OptimizationResult::setRelativeError(const NumericalScalar relativeError)
+void OptimizationResult::setRelativeError(const Scalar relativeError)
 {
   relativeError_ = relativeError;
 }
 
 /* Residual error accessor */
-NumericalScalar OptimizationResult::getResidualError() const
+Scalar OptimizationResult::getResidualError() const
 {
   return residualError_;
 }
@@ -165,13 +165,13 @@ Sample OptimizationResult::getResidualErrorHistory() const
 }
 
 /* Residual error accessor */
-void OptimizationResult::setResidualError(const NumericalScalar residualError)
+void OptimizationResult::setResidualError(const Scalar residualError)
 {
   residualError_ = residualError;
 }
 
 /* Constraint error accessor */
-NumericalScalar OptimizationResult::getConstraintError() const
+Scalar OptimizationResult::getConstraintError() const
 {
   return constraintError_;
 }
@@ -182,7 +182,7 @@ Sample OptimizationResult::getConstraintErrorHistory() const
 }
 
 /* Constraint error accessor */
-void OptimizationResult::setConstraintError(const NumericalScalar constraintError)
+void OptimizationResult::setConstraintError(const Scalar constraintError)
 {
   constraintError_ = constraintError;
 }
@@ -286,10 +286,10 @@ void OptimizationResult::load(Advocate & adv)
 /* Incremental history storage */
 void OptimizationResult::store(const Point & x,
                                const Point & y,
-                               const NumericalScalar absoluteError,
-                               const NumericalScalar relativeError,
-                               const NumericalScalar residualError,
-                               const NumericalScalar constraintError)
+                               const Scalar absoluteError,
+                               const Scalar relativeError,
+                               const Scalar residualError,
+                               const Scalar constraintError)
 {
   // assume the last point stored is the optimum
   optimalPoint_ = x;

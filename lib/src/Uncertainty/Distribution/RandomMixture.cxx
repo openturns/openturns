@@ -59,7 +59,7 @@ static const Factory<RandomMixture> Factory_RandomMixture;
 
 /* Default constructor */
 RandomMixture::RandomMixture(const DistributionCollection & coll,
-                             const NumericalScalar constant)
+                             const Scalar constant)
   : DistributionImplementation()
   , distributionCollection_()
   , constant_(Point(1, constant))
@@ -94,7 +94,7 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
 /* Default constructor */
 RandomMixture::RandomMixture(const DistributionCollection & coll,
                              const Point & weights,
-                             const NumericalScalar constant)
+                             const Scalar constant)
   : DistributionImplementation()
   , distributionCollection_()
   , constant_(Point(1, constant))
@@ -341,7 +341,7 @@ String RandomMixture::__str__(const String & offset) const
     if (constant_[marginal] != 0.0) oss << constant_[marginal];
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const NumericalScalar w = weights_(marginal, i);
+      const Scalar w = weights_(marginal, i);
       if ((constant_[marginal] != 0.0) || (i > 0))
       {
         if (w > 0.0) oss << " + ";
@@ -385,8 +385,8 @@ void RandomMixture::setDistributionCollection(const DistributionCollection & col
   const UnsignedInteger dimension = getDimension();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a RandomMixture based on an empty distribution collection.";
   Bool hasNormalAtom = false;
-  NumericalScalar aggregatedMean = 0.0;
-  NumericalScalar aggregatedVariance = 0.0;
+  Scalar aggregatedMean = 0.0;
+  Scalar aggregatedVariance = 0.0;
   Bool hasPendingUniform = false;
   Uniform pendingUniform;
   distributionCollection_ = DistributionCollection(0);
@@ -399,21 +399,21 @@ void RandomMixture::setDistributionCollection(const DistributionCollection & col
     {
       if (coll[i].getImplementation()->getClassName() == "Uniform")
       {
-        const NumericalScalar w = weights_(0, i);
-        const NumericalScalar low = coll[i].getRange().getLowerBound()[0];
-        const NumericalScalar high = coll[i].getRange().getUpperBound()[0];
-        NumericalScalar a0 = w * low;
-        NumericalScalar b0 = w * high;
+        const Scalar w = weights_(0, i);
+        const Scalar low = coll[i].getRange().getLowerBound()[0];
+        const Scalar high = coll[i].getRange().getUpperBound()[0];
+        Scalar a0 = w * low;
+        Scalar b0 = w * high;
         if (a0 > b0) std::swap(a0, b0);
         // If there is already a uniform, merge it into a symmetrical trapezoidal distribution
         if (hasPendingUniform)
         {
-          const NumericalScalar a1 = pendingUniform.getA();
-          const NumericalScalar b1 = pendingUniform.getB();
-          const NumericalScalar alpha = a1 + a0;
-          const NumericalScalar delta = b1 + b0;
-          const NumericalScalar halfWidth = 0.5 * std::abs((b1 - a1) - (b0 - a0));
-          const NumericalScalar center = 0.5 * (alpha + delta);
+          const Scalar a1 = pendingUniform.getA();
+          const Scalar b1 = pendingUniform.getB();
+          const Scalar alpha = a1 + a0;
+          const Scalar delta = b1 + b0;
+          const Scalar halfWidth = 0.5 * std::abs((b1 - a1) - (b0 - a0));
+          const Scalar center = 0.5 * (alpha + delta);
           if (halfWidth > 0.0) distributionCollection_.add(Trapezoidal(alpha, center - halfWidth, center + halfWidth, delta));
           else distributionCollection_.add(Triangular(alpha, center, delta));
           // Add weight
@@ -429,18 +429,18 @@ void RandomMixture::setDistributionCollection(const DistributionCollection & col
       else if (coll[i].getImplementation()->getClassName() == "Normal")
       {
         hasNormalAtom = true;
-        const NumericalScalar w = weights_(0, i);
+        const Scalar w = weights_(0, i);
         aggregatedMean += w * coll[i].getMean()[0];
         aggregatedVariance += w * w * coll[i].getCovariance()(0, 0);
       } // atom is a Normal
       else if (coll[i].getImplementation()->getClassName() == "Dirac")
       {
-        const NumericalScalar w = weights_(0, i);
+        const Scalar w = weights_(0, i);
         constant_[0] += w * coll[i].getSupport()[0][0];
       } // atom is a Dirac
       else if (coll[i].getImplementation()->getClassName() == "RandomMixture")
       {
-        const NumericalScalar w = weights_(0, i);
+        const Scalar w = weights_(0, i);
         const RandomMixture * mixture(static_cast< const RandomMixture * >(coll[i].getImplementation().get()));
         // As the random mixture atom has already been built, all its Dirac components have been merged into its constant and all its
         // Normal components have been merged into a single component in the last place, if any.
@@ -462,21 +462,21 @@ void RandomMixture::setDistributionCollection(const DistributionCollection & col
           const Distribution atom(mixture->distributionCollection_[j]);
           if (atom.getImplementation()->getClassName() == "Uniform")
           {
-            const NumericalScalar wj = localWeights(0, j);
-            const NumericalScalar low = coll[i].getRange().getLowerBound()[0];
-            const NumericalScalar high = coll[i].getRange().getUpperBound()[0];
-            NumericalScalar a0 = wj * low;
-            NumericalScalar b0 = wj * high;
+            const Scalar wj = localWeights(0, j);
+            const Scalar low = coll[i].getRange().getLowerBound()[0];
+            const Scalar high = coll[i].getRange().getUpperBound()[0];
+            Scalar a0 = wj * low;
+            Scalar b0 = wj * high;
             if (a0 > b0) std::swap(a0, b0);
             // If there is already a uniform, merge it into a symmetrical trapezoidal distribution
             if (hasPendingUniform)
             {
-              const NumericalScalar a1 = pendingUniform.getA();
-              const NumericalScalar b1 = pendingUniform.getB();
-              const NumericalScalar alpha = a1 + a0;
-              const NumericalScalar delta = b1 + b0;
-              const NumericalScalar halfWidth = 0.5 * std::abs((b1 - a1) - (b0 - a0));
-              const NumericalScalar center = 0.5 * (alpha + delta);
+              const Scalar a1 = pendingUniform.getA();
+              const Scalar b1 = pendingUniform.getB();
+              const Scalar alpha = a1 + a0;
+              const Scalar delta = b1 + b0;
+              const Scalar halfWidth = 0.5 * std::abs((b1 - a1) - (b0 - a0));
+              const Scalar center = 0.5 * (alpha + delta);
               if (halfWidth > 0.0) distributionCollection_.add(Trapezoidal(alpha, center - halfWidth, center + halfWidth, delta));
               else distributionCollection_.add(Triangular(alpha, center, delta));
               // Add weight
@@ -655,11 +655,11 @@ Point RandomMixture::computeDDF(const Point & point) const
 /* Wrapper for the convolution in the 1D case with 2 atoms */
 struct RandomMixture2AtomsWrapper
 {
-  RandomMixture2AtomsWrapper(const NumericalScalar alpha1,
-                             const NumericalScalar alpha2,
+  RandomMixture2AtomsWrapper(const Scalar alpha1,
+                             const Scalar alpha2,
                              const Distribution & atom1,
                              const Distribution & atom2,
-                             const NumericalScalar z0)
+                             const Scalar z0)
     : alpha1_(alpha1)
     , alpha2_(alpha2)
     , atom1_(atom1)
@@ -672,33 +672,33 @@ struct RandomMixture2AtomsWrapper
   // F(z) = P(Z < z) = P(alpha1 X1 + alpha2 X2 < z - alpha0)
   Point convolutionPDFKernel(const Point & point) const
   {
-    const NumericalScalar t = point[0];
-    const NumericalScalar res = atom1_.computePDF(t) * atom2_.computePDF((z0_ - alpha1_ * t) / alpha2_);
+    const Scalar t = point[0];
+    const Scalar res = atom1_.computePDF(t) * atom2_.computePDF((z0_ - alpha1_ * t) / alpha2_);
     return Point(1, res);
   }
 
   Point convolutionCDFKernel(const Point & point) const
   {
-    const NumericalScalar t = point[0];
-    const NumericalScalar pdf1 = atom1_.computePDF(t);
-    const NumericalScalar s = (z0_ - alpha1_ * t) / alpha2_;
-    const NumericalScalar cdf2 = atom2_.computeCDF(s);
-    const NumericalScalar res = pdf1 * cdf2;
+    const Scalar t = point[0];
+    const Scalar pdf1 = atom1_.computePDF(t);
+    const Scalar s = (z0_ - alpha1_ * t) / alpha2_;
+    const Scalar cdf2 = atom2_.computeCDF(s);
+    const Scalar res = pdf1 * cdf2;
     return Point(1, res);
   }
 
   Point convolutionCCDFKernel(const Point & point) const
   {
-    const NumericalScalar t = point[0];
-    const NumericalScalar res = atom1_.computePDF(t) * atom2_.computeComplementaryCDF((z0_ - alpha1_ * t) / alpha2_);
+    const Scalar t = point[0];
+    const Scalar res = atom1_.computePDF(t) * atom2_.computeComplementaryCDF((z0_ - alpha1_ * t) / alpha2_);
     return Point(1, res);
   }
 
-  const NumericalScalar alpha1_;
-  const NumericalScalar alpha2_;
+  const Scalar alpha1_;
+  const Scalar alpha2_;
   const Distribution & atom1_;
   const Distribution & atom2_;
-  const NumericalScalar z0_;
+  const Scalar z0_;
 };
 
 /* Get the PDF of the RandomMixture. It uses the Poisson inversion formula as described in the reference:
@@ -721,7 +721,7 @@ struct RandomMixture2AtomsWrapper
    p(x) \simeq h/2\pi\sum_{j\neq 0}\delta(jh)\exp(-Ihjx) + Q(x, h) as \delta(0) = 0
    \simeq h/\pi\sum_{j>0} Re(\delta(jh)) * cos(jhx) + Im(\delta(jh)) * sin(jhx) + Q(x, h)
 */
-NumericalScalar RandomMixture::computePDF(const Point & point) const
+Scalar RandomMixture::computePDF(const Point & point) const
 {
   if (point.getDimension() != dimension_)
     throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension_ << ", here dimension=" << point.getDimension();
@@ -731,7 +731,7 @@ NumericalScalar RandomMixture::computePDF(const Point & point) const
     // compute analytically the pdf
     const Point u(point - constant_);
     const Point Qu(inverseWeights_ * u);
-    NumericalScalar value = std::abs(detWeightsInverse_);
+    Scalar value = std::abs(detWeightsInverse_);
     for (UnsignedInteger j = 0; j < dimension_; ++j) value *= distributionCollection_[j].computePDF(Qu[j]);
     return value;
   } // isAnalytical_
@@ -748,19 +748,19 @@ NumericalScalar RandomMixture::computePDF(const Point & point) const
   if ((dimension_ == 1) && (distributionCollection_.getSize() == 2))
   {
     // Get the parameters of the random mixture
-    const NumericalScalar z0 = point[0] - constant_[0];
-    const NumericalScalar alpha1 = weights_(0, 0);
-    const NumericalScalar alpha2 = weights_(0, 1);
+    const Scalar z0 = point[0] - constant_[0];
+    const Scalar alpha1 = weights_(0, 0);
+    const Scalar alpha2 = weights_(0, 1);
     // Get the bounds of the atoms
-    const NumericalScalar a = distributionCollection_[0].getRange().getLowerBound()[0];
-    const NumericalScalar b = distributionCollection_[0].getRange().getUpperBound()[0];
-    const NumericalScalar c = distributionCollection_[1].getRange().getLowerBound()[0];
-    const NumericalScalar d = distributionCollection_[1].getRange().getUpperBound()[0];
+    const Scalar a = distributionCollection_[0].getRange().getLowerBound()[0];
+    const Scalar b = distributionCollection_[0].getRange().getUpperBound()[0];
+    const Scalar c = distributionCollection_[1].getRange().getLowerBound()[0];
+    const Scalar d = distributionCollection_[1].getRange().getUpperBound()[0];
     // Compute the bounds of the convolution
-    NumericalScalar lower = -1.0;
-    NumericalScalar upper = -1.0;
-    NumericalScalar uc = (z0 - alpha2 * c) / alpha1;
-    NumericalScalar ud = (z0 - alpha2 * d) / alpha1;
+    Scalar lower = -1.0;
+    Scalar upper = -1.0;
+    Scalar uc = (z0 - alpha2 * c) / alpha1;
+    Scalar ud = (z0 - alpha2 * d) / alpha1;
     if ((alpha1 > 0) == (alpha2 > 0))
     {
       lower = std::max(a, ud);
@@ -782,28 +782,28 @@ NumericalScalar RandomMixture::computePDF(const Point & point) const
   Point two_pi_on_h(dimension_);
   for (UnsignedInteger k = 0; k < dimension_; ++k) two_pi_on_h[k] = 2.0 * M_PI / referenceBandwidth_[k];
   UnsignedInteger levelMax = 0;
-  NumericalScalar value = computeEquivalentNormalPDFSum(point, two_pi_on_h, 0, levelMax);
+  Scalar value = computeEquivalentNormalPDFSum(point, two_pi_on_h, 0, levelMax);
 
   UnsignedInteger k = 1;
-  const NumericalScalar precision = pdfPrecision_;
+  const Scalar precision = pdfPrecision_;
   const UnsignedInteger kmin = 1 << blockMin_;
   const UnsignedInteger kmax = 1 << blockMax_;
   // hX is only useful in 1D
-  NumericalScalar hX = referenceBandwidth_[0] * point[0];
-  NumericalScalar error = 2.0 * precision;
+  Scalar hX = referenceBandwidth_[0] * point[0];
+  Scalar error = 2.0 * precision;
   LOGDEBUG(OSS() << std::setprecision(20) << "h=" << referenceBandwidth_ << ", equivalent normal pdf sum=" << value << ", k=" << k << ", precision=" << precision << ", kmin=" << kmin << ", kmax=" << kmax << ", error=" << error);
   while ( (k < kmin) || ( (k < kmax) && (error > precision) ) )
   {
-    NumericalScalar sumContributions = 0.0;
+    Scalar sumContributions = 0.0;
     error = 0.0;
     for (UnsignedInteger m = k; m < 2 * k; ++m)
     {
       if (dimension_ == 1)
       {
-        const NumericalScalar sinMHX = std::sin(m * hX);
-        const NumericalScalar cosMHX = std::cos(m * hX);
+        const Scalar sinMHX = std::sin(m * hX);
+        const Scalar cosMHX = std::cos(m * hX);
         const NumericalComplex deltaValue(computeDeltaCharacteristicFunction(m));
-        const NumericalScalar contribution = (deltaValue.real() * cosMHX + deltaValue.imag() * sinMHX);
+        const Scalar contribution = (deltaValue.real() * cosMHX + deltaValue.imag() * sinMHX);
         LOGDEBUG(OSS() << "m=" << m << ", delta=" << deltaValue << ", contribution=" << contribution);
         sumContributions += contribution;
         error += std::abs(contribution);
@@ -823,9 +823,9 @@ NumericalScalar RandomMixture::computePDF(const Point & point) const
             const NumericalComplex deltaValue(characteristicValuesCache_[fromIndex + i - 1]);
             hX = 0.0;
             for (UnsignedInteger j = 0; j < dimension_; ++j) hX += skinPoints[i][j] * point[j];
-            const NumericalScalar sinHX = std::sin(hX);
-            const NumericalScalar cosHX = std::cos(hX);
-            const NumericalScalar contribution = deltaValue.real() * cosHX + deltaValue.imag() * sinHX;
+            const Scalar sinHX = std::sin(hX);
+            const Scalar cosHX = std::cos(hX);
+            const Scalar contribution = deltaValue.real() * cosHX + deltaValue.imag() * sinHX;
             error += std::abs(contribution);
             sumContributions += contribution;
             LOGDEBUG(OSS() << "m=" << m << ", delta=" << deltaValue << ", contribution=" << contribution << ", error=" << error);
@@ -843,9 +843,9 @@ NumericalScalar RandomMixture::computePDF(const Point & point) const
               hX += skinPoints[i][j] * point[j];
             }
             const NumericalComplex deltaValue(computeDeltaCharacteristicFunction(pti));
-            const NumericalScalar sinHX = std::sin(hX);
-            const NumericalScalar cosHX = std::cos(hX);
-            const NumericalScalar contribution = deltaValue.real() * cosHX + deltaValue.imag() * sinHX;
+            const Scalar sinHX = std::sin(hX);
+            const Scalar cosHX = std::cos(hX);
+            const Scalar contribution = deltaValue.real() * cosHX + deltaValue.imag() * sinHX;
             error += std::abs(contribution);
             sumContributions += contribution;
             LOGDEBUG(OSS() << "m=" << m << ", delta=" << deltaValue << ", contribution=" << contribution << ", error=" << error);
@@ -870,8 +870,8 @@ NumericalScalar RandomMixture::computePDF(const Point & point) const
 }
 
 /*  Compute the PDF of 1D distributions over a regular grid. The precision is reduced as this method is for drawing purpose only. */
-Sample RandomMixture::computePDF(const NumericalScalar xMin,
-    const NumericalScalar xMax,
+Sample RandomMixture::computePDF(const Scalar xMin,
+    const Scalar xMax,
     const UnsignedInteger pointNumber,
     Sample & grid) const
 {
@@ -885,13 +885,13 @@ struct EquivalentNormalPDFSumPolicy
   const Sample & grid_;
   const Point & two_b_sigma_;
   const UnsignedInteger levelMax_;
-  Collection<NumericalScalar> & output_;
+  Collection<Scalar> & output_;
 
   EquivalentNormalPDFSumPolicy(const RandomMixture & mixture,
                                const Sample & grid,
                                const Point & two_b_sigma,
                                const UnsignedInteger levelMax,
-                               Collection<NumericalScalar> & output)
+                               Collection<Scalar> & output)
     : mixture_(mixture)
     , grid_(grid)
     , two_b_sigma_(two_b_sigma)
@@ -926,14 +926,14 @@ Sample RandomMixture::computePDF(const Point & xMin,
   // Special case for 1D distributions with exactly 2 atoms
   if ((dimension_ == 1) && (distributionCollection_.getSize() == 2))
   {
-    const NumericalScalar a = xMin[0];
-    const NumericalScalar b = xMax[0];
+    const Scalar a = xMin[0];
+    const Scalar b = xMax[0];
     const UnsignedInteger n = pointNumber[0];
     grid = Sample(n, 1);
     Sample pdf(n, 1);
     for (UnsignedInteger i = 0; i < n; ++i)
     {
-      const NumericalScalar x = a + i * (b - a) / (n - 1);
+      const Scalar x = a + i * (b - a) / (n - 1);
       grid[i][0] = x;
       pdf[i][0] = computePDF(x);
     }
@@ -947,7 +947,7 @@ Sample RandomMixture::computePDF(const Point & xMin,
   UnsignedInteger b = 0;
   for(UnsignedInteger i = 0; i < dimension_; ++i)
   {
-    const NumericalScalar dx = std::max(mu[i] - xMin[i], xMax[i] - mu[i]);
+    const Scalar dx = std::max(mu[i] - xMin[i], xMax[i] - mu[i]);
     b = std::max(b, static_cast<UnsignedInteger>(std::ceil(dx / sigma[i])));
   }
   const Point b_sigma(b * sigma);
@@ -980,7 +980,7 @@ Sample RandomMixture::computePDF(const Point & xMin,
   // First compute levelMax on mu, to speed up calls to computeEquivalentNormalPDFSum
   (void) computeEquivalentNormalPDFSum(mu, two_b_sigma, 0, levelMax);
 
-  Collection<NumericalScalar> output(size);
+  Collection<Scalar> output(size);
   const  EquivalentNormalPDFSumPolicy policyGrid(*this, grid, two_b_sigma, levelMax, output);
   TBB::ParallelFor( 0, size, policyGrid);
 
@@ -1050,7 +1050,7 @@ void RandomMixture::addPDFOn1DGrid(const Indices & pointNumber, const Point & h,
   {
     xPlus[i] = (i + 1) * h[0];
     fx[i] = std::exp(- M_PI * cOne * (tau[0] - 1.0 + 1.0 / N) * (1.0 + i));
-    z_exp[i] = std::exp(- 2.0 * M_PI * cOne * static_cast<NumericalScalar>(i) / static_cast<NumericalScalar>(N));
+    z_exp[i] = std::exp(- 2.0 * M_PI * cOne * static_cast<Scalar>(i) / static_cast<Scalar>(N));
   }
 
   // FFT 1D
@@ -1073,7 +1073,7 @@ void RandomMixture::addPDFOn1DGrid(const Indices & pointNumber, const Point & h,
 
   Collection<NumericalComplex> sigma_minus(fftAlgorithm_.transform(ykc));
 
-  const NumericalScalar scaling = h[0] / (2.0 * M_PI);
+  const Scalar scaling = h[0] / (2.0 * M_PI);
   for (UnsignedInteger j = 0; j < N; ++j)
   {
     result[j][0] += scaling * std::real( sigma_plus[j] + sigma_minus[j] );
@@ -1129,12 +1129,12 @@ void RandomMixture::addPDFOn2DGrid(const Indices & pointNumber, const Point & h,
   for (UnsignedInteger i = 0; i < Nx; ++i)
   {
     fx[i] = std::exp(- M_PI * cOne * (tau[0] - 1.0 + 1.0 / Nx) * (1.0 + i));
-    z_exp_mx[i] = std::exp(- 2.0 * M_PI * cOne * static_cast<NumericalScalar>(i) / static_cast<NumericalScalar>(Nx));
+    z_exp_mx[i] = std::exp(- 2.0 * M_PI * cOne * static_cast<Scalar>(i) / static_cast<Scalar>(Nx));
   }
   for (UnsignedInteger j = 0; j < Ny; ++j)
   {
     fy[j] = std::exp(- M_PI * cOne * (tau[1] - 1.0 + 1.0 / Ny) * (1.0 + j));
-    z_exp_my[j] = std::exp(- 2.0 * M_PI * cOne * static_cast<NumericalScalar>(j) / static_cast<NumericalScalar>(Ny));
+    z_exp_my[j] = std::exp(- 2.0 * M_PI * cOne * static_cast<Scalar>(j) / static_cast<Scalar>(Ny));
   }
   Point xPlus(Nx);
   Point xMinus(Nx);
@@ -1143,12 +1143,12 @@ void RandomMixture::addPDFOn2DGrid(const Indices & pointNumber, const Point & h,
   for (UnsignedInteger i = 0; i < Nx; ++i)
   {
     xPlus[i] = (i + 1) * h[0];
-    xMinus[i] = (static_cast<NumericalScalar>(i) - Nx) * h[0];
+    xMinus[i] = (static_cast<Scalar>(i) - Nx) * h[0];
   }
   for (UnsignedInteger j = 0; j < Ny; ++j)
   {
     yPlus[j] = (j + 1) * h[1];
-    yMinus[j] = (static_cast<NumericalScalar>(j) - Ny) * h[1];
+    yMinus[j] = (static_cast<Scalar>(j) - Ny) * h[1];
   }
   ComplexMatrix yk(Nx, Ny);
   // 1) compute \Sigma_++
@@ -1233,7 +1233,7 @@ void RandomMixture::addPDFOn2DGrid(const Indices & pointNumber, const Point & h,
   NumericalComplexCollection sigma_0_minus(fftAlgorithm_.transform(yk0c));
 
   UnsignedInteger counter = 0;
-  const NumericalScalar scaling = (h[0] * h[1]) / (4.0 * M_PI * M_PI);
+  const Scalar scaling = (h[0] * h[1]) / (4.0 * M_PI * M_PI);
   for (UnsignedInteger j = 0; j < Ny; ++j)
   {
     for (UnsignedInteger i = 0; i < Nx; ++i, ++counter)
@@ -1307,17 +1307,17 @@ void RandomMixture::addPDFOn3DGrid(const Indices & pointNumber, const Point & h,
   for (UnsignedInteger i = 0; i < Nx; ++i)
   {
     fx[i] = std::exp(- M_PI * cOne * (tau[0] - 1.0 + 1.0 / Nx) * (1.0 + i));
-    z_exp_mx[i] = std::exp(- 2.0 * M_PI * cOne * static_cast<NumericalScalar>(i) / static_cast<NumericalScalar>(Nx));
+    z_exp_mx[i] = std::exp(- 2.0 * M_PI * cOne * static_cast<Scalar>(i) / static_cast<Scalar>(Nx));
   }
   for (UnsignedInteger j = 0; j < Ny; ++j)
   {
     fy[j] = std::exp(- M_PI * cOne * (tau[1] - 1.0 + 1.0 / Ny) * (1.0 + j));
-    z_exp_my[j] = std::exp(- 2.0 * M_PI * cOne * static_cast<NumericalScalar>(j) / static_cast<NumericalScalar>(Ny));
+    z_exp_my[j] = std::exp(- 2.0 * M_PI * cOne * static_cast<Scalar>(j) / static_cast<Scalar>(Ny));
   }
   for (UnsignedInteger k = 0; k < Nz; ++k)
   {
     fz[k] = std::exp(- M_PI * cOne * (tau[2] - 1.0 + 1.0 / Nz) * (1.0 + k));
-    z_exp_mz[k] = std::exp(- 2.0 * M_PI * cOne * static_cast<NumericalScalar>(k) / static_cast<NumericalScalar>(Nz));
+    z_exp_mz[k] = std::exp(- 2.0 * M_PI * cOne * static_cast<Scalar>(k) / static_cast<Scalar>(Nz));
   }
   Point xPlus(Nx);
   Point xMinus(Nx);
@@ -1328,17 +1328,17 @@ void RandomMixture::addPDFOn3DGrid(const Indices & pointNumber, const Point & h,
   for (UnsignedInteger i = 0; i < Nx; ++i)
   {
     xPlus[i] = (i + 1) * h[0];
-    xMinus[i] = (static_cast<NumericalScalar>(i) - Nx) * h[0];
+    xMinus[i] = (static_cast<Scalar>(i) - Nx) * h[0];
   }
   for (UnsignedInteger j = 0; j < Ny; ++j)
   {
     yPlus[j] = (j + 1) * h[1];
-    yMinus[j] = (static_cast<NumericalScalar>(j) - Ny) * h[1];
+    yMinus[j] = (static_cast<Scalar>(j) - Ny) * h[1];
   }
   for (UnsignedInteger k = 0; k < Nz; ++k)
   {
     zPlus[k] = (k + 1) * h[2];
-    zMinus[k] = (static_cast<NumericalScalar>(k) - Nz) * h[2];
+    zMinus[k] = (static_cast<Scalar>(k) - Nz) * h[2];
   }
   ComplexTensor yk(Nx, Ny, Nz);
   const  AddPDFOn3DGridPolicy policyGridPPP(*this, xPlus, yPlus, zPlus, *(yk.getImplementation().get()));
@@ -1528,7 +1528,7 @@ void RandomMixture::addPDFOn3DGrid(const Indices & pointNumber, const Point & h,
   x[2] = 0.0;
   for (UnsignedInteger j = 0; j < Ny; ++j)
   {
-    x[1] = (static_cast<NumericalScalar>(j) - Ny) * h[1];
+    x[1] = (static_cast<Scalar>(j) - Ny) * h[1];
     for (UnsignedInteger i = 0; i < Nx; ++i)
     {
       x[0] = (i + 1) * h[0];
@@ -1558,7 +1558,7 @@ void RandomMixture::addPDFOn3DGrid(const Indices & pointNumber, const Point & h,
   x[1] = 0.0;
   for (UnsignedInteger k = 0; k < Nz; ++k)
   {
-    x[2] = (static_cast<NumericalScalar>(k) - Nz) * h[2];
+    x[2] = (static_cast<Scalar>(k) - Nz) * h[2];
     for (UnsignedInteger i = 0; i < Nx; ++i)
     {
       x[0] = (i + 1) * h[0];
@@ -1588,7 +1588,7 @@ void RandomMixture::addPDFOn3DGrid(const Indices & pointNumber, const Point & h,
   x[0] = 0.0;
   for (UnsignedInteger k = 0; k < Nz; ++k)
   {
-    x[2] = (static_cast<NumericalScalar>(k) - Nz) * h[2];
+    x[2] = (static_cast<Scalar>(k) - Nz) * h[2];
     for (UnsignedInteger j = 0; j < Ny; ++j)
     {
       x[1] = (j + 1) * h[1];
@@ -1673,7 +1673,7 @@ void RandomMixture::addPDFOn3DGrid(const Indices & pointNumber, const Point & h,
   Collection<NumericalComplex> sigma_0_0_minus(fftAlgorithm_.transform(yk00c));
 
   UnsignedInteger counter = 0;
-  const NumericalScalar scaling = (h[0] * h[1] * h[2]) / (8.0 * M_PI * M_PI * M_PI);
+  const Scalar scaling = (h[0] * h[1] * h[2]) / (8.0 * M_PI * M_PI * M_PI);
   for (UnsignedInteger k = 0; k < Nz; ++k)
   {
     for (UnsignedInteger j = 0; j < Ny; ++j)
@@ -1701,14 +1701,14 @@ void RandomMixture::addPDFOn3DGrid(const Indices & pointNumber, const Point & h,
 }
 
 /* Get the CDF of the RandomMixture */
-NumericalScalar RandomMixture::computeCDF(const Point & point) const
+Scalar RandomMixture::computeCDF(const Point & point) const
 {
   if (point.getDimension() != getDimension())
     throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
   if (point.getDimension() != 1) return computeProbability(Interval(getRange().getLowerBound(), point));
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   // Special case for combination containing only one contributor Y = alpha * X + beta
   // for alpha > 0.0:
   // P(Y < y) = P(X < (y - beta) / alpha) = CDF_X((y - beta) / alpha)
@@ -1716,34 +1716,34 @@ NumericalScalar RandomMixture::computeCDF(const Point & point) const
   // P(Y < y) = P(X > (y - beta) / alpha) = 1.0 - CDF_X((y - beta) / alpha)
   if (isAnalytical_)
   {
-    const NumericalScalar alpha = weights_(0, 0);
+    const Scalar alpha = weights_(0, 0);
     if (alpha > 0.0) return distributionCollection_[0].computeCDF((x - constant_[0]) / alpha);
     // If alpha < 0.0, compute the complementary CDF
     return distributionCollection_[0].computeComplementaryCDF((x - constant_[0]) / alpha);
   }
   // Check range
   const Interval range(getRange());
-  const NumericalScalar lowerBound = range.getLowerBound()[0];
-  const NumericalScalar upperBound = range.getUpperBound()[0];
+  const Scalar lowerBound = range.getLowerBound()[0];
+  const Scalar upperBound = range.getUpperBound()[0];
   if (x <= lowerBound) return 0.0;
   if (x >= upperBound) return 1.0;
   // Special case for 1D distributions with exactly 2 atoms
   if ((dimension_ == 1) && (distributionCollection_.getSize() == 2))
   {
     // Get the parameters of the random mixture
-    const NumericalScalar z0 = x - constant_[0];
-    const NumericalScalar alpha1 = weights_(0, 0);
-    const NumericalScalar alpha2 = weights_(0, 1);
+    const Scalar z0 = x - constant_[0];
+    const Scalar alpha1 = weights_(0, 0);
+    const Scalar alpha2 = weights_(0, 1);
     // Get the bounds of the atoms
-    const NumericalScalar a = distributionCollection_[0].getRange().getLowerBound()[0];
-    const NumericalScalar b = distributionCollection_[0].getRange().getUpperBound()[0];
-    const NumericalScalar c = distributionCollection_[1].getRange().getLowerBound()[0];
-    const NumericalScalar d = distributionCollection_[1].getRange().getUpperBound()[0];
+    const Scalar a = distributionCollection_[0].getRange().getLowerBound()[0];
+    const Scalar b = distributionCollection_[0].getRange().getUpperBound()[0];
+    const Scalar c = distributionCollection_[1].getRange().getLowerBound()[0];
+    const Scalar d = distributionCollection_[1].getRange().getUpperBound()[0];
     // Compute the bounds of the convolution
-    NumericalScalar lower = -1.0;
-    NumericalScalar upper = -1.0;
-    NumericalScalar uc = (z0 - alpha2 * c) / alpha1;
-    NumericalScalar ud = (z0 - alpha2 * d) / alpha1;
+    Scalar lower = -1.0;
+    Scalar upper = -1.0;
+    Scalar uc = (z0 - alpha2 * c) / alpha1;
+    Scalar ud = (z0 - alpha2 * d) / alpha1;
     const RandomMixture2AtomsWrapper convolutionKernelWrapper(alpha1, alpha2, distributionCollection_[0], distributionCollection_[1], z0);
     GaussKronrod algo;
     if (alpha2 > 0)
@@ -1753,7 +1753,7 @@ NumericalScalar RandomMixture::computeCDF(const Point & point) const
       {
         lower = std::max(a, ud);
         upper = std::min(b, uc);
-        NumericalScalar cdf = algo.integrate(convolutionKernel, Interval(lower, upper), cdfEpsilon_)[0];
+        Scalar cdf = algo.integrate(convolutionKernel, Interval(lower, upper), cdfEpsilon_)[0];
         if (ud > a) cdf += distributionCollection_[0].computeCDF(ud);
         return cdf;
       } // alpha1 > 0
@@ -1761,7 +1761,7 @@ NumericalScalar RandomMixture::computeCDF(const Point & point) const
       {
         lower = std::max(a, uc);
         upper = std::min(b, ud);
-        NumericalScalar cdf = algo.integrate(convolutionKernel, Interval(lower, upper), cdfEpsilon_)[0];
+        Scalar cdf = algo.integrate(convolutionKernel, Interval(lower, upper), cdfEpsilon_)[0];
         if (uc > a) cdf += distributionCollection_[0].computeCDF(uc);
         return cdf;
       } // alpha1 < 0
@@ -1773,7 +1773,7 @@ NumericalScalar RandomMixture::computeCDF(const Point & point) const
       {
         lower = std::max(a, uc);
         upper = std::min(b, ud);
-        NumericalScalar cdf = algo.integrate(convolutionKernel, Interval(lower, upper), cdfEpsilon_)[0];
+        Scalar cdf = algo.integrate(convolutionKernel, Interval(lower, upper), cdfEpsilon_)[0];
         if (uc > a) cdf += distributionCollection_[0].computeCDF(uc);
         return cdf;
       } // alpha1 > 0
@@ -1781,7 +1781,7 @@ NumericalScalar RandomMixture::computeCDF(const Point & point) const
       {
         lower = std::max(a, ud);
         upper = std::min(b, uc);
-        NumericalScalar cdf = algo.integrate(convolutionKernel, Interval(lower, upper), cdfEpsilon_)[0];
+        Scalar cdf = algo.integrate(convolutionKernel, Interval(lower, upper), cdfEpsilon_)[0];
         if (ud > a) cdf += distributionCollection_[0].computeCDF(ud);
         return cdf;
       } // alpha1 < 0
@@ -1789,19 +1789,19 @@ NumericalScalar RandomMixture::computeCDF(const Point & point) const
   } // dimension_ == 1 && size == 2
 
   // Here we call computeProbability with a ]-inf, x] interval
-  const NumericalScalar cdf = computeProbability(Interval(Point(1, lowerBound), point, getRange().getFiniteLowerBound(), Interval::BoolCollection(1, true)));
+  const Scalar cdf = computeProbability(Interval(Point(1, lowerBound), point, getRange().getFiniteLowerBound(), Interval::BoolCollection(1, true)));
   if (cdf < 0.5) return cdf;
   // and if the cdf value is less than 1/2, it was better to use the complementary CDF
   else return 1.0 - computeProbability(Interval(point, Point(1, upperBound), Interval::BoolCollection(1, true), getRange().getFiniteUpperBound()));
 }
 
-NumericalScalar RandomMixture::computeComplementaryCDF(const Point & point) const
+Scalar RandomMixture::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != getDimension())
     throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
   if (getDimension() > 1) return DistributionImplementation::computeComplementaryCDF(point);
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   // Special case for combination containing only one contributor Y = alpha * X + beta
   // for alpha > 0.0:
   // P(Y < y) = P(X < (y - beta) / alpha) = CDF_X((y - beta) / alpha)
@@ -1809,28 +1809,28 @@ NumericalScalar RandomMixture::computeComplementaryCDF(const Point & point) cons
   // P(Y < y) = P(X > (y - beta) / alpha) = 1.0 - CDF_X((y - beta) / alpha)
   if (isAnalytical_)
   {
-    const NumericalScalar alpha = weights_(0, 0);
+    const Scalar alpha = weights_(0, 0);
     if (alpha > 0.0) return distributionCollection_[0].computeComplementaryCDF((x - constant_[0]) / alpha);
     // If alpha < 0.0, compute the CDF
     return distributionCollection_[0].computeCDF((x - constant_[0]) / alpha);
   }
   // Check range
   const Interval range(getRange());
-  const NumericalScalar lowerBound = range.getLowerBound()[0];
-  const NumericalScalar upperBound = range.getUpperBound()[0];
+  const Scalar lowerBound = range.getLowerBound()[0];
+  const Scalar upperBound = range.getUpperBound()[0];
   if (x <= lowerBound) return 1.0;
   if (x >= upperBound) return 0.0;
   // Here we call computeProbability with a [x, +inf[ interval
   // Here we call computeProbability with a ]-inf, x] interval
-  const NumericalScalar complementaryCDF = computeProbability(Interval(point, Point(1, upperBound), Interval::BoolCollection(1, true), getRange().getFiniteUpperBound()));
+  const Scalar complementaryCDF = computeProbability(Interval(point, Point(1, upperBound), Interval::BoolCollection(1, true), getRange().getFiniteUpperBound()));
   if (complementaryCDF < 0.5) return complementaryCDF;
   // and if the cdf value is less than 1/2, it was better to use the complementary CDF
   else return 1.0 - computeProbability(Interval(Point(1, lowerBound), point, getRange().getFiniteLowerBound(), Interval::BoolCollection(1, true)));
 }
 
 /*  Compute the CDF of 1D distributions over a regular grid. The precision is reduced as this method is for drawing purpose only. */
-Sample RandomMixture::computeCDF(const NumericalScalar xMin,
-    const NumericalScalar xMax,
+Sample RandomMixture::computeCDF(const Scalar xMin,
+    const Scalar xMax,
     const UnsignedInteger pointNumber,
     Sample & grid) const
 {
@@ -1844,7 +1844,7 @@ Sample RandomMixture::computeCDF(const NumericalScalar xMin,
    We use an incremental update of the trigonometric functions and reduce the complex arithmetic to a real
    arithmetic for performance purpose.
 */
-NumericalScalar RandomMixture::computeProbability(const Interval & interval) const
+Scalar RandomMixture::computeProbability(const Interval & interval) const
 {
   const UnsignedInteger dimension = getDimension();
   if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension=" << dimension << ", here dimension=" << interval.getDimension();
@@ -1852,14 +1852,14 @@ NumericalScalar RandomMixture::computeProbability(const Interval & interval) con
   if (interval.isNumericallyEmpty()) return 0.0;
   if ((dimension != 1) || (distributionCollection_.getSize() >= ResourceMap::GetAsUnsignedInteger( "RandomMixture-SmallSize" )))
   {
-    const NumericalScalar oldPDFPrecision = pdfPrecision_;
+    const Scalar oldPDFPrecision = pdfPrecision_;
     pdfPrecision_ = std::pow(SpecFunc::ScalarEpsilon, 2.0 / (3.0 * dimension_));
     const UnsignedInteger n1 = ResourceMap::GetAsUnsignedInteger("RandomMixture-MarginalIntegrationNodesNumber");
     const UnsignedInteger N = ResourceMap::GetAsUnsignedInteger("RandomMixture-MaximumIntegrationNodesNumber");
     const UnsignedInteger n2 = static_cast<UnsignedInteger>(round(std::pow(N, 1.0 / dimension_)));
     const UnsignedInteger marginalSize = SpecFunc::NextPowerOfTwo(std::min(n1, n2));
     setIntegrationNodesNumber(marginalSize);
-    const NumericalScalar probability = DistributionImplementation::computeProbability(interval);
+    const Scalar probability = DistributionImplementation::computeProbability(interval);
     pdfPrecision_ = oldPDFPrecision;
     return probability;
 #ifdef TRAPEZE
@@ -1872,8 +1872,8 @@ NumericalScalar RandomMixture::computeProbability(const Interval & interval) con
     // Compute the elementary volume
     const UnsignedInteger otherCornerIndex = static_cast<UnsignedInteger>(round((std::pow(marginalSize, dimension) - 1) / (marginalSize - 1)));
     const Interval elementaryInterval(gridX[0], gridX[otherCornerIndex]);
-    const NumericalScalar elementaryVolume = elementaryInterval.getVolume();
-    NumericalScalar cdf = 0.0;
+    const Scalar elementaryVolume = elementaryInterval.getVolume();
+    Scalar cdf = 0.0;
     for (UnsignedInteger i = 0; i < gridX.getSize(); ++i)
       if (interval.contains(gridX[i])) cdf += samplePDF[i][0] * elementaryVolume;
     return cdf;
@@ -1883,9 +1883,9 @@ NumericalScalar RandomMixture::computeProbability(const Interval & interval) con
   if (isAnalytical_)
   {
     cdfEpsilon_ = ResourceMap::GetAsScalar( "RandomMixture-DefaultCDFEpsilon" );
-    const NumericalScalar lower = interval.getLowerBound()[0];
-    const NumericalScalar upper = interval.getUpperBound()[0];
-    const NumericalScalar weight = getWeight();
+    const Scalar lower = interval.getLowerBound()[0];
+    const Scalar upper = interval.getUpperBound()[0];
+    const Scalar weight = getWeight();
     // Negative weight, swap upper and lower bound flags
     if (weight < 0.0)
     {
@@ -1905,15 +1905,15 @@ NumericalScalar RandomMixture::computeProbability(const Interval & interval) con
   const Bool finiteUpperBound = clippedInterval.getFiniteUpperBound()[0] == 1;
   // Quick return for integral over the whole real line
   if (!finiteLowerBound && !finiteUpperBound) return 1.0;
-  const NumericalScalar lowerBound = clippedInterval.getLowerBound()[0];
-  const NumericalScalar upperBound = clippedInterval.getUpperBound()[0];
+  const Scalar lowerBound = clippedInterval.getLowerBound()[0];
+  const Scalar upperBound = clippedInterval.getUpperBound()[0];
   // Small size case: use Fourier series
-  const NumericalScalar precision = cdfPrecision_;
-  NumericalScalar error = 2.0 * precision;
-  const NumericalScalar a = referenceBandwidth_[0] * lowerBound;
-  const NumericalScalar b = referenceBandwidth_[0] * upperBound;
-  const NumericalScalar factor = referenceBandwidth_[0] / M_PI;
-  NumericalScalar value = computeEquivalentNormalCDFSum(lowerBound, upperBound);
+  const Scalar precision = cdfPrecision_;
+  Scalar error = 2.0 * precision;
+  const Scalar a = referenceBandwidth_[0] * lowerBound;
+  const Scalar b = referenceBandwidth_[0] * upperBound;
+  const Scalar factor = referenceBandwidth_[0] / M_PI;
+  Scalar value = computeEquivalentNormalCDFSum(lowerBound, upperBound);
   UnsignedInteger k = 1;
   const UnsignedInteger kmin = 1 << blockMin_;
   const UnsignedInteger kmax = 1 << blockMax_;
@@ -1922,12 +1922,12 @@ NumericalScalar RandomMixture::computeProbability(const Interval & interval) con
     error = 0.0;
     for (UnsignedInteger m = k; m < 2 * k; ++m)
     {
-      NumericalScalar sinMHLower = std::sin(m * a);
-      NumericalScalar cosMHLower = std::cos(m * a);
-      NumericalScalar sinMHUpper = std::sin(m * b);
-      NumericalScalar cosMHUpper = std::cos(m * b);
+      Scalar sinMHLower = std::sin(m * a);
+      Scalar cosMHLower = std::cos(m * a);
+      Scalar sinMHUpper = std::sin(m * b);
+      Scalar cosMHUpper = std::cos(m * b);
       const NumericalComplex deltaValue(computeDeltaCharacteristicFunction(m));
-      const NumericalScalar contribution = factor * (deltaValue.real() * (sinMHUpper - sinMHLower) + deltaValue.imag() * (cosMHLower - cosMHUpper)) / (m * referenceBandwidth_[0]);
+      const Scalar contribution = factor * (deltaValue.real() * (sinMHUpper - sinMHLower) + deltaValue.imag() * (cosMHLower - cosMHUpper)) / (m * referenceBandwidth_[0]);
       value += contribution;
       error += std::abs(contribution);
     }
@@ -1939,15 +1939,15 @@ NumericalScalar RandomMixture::computeProbability(const Interval & interval) con
 }
 
 /*  Compute the quantile over a regular grid */
-Sample RandomMixture::computeQuantile(const NumericalScalar qMin,
-    const NumericalScalar qMax,
+Sample RandomMixture::computeQuantile(const Scalar qMin,
+    const Scalar qMax,
     const UnsignedInteger pointNumber,
     const Bool tail) const
 {
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot compute the quantile over a regular 1D grid if the dimension is > 1";
   Sample result(pointNumber, 2);
-  NumericalScalar q = qMin;
-  const NumericalScalar step = (qMax - qMin) / NumericalScalar(pointNumber - 1.0);
+  Scalar q = qMin;
+  const Scalar step = (qMax - qMin) / Scalar(pointNumber - 1.0);
   for (UnsignedInteger i = 0; i < pointNumber; ++i)
   {
     result[i][0] = q;
@@ -1958,7 +1958,7 @@ Sample RandomMixture::computeQuantile(const NumericalScalar qMin,
 }
 
 /* Quantile computation for dimension=1 */
-NumericalScalar RandomMixture::computeScalarQuantile(const NumericalScalar prob,
+Scalar RandomMixture::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
   // Special case for random mixture with only 1 atom: Y = alpha * X + beta
@@ -1969,7 +1969,7 @@ NumericalScalar RandomMixture::computeScalarQuantile(const NumericalScalar prob,
   // P(X > (Yq - beta) / alpha) = q i.e. P(X < (Yq - beta) / alpha) = r with r = 1-q -> Yq = alpha * Xr + beta
   if (isAnalytical_)
   {
-    const NumericalScalar alpha = weights_(0, 0);
+    const Scalar alpha = weights_(0, 0);
     return distributionCollection_[0].computeQuantile((alpha > 0.0) ? (prob) : (1.0 - prob))[0] * alpha + constant_[0];
   }
   // General case
@@ -1977,8 +1977,8 @@ NumericalScalar RandomMixture::computeScalarQuantile(const NumericalScalar prob,
 }
 
 /** Get the minimum volume level set containing a given probability of the distribution */
-LevelSet RandomMixture::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob,
-    NumericalScalar & threshold) const
+LevelSet RandomMixture::computeMinimumVolumeLevelSetWithThreshold(const Scalar prob,
+    Scalar & threshold) const
 {
   Function minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
   minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
@@ -1986,14 +1986,14 @@ LevelSet RandomMixture::computeMinimumVolumeLevelSetWithThreshold(const Numerica
   // we use an improved sampling method to compute the quantile of the -logPDF(X) distribution
   const UnsignedInteger size = SpecFunc::NextPowerOfTwo(ResourceMap::GetAsUnsignedInteger("Distribution-MinimumVolumeLevelSetSamplingSize"));
   const Sample minusLogPDFSample(computeLogPDF(getSampleByQMC(size)) * Point(1, -1.0));
-  const NumericalScalar minusLogPDFThreshold = minusLogPDFSample.computeQuantile(prob)[0];
+  const Scalar minusLogPDFThreshold = minusLogPDFSample.computeQuantile(prob)[0];
   threshold = std::exp(-minusLogPDFThreshold);
 
   return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex RandomMixture::computeCharacteristicFunction(const NumericalScalar x) const
+NumericalComplex RandomMixture::computeCharacteristicFunction(const Scalar x) const
 {
   if (x == 0.0) return 1.0;
   return std::exp(computeLogCharacteristicFunction(x));
@@ -2007,12 +2007,12 @@ NumericalComplex RandomMixture::computeCharacteristicFunction(const Point & x) c
   return std::exp(computeLogCharacteristicFunction(x));
 }
 
-NumericalComplex RandomMixture::computeLogCharacteristicFunction(const NumericalScalar x) const
+NumericalComplex RandomMixture::computeLogCharacteristicFunction(const Scalar x) const
 {
   if (x == 0.0) return 0.0;
   NumericalComplex logCfValue(0.0, constant_[0] * x);
   const UnsignedInteger size = distributionCollection_.getSize();
-  const NumericalScalar smallScalar = 0.5 * std::log(SpecFunc::MinScalar);
+  const Scalar smallScalar = 0.5 * std::log(SpecFunc::MinScalar);
   for(UnsignedInteger i = 0; i < size; ++i)
   {
     logCfValue += distributionCollection_[i].computeLogCharacteristicFunction(weights_(0, i) * x);
@@ -2028,7 +2028,7 @@ NumericalComplex RandomMixture::computeLogCharacteristicFunction(const Point & x
   // log(\phi(x)) = \sum_{j=1}^{d} ((i * y_j * constant_j) + \sum_{k=1}^{n} log(\phi_{X_k})((M^t x)_k))
   const UnsignedInteger dimension = getDimension();
   const UnsignedInteger size = distributionCollection_.getSize();
-  const NumericalScalar smallScalar = 0.5 * std::log(SpecFunc::MinScalar);
+  const Scalar smallScalar = 0.5 * std::log(SpecFunc::MinScalar);
   // 1) compute the deterministic term
   NumericalComplex logCfValue;
   for (UnsignedInteger i = 0; i < dimension; ++i) logCfValue += NumericalComplex(0.0, x[i] * constant_[i]);
@@ -2037,7 +2037,7 @@ NumericalComplex RandomMixture::computeLogCharacteristicFunction(const Point & x
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     // compute M^t * x
-    NumericalScalar wtx = 0.;
+    Scalar wtx = 0.;
     for (UnsignedInteger j = 0; j < dimension; ++j) wtx += weights_(j, i) * x[j];
     logCfValue += distributionCollection_[i].computeLogCharacteristicFunction(wtx);
     if (logCfValue.real() < smallScalar) break;
@@ -2057,7 +2057,7 @@ NumericalComplex RandomMixture::computeDeltaCharacteristicFunction(const Unsigne
   if (index > maxSize_)
   {
     LOGINFO(OSS() << "Cache exceeded in RandomMixture::computeDeltaCharacteristicFunction, consider increasing maxSize_ to " << index);
-    const NumericalScalar x = index * referenceBandwidth_[0];
+    const Scalar x = index * referenceBandwidth_[0];
     const NumericalComplex logCF(computeLogCharacteristicFunction(x));
     const NumericalComplex logNormalCF(equivalentNormal_.computeLogCharacteristicFunction(x));
     const NumericalComplex deltaLog(logCF - logNormalCF);
@@ -2072,7 +2072,7 @@ NumericalComplex RandomMixture::computeDeltaCharacteristicFunction(const Unsigne
   {
     for (UnsignedInteger i = storedSize_ + 1; i <= index; ++i)
     {
-      const NumericalScalar x = i * referenceBandwidth_[0];
+      const Scalar x = i * referenceBandwidth_[0];
       const NumericalComplex logCF(computeLogCharacteristicFunction(x));
       const NumericalComplex logNormalCF(equivalentNormal_.computeLogCharacteristicFunction(x));
       const NumericalComplex deltaLog(logCF - logNormalCF);
@@ -2164,7 +2164,7 @@ void RandomMixture::computeCovariance() const
   {
     for (UnsignedInteger j = 0; j <= i; ++j)
     {
-      NumericalScalar covariance = 0.0;
+      Scalar covariance = 0.0;
       for (UnsignedInteger k = 0; k < size; ++k)
       {
         covariance += weights_(i, k) * weights_(j, k) * distributionCollection_[k].getCovariance().operator()(0, 0);
@@ -2192,12 +2192,12 @@ Point RandomMixture::getSkewness() const
   const UnsignedInteger size = distributionCollection_.getSize();
   for (UnsignedInteger j = 0; j < getDimension(); ++j)
   {
-    NumericalScalar variance = 0.0;
+    Scalar variance = 0.0;
     for(UnsignedInteger i = 0; i < size; ++i)
     {
-      const NumericalScalar wi = weights_(j, i);
-      const NumericalScalar wi2 = wi * wi;
-      const NumericalScalar vi = distributionCollection_[i].getCovariance().operator()(0, 0);
+      const Scalar wi = weights_(j, i);
+      const Scalar wi2 = wi * wi;
+      const Scalar vi = distributionCollection_[i].getCovariance().operator()(0, 0);
       variance += wi2 * vi;
       skewness[j] += wi2 * wi * distributionCollection_[i].getSkewness()[0] * std::pow(vi, 1.5);
     } /* end for */
@@ -2215,13 +2215,13 @@ Point RandomMixture::getKurtosis() const
   Point w2(size);
   for (UnsignedInteger d = 0; d < getDimension(); ++d)
   {
-    NumericalScalar variance = 0.0;
+    Scalar variance = 0.0;
     for(UnsignedInteger i = 0; i < size; ++i)
     {
-      const NumericalScalar wi = weights_(d, i);
-      const NumericalScalar wi2 = wi * wi;
+      const Scalar wi = weights_(d, i);
+      const Scalar wi2 = wi * wi;
       w2[i] = wi2;
-      const NumericalScalar vi = distributionCollection_[i].getCovariance().operator()(0, 0);
+      const Scalar vi = distributionCollection_[i].getCovariance().operator()(0, 0);
       v[i] = vi;
       variance += wi2 * vi;
       kurtosis[d] += wi2 * wi2 * distributionCollection_[i].getKurtosis()[0] * vi * vi;
@@ -2259,7 +2259,7 @@ RandomMixture::PointWithDescriptionCollection RandomMixture::getParametersCollec
 } // getParametersCollection
 
 /* Get a positon indicator for a 1D distribution */
-NumericalScalar RandomMixture::getPositionIndicator() const
+Scalar RandomMixture::getPositionIndicator() const
 {
   if (!isAlreadyComputedPositionIndicator_) computePositionIndicator();
   return positionIndicator_;
@@ -2280,7 +2280,7 @@ void RandomMixture::computePositionIndicator() const
 
 
 /* Get a dispersion indicator for a 1D distribution */
-NumericalScalar RandomMixture::getDispersionIndicator() const
+Scalar RandomMixture::getDispersionIndicator() const
 {
   if (!isAlreadyComputedDispersionIndicator_) computeDispersionIndicator();
   return dispersionIndicator_;
@@ -2342,7 +2342,7 @@ UnsignedInteger RandomMixture::getMaxSize() const
 }
 
 /* Alpha accessor */
-void RandomMixture::setAlpha(const NumericalScalar alpha)
+void RandomMixture::setAlpha(const Scalar alpha)
 {
   if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "Error: the alpha parameter must be strictly positive";
   alpha_ = alpha;
@@ -2350,19 +2350,19 @@ void RandomMixture::setAlpha(const NumericalScalar alpha)
   computeReferenceBandwidth();
 }
 
-NumericalScalar RandomMixture::getAlpha() const
+Scalar RandomMixture::getAlpha() const
 {
   return alpha_;
 }
 
-void RandomMixture::setBeta(const NumericalScalar beta)
+void RandomMixture::setBeta(const Scalar beta)
 {
   beta_ = beta;
   computeRange();
   computeReferenceBandwidth();
 }
 
-NumericalScalar RandomMixture::getBeta() const
+Scalar RandomMixture::getBeta() const
 {
   return beta_;
 }
@@ -2382,13 +2382,13 @@ Point RandomMixture::getReferenceBandwidth() const
 }
 
 /* PDF precision accessor. For other distributions, it is a read-only attribute. */
-void RandomMixture::setPDFPrecision(const NumericalScalar pdfPrecision)
+void RandomMixture::setPDFPrecision(const Scalar pdfPrecision)
 {
   pdfPrecision_ = pdfPrecision;
 }
 
 /* CDF precision accessor. For other distributions, it is a read-only attribute. */
-void RandomMixture::setCDFPrecision(const NumericalScalar cdfPrecision)
+void RandomMixture::setCDFPrecision(const Scalar cdfPrecision)
 {
   cdfPrecision_ = cdfPrecision;
 }
@@ -2429,17 +2429,17 @@ void RandomMixture::computeEquivalentNormal()
 }
 
 /* Compute the left-hand sum in Poisson's summation formula for the equivalent normal */
-NumericalScalar RandomMixture::computeEquivalentNormalPDFSum(const NumericalScalar x) const
+Scalar RandomMixture::computeEquivalentNormalPDFSum(const Scalar x) const
 {
-  if (dimension_ != 1) throw InvalidDimensionException(HERE) << "RandomMixture::computeEquivalentNormalPDFSum(NumericalScalar) is only possible for dimension 1";
+  if (dimension_ != 1) throw InvalidDimensionException(HERE) << "RandomMixture::computeEquivalentNormalPDFSum(Scalar) is only possible for dimension 1";
 
-  NumericalScalar value = equivalentNormal_.computePDF(x);
+  Scalar value = equivalentNormal_.computePDF(x);
   UnsignedInteger i = 0;
-  NumericalScalar delta = 0.0;
+  Scalar delta = 0.0;
   do
   {
     ++i;
-    const NumericalScalar step = 2.0 * M_PI * i / referenceBandwidth_[0];
+    const Scalar step = 2.0 * M_PI * i / referenceBandwidth_[0];
     delta = equivalentNormal_.computePDF(x + step) + equivalentNormal_.computePDF(x - step);
     value += delta;
   }
@@ -2447,7 +2447,7 @@ NumericalScalar RandomMixture::computeEquivalentNormalPDFSum(const NumericalScal
   return value;
 }
 
-NumericalScalar RandomMixture::computeEquivalentNormalPDFSum(const Point & y, const Point & gridStep,
+Scalar RandomMixture::computeEquivalentNormalPDFSum(const Point & y, const Point & gridStep,
     UnsignedInteger imax, UnsignedInteger & levelMax) const
 {
   /*
@@ -2470,14 +2470,14 @@ NumericalScalar RandomMixture::computeEquivalentNormalPDFSum(const Point & y, co
   if (gridStep.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: invalid grid dimension";
   if (dimension_ == 1)
   {
-    const NumericalScalar x = y[0];
-    NumericalScalar value = equivalentNormal_.computePDF(x);
+    const Scalar x = y[0];
+    Scalar value = equivalentNormal_.computePDF(x);
     UnsignedInteger i = 0;
-    NumericalScalar delta = 0.0;
+    Scalar delta = 0.0;
     do
     {
       ++i;
-      const NumericalScalar step = i * gridStep[0];
+      const Scalar step = i * gridStep[0];
       delta = equivalentNormal_.computePDF(x + step) + equivalentNormal_.computePDF(x - step);
       value += delta;
     }
@@ -2489,9 +2489,9 @@ NumericalScalar RandomMixture::computeEquivalentNormalPDFSum(const Point & y, co
   // We force symmetry to improve performance.
   const SphereUniformNorm grid(SphereUniformNorm::GetFromGridSteps(gridStep, true));
 
-  NumericalScalar gaussian_pdf = equivalentNormal_.computePDF(y);
-  NumericalScalar delta = std::max(1.0, gaussian_pdf);
-  const NumericalScalar epsilon = pdfPrecision_;
+  Scalar gaussian_pdf = equivalentNormal_.computePDF(y);
+  Scalar delta = std::max(1.0, gaussian_pdf);
+  const Scalar epsilon = pdfPrecision_;
 
   // If imax is zero, we want to store in levelMax the first level which does not improve accuracy.
   // If non zero, this means that a previous call had already computed levelMax, and levelMax
@@ -2504,7 +2504,7 @@ NumericalScalar RandomMixture::computeEquivalentNormalPDFSum(const Point & y, co
     const Sample skinPoints(grid.getPoints(i));
 
     if (!imax) levelMax = i;
-    const NumericalScalar numberOfPoints = skinPoints.getSize();
+    const Scalar numberOfPoints = skinPoints.getSize();
     delta = 0.0;
     for (UnsignedInteger j = 0; j < numberOfPoints; ++j)
     {
@@ -2521,18 +2521,18 @@ NumericalScalar RandomMixture::computeEquivalentNormalPDFSum(const Point & y, co
 }
 
 /* Compute the left-hand sum in Poisson's summation formula for the equivalent normal */
-NumericalScalar RandomMixture::computeEquivalentNormalCDFSum(const NumericalScalar s,
-    const NumericalScalar t) const
+Scalar RandomMixture::computeEquivalentNormalCDFSum(const Scalar s,
+    const Scalar t) const
 {
-  if (dimension_ != 1) throw InvalidDimensionException(HERE) << "RandomMixture::computeEquivalentNormalCDFSum(NumericalScalar) is only possible for dimension 1";
+  if (dimension_ != 1) throw InvalidDimensionException(HERE) << "RandomMixture::computeEquivalentNormalCDFSum(Scalar) is only possible for dimension 1";
 
-  NumericalScalar value = equivalentNormal_.computeProbability(Interval(s, t));
+  Scalar value = equivalentNormal_.computeProbability(Interval(s, t));
   UnsignedInteger i = 0;
-  NumericalScalar delta = 0.0;
+  Scalar delta = 0.0;
   do
   {
     ++i;
-    const NumericalScalar step = 2.0 * M_PI * i / referenceBandwidth_[0];
+    const Scalar step = 2.0 * M_PI * i / referenceBandwidth_[0];
     delta = (equivalentNormal_.computeCDF(t + step) - equivalentNormal_.computeCDF(s + step)) + (equivalentNormal_.computeCDF(t - step) - equivalentNormal_.computeCDF(s - step));
     value += delta;
   }
@@ -2542,10 +2542,10 @@ NumericalScalar RandomMixture::computeEquivalentNormalCDFSum(const NumericalScal
 
 struct RandomMixturePair
 {
-  NumericalScalar norm_;
+  Scalar norm_;
   Distribution distribution_;
   RandomMixturePair(): norm_(0.0), distribution_() {}
-  RandomMixturePair(const NumericalScalar norm, const Distribution & distribution): norm_(norm), distribution_(distribution) {}
+  RandomMixturePair(const Scalar norm, const Distribution & distribution): norm_(norm), distribution_(distribution) {}
 
   Bool operator < (const RandomMixturePair & other) const
   {
@@ -2563,11 +2563,11 @@ DistributionCollection RandomMixture::project(const DistributionFactoryCollectio
   if (getDimension() != 1) throw NotDefinedException(HERE) << "Error: cannot project random mixtures of dimension>1.";
   const UnsignedInteger factorySize = factoryCollection.getSize();
   RandomMixturePairCollection result(0);
-  const NumericalScalar mean = getMean()[0];
-  const NumericalScalar sigma = getStandardDeviation()[0];
+  const Scalar mean = getMean()[0];
+  const Scalar sigma = getStandardDeviation()[0];
   // Sample the quantile function uniformly over [mean +/- alpha * sigma]
-  const NumericalScalar qMin = computeCDF(mean - alpha_ * sigma);
-  const NumericalScalar qMax = computeCDF(mean + alpha_ * sigma);
+  const Scalar qMin = computeCDF(mean - alpha_ * sigma);
+  const Scalar qMax = computeCDF(mean + alpha_ * sigma);
   const Sample dataX(computeQuantile(qMin, qMax, size).getMarginal(1));
   // Loop over the factories
   for (UnsignedInteger i = 0; i < factorySize; ++i)
@@ -2583,7 +2583,7 @@ DistributionCollection RandomMixture::project(const DistributionFactoryCollectio
     {
       LOGWARN(OSS() << "Estimation failed for the factory " << factory.getImplementation()->getClassName() << ". It is removed from the set of factories.");
     }
-    NumericalScalar kolmogorov = 0.0;
+    Scalar kolmogorov = 0.0;
     for (UnsignedInteger j = 0; j < size; ++j)
       kolmogorov = std::max(kolmogorov, std::abs(candidate.computeCDF(dataX[j][0]) - (qMin + j * (qMax - qMin) / (size - 1.0))));
     result.add(RandomMixturePair(kolmogorov, candidate));

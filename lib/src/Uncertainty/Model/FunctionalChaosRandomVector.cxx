@@ -92,7 +92,7 @@ void FunctionalChaosRandomVector::computeCovariance() const
 }
 
 /* Sobol index accessor */
-NumericalScalar FunctionalChaosRandomVector::getSobolIndex(const Indices & variableIndices,
+Scalar FunctionalChaosRandomVector::getSobolIndex(const Indices & variableIndices,
     const UnsignedInteger marginalIndex) const
 {
   const UnsignedInteger inputDimension = getAntecedent()->getDimension();
@@ -106,15 +106,15 @@ NumericalScalar FunctionalChaosRandomVector::getSobolIndex(const Indices & varia
   const Sample coefficients(functionalChaosResult_.getCoefficients().getMarginal(marginalIndex));
   const Indices coefficientIndices(functionalChaosResult_.getIndices());
   const UnsignedInteger size = coefficients.getSize();
-  NumericalScalar covarianceVariables = 0.0;
+  Scalar covarianceVariables = 0.0;
   const EnumerateFunction enumerateFunction(functionalChaosResult_.getOrthogonalBasis().getEnumerateFunction());
   // Sum the contributions of all the coefficients associated to a basis vector involving only the needed variables
-  NumericalScalar totalVariance = 0.0;
+  Scalar totalVariance = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     if (coefficientIndices[i] > 0)
     {
-      const NumericalScalar coefficientI = coefficients[i][0];
+      const Scalar coefficientI = coefficients[i][0];
       if (coefficientI != 0.0)
       {
         Indices multiIndices(enumerateFunction(coefficientIndices[i]));
@@ -147,7 +147,7 @@ NumericalScalar FunctionalChaosRandomVector::getSobolIndex(const Indices & varia
 }
 
 /* Sobol index accessor */
-NumericalScalar FunctionalChaosRandomVector::getSobolIndex(const UnsignedInteger variableIndex,
+Scalar FunctionalChaosRandomVector::getSobolIndex(const UnsignedInteger variableIndex,
     const UnsignedInteger marginalIndex) const
 {
   Indices index(1);
@@ -156,7 +156,7 @@ NumericalScalar FunctionalChaosRandomVector::getSobolIndex(const UnsignedInteger
 }
 
 /* Sobol total index accessor */
-NumericalScalar FunctionalChaosRandomVector::getSobolTotalIndex(const Indices & variableIndices,
+Scalar FunctionalChaosRandomVector::getSobolTotalIndex(const Indices & variableIndices,
     const UnsignedInteger marginalIndex) const
 {
   const UnsignedInteger inputDimension = getAntecedent()->getDimension();
@@ -170,15 +170,15 @@ NumericalScalar FunctionalChaosRandomVector::getSobolTotalIndex(const Indices & 
   const Sample coefficients(functionalChaosResult_.getCoefficients().getMarginal(marginalIndex));
   const Indices coefficientIndices(functionalChaosResult_.getIndices());
   const UnsignedInteger size = coefficients.getSize();
-  NumericalScalar covarianceVariables = 0.0;
+  Scalar covarianceVariables = 0.0;
   const EnumerateFunction enumerateFunction(functionalChaosResult_.getOrthogonalBasis().getEnumerateFunction());
   // Sum the contributions to all the coefficients associated to a basis vector involving at least the variable i
-  NumericalScalar totalVariance = 0.0;
+  Scalar totalVariance = 0.0;
   for (UnsignedInteger i = 1; i < size; ++i)
   {
     if (coefficientIndices[i] > 0)
     {
-      const NumericalScalar coefficientI = coefficients[i][0];
+      const Scalar coefficientI = coefficients[i][0];
       if (coefficientI != 0.0)
       {
         const Indices multiIndices(enumerateFunction(coefficientIndices[i]));
@@ -203,7 +203,7 @@ NumericalScalar FunctionalChaosRandomVector::getSobolTotalIndex(const Indices & 
 }
 
 /* Sobol total index accessor */
-NumericalScalar FunctionalChaosRandomVector::getSobolTotalIndex(const UnsignedInteger variableIndex,
+Scalar FunctionalChaosRandomVector::getSobolTotalIndex(const UnsignedInteger variableIndex,
     const UnsignedInteger marginalIndex) const
 {
   Indices index(1);
@@ -212,7 +212,7 @@ NumericalScalar FunctionalChaosRandomVector::getSobolTotalIndex(const UnsignedIn
 }
 
 /* Sobol grouped index accessor */
-NumericalScalar FunctionalChaosRandomVector::getSobolGroupedIndex(const Indices & variableIndices,
+Scalar FunctionalChaosRandomVector::getSobolGroupedIndex(const Indices & variableIndices,
     const UnsignedInteger marginalIndex) const
 {
   const UnsignedInteger inputDimension = getAntecedent()->getDimension();
@@ -226,15 +226,15 @@ NumericalScalar FunctionalChaosRandomVector::getSobolGroupedIndex(const Indices 
   const Sample coefficients(functionalChaosResult_.getCoefficients().getMarginal(marginalIndex));
   const Indices coefficientIndices(functionalChaosResult_.getIndices());
   const UnsignedInteger size = coefficients.getSize();
-  NumericalScalar covarianceVariables = 0.0;
+  Scalar covarianceVariables = 0.0;
   const EnumerateFunction enumerateFunction(functionalChaosResult_.getOrthogonalBasis().getEnumerateFunction());
   // Sum the contributions of all the coefficients associated to a basis vector involving only the needed variables
-  NumericalScalar totalVariance = 0.0;
+  Scalar totalVariance = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     if (coefficientIndices[i] > 0)
     {
-      const NumericalScalar coefficientI = coefficients[i][0];
+      const Scalar coefficientI = coefficients[i][0];
       if (coefficientI != 0.0)
       {
         Indices multiIndices(enumerateFunction(coefficientIndices[i]));
@@ -257,7 +257,7 @@ NumericalScalar FunctionalChaosRandomVector::getSobolGroupedIndex(const Indices 
 }
 
 /* Sobol index accessor */
-NumericalScalar FunctionalChaosRandomVector::getSobolGroupedIndex(const UnsignedInteger variableIndex,
+Scalar FunctionalChaosRandomVector::getSobolGroupedIndex(const UnsignedInteger variableIndex,
     const UnsignedInteger marginalIndex) const
 {
   Indices index(1);

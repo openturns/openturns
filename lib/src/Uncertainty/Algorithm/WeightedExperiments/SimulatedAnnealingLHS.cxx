@@ -107,8 +107,8 @@ Sample SimulatedAnnealingLHS::generateWithRestart(UnsignedInteger nRestart) cons
 
     // Starting implementation
     UnsignedInteger iteration(0);
-    NumericalScalar T(profile_.getT0());
-    NumericalScalar optimalValue(spaceFilling_.evaluate(optimalDesign));
+    Scalar T(profile_.getT0());
+    Scalar optimalValue(spaceFilling_.evaluate(optimalDesign));
     const UnsignedInteger iMax(profile_.getIMax());
     while(iteration < iMax && T > 0)
     {
@@ -123,9 +123,9 @@ Sample SimulatedAnnealingLHS::generateWithRestart(UnsignedInteger nRestart) cons
       //          newCriterion are almost equal, architectures may go to different
       //          branches.  In order to have the same random generator state,
       //          RandomGenerator::Generate() is called here.
-      const NumericalScalar bernoulliTrial = RandomGenerator::Generate();
-      const NumericalScalar newCriterion = spaceFilling_.perturbLHS(optimalDesign, optimalValue, row1, row2, columnIndex);
-      const NumericalScalar criteriaDifference = std::min(std::exp((optimalValue-newCriterion)/T), 1.0);
+      const Scalar bernoulliTrial = RandomGenerator::Generate();
+      const Scalar newCriterion = spaceFilling_.perturbLHS(optimalDesign, optimalValue, row1, row2, columnIndex);
+      const Scalar criteriaDifference = std::min(std::exp((optimalValue-newCriterion)/T), 1.0);
       // Decision with respect to criteriaDifference
       if (optimalValue >= newCriterion)
       {

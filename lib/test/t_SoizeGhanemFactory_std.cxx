@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
         {
           KernelWrapper wrapper(functions[m], functions[n], distribution);
           Function kernel(bindMethod<KernelWrapper, Point, Point>(wrapper, &KernelWrapper::operator(), distribution.getDimension(), 1));
-          NumericalScalar value = IteratedQuadrature().integrate(kernel, distribution.getRange())[0];
+          Scalar value = IteratedQuadrature().integrate(kernel, distribution.getRange())[0];
           M(m, n) = (std::abs(value) < 1e-6 ? 0.0 : value);
         }
       fullprint << "M=\n" << M.__str__() << std::endl;

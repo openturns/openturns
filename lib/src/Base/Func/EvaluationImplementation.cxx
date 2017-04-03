@@ -49,8 +49,8 @@ static const Factory<PersistentCollection<UnsignedInteger> > Factory_PersistentC
 static const Factory<PersistentCollection<Unsigned64BitsInteger> > Factory_PersistentCollection_Unsigned64BitsInteger;
 #endif
 
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<PersistentCollection<NumericalScalar> >);
-static const Factory<PersistentCollection<PersistentCollection<NumericalScalar> > > Factory_PersistentCollection_PersistentCollection_NumericalScalar;
+TEMPLATE_CLASSNAMEINIT(PersistentCollection<PersistentCollection<Scalar> >);
+static const Factory<PersistentCollection<PersistentCollection<Scalar> > > Factory_PersistentCollection_PersistentCollection_Scalar;
 
 
 CLASSNAMEINIT(EvaluationImplementation);
@@ -302,7 +302,7 @@ Matrix EvaluationImplementation::parameterGradient(const Point & inP) const
   const UnsignedInteger parameterDimension = parameter.getDimension();
   const UnsignedInteger outputDimension = getOutputDimension();
 
-  const NumericalScalar epsilon = ResourceMap::GetAsScalar("NumericalMathEvaluation-ParameterEpsilon");
+  const Scalar epsilon = ResourceMap::GetAsScalar("NumericalMathEvaluation-ParameterEpsilon");
 
   Sample inS(parameterDimension + 1, parameter);
   for (UnsignedInteger i = 0; i < parameterDimension; ++ i)
@@ -449,8 +449,8 @@ UnsignedInteger EvaluationImplementation::getCallsNumber() const
 Graph EvaluationImplementation::draw(const UnsignedInteger inputMarginal,
     const UnsignedInteger outputMarginal,
     const Point & centralPoint,
-    const NumericalScalar xMin,
-    const NumericalScalar xMax,
+    const Scalar xMin,
+    const Scalar xMax,
     const UnsignedInteger pointNumber,
     const GraphImplementation::LogScale scale) const
 {
@@ -462,15 +462,15 @@ Graph EvaluationImplementation::draw(const UnsignedInteger inputMarginal,
   Sample inputData(pointNumber, centralPoint);
   if (scale == GraphImplementation::NONE)
   {
-    const NumericalScalar dx = (xMax - xMin) / (pointNumber - 1.0);
+    const Scalar dx = (xMax - xMin) / (pointNumber - 1.0);
     for (UnsignedInteger i = 0; i < pointNumber; ++i)
       inputData[i][inputMarginal] = xMin + i * dx;
   }
   else
   {
-    const NumericalScalar a = std::log(xMin);
-    const NumericalScalar b = std::log(xMax);
-    const NumericalScalar dLogX = (b - a) / (pointNumber - 1.0);
+    const Scalar a = std::log(xMin);
+    const Scalar b = std::log(xMax);
+    const Scalar dLogX = (b - a) / (pointNumber - 1.0);
     for (UnsignedInteger i = 0; i < pointNumber; ++i)
       inputData[i][inputMarginal] = std::exp(a + i * dLogX);
   }
@@ -486,7 +486,7 @@ Graph EvaluationImplementation::draw(const UnsignedInteger inputMarginal,
   graph.add(Curve(inputData.getMarginal(inputMarginal), outputData.getMarginal(outputMarginal)));
   // Add a slight vertical margin
   GraphImplementation::BoundingBox bb(graph.getBoundingBox());
-  const NumericalScalar height = bb[3] - bb[2];
+  const Scalar height = bb[3] - bb[2];
   bb[2] -= 0.05 * height;
   bb[3] += 0.05 * height;
   graph.setBoundingBox(bb);
@@ -512,13 +512,13 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
   Point discretization(2);
   Point scaling(2);
   Point origin(2);
-  const NumericalScalar nX = pointNumber[0] - 2;
+  const Scalar nX = pointNumber[0] - 2;
   discretization[0] = nX;
   // Discretization of the first component
   Sample x(Box(Point(1, nX)).generate());
   {
-    NumericalScalar a = xMin[0];
-    NumericalScalar b = xMax[0];
+    Scalar a = xMin[0];
+    Scalar b = xMax[0];
     if ((scale == GraphImplementation::LOGX) || (scale == GraphImplementation::LOGXY))
     {
       a = std::log(a);
@@ -532,13 +532,13 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
   // Recover the original scale if the discretization has been done in the logarithmic scale
   if ((scale == GraphImplementation::LOGY) || (scale == GraphImplementation::LOGXY))
     for (UnsignedInteger i = 0; i < x.getDimension(); ++i) x[i][0] = std::exp(x[i][0]);
-  const NumericalScalar nY = pointNumber[1] - 2;
+  const Scalar nY = pointNumber[1] - 2;
   discretization[1] = nY;
   // Discretization of the second component
   Sample y(Box(Point(1, nY)).generate());
   {
-    NumericalScalar a = xMin[1];
-    NumericalScalar b = xMax[1];
+    Scalar a = xMin[1];
+    Scalar b = xMax[1];
     if ((scale == GraphImplementation::LOGY) || (scale == GraphImplementation::LOGXY))
     {
       a = std::log(a);
@@ -558,10 +558,10 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
   UnsignedInteger index = 0;
   for (UnsignedInteger j = 0; j < nY + 2; ++j)
   {
-    const NumericalScalar yJ = (scale == GraphImplementation::LOGY) || (scale == GraphImplementation::LOGXY) ? exp(y[j][0]) : y[j][0];
+    const Scalar yJ = (scale == GraphImplementation::LOGY) || (scale == GraphImplementation::LOGXY) ? exp(y[j][0]) : y[j][0];
     for (UnsignedInteger i = 0; i < nX + 2; ++i)
     {
-      const NumericalScalar xI = (scale == GraphImplementation::LOGX) || (scale == GraphImplementation::LOGXY) ? exp(x[i][0]) : x[i][0];
+      const Scalar xI = (scale == GraphImplementation::LOGX) || (scale == GraphImplementation::LOGXY) ? exp(x[i][0]) : x[i][0];
       inputSample[index][firstInputMarginal]  = xI;
       inputSample[index][secondInputMarginal]  = yJ;
       ++index;
@@ -593,8 +593,8 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
 }
 
 /* Draw the output of the function with respect to its input when the input and output dimensions are 1 */
-Graph EvaluationImplementation::draw(const NumericalScalar xMin,
-    const NumericalScalar xMax,
+Graph EvaluationImplementation::draw(const Scalar xMin,
+    const Scalar xMax,
     const UnsignedInteger pointNumber,
     const GraphImplementation::LogScale scale) const
 {

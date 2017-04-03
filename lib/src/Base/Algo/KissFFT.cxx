@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-typedef kissfft<NumericalScalar> KISSFFTScalar;
+typedef kissfft<Scalar> KISSFFTScalar;
 
 struct FFTPolicy
 {
@@ -136,7 +136,7 @@ KissFFT::NumericalComplexCollection KissFFT::inverseTransform(const NumericalCom
   // Inverse transform = transform with the opposite sign in the exponent and a 1/N factor
   // Call inverse transformation
   fft.transform( &collection[0] , &transformationResult[0] );
-  const NumericalScalar alpha = 1.0 / size;
+  const Scalar alpha = 1.0 / size;
   for (UnsignedInteger index = 0; index < size; ++index) transformationResult[index] *= alpha;
   return transformationResult;
 }
@@ -152,7 +152,7 @@ KissFFT::NumericalComplexCollection KissFFT::inverseTransform(const NumericalCom
   // Allocation of memory for final result
   NumericalComplexCollection transformationResult(size);
   fft.transform( &collection[first] , &transformationResult[0] );
-  const NumericalScalar alpha = 1.0 / size;
+  const Scalar alpha = 1.0 / size;
   for (UnsignedInteger index = 0; index < size; ++index) transformationResult[index] *= alpha;
   return transformationResult;
 }

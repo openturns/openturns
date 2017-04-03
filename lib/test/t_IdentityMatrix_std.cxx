@@ -42,11 +42,11 @@ int main(int argc, char *argv[])
   result = matrix1.solveLinearSystem(pt);
   fullprint << "result = " << result << std::endl;
 
-  NumericalScalar determinant ;
+  Scalar determinant ;
   determinant = matrix1.computeDeterminant();
   fullprint << "determinant = " << determinant << std::endl;
 
-  Collection<NumericalScalar> ev(2);
+  Collection<Scalar> ev(2);
   ev = matrix1.computeEigenValues().getCollection();
   fullprint << "ev = " << ev << std::endl;
 

@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
     proposalColl.add(std_proposal);
 
     // prior distribution
-    NumericalScalar mu0 = 25.0;
+    Scalar mu0 = 25.0;
 
     Point sigma0s;
     sigma0s.add(0.1);
@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
     for ( UnsignedInteger i = 0; i < sigma0s.getDimension(); ++ i )
     {
 
-      NumericalScalar sigma0 = sigma0s[i];
+      Scalar sigma0 = sigma0s[i];
       Normal mean_prior(mu0, sigma0);
       Dirac std_prior(2.0); // standard dev is known
       DistributionCollection priorColl;
@@ -98,8 +98,8 @@ int main(int argc, char *argv[])
       sampler.setBurnIn(500);
       sampler.setCalibrationStrategyPerComponent(calibrationColl);
 
-      NumericalScalar sigmay = ConditionalDistribution(Normal(), prior).getStandardDeviation()[0];
-      NumericalScalar w = size * pow(sigma0, 2.) / (size * pow(sigma0, 2.) + pow(sigmay, 2.0));
+      Scalar sigmay = ConditionalDistribution(Normal(), prior).getStandardDeviation()[0];
+      Scalar w = size * pow(sigma0, 2.) / (size * pow(sigma0, 2.) + pow(sigmay, 2.0));
 
       std::cout << "prior variance=" << pow(sigma0, 2.) << std::endl;
 

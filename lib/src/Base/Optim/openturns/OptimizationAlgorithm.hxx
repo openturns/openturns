@@ -75,27 +75,27 @@ public:
   void setMaximumIterationNumber(const UnsignedInteger maximumIterationNumber);
 
   /** Maximum absolute error accessor */
-  NumericalScalar getMaximumAbsoluteError() const;
-  void setMaximumAbsoluteError(const NumericalScalar maximumAbsoluteError);
+  Scalar getMaximumAbsoluteError() const;
+  void setMaximumAbsoluteError(const Scalar maximumAbsoluteError);
 
   /** Maximum relative error accessor */
-  NumericalScalar getMaximumRelativeError() const;
-  void setMaximumRelativeError(const NumericalScalar maximumRelativeError);
+  Scalar getMaximumRelativeError() const;
+  void setMaximumRelativeError(const Scalar maximumRelativeError);
 
   /** Maximum residual error accessor */
-  NumericalScalar getMaximumResidualError() const;
-  void setMaximumResidualError(const NumericalScalar maximumResidualError);
+  Scalar getMaximumResidualError() const;
+  void setMaximumResidualError(const Scalar maximumResidualError);
 
   /** Maximum constraint error accessor */
-  NumericalScalar getMaximumConstraintError() const;
-  void setMaximumConstraintError(const NumericalScalar maximumConstraintError);
+  Scalar getMaximumConstraintError() const;
+  void setMaximumConstraintError(const Scalar maximumConstraintError);
 
   /* Verbose accessor */
   Bool getVerbose() const;
   void setVerbose(const Bool verbose);
 
   /** Progress callback */
-  typedef void (*ProgressCallback)(NumericalScalar, void * data);
+  typedef void (*ProgressCallback)(Scalar, void * data);
   void setProgressCallback(ProgressCallback callBack, void * data = 0);
 
   /** Stop callback */

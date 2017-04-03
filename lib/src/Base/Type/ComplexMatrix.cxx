@@ -64,7 +64,7 @@ ComplexMatrix::ComplexMatrix(const UnsignedInteger rowDim,
 /* or the rest of the matrix is filled with zeros */
 ComplexMatrix::ComplexMatrix(const UnsignedInteger rowDim,
                              const UnsignedInteger colDim,
-                             const NumericalScalarCollection & elementsValues)
+                             const ScalarCollection & elementsValues)
   : TypedInterfaceObject<ComplexMatrixImplementation>(new ComplexMatrixImplementation(rowDim, colDim, elementsValues))
 {
   // Nothing to do
@@ -106,7 +106,7 @@ ComplexMatrix ComplexMatrix::solveLinearSystem(const ComplexMatrix & b,
 }
 
 /* Set small elements to zero */
-ComplexMatrix ComplexMatrix::clean(const NumericalScalar threshold) const
+ComplexMatrix ComplexMatrix::clean(const Scalar threshold) const
 {
   return Implementation(getImplementation()->clean(threshold).clone());
 }
@@ -284,8 +284,8 @@ ComplexMatrix ComplexMatrix::operator* (const IdentityMatrix & m) const
   return (*this);
 }
 
-/* Multiplication with a NumericalScalarCollection  */
-ComplexMatrix::NumericalComplexCollection ComplexMatrix::operator* (const NumericalScalarCollection & collection) const
+/* Multiplication with a ScalarCollection  */
+ComplexMatrix::NumericalComplexCollection ComplexMatrix::operator* (const ScalarCollection & collection) const
 {
   return getImplementation()->genVectProd(collection) ;
 }

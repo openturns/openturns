@@ -25,7 +25,7 @@ confInterval : :class:`~openturns.Interval`
 
 Returns
 -------
-pvalues : collection of :class:`~openturns.NumericalScalar`
+pvalues : collection of :class:`~openturns.Scalar`
     The collection of the p-values of the linear model coefficients."
 
 // ---------------------------------------------------------------------

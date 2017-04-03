@@ -40,7 +40,7 @@ Event::Event()
 /* Constructor from RandomVector */
 Event::Event(const RandomVector & antecedent,
              const ComparisonOperator & op,
-             const NumericalScalar threshold)
+             const Scalar threshold)
   : RandomVector(antecedent, op, threshold)
 {
   // Nothing to do

@@ -21,8 +21,8 @@
 
 %apply UnsignedInteger { OT::Unsigned64BitsInteger };
 
-%typemap(in) NumericalScalar {
-  $1 = OT::convert< OT::_PyFloat_, OT::NumericalScalar >($input);
+%typemap(in) Scalar {
+  $1 = OT::convert< OT::_PyFloat_, OT::Scalar >($input);
 }
 
 %typemap(in) NumericalComplex {

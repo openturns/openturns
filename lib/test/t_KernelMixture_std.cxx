@@ -83,26 +83,26 @@ int main(int argc, char *argv[])
     fullprint << "Point= " << point << std::endl;
 
     // Show PDF and CDF of point
-    NumericalScalar eps = 1e-5;
+    Scalar eps = 1e-5;
     Point DDF = distribution.computeDDF( point );
     fullprint << "ddf     =" << DDF << std::endl;
     fullprint << "ddf (ref)=" << distributionRef.computeDDF( point ) << std::endl;
     Point ddfFD(distribution.ContinuousDistribution::computeDDF(point));
     fullprint << "ddf (FD)=" << ddfFD << std::endl;
-    NumericalScalar LPDF = distribution.computeLogPDF( point );
+    Scalar LPDF = distribution.computeLogPDF( point );
     fullprint << "log pdf=" << LPDF << std::endl;
-    NumericalScalar PDF = distribution.computePDF( point );
+    Scalar PDF = distribution.computePDF( point );
     fullprint << "pdf     =" << PDF << std::endl;
     fullprint << "pdf (ref)=" << distributionRef.computePDF( point ) << std::endl;
     if (dimension == 1)
     {
       fullprint << "pdf (FD)=" << (distribution.computeCDF( point + Point(1, eps) ) - distribution.computeCDF( point  + Point(1, -eps) )) / (2.0 * eps) << std::endl;
     }
-    NumericalScalar CDF = distribution.computeCDF( point );
+    Scalar CDF = distribution.computeCDF( point );
     fullprint << "cdf=" << CDF << std::endl;
-    NumericalScalar CCDF = distribution.computeComplementaryCDF( point );
+    Scalar CCDF = distribution.computeComplementaryCDF( point );
     fullprint << "ccdf=" << CCDF << std::endl;
-    NumericalScalar Survival = distribution.computeSurvivalFunction( point );
+    Scalar Survival = distribution.computeSurvivalFunction( point );
     fullprint << "survival=" << Survival << std::endl;
     Point InverseSurvival = distribution.computeInverseSurvivalFunction(0.95);
     fullprint << "Inverse survival=" << InverseSurvival << std::endl;
@@ -119,10 +119,10 @@ int main(int argc, char *argv[])
     if (distribution.getDimension() <= 2)
     {
       // Confidence regions
-      NumericalScalar threshold;
+      Scalar threshold;
       fullprint << "Minimum volume interval=" << distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95, threshold) << std::endl;
       fullprint << "threshold=" << threshold << std::endl;
-      NumericalScalar beta;
+      Scalar beta;
       LevelSet levelSet(distribution.computeMinimumVolumeLevelSetWithThreshold(0.95, beta));
       fullprint << "Minimum volume level set=" << levelSet << std::endl;
       fullprint << "beta=" << beta << std::endl;
@@ -147,15 +147,15 @@ int main(int argc, char *argv[])
     y[1][0] =  0.5;
     y[2][0] =  1.5;
 
-    NumericalScalar condCDF = distribution.computeConditionalCDF(x[0], y[0]);
+    Scalar condCDF = distribution.computeConditionalCDF(x[0], y[0]);
     fullprint << "cond. cdf=" << condCDF << std::endl;
     Point condCDFs(distribution.computeConditionalCDF(x, y));
     fullprint << "cond. cdf (vect)=" << condCDFs << std::endl;
-    NumericalScalar condPDF = distribution.computeConditionalPDF(x[0], y[0]);
+    Scalar condPDF = distribution.computeConditionalPDF(x[0], y[0]);
     fullprint << "cond. pdf=" << condPDF << std::endl;
     Point condPDFs(distribution.computeConditionalPDF(x, y));
     fullprint << "cond. pdf (vect)=" << condPDFs << std::endl;
-    NumericalScalar condQuantile = distribution.computeConditionalQuantile(q[0], y[0]);
+    Scalar condQuantile = distribution.computeConditionalQuantile(q[0], y[0]);
     fullprint << "cond. quantile=" << condQuantile << std::endl;
     Point condQuantiles(distribution.computeConditionalQuantile(q, y));
     fullprint << "cond. quantile (vect)=" << condQuantiles << std::endl;

@@ -49,7 +49,7 @@ UserDefinedFactory::Implementation UserDefinedFactory::build(const Sample & samp
 }
 
 UserDefinedFactory::Implementation UserDefinedFactory::build(const Sample & sample,
-    const NumericalScalar epsilon) const
+    const Scalar epsilon) const
 {
   return buildAsUserDefined(sample, epsilon).clone();
 }
@@ -60,11 +60,11 @@ UserDefinedFactory::Implementation UserDefinedFactory::build() const
 }
 
 UserDefined UserDefinedFactory::buildAsUserDefined(const Sample & sample,
-    const NumericalScalar epsilon) const
+    const Scalar epsilon) const
 {
   const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a UserDefined distribution from an empty sample";
-  const NumericalScalar p = 1.0 / NumericalScalar(size);
+  const Scalar p = 1.0 / Scalar(size);
   UserDefined result(sample, Point(size, p));
   result.compactSupport(epsilon);
   result.setDescription(sample.getDescription());

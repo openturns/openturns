@@ -38,7 +38,7 @@ void __setitem__ (SignedInteger index,
   self->at(index) = val;
 }
 
-NumericalScalar __getitem__(PyObject * args) const {
+Scalar __getitem__(PyObject * args) const {
 
           OT::UnsignedInteger arg2 ;
           OT::UnsignedInteger arg3 ;
@@ -71,7 +71,7 @@ fail:
 
 
 
-void __setitem__(PyObject * args, NumericalScalar val) {
+void __setitem__(PyObject * args, Scalar val) {
 
           OT::UnsignedInteger arg2 ;
           OT::UnsignedInteger arg3 ;

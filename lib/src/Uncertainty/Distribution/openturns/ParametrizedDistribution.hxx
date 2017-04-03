@@ -59,21 +59,21 @@ public:
 
   /** Get the PDF of the distribution */
   using DistributionImplementation::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
   using DistributionImplementation::computeLogPDF;
-  NumericalScalar computeLogPDF(const Point & point) const;
+  Scalar computeLogPDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using DistributionImplementation::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using DistributionImplementation::computeComplementaryCDF;
-  virtual NumericalScalar computeComplementaryCDF(const Point & point) const;
+  virtual Scalar computeComplementaryCDF(const Point & point) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
-  NumericalComplex computeLogCharacteristicFunction(const NumericalScalar x) const;
+  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
+  NumericalComplex computeLogCharacteristicFunction(const Scalar x) const;
 
   /** Get the PDFGradient of the distribution */
   using DistributionImplementation::computePDFGradient;
@@ -85,20 +85,20 @@ public:
 
   /** Get the quantile of the distribution */
   using DistributionImplementation::computeQuantile;
-  virtual Point computeQuantile(const NumericalScalar prob,
+  virtual Point computeQuantile(const Scalar prob,
                                          const Bool tail = false) const;
 
   /** Get the product minimum volume interval containing a given probability of the distribution */
-  Interval computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
+  Interval computeMinimumVolumeIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const;
 
   /** Get the product bilateral confidence interval containing a given probability of the distribution */
-  Interval computeBilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
+  Interval computeBilateralConfidenceIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const;
 
   /** Get the product unilateral confidence interval containing a given probability of the distribution */
-  Interval computeUnilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, const Bool tail, NumericalScalar & marginalProb) const;
+  Interval computeUnilateralConfidenceIntervalWithMarginalProbability(const Scalar prob, const Bool tail, Scalar & marginalProb) const;
 
   /** Get the minimum volume level set containing a given probability of the distribution */
-  LevelSet computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const;
+  LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & threshold) const;
 
   /** Parameters value accessors */
   void setParameter(const Point & parameter);
@@ -114,7 +114,7 @@ public:
   virtual Bool isContinuous() const;
 
   /** Get the roughness, i.e. the L2-norm of the PDF */
-  virtual NumericalScalar getRoughness() const;
+  virtual Scalar getRoughness() const;
 
   /** Get the mean of the distribution */
   virtual Point getMean() const;

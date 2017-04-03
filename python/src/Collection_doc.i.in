@@ -7,11 +7,11 @@ Examples
 
 - Collection of **real values**:
 
->>> ot.NumericalScalarCollection(2)
+>>> ot.ScalarCollection(2)
 [0,0]
->>> ot.NumericalScalarCollection(2, 3.25)
+>>> ot.ScalarCollection(2, 3.25)
 [3.25,3.25]
->>> vector = ot.NumericalScalarCollection([2.0, 1.5, 2.6])
+>>> vector = ot.ScalarCollection([2.0, 1.5, 2.6])
 >>> vector
 [2,1.5,2.6]
 >>> vector[1] = 4.2

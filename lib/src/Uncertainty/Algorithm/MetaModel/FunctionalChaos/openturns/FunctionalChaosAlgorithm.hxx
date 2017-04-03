@@ -99,8 +99,8 @@ public:
   virtual String __repr__() const;
 
   /** Maximum residual accessors */
-  void setMaximumResidual(NumericalScalar residual);
-  NumericalScalar getMaximumResidual() const;
+  void setMaximumResidual(Scalar residual);
+  Scalar getMaximumResidual() const;
 
   /** Projection strategy accessor */
   void setProjectionStrategy(const ProjectionStrategy & projectionStrategy);
@@ -138,8 +138,8 @@ private:
   void runMarginal(const UnsignedInteger marginalIndex,
                    Indices & indices,
                    Point & coefficients,
-                   NumericalScalar & residual,
-                   NumericalScalar & relativeError);
+                   Scalar & residual,
+                   Scalar & relativeError);
 
   /** The isoprobabilistic transformation maps the distribution into the orthogonal measure */
   Function transformation_;
@@ -157,7 +157,7 @@ private:
   ProjectionStrategy projectionStrategy_;
 
   /** Maximum residual */
-  NumericalScalar maximumResidual_;
+  Scalar maximumResidual_;
 
   /** Result of the projection */
   FunctionalChaosResult result_;

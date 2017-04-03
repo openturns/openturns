@@ -47,8 +47,8 @@ public:
   KarhunenLoeveAlgorithm(const Implementation & p_implementation);
 
   /** Threshold accessors */
-  NumericalScalar getThreshold() const;
-  void setThreshold(const NumericalScalar threshold);
+  Scalar getThreshold() const;
+  void setThreshold(const Scalar threshold);
 
   /** Covariance model accessors */
   CovarianceModel getCovarianceModel() const;

@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
     UserDefinedStationaryCovarianceModel::CovarianceMatrixCollection covarianceCollection(size);
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const NumericalScalar t = timeGrid.getValue(i);
+      const Scalar t = timeGrid.getValue(i);
       covarianceCollection[i] = referenceModel(0, t);
     }
 
@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
     /* Sample the UserDefinedStationaryCovarianceModel */
     for (UnsignedInteger i = 0; i < timeGrid.getN(); ++i)
     {
-      const NumericalScalar t = timeGrid.getValue(i);
+      const Scalar t = timeGrid.getValue(i);
       // We look for cov(t) ==> when adding to the collection, we compute cov(t)
       fullprint << "myModel = " << myModel(t)(0, 0) << ", referenceModel = " << referenceModel(t)(0 , 0) << std::endl;
     }

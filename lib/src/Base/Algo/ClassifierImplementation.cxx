@@ -113,7 +113,7 @@ Indices ClassifierImplementation::classify(const Sample & inS) const
 }
 
 /* Grade a point */
-NumericalScalar ClassifierImplementation::grade(const Point & inP, const UnsignedInteger hClass) const
+Scalar ClassifierImplementation::grade(const Point & inP, const UnsignedInteger hClass) const
 {
   throw NotYetImplementedException(HERE) << "In ClassifierImplementation::grade(const Point & inP, const UnsignedInteger hClass) const";
 }

@@ -64,7 +64,7 @@ OptimizationProblem::OptimizationProblem(const Function & objective,
 
 /* Constructor for nearest point problem */
 OptimizationProblem::OptimizationProblem(const Function & levelFunction,
-    NumericalScalar levelValue)
+    Scalar levelValue)
   : TypedInterfaceObject<OptimizationProblemImplementation>(new OptimizationProblemImplementation(levelFunction, levelValue))
 {
   // Nothing to do
@@ -156,12 +156,12 @@ Bool OptimizationProblem::hasLevelFunction() const
 }
 
 /* Level value accessor */
-NumericalScalar OptimizationProblem::getLevelValue() const
+Scalar OptimizationProblem::getLevelValue() const
 {
   return getImplementation()->getLevelValue();
 }
 
-void OptimizationProblem::setLevelValue(NumericalScalar levelValue)
+void OptimizationProblem::setLevelValue(Scalar levelValue)
 {
   getImplementation()->setLevelValue(levelValue);
 }

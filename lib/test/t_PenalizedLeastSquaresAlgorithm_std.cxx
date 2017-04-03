@@ -60,11 +60,11 @@ int main(int argc, char *argv[])
     Point weight(inputSample.getSize());
     for (UnsignedInteger i = 0; i < inputSample.getSize(); ++i)
     {
-      inputSample[i][0] = NumericalScalar(i % size) / size;
-      inputSample[i][1] = NumericalScalar (i / size) / size;
+      inputSample[i][0] = Scalar(i % size) / size;
+      inputSample[i][1] = Scalar (i / size) / size;
       weight[i] = (i % size + 1) * (i / size + 1);
     }
-    NumericalScalar penalizationFactor = 0.25;
+    Scalar penalizationFactor = 0.25;
     // Uniform weight, no penalization
     {
       PenalizedLeastSquaresAlgorithm algo(inputSample, model(inputSample), Point(inputSample.getSize(), 1.0), basis, indices);

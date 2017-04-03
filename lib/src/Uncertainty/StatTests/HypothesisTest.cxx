@@ -41,7 +41,7 @@ HypothesisTest::HypothesisTest()
 /* Independance test between 2 scalar scalar samples for discrete distributions  */
 TestResult HypothesisTest::ChiSquared(const Sample & firstSample,
                                       const Sample & secondSample,
-                                      const NumericalScalar level)
+                                      const Scalar level)
 {
   if ((firstSample.getDimension() != 1) || (secondSample.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: the ChiSquared test can be performed only between two 1D samples.";
   return RunTwoSamplesRTest(firstSample, secondSample, level, "TwoSampleChiSquared");
@@ -50,7 +50,7 @@ TestResult HypothesisTest::ChiSquared(const Sample & firstSample,
 /* Independence Pearson test between 2 scalar samples which form a gaussian vector: test the linear relation  */
 TestResult HypothesisTest::Pearson(const Sample & firstSample,
                                    const Sample & secondSample,
-                                   const NumericalScalar level)
+                                   const Scalar level)
 {
   if ((firstSample.getDimension() != 1) || (secondSample.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: the Pearson test can be performed only between two 1D samples.";
   return RunTwoSamplesRTest(firstSample, secondSample, level, "TwoSamplePearson");
@@ -59,7 +59,7 @@ TestResult HypothesisTest::Pearson(const Sample & firstSample,
 /* Smirnov test if two scalar samples (of sizes not necessarily equal) follow the same distribution (only for continuous distributions)*/
 TestResult HypothesisTest::Smirnov(const Sample & firstSample,
                                    const Sample & secondSample,
-                                   const NumericalScalar level)
+                                   const Scalar level)
 {
   if ((firstSample.getDimension() != 1) || (secondSample.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: the Smirnov test can be performed only between two 1D samples.";
   return RunTwoSamplesRTest(firstSample, secondSample, level, "TwoSampleSmirnov");
@@ -68,7 +68,7 @@ TestResult HypothesisTest::Smirnov(const Sample & firstSample,
 /* Spearman test between 2 scalar samples : test the monotonous relation  (only for continuous distributions) */
 TestResult HypothesisTest::Spearman(const Sample & firstSample,
                                     const Sample & secondSample,
-                                    const NumericalScalar level)
+                                    const Scalar level)
 {
   if ((firstSample.getDimension() != 1) || (secondSample.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: the Spearman test can be performed only between two 1D samples.";
   return RunTwoSamplesRTest(firstSample, secondSample, level, "TwoSampleSpearman");
@@ -77,7 +77,7 @@ TestResult HypothesisTest::Spearman(const Sample & firstSample,
 /* Generic invocation of a R script for executing a test between two 1D samples */
 TestResult HypothesisTest::RunTwoSamplesRTest(const Sample & firstSample,
     const Sample & secondSample,
-    const NumericalScalar level,
+    const Scalar level,
     const String & testName)
 {
   const String firstDataFileName(firstSample.storeToTemporaryFile());
@@ -101,7 +101,7 @@ TestResult HypothesisTest::RunTwoSamplesRTest(const Sample & firstSample,
   const String RExecutable(ResourceMap::Get("R-executable-command"));
   OSS systemCommand;
   if (RExecutable != "") systemCommand << RExecutable << " --no-save --silent < \"" << commandFileName << "\"" << Os::GetDeleteCommandOutput();
-  else throw NotYetImplementedException(HERE) << "In HypothesisTest::RunTwoSamplesRTest(const Sample & firstSample, const Sample & secondSample, const NumericalScalar level, const String & testName): needs R. Please install it and set the absolute path of the R executable in ResourceMap.";
+  else throw NotYetImplementedException(HERE) << "In HypothesisTest::RunTwoSamplesRTest(const Sample & firstSample, const Sample & secondSample, const Scalar level, const String & testName): needs R. Please install it and set the absolute path of the R executable in ResourceMap.";
   const int returnCode(Os::ExecuteCommand(String(systemCommand).c_str()));
   if (returnCode != 0) throw InternalException(HERE) << "Error: unable to execute the system command " << String(systemCommand) << " returned code is " << returnCode;
   // Parse result file
@@ -113,10 +113,10 @@ TestResult HypothesisTest::RunTwoSamplesRTest(const Sample & firstSample,
   Bool testResult;
   resultFile >> testResult;
   // Third, test threshold
-  NumericalScalar pThreshold = -1.0;
+  Scalar pThreshold = -1.0;
   resultFile >> pThreshold;
   // Fourth, test value
-  NumericalScalar pValue = -1.0;
+  Scalar pValue = -1.0;
   resultFile >> pValue;
 
   // Clean-up everything
@@ -132,7 +132,7 @@ TestResult HypothesisTest::RunTwoSamplesRTest(const Sample & firstSample,
 HypothesisTest::TestResultCollection HypothesisTest::PartialPearson(const Sample & firstSample,
     const Sample & secondSample,
     const Indices & selection,
-    const NumericalScalar level)
+    const Scalar level)
 {
   if (secondSample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the Spearman test can be performed only with an 1-d ouput sample.";
   if (!selection.check(firstSample.getDimension())) throw InvalidArgumentException(HERE) << "Error: invalid selection, repeated indices or values out of bound";
@@ -143,7 +143,7 @@ HypothesisTest::TestResultCollection HypothesisTest::PartialPearson(const Sample
 HypothesisTest::TestResultCollection HypothesisTest::PartialRegression(const Sample & firstSample,
     const Sample & secondSample,
     const Indices & selection,
-    const NumericalScalar level)
+    const Scalar level)
 {
   // TODO: this can be checked inside RunTwoSamplesASelectionRTest once the rot script is fixed
   if (secondSample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the Regression test can be performed only with an 1-d ouput sample.";
@@ -158,7 +158,7 @@ HypothesisTest::TestResultCollection HypothesisTest::PartialRegression(const Sam
 HypothesisTest::TestResultCollection HypothesisTest::PartialSpearman(const Sample & firstSample,
     const Sample & secondSample,
     const Indices & selection,
-    const NumericalScalar level)
+    const Scalar level)
 {
   if (secondSample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the Spearman test can be performed only with an 1-d ouput sample.";
   if (!selection.check(firstSample.getDimension())) throw InvalidArgumentException(HERE) << "Error: invalid selection, repeated indices or values out of bound";
@@ -168,7 +168,7 @@ HypothesisTest::TestResultCollection HypothesisTest::PartialSpearman(const Sampl
 /* Independence Pearson test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), FullPearson performs the Independence Pearson test simultaneously on all firstSample[i] and secondSample. For all i, it is supposed that the couple (firstSample[i] and secondSample) is issued from a gaussian  vector. */
 HypothesisTest::TestResultCollection HypothesisTest::FullPearson(const Sample & firstSample,
     const Sample & secondSample,
-    const NumericalScalar level)
+    const Scalar level)
 {
   const UnsignedInteger dimension = firstSample.getDimension();
   Indices selection(dimension);
@@ -179,7 +179,7 @@ HypothesisTest::TestResultCollection HypothesisTest::FullPearson(const Sample & 
 /* Regression test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), FullRegression performs the Regression test simultaneously on all firstSample[i] and secondSample. The Regression test tests if the regression model between two scalar numerical samples is significant. It is based on the deviation analysis of the regression. The Fisher distribution is used. */
 HypothesisTest::TestResultCollection HypothesisTest::FullRegression(const Sample & firstSample,
     const Sample & secondSample,
-    const NumericalScalar level)
+    const Scalar level)
 {
   const UnsignedInteger dimension = firstSample.getDimension();
   Indices selection(dimension);
@@ -190,7 +190,7 @@ HypothesisTest::TestResultCollection HypothesisTest::FullRegression(const Sample
 /* Spearman test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), PartialSpearman performs the Independence Spearman test simultaneously on all firstSample[i] and secondSample. */
 HypothesisTest::TestResultCollection HypothesisTest::FullSpearman(const Sample & firstSample,
     const Sample & secondSample,
-    const NumericalScalar level)
+    const Scalar level)
 {
   const UnsignedInteger dimension = firstSample.getDimension();
   Indices selection(dimension);
@@ -202,7 +202,7 @@ HypothesisTest::TestResultCollection HypothesisTest::FullSpearman(const Sample &
 HypothesisTest::TestResultCollection HypothesisTest::RunTwoSamplesASelectionRTest(const Sample & firstSample,
     const Sample & secondSample,
     const Indices & selection,
-    const NumericalScalar level,
+    const Scalar level,
     const String & testName)
 {
   const String firstDataFileName(firstSample.storeToTemporaryFile());
@@ -231,7 +231,7 @@ HypothesisTest::TestResultCollection HypothesisTest::RunTwoSamplesASelectionRTes
   const String RExecutable(ResourceMap::Get("R-executable-command"));
   OSS systemCommand;
   if (RExecutable != "") systemCommand << RExecutable << " --no-save --silent < \"" << commandFileName << "\"" << Os::GetDeleteCommandOutput();
-  else throw NotYetImplementedException(HERE) << "In HypothesisTest::RunTwoSamplesASelectionRTest(const Sample & firstSample, const Sample & secondSample, const Indices & selection, const NumericalScalar level, const String & testName): needs R. Please install it and set the absolute path of the R executable in ResourceMap.";
+  else throw NotYetImplementedException(HERE) << "In HypothesisTest::RunTwoSamplesASelectionRTest(const Sample & firstSample, const Sample & secondSample, const Indices & selection, const Scalar level, const String & testName): needs R. Please install it and set the absolute path of the R executable in ResourceMap.";
   const int returnCode = Os::ExecuteCommand(systemCommand);
   if (returnCode != 0) throw InternalException(HERE) << "Error: unable to execute the system command " << String(systemCommand) << " returned code is " << returnCode;
   // Parse result file
@@ -244,13 +244,13 @@ HypothesisTest::TestResultCollection HypothesisTest::RunTwoSamplesASelectionRTes
   // Second, test results
   Indices results(size);
   // FIXME: rot script should not output intercept p-value
-  NumericalScalar intercept = 0.;
+  Scalar intercept = 0.;
   if (testName == "PartialRegression")
     resultFile >> intercept;
   for (UnsignedInteger i = 0; i < size; ++ i) resultFile >> results[i];
 
   // Third, test threshold
-  NumericalScalar pThreshold = 0.;
+  Scalar pThreshold = 0.;
   resultFile >> pThreshold;
 
   // Fourth, test values

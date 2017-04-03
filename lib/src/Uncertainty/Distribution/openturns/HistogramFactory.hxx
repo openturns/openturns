@@ -47,19 +47,19 @@ public:
 
   Implementation build(const Sample & sample) const;
   Implementation build(const Sample & sample,
-		       const NumericalScalar bandwidth) const;
+		       const Scalar bandwidth) const;
   Implementation build(const Sample & sample,
 		       const UnsignedInteger binNumber) const;
   Implementation build() const;
   Histogram buildAsHistogram(const Sample & sample) const;
   Histogram buildAsHistogram(const Sample & sample,
-		       const NumericalScalar bandwidth) const;
+		       const Scalar bandwidth) const;
   Histogram buildAsHistogram(const Sample & sample,
 		       const UnsignedInteger binNumber) const;
   Histogram buildAsHistogram() const;
 
   /** Compute the bandwidth according to Silverman's rule */
-  NumericalScalar computeSilvermanBandwidth(const Sample & sample,
+  Scalar computeSilvermanBandwidth(const Sample & sample,
 					    const Bool useQuantile = true) const;
 
 }; /* class HistogramFactory */

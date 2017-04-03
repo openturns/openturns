@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
     Sample data(tg.getN(), 2);
     for (UnsignedInteger i = 0; i < data.getSize(); ++i)
     {
-      const NumericalScalar instant = tg.getStart() + i * tg.getStep();
+      const Scalar instant = tg.getStart() + i * tg.getStep();
       data(i, 0) = i + 1 + sin(instant);
       data(i, 1) = i + cos(instant);
     }

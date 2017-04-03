@@ -118,14 +118,14 @@ Point ExpertMixture::operator() (const Point & inP) const
   Point mixedPoint(inP);
   Point bestValue(experts_[0](inP));
   mixedPoint.add(bestValue);
-  NumericalScalar bestGrade = classifier_.grade(mixedPoint, bestClass);
+  Scalar bestGrade = classifier_.grade(mixedPoint, bestClass);
   LOGDEBUG(OSS() << "Class index=" << 0 << ", grade=" << bestGrade << ", value=" << bestValue);
   for (UnsignedInteger classIndex = 1; classIndex < size; ++classIndex)
   {
     // Build the point (x, f(x)) for each other class and grade it according to the classifier
     const Point localValue(experts_[classIndex](inP));
     for (UnsignedInteger i = 0; i < outputDimension; ++i) mixedPoint[inputDimension + i] = localValue[i];
-    const NumericalScalar grade = classifier_.grade(mixedPoint, classIndex);
+    const Scalar grade = classifier_.grade(mixedPoint, classIndex);
     LOGDEBUG(OSS() << "Class index=" << classIndex << ", grade=" << grade << ", value=" << localValue);
     // The best class will give the output value
     if (grade > bestGrade)

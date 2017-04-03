@@ -575,8 +575,8 @@ void fromStringConverter(const String & st, _Tp & value)
 //       {
 //      XML::Node node_real = XML::FindElementByName( node, BIN_STMGR::real_tag::Get() );
 //      XML::Node node_imag = XML::FindElementByName( node, BIN_STMGR::imag_tag::Get() );
-//      NumericalScalar real = -1.0;
-//      NumericalScalar imag = -1.0;
+//      Scalar real = -1.0;
+//      Scalar imag = -1.0;
 //      fromStringConverter( getValueToConvert<BIN_STMGR::real_tag>( node_real ), real );
 //      fromStringConverter( getValueToConvert<BIN_STMGR::imag_tag>( node_imag ), imag );
 //      value = NumericalComplex( real,imag );
@@ -865,13 +865,13 @@ void BinaryStorageManager::readIndexedValue(Pointer<InternalObject> & p_obj,
 
 
 
-/************ Type = NumericalScalar ************/
+/************ Type = Scalar ************/
 
 
 /* Add an attribute to an internal object */
 void BinaryStorageManager::addAttribute(Pointer<InternalObject> & p_obj,
                                         const String & name,
-                                        NumericalScalar value)
+                                        Scalar value)
 {
   writeToFile( filefd_, name );
   writeToFile( filefd_, value );
@@ -880,7 +880,7 @@ void BinaryStorageManager::addAttribute(Pointer<InternalObject> & p_obj,
 /* Read an attribute */
 void BinaryStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
     const String & name,
-    NumericalScalar & value)
+    Scalar & value)
 {
   off64_t pos = lseek64( filefd_, 0, SEEK_CUR );
   String token;
@@ -893,7 +893,7 @@ void BinaryStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
 /* Add an indexed value to an internal object */
 void BinaryStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
     UnsignedInteger index,
-    NumericalScalar value)
+    Scalar value)
 {
   writeToFile( filefd_, value );
 }
@@ -901,7 +901,7 @@ void BinaryStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
 /* Read an indexed value */
 void BinaryStorageManager::readIndexedValue(Pointer<InternalObject> & p_obj,
     UnsignedInteger index,
-    NumericalScalar & value)
+    Scalar & value)
 {
   readFromFile( filefd_, value );
 }

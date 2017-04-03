@@ -226,7 +226,7 @@ PyObject * __getitem__(PyObject * args) const {
     else
     {
       // case #4: [index/index] => float
-      return OT::convert< OT::NumericalScalar, OT::_PyFloat_>( self->at(arg2, arg3) );
+      return OT::convert< OT::Scalar, OT::_PyFloat_>( self->at(arg2, arg3) );
     }
   }
 
@@ -372,7 +372,7 @@ PyObject * __setitem__(PyObject * args, PyObject * valObj) {
       double val = 0.;
       int ecode2 = SWIG_AsVal_double(valObj, &val );
       if (!SWIG_IsOK(ecode2)) {
-        SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Sample___setitem__" "', argument " "2"" of type '" "OT::NumericalScalar""'");
+        SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Sample___setitem__" "', argument " "2"" of type '" "OT::Scalar""'");
       }
       self->at(arg2, arg3) = val;
     }
@@ -414,7 +414,7 @@ Sample(PyObject * pyObj, UnsignedInteger dimension)
 Bool __eq__(const Sample & other) { return (*self) == other; }
 
 #if SWIG_VERSION < 0x030011
-Sample __truediv__(const NumericalScalar & u) { return (*self) / u; }
+Sample __truediv__(const Scalar & u) { return (*self) / u; }
 
 Sample __truediv__(const Point & v) { return (*self) / v; }
 

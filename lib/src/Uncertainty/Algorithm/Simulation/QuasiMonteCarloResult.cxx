@@ -40,8 +40,8 @@ QuasiMonteCarloResult::QuasiMonteCarloResult()
 
 /* Standard constructor */
 QuasiMonteCarloResult::QuasiMonteCarloResult(const Event & event,
-    const NumericalScalar probabilityEstimate,
-    const NumericalScalar varianceEstimate,
+    const Scalar probabilityEstimate,
+    const Scalar varianceEstimate,
     const UnsignedInteger outerSampling,
     const UnsignedInteger blockSize)
   : SimulationResultImplementation(event, probabilityEstimate, varianceEstimate, outerSampling, blockSize)
@@ -56,21 +56,21 @@ QuasiMonteCarloResult * QuasiMonteCarloResult::clone() const
 }
 
 /* Coefficient of variation estimate accessor */
-NumericalScalar QuasiMonteCarloResult::getCoefficientOfVariation() const
+Scalar QuasiMonteCarloResult::getCoefficientOfVariation() const
 {
   return -1.0;
 }
 
 /* Standard deviation estimate accessor */
-NumericalScalar QuasiMonteCarloResult::getStandardDeviation() const
+Scalar QuasiMonteCarloResult::getStandardDeviation() const
 {
   return -1.0;
 }
 
 /* Confidence length */
-NumericalScalar QuasiMonteCarloResult::getConfidenceLength(const NumericalScalar level) const
+Scalar QuasiMonteCarloResult::getConfidenceLength(const Scalar level) const
 {
-  throw NotYetImplementedException(HERE) << "In QuasiMonteCarloResult::getConfidenceLength(const NumericalScalar level) const: cannot compute confidence interval for QMC sampling";
+  throw NotYetImplementedException(HERE) << "In QuasiMonteCarloResult::getConfidenceLength(const Scalar level) const: cannot compute confidence interval for QMC sampling";
 }
 
 /* String converter */

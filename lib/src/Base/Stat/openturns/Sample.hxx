@@ -113,20 +113,20 @@ public:
   NSI_const_point operator [] (const UnsignedInteger index) const;
   NSI_point at (const UnsignedInteger index);
   NSI_const_point at (const UnsignedInteger index) const;
-  NumericalScalar & operator () (const UnsignedInteger i,
+  Scalar & operator () (const UnsignedInteger i,
                                  const UnsignedInteger j);
-  const NumericalScalar & operator () (const UnsignedInteger i,
+  const Scalar & operator () (const UnsignedInteger i,
                                        const UnsignedInteger j) const;
-  NumericalScalar & at (const UnsignedInteger i,
+  Scalar & at (const UnsignedInteger i,
                         const UnsignedInteger j);
-  const NumericalScalar & at (const UnsignedInteger i,
+  const Scalar & at (const UnsignedInteger i,
                               const UnsignedInteger j) const;
 
   void erase(SampleImplementation::iterator first, SampleImplementation::iterator last);
 #endif
   // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
   // INTENTIONALY NOT DOCUMENTED
-  const NumericalScalar * __baseaddress__ () const;
+  const Scalar * __baseaddress__ () const;
   UnsignedInteger __elementsize__ () const;
 
   /** Whether the list contains the value val */
@@ -256,17 +256,17 @@ public:
   /**
    * Method computeQuantilePerComponent() gives the quantile per component of the sample
    */
-  Point computeQuantilePerComponent(const NumericalScalar prob) const;
+  Point computeQuantilePerComponent(const Scalar prob) const;
 
   /**
    * Method computeQuantile() gives the N-dimension quantile of the sample
    */
-  Point computeQuantile(const NumericalScalar prob) const;
+  Point computeQuantile(const Scalar prob) const;
 
   /**
    * Get the empirical CDF of the sample
    */
-  NumericalScalar computeEmpiricalCDF(const Point & point,
+  Scalar computeEmpiricalCDF(const Point & point,
                                       const Bool tail = false) const;
 
   /**
@@ -278,34 +278,34 @@ public:
   /**
    * Translate realizations in-place
    */
-  Sample & operator += (const NumericalScalar translation);
+  Sample & operator += (const Scalar translation);
   Sample & operator += (const Point & translation);
   Sample & operator += (const Sample & translation);
-  Sample & operator -= (const NumericalScalar translation);
+  Sample & operator -= (const Scalar translation);
   Sample & operator -= (const Point & translation);
   Sample & operator -= (const Sample & translation);
 
   /** Translate/scale realizations */
-  Sample operator + (const NumericalScalar translation) const;
+  Sample operator + (const Scalar translation) const;
   Sample operator + (const Point & translation) const;
   Sample operator + (const Sample & translation) const;
-  Sample operator - (const NumericalScalar translation) const;
+  Sample operator - (const Scalar translation) const;
   Sample operator - (const Point & translation) const;
   Sample operator - (const Sample & translation) const;
-  Sample operator * (const NumericalScalar scaling) const;
+  Sample operator * (const Scalar scaling) const;
   Sample operator * (const Point & scaling) const;
   Sample operator * (const SquareMatrix & scaling) const;
-  Sample operator / (const NumericalScalar scaling) const;
+  Sample operator / (const Scalar scaling) const;
   Sample operator / (const Point & scaling) const;
   Sample operator / (const SquareMatrix & scaling) const;
 
   /**
    * Scale realizations componentwise in-place
    */
-  Sample & operator *= (const NumericalScalar scaling);
+  Sample & operator *= (const Scalar scaling);
   Sample & operator *= (const Point & scaling);
   Sample & operator *= (const SquareMatrix & scaling);
-  Sample & operator /= (const NumericalScalar scaling);
+  Sample & operator /= (const Scalar scaling);
   Sample & operator /= (const Point & scaling);
   Sample & operator /= (const SquareMatrix & scaling);
 

@@ -62,13 +62,13 @@ public:
   NSI_const_point operator[](const UnsignedInteger index) const;
   NSI_point at(const UnsignedInteger index);
   NSI_const_point at(const UnsignedInteger index) const;
-  NumericalScalar & operator() (const UnsignedInteger i,
+  Scalar & operator() (const UnsignedInteger i,
                                 const UnsignedInteger j);
-  const NumericalScalar & operator() (const UnsignedInteger i,
+  const Scalar & operator() (const UnsignedInteger i,
                                       const UnsignedInteger j) const;
-  NumericalScalar & at(const UnsignedInteger i,
+  Scalar & at(const UnsignedInteger i,
                        const UnsignedInteger j);
-  const NumericalScalar & at(const UnsignedInteger i,
+  const Scalar & at(const UnsignedInteger i,
                              const UnsignedInteger j) const;
 #endif
 

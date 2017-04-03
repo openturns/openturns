@@ -71,7 +71,7 @@ void MultiStart::run()
   // run the solver with each starting point
   OptimizationAlgorithm solver(solver_);
   resultCollection_.clear();
-  NumericalScalar bestValue = getProblem().isMinimization() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
+  Scalar bestValue = getProblem().isMinimization() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
   const UnsignedInteger size = startingPoints_.getSize();
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
@@ -86,7 +86,7 @@ void MultiStart::run()
     }
     OptimizationResult result(solver.getResult());
     resultCollection_.add(result);
-    NumericalScalar currentValue = result.getOptimalValue()[0];
+    Scalar currentValue = result.getOptimalValue()[0];
     if ((getProblem().isMinimization() && (currentValue < bestValue))
         || (!getProblem().isMinimization() && (currentValue > bestValue)))
     {

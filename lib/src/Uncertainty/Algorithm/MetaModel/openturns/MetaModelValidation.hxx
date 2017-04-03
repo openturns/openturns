@@ -62,7 +62,7 @@ public:
   virtual Sample getOutputSample() const;
 
   /** Compute predictivity factor */
-  NumericalScalar computePredictivityFactor() const;
+  Scalar computePredictivityFactor() const;
 
   /** Get residual sample */
   Sample getResidualSample() const;
@@ -99,7 +99,7 @@ protected:
   mutable Sample residual_;
 
   /** Q2 arguments  */
-  mutable NumericalScalar q2_;
+  mutable Scalar q2_;
 
 private:
 

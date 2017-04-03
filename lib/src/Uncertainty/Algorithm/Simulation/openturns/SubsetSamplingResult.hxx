@@ -36,17 +36,17 @@ public:
 
   /** Constructor with parameters */
   SubsetSamplingResult(const Event & event,
-                       const NumericalScalar probabilityEstimate,
-                       const NumericalScalar varianceEstimate,
+                       const Scalar probabilityEstimate,
+                       const Scalar varianceEstimate,
                        const UnsignedInteger outerSampling,
                        const UnsignedInteger blockSize,
-                       const NumericalScalar coefficientOfVariation = 0.0);
+                       const Scalar coefficientOfVariation = 0.0);
 
   /** Virtual constructor */
   virtual SubsetSamplingResult * clone() const;
 
   /** Coefficient of variation estimate accessor */
-  virtual NumericalScalar getCoefficientOfVariation() const;
+  virtual Scalar getCoefficientOfVariation() const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -58,7 +58,7 @@ public:
   virtual void load(Advocate & adv);
 
 protected:
-  NumericalScalar coefficientOfVariation_;
+  Scalar coefficientOfVariation_;
 
 private:
 

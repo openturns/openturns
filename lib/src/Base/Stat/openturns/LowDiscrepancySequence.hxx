@@ -63,7 +63,7 @@ public:
   Sample generate(const UnsignedInteger size) const;
 
   /** Compute the star discrepancy of a sample uniformly distributed over [0, 1) */
-  NumericalScalar computeStarDiscrepancy(const Sample & sample) const;
+  Scalar computeStarDiscrepancy(const Sample & sample) const;
 
   /** String converter */
   String __repr__() const;

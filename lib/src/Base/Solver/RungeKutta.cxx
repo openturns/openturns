@@ -63,13 +63,13 @@ Sample RungeKutta::solve(const Point & initialState,
   const UnsignedInteger steps = timeGrid.getSize();
   Sample result(steps, transitionFunction_.getOutputDimension());
   if (steps == 0) return result;
-  NumericalScalar t = timeGrid[0];
+  Scalar t = timeGrid[0];
   Point state(initialState);
   result[0] = state;
   for (UnsignedInteger i = 1; i < steps; ++i)
   {
-    const NumericalScalar newT = timeGrid[i];
-    const NumericalScalar timeStep = newT - t;
+    const Scalar newT = timeGrid[i];
+    const Scalar timeStep = newT - t;
     const Point phi(computeStep(t, state, timeStep));
     state += timeStep * phi;
     result[i] = state;
@@ -79,9 +79,9 @@ Sample RungeKutta::solve(const Point & initialState,
 }
 
 /* Perform one step of the RungeKutta method */
-Point RungeKutta::computeStep(const NumericalScalar t,
+Point RungeKutta::computeStep(const Scalar t,
                                        const Point & state,
-                                       const NumericalScalar h) const
+                                       const Scalar h) const
 {
   const Point k1(transitionFunction_(t, state));
   const Point k2(transitionFunction_(t + 0.5 * h, state + k1 * (0.5 * h)));

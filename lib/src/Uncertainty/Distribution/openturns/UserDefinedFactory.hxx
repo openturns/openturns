@@ -47,10 +47,10 @@ public:
 
   Implementation build(const Sample & sample) const;
   Implementation build(const Sample & sample,
-                       const NumericalScalar epsilon) const;
+                       const Scalar epsilon) const;
   Implementation build() const;
   UserDefined buildAsUserDefined(const Sample & sample,
-                                 const NumericalScalar epsilon = 0.0) const;
+                                 const Scalar epsilon = 0.0) const;
   UserDefined buildAsUserDefined() const;
 
 }; /* class UserDefinedFactory */

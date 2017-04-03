@@ -46,7 +46,7 @@ Wishart::Wishart()
 
 /* Parameters constructor */
 Wishart::Wishart(const CovarianceMatrix & v,
-                 const NumericalScalar nu)
+                 const Scalar nu)
   : ContinuousDistribution()
   , cholesky_()
   , nu_(-1.0)
@@ -99,7 +99,7 @@ Wishart * Wishart::clone() const
 void Wishart::computeRange()
 {
   const UnsignedInteger p = cholesky_.getDimension();
-  const NumericalScalar bound = ChiSquare(1.0).getRange().getUpperBound()[0];
+  const Scalar bound = ChiSquare(1.0).getRange().getUpperBound()[0];
   UnsignedInteger index = 0;
   Point upper(getDimension());
   Point lower(getDimension());
@@ -149,23 +149,23 @@ CovarianceMatrix Wishart::getRealizationAsMatrix() const
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Wishart::computePDF(const CovarianceMatrix & m) const
+Scalar Wishart::computePDF(const CovarianceMatrix & m) const
 {
   if (m.getDimension() != cholesky_.getDimension()) throw InvalidArgumentException(HERE) << "Error: the given matrix must have dimension=" << cholesky_.getDimension() << ", here dimension=" << m.getDimension();
-  const NumericalScalar logPDF = computeLogPDF(m);
-  const NumericalScalar pdf = (logPDF == SpecFunc::LogMinScalar ? 0.0 : std::exp(logPDF));
+  const Scalar logPDF = computeLogPDF(m);
+  const Scalar pdf = (logPDF == SpecFunc::LogMinScalar ? 0.0 : std::exp(logPDF));
   return pdf;
 }
 
-NumericalScalar Wishart::computePDF(const Point & point) const
+Scalar Wishart::computePDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
-  const NumericalScalar logPDF = computeLogPDF(point);
-  const NumericalScalar pdf = (logPDF == SpecFunc::LogMinScalar) ? 0.0 : std::exp(logPDF);
+  const Scalar logPDF = computeLogPDF(point);
+  const Scalar pdf = (logPDF == SpecFunc::LogMinScalar) ? 0.0 : std::exp(logPDF);
   return pdf;
 }
 
-NumericalScalar Wishart::computeLogPDF(const Point & point) const
+Scalar Wishart::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
   const UnsignedInteger p = cholesky_.getDimension();
@@ -181,7 +181,7 @@ NumericalScalar Wishart::computeLogPDF(const Point & point) const
   return computeLogPDF(m);
 }
 
-NumericalScalar Wishart::computeLogPDF(const CovarianceMatrix & m) const
+Scalar Wishart::computeLogPDF(const CovarianceMatrix & m) const
 {
   if (m.getDimension() != cholesky_.getDimension()) throw InvalidArgumentException(HERE) << "Error: the given matrix must have dimension=" << cholesky_.getDimension() << ", here dimension=" << m.getDimension();
   const UnsignedInteger p = cholesky_.getDimension();
@@ -190,7 +190,7 @@ NumericalScalar Wishart::computeLogPDF(const CovarianceMatrix & m) const
     // If the Cholesky factor is not defined, it means that M is not symmetric positive definite (an exception is thrown) and the PDF is zero
     TriangularMatrix X(CovarianceMatrix(m).computeCholesky());
     // Compute the determinant of the Cholesky factor, ie the square-root of the determinant of M
-    NumericalScalar logPDF = logNormalizationFactor_;
+    Scalar logPDF = logNormalizationFactor_;
     // Here, the diagonal of X is positive
     for (UnsignedInteger i = 0; i < p; ++i) logPDF += std::log(X(i, i));
     logPDF *= nu_ - p - 1.0;
@@ -209,7 +209,7 @@ NumericalScalar Wishart::computeLogPDF(const CovarianceMatrix & m) const
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar Wishart::computeCDF(const Point & point) const
+Scalar Wishart::computeCDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
   return ContinuousDistribution::computeCDF(point);
@@ -272,8 +272,8 @@ Wishart::PointWithDescriptionCollection Wishart::getParametersCollection() const
 
 void Wishart::setParametersCollection(const PointCollection & parametersCollection)
 {
-  const NumericalScalar w = getWeight();
-  const NumericalScalar pReal = 0.5 * std::sqrt(8.0 * parametersCollection.getSize() - 7.0) - 0.5;
+  const Scalar w = getWeight();
+  const Scalar pReal = 0.5 * std::sqrt(8.0 * parametersCollection.getSize() - 7.0) - 0.5;
   const UnsignedInteger p = static_cast< UnsignedInteger >(pReal);
   if (pReal != p) throw InvalidArgumentException(HERE) << "Error: the given parameters cannot be converted into a covariance matrix and a number of degrees of freedom.";
   CovarianceMatrix V(p);
@@ -284,7 +284,7 @@ void Wishart::setParametersCollection(const PointCollection & parametersCollecti
       V(i, j) = parametersCollection[0][index];
       ++index;
     }
-  const NumericalScalar nu = parametersCollection[0][index];
+  const Scalar nu = parametersCollection[0][index];
   *this = Wishart(V, nu);
   setWeight(w);
 }
@@ -308,7 +308,7 @@ Point Wishart::getParameter() const
 void Wishart::setParameter(const Point & parameter)
 {
   const UnsignedInteger size = parameter.getSize();
-  const NumericalScalar pReal = 0.5 * std::sqrt(8.0 * size - 7.0) - 0.5;
+  const Scalar pReal = 0.5 * std::sqrt(8.0 * size - 7.0) - 0.5;
   const UnsignedInteger p = static_cast< UnsignedInteger >(pReal);
   if (pReal != p) throw InvalidArgumentException(HERE) << "Error: the given parameter cannot be converted into a covariance matrix and a number of degrees of freedom.";
   CovarianceMatrix V(p);
@@ -319,8 +319,8 @@ void Wishart::setParameter(const Point & parameter)
       V(i, j) = parameter[index];
       ++ index;
     }
-  const NumericalScalar nu = parameter[size - 1];
-  const NumericalScalar w = getWeight();
+  const Scalar nu = parameter[size - 1];
+  const Scalar w = getWeight();
   *this = Wishart(V, nu);
   setWeight(w);
 }
@@ -366,7 +366,7 @@ CovarianceMatrix Wishart::getV() const
 
 
 /* Nu accessor */
-void Wishart::setNu(const NumericalScalar nu)
+void Wishart::setNu(const Scalar nu)
 {
   if (nu + 1.0 <= cholesky_.getDimension()) throw InvalidArgumentException(HERE) << "Error: nu must be greater than V dimension - 1";
   if (nu != nu_)
@@ -379,7 +379,7 @@ void Wishart::setNu(const NumericalScalar nu)
   }
 }
 
-NumericalScalar Wishart::getNu() const
+Scalar Wishart::getNu() const
 {
   return nu_;
 }

@@ -9,21 +9,21 @@
 
 %include Point_doc.i
 
-%template(NumericalScalarCollection)           OT::Collection<OT::NumericalScalar>;
-%template(NumericalScalarPersistentCollection) OT::PersistentCollection<OT::NumericalScalar>;
+%template(ScalarCollection)           OT::Collection<OT::Scalar>;
+%template(ScalarPersistentCollection) OT::PersistentCollection<OT::Scalar>;
 
-%typemap(in) const NumericalScalarCollection & ($1_basetype temp) {
+%typemap(in) const ScalarCollection & ($1_basetype temp) {
   if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
     try {
-      temp = OT::convert<OT::_PySequence_,OT::Collection<OT::NumericalScalar> >( $input );
+      temp = OT::convert<OT::_PySequence_,OT::Collection<OT::Scalar> >( $input );
       $1 = &temp;
     } catch (OT::InvalidArgumentException &) {
-      SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a collection of NumericalScalar");
+      SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a collection of Scalar");
     }
   }
 }
 
-%typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const NumericalScalarCollection & {
+%typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const ScalarCollection & {
   $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0)) ||
        OT::isAPythonSequenceOf<OT::_PyFloat_>( $input );
 }
@@ -68,7 +68,7 @@ Point(PyObject * pyObj)
   return new OT::Point(OT::convert<OT::_PySequence_,OT::Point>(pyObj));
 }
 
-OTCollectionOperatorsHelper(OT::Point, OT::NumericalScalar)
+OTCollectionOperatorsHelper(OT::Point, OT::Scalar)
 
 /* Point __add__(const Point & other) */
 /* { */
@@ -85,22 +85,22 @@ Point __sub__(const Point & other)
  return *self - other;
 }
 
-Point __mul__(NumericalScalar s)
+Point __mul__(Scalar s)
 {
  return (*self) * s;
 }
 
-Point __rmul__(NumericalScalar s)
+Point __rmul__(Scalar s)
 {
  return s * (*self);
 }
 
-Point __div__(NumericalScalar s)
+Point __div__(Scalar s)
 {
  return (*self) / s;
 }
 
-Point __truediv__(NumericalScalar s) { return (*self) / s; }
+Point __truediv__(Scalar s) { return (*self) / s; }
 
 Point __iadd__(const Point & other)
 {
@@ -124,4 +124,10 @@ class NumericalPoint(Point):
     def __init__(self, *args):
         super(NumericalPoint, self).__init__(*args)
         openturns.common.Log.Warn('class NumericalPoint is deprecated in favor of Point')
+
+class NumericalScalarCollection(ScalarCollection):
+    def __init__(self, *args):
+        super(NumericalScalarCollection, self).__init__(*args)
+        openturns.common.Log.Warn('class NumericalScalarCollection is deprecated in favor of ScalarCollection')
+
 %}

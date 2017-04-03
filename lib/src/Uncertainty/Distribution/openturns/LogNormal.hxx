@@ -43,9 +43,9 @@ public:
   LogNormal();
 
   /** Parameters constructor */
-  LogNormal(const NumericalScalar muLog,
-            const NumericalScalar sigmaLog,
-            const NumericalScalar gamma = 0.0);
+  LogNormal(const Scalar muLog,
+            const Scalar sigmaLog,
+            const Scalar gamma = 0.0);
 
   /** Comparison operator */
   Bool operator ==(const LogNormal & other) const;
@@ -73,19 +73,19 @@ public:
 
   /** Get the PDF of the LogNormal distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
   using ContinuousDistribution::computeLogPDF;
-  NumericalScalar computeLogPDF(const Point & point) const;
+  Scalar computeLogPDF(const Point & point) const;
 
   /** Get the CDF of the LogNormal distribution */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
   using ContinuousDistribution::computeComplementaryCDF;
-  NumericalScalar computeComplementaryCDF(const Point & point) const;
+  Scalar computeComplementaryCDF(const Point & point) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
-  NumericalComplex computeLogCharacteristicFunction(const NumericalScalar x) const;
+  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
+  NumericalComplex computeLogCharacteristicFunction(const Scalar x) const;
 
   /** Get the PDFGradient of the LogNormal distribution */
   using ContinuousDistribution::computePDFGradient;
@@ -120,17 +120,17 @@ public:
   /* Interface specific to LogNormal */
 
   /** MuLog accessor */
-  void setMuLog(const NumericalScalar muLog);
-  NumericalScalar getMuLog() const;
+  void setMuLog(const Scalar muLog);
+  Scalar getMuLog() const;
 
   /** SigmaLog accessor */
-  void setSigmaLog(const NumericalScalar sigmaLog);
-  NumericalScalar getSigmaLog() const;
+  void setSigmaLog(const Scalar sigmaLog);
+  Scalar getSigmaLog() const;
 
 
   /** Gamma accessor */
-  void setGamma(const NumericalScalar gamma);
-  NumericalScalar getGamma() const;
+  void setGamma(const Scalar gamma);
+  Scalar getGamma() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -141,8 +141,8 @@ public:
 protected:
 
   /** MuLogSigmaLog accessor */
-  void setMuLogSigmaLog(const NumericalScalar muLog,
-                        const NumericalScalar sigmaLog);
+  void setMuLogSigmaLog(const Scalar muLog,
+                        const Scalar sigmaLog);
 
 private:
 
@@ -153,23 +153,23 @@ private:
   void computeCovariance() const;
 
   /** Get the quantile of the LogNormal distribution */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+  Scalar computeScalarQuantile(const Scalar prob,
                                         const Bool tail = false) const;
 
   /** Compute the integrand that is involved in the computation of the characteristic function */
-  NumericalComplex characteristicIntegrand(const NumericalScalar eta,
-      const NumericalScalar sStar) const;
+  NumericalComplex characteristicIntegrand(const Scalar eta,
+      const Scalar sStar) const;
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange();
 
   /** The main parameter set of the distribution */
-  NumericalScalar muLog_;
-  NumericalScalar sigmaLog_;
-  NumericalScalar gamma_;
-  NumericalScalar normalizationFactor_;
+  Scalar muLog_;
+  Scalar sigmaLog_;
+  Scalar gamma_;
+  Scalar normalizationFactor_;
   /** Normalization factor for the characteristic function */
-  NumericalScalar H_;
+  Scalar H_;
   /** Hermite integration */
   mutable Point hermiteNodes_;
   mutable Point hermiteWeights_;

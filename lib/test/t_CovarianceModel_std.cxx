@@ -48,7 +48,7 @@ static void test_model(const CovarianceModel & myModel)
   Matrix grad(myModel.partialGradient(x1, x2));
   fullprint << "dCov =" << grad << std::endl;
 
-  NumericalScalar eps = 1e-3;
+  Scalar eps = 1e-3;
   if (dimension == 1)
   {
     Point gradfd(spatialDimension);

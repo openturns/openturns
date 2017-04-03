@@ -190,20 +190,20 @@ Sample MarginalDistribution::getSample(const UnsignedInteger size) const
 }
 
 /* Get the CDF of the MarginalDistribution */
-NumericalScalar MarginalDistribution::computeCDF(const Point & point) const
+Scalar MarginalDistribution::computeCDF(const Point & point) const
 {
   const Point x(expandPoint(point));
-  const NumericalScalar cdf = distribution_.computeCDF(x);
+  const Scalar cdf = distribution_.computeCDF(x);
   return cdf;
 }
 
-NumericalScalar MarginalDistribution::computeSurvivalFunction(const Point & point) const
+Scalar MarginalDistribution::computeSurvivalFunction(const Point & point) const
 {
   return distribution_.computeSurvivalFunction(expandPoint(point, false));
 }
 
 /* Compute the probability content of an interval */
-NumericalScalar MarginalDistribution::computeProbability(const Interval & interval) const
+Scalar MarginalDistribution::computeProbability(const Interval & interval) const
 {
   return distribution_.computeProbability(Interval(expandPoint(interval.getLowerBound(), false), expandPoint(interval.getUpperBound())));
 }

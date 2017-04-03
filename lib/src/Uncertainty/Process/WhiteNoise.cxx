@@ -129,7 +129,7 @@ TimeSeries WhiteNoise::getFuture(const UnsignedInteger stepNumber) const
   }
   if (stepNumber == 0) throw InvalidArgumentException(HERE) << "Error: the number of future steps must be positive.";
   /* TimeGrid associated with the possible future */
-  const NumericalScalar timeStep = timeGrid.getStep();
+  const Scalar timeStep = timeGrid.getStep();
   const RegularGrid futurTimeGrid(timeGrid.getEnd(), timeStep, stepNumber);
   return TimeSeries(futurTimeGrid, distribution_.getSample(stepNumber));
 }

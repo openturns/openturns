@@ -50,7 +50,7 @@ public:
   SpaceFillingImplementation * clone() const;
 
   /** Evaluate criterion on a sample */
-  virtual NumericalScalar evaluate(const Sample& sample) const;
+  virtual Scalar evaluate(const Sample& sample) const;
 
   /** Accessor */
   Bool isMinimizationProblem() const { return minimization_; }
@@ -65,7 +65,7 @@ public:
   void load(Advocate & adv);
 
   /** Compute criterion when performing an elementary perturbation */
-  virtual NumericalScalar perturbLHS(Sample& oldDesign, NumericalScalar oldCriterion,
+  virtual Scalar perturbLHS(Sample& oldDesign, Scalar oldCriterion,
       UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const;
 
 protected:

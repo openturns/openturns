@@ -38,9 +38,9 @@ namespace KFactorFunctions
 class KernelFunction: public EvaluationImplementation
 {
 public:
-  KernelFunction(const NumericalScalar nu,
-                 const NumericalScalar p,
-                 const NumericalScalar n)
+  KernelFunction(const Scalar nu,
+                 const Scalar p,
+                 const Scalar n)
     : EvaluationImplementation()
     , nu_(nu)
     , p_(p)
@@ -59,11 +59,11 @@ public:
 
   Point operator() (const Point & point) const
   {
-    const NumericalScalar z = point[0];
+    const Scalar z = point[0];
     return Point(1, chiSquare_.computeComplementaryCDF(nu_ * NonCentralChiSquare(1.0, z * z).computeQuantile(p_) / (x_ * x_)) * normal_.computePDF(z));
   }
 
-  void setX(const NumericalScalar x)
+  void setX(const Scalar x)
   {
     x_ = x;
   }
@@ -106,10 +106,10 @@ public:
   }
 
 private:
-  NumericalScalar nu_;
-  NumericalScalar p_;
-  NumericalScalar x_;
-  NumericalScalar n_;
+  Scalar nu_;
+  Scalar p_;
+  Scalar x_;
+  Scalar n_;
   ChiSquare chiSquare_;
   Normal normal_;
 }; // KernelFunction
@@ -117,9 +117,9 @@ private:
 class ConstraintFunction: public EvaluationImplementation
 {
 public:
-  ConstraintFunction(const NumericalScalar nu,
-                     const NumericalScalar p,
-                     const NumericalScalar n)
+  ConstraintFunction(const Scalar nu,
+                     const Scalar p,
+                     const Scalar n)
     : EvaluationImplementation()
     , nu_(nu)
     , p_(p)
@@ -136,7 +136,7 @@ public:
 
   Point operator() (const Point & point) const
   {
-    const NumericalScalar x = point[0];
+    const Scalar x = point[0];
     kernel_.setX(x);
     return GaussKronrod(ResourceMap::GetAsUnsignedInteger("KFactor-DefaultIntegrationNodesNumber"), ResourceMap::GetAsScalar("KFactor-Precision"), GaussKronrodRule(GaussKronrodRule::G7K15)).integrate(kernel_, Interval(0.0, KFactorFunctions_RMAX / std::sqrt(n_)));
   }
@@ -175,16 +175,16 @@ public:
   }
 
 private:
-  NumericalScalar nu_;
-  NumericalScalar p_;
-  NumericalScalar n_;
+  Scalar nu_;
+  Scalar p_;
+  Scalar n_;
   mutable KernelFunction kernel_;
 }; // ConstraintFunction
 
-NumericalScalar KFactor(const NumericalScalar n,
-                        const NumericalScalar nu,
-                        const NumericalScalar p,
-                        const NumericalScalar alpha)
+Scalar KFactor(const Scalar n,
+                        const Scalar nu,
+                        const Scalar p,
+                        const Scalar alpha)
 {
   if (!(n >= 1.0)) throw InvalidArgumentException(HERE) << "Error: n must be greater than 1, here n=" << n;
   if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Error: nu must be positive, here nu=" << nu;

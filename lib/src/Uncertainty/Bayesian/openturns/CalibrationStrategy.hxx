@@ -49,13 +49,13 @@ public:
 
   /** Constructor with parameters*/
   CalibrationStrategy(const Interval & range,
-                      const NumericalScalar expansionFactor,
-                      const NumericalScalar shrinkFactor);
+                      const Scalar expansionFactor,
+                      const Scalar shrinkFactor);
 
   /** Constructor with parameters*/
   CalibrationStrategy(const Interval & range,
-                      const NumericalScalar expansionFactor,
-                      const NumericalScalar shrinkFactor,
+                      const Scalar expansionFactor,
+                      const Scalar shrinkFactor,
                       const UnsignedInteger calibrationStep);
 
   /** Constructor from implementation */
@@ -66,12 +66,12 @@ public:
   Interval getRange() const;
 
   /** Expansion factor accessor */
-  void setExpansionFactor(const NumericalScalar expansionFactor);
-  NumericalScalar getExpansionFactor() const;
+  void setExpansionFactor(const Scalar expansionFactor);
+  Scalar getExpansionFactor() const;
 
   /** Shrink factor accessor */
-  void setShrinkFactor(const NumericalScalar shrinkFactor);
-  NumericalScalar getShrinkFactor() const;
+  void setShrinkFactor(const Scalar shrinkFactor);
+  Scalar getShrinkFactor() const;
 
   /** Calibration period */
   void setCalibrationStep(const UnsignedInteger calibrationStep);
@@ -82,7 +82,7 @@ public:
    * @param rhoEstimate The old rho estimate
    * @return The new rho estimate
    */
-  NumericalScalar computeUpdateFactor(const NumericalScalar rho) const;
+  Scalar computeUpdateFactor(const Scalar rho) const;
 
 
 }; /* class CalibrationStrategy */

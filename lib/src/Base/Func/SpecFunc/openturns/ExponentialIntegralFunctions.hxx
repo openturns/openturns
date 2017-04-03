@@ -30,19 +30,19 @@ namespace ExponentialIntegralFunctions
 {
 
 NumericalComplex Ei(const NumericalComplex & z);
-NumericalScalar Ei(const NumericalScalar z);
+Scalar Ei(const Scalar z);
 
 NumericalComplex EiPowerSeries(const NumericalComplex & z);
-NumericalScalar EiPowerSeries(const NumericalScalar z);
+Scalar EiPowerSeries(const Scalar z);
 
 NumericalComplex EiAsymptoticSeries(const NumericalComplex & z);
-NumericalScalar EiAsymptoticSeries(const NumericalScalar z);
+Scalar EiAsymptoticSeries(const Scalar z);
 
 NumericalComplex EiContinuedFractionBackward(const NumericalComplex & z);
-NumericalScalar EiContinuedFractionBackward(const NumericalScalar z);
+Scalar EiContinuedFractionBackward(const Scalar z);
 
 NumericalComplex EiContinuedFractionForward(const NumericalComplex & z);
-NumericalScalar EiContinuedFractionForward(const NumericalScalar z);
+Scalar EiContinuedFractionForward(const Scalar z);
 
 Bool hasConverged(const NumericalComplex & current,
                   const NumericalComplex & previous);

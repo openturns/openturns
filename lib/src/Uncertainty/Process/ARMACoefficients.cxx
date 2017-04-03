@@ -108,7 +108,7 @@ void ARMACoefficients::add(const SquareMatrix & matrix)
   PersistentCollection<SquareMatrix>::add(matrix);
 }
 
-void ARMACoefficients::add(const NumericalScalar scalar)
+void ARMACoefficients::add(const Scalar scalar)
 {
   if (dimension_ != 1)
     throw InvalidArgumentException(HERE) << "Could not add the coefficient. The dimension is greater than 1.";

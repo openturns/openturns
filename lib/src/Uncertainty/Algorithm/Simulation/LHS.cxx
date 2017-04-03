@@ -79,7 +79,7 @@ Sample LHS::computeBlockSample()
     const Point u(RandomGenerator::Generate(dimension_));
     for(UnsignedInteger component = 0; component < dimension_; ++component)
     {
-      NumericalScalar xi = (shuffle_(component, basePosition) + u[component]) / totalSize;
+      Scalar xi = (shuffle_(component, basePosition) + u[component]) / totalSize;
       inputSample[index][component] = marginals_[component].computeQuantile(xi)[0];
     }
     // Update the base position

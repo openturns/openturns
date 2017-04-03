@@ -53,7 +53,7 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Evaluation method  */
-  NumericalScalar operator()(const NumericalScalar t) const;
+  Scalar operator()(const Scalar t) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

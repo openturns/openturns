@@ -50,7 +50,7 @@ String CorrectedLeaveOneOut::__repr__() const
 }
 
 /* Perform cross-validation */
-NumericalScalar CorrectedLeaveOneOut::run(const Sample & x,
+Scalar CorrectedLeaveOneOut::run(const Sample & x,
     const Sample & y,
     const Point & weight,
     const Basis & basis,
@@ -60,7 +60,7 @@ NumericalScalar CorrectedLeaveOneOut::run(const Sample & x,
 }
 
 
-NumericalScalar CorrectedLeaveOneOut::run(const Sample & y,
+Scalar CorrectedLeaveOneOut::run(const Sample & y,
     const Point & weight,
     const Indices & indices,
     const DesignProxy & proxy) const
@@ -68,7 +68,7 @@ NumericalScalar CorrectedLeaveOneOut::run(const Sample & y,
   return FittingAlgorithmImplementation::run(y, weight, indices, proxy);
 }
 
-NumericalScalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method,
+Scalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method,
                                           const Sample & y) const
 {
   const Sample x(method.getInputSample());
@@ -77,7 +77,7 @@ NumericalScalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method,
 
   if (y.getDimension() != 1) throw InvalidArgumentException(HERE) << "Output sample should be unidimensional (dim=" << y.getDimension() << ").";
   if (y.getSize() != sampleSize) throw InvalidArgumentException(HERE) << "Samples should be equally sized (in=" << sampleSize << " out=" << y.getSize() << ").";
-  const NumericalScalar variance = y.computeVariance()[0];
+  const Scalar variance = y.computeVariance()[0];
   if (!(variance > 0.0)) throw InvalidArgumentException(HERE) << "Null output sample variance.";
 
   const UnsignedInteger basisSize = method.getImplementation()->currentIndices_.getSize();
@@ -100,19 +100,19 @@ NumericalScalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method,
   const Point yHat(psiAk * coefficients);
 
   const Point h(method.getHDiag());
-  NumericalScalar empiricalError = 0.0;
+  Scalar empiricalError = 0.0;
   for (UnsignedInteger i = 0; i < sampleSize; ++ i)
   {
-    const NumericalScalar ns = (y[i][0] - yHat[i]) / (1.0 - h[i]);
+    const Scalar ns = (y[i][0] - yHat[i]) / (1.0 - h[i]);
     empiricalError += ns * ns / sampleSize;
   }
   LOGINFO(OSS() << "Empirical error=" << empiricalError);
 
   LOGINFO("Compute the correcting factor");
-  const NumericalScalar traceInverse = method.getGramInverseTrace();
+  const Scalar traceInverse = method.getGramInverseTrace();
 
-  const NumericalScalar correctingFactor = (1.0 * sampleSize) / (sampleSize - basisSize) * (1.0 + traceInverse);
-  const NumericalScalar relativeError = correctingFactor * empiricalError / variance;
+  const Scalar correctingFactor = (1.0 * sampleSize) / (sampleSize - basisSize) * (1.0 + traceInverse);
+  const Scalar relativeError = correctingFactor * empiricalError / variance;
   LOGINFO(OSS() << "Relative error=" << relativeError);
   return relativeError;
 }

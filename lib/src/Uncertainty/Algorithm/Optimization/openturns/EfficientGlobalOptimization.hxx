@@ -73,16 +73,16 @@ public:
   void setParameterEstimationPeriod(const UnsignedInteger parameterEstimationPeriod);
 
   /** improvement stopping criterion factor accessor */
-  void setImprovementFactor(const NumericalScalar improvementFactor);
-  NumericalScalar getImprovementFactor() const;
+  void setImprovementFactor(const Scalar improvementFactor);
+  Scalar getImprovementFactor() const;
 
   /** correlation length stopping criterion factor accessor */
-  void setCorrelationLengthFactor(const NumericalScalar b);
-  NumericalScalar getCorrelationLengthFactor() const;
+  void setCorrelationLengthFactor(const Scalar b);
+  Scalar getCorrelationLengthFactor() const;
 
   /** AEI tradeoff constant accessor */
-  void setAIETradeoff(const NumericalScalar c);
-  NumericalScalar getAIETradeoff() const;
+  void setAIETradeoff(const Scalar c);
+  Scalar getAIETradeoff() const;
 
   /** Improvement noise function accessor */
   void setNoiseModel(const Function & noiseModel);
@@ -121,13 +121,13 @@ private:
   UnsignedInteger parameterEstimationPeriod_;
 
   // improvement stopping criterion factor
-  NumericalScalar improvementFactor_;
+  Scalar improvementFactor_;
 
   // correlation length stopping criterion factor
-  NumericalScalar correlationLengthFactor_;
+  Scalar correlationLengthFactor_;
 
   // AEI tradeoff constant u(x)=mk(x)+c*sk(x)
-  NumericalScalar aeiTradeoff_;
+  Scalar aeiTradeoff_;
 
   // optional noise model for improvement optimization only
   // for the metamodel noise the 2nd marginal of the objective is used

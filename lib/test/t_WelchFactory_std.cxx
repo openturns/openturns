@@ -61,9 +61,9 @@ int main(int argc, char *argv[])
         fullprint << "Spectre " << i << "-" << j << std::endl;
         for (UnsignedInteger k = 0; k < myFrequencyGrid.getN(); ++k)
         {
-          const NumericalScalar frequency = myFrequencyGrid.getStart() + k * myFrequencyGrid.getStep();
-          const NumericalScalar estimatedValue = std::real(mySpectralModel(frequency)(i, j));
-          const NumericalScalar modelValue = std::real(model.computeSpectralDensity(frequency)(i, j));
+          const Scalar frequency = myFrequencyGrid.getStart() + k * myFrequencyGrid.getStep();
+          const Scalar estimatedValue = std::real(mySpectralModel(frequency)(i, j));
+          const Scalar modelValue = std::real(model.computeSpectralDensity(frequency)(i, j));
           fullprint << "Frequency =  " <<  frequency ;
           fullprint << ", evaluation = " << estimatedValue << " model = " << modelValue << std::endl;
         }
@@ -84,9 +84,9 @@ int main(int argc, char *argv[])
         fullprint << "Spectre " << i << "-" << j << std::endl;
         for (UnsignedInteger k = 0; k < myFrequencyGrid.getN(); ++k)
         {
-          const NumericalScalar frequency = myFrequencyGrid.getStart() + k * myFrequencyGrid.getStep();
-          const NumericalScalar estimatedValue = std::real(mySpectralModel2(frequency)(i, j));
-          const NumericalScalar modelValue = std::real(model.computeSpectralDensity(frequency)(i, j));
+          const Scalar frequency = myFrequencyGrid.getStart() + k * myFrequencyGrid.getStep();
+          const Scalar estimatedValue = std::real(mySpectralModel2(frequency)(i, j));
+          const Scalar modelValue = std::real(model.computeSpectralDensity(frequency)(i, j));
           fullprint << "Frequency =  " <<  frequency ;
           fullprint << ", evaluation = " << estimatedValue << " model = " << modelValue << std::endl;
         }

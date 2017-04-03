@@ -69,7 +69,7 @@ String CopulaImplementation::__repr__() const
   return oss;
 }
 
-NumericalScalar CopulaImplementation::computeSurvivalFunction(const Point & point) const
+Scalar CopulaImplementation::computeSurvivalFunction(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (dimension == 1) return computeComplementaryCDF(point);
@@ -81,13 +81,13 @@ NumericalScalar CopulaImplementation::computeSurvivalFunction(const Point & poin
   }
   if (allOutside) return 1.0;
   // Use Poincaré's formula
-  NumericalScalar value = 1.0 + (1 - 2 * (dimension % 2)) * computeCDF(point);
+  Scalar value = 1.0 + (1 - 2 * (dimension % 2)) * computeCDF(point);
   // We know the explicit value of the 1D marginal distributions
   for (UnsignedInteger i = 0; i < dimension; ++i) value -= point[i];
-  NumericalScalar sign = 1.0;
+  Scalar sign = 1.0;
   for (UnsignedInteger i = 2; i < dimension - 1; ++i)
   {
-    NumericalScalar contribution = 0.0;
+    Scalar contribution = 0.0;
     Combinations::IndicesCollection indices(Combinations(i, dimension).generate());
     Point subPoint(i);
     for (UnsignedInteger j = 0; j < indices.getSize(); ++j)
@@ -102,27 +102,27 @@ NumericalScalar CopulaImplementation::computeSurvivalFunction(const Point & poin
 }
 
 /* Generic implementation of the quantile computation for copulas */
-Point CopulaImplementation::computeQuantile(const NumericalScalar prob,
+Point CopulaImplementation::computeQuantile(const Scalar prob,
     const Bool tail) const
 {
   const UnsignedInteger dimension = getDimension();
   // Special case for bording values
-  const NumericalScalar q = tail ? 1.0 - prob : prob;
+  const Scalar q = tail ? 1.0 - prob : prob;
   if (q <= 0.0) return Point(dimension, 0.0);
   if (q >= 1.0) return Point(dimension, 1.0);
   // Special case for dimension 1
   if (dimension == 1) return Point(1, q);
   QuantileWrapper wrapper(this);
   const Function f(bindMethod<QuantileWrapper, Point, Point>(wrapper, &QuantileWrapper::computeDiagonal, 1, 1));
-  NumericalScalar leftTau = q;
+  Scalar leftTau = q;
   const Point leftPoint(1, leftTau);
   const Point leftValue(f(leftPoint));
-  NumericalScalar leftCDF = leftValue[0];
+  Scalar leftCDF = leftValue[0];
   // Upper bound of the bracketing interval
-  NumericalScalar rightTau = 1.0 - (1.0 - q) / dimension;
+  Scalar rightTau = 1.0 - (1.0 - q) / dimension;
   Point rightPoint(1, rightTau);
   const Point rightValue(f(rightPoint));
-  NumericalScalar rightCDF = rightValue[0];
+  Scalar rightCDF = rightValue[0];
   // Use Brent's method to compute the quantile efficiently
   Brent solver(cdfEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_);
   return Point(dimension, solver.solve(f, q, leftTau, rightTau, leftCDF, rightCDF));

@@ -36,8 +36,8 @@ int main(int argc, char *argv[])
     PlatformInfo::SetNumericalPrecision(3);
     // Problem parameters
     UnsignedInteger dimension = 3;
-    NumericalScalar a = 7.0;
-    NumericalScalar b = 0.1;
+    Scalar a = 7.0;
+    Scalar b = 0.1;
     // Create the Ishigami function
     Description inputVariables(dimension);
     inputVariables[0] = "xi1";

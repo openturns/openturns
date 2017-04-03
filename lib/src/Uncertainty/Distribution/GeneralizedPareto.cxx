@@ -42,8 +42,8 @@ GeneralizedPareto::GeneralizedPareto()
 }
 
 /* Parameters constructor */
-GeneralizedPareto::GeneralizedPareto(const NumericalScalar sigma,
-                                     const NumericalScalar xi)
+GeneralizedPareto::GeneralizedPareto(const Scalar sigma,
+                                     const Scalar xi)
   : ContinuousDistribution()
   , sigma_(0.0)
   , xi_(xi)
@@ -112,7 +112,7 @@ void GeneralizedPareto::computeRange()
 /* Get one realization of the distribution */
 Point GeneralizedPareto::getRealization() const
 {
-  const NumericalScalar u = RandomGenerator::Generate();
+  const Scalar u = RandomGenerator::Generate();
   if (xi_ == 0.0) return Point(1, -sigma_ * std::log(u));
   return Point(1, sigma_ * expm1(-xi_ * std::log(u)) / xi_);
 }
@@ -122,7 +122,7 @@ Point GeneralizedPareto::getRealization() const
 Point GeneralizedPareto::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-  const NumericalScalar z = point[0] / sigma_;
+  const Scalar z = point[0] / sigma_;
   Point result(1);
   if (z < 0.0) return result;
   if (std::abs(std::sqrt(std::abs(xi_)) * z) < 1.0e-8)
@@ -137,20 +137,20 @@ Point GeneralizedPareto::computeDDF(const Point & point) const
 
 
 /* Get the PDF of the distribution */
-NumericalScalar GeneralizedPareto::computePDF(const Point & point) const
+Scalar GeneralizedPareto::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-  const NumericalScalar z = point[0] / sigma_;
+  const Scalar z = point[0] / sigma_;
   if (z < 0.0) return 0.0;
   if (std::abs(z) * std::sqrt(std::abs(xi_)) < 1.0e-8) return std::exp(-z) * (1.0 + z * xi_ * (0.5 * z - 1.0)) / sigma_;
   if ((xi_ < 0.0) && (z >= -1.0 / xi_)) return 0.0;
   return std::exp(-(1.0 + 1.0 / xi_) * log1p(xi_ * z)) / sigma_;
 }
 
-NumericalScalar GeneralizedPareto::computeLogPDF(const Point & point) const
+Scalar GeneralizedPareto::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-  const NumericalScalar z = point[0] / sigma_;
+  const Scalar z = point[0] / sigma_;
   if (z < 0.0) return SpecFunc::LogMinScalar;
   if (std::abs(std::sqrt(std::abs(xi_)) * z) < 1.0e-8) return -z + log1p(z * xi_ * (0.5 * z - 1.0)) - std::log(sigma_);
   if ((xi_ < 0.0) && (z >= -1.0 / xi_)) return SpecFunc::LogMinScalar;
@@ -158,10 +158,10 @@ NumericalScalar GeneralizedPareto::computeLogPDF(const Point & point) const
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar GeneralizedPareto::computeCDF(const Point & point) const
+Scalar GeneralizedPareto::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-  const NumericalScalar z = point[0] / sigma_;
+  const Scalar z = point[0] / sigma_;
   if (z <= 0.0) return 0.0;
   if (std::abs(std::sqrt(xi_) * z) < 1.0e-8) return -expm1(-z) - 0.5 * xi_ * z * z * std::exp(-z);
   if ((xi_ < 0.0) && (z > -1.0 / xi_)) return 1.0;
@@ -169,10 +169,10 @@ NumericalScalar GeneralizedPareto::computeCDF(const Point & point) const
 }
 
 /* Get the complementary CDF of the distribution */
-NumericalScalar GeneralizedPareto::computeComplementaryCDF(const Point & point) const
+Scalar GeneralizedPareto::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-  const NumericalScalar z = point[0] / sigma_;
+  const Scalar z = point[0] / sigma_;
   if (z <= 0.0) return 1.0;
   if (std::abs(std::sqrt(xi_) * z) < 1.0e-8) return std::exp(-z) * (1.0 + 0.5 * xi_ * z * z);
   if ((xi_ < 0.0) && (z > -1.0 / xi_)) return 0.0;
@@ -180,30 +180,30 @@ NumericalScalar GeneralizedPareto::computeComplementaryCDF(const Point & point) 
 }
 
 /** Get the product minimum volume interval containing a given probability of the distribution */
-Interval GeneralizedPareto::computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const
+Interval GeneralizedPareto::computeMinimumVolumeIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const
 {
   return computeUnilateralConfidenceIntervalWithMarginalProbability(prob, false, marginalProb);
 }
 
 /** Get the minimum volume level set containing a given probability of the distribution */
-LevelSet GeneralizedPareto::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const
+LevelSet GeneralizedPareto::computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & threshold) const
 {
   const Interval interval(computeMinimumVolumeInterval(prob));
   Function minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
   minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
-  NumericalScalar minusLogPDFThreshold = -computeLogPDF(interval.getUpperBound()[0]);
+  Scalar minusLogPDFThreshold = -computeLogPDF(interval.getUpperBound()[0]);
   threshold = std::exp(-minusLogPDFThreshold);
   return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex GeneralizedPareto::computeCharacteristicFunction(const NumericalScalar x) const
+NumericalComplex GeneralizedPareto::computeCharacteristicFunction(const Scalar x) const
 {
   if (xi_ == 0.0) return 1.0 / NumericalComplex(1.0, -x);
   return DistributionImplementation::computeCharacteristicFunction(x);
 }
 
-NumericalComplex GeneralizedPareto::computeLogCharacteristicFunction(const NumericalScalar x) const
+NumericalComplex GeneralizedPareto::computeLogCharacteristicFunction(const Scalar x) const
 {
   if (xi_ == 0.0) return -std::log(NumericalComplex(1.0, -x));
   return std::log(computeCharacteristicFunction(x));
@@ -214,7 +214,7 @@ Point GeneralizedPareto::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   Point result(2);
-  const NumericalScalar epsilon = 1.0e-5;
+  const Scalar epsilon = 1.0e-5;
   result[0] = (GeneralizedPareto(sigma_ + epsilon, xi_).computePDF(point) - GeneralizedPareto(sigma_ - epsilon, xi_).computePDF(point)) / (2.0 * epsilon);
   result[1] = (GeneralizedPareto(sigma_, xi_ + epsilon).computePDF(point) - GeneralizedPareto(sigma_, xi_ - epsilon).computePDF(point)) / (2.0 * epsilon);
   return result;
@@ -226,17 +226,17 @@ Point GeneralizedPareto::computeCDFGradient(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   Point result(2);
-  const NumericalScalar epsilon = 1.0e-5;
+  const Scalar epsilon = 1.0e-5;
   result[0] = (GeneralizedPareto(sigma_ + epsilon, xi_).computeCDF(point) - GeneralizedPareto(sigma_ - epsilon, xi_).computeCDF(point)) / (2.0 * epsilon);
   result[1] = (GeneralizedPareto(sigma_, xi_ + epsilon).computeCDF(point) - GeneralizedPareto(sigma_, xi_ - epsilon).computeCDF(point)) / (2.0 * epsilon);
   return result;
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar GeneralizedPareto::computeScalarQuantile(const NumericalScalar prob,
+Scalar GeneralizedPareto::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
-  const NumericalScalar logProb = tail ? std::log(prob) : log1p(-prob);
+  const Scalar logProb = tail ? std::log(prob) : log1p(-prob);
   if (xi_ == 0.0) return -sigma_ * logProb;
   else return sigma_ * expm1(-xi_ * logProb) / xi_;
 }
@@ -309,7 +309,7 @@ Point GeneralizedPareto::getParameter() const
 void GeneralizedPareto::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = GeneralizedPareto(parameter[0], parameter[1]);
   setWeight(w);
 }
@@ -324,7 +324,7 @@ Description GeneralizedPareto::getParameterDescription() const
 }
 
 /* Sigma accessor */
-void GeneralizedPareto::setSigma(const NumericalScalar sigma)
+void GeneralizedPareto::setSigma(const Scalar sigma)
 {
   if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "Sigma MUST be positive";
   if (sigma != sigma_)
@@ -337,13 +337,13 @@ void GeneralizedPareto::setSigma(const NumericalScalar sigma)
 }
 
 /* Sigma accessor */
-NumericalScalar GeneralizedPareto::getSigma() const
+Scalar GeneralizedPareto::getSigma() const
 {
   return sigma_;
 }
 
 /* Xi accessor */
-void GeneralizedPareto::setXi(const NumericalScalar xi)
+void GeneralizedPareto::setXi(const Scalar xi)
 {
   if (xi != xi_)
   {
@@ -356,7 +356,7 @@ void GeneralizedPareto::setXi(const NumericalScalar xi)
 }
 
 /* Xi accessor */
-NumericalScalar GeneralizedPareto::getXi() const
+Scalar GeneralizedPareto::getXi() const
 {
   return xi_;
 }

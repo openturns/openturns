@@ -47,7 +47,7 @@ RiceFactory * RiceFactory::clone() const
 struct RiceFactoryParameterConstraint
 {
   /** Constructor from a sample and a derivative factor estimate */
-  RiceFactoryParameterConstraint(const NumericalScalar r):
+  RiceFactoryParameterConstraint(const Scalar r):
     r2p1_(1.0 + r * r)
   {
     // Nothing to do
@@ -56,20 +56,20 @@ struct RiceFactoryParameterConstraint
   Point computeConstraint(const Point & parameter) const
   {
     // Here u = \theta^2 wrt reference
-    const NumericalScalar u = parameter[0];
-    const NumericalScalar relation = u - (r2p1_ * computeXi(u) - 2.0);
+    const Scalar u = parameter[0];
+    const Scalar relation = u - (r2p1_ * computeXi(u) - 2.0);
     return Point(1, relation);
   }
 
-  NumericalScalar computeXi(const NumericalScalar u) const
+  Scalar computeXi(const Scalar u) const
   {
     if (!(u > 0.0)) throw InvalidArgumentException(HERE) << "Error: the argument u=" << u << " in the constraint must be positive.";
-    const NumericalScalar up2 = u + 2.0;
-    const NumericalScalar quarterU = 0.25 * u;
+    const Scalar up2 = u + 2.0;
+    const Scalar quarterU = 0.25 * u;
     return up2 - 0.125 * M_PI * std::exp(-0.5 * u + 2.0 * SpecFunc::LogBesselI0(quarterU)) * std::pow(up2 + u * std::exp(SpecFunc::DeltaLogBesselI10(quarterU)), 2.0);
   }
 
-  NumericalScalar r2p1_;
+  Scalar r2p1_;
 };
 
 /* Here is the interface that all derived class must implement */
@@ -97,17 +97,17 @@ Rice RiceFactory::buildAsRice(const Sample & sample) const
   const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Rice distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Rice distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
-  const NumericalScalar mu = sample.computeMean()[0];
-  const NumericalScalar std = sample.computeStandardDeviationPerComponent()[0];
+  const Scalar mu = sample.computeMean()[0];
+  const Scalar std = sample.computeStandardDeviationPerComponent()[0];
   // Koay inversion method
   RiceFactoryParameterConstraint constraint(mu / std);
   const Function f(bindMethod<RiceFactoryParameterConstraint, Point, Point>(constraint, &RiceFactoryParameterConstraint::computeConstraint, 1, 1));
   // Find a bracketing interval
-  NumericalScalar a = 1.0;
-  NumericalScalar b = 2.0;
-  NumericalScalar fA = f(Point(1, a))[0];
-  NumericalScalar fB = f(Point(1, b))[0];
-  const NumericalScalar largeValue = std::sqrt(SpecFunc::MaxScalar);
+  Scalar a = 1.0;
+  Scalar b = 2.0;
+  Scalar fA = f(Point(1, a))[0];
+  Scalar fB = f(Point(1, b))[0];
+  const Scalar largeValue = std::sqrt(SpecFunc::MaxScalar);
   const UnsignedInteger maximumIteration = ResourceMap::GetAsUnsignedInteger( "RiceFactory-MaximumIteration" );
   UnsignedInteger iteration = 0;
   // While f has the same sign at the two bounds, update the interval
@@ -125,12 +125,12 @@ Rice RiceFactory::buildAsRice(const Sample & sample) const
   // Solve the constraint equation
   Brent solver(ResourceMap::GetAsScalar( "RiceFactory-AbsolutePrecision" ), ResourceMap::GetAsScalar( "RiceFactory-RelativePrecision" ), ResourceMap::GetAsScalar( "RiceFactory-ResidualPrecision" ), maximumIteration);
   // u estimate
-  const NumericalScalar u = solver.solve(f, 0.0, a, b, fA, fB);
-  const NumericalScalar xiU = constraint.computeXi(u);
+  const Scalar u = solver.solve(f, 0.0, a, b, fA, fB);
+  const Scalar xiU = constraint.computeXi(u);
   // Corresponding sigma estimate
-  const NumericalScalar sigma = std / std::sqrt(xiU);
+  const Scalar sigma = std / std::sqrt(xiU);
   // Corresponding nu estimate
-  const NumericalScalar nu = std::sqrt(mu * mu + sigma * sigma * (xiU - 2.0));
+  const Scalar nu = std::sqrt(mu * mu + sigma * sigma * (xiU - 2.0));
   try
   {
     Rice result(sigma, nu);

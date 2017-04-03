@@ -4,9 +4,9 @@
 #include "openturns/Simulation.hxx"
 #include "openturns/PythonWrappingFunctions.hxx"
 
-static void PythonProgressCallback(OT::NumericalScalar percent, void * data) {
+static void PythonProgressCallback(OT::Scalar percent, void * data) {
   PyObject * pyObj = reinterpret_cast<PyObject *>(data);
-  OT::ScopedPyObjectPointer point(OT::convert< OT::NumericalScalar, OT::_PyFloat_ >(percent));
+  OT::ScopedPyObjectPointer point(OT::convert< OT::Scalar, OT::_PyFloat_ >(percent));
   OT::ScopedPyObjectPointer result(PyObject_CallFunctionObjArgs( pyObj, point.get(), NULL ));
 }
 

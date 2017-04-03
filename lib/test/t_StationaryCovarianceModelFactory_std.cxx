@@ -62,9 +62,9 @@ int main(int argc, char *argv[])
     RegularGrid myTimeGrid(myCovarianceModel.getTimeGrid());
     for (UnsignedInteger i = 0 ; i < myTimeGrid.getN() ; ++i)
     {
-      const NumericalScalar t = myTimeGrid.getValue(i);
-      const NumericalScalar estimatedValue = myCovarianceModel(t)(0, 0);
-      const NumericalScalar modelValue = model.computeCovariance(t)(0, 0);
+      const Scalar t = myTimeGrid.getValue(i);
+      const Scalar estimatedValue = myCovarianceModel(t)(0, 0);
+      const Scalar modelValue = model.computeCovariance(t)(0, 0);
       fullprint << "Covariance C(" << t << ") : ";
       fullprint << " evaluation = " << estimatedValue << " model = " << modelValue << std::endl;
     }

@@ -72,8 +72,8 @@ UnsignedInteger CovarianceModel::getDimension() const
 }
 
 /* Computation of the covariance function */
-CovarianceMatrix CovarianceModel::operator() (const NumericalScalar s,
-    const NumericalScalar t) const
+CovarianceMatrix CovarianceModel::operator() (const Scalar s,
+    const Scalar t) const
 {
   return getImplementation()->operator() (s, t);
 }
@@ -84,36 +84,36 @@ CovarianceMatrix CovarianceModel::operator() (const Point & s,
   return getImplementation()->operator() (s, t);
 }
 
-NumericalScalar CovarianceModel::computeStandardRepresentative(const Point & s,
+Scalar CovarianceModel::computeStandardRepresentative(const Point & s,
     const Point & t) const
 {
   return getImplementation()->computeStandardRepresentative(s, t);
 }
 
-NumericalScalar CovarianceModel::computeStandardRepresentative(const NumericalScalar & s,
-    const NumericalScalar & t) const
+Scalar CovarianceModel::computeStandardRepresentative(const Scalar & s,
+    const Scalar & t) const
 {
   return getImplementation()->computeStandardRepresentative(s, t);
 }
 
-NumericalScalar CovarianceModel::computeStandardRepresentative(const Point & tau) const
+Scalar CovarianceModel::computeStandardRepresentative(const Point & tau) const
 {
   return getImplementation()->computeStandardRepresentative(tau);
 }
 
 
-NumericalScalar CovarianceModel::computeStandardRepresentative(const NumericalScalar & tau) const
+Scalar CovarianceModel::computeStandardRepresentative(const Scalar & tau) const
 {
   return getImplementation()->computeStandardRepresentative(tau);
 }
 
-NumericalScalar CovarianceModel::computeAsScalar (const Point & s,
+Scalar CovarianceModel::computeAsScalar (const Point & s,
     const Point & t) const
 {
   return getImplementation()->computeAsScalar(s, t);
 }
 
-CovarianceMatrix CovarianceModel::operator() (const NumericalScalar tau) const
+CovarianceMatrix CovarianceModel::operator() (const Scalar tau) const
 {
   return getImplementation()->operator() (tau);
 }
@@ -123,7 +123,7 @@ CovarianceMatrix CovarianceModel::operator() (const Point & tau) const
   return getImplementation()->operator() (tau);
 }
 
-NumericalScalar CovarianceModel::computeAsScalar (const Point & tau) const
+Scalar CovarianceModel::computeAsScalar (const Point & tau) const
 {
   return getImplementation()->computeAsScalar(tau);
 }
@@ -183,21 +183,21 @@ TriangularMatrix CovarianceModel::discretizeAndFactorize(const Sample & vertices
 
 /** Discretize the covariance function on a given TimeGrid/Mesh using HMatrix */
 HMatrix CovarianceModel::discretizeHMatrix(const RegularGrid & timeGrid,
-    const NumericalScalar nuggetFactor,
+    const Scalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
   return getImplementation()->discretizeHMatrix(timeGrid, nuggetFactor, parameters);
 }
 
 HMatrix CovarianceModel::discretizeHMatrix(const Mesh & mesh,
-    const NumericalScalar nuggetFactor,
+    const Scalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
   return getImplementation()->discretizeHMatrix(mesh, nuggetFactor, parameters);
 }
 
 HMatrix CovarianceModel::discretizeHMatrix(const Sample & vertices,
-    const NumericalScalar nuggetFactor,
+    const Scalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
   return getImplementation()->discretizeHMatrix(vertices, nuggetFactor, parameters);
@@ -205,21 +205,21 @@ HMatrix CovarianceModel::discretizeHMatrix(const Sample & vertices,
 
 /** Discretize and factorize the covariance function on a given TimeGrid/Mesh using HMatrix */
 HMatrix CovarianceModel::discretizeAndFactorizeHMatrix(const RegularGrid & timeGrid,
-    const NumericalScalar nuggetFactor,
+    const Scalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
   return getImplementation()->discretizeAndFactorizeHMatrix(timeGrid, nuggetFactor, parameters);
 }
 
 HMatrix CovarianceModel::discretizeAndFactorizeHMatrix(const Mesh & mesh,
-    const NumericalScalar nuggetFactor,
+    const Scalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
   return getImplementation()->discretizeAndFactorizeHMatrix(mesh, nuggetFactor, parameters);
 }
 
 HMatrix CovarianceModel::discretizeAndFactorizeHMatrix(const Sample & vertices,
-    const NumericalScalar nuggetFactor,
+    const Scalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
   return getImplementation()->discretizeAndFactorizeHMatrix(vertices, nuggetFactor, parameters);
@@ -262,12 +262,12 @@ void CovarianceModel::setSpatialCorrelation(const CorrelationMatrix & spatialCor
 }
 
 /* Nugget factor accessor */
-NumericalScalar CovarianceModel::getNuggetFactor() const
+Scalar CovarianceModel::getNuggetFactor() const
 {
   return getImplementation()->getNuggetFactor();
 }
 
-void CovarianceModel::setNuggetFactor(const NumericalScalar nuggetFactor)
+void CovarianceModel::setNuggetFactor(const Scalar nuggetFactor)
 {
   copyOnWrite();
   getImplementation()->setNuggetFactor(nuggetFactor);
@@ -317,8 +317,8 @@ Bool CovarianceModel::isDiagonal() const
 /* Drawing method */
 Graph CovarianceModel::draw(const UnsignedInteger rowIndex,
 			    const UnsignedInteger columnIndex,
-			    const NumericalScalar tMin,
-			    const NumericalScalar tMax,
+			    const Scalar tMin,
+			    const Scalar tMax,
 			    const UnsignedInteger pointNumber,
 			    const Bool asStationary,
 			    const Bool correlationFlag) const

@@ -37,9 +37,9 @@ CLASSNAMEINIT(Secant);
 static const Factory<Secant> Factory_Secant;
 
 /* Parameter constructor */
-Secant::Secant(const NumericalScalar absoluteError,
-               const NumericalScalar relativeError,
-               const NumericalScalar residualError,
+Secant::Secant(const Scalar absoluteError,
+               const Scalar relativeError,
+               const Scalar residualError,
                const UnsignedInteger maximumFunctionEvaluation)
   : SolverImplementation(absoluteError, relativeError, residualError, maximumFunctionEvaluation)
 {
@@ -68,47 +68,47 @@ String Secant::__repr__() const
    C     DEC., 1984, P. 473.
    see http://www.netlib.org/toms/626
 */
-NumericalScalar Secant::solve(const Function & function,
-                              const NumericalScalar value,
-                              const NumericalScalar infPoint,
-                              const NumericalScalar supPoint,
-                              const NumericalScalar infValue,
-                              const NumericalScalar supValue) const
+Scalar Secant::solve(const Function & function,
+                              const Scalar value,
+                              const Scalar infPoint,
+                              const Scalar supPoint,
+                              const Scalar infValue,
+                              const Scalar supValue) const
 {
   if ((function.getInputDimension() != 1) || (function.getOutputDimension() != 1)) throw InvalidDimensionException(HERE) << "Error: the secant method requires a scalar function, here input dimension=" << function.getInputDimension() << " and output dimension=" << function.getOutputDimension();
   /* We transform the equation function(x) = value into function(x) - value = 0 */
   UnsignedInteger usedFunctionEvaluation = 0;
   const UnsignedInteger maximumFunctionEvaluation = getMaximumFunctionEvaluation();
-  NumericalScalar a = infPoint;
-  NumericalScalar fA = infValue - value;
+  Scalar a = infPoint;
+  Scalar fA = infValue - value;
   if (std::abs(fA) <= getResidualError()) return a;
-  NumericalScalar b = supPoint;
-  NumericalScalar fB = supValue - value;
+  Scalar b = supPoint;
+  Scalar fB = supValue - value;
   if (std::abs(fB) <= getResidualError()) return b;
   if (!(fA * fB <= 0.0)) throw InternalException(HERE) << "Error: Secant  method requires that the function takes different signs at the endpoints of the given starting interval, here infPoint=" << infPoint << ", supPoint=" << supPoint << ", value=" << value << ", f(infPoint) - value=" << fA << " and f(supPoint) - value=" << fB;
   // p will store the previous approximation
-  NumericalScalar c = a;
-  NumericalScalar fC = fA;
+  Scalar c = a;
+  Scalar fC = fA;
   // c will store the current approximation
-  NumericalScalar s = b;
-  NumericalScalar fS = fB;
+  Scalar s = b;
+  Scalar fS = fB;
 
   // Main loop
   for (;;)
   {
-    const NumericalScalar h = 0.5 * (b + c);
-    const NumericalScalar error = 0.5 * getRelativeError() * std::abs(c) + 0.5 * getAbsoluteError();
-    const NumericalScalar delta = std::abs(h - b);
+    const Scalar h = 0.5 * (b + c);
+    const Scalar error = 0.5 * getRelativeError() * std::abs(c) + 0.5 * getAbsoluteError();
+    const Scalar delta = std::abs(h - b);
     if (delta < error)
     {
       b = h;
       break;
     }
     // Swap b and c such that fB <= fC
-    NumericalScalar y = -1.0;
-    NumericalScalar fY = -1.0;
-    NumericalScalar g = -1.0;
-    NumericalScalar fG = -1.0;
+    Scalar y = -1.0;
+    Scalar fY = -1.0;
+    Scalar g = -1.0;
+    Scalar fG = -1.0;
     if (std::abs(fB) < std::abs(fC))
     {
       y = s;
@@ -130,7 +130,7 @@ NumericalScalar Secant::solve(const Function & function,
     // If we can do a linear interpolation (secant step)
     if (std::abs(fY - fS) > getResidualError())
     {
-      NumericalScalar e = (s * fY - y * fS) / (fY - fS);
+      Scalar e = (s * fY - y * fS) / (fY - fS);
       // Step adjustment to avoid spurious fixed point
       if (std::abs(e - s) < error) e = s + ((g - s) > 0.0 ? (error) : (-error));
       // If the secant step is not within the current bracketing interval

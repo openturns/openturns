@@ -146,7 +146,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
   // Second, keep only the simplices with a majority of vertices in the level set
   const Function function(levelSet.getFunction());
   Sample values(function(boundingVertices));
-  const NumericalScalar level = levelSet.getLevel();
+  const Scalar level = levelSet.getLevel();
   Mesh::IndicesCollection goodSimplices(0);
   Sample goodVertices(0, dimension);
   // Flags for the vertices to keep
@@ -202,7 +202,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
           localValues[j] = values[index][0];
         }
         Point center(dimension);
-        NumericalScalar centerValue = 0.0;
+        Scalar centerValue = 0.0;
         // First pass: compute the center of the good points
         for (UnsignedInteger j = 0; j <= dimension; ++j)
           if (localValues[j] <= level)
@@ -247,7 +247,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
               {
 		LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with solver=" << solver_ << ", using finite differences for gradient");
                 // Here we may have to fix the gradient eg in the case of analytical functions, when Ev3 does not handle the expression.
-                const NumericalScalar epsilon = ResourceMap::GetAsScalar("CenteredFiniteDifferenceGradient-DefaultEpsilon");
+                const Scalar epsilon = ResourceMap::GetAsScalar("CenteredFiniteDifferenceGradient-DefaultEpsilon");
                 levelFunction.setGradient(CenteredFiniteDifferenceGradient((localVertices.getMin() - localVertices.getMax()) * epsilon + Point(dimension, epsilon), levelFunction.getEvaluation()).clone());
                 problem.setLevelFunction(levelFunction);
                 solver_.setProblem(problem);

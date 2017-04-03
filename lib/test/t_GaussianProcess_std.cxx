@@ -52,8 +52,8 @@ int main(int argc, char *argv[])
     SecondOrderModel mySecondOrderModel(myModel);
     fullprint << "mySecondOrderModel=" << mySecondOrderModel << std::endl;
 
-    const NumericalScalar tmin = 0.0;
-    const NumericalScalar step = 0.1;
+    const Scalar tmin = 0.0;
+    const Scalar step = 0.1;
     const UnsignedInteger n = 11;
 
     RegularGrid myTimeGrid(tmin, step, n);

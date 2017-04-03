@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
     fullprint << "result=" << result << std::endl;
     fullprint << "last value=" << result[nt - 1] << std::endl;
     Point ref(2);
-    NumericalScalar t = timeGrid[nt - 1];
+    Scalar t = timeGrid[nt - 1];
     ref[0] = -1.0 + t + 2.0 * exp(-t);
     ref[1] = -2.0 + -2.0 * t - t * t + exp(t);
     fullprint << "ref. value=" << ref << std::endl;

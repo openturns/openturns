@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     UnsignedInteger basisSize = 5;
     LHSExperiment experiment(basis.getMeasure(), 100);
     Bool mustScale = false;
-    NumericalScalar threshold = 0.0001;
+    Scalar threshold = 0.0001;
     AbsoluteExponential model(Point(dim, 1.0));
     KarhunenLoeveQuadratureAlgorithm algo(domain, model, experiment, basis, basisSize, mustScale, threshold);
     algo.run();

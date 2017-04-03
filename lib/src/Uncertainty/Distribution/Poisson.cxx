@@ -43,7 +43,7 @@ Poisson::Poisson()
 }
 
 /* Parameters constructor */
-Poisson::Poisson(const NumericalScalar lambda)
+Poisson::Poisson(const Scalar lambda)
   : DiscreteDistribution()
   , lambda_(0.0)
 {
@@ -99,31 +99,31 @@ Point Poisson::getRealization() const
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Poisson::computePDF(const Point & point) const
+Scalar Poisson::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
+  const Scalar k = point[0];
   if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return 0.0;
   return std::exp(k * std::log(lambda_) - lambda_ - SpecFunc::LnGamma(k + 1.0));
 }
 
 
 /* Get the CDF of the distribution */
-NumericalScalar Poisson::computeCDF(const Point & point) const
+Scalar Poisson::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
+  const Scalar k = point[0];
   if (k < -supportEpsilon_) return 0.0;
   return DistFunc::pGamma(floor(k) + 1.0, lambda_, true);
 }
 
-NumericalScalar Poisson::computeComplementaryCDF(const Point & point) const
+Scalar Poisson::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
+  const Scalar k = point[0];
   if (k < -supportEpsilon_) return 1.0;
   return DistFunc::pGamma(floor(k) + 1.0, lambda_);
 }
@@ -133,7 +133,7 @@ Point Poisson::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
+  const Scalar k = point[0];
   Point pdfGradient(1, 0.0);
   if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return pdfGradient;
   return Point(1, (k - lambda_) * std::exp((k - 1.0) * std::log(lambda_) - lambda_ - SpecFunc::LnGamma(k + 1.0)));
@@ -145,25 +145,25 @@ Point Poisson::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
+  const Scalar k = point[0];
   if (k < -supportEpsilon_) return Point(1, 0.0);
   return Point(1, -std::exp(floor(k) * std::log(lambda_) - lambda_ - SpecFunc::LnGamma(floor(k) + 1.0)));
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar Poisson::computeScalarQuantile(const NumericalScalar prob,
+Scalar Poisson::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
   return DistFunc::qPoisson(lambda_, prob, tail);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Poisson::computeCharacteristicFunction(const NumericalScalar x) const
+NumericalComplex Poisson::computeCharacteristicFunction(const Scalar x) const
 {
   return std::exp(computeLogCharacteristicFunction(x));
 }
 
-NumericalComplex Poisson::computeLogCharacteristicFunction(const NumericalScalar x) const
+NumericalComplex Poisson::computeLogCharacteristicFunction(const Scalar x) const
 {
   return lambda_ * (std::exp(NumericalComplex(0.0, x)) - 1.0);
 }
@@ -233,7 +233,7 @@ Point Poisson::getParameter() const
 void Poisson::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize();
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = Poisson(parameter[0]);
   setWeight(w);
 }
@@ -245,7 +245,7 @@ Description Poisson::getParameterDescription() const
 }
 
 /* Lambda accessor */
-void Poisson::setLambda(const NumericalScalar lambda)
+void Poisson::setLambda(const Scalar lambda)
 {
   if (!(lambda > 0.0)) throw InvalidArgumentException(HERE) << "Lambda must be positive, here lambda=" << lambda;
   if (lambda != lambda_)
@@ -258,7 +258,7 @@ void Poisson::setLambda(const NumericalScalar lambda)
 }
 
 /* Lambda accessor */
-NumericalScalar Poisson::getLambda() const
+Scalar Poisson::getLambda() const
 {
   return lambda_;
 }

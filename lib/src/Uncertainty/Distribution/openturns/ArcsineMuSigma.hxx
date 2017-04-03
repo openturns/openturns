@@ -40,7 +40,7 @@ public:
   ArcsineMuSigma();
 
   /** Constructor with parameters */
-  ArcsineMuSigma(const NumericalScalar mu, const NumericalScalar sigma);
+  ArcsineMuSigma(const Scalar mu, const Scalar sigma);
 
   /** Virtual constructor */
   virtual ArcsineMuSigma * clone() const;
@@ -73,8 +73,8 @@ public:
 
 private:
   /** The main parameter set of the distribution */
-  NumericalScalar mu_;
-  NumericalScalar sigma_;
+  Scalar mu_;
+  Scalar sigma_;
 }; /* class ArcsineMuSigma */
 
 

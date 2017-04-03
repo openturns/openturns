@@ -43,8 +43,8 @@ public:
   InverseGamma();
 
   /** Parameters constructor */
-  InverseGamma(const NumericalScalar k,
-               const NumericalScalar lambda);
+  InverseGamma(const Scalar k,
+               const Scalar lambda);
 
 
   /** Comparison operator */
@@ -73,19 +73,19 @@ public:
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
   using ContinuousDistribution::computeLogPDF;
-  NumericalScalar computeLogPDF(const Point & point) const;
+  Scalar computeLogPDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
   using ContinuousDistribution::computeComplementaryCDF;
-  NumericalScalar computeComplementaryCDF(const Point & point) const;
+  Scalar computeComplementaryCDF(const Point & point) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
-  NumericalComplex computeLogCharacteristicFunction(const NumericalScalar x) const;
+  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
+  NumericalComplex computeLogCharacteristicFunction(const Scalar x) const;
 
   /** Get the PDFGradient of the distribution */
   using ContinuousDistribution::computePDFGradient;
@@ -120,16 +120,16 @@ public:
   /* Interface specific to InverseGamma */
 
   /** K accessor */
-  void setK(const NumericalScalar k);
-  NumericalScalar getK() const;
+  void setK(const Scalar k);
+  Scalar getK() const;
 
   /** Lambda accessor */
-  void setLambda(const NumericalScalar lambda);
-  NumericalScalar getLambda() const;
+  void setLambda(const Scalar lambda);
+  Scalar getLambda() const;
 
   /** K and lambda accessor */
-  void setKLambda(const NumericalScalar k,
-                  const NumericalScalar lambda);
+  void setKLambda(const Scalar k,
+                  const Scalar lambda);
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -150,7 +150,7 @@ private:
   void computeCovariance() const;
 
   /** Get the quantile of the distribution */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+  Scalar computeScalarQuantile(const Scalar prob,
                                         const Bool tail = false) const;
 
   /** Compute the numerical range of the distribution given the parameters values */
@@ -160,9 +160,9 @@ private:
   void update();
 
   /** The main parameter set of the distribution */
-  NumericalScalar k_;
-  NumericalScalar lambda_;
-  NumericalScalar normalizationFactor_;
+  Scalar k_;
+  Scalar lambda_;
+  Scalar normalizationFactor_;
 
 }; /* class InverseGamma */
 

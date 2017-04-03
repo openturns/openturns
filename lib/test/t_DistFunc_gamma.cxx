@@ -35,49 +35,49 @@ int main(int argc, char *argv[])
     // Gamma related functions
     {
       // pGamma
-      NumericalScalar kMin = 0.2;
-      NumericalScalar kMax = 5.0;
+      Scalar kMin = 0.2;
+      Scalar kMax = 5.0;
       UnsignedInteger nK = 5;
-      NumericalScalar xMin = 0.1;
-      NumericalScalar xMax = 0.9;
+      Scalar xMin = 0.1;
+      Scalar xMax = 0.9;
       UnsignedInteger nX = 5;
       for (UnsignedInteger i1 = 0; i1 < nK; ++i1)
       {
-        NumericalScalar k = kMin + (kMax - kMin) * i1 / (nK - 1);
+        Scalar k = kMin + (kMax - kMin) * i1 / (nK - 1);
         for (UnsignedInteger iX = 0; iX < nX; ++iX)
         {
-          NumericalScalar x = xMin + (xMax - xMin) * iX / (nX - 1);
+          Scalar x = xMin + (xMax - xMin) * iX / (nX - 1);
           fullprint << "pGamma(" << k << ", " << x << ")=" << DistFunc::pGamma(k, x) << ", complementary=" << DistFunc::pGamma(k, x, true) << std::endl;
         }
       }
     } // pGamma
     {
       // qGamma
-      NumericalScalar kMin = 0.2;
-      NumericalScalar kMax = 5.0;
+      Scalar kMin = 0.2;
+      Scalar kMax = 5.0;
       UnsignedInteger nK = 5;
-      NumericalScalar qMin = 0.1;
-      NumericalScalar qMax = 0.9;
+      Scalar qMin = 0.1;
+      Scalar qMax = 0.9;
       UnsignedInteger nQ = 5;
       for (UnsignedInteger i1 = 0; i1 < nK; ++i1)
       {
-        NumericalScalar k = kMin + (kMax - kMin) * i1 / (nK - 1);
+        Scalar k = kMin + (kMax - kMin) * i1 / (nK - 1);
         for (UnsignedInteger iQ = 0; iQ < nQ; ++iQ)
         {
-          NumericalScalar q = qMin + (qMax - qMin) * iQ / (nQ - 1);
+          Scalar q = qMin + (qMax - qMin) * iQ / (nQ - 1);
           fullprint << "qGamma(" << k << ", " << q << ")=" << DistFunc::qGamma(k, q) << ", complementary=" << DistFunc::qGamma(k, q, true) << std::endl;
         }
       }
     } // qGamma
     {
       // rGamma
-      NumericalScalar kMin = 0.2;
-      NumericalScalar kMax = 5.0;
+      Scalar kMin = 0.2;
+      Scalar kMax = 5.0;
       UnsignedInteger nK = 5;
       UnsignedInteger nR = 5;
       for (UnsignedInteger i1 = 0; i1 < nK; ++i1)
       {
-        NumericalScalar k = kMin + (kMax - kMin) * i1 / (nK - 1);
+        Scalar k = kMin + (kMax - kMin) * i1 / (nK - 1);
         for (UnsignedInteger iR = 0; iR < nR; ++iR)
         {
           fullprint << "rGamma(" << k << ")=" << DistFunc::rGamma(k) << std::endl;

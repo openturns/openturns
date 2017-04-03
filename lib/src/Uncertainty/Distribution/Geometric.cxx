@@ -41,7 +41,7 @@ Geometric::Geometric()
 }
 
 /* Parameters constructor */
-Geometric::Geometric(const NumericalScalar p)
+Geometric::Geometric(const Scalar p)
   : DiscreteDistribution()
   , p_(0.)
 {
@@ -107,31 +107,31 @@ Point Geometric::getRealization() const
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Geometric::computePDF(const Point & point) const
+Scalar Geometric::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
+  const Scalar k = point[0];
   if ((k < 1.0 - supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return 0.0;
   return p_ * std::pow(1.0 - p_, k - 1.0);
 }
 
 
 /* Get the CDF of the distribution */
-NumericalScalar Geometric::computeCDF(const Point & point) const
+Scalar Geometric::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
+  const Scalar k = point[0];
   if (k < 1.0) return 0.0;
   return 1.0 - std::pow(1.0 - p_, floor(k));
 }
 
-NumericalScalar Geometric::computeComplementaryCDF(const Point & point) const
+Scalar Geometric::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
+  const Scalar k = point[0];
   if (k < 1.0) return 1.0;
   return std::pow(1.0 - p_, floor(k));
 }
@@ -141,7 +141,7 @@ Point Geometric::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
+  const Scalar k = point[0];
   if ((k < 1.0 - supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return Point(1, 0.0);
   return Point(1, (1.0 - k * p_) * std::pow(1.0 - p_, k - 2.0));
 }
@@ -151,13 +151,13 @@ Point Geometric::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = floor(point[0]);
+  const Scalar k = floor(point[0]);
   if ( k < 1.0 ) return Point(1, 0.0);
   return Point(1, k * std::pow(1 - p_, k - 1.0));
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar Geometric::computeScalarQuantile(const NumericalScalar prob,
+Scalar Geometric::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
   if (tail) return ceil(std::log(prob) / log1p(-p_));
@@ -165,7 +165,7 @@ NumericalScalar Geometric::computeScalarQuantile(const NumericalScalar prob,
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Geometric::computeCharacteristicFunction(const NumericalScalar x) const
+NumericalComplex Geometric::computeCharacteristicFunction(const Scalar x) const
 {
   const NumericalComplex value(p_ / (std::exp(NumericalComplex(0.0, -x)) - (1.0 - p_)));
   return value;
@@ -231,7 +231,7 @@ Point Geometric::getParameter() const
 void Geometric::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize();
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = Geometric(parameter[0]);
   setWeight(w);
 }
@@ -243,7 +243,7 @@ Description Geometric::getParameterDescription() const
 }
 
 /* P accessor */
-void Geometric::setP(const NumericalScalar p)
+void Geometric::setP(const Scalar p)
 {
   if ( (p <= 0.0) || (p > 1.0) ) throw InvalidArgumentException(HERE) << "Error: p must be in ]0, 1], here p=" << p;
   if (p != p_)
@@ -256,7 +256,7 @@ void Geometric::setP(const NumericalScalar p)
 }
 
 /* P accessor */
-NumericalScalar Geometric::getP() const
+Scalar Geometric::getP() const
 {
   return p_;
 }

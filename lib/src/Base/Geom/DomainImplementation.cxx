@@ -85,13 +85,13 @@ Bool DomainImplementation::isNumericallyEmpty() const
 }
 
 /* Get the volume of the domain */
-NumericalScalar DomainImplementation::getVolume() const
+Scalar DomainImplementation::getVolume() const
 {
   return getNumericalVolume();
 }
 
 /* Get the numerical volume of the domain */
-NumericalScalar DomainImplementation::getNumericalVolume() const
+Scalar DomainImplementation::getNumericalVolume() const
 {
   if (!isAlreadyComputedVolume_) computeVolume();
   return volume_;

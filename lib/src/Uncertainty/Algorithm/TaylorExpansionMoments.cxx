@@ -260,7 +260,7 @@ void TaylorExpansionMoments::computeMeanSecondOrder() const
   /* loop on k */
   for (UnsignedInteger k = 0; k < sheetDimension; ++k)
   {
-    NumericalScalar kSecondOrderContribution = 0.0;
+    Scalar kSecondOrderContribution = 0.0;
     /* loop on i */
     for (UnsignedInteger i = 0; i < rowDimension; ++i)
     {

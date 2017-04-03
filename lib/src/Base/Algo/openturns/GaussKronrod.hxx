@@ -44,7 +44,7 @@ public:
 
   /** Parameter constructor */
   GaussKronrod(const UnsignedInteger maximumSubIntervals,
-               const NumericalScalar maximumError,
+               const Scalar maximumError,
                const GaussKronrodRule & rule);
 
   /** Virtual copy constructor */
@@ -57,13 +57,13 @@ public:
 #ifndef SWIG
   virtual Point integrate(const Function & function,
                                    const Interval & interval,
-                                   NumericalScalar & error) const;
+                                   Scalar & error) const;
 
   // This method allows to get the estimated integration error as a scalar
   virtual Point integrate(const Function & function,
-                                   const NumericalScalar a,
-                                   const NumericalScalar b,
-                                   NumericalScalar & error,
+                                   const Scalar a,
+                                   const Scalar b,
+                                   Scalar & error,
                                    Point & ai,
                                    Point & bi,
                                    Sample & fi,
@@ -73,8 +73,8 @@ public:
   // This method allows to get the estimated integration error as a Point,
   // needed by Python
   virtual Point integrate(const Function & function,
-                                   const NumericalScalar a,
-                                   const NumericalScalar b,
+                                   const Scalar a,
+                                   const Scalar b,
                                    Point & error,
                                    Point & ai,
                                    Point & bi,
@@ -86,8 +86,8 @@ public:
   void setMaximumSubIntervals(const UnsignedInteger maximumSubIntervals);
 
   /** Maximum error accessor */
-  NumericalScalar getMaximumError() const;
-  void setMaximumError(const NumericalScalar maximumError);
+  Scalar getMaximumError() const;
+  void setMaximumError(const Scalar maximumError);
 
   /** Rule accessor */
   GaussKronrodRule getRule() const;
@@ -103,15 +103,15 @@ private:
 
   /** Compute the local GaussKronrod rule over [a, b] */
   Point computeRule(const Function & function,
-                             const NumericalScalar a,
-                             const NumericalScalar b,
-                             NumericalScalar & localError) const;
+                             const Scalar a,
+                             const Scalar b,
+                             Scalar & localError) const;
 
   /* Maximum number of sub-intervals */
   UnsignedInteger maximumSubIntervals_;
 
   /* Maximum estimated error */
-  NumericalScalar maximumError_;
+  Scalar maximumError_;
 
   /* Local integration rule */
   GaussKronrodRule rule_;

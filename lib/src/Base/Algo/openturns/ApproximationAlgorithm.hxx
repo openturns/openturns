@@ -76,10 +76,10 @@ public:
   Point getCoefficients();
 
   /** Acccessor to the residual of the selected metamodel on the provided basis */
-  NumericalScalar getResidual();
+  Scalar getResidual();
 
   /** Acccessor to the residual of the selected metamodel on the provided basis */
-  NumericalScalar getRelativeError();
+  Scalar getRelativeError();
 
 }; /* class ApproximationAlgorithm */
 

@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     UnsignedInteger basisSize = 10;
     LHSExperiment experiment(basis.getMeasure(), 1000);
     Bool mustScale = false;
-    NumericalScalar threshold = 0.01;
+    Scalar threshold = 0.01;
     KarhunenLoeveQuadratureFactory factory(domain, experiment, basis, basisSize, mustScale, threshold);
     AbsoluteExponential model(Point(dim, 1.0));
     Point lambda;

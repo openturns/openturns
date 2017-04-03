@@ -102,8 +102,8 @@ int main(int argc, char *argv[])
       Point zero(dim, 0.0);
 
       // Show PDF and CDF of zero point
-      NumericalScalar zeroPDF = distribution.computePDF(zero);
-      NumericalScalar zeroCDF = distribution.computeCDF(zero);
+      Scalar zeroPDF = distribution.computePDF(zero);
+      Scalar zeroCDF = distribution.computeCDF(zero);
       fullprint << "Zero point= " << zero
                 << " pdf=" << zeroPDF
                 << " cdf=" << zeroCDF

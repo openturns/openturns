@@ -43,8 +43,8 @@ TestResult::TestResult():
 /* Parameters constructor */
 TestResult::TestResult(const String & type,
                        const Bool binMeasure,
-                       const NumericalScalar pVal,
-                       const NumericalScalar pThreshold):
+                       const Scalar pVal,
+                       const Scalar pThreshold):
   PersistentObject(),
   testType_(type),
   binaryQualityMeasure_(binMeasure),
@@ -90,12 +90,12 @@ Bool TestResult::getBinaryQualityMeasure() const
   return binaryQualityMeasure_;
 }
 
-NumericalScalar TestResult::getPValue() const
+Scalar TestResult::getPValue() const
 {
   return pValue_;
 }
 
-NumericalScalar TestResult::getThreshold() const
+Scalar TestResult::getThreshold() const
 {
   return pValueThreshold_;
 }

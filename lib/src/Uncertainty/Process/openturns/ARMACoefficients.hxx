@@ -67,7 +67,7 @@ public:
   using SquareMatrixCollection::add;
 #endif
   void add(const SquareMatrix & matrix);
-  void add(const NumericalScalar scalar);
+  void add(const Scalar scalar);
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

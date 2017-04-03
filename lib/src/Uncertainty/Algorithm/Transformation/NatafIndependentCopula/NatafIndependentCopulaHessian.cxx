@@ -80,10 +80,10 @@ SymmetricTensor NatafIndependentCopulaHessian::hessian(const Point & inP) const
   SymmetricTensor result(dimension_, dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
-    NumericalScalar x = inP[i];
+    Scalar x = inP[i];
     if ((x < 0.0) || (x > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot evaluate the NatafIndependentCopulaHessian if all the components are not in [0, 1], here in=" << inP;
     // q = Normal(0,1).computeQuantile(x)
-    const NumericalScalar q = DistFunc::qNormal(x);
+    const Scalar q = DistFunc::qNormal(x);
     // factor = 1/Normal(0,1).computePDF(q)
     // 6.283185307179586476925286 = 2Pi
     // quantileSecondDerivative = -Normal(0,1).computeDDF(q) / (Normal(0,1).computePDF(q))^3 = q / (Normal(0,1).computePDF(q))^2

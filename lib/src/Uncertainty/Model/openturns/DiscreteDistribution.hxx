@@ -64,8 +64,8 @@ public:
   Bool isIntegral() const;
 
   /** Support tolerance accessor */
-  void setSupportEpsilon(const NumericalScalar epsilon);
-  NumericalScalar getSupportEpsilon() const;
+  void setSupportEpsilon(const Scalar epsilon);
+  Scalar getSupportEpsilon() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -75,7 +75,7 @@ public:
 
 protected:
   /** Tolerance to say if a point is in the support of the distribution */
-  NumericalScalar supportEpsilon_;
+  Scalar supportEpsilon_;
 
 private:
 

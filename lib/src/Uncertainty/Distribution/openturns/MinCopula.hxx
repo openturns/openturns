@@ -65,20 +65,20 @@ public:
 
   /** Get the PDF of the MinCopula distribution */
   using CopulaImplementation::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the MinCopula distribution */
   using CopulaImplementation::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the quantile of the distribution */
   using DistributionImplementation::computeQuantile;
-  Point computeQuantile(const NumericalScalar prob,
+  Point computeQuantile(const Scalar prob,
                                  const Bool tail = false) const;
 
   /** Compute the survival function */
   using CopulaImplementation::computeSurvivalFunction;
-  NumericalScalar computeSurvivalFunction(const Point & point) const;
+  Scalar computeSurvivalFunction(const Point & point) const;
 
   /** Get the Kendall concordance of the distribution */
   CorrelationMatrix getKendallTau() const;

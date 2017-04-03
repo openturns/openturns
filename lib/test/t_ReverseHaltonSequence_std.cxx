@@ -52,9 +52,9 @@ int main(int argc, char *argv[])
       if(reverseHaltonPoint.norm() < 1.0)
         ++ pointInsideCircle;
     }
-    NumericalScalar probabilityEstimate = 1.0 * pointInsideCircle / sampleSize;
-    NumericalScalar probability = M_PI / 4.0;
-    NumericalScalar relativeError = std::abs(probability - probabilityEstimate) / probability;
+    Scalar probabilityEstimate = 1.0 * pointInsideCircle / sampleSize;
+    Scalar probability = M_PI / 4.0;
+    Scalar relativeError = std::abs(probability - probabilityEstimate) / probability;
     fullprint << "sample size=" << sampleSize << std::endl;
     fullprint << "relative error to Pi=" << relativeError << std::endl;
   }

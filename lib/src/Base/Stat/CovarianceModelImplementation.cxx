@@ -148,8 +148,8 @@ UnsignedInteger CovarianceModelImplementation::getSpatialDimension() const
   return spatialDimension_;
 }
 
-CovarianceMatrix CovarianceModelImplementation::operator() (const NumericalScalar s,
-    const NumericalScalar t) const
+CovarianceMatrix CovarianceModelImplementation::operator() (const Scalar s,
+    const Scalar t) const
 {
   return operator() (Point(1, s), Point(1, t));
 }
@@ -157,49 +157,49 @@ CovarianceMatrix CovarianceModelImplementation::operator() (const NumericalScala
 CovarianceMatrix CovarianceModelImplementation::operator() (const Point & s,
     const Point & t) const
 {
-  const NumericalScalar rho = computeStandardRepresentative(s, t);
+  const Scalar rho = computeStandardRepresentative(s, t);
   return CovarianceMatrix((spatialCovariance_ * rho).getImplementation());
 }
 
 // compute standard representative computes the term \rho(s, t)
-NumericalScalar CovarianceModelImplementation::computeStandardRepresentative(const Point & s,
+Scalar CovarianceModelImplementation::computeStandardRepresentative(const Point & s,
     const Point & t) const
 {
   throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeStandardRepresentative(const Point & s, const Point & t) const";
 }
 
-NumericalScalar CovarianceModelImplementation::computeStandardRepresentative(const NumericalScalar & s,
-    const NumericalScalar & t) const
+Scalar CovarianceModelImplementation::computeStandardRepresentative(const Scalar & s,
+    const Scalar & t) const
 {
   return computeStandardRepresentative(Point(1, s), Point(1, t));
 }
 
-NumericalScalar CovarianceModelImplementation::computeStandardRepresentative(const Point & tau) const
+Scalar CovarianceModelImplementation::computeStandardRepresentative(const Point & tau) const
 {
   return computeStandardRepresentative(Point(dimension_), tau);
 }
 
-NumericalScalar CovarianceModelImplementation::computeStandardRepresentative(const NumericalScalar & tau) const
+Scalar CovarianceModelImplementation::computeStandardRepresentative(const Scalar & tau) const
 {
   return computeStandardRepresentative(Point(1, tau));
 }
 
 
-NumericalScalar CovarianceModelImplementation::computeAsScalar (const Point & s,
+Scalar CovarianceModelImplementation::computeAsScalar (const Point & s,
     const Point & t) const
 {
   if (dimension_ != 1) throw NotDefinedException(HERE) << "Error: the covariance model is of dimension=" << dimension_ << ", expected dimension=1.";
   return (*this)(s, t)(0, 0);
 }
 
-NumericalScalar CovarianceModelImplementation::computeAsScalar(const NumericalScalar s,
-    const NumericalScalar t) const
+Scalar CovarianceModelImplementation::computeAsScalar(const Scalar s,
+    const Scalar t) const
 {
-  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeAsScalar(const NumericalScalar s, const NumericalScalar t) const";
+  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeAsScalar(const Scalar s, const Scalar t) const";
 }
 
 /* Computation of the covariance function */
-CovarianceMatrix CovarianceModelImplementation::operator() (const NumericalScalar tau) const
+CovarianceMatrix CovarianceModelImplementation::operator() (const Scalar tau) const
 {
   return operator() (Point(1, tau));
 }
@@ -209,15 +209,15 @@ CovarianceMatrix CovarianceModelImplementation::operator() (const Point & tau) c
   return operator() (Point(tau.getDimension()), tau);
 }
 
-NumericalScalar CovarianceModelImplementation::computeAsScalar (const Point & tau) const
+Scalar CovarianceModelImplementation::computeAsScalar (const Point & tau) const
 {
   if (dimension_ != 1) throw NotDefinedException(HERE) << "Error: the covariance model is of dimension=" << dimension_ << ", expected dimension=1.";
   return (*this)(tau)(0, 0);
 }
 
-NumericalScalar CovarianceModelImplementation::computeAsScalar(const NumericalScalar tau) const
+Scalar CovarianceModelImplementation::computeAsScalar(const Scalar tau) const
 {
-  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeAsScalar(const NumericalScalar tau) const";
+  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeAsScalar(const Scalar tau) const";
 }
 
 /* Gradient */
@@ -232,7 +232,7 @@ Matrix CovarianceModelImplementation::partialGradient (const Point & s,
   MatrixImplementation covarianceSTImplementation(*covarianceST.getImplementation());
   covarianceSTImplementation.symmetrize();
   const Point centralValue(covarianceSTImplementation);
-  const NumericalScalar epsilon = std::sqrt(SpecFunc::ScalarEpsilon);
+  const Scalar epsilon = std::sqrt(SpecFunc::ScalarEpsilon);
   // Loop over the shifted points
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i)
   {
@@ -254,7 +254,7 @@ Matrix CovarianceModelImplementation::parameterGradient(const Point & s,
 {
   const Point parameter(getParameter());
   const UnsignedInteger size = parameter.getSize();
-  const NumericalScalar epsilon = std::sqrt(SpecFunc::ScalarEpsilon);
+  const Scalar epsilon = std::sqrt(SpecFunc::ScalarEpsilon);
   Matrix gradient(size, (dimension_ * (dimension_ + 1)) / 2);
   CovarianceMatrix covRef = operator()(s, t);
   Pointer<CovarianceModelImplementation> p_implementation(clone());
@@ -434,21 +434,21 @@ Sample CovarianceModelImplementation::discretizeRow(const Sample & vertices,
 
 /* Discretize the covariance function on a given TimeGrid/Mesh using HMatrix */
 HMatrix CovarianceModelImplementation::discretizeHMatrix(const RegularGrid & timeGrid,
-    const NumericalScalar nuggetFactor,
+    const Scalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
   return discretizeHMatrix(timeGrid.getVertices(), nuggetFactor, parameters);
 }
 
 HMatrix CovarianceModelImplementation::discretizeHMatrix(const Mesh & mesh,
-    const NumericalScalar nuggetFactor,
+    const Scalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
   return discretizeHMatrix(mesh.getVertices(), nuggetFactor, parameters);
 }
 
 HMatrix CovarianceModelImplementation::discretizeHMatrix(const Sample & vertices,
-    const NumericalScalar nuggetFactor,
+    const Scalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
 #ifdef OPENTURNS_HAVE_HMAT
@@ -472,21 +472,21 @@ HMatrix CovarianceModelImplementation::discretizeHMatrix(const Sample & vertices
 
 /* Discretize and factorize the covariance function on a given TimeGrid/Mesh using HMatrix */
 HMatrix CovarianceModelImplementation::discretizeAndFactorizeHMatrix(const RegularGrid & timeGrid,
-    const NumericalScalar nuggetFactor,
+    const Scalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
   return discretizeAndFactorizeHMatrix(timeGrid.getVertices(), nuggetFactor, parameters);
 }
 
 HMatrix CovarianceModelImplementation::discretizeAndFactorizeHMatrix(const Mesh & mesh,
-    const NumericalScalar nuggetFactor,
+    const Scalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
   return discretizeAndFactorizeHMatrix(mesh.getVertices(), nuggetFactor, parameters);
 }
 
 HMatrix CovarianceModelImplementation::discretizeAndFactorizeHMatrix(const Sample & vertices,
-    const NumericalScalar nuggetFactor,
+    const Scalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
   // We suppose that covariance matrix is symmetric positive definite
@@ -558,12 +558,12 @@ void CovarianceModelImplementation::updateSpatialCovariance()
 }
 
 /* Nugget factor accessor */
-NumericalScalar CovarianceModelImplementation::getNuggetFactor() const
+Scalar CovarianceModelImplementation::getNuggetFactor() const
 {
   return nuggetFactor_;
 }
 
-void CovarianceModelImplementation::setNuggetFactor(const NumericalScalar nuggetFactor)
+void CovarianceModelImplementation::setNuggetFactor(const Scalar nuggetFactor)
 {
   if (!(nuggetFactor >= 0.0)) throw InvalidArgumentException(HERE) << "Error: the nugget factor=" << nuggetFactor << " is negative";
   nuggetFactor_ = nuggetFactor;
@@ -709,8 +709,8 @@ CovarianceModelImplementation::Implementation CovarianceModelImplementation::get
 /* Drawing method */
 Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
 					  const UnsignedInteger columnIndex,
-					  const NumericalScalar tMin,
-					  const NumericalScalar tMax,
+					  const Scalar tMin,
+					  const Scalar tMax,
 					  const UnsignedInteger pointNumber,
 					  const Bool asStationary,
 					  const Bool correlationFlag) const
@@ -724,7 +724,7 @@ Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
     {
       // Here we compute the normalization for the correlation instead of using
       // the amplitude attribute for models for which it is not given
-      NumericalScalar ratio = 1.0;
+      Scalar ratio = 1.0;
       if (correlationFlag)
 	{
 	  ratio = (*this)(0.0)(rowIndex, columnIndex);
@@ -734,8 +734,8 @@ Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
       Sample data(pointNumber, 2);
       for (UnsignedInteger i = 0; i < pointNumber; ++i)
 	{
-	  const NumericalScalar tau = (i * tMin + (pointNumber - i - 1.0) * tMax) / (pointNumber - 1.0);
-	  const NumericalScalar value((*this)(tau)(rowIndex, columnIndex) / ratio);
+	  const Scalar tau = (i * tMin + (pointNumber - i - 1.0) * tMax) / (pointNumber - 1.0);
+	  const Scalar value((*this)(tau)(rowIndex, columnIndex) / ratio);
 	  data[i][0] = tau;
 	  data[i][1] = value;
 	}
@@ -760,7 +760,7 @@ Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
 	{
 	  for (UnsignedInteger i = 0; i < j; ++i)
 	    {
-	      const NumericalScalar scaling = sigma[i] * sigma[j];
+	      const Scalar scaling = sigma[i] * sigma[j];
 	      if (scaling == 0.0) matrix(i, j) = 0.0;
 	      else matrix(i, j) /= scaling;
 	    } // i

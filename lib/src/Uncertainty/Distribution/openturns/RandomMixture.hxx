@@ -55,12 +55,12 @@ public:
 
   /** Parameter constructor - 1D */
   explicit RandomMixture(const DistributionCollection & coll,
-                         const NumericalScalar constant = 0.0);
+                         const Scalar constant = 0.0);
 
   /** Parameter constructor - 1D */
   explicit RandomMixture(const DistributionCollection & coll,
                          const Point & weights,
-                         const NumericalScalar constant = 0.0);
+                         const Scalar constant = 0.0);
 
   /** Parameter constructor - nD */
   RandomMixture(const DistributionCollection & coll,
@@ -125,11 +125,11 @@ public:
 
   /** Get the PDF of the RandomMixture */
   using DistributionImplementation::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Compute the PDF over a regular grid */
-  Sample computePDF(const NumericalScalar xMin,
-                             const NumericalScalar xMax,
+  Sample computePDF(const Scalar xMin,
+                             const Scalar xMax,
                              const UnsignedInteger pointNumber,
                              Sample & grid) const;
 
@@ -150,7 +150,7 @@ protected:
 private:
 
   /** Quantile computation for dimension=1 */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+  Scalar computeScalarQuantile(const Scalar prob,
                                         const Bool tail = false) const;
 
   /** Compute the characteristic function of 1D distributions by difference to a reference Normal distribution with the same mean and the same standard deviation in a regular pattern with cache */
@@ -177,35 +177,35 @@ private:
 public:
   /** Get the CDF of the RandomMixture */
   using DistributionImplementation::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
   using DistributionImplementation::computeComplementaryCDF;
-  NumericalScalar computeComplementaryCDF(const Point & point) const;
+  Scalar computeComplementaryCDF(const Point & point) const;
 
   /** Compute the CDF over a regular grid */
-  Sample computeCDF(const NumericalScalar xMin,
-                             const NumericalScalar xMax,
+  Sample computeCDF(const Scalar xMin,
+                             const Scalar xMax,
                              const UnsignedInteger pointNumber,
                              Sample & grid) const;
 
   /** Get the probability content of an interval */
-  NumericalScalar computeProbability(const Interval & interval) const;
+  Scalar computeProbability(const Interval & interval) const;
 
   /** Compute the quantile over a regular grid */
   using DistributionImplementation::computeQuantile;
-  Sample computeQuantile(const NumericalScalar qMin,
-                                  const NumericalScalar qMax,
+  Sample computeQuantile(const Scalar qMin,
+                                  const Scalar qMax,
                                   const UnsignedInteger pointNumber,
                                   const Bool tail = false) const;
 
   /** Get the minimum volume level set containing a given probability of the distribution */
-  virtual LevelSet computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const;
+  virtual LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & threshold) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   using DistributionImplementation::computeCharacteristicFunction;
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
+  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
   NumericalComplex computeCharacteristicFunction(const Point & x) const;
   using DistributionImplementation::computeLogCharacteristicFunction;
-  NumericalComplex computeLogCharacteristicFunction(const NumericalScalar x) const;
+  NumericalComplex computeLogCharacteristicFunction(const Scalar x) const;
   NumericalComplex computeLogCharacteristicFunction(const Point & x) const;
 
   /** Get the PDF gradient of the distribution */
@@ -228,10 +228,10 @@ public:
   Matrix getWeights() const;
 
   /** Get a positon indicator for a 1D distribution */
-  NumericalScalar getPositionIndicator() const;
+  Scalar getPositionIndicator() const;
 
   /** Get a dispersion indicator for a 1D distribution */
-  NumericalScalar getDispersionIndicator() const;
+  Scalar getDispersionIndicator() const;
 
   /** BlockMin accessor */
   void setBlockMin(const UnsignedInteger blockMin);
@@ -246,22 +246,22 @@ public:
   UnsignedInteger getMaxSize() const;
 
   /** Alpha accessor */
-  void setAlpha(const NumericalScalar alpha);
-  NumericalScalar getAlpha() const;
+  void setAlpha(const Scalar alpha);
+  Scalar getAlpha() const;
 
   /** Beta accessor */
-  void setBeta(const NumericalScalar beta);
-  NumericalScalar getBeta() const;
+  void setBeta(const Scalar beta);
+  Scalar getBeta() const;
 
   /** Reference bandwidth accessor */
   void setReferenceBandwidth(const Point & bandwidth);
   Point getReferenceBandwidth() const;
 
   /** PDF epsilon accessor. For other distributions, it is a read-only attribute. */
-  void setPDFPrecision(const NumericalScalar pdfPrecision);
+  void setPDFPrecision(const Scalar pdfPrecision);
 
   /** CDF epsilon accessor. For other distributions, it is a read-only attribute. */
-  void setCDFPrecision(const NumericalScalar cdfPrecision);
+  void setCDFPrecision(const Scalar cdfPrecision);
 
   /** Project a RandomMixture distribution over a collection of DistributionFactory by using sampling and Kolmogorov distance. */
   DistributionCollection project(const DistributionFactoryCollection & factoryCollection,
@@ -312,7 +312,7 @@ private:
     /** Compute the Kolmogorov distance based on the given data, for a given parameter set */
     Point computeNorm(const Point & parameters) const
     {
-      NumericalScalar norm = 0.0;
+      Scalar norm = 0.0;
       try
       {
         const Distribution candidate(factory_.build(PointCollection(1, parameters)));
@@ -353,11 +353,11 @@ protected:
 
 private:
   /** Compute the left-hand sum in Poisson's summation formula for the equivalent normal */
-  NumericalScalar computeEquivalentNormalPDFSum(const NumericalScalar x) const;
-  NumericalScalar computeEquivalentNormalCDFSum(const NumericalScalar s, const NumericalScalar t) const;
+  Scalar computeEquivalentNormalPDFSum(const Scalar x) const;
+  Scalar computeEquivalentNormalCDFSum(const Scalar s, const Scalar t) const;
 
   friend struct EquivalentNormalPDFSumPolicy;
-  NumericalScalar computeEquivalentNormalPDFSum(const Point & y, const Point & gridStep,
+  Scalar computeEquivalentNormalPDFSum(const Point & y, const Point & gridStep,
       UnsignedInteger imax, UnsignedInteger & levelMax) const;
 public:
   /** Get the standard deviation of the distribution */
@@ -398,7 +398,7 @@ private:
   Matrix inverseWeights_;
 
   /** Determinant of inverse weights */
-  NumericalScalar detWeightsInverse_;
+  Scalar detWeightsInverse_;
 
   /** FFT algorithm */
   FFT fftAlgorithm_;
@@ -407,11 +407,11 @@ private:
   Bool isAnalytical_;
 
   /** Position indicator */
-  mutable NumericalScalar positionIndicator_;
+  mutable Scalar positionIndicator_;
   mutable Bool isAlreadyComputedPositionIndicator_;
 
   /** Dispersion indicator */
-  mutable NumericalScalar dispersionIndicator_;
+  mutable Scalar dispersionIndicator_;
   mutable Bool isAlreadyComputedDispersionIndicator_;
 
   /** Minimum number of blocks to consider for PDF and CDF computation */
@@ -424,7 +424,7 @@ private:
   Point referenceBandwidth_;
 
   /** Reference bandwidth factor */
-  NumericalScalar referenceBandwidthFactor_;
+  Scalar referenceBandwidthFactor_;
 
   /** Maximum size of the cache for the CharacteristicFunction values */
   UnsignedInteger maxSize_;
@@ -436,16 +436,16 @@ private:
   mutable NumericalComplexPersistentCollection characteristicValuesCache_;
 
   /** A priori range of PDF and CDF argument expressed in dispersionIndicator units */
-  NumericalScalar alpha_;
+  Scalar alpha_;
 
   /** Distance from the boundary of the a priori range at which the PDF is negligible */
-  NumericalScalar beta_;
+  Scalar beta_;
 
   /** Requested precision for PDF computation */
-  mutable NumericalScalar pdfPrecision_;
+  mutable Scalar pdfPrecision_;
 
   /** Requested precision for CDF computation */
-  mutable NumericalScalar cdfPrecision_;
+  mutable Scalar cdfPrecision_;
 
   /** Normal distribution with the same mean and standard deviation than the RandomMixture */
   Normal equivalentNormal_;

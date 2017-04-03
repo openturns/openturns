@@ -121,7 +121,7 @@ HMatrixFactory::build(const Sample & sample, UnsignedInteger outputDimension, Bo
   hmat_delete_clustering(algo);
   delete[] points;
 
-  NumericalScalar eta = parameters.getAdmissibilityFactor();
+  Scalar eta = parameters.getAdmissibilityFactor();
   hmat_admissibility_t* admissibility = hmat_create_admissibility_standard(eta);
   hmat_matrix_t* ptrHMat = hmatInterface->create_empty_hmatrix_admissibility(ct, ct, symmetric, admissibility);
   hmat_delete_admissibility(admissibility);

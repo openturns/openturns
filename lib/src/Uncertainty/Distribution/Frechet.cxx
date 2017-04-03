@@ -31,9 +31,9 @@ CLASSNAMEINIT(Frechet);
 static const Factory<Frechet> Factory_Frechet;
 
 /* Parameters constructor */
-Frechet::Frechet(const NumericalScalar alpha,
-                 const NumericalScalar beta,
-                 const NumericalScalar gamma)
+Frechet::Frechet(const Scalar alpha,
+                 const Scalar beta,
+                 const Scalar gamma)
   : ContinuousDistribution()
   , alpha_(alpha)
   , beta_(beta)
@@ -98,7 +98,7 @@ void Frechet::computeRange()
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar Frechet::computeScalarQuantile(const NumericalScalar prob,
+Scalar Frechet::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
   return gamma_ + beta_ * std::pow(-std::log(tail ? 1.0 - prob : prob), -1.0 / alpha_);
@@ -114,47 +114,47 @@ Point Frechet::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0] - gamma_;
+  const Scalar x = point[0] - gamma_;
   if (x <= 0.0) return Point(1, 0.0);
-  const NumericalScalar y = x / beta_;
-  const NumericalScalar minusAlphalogY = -alpha_ * std::log(y);
+  const Scalar y = x / beta_;
+  const Scalar minusAlphalogY = -alpha_ * std::log(y);
   return Point(1, -alpha_ * (-alpha_ * expm1(minusAlphalogY) + 1.0) * std::exp(-std::exp(minusAlphalogY) + minusAlphalogY) / (x * x));
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar Frechet::computeCDF(const Point & point) const
+Scalar Frechet::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0] - gamma_;
+  const Scalar x = point[0] - gamma_;
   if (x <= 0.0) return 0.0;
   return std::exp(-std::pow(x / beta_, -alpha_));
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar Frechet::computePDF(const Point & point) const
+Scalar Frechet::computePDF(const Point & point) const
 {
-  const NumericalScalar x = point[0] - gamma_;
+  const Scalar x = point[0] - gamma_;
   if (x <= 0.0) return 0.0;
   return std::exp(computeLogPDF(point));
 }
 
-NumericalScalar Frechet::computeLogPDF(const Point & point) const
+Scalar Frechet::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0] - gamma_;
+  const Scalar x = point[0] - gamma_;
   if (x <= 0.0) return SpecFunc::LogMinScalar;
   return std::log(alpha_ / beta_) + (-1.0 - alpha_) * std::log(x / beta_) - std::pow(x / beta_, -alpha_);
 }
 
 /** Get the minimum volume level set containing a given probability of the distribution */
-LevelSet Frechet::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const
+LevelSet Frechet::computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & threshold) const
 {
   const Interval interval(computeMinimumVolumeInterval(prob));
   Function minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
   minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
-  NumericalScalar minusLogPDFThreshold = -computeLogPDF(interval.getLowerBound()[0]);
+  Scalar minusLogPDFThreshold = -computeLogPDF(interval.getLowerBound()[0]);
   threshold = std::exp(-minusLogPDFThreshold);
   return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold);
 }
@@ -172,7 +172,7 @@ Point Frechet::getParameter() const
 void Frechet::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize();
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = Frechet(parameter[0], parameter[1], parameter[2]);
   setWeight(w);
 }
@@ -192,12 +192,12 @@ Point Frechet::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   Point pdfGradient(3);
   if (x <= gamma_) return pdfGradient;
-  const NumericalScalar logCdf = -std::pow((x - gamma_) / beta_, -alpha_);
-  const NumericalScalar logCdfm1 = std::pow((x - gamma_) / beta_, -alpha_ - 1.0);
-  const NumericalScalar cdf = std::exp(logCdf);
+  const Scalar logCdf = -std::pow((x - gamma_) / beta_, -alpha_);
+  const Scalar logCdfm1 = std::pow((x - gamma_) / beta_, -alpha_ - 1.0);
+  const Scalar cdf = std::exp(logCdf);
   pdfGradient[0] = -alpha_ * logCdfm1 * cdf * std::log((x - gamma_) / beta_) / beta_ - alpha_ * logCdf * logCdfm1 * cdf * std::log((x - gamma_) / beta_) / beta_ + logCdfm1 * cdf / beta_;
   pdfGradient[1] = alpha_ * alpha_ * logCdf * logCdfm1 * cdf / (beta_ * beta_) - alpha_ * logCdfm1 * (-alpha_ - 1.0) * cdf / (beta_ * beta_) - alpha_ * logCdfm1 * cdf / (beta_ * beta_);
   pdfGradient[2] = alpha_ * alpha_ * logCdf * logCdfm1 * cdf / (beta_ * (x - gamma_)) - alpha_ * logCdfm1 * (-alpha_ - 1.0) * cdf / (beta_ * (x - gamma_));
@@ -209,11 +209,11 @@ Point Frechet::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   Point cdfGradient(3);
   if (x <= gamma_) return cdfGradient;
-  const NumericalScalar logCdf = -std::pow((x - gamma_) / beta_, -alpha_);
-  const NumericalScalar cdf = std::exp(logCdf);
+  const Scalar logCdf = -std::pow((x - gamma_) / beta_, -alpha_);
+  const Scalar cdf = std::exp(logCdf);
   cdfGradient[0] = -logCdf * cdf * std::log((x - gamma_) / beta_);
   cdfGradient[1] = alpha_ * logCdf * cdf / beta_;
   cdfGradient[2] = alpha_ * logCdf * cdf / (x - gamma_);
@@ -241,7 +241,7 @@ void Frechet::computeCovariance() const
   if (!(alpha_ > 2.0)) throw InvalidArgumentException(HERE) << "covariance is not defined for alpha <= 2";
 
   covariance_ = CovarianceMatrix(1);
-  const NumericalScalar gammaInvAlpha = SpecFunc::Gamma(1.0 - 1.0 / alpha_);
+  const Scalar gammaInvAlpha = SpecFunc::Gamma(1.0 - 1.0 / alpha_);
   covariance_(0, 0) = beta_ * beta_ * (SpecFunc::Gamma(1.0 - 2.0 / alpha_) - gammaInvAlpha * gammaInvAlpha);
   isAlreadyComputedCovariance_ = true;
 }
@@ -252,11 +252,11 @@ Point Frechet::getSkewness() const
 {
   if (!(alpha_ > 3.0)) throw InvalidArgumentException(HERE) << "skewness is not defined for alpha <= 3";
 
-  const NumericalScalar gammaInvAlpha = SpecFunc::Gamma(1.0 - 1.0 / alpha_);
-  const NumericalScalar gamma2InvAlpha = SpecFunc::Gamma(1.0 - 2.0 / alpha_);
-  const NumericalScalar gamma3InvAlpha = SpecFunc::Gamma(1.0 - 3.0 / alpha_);
-  const NumericalScalar gammaInvAlpha2 = gammaInvAlpha * gammaInvAlpha;
-  const NumericalScalar skewness = (gamma3InvAlpha + gammaInvAlpha * (2.0 * gammaInvAlpha2 - 3.0 * gamma2InvAlpha)) / std::pow(gamma2InvAlpha - gammaInvAlpha2, 1.5);
+  const Scalar gammaInvAlpha = SpecFunc::Gamma(1.0 - 1.0 / alpha_);
+  const Scalar gamma2InvAlpha = SpecFunc::Gamma(1.0 - 2.0 / alpha_);
+  const Scalar gamma3InvAlpha = SpecFunc::Gamma(1.0 - 3.0 / alpha_);
+  const Scalar gammaInvAlpha2 = gammaInvAlpha * gammaInvAlpha;
+  const Scalar skewness = (gamma3InvAlpha + gammaInvAlpha * (2.0 * gammaInvAlpha2 - 3.0 * gamma2InvAlpha)) / std::pow(gamma2InvAlpha - gammaInvAlpha2, 1.5);
   return Point(1, skewness);
 }
 
@@ -265,12 +265,12 @@ Point Frechet::getKurtosis() const
 {
   if (!(alpha_ > 4.0)) throw InvalidArgumentException(HERE) << "kurtosis is not defined for alpha <= 4";
 
-  const NumericalScalar gammaInvAlpha = SpecFunc::Gamma(1.0 - 1.0 / alpha_);
-  const NumericalScalar gamma2InvAlpha = SpecFunc::Gamma(1.0 - 2.0 / alpha_);
-  const NumericalScalar gamma3InvAlpha = SpecFunc::Gamma(1.0 - 3.0 / alpha_);
-  const NumericalScalar gamma4InvAlpha = SpecFunc::Gamma(1.0 - 4.0 / alpha_);
-  const NumericalScalar gammaInvAlpha2 = gammaInvAlpha * gammaInvAlpha;
-  const NumericalScalar kurtosis((gamma4InvAlpha + gammaInvAlpha * (-4.0 * gamma3InvAlpha + 3.0 * gammaInvAlpha * (2.0 * gamma2InvAlpha - gammaInvAlpha2))) / std::pow(gamma2InvAlpha - gammaInvAlpha2, 2.0));
+  const Scalar gammaInvAlpha = SpecFunc::Gamma(1.0 - 1.0 / alpha_);
+  const Scalar gamma2InvAlpha = SpecFunc::Gamma(1.0 - 2.0 / alpha_);
+  const Scalar gamma3InvAlpha = SpecFunc::Gamma(1.0 - 3.0 / alpha_);
+  const Scalar gamma4InvAlpha = SpecFunc::Gamma(1.0 - 4.0 / alpha_);
+  const Scalar gammaInvAlpha2 = gammaInvAlpha * gammaInvAlpha;
+  const Scalar kurtosis((gamma4InvAlpha + gammaInvAlpha * (-4.0 * gamma3InvAlpha + 3.0 * gammaInvAlpha * (2.0 * gamma2InvAlpha - gammaInvAlpha2))) / std::pow(gamma2InvAlpha - gammaInvAlpha2, 2.0));
   return Point(1, kurtosis);
 }
 
@@ -288,7 +288,7 @@ Frechet::Implementation Frechet::getStandardRepresentative() const
 }
 
 /* Alpha accessor */
-void Frechet::setAlpha(const NumericalScalar alpha)
+void Frechet::setAlpha(const Scalar alpha)
 {
   if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "Error: Frechet alpha parameter must be positive";
   if (alpha != alpha_)
@@ -300,13 +300,13 @@ void Frechet::setAlpha(const NumericalScalar alpha)
   }
 }
 
-NumericalScalar Frechet::getAlpha() const
+Scalar Frechet::getAlpha() const
 {
   return alpha_;
 }
 
 /* Beta accessor */
-void Frechet::setBeta(const NumericalScalar beta)
+void Frechet::setBeta(const Scalar beta)
 {
   if (!(beta > 0.0)) throw InvalidArgumentException(HERE) << "Error: Frechet beta parameter must be positive";
   if (beta != beta_)
@@ -318,13 +318,13 @@ void Frechet::setBeta(const NumericalScalar beta)
   }
 }
 
-NumericalScalar Frechet::getBeta() const
+Scalar Frechet::getBeta() const
 {
   return beta_;
 }
 
 /* Gamma accessor */
-void Frechet::setGamma(const NumericalScalar gamma)
+void Frechet::setGamma(const Scalar gamma)
 {
   if (gamma != gamma_)
   {
@@ -336,7 +336,7 @@ void Frechet::setGamma(const NumericalScalar gamma)
 }
 
 
-NumericalScalar Frechet::getGamma() const
+Scalar Frechet::getGamma() const
 {
   return gamma_;
 }

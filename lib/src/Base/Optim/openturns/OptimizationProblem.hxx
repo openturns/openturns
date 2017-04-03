@@ -65,7 +65,7 @@ public:
 
   /** Constructor with parameters */
   OptimizationProblem(const Function & levelFunction,
-                      NumericalScalar levelValue);
+                      Scalar levelValue);
 
   /** Objective functions accessor */
   Function getObjective() const;
@@ -93,8 +93,8 @@ public:
   Bool hasLevelFunction() const;
 
   /** Level value accessor */
-  NumericalScalar getLevelValue() const;
-  void setLevelValue(NumericalScalar levelValue);
+  Scalar getLevelValue() const;
+  void setLevelValue(Scalar levelValue);
 
   /** Dimension accessor */
   UnsignedInteger getDimension() const;

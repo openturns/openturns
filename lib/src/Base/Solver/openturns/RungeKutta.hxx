@@ -60,9 +60,9 @@ public:
 
 private:
   /** Perform one step of the RungeKutta method */
-  Point computeStep(const NumericalScalar t,
+  Point computeStep(const Scalar t,
                              const Point & state,
-                             const NumericalScalar h) const;
+                             const Scalar h) const;
 
 }; /* class RungeKutta */
 

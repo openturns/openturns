@@ -24,10 +24,10 @@
 using namespace OT;
 using namespace OT::Test;
 
-inline NumericalScalar sobol(const Indices & indices,
+inline Scalar sobol(const Indices & indices,
                              const Point & a)
 {
-  NumericalScalar value = 1.0;
+  Scalar value = 1.0;
   for (UnsignedInteger i = 0; i < indices.getSize(); ++i)
   {
     value *= 1.0 / (3.0 * pow(1.0 + a[indices[i]], 2.0));
@@ -49,11 +49,11 @@ int main(int argc, char *argv[])
     UnsignedInteger outputDimension = 2;
 
     // Reference analytical values
-    NumericalScalar meanTh_Sobol = 1.0;
-    NumericalScalar covTh_Sobol = 1.0;
+    Scalar meanTh_Sobol = 1.0;
+    Scalar covTh_Sobol = 1.0;
     Point kappa(inputDimension);
-    NumericalScalar a = 7.0;
-    NumericalScalar b = 0.1;
+    Scalar a = 7.0;
+    Scalar b = 0.1;
     // Create the gSobol function
     Description inputVariables(inputDimension);
     Description outputVariables(outputDimension);
@@ -71,8 +71,8 @@ int main(int argc, char *argv[])
     formula[1] = (OSS() << "sin(" << -M_PI << " + 2 * " << M_PI << " * xi0) + (" << a << ") * (sin(" << -M_PI << " + 2 * " << M_PI << " * xi1)) ^ 2 + (" << b << ") * (" << -M_PI << " + 2 * " << M_PI << " * xi2)^4 * sin(" << -M_PI << " + 2 * " << M_PI << " * xi0)");
     --covTh_Sobol;
     // Reference analytical values
-    NumericalScalar meanTh_Ishigami = a / 2;
-    NumericalScalar covTh_Ishigami = (pow(b, 2.0) * pow(M_PI, 8.0)) / 18.0 + (b * pow(M_PI, 4.0)) / 5.0 + (pow(a, 2.0)) / 8.0 + 1.0 / 2.0;
+    Scalar meanTh_Ishigami = a / 2;
+    Scalar covTh_Ishigami = (pow(b, 2.0) * pow(M_PI, 8.0)) / 18.0 + (b * pow(M_PI, 4.0)) / 5.0 + (pow(a, 2.0)) / 8.0 + 1.0 / 2.0;
     Point sob_1_Ishigami(3);
     sob_1_Ishigami[0] = (b * pow(M_PI, 4.0) / 5.0 + pow(b, 2.0) * pow(M_PI, 8.0) / 50.0 + 1.0 / 2.0) / covTh_Ishigami;
     sob_1_Ishigami[1] = (pow(a, 2.0) / 8.0) / covTh_Ishigami;
@@ -171,7 +171,7 @@ int main(int argc, char *argv[])
     UnsignedInteger degree = 6;
     UnsignedInteger indexMax = enumerateFunction.getStrataCumulatedCardinal(degree);
     UnsignedInteger basisDimension = enumerateFunction.getStrataCumulatedCardinal(degree / 2);
-    NumericalScalar threshold = 1.0e-6;
+    Scalar threshold = 1.0e-6;
     listAdaptiveStrategy.add(CleaningStrategy(productBasis, indexMax, basisDimension, threshold, false));
     // Second, the most used (and most basic!) strategy
     listAdaptiveStrategy.add(FixedStrategy(productBasis, enumerateFunction.getStrataCumulatedCardinal(degree)));
@@ -188,7 +188,7 @@ int main(int argc, char *argv[])
       {
         ProjectionStrategy projectionStrategy(listProjectionStrategy[projectionStrategyIndex]);
         // Create the polynomial chaos algorithm
-        NumericalScalar maximumResidual = 1.0e-10;
+        Scalar maximumResidual = 1.0e-10;
         FunctionalChaosAlgorithm algo(model, distribution, adaptiveStrategy, projectionStrategy);
         algo.setMaximumResidual(maximumResidual);
         // Reinitialize the RandomGenerator to see the effect of the sampling method only
@@ -211,15 +211,15 @@ int main(int argc, char *argv[])
         for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++outputIndex)
         {
           fullprint << "output=" << outputIndex << std::endl;
-          NumericalScalar mean = vector.getMean()[outputIndex];
+          Scalar mean = vector.getMean()[outputIndex];
           fullprint << "mean=" << std::fixed << std::setprecision(5) << mean << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(mean - meanTh[outputIndex]) << std::endl;
-          NumericalScalar variance = vector.getCovariance()(outputIndex, outputIndex);
+          Scalar variance = vector.getCovariance()(outputIndex, outputIndex);
           fullprint << "variance=" << std::fixed << std::setprecision(5) << variance << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(variance - covTh(outputIndex, outputIndex)) << std::endl;
           Indices indices(1);
           for(UnsignedInteger i = 0; i < inputDimension; ++i)
           {
             indices[0] = i;
-            NumericalScalar value = vector.getSobolIndex(i, outputIndex);
+            Scalar value = vector.getSobolIndex(i, outputIndex);
             fullprint << "Sobol index " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_1[i + inputDimension * outputIndex]) << std::endl;
           }
           indices = Indices(2);
@@ -230,7 +230,7 @@ int main(int argc, char *argv[])
             for (UnsignedInteger j = i + 1; j < inputDimension; ++j)
             {
               indices[1] = j;
-              NumericalScalar value = vector.getSobolIndex(indices, outputIndex);
+              Scalar value = vector.getSobolIndex(indices, outputIndex);
               fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_2[k + inputDimension * outputIndex]) << std::endl;
               k = k + 1;
             } // j
@@ -239,7 +239,7 @@ int main(int argc, char *argv[])
           indices[0] = 0;
           indices[1] = 1;
           indices[2] = 2;
-          NumericalScalar value = vector.getSobolIndex(indices, outputIndex);
+          Scalar value = vector.getSobolIndex(indices, outputIndex);
           fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_3[outputIndex]) << std::endl;
           for (UnsignedInteger i = 0; i < inputDimension; ++i)
           {

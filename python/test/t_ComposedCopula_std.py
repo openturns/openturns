@@ -46,7 +46,7 @@ try:
     print("Point= ", repr(point))
 
     # Show PDF and CDF of point
-    # NumericalScalar eps(1e-5)
+    # Scalar eps(1e-5)
     DDF = copula.computeDDF(point)
     print("ddf     =", repr(DDF))
     PDF = copula.computePDF(point)

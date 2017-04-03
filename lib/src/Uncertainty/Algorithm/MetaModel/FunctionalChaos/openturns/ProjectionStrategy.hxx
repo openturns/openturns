@@ -63,10 +63,10 @@ public:
   virtual Point getWeights() const;
 
   /** Residual accessor */
-  virtual NumericalScalar getResidual() const;
+  virtual Scalar getResidual() const;
 
   /** Relative error accessor */
-  virtual NumericalScalar getRelativeError() const;
+  virtual Scalar getRelativeError() const;
 
   /** Relative error accessor */
   virtual Point getCoefficients() const;

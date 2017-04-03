@@ -36,8 +36,8 @@ int main(int argc, char *argv[])
   try
   {
     // First, compute the volume of the unit ball in R^n
-    NumericalScalar a = -1.0;
-    NumericalScalar b = 1.0;
+    Scalar a = -1.0;
+    Scalar b = 1.0;
     String formula("1.0");
     Collection< Function > lower(0);
     Collection< Function > upper(0);
@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
         upper.add(SymbolicFunction(inVarsBounds, Description(1, String("sqrt(") + formula + String(")"))));
       }
       SymbolicFunction integrand(inVars, Description(1, "1.0"));
-      NumericalScalar value = algo.integrate(integrand, a, b, lower, upper)[0];
+      Scalar value = algo.integrate(integrand, a, b, lower, upper)[0];
       fullprint << "dim=" << n + 1 << ", volume=" << value << ", calls=" << integrand.getCallsNumber() << std::endl;
     }
     // Second, integrate a multi-valued function

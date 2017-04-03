@@ -76,7 +76,7 @@ void LeastSquaresMethodImplementation::setWeight(const Point & weight)
 {
   const UnsignedInteger size = weight.getSize();
   // First, check for uniformity
-  const NumericalScalar w0 = weight[0];
+  const Scalar w0 = weight[0];
   if (!(w0 > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected positive weights, here w[0]=" << w0;
   hasUniformWeight_ = true;
   for (UnsignedInteger i = 1; i < size; ++i)
@@ -157,7 +157,7 @@ Point LeastSquaresMethodImplementation::getGramInverseDiag() const
 }
 
 
-NumericalScalar LeastSquaresMethodImplementation::getGramInverseTrace() const
+Scalar LeastSquaresMethodImplementation::getGramInverseTrace() const
 {
   // subclasses better override this
   return getGramInverse().getImplementation()->computeTrace();

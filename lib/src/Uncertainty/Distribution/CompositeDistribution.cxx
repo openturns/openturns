@@ -102,8 +102,8 @@ CompositeDistribution::CompositeDistribution(const Function & function,
   // Compute the variations
   for (UnsignedInteger i = 0; i < size - 1; ++i) increasing_[i] = values_[i + 1] > values[i];
   // Compute the range
-  NumericalScalar xMin = values[0];
-  NumericalScalar xMax = xMin;
+  Scalar xMin = values[0];
+  Scalar xMax = xMin;
   for (UnsignedInteger i = 1; i < size; ++i)
   {
     xMin = std::min(xMin, values[i]);
@@ -131,8 +131,8 @@ void CompositeDistribution::setFunctionAndAntecedent(const Function & function,
 void CompositeDistribution::update()
 {
   // First, compute the roots of the gradient
-  const NumericalScalar xMin = antecedent_.getRange().getLowerBound()[0] + ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
-  const NumericalScalar xMax = antecedent_.getRange().getUpperBound()[0] - ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
+  const Scalar xMin = antecedent_.getRange().getLowerBound()[0] + ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
+  const Scalar xMax = antecedent_.getRange().getUpperBound()[0] - ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
   bounds_ = Point(1, xMin);
   try
   {
@@ -145,13 +145,13 @@ void CompositeDistribution::update()
   if (!SpecFunc::IsNormal(values_[0])) throw NotDefinedException(HERE) << "Error: cannot evaluate the function at x=" << xMin;
   probabilities_ = Point(1, antecedent_.computeCDF(xMin));
   increasing_ = Indices(0);
-  NumericalScalar fMin = values_[0];
-  NumericalScalar fMax = values_[0];
+  Scalar fMin = values_[0];
+  Scalar fMax = values_[0];
   const UnsignedInteger n = ResourceMap::GetAsUnsignedInteger("CompositeDistribution-StepNumber");
   const DerivativeWrapper derivativeWrapper(function_);
   const Function derivative(bindMethod<DerivativeWrapper, Point, Point>(derivativeWrapper, &DerivativeWrapper::computeDerivative, 1, 1));
-  NumericalScalar a = xMin;
-  NumericalScalar fpA = -1.0;
+  Scalar a = xMin;
+  Scalar fpA = -1.0;
   try
   {
     fpA = derivative(Point(1, a))[0];
@@ -161,8 +161,8 @@ void CompositeDistribution::update()
     throw NotDefinedException(HERE) << "Error: cannot evaluate the derivative at x=" << a;
   }
   if (!SpecFunc::IsNormal(fpA)) throw NotDefinedException(HERE) << "Error: cannot evaluate the derivative at x=" << a;
-  NumericalScalar b = a;
-  NumericalScalar fpB = fpA;
+  Scalar b = a;
+  Scalar fpB = fpA;
   for (UnsignedInteger i = 0; i < n; ++i)
   {
     a = b;
@@ -179,9 +179,9 @@ void CompositeDistribution::update()
     if (!SpecFunc::IsNormal(fpB)) throw NotDefinedException(HERE) << "Error: cannot evaluate the derivative at x=" << b;
     try
     {
-      const NumericalScalar root = solver_.solve(derivative, 0.0, a, b, fpA, fpB);
+      const Scalar root = solver_.solve(derivative, 0.0, a, b, fpA, fpB);
       bounds_.add(root);
-      NumericalScalar value = -1.0;
+      Scalar value = -1.0;
       try
       {
         value = function_(Point(1, root))[0];
@@ -203,7 +203,7 @@ void CompositeDistribution::update()
     }
   }
   bounds_.add(xMax);
-  NumericalScalar value = -1.0;
+  Scalar value = -1.0;
   try
   {
     value = function_(Point(1, xMax))[0];
@@ -306,15 +306,15 @@ Point CompositeDistribution::getRealization() const
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar CompositeDistribution::computePDF(const Point & point) const
+Scalar CompositeDistribution::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-  NumericalScalar pdf = 0.0;
-  const NumericalScalar x = point[0];
-  NumericalScalar a = bounds_[0];
-  NumericalScalar fA = values_[0];
-  NumericalScalar b = a;
-  NumericalScalar fB = fA;
+  Scalar pdf = 0.0;
+  const Scalar x = point[0];
+  Scalar a = bounds_[0];
+  Scalar fA = values_[0];
+  Scalar b = a;
+  Scalar fB = fA;
   const UnsignedInteger size = bounds_.getSize();
   for (UnsignedInteger i = 1; i < size; ++i)
   {
@@ -326,12 +326,12 @@ NumericalScalar CompositeDistribution::computePDF(const Point & point) const
     if (mustSolve)
     {
       const Point fInvX(1, solver_.solve(function_, x, a, b, fA, fB));
-      const NumericalScalar numerator = antecedent_.computePDF(fInvX);
+      const Scalar numerator = antecedent_.computePDF(fInvX);
       if (numerator > 0.0)
       {
 	const Matrix gradient(function_.gradient(fInvX));
 	if (!(gradient.getNbRows() == 1 && gradient.getNbColumns() == 1)) throw InternalException(HERE) << "Error: the given function has no actual gradient. Consider using finite differences.";
-        const NumericalScalar denominator = std::abs(function_.gradient(fInvX)(0, 0));
+        const Scalar denominator = std::abs(function_.gradient(fInvX)(0, 0));
         if (SpecFunc::IsNormal(denominator)) pdf += numerator / denominator;
         LOGDEBUG(OSS() << "i=" << i << ", a=" << a << ", fA=" << fA << ", x=" << x << ", b=" << b << ", fB=" << fB << ", fInvX=" << fInvX << ", numerator=" << numerator << ", denominator=" << denominator << ", pdf=" << pdf);
       }
@@ -343,15 +343,15 @@ NumericalScalar CompositeDistribution::computePDF(const Point & point) const
 
 
 /* Get the CDF of the distribution */
-NumericalScalar CompositeDistribution::computeCDF(const Point & point) const
+Scalar CompositeDistribution::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-  NumericalScalar cdf = 0.0;
-  const NumericalScalar x = point[0];
-  NumericalScalar a = bounds_[0];
-  NumericalScalar fA = values_[0];
-  NumericalScalar b = a;
-  NumericalScalar fB = fA;
+  Scalar cdf = 0.0;
+  const Scalar x = point[0];
+  Scalar a = bounds_[0];
+  Scalar fA = values_[0];
+  Scalar b = a;
+  Scalar fB = fA;
   for (UnsignedInteger i = 1; i < bounds_.getSize(); ++i)
   {
     a = b;
@@ -406,13 +406,13 @@ NumericalScalar CompositeDistribution::computeCDF(const Point & point) const
 }
 
 /** Get the product minimum volume interval containing a given probability of the distribution */
-Interval CompositeDistribution::computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const
+Interval CompositeDistribution::computeMinimumVolumeIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const
 {
   return DistributionImplementation::computeUnivariateMinimumVolumeIntervalByOptimization(prob, marginalProb);
 }
 
 /** Get the minimum volume level set containing a given probability of the distribution */
-LevelSet CompositeDistribution::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const
+LevelSet CompositeDistribution::computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & threshold) const
 {
   Function minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
   minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
@@ -422,7 +422,7 @@ LevelSet CompositeDistribution::computeMinimumVolumeLevelSetWithThreshold(const 
   const Point q(SobolSequence(1).generate(size).getImplementation()->getData());
   const Sample sampleAntecedent(antecedent_.computeQuantile(q));
   const Sample minusLogPDFSample(computeLogPDF(function_(sampleAntecedent)) * Point(1, -1.0));
-  const NumericalScalar minusLogPDFThreshold = minusLogPDFSample.computeQuantile(prob)[0];
+  const Scalar minusLogPDFThreshold = minusLogPDFSample.computeQuantile(prob)[0];
   threshold = std::exp(-minusLogPDFThreshold);
 
   return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold);
@@ -481,8 +481,8 @@ Point CompositeDistribution::computeShiftedMomentContinuous(const UnsignedIntege
   GaussKronrod algo;
   const CompositeDistributionShiftedMomentWrapper kernel(n, shift[0], this);
   const Function integrand(bindMethod<CompositeDistributionShiftedMomentWrapper, Point, Point>(kernel, &CompositeDistributionShiftedMomentWrapper::computeShiftedMomentKernel, 1, 1));
-  const NumericalScalar a = antecedent_.getRange().getLowerBound()[0];
-  const NumericalScalar b = antecedent_.getRange().getUpperBound()[0];
+  const Scalar a = antecedent_.getRange().getLowerBound()[0];
+  const Scalar b = antecedent_.getRange().getUpperBound()[0];
   moment[0] = algo.integrate(integrand, Interval(a, b))[0];
   return moment;
 }

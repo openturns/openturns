@@ -227,15 +227,15 @@ namePython<_PyFloat_>()
 }
 
 template <>
-struct traitsPythonType< NumericalScalar >
+struct traitsPythonType< Scalar >
 {
   typedef _PyFloat_ Type;
 };
 
 template <>
 inline
-NumericalScalar
-convert< _PyFloat_, NumericalScalar >(PyObject * pyObj)
+Scalar
+convert< _PyFloat_, Scalar >(PyObject * pyObj)
 {
   return PyFloat_AsDouble(pyObj);
 }
@@ -243,7 +243,7 @@ convert< _PyFloat_, NumericalScalar >(PyObject * pyObj)
 template <>
 inline
 PyObject *
-convert< NumericalScalar, _PyFloat_ >(NumericalScalar x)
+convert< Scalar, _PyFloat_ >(Scalar x)
 {
   return PyFloat_FromDouble(x);
 }
@@ -590,7 +590,7 @@ inline
 Point
 convert< _PySequence_, Point >(PyObject * pyObj)
 {
-  Pointer<Collection<NumericalScalar> > ptr = buildCollectionFromPySequence<NumericalScalar>(pyObj);
+  Pointer<Collection<Scalar> > ptr = buildCollectionFromPySequence<Scalar>(pyObj);
   return Point( *ptr );
 }
 
@@ -603,7 +603,7 @@ convert< Point, _PySequence_ >(Point inP)
   PyObject * point = PyTuple_New( dimension );
   for ( UnsignedInteger i = 0; i < dimension; ++ i )
   {
-    PyTuple_SetItem( point, i, convert< NumericalScalar, _PyFloat_ >( inP[i] ) );
+    PyTuple_SetItem( point, i, convert< Scalar, _PyFloat_ >( inP[i] ) );
   }
   return point;
 }
@@ -718,18 +718,18 @@ convert<_PySequence_, Description>(PyObject * pyObj)
 
 
 template <>
-struct traitsPythonType< Collection< NumericalScalar > >
+struct traitsPythonType< Collection< Scalar > >
 {
   typedef _PySequence_ Type;
 };
 
 template <>
 inline
-Collection<NumericalScalar>
-convert< _PySequence_, Collection<NumericalScalar> >(PyObject * pyObj)
+Collection<Scalar>
+convert< _PySequence_, Collection<Scalar> >(PyObject * pyObj)
 {
-  Pointer<Collection<NumericalScalar> > ptr = buildCollectionFromPySequence<NumericalScalar>(pyObj);
-  return Collection<NumericalScalar>( *ptr );
+  Pointer<Collection<Scalar> > ptr = buildCollectionFromPySequence<Scalar>(pyObj);
+  return Collection<Scalar>( *ptr );
 }
 
 
@@ -773,7 +773,7 @@ convert< _PySequence_, MatrixImplementation* >(PyObject * pyObj)
             {
               try
               {
-                p_implementation->operator()( i, j ) = checkAndConvert<_PyFloat_, NumericalScalar>(elt.get());
+                p_implementation->operator()( i, j ) = checkAndConvert<_PyFloat_, Scalar>(elt.get());
               }
               catch (InvalidArgumentException &)
               {
@@ -802,7 +802,7 @@ convert< _PySequence_, MatrixImplementation* >(PyObject * pyObj)
     ScopedPyObjectPointer implObj(PyObject_CallMethod ( pyObj,
                                   const_cast<char *>( "getImplementation" ),
                                   const_cast<char *>( "()" ) ));
-    Pointer< Collection< NumericalScalar > > ptr = buildCollectionFromPySequence< NumericalScalar >( implObj.get() );
+    Pointer< Collection< Scalar > > ptr = buildCollectionFromPySequence< Scalar >( implObj.get() );
     UnsignedInteger nbColumns = checkAndConvert< _PyInt_, UnsignedInteger >( colunmsObj.get() );
     UnsignedInteger nbRows = checkAndConvert< _PyInt_, UnsignedInteger >( rowsObj.get() );
     p_implementation = new MatrixImplementation( nbRows, nbColumns, *ptr );

@@ -50,7 +50,7 @@ SimulationSensitivityAnalysis::SimulationSensitivityAnalysis(const Sample & inpu
     const Sample & outputSample,
     const IsoProbabilisticTransformation & transformation,
     const ComparisonOperator & comparisonOperator,
-    const NumericalScalar threshold)
+    const Scalar threshold)
   : PersistentObject(),
     inputSample_(inputSample),
     outputSample_(outputSample),
@@ -117,7 +117,7 @@ SimulationSensitivityAnalysis * SimulationSensitivityAnalysis::clone() const
 }
 
 /* Mean point in event domain computation */
-Point SimulationSensitivityAnalysis::computeMeanPointInEventDomain(const NumericalScalar threshold) const
+Point SimulationSensitivityAnalysis::computeMeanPointInEventDomain(const Scalar threshold) const
 {
   const UnsignedInteger inputSize = inputSample_.getSize();
   Sample filteredSample(0, inputSample_.getDimension());
@@ -134,7 +134,7 @@ Point SimulationSensitivityAnalysis::computeMeanPointInEventDomain() const
 }
 
 /* Importance factors computation */
-PointWithDescription SimulationSensitivityAnalysis::computeImportanceFactors(const NumericalScalar threshold) const
+PointWithDescription SimulationSensitivityAnalysis::computeImportanceFactors(const Scalar threshold) const
 {
   PointWithDescription result(transformation_(computeMeanPointInEventDomain(threshold)).normalizeSquare());
   result.setDescription(inputSample_.getDescription());
@@ -156,8 +156,8 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactors() const
 }
 
 Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool probabilityScale,
-    const NumericalScalar lower,
-    const NumericalScalar upper) const
+    const Scalar lower,
+    const Scalar upper) const
 {
   // Here we choose if we have to go forward or backward through the data
   // True if < or <=
@@ -222,7 +222,7 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
   while (i != iStopDrawing)
   {
     SignedInteger iThreshold = i;
-    NumericalScalar currentThreshold = mergedSample[iThreshold][inputDimension];
+    Scalar currentThreshold = mergedSample[iThreshold][inputDimension];
     // First, search for a valid threshold, ie one that needs to accumulate more points than the ones already accumulated
     while (!comparisonOperator_(mergedSample[i][inputDimension], currentThreshold))
     {
@@ -262,9 +262,9 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
     {
       // Now, augmente the data in the collection
       // Initialize with values associated with probabilityScale == false
-      NumericalScalar xValue = currentThreshold;
+      Scalar xValue = currentThreshold;
       // Change the values if probabilityScale == true
-      if (probabilityScale) xValue = NumericalScalar(accumulated) / size;
+      if (probabilityScale) xValue = Scalar(accumulated) / size;
       // Check if the point is in the exploration range
       if ((xValue >= lower) && (xValue <= upper))
       {
@@ -295,12 +295,12 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
   } // while (i != iStopDrawing)
   // Initialize with values associated with probabilityScale == false
   String xLabel("threshold");
-  NumericalScalar internalX = threshold_;
+  Scalar internalX = threshold_;
   // Change the values if probabilityScale == true
   if (probabilityScale)
   {
     xLabel = "probability";
-    internalX = static_cast<NumericalScalar>(good) / size;
+    internalX = static_cast<Scalar>(good) / size;
   }
   Graph graph("Importance factors range", xLabel, "Importance (%)", true, "topright");
   const Description colors(Drawable::BuildDefaultPalette(inputDimension));
@@ -342,12 +342,12 @@ Sample SimulationSensitivityAnalysis::getOutputSample() const
 }
 
 /* Threshold accessors */
-NumericalScalar SimulationSensitivityAnalysis::getThreshold() const
+Scalar SimulationSensitivityAnalysis::getThreshold() const
 {
   return threshold_;
 }
 
-void SimulationSensitivityAnalysis::setThreshold(const NumericalScalar threshold)
+void SimulationSensitivityAnalysis::setThreshold(const Scalar threshold)
 {
   threshold_ = threshold;
 }

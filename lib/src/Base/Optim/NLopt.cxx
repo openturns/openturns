@@ -328,10 +328,10 @@ void NLopt::run()
 
   UnsignedInteger size = evaluationInputHistory_.getSize();
 
-  NumericalScalar absoluteError = -1.0;
-  NumericalScalar relativeError = -1.0;
-  NumericalScalar residualError = -1.0;
-  NumericalScalar constraintError = -1.0;
+  Scalar absoluteError = -1.0;
+  Scalar relativeError = -1.0;
+  Scalar residualError = -1.0;
+  Scalar constraintError = -1.0;
 
   for (UnsignedInteger i = 0; i < size; ++ i)
   {

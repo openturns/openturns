@@ -64,15 +64,15 @@ InverseNormal InverseNormalFactory::buildAsInverseNormal(const Sample & sample) 
   const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an InverseNormal distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot build an InverseNormal distribution from a sample of dimension different from 1";
-  const NumericalScalar mu = sample.computeMean()[0];
-  NumericalScalar lambda = -1.0;
+  const Scalar mu = sample.computeMean()[0];
+  Scalar lambda = -1.0;
   if (ResourceMap::Get("InverseNormalFactory-Method") == "MLE")
     // Maximum likelihood estimation
   {
-    NumericalScalar sum = 0.0;
+    Scalar sum = 0.0;
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const NumericalScalar xI = sample[i][0];
+      const Scalar xI = sample[i][0];
       if (!(xI > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot build an InverseNormal distribution from a sample with non positive values";
       sum += 1.0 / sample[i][0];
     }

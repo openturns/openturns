@@ -54,8 +54,8 @@ class OT_API NSI_point
   friend OT_API std::ostream & operator << (std::ostream & os, const NSI_point & point);
 
 public:
-  typedef       NumericalScalar *       iterator;
-  typedef const NumericalScalar * const_iterator;
+  typedef       Scalar *       iterator;
+  typedef const Scalar * const_iterator;
 
 public:
   NSI_point(SampleImplementation * p_nsi,
@@ -76,15 +76,15 @@ public:
   // NSI_point & operator = (const NSI_const_point & rhs);
   // NSI_point & operator = (const Point & rhs);
 
-  NumericalScalar & operator [] (const UnsignedInteger i);
-  const NumericalScalar & operator [] (const UnsignedInteger i) const;
-  NumericalScalar & at (const UnsignedInteger i);
-  const NumericalScalar & at (const UnsignedInteger i) const;
+  Scalar & operator [] (const UnsignedInteger i);
+  const Scalar & operator [] (const UnsignedInteger i) const;
+  Scalar & at (const UnsignedInteger i);
+  const Scalar & at (const UnsignedInteger i) const;
 
-  inline Collection<NumericalScalar> getCollection() const
+  inline Collection<Scalar> getCollection() const
   {
-    if (dimension_ == 0) return Collection<NumericalScalar>(0);
-    return Collection<NumericalScalar>( begin(), end() );
+    if (dimension_ == 0) return Collection<Scalar>(0);
+    return Collection<Scalar>( begin(), end() );
   }
   inline operator Point () const
   {
@@ -117,8 +117,8 @@ public:
   NSI_point & operator -= (const NSI_point & other);
   NSI_point & operator += (const Point & other);
   NSI_point & operator -= (const Point & other);
-  NSI_point & operator *= (const NumericalScalar val);
-  NSI_point & operator /= (const NumericalScalar val);
+  NSI_point & operator *= (const Scalar val);
+  NSI_point & operator /= (const Scalar val);
 };
 
 OT_API bool operator == (const NSI_point & lhs, const NSI_point & rhs);
@@ -141,20 +141,20 @@ class OT_API NSI_const_point
   friend OT_API std::ostream & operator << (std::ostream & os, const NSI_const_point & point);
 
 public:
-  typedef       NumericalScalar *       iterator;
-  typedef const NumericalScalar * const_iterator;
+  typedef       Scalar *       iterator;
+  typedef const Scalar * const_iterator;
 
 public:
   NSI_const_point(const SampleImplementation * p_nsi, UnsignedInteger index);
   NSI_const_point(const NSI_point & point);
 
-  const NumericalScalar & operator [] (const UnsignedInteger i) const;
-  const NumericalScalar & at (const UnsignedInteger i) const;
+  const Scalar & operator [] (const UnsignedInteger i) const;
+  const Scalar & at (const UnsignedInteger i) const;
 
-  inline Collection<NumericalScalar> getCollection() const
+  inline Collection<Scalar> getCollection() const
   {
-    if (dimension_ == 0) return Collection<NumericalScalar>(0);
-    return Collection<NumericalScalar>( begin(), end() );
+    if (dimension_ == 0) return Collection<Scalar>(0);
+    return Collection<Scalar>( begin(), end() );
   }
   inline operator Point () const
   {
@@ -189,7 +189,7 @@ OT_API OStream & operator << (OStream & OS, const NSI_const_point & point);
 
 inline
 Point operator * (const NSI_point & point,
-                           const NumericalScalar val)
+                           const Scalar val)
 {
   Point res(point.getDimension(), 0.);
   for(UnsignedInteger i = 0; i < point.getDimension(); ++i) res[i] = point[i] * val;
@@ -197,7 +197,7 @@ Point operator * (const NSI_point & point,
 }
 
 inline
-Point operator * (const NumericalScalar val,
+Point operator * (const Scalar val,
                            const NSI_point & point)
 {
   return point * val;
@@ -205,7 +205,7 @@ Point operator * (const NumericalScalar val,
 
 inline
 Point operator * (const NSI_const_point & point,
-                           const NumericalScalar val)
+                           const Scalar val)
 {
   Point res(point.getDimension(), 0.);
   for(UnsignedInteger i = 0; i < point.getDimension(); ++i) res[i] = point[i] * val;
@@ -213,7 +213,7 @@ Point operator * (const NSI_const_point & point,
 }
 
 inline
-Point operator * (const NumericalScalar val,
+Point operator * (const Scalar val,
                            const NSI_const_point & point)
 {
   return point * val;
@@ -467,8 +467,8 @@ public:
   /* Some typedefs for easy reading */
   typedef NSI_iterator               iterator;
   typedef NSI_const_iterator         const_iterator;
-  typedef       NumericalScalar *       data_iterator;
-  typedef const NumericalScalar * const_data_iterator;
+  typedef       Scalar *       data_iterator;
+  typedef const Scalar * const_data_iterator;
 
   typedef Collection<UnsignedInteger>   UnsignedIntegerCollection;
 
@@ -559,7 +559,7 @@ public:
 
   /** Raw internal format accessor */
   Point getData() const;
-  void setData(const Collection<NumericalScalar> & data);
+  void setData(const Collection<Scalar> & data);
 
   inline NSI_point operator [] (const UnsignedInteger index)
   {
@@ -575,13 +575,13 @@ public:
 #endif
   // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
   // INTENTIONALY NOT DOCUMENTED
-  const NumericalScalar * __baseaddress__ () const
+  const Scalar * __baseaddress__ () const
   {
     return &data_[0];
   }
   UnsignedInteger __elementsize__ () const
   {
-    return sizeof( NumericalScalar );
+    return sizeof( Scalar );
   }
 
   /** Virtual constructor */
@@ -704,17 +704,17 @@ public:
   /**
    * Gives the quantile per component of the sample
    */
-  virtual Point computeQuantilePerComponent(const NumericalScalar prob) const;
+  virtual Point computeQuantilePerComponent(const Scalar prob) const;
 
   /**
    * Gives the N-dimension quantile of the sample
    */
-  Point computeQuantile(const NumericalScalar prob) const;
+  Point computeQuantile(const Scalar prob) const;
 
   /**
    * Get the empirical CDF of the sample
    */
-  NumericalScalar computeEmpiricalCDF(const Point & point,
+  Scalar computeEmpiricalCDF(const Point & point,
                                       const Bool tail = false) const;
 
   /** Maximum accessor */
@@ -750,25 +750,25 @@ public:
   /**
    * Translate realizations in-place
    */
-  SampleImplementation & operator += (const NumericalScalar translation);
+  SampleImplementation & operator += (const Scalar translation);
   SampleImplementation & operator += (const Point & translation);
   SampleImplementation & operator += (const SampleImplementation & translation);
-  SampleImplementation & operator -= (const NumericalScalar translation);
+  SampleImplementation & operator -= (const Scalar translation);
   SampleImplementation & operator -= (const Point & translation);
   SampleImplementation & operator -= (const SampleImplementation & translation);
 
   /** Translate realizations */
-  SampleImplementation operator + (const NumericalScalar translation) const;
+  SampleImplementation operator + (const Scalar translation) const;
   SampleImplementation operator + (const Point & translation) const;
   SampleImplementation operator + (const SampleImplementation & translation) const;
-  SampleImplementation operator - (const NumericalScalar translation) const;
+  SampleImplementation operator - (const Scalar translation) const;
   SampleImplementation operator - (const Point & translation) const;
   SampleImplementation operator - (const SampleImplementation & translation) const;
 
-  SampleImplementation operator * (const NumericalScalar scaling) const;
+  SampleImplementation operator * (const Scalar scaling) const;
   SampleImplementation operator * (const Point & scaling) const;
   SampleImplementation operator * (const SquareMatrix & scaling) const;
-  SampleImplementation operator / (const NumericalScalar scaling) const;
+  SampleImplementation operator / (const Scalar scaling) const;
   SampleImplementation operator / (const Point & scaling) const;
   SampleImplementation operator / (const SquareMatrix & scaling) const;
 
@@ -776,10 +776,10 @@ public:
    * Scale realizations componentwise in-place
    */
 
-  SampleImplementation & operator *= (const NumericalScalar scaling);
+  SampleImplementation & operator *= (const Scalar scaling);
   SampleImplementation & operator *= (const Point & scaling);
   SampleImplementation & operator *= (const SquareMatrix & scaling);
-  SampleImplementation & operator /= (const NumericalScalar scaling);
+  SampleImplementation & operator /= (const Scalar scaling);
   SampleImplementation & operator /= (const Point & scaling);
   SampleImplementation & operator /= (const SquareMatrix & scaling);
 
@@ -806,7 +806,7 @@ private:
   UnsignedInteger dimension_;
 
   /** The collection of unwrapped points */
-  PersistentCollection<NumericalScalar> data_;
+  PersistentCollection<Scalar> data_;
 
   /** The description of all components */
   Pointer<Description> p_description_;

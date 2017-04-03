@@ -66,19 +66,19 @@ TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const Sample & sa
   const UnsignedInteger size = sample.getSize();
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a TruncatedNormal distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   // In order to avoid numerical stability issues, we normalize the data to [-1, 1]
-  const NumericalScalar xMin = sample.getMin()[0];
-  const NumericalScalar xMax = sample.getMax()[0];
+  const Scalar xMin = sample.getMin()[0];
+  const Scalar xMax = sample.getMax()[0];
   if (!SpecFunc::IsNormal(xMin) || !SpecFunc::IsNormal(xMax)) throw InvalidArgumentException(HERE) << "Error: cannot build a TruncatedNormal distribution if data contains NaN or Inf";
   if (xMin == xMax)
   {
-    const NumericalScalar delta = std::max(std::abs(xMin), 10.0) * SpecFunc::ScalarEpsilon;
+    const Scalar delta = std::max(std::abs(xMin), 10.0) * SpecFunc::ScalarEpsilon;
     TruncatedNormal result(xMin, 1.0, xMin - delta, xMax + delta);
     result.setDescription(sample.getDescription());
     return result;
   }
   // X_norm = alpha * (X - beta)
-  const NumericalScalar alpha = 2.0 / (xMax - xMin);
-  const NumericalScalar beta = 0.5 * (xMin + xMax);
+  const Scalar alpha = 2.0 / (xMax - xMin);
+  const Scalar beta = 0.5 * (xMin + xMax);
   Sample normalizedSample(sample);
   normalizedSample -= Point(1, beta);
   normalizedSample *= Point(1, alpha);
@@ -92,7 +92,7 @@ TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const Sample & sa
   startingPoint[0] = normalizedSample.computeMean()[0];
   startingPoint[1] = normalizedSample.computeStandardDeviationPerComponent()[0];
 
-  const NumericalScalar oneEps = 1.0 + 1.0 / size;
+  const Scalar oneEps = 1.0 + 1.0 / size;
 
   MaximumLikelihoodFactory factory(buildAsTruncatedNormal());
 

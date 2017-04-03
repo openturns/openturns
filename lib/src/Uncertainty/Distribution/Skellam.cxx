@@ -45,8 +45,8 @@ Skellam::Skellam()
 }
 
 /* Parameters constructor */
-Skellam::Skellam(const NumericalScalar lambda1,
-                 const NumericalScalar lambda2)
+Skellam::Skellam(const Scalar lambda1,
+                 const Scalar lambda2)
   : DiscreteDistribution()
   , lambda1_(-1.0)
   , lambda2_(-1.0)
@@ -101,16 +101,16 @@ Skellam * Skellam::clone() const
 Point Skellam::getRealization() const
 {
   // Must cast the second Poisson realization to avoid overflow by taking the opposite of an UnsignedInteger
-  return Point(1, DistFunc::rPoisson(lambda1_) - static_cast<NumericalScalar>(DistFunc::rPoisson(lambda2_)));
+  return Point(1, DistFunc::rPoisson(lambda1_) - static_cast<Scalar>(DistFunc::rPoisson(lambda2_)));
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Skellam::computePDF(const Point & point) const
+Scalar Skellam::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
+  const Scalar k = point[0];
   if (std::abs(k - round(k)) > supportEpsilon_) return 0.0;
   if (k < 0) return 2 * DistFunc::dNonCentralChiSquare(2.0 * (1.0 - k), 2.0 * lambda1_, 2.0 * lambda2_, pdfEpsilon_, maximumIteration_);
   return 2 * DistFunc::dNonCentralChiSquare(2.0 * (k + 1.0), 2.0 * lambda2_, 2.0 * lambda1_, pdfEpsilon_, maximumIteration_);
@@ -118,11 +118,11 @@ NumericalScalar Skellam::computePDF(const Point & point) const
 
 
 /* Get the CDF of the distribution */
-NumericalScalar Skellam::computeCDF(const Point & point) const
+Scalar Skellam::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
+  const Scalar k = point[0];
   if (k < 0.0) return DistFunc::pNonCentralChiSquare(-2.0 * k, 2.0 * lambda1_, 2.0 * lambda2_, false, cdfEpsilon_, maximumIteration_);
   return DistFunc::pNonCentralChiSquare(2.0 * (k + 1.0), 2.0 * lambda2_, 2.0 * lambda1_, true, cdfEpsilon_, maximumIteration_);
 }
@@ -143,12 +143,12 @@ Point Skellam::computeCDFGradient(const Point & point) const
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Skellam::computeCharacteristicFunction(const NumericalScalar x) const
+NumericalComplex Skellam::computeCharacteristicFunction(const Scalar x) const
 {
   return std::exp(computeLogCharacteristicFunction(x));
 }
 
-NumericalComplex Skellam::computeLogCharacteristicFunction(const NumericalScalar x) const
+NumericalComplex Skellam::computeLogCharacteristicFunction(const Scalar x) const
 {
   return lambda1_ * std::exp(NumericalComplex(0.0, x)) + lambda2_ * std::exp(NumericalComplex(0.0, -x)) - (lambda1_ + lambda2_);
 }
@@ -165,7 +165,7 @@ NumericalComplex Skellam::computeLogGeneratingFunction(const NumericalComplex & 
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar Skellam::computeScalarQuantile(const NumericalScalar prob,
+Scalar Skellam::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
   return ceil(DistributionImplementation::computeScalarQuantile(prob, tail));
@@ -228,7 +228,7 @@ Point Skellam::getParameter() const
 void Skellam::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = Skellam(parameter[0], parameter[1]);
   setWeight(w);
 }
@@ -249,8 +249,8 @@ Bool Skellam::isElliptical() const
 }
 
 /* Lambda1/Lambda2 accessor */
-void Skellam::setLambda1Lambda2(const NumericalScalar lambda1,
-                                const NumericalScalar lambda2)
+void Skellam::setLambda1Lambda2(const Scalar lambda1,
+                                const Scalar lambda2)
 {
   if (!(lambda1 > 0.0)) throw InvalidArgumentException(HERE) << "Lambda1 must be positive, here lambda1=" << lambda1;
   if (!(lambda2 > 0.0)) throw InvalidArgumentException(HERE) << "Lambda2 must be positive, here lambda2=" << lambda2;
@@ -265,7 +265,7 @@ void Skellam::setLambda1Lambda2(const NumericalScalar lambda1,
 }
 
 /* Lambda1 accessor */
-void Skellam::setLambda1(const NumericalScalar lambda1)
+void Skellam::setLambda1(const Scalar lambda1)
 {
   if (!(lambda1 > 0.0)) throw InvalidArgumentException(HERE) << "Lambda1 must be positive, here lambda1=" << lambda1;
   if (lambda1 != lambda1_)
@@ -278,13 +278,13 @@ void Skellam::setLambda1(const NumericalScalar lambda1)
 }
 
 /* Lambda1 accessor */
-NumericalScalar Skellam::getLambda1() const
+Scalar Skellam::getLambda1() const
 {
   return lambda1_;
 }
 
 /* Lambda2 accessor */
-void Skellam::setLambda2(const NumericalScalar lambda2)
+void Skellam::setLambda2(const Scalar lambda2)
 {
   if (!(lambda2 > 0.0)) throw InvalidArgumentException(HERE) << "Lambda2 must be positive, here lambda2=" << lambda2;
   if (lambda2 != lambda2_)
@@ -297,7 +297,7 @@ void Skellam::setLambda2(const NumericalScalar lambda2)
 }
 
 /* Lambda2 accessor */
-NumericalScalar Skellam::getLambda2() const
+Scalar Skellam::getLambda2() const
 {
   return lambda2_;
 }

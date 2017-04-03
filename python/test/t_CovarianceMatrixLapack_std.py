@@ -25,7 +25,7 @@ try:
     determinant = matrix1.computeDeterminant()
     print("determinant=%.6f" % determinant)
 
-    ev = NumericalScalarCollection(2)
+    ev = ScalarCollection(2)
     ev = matrix1.computeEigenValues()
     print("ev=" + repr(ev))
 

@@ -80,28 +80,28 @@ CovarianceMatrix StationaryCovarianceModel::operator() (const Point & s,
 
 CovarianceMatrix StationaryCovarianceModel::operator() (const Point & tau) const
 {
-  const NumericalScalar rho = computeStandardRepresentative(tau);
+  const Scalar rho = computeStandardRepresentative(tau);
   return CovarianceMatrix((spatialCovariance_ * rho).getImplementation());
 }
 
-NumericalScalar StationaryCovarianceModel::computeAsScalar(const Point & s,
+Scalar StationaryCovarianceModel::computeAsScalar(const Point & s,
     const Point & t) const
 {
   return computeAsScalar(t - s);
 }
 
-NumericalScalar StationaryCovarianceModel::computeAsScalar(const Point & tau) const
+Scalar StationaryCovarianceModel::computeAsScalar(const Point & tau) const
 {
   return (*this)(tau)(0, 0);
 }
 
-NumericalScalar StationaryCovarianceModel::computeStandardRepresentative(const Point & s,
+Scalar StationaryCovarianceModel::computeStandardRepresentative(const Point & s,
     const Point & t) const
 {
   return computeStandardRepresentative(t - s);
 }
 
-NumericalScalar StationaryCovarianceModel::computeStandardRepresentative(const Point & tau) const
+Scalar StationaryCovarianceModel::computeStandardRepresentative(const Point & tau) const
 {
   throw NotYetImplementedException(HERE) << "In StationaryCovarianceModel::computeStandardRepresentative (const Point & tau) const";
 }
@@ -110,7 +110,7 @@ NumericalScalar StationaryCovarianceModel::computeStandardRepresentative(const P
 CovarianceMatrix StationaryCovarianceModel::discretize(const RegularGrid & timeGrid) const
 {
   const UnsignedInteger size = timeGrid.getN();
-  const NumericalScalar timeStep = timeGrid.getStep();
+  const Scalar timeStep = timeGrid.getStep();
   const UnsignedInteger fullSize = size * dimension_;
   CovarianceMatrix covarianceMatrix(fullSize);
 

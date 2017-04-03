@@ -19,7 +19,7 @@ try:
     testInterval = Interval([begin], [end])
     testInterval.setName("testInterval")
 
-    valColl = NumericalScalarCollection()
+    valColl = ScalarCollection()
     valColl.add(1.0)
 
     # Constructor from Point

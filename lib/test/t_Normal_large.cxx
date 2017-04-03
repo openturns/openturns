@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
     Point mean(oneSample.computeMean());
     fullprint << "mean error (relative)=" << (mean - meanPoint).norm() / meanPoint.norm() << std::endl;
     CovarianceMatrix covariance(oneSample.computeCovariance());
-    NumericalScalar errorCovariance = 0.0;
+    Scalar errorCovariance = 0.0;
     for (UnsignedInteger i = 0; i < dim; i++)
     {
       for (UnsignedInteger j = 0; j < dim; j++)
@@ -66,8 +66,8 @@ int main(int argc, char *argv[])
     Point zero(dim, 0.0);
 
     // Show PDF of zero point
-    NumericalScalar zeroPDF = distribution.computePDF( zero );
-    NumericalScalar zeroCDF = distribution.computeCDF( zero );
+    Scalar zeroPDF = distribution.computePDF( zero );
+    Scalar zeroCDF = distribution.computeCDF( zero );
     fullprint << "Zero point= " << zero
               << " pdf=" << zeroPDF
               << " cdf=" << zeroCDF

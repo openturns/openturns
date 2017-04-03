@@ -43,7 +43,7 @@ ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const UnsignedInt
 /** Standard constructor with amplitude and scale parameters */
 ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const Point & scale,
     const Point & amplitude,
-    const NumericalScalar frequency)
+    const Scalar frequency)
   : StationaryCovarianceModel(scale, amplitude)
   , frequency_(0.0)
 {
@@ -68,19 +68,19 @@ CovarianceMatrix ExponentiallyDampedCosineModel::operator() (const Point & tau) 
   return covarianceMatrix;
 }
 
-NumericalScalar ExponentiallyDampedCosineModel::computeAsScalar(const Point & tau) const
+Scalar ExponentiallyDampedCosineModel::computeAsScalar(const Point & tau) const
 {
   return amplitude_[0] * computeStandardRepresentative(tau);
 }
 
-NumericalScalar ExponentiallyDampedCosineModel::computeStandardRepresentative(const Point & tau) const
+Scalar ExponentiallyDampedCosineModel::computeStandardRepresentative(const Point & tau) const
 {
   if (tau.getDimension() != spatialDimension_)
     throw InvalidArgumentException(HERE) << "In ExponentiallyDampedCosineModel::computeStandardRepresentative: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();
   Point tauOverTheta(spatialDimension_);
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
 
-  const NumericalScalar absTau = tauOverTheta.norm();
+  const Scalar absTau = tauOverTheta.norm();
   if (absTau <= SpecFunc::ScalarEpsilon) return 1.0 + nuggetFactor_;
   return exp(-absTau) * cos(2.0 * M_PI * absTau);
 }
@@ -90,7 +90,7 @@ CovarianceMatrix ExponentiallyDampedCosineModel::discretize(const RegularGrid & 
 {
   const UnsignedInteger size = timeGrid.getN();
   const UnsignedInteger fullSize = size * dimension_;
-  const NumericalScalar timeStep = timeGrid.getStep();
+  const Scalar timeStep = timeGrid.getStep();
 
   CovarianceMatrix cov(fullSize);
 
@@ -101,7 +101,7 @@ CovarianceMatrix ExponentiallyDampedCosineModel::discretize(const RegularGrid & 
   // has to be copied
   for (UnsignedInteger diag = 0; diag < size; ++diag)
   {
-    const NumericalScalar covTau = computeAsScalar(Point(1, diag * timeStep));
+    const Scalar covTau = computeAsScalar(Point(1, diag * timeStep));
     for (UnsignedInteger i = 0; i < size - diag; ++i) cov(i, i + diag) = covTau;
   }
 
@@ -138,13 +138,13 @@ String ExponentiallyDampedCosineModel::__str__(const String & offset) const
 }
 
 /* Frequency accessor */
-void ExponentiallyDampedCosineModel::setFrequency(const NumericalScalar frequency)
+void ExponentiallyDampedCosineModel::setFrequency(const Scalar frequency)
 {
   if (!(frequency > 0.0)) throw InvalidArgumentException(HERE) << "Error: the frequency must be positive.";
   frequency_ = frequency;
 }
 
-NumericalScalar ExponentiallyDampedCosineModel::getFrequency() const
+Scalar ExponentiallyDampedCosineModel::getFrequency() const
 {
   return frequency_;
 }

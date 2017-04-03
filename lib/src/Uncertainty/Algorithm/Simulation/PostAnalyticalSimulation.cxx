@@ -59,7 +59,7 @@ AnalyticalResult PostAnalyticalSimulation::getAnalyticalResult() const
 }
 
 /* Control probability accessor */
-NumericalScalar PostAnalyticalSimulation::getControlProbability() const
+Scalar PostAnalyticalSimulation::getControlProbability() const
 {
   return controlProbability_;
 }

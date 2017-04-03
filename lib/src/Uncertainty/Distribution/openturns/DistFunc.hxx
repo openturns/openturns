@@ -33,127 +33,127 @@ class OT_API DistFunc
 {
 public:
   static const UnsignedInteger NumberOfBandNormalZigurrat;
-  static const NumericalScalar NormalZigguratTail;
+  static const Scalar NormalZigguratTail;
   // The array NormalZigguratAbscissa stores the abscissas of the bands:
   // the ith band is [NormalZigguratAbscissa[0], NormalZigguratAbscissa[i+1]] with
   // NormalZigguratAbscissa[0] = 0.0 and
   // NormalZigguratAbscissa[NumberOfBandNormalZigurrat] = NormalZigguratTail
-  static const NumericalScalar NormalZigguratAbscissa[];
+  static const Scalar NormalZigguratAbscissa[];
   // The array NormalZigguratRatio stores the ratio between a band and the next one,
   // starting from the smallest one:
   // NormalZigguratRatio[i] = NormalZigguratAbscissa[i] / NormalZigguratAbscissa[i+1]
-  static const NumericalScalar NormalZigguratRatio[];
+  static const Scalar NormalZigguratRatio[];
 
   // For Beta distribution. WARNING: here we adopt the classical definition
   // If tail=false, compute P(X<=x), else P(X>x)
-  static NumericalScalar pBeta(const NumericalScalar p1,
-                               const NumericalScalar p2,
-                               const NumericalScalar x,
+  static Scalar pBeta(const Scalar p1,
+                               const Scalar p2,
+                               const Scalar x,
                                const Bool tail = false);
   // If tail=false, compute x such that P(X<=x)=q, else x such that P(X>x)=q
-  static NumericalScalar qBeta(const NumericalScalar p1,
-                               const NumericalScalar p2,
-                               const NumericalScalar p,
+  static Scalar qBeta(const Scalar p1,
+                               const Scalar p2,
+                               const Scalar p,
                                const Bool tail = false);
-  static NumericalScalar rBeta(const NumericalScalar p1,
-                               const NumericalScalar p2);
-  static Point rBeta(const NumericalScalar p1,
-                              const NumericalScalar p2,
+  static Scalar rBeta(const Scalar p1,
+                               const Scalar p2);
+  static Point rBeta(const Scalar p1,
+                              const Scalar p2,
                               const UnsignedInteger size);
   // For the Binomial distribution
 private:
-  static NumericalScalar fcBinomial(const UnsignedInteger k);
+  static Scalar fcBinomial(const UnsignedInteger k);
 
 public:
   static UnsignedInteger rBinomial(const UnsignedInteger n,
-                                   const NumericalScalar p);
+                                   const Scalar p);
   static Indices rBinomial(const UnsignedInteger n,
-                           const NumericalScalar p,
+                           const Scalar p,
                            const UnsignedInteger size);
   // For Gamma distribution
-  static NumericalScalar pGamma(const NumericalScalar k,
-                                const NumericalScalar x,
+  static Scalar pGamma(const Scalar k,
+                                const Scalar x,
                                 const Bool tail = false);
-  static NumericalScalar qGamma(const NumericalScalar k,
-                                const NumericalScalar p,
+  static Scalar qGamma(const Scalar k,
+                                const Scalar p,
                                 const Bool tail = false);
-  static NumericalScalar rGamma(const NumericalScalar k);
-  static Point rGamma(const NumericalScalar k,
+  static Scalar rGamma(const Scalar k);
+  static Point rGamma(const Scalar k,
                                const UnsignedInteger size);
   // For Kolmogorov distribution
-  static NumericalScalar pKolmogorov(const UnsignedInteger n,
-                                     const NumericalScalar x,
+  static Scalar pKolmogorov(const UnsignedInteger n,
+                                     const Scalar x,
                                      const Bool tail = false);
 
   // For NonCentralChiSquare distribution
-  static NumericalScalar dNonCentralChiSquare(const NumericalScalar nu,
-      const NumericalScalar lambda,
-      const NumericalScalar x,
-      const NumericalScalar precision = ResourceMap::GetAsScalar("DistFunc-Precision"),
+  static Scalar dNonCentralChiSquare(const Scalar nu,
+      const Scalar lambda,
+      const Scalar x,
+      const Scalar precision = ResourceMap::GetAsScalar("DistFunc-Precision"),
       const UnsignedInteger maximumIteration = ResourceMap::GetAsScalar("DistFunc-MaximumIteration"));
-  static NumericalScalar pNonCentralChiSquare(const NumericalScalar nu,
-      const NumericalScalar lambda,
-      const NumericalScalar x,
+  static Scalar pNonCentralChiSquare(const Scalar nu,
+      const Scalar lambda,
+      const Scalar x,
       const Bool tail = false,
-      const NumericalScalar precision = ResourceMap::GetAsScalar("DistFunc-Precision"),
+      const Scalar precision = ResourceMap::GetAsScalar("DistFunc-Precision"),
       const UnsignedInteger maximumIteration = ResourceMap::GetAsScalar("DistFunc-MaximumIteration"));
-  static NumericalScalar rNonCentralChiSquare(const NumericalScalar nu,
-      const NumericalScalar lambda);
-  static Point rNonCentralChiSquare(const NumericalScalar nu,
-      const NumericalScalar lambda,
+  static Scalar rNonCentralChiSquare(const Scalar nu,
+      const Scalar lambda);
+  static Point rNonCentralChiSquare(const Scalar nu,
+      const Scalar lambda,
       const UnsignedInteger size);
   // For NonCentralStudent distribution
-  static NumericalScalar dNonCentralStudent(const NumericalScalar nu,
-      const NumericalScalar delta,
-      const NumericalScalar x);
-  static NumericalScalar dNonCentralStudentAlt0(const NumericalScalar nu,
-      const NumericalScalar delta,
-      const NumericalScalar x,
-      const NumericalScalar precision = ResourceMap::GetAsScalar("DistFunc-Precision"),
+  static Scalar dNonCentralStudent(const Scalar nu,
+      const Scalar delta,
+      const Scalar x);
+  static Scalar dNonCentralStudentAlt0(const Scalar nu,
+      const Scalar delta,
+      const Scalar x,
+      const Scalar precision = ResourceMap::GetAsScalar("DistFunc-Precision"),
       const UnsignedInteger maximumIteration = ResourceMap::GetAsScalar("DistFunc-MaximumIteration"));
-  static NumericalScalar pNonCentralStudent(const NumericalScalar nu,
-      const NumericalScalar delta,
-      const NumericalScalar x,
+  static Scalar pNonCentralStudent(const Scalar nu,
+      const Scalar delta,
+      const Scalar x,
       const Bool tail = false);
-  static NumericalScalar rNonCentralStudent(const NumericalScalar nu,
-      const NumericalScalar delta);
-  static Point rNonCentralStudent(const NumericalScalar nu,
-      const NumericalScalar delta,
+  static Scalar rNonCentralStudent(const Scalar nu,
+      const Scalar delta);
+  static Point rNonCentralStudent(const Scalar nu,
+      const Scalar delta,
       const UnsignedInteger size);
   // For Normal distribution
-  static NumericalScalar pNormal(const NumericalScalar x,
+  static Scalar pNormal(const Scalar x,
                                  const Bool tail = false);
-  static NumericalScalar pNormal2D(const NumericalScalar x1,
-                                   const NumericalScalar x2,
-                                   const NumericalScalar rho,
+  static Scalar pNormal2D(const Scalar x1,
+                                   const Scalar x2,
+                                   const Scalar rho,
                                    const Bool tail = false);
-  static NumericalScalar pNormal3D(const NumericalScalar x1,
-                                   const NumericalScalar x2,
-                                   const NumericalScalar x3,
-                                   const NumericalScalar rho12,
-                                   const NumericalScalar rho13,
-                                   const NumericalScalar rho23,
+  static Scalar pNormal3D(const Scalar x1,
+                                   const Scalar x2,
+                                   const Scalar x3,
+                                   const Scalar rho12,
+                                   const Scalar rho13,
+                                   const Scalar rho23,
                                    const Bool tail = false);
-  static NumericalScalar qNormal(const NumericalScalar p,
+  static Scalar qNormal(const Scalar p,
                                  const Bool tail = false);
-  static NumericalScalar rNormal();
+  static Scalar rNormal();
   static Point rNormal(const UnsignedInteger size);
   // For Poisson distribution
-  static NumericalScalar qPoisson(const NumericalScalar lambda,
-                                  const NumericalScalar p,
+  static Scalar qPoisson(const Scalar lambda,
+                                  const Scalar p,
                                   const Bool tail = false);
-  static UnsignedInteger rPoisson(const NumericalScalar lambda);
-  static Indices rPoisson(const NumericalScalar lambda,
+  static UnsignedInteger rPoisson(const Scalar lambda);
+  static Indices rPoisson(const Scalar lambda,
                           const UnsignedInteger size);
   // For Student distribution
-  static NumericalScalar pStudent(const NumericalScalar nu,
-                                  const NumericalScalar x,
+  static Scalar pStudent(const Scalar nu,
+                                  const Scalar x,
                                   const Bool tail = false);
-  static NumericalScalar qStudent(const NumericalScalar nu,
-                                  const NumericalScalar p,
+  static Scalar qStudent(const Scalar nu,
+                                  const Scalar p,
                                   const Bool tail = false);
-  static NumericalScalar rStudent(const NumericalScalar nu);
-  static Point rStudent(const NumericalScalar nu,
+  static Scalar rStudent(const Scalar nu);
+  static Point rStudent(const Scalar nu,
                                  const UnsignedInteger size);
   static Point rUniformTriangle(const Point & a,
                                          const Point & b,
@@ -164,38 +164,38 @@ public:
                                           const UnsignedInteger size);
 
   // For TruncatedNormal distribution
-  //      static NumericalScalar rTruncatedNormal(const NumericalScalar a, const NumericalScalar b);
+  //      static Scalar rTruncatedNormal(const Scalar a, const Scalar b);
   // Compute the expectation of the min of n independent standard normal random variables
-  static NumericalScalar eZ1(const UnsignedInteger n);
+  static Scalar eZ1(const UnsignedInteger n);
 
   // K factor for exact two-sided tolerance intervals of normal pooled populations
-  static NumericalScalar kFactorPooled(const UnsignedInteger n,
+  static Scalar kFactorPooled(const UnsignedInteger n,
                                        const UnsignedInteger m,
-                                       const NumericalScalar p,
-                                       const NumericalScalar alpha);
+                                       const Scalar p,
+                                       const Scalar alpha);
 
   // K factor for exact two-sided tolerance intervals of a normal population
-  static NumericalScalar kFactor(const UnsignedInteger n,
-                                 const NumericalScalar p,
-                                 const NumericalScalar alpha);
+  static Scalar kFactor(const UnsignedInteger n,
+                                 const Scalar p,
+                                 const Scalar alpha);
 
   // Asymptotic distribution of the DickeyFuller distribution
-  static NumericalScalar pDickeyFullerTrend(const NumericalScalar x,
+  static Scalar pDickeyFullerTrend(const Scalar x,
       const Bool tail = false);
 
-  static NumericalScalar pDickeyFullerConstant(const NumericalScalar x,
+  static Scalar pDickeyFullerConstant(const Scalar x,
       const Bool tail = false);
 
-  static NumericalScalar pDickeyFullerNoConstant(const NumericalScalar x,
+  static Scalar pDickeyFullerNoConstant(const Scalar x,
       const Bool tail = false);
 
-  static NumericalScalar qDickeyFullerTrend(const NumericalScalar p,
+  static Scalar qDickeyFullerTrend(const Scalar p,
       const Bool tail = false);
 
-  static NumericalScalar qDickeyFullerConstant(const NumericalScalar p,
+  static Scalar qDickeyFullerConstant(const Scalar p,
       const Bool tail = false);
 
-  static NumericalScalar qDickeyFullerNoConstant(const NumericalScalar p,
+  static Scalar qDickeyFullerNoConstant(const Scalar p,
       const Bool tail = false);
 
 }; /* class DistFunc */

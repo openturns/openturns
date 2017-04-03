@@ -97,8 +97,8 @@ void AdaptiveDirectionalSampling::run()
   {
     const Point w0(m, 1.0 / m);
 
-    NumericalScalar probabilityEstimate = 0.0;
-    NumericalScalar w0SigmaSum = 0.0;
+    Scalar probabilityEstimate = 0.0;
+    Scalar w0SigmaSum = 0.0;
     Point sigma(m, 0.0);
 
     Sample T0(d, m);
@@ -119,7 +119,7 @@ void AdaptiveDirectionalSampling::run()
       directionalSampling.setBlockSize (blockSize);
       directionalSampling.run();
       const SimulationResult result(directionalSampling.getResult());
-      const NumericalScalar pf = result.getProbabilityEstimate();
+      const Scalar pf = result.getProbabilityEstimate();
 
       if (pf > 0.0)
       {
@@ -140,7 +140,7 @@ void AdaptiveDirectionalSampling::run()
 
     } // for i
 
-    const NumericalScalar varianceEstimate = w0SigmaSum * w0SigmaSum / (gamma_[l] * n); // (33)
+    const Scalar varianceEstimate = w0SigmaSum * w0SigmaSum / (gamma_[l] * n); // (33)
 
     // update result
     setResult(SimulationResult(getEvent(), probabilityEstimate, varianceEstimate, n, blockSize));
@@ -247,7 +247,7 @@ void AdaptiveDirectionalSampling::setGamma(const Point& gamma)
 {
   const UnsignedInteger dimension = gamma.getDimension();
   if (dimension > 2) throw InvalidDimensionException(HERE) << "gamma dimension is " << dimension;
-  NumericalScalar sum = 0.0;
+  Scalar sum = 0.0;
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
     if (!(gamma[i] > 0.0)) throw InvalidArgumentException(HERE) << "gamma values should be positive";

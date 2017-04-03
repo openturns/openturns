@@ -61,11 +61,11 @@ String Hanning::__str__(const String & offset) const
 }
 
 /* Evaluation of Hanning filter */
-NumericalScalar Hanning::operator()(const NumericalScalar t) const
+Scalar Hanning::operator()(const Scalar t) const
 {
   if ((t <= 0.0) || (t >= 1.0))
     return 0.0;
-  const NumericalScalar sinTheta = sin(M_PI * t);
+  const Scalar sinTheta = sin(M_PI * t);
   // 1.632993161855452065464856 = sqrt(8/3)
   return 1.632993161855452065464856 * sinTheta * sinTheta;
 }

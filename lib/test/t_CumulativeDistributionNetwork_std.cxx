@@ -79,16 +79,16 @@ int main(int argc, char *argv[])
     UnsignedInteger oldPrecision = PlatformInfo::GetNumericalPrecision();
     PlatformInfo::SetNumericalPrecision(5);
     // Show PDF and CDF of point
-    NumericalScalar LPDF = distribution.computeLogPDF( point );
+    Scalar LPDF = distribution.computeLogPDF( point );
     fullprint << std::setprecision(5) << "log pdf=" << LPDF << std::endl;
-    NumericalScalar PDF = distribution.computePDF( point );
+    Scalar PDF = distribution.computePDF( point );
     fullprint << std::setprecision(5) << "pdf     =" << PDF << std::endl;
     fullprint << std::setprecision(5) << "pdf (FD)=" << distribution.DistributionImplementation::computePDF(point) << std::endl;
-    NumericalScalar CDF = distribution.computeCDF( point );
+    Scalar CDF = distribution.computeCDF( point );
     fullprint << std::setprecision(5) << "cdf=" << CDF << std::endl;
-    NumericalScalar CCDF = distribution.computeComplementaryCDF( point );
+    Scalar CCDF = distribution.computeComplementaryCDF( point );
     fullprint << std::setprecision(5) << "ccdf=" << CCDF << std::endl;
-    NumericalScalar Survival = distribution.computeSurvivalFunction( point );
+    Scalar Survival = distribution.computeSurvivalFunction( point );
     fullprint << std::setprecision(5) << "survival=" << Survival << std::endl;
     Point InverseSurvival = distribution.computeInverseSurvivalFunction(0.95);
     fullprint << "Inverse survival=" << InverseSurvival << std::endl;
@@ -100,10 +100,10 @@ int main(int argc, char *argv[])
     if (distribution.getDimension() <= 2)
     {
       ResourceMap::SetAsUnsignedInteger("Distribution-MinimumVolumeLevelSetSamplingSize", 1000 );
-      NumericalScalar threshold;
+      Scalar threshold;
       fullprint << "Minimum volume interval=" << distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95, threshold) << std::endl;
       fullprint << "threshold=" << threshold << std::endl;
-      NumericalScalar beta;
+      Scalar beta;
       LevelSet levelSet(distribution.computeMinimumVolumeLevelSetWithThreshold(0.95, beta));
       fullprint << "Minimum volume level set=" << levelSet << std::endl;
       fullprint << "beta=" << beta << std::endl;

@@ -83,13 +83,13 @@ void FORMResult::computeEventProbability() const
 }
 
 /* EventProbability accessor */
-NumericalScalar FORMResult::getEventProbability() const
+Scalar FORMResult::getEventProbability() const
 {
   return eventProbability_;
 }
 
 /* EventProbability accessor */
-void FORMResult::setEventProbability(const NumericalScalar & eventProbability)
+void FORMResult::setEventProbability(const Scalar & eventProbability)
 {
   eventProbability_ = eventProbability;
 }
@@ -104,13 +104,13 @@ void  FORMResult::computeGeneralisedReliabilityIndex() const
 
 
 /* GeneralisedReliabilityIndex accessor */
-NumericalScalar FORMResult::getGeneralisedReliabilityIndex() const
+Scalar FORMResult::getGeneralisedReliabilityIndex() const
 {
   return generalisedReliabilityIndex_;
 }
 
 /* GeneralisedReliabilityIndex accessor */
-void FORMResult::setGeneralisedReliabilityIndex(const NumericalScalar & generalisedReliabilityIndex)
+void FORMResult::setGeneralisedReliabilityIndex(const Scalar & generalisedReliabilityIndex)
 {
   generalisedReliabilityIndex_ = generalisedReliabilityIndex;
 }
@@ -126,7 +126,7 @@ void FORMResult::computeEventProbabilitySensitivity() const
   /* in the standard space all marginals of the standard distribution are identical */
   /* evaluate one marginal at the reliability index : the marginal is symmetric with respect to zero */
   const Distribution standardMarginalDistribution(antecedent.getStandardDistribution().getMarginal(0));
-  NumericalScalar correctedReliabilityIndexDensity = standardMarginalDistribution.computePDF(correctedReliabilityIndex);
+  Scalar correctedReliabilityIndexDensity = standardMarginalDistribution.computePDF(correctedReliabilityIndex);
 
   if (! getIsStandardPointOriginInFailureSpace())
   {
@@ -164,7 +164,7 @@ FORMResult::Sensitivity FORMResult::getEventProbabilitySensitivity() const
 
 
 /* HasoferReliabilityIndexSensitivity Graph */
-AnalyticalResult::GraphCollection FORMResult::drawEventProbabilitySensitivity(NumericalScalar width) const
+AnalyticalResult::GraphCollection FORMResult::drawEventProbabilitySensitivity(Scalar width) const
 {
   GraphCollection eventProbabilitySensitivityGraphCollection(0);
   // To ensure that the eventProbabilitySensitivity_ are up to date

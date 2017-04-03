@@ -51,7 +51,7 @@ IntegrationAlgorithmImplementation * IntegrationAlgorithmImplementation::clone()
 Point IntegrationAlgorithmImplementation::integrate(const Function & function,
     const Interval & interval) const
 {
-  NumericalScalar error = 0.0;
+  Scalar error = 0.0;
   return integrate(function, interval, error);
 }
 
@@ -65,9 +65,9 @@ Point IntegrationAlgorithmImplementation::integrate(const Function & function,
 
 Point IntegrationAlgorithmImplementation::integrate(const Function & function,
     const Interval & interval,
-    NumericalScalar & error) const
+    Scalar & error) const
 {
-  throw NotYetImplementedException(HERE) << "In IntegrationAlgorithmImplementation::integrate(const Function & function, const Interval & interval, NumericalScalar & error) const";
+  throw NotYetImplementedException(HERE) << "In IntegrationAlgorithmImplementation::integrate(const Function & function, const Interval & interval, Scalar & error) const";
 }
 
 /* String converter */

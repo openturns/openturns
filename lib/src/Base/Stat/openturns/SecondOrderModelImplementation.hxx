@@ -60,10 +60,10 @@ public:
   virtual UnsignedInteger getDimension() const;
 
   /** Computation of the covariance matrix */
-  virtual CovarianceMatrix computeCovariance(const NumericalScalar s,
-      const NumericalScalar t) const;
+  virtual CovarianceMatrix computeCovariance(const Scalar s,
+      const Scalar t) const;
 
-  virtual CovarianceMatrix computeCovariance(const NumericalScalar tau) const;
+  virtual CovarianceMatrix computeCovariance(const Scalar tau) const;
 
   virtual CovarianceMatrix computeCovariance(const Point & s,
       const Point & t) const;
@@ -80,7 +80,7 @@ public:
   virtual CovarianceMatrix discretize(const RegularGrid & timeGrid) const;
 
   /** Computation of the spectral density function */
-  virtual HermitianMatrix computeSpectralDensity(const NumericalScalar frequency) const;
+  virtual HermitianMatrix computeSpectralDensity(const Scalar frequency) const;
 
   /** String converter */
   virtual String __repr__() const;

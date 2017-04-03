@@ -38,13 +38,13 @@ class OT_API GeometricProfile
 
 public:
   /** Default constructor */
-  GeometricProfile(const NumericalScalar T0=10, const NumericalScalar c=0.95, const UnsignedInteger iMax=2000);
+  GeometricProfile(const Scalar T0=10, const Scalar c=0.95, const UnsignedInteger iMax=2000);
 
   /** Virtual constructor method */
   GeometricProfile * clone() const;
 
   /** Compute temperature T(i) */
-  NumericalScalar operator()(UnsignedInteger i) const;
+  Scalar operator()(UnsignedInteger i) const;
 
   /** String converter */
   String __repr__() const;
@@ -56,8 +56,8 @@ public:
   void load(Advocate & adv);
 
 private:
-  NumericalScalar c_;
-  mutable NumericalScalar logc_;
+  Scalar c_;
+  mutable Scalar logc_;
 
 }; /* class GeometricProfile */
 

@@ -104,10 +104,10 @@ void AdaptiveStrategyImplementation::computeInitialBasis()
 
 /* Update the basis for the next iteration of approximation */
 void AdaptiveStrategyImplementation::updateBasis(const Point & alpha_k,
-    const NumericalScalar residual,
-    const NumericalScalar relativeError)
+    const Scalar residual,
+    const Scalar relativeError)
 {
-  throw NotYetImplementedException(HERE) << "In AdaptiveStrategyImplementation::updateBasis(const Point & alpha_k, const NumericalScalar residual, const NumericalScalar relativeError)";
+  throw NotYetImplementedException(HERE) << "In AdaptiveStrategyImplementation::updateBasis(const Point & alpha_k, const Scalar residual, const Scalar relativeError)";
 }
 
 /* Psi accessor */

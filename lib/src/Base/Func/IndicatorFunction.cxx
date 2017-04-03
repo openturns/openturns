@@ -37,7 +37,7 @@ IndicatorFunction::IndicatorFunction ()
 /* Parameter constructor */
 IndicatorFunction::IndicatorFunction (const Function & function,
                                       const ComparisonOperator & comparisonOperator,
-                                      const NumericalScalar threshold)
+                                      const Scalar threshold)
   : Function()
 {
   const IndicatorEvaluation evaluation(function.getEvaluation(), comparisonOperator, threshold);

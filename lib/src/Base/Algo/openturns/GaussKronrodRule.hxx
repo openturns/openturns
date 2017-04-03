@@ -63,7 +63,7 @@ public:
   UnsignedInteger getOrder() const;
 
   /** Zero Gauss weight accessor */
-  NumericalScalar getZeroGaussWeight() const;
+  Scalar getZeroGaussWeight() const;
 
   /** Other Gauss weight accessor */
   Point getOtherGaussWeights() const;
@@ -72,7 +72,7 @@ public:
   Point getOtherKronrodNodes() const;
 
   /** Zero Kronrod weight accessor */
-  NumericalScalar getZeroKronrodWeight() const;
+  Scalar getZeroKronrodWeight() const;
 
   /** Other Kronrod weight accessor */
   Point getOtherKronrodWeights() const;
@@ -88,7 +88,7 @@ private:
   UnsignedInteger order_;
 
   /** Gauss weight of node 0.0 */
-  NumericalScalar zeroGaussWeight_;
+  Scalar zeroGaussWeight_;
 
   /** Gauss weights of the nonzero nodes */
   Point otherGaussWeights_;
@@ -97,7 +97,7 @@ private:
   Point otherKronrodNodes_;
 
   /** Kronrod weight of node 0.0 */
-  NumericalScalar zeroKronrodWeight_;
+  Scalar zeroKronrodWeight_;
 
   /** Kronrod weights of the nonzero nodes */
   Point otherKronrodWeights_;

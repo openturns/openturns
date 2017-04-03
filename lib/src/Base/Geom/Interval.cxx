@@ -43,8 +43,8 @@ Interval::Interval(const UnsignedInteger dimension)
 }
 
 /* Parameters constructor, simplified interface for 1D case */
-Interval::Interval(const NumericalScalar lowerBound,
-                   const NumericalScalar upperBound)
+Interval::Interval(const Scalar lowerBound,
+                   const Scalar upperBound)
   : DomainImplementation(1)
   , lowerBound_(1, lowerBound)
   , upperBound_(1, upperBound)
@@ -287,7 +287,7 @@ Interval & Interval::operator -=(const Interval & other)
 
 
 /* Product operator */
-Interval Interval::operator *(const NumericalScalar scalar) const
+Interval Interval::operator *(const Scalar scalar) const
 {
   // Special case for multiplication by 0. We assume that 0 x (+/-inf) = 0.
   if (scalar == 0.0) return Interval(Point(getDimension(), 0.0), Point(getDimension(), 0.0));
@@ -300,7 +300,7 @@ Interval Interval::operator *(const NumericalScalar scalar) const
 }
 
 /*  In-place product operator */
-Interval & Interval::operator *=(const NumericalScalar scalar)
+Interval & Interval::operator *=(const Scalar scalar)
 {
   // Special case for multiplication by 0. We assume that 0 x (+/-inf) = 0.
   if (scalar == 0.0)

@@ -167,7 +167,7 @@ TimeSeries FunctionalBasisProcess::getFuture(const UnsignedInteger stepNumber) c
   }
   if (stepNumber == 0) throw InvalidArgumentException(HERE) << "Error: the number of future steps must be positive.";
   /* TimeGrid associated with the possible future */
-  const NumericalScalar timeStep = timeGrid.getStep();
+  const Scalar timeStep = timeGrid.getStep();
   const RegularGrid futureTimeGrid(timeGrid.getEnd(), timeStep, stepNumber);
   const UnsignedInteger basisSize = basis_.getSize();
   // Loop over the time stamps

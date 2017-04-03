@@ -46,7 +46,7 @@ Cobyla::Cobyla(const OptimizationProblem & problem)
 }
 
 Cobyla::Cobyla(const OptimizationProblem & problem,
-               const NumericalScalar rhoBeg)
+               const Scalar rhoBeg)
   : OptimizationAlgorithmImplementation(problem)
   , rhoBeg_(rhoBeg)
 {
@@ -89,7 +89,7 @@ void Cobyla::run()
     }
   }
 
-  NumericalScalar rhoEnd = getMaximumAbsoluteError();
+  Scalar rhoEnd = getMaximumAbsoluteError();
   int maxFun(getMaximumIterationNumber());
   cobyla_message message((getVerbose() ? COBYLA_MSG_INFO : COBYLA_MSG_NONE));
 
@@ -124,10 +124,10 @@ void Cobyla::run()
   // Update the result
   UnsignedInteger size = evaluationInputHistory_.getSize();
 
-  NumericalScalar absoluteError = -1.0;
-  NumericalScalar relativeError = -1.0;
-  NumericalScalar residualError = -1.0;
-  NumericalScalar constraintError = -1.0;
+  Scalar absoluteError = -1.0;
+  Scalar relativeError = -1.0;
+  Scalar residualError = -1.0;
+  Scalar constraintError = -1.0;
 
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
@@ -147,7 +147,7 @@ void Cobyla::run()
 
   result_.setOptimalPoint(x);
   const UnsignedInteger index = evaluationInputHistory_.find(x);
-  NumericalScalar bestValue = evaluationOutputHistory_[index][0];
+  Scalar bestValue = evaluationOutputHistory_[index][0];
   result_.setOptimalValue(Point(1, bestValue));
   result_.setIterationNumber(maxFun);
   result_.setLagrangeMultipliers(computeLagrangeMultipliers(x));
@@ -166,12 +166,12 @@ void Cobyla::run()
 }
 
 /* RhoBeg accessor */
-NumericalScalar Cobyla::getRhoBeg() const
+Scalar Cobyla::getRhoBeg() const
 {
   return rhoBeg_;
 }
 
-void Cobyla::setRhoBeg(const NumericalScalar rhoBeg)
+void Cobyla::setRhoBeg(const Scalar rhoBeg)
 {
   rhoBeg_ = rhoBeg;
 }
@@ -215,17 +215,17 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
 
   /* Convert the input vector in OpenTURNS format */
   Point inPoint(n);
-  memcpy(&inPoint[0], &x[0], n * sizeof(NumericalScalar));
+  memcpy(&inPoint[0], &x[0], n * sizeof(Scalar));
 
   const OptimizationProblem problem(algorithm->getProblem());
   Point outPoint(2);
 
-  NumericalScalar result = problem.getObjective().operator()(inPoint)[0];
+  Scalar result = problem.getObjective().operator()(inPoint)[0];
   // cobyla freezes when dealing with MaxScalar
   if (std::abs(result) == SpecFunc::MaxScalar) result /= 1.0e3;
   outPoint[0] = result;
 
-  const NumericalScalar sign = problem.isMinimization() ? 1.0 : -1.0;
+  const Scalar sign = problem.isMinimization() ? 1.0 : -1.0;
   *f = sign * result;
 
   UnsignedInteger shift = 0;
@@ -264,7 +264,7 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   }
 
   /* Convert the constraint vector in double format */
-  memcpy(&con[0], &constraintValue[0], constraintValue.getDimension() * sizeof(NumericalScalar));
+  memcpy(&con[0], &constraintValue[0], constraintValue.getDimension() * sizeof(Scalar));
 
   // only take violated constraints into account to compute error
   for (UnsignedInteger j = 0; j < constraintValue.getDimension(); ++ j)

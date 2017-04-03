@@ -129,7 +129,7 @@ Point RandomWalkMetropolisHastings::getRealization() const
 
     history_.store(currentState_);
 
-    NumericalScalar logLikelihoodCandidate = currentLogLikelihood_;
+    Scalar logLikelihoodCandidate = currentLogLikelihood_;
 
     // update each chain component
     for (UnsignedInteger j = 0; j < dimension; ++ j)
@@ -149,13 +149,13 @@ Point RandomWalkMetropolisHastings::getRealization() const
         nextState[j] = getPrior().getMarginal(j).getRealization()[0];
       }
 
-      const NumericalScalar nextLogLikelihood = computeLogLikelihood(nextState);
+      const Scalar nextLogLikelihood = computeLogLikelihood(nextState);
 
       // alpha = likehood(newstate)/likehood(oldstate)
-      const NumericalScalar alphaLog = nextLogLikelihood  - currentLogLikelihood_;
+      const Scalar alphaLog = nextLogLikelihood  - currentLogLikelihood_;
 
       // acceptance test
-      const NumericalScalar uLog = log(RandomGenerator::Generate());
+      const Scalar uLog = log(RandomGenerator::Generate());
       if (nonRejectedComponent || (uLog < alphaLog))
       {
         // the likelihood can be 0 wrt the observations because of a non-rejected component (always ok wrt prior)
@@ -185,10 +185,10 @@ Point RandomWalkMetropolisHastings::getRealization() const
         if ((samplesNumber_ % calibrationStep) == (calibrationStep - 1))
         {
           // compute the current acceptation rate
-          NumericalScalar rho = 1.0 * accepted[j] / (1.0 * calibrationStep);
+          Scalar rho = 1.0 * accepted[j] / (1.0 * calibrationStep);
 
           // compute factor
-          NumericalScalar factor = calibrationStrategy_[j].computeUpdateFactor(rho);
+          Scalar factor = calibrationStrategy_[j].computeUpdateFactor(rho);
 
           // update delta
           delta[j] *= factor;
@@ -221,7 +221,7 @@ Point RandomWalkMetropolisHastings::getAcceptanceRate() const
   Point acceptanceRate(dimension);
   for (UnsignedInteger j = 0; j < dimension; ++ j)
   {
-    acceptanceRate[j] = static_cast<NumericalScalar>(acceptedNumber_[j]) / samplesNumber_;
+    acceptanceRate[j] = static_cast<Scalar>(acceptedNumber_[j]) / samplesNumber_;
   }
   return acceptanceRate;
 }

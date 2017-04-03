@@ -35,14 +35,14 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API Point
-  : public PersistentCollection<NumericalScalar>
+  : public PersistentCollection<Scalar>
 {
   CLASSNAME;
 
 public:
 
-  typedef PersistentCollection<NumericalScalar> InternalType;
-  typedef Collection<NumericalScalar>           NumericalScalarCollection;
+  typedef PersistentCollection<Scalar> InternalType;
+  typedef Collection<Scalar>           ScalarCollection;
   typedef Point                        ImplementationType;
 
   /** Default constructor */
@@ -50,10 +50,10 @@ public:
 
   /** Constructor with size */
   explicit Point(const UnsignedInteger size,
-                          const NumericalScalar value = 0.0);
+                          const Scalar value = 0.0);
 
   /** Constructor from a collection */
-  Point(const Collection<NumericalScalar> & coll);
+  Point(const Collection<Scalar> & coll);
 
   /** Virtual constructor */
   virtual Point * clone() const;
@@ -67,20 +67,20 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Set small elements to zero */
-  Point clean(const NumericalScalar threshold) const;
+  Point clean(const Scalar threshold) const;
 
   /** Dimension accessor */
   inline UnsignedInteger getDimension() const
   {
-    return PersistentCollection<NumericalScalar>::getSize();
+    return PersistentCollection<Scalar>::getSize();
   }
   inline UnsignedInteger getSize() const
   {
-    return PersistentCollection<NumericalScalar>::getSize();
+    return PersistentCollection<Scalar>::getSize();
   }
 
   /** Collection accessor */
-  inline const NumericalScalarCollection & getCollection() const
+  inline const ScalarCollection & getCollection() const
   {
     return *this;
   }
@@ -103,22 +103,22 @@ public:
 #endif
 
   /**  In-place product operator */
-  Point & operator *=(const NumericalScalar scalar);
+  Point & operator *=(const Scalar scalar);
 
   /**  In-place division operator */
-  Point & operator /=(const NumericalScalar scalar);
+  Point & operator /=(const Scalar scalar);
 
   /**  Norm */
-  NumericalScalar norm() const;
+  Scalar norm() const;
 
   /** l1-norm */
-  NumericalScalar norm1() const;
+  Scalar norm1() const;
 
   /** linf-norm */
-  NumericalScalar normInf() const;
+  Scalar normInf() const;
 
   /**  Norm^2 */
-  NumericalScalar normSquare() const;
+  Scalar normSquare() const;
 
   /** Normalize the vector */
   Point normalize() const;
@@ -150,16 +150,16 @@ OT_API Bool operator < (const Point & lhs,
                         const Point & rhs);
 
 /** Product operator */
-OT_API Point operator * (const NumericalScalar scalar,
+OT_API Point operator * (const Scalar scalar,
                                   const Point & point);
 
 /** Product operator */
 OT_API Point operator * (const Point & point,
-                                  const NumericalScalar scalar);
+                                  const Scalar scalar);
 
 /** Division operator */
 OT_API Point operator / (const Point & point,
-                                  const NumericalScalar scalar);
+                                  const Scalar scalar);
 
 /** Addition operator */
 OT_API Point operator + (const Point & lhs,
@@ -172,7 +172,7 @@ OT_API Point operator - (const Point & lhs,
 #endif
 
 /** Dot product operator */
-OT_API NumericalScalar dot(const Point & lhs,
+OT_API Scalar dot(const Point & lhs,
                            const Point & rhs);
 
 

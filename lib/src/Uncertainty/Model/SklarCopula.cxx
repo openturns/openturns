@@ -130,10 +130,10 @@ Point SklarCopula::computeDDF(const Point & point) const
   Point x(point);
   Point pdfX(dimension);
   Point ddfX(dimension);
-  NumericalScalar factor = 1.0;
+  Scalar factor = 1.0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const NumericalScalar ui = point[i];
+    const Scalar ui = point[i];
     if ((ui <= 0.0) || ui >= 1.0) return Point(dimension, 0.0);
     const Point xi(marginalCollection_[i].computeQuantile(ui));
     x[i] = xi[0];
@@ -142,7 +142,7 @@ Point SklarCopula::computeDDF(const Point & point) const
     factor *= pdfX[i];
     if (factor == 0.0) return Point(dimension, 0.0);
   }
-  const NumericalScalar pdfDistribution = distribution_.computePDF(x);
+  const Scalar pdfDistribution = distribution_.computePDF(x);
   Point result(distribution_.computeDDF(x));
   for (UnsignedInteger i = 0; i < dimension; ++i) result[i] -= ddfX[i] * pdfDistribution / pdfX[i];
   return result * (1.0 / factor);
@@ -151,18 +151,18 @@ Point SklarCopula::computeDDF(const Point & point) const
 /* Get the PDF of the distribution
    F(x_1,\dots,x_n) = C(F_1(x_1),\dots,F_n(x_n))
    so p(x_1,\dots,x_n) = c(F_1(x_1),\dots,F_n(x_n))\prod_{i=1}^n p_i(x_i) */
-NumericalScalar SklarCopula::computePDF(const Point & point) const
+Scalar SklarCopula::computePDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   // Early exit for the independent case
   if (distribution_.hasIndependentCopula()) return IndependentCopula(dimension).computePDF(point);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const NumericalScalar ui = point[i];
+    const Scalar ui = point[i];
     if ((ui <= 0.0) || ui > 1.0) return 0.0;
   }
   Point x(dimension);
-  NumericalScalar factor = 1.0;
+  Scalar factor = 1.0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const Point xi(marginalCollection_[i].computeQuantile(point[i]));
@@ -175,7 +175,7 @@ NumericalScalar SklarCopula::computePDF(const Point & point) const
 
 /* Get the CDF of the distribution
    F(x_1,\dots,x_n) = C(F_1(x_1),\dots,F_n(x_n)) */
-NumericalScalar SklarCopula::computeCDF(const Point & point) const
+Scalar SklarCopula::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   // Early exit for the independent case
@@ -193,7 +193,7 @@ NumericalScalar SklarCopula::computeCDF(const Point & point) const
 }
 
 /* Compute the probability content of an interval */
-NumericalScalar SklarCopula::computeProbability(const Interval & interval) const
+Scalar SklarCopula::computeProbability(const Interval & interval) const
 {
   const UnsignedInteger dimension = getDimension();
   if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension not compatible with the distribution dimension";
@@ -218,7 +218,7 @@ NumericalScalar SklarCopula::computeProbability(const Interval & interval) const
 }
 
 /* Get the survival function of the distribution */
-NumericalScalar SklarCopula::computeSurvivalFunction(const Point & point) const
+Scalar SklarCopula::computeSurvivalFunction(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   // Early exit for the independent case
@@ -249,11 +249,11 @@ Point SklarCopula::computeCDFGradient(const Point & point) const
 
 /* Get the quantile of the distribution
    F(x_1,\dots,x_n) = C(F_1(x_1),\dots,F_n(x_n)) */
-Point SklarCopula::computeQuantile(const NumericalScalar prob,
+Point SklarCopula::computeQuantile(const Scalar prob,
     const Bool tail) const
 {
   const UnsignedInteger dimension = getDimension();
-  const NumericalScalar epsilon = cdfEpsilon_;
+  const Scalar epsilon = cdfEpsilon_;
   if (prob < -epsilon || prob > 1.0 + epsilon) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
   if (dimension == 1) return Point(1, (tail ? 1.0 - prob : prob));
   Point uq(distribution_.computeQuantile(prob));
@@ -262,7 +262,7 @@ Point SklarCopula::computeQuantile(const NumericalScalar prob,
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar SklarCopula::computeConditionalPDF(const NumericalScalar x,
+Scalar SklarCopula::computeConditionalPDF(const Scalar x,
     const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
@@ -272,14 +272,14 @@ NumericalScalar SklarCopula::computeConditionalPDF(const NumericalScalar x,
   // General case
   Point u(conditioningDimension);
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i) u[i] = marginalCollection_[i].computeQuantile(y[i])[0];
-  const NumericalScalar ux = marginalCollection_[conditioningDimension].computeQuantile(x)[0];
-  const NumericalScalar pdf = marginalCollection_[conditioningDimension].computePDF(ux);
+  const Scalar ux = marginalCollection_[conditioningDimension].computeQuantile(x)[0];
+  const Scalar pdf = marginalCollection_[conditioningDimension].computePDF(ux);
   if (pdf == 0.0) return 0.0;
   return distribution_.computeConditionalPDF(ux, u) / pdf;
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar SklarCopula::computeConditionalCDF(const NumericalScalar x,
+Scalar SklarCopula::computeConditionalCDF(const Scalar x,
     const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
@@ -293,7 +293,7 @@ NumericalScalar SklarCopula::computeConditionalCDF(const NumericalScalar x,
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar SklarCopula::computeConditionalQuantile(const NumericalScalar q,
+Scalar SklarCopula::computeConditionalQuantile(const Scalar q,
     const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
@@ -389,7 +389,7 @@ void SklarCopula::setParameter(const Point & parameters)
 {
   Distribution newDistribution(distribution_);
   newDistribution.setParameter(parameters);
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = SklarCopula(newDistribution);
   setWeight(w);
 }

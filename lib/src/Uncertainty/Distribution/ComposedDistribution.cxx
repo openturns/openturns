@@ -342,7 +342,7 @@ Point ComposedDistribution::computeDDF(const Point & point) const
   Point uPoint(dimension);
   Point pdfMarginal(dimension);
   Point ddfMarginal(dimension);
-  NumericalScalar productPDF = 1.0;
+  Scalar productPDF = 1.0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const Point component(Point(1, point[i]));
@@ -352,7 +352,7 @@ Point ComposedDistribution::computeDDF(const Point & point) const
     productPDF *= pdfMarginal[i];
   }
   // Initialization with the values of an independent copula
-  NumericalScalar pdfCopula = 1.0;
+  Scalar pdfCopula = 1.0;
   Point ddfCopula(dimension, 0.0);
   // If the distribution does not have an independent copula
   if (!hasIndependentCopula())
@@ -367,7 +367,7 @@ Point ComposedDistribution::computeDDF(const Point & point) const
 }
 
 /* Get the PDF of the ComposedDistribution */
-NumericalScalar ComposedDistribution::computePDF(const Point & point) const
+Scalar ComposedDistribution::computePDF(const Point & point) const
 {
   /* PDF = PDF_copula(CDF_dist1(p1), ..., CDF_distn(pn))xPDF_dist1(p1)x...xPDF_distn(pn) */
   const UnsignedInteger dimension = getDimension();
@@ -375,7 +375,7 @@ NumericalScalar ComposedDistribution::computePDF(const Point & point) const
 
   // Special case for dimension 1, to boost performances
   if (dimension == 1) return distributionCollection_[0].computePDF(point);
-  NumericalScalar productPDF = 1.0;
+  Scalar productPDF = 1.0;
   // Special case for the independent case, to boost performances
   if (hasIndependentCopula())
   {
@@ -394,7 +394,7 @@ NumericalScalar ComposedDistribution::computePDF(const Point & point) const
 }
 
 /* Get the CDF of the ComposedDistribution */
-NumericalScalar ComposedDistribution::computeCDF(const Point & point) const
+Scalar ComposedDistribution::computeCDF(const Point & point) const
 {
   /* CDF = CDF_copula(CDF_dist1(p1), ..., CDF_distn(pn)) */
   const UnsignedInteger dimension = getDimension();
@@ -404,7 +404,7 @@ NumericalScalar ComposedDistribution::computeCDF(const Point & point) const
   // Special case for the independent case, to boost performances
   if (hasIndependentCopula())
   {
-    NumericalScalar productCDF = 1.0;
+    Scalar productCDF = 1.0;
     for (UnsignedInteger i = 0; i < dimension; ++i) productCDF *= distributionCollection_[i].computeCDF(point[i]);
     return productCDF;
   }
@@ -414,7 +414,7 @@ NumericalScalar ComposedDistribution::computeCDF(const Point & point) const
   return copula_.computeCDF(uPoint);
 }
 
-NumericalScalar ComposedDistribution::computeSurvivalFunction(const Point & point) const
+Scalar ComposedDistribution::computeSurvivalFunction(const Point & point) const
 {
   /* Survival = \hat{F}(x_1, \dots, x_d)
    *          = \hat{C}(\hat{F}_1(x_1), \dots, \hat{F}_d(x_d))
@@ -430,7 +430,7 @@ NumericalScalar ComposedDistribution::computeSurvivalFunction(const Point & poin
   // Special case for the independent case, to boost performances
   if (hasIndependentCopula())
   {
-    NumericalScalar productSurvival = 1.0;
+    Scalar productSurvival = 1.0;
     for (UnsignedInteger i = 0; i < dimension; ++i) productSurvival *= distributionCollection_[i].computeSurvivalFunction(point[i]);
     return productSurvival;
   }
@@ -441,7 +441,7 @@ NumericalScalar ComposedDistribution::computeSurvivalFunction(const Point & poin
 }
 
 /* Compute the probability content of an interval */
-NumericalScalar ComposedDistribution::computeProbability(const Interval & interval) const
+Scalar ComposedDistribution::computeProbability(const Interval & interval) const
 {
   const UnsignedInteger dimension = getDimension();
   if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension=" << dimension << ", here dimension=" << interval.getDimension();
@@ -511,7 +511,7 @@ Point ComposedDistribution::computeCDFGradient(const Point & point) const
 }
 
 /* Get the quantile of the ComposedDistribution */
-Point ComposedDistribution::computeQuantile(const NumericalScalar prob,
+Point ComposedDistribution::computeQuantile(const Scalar prob,
     const Bool tail) const
 {
   if (!(prob < 0.0 || prob <= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
@@ -523,7 +523,7 @@ Point ComposedDistribution::computeQuantile(const NumericalScalar prob,
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar ComposedDistribution::computeConditionalPDF(const NumericalScalar x, const Point & y) const
+Scalar ComposedDistribution::computeConditionalPDF(const Scalar x, const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -536,7 +536,7 @@ NumericalScalar ComposedDistribution::computeConditionalPDF(const NumericalScala
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar ComposedDistribution::computeConditionalCDF(const NumericalScalar x, const Point & y) const
+Scalar ComposedDistribution::computeConditionalCDF(const Scalar x, const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -645,7 +645,7 @@ void ComposedDistribution::computeCovariance() const
       const Distribution marginalDistribution(getMarginal(component));
       for(UnsignedInteger nodeIndex = 0; nodeIndex < gaussWeights.getSize(); ++nodeIndex)
       {
-        const NumericalScalar node = gaussNodes[nodeIndex];
+        const Scalar node = gaussNodes[nodeIndex];
         const Point q(marginalDistribution.computeQuantile(node));
         marginalQuantiles[nodeIndex][component] = q[0];
         marginalPDF[nodeIndex][component] = marginalDistribution.computePDF(q);
@@ -661,12 +661,12 @@ void ComposedDistribution::computeCovariance() const
     UnsignedInteger index = 0;
     for (UnsignedInteger rowNodeIndex = 0; rowNodeIndex < gaussWeights.getSize(); ++rowNodeIndex)
     {
-      const NumericalScalar nodeI = gaussNodes[rowNodeIndex];
-      const NumericalScalar weightI = gaussWeights[rowNodeIndex];
+      const Scalar nodeI = gaussNodes[rowNodeIndex];
+      const Scalar weightI = gaussWeights[rowNodeIndex];
       for (UnsignedInteger columnNodeIndex = 0; columnNodeIndex < gaussWeights.getSize(); ++columnNodeIndex)
       {
-        const NumericalScalar nodeJ = gaussNodes[columnNodeIndex];
-        const NumericalScalar weightJ = gaussWeights[columnNodeIndex];
+        const Scalar nodeJ = gaussNodes[columnNodeIndex];
+        const Scalar weightJ = gaussWeights[columnNodeIndex];
         nodes2D[index][0] = nodeI;
         nodes2D[index][1] = nodeJ;
         weights2D[index] = weightI * weightJ;
@@ -677,19 +677,19 @@ void ComposedDistribution::computeCovariance() const
     for (UnsignedInteger rowIndex = 0; rowIndex < dimension; ++rowIndex)
     {
       indices[0] = rowIndex;
-      const NumericalScalar muI = mean_[rowIndex];
+      const Scalar muI = mean_[rowIndex];
       // We must fill the upper triangle of the covariance matrix in order to access the 2D marginal distributions
       // of the copula in the correct order for the ComposedCopula
       for (UnsignedInteger columnIndex = rowIndex + 1; columnIndex < dimension; ++columnIndex)
       {
         indices[1] = columnIndex;
-        const NumericalScalar muJ = mean_[columnIndex];
+        const Scalar muJ = mean_[columnIndex];
         const Distribution marginalCopula(copula_.getMarginal(indices));
         if (!marginalCopula.hasIndependentCopula())
         {
           LOGINFO(OSS() << "Compute covariance(" << rowIndex << ", " << columnIndex << ")");
           const Point pdf2D(marginalCopula.computePDF(nodes2D).getImplementation()->getData());
-          NumericalScalar covarianceIJ = 0.0;
+          Scalar covarianceIJ = 0.0;
           // Then we loop over the integration points
           index = 0;
           for (UnsignedInteger rowNodeIndex = 0; rowNodeIndex < gaussWeights.getSize(); ++rowNodeIndex)

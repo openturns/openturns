@@ -36,7 +36,7 @@ GumbelAB::GumbelAB()
   // Nothing to do
 }
 
-GumbelAB::GumbelAB(const NumericalScalar a, const NumericalScalar b)
+GumbelAB::GumbelAB(const Scalar a, const Scalar b)
   : DistributionParametersImplementation()
   , a_(a)
   , b_(b)
@@ -72,10 +72,10 @@ Distribution GumbelAB::getDistribution() const
 /* Compute jacobian / native parameters */
 Matrix GumbelAB::gradient() const
 {
-  const NumericalScalar dalphada = 0.0;
-  const NumericalScalar dalphadb = -1 / (b_ * b_);
-  const NumericalScalar dbetada = 1.0;
-  const NumericalScalar dbetadb = 0.0;
+  const Scalar dalphada = 0.0;
+  const Scalar dalphadb = -1 / (b_ * b_);
+  const Scalar dbetada = 1.0;
+  const Scalar dbetadb = 0.0;
 
   SquareMatrix nativeParametersGradient(IdentityMatrix(2));
   nativeParametersGradient(0, 0) = dalphada;
@@ -92,13 +92,13 @@ Matrix GumbelAB::gradient() const
 Point GumbelAB::operator () (const Point & inP) const
 {
   if (inP.getDimension() != 2) throw InvalidArgumentException(HERE) << "the given point must have dimension=2, here dimension=" << inP.getDimension();
-  const NumericalScalar a = inP[0];
-  const NumericalScalar b = inP[1];
+  const Scalar a = inP[0];
+  const Scalar b = inP[1];
 
   if (!(b > 0.0)) throw InvalidArgumentException(HERE) << "b must be > 0, here b=" << b;
 
-  const NumericalScalar alpha = 1 / b;
-  const NumericalScalar beta = a;
+  const Scalar alpha = 1 / b;
+  const Scalar beta = a;
 
   Point nativeParameters(inP);
   nativeParameters[0] = alpha;
@@ -111,13 +111,13 @@ Point GumbelAB::operator () (const Point & inP) const
 Point GumbelAB::inverse(const Point & inP) const
 {
   if (inP.getDimension() != 2) throw InvalidArgumentException(HERE) << "the given point must have dimension=2, here dimension=" << inP.getDimension();
-  const NumericalScalar alpha = inP[0];
-  const NumericalScalar beta = inP[1];
+  const Scalar alpha = inP[0];
+  const Scalar beta = inP[1];
 
   if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "alpha must be > 0, here alpha=" << alpha;
 
-  const NumericalScalar a = beta;
-  const NumericalScalar b = 1.0 / alpha;
+  const Scalar a = beta;
+  const Scalar b = 1.0 / alpha;
 
   Point abParameters(inP);
   abParameters[0] = a;

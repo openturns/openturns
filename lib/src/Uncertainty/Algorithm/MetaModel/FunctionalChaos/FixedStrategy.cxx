@@ -69,8 +69,8 @@ void FixedStrategy::computeInitialBasis()
 
 /* Update the basis for the next iteration of approximation */
 void FixedStrategy::updateBasis(const Point & alpha_k,
-                                const NumericalScalar residual,
-                                const NumericalScalar relativeError)
+                                const Scalar residual,
+                                const Scalar relativeError)
 {
   // No change to the basis in the fixed strategy
   addedPsi_k_ranks_ = Indices(0);

@@ -147,42 +147,42 @@ Point MaximumDistribution::getRealization() const
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar MaximumDistribution::computePDF(const Point & point) const
+Scalar MaximumDistribution::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   if ((point[0] <= getRange().getLowerBound()[0]) || (point[0] >= getRange().getUpperBound()[0])) return 0.0;
   // Special case for identical independent variables
-  if (allSame_) return distribution_.computePDF(point) * std::pow(distribution_.computeCDF(point), static_cast<NumericalScalar>(variablesNumber_) - 1.0);
+  if (allSame_) return distribution_.computePDF(point) * std::pow(distribution_.computeCDF(point), static_cast<Scalar>(variablesNumber_) - 1.0);
   // General case
   if (!distribution_.hasIndependentCopula()) DistributionImplementation::computePDF(point);
   // Special treatment of the independent copula case
   const UnsignedInteger size = distribution_.getDimension();
   Point marginalCDF(size);
-  NumericalScalar product = 1.0;
+  Scalar product = 1.0;
   DistributionCollection marginals(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     marginals[i] = distribution_.getMarginal(i);
-    const NumericalScalar cdf = marginals[i].computeCDF(point);
+    const Scalar cdf = marginals[i].computeCDF(point);
     if ((cdf == 0) || (cdf == 1.0)) return 0.0;
     marginalCDF[i] = cdf;
     product *= cdf;
   }
-  NumericalScalar sum = 0.0;
+  Scalar sum = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalScalar pdfI = marginals[i].computePDF(point);
+    const Scalar pdfI = marginals[i].computePDF(point);
     if (pdfI > 0.0) sum += pdfI / marginalCDF[i];
   }
   return sum * product;
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar MaximumDistribution::computeCDF(const Point & point) const
+Scalar MaximumDistribution::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   // Special case for identical independent variables
-  if (allSame_) return std::pow(distribution_.computeCDF(point), static_cast<NumericalScalar>(variablesNumber_));
+  if (allSame_) return std::pow(distribution_.computeCDF(point), static_cast<Scalar>(variablesNumber_));
   // General case
   return distribution_.computeCDF(Point(distribution_.getDimension(), point[0]));
 }

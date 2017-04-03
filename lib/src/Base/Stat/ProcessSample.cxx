@@ -196,7 +196,7 @@ Sample ProcessSample::computeSpatialMean() const
 /*
  * Method computeQuantilePerComponent() gives the quantile per component of the sample
  */
-Field ProcessSample::computeQuantilePerComponent(const NumericalScalar prob) const
+Field ProcessSample::computeQuantilePerComponent(const Scalar prob) const
 {
   const UnsignedInteger size = getSize();
   if (size == 0) return Field();

@@ -70,12 +70,12 @@ public:
   virtual void load(Advocate & adv);
 
 private:
-  NumericalScalar relativeConvergence_;
+  Scalar relativeConvergence_;
 
   Point coefficients_;
   Point mu_;
-  NumericalScalar oldCoefficientsL1Norm_;
-  NumericalScalar coefficientsL1Norm_;
+  Scalar oldCoefficientsL1Norm_;
+  Scalar coefficientsL1Norm_;
 
   Indices predictors_;
   Indices inPredictors_;

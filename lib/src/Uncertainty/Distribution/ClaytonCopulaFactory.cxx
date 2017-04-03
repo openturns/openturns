@@ -62,7 +62,7 @@ ClaytonCopula ClaytonCopulaFactory::buildAsClaytonCopula(const Sample & sample) 
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a ClaytonCopula distribution from an empty sample";
   if (sample.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a ClaytonCopula distribution from a sample of dimension not equal to 2";
-  NumericalScalar tau = sample.computeKendallTau().operator()(0, 1);
+  Scalar tau = sample.computeKendallTau().operator()(0, 1);
   if (tau == 1) throw InvalidArgumentException(HERE) << "Error: cannot build a ClaytonCopula distribution from a sample with Kendall tau equal to 1";
   ClaytonCopula result(2.0 * tau / (1.0 - tau));
   result.setDescription(sample.getDescription());

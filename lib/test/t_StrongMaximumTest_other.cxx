@@ -85,9 +85,9 @@ int main(int argc, char *argv[])
     Point pseudoDesignPoint(dim, 0.0);
     pseudoDesignPoint[0] = sqrt(seuil) + C;
 
-    NumericalScalar importanceLevel = 0.01;
-    NumericalScalar accuracyLevel = 2;
-    NumericalScalar confidenceLevel = 0.999;
+    Scalar importanceLevel = 0.01;
+    Scalar accuracyLevel = 2;
+    Scalar confidenceLevel = 0.999;
 
     StrongMaximumTest myTest(myStandardEvent, designPoint, importanceLevel, accuracyLevel, confidenceLevel);
     fullprint << "myTest=" << myTest << std::endl;

@@ -52,11 +52,11 @@ int main(int argc, char *argv[])
     CauchyModel myModel(scale, amplitude);
     fullprint << "myModel = " << myModel << std::endl;
 
-    const NumericalScalar frequencyValue = 1.0;
+    const Scalar frequencyValue = 1.0;
     fullprint << "spectral density matrix at f = " << frequencyValue << " : " << myModel(frequencyValue) << std::endl;
 
     /* Evaluation at time higher to check the decrease of the cauchy values */
-    const NumericalScalar frequencyValueHigh = 10.0;
+    const Scalar frequencyValueHigh = 10.0;
     fullprint << "spectral density matrix at f = " << frequencyValueHigh << " : " << myModel(frequencyValueHigh) << std::endl;
 
     /* Default dimension parameter to evaluate the model */

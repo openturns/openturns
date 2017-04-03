@@ -94,7 +94,7 @@ String PiecewiseLinearEvaluation::__str__(const String & offset) const
 Point PiecewiseLinearEvaluation::operator () (const Point & inP) const
 {
   if (inP.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: expected an input point of dimension 1, got dimension=" << inP.getDimension();
-  const NumericalScalar x = inP[0];
+  const Scalar x = inP[0];
   UnsignedInteger iLeft = 0;
   if (x <= locations_[iLeft])
     return values_[iLeft];
@@ -115,15 +115,15 @@ Point PiecewiseLinearEvaluation::operator () (const Point & inP) const
       else iLeft = im;
     }
 
-  const NumericalScalar xLeft = locations_[iLeft];
-  const NumericalScalar xRight = locations_[iRight];
-  const NumericalScalar dx = xLeft - xRight;
+  const Scalar xLeft = locations_[iLeft];
+  const Scalar xRight = locations_[iRight];
+  const Scalar dx = xLeft - xRight;
   const Point vLeft(values_[iLeft]);
   const Point vRight(values_[iRight]);
   const UnsignedInteger dimension = getOutputDimension();
   Point value(dimension);
-  const NumericalScalar alpha = (x - xRight) / dx;
-  const NumericalScalar beta = (xLeft - x) / dx;
+  const Scalar alpha = (x - xRight) / dx;
+  const Scalar beta = (xLeft - x) / dx;
   for (UnsignedInteger i = 0; i < dimension; ++i) value[i] = alpha * vLeft[i] + beta * vRight[i];
   return value;
 }
@@ -139,9 +139,9 @@ void PiecewiseLinearEvaluation::setLocations(const Point & locations)
   const UnsignedInteger size = locations.getSize();
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: there must be at least 2 points to build a piecewise linear interpolation function.";
   if (locations.getSize() != values_.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of locations=" << size << " must match the number of previously set values=" << values_.getSize();
-  Collection< std::pair<NumericalScalar, Point> > locationsAndValues(size);
+  Collection< std::pair<Scalar, Point> > locationsAndValues(size);
   for (UnsignedInteger i = 0; i < size; ++i)
-    locationsAndValues[i] = std::pair<NumericalScalar, Point>(locations[i], values_[i]);
+    locationsAndValues[i] = std::pair<Scalar, Point>(locations[i], values_[i]);
   std::stable_sort(locationsAndValues.begin(), locationsAndValues.end());
   locations_ = Point(size);
   for (UnsignedInteger i = 0; i < size; ++i)
@@ -149,8 +149,8 @@ void PiecewiseLinearEvaluation::setLocations(const Point & locations)
       locations_[i] = locationsAndValues[i].first;
       values_[i] = locationsAndValues[i].second;      
     }
-  const NumericalScalar step = locations_[1] - locations_[0];
-  const NumericalScalar epsilon = ResourceMap::GetAsScalar("PiecewiseLinearEvaluation-EpsilonRegular") * std::abs(step);
+  const Scalar step = locations_[1] - locations_[0];
+  const Scalar epsilon = ResourceMap::GetAsScalar("PiecewiseLinearEvaluation-EpsilonRegular") * std::abs(step);
   isRegular_ = true;
   for (UnsignedInteger i = 0; i < size; ++i) isRegular_ = isRegular_ && (std::abs(locations_[i] - locations_[0] - i * step) < epsilon);
 }
@@ -195,8 +195,8 @@ void PiecewiseLinearEvaluation::setLocationsAndValues(const Point & locations,
   data = data.sortAccordingToAComponent(0);
   locations_ = Point(size);
   values_ = Sample(size, dimension);
-  const NumericalScalar step = data[1][0] - data[0][0];
-  const NumericalScalar epsilon = ResourceMap::GetAsScalar("PiecewiseLinearEvaluation-EpsilonRegular") * std::abs(step);
+  const Scalar step = data[1][0] - data[0][0];
+  const Scalar epsilon = ResourceMap::GetAsScalar("PiecewiseLinearEvaluation-EpsilonRegular") * std::abs(step);
   isRegular_ = true;
   for (UnsignedInteger i = 0; i < size; ++i)
   {

@@ -78,7 +78,7 @@ Distribution Distribution::operator + (const Distribution & other) const
   return getImplementation()->operator +(other.getImplementation());
 }
 
-Distribution Distribution::operator + (const NumericalScalar value) const
+Distribution Distribution::operator + (const Scalar value) const
 {
   return getImplementation()->operator +(value);
 }
@@ -89,7 +89,7 @@ Distribution Distribution::operator - (const Distribution & other) const
   return getImplementation()->operator -(other.getImplementation());
 }
 
-Distribution Distribution::operator - (const NumericalScalar value) const
+Distribution Distribution::operator - (const Scalar value) const
 {
   return getImplementation()->operator -(value);
 }
@@ -100,7 +100,7 @@ Distribution Distribution::operator * (const Distribution & other) const
   return getImplementation()->operator *(other.getImplementation());
 }
 
-Distribution Distribution::operator * (const NumericalScalar value) const
+Distribution Distribution::operator * (const Scalar value) const
 {
   return getImplementation()->operator *(value);
 }
@@ -111,7 +111,7 @@ Distribution Distribution::operator / (const Distribution & other) const
   return getImplementation()->operator /(other.getImplementation());
 }
 
-Distribution Distribution::operator / (const NumericalScalar value) const
+Distribution Distribution::operator / (const Scalar value) const
 {
   return getImplementation()->operator /(value);
 }
@@ -192,7 +192,7 @@ Distribution Distribution::ln() const
   return getImplementation()->ln();
 }
 
-Distribution Distribution::pow(const NumericalScalar exponent) const
+Distribution Distribution::pow(const Scalar exponent) const
 {
   return getImplementation()->pow(exponent);
 }
@@ -241,14 +241,14 @@ String Distribution::__str__(const String & offset) const
 
 
 /* Weight accessor */
-void Distribution::setWeight(const NumericalScalar w)
+void Distribution::setWeight(const Scalar w)
 {
   copyOnWrite();
   getImplementation()->setWeight(w);
 }
 
 /* Weight accessor */
-NumericalScalar Distribution::getWeight() const
+Scalar Distribution::getWeight() const
 {
   return getImplementation()->getWeight();
 }
@@ -261,7 +261,7 @@ UnsignedInteger Distribution::getDimension() const
 }
 
 /* Get the roughness, i.e. the L2-norm of the PDF */
-NumericalScalar Distribution::getRoughness() const
+Scalar Distribution::getRoughness() const
 {
   return getImplementation()->getRoughness();
 }
@@ -386,61 +386,61 @@ Point Distribution::computeDDF(const Point & point) const
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar Distribution::computePDF(const Point & point) const
+Scalar Distribution::computePDF(const Point & point) const
 {
   return getImplementation()->computePDF(point);
 }
 
-NumericalScalar Distribution::computeLogPDF(const Point & point) const
+Scalar Distribution::computeLogPDF(const Point & point) const
 {
   return getImplementation()->computeLogPDF(point);
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar Distribution::computeCDF(const Point & point) const
+Scalar Distribution::computeCDF(const Point & point) const
 {
   return getImplementation()->computeCDF(point);
 }
 
-NumericalScalar Distribution::computeComplementaryCDF(const Point & point) const
+Scalar Distribution::computeComplementaryCDF(const Point & point) const
 {
   return getImplementation()->computeComplementaryCDF(point);
 }
 
-NumericalScalar Distribution::computeSurvivalFunction(const Point & point) const
+Scalar Distribution::computeSurvivalFunction(const Point & point) const
 {
   return getImplementation()->computeSurvivalFunction(point);
 }
 
-Point Distribution::computeInverseSurvivalFunction(const NumericalScalar prob) const
+Point Distribution::computeInverseSurvivalFunction(const Scalar prob) const
 {
   return getImplementation()->computeInverseSurvivalFunction(prob);
 }
 
-Point Distribution::computeInverseSurvivalFunction(const NumericalScalar prob,
-							    NumericalScalar & marginalProb) const
+Point Distribution::computeInverseSurvivalFunction(const Scalar prob,
+							    Scalar & marginalProb) const
 {
   return getImplementation()->computeInverseSurvivalFunction(prob, marginalProb);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Distribution::computeCharacteristicFunction(const NumericalScalar x) const
+NumericalComplex Distribution::computeCharacteristicFunction(const Scalar x) const
 {
   return getImplementation()->computeCharacteristicFunction(x);
 }
 
-NumericalComplex Distribution::computeLogCharacteristicFunction(const NumericalScalar x) const
+NumericalComplex Distribution::computeLogCharacteristicFunction(const Scalar x) const
 {
   return getImplementation()->computeLogCharacteristicFunction(x);
 }
 
 /* Get the generating function of the distribution, i.e. psi(z) = E(z^X) */
-NumericalScalar Distribution::computeGeneratingFunction(const NumericalScalar z) const
+Scalar Distribution::computeGeneratingFunction(const Scalar z) const
 {
   return getImplementation()->computeGeneratingFunction(z);
 }
 
-NumericalScalar Distribution::computeLogGeneratingFunction(const NumericalScalar z) const
+Scalar Distribution::computeLogGeneratingFunction(const Scalar z) const
 {
   return getImplementation()->computeLogGeneratingFunction(z);
 }
@@ -489,47 +489,47 @@ Sample Distribution::computeSurvivalFunction(const Sample & sample) const
 }
 
 /* Get the DDF of the distribution (for a scalar) */
-NumericalScalar Distribution::computeDDF(const NumericalScalar scalar) const
+Scalar Distribution::computeDDF(const Scalar scalar) const
 {
   return getImplementation()->computeDDF(scalar);
 }
 
 /* Get the PDF of the distribution (for a scalar) */
-NumericalScalar Distribution::computePDF(const NumericalScalar scalar) const
+Scalar Distribution::computePDF(const Scalar scalar) const
 {
   return getImplementation()->computePDF(scalar);
 }
 
-NumericalScalar Distribution::computeLogPDF(const NumericalScalar scalar) const
+Scalar Distribution::computeLogPDF(const Scalar scalar) const
 {
   return getImplementation()->computeLogPDF(scalar);
 }
 
 /* Get the CDF of the distribution (for a scalar) */
-NumericalScalar Distribution::computeCDF(const NumericalScalar scalar) const
+Scalar Distribution::computeCDF(const Scalar scalar) const
 {
   return getImplementation()->computeCDF(scalar);
 }
 
-NumericalScalar Distribution::computeComplementaryCDF(const NumericalScalar scalar) const
+Scalar Distribution::computeComplementaryCDF(const Scalar scalar) const
 {
   return getImplementation()->computeComplementaryCDF(scalar);
 }
 
-NumericalScalar Distribution::computeSurvivalFunction(const NumericalScalar scalar) const
+Scalar Distribution::computeSurvivalFunction(const Scalar scalar) const
 {
   return getImplementation()->computeSurvivalFunction(scalar);
 }
 
 /* Get the probability content of an interval */
-NumericalScalar Distribution::computeProbability(const Interval & interval) const
+Scalar Distribution::computeProbability(const Interval & interval) const
 {
   return getImplementation()->computeProbability(interval);
 }
 
 /*  Compute the PDF of 1D distributions over a regular grid */
-Sample Distribution::computePDF(const NumericalScalar xMin,
-    const NumericalScalar xMax,
+Sample Distribution::computePDF(const Scalar xMin,
+    const Scalar xMax,
     const UnsignedInteger pointNumber) const
 {
   Sample grid;
@@ -537,8 +537,8 @@ Sample Distribution::computePDF(const NumericalScalar xMin,
 }
 
 /*  Compute the log-PDF of 1D distributions over a regular grid */
-Sample Distribution::computeLogPDF(const NumericalScalar xMin,
-    const NumericalScalar xMax,
+Sample Distribution::computeLogPDF(const Scalar xMin,
+    const Scalar xMax,
     const UnsignedInteger pointNumber) const
 {
   Sample grid;
@@ -546,16 +546,16 @@ Sample Distribution::computeLogPDF(const NumericalScalar xMin,
 }
 
 /*  Compute the CDF of 1D distributions over a regular grid */
-Sample Distribution::computeCDF(const NumericalScalar xMin,
-    const NumericalScalar xMax,
+Sample Distribution::computeCDF(const Scalar xMin,
+    const Scalar xMax,
     const UnsignedInteger pointNumber) const
 {
   Sample grid;
   return getImplementation()->computeCDF(xMin, xMax, pointNumber, grid);
 }
 
-Sample Distribution::computeComplementaryCDF(const NumericalScalar xMin,
-    const NumericalScalar xMax,
+Sample Distribution::computeComplementaryCDF(const Scalar xMin,
+    const Scalar xMax,
     const UnsignedInteger pointNumber) const
 {
   Sample grid;
@@ -606,15 +606,15 @@ Interval Distribution::getRange() const
 }
 
 /* Get the quantile of the distribution */
-Point Distribution::computeQuantile(const NumericalScalar prob,
+Point Distribution::computeQuantile(const Scalar prob,
     const Bool tail) const
 {
   return getImplementation()->computeQuantile(prob, tail);
 }
 
-Point Distribution::computeQuantile(const NumericalScalar prob,
+Point Distribution::computeQuantile(const Scalar prob,
 					     const Bool tail,
-					     NumericalScalar & marginalProb) const
+					     Scalar & marginalProb) const
 {
   return getImplementation()->computeQuantile(prob, tail, marginalProb);
 }
@@ -632,12 +632,12 @@ Sample Distribution::computeQuantile(const Point & prob,
    f(a) = f(b) = f(F^{-1}(p+F(a)))
    so we look for the root of f(F^{-1}(p+F(a))) - f(a)
 */
-Interval Distribution::computeMinimumVolumeInterval(const NumericalScalar prob) const
+Interval Distribution::computeMinimumVolumeInterval(const Scalar prob) const
 {
   return getImplementation()->computeMinimumVolumeInterval(prob);
 }
 
-Interval Distribution::computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const
+Interval Distribution::computeMinimumVolumeIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const
 {
   return getImplementation()->computeMinimumVolumeIntervalWithMarginalProbability(prob, marginalProb);
 }
@@ -647,12 +647,12 @@ Interval Distribution::computeMinimumVolumeIntervalWithMarginalProbability(const
    for all i\in{1,...,d}, P(X_i\in[a_i, b_i])=\beta
    where \beta is such that P(X\in\prod_{i=1}^d[a_i, b_i])=p
 */
-Interval Distribution::computeBilateralConfidenceInterval(const NumericalScalar prob) const
+Interval Distribution::computeBilateralConfidenceInterval(const Scalar prob) const
 {
   return getImplementation()->computeBilateralConfidenceInterval(prob);
 }
 
-Interval Distribution::computeBilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const
+Interval Distribution::computeBilateralConfidenceIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const
 {
   return getImplementation()->computeBilateralConfidenceIntervalWithMarginalProbability(prob, marginalProb);
 }
@@ -666,13 +666,13 @@ Interval Distribution::computeBilateralConfidenceIntervalWithMarginalProbability
 
    where in both cases \beta is such that P(X\in\prod_{i=1}^d[a_i, b_i])=p
 */
-Interval Distribution::computeUnilateralConfidenceInterval(const NumericalScalar prob,
+Interval Distribution::computeUnilateralConfidenceInterval(const Scalar prob,
 							   const Bool tail) const
 {
   return getImplementation()->computeUnilateralConfidenceInterval(prob, tail);
 }
 
-Interval Distribution::computeUnilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, const Bool tail, NumericalScalar & marginalProb) const
+Interval Distribution::computeUnilateralConfidenceIntervalWithMarginalProbability(const Scalar prob, const Bool tail, Scalar & marginalProb) const
 {
   return getImplementation()->computeUnilateralConfidenceIntervalWithMarginalProbability(prob, tail, marginalProb);
 }
@@ -681,19 +681,19 @@ Interval Distribution::computeUnilateralConfidenceIntervalWithMarginalProbabilit
    The minimum volume level A(p) set is such that A(p)={x\in R^n | y(x) <= y_p}
    where y(x)=-\log X and y_p is the p-quantile of Y=pdf(X)
 */
-LevelSet Distribution::computeMinimumVolumeLevelSet(const NumericalScalar prob) const
+LevelSet Distribution::computeMinimumVolumeLevelSet(const Scalar prob) const
 {
   return getImplementation()->computeMinimumVolumeLevelSet(prob);
 }
 
-LevelSet Distribution::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const
+LevelSet Distribution::computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & threshold) const
 {
   return getImplementation()->computeMinimumVolumeLevelSetWithThreshold(prob, threshold);
 }
 
 /* Compute the quantile over a regular grid */
-Sample Distribution::computeQuantile(const NumericalScalar qMin,
-    const NumericalScalar qMax,
+Sample Distribution::computeQuantile(const Scalar qMin,
+    const Scalar qMax,
     const UnsignedInteger pointNumber,
     const Bool tail) const
 {
@@ -775,25 +775,25 @@ Point Distribution::getSingularities() const
 /* Compute the density generator of the elliptical generator, i.e.
   *  the function phi such that the density of the distribution can
   *  be written as p(x) = phi(t(x-mu)R(x-mu))                      */
-NumericalScalar Distribution::computeDensityGenerator(const NumericalScalar betaSquare) const
+Scalar Distribution::computeDensityGenerator(const Scalar betaSquare) const
 {
   return getImplementation()->computeDensityGenerator(betaSquare);
 }
 
 /* Compute the derivative of the density generator */
-NumericalScalar Distribution::computeDensityGeneratorDerivative(const NumericalScalar betaSquare) const
+Scalar Distribution::computeDensityGeneratorDerivative(const Scalar betaSquare) const
 {
   return getImplementation()->computeDensityGeneratorDerivative(betaSquare);
 }
 
 /* Compute the seconde derivative of the density generator */
-NumericalScalar Distribution::computeDensityGeneratorSecondDerivative(const NumericalScalar betaSquare) const
+Scalar Distribution::computeDensityGeneratorSecondDerivative(const Scalar betaSquare) const
 {
   return getImplementation()->computeDensityGeneratorSecondDerivative(betaSquare);
 }
 
 /* Compute the radial distribution CDF */
-NumericalScalar Distribution::computeRadialDistributionCDF (const NumericalScalar radius,
+Scalar Distribution::computeRadialDistributionCDF (const Scalar radius,
     const Bool tail) const
 {
   return getImplementation()->computeRadialDistributionCDF(radius, tail);
@@ -818,13 +818,13 @@ Distribution Distribution::getCopula() const
 }
 
 /* Compute the DDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar Distribution::computeConditionalDDF(const NumericalScalar x, const Point & y) const
+Scalar Distribution::computeConditionalDDF(const Scalar x, const Point & y) const
 {
   return getImplementation()->computeConditionalDDF(x, y);
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar Distribution::computeConditionalPDF(const NumericalScalar x, const Point & y) const
+Scalar Distribution::computeConditionalPDF(const Scalar x, const Point & y) const
 {
   return getImplementation()->computeConditionalPDF(x, y);
 }
@@ -835,7 +835,7 @@ Point Distribution::computeConditionalPDF(const Point & x, const Sample & y) con
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar Distribution::computeConditionalCDF(const NumericalScalar x, const Point & y) const
+Scalar Distribution::computeConditionalCDF(const Scalar x, const Point & y) const
 {
   return getImplementation()->computeConditionalCDF(x, y);
 }
@@ -846,7 +846,7 @@ Point Distribution::computeConditionalCDF(const Point & x, const Sample & y) con
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar Distribution::computeConditionalQuantile(const NumericalScalar q, const Point & y) const
+Scalar Distribution::computeConditionalQuantile(const Scalar q, const Point & y) const
 {
   return getImplementation()->computeConditionalQuantile(q, y);
 }
@@ -881,8 +881,8 @@ Distribution Distribution::getStandardRepresentative() const
 }
 
 /* Draw the PDF of the distribution when its dimension is 1 */
-Graph Distribution::drawPDF(const NumericalScalar xMin,
-                            const NumericalScalar xMax,
+Graph Distribution::drawPDF(const Scalar xMin,
+                            const Scalar xMax,
                             const UnsignedInteger pointNumber) const
 {
   return getImplementation()->drawPDF(xMin, xMax, pointNumber);
@@ -896,8 +896,8 @@ Graph Distribution::drawPDF(const UnsignedInteger pointNumber) const
 
 /* Draw the PDF of a 1D marginal */
 Graph Distribution::drawMarginal1DPDF(const UnsignedInteger marginalIndex,
-                                      const NumericalScalar xMin,
-                                      const NumericalScalar xMax,
+                                      const Scalar xMin,
+                                      const Scalar xMax,
                                       const UnsignedInteger pointNumber) const
 {
   return getImplementation()->drawMarginal1DPDF(marginalIndex, xMin, xMax, pointNumber);
@@ -941,8 +941,8 @@ Graph Distribution::drawPDF() const
 }
 
 /* Draw the log-PDF of the distribution when its dimension is 1 */
-Graph Distribution::drawLogPDF(const NumericalScalar xMin,
-			       const NumericalScalar xMax,
+Graph Distribution::drawLogPDF(const Scalar xMin,
+			       const Scalar xMax,
 			       const UnsignedInteger pointNumber) const
 {
   return getImplementation()->drawLogPDF(xMin, xMax, pointNumber);
@@ -956,8 +956,8 @@ Graph Distribution::drawLogPDF(const UnsignedInteger pointNumber) const
 
 /* Draw the log-PDF of a 1D marginal */
 Graph Distribution::drawMarginal1DLogPDF(const UnsignedInteger marginalIndex,
-					 const NumericalScalar xMin,
-					 const NumericalScalar xMax,
+					 const Scalar xMin,
+					 const Scalar xMax,
 					 const UnsignedInteger pointNumber) const
 {
   return getImplementation()->drawMarginal1DLogPDF(marginalIndex, xMin, xMax, pointNumber);
@@ -1001,8 +1001,8 @@ Graph Distribution::drawLogPDF() const
 }
 
 /* Draw the CDF of the distribution when its dimension is 1 */
-Graph Distribution::drawCDF(const NumericalScalar xMin,
-                            const NumericalScalar xMax,
+Graph Distribution::drawCDF(const Scalar xMin,
+                            const Scalar xMax,
                             const UnsignedInteger pointNumber) const
 {
   return getImplementation()->drawCDF(xMin, xMax, pointNumber);
@@ -1016,8 +1016,8 @@ Graph Distribution::drawCDF(const UnsignedInteger pointNumber) const
 
 /* Draw the CDF of a 1D marginal */
 Graph Distribution::drawMarginal1DCDF(const UnsignedInteger marginalIndex,
-                                      const NumericalScalar xMin,
-                                      const NumericalScalar xMax,
+                                      const Scalar xMin,
+                                      const Scalar xMax,
                                       const UnsignedInteger pointNumber) const
 {
   return getImplementation()->drawMarginal1DCDF(marginalIndex, xMin, xMax, pointNumber);
@@ -1066,8 +1066,8 @@ Graph Distribution::drawQuantile(const UnsignedInteger pointNumber) const
   return getImplementation()->drawQuantile(pointNumber);
 }
 
-Graph Distribution::drawQuantile(const NumericalScalar qMin,
-                                 const NumericalScalar qMax,
+Graph Distribution::drawQuantile(const Scalar qMin,
+                                 const Scalar qMax,
                                  const UnsignedInteger pointNumber) const
 {
   return getImplementation()->drawQuantile(qMin, qMax, pointNumber);
@@ -1128,25 +1128,25 @@ Description Distribution::getDescription() const
 }
 
 /* Accessor to PDF computation precision */
-NumericalScalar Distribution::getPDFEpsilon() const
+Scalar Distribution::getPDFEpsilon() const
 {
   return getImplementation()->getPDFEpsilon();
 }
 
 /* Accessor to CDF computation precision */
-NumericalScalar Distribution::getCDFEpsilon() const
+Scalar Distribution::getCDFEpsilon() const
 {
   return getImplementation()->getCDFEpsilon();
 }
 
 /* Get a positon indicator for a 1D distribution */
-NumericalScalar Distribution::getPositionIndicator() const
+Scalar Distribution::getPositionIndicator() const
 {
   return getImplementation()->getPositionIndicator();
 }
 
 /* Get a dispersion indicator for a 1D distribution */
-NumericalScalar Distribution::getDispersionIndicator() const
+Scalar Distribution::getDispersionIndicator() const
 {
   return getImplementation()->getDispersionIndicator();
 }

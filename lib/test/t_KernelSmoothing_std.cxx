@@ -69,8 +69,8 @@ int main(int argc, char *argv[])
       Point point( smoothed.getDimension(), 0.0 );
 
       // Show PDF and CDF of point point
-      NumericalScalar pointPDF = smoothed.computePDF( point );
-      NumericalScalar pointCDF = smoothed.computeCDF( point );
+      Scalar pointPDF = smoothed.computePDF( point );
+      Scalar pointCDF = smoothed.computeCDF( point );
       fullprint << "Point= " << point << std::endl;
       fullprint << " pdf(smoothed)= " << pointPDF << " pdf(exact)=" << distribution.computePDF( point ) << std::endl;
       fullprint << " cdf(smoothed)= " << pointCDF << " cdf(exact)=" << distribution.computeCDF( point ) << std::endl;
@@ -89,9 +89,9 @@ int main(int argc, char *argv[])
       KernelSmoothing smoother(kernel);
       for (UnsignedInteger j = 0; j < 2; ++j)
       {
-        NumericalScalar hSilverman = smoother.computeSilvermanBandwidth(sampleCollection[j])[0];
-        NumericalScalar hPlugin = smoother.computePluginBandwidth(sampleCollection[j])[0];
-        NumericalScalar hMixed = smoother.computeMixedBandwidth(sampleCollection[j])[0];
+        Scalar hSilverman = smoother.computeSilvermanBandwidth(sampleCollection[j])[0];
+        Scalar hPlugin = smoother.computePluginBandwidth(sampleCollection[j])[0];
+        Scalar hMixed = smoother.computeMixedBandwidth(sampleCollection[j])[0];
         fullprint << "Silverman's bandwidth=" << hSilverman << " plugin bandwidth=" << hPlugin << " mixed bandwidth=" << hMixed << std::endl;
         for (UnsignedInteger k = 0; k < 2; ++k)
         {
@@ -102,8 +102,8 @@ int main(int argc, char *argv[])
           Point point( smoothed.getDimension(), -0.9 );
 
           // Show PDF and CDF of point point
-          NumericalScalar pointPDF = smoothed.computePDF( point );
-          NumericalScalar pointCDF = smoothed.computeCDF( point );
+          Scalar pointPDF = smoothed.computePDF( point );
+          Scalar pointCDF = smoothed.computeCDF( point );
           fullprint << " pdf(smoothed)= " << pointPDF << " pdf(exact)=" << distributionCollection[j].computePDF( point ) << std::endl;
           fullprint << " cdf(smoothed)= " << pointCDF << " cdf(exact)=" << distributionCollection[j].computeCDF( point ) << std::endl;
         }

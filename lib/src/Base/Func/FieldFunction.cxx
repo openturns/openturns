@@ -112,7 +112,7 @@ Mesh FieldFunction::getOutputMesh(const Mesh & inputMesh) const
 }
 
 /* Operator () */
-Point FieldFunction::operator() (const NumericalScalar timeStamp,
+Point FieldFunction::operator() (const Scalar timeStamp,
     const Point & inP) const
 {
   return getImplementation()->operator()(timeStamp, inP);

@@ -44,7 +44,7 @@ BoxCoxTransform::BoxCoxTransform(const Point & lambda)
   setHessian(BoxCoxHessian(evaluation).clone());
 }
 
-/* NumericalScalarCollection parameter constructor */
+/* ScalarCollection parameter constructor */
 BoxCoxTransform::BoxCoxTransform(const Point & lambda,
                                  const Point & shift)
   : Function()
@@ -55,8 +55,8 @@ BoxCoxTransform::BoxCoxTransform(const Point & lambda,
   setHessian(BoxCoxHessian(evaluation).clone());
 }
 
-/* 1D NumericalScalar parameter constructor */
-BoxCoxTransform::BoxCoxTransform(const NumericalScalar & lambda)
+/* 1D Scalar parameter constructor */
+BoxCoxTransform::BoxCoxTransform(const Scalar & lambda)
   : Function()
 {
   const BoxCoxEvaluation evaluation(Point(1, lambda));
@@ -65,8 +65,8 @@ BoxCoxTransform::BoxCoxTransform(const NumericalScalar & lambda)
   setHessian(BoxCoxHessian(evaluation).clone());
 }
 
-BoxCoxTransform::BoxCoxTransform(const NumericalScalar & lambda,
-                                 const NumericalScalar & shift)
+BoxCoxTransform::BoxCoxTransform(const Scalar & lambda,
+                                 const Scalar & shift)
   : Function()
 {
   const BoxCoxEvaluation evaluation(Point(1, lambda), Point(1, shift));

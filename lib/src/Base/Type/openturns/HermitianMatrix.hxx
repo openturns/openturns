@@ -52,7 +52,7 @@ class OT_API HermitianMatrix :
 public:
 
   typedef Collection<NumericalComplex>                       NumericalComplexCollection;
-  typedef Collection<NumericalScalar>                        NumericalScalarCollection;
+  typedef Collection<Scalar>                        ScalarCollection;
   typedef TypedInterfaceObject<ComplexMatrixImplementation>::Implementation     Implementation ;
 
   /** Default constructor */
@@ -152,7 +152,7 @@ public:
   NumericalComplexCollection operator * (const NumericalComplexCollection & p) const;
 
   /** Multiplication with a NumericaScalarCollection (must have consistent dimensions) */
-  NumericalComplexCollection operator * (const NumericalScalarCollection & p) const;
+  NumericalComplexCollection operator * (const ScalarCollection & p) const;
 
   /** Multiplication with a Point (must have consistent dimensions) */
   NumericalComplexCollection operator * (const Point & p) const;

@@ -54,8 +54,8 @@ public:
 
   //      private:
   // Compute the log-likelihood of a sample
-  static NumericalScalar ComputeLogLikelihood(const UnsignedInteger n,
-      const NumericalScalar p,
+  static Scalar ComputeLogLikelihood(const UnsignedInteger n,
+      const Scalar p,
       const Sample & sample);
 
 }; /* class BinomialFactory */

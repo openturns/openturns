@@ -21,7 +21,7 @@ namespace OT {
    return new OT::CenteredFiniteDifferenceHessian(epsilon, evaluation.clone());
  }
 
- CenteredFiniteDifferenceHessian(const NumericalScalar epsilon,
+ CenteredFiniteDifferenceHessian(const Scalar epsilon,
                                  const EvaluationImplementation & evaluation)
  {
    return new OT::CenteredFiniteDifferenceHessian(epsilon, evaluation.clone());

@@ -40,7 +40,7 @@ public:
   GumbelAB();
 
   /** Constructor with parameters */
-  GumbelAB(const NumericalScalar a, const NumericalScalar b);
+  GumbelAB(const Scalar a, const Scalar b);
 
   /** Virtual constructor */
   virtual GumbelAB * clone() const;
@@ -70,8 +70,8 @@ public:
 
 private:
   /** The main parameter set of the distribution */
-  NumericalScalar a_;
-  NumericalScalar b_;
+  Scalar a_;
+  Scalar b_;
 }; /* class GumbelAB */
 
 

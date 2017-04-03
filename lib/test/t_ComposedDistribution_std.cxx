@@ -110,8 +110,8 @@ int main(int argc, char *argv[])
     Point zero(dim, 0.0);
 
     // Show PDF and CDF of zero point
-    NumericalScalar zeroPDF = distribution.computePDF( zero );
-    NumericalScalar zeroCDF = distribution.computeCDF( zero );
+    Scalar zeroPDF = distribution.computePDF( zero );
+    Scalar zeroCDF = distribution.computeCDF( zero );
     fullprint << "Zero point= " << zero
               << " pdf=" << zeroPDF
               << " cdf=" << zeroCDF
@@ -172,7 +172,7 @@ int main(int argc, char *argv[])
     fullprint << "PDF (ref)=" << distributionRef.computePDF(point) << std::endl;
     fullprint << "CDF      =" << distribution.computeCDF(point) << std::endl;
     fullprint << "CDF (ref)=" << distributionRef.computeCDF(point) << std::endl;
-    NumericalScalar Survival = distribution.computeSurvivalFunction(point);
+    Scalar Survival = distribution.computeSurvivalFunction(point);
     fullprint << "Survival      =" << Survival << std::endl;
     fullprint << "Survival (ref)=" << distribution.computeSurvivalFunction(point) << std::endl;
     Point InverseSurvival = distribution.computeInverseSurvivalFunction(0.95);
@@ -188,10 +188,10 @@ int main(int argc, char *argv[])
     // Confidence regions
     if (distribution.getDimension() <= 2)
     {
-      NumericalScalar threshold;
+      Scalar threshold;
       fullprint << "Minimum volume interval=" << distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95, threshold) << std::endl;
       fullprint << "threshold=" << threshold << std::endl;
-      NumericalScalar beta;
+      Scalar beta;
       LevelSet levelSet(distribution.computeMinimumVolumeLevelSetWithThreshold(0.95, beta));
       fullprint << "Minimum volume level set=" << levelSet << std::endl;
       fullprint << "beta=" << beta << std::endl;

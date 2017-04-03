@@ -95,18 +95,18 @@ public:
 
   /** Get the PDF of the ComposedDistribution */
   using DistributionImplementation::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the ComposedDistribution */
   using DistributionImplementation::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the survival function of the ComposedDistribution */
   using DistributionImplementation::computeSurvivalFunction;
-  NumericalScalar computeSurvivalFunction(const Point & point) const;
+  Scalar computeSurvivalFunction(const Point & point) const;
 
   /** Get the probability content of an interval */
-  NumericalScalar computeProbability(const Interval & interval) const;
+  Scalar computeProbability(const Interval & interval) const;
 
   /** Get the PDF gradient of the distribution */
   using DistributionImplementation::computePDFGradient;
@@ -118,16 +118,16 @@ public:
 
   /** Get the quantile of the distribution */
   using DistributionImplementation::computeQuantile;
-  Point computeQuantile(const NumericalScalar prob,
+  Point computeQuantile(const Scalar prob,
                                  const Bool tail = false) const;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalPDF;
-  NumericalScalar computeConditionalPDF(const NumericalScalar x, const Point & y) const;
+  Scalar computeConditionalPDF(const Scalar x, const Point & y) const;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalCDF;
-  NumericalScalar computeConditionalCDF(const NumericalScalar x, const Point & y) const;
+  Scalar computeConditionalCDF(const Scalar x, const Point & y) const;
 
   /** Get the standard deviation of the distribution */
   Point getStandardDeviation() const;

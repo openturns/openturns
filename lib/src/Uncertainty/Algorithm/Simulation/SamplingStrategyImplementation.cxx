@@ -57,7 +57,7 @@ Sample SamplingStrategyImplementation::generate() const
 Point SamplingStrategyImplementation::getUniformUnitVectorRealization(const UnsignedInteger dimension) const
 {
   Point direction(dimension);
-  NumericalScalar norm = 0.0;
+  Scalar norm = 0.0;
   do
   {
     for (UnsignedInteger i = 0; i < dimension; ++i) direction[i] = DistFunc::rNormal();

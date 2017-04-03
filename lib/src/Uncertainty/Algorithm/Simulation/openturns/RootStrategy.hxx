@@ -40,7 +40,7 @@ class OT_API RootStrategy
 
 public:
   typedef Pointer<RootStrategyImplementation>     Implementation;
-  typedef Collection<NumericalScalar> NumericalScalarCollection;
+  typedef Collection<Scalar> ScalarCollection;
 
   /** Constructor with parameters */
   RootStrategy(const RootStrategyImplementation & implementation);
@@ -53,24 +53,24 @@ public:
 
 
   /** Solve gives all the roots found applying the root strategy */
-  NumericalScalarCollection solve(const Function & function,
-                                  const NumericalScalar value);
+  ScalarCollection solve(const Function & function,
+                                  const Scalar value);
 
   /** Solver accessor */
   void setSolver(const Solver & solver);
   Solver getSolver() const;
 
   /** Maximum distance accessor */
-  void setMaximumDistance(const NumericalScalar maximumDistance);
-  NumericalScalar getMaximumDistance() const;
+  void setMaximumDistance(const Scalar maximumDistance);
+  Scalar getMaximumDistance() const;
 
   /** Step size accessor */
-  void setStepSize(const NumericalScalar stepSize);
-  NumericalScalar getStepSize() const;
+  void setStepSize(const Scalar stepSize);
+  Scalar getStepSize() const;
 
   /** Value of the performance function at the origin accessor */
-  void setOriginValue(const NumericalScalar originValue);
-  NumericalScalar getOriginValue() const;
+  void setOriginValue(const Scalar originValue);
+  Scalar getOriginValue() const;
 
   /** String converter */
   String __repr__() const;

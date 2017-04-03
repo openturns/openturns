@@ -48,7 +48,7 @@ WelchFactory::WelchFactory()
 
 WelchFactory::WelchFactory(const FilteringWindows & window,
                            const UnsignedInteger blockNumber,
-                           const NumericalScalar overlap)
+                           const Scalar overlap)
   : SpectralModelFactoryImplementation()
   , window_(window)
   , blockNumber_(0)
@@ -105,12 +105,12 @@ void WelchFactory::setBlockNumber(const UnsignedInteger blockNumber)
 }
 
 /* Overlap accessor */
-NumericalScalar WelchFactory::getOverlap() const
+Scalar WelchFactory::getOverlap() const
 {
   return overlap_;
 }
 
-void WelchFactory::setOverlap(const NumericalScalar overlap)
+void WelchFactory::setOverlap(const Scalar overlap)
 {
   if ((overlap < 0.0) || (overlap > 0.5)) throw InvalidArgumentException(HERE) << "Error: the overlap must be in [0, 0.5], here overlap=" << overlap;
   overlap_ = overlap;
@@ -132,17 +132,17 @@ UserDefinedSpectralModel WelchFactory::buildAsUserDefinedSpectralModel(const Pro
   const UnsignedInteger sampleSize = sample.getSize();
   const RegularGrid timeGrid(sample.getTimeGrid());
   const UnsignedInteger N = timeGrid.getN();
-  const NumericalScalar timeStep = timeGrid.getStep();
-  const NumericalScalar T = timeGrid.getEnd() - timeGrid.getStart();
+  const Scalar timeStep = timeGrid.getStep();
+  const Scalar T = timeGrid.getEnd() - timeGrid.getStart();
   // Preprocessing: the scaling factor, including the tappering window
   NumericalComplexCollection alpha(N);
-  const NumericalScalar factor = timeStep / sqrt(sampleSize * T);
+  const Scalar factor = timeStep / sqrt(sampleSize * T);
   for (UnsignedInteger m = 0; m < N; ++m)
   {
     // The window argument is normalized on [0, 1]
-    const NumericalScalar xiM = static_cast<NumericalScalar>(m) / N;
+    const Scalar xiM = static_cast<Scalar>(m) / N;
     // Phase shift
-    const NumericalScalar theta = M_PI * (N - 1) * xiM;
+    const Scalar theta = M_PI * (N - 1) * xiM;
     alpha[m] = factor * window_(xiM) * NumericalComplex(cos(theta), sin(theta));
   }
   // The DSP estimate will be done over a regular frequency grid containing only
@@ -150,8 +150,8 @@ UserDefinedSpectralModel WelchFactory::buildAsUserDefinedSpectralModel(const Pro
   // the frequency on positive and negative values using the hermitian symmetry
   // If N is even, kMax = N / 2, else kMax = (N + 1) / 2.
   UnsignedInteger kMax = N / 2;
-  const NumericalScalar frequencyStep = 1.0 / T;
-  NumericalScalar frequencyMin = 0.5 * frequencyStep;
+  const Scalar frequencyStep = 1.0 / T;
+  Scalar frequencyMin = 0.5 * frequencyStep;
   // Adjust kMax and frequencyMin if N is odd
   if (N % 2 == 1)
   {

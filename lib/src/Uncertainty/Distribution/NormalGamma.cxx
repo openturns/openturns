@@ -53,10 +53,10 @@ NormalGamma::NormalGamma()
 }
 
 /* Parameters constructor */
-NormalGamma::NormalGamma(const NumericalScalar mu,
-                         const NumericalScalar kappa,
-                         const NumericalScalar alpha,
-                         const NumericalScalar beta)
+NormalGamma::NormalGamma(const Scalar mu,
+                         const Scalar kappa,
+                         const Scalar alpha,
+                         const Scalar beta)
   : BayesDistribution()
   , mu_(mu)
   , kappa_(kappa)
@@ -82,11 +82,11 @@ NormalGamma::NormalGamma(const NumericalScalar mu,
 /* Compute the numerical range of the distribution given the parameters values */
 void NormalGamma::computeRange()
 {
-  const NumericalScalar epsilon = ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
+  const Scalar epsilon = ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
   // Lower bound
   Point lowerBound(2, 0.0);
-  //const NumericalScalar lambdaMin(conditioningDistribution_.computeQuantile(epsilon)[0]);
-  const NumericalScalar lambdaMax = conditioningDistribution_.computeQuantile(epsilon, true)[0];
+  //const Scalar lambdaMin(conditioningDistribution_.computeQuantile(epsilon)[0]);
+  const Scalar lambdaMax = conditioningDistribution_.computeQuantile(epsilon, true)[0];
   const Normal deconditionedDistribution(mu_, 1.0 / std::sqrt(kappa_ * lambdaMax));
   lowerBound[0] = deconditionedDistribution.computeQuantile(epsilon)[0];
   // Upper bound
@@ -138,19 +138,19 @@ NormalGamma * NormalGamma::clone() const
 }
 
 /* Mu accessor */
-void NormalGamma::setMu(const NumericalScalar mu)
+void NormalGamma::setMu(const Scalar mu)
 {
   if (mu != mu_) mu_ = mu;
 }
 
-NumericalScalar NormalGamma::getMu() const
+Scalar NormalGamma::getMu() const
 {
   return mu_;
 }
 
 
 /* Kappa accessor */
-void NormalGamma::setKappa(const NumericalScalar kappa)
+void NormalGamma::setKappa(const Scalar kappa)
 {
   if (kappa != kappa_)
   {
@@ -159,13 +159,13 @@ void NormalGamma::setKappa(const NumericalScalar kappa)
   }
 }
 
-NumericalScalar NormalGamma::getKappa() const
+Scalar NormalGamma::getKappa() const
 {
   return kappa_;
 }
 
 /* Alpha accessor */
-void NormalGamma::setAlpha(const NumericalScalar alpha)
+void NormalGamma::setAlpha(const Scalar alpha)
 {
   if (!(alpha == alpha_))
   {
@@ -174,13 +174,13 @@ void NormalGamma::setAlpha(const NumericalScalar alpha)
   }
 }
 
-NumericalScalar NormalGamma::getAlpha() const
+Scalar NormalGamma::getAlpha() const
 {
   return alpha_;
 }
 
 /* Beta accessor */
-void NormalGamma::setBeta(const NumericalScalar beta)
+void NormalGamma::setBeta(const Scalar beta)
 {
   if (!(beta == beta_))
   {
@@ -189,7 +189,7 @@ void NormalGamma::setBeta(const NumericalScalar beta)
   }
 }
 
-NumericalScalar NormalGamma::getBeta() const
+Scalar NormalGamma::getBeta() const
 {
   return beta_;
 }

@@ -37,7 +37,7 @@ ArcsineMuSigma::ArcsineMuSigma()
   // Nothing to do
 }
 
-ArcsineMuSigma::ArcsineMuSigma(const NumericalScalar mu, const NumericalScalar sigma)
+ArcsineMuSigma::ArcsineMuSigma(const Scalar mu, const Scalar sigma)
   : DistributionParametersImplementation()
   , mu_(mu)
   , sigma_(sigma)
@@ -74,10 +74,10 @@ Distribution ArcsineMuSigma::getDistribution() const
 /* Compute jacobian / native parameters */
 Matrix ArcsineMuSigma::gradient() const
 {
-  const NumericalScalar dadmu = 1.0;
-  const NumericalScalar dadsigma = -sqrt(2.0);
-  const NumericalScalar dbdmu = 1.0;
-  const NumericalScalar dbdsigma = sqrt(2.0);
+  const Scalar dadmu = 1.0;
+  const Scalar dadsigma = -sqrt(2.0);
+  const Scalar dbdmu = 1.0;
+  const Scalar dbdsigma = sqrt(2.0);
 
   SquareMatrix nativeParametersGradient(IdentityMatrix(2));
   nativeParametersGradient(0, 0) = dadmu;
@@ -94,13 +94,13 @@ Matrix ArcsineMuSigma::gradient() const
 Point ArcsineMuSigma::operator () (const Point & inP) const
 {
   if (inP.getDimension() != 2) throw InvalidArgumentException(HERE) << "the given point must have dimension=2, here dimension=" << inP.getDimension();
-  const NumericalScalar mu = inP[0];
-  const NumericalScalar sigma = inP[1];
+  const Scalar mu = inP[0];
+  const Scalar sigma = inP[1];
 
   if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
 
-  const NumericalScalar a = mu - sigma * sqrt(2.0);
-  const NumericalScalar b = mu + sigma * sqrt(2.0);
+  const Scalar a = mu - sigma * sqrt(2.0);
+  const Scalar b = mu + sigma * sqrt(2.0);
 
   Point nativeParameters(inP);
   nativeParameters[0] = a;
@@ -113,13 +113,13 @@ Point ArcsineMuSigma::operator () (const Point & inP) const
 Point ArcsineMuSigma::inverse(const Point & inP) const
 {
   if (inP.getDimension() != 2) throw InvalidArgumentException(HERE) << "the given point must have dimension=2, here dimension=" << inP.getDimension();
-  const NumericalScalar a = inP[0];
-  const NumericalScalar b = inP[1];
+  const Scalar a = inP[0];
+  const Scalar b = inP[1];
 
   if (a >= b) throw InvalidArgumentException(HERE) << "a must be smaller than b";
 
-  const NumericalScalar mu = (a + b) / 2.0;
-  const NumericalScalar sigma = 0.5 * (b - a) * M_SQRT1_2;
+  const Scalar mu = (a + b) / 2.0;
+  const Scalar sigma = 0.5 * (b - a) * M_SQRT1_2;
 
   Point muSigmaParameters(inP);
   muSigmaParameters[0] = mu;

@@ -174,7 +174,7 @@ Point CanonicalTensorEvaluation::operator() (const Point & inP) const
     for (UnsignedInteger i = 0; i < m; ++ i)
     {
       const Point coeffI(getCoefficients(i, j));
-      NumericalScalar sumI = 0.0;
+      Scalar sumI = 0.0;
       for (UnsignedInteger k = 0; k < basisSize; ++ k)
       {
         if (coeffI[k] != 0.0)
@@ -186,7 +186,7 @@ Point CanonicalTensorEvaluation::operator() (const Point & inP) const
     }
   }
 
-  NumericalScalar sumR = 0.0;
+  Scalar sumR = 0.0;
   for (UnsignedInteger i = 0; i < m; ++ i)
   {
     sumR += prodI[i];

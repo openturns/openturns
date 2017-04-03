@@ -39,7 +39,7 @@ BetaMuSigma::BetaMuSigma()
   // Nothing to do
 }
 
-BetaMuSigma::BetaMuSigma(const NumericalScalar mu, const NumericalScalar sigma, const NumericalScalar a, const NumericalScalar b)
+BetaMuSigma::BetaMuSigma(const Scalar mu, const Scalar sigma, const Scalar a, const Scalar b)
   : DistributionParametersImplementation()
   , mu_(mu)
   , sigma_(sigma)
@@ -86,21 +86,21 @@ Matrix BetaMuSigma::gradient() const
   newParameters[2] = a_;
   newParameters[3] = b_;
 
-  const NumericalScalar t = operator()(newParameters)[1];
+  const Scalar t = operator()(newParameters)[1];
 
-  const NumericalScalar mu = mu_;
-  const NumericalScalar sigma = sigma_;
-  const NumericalScalar a = a_;
-  const NumericalScalar b = b_;
+  const Scalar mu = mu_;
+  const Scalar sigma = sigma_;
+  const Scalar a = a_;
+  const Scalar b = b_;
 
-  const NumericalScalar dtdmu = (a + b - 2.0 * mu) / (sigma * sigma);
-  const NumericalScalar dtdsigma = 2.0 * (mu - a) * (mu - b) / (sigma * sigma * sigma);
-  const NumericalScalar dtda = (mu - b) / (sigma * sigma);
-  const NumericalScalar dtdb = (mu - a) / (sigma * sigma);
-  const NumericalScalar drdmu = (t + dtdmu * (mu - a)) / (b - a);
-  const NumericalScalar drdsigma = dtdsigma * (mu - a) / (b - a);
-  const NumericalScalar drda = (a * a - 2.0 * a * b - sigma * sigma - mu * (mu - 2.0 * b)) * (mu - b) / ((b - a) * (b - a) * sigma * sigma);
-  const NumericalScalar drdb = (sigma * sigma + (mu - a) * (mu - a)) * (mu - a) / ((b - a) * (b - a) * sigma * sigma);
+  const Scalar dtdmu = (a + b - 2.0 * mu) / (sigma * sigma);
+  const Scalar dtdsigma = 2.0 * (mu - a) * (mu - b) / (sigma * sigma * sigma);
+  const Scalar dtda = (mu - b) / (sigma * sigma);
+  const Scalar dtdb = (mu - a) / (sigma * sigma);
+  const Scalar drdmu = (t + dtdmu * (mu - a)) / (b - a);
+  const Scalar drdsigma = dtdsigma * (mu - a) / (b - a);
+  const Scalar drda = (a * a - 2.0 * a * b - sigma * sigma - mu * (mu - 2.0 * b)) * (mu - b) / ((b - a) * (b - a) * sigma * sigma);
+  const Scalar drdb = (sigma * sigma + (mu - a) * (mu - a)) * (mu - a) / ((b - a) * (b - a) * sigma * sigma);
 
   SquareMatrix nativeParametersGradient(IdentityMatrix(4));
   nativeParametersGradient(0, 0) = drdmu;
@@ -121,13 +121,13 @@ Matrix BetaMuSigma::gradient() const
 Point BetaMuSigma::operator () (const Point & inP) const
 {
   if (inP.getDimension() != 4) throw InvalidArgumentException(HERE) << "the given point must have dimension=4, here dimension=" << inP.getDimension();
-  const NumericalScalar mu = inP[0];
-  const NumericalScalar sigma = inP[1];
-  const NumericalScalar a = inP[2];
-  const NumericalScalar b = inP[3];
+  const Scalar mu = inP[0];
+  const Scalar sigma = inP[1];
+  const Scalar a = inP[2];
+  const Scalar b = inP[3];
 
-  const NumericalScalar t = (b - mu) * (mu - a) / (sigma * sigma) - 1.0;
-  const NumericalScalar r = t * (mu - a) / (b - a);
+  const Scalar t = (b - mu) * (mu - a) / (sigma * sigma) - 1.0;
+  const Scalar r = t * (mu - a) / (b - a);
 
   Point nativeParameters(inP);
   nativeParameters[0] = r;
@@ -140,17 +140,17 @@ Point BetaMuSigma::operator () (const Point & inP) const
 Point BetaMuSigma::inverse(const Point & inP) const
 {
   if (inP.getDimension() != 4) throw InvalidArgumentException(HERE) << "the given point must have dimension=4, here dimension=" << inP.getDimension();
-  const NumericalScalar r = inP[0];
-  const NumericalScalar t = inP[1];
-  const NumericalScalar a = inP[2];
-  const NumericalScalar b = inP[3];
+  const Scalar r = inP[0];
+  const Scalar t = inP[1];
+  const Scalar a = inP[2];
+  const Scalar b = inP[3];
 
   if (!(r > 0.0)) throw InvalidArgumentException(HERE) << "R MUST be positive";
   if (!(t > 0.0)) throw InvalidArgumentException(HERE) << "T MUST be positive";
   if (t <= r) throw InvalidArgumentException(HERE) << "T MUST be greater than r, here t=" << t << " and r=" << r;
 
-  const NumericalScalar mu = a + (b - a) * r / t;
-  const NumericalScalar sigma = (b - a) / t * std::sqrt(r * (t - r) / (t + 1.0));
+  const Scalar mu = a + (b - a) * r / t;
+  const Scalar sigma = (b - a) / t * std::sqrt(r * (t - r) / (t + 1.0));
 
   Point muSigmaParameters(inP);
   muSigmaParameters[0] = mu;

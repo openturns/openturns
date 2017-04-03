@@ -51,8 +51,8 @@ Equal * Equal::clone() const
 }
 
 /* Return true if comparison succeeds */
-Bool Equal::operator() (const NumericalScalar a,
-                        const NumericalScalar b) const
+Bool Equal::operator() (const Scalar a,
+                        const Scalar b) const
 {
   return (a == b);
 }

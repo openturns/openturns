@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
     fullprint << "Rank=" << sample.rank() << std::endl;
     fullprint << "Sort=" << sample.sort() << std::endl;
     fullprint << "Sort according to component 0=" << sample.sortAccordingToAComponent(0) << std::endl;
-    NumericalScalar prob = 0.25;
+    Scalar prob = 0.25;
     fullprint << "Quantile per component(" << prob << ")=" << sample.computeQuantilePerComponent(prob) << std::endl;
     //    fullprint << "Quantile(" << prob << ")=" << sample.computeQuantile(prob) << std::endl;
     Point pointCDF(sample.getDimension(), 0.25);

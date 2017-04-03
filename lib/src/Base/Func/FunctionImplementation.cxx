@@ -557,8 +557,8 @@ Description FunctionImplementation::GetValidOperators()
 Graph FunctionImplementation::draw(const UnsignedInteger inputMarginal,
     const UnsignedInteger outputMarginal,
     const Point & centralPoint,
-    const NumericalScalar xMin,
-    const NumericalScalar xMax,
+    const Scalar xMin,
+    const Scalar xMax,
     const UnsignedInteger pointNumber,
     const GraphImplementation::LogScale scale) const
 {
@@ -579,8 +579,8 @@ Graph FunctionImplementation::draw(const UnsignedInteger firstInputMarginal,
 }
 
 /* Draw the output of the function with respect to its input when the input and output dimensions are 1 */
-Graph FunctionImplementation::draw(const NumericalScalar xMin,
-    const NumericalScalar xMax,
+Graph FunctionImplementation::draw(const Scalar xMin,
+    const Scalar xMax,
     const UnsignedInteger pointNumber,
     const GraphImplementation::LogScale scale) const
 {

@@ -42,8 +42,8 @@ Logistic::Logistic()
 }
 
 /* Parameters constructor */
-Logistic::Logistic(const NumericalScalar alpha,
-                   const NumericalScalar beta)
+Logistic::Logistic(const Scalar alpha,
+                   const Scalar beta)
   : ContinuousDistribution()
   , alpha_(alpha)
   , beta_(0.0)
@@ -95,7 +95,7 @@ Logistic * Logistic::clone() const
 /* Get one realization of the distribution */
 Point Logistic::getRealization() const
 {
-  NumericalScalar prob = RandomGenerator::Generate();
+  Scalar prob = RandomGenerator::Generate();
   return Point(1, alpha_ + beta_ * std::log(prob / (1.0 - prob)));
 }
 
@@ -105,97 +105,97 @@ Point Logistic::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  NumericalScalar expX = std::exp((point[0] - alpha_) / beta_);
-  NumericalScalar betaExpX = beta_ * (1.0 + expX);
+  Scalar expX = std::exp((point[0] - alpha_) / beta_);
+  Scalar betaExpX = beta_ * (1.0 + expX);
   return Point(1, beta_ * expX * (1.0 - expX) / (betaExpX * betaExpX * betaExpX));
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Logistic::computePDF(const Point & point) const
+Scalar Logistic::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-  const NumericalScalar z = (point[0] - alpha_) / beta_;
+  const Scalar z = (point[0] - alpha_) / beta_;
   if (z > 12.38075336)
   {
-    const NumericalScalar expMZ = std::exp(-z);
+    const Scalar expMZ = std::exp(-z);
     return expMZ * (1.0 - 2.0 * expMZ) / beta_;
   }
   if (z < -12.38075336)
   {
-    const NumericalScalar expZ = std::exp(z);
+    const Scalar expZ = std::exp(z);
     return expZ * (1.0 - 2.0 * expZ) / beta_;
   }
-  const NumericalScalar expMZ = std::exp(-z);
+  const Scalar expMZ = std::exp(-z);
   return expMZ / (beta_ * std::pow(1.0 + expMZ, 2.0));
 }
 
-NumericalScalar Logistic::computeLogPDF(const Point & point) const
+Scalar Logistic::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar z = (point[0] - alpha_) / beta_;
+  const Scalar z = (point[0] - alpha_) / beta_;
   if (z > 12.38075336) return -z + log1p(-2.0 * std::exp(-z)) - std::log(beta_);
   if (z < -12.38075336) return z + log1p(-2.0 * std::exp(z)) - std::log(beta_);
   return -z - std::log(beta_) - 2.0 * log1p(std::exp(-z));
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar Logistic::computeCDF(const Point & point) const
+Scalar Logistic::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar z = (point[0] - alpha_) / beta_;
+  const Scalar z = (point[0] - alpha_) / beta_;
   if (z > 12.01454911)
   {
-    const NumericalScalar expMZ = std::exp(-z);
+    const Scalar expMZ = std::exp(-z);
     return 1.0 - expMZ * (1.0 - expMZ);
   }
   if (z < -12.01454911)
   {
-    const NumericalScalar expZ = std::exp(z);
+    const Scalar expZ = std::exp(z);
     return expZ * (1.0 - expZ);
   }
   return 1.0 / (1.0 + std::exp(-z));
 }
 
-NumericalScalar Logistic::computeComplementaryCDF(const Point & point) const
+Scalar Logistic::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar z = (point[0] - alpha_) / beta_;
+  const Scalar z = (point[0] - alpha_) / beta_;
   if (z > 12.01454911)
   {
-    const NumericalScalar expMZ = std::exp(-z);
+    const Scalar expMZ = std::exp(-z);
     return expMZ * (1.0 - expMZ);
   }
   if (z < -12.01454911)
   {
-    const NumericalScalar expZ = std::exp(z);
+    const Scalar expZ = std::exp(z);
     return 1.0 - expZ * (1.0 - expZ);
   }
   return 1.0 / (1.0 + std::exp(z));
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Logistic::computeCharacteristicFunction(const NumericalScalar x) const
+NumericalComplex Logistic::computeCharacteristicFunction(const Scalar x) const
 {
-  const NumericalScalar piBetaU = M_PI * beta_ * x;
+  const Scalar piBetaU = M_PI * beta_ * x;
   return std::exp(NumericalComplex(0.0, x * alpha_)) * piBetaU / std::sinh(piBetaU);
 }
 
-NumericalComplex Logistic::computeLogCharacteristicFunction(const NumericalScalar x) const
+NumericalComplex Logistic::computeLogCharacteristicFunction(const Scalar x) const
 {
-  const NumericalScalar piBetaU = M_PI * beta_ * x;
+  const Scalar piBetaU = M_PI * beta_ * x;
   return NumericalComplex(0.0, x * alpha_) + std::log(piBetaU) - std::log(std::sinh(piBetaU));
 }
 
 /* Get the PDFGradient of the distribution */
 Point Logistic::computePDFGradient(const Point & point) const
 {
-  NumericalScalar x = (point[0] - alpha_) / beta_;
-  NumericalScalar expX = std::exp(x);
-  NumericalScalar betaExpX = beta_ * (1.0 + expX);
+  Scalar x = (point[0] - alpha_) / beta_;
+  Scalar expX = std::exp(x);
+  Scalar betaExpX = beta_ * (1.0 + expX);
   Point pdfGradient(2);
   pdfGradient[0] = beta_ * expX * (expX - 1.0) / (betaExpX * betaExpX * betaExpX);
   pdfGradient[1] = pdfGradient[0] * x - expX / (betaExpX * betaExpX);
@@ -205,9 +205,9 @@ Point Logistic::computePDFGradient(const Point & point) const
 /* Get the CDFGradient of the distribution */
 Point Logistic::computeCDFGradient(const Point & point) const
 {
-  NumericalScalar x = (point[0] - alpha_) / beta_;
-  NumericalScalar expX = std::exp(x);
-  NumericalScalar betaExpX = beta_ * (1.0 + expX);
+  Scalar x = (point[0] - alpha_) / beta_;
+  Scalar expX = std::exp(x);
+  Scalar betaExpX = beta_ * (1.0 + expX);
   Point cdfGradient(2);
   cdfGradient[0] = -beta_ * expX / (betaExpX * betaExpX);
   cdfGradient[1] = cdfGradient[0] * x;
@@ -215,7 +215,7 @@ Point Logistic::computeCDFGradient(const Point & point) const
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar Logistic::computeScalarQuantile(const NumericalScalar prob,
+Scalar Logistic::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
   if (tail) return alpha_ + beta_ * std::log((1.0 - prob) / prob);
@@ -223,7 +223,7 @@ NumericalScalar Logistic::computeScalarQuantile(const NumericalScalar prob,
 }
 
 /* Get the roughness, i.e. the L2-norm of the PDF */
-NumericalScalar Logistic::getRoughness() const
+Scalar Logistic::getRoughness() const
 {
   // 0.1666666666666666666666667 = 1 / 6
   return 0.1666666666666666666666667 / beta_;
@@ -313,7 +313,7 @@ Point Logistic::getParameter() const
 void Logistic::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = Logistic(parameter[0], parameter[1]);
   setWeight(w);
 }
@@ -334,7 +334,7 @@ Bool Logistic::isElliptical() const
 }
 
 /* Alpha accessor */
-void Logistic::setAlpha(const NumericalScalar alpha)
+void Logistic::setAlpha(const Scalar alpha)
 {
   if (alpha != alpha_)
   {
@@ -345,14 +345,14 @@ void Logistic::setAlpha(const NumericalScalar alpha)
   }
 }
 
-NumericalScalar Logistic::getAlpha() const
+Scalar Logistic::getAlpha() const
 {
   return alpha_;
 }
 
 
 /* Beta accessor */
-void Logistic::setBeta(const NumericalScalar beta)
+void Logistic::setBeta(const Scalar beta)
 {
   if (!(beta > 0.0)) throw InvalidArgumentException(HERE) << "Beta MUST be positive, here beta=" << beta;
   if (beta != beta_)
@@ -364,7 +364,7 @@ void Logistic::setBeta(const NumericalScalar beta)
   }
 }
 
-NumericalScalar Logistic::getBeta() const
+Scalar Logistic::getBeta() const
 {
   return beta_;
 }

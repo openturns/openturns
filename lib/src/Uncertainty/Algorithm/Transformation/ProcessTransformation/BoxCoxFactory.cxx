@@ -53,7 +53,7 @@ private:
   mutable Sample sample_;
 
   /** only used to pass data to be used in computeLogLikeliHood */
-  mutable NumericalScalar sumLog_;
+  mutable Scalar sumLog_;
 
   /** Optimization solver */
   mutable OptimizationAlgorithm solver_;
@@ -61,7 +61,7 @@ private:
 public:
 
   BoxCoxSampleOptimization(const Sample & sample,
-                           const NumericalScalar sumLog)
+                           const Scalar sumLog)
     : sample_(sample)
     , sumLog_(sumLog)
     , solver_(new Cobyla())
@@ -86,9 +86,9 @@ public:
     BoxCoxEvaluation myBoxFunction(Point(1, lambda[0]));
     // compute the mean of the transformed sample using the Box-Cox function
     const Sample outSample(myBoxFunction(sample_));
-    const NumericalScalar ratio = 1.0 - 1.0 / size;
-    const NumericalScalar sigma2 = outSample.computeVariance()[0];
-    NumericalScalar result = -0.5 * size * log(sigma2 * ratio);
+    const Scalar ratio = 1.0 - 1.0 / size;
+    const Scalar sigma2 = outSample.computeVariance()[0];
+    Scalar result = -0.5 * size * log(sigma2 * ratio);
 
     // result is translated
     result += (lambda[0] - 1.0) * sumLog_;
@@ -123,7 +123,7 @@ public:
     return optpoint;
   }
 
-  NumericalScalar getSumLog() const
+  Scalar getSumLog() const
   {
     return sumLog_;
   }
@@ -173,7 +173,7 @@ public:
     GeneralLinearModelAlgorithm algo(inputSample_, transformedOutputSample, covarianceModel_, basis_);
     algo.run();
     // Return the optimal log-likelihood
-    const NumericalScalar result = algo.getResult().getOptimalLogLikelihood();
+    const Scalar result = algo.getResult().getOptimalLogLikelihood();
     return Point(1, result);
   }
 
@@ -208,7 +208,7 @@ BoxCoxFactory::BoxCoxFactory()
   : PersistentObject()
   , solver_(new Cobyla())
 {
-  const NumericalScalar rhoBeg = ResourceMap::GetAsScalar("BoxCoxFactory-DefaultRhoBeg");
+  const Scalar rhoBeg = ResourceMap::GetAsScalar("BoxCoxFactory-DefaultRhoBeg");
   dynamic_cast<Cobyla*>(solver_.getImplementation().get())->setRhoBeg(rhoBeg);
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("BoxCoxFactory-DefaultRhoEnd"));
   solver_.setMaximumIterationNumber(ResourceMap::GetAsUnsignedInteger("BoxCoxFactory-DefaultMaxFun"));
@@ -310,10 +310,10 @@ BoxCoxTransform BoxCoxFactory::build(const Sample & sample,
   }
   // Graphical inspection
   graph = Graph("Box-Cox likelihood", "lambda", "log-likelihood", true, "topright");
-  const NumericalScalar lambdaMax = *std::max_element(lambda.begin(), lambda.end());
-  const NumericalScalar lambdaMin = *std::min_element(lambda.begin(), lambda.end());
-  const NumericalScalar xMin = std::min(0.0, 0.002 * round(1000.0 * lambdaMin));
-  const NumericalScalar xMax = std::max(0.0, 0.002 * round(1000.0 * lambdaMax));
+  const Scalar lambdaMax = *std::max_element(lambda.begin(), lambda.end());
+  const Scalar lambdaMin = *std::min_element(lambda.begin(), lambda.end());
+  const Scalar xMin = std::min(0.0, 0.002 * round(1000.0 * lambdaMin));
+  const Scalar xMax = std::max(0.0, 0.002 * round(1000.0 * lambdaMax));
   const UnsignedInteger npts = ResourceMap::GetAsUnsignedInteger("BoxCoxFactory-DefaultPointNumber");
   Sample lambdaValues(npts, 1);
   for (UnsignedInteger i = 0; i < npts; ++i) lambdaValues[i][0] = xMin + i * (xMax - xMin) / (npts - 1.0);

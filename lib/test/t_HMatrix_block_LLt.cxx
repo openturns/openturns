@@ -41,7 +41,7 @@ public:
   void compute(UnsignedInteger i, UnsignedInteger j, Matrix* result) const
   {
     CovarianceMatrix localResult(covarianceModel_( vertices_[i] - vertices_[j] ));
-    memcpy( &result->getImplementation()->operator[](0), &localResult.getImplementation()->operator[](0), dimension_ * dimension_ * sizeof(NumericalScalar) );
+    memcpy( &result->getImplementation()->operator[](0), &localResult.getImplementation()->operator[](0), dimension_ * dimension_ * sizeof(Scalar) );
   }
 };
 
@@ -82,12 +82,12 @@ int main(int argc, char *argv[])
 
     HMatrix hmatRef(hmat);
     hmatRef.assemble(blockAssembly, 'L');
-    NumericalScalar refNorm = hmatRef.norm();
+    Scalar refNorm = hmatRef.norm();
 
     hmat.factorize("LLt");
 
     hmatRef.gemm('N', 'T', -1., hmat, hmat, 1.);
-    NumericalScalar threshold = 1.e-10;
+    Scalar threshold = 1.e-10;
     fullprint << "|| M - L Lt || / || M ||" << ((hmatRef.norm() < threshold * refNorm) ? " < " : " > ") << threshold << std::endl;
   }
   catch (NotYetImplementedException & ex)

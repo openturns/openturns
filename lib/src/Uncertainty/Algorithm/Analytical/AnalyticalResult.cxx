@@ -174,7 +174,7 @@ void AnalyticalResult::computeImportanceFactors() const
     // for each marginals */
     for (UnsignedInteger marginalIndex = 0; marginalIndex < dimension; ++marginalIndex)
     {
-      const NumericalScalar y = inputDistribution.getMarginal(marginalIndex).computeCDF(Point(1, physicalSpaceDesignPoint_[marginalIndex]));
+      const Scalar y = inputDistribution.getMarginal(marginalIndex).computeCDF(Point(1, physicalSpaceDesignPoint_[marginalIndex]));
       importanceFactors_[marginalIndex] = standardMarginalDistribution.computeQuantile(y)[0];
     }
     importanceFactors_ = importanceFactors_.normalizeSquare();
@@ -193,7 +193,7 @@ void AnalyticalResult::computeClassicalImportanceFactors() const
   const UnsignedInteger dimension = standardSpaceDesignPoint_.getDimension();
   classicalImportanceFactors_ = Point(dimension, -1.0);
   /* First, check that the importance factors are well-defined */
-  const NumericalScalar beta2 = standardSpaceDesignPoint_.normSquare();
+  const Scalar beta2 = standardSpaceDesignPoint_.normSquare();
   if (beta2 > 0.0) classicalImportanceFactors_ = standardSpaceDesignPoint_.normalizeSquare();
   /* we give a name to the importance factors vector */
   classicalImportanceFactors_.setName("Classical Importance Factors");
@@ -209,7 +209,7 @@ void AnalyticalResult::computePhysicalImportanceFactors() const
 {
   const Event myEvent(getLimitStateVariable());
   const StandardEvent mystandardEvent(myEvent);
-  const NumericalScalar sign = myEvent.getOperator().compare(0., 1.) ? 1.0 : -1.0;
+  const Scalar sign = myEvent.getOperator().compare(0., 1.) ? 1.0 : -1.0;
   const Point currentStandardGradient(mystandardEvent.getImplementation()->getFunction().gradient(getStandardSpaceDesignPoint()) * Point(1, 1.0));
   const Point alpha(sign / currentStandardGradient.norm() * currentStandardGradient);
   const Distribution physicalDistribution(myEvent.getImplementation()->getAntecedent()->getDistribution());
@@ -230,14 +230,14 @@ void AnalyticalResult::computeMeanPointInStandardEventDomain() const
   // We use the implementation here in order to have access to the computeRadialDistributionCDF() method
   Distribution::Implementation p_standardDistribution(limitStateVariable_.getImplementation()->getAntecedent()->getDistribution().getStandardDistribution().getImplementation());
   // Perform the integration along the ray going from the origin to the infinity
-  NumericalScalar scaling = hasoferReliabilityIndex_ * p_standardDistribution->computeRadialDistributionCDF(hasoferReliabilityIndex_, true);
-  NumericalScalar a = hasoferReliabilityIndex_;
+  Scalar scaling = hasoferReliabilityIndex_ * p_standardDistribution->computeRadialDistributionCDF(hasoferReliabilityIndex_, true);
+  Scalar a = hasoferReliabilityIndex_;
   // Quadrature rule
   Point weights;
   const Point nodes(p_standardDistribution->getGaussNodesAndWeights(weights));
   const UnsignedInteger nodesSize = nodes.getSize();
-  NumericalScalar sum = 0.0;
-  const NumericalScalar quantileEpsilon = ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
+  Scalar sum = 0.0;
+  const Scalar quantileEpsilon = ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
   do
   {
     // Integrate over a unit length segment [a, a+1]
@@ -301,14 +301,14 @@ void AnalyticalResult::computeHasoferReliabilityIndex() const
 }
 
 /*  HasoferReliabilityIndex accessor */
-NumericalScalar AnalyticalResult::getHasoferReliabilityIndex() const
+Scalar AnalyticalResult::getHasoferReliabilityIndex() const
 {
   return hasoferReliabilityIndex_;
 }
 
 
 /* HasoferReliabilityIndex accessor */
-void AnalyticalResult::setHasoferReliabilityIndex(const NumericalScalar & hasoferReliabilityIndex)
+void AnalyticalResult::setHasoferReliabilityIndex(const Scalar & hasoferReliabilityIndex)
 {
   hasoferReliabilityIndex_ = hasoferReliabilityIndex;
 }
@@ -333,8 +333,8 @@ void AnalyticalResult::computeHasoferReliabilityIndexSensitivity() const
   const Matrix physicalGradientMatrix(physicalModel.gradient(physicalSpaceDesignPoint_));
   const Matrix isoGradient(inverseIsoProbabilisticTransformation.gradient(standardSpaceDesignPoint_));
   const Point standardFunctionGradient(isoGradient * (physicalGradientMatrix * Point(1, 1.0)));
-  const NumericalScalar gradientNorm = standardFunctionGradient.norm();
-  NumericalScalar gradientToSensitivity = 0.0;
+  const Scalar gradientNorm = standardFunctionGradient.norm();
+  Scalar gradientToSensitivity = 0.0;
   if (gradientNorm > 0.0) gradientToSensitivity = -(limitStateVariable_.getOperator().compare(1.0, 0.0) ? 1.0 : -1.0) / gradientNorm;
   /* evaluate the gradients of the physical model with respect to Set2 (ref doc : K2) */
   Point physicalGradient;
@@ -390,7 +390,7 @@ UnsignedInteger AnalyticalResult::computePosition(const String & marginalName, c
 
 
 /* HasoferReliabilityIndexSensitivity Graph */
-AnalyticalResult::GraphCollection AnalyticalResult::drawHasoferReliabilityIndexSensitivity(NumericalScalar width) const
+AnalyticalResult::GraphCollection AnalyticalResult::drawHasoferReliabilityIndexSensitivity(Scalar width) const
 {
   GraphCollection hasoferReliabilityIndexSensitivityGraphCollection(0);
   // To ensure that the hasoferReliabilityIndexSensitivity_ are up to date
@@ -422,10 +422,10 @@ AnalyticalResult::GraphCollection AnalyticalResult::drawHasoferReliabilityIndexS
 
 /* Sensitivity Graph */
 Graph AnalyticalResult::drawSensitivity(const Sensitivity & sensitivity,
-                                        const NumericalScalar width) const
+                                        const Scalar width) const
 {
   // shift position of the barplots
-  NumericalScalar shift = 0.0;
+  Scalar shift = 0.0;
 
   // Create an empty graph
   Graph sensitivityGraph("Sensitivity", "parameters", "sensitivities", true, "topright");

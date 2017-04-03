@@ -56,7 +56,7 @@ public:
   virtual UserDefinedSpectralModel * clone() const;
 
   /** Computation of the spectral density function */
-  HermitianMatrix operator()(const NumericalScalar frequency) const;
+  HermitianMatrix operator()(const Scalar frequency) const;
 
   /** Frequency grid accessors */
   RegularGrid getFrequencyGrid() const;

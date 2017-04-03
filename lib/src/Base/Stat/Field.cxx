@@ -81,7 +81,7 @@ NSI_const_point Field::operator[](const UnsignedInteger index) const
   return getImplementation()->operator[](index);
 }
 
-NumericalScalar & Field::operator () (const UnsignedInteger i,
+Scalar & Field::operator () (const UnsignedInteger i,
                                       const UnsignedInteger j)
 {
 #ifdef DEBUG_BOUNDCHECKING
@@ -93,7 +93,7 @@ NumericalScalar & Field::operator () (const UnsignedInteger i,
 #endif /* DEBUG_BOUNDCHECKING */
 }
 
-const NumericalScalar & Field::operator () (const UnsignedInteger i,
+const Scalar & Field::operator () (const UnsignedInteger i,
     const UnsignedInteger j) const
 {
 #ifdef DEBUG_BOUNDCHECKING
@@ -117,7 +117,7 @@ NSI_const_point Field::at (const UnsignedInteger index) const
   return (*getImplementation())[index];
 }
 
-NumericalScalar & Field::at (const UnsignedInteger i,
+Scalar & Field::at (const UnsignedInteger i,
                              const UnsignedInteger j)
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
@@ -126,7 +126,7 @@ NumericalScalar & Field::at (const UnsignedInteger i,
   return (*getImplementation())[i][j];
 }
 
-const NumericalScalar & Field::at (const UnsignedInteger i,
+const Scalar & Field::at (const UnsignedInteger i,
                                    const UnsignedInteger j) const
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";

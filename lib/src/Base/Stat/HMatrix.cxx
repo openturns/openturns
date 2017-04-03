@@ -65,20 +65,20 @@ void HMatrix::factorize(const String& method)
 }
 
 /** Compute x <- alpha * this */
-void HMatrix::scale(NumericalScalar alpha)
+void HMatrix::scale(Scalar alpha)
 {
   copyOnWrite();
   getImplementation()->scale(alpha);
 }
 
 /** Compute y <- alpha op(this) * x + beta * y */
-void HMatrix::gemv(char trans, NumericalScalar alpha, const Point& x, NumericalScalar beta, Point& y) const
+void HMatrix::gemv(char trans, Scalar alpha, const Point& x, Scalar beta, Point& y) const
 {
   getImplementation()->gemv(trans, alpha, x, beta, y);
 }
 
 /** Compute this <- alpha op(A) * p(B) + beta * this */
-void HMatrix::gemm(char transA, char transB, NumericalScalar alpha, const HMatrix& a, const HMatrix& b, NumericalScalar beta)
+void HMatrix::gemm(char transA, char transB, Scalar alpha, const HMatrix& a, const HMatrix& b, Scalar beta)
 {
   copyOnWrite();
   getImplementation()->gemm(transA, transB, alpha, *a.getImplementation(), *b.getImplementation(), beta);
@@ -92,7 +92,7 @@ void HMatrix::transpose()
 }
 
 /** Get the Frobenius norm */
-NumericalScalar HMatrix::norm() const
+Scalar HMatrix::norm() const
 {
   return getImplementation()->norm();
 }

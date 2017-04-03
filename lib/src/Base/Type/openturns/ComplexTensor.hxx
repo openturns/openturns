@@ -74,7 +74,7 @@ public:
   ComplexTensor(const Implementation & i);
 
   /** Set small elements to zero */
-  ComplexTensor clean(const NumericalScalar & threshold) const;
+  ComplexTensor clean(const Scalar & threshold) const;
 
   /** String converter */
   virtual String __repr__() const;

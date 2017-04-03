@@ -45,7 +45,7 @@ public:
   SpaceFillingPhiP * clone() const;
 
   /** Evaluate criterion on a sample */
-  NumericalScalar evaluate(const Sample& sample) const;
+  Scalar evaluate(const Sample& sample) const;
 
   /** String converter */
   String __repr__() const;
@@ -57,7 +57,7 @@ public:
   void load(Advocate & adv);
 
   /** Compute criterion when performing an elementary perturbation */
-  NumericalScalar perturbLHS(Sample& oldDesign, NumericalScalar oldCriterion,
+  Scalar perturbLHS(Sample& oldDesign, Scalar oldCriterion,
       UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const;
 
 private:

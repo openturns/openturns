@@ -51,13 +51,13 @@ public:
     const Basis & basis,
     const UnsignedInteger basisSize,
     const Bool mustScale,
-    const NumericalScalar threshold = 0.0);
+    const Scalar threshold = 0.0);
 
   /** Parameter constructor for the Legendre/GaussProduct case */
   KarhunenLoeveQuadratureAlgorithm(const Domain & domain,
 				   const CovarianceModel & covariance,
 				   const UnsignedInteger basisSize,
-				   const NumericalScalar threshold = 0.0);
+				   const Scalar threshold = 0.0);
 
   /** Virtual copy constructor */
   virtual KarhunenLoeveQuadratureAlgorithm * clone() const;

@@ -60,18 +60,18 @@ Matrix MarginalTransformationGradient::gradient(const Point & inP) const
     if (evaluation_.getSimplifications()[i] && evaluation_.getExpressions()[i].getGradient()->getClassName() == "SymbolicGradient") result(i, i) = evaluation_.getExpressions()[i].gradient(Point(1, inP[i]))(0, 0);
     else
     {
-      const NumericalScalar inputPDF = evaluation_.inputDistributionCollection_[i].computePDF(inP[i]);
+      const Scalar inputPDF = evaluation_.inputDistributionCollection_[i].computePDF(inP[i]);
       // Quick rejection step: if the input PDF is zero, the result will be zero, so continue only if the value is > 0
       if (inputPDF > 0.0)
       {
-        NumericalScalar inputCDF = evaluation_.inputDistributionCollection_[i].computeCDF(inP[i]);
+        Scalar inputCDF = evaluation_.inputDistributionCollection_[i].computeCDF(inP[i]);
         // For accuracy reason, check if we are in the upper tail of the distribution
         const Bool upperTail = inputCDF > 0.5;
         if (upperTail) inputCDF = evaluation_.inputDistributionCollection_[i].computeComplementaryCDF(inP[i]);
         // The upper tail CDF is defined by CDF(x, upper) = P(X>x)
         // The upper tail quantile is defined by Quantile(CDF(x, upper), upper) = x
         const Point  outputQuantile(evaluation_.outputDistributionCollection_[i].computeQuantile(inputCDF, upperTail));
-        const NumericalScalar outputPDF = evaluation_.outputDistributionCollection_[i].computePDF(outputQuantile);
+        const Scalar outputPDF = evaluation_.outputDistributionCollection_[i].computePDF(outputQuantile);
         // The output PDF should never be zero here, be it can occure due to some strange rounding error
         if (outputPDF > 0.0) result(i, i) = inputPDF / outputPDF;
       } // PDF > 0

@@ -67,7 +67,7 @@ public:
 
   /** Computation of the covariance function, stationary interface */
   using StationaryCovarianceModel::computeStandardRepresentative;
-  NumericalScalar computeStandardRepresentative(const Point & tau) const;
+  Scalar computeStandardRepresentative(const Point & tau) const;
 
   /** Gradient */
   using StationaryCovarianceModel::partialGradient;

@@ -43,7 +43,7 @@ GumbelCopula::GumbelCopula()
 }
 
 /* Parameters constructor */
-GumbelCopula::GumbelCopula(const NumericalScalar theta)
+GumbelCopula::GumbelCopula(const Scalar theta)
   : ArchimedeanCopula()
   , theta_(0.0)
 {
@@ -100,12 +100,12 @@ GumbelCopula * GumbelCopula::clone() const
 Point GumbelCopula::getRealization() const
 {
   Point realization(2);
-  const NumericalScalar u = (RandomGenerator::Generate() - 0.5) * M_PI;
-  const NumericalScalar u2 = u + M_PI_2;
-  const NumericalScalar e = -std::log(RandomGenerator::Generate());
-  const NumericalScalar inverseTheta = 1.0 / theta_;
-  const NumericalScalar t = std::cos(u - u2 * inverseTheta) / e;
-  const NumericalScalar gamma = std::pow(std::sin(u2 * inverseTheta) / t, inverseTheta) * t / std::cos(u);
+  const Scalar u = (RandomGenerator::Generate() - 0.5) * M_PI;
+  const Scalar u2 = u + M_PI_2;
+  const Scalar e = -std::log(RandomGenerator::Generate());
+  const Scalar inverseTheta = 1.0 / theta_;
+  const Scalar t = std::cos(u - u2 * inverseTheta) / e;
+  const Scalar gamma = std::pow(std::sin(u2 * inverseTheta) / t, inverseTheta) * t / std::cos(u);
   realization[0] = std::exp(-std::pow(-std::log(RandomGenerator::Generate()), inverseTheta) / gamma);
   realization[1] = std::exp(-std::pow(-std::log(RandomGenerator::Generate()), inverseTheta) / gamma);
   return realization;
@@ -117,87 +117,87 @@ Point GumbelCopula::computeDDF(const Point & point) const
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  const NumericalScalar u = point[0];
-  const NumericalScalar v = point[1];
+  const Scalar u = point[0];
+  const Scalar v = point[1];
   // A copula has a null PDF outside of ]0, 1[^2
   if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0)) return Point(2, 0.0);
   Point result(2);
-  const NumericalScalar t1 = std::log(u);
-  const NumericalScalar t2 = std::pow(-t1, theta_);
-  const NumericalScalar t3 = std::log(v);
-  const NumericalScalar t4 = std::pow(-t3, theta_);
-  const NumericalScalar t5 = t2 + t4;
-  const NumericalScalar t7 = std::pow(t5, 1.0 / theta_);
-  const NumericalScalar t8 = t2 * t2;
-  const NumericalScalar t10 = std::pow(u, 2.0);
-  const NumericalScalar t11 = 1.0 / t10;
-  const NumericalScalar t12 = t1 * t1;
-  const NumericalScalar t13 = 1.0 / t12;
-  const NumericalScalar t14 = t11 * t13;
-  const NumericalScalar t15 = t5 * t5;
-  const NumericalScalar t17 = 1.0 / t15 / t5;
-  const NumericalScalar t20 = std::exp(-t7);
-  const NumericalScalar t22 = -1.0 + theta_ + t7;
-  const NumericalScalar t23 = 1.0 / v;
-  const NumericalScalar t25 = 1.0 / t3;
-  const NumericalScalar t26 = t22 * t23 * t25;
-  const NumericalScalar t29 = t7 * t4;
-  const NumericalScalar t35 = t23 * t25;
-  const NumericalScalar t36 = 1.0 / t15;
-  const NumericalScalar t40 = t7 * t7;
-  const NumericalScalar t41 = t40 * t4;
-  const NumericalScalar t48 = t8 * t20;
-  const NumericalScalar t51 = t23 * t17 * t25;
-  const NumericalScalar t62 = t29 * t2 * t20 * t22;
-  const NumericalScalar t63 = t36 * t11;
+  const Scalar t1 = std::log(u);
+  const Scalar t2 = std::pow(-t1, theta_);
+  const Scalar t3 = std::log(v);
+  const Scalar t4 = std::pow(-t3, theta_);
+  const Scalar t5 = t2 + t4;
+  const Scalar t7 = std::pow(t5, 1.0 / theta_);
+  const Scalar t8 = t2 * t2;
+  const Scalar t10 = std::pow(u, 2.0);
+  const Scalar t11 = 1.0 / t10;
+  const Scalar t12 = t1 * t1;
+  const Scalar t13 = 1.0 / t12;
+  const Scalar t14 = t11 * t13;
+  const Scalar t15 = t5 * t5;
+  const Scalar t17 = 1.0 / t15 / t5;
+  const Scalar t20 = std::exp(-t7);
+  const Scalar t22 = -1.0 + theta_ + t7;
+  const Scalar t23 = 1.0 / v;
+  const Scalar t25 = 1.0 / t3;
+  const Scalar t26 = t22 * t23 * t25;
+  const Scalar t29 = t7 * t4;
+  const Scalar t35 = t23 * t25;
+  const Scalar t36 = 1.0 / t15;
+  const Scalar t40 = t7 * t7;
+  const Scalar t41 = t40 * t4;
+  const Scalar t48 = t8 * t20;
+  const Scalar t51 = t23 * t17 * t25;
+  const Scalar t62 = t29 * t2 * t20 * t22;
+  const Scalar t63 = t36 * t11;
   result[0] = t7 * t8 * t14 * t17 * t4 * t20 * t26 + t29 * t2 * theta_ * t11 * t13 * t20 * t22 * t35 * t36 - t41 * t8 * t11 * t13 * t17 * t20 * t26 + t41 * t48 * t14 * t51 - 2.0 * t29 * t48 * t22 * t51 * t14 * theta_ - t62 * t35 * t63 / t1 - t62 * t35 * t63 * t13;
 
-  const NumericalScalar t8b = t4 * t4;
-  const NumericalScalar t9b = t7 * t8b;
-  const NumericalScalar t10b = std::pow(v, 2.0);
-  const NumericalScalar t11b = 1.0 / t10b;
-  const NumericalScalar t12b = t3 * t3;
-  const NumericalScalar t13b = 1.0 / t12b;
-  const NumericalScalar t14b = t11b * t13b;
-  const NumericalScalar t18 = t14b * t17;
-  const NumericalScalar t21 = t2 * t20;
-  const NumericalScalar t23b = 1.0 / u;
-  const NumericalScalar t26b = t22 * t23b * t25;
-  const NumericalScalar t33 = t21 * t22;
-  const NumericalScalar t36b = 1.0 / t15 * t23b * t25;
-  const NumericalScalar t40b = t40 * t8b;
-  const NumericalScalar t52 = t29 * t33;
+  const Scalar t8b = t4 * t4;
+  const Scalar t9b = t7 * t8b;
+  const Scalar t10b = std::pow(v, 2.0);
+  const Scalar t11b = 1.0 / t10b;
+  const Scalar t12b = t3 * t3;
+  const Scalar t13b = 1.0 / t12b;
+  const Scalar t14b = t11b * t13b;
+  const Scalar t18 = t14b * t17;
+  const Scalar t21 = t2 * t20;
+  const Scalar t23b = 1.0 / u;
+  const Scalar t26b = t22 * t23b * t25;
+  const Scalar t33 = t21 * t22;
+  const Scalar t36b = 1.0 / t15 * t23b * t25;
+  const Scalar t40b = t40 * t8b;
+  const Scalar t52 = t29 * t33;
   result[1] = t9b * t18 * t21 * t26b + t29 * theta_ * t11b * t13b * t33 * t36b - t40b * t11b * t2 * t13b * t17 * t20 * t26b + t40b * t21 * t14b * t23b * t17 * t25 - t52 * t11b / t3 * t36b - t52 * t14b * t36b - 2.0 * t9b * t33 * t18 * t23b * t25 * theta_;
   return result;
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar GumbelCopula::computePDF(const Point & point) const
+Scalar GumbelCopula::computePDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  const NumericalScalar u = point[0];
-  const NumericalScalar v = point[1];
+  const Scalar u = point[0];
+  const Scalar v = point[1];
   // A copula has a null PDF outside of ]0, 1[^2
   if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0)) return 0.0;
-  const NumericalScalar logU = std::log(u);
-  const NumericalScalar logV = std::log(v);
-  const NumericalScalar minusLogUPowerTheta = std::pow(-logU, theta_);
-  const NumericalScalar minusLogVPowerTheta = std::pow(-logV, theta_);
-  const NumericalScalar sum1 = minusLogUPowerTheta + minusLogVPowerTheta;
-  const NumericalScalar pow1 = std::pow(sum1, 1.0 / theta_);
+  const Scalar logU = std::log(u);
+  const Scalar logV = std::log(v);
+  const Scalar minusLogUPowerTheta = std::pow(-logU, theta_);
+  const Scalar minusLogVPowerTheta = std::pow(-logV, theta_);
+  const Scalar sum1 = minusLogUPowerTheta + minusLogVPowerTheta;
+  const Scalar pow1 = std::pow(sum1, 1.0 / theta_);
   return pow1 * minusLogUPowerTheta * minusLogVPowerTheta * std::exp(-pow1) * (pow1 + theta_ - 1.0) / (u * v * logU * logV * sum1 * sum1);
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar GumbelCopula::computeCDF(const Point & point) const
+Scalar GumbelCopula::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  const NumericalScalar u = point[0];
-  const NumericalScalar v = point[1];
+  const Scalar u = point[0];
+  const Scalar v = point[1];
   // If we are outside of the support, in the lower parts
   if ((u <= 0.0) || (v <= 0.0)) return 0.0;
   // If we are outside of the support, in the upper part
@@ -216,11 +216,11 @@ Point GumbelCopula::computePDFGradient(const Point & point) const
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  const NumericalScalar u = point[0];
-  const NumericalScalar v = point[1];
+  const Scalar u = point[0];
+  const Scalar v = point[1];
   // A copula has a null PDF gradient outside of ]0, 1[^2
   if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0)) return Point(1, 0.0);
-  const NumericalScalar epsilon = ResourceMap::GetAsScalar("DistFunc-Precision");
+  const Scalar epsilon = ResourceMap::GetAsScalar("DistFunc-Precision");
   return Point(1, (GumbelCopula(theta_ + epsilon).computePDF(point) - GumbelCopula(theta_ - epsilon).computePDF(point)) / (2.0 * epsilon));
 }
 
@@ -230,23 +230,23 @@ Point GumbelCopula::computeCDFGradient(const Point & point) const
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  const NumericalScalar u = point[0];
-  const NumericalScalar v = point[1];
+  const Scalar u = point[0];
+  const Scalar v = point[1];
   // A copula has a null CDF gradient outside of ]0, 1[^2
   if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0)) return Point(1, 0.0);
   // If we are in the support
-  const NumericalScalar logU = std::log(u);
-  const NumericalScalar logV = std::log(v);
-  const NumericalScalar minusLogUPowerTheta = std::pow(-logU, theta_);
-  const NumericalScalar minusLogVPowerTheta = std::pow(-logV, theta_);
-  const NumericalScalar sum1 = minusLogUPowerTheta + minusLogVPowerTheta;
-  const NumericalScalar inverseTheta = 1.0 / theta_;
-  const NumericalScalar pow1 = std::pow(sum1, inverseTheta);
+  const Scalar logU = std::log(u);
+  const Scalar logV = std::log(v);
+  const Scalar minusLogUPowerTheta = std::pow(-logU, theta_);
+  const Scalar minusLogVPowerTheta = std::pow(-logV, theta_);
+  const Scalar sum1 = minusLogUPowerTheta + minusLogVPowerTheta;
+  const Scalar inverseTheta = 1.0 / theta_;
+  const Scalar pow1 = std::pow(sum1, inverseTheta);
   return Point(1, pow1 * std::exp(-pow1) * inverseTheta * (std::log(sum1) * inverseTheta - (minusLogUPowerTheta * std::log(-logU) + minusLogVPowerTheta * std::log(-logV)) / sum1));
 }
 
 /* Get the quantile of the distribution */
-Point GumbelCopula::computeQuantile(const NumericalScalar prob,
+Point GumbelCopula::computeQuantile(const Scalar prob,
     const Bool tail) const
 {
   if ((prob < 0.0) || (prob > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
@@ -256,24 +256,24 @@ Point GumbelCopula::computeQuantile(const NumericalScalar prob,
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar GumbelCopula::computeConditionalCDF(const NumericalScalar x, const Point & y) const
+Scalar GumbelCopula::computeConditionalCDF(const Scalar x, const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return x;
-  const NumericalScalar u = y[0];
-  const NumericalScalar v = x;
+  const Scalar u = y[0];
+  const Scalar v = x;
   // If we are in the support
-  const NumericalScalar minusLogU = -std::log(u);
-  const NumericalScalar minusLogUPowTheta = std::pow(minusLogU, theta_);
-  const NumericalScalar minusLogVPowTheta = std::pow(-std::log(v), theta_);
-  const NumericalScalar sum = minusLogUPowTheta + minusLogVPowTheta;
+  const Scalar minusLogU = -std::log(u);
+  const Scalar minusLogUPowTheta = std::pow(minusLogU, theta_);
+  const Scalar minusLogVPowTheta = std::pow(-std::log(v), theta_);
+  const Scalar sum = minusLogUPowTheta + minusLogVPowTheta;
   return std::pow(sum, -1.0 + 1.0 / theta_) * minusLogUPowTheta * std::exp(-std::pow(sum, 1.0 / theta_)) / (u * minusLogU);
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar GumbelCopula::computeConditionalQuantile(const NumericalScalar q, const Point & y) const
+Scalar GumbelCopula::computeConditionalQuantile(const Scalar q, const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -283,11 +283,11 @@ NumericalScalar GumbelCopula::computeConditionalQuantile(const NumericalScalar q
   // Initialize the conditional quantile with the quantile of the i-th marginal distribution
   // Special case when no contitioning or independent copula
   if ((conditioningDimension == 0) || hasIndependentCopula()) return q;
-  const NumericalScalar u = y[0];
-  const NumericalScalar inverseThetaMinusOne = 1.0 / (theta_ - 1.0);
-  const NumericalScalar minusLogU = -std::log(u);
-  const NumericalScalar minusLogUPowTheta = std::pow(minusLogU, theta_);
-  const NumericalScalar factor = minusLogUPowTheta / (u * q * minusLogU);
+  const Scalar u = y[0];
+  const Scalar inverseThetaMinusOne = 1.0 / (theta_ - 1.0);
+  const Scalar minusLogU = -std::log(u);
+  const Scalar minusLogUPowTheta = std::pow(minusLogU, theta_);
+  const Scalar factor = minusLogUPowTheta / (u * q * minusLogU);
   return std::exp(-std::pow(std::exp(theta_ * (std::log(factor) / (theta_ - 1.0) - SpecFunc::LambertW(std::pow(factor, inverseThetaMinusOne) * inverseThetaMinusOne))) - minusLogUPowTheta, 1.0 / theta_));
 }
 
@@ -314,7 +314,7 @@ Point GumbelCopula::getParameter() const
 void GumbelCopula::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize();
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = GumbelCopula(parameter[0]);
   setWeight(w);
 }
@@ -329,27 +329,27 @@ Description GumbelCopula::getParameterDescription() const
  * the function phi such that the CDF of the copula can
  * be written as CDF(t) = phi^{-1}(phi(u)+phi(v))
  */
-NumericalScalar GumbelCopula::computeArchimedeanGenerator(const NumericalScalar t) const
+Scalar GumbelCopula::computeArchimedeanGenerator(const Scalar t) const
 {
   return std::pow(-std::log(t), theta_);
 }
 
 /* Compute the inverse of the archimedean generator */
-NumericalScalar GumbelCopula::computeInverseArchimedeanGenerator(const NumericalScalar t) const
+Scalar GumbelCopula::computeInverseArchimedeanGenerator(const Scalar t) const
 {
   return std::exp(-std::pow(t, 1.0 / theta_));
 }
 
 /* Compute the derivative of the density generator */
-NumericalScalar GumbelCopula::computeArchimedeanGeneratorDerivative(const NumericalScalar t) const
+Scalar GumbelCopula::computeArchimedeanGeneratorDerivative(const Scalar t) const
 {
   return -theta_ * std::pow(-std::log(t), theta_ - 1.0) / t;
 }
 
 /* Compute the seconde derivative of the density generator */
-NumericalScalar GumbelCopula::computeArchimedeanGeneratorSecondDerivative(const NumericalScalar t) const
+Scalar GumbelCopula::computeArchimedeanGeneratorSecondDerivative(const Scalar t) const
 {
-  NumericalScalar logT = std::log(t);
+  Scalar logT = std::log(t);
   return theta_ * (theta_ - logT - 1.0) * std::pow(-logT, theta_ - 2.0) / (t * t);
 }
 
@@ -360,14 +360,14 @@ Bool GumbelCopula::hasIndependentCopula() const
 }
 
 /* Theta accessor */
-void GumbelCopula::setTheta(const NumericalScalar theta)
+void GumbelCopula::setTheta(const Scalar theta)
 {
   if (!(theta >= 1.0)) throw InvalidArgumentException(HERE) << "Theta MUST be greater or equal to 1";
   theta_ = theta;
 }
 
 /* Theta accessor */
-NumericalScalar GumbelCopula::getTheta() const
+Scalar GumbelCopula::getTheta() const
 {
   return theta_;
 }

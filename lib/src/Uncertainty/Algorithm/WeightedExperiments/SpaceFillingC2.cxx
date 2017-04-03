@@ -53,36 +53,36 @@ String SpaceFillingC2::__repr__() const
 }
 
 /** Evaluate criterion on a sample */
-NumericalScalar SpaceFillingC2::evaluate(const Sample & sample) const
+Scalar SpaceFillingC2::evaluate(const Sample & sample) const
 {
   const Sample normalizedSample(normalize(sample));
   const UnsignedInteger size(sample.getSize());
   const UnsignedInteger dimension(sample.getDimension());
-  const NumericalScalar* addr_sample = &normalizedSample[0][0];
-  NumericalScalar sum1 = 0.0;
-  NumericalScalar sum2 = 0.0;
+  const Scalar* addr_sample = &normalizedSample[0][0];
+  Scalar sum1 = 0.0;
+  Scalar sum2 = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalScalar* ptI(addr_sample + dimension * i);
-    NumericalScalar prod = 1.0;
+    const Scalar* ptI(addr_sample + dimension * i);
+    Scalar prod = 1.0;
     for (UnsignedInteger d = 0; d < dimension; ++d)
     {
-      const NumericalScalar delta(ptI[d] - 0.5);
+      const Scalar delta(ptI[d] - 0.5);
       prod *= (1.0 + 0.5 * std::abs(delta) - 0.5 * delta * delta);
     }
     sum1 += prod;
   }
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalScalar* ptI(addr_sample + dimension * i);
+    const Scalar* ptI(addr_sample + dimension * i);
     for (UnsignedInteger j = 0; j < size; ++j)
     {
-      const NumericalScalar* ptJ(addr_sample + dimension * j);
-      NumericalScalar prod = 1.0;
+      const Scalar* ptJ(addr_sample + dimension * j);
+      Scalar prod = 1.0;
       for (UnsignedInteger d = 0; d < dimension; ++d)
       {
-        const NumericalScalar deltaI(ptI[d] - 0.5);
-        const NumericalScalar deltaJ(ptJ[d] - 0.5);
+        const Scalar deltaI(ptI[d] - 0.5);
+        const Scalar deltaJ(ptJ[d] - 0.5);
         prod *= (1.0 + 0.5 * std::abs(deltaI) + 0.5 * std::abs(deltaJ) - 0.5 * std::abs(deltaI - deltaJ));
       }
       sum2 += prod;
@@ -92,27 +92,27 @@ NumericalScalar SpaceFillingC2::evaluate(const Sample & sample) const
 }
 
 /** Compute criterion when performing an elementary perturbation */
-NumericalScalar SpaceFillingC2::perturbLHS(Sample& oldDesign, OT::NumericalScalar oldCriterion,
+Scalar SpaceFillingC2::perturbLHS(Sample& oldDesign, OT::Scalar oldCriterion,
     UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const
 {
   const UnsignedInteger size(oldDesign.getSize());
   const UnsignedInteger dimension(oldDesign.getDimension());
-  const NumericalScalar* addr_sample(&oldDesign[0][0]);
-  NumericalScalar* pt1(&oldDesign[0][0] + dimension * row1);
-  NumericalScalar* pt2(&oldDesign[0][0] + dimension * row2);
+  const Scalar* addr_sample(&oldDesign[0][0]);
+  Scalar* pt1(&oldDesign[0][0] + dimension * row1);
+  Scalar* pt2(&oldDesign[0][0] + dimension * row2);
   // Part to remove
-  NumericalScalar oldSum = 0.0;
+  Scalar oldSum = 0.0;
   for(UnsignedInteger j = 0; j < size; ++j)
   {
     if (j == row1 || j == row2) continue;
-    const NumericalScalar* ptJ(addr_sample + dimension * j);
-    NumericalScalar prodRow1 = 1.0;
-    NumericalScalar prodRow2 = 1.0;
+    const Scalar* ptJ(addr_sample + dimension * j);
+    Scalar prodRow1 = 1.0;
+    Scalar prodRow2 = 1.0;
     for (UnsignedInteger d = 0; d < dimension; ++d)
     {
-      const NumericalScalar deltaRow1(pt1[d] - 0.5);
-      const NumericalScalar deltaRow2(pt2[d] - 0.5);
-      const NumericalScalar deltaJ(ptJ[d] - 0.5);
+      const Scalar deltaRow1(pt1[d] - 0.5);
+      const Scalar deltaRow2(pt2[d] - 0.5);
+      const Scalar deltaJ(ptJ[d] - 0.5);
       prodRow1 *= (1.0 + 0.5 * std::abs(deltaRow1) + 0.5 * std::abs(deltaJ) - 0.5 * std::abs(deltaRow1 - deltaJ));
       prodRow2 *= (1.0 + 0.5 * std::abs(deltaRow2) + 0.5 * std::abs(deltaJ) - 0.5 * std::abs(deltaRow2 - deltaJ));
     }
@@ -121,18 +121,18 @@ NumericalScalar SpaceFillingC2::perturbLHS(Sample& oldDesign, OT::NumericalScala
   // Scale oldSum
   oldSum *= 2.0 / size / size;
   // Take into account diagonal elements
-  NumericalScalar prod1Row1 = 1.0;
-  NumericalScalar prod2Row1 = 1.0;
-  NumericalScalar prod1Row2 = 1.0;
-  NumericalScalar prod2Row2 = 1.0;
+  Scalar prod1Row1 = 1.0;
+  Scalar prod2Row1 = 1.0;
+  Scalar prod1Row2 = 1.0;
+  Scalar prod2Row2 = 1.0;
   for (UnsignedInteger d = 0; d < dimension; ++d)
   {
     // c_{row1, row1}
-    const NumericalScalar deltaI(pt1[d] - 0.5);
+    const Scalar deltaI(pt1[d] - 0.5);
     prod1Row1 *= (1.0 + std::abs(deltaI));
     prod2Row1 *= (1.0 + 0.5 * std::abs(deltaI) - 0.5 * deltaI * deltaI);
     // for c_{row2, row2}
-    const NumericalScalar deltaJ(pt2[d] - 0.5);
+    const Scalar deltaJ(pt2[d] - 0.5);
     prod1Row2 *= (1.0 + std::abs(deltaJ));
     prod2Row2 *= (1.0 + 0.5 * std::abs(deltaJ) - 0.5 * deltaJ * deltaJ);
   }
@@ -142,18 +142,18 @@ NumericalScalar SpaceFillingC2::perturbLHS(Sample& oldDesign, OT::NumericalScala
   oldSum += prod1Row2 / size / size - 2.0 * prod2Row2/ size;
   // Swap coordinates
   std::swap(pt1[column], pt2[column]);
-  NumericalScalar newSum = 0.0;
+  Scalar newSum = 0.0;
   for(UnsignedInteger j = 0; j < size; ++j)
   {
     if (j == row1 || j == row2) continue;
-    const NumericalScalar* ptJ(addr_sample + dimension * j);
-    NumericalScalar prodRow1 = 1.0;
-    NumericalScalar prodRow2 = 1.0;
+    const Scalar* ptJ(addr_sample + dimension * j);
+    Scalar prodRow1 = 1.0;
+    Scalar prodRow2 = 1.0;
     for (UnsignedInteger d = 0; d < dimension; ++d)
     {
-      const NumericalScalar deltaRow1(pt1[d] - 0.5);
-      const NumericalScalar deltaRow2(pt2[d] - 0.5);
-      const NumericalScalar deltaJ(ptJ[d] - 0.5);
+      const Scalar deltaRow1(pt1[d] - 0.5);
+      const Scalar deltaRow2(pt2[d] - 0.5);
+      const Scalar deltaJ(ptJ[d] - 0.5);
       prodRow1 *= (1.0 + 0.5 * std::abs(deltaRow1) + 0.5 * std::abs(deltaJ) - 0.5 * std::abs(deltaRow1 - deltaJ));
       prodRow2 *= (1.0 + 0.5 * std::abs(deltaRow2) + 0.5 * std::abs(deltaJ) - 0.5 * std::abs(deltaRow2 - deltaJ));
     }
@@ -169,11 +169,11 @@ NumericalScalar SpaceFillingC2::perturbLHS(Sample& oldDesign, OT::NumericalScala
   for (UnsignedInteger d = 0; d < dimension; ++d)
   {
     // c_{row1, row1}
-    const NumericalScalar deltaI(pt1[d] - 0.5);
+    const Scalar deltaI(pt1[d] - 0.5);
     prod1Row1 *= (1.0 + std::abs(deltaI));
     prod2Row1 *= (1.0 + 0.5 * std::abs(deltaI) - 0.5 * deltaI * deltaI);
     // for c_{row2, row2}
-    const NumericalScalar deltaJ(pt2[d] - 0.5);
+    const Scalar deltaJ(pt2[d] - 0.5);
     prod1Row2 *= (1.0 + std::abs(deltaJ));
     prod2Row2 *= (1.0 + 0.5 * std::abs(deltaJ) - 0.5 * deltaJ * deltaJ);
   }
@@ -184,7 +184,7 @@ NumericalScalar SpaceFillingC2::perturbLHS(Sample& oldDesign, OT::NumericalScala
   // Swap coordinates to restore original sample
   std::swap(pt1[column], pt2[column]);
   // Final result
-  NumericalScalar result = oldCriterion * oldCriterion + newSum - oldSum;
+  Scalar result = oldCriterion * oldCriterion + newSum - oldSum;
   if (result <= 0.0) return 0.0;
   return std::sqrt(result);
 }

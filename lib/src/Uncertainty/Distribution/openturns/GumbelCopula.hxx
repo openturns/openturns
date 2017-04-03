@@ -40,7 +40,7 @@ public:
   GumbelCopula();
 
   /** Parameters constructor */
-  GumbelCopula(const NumericalScalar theta);
+  GumbelCopula(const Scalar theta);
 
 
   /** Comparison operator */
@@ -66,11 +66,11 @@ public:
 
   /** Get the PDF of the distribution */
   using ArchimedeanCopula::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using ArchimedeanCopula::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the Kendall concordance of the distribution */
   CorrelationMatrix getKendallTau() const;
@@ -83,31 +83,31 @@ public:
 
   /** Get the quantile of the distribution */
   using DistributionImplementation::computeQuantile;
-  Point computeQuantile(const NumericalScalar prob,
+  Point computeQuantile(const Scalar prob,
                                  const Bool tail = false) const;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using CopulaImplementation::computeConditionalCDF;
-  NumericalScalar computeConditionalCDF(const NumericalScalar x, const Point & y) const;
+  Scalar computeConditionalCDF(const Scalar x, const Point & y) const;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
   using CopulaImplementation::computeConditionalQuantile;
-  NumericalScalar computeConditionalQuantile(const NumericalScalar q, const Point & y) const;
+  Scalar computeConditionalQuantile(const Scalar q, const Point & y) const;
 
   /** Compute the archimedean generator of the archimedean copula, i.e.
    *  the function phi such that the CDF of the copula can
    *  be written as CDF(t) = phi^{-1}(phi(u)+phi(v))
    */
-  NumericalScalar computeArchimedeanGenerator(const NumericalScalar t) const;
+  Scalar computeArchimedeanGenerator(const Scalar t) const;
 
   /** Compute the inverse of the archimedean generator */
-  NumericalScalar computeInverseArchimedeanGenerator(const NumericalScalar t) const;
+  Scalar computeInverseArchimedeanGenerator(const Scalar t) const;
 
   /** Compute the derivative of the archimedean generator */
-  NumericalScalar computeArchimedeanGeneratorDerivative(const NumericalScalar t) const;
+  Scalar computeArchimedeanGeneratorDerivative(const Scalar t) const;
 
   /** Compute the second derivative of the archimedean generator */
-  NumericalScalar computeArchimedeanGeneratorSecondDerivative(const NumericalScalar t) const;
+  Scalar computeArchimedeanGeneratorSecondDerivative(const Scalar t) const;
 
   /** Parameters value accessors */
   void setParameter(const Point & parameter);
@@ -122,8 +122,8 @@ public:
   /* Interface specific to GumbelCopula */
 
   /** Theta accessor */
-  void setTheta(const NumericalScalar theta);
-  NumericalScalar getTheta() const;
+  void setTheta(const Scalar theta);
+  Scalar getTheta() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -140,7 +140,7 @@ private:
   void computeCovariance() const;
 
   /** The parameter of the GumbelCopula distribution */
-  NumericalScalar theta_;
+  Scalar theta_;
 
 }; /* class GumbelCopula */
 

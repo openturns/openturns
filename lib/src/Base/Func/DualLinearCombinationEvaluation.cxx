@@ -113,7 +113,7 @@ String DualLinearCombinationEvaluation::__str__(const String & offset) const
   {
     if (outputDimension == 1)
     {
-      const NumericalScalar value = coefficients_[i][0];
+      const Scalar value = coefficients_[i][0];
       if (value != 0.0)
       {
         if (first) oss << value;
@@ -260,7 +260,7 @@ void DualLinearCombinationEvaluation::setFunctionsCollectionAndCoefficients(cons
   coefficients_ = Sample(0, coefficients.getDimension());
   functionsCollection_ = FunctionCollection(0);
   // First pass, extract the maximum absolute coefficient
-  NumericalScalar maximumAbsoluteCoefficient = 0.0;
+  Scalar maximumAbsoluteCoefficient = 0.0;
   Point absoluteCoefficients(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -270,7 +270,7 @@ void DualLinearCombinationEvaluation::setFunctionsCollectionAndCoefficients(cons
   }
   if (maximumAbsoluteCoefficient == 0.0) throw InvalidArgumentException(HERE) << "Error: all the coefficients are zero.";
   // Second pass, remove the small coefficients
-  const NumericalScalar epsilon = maximumAbsoluteCoefficient * ResourceMap::GetAsScalar("DualLinearCombinationEvaluation-SmallCoefficient");
+  const Scalar epsilon = maximumAbsoluteCoefficient * ResourceMap::GetAsScalar("DualLinearCombinationEvaluation-SmallCoefficient");
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     if (absoluteCoefficients[i] > epsilon)
@@ -325,7 +325,7 @@ Matrix DualLinearCombinationEvaluation::parameterGradient(const Point & inP) con
   //     const UnsignedInteger rowDimension(atomParametersGradient.getNbRows());
   //     const UnsignedInteger columnDimension(atomParametersGradient.getNbColumns());
   //     // Scale the atom gradient and copy it into the result
-  //     const NumericalScalar coefficient(coefficients_[i]);
+  //     const Scalar coefficient(coefficients_[i]);
   //     for (UnsignedInteger j = 0; j < rowDimension; ++j)
   //       {
   //         for (UnsignedInteger k = 0; k < columnDimension; ++k)

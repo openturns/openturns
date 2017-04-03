@@ -180,7 +180,7 @@ Point OrthogonalUniVariatePolynomialFactory::getNodesAndWeights(const UnsignedIn
   Point d(n);
   Point e(n - 1);
   Coefficients recurrenceCoefficientsI(getRecurrenceCoefficients(0));
-  NumericalScalar alphaPrec = recurrenceCoefficientsI[0];
+  Scalar alphaPrec = recurrenceCoefficientsI[0];
   d[0] = -recurrenceCoefficientsI[1] / alphaPrec;
   for (UnsignedInteger i = 1; i < n; ++i)
   {

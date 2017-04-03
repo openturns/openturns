@@ -45,7 +45,7 @@ public:
   /** Default constructor without parameters */
   KarhunenLoeveP1Algorithm(const Mesh & mesh,
 			   const CovarianceModel & covariance,
-			   const NumericalScalar threshold = 0.0);
+			   const Scalar threshold = 0.0);
 
   /** Virtual copy constructor */
   virtual KarhunenLoeveP1Algorithm * clone() const;

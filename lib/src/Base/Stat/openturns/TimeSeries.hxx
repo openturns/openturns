@@ -105,10 +105,10 @@ public:
 private:
 
   /** The start time of the time series */
-  NumericalScalar start_;
+  Scalar start_;
 
   /** The interval of the underlying regular time grid */
-  NumericalScalar timeStep_;
+  Scalar timeStep_;
 
   /** The number of timestamps of the underlying regular time grid */
   UnsignedInteger n_;

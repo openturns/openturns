@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    NumericalScalar val1, val2;
+    Scalar val1, val2;
 
     /* Default constructor */
     Point point1;
@@ -150,7 +150,7 @@ int main(int argc, char *argv[])
       Point J(j * 3.);
       fullprint << "J = " << J << std::endl;
 
-      NumericalScalar dotProduct = dot(I, J);
+      Scalar dotProduct = dot(I, J);
       fullprint << "dotProduct = " << dotProduct << std::endl;
 
     }

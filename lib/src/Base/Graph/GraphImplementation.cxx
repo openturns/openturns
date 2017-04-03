@@ -91,7 +91,7 @@ GraphImplementation::GraphImplementation(const String & title,
     const String & yTitle,
     const Bool showAxes,
     const String & legendPosition,
-    const NumericalScalar legendFontSize,
+    const Scalar legendFontSize,
     const LogScale logScale)
   : PersistentObject()
   , title_(title)
@@ -496,8 +496,8 @@ std::map<SignedInteger, String> GraphImplementation::GetExtensionMap()
 
 /* The method that generates the graphic files */
 void GraphImplementation::draw(const String & file,
-                               const NumericalScalar width,
-                               const NumericalScalar height,
+                               const Scalar width,
+                               const Scalar height,
                                SignedInteger drawingFormat)
 {
   // Override format base on extension
@@ -686,13 +686,13 @@ Description GraphImplementation::GetValidLegendPositions()
 }
 
 /* Get the legend font size */
-NumericalScalar GraphImplementation::getLegendFontSize() const
+Scalar GraphImplementation::getLegendFontSize() const
 {
   return legendFontSize_;
 }
 
 /* Set the legend font size */
-void GraphImplementation::setLegendFontSize(const NumericalScalar legendFontSize)
+void GraphImplementation::setLegendFontSize(const Scalar legendFontSize)
 {
   if(legendFontSize <= 0.0) throw InvalidArgumentException(HERE) << "The given legend font size = " << legendFontSize << " is invalid";
 

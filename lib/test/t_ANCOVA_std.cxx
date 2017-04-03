@@ -34,12 +34,12 @@ int main(int argc, char *argv[])
   {
     // Problem parameters
     UnsignedInteger dimension = 2;
-    NumericalScalar rho = 0.3;
-    NumericalScalar a = 4.;
-    NumericalScalar b = 5.;
+    Scalar rho = 0.3;
+    Scalar a = 4.;
+    Scalar b = 5.;
 
     // Reference analytical values
-    NumericalScalar covTh = a * a + b * b + 2 * a * b * rho;
+    Scalar covTh = a * a + b * b + 2 * a * b * rho;
     Sample Si(2, 2);
     Si[0][0] = (a * a + a * b * rho) / covTh;
     Si[1][0] = (b * b + a * b * rho) / covTh;
@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
 
     for(UnsignedInteger i = 0; i < dimension; ++i)
     {
-      NumericalScalar value = indices[i];
+      Scalar value = indices[i];
       fullprint << "ANCOVA index " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - Si[i][0]) << std::endl;
       value = uncorrelatedIndices[i];
       fullprint << "ANCOVA uncorrelated index " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - Si[i][1]) << std::endl;

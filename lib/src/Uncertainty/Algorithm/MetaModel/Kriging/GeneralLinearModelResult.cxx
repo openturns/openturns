@@ -49,7 +49,7 @@ GeneralLinearModelResult::GeneralLinearModelResult(const Sample & inputSample,
     const BasisCollection & basis,
     const PointCollection & trendCoefficients,
     const CovarianceModel & covarianceModel,
-    const NumericalScalar optimalLogLikelihood)
+    const Scalar optimalLogLikelihood)
   : MetaModelResult(DatabaseFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
   , inputData_(inputSample)
   , inputTransformedData_(inputSample)
@@ -78,7 +78,7 @@ GeneralLinearModelResult::GeneralLinearModelResult(const Sample & inputSample,
     const BasisCollection & basis,
     const PointCollection & trendCoefficients,
     const CovarianceModel & covarianceModel,
-    const NumericalScalar optimalLogLikelihood,
+    const Scalar optimalLogLikelihood,
     const TriangularMatrix & covarianceCholeskyFactor,
     const HMatrix & covarianceHMatrix)
   : MetaModelResult(DatabaseFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
@@ -170,7 +170,7 @@ void GeneralLinearModelResult::setTransformation(const Function & transformation
 }
 
 /* Optimal log-likelihood accessor */
-NumericalScalar GeneralLinearModelResult::getOptimalLogLikelihood() const
+Scalar GeneralLinearModelResult::getOptimalLogLikelihood() const
 {
   return optimalLogLikelihood_;
 }

@@ -34,8 +34,8 @@ int main(int argc, char *argv[])
   {
     // TimeGrid parameters
     const UnsignedInteger n = 101;
-    const NumericalScalar timeStart = 0.0;
-    const NumericalScalar timeStep = 0.1;
+    const Scalar timeStart = 0.0;
+    const Scalar timeStep = 0.1;
     RegularGrid timeGrid(timeStart, timeStep, n);
 
     // White noise

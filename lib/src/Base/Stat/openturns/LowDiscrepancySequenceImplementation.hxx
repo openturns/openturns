@@ -63,7 +63,7 @@ public:
   virtual Sample generate(const UnsignedInteger size) const;
 
   /** Compute the star discrepancy of a sample uniformly distributed over [0, 1) */
-  static NumericalScalar ComputeStarDiscrepancy(const Sample & sample);
+  static Scalar ComputeStarDiscrepancy(const Sample & sample);
 
   /** String converter */
   virtual String __repr__() const;
@@ -76,7 +76,7 @@ public:
 
 private:
   /** Compute the local discrepancy of a sample, given a multidimensionnal interval */
-  static NumericalScalar ComputeLocalDiscrepancy(const Sample & sample,
+  static Scalar ComputeLocalDiscrepancy(const Sample & sample,
       const Interval & interval);
 
 protected:

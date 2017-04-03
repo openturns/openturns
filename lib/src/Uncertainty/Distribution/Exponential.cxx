@@ -42,8 +42,8 @@ Exponential::Exponential()
 }
 
 /* Parameters constructor */
-Exponential::Exponential(const NumericalScalar lambda,
-                         const NumericalScalar gamma)
+Exponential::Exponential(const Scalar lambda,
+                         const Scalar gamma)
   : ContinuousDistribution()
   , lambda_(0.0)
   , gamma_(gamma)
@@ -111,51 +111,51 @@ Point Exponential::computeDDF(const Point & point) const
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Exponential::computePDF(const Point & point) const
+Scalar Exponential::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0] - gamma_;
+  const Scalar x = point[0] - gamma_;
   if (x < 0.0) return 0.0;
   return lambda_ * std::exp(-lambda_ * x);
 }
 
-NumericalScalar Exponential::computeLogPDF(const Point & point) const
+Scalar Exponential::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0] - gamma_;
+  const Scalar x = point[0] - gamma_;
   if (x < 0.0) return SpecFunc::LogMinScalar;
   return std::log(lambda_) - lambda_ * x;
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar Exponential::computeCDF(const Point & point) const
+Scalar Exponential::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0] - gamma_;
+  const Scalar x = point[0] - gamma_;
   if (x <= 0.0) return 0.0;
   return -expm1(-lambda_ * x);
 }
 
 /* Get the complementary CDF of the distribution */
-NumericalScalar Exponential::computeComplementaryCDF(const Point & point) const
+Scalar Exponential::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0] - gamma_;
+  const Scalar x = point[0] - gamma_;
   if (x < 0.0) return 1.0;
   return std::exp(-lambda_ * x);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Exponential::computeCharacteristicFunction(const NumericalScalar x) const
+NumericalComplex Exponential::computeCharacteristicFunction(const Scalar x) const
 {
   return std::exp(NumericalComplex(0.0, x * gamma_)) / NumericalComplex(1.0, -x / lambda_);
 }
 
-NumericalComplex Exponential::computeLogCharacteristicFunction(const NumericalScalar x) const
+NumericalComplex Exponential::computeLogCharacteristicFunction(const Scalar x) const
 {
   return NumericalComplex(0.0, x * gamma_) - std::log(NumericalComplex(1.0, - x / lambda_));
 }
@@ -165,10 +165,10 @@ Point Exponential::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0] - gamma_;
+  const Scalar x = point[0] - gamma_;
   Point pdfGradient(2, 0.0);
   if (x < 0.0) return pdfGradient;
-  const NumericalScalar expX = std::exp(-lambda_ * x);
+  const Scalar expX = std::exp(-lambda_ * x);
   pdfGradient[0] = (1.0 - lambda_ * x) * expX;
   pdfGradient[1] = lambda_ * lambda_ * expX;
   return pdfGradient;
@@ -179,17 +179,17 @@ Point Exponential::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0] - gamma_;
+  const Scalar x = point[0] - gamma_;
   Point cdfGradient(2, 0.0);
   if (x < 0.0) return cdfGradient;
-  const NumericalScalar expX = std::exp(-lambda_ * x);
+  const Scalar expX = std::exp(-lambda_ * x);
   cdfGradient[0] = x * expX;
   cdfGradient[1] = -lambda_ * expX;
   return cdfGradient;
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar Exponential::computeScalarQuantile(const NumericalScalar prob,
+Scalar Exponential::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
   if (tail) return gamma_ - std::log(prob) / lambda_;
@@ -253,7 +253,7 @@ Point Exponential::getParameter() const
 void Exponential::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = Exponential(parameter[0], parameter[1]);
   setWeight(w);
 }
@@ -268,7 +268,7 @@ Description Exponential::getParameterDescription() const
 }
 
 /* Lambda accessor */
-void Exponential::setLambda(const NumericalScalar lambda)
+void Exponential::setLambda(const Scalar lambda)
 {
   if (!(lambda > 0.0)) throw InvalidArgumentException(HERE) << "Lambda MUST be positive";
   if (lambda != lambda_)
@@ -281,14 +281,14 @@ void Exponential::setLambda(const NumericalScalar lambda)
 }
 
 /* Lambda accessor */
-NumericalScalar Exponential::getLambda() const
+Scalar Exponential::getLambda() const
 {
   return lambda_;
 }
 
 
 /* Gamma accessor */
-void Exponential::setGamma(const NumericalScalar gamma)
+void Exponential::setGamma(const Scalar gamma)
 {
   if (gamma != gamma_)
   {
@@ -300,7 +300,7 @@ void Exponential::setGamma(const NumericalScalar gamma)
 }
 
 /* Gamma accessor */
-NumericalScalar Exponential::getGamma() const
+Scalar Exponential::getGamma() const
 {
   return gamma_;
 }

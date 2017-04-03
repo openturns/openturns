@@ -51,7 +51,7 @@ EnumerateFunction::EnumerateFunction(const UnsignedInteger dimension)
 
 /* Parameter constructor */
 EnumerateFunction::EnumerateFunction(const UnsignedInteger dimension,
-                                     const NumericalScalar q)
+                                     const Scalar q)
   : TypedInterfaceObject<EnumerateFunctionImplementation>(new HyperbolicAnisotropicEnumerateFunction(dimension, q))
 {
   // Nothing to do
@@ -59,7 +59,7 @@ EnumerateFunction::EnumerateFunction(const UnsignedInteger dimension,
 
 /* Parameter constructor */
 EnumerateFunction::EnumerateFunction(const Point & weight,
-                                     const NumericalScalar q)
+                                     const Scalar q)
   : TypedInterfaceObject<EnumerateFunctionImplementation>(new HyperbolicAnisotropicEnumerateFunction(weight, q))
 {
   // Nothing to do

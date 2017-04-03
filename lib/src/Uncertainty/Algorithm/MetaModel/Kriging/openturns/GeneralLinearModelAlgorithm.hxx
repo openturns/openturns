@@ -139,12 +139,12 @@ public:
 
 protected:
   // Maximize the reduced log-likelihood
-  NumericalScalar maximizeReducedLogLikelihood();
+  Scalar maximizeReducedLogLikelihood();
 
   // Compute the output log-likelihood function
   Point computeReducedLogLikelihood(const Point & parameters) const;
-  NumericalScalar computeLapackLogDeterminantCholesky() const;
-  NumericalScalar computeHMatLogDeterminantCholesky() const;
+  Scalar computeLapackLogDeterminantCholesky() const;
+  Scalar computeHMatLogDeterminantCholesky() const;
 
   // Compute the design matrix on the normalized input sample
   void computeF();
@@ -312,7 +312,7 @@ private:
   Bool analyticalAmplitude_;
 
   /** Cache of the last computed reduced log-likelihood */
-  mutable NumericalScalar lastReducedLogLikelihood_;
+  mutable Scalar lastReducedLogLikelihood_;
 }; // class GeneralLinearModelAlgorithm
 
 

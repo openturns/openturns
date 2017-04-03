@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     LevelSetMesher mesher1D(Indices(1, 7));
     fullprint << "mesher1D=" << mesher1D << std::endl;
 
-    NumericalScalar level = 0.5;
+    Scalar level = 0.5;
     SymbolicFunction function1D("x", "cos(x)/(1+0.1*x^2)");
     LevelSet levelSet1D(function1D, level);
     // Automatic bounding box

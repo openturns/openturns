@@ -169,10 +169,10 @@ void GaussianProcess::initialize() const
   Bool continuationCondition = true;
   // Scaling factor of the matrix : M-> M + \lambda I with \lambda very small
   // The regularization is needed for fast decreasing covariance models
-  const NumericalScalar startingScaling = ResourceMap::GetAsScalar("GaussianProcess-StartingScaling");
-  const NumericalScalar maximalScaling = ResourceMap::GetAsScalar("GaussianProcess-MaximalScaling");
-  NumericalScalar cumulatedScaling = 0.0;
-  NumericalScalar scaling = startingScaling;
+  const Scalar startingScaling = ResourceMap::GetAsScalar("GaussianProcess-StartingScaling");
+  const Scalar maximalScaling = ResourceMap::GetAsScalar("GaussianProcess-MaximalScaling");
+  Scalar cumulatedScaling = 0.0;
+  Scalar scaling = startingScaling;
   HMatrixFactory hmatFactory;
   HMatrixParameters hmatrixParameters;
 
@@ -202,9 +202,9 @@ void GaussianProcess::initialize() const
       {
         cumulatedScaling += scaling ;
         scaling *= 2.0;
-        NumericalScalar assemblyEpsilon = hmatrixParameters.getAssemblyEpsilon() / 10.0;
+        Scalar assemblyEpsilon = hmatrixParameters.getAssemblyEpsilon() / 10.0;
         hmatrixParameters.setAssemblyEpsilon(assemblyEpsilon);
-        NumericalScalar recompressionEpsilon = hmatrixParameters.getRecompressionEpsilon() / 10.0;
+        Scalar recompressionEpsilon = hmatrixParameters.getRecompressionEpsilon() / 10.0;
         hmatrixParameters.setRecompressionEpsilon(recompressionEpsilon);
         LOGDEBUG(OSS() <<  "Currently, scaling up to "  << cumulatedScaling << " to get an admissible covariance. Maybe compression & recompression factors are not adapted.");
         LOGDEBUG(OSS() <<  "Currently, assembly espilon = "  << assemblyEpsilon );

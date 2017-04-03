@@ -60,17 +60,17 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** UniVariateFunction are evaluated as functors */
-  NumericalScalar operator() (const NumericalScalar x) const;
+  Scalar operator() (const Scalar x) const;
 
   /** UniVariateFunctionImplementation gradient */
-  NumericalScalar gradient(const NumericalScalar x) const;
+  Scalar gradient(const Scalar x) const;
 
   /** UniVariateFunctionImplementation hessian */
-  NumericalScalar hessian(const NumericalScalar x) const;
+  Scalar hessian(const Scalar x) const;
 
   /** Method to draw the graph of the polynomial between given bounds */
-  Graph draw(const NumericalScalar xMin,
-             const NumericalScalar xMax,
+  Graph draw(const Scalar xMin,
+             const Scalar xMax,
              const UnsignedInteger pointNumber) const;
 } ; /* class UniVariateFunction */
 

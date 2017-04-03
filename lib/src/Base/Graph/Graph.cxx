@@ -44,7 +44,7 @@ Graph::Graph(const String & title,
              const String & yTitle,
              const Bool showAxes,
              const String & legendPosition,
-             const NumericalScalar legendFontSize,
+             const Scalar legendFontSize,
              const LogScale logScale)
   : TypedInterfaceObject<GraphImplementation>(new GraphImplementation(title, xTitle, yTitle, showAxes, legendPosition, legendFontSize, logScale))
 {
@@ -240,8 +240,8 @@ void Graph::setTitle(const String & title)
 
 /* The method that generates the graphic files */
 void Graph::draw(const String & file,
-                 const NumericalScalar width,
-                 const NumericalScalar height,
+                 const Scalar width,
+                 const Scalar height,
                  SignedInteger format)
 {
   getImplementation()->draw(file, width, height, format);
@@ -304,13 +304,13 @@ void Graph::setLegendPosition(const String & position)
 }
 
 /* Get the legend font size */
-NumericalScalar Graph::getLegendFontSize() const
+Scalar Graph::getLegendFontSize() const
 {
   return getImplementation()->getLegendFontSize();
 }
 
 /* Set the legend font size */
-void Graph::setLegendFontSize(const NumericalScalar legendFontSize)
+void Graph::setLegendFontSize(const Scalar legendFontSize)
 {
   copyOnWrite();
   return getImplementation()->setLegendFontSize(legendFontSize);

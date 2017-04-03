@@ -46,7 +46,7 @@ GaussKronrod::GaussKronrod()
 
 /* Parameters constructor */
 GaussKronrod::GaussKronrod(const UnsignedInteger maximumSubIntervals,
-                           const NumericalScalar maximumError,
+                           const Scalar maximumError,
                            const GaussKronrodRule & rule)
   : IntegrationAlgorithmImplementation()
   , maximumSubIntervals_(maximumSubIntervals)
@@ -68,7 +68,7 @@ GaussKronrod * GaussKronrod::clone() const
  */
 Point GaussKronrod::integrate(const Function & function,
                                        const Interval & interval,
-                                       NumericalScalar & error) const
+                                       Scalar & error) const
 {
   if (interval.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given interval should be 1D, here dimension=" << interval.getDimension();
   Point ai(0);
@@ -79,9 +79,9 @@ Point GaussKronrod::integrate(const Function & function,
 }
 
 Point GaussKronrod::integrate(const Function & function,
-                                       const NumericalScalar a,
-                                       const NumericalScalar b,
-                                       NumericalScalar & error,
+                                       const Scalar a,
+                                       const Scalar b,
+                                       Scalar & error,
                                        Point & ai,
                                        Point & bi,
                                        Sample & fi,
@@ -109,12 +109,12 @@ Point GaussKronrod::integrate(const Function & function,
     fi[ip] = computeRule(function, ai[ip], bi[ip], ei[ip]);
     fi[im] = computeRule(function, ai[im], bi[im], ei[im]);
     UnsignedInteger iErrorMax = 0;
-    NumericalScalar errorMax = 0.0;
+    Scalar errorMax = 0.0;
     error = 0.0;
     result = Point(outputDimension);
     for (UnsignedInteger i = 0; i <= im; ++i)
     {
-      const NumericalScalar localError = ei[i];
+      const Scalar localError = ei[i];
       for (UnsignedInteger j = 0; j < outputDimension; ++j) result[j] += fi[i][j];
       error += localError * localError;
       // Add a test on the integration interval length to avoid too short intervals
@@ -136,8 +136,8 @@ Point GaussKronrod::integrate(const Function & function,
 }
 
 Point GaussKronrod::integrate(const Function & function,
-                                       const NumericalScalar a,
-                                       const NumericalScalar b,
+                                       const Scalar a,
+                                       const Scalar b,
                                        Point & error,
                                        Point & ai,
                                        Point & bi,
@@ -151,18 +151,18 @@ Point GaussKronrod::integrate(const Function & function,
 
 /* Compute the local GaussKronrod rule over [a, b]. */
 Point GaussKronrod::computeRule(const Function & function,
-    const NumericalScalar a,
-    const NumericalScalar b,
-    NumericalScalar & localError) const
+    const Scalar a,
+    const Scalar b,
+    Scalar & localError) const
 {
-  const NumericalScalar width = 0.5 * (b - a);
-  const NumericalScalar center = 0.5 * (a + b);
+  const Scalar width = 0.5 * (b - a);
+  const Scalar center = 0.5 * (a + b);
   // Generate the set of points
   Sample x(2 * rule_.order_ + 1, 1);
   x[0][0] = center;
   for (UnsignedInteger i = 0; i < rule_.order_; ++i)
   {
-    const NumericalScalar t = width * rule_.otherKronrodNodes_[i];
+    const Scalar t = width * rule_.otherKronrodNodes_[i];
     x[2 * i + 1][0] = center - t;
     x[2 * i + 2][0] = center + t;
   }
@@ -198,12 +198,12 @@ void GaussKronrod::setMaximumSubIntervals(const UnsignedInteger maximumSubInterv
 }
 
 /* Maximum error accessor */
-NumericalScalar GaussKronrod::getMaximumError() const
+Scalar GaussKronrod::getMaximumError() const
 {
   return maximumError_;
 }
 
-void GaussKronrod::setMaximumError(const NumericalScalar maximumError)
+void GaussKronrod::setMaximumError(const Scalar maximumError)
 {
   if (!(maximumError >= 0.0)) throw InvalidArgumentException(HERE) << "Error: the maximum error must be nonnegative, here maximum error=" << maximumError;
   maximumError_ = maximumError;

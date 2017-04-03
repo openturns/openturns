@@ -14,7 +14,7 @@ nc : integer
     The number of columns of the complex matrix.
 values : sequence of complex number
     The sequence must have :math:`n_r \times n_c` elements. It might be a
-    :class:`~openturns.NumericalComplexCollection` or a :class:`~openturns.NumericalScalarCollection`. Default is (0, 0).
+    :class:`~openturns.NumericalComplexCollection` or a :class:`~openturns.ScalarCollection`. Default is (0, 0).
 
 See also
 --------

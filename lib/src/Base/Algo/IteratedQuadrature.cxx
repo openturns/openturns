@@ -59,8 +59,8 @@ IteratedQuadrature * IteratedQuadrature::clone() const
 /* Compute an approximation of \int_a^b\int_{L_1(x_1)}^{U_1(x_1)}\int_{L_1(x_1,x_2)}^{U_2(x_1,x_2)}\dots\int_{L_1(x_1,\dots,x_{n-1})}^{U_2(x_1,\dots,x_{n-1})} f(x_1,\dots,x_n)dx_1\dotsdx_n, where [a,b] is an 1D interval, L_k and U_k are functions from R^k into R.
  */
 Point IteratedQuadrature::integrate(const Function & function,
-    const NumericalScalar a,
-    const NumericalScalar b,
+    const Scalar a,
+    const Scalar b,
     const FunctionCollection & lowerBounds,
     const FunctionCollection & upperBounds,
     const Bool check) const
@@ -98,8 +98,8 @@ Point IteratedQuadrature::integrate(const Function & function,
   // Build the bound functions associated with the interval
   const Point lower(interval.getLowerBound());
   const Point upper(interval.getUpperBound());
-  NumericalScalar a = lower[0];
-  NumericalScalar b = upper[0];
+  Scalar a = lower[0];
+  Scalar b = upper[0];
   FunctionCollection lowerBounds(inputDimension - 1);
   FunctionCollection upperBounds(inputDimension - 1);
   for (UnsignedInteger i = 1; i < inputDimension; ++i)

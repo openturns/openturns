@@ -65,31 +65,31 @@ public:
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
 private:
-  NumericalScalar computePDFQ1(const NumericalScalar x,
-                               const NumericalScalar a,
-                               const NumericalScalar b,
-                               const NumericalScalar c,
-                               const NumericalScalar d) const;
-  NumericalScalar computePDFQ2(const NumericalScalar x,
-                               const NumericalScalar a,
-                               const NumericalScalar b,
-                               const NumericalScalar c,
-                               const NumericalScalar d) const;
-  NumericalScalar computePDFQ3(const NumericalScalar x,
-                               const NumericalScalar a,
-                               const NumericalScalar b,
-                               const NumericalScalar c,
-                               const NumericalScalar d) const;
-  NumericalScalar computePDFQ4(const NumericalScalar x,
-                               const NumericalScalar a,
-                               const NumericalScalar b,
-                               const NumericalScalar c,
-                               const NumericalScalar d) const;
+  Scalar computePDFQ1(const Scalar x,
+                               const Scalar a,
+                               const Scalar b,
+                               const Scalar c,
+                               const Scalar d) const;
+  Scalar computePDFQ2(const Scalar x,
+                               const Scalar a,
+                               const Scalar b,
+                               const Scalar c,
+                               const Scalar d) const;
+  Scalar computePDFQ3(const Scalar x,
+                               const Scalar a,
+                               const Scalar b,
+                               const Scalar c,
+                               const Scalar d) const;
+  Scalar computePDFQ4(const Scalar x,
+                               const Scalar a,
+                               const Scalar b,
+                               const Scalar c,
+                               const Scalar d) const;
 public:
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
+  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
 
   /** Parameters value accessors */
   void setParameter(const Point & parameter);
@@ -133,14 +133,14 @@ private:
   {
     PDFKernelWrapper(const Distribution & left,
                      const Distribution & right,
-                     const NumericalScalar x):
+                     const Scalar x):
       left_(left), right_(right), x_(x), isZero_(std::abs(x) == 0.0), pdf0_(isZero_ ? right.computePDF(0.0) : 0.0) {};
 
     // Compute |u|p_left(u)p_right(ux) where x is the argument of the pdf of left*right
     Point eval(const Point & point) const
     {
-      const NumericalScalar u = point[0];
-      const NumericalScalar absU = std::abs(u);
+      const Scalar u = point[0];
+      const Scalar absU = std::abs(u);
       // First special case: |u|==0
       if (absU == 0.0) return Point(1, 0.0);
       // Secon special case: x==0
@@ -149,7 +149,7 @@ private:
         if (pdf0_ == 0.0) return Point(1, 0.0);
         return Point(1, absU * pdf0_ * left_.computePDF(point));
       }
-      const NumericalScalar value = left_.computePDF(point);
+      const Scalar value = left_.computePDF(point);
       // If the given point is outside of the support of left
       if (value == 0.0) return Point(1, 0.0);
       return Point(1, absU * right_.computePDF(u * x_) * value);
@@ -157,9 +157,9 @@ private:
 
     const Distribution left_;
     const Distribution right_;
-    const NumericalScalar x_;
+    const Scalar x_;
     const Bool isZero_;
-    const NumericalScalar pdf0_;
+    const Scalar pdf0_;
   }; // struct PDFKernelWrapper
 
   // Structure used to wrap the kernel of the integral defining the ratio
@@ -167,15 +167,15 @@ private:
   {
     CFKernelWrapper(const Distribution & left,
                     const Distribution & right,
-                    const NumericalScalar x):
+                    const Scalar x):
       left_(left), right_(right), x_(x) {};
 
     Point eval(const Point & point) const
     {
       Point value(2);
-      const NumericalScalar u = point[0];
+      const Scalar u = point[0];
       const NumericalComplex phi(right_.computeCharacteristicFunction(u * x_));
-      const NumericalScalar pdf = left_.computePDF(point);
+      const Scalar pdf = left_.computePDF(point);
       value[0] = pdf * phi.real();
       value[1] = pdf * phi.imag();
       return value;
@@ -183,7 +183,7 @@ private:
 
     const Distribution left_;
     const Distribution right_;
-    const NumericalScalar x_;
+    const Scalar x_;
   }; // struct CFKernelWrapper
 
   /** Compute the mean of the distribution */

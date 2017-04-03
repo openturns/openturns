@@ -47,7 +47,7 @@ public:
   /** Default constructor */
   WhittleFactoryState(const UnsignedInteger p,
                       const Point & theta,
-                      const NumericalScalar sigma2,
+                      const Scalar sigma2,
                       const Point & informationCriteria,
                       const RegularGrid & timeGrid);
 
@@ -68,7 +68,7 @@ public:
   Point getTheta() const;
 
   /** Sigma2 accessor */
-  NumericalScalar getSigma2() const;
+  Scalar getSigma2() const;
 
   /** AR coefficients accessor */
   ARMACoefficients getARCoefficients() const;
@@ -103,7 +103,7 @@ private :
   Point theta_;
 
   /* The variance of the white noise */
-  NumericalScalar sigma2_;
+  Scalar sigma2_;
 
   /* The information criteria of the fitting */
   Point informationCriteria_;

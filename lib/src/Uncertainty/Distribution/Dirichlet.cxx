@@ -117,10 +117,10 @@ Point Dirichlet::getRealization() const
   const UnsignedInteger dimension = getDimension();
   if (dimension == 1) return Point(1, DistFunc::rBeta(theta_[0], theta_[1]));
   Point realization(dimension);
-  NumericalScalar sum = DistFunc::rGamma(theta_[dimension]);
+  Scalar sum = DistFunc::rGamma(theta_[dimension]);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const NumericalScalar yI = DistFunc::rGamma(theta_[i]);
+    const Scalar yI = DistFunc::rGamma(theta_[i]);
     sum += yI;
     realization[i] = yI;
   }
@@ -128,30 +128,30 @@ Point Dirichlet::getRealization() const
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar Dirichlet::computePDF(const Point & point) const
+Scalar Dirichlet::computePDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  const NumericalScalar logPDF = computeLogPDF(point);
+  const Scalar logPDF = computeLogPDF(point);
   if (logPDF == SpecFunc::LogMinScalar) return 0.0;
   return std::exp(logPDF);
 }
 
-NumericalScalar Dirichlet::computeLogPDF(const Point & point) const
+Scalar Dirichlet::computeLogPDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  NumericalScalar sum = 0.0;
+  Scalar sum = 0.0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const NumericalScalar xI = point[i];
+    const Scalar xI = point[i];
     if (xI <= 0.0) return SpecFunc::LogMinScalar;
     sum += xI;
   }
   if (sum >= 1.0) return SpecFunc::LogMinScalar;
-  NumericalScalar logPDF = normalizationFactor_ + (theta_[dimension] - 1.0) * log1p(-sum);
+  Scalar logPDF = normalizationFactor_ + (theta_[dimension] - 1.0) * log1p(-sum);
   for (UnsignedInteger i = 0; i < dimension; ++i) logPDF += (theta_[i] - 1.0) * std::log(point[i]);
   return logPDF;
 }
@@ -179,7 +179,7 @@ void Dirichlet::initializeIntegration() const
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar Dirichlet::computeCDF(const Point & point) const
+Scalar Dirichlet::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -194,10 +194,10 @@ NumericalScalar Dirichlet::computeCDF(const Point & point) const
   Bool oneNegative = false;
   Bool allPositive = true;
   Bool allGreaterThanOne = true;
-  NumericalScalar sum = 0.0;
+  Scalar sum = 0.0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const NumericalScalar xI = point[i];
+    const Scalar xI = point[i];
     oneNegative = oneNegative || (xI <= 0.0);
     allPositive = allPositive && (xI > 0.0);
     allGreaterThanOne = allGreaterThanOne && (xI >= 1.0);
@@ -209,8 +209,8 @@ NumericalScalar Dirichlet::computeCDF(const Point & point) const
   if (allPositive && (sum <= 1.0))
   {
     Indices indices(dimension, 0);
-    NumericalScalar value = 0.0;
-    NumericalScalar logFactor = normalizationFactor_;
+    Scalar value = 0.0;
+    Scalar logFactor = normalizationFactor_;
     for (UnsignedInteger i = 0; i < dimension; ++i) logFactor += theta_[i] * std::log(point[i]) - std::log(theta_[i]);
     // Initialize the integration data
     initializeIntegration();
@@ -220,16 +220,16 @@ NumericalScalar Dirichlet::computeCDF(const Point & point) const
     for (UnsignedInteger flatIndex = 0; flatIndex < size; ++flatIndex)
     {
       // The current point has components obtained by tensorization of scaled Jacobi polynomials zeros
-      NumericalScalar w = 1.0;
-      NumericalScalar sumX = 0.0;
+      Scalar w = 1.0;
+      Scalar sumX = 0.0;
       for (UnsignedInteger i = 0; i < dimension; ++i)
       {
         const UnsignedInteger indexI = indices[i];
-        const NumericalScalar lI = 0.5 * point[i];
+        const Scalar lI = 0.5 * point[i];
         sumX += (integrationNodes_[i][indexI] + 1.0) * lI;
         w *= integrationWeights_[i][indexI];
       }
-      const NumericalScalar dCDF = w * std::exp(logFactor + (theta_[dimension] - 1.0) * log1p(-sumX));
+      const Scalar dCDF = w * std::exp(logFactor + (theta_[dimension] - 1.0) * log1p(-sumX));
       value += dCDF;
       // Update the indices
       ++indices[0];
@@ -242,9 +242,9 @@ NumericalScalar Dirichlet::computeCDF(const Point & point) const
   } // in the simplex
   Point sortedPoint(point);
   std::sort(sortedPoint.begin(), sortedPoint.end());
-  NumericalScalar value = 0.0;
+  Scalar value = 0.0;
   // Can go there only if dimension > 1
-  NumericalScalar sortedSum = sortedPoint[0] + sortedPoint[1];
+  Scalar sortedSum = sortedPoint[0] + sortedPoint[1];
   if (sortedSum >= 1.0)
   {
     value = 1.0 - dimension;
@@ -292,54 +292,54 @@ NumericalScalar Dirichlet::computeCDF(const Point & point) const
     successNumber += success;
   }
   RandomGenerator::SetState(initialState);
-  return NumericalScalar(successNumber) / samplingSize;
+  return Scalar(successNumber) / samplingSize;
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar Dirichlet::computeScalarQuantile(const NumericalScalar prob,
+Scalar Dirichlet::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
   return DistFunc::qBeta(theta_[0], theta_[1], prob, tail);
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar Dirichlet::computeConditionalPDF(const NumericalScalar x,
+Scalar Dirichlet::computeConditionalPDF(const Scalar x,
     const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
-  NumericalScalar sum = 0.0;
+  Scalar sum = 0.0;
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i) sum += theta_[i];
-  const NumericalScalar r = theta_[conditioningDimension];
-  const NumericalScalar s = sumTheta_ - sum - r;
-  const NumericalScalar z = x / (1.0 - sum);
+  const Scalar r = theta_[conditioningDimension];
+  const Scalar s = sumTheta_ - sum - r;
+  const Scalar z = x / (1.0 - sum);
   return std::exp(- SpecFunc::LnBeta(r, s) + (r - 1.0) * std::log(z) + (s - 1.0) * log1p(-z)) / (1.0 - sum);
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar Dirichlet::computeConditionalCDF(const NumericalScalar x,
+Scalar Dirichlet::computeConditionalCDF(const Scalar x,
     const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
-  NumericalScalar sum = 0.0;
+  Scalar sum = 0.0;
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i) sum += theta_[i];
-  const NumericalScalar r = theta_[conditioningDimension];
-  const NumericalScalar s = sumTheta_ - sum - r;
+  const Scalar r = theta_[conditioningDimension];
+  const Scalar s = sumTheta_ - sum - r;
   return DistFunc::pBeta(r, s, x / (1.0 - sum));
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar Dirichlet::computeConditionalQuantile(const NumericalScalar q,
+Scalar Dirichlet::computeConditionalQuantile(const Scalar q,
     const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
   if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
-  NumericalScalar sum = 0.0;
+  Scalar sum = 0.0;
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i) sum += theta_[i];
-  const NumericalScalar r = theta_[conditioningDimension];
-  const NumericalScalar s = sumTheta_ - sum - r;
+  const Scalar r = theta_[conditioningDimension];
+  const Scalar s = sumTheta_ - sum - r;
   return (1.0 - sum) * DistFunc::qBeta(r, s, q);
 }
 
@@ -357,7 +357,7 @@ Point Dirichlet::getStandardDeviation() const
 {
   const UnsignedInteger dimension = getDimension();
   Point sigma(dimension);
-  NumericalScalar factor = 1.0 / (sumTheta_ * std::sqrt(1.0 + sumTheta_));
+  Scalar factor = 1.0 / (sumTheta_ * std::sqrt(1.0 + sumTheta_));
   for (UnsignedInteger i = 0; i < dimension; ++i) sigma[i] = theta_[i] * (sumTheta_ - theta_[i]) * factor;
   return sigma;
 }
@@ -369,7 +369,7 @@ Point Dirichlet::getSkewness() const
   Point skewness(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const NumericalScalar thetaI = theta_[i];
+    const Scalar thetaI = theta_[i];
     skewness[i] = 2.0 * (sumTheta_ - 2.0 * thetaI) / (sumTheta_ + 2.0) * std::sqrt(sumTheta_ + 1.0) / (thetaI * (sumTheta_ - thetaI));
   }
   return skewness;
@@ -382,7 +382,7 @@ Point Dirichlet::getKurtosis() const
   Point kurtosis(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const NumericalScalar thetaI = theta_[i];
+    const Scalar thetaI = theta_[i];
     kurtosis[i] = 3.0 * (sumTheta_ + 1.0) * (2.0 * sumTheta_ * sumTheta_ + thetaI * (sumTheta_ - 6.0) * (sumTheta_ - thetaI)) / (thetaI * (sumTheta_ - thetaI) * (3.0 + sumTheta_) * (2.0 + sumTheta_));
   }
   return kurtosis;
@@ -393,10 +393,10 @@ void Dirichlet::computeCovariance() const
 {
   const UnsignedInteger dimension = getDimension();
   covariance_ = CovarianceMatrix(dimension);
-  NumericalScalar factor = 1.0 / (sumTheta_ * sumTheta_ * (1.0 + sumTheta_));
+  Scalar factor = 1.0 / (sumTheta_ * sumTheta_ * (1.0 + sumTheta_));
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const NumericalScalar thetaI = theta_[i];
+    const Scalar thetaI = theta_[i];
     covariance_(i, i) = factor * (thetaI * (sumTheta_ - thetaI));
     for (UnsignedInteger j = 0; j < i; ++j) covariance_(i, j) = -factor * thetaI * theta_[j];
   }
@@ -414,7 +414,7 @@ void Dirichlet::setTheta(const Point & theta)
   normalizationFactor_ = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalScalar thetaI = theta[i];
+    const Scalar thetaI = theta[i];
     if (!(thetaI > 0.0)) throw InvalidArgumentException(HERE) << "Error: the vector theta must have positive components, here theta(" << i << ")=" << thetaI;
     normalizationFactor_ -= SpecFunc::LnGamma(thetaI);
     sumTheta_ += thetaI;
@@ -451,10 +451,10 @@ Dirichlet::Implementation Dirichlet::getMarginal(const Indices & indices) const
   if (dimension == 1) return clone();
   const UnsignedInteger outputDimension = indices.getSize();
   Point thetaMarginal(outputDimension + 1);
-  NumericalScalar sumMarginal = 0.0;
+  Scalar sumMarginal = 0.0;
   for (UnsignedInteger i = 0; i < outputDimension; ++i)
   {
-    const NumericalScalar thetaI = theta_[indices[i]];
+    const Scalar thetaI = theta_[indices[i]];
     sumMarginal += thetaI;
     thetaMarginal[i] = thetaI;
   }
@@ -503,13 +503,13 @@ CorrelationMatrix Dirichlet::getSpearmanCorrelation() const
     {
       const UnsignedInteger nJ = integrationNodes_[j].getSize();
       // Perform the numerical integration of the (i,j) correlation
-      NumericalScalar rhoIJ = 0.0;
+      Scalar rhoIJ = 0.0;
       for (UnsignedLong indexU = 0; indexU < nI; ++indexU)
       {
-        const NumericalScalar u = 0.5 * (integrationNodes_[j][indexU] + 1.0);
+        const Scalar u = 0.5 * (integrationNodes_[j][indexU] + 1.0);
         for (UnsignedLong indexV = 0; indexV < nJ; ++indexV)
         {
-          NumericalScalar v = 0.5 * (integrationNodes_[j][indexU] + 1.0) * (1.0 - u);
+          Scalar v = 0.5 * (integrationNodes_[j][indexU] + 1.0) * (1.0 - u);
         } // indexV
       } // indexU
     } // j
@@ -557,7 +557,7 @@ void Dirichlet::setParametersCollection(const PointCollection & parametersCollec
   Point theta(dimension + 1);
   if ( size == 0 ) throw InvalidArgumentException(HERE) << "The collection is empty.";
   if ( parametersCollection[0].getSize() < 2 ) throw InvalidArgumentException(HERE) << "The collection is too small.";
-  NumericalScalar lastTheta = parametersCollection[0][0] + parametersCollection[0][1];// sum of all thetas
+  Scalar lastTheta = parametersCollection[0][0] + parametersCollection[0][1];// sum of all thetas
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     theta[i] = parametersCollection[i][0];
@@ -574,7 +574,7 @@ Point Dirichlet::getParameter() const
 
 void Dirichlet::setParameter(const Point & parameter)
 {
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = Dirichlet(parameter);
   setWeight(w);
 }

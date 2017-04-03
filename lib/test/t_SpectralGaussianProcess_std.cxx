@@ -49,8 +49,8 @@ int main(int argc, char *argv[])
     SecondOrderModel mySecondOrderModel(myModel);
 
     const UnsignedInteger points = 8;
-    const NumericalScalar tMin = 0.0;
-    const NumericalScalar tStep = 1.0 / (points - 1);
+    const Scalar tMin = 0.0;
+    const Scalar tStep = 1.0 / (points - 1);
 
     // RegularGrid --> Build list of frequencies using the RegularGrid
     RegularGrid myTimeGrid(tMin, tStep, points);
@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
     fullprint << "Realization = " << mySpectralProcess0.getRealization().__str__() << std::endl;
 
     // Constructor using maximalFrequency value and size of discretization
-    const NumericalScalar maximalFrequency = 10.0;
+    const Scalar maximalFrequency = 10.0;
     SpectralGaussianProcess mySpectralProcess1(myModel, maximalFrequency, points);
     RegularGrid tg(mySpectralProcess1.getTimeGrid());
 

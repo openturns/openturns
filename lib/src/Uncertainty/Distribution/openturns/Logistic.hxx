@@ -43,8 +43,8 @@ public:
   Logistic();
 
   /** Parameters constructor */
-  Logistic(const NumericalScalar alpha,
-           const NumericalScalar beta);
+  Logistic(const Scalar alpha,
+           const Scalar beta);
 
 
   /** Comparison operator */
@@ -73,19 +73,19 @@ public:
 
   /** Get the PDF of the Logistic distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
   using ContinuousDistribution::computeLogPDF;
-  NumericalScalar computeLogPDF(const Point & point) const;
+  Scalar computeLogPDF(const Point & point) const;
 
   /** Get the CDF of the Logistic distribution */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
   using ContinuousDistribution::computeComplementaryCDF;
-  NumericalScalar computeComplementaryCDF(const Point & point) const;
+  Scalar computeComplementaryCDF(const Point & point) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
-  NumericalComplex computeLogCharacteristicFunction(const NumericalScalar x) const;
+  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
+  NumericalComplex computeLogCharacteristicFunction(const Scalar x) const;
 
   /** Get the PDFGradient of the Logistic distribution */
   using ContinuousDistribution::computePDFGradient;
@@ -96,7 +96,7 @@ public:
   Point computeCDFGradient(const Point & point) const;
 
   /** Get the roughness, i.e. the L2-norm of the PDF */
-  NumericalScalar getRoughness() const;
+  Scalar getRoughness() const;
 
   /** Get the standard deviation of the distribution */
   Point getStandardDeviation() const;
@@ -126,12 +126,12 @@ public:
   /* Interface specific to Logistic */
 
   /** Alpha accessor */
-  void setAlpha(const NumericalScalar alpha);
-  NumericalScalar getAlpha() const;
+  void setAlpha(const Scalar alpha);
+  Scalar getAlpha() const;
 
   /** Beta accessor */
-  void setBeta(const NumericalScalar beta);
-  NumericalScalar getBeta() const;
+  void setBeta(const Scalar beta);
+  Scalar getBeta() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -153,12 +153,12 @@ private:
   void computeCovariance() const;
 
   /** Get the quantile of the Logistic distribution */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+  Scalar computeScalarQuantile(const Scalar prob,
                                         const Bool tail = false) const;
 
   /** The main parameter set of the distribution */
-  NumericalScalar alpha_;
-  NumericalScalar beta_;
+  Scalar alpha_;
+  Scalar beta_;
 
 
 }; /* class Logistic */

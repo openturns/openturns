@@ -60,7 +60,7 @@ FiniteDifferenceGradient::FiniteDifferenceGradient(
 }
 
 /* SecondParameter constructor */
-FiniteDifferenceGradient::FiniteDifferenceGradient(const NumericalScalar epsilon,
+FiniteDifferenceGradient::FiniteDifferenceGradient(const Scalar epsilon,
     const EvaluationPointer & p_evaluation)
   : GradientImplementation()
   , p_evaluation_(p_evaluation)

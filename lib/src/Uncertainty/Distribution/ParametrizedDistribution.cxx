@@ -74,70 +74,70 @@ Point ParametrizedDistribution::computeDDF(const Point & point) const
 
 
 /* Get the PDF of the distribution */
-NumericalScalar ParametrizedDistribution::computePDF(const Point & point) const
+Scalar ParametrizedDistribution::computePDF(const Point & point) const
 {
   return distribution_.computePDF(point);
 }
 
 
-NumericalScalar ParametrizedDistribution::computeLogPDF(const Point & point) const
+Scalar ParametrizedDistribution::computeLogPDF(const Point & point) const
 {
   return distribution_.computeLogPDF(point);
 }
 
 
 /* Get the CDF of the distribution */
-NumericalScalar ParametrizedDistribution::computeCDF(const Point & point) const
+Scalar ParametrizedDistribution::computeCDF(const Point & point) const
 {
   return distribution_.computeCDF(point);
 }
 
 
-NumericalScalar ParametrizedDistribution::computeComplementaryCDF(const Point & point) const
+Scalar ParametrizedDistribution::computeComplementaryCDF(const Point & point) const
 {
   return distribution_.computeComplementaryCDF(point);
 }
 
 
-NumericalComplex ParametrizedDistribution::computeCharacteristicFunction(const NumericalScalar x) const
+NumericalComplex ParametrizedDistribution::computeCharacteristicFunction(const Scalar x) const
 {
   return distribution_.computeCharacteristicFunction(x);
 }
 
 
-NumericalComplex ParametrizedDistribution::computeLogCharacteristicFunction(const NumericalScalar x) const
+NumericalComplex ParametrizedDistribution::computeLogCharacteristicFunction(const Scalar x) const
 {
   return distribution_.computeLogCharacteristicFunction(x);
 }
 
 
 /* Generic implementation of the quantile computation */
-Point ParametrizedDistribution::computeQuantile(const NumericalScalar prob,
+Point ParametrizedDistribution::computeQuantile(const Scalar prob,
     const Bool tail) const
 {
   return distribution_.computeQuantile(prob, tail);
 }
 
 /* Get the product minimum volume interval containing a given probability of the distribution */
-Interval ParametrizedDistribution::computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const
+Interval ParametrizedDistribution::computeMinimumVolumeIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const
 {
   return distribution_.computeMinimumVolumeIntervalWithMarginalProbability(prob, marginalProb);
 }
 
 /* Get the product bilateral confidence interval containing a given probability of the distribution */
-Interval ParametrizedDistribution::computeBilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const
+Interval ParametrizedDistribution::computeBilateralConfidenceIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const
 {
   return distribution_.computeBilateralConfidenceIntervalWithMarginalProbability(prob, marginalProb);
 }
 
 /* Get the product unilateral confidence interval containing a given probability of the distribution */
-Interval ParametrizedDistribution::computeUnilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, const Bool tail, NumericalScalar & marginalProb) const
+Interval ParametrizedDistribution::computeUnilateralConfidenceIntervalWithMarginalProbability(const Scalar prob, const Bool tail, Scalar & marginalProb) const
 {
   return distribution_.computeUnilateralConfidenceIntervalWithMarginalProbability(prob, tail, marginalProb);
 }
 
 /* Get the minimum volume level set containing a given probability of the distribution */
-LevelSet ParametrizedDistribution::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const
+LevelSet ParametrizedDistribution::computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & threshold) const
 {
   return distribution_.computeMinimumVolumeLevelSetWithThreshold(prob, threshold);
 }
@@ -199,7 +199,7 @@ String ParametrizedDistribution::__repr__() const
 
 
 /* Get the roughness, i.e. the L2-norm of the PDF */
-NumericalScalar ParametrizedDistribution::getRoughness() const
+Scalar ParametrizedDistribution::getRoughness() const
 {
   return distribution_.getRoughness();
 }

@@ -51,17 +51,17 @@ public:
   /** Standard constructor with amplitude and range parameters parameters */
   SphericalModel(const Point & scale,
                  const Point & amplitude,
-                 const NumericalScalar radius = 1);
+                 const Scalar radius = 1);
 
   /** Virtual copy constructor */
   virtual SphericalModel * clone() const;
 
   /** Computation of the covariance function, stationary interface */
   using StationaryCovarianceModel::computeStandardRepresentative;
-  NumericalScalar computeStandardRepresentative(const Point & tau) const;
+  Scalar computeStandardRepresentative(const Point & tau) const;
   using StationaryCovarianceModel::operator();
   CovarianceMatrix operator() (const Point & tau) const;
-  NumericalScalar computeAsScalar(const Point & tau) const;
+  Scalar computeAsScalar(const Point & tau) const;
 
   /** Discretize the covariance function on a given TimeGrid */
   using StationaryCovarianceModel::discretize;
@@ -77,8 +77,8 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Radius accessor */
-  NumericalScalar getRadius() const;
-  void setRadius(const NumericalScalar radius);
+  Scalar getRadius() const;
+  void setRadius(const Scalar radius);
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -95,7 +95,7 @@ protected:
 
 private :
 
-  NumericalScalar radius_;
+  Scalar radius_;
 
 } ; /* class SphericalModel */
 

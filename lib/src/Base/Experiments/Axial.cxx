@@ -72,7 +72,7 @@ Sample Axial::generate() const
   /* For each level of the axial plane */
   for(UnsignedInteger levelIndex = 0; levelIndex < levelNumber; ++levelIndex)
   {
-    const NumericalScalar levelValue = levels_[levelIndex];
+    const Scalar levelValue = levels_[levelIndex];
     /* For each vertex of one half of the current level */
     for(UnsignedInteger vertex = 0; vertex < dimension; ++vertex)
     {

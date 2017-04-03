@@ -46,7 +46,7 @@ NonCenteredFiniteDifferenceGradient::NonCenteredFiniteDifferenceGradient(const P
 }
 
 /* Parameter constructor */
-NonCenteredFiniteDifferenceGradient::NonCenteredFiniteDifferenceGradient(const NumericalScalar epsilon,
+NonCenteredFiniteDifferenceGradient::NonCenteredFiniteDifferenceGradient(const Scalar epsilon,
     const EvaluationPointer & p_evaluation)
   : FiniteDifferenceGradient(epsilon, p_evaluation)
 {

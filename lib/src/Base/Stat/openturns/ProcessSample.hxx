@@ -102,7 +102,7 @@ public:
   Sample computeSpatialMean() const;
 
   /**  Method computeQuantilePerComponent() gives the quantile per component of the sample */
-  Field computeQuantilePerComponent(const NumericalScalar prob) const;
+  Field computeQuantilePerComponent(const Scalar prob) const;
 
   /** Get the i-th marginal sample */
   ProcessSample getMarginal(const UnsignedInteger index) const;

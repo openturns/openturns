@@ -63,19 +63,19 @@ public:
                          const String & offset) const;
 
   /** UniVariatePolynomialImplementation are evaluated as functors */
-  virtual NumericalScalar operator() (const NumericalScalar x) const;
+  virtual Scalar operator() (const Scalar x) const;
   NumericalComplex operator() (const NumericalComplex z) const;
 
   /** UniVariatePolynomialImplementation derivative */
-  virtual NumericalScalar gradient(const NumericalScalar x) const;
+  virtual Scalar gradient(const Scalar x) const;
 
-  virtual NumericalScalar hessian(const NumericalScalar x) const;
+  virtual Scalar hessian(const Scalar x) const;
 
   /** Compute the derivative of the polynomial */
   UniVariatePolynomialImplementation derivate() const;
 
-  /** Multiply the polynomial P by a NumericalScalar */
-  UniVariatePolynomialImplementation operator * (const NumericalScalar scalar) const;
+  /** Multiply the polynomial P by a Scalar */
+  UniVariatePolynomialImplementation operator * (const Scalar scalar) const;
 
   /** Multiply the polynomial P by a polynomial Q */
   UniVariatePolynomialImplementation operator * (const UniVariatePolynomialImplementation & uniVariatePolynomial) const;

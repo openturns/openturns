@@ -83,14 +83,14 @@ public:
 
   /** Get the CDF of the MarginalDistribution */
   using DistributionImplementation::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the survival function of the MarginalDistribution */
   using DistributionImplementation::computeSurvivalFunction;
-  NumericalScalar computeSurvivalFunction(const Point & point) const;
+  Scalar computeSurvivalFunction(const Point & point) const;
 
   /** Get the probability content of an interval */
-  NumericalScalar computeProbability(const Interval & interval) const;
+  Scalar computeProbability(const Interval & interval) const;
 
   /** Get the standard deviation of the distribution */
   Point getStandardDeviation() const;

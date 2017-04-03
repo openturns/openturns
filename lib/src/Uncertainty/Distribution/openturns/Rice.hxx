@@ -42,8 +42,8 @@ public:
   Rice();
 
   /** Parameters constructor */
-  explicit Rice(const NumericalScalar sigma,
-                const NumericalScalar nu = 0.0);
+  explicit Rice(const Scalar sigma,
+                const Scalar nu = 0.0);
 
 
   /** Comparison operator */
@@ -68,17 +68,17 @@ public:
 
   /** Get the PDF of the distribution, i.e. P(point < X < point+dx) = PDF(point)dx + o(dx) */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the logarithm of the PDF of the distribution */
   using ContinuousDistribution::computeLogPDF;
-  NumericalScalar computeLogPDF(const Point & point) const;
+  Scalar computeLogPDF(const Point & point) const;
 
   /** Get the CDF of the distribution, i.e. P(X <= point) = CDF(point). If tail=true, compute P(X >= point) */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
   using ContinuousDistribution::computeComplementaryCDF;
-  NumericalScalar computeComplementaryCDF(const Point & point) const;
+  Scalar computeComplementaryCDF(const Point & point) const;
 
   /** Get the standard deviation of the distribution */
   Point getStandardDeviation() const;
@@ -99,12 +99,12 @@ public:
   /* Interface specific to Rice */
 
   /** Sigma accessor */
-  void setSigma(const NumericalScalar sigma);
-  NumericalScalar getSigma() const;
+  void setSigma(const Scalar sigma);
+  Scalar getSigma() const;
 
   /** Nu accessor */
-  void setNu(const NumericalScalar nu);
-  NumericalScalar getNu() const;
+  void setNu(const Scalar nu);
+  Scalar getNu() const;
 
   /** Maximum iterations accessor */
   void setMaximumIteration(const UnsignedInteger maximumIteration);
@@ -130,10 +130,10 @@ private:
   void computeRange();
 
   /** The dispersion parameter */
-  NumericalScalar sigma_;
+  Scalar sigma_;
 
   /** The position parameter */
-  NumericalScalar nu_;
+  Scalar nu_;
 
   /** The maximum iterations for the PDF and CDF computations */
   UnsignedInteger maximumIteration_;

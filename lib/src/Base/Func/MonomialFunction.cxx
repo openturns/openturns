@@ -73,14 +73,14 @@ String MonomialFunction::__str__(const String & offset) const
 }
 
 /* MonomialFunction are evaluated as functors */
-NumericalScalar MonomialFunction::operator() (const NumericalScalar x) const
+Scalar MonomialFunction::operator() (const Scalar x) const
 {
   // Evaluate x ^n
   return std::pow(x, 1.0 * degree_);
 }
 
 /* MonomialFunction gradient */
-NumericalScalar MonomialFunction::gradient(const NumericalScalar x) const
+Scalar MonomialFunction::gradient(const Scalar x) const
 {
   // Evaluate gradien = n * x ^{n-1}
   if (degree_ == 0) return 0.0;
@@ -88,7 +88,7 @@ NumericalScalar MonomialFunction::gradient(const NumericalScalar x) const
 }
 
 /* MonomialFunction hessian */
-NumericalScalar MonomialFunction::hessian(const NumericalScalar x) const
+Scalar MonomialFunction::hessian(const Scalar x) const
 {
   if (degree_ < 2) return 0.0;
   return degree_ * (degree_ - 1) * std::pow(x, 1.0 * degree_ - 2.0);

@@ -39,7 +39,7 @@ PointWithDescription::PointWithDescription()
 
 /* Constructor with size */
 PointWithDescription::PointWithDescription(const UnsignedInteger size,
-    const NumericalScalar value)
+    const Scalar value)
   : Point(size, value)
   , description_(size)
 {
@@ -49,7 +49,7 @@ PointWithDescription::PointWithDescription(const UnsignedInteger size,
 
 
 /* Constructor from a collection */
-PointWithDescription::PointWithDescription(const Collection<NumericalScalar> & coll)
+PointWithDescription::PointWithDescription(const Collection<Scalar> & coll)
   : Point(coll)
   , description_(coll.getSize())
 {
@@ -87,15 +87,15 @@ String PointWithDescription::__repr__() const
          << " name=" << getName()
          << " dimension=" << getDimension()
          << " description=" << getDescription()
-         << " values=" << PersistentCollection<NumericalScalar>::__repr__();
+         << " values=" << PersistentCollection<Scalar>::__repr__();
 }
 
 class KeyValuePair : public Object
 {
   String key_;
-  NumericalScalar value_;
+  Scalar value_;
 public:
-  KeyValuePair(const String & key = "", NumericalScalar value = 0.): key_(key), value_(value) {}
+  KeyValuePair(const String & key = "", Scalar value = 0.): key_(key), value_(value) {}
   String __repr__() const
   {
     return OSS() << key_ << " : " << value_;

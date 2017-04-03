@@ -40,14 +40,14 @@ Bool hasConverged(const NumericalComplex & current,
   return (std::abs(std::real(current) - std::real(previous)) <= SpecFunc::Precision * std::abs(std::real(current))) && (std::abs(std::imag(current) - std::imag(previous)) <= SpecFunc::Precision * std::abs(std::imag(current)));
 }
 
-inline NumericalScalar sign(const NumericalScalar x)
+inline Scalar sign(const Scalar x)
 {
   return (x > 0.0) - (x < 0.0);
 }
 
 NumericalComplex Ei(const NumericalComplex & z)
 {
-  const NumericalScalar absZ = std::abs(z);
+  const Scalar absZ = std::abs(z);
   if (absZ >= SpecFunc::LogMaxScalar) return std::exp(z) / z + NumericalComplex(0.0, sign(std::imag(z)) * M_PI);
   if (absZ > 2.0 - 1.035 * std::log(SpecFunc::Precision)) return EiAsymptoticSeries(z);
   if ((absZ > 1.0) && ((std::real(z) < 0.0) || (std::abs(std::imag(z)) > 1.0))) return EiContinuedFractionForward(z);
@@ -55,7 +55,7 @@ NumericalComplex Ei(const NumericalComplex & z)
   return SpecFunc::LogMinScalar;
 }
 
-NumericalScalar Ei(const NumericalScalar z)
+Scalar Ei(const Scalar z)
 {
   return std::real(Ei(NumericalComplex(z, 0.0)));
 }
@@ -66,15 +66,15 @@ NumericalComplex EiPowerSeries(const NumericalComplex & z)
   NumericalComplex tmp(1.0);
   for (UnsignedInteger k = 1; k < SpecFunc::MaximumIteration; ++k)
   {
-    tmp *= z / static_cast<NumericalScalar>(k);
+    tmp *= z / static_cast<Scalar>(k);
     const NumericalComplex old(ei);
-    ei += tmp / static_cast<NumericalScalar>(k);
+    ei += tmp / static_cast<Scalar>(k);
     if (hasConverged(ei, old)) break;
   }
   return ei;
 }
 
-NumericalScalar EiPowerSeries(const NumericalScalar z)
+Scalar EiPowerSeries(const Scalar z)
 {
   return real(EiPowerSeries(NumericalComplex(z, 0.0)));
 }
@@ -88,12 +88,12 @@ NumericalComplex EiAsymptoticSeries(const NumericalComplex & z)
     const NumericalComplex old(ei);
     ei += tmp;
     if (hasConverged(ei, old)) break;
-    tmp *= static_cast<NumericalScalar>(k) / z;
+    tmp *= static_cast<Scalar>(k) / z;
   }
   return ei;
 }
 
-NumericalScalar EiAsymptoticSeries(const NumericalScalar z)
+Scalar EiAsymptoticSeries(const Scalar z)
 {
   return std::real(EiAsymptoticSeries(NumericalComplex(z, 0.0)));
 }
@@ -102,11 +102,11 @@ NumericalComplex EiContinuedFractionBackward(const NumericalComplex & z)
 {
   NumericalComplex ei(0.0);
   for (UnsignedInteger k = SpecFunc::MaximumIteration; k >= 1; --k)
-    ei = - static_cast<NumericalScalar>(k) / (2.0 + (1.0 - z + ei) / static_cast<NumericalScalar>(k));
+    ei = - static_cast<Scalar>(k) / (2.0 + (1.0 - z + ei) / static_cast<Scalar>(k));
   return -std::exp(z) / (1.0 - z + ei) + NumericalComplex(0.0, sign(std::imag(z)));
 }
 
-NumericalScalar EiContinuedFractionBackward(const NumericalScalar z)
+Scalar EiContinuedFractionBackward(const Scalar z)
 {
   return std::real(EiContinuedFractionBackward(NumericalComplex(z, 0.0)));
 }
@@ -127,8 +127,8 @@ NumericalComplex EiContinuedFractionForward(const NumericalComplex & z)
   }
   for (UnsignedInteger k = 1; k <= SpecFunc::MaximumIteration; ++k)
   {
-    const NumericalScalar l = 2 * k + 1;
-    const NumericalScalar k2 = k * k;
+    const Scalar l = 2 * k + 1;
+    const Scalar k2 = k * k;
     c = 1.0 / (l - z - k2 * c);
     d = 1.0 / (l - z - k2 * d);
     const NumericalComplex old(ei);
@@ -138,7 +138,7 @@ NumericalComplex EiContinuedFractionForward(const NumericalComplex & z)
   return ei;
 }
 
-NumericalScalar EiContinuedFractionForward(const NumericalScalar z)
+Scalar EiContinuedFractionForward(const Scalar z)
 {
   return std::real(EiContinuedFractionBackward(NumericalComplex(z, 0.0)));
 }

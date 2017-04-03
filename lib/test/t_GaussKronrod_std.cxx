@@ -38,8 +38,8 @@ int main(int argc, char *argv[])
     // First, a smooth function
     {
       SymbolicFunction f("x", "sin(x)");
-      NumericalScalar a = -2.5;
-      NumericalScalar b = 4.5;
+      Scalar a = -2.5;
+      Scalar b = 4.5;
       // Default parameters
       GaussKronrod algo;
       GaussKronrodRule::GaussKronrodPair rules[5] = {GaussKronrodRule::G3K7, GaussKronrodRule::G7K15, GaussKronrodRule::G11K23, GaussKronrodRule::G15K31, GaussKronrodRule::G25K51};
@@ -48,16 +48,16 @@ int main(int argc, char *argv[])
         algo.setRule(rules[i]);
         fullprint << "Algo=" << algo << std::endl;
         // High-level interface
-        NumericalScalar error = -1.0;
-        NumericalScalar value = algo.integrate(f, Interval(a, b), error)[0];
-        NumericalScalar ref = cos(a) - cos(b);
+        Scalar error = -1.0;
+        Scalar value = algo.integrate(f, Interval(a, b), error)[0];
+        Scalar ref = cos(a) - cos(b);
         fullprint << "value=" << value << ", ref=" << ref << ", true error below bound? " << (std::abs(ref - value) < algo.getMaximumError() ? "true" : "false") << ", estimated error below bound? " << (error < algo.getMaximumError() ? "true" : "false") << std::endl;
         // Low-level interface
 //         Point ai;
 //         Point bi;
 //         Sample fi;
 //         Point ei;
-//         NumericalScalar value2(algo.integrate(f, a, b, error, ai, bi, fi, ei)[0]);
+//         Scalar value2(algo.integrate(f, a, b, error, ai, bi, fi, ei)[0]);
 //         ai.add(b);
 //         Graph g(f.draw(a, b, 512));
 //         Cloud lower(ai, Point(ai.getDimension()));
@@ -69,17 +69,17 @@ int main(int argc, char *argv[])
     // Second, a piecewise smooth function
     {
       SymbolicFunction f("x", "abs(sin(x))");
-      NumericalScalar a = -2.5;
-      NumericalScalar b = 4.5;
+      Scalar a = -2.5;
+      Scalar b = 4.5;
       GaussKronrod algo;
       GaussKronrodRule::GaussKronrodPair rules[5] = {GaussKronrodRule::G3K7, GaussKronrodRule::G7K15, GaussKronrodRule::G11K23, GaussKronrodRule::G15K31, GaussKronrodRule::G25K51};
       for (UnsignedInteger i = 0; i < 5; ++i)
       {
         algo.setRule(rules[i]);
         fullprint << "Algo=" << algo << std::endl;
-        NumericalScalar error = -1.0;
-        NumericalScalar value = algo.integrate(f, Interval(a, b), error)[0];
-        NumericalScalar ref = 4.0 + cos(b) - cos(a);
+        Scalar error = -1.0;
+        Scalar value = algo.integrate(f, Interval(a, b), error)[0];
+        Scalar ref = 4.0 + cos(b) - cos(a);
         fullprint << "value=" << value << ", ref=" << ref << ", true error below bound? " << (std::abs(ref - value) < algo.getMaximumError() ? "true" : "false") << ", estimated error below bound? " << (error < algo.getMaximumError() ? "true" : "false") << std::endl;
 
         // Low-level interface
@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
 //         Point bi;
 //         Sample fi;
 //         Point ei;
-//         NumericalScalar value2(algo.integrate(f, a, b, error, ai, bi, fi, ei)[0]);
+//         Scalar value2(algo.integrate(f, a, b, error, ai, bi, fi, ei)[0]);
 //         ai.add(b);
 //         Graph g(f.draw(a, b, 512));
 //         Cloud lower(ai, Point(ai.getDimension()));

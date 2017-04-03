@@ -71,7 +71,7 @@ SymbolicFunction::SymbolicFunction (const Description & inputVariablesNames,
   catch(...)
   {
     LOGWARN("Cannot compute an analytical gradient, using finite differences instead.");
-    const NumericalScalar epsilon = ResourceMap::GetAsScalar("CenteredFiniteDifferenceGradient-DefaultEpsilon");
+    const Scalar epsilon = ResourceMap::GetAsScalar("CenteredFiniteDifferenceGradient-DefaultEpsilon");
     setGradient(new CenteredFiniteDifferenceGradient(epsilon, getEvaluation()));
   }
   try
@@ -81,7 +81,7 @@ SymbolicFunction::SymbolicFunction (const Description & inputVariablesNames,
   catch(...)
   {
     LOGWARN("Cannot compute an analytical hessian, using finite differences instead.");
-    const NumericalScalar epsilon = ResourceMap::GetAsScalar("CenteredFiniteDifferenceHessian-DefaultEpsilon");
+    const Scalar epsilon = ResourceMap::GetAsScalar("CenteredFiniteDifferenceHessian-DefaultEpsilon");
     setHessian(new CenteredFiniteDifferenceHessian(epsilon, getEvaluation()));
   }
 #else

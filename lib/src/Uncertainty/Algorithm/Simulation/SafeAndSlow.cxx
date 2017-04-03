@@ -49,8 +49,8 @@ SafeAndSlow::SafeAndSlow(const Solver & solver):
 
 /* Constructor with parameters */
 SafeAndSlow::SafeAndSlow(const Solver & solver,
-                         const NumericalScalar maximumDistance,
-                         const NumericalScalar stepSize):
+                         const Scalar maximumDistance,
+                         const Scalar stepSize):
   RootStrategyImplementation(solver, maximumDistance, stepSize)
 {
   // Nothing to do
@@ -63,12 +63,12 @@ SafeAndSlow * SafeAndSlow::clone() const
 }
 
 /* Solve gives all the roots found applying the root strategy */
-SafeAndSlow::NumericalScalarCollection SafeAndSlow::solve(const Function & function,
-    const NumericalScalar value)
+SafeAndSlow::ScalarCollection SafeAndSlow::solve(const Function & function,
+    const Scalar value)
 {
-  NumericalScalarCollection result(0);
-  NumericalScalar infPoint = 0.0;
-  NumericalScalar infValue = 0.0;
+  ScalarCollection result(0);
+  Scalar infPoint = 0.0;
+  Scalar infValue = 0.0;
   // Get the value of the function at the origin
   try
   {
@@ -82,13 +82,13 @@ SafeAndSlow::NumericalScalarCollection SafeAndSlow::solve(const Function & funct
   }
   // If the origin is in the failure domain add it to the roots
   if (infValue == value) result.add(infPoint);
-  const NumericalScalar maximumDistance = getMaximumDistance();
-  const NumericalScalar stepSize = getStepSize();
+  const Scalar maximumDistance = getMaximumDistance();
+  const Scalar stepSize = getStepSize();
   Solver solver(getSolver());
   while(infPoint < maximumDistance)
   {
-    const NumericalScalar supPoint = std::min(infPoint + stepSize, maximumDistance);
-    const NumericalScalar supValue = function(Point(1, supPoint))[0];
+    const Scalar supPoint = std::min(infPoint + stepSize, maximumDistance);
+    const Scalar supValue = function(Point(1, supPoint))[0];
     if ((infValue - value) * (supValue - value) < 0.0)
     {
       result.add(solver.solve(function, value, infPoint, supPoint, infValue, supValue));

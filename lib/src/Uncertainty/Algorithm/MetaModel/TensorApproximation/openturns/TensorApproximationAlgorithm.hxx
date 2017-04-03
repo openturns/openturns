@@ -78,12 +78,12 @@ public:
   UnsignedInteger getMaximumAlternatingLeastSquaresIteration() const;
 
   /** Radius error accessor */
-  void setMaximumRadiusError(const NumericalScalar maximumRadiusError);
-  NumericalScalar getMaximumRadiusError() const;
+  void setMaximumRadiusError(const Scalar maximumRadiusError);
+  Scalar getMaximumRadiusError() const;
 
   /** Residual error accessor */
-  void setMaximumResidualError(const NumericalScalar maximumResidualError);
-  NumericalScalar getMaximumResidualError() const;
+  void setMaximumResidualError(const Scalar maximumResidualError);
+  Scalar getMaximumResidualError() const;
 
 protected:
 
@@ -96,30 +96,30 @@ private:
 
   /** Marginal computation */
   void runMarginal(const UnsignedInteger marginalIndex,
-                   NumericalScalar & marginalResidual,
-                   NumericalScalar & marginalRelativeError);
+                   Scalar & marginalResidual,
+                   Scalar & marginalRelativeError);
 
   /** Greedy rank-1 algorithm */
   void greedyRankOne(const Sample & x,
                      const Sample & y,
                      CanonicalTensorEvaluation & tensor,
-                     NumericalScalar & marginalResidual,
-                     NumericalScalar & marginalRelativeError);
+                     Scalar & marginalResidual,
+                     Scalar & marginalRelativeError);
 
   /** Alternating least-squares algorithm to estimate a rank-1 tensor */
   void rankOne(const Sample & x,
                const Sample & y,
                CanonicalTensorEvaluation & tensor,
                const UnsignedInteger k,
-               NumericalScalar & marginalResidual,
-               NumericalScalar & marginalRelativeError);
+               Scalar & marginalResidual,
+               Scalar & marginalRelativeError);
 
   /** Rank-M algorithm */
   void rankM (const Sample & x,
               const Sample & y,
               CanonicalTensorEvaluation & tensor,
-              NumericalScalar & marginalResidual,
-              NumericalScalar & marginalRelativeError);
+              Scalar & marginalResidual,
+              Scalar & marginalRelativeError);
 
   void rankMComponent (const Sample & x,
               const Sample & y,
@@ -152,9 +152,9 @@ private:
   // maximum rank-1 iterations
   UnsignedInteger maximumAlternatingLeastSquaresIteration_;
   // error on the radius for rank-1
-  NumericalScalar maximumRadiusError_;
+  Scalar maximumRadiusError_;
   // error on the residual for rank-1
-  NumericalScalar maximumResidualError_;
+  Scalar maximumResidualError_;
 
   mutable Collection<DesignProxy> proxy_;
 

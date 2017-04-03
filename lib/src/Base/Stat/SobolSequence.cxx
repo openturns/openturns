@@ -33,7 +33,7 @@ static const Factory<SobolSequence> Factory_SobolSequence;
 
 const UnsignedInteger    SobolSequence::MaximumNumberOfDimension = 40;
 const UnsignedInteger    SobolSequence::MaximumBase2Logarithm    = 62;
-const NumericalScalar SobolSequence::Epsilon                  = 1.0 / power2(MaximumBase2Logarithm);
+const Scalar SobolSequence::Epsilon                  = 1.0 / power2(MaximumBase2Logarithm);
 const UnsignedInteger    SobolSequence::MaximumInitialDegree     = 8;
 
 const UnsignedInteger SobolSequence::InitialBase[MaximumNumberOfDimension*MaximumInitialDegree] =

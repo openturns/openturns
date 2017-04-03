@@ -38,14 +38,14 @@ BEGIN_NAMESPACE_OPENTURNS
 class ComplexMatrixImplementation;
 
 class OT_API MatrixImplementation
-  : public PersistentCollection<NumericalScalar>
+  : public PersistentCollection<Scalar>
 
 {
   CLASSNAME;
 
 #ifndef SWIG
   /** Declaration of friend operators */
-  friend MatrixImplementation operator * (const NumericalScalar s,
+  friend MatrixImplementation operator * (const Scalar s,
                                           const MatrixImplementation & matrix)
   {
     return matrix.operator * (s);
@@ -55,7 +55,7 @@ class OT_API MatrixImplementation
 
 public:
 
-  typedef Collection<NumericalScalar>       NumericalScalarCollection;
+  typedef Collection<Scalar>       ScalarCollection;
   typedef Collection<NumericalComplex>      NumericalComplexCollection;
 
   /** Default constructor */
@@ -78,7 +78,7 @@ public:
   /** or the rest of the matrix is filled with zeros */
   MatrixImplementation(const UnsignedInteger rowDim,
                        const UnsignedInteger colDim,
-                       const NumericalScalarCollection & elementsValues);
+                       const ScalarCollection & elementsValues);
 
   /** Virtual constructor */
   virtual MatrixImplementation * clone() const;
@@ -89,12 +89,12 @@ public:
 
   /** Operator () gives access to the elements of the MatrixImplementation (to modify these elements) */
   /** The element of the MatrixImplementation is designated by its row number i and its column number j */
-  NumericalScalar & operator () (const UnsignedInteger i,
+  Scalar & operator () (const UnsignedInteger i,
                                  const UnsignedInteger j);
 
   /** Operator () gives access to the elements of the MatrixImplementation (read only) */
   /** The element of the MatrixImplementation is designated by its row number i and its column number j */
-  const NumericalScalar & operator () (const UnsignedInteger i,
+  const Scalar & operator () (const UnsignedInteger i,
                                        const UnsignedInteger j) const;
 
   /** Get the dimensions of the MatrixImplementation */
@@ -144,22 +144,22 @@ public:
   Point symVectProd (const Point & pt) const;
 
   /** Using triangular matrix */
-  NumericalScalarCollection triangularVectProd (const NumericalScalarCollection & pt,
+  ScalarCollection triangularVectProd (const ScalarCollection & pt,
       const char side = 'L') const;
-  NumericalScalarCollection triangularVectProd (const Point & pt,
+  ScalarCollection triangularVectProd (const Point & pt,
       const char side = 'L') const;
 
-  /** Multiplication with a NumericalScalar */
-  MatrixImplementation operator * (const NumericalScalar s) const;
+  /** Multiplication with a Scalar */
+  MatrixImplementation operator * (const Scalar s) const;
 
-  /** In-place Multiplication with a NumericalScalar */
-  MatrixImplementation & operator *= (const NumericalScalar s);
+  /** In-place Multiplication with a Scalar */
+  MatrixImplementation & operator *= (const Scalar s);
 
-  /** Division by a NumericalScalar*/
-  MatrixImplementation operator / (const NumericalScalar s) const;
+  /** Division by a Scalar*/
+  MatrixImplementation operator / (const Scalar s) const;
 
-  /** In-place Division by a NumericalScalar*/
-  MatrixImplementation & operator /= (const NumericalScalar s);
+  /** In-place Division by a Scalar*/
+  MatrixImplementation & operator /= (const Scalar s);
 
   /** Symmetrize MatrixImplementation in case it is a symmetric matrix (stored as a triangular matrix) */
   void symmetrize() const;
@@ -208,15 +208,15 @@ public:
                                       const char uplo = 'L') const;
 
   /** Compute determinant */
-  NumericalScalar computeLogAbsoluteDeterminant(NumericalScalar & sign,
+  Scalar computeLogAbsoluteDeterminant(Scalar & sign,
       const Bool keepIntact = true);
-  NumericalScalar computeDeterminant(const Bool keepIntact = true);
-  NumericalScalar computeLogAbsoluteDeterminantSym(NumericalScalar & sign,
+  Scalar computeDeterminant(const Bool keepIntact = true);
+  Scalar computeLogAbsoluteDeterminantSym(Scalar & sign,
       const Bool keepIntact = true);
-  NumericalScalar computeDeterminantSym(const Bool keepIntact = true);
+  Scalar computeDeterminantSym(const Bool keepIntact = true);
 
   /** Compute trace */
-  NumericalScalar computeTrace() const;
+  Scalar computeTrace() const;
 
   /** Compute eigenvalues */
   NumericalComplexCollection computeEigenValuesSquare(const Bool keepIntact = true);
@@ -245,9 +245,9 @@ public:
   virtual Bool hasUnitRange() const;
 
   /** Set small elements to zero */
-  virtual MatrixImplementation clean(const NumericalScalar threshold) const;
+  virtual MatrixImplementation clean(const Scalar threshold) const;
 
-  virtual MatrixImplementation cleanSym(const NumericalScalar threshold) const;
+  virtual MatrixImplementation cleanSym(const Scalar threshold) const;
 
   /** Build the Cholesky factorization of the matrix */
   virtual MatrixImplementation computeCholesky(const Bool keepIntact = true);
@@ -289,7 +289,7 @@ public:
 
   // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
   // INTENTIONALY NOT DOCUMENTED
-  const NumericalScalar * __baseaddress__ () const;
+  const Scalar * __baseaddress__ () const;
   UnsignedInteger __elementsize__ () const;
   UnsignedInteger __stride__ (UnsignedInteger dim) const;
 
@@ -319,7 +319,7 @@ MatrixImplementation::MatrixImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim,
     const InputIterator first,
     const InputIterator last)
-  : PersistentCollection<NumericalScalar>(rowDim * colDim, 0.0),
+  : PersistentCollection<Scalar>(rowDim * colDim, 0.0),
     nbRows_(rowDim),
     nbColumns_(colDim)
 {

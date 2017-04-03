@@ -267,7 +267,7 @@ Sample PythonEvaluation::operator() (const Sample & inS) const
     for (UnsignedInteger i = 0; i < toDoSize; ++ i)
     {
       PyObject * eltTuple = PyTuple_New(inDim);
-      for (UnsignedInteger j = 0; j < inDim; ++ j) PyTuple_SetItem(eltTuple, j, convert< NumericalScalar, _PyFloat_ > (toDo[i][j]));
+      for (UnsignedInteger j = 0; j < inDim; ++ j) PyTuple_SetItem(eltTuple, j, convert< Scalar, _PyFloat_ > (toDo[i][j]));
       PyTuple_SetItem(inTuple.get(), i, eltTuple);
     }
     ScopedPyObjectPointer result(PyObject_CallFunctionObjArgs(pyObj_, inTuple.get(), NULL));
@@ -296,7 +296,7 @@ Sample PythonEvaluation::operator() (const Sample & inS) const
                 for (UnsignedInteger j = 0; j < outDim; ++ j)
                 {
                   ScopedPyObjectPointer val(PySequence_GetItem(elt.get(), j));
-                  outP[j] = convert< _PyFloat_, NumericalScalar >(val.get());
+                  outP[j] = convert< _PyFloat_, Scalar >(val.get());
                 }
                 tempCache.add(toDo[i].getCollection(), outP.getCollection());
               }
@@ -305,7 +305,7 @@ Sample PythonEvaluation::operator() (const Sample & inS) const
                 for (UnsignedInteger j = 0; j < outDim; ++j)
                 {
                   ScopedPyObjectPointer val(PySequence_GetItem(elt.get(), j));
-                  outS[i][j] = convert< _PyFloat_, NumericalScalar >(val.get());
+                  outS[i][j] = convert< _PyFloat_, Scalar >(val.get());
                 }
               }
             }

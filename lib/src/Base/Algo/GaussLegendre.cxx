@@ -79,7 +79,7 @@ Point GaussLegendre::integrateWithNodes(const Function & function,
   if (interval.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected an interval of dimension=" << inputDimension << ", got dimension=" << interval.getDimension();
   if (function.getInputDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a function of input dimension=" << inputDimension << ", got input dimension=" << function.getInputDimension();
   // Compute the volume of the interval
-  const NumericalScalar volume = interval.getVolume();
+  const Scalar volume = interval.getVolume();
   Point integral(function.getOutputDimension());
   if (volume == 0.0) return integral;
   // Adapt the nodes to the bounds of the interval

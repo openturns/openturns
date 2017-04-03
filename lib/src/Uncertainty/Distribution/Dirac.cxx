@@ -42,7 +42,7 @@ Dirac::Dirac()
 }
 
 /* Parameters constructor */
-Dirac::Dirac(const NumericalScalar p)
+Dirac::Dirac(const Scalar p)
   : DiscreteDistribution()
   , point_(1, p)
 {
@@ -113,7 +113,7 @@ Sample Dirac::getSample(const UnsignedInteger size) const
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar Dirac::computePDF(const Point & point) const
+Scalar Dirac::computePDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -124,7 +124,7 @@ NumericalScalar Dirac::computePDF(const Point & point) const
 
 
 /* Get the CDF of the distribution */
-NumericalScalar Dirac::computeCDF(const Point & point) const
+Scalar Dirac::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -135,7 +135,7 @@ NumericalScalar Dirac::computeCDF(const Point & point) const
 }
 
 /* Compute the multivariate quantile of the distribution */
-Point Dirac::computeQuantile(const NumericalScalar prob,
+Point Dirac::computeQuantile(const Scalar prob,
                                       const Bool tail) const
 {
   return point_;
@@ -161,21 +161,21 @@ Point Dirac::computeCDFGradient(const Point & point) const
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar Dirac::computeScalarQuantile(const NumericalScalar prob,
+Scalar Dirac::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
   return point_[0];
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Dirac::computeCharacteristicFunction(const NumericalScalar u) const
+NumericalComplex Dirac::computeCharacteristicFunction(const Scalar u) const
 {
   return std::exp(computeLogCharacteristicFunction(u));
 }
 
-NumericalComplex Dirac::computeLogCharacteristicFunction(const NumericalScalar u) const
+NumericalComplex Dirac::computeLogCharacteristicFunction(const Scalar u) const
 {
-  if (getDimension() != 1) throw NotYetImplementedException(HERE) << "In Dirac::computeLogCharacteristicFunction(const NumericalScalar u) const: the computeCharacteristicFunction() method is implemented for 1D distributions only.";
+  if (getDimension() != 1) throw NotYetImplementedException(HERE) << "In Dirac::computeLogCharacteristicFunction(const Scalar u) const: the computeCharacteristicFunction() method is implemented for 1D distributions only.";
   const NumericalComplex value(0.0, u * point_[0]);
   return value;
 }
@@ -261,7 +261,7 @@ Dirac::PointWithDescriptionCollection Dirac::getParametersCollection() const
 
 void Dirac::setParametersCollection(const PointCollection & parametersCollection)
 {
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   const UnsignedInteger dimension = parametersCollection.getSize();
   Point point(dimension);
   // The ith component of the point is supposed to be the first component of the point
@@ -279,7 +279,7 @@ Point Dirac::getParameter() const
 
 void Dirac::setParameter(const Point & parameter)
 {
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = Dirac(parameter);
   setWeight(w);
 }

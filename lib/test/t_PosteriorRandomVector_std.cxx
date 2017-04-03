@@ -53,9 +53,9 @@ int main(int argc, char *argv[])
     proposalColl.add(std_proposal);
 
     // prior distribution
-    NumericalScalar mu0 = 25.;
+    Scalar mu0 = 25.;
 
-    NumericalScalar sigma0 = 0.1;
+    Scalar sigma0 = 0.1;
     Normal mean_prior(mu0, sigma0);
     Dirac std_prior(2.0); // standard dev is known
     DistributionCollection priorColl;

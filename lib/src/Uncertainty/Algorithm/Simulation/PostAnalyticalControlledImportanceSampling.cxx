@@ -62,11 +62,11 @@ Sample PostAnalyticalControlledImportanceSampling::computeBlockSample()
   const Point standardSpaceDesignPoint(analyticalResult_.getStandardSpaceDesignPoint());
   const Bool originFailure = analyticalResult_.getIsStandardPointOriginInFailureSpace();
   // Get the threshold and the reliability index
-  const NumericalScalar threshold = event_.getThreshold();
-  const NumericalScalar reliabilityIndex = analyticalResult_.getHasoferReliabilityIndex();
-  const NumericalScalar betaSquare = reliabilityIndex * reliabilityIndex;
+  const Scalar threshold = event_.getThreshold();
+  const Scalar reliabilityIndex = analyticalResult_.getHasoferReliabilityIndex();
+  const Scalar betaSquare = reliabilityIndex * reliabilityIndex;
   // Initialize the probability with the control probability
-  NumericalScalar probability = controlProbability_;
+  Scalar probability = controlProbability_;
   // First, compute a sample of the importance distribution. It is simply
   // the standard distribution translated to the design point
   Sample inputSample(standardDistribution_.getSample(blockSize));
@@ -83,7 +83,7 @@ Sample PostAnalyticalControlledImportanceSampling::computeBlockSample()
     failureControl = (failureControl && !originFailure) || (!failureControl && originFailure);
     const Bool failureEvent = event_.getOperator()(blockSample[i][0], threshold);
     blockSample[i][0] = probability;
-    const NumericalScalar factor = (!failureControl && failureEvent) - (failureControl && !failureEvent);
+    const Scalar factor = (!failureControl && failureEvent) - (failureControl && !failureEvent);
     if (factor != 0.0) blockSample[i][0] = blockSample[i][0] + factor * standardDistribution_.computePDF(realization) / standardDistribution_.computePDF(realization - standardSpaceDesignPoint);
   }
   return blockSample;

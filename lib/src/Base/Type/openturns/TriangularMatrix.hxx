@@ -45,7 +45,7 @@ class OT_API TriangularMatrix :
   CLASSNAME;
 
 #ifndef SWIG
-  friend TriangularMatrix operator * (const NumericalScalar s,
+  friend TriangularMatrix operator * (const Scalar s,
                                       const TriangularMatrix & m);
 #endif
 
@@ -89,12 +89,12 @@ public:
 #ifndef SWIG
   /** Operator () gives access to the elements of the matrix (to modify these elements) */
   /** The element of the matrix is designated by its row number i and its column number j */
-  NumericalScalar & operator ()(const UnsignedInteger i,
+  Scalar & operator ()(const UnsignedInteger i,
                                 const UnsignedInteger j) ;
 
   /** Operator () gives access to the elements of the matrix (read only) */
   /** The element of the matrix is designated by its row number i and its column number j */
-  const NumericalScalar & operator ()(const UnsignedInteger i,
+  const Scalar & operator ()(const UnsignedInteger i,
                                       const UnsignedInteger j) const;
 #endif
 
@@ -112,7 +112,7 @@ public:
   SquareMatrix operator - (const SquareMatrix & m) const;
 
   /** Multiplication with a scalar */
-  TriangularMatrix operator * (const NumericalScalar s) const ;
+  TriangularMatrix operator * (const Scalar s) const ;
 
   /** Matrix multiplications */
   Matrix operator * (const Matrix & m) const;
@@ -129,14 +129,14 @@ public:
   /** IdentityMatrix multiplications  */
   TriangularMatrix operator * (const IdentityMatrix & m) const;
 
-  /** Multiplication with a NumericalScalarCollection (must have consistent dimensions) */
-  NumericalScalarCollection operator * (const NumericalScalarCollection & p) const;
+  /** Multiplication with a ScalarCollection (must have consistent dimensions) */
+  ScalarCollection operator * (const ScalarCollection & p) const;
 
   /** Multiplication with a Point (must have consistent dimensions) */
-  NumericalScalarCollection operator * (const Point & p) const;
+  ScalarCollection operator * (const Point & p) const;
 
-  /** Division by a NumericalScalar */
-  TriangularMatrix operator / (const NumericalScalar s) const;
+  /** Division by a Scalar */
+  TriangularMatrix operator / (const Scalar s) const;
 
   /** Resolution of a linear system */
   Point solveLinearSystem(const Point & b,
@@ -155,7 +155,7 @@ private:
 }; /* class TriangularMatrix */
 
 
-inline TriangularMatrix operator * (const NumericalScalar s,
+inline TriangularMatrix operator * (const Scalar s,
                                     const TriangularMatrix & m)
 {
   return m.operator * (s);

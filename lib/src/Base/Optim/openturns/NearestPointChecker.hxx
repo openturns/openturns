@@ -49,7 +49,7 @@ public:
   /** Constructor with parameters */
   NearestPointChecker(const Function & levelFunction,
                       const ComparisonOperator & comparisonOperator,
-                      const NumericalScalar threshold,
+                      const Scalar threshold,
                       const Sample & sample);
 
 
@@ -75,10 +75,10 @@ public:
   ComparisonOperator getComparisonOperator() const;
 
   /** threshold accessor */
-  void setThreshold(const NumericalScalar threshold);
+  void setThreshold(const Scalar threshold);
 
   /** threshold accessor */
-  NumericalScalar getThreshold() const;
+  Scalar getThreshold() const;
 
   /** sample accessor */
   void setSample(const Sample & sample);
@@ -97,7 +97,7 @@ private:
   Function levelFunction_;
   NearestPointCheckerResult result_;
   ComparisonOperator comparisonOperator_;
-  NumericalScalar threshold_;
+  Scalar threshold_;
   Sample sample_;
 } ; /* class NearestPointChecker */
 

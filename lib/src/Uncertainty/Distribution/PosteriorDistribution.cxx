@@ -110,35 +110,35 @@ Point PosteriorDistribution::computeLogLikelihood(const Point & theta) const
 {
   Distribution conditionedDistribution(conditionalDistribution_.getConditionedDistribution());
   conditionedDistribution.setParameter(theta);
-  NumericalScalar logLikelihood = 0.0;
+  Scalar logLikelihood = 0.0;
   const UnsignedInteger size = observations_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalScalar atomicValue = conditionedDistribution.computeLogPDF(observations_[i]);
+    const Scalar atomicValue = conditionedDistribution.computeLogPDF(observations_[i]);
     logLikelihood += atomicValue;
   }
   return Point(1, logLikelihood);
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar PosteriorDistribution::computePDF(const Point & point) const
+Scalar PosteriorDistribution::computePDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
-  const NumericalScalar value = conditionalDistribution_.getConditioningDistribution().computeLogPDF(point) - logNormalizationFactor_ + computeLogLikelihood(point)[0];
+  const Scalar value = conditionalDistribution_.getConditioningDistribution().computeLogPDF(point) - logNormalizationFactor_ + computeLogLikelihood(point)[0];
   return std::exp(value);
 }
 
 
 /* Get the CDF of the distribution */
-NumericalScalar PosteriorDistribution::computeCDF(const Point & point) const
+Scalar PosteriorDistribution::computeCDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
   Description inputDescription(getDimension());
   for (UnsignedInteger i = 0; i < getDimension(); ++i) inputDescription[i] = String(OSS() << "x" << i);
   const SymbolicFunction f(inputDescription, Description(1, "1"));
-  const NumericalScalar cdf = conditionalDistribution_.computeExpectation(f, point)[0];
+  const Scalar cdf = conditionalDistribution_.computeExpectation(f, point)[0];
   return cdf;
 }
 
@@ -192,7 +192,7 @@ Sample PosteriorDistribution::getObservations() const
 }
 
 /* Log normalization factor accessor */
-NumericalScalar PosteriorDistribution::getLogNormalizationFactor() const
+Scalar PosteriorDistribution::getLogNormalizationFactor() const
 {
   return logNormalizationFactor_;
 }
@@ -248,10 +248,10 @@ void PosteriorDistribution::computeCovariance() const
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const NumericalScalar muI = mean_[i];
+    const Scalar muI = mean_[i];
     for (UnsignedInteger j = 0; j <= i; ++j)
     {
-      const NumericalScalar muJ = mean_[j];
+      const Scalar muJ = mean_[j];
       formulas[index] = String(OSS() << "(x" << i << "-" << muI << ")*(x" << j << "-" << muJ << ")");
       ++index;
     }

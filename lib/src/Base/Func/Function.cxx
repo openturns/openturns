@@ -114,10 +114,10 @@ Function::Function(const Description & inputVariablesNames,
 /* Indicator function constructor */
 Function::Function(const Function & function,
     const ComparisonOperator & comparisonOperator,
-    const NumericalScalar threshold)
+    const Scalar threshold)
   : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation(new IndicatorEvaluation(function.getEvaluation(), comparisonOperator, threshold), new NoGradient(), new NoHessian()))
 {
-  Log::Warn(OSS() << "Function(Function, ComparisonOperator, NumericalScalar) is deprecated: use IndicatorFunction");
+  Log::Warn(OSS() << "Function(Function, ComparisonOperator, Scalar) is deprecated: use IndicatorFunction");
 }
 
 /* Aggregated function constructor: the output is the aggregation of the several functions */
@@ -595,8 +595,8 @@ UnsignedInteger Function::getHessianCallsNumber() const
 Graph Function::draw(const UnsignedInteger inputMarginal,
                                   const UnsignedInteger outputMarginal,
                                   const Point & centralPoint,
-                                  const NumericalScalar xMin,
-                                  const NumericalScalar xMax,
+                                  const Scalar xMin,
+                                  const Scalar xMax,
                                   const UnsignedInteger pointNumber,
                                   const GraphImplementation::LogScale scale) const
 {
@@ -617,8 +617,8 @@ Graph Function::draw(const UnsignedInteger firstInputMarginal,
 }
 
 /* Draw the output of the function with respect to its input when the input and output dimensions are 1 */
-Graph Function::draw(const NumericalScalar xMin,
-                                  const NumericalScalar xMax,
+Graph Function::draw(const Scalar xMin,
+                                  const Scalar xMax,
                                   const UnsignedInteger pointNumber,
                                   const GraphImplementation::LogScale scale) const
 {

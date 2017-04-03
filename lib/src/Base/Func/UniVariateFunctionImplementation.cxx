@@ -61,33 +61,33 @@ String UniVariateFunctionImplementation::__str__(const String & offset) const
 
 
 /* UniVariateFunctionImplementation are evaluated as functors */
-NumericalScalar UniVariateFunctionImplementation::operator() (const NumericalScalar x) const
+Scalar UniVariateFunctionImplementation::operator() (const Scalar x) const
 {
-  throw NotYetImplementedException(HERE) << "UniVariateFunctionImplementation::operator() (const NumericalScalar x)";
+  throw NotYetImplementedException(HERE) << "UniVariateFunctionImplementation::operator() (const Scalar x)";
 }
 
 /* UniVariateFunctionImplementation gradient */
-NumericalScalar UniVariateFunctionImplementation::gradient(const NumericalScalar x) const
+Scalar UniVariateFunctionImplementation::gradient(const Scalar x) const
 {
-  throw NotYetImplementedException(HERE) << "UniVariateFunctionImplementation::gradient(const NumericalScalar x)";
+  throw NotYetImplementedException(HERE) << "UniVariateFunctionImplementation::gradient(const Scalar x)";
 }
 
 /* UniVariateFunctionImplementation hessian */
-NumericalScalar UniVariateFunctionImplementation::hessian(const NumericalScalar x) const
+Scalar UniVariateFunctionImplementation::hessian(const Scalar x) const
 {
-  throw NotYetImplementedException(HERE) << "UniVariateFunctionImplementation::hessian(const NumericalScalar x)";
+  throw NotYetImplementedException(HERE) << "UniVariateFunctionImplementation::hessian(const Scalar x)";
 }
 
 
 /* Method to draw the graph of the function between given bounds */
-Graph UniVariateFunctionImplementation::draw(const NumericalScalar xMin,
-    const NumericalScalar xMax,
+Graph UniVariateFunctionImplementation::draw(const Scalar xMin,
+    const Scalar xMax,
     const UnsignedInteger pointNumber) const
 {
   Sample data(pointNumber, 2);
   for (UnsignedInteger i = 0; i < pointNumber; ++ i)
   {
-    const NumericalScalar x = xMin + (xMax - xMin) * i / (1.0 * pointNumber);
+    const Scalar x = xMin + (xMax - xMin) * i / (1.0 * pointNumber);
     data[i][0] = x;
     data[i][1] = operator()(x);
   }

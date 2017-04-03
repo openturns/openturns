@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     {
       for (UnsignedInteger j = 0; j < dimension; ++j)
       {
-        sample[i][j] = i + NumericalScalar(j) / dimension;
+        sample[i][j] = i + Scalar(j) / dimension;
       }
     }
     fullprint << "sample=" << sample << std::endl;

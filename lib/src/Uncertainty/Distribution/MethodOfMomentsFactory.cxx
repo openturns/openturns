@@ -176,14 +176,14 @@ public:
     }
 
     // compute sum of deltas between centered homogenized moments
-    NumericalScalar result = 0.0;
+    Scalar result = 0.0;
     for (UnsignedInteger j = 0; j < parameterDimension; ++ j)
     {
-      const NumericalScalar sign = moments[j] < 0.0 ? -1.0 : 1.0;
-      const NumericalScalar slack = refSign_[j] * std::pow(std::abs(refMoments_[j]), 1.0 / (j + 1.0)) - sign * std::pow(std::abs(moments[j]), 1.0 / (j + 1.0));
+      const Scalar sign = moments[j] < 0.0 ? -1.0 : 1.0;
+      const Scalar slack = refSign_[j] * std::pow(std::abs(refMoments_[j]), 1.0 / (j + 1.0)) - sign * std::pow(std::abs(moments[j]), 1.0 / (j + 1.0));
       result += slack * slack;
     }
-    const NumericalScalar sigma2 = distribution.getCovariance()(0, 0);
+    const Scalar sigma2 = distribution.getCovariance()(0, 0);
     return Point(1, result / sigma2);
   }
 

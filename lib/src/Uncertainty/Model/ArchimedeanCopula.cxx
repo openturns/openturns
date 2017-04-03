@@ -65,17 +65,17 @@ String ArchimedeanCopula::__repr__() const
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar ArchimedeanCopula::computePDF(const Point & point) const
+Scalar ArchimedeanCopula::computePDF(const Point & point) const
 {
   if ((point[0] <= 0.0) || (point[1] <= 0.0) || (point[0] >= 1.0) || point[1] >= 1.0) return 0.0;
-  NumericalScalar sum = computeArchimedeanGenerator(point[0]) + computeArchimedeanGenerator(point[1]);
-  NumericalScalar inv = computeInverseArchimedeanGenerator(sum);
-  NumericalScalar den = computeArchimedeanGeneratorDerivative(inv);
+  Scalar sum = computeArchimedeanGenerator(point[0]) + computeArchimedeanGenerator(point[1]);
+  Scalar inv = computeInverseArchimedeanGenerator(sum);
+  Scalar den = computeArchimedeanGeneratorDerivative(inv);
   return -computeArchimedeanGeneratorSecondDerivative(inv) * computeArchimedeanGeneratorDerivative(point[0]) * computeArchimedeanGeneratorDerivative(point[1]) / (den * den * den);
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar ArchimedeanCopula::computeCDF(const Point & point) const
+Scalar ArchimedeanCopula::computeCDF(const Point & point) const
 {
   if ((point[0] <= 0.0) || (point[1] <= 0.0)) return 0.0;
   if ((point[0] >= 1.0) && (point[1] >= 1.0)) return 1.0;
@@ -84,34 +84,34 @@ NumericalScalar ArchimedeanCopula::computeCDF(const Point & point) const
   return computeInverseArchimedeanGenerator(computeArchimedeanGenerator(point[0]) + computeArchimedeanGenerator(point[1]));
 }
 
-NumericalScalar ArchimedeanCopula::computeComplementaryCDF(const Point & point) const
+Scalar ArchimedeanCopula::computeComplementaryCDF(const Point & point) const
 {
   throw NotYetImplementedException(HERE) << "In ArchimedeanCopula::computeComplementaryCDF(const Point & point) const";
 }
 
 /* Compute the probability content of an interval */
-NumericalScalar ArchimedeanCopula::computeProbability(const Interval & interval) const
+Scalar ArchimedeanCopula::computeProbability(const Interval & interval) const
 {
   Interval intersect(interval.intersect(Interval(2)));
   // Empty interval
   if (intersect.isNumericallyEmpty()) return 0.0;
   Point lowerBound(intersect.getLowerBound());
   Point upperBound(intersect.getUpperBound());
-  NumericalScalar uuCDF = computeCDF(upperBound);
-  NumericalScalar llCDF = computeCDF(lowerBound);
+  Scalar uuCDF = computeCDF(upperBound);
+  Scalar llCDF = computeCDF(lowerBound);
   Point ul(2);
   ul[0] = upperBound[0];
   ul[1] = lowerBound[1];
-  NumericalScalar ulCDF = computeCDF(ul);
+  Scalar ulCDF = computeCDF(ul);
   Point lu(2);
   lu[0] = lowerBound[0];
   lu[1] = upperBound[1];
-  NumericalScalar luCDF = computeCDF(lu);
+  Scalar luCDF = computeCDF(lu);
   return uuCDF - ulCDF - luCDF + llCDF;
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar ArchimedeanCopula::computeConditionalPDF(const NumericalScalar x,
+Scalar ArchimedeanCopula::computeConditionalPDF(const Scalar x,
     const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
@@ -120,7 +120,7 @@ NumericalScalar ArchimedeanCopula::computeConditionalPDF(const NumericalScalar x
   if ((x <= 0.0) || (x >= 1.0)) return 0.0;
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return 1.0;
-  const NumericalScalar z = y[0];
+  const Scalar z = y[0];
   // If the conditioning variable is outside of the range of the marginal distribution
   if ((z <= 0.0) || (z >= 1.0)) return 0.0;
   Point point(2);
@@ -134,27 +134,27 @@ NumericalScalar ArchimedeanCopula::computeConditionalPDF(const NumericalScalar x
  * the function phi such that the CDF of the copula can
  * be written as CDF(t) = phi^{-1}(phi(u)+phi(v))
  */
-NumericalScalar ArchimedeanCopula::computeArchimedeanGenerator(const NumericalScalar t) const
+Scalar ArchimedeanCopula::computeArchimedeanGenerator(const Scalar t) const
 {
-  throw NotYetImplementedException(HERE) << "In ArchimedeanCopula::computeArchimedeanGenerator(const NumericalScalar t) const";
+  throw NotYetImplementedException(HERE) << "In ArchimedeanCopula::computeArchimedeanGenerator(const Scalar t) const";
 }
 
 /* Compute the inverse of the archimedean generator */
-NumericalScalar ArchimedeanCopula::computeInverseArchimedeanGenerator(const NumericalScalar t) const
+Scalar ArchimedeanCopula::computeInverseArchimedeanGenerator(const Scalar t) const
 {
-  throw NotYetImplementedException(HERE) << "In ArchimedeanCopula::computeInverseArchimedeanGenerator(const NumericalScalar t) const";
+  throw NotYetImplementedException(HERE) << "In ArchimedeanCopula::computeInverseArchimedeanGenerator(const Scalar t) const";
 }
 
 /* Compute the derivative of the density generator */
-NumericalScalar ArchimedeanCopula::computeArchimedeanGeneratorDerivative(const NumericalScalar t) const
+Scalar ArchimedeanCopula::computeArchimedeanGeneratorDerivative(const Scalar t) const
 {
-  throw NotYetImplementedException(HERE) << "In ArchimedeanCopula::computeArchimedeanGeneratorDerivative(const NumericalScalar t) const";
+  throw NotYetImplementedException(HERE) << "In ArchimedeanCopula::computeArchimedeanGeneratorDerivative(const Scalar t) const";
 }
 
 /* Compute the seconde derivative of the density generator */
-NumericalScalar ArchimedeanCopula::computeArchimedeanGeneratorSecondDerivative(const NumericalScalar t) const
+Scalar ArchimedeanCopula::computeArchimedeanGeneratorSecondDerivative(const Scalar t) const
 {
-  throw NotYetImplementedException(HERE) << "In ArchimedeanCopula::computeArchimedeanGeneratorSecondDerivative(const NumericalScalar t) const";
+  throw NotYetImplementedException(HERE) << "In ArchimedeanCopula::computeArchimedeanGeneratorSecondDerivative(const Scalar t) const";
 }
 
 /* Tell if the distribution has elliptical copula */

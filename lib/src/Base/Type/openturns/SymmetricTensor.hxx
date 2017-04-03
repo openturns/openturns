@@ -41,7 +41,7 @@ class OT_API SymmetricTensor :
   CLASSNAME;
 
 public:
-  typedef Collection<NumericalScalar>       NumericalScalarCollection;
+  typedef Collection<Scalar>       ScalarCollection;
 
 
   /** Default constructor */
@@ -61,7 +61,7 @@ public:
   /** Constructor from external collection */
   SymmetricTensor(const UnsignedInteger squareDim,
                   const UnsignedInteger sheetDim,
-                  const NumericalScalarCollection & elementsValues);
+                  const ScalarCollection & elementsValues);
 
   /** Constructor with implementation */
   SymmetricTensor(const Implementation & i);
@@ -76,13 +76,13 @@ public:
 #ifndef SWIG
   /** Operator () gives access to the elements of the symmetric tensor (to modify these elements and their symmetric element) */
   /** The element of the symmetric tensor is designated by its row number i, its column number j and its sheet number k*/
-  NumericalScalar & operator () (const UnsignedInteger i,
+  Scalar & operator () (const UnsignedInteger i,
                                  const UnsignedInteger j,
                                  const UnsignedInteger k);
 
   /** Operator () gives access to the elements of the tensor (read only) */
   /** The element of the tensor is designated by its row number i and its column number j */
-  const NumericalScalar & operator () (const UnsignedInteger i,
+  const Scalar & operator () (const UnsignedInteger i,
                                        const UnsignedInteger j,
                                        const UnsignedInteger k) const;
 #endif

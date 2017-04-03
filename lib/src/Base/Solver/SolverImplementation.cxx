@@ -33,9 +33,9 @@ CLASSNAMEINIT(SolverImplementation);
 static const Factory<SolverImplementation> Factory_SolverImplementation;
 
 /** Second parameter constructor */
-SolverImplementation::SolverImplementation(const NumericalScalar absoluteError,
-    const NumericalScalar relativeError,
-    const NumericalScalar residualError,
+SolverImplementation::SolverImplementation(const Scalar absoluteError,
+    const Scalar relativeError,
+    const Scalar residualError,
     const UnsignedInteger maximumFunctionEvaluation)
   : PersistentObject()
   , maximumFunctionEvaluation_(maximumFunctionEvaluation)
@@ -98,34 +98,34 @@ void SolverImplementation::load(Advocate & adv)
 }
 
 /** Absolute error accessor */
-void SolverImplementation::setAbsoluteError(const NumericalScalar absoluteError)
+void SolverImplementation::setAbsoluteError(const Scalar absoluteError)
 {
   absoluteError_ = absoluteError;
 }
 
-NumericalScalar SolverImplementation::getAbsoluteError() const
+Scalar SolverImplementation::getAbsoluteError() const
 {
   return absoluteError_;
 }
 
 /** Relative error accessor */
-void SolverImplementation::setRelativeError(const NumericalScalar relativeError)
+void SolverImplementation::setRelativeError(const Scalar relativeError)
 {
   relativeError_ = relativeError;
 }
 
-NumericalScalar SolverImplementation::getRelativeError() const
+Scalar SolverImplementation::getRelativeError() const
 {
   return relativeError_;
 }
 
 /** Residual error accessor */
-void SolverImplementation::setResidualError(const NumericalScalar residualError)
+void SolverImplementation::setResidualError(const Scalar residualError)
 {
   residualError_ = residualError;
 }
 
-NumericalScalar SolverImplementation::getResidualError() const
+Scalar SolverImplementation::getResidualError() const
 {
   return residualError_;
 }
@@ -147,30 +147,30 @@ UnsignedInteger SolverImplementation::getUsedFunctionEvaluation() const
 }
 
 /** Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] */
-NumericalScalar SolverImplementation::solve(const Function & function,
-    const NumericalScalar value,
-    const NumericalScalar infPoint,
-    const NumericalScalar supPoint) const
+Scalar SolverImplementation::solve(const Function & function,
+    const Scalar value,
+    const Scalar infPoint,
+    const Scalar supPoint) const
 {
   if ((function.getInputDimension() != 1) || (function.getOutputDimension() != 1)) throw InvalidDimensionException(HERE) << "Error: solver implementation requires a scalar function, here input dimension=" << function.getInputDimension() << " and output dimension=" << function.getOutputDimension();
   if (maximumFunctionEvaluation_ < 2) throw InternalException(HERE) << "Error: solver needs to evaluate the function at least two times, here maximumFunctionEvaluation=" << maximumFunctionEvaluation_;
   /* We take into account the fact that we use 2 function calls when using the other solve method */
   maximumFunctionEvaluation_ -= 2;
-  NumericalScalar root = solve(function, value, infPoint, supPoint, function(Point(1, infPoint))[0], function(Point(1, supPoint))[0]);
+  Scalar root = solve(function, value, infPoint, supPoint, function(Point(1, infPoint))[0], function(Point(1, supPoint))[0]);
   maximumFunctionEvaluation_ += 2;
   usedFunctionEvaluation_ += 2;
   return root;
 }
 
 /** Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] given function(infPoint) and function(supPoint) */
-NumericalScalar SolverImplementation::solve(const Function & function,
-    const NumericalScalar value,
-    const NumericalScalar infPoint,
-    const NumericalScalar supPoint,
-    const NumericalScalar infValue,
-    const NumericalScalar supValue) const
+Scalar SolverImplementation::solve(const Function & function,
+    const Scalar value,
+    const Scalar infPoint,
+    const Scalar supPoint,
+    const Scalar infValue,
+    const Scalar supValue) const
 {
-  throw NotYetImplementedException(HERE) << "In SolverImplementation::solve(const Function & function, const NumericalScalar value, const NumericalScalar infPoint, const NumericalScalar supPoint, const NumericalScalar infValue, const NumericalScalar supValue) const";
+  throw NotYetImplementedException(HERE) << "In SolverImplementation::solve(const Function & function, const Scalar value, const Scalar infPoint, const Scalar supPoint, const Scalar infValue, const Scalar supValue) const";
 }
 
 END_NAMESPACE_OPENTURNS

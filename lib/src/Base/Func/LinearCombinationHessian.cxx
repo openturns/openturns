@@ -68,7 +68,7 @@ SymmetricTensor LinearCombinationHessian::hessian(const Point & inP) const
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const SymmetricTensor currentTensor(evaluation_.functionsCollection_[i].hessian(inP));
-    const NumericalScalar factor = evaluation_.coefficients_[i];
+    const Scalar factor = evaluation_.coefficients_[i];
     for (UnsignedInteger k = 0; k < sheetSize; ++k)
     {
       SymmetricMatrix sheet(result.getSheet(k) + factor * currentTensor.getSheet(k));

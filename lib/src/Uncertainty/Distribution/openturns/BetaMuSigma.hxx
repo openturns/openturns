@@ -40,7 +40,7 @@ public:
   BetaMuSigma();
 
   /** Constructor with parameters */
-  BetaMuSigma(const NumericalScalar mu, const NumericalScalar sigma, const NumericalScalar a = 0., const NumericalScalar b = 1.);
+  BetaMuSigma(const Scalar mu, const Scalar sigma, const Scalar a = 0., const Scalar b = 1.);
 
   /** Virtual constructor */
   virtual BetaMuSigma * clone() const;
@@ -76,10 +76,10 @@ public:
 
 private:
   /** The main parameter set of the distribution */
-  NumericalScalar mu_;
-  NumericalScalar sigma_;
-  NumericalScalar a_;
-  NumericalScalar b_;
+  Scalar mu_;
+  Scalar sigma_;
+  Scalar a_;
+  Scalar b_;
 }; /* class BetaMuSigma */
 
 

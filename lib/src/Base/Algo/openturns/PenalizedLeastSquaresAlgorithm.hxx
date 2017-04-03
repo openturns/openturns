@@ -51,7 +51,7 @@ public:
                                  const Sample & y,
                                  const Basis & psi,
                                  const Indices & indices,
-                                 const NumericalScalar penalizationFactor = 0.0,
+                                 const Scalar penalizationFactor = 0.0,
                                  const Bool useNormal = false);
 
   /** Parameters constructor, simple weighted least squares problem with default parameters, spherically penalized for general parameters */
@@ -60,7 +60,7 @@ public:
                                  const Point & weight,
                                  const Basis & psi,
                                  const Indices & indices,
-                                 const NumericalScalar penalizationFactor = 0.0,
+                                 const Scalar penalizationFactor = 0.0,
                                  const Bool useNormal = false);
 
   /** Parameters constructor, general penalized weighted least squares problem */
@@ -69,7 +69,7 @@ public:
                                  const Point & weight,
                                  const Basis & psi,
                                  const Indices & indices,
-                                 const NumericalScalar penalizationFactor,
+                                 const Scalar penalizationFactor,
                                  const CovarianceMatrix & penalizationMatrix,
                                  const Bool useNormal = false);
 
@@ -94,7 +94,7 @@ public:
 protected:
 
 private:
-  NumericalScalar penalizationFactor_;
+  Scalar penalizationFactor_;
   CovarianceMatrix penalizationMatrix_;
   Bool useNormal_;
 

@@ -41,8 +41,8 @@ public:
   Burr();
 
   /** Parameters constructor */
-  Burr(const NumericalScalar c,
-       const NumericalScalar k);
+  Burr(const Scalar c,
+       const Scalar k);
 
 
   /** Comparison operator */
@@ -69,13 +69,13 @@ public:
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
   using ContinuousDistribution::computeLogPDF;
-  NumericalScalar computeLogPDF(const Point & point) const;
+  Scalar computeLogPDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the PDFGradient of the distribution */
   using ContinuousDistribution::computePDFGradient;
@@ -107,12 +107,12 @@ public:
   /* Interface specific to Burr */
 
   /** C accessor */
-  void setC(const NumericalScalar c);
-  NumericalScalar getC() const;
+  void setC(const Scalar c);
+  Scalar getC() const;
 
   /** K accessor */
-  void setK(const NumericalScalar k);
-  NumericalScalar getK() const;
+  void setK(const Scalar k);
+  Scalar getK() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -126,7 +126,7 @@ protected:
 private:
 
   /** Get the quantile of the distribution */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+  Scalar computeScalarQuantile(const Scalar prob,
                                         const Bool tail = false) const;
 
   /** Compute the numerical range of the distribution given the parameters values */
@@ -139,10 +139,10 @@ private:
   void computeCovariance() const;
 
   /** The c of the Burr distribution */
-  NumericalScalar c_;
+  Scalar c_;
 
   /** The k of the Burr distribution */
-  NumericalScalar k_;
+  Scalar k_;
 
 }; /* class Burr */
 

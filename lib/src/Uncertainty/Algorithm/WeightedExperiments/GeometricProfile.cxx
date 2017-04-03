@@ -33,7 +33,7 @@ static const Factory<GeometricProfile> Factory_GeometricProfile;
 
 
 /* Default constructor */
-GeometricProfile::GeometricProfile(const NumericalScalar T0, const NumericalScalar c, const UnsignedInteger iMax)
+GeometricProfile::GeometricProfile(const Scalar T0, const Scalar c, const UnsignedInteger iMax)
   : TemperatureProfileImplementation(T0, iMax)
     , c_(c)
 {
@@ -48,7 +48,7 @@ GeometricProfile * GeometricProfile::clone() const
 }
 
 /** Compute temperature T(i) */
-NumericalScalar GeometricProfile::operator()(UnsignedInteger i) const
+Scalar GeometricProfile::operator()(UnsignedInteger i) const
 {
   return T0_ * std::exp(i * logc_);
 }

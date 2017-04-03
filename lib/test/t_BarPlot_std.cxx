@@ -55,11 +55,11 @@ int main(int argc, char *argv[])
 
 
     // Construct histograms
-    NumericalScalar epsilon = 0.1;
-    NumericalScalar min1 = sample1.getMin()[0];
-    NumericalScalar max1 = sample1.getMax()[0] + epsilon;
-    NumericalScalar min2 = sample2.getMin()[0];
-    NumericalScalar max2 = sample2.getMax()[0] + epsilon;
+    Scalar epsilon = 0.1;
+    Scalar min1 = sample1.getMin()[0];
+    Scalar max1 = sample1.getMax()[0] + epsilon;
+    Scalar min2 = sample2.getMin()[0];
+    Scalar max2 = sample2.getMax()[0] + epsilon;
     Point tmp(2);
     tmp[0] = (max1 - min1) / nBars;
     tmp[1] = 0;

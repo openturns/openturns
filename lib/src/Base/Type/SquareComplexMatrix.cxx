@@ -163,7 +163,7 @@ SquareComplexMatrix::NumericalComplexCollection SquareComplexMatrix::operator * 
   return getImplementation()->genVectProd(pt) ;
 }
 
-SquareComplexMatrix::NumericalComplexCollection SquareComplexMatrix::operator * (const NumericalScalarCollection & pt) const
+SquareComplexMatrix::NumericalComplexCollection SquareComplexMatrix::operator * (const ScalarCollection & pt) const
 {
   return getImplementation()->genVectProd(pt) ;
 }

@@ -64,13 +64,13 @@ public:
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
   using ContinuousDistribution::computeLogPDF;
-  NumericalScalar computeLogPDF(const Point & point) const;
+  Scalar computeLogPDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the standard deviation of the distribution */
   Point getStandardDeviation() const;
@@ -101,15 +101,15 @@ public:
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalPDF;
-  NumericalScalar computeConditionalPDF(const NumericalScalar x, const Point & y) const;
+  Scalar computeConditionalPDF(const Scalar x, const Point & y) const;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalCDF;
-  NumericalScalar computeConditionalCDF(const NumericalScalar x, const Point & y) const;
+  Scalar computeConditionalCDF(const Scalar x, const Point & y) const;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalQuantile;
-  NumericalScalar computeConditionalQuantile(const NumericalScalar q, const Point & y) const;
+  Scalar computeConditionalQuantile(const Scalar q, const Point & y) const;
 
   /** Get the i-th marginal distribution */
   Implementation getMarginal(const UnsignedInteger i) const;
@@ -150,7 +150,7 @@ private:
   void computeCovariance() const;
 
   /** Get the quantile of the distribution */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+  Scalar computeScalarQuantile(const Scalar prob,
                                         const Bool tail = false) const;
 
   /** Compute the numerical range of the distribution given the parameters values */
@@ -161,8 +161,8 @@ private:
 
   /** The main parameter set of the distribution */
   Point theta_;
-  NumericalScalar sumTheta_;
-  NumericalScalar normalizationFactor_;
+  Scalar sumTheta_;
+  Scalar normalizationFactor_;
   mutable Bool isInitializedCDF_;
   mutable PointCollection integrationNodes_;
   mutable PointCollection integrationWeights_;

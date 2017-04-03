@@ -44,7 +44,7 @@ WhittleFactoryState::WhittleFactoryState()
 /* Standard constructor */
 WhittleFactoryState::WhittleFactoryState(const UnsignedInteger p,
     const Point & theta,
-    const NumericalScalar sigma2,
+    const Scalar sigma2,
     const Point & informationCriteria,
     const RegularGrid & timeGrid)
   : PersistentObject()
@@ -108,7 +108,7 @@ Point WhittleFactoryState::getTheta() const
 }
 
 /* Sigma2 accessor */
-NumericalScalar WhittleFactoryState::getSigma2() const
+Scalar WhittleFactoryState::getSigma2() const
 {
   return sigma2_;
 }

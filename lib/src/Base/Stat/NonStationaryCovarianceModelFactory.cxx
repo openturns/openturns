@@ -83,7 +83,7 @@ struct ComputeCovariancePolicy
   Field mean_;
   UnsignedInteger dimension_;
   UnsignedInteger size_;
-  NumericalScalar alpha_;
+  Scalar alpha_;
 
   ComputeCovariancePolicy(const ProcessSample & input,
                           const Bool isCentered,
@@ -116,7 +116,7 @@ struct ComputeCovariancePolicy
       {
         for (UnsignedInteger l = 0; l <= k; ++l)
         {
-          NumericalScalar coef = 0.0;
+          Scalar coef = 0.0;
           for (UnsignedInteger sampleIndex = 0; sampleIndex < size_; ++sampleIndex)
           {
             coef += input_[sampleIndex][i][k] * input_[sampleIndex][j][l];
@@ -138,11 +138,11 @@ struct ComputeCovariancePolicy
       CovarianceMatrix & matrix(output_[index]);
       for (UnsignedInteger k = 0; k < dimension_; ++k)
       {
-        const NumericalScalar muIK = muI[k];
+        const Scalar muIK = muI[k];
         for (UnsignedInteger l = 0; l <= k; ++l)
         {
-          const NumericalScalar muJL = muJ[l];
-          NumericalScalar coef = 0.0;
+          const Scalar muJL = muJ[l];
+          Scalar coef = 0.0;
           for (UnsignedInteger sampleIndex = 0; sampleIndex < size_; ++sampleIndex)
           {
             coef += (input_[sampleIndex][i][k] - muIK) * (input_[sampleIndex][j][l] - muJL);

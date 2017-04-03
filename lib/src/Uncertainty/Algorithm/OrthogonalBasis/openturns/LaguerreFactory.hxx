@@ -44,7 +44,7 @@ public:
   LaguerreFactory();
 
   /** Parameter constructor: k is the order of the generalized Laguerre polynomial, associated with the Gamma(k+1, 1, 0) distribution in the ANALYSIS parameter set, or with the Gamma(k, 1, 0) with the PROBABILITY parameter set */
-  LaguerreFactory(const NumericalScalar k,
+  LaguerreFactory(const Scalar k,
                   const ParameterSet parameterization = ANALYSIS);
 
   /** Virtual constructor */
@@ -55,7 +55,7 @@ public:
   Coefficients getRecurrenceCoefficients(const UnsignedInteger n) const;
 
   /** K accessor */
-  NumericalScalar getK() const;
+  Scalar getK() const;
 
   /** String converter */
   String __repr__() const;
@@ -68,7 +68,7 @@ public:
 
 private:
   /** Parameter of the Laguerre polynomial */
-  NumericalScalar k_;
+  Scalar k_;
 
 } ; /* class LaguerreFactory */
 

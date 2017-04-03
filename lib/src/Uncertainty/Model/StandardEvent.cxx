@@ -45,7 +45,7 @@ StandardEvent::StandardEvent()
 /* Constructor from a RandomVector */
 StandardEvent::StandardEvent(const RandomVector & antecedent,
                              const ComparisonOperator & op,
-                             const NumericalScalar threshold)
+                             const Scalar threshold)
   : Event(antecedent, op, threshold)
 {
   // StandardEvent can only be constructed from composite random vector whose antecedent has a spherical distribution. As we cannot check it, we just check that the distribution is elliptical

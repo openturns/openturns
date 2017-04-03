@@ -53,7 +53,7 @@ public:
   /** Constructor from RandomVector */
   EventRandomVector(const RandomVectorImplementation & antecedent,
                                   const ComparisonOperator & op,
-                                  const NumericalScalar threshold);
+                                  const Scalar threshold);
 
   /** Virtual constructor */
   virtual EventRandomVector * clone() const;
@@ -68,7 +68,7 @@ public:
   ComparisonOperator getOperator() const;
 
   /** Threshold accessor */
-  NumericalScalar getThreshold() const;
+  Scalar getThreshold() const;
 
   /* Here is the interface that all derived class may implement */
 
@@ -95,7 +95,7 @@ private:
   ComparisonOperator operator_;
 
   /** The threshold of the eventRandomVectorImplementation */
-  NumericalScalar threshold_;
+  Scalar threshold_;
 
 }; /* class EventRandomVector */
 

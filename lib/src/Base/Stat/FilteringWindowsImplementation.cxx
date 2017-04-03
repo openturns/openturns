@@ -45,9 +45,9 @@ FilteringWindowsImplementation * FilteringWindowsImplementation::clone() const
   return new FilteringWindowsImplementation(*this);
 }
 
-NumericalScalar FilteringWindowsImplementation::operator()(const NumericalScalar t) const
+Scalar FilteringWindowsImplementation::operator()(const Scalar t) const
 {
-  throw NotYetImplementedException(HERE) << "In FilteringWindowsImplementation::operator()(const NumericalScalar t) const";
+  throw NotYetImplementedException(HERE) << "In FilteringWindowsImplementation::operator()(const Scalar t) const";
 }
 
 /* String converter */

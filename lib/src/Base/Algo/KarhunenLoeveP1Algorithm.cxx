@@ -47,7 +47,7 @@ KarhunenLoeveP1Algorithm::KarhunenLoeveP1Algorithm()
 /* Constructor with parameters */
 KarhunenLoeveP1Algorithm::KarhunenLoeveP1Algorithm(const Mesh & mesh,
 						   const CovarianceModel & covariance,
-    const NumericalScalar threshold)
+    const Scalar threshold)
   : KarhunenLoeveAlgorithmImplementation(covariance, threshold)
   , mesh_(mesh)
 {
@@ -87,7 +87,7 @@ void KarhunenLoeveP1Algorithm::run()
   CovarianceMatrix gram(mesh_.computeP1Gram());
   const UnsignedInteger numVertices = mesh_.getVerticesNumber();
   if (!(gram.getDimension() == numVertices)) throw InternalException(HERE) << "Error: the P1 Gram matrix of the mesh has a dimension=" << gram.getDimension() << " different from the number of vertices=" << numVertices;
-  const NumericalScalar epsilon = ResourceMap::GetAsScalar("KarhunenLoeveP1Algorithm-RegularizationFactor");
+  const Scalar epsilon = ResourceMap::GetAsScalar("KarhunenLoeveP1Algorithm-RegularizationFactor");
   if (epsilon > 0.0)
     for (UnsignedInteger i = 0; i < gram.getDimension(); ++i) gram(i, i) += epsilon;
   // Extend the Gram matrix of the mesh
@@ -102,7 +102,7 @@ void KarhunenLoeveP1Algorithm::run()
 	{
 	  for (UnsignedInteger j = 0; j <= i; ++j)
 	    {
-	      const NumericalScalar gij = gram(i, j);
+	      const Scalar gij = gram(i, j);
 	      for (UnsignedInteger k = 0; k < dimension; ++k)
 		G(i * dimension + k, j * dimension + k) = gij;
 	    } // Loop over j
@@ -134,7 +134,7 @@ void KarhunenLoeveP1Algorithm::run()
   LOGDEBUG(OSS(false) << "eigenVectors=\n" << eigenVectors << ", eigenValues=" << eigenValues);
   LOGINFO("Extract the relevant eigenpairs");
   UnsignedInteger K = 0;
-  NumericalScalar cumulatedVariance = std::abs(eigenValues[0]);
+  Scalar cumulatedVariance = std::abs(eigenValues[0]);
   // Find the cut-off in the eigenvalues
   while ((K < eigenValues.getSize()) && (eigenValues[K] >= threshold_ * cumulatedVariance))
     {
@@ -154,8 +154,8 @@ void KarhunenLoeveP1Algorithm::run()
     selectedEV[k] = eigenValues[k];
     const MatrixImplementation a(*eigenVectors.getColumn(k).getImplementation());
     const MatrixImplementation Ga(G.getImplementation()->genProd(a));
-    const NumericalScalar norm = std::sqrt(a.genProd(Ga, true, false)[0]);
-    const NumericalScalar factor = a[0] < 0.0 ? -1.0 / norm : 1.0 / norm;
+    const Scalar norm = std::sqrt(a.genProd(Ga, true, false)[0]);
+    const Scalar factor = a[0] < 0.0 ? -1.0 / norm : 1.0 / norm;
     // Store the eigen modes in two forms
     values.setData(a * factor);
     modesAsProcessSample.add(values);

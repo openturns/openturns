@@ -50,7 +50,7 @@ public:
 
   /** Default constructor without parameters */
   KarhunenLoeveP1Factory(const Mesh & mesh,
-                         const NumericalScalar threshold);
+                         const Scalar threshold);
 
   /** Virtual copy constructor */
   virtual KarhunenLoeveP1Factory * clone() const;
@@ -86,7 +86,7 @@ private:
   CovarianceMatrix gram_;
 
   /** Threshold for eigenvalues selection */
-  NumericalScalar threshold_;
+  Scalar threshold_;
 
 } ; /* class KarhunenLoeveP1Factory */
 

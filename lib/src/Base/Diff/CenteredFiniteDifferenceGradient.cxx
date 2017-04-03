@@ -47,7 +47,7 @@ CenteredFiniteDifferenceGradient::CenteredFiniteDifferenceGradient(const Point &
 }
 
 /* Parameter constructor */
-CenteredFiniteDifferenceGradient::CenteredFiniteDifferenceGradient(const NumericalScalar epsilon,
+CenteredFiniteDifferenceGradient::CenteredFiniteDifferenceGradient(const Scalar epsilon,
     const EvaluationPointer & p_evaluation)
   : FiniteDifferenceGradient(epsilon, p_evaluation)
 {

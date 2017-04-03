@@ -122,13 +122,13 @@ public:
   ComparisonOperator getOperator() const;
 
   /** Threshold accessor */
-  NumericalScalar getThreshold() const;
+  Scalar getThreshold() const;
 
 protected:
   /** Constructor for event vector */
   RandomVector(const RandomVector & antecedent,
                const ComparisonOperator & op,
-               const NumericalScalar threshold);
+               const Scalar threshold);
 
   /** Constructor for event vector */
   RandomVector(const RandomVector & antecedent,

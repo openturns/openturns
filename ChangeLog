@@ -64,6 +64,7 @@
  * Deprecated NumericalPoint[WithDescription] for Point[WithDescription]
  * Deprecated ResourceMap::[SG]AsNumericalScalar for [SG]AsScalar
  * Deprecated SpecFunc::*NumericalScalar*
+ * Deprecated NumericalScalar for Scalar
 
 === Python module ===
 

@@ -46,19 +46,19 @@ SpaceFillingImplementation * SpaceFillingImplementation::clone() const
 }
 
 /** Evaluate criterion on a sample */
-NumericalScalar SpaceFillingImplementation::evaluate(const Sample & sample) const
+Scalar SpaceFillingImplementation::evaluate(const Sample & sample) const
 {
   throw NotYetImplementedException(HERE);
 }
 
 /** Compute criterion when performing an elementary perturbation */
-NumericalScalar SpaceFillingImplementation::perturbLHS(Sample& oldDesign, NumericalScalar oldCriterion,
+Scalar SpaceFillingImplementation::perturbLHS(Sample& oldDesign, Scalar oldCriterion,
     UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const
 {
   // Default method uses O(N*N) computations
   // Swap coordinates
   std::swap(oldDesign[row1][column], oldDesign[row2][column]);
-  const NumericalScalar criterion = evaluate(oldDesign);
+  const Scalar criterion = evaluate(oldDesign);
   // Swap coordinates to restore original sample
   std::swap(oldDesign[row1][column], oldDesign[row2][column]);
   // Return criterion

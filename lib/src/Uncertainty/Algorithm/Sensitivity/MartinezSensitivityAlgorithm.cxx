@@ -144,7 +144,7 @@ void MartinezSensitivityAlgorithm::computeAsymptoticInterval() const
   // Mean reference is the Sensitivity values
   const Point aggregatedFirstOrder(getAggregatedFirstOrderIndices());
   const Point aggregatedTotalOrder(getAggregatedTotalOrderIndices());
-  const NumericalScalar t = DistFunc::qNormal(1.0 - 0.5 * confidenceLevel_);
+  const Scalar t = DistFunc::qNormal(1.0 - 0.5 * confidenceLevel_);
   const UnsignedInteger size = size_;
   if (size <= 3)
     throw InvalidArgumentException(HERE) << "Could not compute asymptotic confidence interval for sensitivity indices with size=" << size
@@ -157,7 +157,7 @@ void MartinezSensitivityAlgorithm::computeAsymptoticInterval() const
   Point totalOrderLowerBound(inputDimension, 0.0);
   Point totalOrderUpperBound(inputDimension, 0.0);
   // Numerical scalar that will be used
-  NumericalScalar z, rho;
+  Scalar z, rho;
   for (UnsignedInteger p = 0; p < inputDimension; ++p)
   {
     // Correlation indices evaluation
@@ -168,8 +168,8 @@ void MartinezSensitivityAlgorithm::computeAsymptoticInterval() const
     // Fisher transform
     z = 0.5 * std::log((1.0 + rho) / (1.0 - rho));
     // zmin/zmax
-    NumericalScalar zmin = std::tanh(z - t / std::sqrt(size - 3.0));
-    NumericalScalar zmax = std::tanh(z + t / std::sqrt(size - 3.0));
+    Scalar zmin = std::tanh(z - t / std::sqrt(size - 3.0));
+    Scalar zmax = std::tanh(z + t / std::sqrt(size - 3.0));
     // TODO if interval is outside [0,1], how to procede?
     firstOrderLowerBound[p] = zmin;
     firstOrderUpperBound[p] = zmax;

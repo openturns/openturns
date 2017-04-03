@@ -41,7 +41,7 @@ class OT_API FFT
 public:
 
   typedef Pointer<FFTImplementation>    Implementation;
-  typedef Collection<NumericalScalar>   NumericalScalarCollection;
+  typedef Collection<Scalar>   ScalarCollection;
   typedef Collection<NumericalComplex>  NumericalComplexCollection;
 
   /** Default onstructor */
@@ -62,15 +62,15 @@ public:
    * Given the real sequence X_n, compute the sequence Z_k such that:
    * Z_k = \sum_{n=0}^{N-1} X_n\exp(-\frac{2i\pi kn}{N})
    */
-  NumericalComplexCollection transform(const NumericalScalarCollection & collection) const;
+  NumericalComplexCollection transform(const ScalarCollection & collection) const;
 
   /** FFT transformation on real - The transformation is applied on a part of the collection*/
-  NumericalComplexCollection transform(const NumericalScalarCollection & collection,
+  NumericalComplexCollection transform(const ScalarCollection & collection,
                                        const UnsignedInteger first,
                                        const UnsignedInteger size) const;
 
   /** FFT transformation on real with a regular sequence of the collection (between first and last, by step = step)*/
-  NumericalComplexCollection transform(const NumericalScalarCollection & collection,
+  NumericalComplexCollection transform(const ScalarCollection & collection,
                                        const UnsignedInteger first,
                                        const UnsignedInteger step,
                                        const UnsignedInteger last) const;
@@ -119,15 +119,15 @@ public:
    * Y_k = \frac{1}{N}\sum_{n=0}^{N-1} Z_n\exp(\frac{2i\pi kn}{N})
    */
   /** FFT inverse transformation */
-  NumericalComplexCollection inverseTransform(const NumericalScalarCollection & collection) const;
+  NumericalComplexCollection inverseTransform(const ScalarCollection & collection) const;
 
   /** FFT inverse transformation - The transformation is applied on a part of the collection */
-  NumericalComplexCollection inverseTransform(const NumericalScalarCollection & collection,
+  NumericalComplexCollection inverseTransform(const ScalarCollection & collection,
       const UnsignedInteger first,
       const UnsignedInteger size) const;
 
   /** FFT inverse transformation on a regular sequence of the collection (between first and last, spearated  by step)*/
-  NumericalComplexCollection inverseTransform(const NumericalScalarCollection & collection,
+  NumericalComplexCollection inverseTransform(const ScalarCollection & collection,
       const UnsignedInteger first,
       const UnsignedInteger step,
       const UnsignedInteger last) const;

@@ -41,7 +41,7 @@ public:
   FarlieGumbelMorgensternCopula();
 
   /** Parameters constructor */
-  explicit FarlieGumbelMorgensternCopula(const NumericalScalar theta);
+  explicit FarlieGumbelMorgensternCopula(const Scalar theta);
 
   /** Comparison operator */
   Bool operator ==(const FarlieGumbelMorgensternCopula & other) const;
@@ -67,11 +67,11 @@ public:
 
   /** Get the PDF of the distribution */
   using CopulaImplementation::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using CopulaImplementation::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the Kendall concordance of the distribution */
   CorrelationMatrix getKendallTau() const;
@@ -84,11 +84,11 @@ public:
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using CopulaImplementation::computeConditionalCDF;
-  NumericalScalar computeConditionalCDF(const NumericalScalar x, const Point & y) const;
+  Scalar computeConditionalCDF(const Scalar x, const Point & y) const;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
   using CopulaImplementation::computeConditionalQuantile;
-  NumericalScalar computeConditionalQuantile(const NumericalScalar q, const Point & y) const;
+  Scalar computeConditionalQuantile(const Scalar q, const Point & y) const;
 
   /** Parameters value accessors */
   void setParameter(const Point & parameter);
@@ -106,8 +106,8 @@ public:
   /* Interface specific to FarlieGumbelMorgensternCopula */
 
   /** Theta accessor */
-  void setTheta(const NumericalScalar theta);
-  NumericalScalar getTheta() const;
+  void setTheta(const Scalar theta);
+  Scalar getTheta() const;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
   using CopulaImplementation::getMarginal;
@@ -128,7 +128,7 @@ private:
   void computeCovariance() const;
 
   /** The parameter of the FarlieGumbelMorgensternCopula distribution */
-  NumericalScalar theta_;
+  Scalar theta_;
 
 }; /* class FarlieGumbelMorgensternCopula */
 

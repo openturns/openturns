@@ -68,25 +68,25 @@ public:
 
   /** Get the PDF of the distribution */
   using DiscreteDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using DiscreteDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalPDF;
-  NumericalScalar computeConditionalPDF(const NumericalScalar x,
+  Scalar computeConditionalPDF(const Scalar x,
                                         const Point & y) const;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalCDF;
-  NumericalScalar computeConditionalCDF(const NumericalScalar x,
+  Scalar computeConditionalCDF(const Scalar x,
                                         const Point & y) const;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalQuantile;
-  NumericalScalar computeConditionalQuantile(const NumericalScalar q,
+  Scalar computeConditionalQuantile(const Scalar q,
       const Point & y) const;
 
   /** Get the i-th marginal distribution */
@@ -118,12 +118,12 @@ public:
   UnsignedInteger getN() const;
 
   /** SmallA accessor */
-  void setSmallA(const NumericalScalar smallA);
-  NumericalScalar getSmallA() const;
+  void setSmallA(const Scalar smallA);
+  Scalar getSmallA() const;
 
   /** Eta accessor */
-  void setEta(const NumericalScalar eta);
-  NumericalScalar getEta() const;
+  void setEta(const Scalar eta);
+  Scalar getEta() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -145,11 +145,11 @@ private:
 
   /** Compute the generating function of a truncated Poisson distributions as needed in the computeCDF() method */
   NumericalComplex computeLocalPhi(const NumericalComplex & z,
-                                   const NumericalScalar lambda,
-                                   const NumericalScalar a) const;
+                                   const Scalar lambda,
+                                   const Scalar a) const;
 
   /** Quantile computation for dimension=1 */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+  Scalar computeScalarQuantile(const Scalar prob,
                                         const Bool tail = false) const;
 
   /** Compute the mean of the distribution */
@@ -165,19 +165,19 @@ private:
   Point p_;
 
   /** The sum of probabilities of the Multinomial distribution */
-  NumericalScalar sumP_;
+  Scalar sumP_;
 
   /** Normalization factor for the CDF */
-  NumericalScalar normalizationCDF_;
+  Scalar normalizationCDF_;
 
   /** Radius of the discretization in Poisson's formula */
-  NumericalScalar r_;
+  Scalar r_;
 
   /** Threshold for the A parameter of the CDF algorithm */
-  NumericalScalar smallA_;
+  Scalar smallA_;
 
   /** Normalization for the CDF algorithm */
-  NumericalScalar eta_;
+  Scalar eta_;
 
 }; /* class Multinomial */
 

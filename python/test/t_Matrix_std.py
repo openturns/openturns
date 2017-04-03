@@ -52,7 +52,7 @@ try:
     print("test number four : constructor with collection method")
 
     # Create the collection of values
-    elementsValues = NumericalScalarCollection()
+    elementsValues = ScalarCollection()
     elementsValues.add(1.)
     elementsValues.add(2.)
     elementsValues.add(3.)

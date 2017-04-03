@@ -448,8 +448,8 @@ void fromNodeConverter<XML_STMGR::numericalcomplex_tag, NumericalComplex>(XML::N
 {
   XML::Node node_real = XML::FindElementByName( node, XML_STMGR::real_tag::Get() );
   XML::Node node_imag = XML::FindElementByName( node, XML_STMGR::imag_tag::Get() );
-  NumericalScalar real = -1.0;
-  NumericalScalar imag = -1.0;
+  Scalar real = -1.0;
+  Scalar imag = -1.0;
   fromStringConverter( getValueToConvert<XML_STMGR::real_tag>( node_real ), real );
   fromStringConverter( getValueToConvert<XML_STMGR::imag_tag>( node_imag ), imag );
   value = NumericalComplex( real, imag );
@@ -777,13 +777,13 @@ void XMLStorageManager::readIndexedValue(Pointer<InternalObject> & p_obj,
 
 #endif
 
-/************ Type = NumericalScalar ************/
+/************ Type = Scalar ************/
 
 
 /* Add an attribute to an internal object */
 void XMLStorageManager::addAttribute(Pointer<InternalObject> & p_obj,
                                      const String & name,
-                                     NumericalScalar value)
+                                     Scalar value)
 {
   AttributeWriter( p_obj, name, value );
 }
@@ -791,7 +791,7 @@ void XMLStorageManager::addAttribute(Pointer<InternalObject> & p_obj,
 /* Read an attribute */
 void XMLStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
                                       const String & name,
-                                      NumericalScalar & value)
+                                      Scalar & value)
 {
   AttributeReader( XML_STMGR::numericalscalar_tag(), p_state_, name, value );
 }
@@ -799,7 +799,7 @@ void XMLStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
 /* Add an indexed value to an internal object */
 void XMLStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
                                         UnsignedInteger index,
-                                        NumericalScalar value)
+                                        Scalar value)
 {
   IndexedValueWriter( XML_STMGR::numericalscalar_tag(), p_obj, index, value );
 }
@@ -807,7 +807,7 @@ void XMLStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
 /* Read an indexed value */
 void XMLStorageManager::readIndexedValue(Pointer<InternalObject> & p_obj,
     UnsignedInteger index,
-    NumericalScalar & value)
+    Scalar & value)
 {
   IndexedValueReader( XML_STMGR::numericalscalar_tag(), p_obj, index, value );
 }

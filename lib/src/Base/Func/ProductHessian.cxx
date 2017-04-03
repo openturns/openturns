@@ -112,8 +112,8 @@ SymmetricTensor ProductHessian::hessian(const Point & inP) const
   {
     const SymmetricMatrix leftHessianSheet(leftHessian.getSheet(0));
     const SymmetricMatrix rightHessianSheet(rightHessian.getSheet(k));
-    const NumericalScalar rightValueScalar = rightValue[k];
-    const NumericalScalar leftValueScalar = leftValue[0];
+    const Scalar rightValueScalar = rightValue[k];
+    const Scalar leftValueScalar = leftValue[0];
     const SymmetricMatrix term1(leftHessianSheet * rightValueScalar);
     const SymmetricMatrix term2(rightHessianSheet * leftValueScalar);
     const Matrix term3(leftGradient * rightGradient.transpose().getRow(k));

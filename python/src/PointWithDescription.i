@@ -32,9 +32,9 @@ namespace OT {
         desc[i] = convert<_PyString_,OT::String>( item_0 );
         PyObject * item_1 = PySequence_Fast_GET_ITEM( elt, 1 );
         check<_PyFloat_>( item_1 );
-        coll[i] = convert<_PyFloat_,OT::NumericalScalar>( item_1 );
+        coll[i] = convert<_PyFloat_,OT::Scalar>( item_1 );
       } else {
-        throw OT::InvalidArgumentException(HERE) << "Sequence item " << i << " passed as argument is not a pair (String, NumericalScalar)";
+        throw OT::InvalidArgumentException(HERE) << "Sequence item " << i << " passed as argument is not a pair (String, Scalar)";
       }
     }
 

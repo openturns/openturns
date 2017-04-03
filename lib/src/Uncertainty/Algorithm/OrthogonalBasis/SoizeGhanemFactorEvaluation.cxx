@@ -97,7 +97,7 @@ Point SoizeGhanemFactorEvaluation::operator() (const Point & inP) const
   }
   else
   {
-    NumericalScalar logFactor = 0.0;
+    Scalar logFactor = 0.0;
     for (UnsignedInteger i = 0; i < inputDimension; ++i)
       logFactor += marginals_[i].computeLogPDF(inP[i]);
     // \sqrt{\frac{\prod_{k=1}^d p_k(x_k)}{p(x_1,\dots,x_d)}}

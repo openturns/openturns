@@ -71,7 +71,7 @@ public:
   // discretize with use of HMatrix
   using StationaryCovarianceModel::discretizeHMatrix;
   HMatrix discretizeHMatrix(const Sample & vertices,
-                            const NumericalScalar nuggetFactor,
+                            const Scalar nuggetFactor,
                             const HMatrixParameters & parameters) const;
 
   /** Gradient */

@@ -68,13 +68,13 @@ public:
 
   /** Get the PDF of the distribution */
   using DiscreteDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
   using DiscreteDistribution::computeLogPDF;
-  NumericalScalar computeLogPDF(const Point & point) const;
+  Scalar computeLogPDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using DiscreteDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the i-th marginal distribution */
   using DiscreteDistribution::getMarginal;
@@ -115,7 +115,7 @@ private:
   void computeRange();
 
   /** Quantile computation for dimension=1 */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+  Scalar computeScalarQuantile(const Scalar prob,
                                         const Bool tail = false) const;
 
   /** Compute the mean of the distribution */
@@ -131,7 +131,7 @@ private:
   UnsignedInteger n_;
 
   /** Log PDF value */
-  NumericalScalar logPDFValue_;
+  Scalar logPDFValue_;
 
 }; /* class KPermutationsDistribution */
 

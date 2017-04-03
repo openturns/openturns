@@ -48,7 +48,7 @@ protected:
 public:
 
   /** Compute the survival function */
-  virtual NumericalScalar computeSurvivalFunction(const Point & point) const;
+  virtual Scalar computeSurvivalFunction(const Point & point) const;
 
   /** Get the mean of the copula */
   Point getMean() const;
@@ -84,7 +84,7 @@ public:
   /* Methods inherited from upper classes */
 
   /** Generic implementation of the quantile computation for continuous copulas */
-  Point computeQuantile(const NumericalScalar prob,
+  Point computeQuantile(const Scalar prob,
                                  const Bool tail = false) const;
 
 protected:
@@ -113,7 +113,7 @@ private:
     Point computeDiagonal(const Point & u) const
     {
       const Point point(dimension_, u[0]);
-      const NumericalScalar cdf = p_distribution_->computeCDF(point);
+      const Scalar cdf = p_distribution_->computeCDF(point);
       const Point value(1, cdf);
       return value;
     }

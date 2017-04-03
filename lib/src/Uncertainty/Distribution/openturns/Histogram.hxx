@@ -45,7 +45,7 @@ public:
   Histogram();
 
   /** Parameters constructor */
-  Histogram(const NumericalScalar first,
+  Histogram(const Scalar first,
             const Point & width,
             const Point & height);
 
@@ -75,14 +75,14 @@ public:
 
   /** Get the PDF of the Histogram distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the Histogram distribution */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
+  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
 
   /** Get the PDFGradient of the Histogram distribution */
   using ContinuousDistribution::computePDFGradient;
@@ -106,8 +106,8 @@ public:
   /* Interface specific to Histogram */
 
   /** First point accessor */
-  void setFirst(const NumericalScalar first);
-  NumericalScalar getFirst() const;
+  void setFirst(const Scalar first);
+  Scalar getFirst() const;
 
   /** Data accessor */
   void setData(const Point & width,
@@ -123,8 +123,8 @@ public:
   virtual Graph drawPDF() const;
 
   /** Draw the PDF of the Histogram using a specific presentation */
-  virtual Graph drawPDF(const NumericalScalar xMin,
-                        const NumericalScalar xMax,
+  virtual Graph drawPDF(const Scalar xMin,
+                        const Scalar xMax,
                         const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
 
   /** Method save() stores the object through the StorageManager */
@@ -146,14 +146,14 @@ private:
   void computeCovariance() const;
 
   /** Get the quantile of the Histogram distribution */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+  Scalar computeScalarQuantile(const Scalar prob,
                                         const Bool tail = false) const;
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange();
 
   /** The first point of the collection */
-  NumericalScalar first_;
+  Scalar first_;
 
   /** The collection of widths/heights */
   Point width_;

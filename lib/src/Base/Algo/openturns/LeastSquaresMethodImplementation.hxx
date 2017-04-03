@@ -93,7 +93,7 @@ public:
   virtual Point getGramInverseDiag() const;
 
   /** Get the trace of the Gram inverse */
-  virtual NumericalScalar getGramInverseTrace() const;
+  virtual Scalar getGramInverseTrace() const;
 
   /** Update */
   virtual void update(const Indices & addedIndices,

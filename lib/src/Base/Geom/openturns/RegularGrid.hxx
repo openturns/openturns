@@ -48,8 +48,8 @@ public:
   RegularGrid();
 
   /** Parameters constructor */
-  RegularGrid(const NumericalScalar start,
-              const NumericalScalar step,
+  RegularGrid(const Scalar start,
+              const Scalar step,
               const UnsignedInteger n);
 
   /** Parameters constructor */
@@ -65,19 +65,19 @@ public:
   Bool operator != (const RegularGrid & rhs) const;
 
   /** Start accessor */
-  NumericalScalar getStart() const;
+  Scalar getStart() const;
 
   /** This method computes the timestamp of the very next step past the time series (STL convention) */
-  NumericalScalar getEnd() const;
+  Scalar getEnd() const;
 
   /** Step accessor */
-  NumericalScalar getStep() const;
+  Scalar getStep() const;
 
   /** TimeStamp number accessor */
   UnsignedInteger getN() const;
 
   /** Get the value at index i */
-  NumericalScalar getValue(const UnsignedInteger i) const;
+  Scalar getValue(const UnsignedInteger i) const;
 
   /** Get all the values as a sample */
   Point getValues() const;
@@ -106,10 +106,10 @@ public:
 private:
 
   /** The start of the regular grid */
-  NumericalScalar start_;
+  Scalar start_;
 
   /** The step of the regular grid */
-  NumericalScalar step_;
+  Scalar step_;
 
   /** The number of stamps of the underlying regular grid */
   UnsignedInteger n_;

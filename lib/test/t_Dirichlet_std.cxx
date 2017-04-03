@@ -82,11 +82,11 @@ int main(int argc, char *argv[])
       fullprint << "Point=" << point << std::endl;
 
       // Show PDF and CDF of point
-      NumericalScalar LPDF = distribution.computeLogPDF( point );
+      Scalar LPDF = distribution.computeLogPDF( point );
       fullprint << "log pdf=" << LPDF << std::endl;
-      NumericalScalar PDF = distribution.computePDF( point );
+      Scalar PDF = distribution.computePDF( point );
       fullprint << "pdf=" << PDF << std::endl;
-      NumericalScalar CDF = distribution.computeCDF( point );
+      Scalar CDF = distribution.computeCDF( point );
       fullprint << "cdf=" << CDF << std::endl;
       Point quantile = distribution.computeQuantile( 0.95 );
       int oldPrecision = PlatformInfo::GetNumericalPrecision();

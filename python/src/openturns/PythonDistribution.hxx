@@ -72,21 +72,21 @@ public:
   Point computeDDF(const Point & point) const;
 
   /** Get the PDF of the distribution */
-  NumericalScalar computePDF(const Point & point) const;
-  NumericalScalar computeLogPDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
+  Scalar computeLogPDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the complementary CDF of the distribution */
-  NumericalScalar computeComplementaryCDF(const Point & point) const;
+  Scalar computeComplementaryCDF(const Point & point) const;
 
   /** Get the quantile of the distributionImplementation */
-  virtual Point computeQuantile(const NumericalScalar prob,
+  virtual Point computeQuantile(const Scalar prob,
                                          const Bool tail = false) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
+  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
 
   /** Get the PDFGradient of the distribution */
   Point computePDFGradient(const Point & point) const;
@@ -95,11 +95,11 @@ public:
   Point computeCDFGradient(const Point & point) const;
 
   /** Get the quantile of the distribution */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+  Scalar computeScalarQuantile(const Scalar prob,
                                         const Bool tail = false) const;
 
   /** Get the roughness, i.e. the L2-norm of the PDF */
-  NumericalScalar getRoughness() const;
+  Scalar getRoughness() const;
 
   /** Get the mean of the distribution */
   Point getMean() const;

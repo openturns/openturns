@@ -80,7 +80,7 @@ void ProductCovarianceModel::setCollection(const CovarianceModelCollection & col
     spatialDimension_ += localSpatialDimension;
     scale.add(collection[i].getScale());
     // Get amplitude as amplitude product
-    const NumericalScalar localAmplitude = collection[i].getAmplitude()[0];
+    const Scalar localAmplitude = collection[i].getAmplitude()[0];
     amplitude[0] *= localAmplitude;
   }
   // Set collection
@@ -104,13 +104,13 @@ ProductCovarianceModel * ProductCovarianceModel::clone() const
 }
 
 /* Computation of the covariance density function */
-NumericalScalar ProductCovarianceModel::computeStandardRepresentative(const Point & s,
+Scalar ProductCovarianceModel::computeStandardRepresentative(const Point & s,
     const Point & t) const
 {
   if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
   if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
 
-  NumericalScalar rho = 1.0;
+  Scalar rho = 1.0;
   UnsignedInteger start = 0;
   for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
   {
@@ -135,8 +135,8 @@ Matrix ProductCovarianceModel::partialGradient(const Point & s,
 
   const UnsignedInteger size = collection_.getSize();
   Point localCovariances(size);
-  NumericalScalar leftValue = 1.0;
-  NumericalScalar rightValue = 1.0;
+  Scalar leftValue = 1.0;
+  Scalar rightValue = 1.0;
   UnsignedInteger start = 0;
   Matrix gradient(spatialDimension_, 1);
   for (UnsignedInteger i = 0; i < size; ++i)

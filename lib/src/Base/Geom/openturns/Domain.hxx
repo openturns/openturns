@@ -62,10 +62,10 @@ public:
   Bool numericallyContains(const Point & point) const;
 
   /** Get the numerical volume of the discretization of the domain */
-  NumericalScalar getNumericalVolume() const;
+  Scalar getNumericalVolume() const;
 
   /** Get the volume of the domain */
-  NumericalScalar getVolume() const;
+  Scalar getVolume() const;
 
   /** Dimension accessors */
   virtual UnsignedInteger getDimension() const;

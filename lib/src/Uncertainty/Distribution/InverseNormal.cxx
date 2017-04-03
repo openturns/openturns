@@ -43,8 +43,8 @@ InverseNormal::InverseNormal()
 }
 
 /* Parameters constructor */
-InverseNormal::InverseNormal(const NumericalScalar lambda,
-                             const NumericalScalar mu)
+InverseNormal::InverseNormal(const Scalar lambda,
+                             const Scalar mu)
   : ContinuousDistribution()
   , lambda_(0.0)
   , mu_(0.0)
@@ -96,72 +96,72 @@ InverseNormal * InverseNormal::clone() const
 /* Get one realization of the distribution */
 Point InverseNormal::getRealization() const
 {
-  const NumericalScalar nu = DistFunc::rNormal();
-  const NumericalScalar y = nu * nu;
-  const NumericalScalar w = mu_ * y / lambda_;
+  const Scalar nu = DistFunc::rNormal();
+  const Scalar y = nu * nu;
+  const Scalar w = mu_ * y / lambda_;
   // Lower bound computed by Maple to insure double precision
-  const NumericalScalar x = w < 5.015e5 ? mu_ * (1.0 + 0.5 * w * (1.0 - std::sqrt(1.0 + 4.0 / w))) : mu_ * ((5.0 / w - 2.0) / w + 1.0) / w;
-  const NumericalScalar z = RandomGenerator::Generate();
+  const Scalar x = w < 5.015e5 ? mu_ * (1.0 + 0.5 * w * (1.0 - std::sqrt(1.0 + 4.0 / w))) : mu_ * ((5.0 / w - 2.0) / w + 1.0) / w;
+  const Scalar z = RandomGenerator::Generate();
   if (z * (mu_ + x) <= mu_) return Point(1, x);
   return Point(1, mu_ * mu_ / x);
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar InverseNormal::computePDF(const Point & point) const
+Scalar InverseNormal::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if (x <= 0.0) return 0.0;
   return std::sqrt(lambda_ / (2.0 * M_PI * x * x * x)) * std::exp(- lambda_ * (x - mu_) * (x - mu_) / (2.0 * x * mu_ * mu_));
 }
 
-NumericalScalar InverseNormal::computeLogPDF(const Point & point) const
+Scalar InverseNormal::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if (x <= 0.0) return SpecFunc::LogMinScalar;
   return 0.5 * ( std::log(lambda_) - std::log(2.0 * M_PI * x * x * x)) - lambda_ * (x - mu_) * (x - mu_) / (2.0 * x * mu_ * mu_);
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar InverseNormal::computeCDF(const Point & point) const
+Scalar InverseNormal::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if (x <= 0.0) return 0.0;
-  const NumericalScalar lx = std::sqrt(lambda_ / x);
-  const NumericalScalar phiArg1 = lx * ( x / mu_ - 1.0);
+  const Scalar lx = std::sqrt(lambda_ / x);
+  const Scalar phiArg1 = lx * ( x / mu_ - 1.0);
   // Quick return if in the far right tail. The pNormal() function is constant
   // equal to 1 in double precision for argument greater than 8.24, and the
   // InverseNormal CDF is greater than pNormal()
   if (phiArg1 > 8.24) return 1.0;
-  const NumericalScalar phiArg2 = -lx * ( x / mu_ + 1.0);
+  const Scalar phiArg2 = -lx * ( x / mu_ + 1.0);
   return DistFunc::pNormal(phiArg1) + std::exp(2.0 * lambda_ / mu_ + std::log(DistFunc::pNormal(phiArg2)));
 }
 
 /** Get the minimum volume level set containing a given probability of the distribution */
-LevelSet InverseNormal::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const
+LevelSet InverseNormal::computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & threshold) const
 {
   const Interval interval(computeMinimumVolumeInterval(prob));
   Function minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
   minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
-  NumericalScalar minusLogPDFThreshold = -computeLogPDF(interval.getLowerBound()[0]);
+  Scalar minusLogPDFThreshold = -computeLogPDF(interval.getLowerBound()[0]);
   threshold = std::exp(-minusLogPDFThreshold);
   return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex InverseNormal::computeCharacteristicFunction(const NumericalScalar x) const
+NumericalComplex InverseNormal::computeCharacteristicFunction(const Scalar x) const
 {
   if (std::abs(x) < pdfEpsilon_) return 1.0;
   return std::exp(computeLogCharacteristicFunction(x));
 }
 
-NumericalComplex InverseNormal::computeLogCharacteristicFunction(const NumericalScalar x) const
+NumericalComplex InverseNormal::computeLogCharacteristicFunction(const Scalar x) const
 {
   if (std::abs(x) < pdfEpsilon_) return 0.0;
   const NumericalComplex logCF(lambda_ * (1.0 - std::sqrt(NumericalComplex(1.0, - 2.0 * mu_ * mu_ * x / lambda_))) / mu_);
@@ -172,7 +172,7 @@ NumericalComplex InverseNormal::computeLogCharacteristicFunction(const Numerical
 void InverseNormal::computeRange()
 {
   const Point lowerBound(1, 0.0);
-  const NumericalScalar q = DistFunc::qNormal(cdfEpsilon_, true);
+  const Scalar q = DistFunc::qNormal(cdfEpsilon_, true);
   const Point upperBound(1, 2.0 * lambda_ * mu_ / (2.0 * lambda_ + mu_ * q * q - q * std::sqrt(mu_ * (q * q * mu_ + 4.0 * lambda_))));
   const Interval::BoolCollection finiteLowerBound(1, true);
   const Interval::BoolCollection finiteUpperBound(1, false);
@@ -216,9 +216,9 @@ Point InverseNormal::getKurtosis() const
 Point InverseNormal::getStandardMoment(const UnsignedInteger n) const
 {
   if (n == 0) return Point(1, 1.0);
-  NumericalScalar moment = 1.0;
-  NumericalScalar rho = 0.5 * mu_ / lambda_;
-  NumericalScalar product = 1.0;
+  Scalar moment = 1.0;
+  Scalar rho = 0.5 * mu_ / lambda_;
+  Scalar product = 1.0;
   for (UnsignedInteger k = 1; k < n; ++k)
   {
     product *= (n - k) * (n + k - 1) * rho / k;
@@ -229,8 +229,8 @@ Point InverseNormal::getStandardMoment(const UnsignedInteger n) const
 
 /* Interface specific to InverseNormal */
 
-void InverseNormal::setLambdaMu(const NumericalScalar lambda,
-                                const NumericalScalar mu)
+void InverseNormal::setLambdaMu(const Scalar lambda,
+                                const Scalar mu)
 {
   if ( (lambda <= 0.0) || (mu <= 0.0) ) throw InvalidArgumentException(HERE) << "lambda and mu MUST be positive";
   if ((lambda_ != lambda) || (mu_ != mu))
@@ -244,14 +244,14 @@ void InverseNormal::setLambdaMu(const NumericalScalar lambda,
 }
 
 /* lambda accessor */
-NumericalScalar InverseNormal::getLambda() const
+Scalar InverseNormal::getLambda() const
 {
   return lambda_;
 }
 
 
 /* mu accessor */
-NumericalScalar InverseNormal::getMu() const
+Scalar InverseNormal::getMu() const
 {
   return mu_;
 }
@@ -268,7 +268,7 @@ Point InverseNormal::getParameter() const
 void InverseNormal::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = InverseNormal(parameter[0], parameter[1]);
   setWeight(w);
 }

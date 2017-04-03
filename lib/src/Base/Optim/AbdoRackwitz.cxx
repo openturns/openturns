@@ -41,9 +41,9 @@ AbdoRackwitz::AbdoRackwitz()
 }
 
 AbdoRackwitz::AbdoRackwitz (const OptimizationProblem & problem,
-                            const NumericalScalar tau,
-                            const NumericalScalar omega,
-                            const NumericalScalar smooth)
+                            const Scalar tau,
+                            const Scalar omega,
+                            const Scalar smooth)
   : OptimizationAlgorithmImplementation(problem)
   , tau_(tau)
   , omega_(omega)
@@ -89,25 +89,25 @@ void AbdoRackwitz::checkProblem(const OptimizationProblem & problem) const
 }
 
 /* Line search for globalization of the algorithm */
-NumericalScalar AbdoRackwitz::computeLineSearch()
+Scalar AbdoRackwitz::computeLineSearch()
 {
   /* Logal copy of the level function and the level value */
   const Function levelFunction(getProblem().getLevelFunction());
-  const NumericalScalar levelValue = getProblem().getLevelValue();
+  const Scalar levelValue = getProblem().getLevelValue();
   /* Actualize sigma */
   currentSigma_ = std::max(currentSigma_ + 1.0, smooth_ * currentPoint_.norm() / currentGradient_.norm());
   /* Compute penalized scalar objective function at current point */
-  const NumericalScalar currentTheta = 0.5 * currentPoint_.normSquare() + currentSigma_ * std::abs(currentLevelValue_ - levelValue);
+  const Scalar currentTheta = 0.5 * currentPoint_.normSquare() + currentSigma_ * std::abs(currentLevelValue_ - levelValue);
   /* Min bound for step */
-  const NumericalScalar minStep = getMaximumAbsoluteError() / currentDirection_.norm();
+  const Scalar minStep = getMaximumAbsoluteError() / currentDirection_.norm();
   /* Minimum decrease for the penalized objective function */
-  const NumericalScalar levelIncrement = omega_ * dot(currentPoint_ + (currentSigma_ * ((currentLevelValue_ > levelValue) ? 1.0 : -1.0)) * currentGradient_, currentDirection_);
+  const Scalar levelIncrement = omega_ * dot(currentPoint_ + (currentSigma_ * ((currentLevelValue_ > levelValue) ? 1.0 : -1.0)) * currentGradient_, currentDirection_);
   /* Initialization of the line search */
   /* We start with step=1 */
-  NumericalScalar step = 1.0;
+  Scalar step = 1.0;
   Point currentStepPoint;
-  NumericalScalar currentStepLevelValue = -1.0;
-  NumericalScalar currentStepTheta = -1.0;
+  Scalar currentStepLevelValue = -1.0;
+  Scalar currentStepTheta = -1.0;
   do
   {
     currentStepPoint = currentPoint_ + step * currentDirection_;
@@ -134,15 +134,15 @@ void AbdoRackwitz::run()
   /* Get a local copy of the level function */
   const Function levelFunction(getProblem().getLevelFunction());
   /* Get a local copy of the level value */
-  const NumericalScalar levelValue = getProblem().getLevelValue();
+  const Scalar levelValue = getProblem().getLevelValue();
   /* Current point -> u */
   currentPoint_ = getStartingPoint();
   Bool convergence = false;
   UnsignedInteger iterationNumber = 0;
-  NumericalScalar absoluteError = -1.0;
-  NumericalScalar constraintError = -1.0;
-  NumericalScalar relativeError = -1.0;
-  NumericalScalar residualError = -1.0;
+  Scalar absoluteError = -1.0;
+  Scalar constraintError = -1.0;
+  Scalar relativeError = -1.0;
+  Scalar residualError = -1.0;
 
   /* Compute the level function at the current point -> G */
   currentLevelValue_ = levelFunction(currentPoint_)[0];
@@ -161,7 +161,7 @@ void AbdoRackwitz::run()
     currentGradient_ = levelFunction.gradient(currentPoint_) * Point(1, 1.0);
     if (getVerbose()) LOGINFO(OSS() << "current point=" << currentPoint_ << " current level value=" << currentLevelValue_ << " current gradient=" << currentGradient_);
     /* Compute the current Lagrange multiplier */
-    const NumericalScalar normGradientSquared = currentGradient_.normSquare();
+    const Scalar normGradientSquared = currentGradient_.normSquare();
     /* In case of a null gradient, throw an internal exception */
     if (normGradientSquared == 0)
     {
@@ -175,11 +175,11 @@ void AbdoRackwitz::run()
      */
     currentDirection_ = -currentLambda_ * currentGradient_ - currentPoint_;
     /* Perform a line search in the given direction */
-    const NumericalScalar alpha = computeLineSearch();
+    const Scalar alpha = computeLineSearch();
     /* Check if convergence has been achieved */
     absoluteError = std::abs(alpha) * currentDirection_.norm();
     constraintError = std::abs(currentLevelValue_ - levelValue);
-    const NumericalScalar pointNorm = currentPoint_.norm();
+    const Scalar pointNorm = currentPoint_.norm();
     if (pointNorm > 0.0)
     {
       relativeError = absoluteError / pointNorm;
@@ -222,34 +222,34 @@ void AbdoRackwitz::run()
 
 
 /* Tau accessor */
-NumericalScalar AbdoRackwitz::getTau() const
+Scalar AbdoRackwitz::getTau() const
 {
   return tau_;
 }
 
-void AbdoRackwitz::setTau(const NumericalScalar tau)
+void AbdoRackwitz::setTau(const Scalar tau)
 {
   tau_ = tau;
 }
 
 /* Omega accessor */
-NumericalScalar AbdoRackwitz::getOmega() const
+Scalar AbdoRackwitz::getOmega() const
 {
   return omega_;
 }
 
-void AbdoRackwitz::setOmega(const NumericalScalar omega)
+void AbdoRackwitz::setOmega(const Scalar omega)
 {
   omega_ = omega;
 }
 
 /* Smooth accessor */
-NumericalScalar AbdoRackwitz::getSmooth() const
+Scalar AbdoRackwitz::getSmooth() const
 {
   return smooth_;
 }
 
-void AbdoRackwitz::setSmooth(const NumericalScalar smooth)
+void AbdoRackwitz::setSmooth(const Scalar smooth)
 {
   smooth_ = smooth;
 }

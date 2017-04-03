@@ -40,7 +40,7 @@ public:
   LogNormalMuSigma();
 
   /** Constructor with parameters */
-  LogNormalMuSigma(const NumericalScalar mu, const NumericalScalar sigma, const NumericalScalar gamma = 0.);
+  LogNormalMuSigma(const Scalar mu, const Scalar sigma, const Scalar gamma = 0.);
 
   /** Virtual constructor */
   virtual LogNormalMuSigma * clone() const;
@@ -70,9 +70,9 @@ public:
 
 private:
   /** The main parameter set of the distribution */
-  NumericalScalar mu_;
-  NumericalScalar sigma_;
-  NumericalScalar gamma_;
+  Scalar mu_;
+  Scalar sigma_;
+  Scalar gamma_;
 }; /* class LogNormalMuSigma */
 
 

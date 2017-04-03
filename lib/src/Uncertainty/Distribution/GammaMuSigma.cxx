@@ -41,7 +41,7 @@ GammaMuSigma::GammaMuSigma()
   // Nothing to do
 }
 
-GammaMuSigma::GammaMuSigma(const NumericalScalar mu, const NumericalScalar sigma, const NumericalScalar gamma)
+GammaMuSigma::GammaMuSigma(const Scalar mu, const Scalar sigma, const Scalar gamma)
   : DistributionParametersImplementation()
   , mu_(mu)
   , sigma_(sigma)
@@ -80,16 +80,16 @@ Distribution GammaMuSigma::getDistribution() const
 /* Compute jacobian / native parameters */
 Matrix GammaMuSigma::gradient() const
 {
-  const NumericalScalar mu = mu_;
-  const NumericalScalar sigma = sigma_;
-  const NumericalScalar gamma = gamma_;
+  const Scalar mu = mu_;
+  const Scalar sigma = sigma_;
+  const Scalar gamma = gamma_;
 
-  const NumericalScalar dkdmu = 2.0 * (mu - gamma) / (sigma * sigma);
-  const NumericalScalar dkdsigma = -2.0 * (mu - gamma) * (mu - gamma) / (sigma * sigma * sigma);
-  const NumericalScalar dkdgamma = -dkdmu;
-  const NumericalScalar dlambdadmu = 1.0 / (sigma * sigma);
-  const NumericalScalar dlambdadsigma = -2.0 * (mu - gamma) / (sigma * sigma * sigma);
-  const NumericalScalar dlambdadgamma = -dlambdadmu;
+  const Scalar dkdmu = 2.0 * (mu - gamma) / (sigma * sigma);
+  const Scalar dkdsigma = -2.0 * (mu - gamma) * (mu - gamma) / (sigma * sigma * sigma);
+  const Scalar dkdgamma = -dkdmu;
+  const Scalar dlambdadmu = 1.0 / (sigma * sigma);
+  const Scalar dlambdadsigma = -2.0 * (mu - gamma) / (sigma * sigma * sigma);
+  const Scalar dlambdadgamma = -dlambdadmu;
 
   SquareMatrix nativeParametersGradient(IdentityMatrix(3));
   nativeParametersGradient(0, 0) = dkdmu;
@@ -108,14 +108,14 @@ Matrix GammaMuSigma::gradient() const
 Point GammaMuSigma::operator () (const Point & inP) const
 {
   if (inP.getDimension() != 3) throw InvalidArgumentException(HERE) << "the given point must have dimension=3, here dimension=" << inP.getDimension();
-  const NumericalScalar mu = inP[0];
-  const NumericalScalar sigma = inP[1];
-  const NumericalScalar gamma = inP[2];
+  const Scalar mu = inP[0];
+  const Scalar sigma = inP[1];
+  const Scalar gamma = inP[2];
 
   if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
 
-  NumericalScalar lambda = (mu - gamma) / sigma;
-  const NumericalScalar k = lambda * lambda;
+  Scalar lambda = (mu - gamma) / sigma;
+  const Scalar k = lambda * lambda;
   lambda /= sigma;
 
   Point nativeParameters(inP);
@@ -129,15 +129,15 @@ Point GammaMuSigma::operator () (const Point & inP) const
 Point GammaMuSigma::inverse(const Point & inP) const
 {
   if (inP.getDimension() != 3) throw InvalidArgumentException(HERE) << "the given point must have dimension=3, here dimension=" << inP.getDimension();
-  const NumericalScalar k = inP[0];
-  const NumericalScalar lambda = inP[1];
-  const NumericalScalar gamma = inP[2];
+  const Scalar k = inP[0];
+  const Scalar lambda = inP[1];
+  const Scalar gamma = inP[2];
 
   if (!(k > 0.0)) throw InvalidArgumentException(HERE) << "K MUST be positive";
   if (!(lambda > 0.0)) throw InvalidArgumentException(HERE) << "Lambda MUST be positive";
 
-  NumericalScalar mu = gamma + k / lambda;
-  const NumericalScalar sigma = std::sqrt(k) / lambda;
+  Scalar mu = gamma + k / lambda;
+  const Scalar sigma = std::sqrt(k) / lambda;
 
   Point muSigmaParameters(inP);
   muSigmaParameters[0] = mu;

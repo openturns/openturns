@@ -44,7 +44,7 @@ public:
 
   /** Parameters constructor */
   InverseWishart(const CovarianceMatrix & v,
-                 const NumericalScalar nu);
+                 const Scalar nu);
 
   /** Comparison operator */
   Bool operator ==(const InverseWishart & other) const;
@@ -69,15 +69,15 @@ public:
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
-  NumericalScalar computePDF(const CovarianceMatrix & m) const;
+  Scalar computePDF(const Point & point) const;
+  Scalar computePDF(const CovarianceMatrix & m) const;
   using ContinuousDistribution::computeLogPDF;
-  NumericalScalar computeLogPDF(const Point & point) const;
-  NumericalScalar computeLogPDF(const CovarianceMatrix & m) const;
+  Scalar computeLogPDF(const Point & point) const;
+  Scalar computeLogPDF(const CovarianceMatrix & m) const;
 
   /** Get the CDF of the distribution */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the standard deviation of the distribution */
   Point getStandardDeviation() const;
@@ -97,8 +97,8 @@ public:
   CovarianceMatrix getV() const;
 
   /** Nu accessor */
-  void setNu(const NumericalScalar nu);
-  NumericalScalar getNu() const;
+  void setNu(const Scalar nu);
+  Scalar getNu() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -126,13 +126,13 @@ private:
 
   /** The main parameter set of the distribution */
   mutable TriangularMatrix cholesky_;
-  NumericalScalar nu_;
+  Scalar nu_;
 
   /** The inverse of the Cholesky factor of the inverse of the scale matrix V */
   TriangularMatrix inverseCholeskyInverse_;
 
   /** The log-normalization factor */
-  NumericalScalar logNormalizationFactor_;
+  Scalar logNormalizationFactor_;
 
 }; /* class InverseWishart */
 

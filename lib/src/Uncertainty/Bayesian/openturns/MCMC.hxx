@@ -66,7 +66,7 @@ public:
   virtual String __repr__() const;
 
   /** Compute the likelihood w.r.t. observartions */
-  NumericalScalar computeLogLikelihood(const Point & currentState) const;
+  Scalar computeLogLikelihood(const Point & currentState) const;
 
   /** Prior accessor */
   void setPrior(const Distribution & prior);

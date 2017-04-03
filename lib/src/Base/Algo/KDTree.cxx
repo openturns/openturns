@@ -100,11 +100,11 @@ private:
                                 const Point & x,
                                 const UnsignedInteger activeDimension)
   {
-    const NumericalScalar delta = x[activeDimension] - sample_[p_node->index_][activeDimension];
+    const Scalar delta = x[activeDimension] - sample_[p_node->index_][activeDimension];
     const KDTree::KDNode::KDNodePointer & sameSide(delta < 0.0 ? p_node->p_left_ : p_node->p_right_);
     const KDTree::KDNode::KDNodePointer & oppositeSide(delta < 0.0 ? p_node->p_right_ : p_node->p_left_);
     const UnsignedInteger dimension = sample_.getDimension();
-    NumericalScalar currentGreatestValidSquaredDistance = values_[0];
+    Scalar currentGreatestValidSquaredDistance = values_[0];
     if (sameSide != 0)
     {
       collectNearestNeighbours(sameSide, x, (activeDimension + 1) % dimension);
@@ -112,7 +112,7 @@ private:
     }
     if (size_ == capacity_ && currentGreatestValidSquaredDistance < delta * delta) return;
     const UnsignedInteger localIndex = p_node->index_;
-    const NumericalScalar localSquaredDistance = (x - sample_[localIndex]).normSquare();
+    const Scalar localSquaredDistance = (x - sample_[localIndex]).normSquare();
     if (size_ != capacity_)
     {
       // Put index/value at the first free node and move it up to a valid location
@@ -181,7 +181,7 @@ private:
   // Number of used buckets
   UnsignedInteger size_;
   // Array containing values
-  Collection<NumericalScalar> values_;
+  Collection<Scalar> values_;
   // Array containing point indices
   Indices indices_;
 
@@ -300,7 +300,7 @@ Sample KDTree::getNearestNeighbours(const Point & x,
 UnsignedInteger KDTree::getNearestNeighbourIndex(const Point & x) const
 {
   if (points_.getSize() == 1) return 0;
-  NumericalScalar smallestDistance = SpecFunc::MaxScalar;
+  Scalar smallestDistance = SpecFunc::MaxScalar;
   return getNearestNeighbourIndex(p_root_, x, smallestDistance, 0);
 }
 
@@ -311,7 +311,7 @@ Point KDTree::getNearestNeighbour(const Point & x) const
 
 UnsignedInteger KDTree::getNearestNeighbourIndex(const KDNode::KDNodePointer & p_node,
     const Point & x,
-    NumericalScalar & bestSquaredDistance,
+    Scalar & bestSquaredDistance,
     const UnsignedInteger activeDimension) const
 {
   if (p_node == 0) throw NotDefinedException(HERE) << "Error: cannot find a nearest neighbour in an emty tree";
@@ -328,11 +328,11 @@ UnsignedInteger KDTree::getNearestNeighbourIndex(const KDNode::KDNodePointer & p
   // 2.4) Go on the opposite side. On return, check if the returned squared distance is less than the current best squared distance and update the current best index and the associated squared distance.
   // 3*) Return the current best index and the associated squared distance to the upper level
 
-  const NumericalScalar delta = x[activeDimension] - points_[p_node->index_][activeDimension];
+  const Scalar delta = x[activeDimension] - points_[p_node->index_][activeDimension];
   const KDNode::KDNodePointer & sameSide(delta < 0.0 ? p_node->p_left_ : p_node->p_right_);
   const KDNode::KDNodePointer & oppositeSide(delta < 0.0 ? p_node->p_right_ : p_node->p_left_);
   UnsignedInteger currentBestIndex = points_.getSize();
-  NumericalScalar currentBestSquaredDistance = bestSquaredDistance;
+  Scalar currentBestSquaredDistance = bestSquaredDistance;
   // 1)
   if (sameSide != 0)
   {
@@ -353,7 +353,7 @@ UnsignedInteger KDTree::getNearestNeighbourIndex(const KDNode::KDNodePointer & p
   }
   // 2.2)
   const UnsignedInteger localIndex = p_node->index_;
-  const NumericalScalar localSquaredDistance = (x - points_[localIndex]).normSquare();
+  const Scalar localSquaredDistance = (x - points_[localIndex]).normSquare();
   if (localSquaredDistance < currentBestSquaredDistance)
   {
     currentBestSquaredDistance = localSquaredDistance;

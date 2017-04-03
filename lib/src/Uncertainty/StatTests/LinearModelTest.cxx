@@ -45,7 +45,7 @@ LinearModelTest::LinearModelTest()
 TestResult LinearModelTest::LinearModelAdjustedRSquared(const Sample & firstSample,
     const Sample & secondSample,
     const LinearModel & linearModel,
-    const NumericalScalar level)
+    const Scalar level)
 {
   return RunTwoSamplesALinearModelRTest(firstSample, secondSample, linearModel, level, "LmAdjustedRSquare");
 }
@@ -53,7 +53,7 @@ TestResult LinearModelTest::LinearModelAdjustedRSquared(const Sample & firstSamp
 /*  */
 TestResult LinearModelTest::LinearModelAdjustedRSquared(const Sample & firstSample,
     const Sample & secondSample,
-    const NumericalScalar level)
+    const Scalar level)
 {
   return LinearModelAdjustedRSquared(firstSample, secondSample, LinearModelFactory().build(firstSample, secondSample, level), level);
 }
@@ -62,7 +62,7 @@ TestResult LinearModelTest::LinearModelAdjustedRSquared(const Sample & firstSamp
 TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
     const Sample & secondSample,
     const LinearModel & linearModel,
-    const NumericalScalar level)
+    const Scalar level)
 {
   return RunTwoSamplesALinearModelRTest(firstSample, secondSample, linearModel, level, "LmFisher");
 }
@@ -70,7 +70,7 @@ TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
 /*  */
 TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
     const Sample & secondSample,
-    const NumericalScalar level)
+    const Scalar level)
 {
   return LinearModelFisher(firstSample, secondSample, LinearModelFactory().build(firstSample, secondSample, level), level);
 }
@@ -79,7 +79,7 @@ TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
 TestResult LinearModelTest::LinearModelResidualMean(const Sample & firstSample,
     const Sample & secondSample,
     const LinearModel & linearModel,
-    const NumericalScalar level)
+    const Scalar level)
 {
   return RunTwoSamplesALinearModelRTest(firstSample, secondSample, linearModel, level, "LmResidualMean");
 }
@@ -87,7 +87,7 @@ TestResult LinearModelTest::LinearModelResidualMean(const Sample & firstSample,
 /*  */
 TestResult LinearModelTest::LinearModelResidualMean(const Sample & firstSample,
     const Sample & secondSample,
-    const NumericalScalar level)
+    const Scalar level)
 {
   return LinearModelResidualMean(firstSample, secondSample, LinearModelFactory().build(firstSample, secondSample, level), level);
 }
@@ -96,7 +96,7 @@ TestResult LinearModelTest::LinearModelResidualMean(const Sample & firstSample,
 TestResult LinearModelTest::LinearModelRSquared(const Sample & firstSample,
     const Sample & secondSample,
     const LinearModel & linearModel,
-    const NumericalScalar level)
+    const Scalar level)
 {
   return RunTwoSamplesALinearModelRTest(firstSample, secondSample, linearModel, level, "LmRsquared");
 }
@@ -104,7 +104,7 @@ TestResult LinearModelTest::LinearModelRSquared(const Sample & firstSample,
 /*  */
 TestResult LinearModelTest::LinearModelRSquared(const Sample & firstSample,
     const Sample & secondSample,
-    const NumericalScalar level)
+    const Scalar level)
 {
   return LinearModelRSquared(firstSample, secondSample, LinearModelFactory().build(firstSample, secondSample, level), level);
 }
@@ -113,7 +113,7 @@ TestResult LinearModelTest::LinearModelRSquared(const Sample & firstSample,
 TestResult LinearModelTest::RunTwoSamplesALinearModelRTest(const Sample & firstSample,
     const Sample & secondSample,
     const LinearModel & linearModel,
-    const NumericalScalar level,
+    const Scalar level,
     const String & testName)
 {
   String firstDataFileName(firstSample.storeToTemporaryFile());
@@ -140,7 +140,7 @@ TestResult LinearModelTest::RunTwoSamplesALinearModelRTest(const Sample & firstS
   const String RExecutable(ResourceMap::Get("R-executable-command"));
   OSS systemCommand;
   if (RExecutable != "") systemCommand << RExecutable << " --no-save --silent < \"" << commandFileName << "\"" << Os::GetDeleteCommandOutput();
-  else throw NotYetImplementedException(HERE) << "In LinearModelTest::RunTwoSamplesALinearModelRTest(const Sample & firstSample, const Sample & secondSample, const LinearModel & linearModel, const NumericalScalar level, const String & testName): needs R. Please install it and set the absolute path of the R executable in ResourceMap.";
+  else throw NotYetImplementedException(HERE) << "In LinearModelTest::RunTwoSamplesALinearModelRTest(const Sample & firstSample, const Sample & secondSample, const LinearModel & linearModel, const Scalar level, const String & testName): needs R. Please install it and set the absolute path of the R executable in ResourceMap.";
   int returnCode(Os::ExecuteCommand(systemCommand));
   if (returnCode != 0) throw InternalException(HERE) << "Error: unable to execute the system command " << String(systemCommand) << " returned code is " << returnCode;
   // Parse result file
@@ -149,9 +149,9 @@ TestResult LinearModelTest::RunTwoSamplesALinearModelRTest(const Sample & firstS
   resultFile >> testType;
   Bool testResult;
   resultFile >> testResult;
-  NumericalScalar pThreshold = -1.0;
+  Scalar pThreshold = -1.0;
   resultFile >> pThreshold;
-  NumericalScalar pValue = -1.0;
+  Scalar pValue = -1.0;
   resultFile >> pValue;
 
   // Clean-up everything
@@ -168,9 +168,9 @@ TestResult LinearModelTest::RunTwoSamplesALinearModelRTest(const Sample & firstS
 TestResult LinearModelTest::LinearModelHarrisonMcCabe(const Sample & firstSample,
     const Sample & secondSample,
     const LinearModel & linearModel,
-    const NumericalScalar level,
-    const NumericalScalar breakPoint,
-    const NumericalScalar simulationSize)
+    const Scalar level,
+    const Scalar breakPoint,
+    const Scalar simulationSize)
 {
   const Sample residuals(linearModel.getResidual(firstSample, secondSample));
   const UnsignedInteger residualSize = firstSample.getSize();
@@ -178,32 +178,32 @@ TestResult LinearModelTest::LinearModelHarrisonMcCabe(const Sample & firstSample
   /* Split the sample using the breakPoint*/
   const UnsignedInteger breakIndex = std::floor(residualSize * breakPoint);
 
-  NumericalScalar sumSelectResiduals = 0;
+  Scalar sumSelectResiduals = 0;
   for(UnsignedInteger i = 0; i < breakIndex; ++i)
   {
     const Point residual(residuals[i]);
     sumSelectResiduals += residual.normSquare();
   }
 
-  const NumericalScalar sumSquaredResiduals = residuals.computeVariance()[0] * (residualSize - 1);
+  const Scalar sumSquaredResiduals = residuals.computeVariance()[0] * (residualSize - 1);
 
   /* compute Harrison McCabe statistic */
-  const NumericalScalar hmc = sumSelectResiduals / sumSquaredResiduals;
+  const Scalar hmc = sumSelectResiduals / sumSquaredResiduals;
 
   /* p-value computed by simultation */
-  NumericalScalar pValue = 0;
+  Scalar pValue = 0;
   for(UnsignedInteger i = 0; i < simulationSize; ++i)
   {
     const Sample sample(Normal().getSample(residualSize));
     const Sample stantardSample((sample - sample.computeMean()) / sample.computeStandardDeviationPerComponent());
-    NumericalScalar sumSelectResidualsSimulation = 0;
+    Scalar sumSelectResidualsSimulation = 0;
     for (UnsignedInteger j = 0; j < breakIndex; ++ j)
     {
       const Point stantardSamplePoint(stantardSample[j]);
       sumSelectResidualsSimulation += stantardSamplePoint.normSquare();
     }
-    const NumericalScalar sumSquaredResidualsSimulation = stantardSample.computeVariance()[0] * (residualSize - 1);
-    const NumericalScalar statistic = sumSelectResidualsSimulation / sumSquaredResidualsSimulation;
+    const Scalar sumSquaredResidualsSimulation = stantardSample.computeVariance()[0] * (residualSize - 1);
+    const Scalar statistic = sumSelectResidualsSimulation / sumSquaredResidualsSimulation;
     if(statistic < hmc)
     {
       pValue += 1.0;
@@ -211,15 +211,15 @@ TestResult LinearModelTest::LinearModelHarrisonMcCabe(const Sample & firstSample
   }
   pValue = pValue / simulationSize;
 
-  return TestResult(String("HarrisonMcCabe"), Bool(pValue > 1.0 - level), pValue, NumericalScalar(level));
+  return TestResult(String("HarrisonMcCabe"), Bool(pValue > 1.0 - level), pValue, Scalar(level));
 }
 
 /*  */
 TestResult LinearModelTest::LinearModelHarrisonMcCabe(const Sample & firstSample,
     const Sample & secondSample,
-    const NumericalScalar level,
-    const NumericalScalar breakPoint,
-    const NumericalScalar simulationSize)
+    const Scalar level,
+    const Scalar breakPoint,
+    const Scalar simulationSize)
 {
   return LinearModelHarrisonMcCabe(firstSample, secondSample,
                                    LinearModelFactory().build(firstSample, secondSample, level),
@@ -232,13 +232,13 @@ TestResult LinearModelTest::LinearModelHarrisonMcCabe(const Sample & firstSample
 TestResult LinearModelTest::LinearModelBreuschPagan(const Sample & firstSample,
     const Sample & secondSample,
     const LinearModel & linearModel,
-    const NumericalScalar level)
+    const Scalar level)
 {
   const Sample residuals(linearModel.getResidual(firstSample, secondSample));
   const UnsignedInteger residualSize = firstSample.getSize();
 
   /* compute variance of the residuals*/
-  const NumericalScalar residualsVariance = residuals.computeVariance()[0];
+  const Scalar residualsVariance = residuals.computeVariance()[0];
 
   Sample w(residualSize, 1);
   for(UnsignedInteger i = 0; i < residualSize; ++i)
@@ -252,14 +252,14 @@ TestResult LinearModelTest::LinearModelBreuschPagan(const Sample & firstSample,
   /* Predicted values of the squared residuals*/
   const Sample wPredicted(linearModelResiduals.getPredicted(firstSample));
   /* Compute variances */
-  const NumericalScalar wPredictedVar = wPredicted.computeVariance()[0];
-  const NumericalScalar wVariance = w.computeVariance()[0];
+  const Scalar wPredictedVar = wPredicted.computeVariance()[0];
+  const Scalar wVariance = w.computeVariance()[0];
   /* Compute the Breusch Pagan statistic */
-  const NumericalScalar bp = residualSize * wPredictedVar / wVariance;
+  const Scalar bp = residualSize * wPredictedVar / wVariance;
   /* Get the degree of freedom */
   const UnsignedInteger dof = firstSample.getDimension();
   /* Compute the p-value */
-  const NumericalScalar pValue = ChiSquare(dof).computeComplementaryCDF(bp);
+  const Scalar pValue = ChiSquare(dof).computeComplementaryCDF(bp);
 
   return TestResult(String("BreuschPagan"), Bool(pValue > 1.0 - level), pValue, level);
 }
@@ -267,7 +267,7 @@ TestResult LinearModelTest::LinearModelBreuschPagan(const Sample & firstSample,
 /*  */
 TestResult LinearModelTest::LinearModelBreuschPagan(const Sample & firstSample,
     const Sample & secondSample,
-    const NumericalScalar level)
+    const Scalar level)
 {
   return LinearModelBreuschPagan(firstSample, secondSample,
                                  LinearModelFactory().build(firstSample, secondSample, level),
@@ -280,15 +280,15 @@ TestResult LinearModelTest::LinearModelDurbinWatson(const Sample & firstSample,
     const Sample & secondSample,
     const LinearModel & linearModel,
     const String hypothesis,
-    const NumericalScalar level)
+    const Scalar level)
 {
   const Sample residuals(linearModel.getResidual(firstSample, secondSample));
   const UnsignedInteger residualSize = firstSample.getSize();
   const UnsignedInteger dimension = firstSample.getDimension();
 
-  const NumericalScalar sumSquaredResiduals = residuals.computeVariance()[0] * (residualSize - 1);
+  const Scalar sumSquaredResiduals = residuals.computeVariance()[0] * (residualSize - 1);
 
-  NumericalScalar sumSquaredDifference = 0;
+  Scalar sumSquaredDifference = 0;
   for(UnsignedInteger i = 1; i < residualSize; ++i)
   {
     const Point residualDifference(residuals[i] - residuals[i - 1]);
@@ -296,7 +296,7 @@ TestResult LinearModelTest::LinearModelDurbinWatson(const Sample & firstSample,
   }
 
   /* Compute the Durbin Watson statistic */
-  const NumericalScalar dw = sumSquaredDifference / sumSquaredResiduals;
+  const Scalar dw = sumSquaredDifference / sumSquaredResiduals;
 
   /* Normal approximation of dw to compute the p-value*/
   /* Create the matrix [1 x]*/
@@ -317,15 +317,15 @@ TestResult LinearModelTest::LinearModelDurbinWatson(const Sample & firstSample,
 
   CovarianceMatrix XtX(X.computeGram());
   const SquareMatrix XAXQt(XtX.solveLinearSystem(AX.transpose() * X).getImplementation());
-  const NumericalScalar P = 2 * (residualSize - 1) - XAXQt.computeTrace();
-  const NumericalScalar XAXTrace = XtX.solveLinearSystem(AX.computeGram(), false).getImplementation()->computeTrace();
-  const NumericalScalar Q = 2 * (3 * residualSize - 4) - 2 * XAXTrace + (XAXQt * XAXQt).getImplementation()->computeTrace();
-  const NumericalScalar dmean = P / (residualSize - (dimension + 1));
-  const NumericalScalar dvar = 2.0 / ((residualSize - (dimension + 1)) * (residualSize - (dimension + 1) + 2)) * (Q - P * dmean);
+  const Scalar P = 2 * (residualSize - 1) - XAXQt.computeTrace();
+  const Scalar XAXTrace = XtX.solveLinearSystem(AX.computeGram(), false).getImplementation()->computeTrace();
+  const Scalar Q = 2 * (3 * residualSize - 4) - 2 * XAXTrace + (XAXQt * XAXQt).getImplementation()->computeTrace();
+  const Scalar dmean = P / (residualSize - (dimension + 1));
+  const Scalar dvar = 2.0 / ((residualSize - (dimension + 1)) * (residualSize - (dimension + 1) + 2)) * (Q - P * dmean);
 
   /* Compute the p-value with respect to the hypothesis */
   // Initial values defined for hypothesis = "Equal"
-  NumericalScalar pValue = 2.0 * DistFunc::pNormal(std::abs(dw - dmean) / std::sqrt(dvar), true);
+  Scalar pValue = 2.0 * DistFunc::pNormal(std::abs(dw - dmean) / std::sqrt(dvar), true);
   Description description(1, "Hypothesis test: autocorrelation equals 0.");
   if(hypothesis == "Less")
   {
@@ -348,7 +348,7 @@ TestResult LinearModelTest::LinearModelDurbinWatson(const Sample & firstSample,
 TestResult LinearModelTest::LinearModelDurbinWatson(const Sample & firstSample,
     const Sample & secondSample,
     const String hypothesis,
-    const NumericalScalar level)
+    const Scalar level)
 {
   return LinearModelDurbinWatson(firstSample, secondSample,
                                  LinearModelFactory().build(firstSample, secondSample, level),

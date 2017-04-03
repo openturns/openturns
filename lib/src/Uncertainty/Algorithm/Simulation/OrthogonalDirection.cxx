@@ -101,7 +101,7 @@ void OrthogonalDirection::computePartialSample(const Indices & indices,
     Sample & result) const
 {
   // Normalization factor of the linear combination
-  const NumericalScalar factor = 1.0 / sqrt(1.0 * size_);
+  const Scalar factor = 1.0 / sqrt(1.0 * size_);
   // We have 2^size linear combinations to generate
   const UnsignedInteger indexLinearCombinationMax = 1 << size_;
   // For each combination
@@ -115,7 +115,7 @@ void OrthogonalDirection::computePartialSample(const Indices & indices,
       // Which column of Q corresponds to the index position of indices?
       const UnsignedInteger column = indices[index];
       // Sign affected to this column
-      const NumericalScalar sign = 1.0 - 2.0 * (mask % 2);
+      const Scalar sign = 1.0 - 2.0 * (mask % 2);
       // Summation
       for (UnsignedInteger row = 0; row < dimension_; ++row) direction[row] += sign * Q(row, column);
       // Next bit of the mask

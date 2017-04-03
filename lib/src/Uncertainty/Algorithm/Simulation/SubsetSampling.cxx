@@ -53,8 +53,8 @@ SubsetSampling::SubsetSampling()
 
 /* Constructor with parameters */
 SubsetSampling::SubsetSampling(const Event & event,
-                               const NumericalScalar proposalRange,
-                               const NumericalScalar conditionalProbability)
+                               const Scalar proposalRange,
+                               const Scalar conditionalProbability)
   : Simulation(event)
   , proposalRange_(proposalRange)
   , conditionalProbability_(conditionalProbability)
@@ -106,9 +106,9 @@ void SubsetSampling::run()
   // perform isoprobabilistic transformation (the study is done in the standard space):
   standardEvent_ = StandardEvent(getEvent());
 
-  NumericalScalar currentCoVsquare = 0.0;
-  NumericalScalar varianceEstimate = 0.0;
-  NumericalScalar coefficientOfVariationSquare = 0.0;
+  Scalar currentCoVsquare = 0.0;
+  Scalar varianceEstimate = 0.0;
+  Scalar coefficientOfVariationSquare = 0.0;
 
   // allocate input/output samples
   currentPointSample_ = Sample(N, dimension_);
@@ -132,8 +132,8 @@ void SubsetSampling::run()
       for (UnsignedInteger j = 0; j < blockSize; ++ j)
       {
         Point direction(normal.getRealization());
-        NumericalScalar norm = direction.norm();
-        NumericalScalar radius = truncatedChiSquare.getRealization()[0];
+        Scalar norm = direction.norm();
+        Scalar radius = truncatedChiSquare.getRealization()[0];
         if (norm != 0.0)
         {
           radius *= 1.0 / norm;
@@ -151,7 +151,7 @@ void SubsetSampling::run()
   ++ numberOfSteps_;
 
   // computation of the first intermediate threshold with the sample create with a normal distribution */
-  NumericalScalar currentThreshold = computeThreshold();
+  Scalar currentThreshold = computeThreshold();
 
   // as long as the conditional failure domain do not overlap the global one
   Bool stop = !getEvent().getOperator()(getEvent().getThreshold(), currentThreshold) || (currentThreshold == getEvent().getThreshold());
@@ -162,11 +162,11 @@ void SubsetSampling::run()
   thresholdPerStep_.add(currentThreshold);
 
   // compute monte carlo probability estimate
-  NumericalScalar probabilityEstimate = computeProbability(1.0, currentThreshold);
+  Scalar probabilityEstimate = computeProbability(1.0, currentThreshold);
 
   if (iSubset_)
   {
-    NumericalScalar correction = ChiSquare(standardEvent_.getImplementation()->getAntecedent()->getDistribution().getDimension()).computeComplementaryCDF(betaMin_ * betaMin_);
+    Scalar correction = ChiSquare(standardEvent_.getImplementation()->getAntecedent()->getDistribution().getDimension()).computeComplementaryCDF(betaMin_ * betaMin_);
     probabilityEstimate *= correction;
   }
 
@@ -209,10 +209,10 @@ void SubsetSampling::run()
     thresholdPerStep_.add(currentThreshold);
 
     // compute probability estimate on the current sample and group seeds at the beginning of the work sample
-    NumericalScalar currentProbabilityEstimate = computeProbability(probabilityEstimate, currentThreshold);
+    Scalar currentProbabilityEstimate = computeProbability(probabilityEstimate, currentThreshold);
 
     // update coefficient of variation
-    NumericalScalar gamma = computeVarianceGamma(currentProbabilityEstimate, currentThreshold);
+    Scalar gamma = computeVarianceGamma(currentProbabilityEstimate, currentThreshold);
     currentCoVsquare = (1.0 - currentProbabilityEstimate) / (currentProbabilityEstimate * currentLevelSample_.getSize() * 1.0);
     coefficientOfVariationSquare += (1.0 + gamma) * currentCoVsquare;
 
@@ -264,29 +264,29 @@ Sample SubsetSampling::computeBlockSample()
 
 
 /* Compute the new threshold corresponding to the conditional failure probability */
-NumericalScalar SubsetSampling::computeThreshold()
+Scalar SubsetSampling::computeThreshold()
 {
   // compute the quantile according to the event operator
-  NumericalScalar ratio = getEvent().getOperator()(1.0, 2.0) ?  conditionalProbability_ : 1.0 - conditionalProbability_;
+  Scalar ratio = getEvent().getOperator()(1.0, 2.0) ?  conditionalProbability_ : 1.0 - conditionalProbability_;
 
-  NumericalScalar currentThreshold = currentLevelSample_.computeQuantile(ratio)[0];
+  Scalar currentThreshold = currentLevelSample_.computeQuantile(ratio)[0];
 
   return currentThreshold;
 }
 
 
-NumericalScalar SubsetSampling::computeProbability(NumericalScalar probabilityEstimateFactor, NumericalScalar threshold)
+Scalar SubsetSampling::computeProbability(Scalar probabilityEstimateFactor, Scalar threshold)
 {
   const UnsignedInteger maximumOuterSampling = getMaximumOuterSampling();
   const UnsignedInteger blockSize = getBlockSize();
-  NumericalScalar probabilityEstimate = 0.0;
-  NumericalScalar varianceEstimate = 0.0;
+  Scalar probabilityEstimate = 0.0;
+  Scalar varianceEstimate = 0.0;
 
   for (UnsignedInteger i = 0; i < maximumOuterSampling; ++ i)
   {
-    const NumericalScalar size = i + 1.0;
-    NumericalScalar meanBlock = 0.0;
-    NumericalScalar varianceBlock = 0.0;
+    const Scalar size = i + 1.0;
+    Scalar meanBlock = 0.0;
+    Scalar varianceBlock = 0.0;
     for (UnsignedInteger j = 0 ; j < blockSize; ++ j)
     {
       if (getEvent().getOperator()(currentLevelSample_[i * blockSize + j][0], threshold))
@@ -310,7 +310,7 @@ NumericalScalar SubsetSampling::computeProbability(NumericalScalar probabilityEs
   }
 
   // cannot determine next subset domain if no variance
-  const NumericalScalar epsilon = ResourceMap::GetAsScalar("SpecFunc-Precision");
+  const Scalar epsilon = ResourceMap::GetAsScalar("SpecFunc-Precision");
   if (std::abs(varianceEstimate) < epsilon)
     throw NotDefinedException(HERE) << "Null output variance";
 
@@ -319,7 +319,7 @@ NumericalScalar SubsetSampling::computeProbability(NumericalScalar probabilityEs
 
 
 /* Sort new seeds */
-void SubsetSampling::initializeSeed(NumericalScalar threshold)
+void SubsetSampling::initializeSeed(Scalar threshold)
 {
   UnsignedInteger seedIndex = 0;
   const UnsignedInteger maximumOuterSampling = getMaximumOuterSampling();
@@ -341,13 +341,13 @@ void SubsetSampling::initializeSeed(NumericalScalar threshold)
 
 
 /* Compute the correlation on markov chains at the current state of the algorithm */
-NumericalScalar SubsetSampling::computeVarianceGamma(NumericalScalar currentFailureProbability, NumericalScalar threshold)
+Scalar SubsetSampling::computeVarianceGamma(Scalar currentFailureProbability, Scalar threshold)
 {
   const UnsignedInteger N = currentPointSample_.getSize();
   const UnsignedInteger Nc = seedNumber_;
   Matrix IndicatorMatrice(Nc, N / Nc);
   Point correlationSequence(N / Nc - 1);
-  NumericalScalar currentFailureProbability2 = pow(currentFailureProbability, 2.);
+  Scalar currentFailureProbability2 = pow(currentFailureProbability, 2.);
   for (UnsignedInteger i = 0; i < N / Nc; ++ i)
   {
     for (UnsignedInteger j = 0; j < Nc; ++ j)
@@ -367,9 +367,9 @@ NumericalScalar SubsetSampling::computeVarianceGamma(NumericalScalar currentFail
     correlationSequence[k] /= 1.0 * N - 1.0 * (k + 1) * Nc;
     correlationSequence[k] -= currentFailureProbability2;
   }
-  const NumericalScalar R0 = currentFailureProbability * (1.0 - currentFailureProbability);
+  const Scalar R0 = currentFailureProbability * (1.0 - currentFailureProbability);
   const Point rho = ((1.0 / R0) * correlationSequence);
-  NumericalScalar gamma = 0.0;
+  Scalar gamma = 0.0;
   for (UnsignedInteger k = 0; k < N / Nc - 1; ++ k)
   {
     gamma += 2.0 * (1.0 - (k + 1) * 1.0 * Nc / N) * rho[k];
@@ -379,7 +379,7 @@ NumericalScalar SubsetSampling::computeVarianceGamma(NumericalScalar currentFail
 
 
 /* Iterate one step of the algorithm */
-void SubsetSampling::generatePoints(NumericalScalar threshold)
+void SubsetSampling::generatePoints(Scalar threshold)
 {
   const UnsignedInteger maximumOuterSampling = getMaximumOuterSampling();
   const UnsignedInteger blockSize = getBlockSize();
@@ -407,7 +407,7 @@ void SubsetSampling::generatePoints(NumericalScalar threshold)
       for (UnsignedInteger k = 0; k < dimension_; ++ k)
       {
         // compute ratio
-        NumericalScalar ratio = exp(0.5 * (oldPoint[k] * oldPoint[k] - newPoint[k] * newPoint[k]));
+        Scalar ratio = exp(0.5 * (oldPoint[k] * oldPoint[k] - newPoint[k] * newPoint[k]));
 
         // accept new point with probability ratio
         if (ratio < uniform[k])
@@ -435,27 +435,27 @@ void SubsetSampling::generatePoints(NumericalScalar threshold)
 
 
 /* Markov parameter accessor */
-void SubsetSampling::setProposalRange(NumericalScalar proposalRange)
+void SubsetSampling::setProposalRange(Scalar proposalRange)
 {
   proposalRange_ = proposalRange;
 }
 
 
-NumericalScalar SubsetSampling::getProposalRange() const
+Scalar SubsetSampling::getProposalRange() const
 {
   return proposalRange_;
 }
 
 
 /* Ratio accessor */
-void SubsetSampling::setConditionalProbability(NumericalScalar conditionalProbability)
+void SubsetSampling::setConditionalProbability(Scalar conditionalProbability)
 {
   if ((conditionalProbability <= 0.0) || (conditionalProbability >= 1.0)) throw InvalidArgumentException(HERE) << "Probability should be in (0, 1)";
   conditionalProbability_ = conditionalProbability;
 }
 
 
-NumericalScalar SubsetSampling::getConditionalProbability() const
+Scalar SubsetSampling::getConditionalProbability() const
 {
   return conditionalProbability_;
 }
@@ -514,7 +514,7 @@ void SubsetSampling::setISubset(Bool iSubset)
   iSubset_ = iSubset;
 }
 
-void SubsetSampling::setBetaMin(NumericalScalar betaMin)
+void SubsetSampling::setBetaMin(Scalar betaMin)
 {
   if (!(betaMin > 0.0)) throw InvalidArgumentException(HERE) << "Beta min should be positive";
   betaMin_ = betaMin;

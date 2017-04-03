@@ -45,7 +45,7 @@ public:
   /** Constructor from RandomVector */
   Event(const RandomVector & antecedent,
         const ComparisonOperator & op,
-        const NumericalScalar threshold);
+        const Scalar threshold);
 
   /** Constructor from RandomVector */
   Event(const RandomVector & antecedent,

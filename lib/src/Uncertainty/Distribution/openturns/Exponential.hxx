@@ -43,8 +43,8 @@ public:
   Exponential();
 
   /** Parameters constructor */
-  explicit Exponential(const NumericalScalar lambda,
-                       const NumericalScalar gamma = 0.0);
+  explicit Exponential(const Scalar lambda,
+                       const Scalar gamma = 0.0);
 
 
   /** Comparison operator */
@@ -72,19 +72,19 @@ public:
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
   using ContinuousDistribution::computeLogPDF;
-  NumericalScalar computeLogPDF(const Point & point) const;
+  Scalar computeLogPDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
   using ContinuousDistribution::computeComplementaryCDF;
-  NumericalScalar computeComplementaryCDF(const Point & point) const;
+  Scalar computeComplementaryCDF(const Point & point) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
-  NumericalComplex computeLogCharacteristicFunction(const NumericalScalar x) const;
+  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
+  NumericalComplex computeLogCharacteristicFunction(const Scalar x) const;
 
   /** Get the PDFGradient of the distribution */
   using ContinuousDistribution::computePDFGradient;
@@ -119,12 +119,12 @@ public:
   /* Interface specific to Exponential */
 
   /** Lambda accessor */
-  void setLambda(const NumericalScalar lambda);
-  NumericalScalar getLambda() const;
+  void setLambda(const Scalar lambda);
+  Scalar getLambda() const;
 
   /** Gamma accessor */
-  void setGamma(const NumericalScalar gamma);
-  NumericalScalar getGamma() const;
+  void setGamma(const Scalar gamma);
+  Scalar getGamma() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -147,14 +147,14 @@ private:
   void computeCovariance() const;
 
   /** Get the quantile of the distribution */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+  Scalar computeScalarQuantile(const Scalar prob,
                                         const Bool tail = false) const;
 
   /** The lamdbda of the Exponential distribution */
-  NumericalScalar lambda_;
+  Scalar lambda_;
 
   /** The gamma of the Exponential distribution */
-  NumericalScalar gamma_;
+  Scalar gamma_;
 
 }; /* class Exponential */
 

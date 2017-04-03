@@ -107,8 +107,8 @@ Matrix ProductFunction::parameterGradient(const Point & inP) const
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   // Values of the functions
-  NumericalScalar leftValue = p_leftFunction_->operator()(inP)[0];
-  NumericalScalar rightValue = p_rightFunction_->operator()(inP)[0];
+  Scalar leftValue = p_leftFunction_->operator()(inP)[0];
+  Scalar rightValue = p_rightFunction_->operator()(inP)[0];
   // Parameters gradient of the functions scaled by the value of there product term
   Matrix upper(p_leftFunction_->parameterGradient(inP) * leftValue);
   Matrix lower(p_rightFunction_->parameterGradient(inP) * rightValue);

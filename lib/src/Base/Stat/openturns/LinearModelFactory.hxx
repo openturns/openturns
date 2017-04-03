@@ -37,7 +37,7 @@ class OT_API LinearModelFactory
 {
 public:
 
-  typedef PersistentCollection<NumericalScalar>    NumericalScalarPersistentCollection;
+  typedef PersistentCollection<Scalar>    ScalarPersistentCollection;
 
   /** Default constructor */
   LinearModelFactory();
@@ -45,7 +45,7 @@ public:
   /** LinearModel creation */
   LinearModel build(const Sample & samplePred,
                     const Sample & sampleLab,
-                    const NumericalScalar levelValue = ResourceMap::GetAsScalar( "LinearModelFactory-DefaultLevelValue" )) const;
+                    const Scalar levelValue = ResourceMap::GetAsScalar( "LinearModelFactory-DefaultLevelValue" )) const;
 
 }; /* class LinearModelFactory */
 

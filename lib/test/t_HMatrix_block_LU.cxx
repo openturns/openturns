@@ -41,7 +41,7 @@ public:
   void compute(UnsignedInteger i, UnsignedInteger j, Matrix* result) const
   {
     CovarianceMatrix localResult(covarianceModel_( vertices_[i] - vertices_[j] ));
-    memcpy( &result->getImplementation()->operator[](0), &localResult.getImplementation()->operator[](0), dimension_ * dimension_ * sizeof(NumericalScalar) );
+    memcpy( &result->getImplementation()->operator[](0), &localResult.getImplementation()->operator[](0), dimension_ * dimension_ * sizeof(Scalar) );
   }
 };
 
@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
       }
     }
     Point rhsCopy(rhs);
-    NumericalScalar rhsCopyNorm = rhsCopy.norm();
+    Scalar rhsCopyNorm = rhsCopy.norm();
 
     Point result(hmat.solve(rhs));
 
@@ -117,8 +117,8 @@ int main(int argc, char *argv[])
         }
       }
     }
-    NumericalScalar diffNorm = rhsCopy.norm();
-    NumericalScalar threshold = 1.e-4;
+    Scalar diffNorm = rhsCopy.norm();
+    Scalar threshold = 1.e-4;
     fullprint << "|| M X - b || / || b ||" << ((diffNorm < threshold * rhsCopyNorm) ? " < " : " > ") << threshold << std::endl;
   }
   catch (NotYetImplementedException & ex)

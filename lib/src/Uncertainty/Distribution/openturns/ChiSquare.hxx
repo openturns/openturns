@@ -40,7 +40,7 @@ public:
   ChiSquare();
 
   /** Parameters constructor */
-  explicit ChiSquare(const NumericalScalar nu);
+  explicit ChiSquare(const Scalar nu);
 
 
   /** Comparison operator */
@@ -69,21 +69,21 @@ public:
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the logarithm of the PDF of the distribution */
   using ContinuousDistribution::computeLogPDF;
-  NumericalScalar computeLogPDF(const Point & point) const;
+  Scalar computeLogPDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
   using ContinuousDistribution::computeComplementaryCDF;
-  NumericalScalar computeComplementaryCDF(const Point & point) const;
+  Scalar computeComplementaryCDF(const Point & point) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
-  NumericalComplex computeLogCharacteristicFunction(const NumericalScalar x) const;
+  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
+  NumericalComplex computeLogCharacteristicFunction(const Scalar x) const;
 
   /** Get the PDFGradient of the distribution */
   using ContinuousDistribution::computePDFGradient;
@@ -115,8 +115,8 @@ public:
   /* Interface specific to ChiSquare */
 
   /** Nu accessor */
-  void setNu(const NumericalScalar nu);
-  NumericalScalar getNu() const;
+  void setNu(const Scalar nu);
+  Scalar getNu() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -137,7 +137,7 @@ private:
   void computeCovariance() const;
 
   /** Get the quantile of the distribution */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+  Scalar computeScalarQuantile(const Scalar prob,
                                         const Bool tail = false) const;
 
   /** Compute the numerical range of the distribution given the parameters values */
@@ -147,8 +147,8 @@ private:
   void update();
 
   /** The main parameter set of the distribution */
-  NumericalScalar nu_;
-  NumericalScalar normalizationFactor_;
+  Scalar nu_;
+  Scalar normalizationFactor_;
 
 }; /* class ChiSquare */
 

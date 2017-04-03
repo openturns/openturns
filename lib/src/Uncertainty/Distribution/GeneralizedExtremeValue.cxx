@@ -45,9 +45,9 @@ GeneralizedExtremeValue::GeneralizedExtremeValue()
 }
 
 /* Parameters constructor to use when the two bounds are finite */
-GeneralizedExtremeValue::GeneralizedExtremeValue(const NumericalScalar mu,
-						 const NumericalScalar sigma,
-						 const NumericalScalar xi)
+GeneralizedExtremeValue::GeneralizedExtremeValue(const Scalar mu,
+						 const Scalar sigma,
+						 const Scalar xi)
   : ContinuousDistribution()
 {
   setName("GeneralizedExtremeValue");
@@ -119,37 +119,37 @@ Point GeneralizedExtremeValue::computeDDF(const Point & point) const
 
 
 /* Get the PDF of the distribution */
-NumericalScalar GeneralizedExtremeValue::computePDF(const Point & point) const
+Scalar GeneralizedExtremeValue::computePDF(const Point & point) const
 {
   return actualDistribution_.computePDF(point);
 }
 
 
 /* Get the log-PDF of the distribution */
-NumericalScalar GeneralizedExtremeValue::computeLogPDF(const Point & point) const
+Scalar GeneralizedExtremeValue::computeLogPDF(const Point & point) const
 {
   return actualDistribution_.computeLogPDF(point);
 }
 
 
 /* Get the CDF of the distribution */
-NumericalScalar GeneralizedExtremeValue::computeCDF(const Point & point) const
+Scalar GeneralizedExtremeValue::computeCDF(const Point & point) const
 {
   return actualDistribution_.computeCDF(point);
 }
 
-NumericalScalar GeneralizedExtremeValue::computeComplementaryCDF(const Point & point) const
+Scalar GeneralizedExtremeValue::computeComplementaryCDF(const Point & point) const
 {
   return actualDistribution_.computeComplementaryCDF(point);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex GeneralizedExtremeValue::computeCharacteristicFunction(const NumericalScalar x) const
+NumericalComplex GeneralizedExtremeValue::computeCharacteristicFunction(const Scalar x) const
 {
   return actualDistribution_.computeCharacteristicFunction(x);
 }
 
-NumericalComplex GeneralizedExtremeValue::computeLogCharacteristicFunction(const NumericalScalar x) const
+NumericalComplex GeneralizedExtremeValue::computeLogCharacteristicFunction(const Scalar x) const
 {
   return actualDistribution_.computeLogCharacteristicFunction(x);
 }
@@ -167,7 +167,7 @@ Point GeneralizedExtremeValue::computeCDFGradient(const Point & point) const
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar GeneralizedExtremeValue::computeScalarQuantile(const NumericalScalar prob,
+Scalar GeneralizedExtremeValue::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
   return actualDistribution_.computeQuantile(prob, tail)[0];
@@ -238,71 +238,71 @@ Description GeneralizedExtremeValue::getParameterDescription() const
 }
 
 /* Mu accessor */
-void GeneralizedExtremeValue::setMu(const NumericalScalar mu)
+void GeneralizedExtremeValue::setMu(const Scalar mu)
 {
   setMuSigmaXi(mu, sigma_, xi_);
 }
 
-NumericalScalar GeneralizedExtremeValue::getMu() const
+Scalar GeneralizedExtremeValue::getMu() const
 {
   return mu_;
 }
 
 
 /* Sigma accessor */
-void GeneralizedExtremeValue::setSigma(const NumericalScalar sigma)
+void GeneralizedExtremeValue::setSigma(const Scalar sigma)
 {
   setMuSigmaXi(mu_, sigma, xi_);
 }
 
-NumericalScalar GeneralizedExtremeValue::getSigma() const
+Scalar GeneralizedExtremeValue::getSigma() const
 {
   return sigma_;
 }
 
 /* Xi accessor */
-void GeneralizedExtremeValue::setXi(const NumericalScalar xi)
+void GeneralizedExtremeValue::setXi(const Scalar xi)
 {
   setMuSigmaXi(mu_, sigma_, xi);
 }
 
-NumericalScalar GeneralizedExtremeValue::getXi() const
+Scalar GeneralizedExtremeValue::getXi() const
 {
   return xi_;
 }
 
 /* All parameters accessor */
-void GeneralizedExtremeValue::setMuSigmaXi(const NumericalScalar mu,
-					   const NumericalScalar sigma,
-					   const NumericalScalar xi)
+void GeneralizedExtremeValue::setMuSigmaXi(const Scalar mu,
+					   const Scalar sigma,
+					   const Scalar xi)
 {
   if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected a positive value for sigma, here sigma=" << sigma;
   mu_ = mu;
   sigma_ = sigma;
   xi_ = xi;
   // Now build the actual Frechet/Gumbel/Weibull distribution
-  const NumericalScalar xiEpsilon = ResourceMap::GetAsScalar("GeneralizedExtremeValue-XiThreshold");
+  const Scalar xiEpsilon = ResourceMap::GetAsScalar("GeneralizedExtremeValue-XiThreshold");
   // Weibull case
   if (xi_ < -xiEpsilon)
     {
-      const NumericalScalar alpha = -sigma / xi;
-      const NumericalScalar beta = -1.0 / xi;
-      const NumericalScalar gamma = sigma / xi - mu;
+      const Scalar alpha = -sigma / xi;
+      const Scalar beta = -1.0 / xi;
+      const Scalar gamma = sigma / xi - mu;
       actualDistribution_ = Weibull(alpha, beta, gamma) * (-1.0);
     }
   // Frechet case
   else if (xi_ > xiEpsilon)
     {
-      const NumericalScalar alpha = 1.0 / xi;
-      const NumericalScalar beta = sigma / xi;
-      const NumericalScalar gamma = mu - sigma / xi;
+      const Scalar alpha = 1.0 / xi;
+      const Scalar beta = sigma / xi;
+      const Scalar gamma = mu - sigma / xi;
       actualDistribution_ = Frechet(alpha, beta, gamma);
     }
   // Gumbel case
   else
     {
-      const NumericalScalar alpha = 1.0 / sigma;
-      const NumericalScalar beta = mu;
+      const Scalar alpha = 1.0 / sigma;
+      const Scalar beta = mu;
       actualDistribution_ = Gumbel(alpha, beta);
     }
   isAlreadyComputedMean_ = false;
@@ -372,8 +372,8 @@ void GeneralizedExtremeValue::setActualDistribution(const Distribution & distrib
 	      const Weibull* p_weibull = dynamic_cast<const Weibull*>(p_mixture->getDistributionCollection()[0].getImplementation().get());
 	      if (p_weibull)
 		{
-		  const NumericalScalar constant = p_mixture->getConstant()[0];
-		  const NumericalScalar weight = p_mixture->getWeights()(0, 0);
+		  const Scalar constant = p_mixture->getConstant()[0];
+		  const Scalar weight = p_mixture->getWeights()(0, 0);
 		  xi_ = -1.0 / p_weibull->getBeta();
 		  sigma_ = -(weight * p_weibull->getAlpha()) * xi_;
 		  mu_ = constant + sigma_ / xi_ - p_weibull->getGamma() * weight;

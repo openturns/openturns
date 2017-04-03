@@ -40,8 +40,8 @@ public:
   LogUniform();
 
   /** Parameters constructor */
-  LogUniform(const NumericalScalar aLog,
-             const NumericalScalar bLog);
+  LogUniform(const Scalar aLog,
+             const Scalar bLog);
 
 
   /** Comparison operator */
@@ -70,16 +70,16 @@ public:
 
   /** Get the PDF of the distribution, i.e. P(point < X < point+dx) = PDF(point)dx + o(dx) */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the distribution, i.e. P(X <= point) = CDF(point) */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const;
   using ContinuousDistribution::computeComplementaryCDF;
-  NumericalScalar computeComplementaryCDF(const Point & point) const;
+  Scalar computeComplementaryCDF(const Point & point) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
+  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
 
   /** Get the gradient of the PDF w.r.t the parameters of the distribution */
   using ContinuousDistribution::computePDFGradient;
@@ -111,12 +111,12 @@ public:
   /* Interface specific to LogUniform */
 
   /** ALog accessor */
-  void setALog(const NumericalScalar aLog);
-  NumericalScalar getALog() const;
+  void setALog(const Scalar aLog);
+  Scalar getALog() const;
 
   /** BLog accessor */
-  void setBLog(const NumericalScalar bLog);
-  NumericalScalar getBLog() const;
+  void setBLog(const Scalar bLog);
+  Scalar getBLog() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -136,7 +136,7 @@ private:
   void computeCovariance() const;
 
   /** Get the quantile of the distribution, i.e the value Xp such that P(X <= Xp) = prob */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
+  Scalar computeScalarQuantile(const Scalar prob,
                                         const Bool tail = false) const;
 
   /** Compute the numerical range of the distribution given the parameters values */
@@ -144,15 +144,15 @@ private:
 
   /** The main parameter set of the distribution */
   /** Lower bound on the logarithmic scale */
-  NumericalScalar aLog_;
+  Scalar aLog_;
   /** Upper bound on the logarithmic scale */
-  NumericalScalar bLog_;
+  Scalar bLog_;
 
   /** Derivative parameters */
   /** Lower bound on the natural scale */
-  NumericalScalar a_;
+  Scalar a_;
   /** Upper bound on the natural scale */
-  NumericalScalar b_;
+  Scalar b_;
 
 }; /* class LogUniform */
 

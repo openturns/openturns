@@ -319,7 +319,7 @@ UnsignedInteger GaussKronrodRule::getOrder() const
 }
 
 /* Zero Gauss weight accessor */
-NumericalScalar GaussKronrodRule::getZeroGaussWeight() const
+Scalar GaussKronrodRule::getZeroGaussWeight() const
 {
   return zeroGaussWeight_;
 }
@@ -337,7 +337,7 @@ Point GaussKronrodRule::getOtherKronrodNodes() const
 }
 
 /* Zero Kronrod weight accessor */
-NumericalScalar GaussKronrodRule::getZeroKronrodWeight() const
+Scalar GaussKronrodRule::getZeroKronrodWeight() const
 {
   return zeroKronrodWeight_;
 }

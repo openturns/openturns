@@ -62,7 +62,7 @@ KarhunenLoeveQuadratureFactory::KarhunenLoeveQuadratureFactory(const Domain & do
     const Basis & basis,
     const UnsignedInteger basisSize,
     const Bool mustScale,
-    const NumericalScalar threshold)
+    const Scalar threshold)
   : PersistentObject()
   , domain_(domain)
   , coll_(basisSize)
@@ -89,7 +89,7 @@ KarhunenLoeveQuadratureFactory::KarhunenLoeveQuadratureFactory(const Domain & do
   Function scaling;
   Function inverseScaling;
   // Normalization factor takes into account the fact that we map the range of the distribution defining the weighted experiment with the bounding box of the domain
-  NumericalScalar normalizationFactor = 1.0;
+  Scalar normalizationFactor = 1.0;
   if (!hasSameBounds)
   {
     TriangularMatrix T(dimension);
@@ -146,7 +146,7 @@ KarhunenLoeveQuadratureFactory::KarhunenLoeveQuadratureFactory(const Domain & do
   // Compute the Cholesky factor of \theta^t\theta
   LOGINFO("Compute the Cholesky factor of the Gram matrix");
   CovarianceMatrix gram(theta_.computeGram(true));
-  const NumericalScalar epsilon = ResourceMap::GetAsScalar("KarhunenLoeveQuadratureFactory-RegularizationFactor");
+  const Scalar epsilon = ResourceMap::GetAsScalar("KarhunenLoeveQuadratureFactory-RegularizationFactor");
   if (epsilon > 0.0)
     for (UnsignedInteger i = 0; i < gram.getDimension(); ++i) gram(i, i) += epsilon;
   cholesky_ = gram.computeCholesky(false);
@@ -196,7 +196,7 @@ Basis KarhunenLoeveQuadratureFactory::build(const CovarianceModel & covarianceMo
     for (UnsignedInteger j = 0; j < nodesNumber; ++j)
       for (UnsignedInteger i = j; i < nodesNumber; ++i)
       {
-        const NumericalScalar factor = weights_[i] * weights_[j];
+        const Scalar factor = weights_[i] * weights_[j];
         C(i, j) *= factor;
       } // i
   } // dimension == 1
@@ -205,7 +205,7 @@ Basis KarhunenLoeveQuadratureFactory::build(const CovarianceModel & covarianceMo
     for (UnsignedInteger j = 0; j < nodesNumber; ++j)
       for (UnsignedInteger i = j; i < nodesNumber; ++i)
       {
-        const NumericalScalar factor = weights_[i] * weights_[j];
+        const Scalar factor = weights_[i] * weights_[j];
         for (UnsignedInteger m = 0; m < dimension; ++m)
           for (UnsignedInteger n = 0; n < dimension; ++n)
             C(m + i * dimension, n + j * dimension) *= factor;
@@ -224,7 +224,7 @@ Basis KarhunenLoeveQuadratureFactory::build(const CovarianceModel & covarianceMo
     for (UnsignedInteger j = 0; j < basisSize; ++j)
       for (UnsignedInteger i = 0; i < nodesNumber; ++i)
       {
-        const NumericalScalar value = theta_(i, j);
+        const Scalar value = theta_(i, j);
         for (UnsignedInteger k = 0; k < dimension; ++k)
           omega(k + i * dimension, k + j * dimension) = value;
       }
@@ -248,7 +248,7 @@ Basis KarhunenLoeveQuadratureFactory::build(const CovarianceModel & covarianceMo
     for (UnsignedInteger j = 0; j < basisSize; ++j)
       for (UnsignedInteger i = j; i < basisSize; ++i)
       {
-        const NumericalScalar value = cholesky_(i, j);
+        const Scalar value = cholesky_(i, j);
         for (UnsignedInteger k = 0; k < dimension; ++k)
           cholesky(k + i * dimension, k + j * dimension) = value;
       }
@@ -290,7 +290,7 @@ Basis KarhunenLoeveQuadratureFactory::build(const CovarianceModel & covarianceMo
   {
     selectedEV.add(eigenValues[j]);
     const Point a(*eigenVectors.getColumn(j).getImplementation());
-    const NumericalScalar norm = (omega * a).norm();
+    const Scalar norm = (omega * a).norm();
     if (dimension == 1)
       resultBasis.add(LinearCombinationFunction(coll_, a / norm));
     else
