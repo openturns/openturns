@@ -114,7 +114,7 @@ UnsignedInteger Matrix::getNbColumns() const
 /* The element of the matrix is designated by its row number i and its column number j */
 /* the first element of the matrix is m(0,0) */
 Scalar & Matrix::operator() (const UnsignedInteger i,
-                                      const UnsignedInteger j)
+                             const UnsignedInteger j)
 {
   copyOnWrite();
   return (*getImplementation())(i, j);
@@ -123,7 +123,7 @@ Scalar & Matrix::operator() (const UnsignedInteger i,
 /* Operator () gives access to the elements of the matrix (read only) */
 /* The element of the matrix is designated by its row number i and its column number j */
 const Scalar & Matrix::operator() (const UnsignedInteger i,
-    const UnsignedInteger j) const
+                                   const UnsignedInteger j) const
 {
   return (*getImplementation())(i, j);
 }
@@ -207,7 +207,7 @@ Matrix Matrix::operator/ (const Scalar s) const
 
 /* Resolution of a linear system */
 Point Matrix::solveLinearSystem(const Point & b,
-    const Bool keepIntact)
+                                const Bool keepIntact)
 {
   return getImplementation()->solveLinearSystemRect(b, keepIntact);
 }
@@ -226,9 +226,9 @@ Point Matrix::computeSingularValues(const Bool keepIntact)
 
 /* Compute singular values */
 Point Matrix::computeSVD(Matrix & u,
-                                  Matrix & vT,
-                                  const Bool fullSVD,
-                                  const Bool keepIntact)
+                         Matrix & vT,
+                         const Bool fullSVD,
+                         const Bool keepIntact)
 {
   return getImplementation()->computeSVD(*(u.getImplementation()), *(vT.getImplementation()), fullSVD, keepIntact);
 }

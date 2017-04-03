@@ -68,50 +68,50 @@ public:
   Scalar computePDF(const Point & point) const;
 private:
   Scalar computePDFQ1(const Scalar x,
-                               const Scalar a,
-                               const Scalar b,
-                               const Scalar c,
-                               const Scalar d) const;
+                      const Scalar a,
+                      const Scalar b,
+                      const Scalar c,
+                      const Scalar d) const;
   Scalar computePDFQ2(const Scalar x,
-                               const Scalar a,
-                               const Scalar b,
-                               const Scalar c,
-                               const Scalar d) const;
+                      const Scalar a,
+                      const Scalar b,
+                      const Scalar c,
+                      const Scalar d) const;
   Scalar computePDFQ3(const Scalar x,
-                               const Scalar a,
-                               const Scalar b,
-                               const Scalar c,
-                               const Scalar d) const;
+                      const Scalar a,
+                      const Scalar b,
+                      const Scalar c,
+                      const Scalar d) const;
   Scalar computePDFQ4(const Scalar x,
-                               const Scalar a,
-                               const Scalar b,
-                               const Scalar c,
-                               const Scalar d) const;
+                      const Scalar a,
+                      const Scalar b,
+                      const Scalar c,
+                      const Scalar d) const;
 public:
   /** Get the CDF of the distribution */
   using ContinuousDistribution::computeCDF;
   Scalar computeCDF(const Point & point) const;
 private:
   Scalar computeCDFQ1(const Scalar x,
-                               const Scalar a,
-                               const Scalar b,
-                               const Scalar c,
-                               const Scalar d) const;
+                      const Scalar a,
+                      const Scalar b,
+                      const Scalar c,
+                      const Scalar d) const;
   Scalar computeCDFQ2(const Scalar x,
-                               const Scalar a,
-                               const Scalar b,
-                               const Scalar c,
-                               const Scalar d) const;
+                      const Scalar a,
+                      const Scalar b,
+                      const Scalar c,
+                      const Scalar d) const;
   Scalar computeCDFQ3(const Scalar x,
-                               const Scalar a,
-                               const Scalar b,
-                               const Scalar c,
-                               const Scalar d) const;
+                      const Scalar a,
+                      const Scalar b,
+                      const Scalar c,
+                      const Scalar d) const;
   Scalar computeCDFQ4(const Scalar x,
-                               const Scalar a,
-                               const Scalar b,
-                               const Scalar c,
-                               const Scalar d) const;
+                      const Scalar a,
+                      const Scalar b,
+                      const Scalar c,
+                      const Scalar d) const;
 public:
 
   /** Get the probability content of an interval */

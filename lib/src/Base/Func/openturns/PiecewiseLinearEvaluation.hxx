@@ -48,11 +48,11 @@ public:
 
   /** Parameter constructor */
   PiecewiseLinearEvaluation(const Point & locations,
-                                          const Point & values);
+                            const Point & values);
 
   /** Parameter constructor */
   PiecewiseLinearEvaluation(const Point & locations,
-                                          const Sample & values);
+                            const Sample & values);
 
   /** Virtual constructor */
   virtual PiecewiseLinearEvaluation * clone() const;

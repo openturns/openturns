@@ -56,8 +56,8 @@ Basis ConstantBasisFactory::build() const
   Point constant(1);
   constant[0] = 1.;
   basis.add(LinearFunction (Point(inputDimension_, 0.0),
-                                         constant,
-                                         Matrix(1, inputDimension_)));
+                            constant,
+                            Matrix(1, inputDimension_)));
   return basis;
 }
 

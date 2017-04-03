@@ -389,7 +389,7 @@ void ResourceMap::loadDefaultConfiguration()
   setAsScalar( "OptimizationAlgorithm-DefaultMaximumRelativeError", 1.0e-5 );
   setAsScalar( "OptimizationAlgorithm-DefaultMaximumResidualError", 1.0e-5 );
   setAsScalar( "OptimizationAlgorithm-DefaultMaximumConstraintError", 1.0e-5 );
-  
+
   // EfficientGlobalOptimization parameters //
   setAsUnsignedInteger( "EfficientGlobalOptimization-DefaultMultiStartExperimentSize", 100);
   setAsUnsignedInteger( "EfficientGlobalOptimization-DefaultMultiStartNumber", 20);
@@ -535,7 +535,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // ComposedDistribution parameters //
   setAsBool("ComposedDistribution-UseGenericCovarianceAlgorithm", false);
-  
+
   // DirichletFactory parameters //
   setAsUnsignedInteger( "Dirichlet-DefaultSamplingSize", 500000 );
   setAsUnsignedInteger( "Dirichlet-DefaultIntegrationSize", 50 );

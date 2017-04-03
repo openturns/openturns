@@ -49,7 +49,7 @@ EfficientGlobalOptimization::EfficientGlobalOptimization()
 
 /* Constructor with parameters */
 EfficientGlobalOptimization::EfficientGlobalOptimization(const OptimizationProblem & problem,
-                                                         const KrigingResult & krigingResult)
+    const KrigingResult & krigingResult)
   : OptimizationAlgorithmImplementation(problem)
   , krigingResult_(krigingResult)
   , solver_(new Cobyla)
@@ -69,12 +69,12 @@ class ExpectedImprovementEvaluation : public EvaluationImplementation
 {
 public:
   ExpectedImprovementEvaluation (const Scalar optimalValue,
-                                      const KrigingResult & metaModelResult,
-                                      const Function & noiseModel)
-  : EvaluationImplementation()
-  , optimalValue_(optimalValue)
-  , metaModelResult_(metaModelResult)
-  , noiseModel_(noiseModel)
+                                 const KrigingResult & metaModelResult,
+                                 const Function & noiseModel)
+    : EvaluationImplementation()
+    , optimalValue_(optimalValue)
+    , metaModelResult_(metaModelResult)
+    , noiseModel_(noiseModel)
   {
   }
 
@@ -176,7 +176,7 @@ void EfficientGlobalOptimization::run()
   {
     if (!problem.hasBounds() || (problem.hasBounds() && problem.getBounds().contains(inputSample[index])))
       if ((problem.isMinimization() && (outputSample[index][0] < optimalValue))
-      || (!problem.isMinimization() && (outputSample[index][0] > optimalValue)))
+          || (!problem.isMinimization() && (outputSample[index][0] > optimalValue)))
       {
         optimizerPrev = optimizer;
         optimalValuePrev = optimalValue;
@@ -196,7 +196,7 @@ void EfficientGlobalOptimization::run()
     {
       if (!problem.hasBounds() || (problem.hasBounds() && problem.getBounds().contains(inputSample[index])))
         if ((problem.isMinimization() && (outputSample[index][0] < optimalValuePrev))
-        || (!problem.isMinimization() && (outputSample[index][0] > optimalValuePrev)))
+            || (!problem.isMinimization() && (outputSample[index][0] > optimalValuePrev)))
         {
           optimizerPrev = inputSample[index];
           optimalValuePrev = outputSample[index][0];
@@ -256,7 +256,7 @@ void EfficientGlobalOptimization::run()
         const Scalar sk2 = krigingResult_.getConditionalCovariance(x)(0, 0);
         const Scalar u = mx + aeiTradeoff_ * sqrt(sk2);
         if ((problem.isMinimization() && (u < optimalU))
-        || (!problem.isMinimization() && (u > optimalU)))
+            || (!problem.isMinimization() && (u > optimalU)))
         {
           optimalValueSubstitute = mx;
           optimalU = u;
@@ -316,7 +316,7 @@ void EfficientGlobalOptimization::run()
     LOGINFO(OSS() << "New point x=" << newPoint << " f(x)=" << newValue << "iteration=" << iterationNumber + 1);
 
     if ((problem.isMinimization() && (newValue[0] < optimalValue))
-    || (!problem.isMinimization() && (newValue[0] > optimalValue)))
+        || (!problem.isMinimization() && (newValue[0] > optimalValue)))
     {
       optimizerPrev = optimizer;
       optimalValuePrev = optimalValue;

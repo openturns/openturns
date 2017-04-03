@@ -154,7 +154,7 @@ private:
 
   /** Get the quantile of the Logistic distribution */
   Scalar computeScalarQuantile(const Scalar prob,
-                                        const Bool tail = false) const;
+                               const Bool tail = false) const;
 
   /** The main parameter set of the distribution */
   Scalar alpha_;

@@ -185,7 +185,7 @@ Point Burr::computeCDFGradient(const Point & point) const
 
 /* Get the quantile of the distribution */
 Scalar Burr::computeScalarQuantile(const Scalar prob,
-    const Bool tail) const
+                                   const Bool tail) const
 {
   if (tail) return std::exp(std::log(expm1(-std::log(prob) / k_)) / c_);
   return std::exp(std::log(expm1(-log1p(-prob) / k_)) / c_);

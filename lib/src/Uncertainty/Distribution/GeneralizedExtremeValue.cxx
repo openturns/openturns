@@ -46,8 +46,8 @@ GeneralizedExtremeValue::GeneralizedExtremeValue()
 
 /* Parameters constructor to use when the two bounds are finite */
 GeneralizedExtremeValue::GeneralizedExtremeValue(const Scalar mu,
-						 const Scalar sigma,
-						 const Scalar xi)
+    const Scalar sigma,
+    const Scalar xi)
   : ContinuousDistribution()
 {
   setName("GeneralizedExtremeValue");
@@ -273,8 +273,8 @@ Scalar GeneralizedExtremeValue::getXi() const
 
 /* All parameters accessor */
 void GeneralizedExtremeValue::setMuSigmaXi(const Scalar mu,
-					   const Scalar sigma,
-					   const Scalar xi)
+    const Scalar sigma,
+    const Scalar xi)
 {
   if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected a positive value for sigma, here sigma=" << sigma;
   mu_ = mu;
@@ -284,27 +284,27 @@ void GeneralizedExtremeValue::setMuSigmaXi(const Scalar mu,
   const Scalar xiEpsilon = ResourceMap::GetAsScalar("GeneralizedExtremeValue-XiThreshold");
   // Weibull case
   if (xi_ < -xiEpsilon)
-    {
-      const Scalar alpha = -sigma / xi;
-      const Scalar beta = -1.0 / xi;
-      const Scalar gamma = sigma / xi - mu;
-      actualDistribution_ = Weibull(alpha, beta, gamma) * (-1.0);
-    }
+  {
+    const Scalar alpha = -sigma / xi;
+    const Scalar beta = -1.0 / xi;
+    const Scalar gamma = sigma / xi - mu;
+    actualDistribution_ = Weibull(alpha, beta, gamma) * (-1.0);
+  }
   // Frechet case
   else if (xi_ > xiEpsilon)
-    {
-      const Scalar alpha = 1.0 / xi;
-      const Scalar beta = sigma / xi;
-      const Scalar gamma = mu - sigma / xi;
-      actualDistribution_ = Frechet(alpha, beta, gamma);
-    }
+  {
+    const Scalar alpha = 1.0 / xi;
+    const Scalar beta = sigma / xi;
+    const Scalar gamma = mu - sigma / xi;
+    actualDistribution_ = Frechet(alpha, beta, gamma);
+  }
   // Gumbel case
   else
-    {
-      const Scalar alpha = 1.0 / sigma;
-      const Scalar beta = mu;
-      actualDistribution_ = Gumbel(alpha, beta);
-    }
+  {
+    const Scalar alpha = 1.0 / sigma;
+    const Scalar beta = mu;
+    actualDistribution_ = Gumbel(alpha, beta);
+  }
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
 }
@@ -314,81 +314,81 @@ void GeneralizedExtremeValue::setActualDistribution(const Distribution & distrib
 {
   // Try to cast the given distribution into a Gumbel distribution
   try
+  {
+    const Gumbel* p_gumbel = dynamic_cast<const Gumbel*>(distribution.getImplementation().get());
+    // If it worked create the actual distribution
+    if (p_gumbel)
     {
-      const Gumbel* p_gumbel = dynamic_cast<const Gumbel*>(distribution.getImplementation().get());
-      // If it worked create the actual distribution
-      if (p_gumbel)
-	{
-	  mu_ = p_gumbel->getBeta();
-	  sigma_ = 1.0 / p_gumbel->getAlpha();
-	  xi_ = 0.0;
-	  actualDistribution_ = Gumbel(*p_gumbel);
-	  isAlreadyComputedMean_ = false;
-	  isAlreadyComputedCovariance_ = false;
-	  return;
-	} // p_gumbel
-    }
+      mu_ = p_gumbel->getBeta();
+      sigma_ = 1.0 / p_gumbel->getAlpha();
+      xi_ = 0.0;
+      actualDistribution_ = Gumbel(*p_gumbel);
+      isAlreadyComputedMean_ = false;
+      isAlreadyComputedCovariance_ = false;
+      return;
+    } // p_gumbel
+  }
   catch (...)
-    {
-      // Nothing to do
-    }
+  {
+    // Nothing to do
+  }
   // Try to cast the given distribution into a Frechet distribution
   try
+  {
+    const Frechet* p_frechet = dynamic_cast<const Frechet*>(distribution.getImplementation().get());
+    // If it worked create the actual distribution
+    if (p_frechet)
     {
-      const Frechet* p_frechet = dynamic_cast<const Frechet*>(distribution.getImplementation().get());
-      // If it worked create the actual distribution
-      if (p_frechet)
-	{
-	  xi_ = 1.0 / p_frechet->getAlpha();
-	  sigma_ = p_frechet->getBeta() * xi_;
-	  mu_ = p_frechet->getGamma() + p_frechet->getBeta();
-	  actualDistribution_ = Frechet(*p_frechet);
-	  isAlreadyComputedMean_ = false;
-	  isAlreadyComputedCovariance_ = false;
-	  return;
-	} // p_frechet
-    }
+      xi_ = 1.0 / p_frechet->getAlpha();
+      sigma_ = p_frechet->getBeta() * xi_;
+      mu_ = p_frechet->getGamma() + p_frechet->getBeta();
+      actualDistribution_ = Frechet(*p_frechet);
+      isAlreadyComputedMean_ = false;
+      isAlreadyComputedCovariance_ = false;
+      return;
+    } // p_frechet
+  }
   catch (...)
-    {
-      // Nothing to do
-    }  
+  {
+    // Nothing to do
+  }
   // Try to cast the given distribution into a RandomMixture
   // with a Weibull atom with negative coefficient
   try
+  {
+    const RandomMixture* p_mixture = dynamic_cast<const RandomMixture*>(distribution.getImplementation().get());
+    // If it worked try to catch the atom into a Weibull distribution
+    if (p_mixture)
     {
-      const RandomMixture* p_mixture = dynamic_cast<const RandomMixture*>(distribution.getImplementation().get());
-      // If it worked try to catch the atom into a Weibull distribution
-      if (p_mixture)
-	{
-	  // First, the easy checks:
-	  // + its diension is 1
-	  // + there is only one atom
-	  // + its weight is negative
-	  if ((p_mixture->getDimension() == 1) &&
-	      (p_mixture->getDistributionCollection().getSize() == 1) &&
-	      (p_mixture->getWeights()(0, 0) < 0.0))
-	    {
-	      // Try to catch the unique atom into a Weibull distribution
-	      const Weibull* p_weibull = dynamic_cast<const Weibull*>(p_mixture->getDistributionCollection()[0].getImplementation().get());
-	      if (p_weibull)
-		{
-		  const Scalar constant = p_mixture->getConstant()[0];
-		  const Scalar weight = p_mixture->getWeights()(0, 0);
-		  xi_ = -1.0 / p_weibull->getBeta();
-		  sigma_ = -(weight * p_weibull->getAlpha()) * xi_;
-		  mu_ = constant + sigma_ / xi_ - p_weibull->getGamma() * weight;
-		  actualDistribution_ = RandomMixture(*p_mixture);
-		  isAlreadyComputedMean_ = false;
-		  isAlreadyComputedCovariance_ = false;
-		  return;
-		} // p_weibull
-	    } // mixture basic check
-	} // p_mixture
-    }
+      // First, the easy checks:
+      // + its diension is 1
+      // + there is only one atom
+      // + its weight is negative
+      if ((p_mixture->getDimension() == 1) &&
+          (p_mixture->getDistributionCollection().getSize() == 1) &&
+          (p_mixture->getWeights()(0, 0) < 0.0))
+      {
+        // Try to catch the unique atom into a Weibull distribution
+        const Weibull* p_weibull = dynamic_cast<const Weibull*>(p_mixture->getDistributionCollection()[0].getImplementation().get());
+        if (p_weibull)
+        {
+          const Scalar constant = p_mixture->getConstant()[0];
+          const Scalar weight = p_mixture->getWeights()(0, 0);
+          xi_ = -1.0 / p_weibull->getBeta();
+          sigma_ = -(weight * p_weibull->getAlpha()) * xi_;
+          mu_ = constant + sigma_ / xi_ - p_weibull->getGamma() * weight;
+          actualDistribution_ = RandomMixture(*p_mixture);
+          isAlreadyComputedMean_ = false;
+          isAlreadyComputedCovariance_ = false;
+          return;
+        } // p_weibull
+      } // mixture basic check
+    } // p_mixture
+  }
   catch (...)
-    {
-      throw InvalidArgumentException(HERE) << "Error: the distribution " << distribution << " cannot be used to define a GeneralizedExtremeValue distribution.";
-    }
+  {
+    throw InvalidArgumentException(HERE) << "Error: the distribution " << distribution << " cannot be used to define a GeneralizedExtremeValue distribution.";
+  }
 }
 
 Distribution GeneralizedExtremeValue::getActualDistribution() const

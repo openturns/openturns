@@ -97,8 +97,8 @@ public:
   using DistributionImplementation::computeQuantile;
 #ifndef SWIG
   Point computeQuantile(const Scalar prob,
-                                 const Bool tail,
-				 Scalar & marginalProb) const;
+                        const Bool tail,
+                        Scalar & marginalProb) const;
 #endif
 
   /** Get the Kendall concordance of the distribution */

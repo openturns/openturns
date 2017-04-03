@@ -54,7 +54,7 @@ public:
 
 private:
   static Function Build(const Distribution & left,
-                                     const Distribution & right);
+                        const Distribution & right);
 
   Distribution left_;
   Distribution right_;

@@ -44,11 +44,11 @@ public:
 
   /** Parameter constructor */
   SymbolicFunction (const String & inputVariableName,
-                      const String & formula);
+                    const String & formula);
 
   /** Parameter constructor */
   SymbolicFunction (const Description & inputVariablesNames,
-                      const Description & formulas);
+                    const Description & formulas);
 
   /** Comparison operator */
   Bool operator ==(const SymbolicFunction & other) const;

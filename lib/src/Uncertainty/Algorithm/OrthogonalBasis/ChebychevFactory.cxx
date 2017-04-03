@@ -49,16 +49,16 @@ ChebychevFactory::Coefficients ChebychevFactory::getRecurrenceCoefficients(const
 {
   Coefficients recurrenceCoefficients(3, 0.0);
   if (n == 0)
-    {
-      recurrenceCoefficients[0] = M_SQRT2;
-      return recurrenceCoefficients;
-    }
+  {
+    recurrenceCoefficients[0] = M_SQRT2;
+    return recurrenceCoefficients;
+  }
   recurrenceCoefficients[0] = 2.0;
   if (n == 1)
-    {
-      recurrenceCoefficients[2] = -M_SQRT2;
-      return recurrenceCoefficients;
-    }
+  {
+    recurrenceCoefficients[2] = -M_SQRT2;
+    return recurrenceCoefficients;
+  }
   recurrenceCoefficients[2] = -1.0;
   return recurrenceCoefficients;
 }

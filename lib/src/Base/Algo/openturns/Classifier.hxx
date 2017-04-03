@@ -60,9 +60,9 @@ public:
 
   /** Grade a point as if it were associated to a class */
   Scalar grade(const Point & inP,
-                        UnsignedInteger outC) const;
+               UnsignedInteger outC) const;
   Point grade(const Sample & inS,
-                       const Indices & outC) const;
+              const Indices & outC) const;
 
   /** Parallelization flag accessor */
   void setParallel(const Bool flag);

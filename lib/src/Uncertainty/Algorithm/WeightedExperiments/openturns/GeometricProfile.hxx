@@ -38,7 +38,7 @@ class OT_API GeometricProfile
 
 public:
   /** Default constructor */
-  GeometricProfile(const Scalar T0=10, const Scalar c=0.95, const UnsignedInteger iMax=2000);
+  GeometricProfile(const Scalar T0 = 10, const Scalar c = 0.95, const UnsignedInteger iMax = 2000);
 
   /** Virtual constructor method */
   GeometricProfile * clone() const;

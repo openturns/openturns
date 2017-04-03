@@ -35,9 +35,9 @@ namespace BetaFunctions
 {
 
 Scalar IncompleteBeta(const Scalar a,
-                               const Scalar b,
-                               const Scalar x,
-                               const Bool tail)
+                      const Scalar b,
+                      const Scalar x,
+                      const Bool tail)
 {
   if (!(a > 0.0)) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
   if (!(b > 0.0)) throw InvalidArgumentException(HERE) << "Error: b must be positive, here b=" << b;
@@ -45,9 +45,9 @@ Scalar IncompleteBeta(const Scalar a,
 }
 
 Scalar IncompleteBetaInverse(const Scalar a,
-                                      const Scalar b,
-                                      const Scalar x,
-                                      const Bool tail)
+                             const Scalar b,
+                             const Scalar x,
+                             const Bool tail)
 {
   if (!(a > 0.0)) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
   if (!(b > 0.0)) throw InvalidArgumentException(HERE) << "Error: b must be positive, here b=" << b;
@@ -55,9 +55,9 @@ Scalar IncompleteBetaInverse(const Scalar a,
 }
 
 Scalar RegularizedIncompleteBeta(const Scalar a,
-    const Scalar b,
-    const Scalar x,
-    const Bool tail)
+                                 const Scalar b,
+                                 const Scalar x,
+                                 const Bool tail)
 {
   if (!(a >= 0.0)) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
   if (!(b >= 0.0)) throw InvalidArgumentException(HERE) << "Error: b must be positive, here b=" << b;
@@ -73,9 +73,9 @@ Scalar RegularizedIncompleteBeta(const Scalar a,
 }
 
 Scalar RegularizedIncompleteBetaSlatec(const Scalar a,
-    const Scalar b,
-    const Scalar x,
-    const Bool tail)
+                                       const Scalar b,
+                                       const Scalar x,
+                                       const Bool tail)
 {
   Scalar p = a;
   Scalar q = b;
@@ -130,9 +130,9 @@ Scalar RegularizedIncompleteBetaSlatec(const Scalar a,
 }
 
 Scalar RegularizedIncompleteBetaInverse(const Scalar a,
-    const Scalar b,
-    const Scalar x,
-    const Bool tail)
+                                        const Scalar b,
+                                        const Scalar x,
+                                        const Bool tail)
 {
   if (!(a > 0.0)) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
   if (!(b > 0.0)) throw InvalidArgumentException(HERE) << "Error: b must be positive, here b=" << b;
@@ -159,8 +159,8 @@ Scalar RegularizedIncompleteBetaInverse(const Scalar a,
 }
 
 Scalar RegularizedIncompleteBetaP(const Scalar a,
-    const Scalar b,
-    const Scalar x)
+                                  const Scalar b,
+                                  const Scalar x)
 {
   if (!(a >= 0.0)) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
   if (!(b >= 0.0)) throw InvalidArgumentException(HERE) << "Error: b must be positive, here b=" << b;
@@ -172,8 +172,8 @@ Scalar RegularizedIncompleteBetaP(const Scalar a,
 }
 
 Scalar RegularizedIncompleteBetaQ(const Scalar a,
-    const Scalar b,
-    const Scalar x)
+                                  const Scalar b,
+                                  const Scalar x)
 {
   if (!(a >= 0.0)) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
   if (!(b >= 0.0)) throw InvalidArgumentException(HERE) << "Error: b must be positive, here b=" << b;
@@ -219,9 +219,9 @@ Scalar RegularizedIncompleteBetaQ(const Scalar a,
 //             a > 15:
 //
 Scalar BRATIO(const Scalar a,
-                       const Scalar b,
-                       const Scalar x,
-                       const Bool tail)
+              const Scalar b,
+              const Scalar x,
+              const Bool tail)
 {
   if (!(a > 0.0)) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
   if (!(b > 0.0)) throw InvalidArgumentException(HERE) << "Error: b must be positive, here b=" << b;
@@ -325,8 +325,8 @@ Scalar BRATIO(const Scalar a,
 // Function BPSER in:
 // Armido R. Didonato a,d Alfred H. Morris, "Algorithm 708: Significant Digit Computation of the Incomplete Beta Function Ratios"
 Scalar BPSER(const Scalar a,
-                      const Scalar b,
-                      const Scalar x)
+             const Scalar b,
+             const Scalar x)
 {
   if (x == 0.0) return 0.0;
   const Scalar pMin = std::min(a, b);
@@ -350,7 +350,7 @@ Scalar BPSER(const Scalar a,
 }
 // Function ALGDIV
 Scalar ALGDIV(const Scalar a,
-                       const Scalar b)
+              const Scalar b)
 {
   Scalar x = -1.0;
   Scalar xM1 = -1.0;
@@ -385,10 +385,10 @@ Scalar ALGDIV(const Scalar a,
 // Function BUP in:
 // Armido R. Didonato a,d Alfred H. Morris, "Algorithm 708: Significant Digit Computation of the Incomplete Beta Function Ratios"
 Scalar BUP(const Scalar a,
-                    const Scalar b,
-                    const Scalar x,
-                    const Scalar y,
-                    const UnsignedInteger n)
+           const Scalar b,
+           const Scalar x,
+           const Scalar y,
+           const UnsignedInteger n)
 {
   Scalar value = 1.0;
   Scalar term = a * x * (1.0 - b) / (1.0 + a);
@@ -401,10 +401,10 @@ Scalar BUP(const Scalar a,
   return exp(a * log(x) - log(a) - SpecFunc::LogBeta(a, b)) * value;
 }
 Scalar BGRAT(const Scalar a,
-                      const Scalar b,
-                      const Scalar x,
-                      const Scalar y,
-                      const Scalar w)
+             const Scalar b,
+             const Scalar x,
+             const Scalar y,
+             const Scalar w)
 {
 
 }

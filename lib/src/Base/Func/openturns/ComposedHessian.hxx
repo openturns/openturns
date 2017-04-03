@@ -48,10 +48,10 @@ public:
 
   /** Default constructor */
   ComposedHessian(const GradientPointer & p_leftGradient,
-      const HessianPointer & p_leftHessian,
-      const EvaluationPointer & p_rightFunction,
-      const GradientPointer & p_rightGradient,
-      const HessianPointer & p_rightHessian);
+                  const HessianPointer & p_leftHessian,
+                  const EvaluationPointer & p_rightFunction,
+                  const GradientPointer & p_rightGradient,
+                  const HessianPointer & p_rightHessian);
 
 
   /** Virtual constructor */

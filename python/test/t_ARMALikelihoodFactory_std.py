@@ -85,4 +85,4 @@ factory.setInitialConditions(phi, theta, cov)
 
 result = ARMA(factory.build(timeSeries))
 print('original process = ', myARMA)
-#print('Estimated ARMA= ', result)
+# print('Estimated ARMA= ', result)

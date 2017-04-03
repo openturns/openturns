@@ -28,31 +28,31 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 Scalar adonet(const Scalar h1,
-                       const Scalar h2,
-                       const Scalar h3,
-                       const Scalar r23,
-                       const Scalar a12,
-                       const Scalar a13);
+              const Scalar h2,
+              const Scalar h3,
+              const Scalar r23,
+              const Scalar a12,
+              const Scalar a13);
 
 Scalar tvnf(const Scalar x,
-                     const Scalar h1,
-                     const Scalar h2,
-                     const Scalar h3,
-                     const Scalar r23,
-                     const Scalar a12,
-                     const Scalar a13);
+            const Scalar h1,
+            const Scalar h2,
+            const Scalar h3,
+            const Scalar r23,
+            const Scalar a12,
+            const Scalar a13);
 
 void sincs(const Scalar x,
            Scalar & sx,
            Scalar & cs);
 
 Scalar pntgnd(const Scalar ba,
-                       const Scalar bb,
-                       const Scalar bc,
-                       const Scalar ra,
-                       const Scalar rb,
-                       const Scalar r,
-                       const Scalar rr);
+              const Scalar bb,
+              const Scalar bc,
+              const Scalar ra,
+              const Scalar rb,
+              const Scalar r,
+              const Scalar rr);
 
 void krnrdt(const Scalar a,
             const Scalar b,
@@ -108,12 +108,12 @@ void krnrdt(const Scalar a,
 #define NORMAL3DCDF_MAXINT 100
 
 Scalar Normal3DCDF(const Scalar x1,
-                            const Scalar x2,
-                            const Scalar x3,
-                            const Scalar rho12,
-                            const Scalar rho13,
-                            const Scalar rho23,
-                            const Bool tail)
+                   const Scalar x2,
+                   const Scalar x3,
+                   const Scalar rho12,
+                   const Scalar rho13,
+                   const Scalar rho23,
+                   const Bool tail)
 {
   if (!(std::abs(rho12) <= 1.0)) throw InvalidArgumentException(HERE) << "Error: the correlation coefficient rho12 must be in [-1, 1], here rho12=" << rho12;
   if (!(std::abs(rho13) <= 1.0)) throw InvalidArgumentException(HERE) << "Error: the correlation coefficient rho13 must be in [-1, 1], here rho12=" << rho13;
@@ -180,12 +180,12 @@ Scalar Normal3DCDF(const Scalar x1,
   Computes Plackett formula integrands
 */
 Scalar tvnf(const Scalar x,
-                     const Scalar h1,
-                     const Scalar h2,
-                     const Scalar h3,
-                     const Scalar r23,
-                     const Scalar a12,
-                     const Scalar a13)
+            const Scalar h1,
+            const Scalar h2,
+            const Scalar h3,
+            const Scalar r23,
+            const Scalar a12,
+            const Scalar a13)
 {
   Scalar result = 0.0;
   Scalar r12 = -1.0;
@@ -223,12 +223,12 @@ void sincs(const Scalar x,
   Computes Plackett formula integrand
 */
 Scalar pntgnd(const Scalar ba,
-                       const Scalar bb,
-                       const Scalar bc,
-                       const Scalar ra,
-                       const Scalar rb,
-                       const Scalar r,
-                       const Scalar rr)
+              const Scalar bb,
+              const Scalar bc,
+              const Scalar ra,
+              const Scalar rb,
+              const Scalar r,
+              const Scalar rr)
 {
   Scalar result = 0.0;
   const Scalar dt = rr * (rr - (ra - rb) * (ra - rb) - 2.0 * ra * rb * (1.0 - r));
@@ -250,11 +250,11 @@ Scalar pntgnd(const Scalar ba,
   1D adaptive integration
 */
 Scalar adonet(const Scalar h1,
-                       const Scalar h2,
-                       const Scalar h3,
-                       const Scalar r23,
-                       const Scalar a12,
-                       const Scalar a13)
+              const Scalar h2,
+              const Scalar h3,
+              const Scalar r23,
+              const Scalar a12,
+              const Scalar a13)
 {
   Scalar result = 0.0;
   Scalar ai[NORMAL3DCDF_MAXINT];

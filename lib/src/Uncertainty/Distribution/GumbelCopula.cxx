@@ -247,7 +247,7 @@ Point GumbelCopula::computeCDFGradient(const Point & point) const
 
 /* Get the quantile of the distribution */
 Point GumbelCopula::computeQuantile(const Scalar prob,
-    const Bool tail) const
+                                    const Bool tail) const
 {
   if ((prob < 0.0) || (prob > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
   if (prob == 0.0) return getRange().getLowerBound();

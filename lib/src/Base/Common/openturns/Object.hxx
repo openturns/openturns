@@ -34,13 +34,13 @@
   /** Class name accessor */                    \
   static  OT::String GetClassName();            \
   virtual OT::String getClassName() const;      \
- 
+
 /** Define GetClassName() and getClassName() for Object-like classes */
 
 #define CLASSNAMEINIT(T)                                                \
   OT::String T::GetClassName()       { return OT::String(#T); }         \
   OT::String T::getClassName() const { return T::GetClassName(); }      \
- 
+
 
 
 

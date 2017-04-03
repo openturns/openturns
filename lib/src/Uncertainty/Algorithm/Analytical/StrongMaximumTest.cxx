@@ -567,8 +567,8 @@ void StrongMaximumTest::run()
 
 /* the function that samples the sphere (radius) with N points */
 Sample StrongMaximumTest::sampleSphere(const Scalar radius,
-    const UnsignedInteger dimension,
-    const UnsignedInteger pointNumber) const
+                                       const UnsignedInteger dimension,
+                                       const UnsignedInteger pointNumber) const
 {
   // First, generate a sample of a standard normal distribution of the proper size and dimension
   const Normal standardNormal(dimension);

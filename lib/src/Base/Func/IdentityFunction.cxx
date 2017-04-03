@@ -31,8 +31,8 @@ CLASSNAMEINIT(IdentityFunction);
 /* Default constructor */
 IdentityFunction::IdentityFunction(const UnsignedInteger dimension)
   : Function(new IdentityEvaluation(dimension),
-                          new ConstantGradient(IdentityMatrix(dimension)),
-                          new ConstantHessian(SymmetricTensor(dimension, dimension)))
+             new ConstantGradient(IdentityMatrix(dimension)),
+             new ConstantHessian(SymmetricTensor(dimension, dimension)))
 {
   // Nothing to do
 }

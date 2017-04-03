@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The external header file of OpenTURNS for subdir TensorApproximation 
+ *  @brief The external header file of OpenTURNS for subdir TensorApproximation
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *

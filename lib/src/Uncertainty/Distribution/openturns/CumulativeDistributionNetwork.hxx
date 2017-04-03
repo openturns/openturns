@@ -124,7 +124,7 @@ private:
 
   /** Extract the components of a full dimension point to feed the index distribution */
   Point reducePoint(const Point & point,
-                             const UnsignedInteger index) const;
+                    const UnsignedInteger index) const;
 
   /** The collection of distribution of the cumulativeDistributionNetwork */
   DistributionPersistentCollection distributionCollection_;

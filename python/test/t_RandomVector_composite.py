@@ -10,7 +10,7 @@ try:
 
     # We create a Function
     myFunction = Function(['x1', 'x2', 'x3', 'x4'], ['y1', 'y2'], [
-                                       '(x1*x1+x2^3*x1)/(2*x3*x3+x4^4+1)', 'cos(x2*x2+x4)/(x1*x1+1+x3^4)'])
+        '(x1*x1+x2^3*x1)/(2*x3*x3+x4^4+1)', 'cos(x2*x2+x4)/(x1*x1+1+x3^4)'])
 
     # We create a distribution
     dim = myFunction.getInputDimension()

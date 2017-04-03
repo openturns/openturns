@@ -131,7 +131,7 @@ String SymmetricMatrix::__str__(const String & offset) const
 /* The element of the matrix is designated by its row number i and its column number j */
 /* the first element of the matrix is m(0,0) */
 Scalar & SymmetricMatrix::operator() (const UnsignedInteger i,
-    const UnsignedInteger j)
+                                      const UnsignedInteger j)
 {
   copyOnWrite();
   hasBeenSymmetrized_ = false;
@@ -269,7 +269,7 @@ Point SymmetricMatrix::computeEigenValues(const Bool keepIntact)
   return getImplementation()->computeEigenValuesSym(keepIntact);
 }
 Point SymmetricMatrix::computeEV(SquareMatrix & v,
-    const Bool keepIntact)
+                                 const Bool keepIntact)
 {
   return getImplementation()->computeEVSym(*(v.getImplementation()), keepIntact);
 }

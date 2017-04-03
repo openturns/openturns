@@ -40,7 +40,7 @@ KarhunenLoeveAlgorithmImplementation::KarhunenLoeveAlgorithmImplementation()
 
 /* Default constructor */
 KarhunenLoeveAlgorithmImplementation::KarhunenLoeveAlgorithmImplementation(const CovarianceModel & covariance,
-									   const Scalar threshold)
+    const Scalar threshold)
   : PersistentObject()
   , covariance_(covariance)
   , threshold_(threshold)
@@ -93,9 +93,9 @@ void KarhunenLoeveAlgorithmImplementation::run()
 String KarhunenLoeveAlgorithmImplementation::__repr__() const
 {
   return OSS(true) << "class=" << getClassName()
-		   << " covariance model=" << covariance_
-		   << " threshold=" << threshold_
-		   << " result=" << result_;
+         << " covariance model=" << covariance_
+         << " threshold=" << threshold_
+         << " result=" << result_;
 }
 
 String KarhunenLoeveAlgorithmImplementation::__str__(const String & offset) const

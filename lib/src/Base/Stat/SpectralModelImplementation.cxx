@@ -226,9 +226,9 @@ String SpectralModelImplementation::__str__(const String & offset) const
 /* Drawing method */
 Graph SpectralModelImplementation::draw(const UnsignedInteger rowIndex,
                                         const UnsignedInteger columnIndex,
-					const Scalar minimumFrequency,
-					const Scalar maximumFrequency,
-					const UnsignedInteger frequencyNumber,
+                                        const Scalar minimumFrequency,
+                                        const Scalar maximumFrequency,
+                                        const UnsignedInteger frequencyNumber,
                                         const Bool module) const
 {
   if (rowIndex >= dimension_) throw InvalidArgumentException(HERE) << "Error: the given row index must be less than " << dimension_ << ", here rowIndex=" << rowIndex;

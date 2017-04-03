@@ -85,7 +85,7 @@ public:
 
   /** Generic implementation of the quantile computation for continuous copulas */
   Point computeQuantile(const Scalar prob,
-                                 const Bool tail = false) const;
+                        const Bool tail = false) const;
 
 protected:
 

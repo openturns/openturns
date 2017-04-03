@@ -124,10 +124,10 @@ Mesh::IndicesCollection Mesh::getSimplices() const
 void Mesh::setSimplices(const IndicesCollection & simplices)
 {
   if (!(simplices == simplices_))
-    {
-      simplices_ = simplices;
-      verticesToSimplices_ = IndicesCollection(0);
-    }
+  {
+    simplices_ = simplices;
+    verticesToSimplices_ = IndicesCollection(0);
+  }
 }
 
 /* Simplex accessor */
@@ -504,13 +504,13 @@ Point Mesh::computeWeights() const
   const UnsignedInteger numVertices = getVerticesNumber();
   Point weights(numVertices, 0.0);
   for (UnsignedInteger i = 0; i < numVertices; ++i)
-    {
-      const Indices vertexSimplices(verticesToSimplices[i]);
-      Scalar weight = 0.0;
-      for (UnsignedInteger j = 0; j < vertexSimplices.getSize(); ++j)
-	weight += simplicesVolume[vertexSimplices[j]];
-      weights[i] = weight;
-    } // i
+  {
+    const Indices vertexSimplices(verticesToSimplices[i]);
+    Scalar weight = 0.0;
+    for (UnsignedInteger j = 0; j < vertexSimplices.getSize(); ++j)
+      weight += simplicesVolume[vertexSimplices[j]];
+    weights[i] = weight;
+  } // i
   // Normalize the weights: each simplex has dim+1 vertices, so each vertex
   // get 1/(dim+1) of the volume of the simplices it belongs to
   weights /= (dimension_ + 1.0);

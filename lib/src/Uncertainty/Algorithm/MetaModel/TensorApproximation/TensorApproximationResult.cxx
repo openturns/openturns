@@ -50,13 +50,13 @@ TensorApproximationResult::TensorApproximationResult()
 
 /* Default constructor */
 TensorApproximationResult::TensorApproximationResult(
-    const Distribution & distribution,
-    const Function & transformation,
-    const Function & inverseTransformation,
-    const Function & composedModel,
-    const Collection<CanonicalTensorEvaluation> & tensorCollection,
-    const Point & residuals,
-    const Point & relativeErrors)
+  const Distribution & distribution,
+  const Function & transformation,
+  const Function & inverseTransformation,
+  const Function & composedModel,
+  const Collection<CanonicalTensorEvaluation> & tensorCollection,
+  const Point & residuals,
+  const Point & relativeErrors)
   : MetaModelResult(Function(), Function(), residuals, relativeErrors)
   , distribution_(distribution)
   , transformation_(transformation)

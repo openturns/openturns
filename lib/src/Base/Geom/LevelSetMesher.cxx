@@ -236,36 +236,36 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
               ComposedFunction levelFunction(function, shiftFunction);
               problem.setLevelFunction(levelFunction);
               solver_.setStartingPoint(delta);
-	      OptimizationResult result;
+              OptimizationResult result;
               // Here we have to catch exceptions raised by the gradient
               try
               {
                 solver_.run();
-		result = solver_.getResult();
+                result = solver_.getResult();
               }
               catch(...)
               {
-		LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with solver=" << solver_ << ", using finite differences for gradient");
+                LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with solver=" << solver_ << ", using finite differences for gradient");
                 // Here we may have to fix the gradient eg in the case of analytical functions, when Ev3 does not handle the expression.
                 const Scalar epsilon = ResourceMap::GetAsScalar("CenteredFiniteDifferenceGradient-DefaultEpsilon");
                 levelFunction.setGradient(CenteredFiniteDifferenceGradient((localVertices.getMin() - localVertices.getMax()) * epsilon + Point(dimension, epsilon), levelFunction.getEvaluation()).clone());
                 problem.setLevelFunction(levelFunction);
                 solver_.setProblem(problem);
-		// Try with the new gradients
-		try
-		  {
-		    solver_.run();
-		    result = solver_.getResult();
-		  }
-		catch(...)
-		  {
-		    // There is definitely a problem with this vertex. Try a gradient-free solver
-		    Cobyla solver(solver_.getProblem());
-		    solver.setStartingPoint(solver_.getStartingPoint());
-		    LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with solver=" << solver_ << " and finite differences for gradient, switching to solver=" << solver);
-		    solver.run();
-		    result = solver.getResult();
-		  } // Even finite differences gradient failed?
+                // Try with the new gradients
+                try
+                {
+                  solver_.run();
+                  result = solver_.getResult();
+                }
+                catch(...)
+                {
+                  // There is definitely a problem with this vertex. Try a gradient-free solver
+                  Cobyla solver(solver_.getProblem());
+                  solver.setStartingPoint(solver_.getStartingPoint());
+                  LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with solver=" << solver_ << " and finite differences for gradient, switching to solver=" << solver);
+                  solver.run();
+                  result = solver.getResult();
+                } // Even finite differences gradient failed?
               } // Gradient failed ?
               movedVertices.add(currentVertex + result.getOptimalPoint());
             } // project

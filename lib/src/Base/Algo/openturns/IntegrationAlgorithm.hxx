@@ -60,17 +60,17 @@ public:
    * is an n-D interval
    */
   Point integrate(const Function & function,
-                           const Interval & interval) const;
+                  const Interval & interval) const;
 
 #ifndef SWIG
   Point integrate(const Function & function,
-                           const Interval & interval,
-                           Scalar & error) const;
+                  const Interval & interval,
+                  Scalar & error) const;
 #endif
 
   Point integrate(const Function & function,
-                           const Interval & interval,
-                           Point & error) const;
+                  const Interval & interval,
+                  Point & error) const;
 
   /** String converter */
   String __repr__() const;

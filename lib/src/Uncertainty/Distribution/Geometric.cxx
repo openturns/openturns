@@ -158,7 +158,7 @@ Point Geometric::computeCDFGradient(const Point & point) const
 
 /* Get the quantile of the distribution */
 Scalar Geometric::computeScalarQuantile(const Scalar prob,
-    const Bool tail) const
+                                        const Bool tail) const
 {
   if (tail) return ceil(std::log(prob) / log1p(-p_));
   return ceil(log1p(-prob) / log1p(-p_));

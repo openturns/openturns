@@ -77,17 +77,17 @@ public:
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalPDF;
   Scalar computeConditionalPDF(const Scalar x,
-                                        const Point & y) const;
+                               const Point & y) const;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalCDF;
   Scalar computeConditionalCDF(const Scalar x,
-                                        const Point & y) const;
+                               const Point & y) const;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalQuantile;
   Scalar computeConditionalQuantile(const Scalar q,
-      const Point & y) const;
+                                    const Point & y) const;
 
   /** Get the i-th marginal distribution */
   using DiscreteDistribution::getMarginal;
@@ -150,7 +150,7 @@ private:
 
   /** Quantile computation for dimension=1 */
   Scalar computeScalarQuantile(const Scalar prob,
-                                        const Bool tail = false) const;
+                               const Bool tail = false) const;
 
   /** Compute the mean of the distribution */
   void computeMean() const;

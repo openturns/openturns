@@ -30,45 +30,45 @@ BEGIN_NAMESPACE_OPENTURNS
 namespace StudentFunctions
 {
 Scalar StudentCDF(const Scalar nu,
-                           const Scalar x,
-                           const Bool tail = false);
+                  const Scalar x,
+                  const Bool tail = false);
 
 Scalar StudentQuantile(const Scalar nu,
-                                const Scalar p,
-                                const Bool tail = false);
+                       const Scalar p,
+                       const Bool tail = false);
 
 Scalar StudentRealization(const Scalar nu);
 
 Scalar NonCentralStudentCDF(const Scalar nu,
-                                     const Scalar delta,
-                                     const Scalar x,
-                                     const Bool tail = false);
+                            const Scalar delta,
+                            const Scalar x,
+                            const Bool tail = false);
 
 Scalar NonCentralStudentCDFAlt0(const Scalar nu,
-    const Scalar delta,
-    const Scalar x,
-    const Bool tail = false,
-    const Scalar precision = ResourceMap::GetAsScalar("DistFunc-Precision"),
-    const UnsignedInteger maximumIteration = ResourceMap::GetAsScalar("DistFunc-MaximumIteration"));
+                                const Scalar delta,
+                                const Scalar x,
+                                const Bool tail = false,
+                                const Scalar precision = ResourceMap::GetAsScalar("DistFunc-Precision"),
+                                const UnsignedInteger maximumIteration = ResourceMap::GetAsScalar("DistFunc-MaximumIteration"));
 
 Scalar NonCentralStudentCDFAlt1(const Scalar nu,
-    const Scalar delta,
-    const Scalar x,
-    const Bool tail = false,
-    const Scalar precision = ResourceMap::GetAsScalar("DistFunc-Precision"));
+                                const Scalar delta,
+                                const Scalar x,
+                                const Bool tail = false,
+                                const Scalar precision = ResourceMap::GetAsScalar("DistFunc-Precision"));
 
 Scalar NonCentralStudentPDF(const Scalar nu,
-                                     const Scalar delta,
-                                     const Scalar x);
+                            const Scalar delta,
+                            const Scalar x);
 
 Scalar NonCentralStudentPDFAlt0(const Scalar nu,
-    const Scalar delta,
-    const Scalar x,
-    const Scalar precision = ResourceMap::GetAsScalar("DistFunc-Precision"),
-    const UnsignedInteger maximumIteration = ResourceMap::GetAsScalar("DistFunc-MaximumIteration"));
+                                const Scalar delta,
+                                const Scalar x,
+                                const Scalar precision = ResourceMap::GetAsScalar("DistFunc-Precision"),
+                                const UnsignedInteger maximumIteration = ResourceMap::GetAsScalar("DistFunc-MaximumIteration"));
 
 Scalar NonCentralStudentRealization(const Scalar nu,
-    const Scalar delta);
+                                    const Scalar delta);
 } // StudentFunctions
 
 END_NAMESPACE_OPENTURNS

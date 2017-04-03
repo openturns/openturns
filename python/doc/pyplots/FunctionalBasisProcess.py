@@ -23,4 +23,3 @@ fig = plt.figure(figsize=(10, 4))
 plt.suptitle('Functional Basis Process')
 fbp_axis = fig.add_subplot(111)
 view = View(graph, figure=fig, axes=[fbp_axis], add_legend=False)
-

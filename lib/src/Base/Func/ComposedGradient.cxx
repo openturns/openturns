@@ -31,8 +31,8 @@ static const Factory<ComposedGradient> Factory_ComposedGradient;
 
 /* Default constructor */
 ComposedGradient::ComposedGradient(const GradientPointer & p_leftGradient,
-    const EvaluationPointer & p_rightFunction,
-    const GradientPointer & p_rightGradient)
+                                   const EvaluationPointer & p_rightFunction,
+                                   const GradientPointer & p_rightGradient)
   : GradientImplementation(),
     p_leftGradient_(p_leftGradient),
     p_rightFunction_(p_rightFunction),

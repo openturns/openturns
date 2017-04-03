@@ -73,30 +73,36 @@ try:
     print("ccdf=%.6f" % CCDF)
     CF = distribution.computeCharacteristicFunction(point[0])
     print("characteristic function=(%.6f+%.6fj)" % (CF.real, CF.imag))
-    PDFgr = distribution.computePDFGradient( point )
-    print( "pdf gradient     =" , repr(PDFgr))
+    PDFgr = distribution.computePDFGradient(point)
+    print("pdf gradient     =", repr(PDFgr))
     # by the finite difference technique
     PDFgrFD = Point(2)
-    PDFgrFD[0] = (FisherSnedecor(distribution.getD1() + eps, distribution.getD2()).computePDF(point) - FisherSnedecor(distribution.getD1() - eps, distribution.getD2()).computePDF(point)) / (2.0 * eps)
-    PDFgrFD[1] = (FisherSnedecor(distribution.getD1(), distribution.getD2() + eps).computePDF(point) - FisherSnedecor(distribution.getD1(), distribution.getD2() - eps).computePDF(point)) / (2.0 * eps)
-    print( "pdf gradient (FD)=" , repr(PDFgrFD))
+    PDFgrFD[0] = (FisherSnedecor(distribution.getD1() + eps, distribution.getD2()).computePDF(point)
+                  - FisherSnedecor(distribution.getD1() - eps, distribution.getD2()).computePDF(point)) / (2.0 * eps)
+    PDFgrFD[1] = (FisherSnedecor(distribution.getD1(), distribution.getD2() + eps).computePDF(point)
+                  - FisherSnedecor(distribution.getD1(), distribution.getD2() - eps).computePDF(point)) / (2.0 * eps)
+    print("pdf gradient (FD)=", repr(PDFgrFD))
 
     # derivative of the PDF with regards the parameters of the distribution
-    CDFgr = distribution.computeCDFGradient( point )
-    print( "cdf gradient     =" , repr(CDFgr))
+    CDFgr = distribution.computeCDFGradient(point)
+    print("cdf gradient     =", repr(CDFgr))
     CDFgrFD = Point(2)
-    CDFgrFD[0] = (FisherSnedecor(distribution.getD1() + eps, distribution.getD2()).computeCDF(point) - FisherSnedecor(distribution.getD1() - eps, distribution.getD2()).computeCDF(point)) / (2.0 * eps)
-    CDFgrFD[1] = (FisherSnedecor(distribution.getD1(), distribution.getD2() + eps).computeCDF(point) - FisherSnedecor(distribution.getD1(), distribution.getD2() - eps).computeCDF(point)) / (2.0 * eps)
+    CDFgrFD[0] = (FisherSnedecor(distribution.getD1() + eps, distribution.getD2()).computeCDF(point)
+                  - FisherSnedecor(distribution.getD1() - eps, distribution.getD2()).computeCDF(point)) / (2.0 * eps)
+    CDFgrFD[1] = (FisherSnedecor(distribution.getD1(), distribution.getD2() + eps).computeCDF(point)
+                  - FisherSnedecor(distribution.getD1(), distribution.getD2() - eps).computeCDF(point)) / (2.0 * eps)
     print("cdf gradient (FD)=",  repr(CDFgrFD))
 
     # derivative of the logPDF with regards the parameters of the distribution
-    logPDFgr = distribution.computeLogPDFGradient( point )
-    print( "log-pdf gradient     =" , repr(logPDFgr))
+    logPDFgr = distribution.computeLogPDFGradient(point)
+    print("log-pdf gradient     =", repr(logPDFgr))
     # by the finite difference technique
     logPDFgrFD = Point(2)
-    logPDFgrFD[0] = (FisherSnedecor(distribution.getD1() + eps, distribution.getD2()).computeLogPDF(point) - FisherSnedecor(distribution.getD1() - eps, distribution.getD2()).computeLogPDF(point)) / (2.0 * eps)
-    logPDFgrFD[1] = (FisherSnedecor(distribution.getD1(), distribution.getD2() + eps).computeLogPDF(point) - FisherSnedecor(distribution.getD1(), distribution.getD2() - eps).computeLogPDF(point)) / (2.0 * eps)
-    print("log-pdf gradient (FD)=" , repr(logPDFgrFD))
+    logPDFgrFD[0] = (FisherSnedecor(distribution.getD1() + eps, distribution.getD2()).computeLogPDF(point)
+                     - FisherSnedecor(distribution.getD1() - eps, distribution.getD2()).computeLogPDF(point)) / (2.0 * eps)
+    logPDFgrFD[1] = (FisherSnedecor(distribution.getD1(), distribution.getD2() + eps).computeLogPDF(point)
+                     - FisherSnedecor(distribution.getD1(), distribution.getD2() - eps).computeLogPDF(point)) / (2.0 * eps)
+    print("log-pdf gradient (FD)=", repr(logPDFgrFD))
 
     # quantile
     quantile = distribution.computeQuantile(0.95)
@@ -105,22 +111,28 @@ try:
     # Get 95% survival function
     inverseSurvival = Point(distribution.computeInverseSurvivalFunction(0.95))
     print("InverseSurvival=", repr(inverseSurvival))
-    print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
+    print("Survival(inverseSurvival)=%.6f" %
+          distribution.computeSurvivalFunction(inverseSurvival))
 
     # Confidence regions
-    interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
+    interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(
+        0.95)
     print("Minimum volume interval=", interval)
     print("threshold=", Point(1, threshold))
-    levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
+    levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(
+        0.95)
     print("Minimum volume level set=", levelSet)
     print("beta=", Point(1, beta))
-    interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
+    interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(
+        0.95)
     print("Bilateral confidence interval=", interval)
     print("beta=", Point(1, beta))
-    interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
+    interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+        0.95, False)
     print("Unilateral confidence interval (lower tail)=", interval)
     print("beta=", Point(1, beta))
-    interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
+    interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+        0.95, True)
     print("Unilateral confidence interval (upper tail)=", interval)
     print("beta=", Point(1, beta))
 

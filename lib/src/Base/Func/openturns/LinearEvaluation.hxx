@@ -47,8 +47,8 @@ public:
 
   /** Parameter constructor */
   LinearEvaluation(const Point & center,
-      const Point & constant,
-      const Matrix & linear);
+                   const Point & constant,
+                   const Matrix & linear);
 
   /** Virtual constructor */
   virtual LinearEvaluation * clone() const;

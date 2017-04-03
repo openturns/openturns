@@ -60,23 +60,28 @@ try:
     # Get 95% survival function
     inverseSurvival = Point(copula.computeInverseSurvivalFunction(0.95))
     print("InverseSurvival=", repr(inverseSurvival))
-    print("Survival(inverseSurvival)=%.6f" % copula.computeSurvivalFunction(inverseSurvival))
+    print("Survival(inverseSurvival)=%.6f" %
+          copula.computeSurvivalFunction(inverseSurvival))
     # Confidence regions
     if copula.getDimension() <= 2:
         threshold = Point()
-        print("Minimum volume interval=", copula.computeMinimumVolumeInterval(0.95, threshold))
+        print("Minimum volume interval=",
+              copula.computeMinimumVolumeInterval(0.95, threshold))
         print("threshold=", threshold)
         beta = Point()
         levelSet = copula.computeMinimumVolumeLevelSet(0.95, beta)
         print("Minimum volume level set=", levelSet)
         print("beta=", beta)
-        print("Bilateral confidence interval=", copula.computeBilateralConfidenceInterval(0.95, beta))
+        print("Bilateral confidence interval=",
+              copula.computeBilateralConfidenceInterval(0.95, beta))
         print("beta=", beta)
-        print("Unilateral confidence interval (lower tail)=", copula.computeUnilateralConfidenceInterval(0.95, False, beta))
+        print("Unilateral confidence interval (lower tail)=",
+              copula.computeUnilateralConfidenceInterval(0.95, False, beta))
         print("beta=", beta)
-        print("Unilateral confidence interval (upper tail)=", copula.computeUnilateralConfidenceInterval(0.95, True, beta))
+        print("Unilateral confidence interval (upper tail)=",
+              copula.computeUnilateralConfidenceInterval(0.95, True, beta))
         print("beta=", beta)
-    
+
     # Extract the marginals
     for i in range(dim):
         margin = copula.getMarginal(i)

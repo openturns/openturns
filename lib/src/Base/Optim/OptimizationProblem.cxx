@@ -47,7 +47,7 @@ OptimizationProblem::OptimizationProblem(const Implementation & p_implementation
 
 /* Constructor with constraints, bounds */
 OptimizationProblem::OptimizationProblem(const Function & objective)
-: TypedInterfaceObject<OptimizationProblemImplementation>(new OptimizationProblemImplementation(objective))
+  : TypedInterfaceObject<OptimizationProblemImplementation>(new OptimizationProblemImplementation(objective))
 {
   // Nothing to do
 }

@@ -62,7 +62,7 @@ LHSResult * LHSResult::clone() const
 
 
 void LHSResult::add(const Sample & optimalDesign, Scalar criterion,
-         Scalar C2, Scalar PhiP, Scalar MinDist, const Sample & algoHistory)
+                    Scalar C2, Scalar PhiP, Scalar MinDist, const Sample & algoHistory)
 {
   if (spaceFilling_.isMinimizationProblem() && (criterion < optimalCriterion_))
   {
@@ -199,7 +199,7 @@ Graph LHSResult::drawHistoryCriterion(const String & title) const
     const UnsignedInteger idx(findDescription("criterion"));
     if (idx == 0)
       throw InvalidArgumentException(HERE) << "Could not draw criterion history, data not found";
-    drawTitle = collAlgoHistory_[0].getDescription()[idx-1]+" history of optimal design";
+    drawTitle = collAlgoHistory_[0].getDescription()[idx - 1] + " history of optimal design";
   }
   return drawHistoryCriterion(optimalIndex_, drawTitle);
 }
@@ -214,7 +214,7 @@ Graph LHSResult::drawHistoryCriterion(UnsignedInteger restart, const String & ti
   if (collAlgoHistory_[restart].getSize() == 0)
     throw InvalidArgumentException(HERE) << "Could not draw criterion history, data are empty";
 
-  const Sample data(collAlgoHistory_[restart].getMarginal(idx-1));
+  const Sample data(collAlgoHistory_[restart].getMarginal(idx - 1));
   String drawTitle(title);
   if (drawTitle.empty()) drawTitle = String(OSS() << data.getDescription()[0] << " history of restart number=" << restart);
   return drawCurveData(data, drawTitle);
@@ -237,7 +237,7 @@ Graph LHSResult::drawHistoryTemperature(UnsignedInteger restart, const String & 
   if (collAlgoHistory_[restart].getSize() == 0)
     throw InvalidArgumentException(HERE) << "Could not draw temperature history, data are empty";
 
-  const Sample data(collAlgoHistory_[restart].getMarginal(idx-1));
+  const Sample data(collAlgoHistory_[restart].getMarginal(idx - 1));
   String drawTitle(title);
   if (drawTitle.empty()) drawTitle = String(OSS() << "Temperature history of restart number=" << restart);
   return drawCurveData(data, drawTitle);
@@ -265,7 +265,7 @@ Graph LHSResult::drawHistoryProbability(UnsignedInteger restart, const String & 
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     data[i][0] = i;
-    data[i][1] = collAlgoHistory_[restart][i][idx-1];
+    data[i][1] = collAlgoHistory_[restart][i][idx - 1];
   }
   Description description(2);
   description[0] = "Iterations";

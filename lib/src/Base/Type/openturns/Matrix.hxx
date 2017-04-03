@@ -97,12 +97,12 @@ public:
   /** Operator () gives access to the elements of the matrix (to modify these elements) */
   /** The element of the matrix is designated by its row number i and its column number j */
   Scalar & operator () (const UnsignedInteger i,
-                                 const UnsignedInteger j);
+                        const UnsignedInteger j);
 
   /** Operator () gives access to the elements of the matrix (read only) */
   /** The element of the matrix is designated by its row number i and its column number j */
   const Scalar & operator () (const UnsignedInteger i,
-                                       const UnsignedInteger j) const;
+                              const UnsignedInteger j) const;
 #endif
 
   /** Get the dimensions of the matrix */
@@ -143,7 +143,7 @@ public:
 
   /** Resolution of a linear system */
   Point solveLinearSystem(const Point & b,
-                                   const Bool keepIntact = true);
+                          const Bool keepIntact = true);
   Matrix solveLinearSystem(const Matrix & b,
                            const Bool keepIntact = true);
 
@@ -151,9 +151,9 @@ public:
   Point computeSingularValues(const Bool keepIntact = true);
 
   Point computeSVD(Matrix & u,
-                            Matrix & vT,
-                            const Bool fullSVD = false,
-                            const Bool keepIntact = true);
+                   Matrix & vT,
+                   const Bool fullSVD = false,
+                   const Bool keepIntact = true);
 
   /** Build the QR factorization of the matrix */
   virtual Matrix computeQR(Matrix & R,

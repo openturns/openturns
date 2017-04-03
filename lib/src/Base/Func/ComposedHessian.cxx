@@ -31,10 +31,10 @@ static const Factory<ComposedHessian> Factory_ComposedHessian;
 
 /* Default constructor */
 ComposedHessian::ComposedHessian(const GradientPointer & p_leftGradient,
-    const HessianPointer & p_leftHessian,
-    const EvaluationPointer & p_rightFunction,
-    const GradientPointer & p_rightGradient,
-    const HessianPointer & p_rightHessian)
+                                 const HessianPointer & p_leftHessian,
+                                 const EvaluationPointer & p_rightFunction,
+                                 const GradientPointer & p_rightGradient,
+                                 const HessianPointer & p_rightHessian)
   : HessianImplementation(),
     p_leftGradient_(p_leftGradient),
     p_leftHessian_(p_leftHessian),

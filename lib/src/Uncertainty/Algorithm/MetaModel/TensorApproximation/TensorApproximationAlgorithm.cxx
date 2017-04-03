@@ -80,7 +80,7 @@ TensorApproximationAlgorithm::TensorApproximationAlgorithm(const Sample & inputS
 
   FunctionFamilyCollection functionFamilies(basisFactory.getFunctionFamilyCollection());
 
-  if (degrees.getSize() != functionFamilies.getSize()) throw InvalidArgumentException(HERE) << "degrees size ("<<degrees.getSize()<<") must match orthogonal basis factories ("<<functionFamilies.getSize()<<")";
+  if (degrees.getSize() != functionFamilies.getSize()) throw InvalidArgumentException(HERE) << "degrees size (" << degrees.getSize() << ") must match orthogonal basis factories (" << functionFamilies.getSize() << ")";
   tensor_ = Collection<CanonicalTensorEvaluation>(outputSample.getDimension(), CanonicalTensorEvaluation(functionFamilies, degrees));
 }
 
@@ -101,7 +101,7 @@ String TensorApproximationAlgorithm::__repr__() const
 /* Computes the functional chaos */
 void TensorApproximationAlgorithm::run()
 {
-    const UnsignedInteger outputDimension = outputSample_.getDimension();
+  const UnsignedInteger outputDimension = outputSample_.getDimension();
   // First, compute all the parts that are independent of the marginal output
   // Create the isoprobabilistic transformation
   // We have two distributions here:
@@ -129,7 +129,7 @@ void TensorApproximationAlgorithm::run()
 
   FunctionCollection marginals(0);
   Point residuals(outputDimension);
-  Point relativeErrors(outputDimension); 
+  Point relativeErrors(outputDimension);
   for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
   {
     runMarginal(outputIndex, residuals[outputIndex], relativeErrors[outputIndex]);
@@ -140,8 +140,8 @@ void TensorApproximationAlgorithm::run()
 
 /* Marginal computation */
 void TensorApproximationAlgorithm::runMarginal(const UnsignedInteger marginalIndex,
-                                               Scalar & marginalResidual,
-                                               Scalar & marginalRelativeError)
+    Scalar & marginalResidual,
+    Scalar & marginalRelativeError)
 {
   // proxies are reused accross marginals because the basis is the same
   const UnsignedInteger dimension = transformedInputSample_.getDimension();
@@ -166,20 +166,20 @@ void TensorApproximationAlgorithm::runMarginal(const UnsignedInteger marginalInd
   else if (method == "RankM")
   {
     rankM(transformedInputSample_,
-                  outputSample_.getMarginal(marginalIndex),
-                  tensor_[marginalIndex],
-                  marginalResidual,
-                  marginalRelativeError);
+          outputSample_.getMarginal(marginalIndex),
+          tensor_[marginalIndex],
+          marginalResidual,
+          marginalRelativeError);
   }
   else throw InvalidArgumentException(HERE) << "Invalid method: " << method;
 }
 
 
 void TensorApproximationAlgorithm::greedyRankOne (const Sample & x,
-                                                  const Sample & y,
-                                                  CanonicalTensorEvaluation & tensor,
-                                                  Scalar & marginalResidual,
-                                                  Scalar & marginalRelativeError)
+    const Sample & y,
+    CanonicalTensorEvaluation & tensor,
+    Scalar & marginalResidual,
+    Scalar & marginalRelativeError)
 {
   Sample yRes(y);
   const UnsignedInteger dimension = x.getDimension();
@@ -241,11 +241,11 @@ void TensorApproximationAlgorithm::greedyRankOne (const Sample & x,
 }
 
 void TensorApproximationAlgorithm::rankOne(const Sample & x,
-                                          const Sample & y,
-                                          CanonicalTensorEvaluation & tensor,
-                                          const UnsignedInteger i,
-                                          Scalar & marginalResidual,
-                                          Scalar & marginalRelativeError)
+    const Sample & y,
+    CanonicalTensorEvaluation & tensor,
+    const UnsignedInteger i,
+    Scalar & marginalResidual,
+    Scalar & marginalRelativeError)
 {
   Bool convergence = false;
   const UnsignedInteger dimension = x.getDimension();
@@ -265,7 +265,7 @@ void TensorApproximationAlgorithm::rankOne(const Sample & x,
     const Scalar oldRadius = tensor.getCoefficients(i, 0).norm();
     for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
-      Log::Info(OSS() << " j=" << j << "/"<< dimension);
+      Log::Info(OSS() << " j=" << j << "/" << dimension);
       const UnsignedInteger basisSize = tensor.getCoefficients(i, j).getSize();
       Indices full(basisSize);
       full.fill();
@@ -358,10 +358,10 @@ void TensorApproximationAlgorithm::rankOne(const Sample & x,
 
 
 void TensorApproximationAlgorithm::rankM (const Sample & x,
-                                          const Sample & y,
-                                          CanonicalTensorEvaluation & tensor,
-                                          Scalar & marginalResidual,
-                                          Scalar & marginalRelativeError)
+    const Sample & y,
+    CanonicalTensorEvaluation & tensor,
+    Scalar & marginalResidual,
+    Scalar & marginalRelativeError)
 {
   Bool convergence = false;
   const UnsignedInteger dimension = x.getDimension();
@@ -451,9 +451,9 @@ void TensorApproximationAlgorithm::rankM (const Sample & x,
 }
 
 void TensorApproximationAlgorithm::rankMComponent (const Sample & x,
-                                                  const Sample & y,
-                                                  CanonicalTensorEvaluation & tensor,
-                                                  const UnsignedInteger j)
+    const Sample & y,
+    CanonicalTensorEvaluation & tensor,
+    const UnsignedInteger j)
 {
   const UnsignedInteger dimension = x.getDimension();
   const UnsignedInteger size = x.getSize();

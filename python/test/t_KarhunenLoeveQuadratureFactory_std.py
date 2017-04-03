@@ -16,7 +16,7 @@ try:
     model = ot.AbsoluteExponential([1.0] * dim)
     lambd = ot.Point()
     KLModes = factory.build(model, lambd)
-    #print("KL modes=", KLModes)
+    # print("KL modes=", KLModes)
     print("KL eigenvalues=", lambd)
 
 except:

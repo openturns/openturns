@@ -199,7 +199,7 @@ Point Gumbel::computeCDFGradient(const Point & point) const
 
 /* Get the quantile of the distribution */
 Scalar Gumbel::computeScalarQuantile(const Scalar prob,
-    const Bool tail) const
+                                     const Bool tail) const
 {
   if (tail) return beta_ - std::log(-log1p(-prob)) / alpha_;
   return beta_ - std::log(-std::log(prob)) / alpha_;

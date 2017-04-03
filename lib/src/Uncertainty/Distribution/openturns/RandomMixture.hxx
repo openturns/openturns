@@ -115,9 +115,9 @@ public:
   /** Get a sample of the RandomMixture */
   Sample getSample(const UnsignedInteger size) const;
 
- protected:
+protected:
   virtual Sample getSampleByQMC(const UnsignedInteger size) const;
- public:
+public:
 
   /** Get the DDF of the RandomMixture */
   using DistributionImplementation::computeDDF;
@@ -129,15 +129,15 @@ public:
 
   /** Compute the PDF over a regular grid */
   Sample computePDF(const Scalar xMin,
-                             const Scalar xMax,
-                             const UnsignedInteger pointNumber,
-                             Sample & grid) const;
+                    const Scalar xMax,
+                    const UnsignedInteger pointNumber,
+                    Sample & grid) const;
 
   /* Compute the PDF of over a regular grid */
   Sample computePDF(const Point & xMin,
-                             const Point & xMax,
-                             const Indices & pointNumber,
-                             Sample & grid) const;
+                    const Point & xMax,
+                    const Indices & pointNumber,
+                    Sample & grid) const;
 
   /** Get the i-th marginal distribution */
   Implementation getMarginal(const UnsignedInteger i) const;
@@ -151,7 +151,7 @@ private:
 
   /** Quantile computation for dimension=1 */
   Scalar computeScalarQuantile(const Scalar prob,
-                                        const Bool tail = false) const;
+                               const Bool tail = false) const;
 
   /** Compute the characteristic function of 1D distributions by difference to a reference Normal distribution with the same mean and the same standard deviation in a regular pattern with cache */
   NumericalComplex computeDeltaCharacteristicFunction(const UnsignedInteger index) const;
@@ -183,9 +183,9 @@ public:
 
   /** Compute the CDF over a regular grid */
   Sample computeCDF(const Scalar xMin,
-                             const Scalar xMax,
-                             const UnsignedInteger pointNumber,
-                             Sample & grid) const;
+                    const Scalar xMax,
+                    const UnsignedInteger pointNumber,
+                    Sample & grid) const;
 
   /** Get the probability content of an interval */
   Scalar computeProbability(const Interval & interval) const;
@@ -193,9 +193,9 @@ public:
   /** Compute the quantile over a regular grid */
   using DistributionImplementation::computeQuantile;
   Sample computeQuantile(const Scalar qMin,
-                                  const Scalar qMax,
-                                  const UnsignedInteger pointNumber,
-                                  const Bool tail = false) const;
+                         const Scalar qMax,
+                         const UnsignedInteger pointNumber,
+                         const Bool tail = false) const;
 
   /** Get the minimum volume level set containing a given probability of the distribution */
   virtual LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & threshold) const;
@@ -358,7 +358,7 @@ private:
 
   friend struct EquivalentNormalPDFSumPolicy;
   Scalar computeEquivalentNormalPDFSum(const Point & y, const Point & gridStep,
-      UnsignedInteger imax, UnsignedInteger & levelMax) const;
+                                       UnsignedInteger imax, UnsignedInteger & levelMax) const;
 public:
   /** Get the standard deviation of the distribution */
   Point getStandardDeviation() const;

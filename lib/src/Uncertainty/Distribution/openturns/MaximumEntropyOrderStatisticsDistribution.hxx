@@ -173,13 +173,13 @@ private:
 public:
   /** Compute the exponential factor */
   Scalar computeExponentialFactor(const UnsignedInteger k,
-      const Scalar u,
-      const Scalar v) const;
+                                  const Scalar u,
+                                  const Scalar v) const;
 
   /** Compute the factor */
   Scalar computeFactor(const UnsignedInteger k,
-                                const Scalar u,
-                                const Scalar v) const;
+                       const Scalar u,
+                       const Scalar v) const;
 private:
   /** The main parameter set of the distribution */
   DistributionPersistentCollection distributionCollection_;

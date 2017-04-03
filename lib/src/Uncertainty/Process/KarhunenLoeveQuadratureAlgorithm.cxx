@@ -94,7 +94,7 @@ KarhunenLoeveQuadratureAlgorithm::KarhunenLoeveQuadratureAlgorithm(const Domain 
   , domain_(domain)
   , experiment_(GaussProductExperiment(ComposedDistribution(Collection<Distribution>(domain.getDimension(), Uniform())), Indices(domain.getDimension(), marginalDegree + 1)))
     // Here we have to use the double/double version of std::pow to make VC++ happy. Grrr.
-  , basis_(OrthogonalProductPolynomialFactory(Collection<OrthogonalUniVariatePolynomialFamily>(domain.getDimension(), LegendreFactory()), EnumerateFunction(domain.getDimension(), SpecFunc::MaxScalar))), basisSize_(static_cast<UnsignedInteger>(std::floor(0.5 + std::pow(1.0*marginalDegree, 1.0*domain.getDimension()))))
+  , basis_(OrthogonalProductPolynomialFactory(Collection<OrthogonalUniVariatePolynomialFamily>(domain.getDimension(), LegendreFactory()), EnumerateFunction(domain.getDimension(), SpecFunc::MaxScalar))), basisSize_(static_cast<UnsignedInteger>(std::floor(0.5 + std::pow(1.0 * marginalDegree, 1.0 * domain.getDimension()))))
   , mustScale_(true)
 {
   // Check the arguments
@@ -330,10 +330,10 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   Scalar cumulatedVariance = std::abs(eigenValues[0]);
   // Find the cut-off in the eigenvalues
   while ((K < eigenValues.getSize()) && (eigenValues[K] >= threshold_ * cumulatedVariance))
-    {
-      cumulatedVariance += eigenValues[K];
-      ++K;
-    }
+  {
+    cumulatedVariance += eigenValues[K];
+    ++K;
+  }
   // Reduce and rescale the eigenvectors
   MatrixImplementation transposedProjection(nodesNumber, K);
   Point selectedEV(K);

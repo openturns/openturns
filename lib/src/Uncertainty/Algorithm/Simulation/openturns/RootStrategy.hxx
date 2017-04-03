@@ -54,7 +54,7 @@ public:
 
   /** Solve gives all the roots found applying the root strategy */
   ScalarCollection solve(const Function & function,
-                                  const Scalar value);
+                         const Scalar value);
 
   /** Solver accessor */
   void setSolver(const Solver & solver);

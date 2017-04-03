@@ -36,7 +36,7 @@ DualLinearCombinationFunction::DualLinearCombinationFunction ()
 
 /* Parameter constructor */
 DualLinearCombinationFunction::DualLinearCombinationFunction (const FunctionCollection & functionCollection,
-                                                              const Sample & coefficients)
+    const Sample & coefficients)
   : Function()
 {
   const DualLinearCombinationEvaluation evaluation(functionCollection, coefficients);

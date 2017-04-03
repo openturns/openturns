@@ -43,10 +43,10 @@ ComposedFunction::ComposedFunction()
 
 /* Composition constructor */
 ComposedFunction::ComposedFunction(const Implementation & p_left,
-    const Implementation & p_right)
+                                   const Implementation & p_right)
   : FunctionImplementation(new ComposedEvaluation(p_left->getEvaluation(), p_right->getEvaluation()),
-                                        new NoGradient(),
-                                        new NoHessian())
+                           new NoGradient(),
+                           new NoHessian())
   , p_leftFunction_(p_left)
   , p_rightFunction_(p_right)
 {
@@ -74,10 +74,10 @@ ComposedFunction::ComposedFunction(const Implementation & p_left,
 
 /* Composition constructor */
 ComposedFunction::ComposedFunction(const Function & left,
-    const Function & right)
+                                   const Function & right)
   : FunctionImplementation(new ComposedEvaluation(left.getEvaluation(), right.getEvaluation()),
-                                        new NoGradient(),
-                                        new NoHessian())
+                           new NoGradient(),
+                           new NoHessian())
   , p_leftFunction_(left.getImplementation())
   , p_rightFunction_(right.getImplementation())
 {

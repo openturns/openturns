@@ -29,16 +29,16 @@ BEGIN_NAMESPACE_OPENTURNS
 namespace GammaFunctions
 {
 Scalar IncompleteGamma(const Scalar a,
-                                const Scalar x,
-                                const Bool tail = false);
+                       const Scalar x,
+                       const Bool tail = false);
 
 Scalar IncompleteGammaInverse(const Scalar a,
-                                       const Scalar x,
-                                       const Bool tail = false);
+                              const Scalar x,
+                              const Bool tail = false);
 
 Scalar RegularizedIncompleteGamma(const Scalar a,
-    const Scalar x,
-    const Bool tail = false);
+                                  const Scalar x,
+                                  const Bool tail = false);
 
 Scalar RegularizedIncompleteGammaInverse(const Scalar a,
     const Scalar x,

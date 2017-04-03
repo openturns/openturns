@@ -55,12 +55,12 @@ Scalar alpha(const Scalar x);
 
 // dompart is approx. of  x^a * exp(-x) / gamma(a+1) ;
 Scalar dompart(const Scalar a,
-                        const Scalar x,
-                        const Bool qt);
+               const Scalar x,
+               const Bool qt);
 
 // a[0]/2+a[1]T1(x)+...a[n]Tn(x); series of Chebychev polynomials
 Scalar chepolsum(const Scalar x,
-                          const Point & a);
+                 const Point & a);
 
 // function g in 1/gamma(x+1) = 1+x*(x-1)*g(x), -1 <= x <= 1
 Scalar auxgam(const Scalar x);
@@ -70,32 +70,32 @@ Scalar auxgam(const Scalar x);
 Scalar gamstar(const Scalar x);
 
 Scalar errorfunction(const Scalar x,
-                              const Bool erfcc,
-                              const Bool expo);
+                     const Bool erfcc,
+                     const Bool expo);
 
 Scalar fractio(const Scalar x,
-                        const Point & r,
-                        const Point & s);
+               const Point & r,
+               const Point & s);
 
 Scalar pqasymp(const Scalar a,
-                        const Scalar x,
-                        const Scalar dp,
-                        const Bool p);
+               const Scalar x,
+               const Scalar dp,
+               const Bool p);
 
 Scalar saeta(const Scalar a,
-                      const Scalar eta);
+             const Scalar eta);
 
 Scalar qfraction(const Scalar a,
-                          const Scalar x,
-                          const Scalar dp);
+                 const Scalar x,
+                 const Scalar dp);
 
 Scalar qtaylor(const Scalar a,
-                        const Scalar x,
-                        const Scalar dp);
+               const Scalar x,
+               const Scalar dp);
 
 Scalar ptaylor(const Scalar a,
-                        const Scalar x,
-                        const Scalar dp);
+               const Scalar x,
+               const Scalar dp);
 
 Scalar eps1(const Scalar eta);
 
@@ -110,8 +110,8 @@ Scalar invq(const Scalar x);
 Scalar inverfc(const Scalar x);
 
 Scalar ratfun(const Scalar x,
-                       const Point & ak,
-                       const Point & bk);
+              const Point & ak,
+              const Point & bk);
 
 } // GammaFunctions
 

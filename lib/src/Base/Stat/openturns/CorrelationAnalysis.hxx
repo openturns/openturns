@@ -40,29 +40,29 @@ public:
 
   /** Compute the Pearson correlation coefficient between the component number index of the input sample and the 1D outputSample */
   static Scalar PearsonCorrelation(const Sample & inputSample,
-      const Sample & outputSample,
-      const UnsignedInteger index = 0);
+                                   const Sample & outputSample,
+                                   const UnsignedInteger index = 0);
 
   /** Compute the Spearman correlation coefficient between the component number index of the input sample and the 1D outputSample */
   static Scalar SpearmanCorrelation(const Sample & inputSample,
-      const Sample & outputSample,
-      const UnsignedInteger index = 0);
+                                    const Sample & outputSample,
+                                    const UnsignedInteger index = 0);
 
   /** Compute the Standard Regression Coefficients (SRC) between the input sample and the output sample */
   static Point SRC(const Sample & inputSample,
-                            const Sample & outputSample);
+                   const Sample & outputSample);
 
   /** Compute the Partial Correlation Coefficients (PCC) between the input sample and the output sample */
   static Point PCC(const Sample & inputSample,
-                            const Sample & outputSample);
+                   const Sample & outputSample);
 
   /** Compute the Standard Rank Regression Coefficients (SRRC) between the input sample and the output sample */
   static Point SRRC(const Sample & inputSample,
-                             const Sample & outputSample);
+                    const Sample & outputSample);
 
   /** Compute the Partial Rank Correlation Coefficients (PRCC) between the input sample and the output sample */
   static Point PRCC(const Sample & inputSample,
-                             const Sample & outputSample);
+                    const Sample & outputSample);
 
 private:
   /** Default constructor */

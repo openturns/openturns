@@ -39,7 +39,7 @@ LogNormal::LogNormal()
   , muLog_(0.0)
   , sigmaLog_(0.0)
   , gamma_(0.0)
-  // 1 / SQRT(2Pi)
+    // 1 / SQRT(2Pi)
   , normalizationFactor_(0.39894228040143267794)
   , H_(0)
   , hermiteNodes_(0)
@@ -294,7 +294,7 @@ Point LogNormal::computeCDFGradient(const Point & point) const
 
 /* Get the quantile of the distribution */
 Scalar LogNormal::computeScalarQuantile(const Scalar prob,
-    const Bool tail) const
+                                        const Bool tail) const
 {
   return gamma_ + std::exp(muLog_ + sigmaLog_ * DistFunc::qNormal(prob, tail));
 }

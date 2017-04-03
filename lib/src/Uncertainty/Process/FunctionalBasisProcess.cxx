@@ -98,14 +98,14 @@ CovarianceModel FunctionalBasisProcess::getCovarianceModel() const
   for (UnsignedInteger i = 0; i < dimension; ++i)
     functions[i] = basis_.build(i);
   if (distribution_.hasIndependentCopula())
-    {
-      // We use the standard deviation as it is an O(dim) computation
-      // in the general case, while covariance is an O(n^2) computation
-      Point coefficients(distribution_.getStandardDeviation());
-      for (UnsignedInteger i = 0; i < dimension; ++i)
-	coefficients[i] *= coefficients[i];
-      return RankMCovarianceModel(coefficients, functions);
-    }
+  {
+    // We use the standard deviation as it is an O(dim) computation
+    // in the general case, while covariance is an O(n^2) computation
+    Point coefficients(distribution_.getStandardDeviation());
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+      coefficients[i] *= coefficients[i];
+    return RankMCovarianceModel(coefficients, functions);
+  }
   return RankMCovarianceModel(distribution_.getCovariance(), functions);
 }
 

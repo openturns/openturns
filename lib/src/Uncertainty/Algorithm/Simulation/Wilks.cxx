@@ -81,8 +81,8 @@ UnsignedInteger Wilks::ComputeSampleSize(const Scalar quantileLevel,
 
 /* Estimate an upper bound of the quantile of the random vector for the given quantile level and confidence level, using the marginIndex upper statistics */
 Point Wilks::computeQuantileBound(const Scalar quantileLevel,
-    const Scalar confidenceLevel,
-    const UnsignedInteger marginIndex) const
+                                  const Scalar confidenceLevel,
+                                  const UnsignedInteger marginIndex) const
 {
   // Compute the needed sample size
   const UnsignedInteger size = ComputeSampleSize(quantileLevel, confidenceLevel, marginIndex);

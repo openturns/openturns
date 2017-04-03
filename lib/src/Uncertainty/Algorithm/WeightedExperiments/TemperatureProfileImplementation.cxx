@@ -41,7 +41,7 @@ TemperatureProfileImplementation::TemperatureProfileImplementation()
 
 /** Constructor with temperature T0 & iMax*/
 TemperatureProfileImplementation::TemperatureProfileImplementation(const Scalar T0,
-                              const UnsignedInteger iMax)
+    const UnsignedInteger iMax)
   : PersistentObject()
   , T0_(T0)
   , iMax_(iMax)
@@ -58,19 +58,19 @@ TemperatureProfileImplementation * TemperatureProfileImplementation::clone() con
 /** Compute temperature T(i) */
 Scalar TemperatureProfileImplementation::operator()(UnsignedInteger i) const
 {
-  throw NotYetImplementedException(HERE); 
+  throw NotYetImplementedException(HERE);
 }
 
 /** get T0 */
 Scalar TemperatureProfileImplementation::getT0() const
 {
-    return T0_;
+  return T0_;
 }
 
 /** get iMax */
 UnsignedInteger TemperatureProfileImplementation::getIMax() const
 {
-    return iMax_;
+  return iMax_;
 }
 
 /* String converter */
@@ -87,7 +87,7 @@ void TemperatureProfileImplementation::save(Advocate & adv) const
 {
   PersistentObject::save( adv );
   adv.saveAttribute("T0_", T0_);
-  adv.saveAttribute("iMax_", iMax_);  
+  adv.saveAttribute("iMax_", iMax_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -95,7 +95,7 @@ void TemperatureProfileImplementation::load(Advocate & adv)
 {
   PersistentObject::load( adv );
   adv.loadAttribute("T0_", T0_);
-  adv.loadAttribute("iMax_", iMax_);  
+  adv.loadAttribute("iMax_", iMax_);
 }
 
 

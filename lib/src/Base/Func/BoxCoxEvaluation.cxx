@@ -40,7 +40,7 @@ BoxCoxEvaluation::BoxCoxEvaluation(const Point & lambda)
 }
 
 BoxCoxEvaluation::BoxCoxEvaluation(const Point & lambda,
-    const Point & shift)
+                                   const Point & shift)
   : EvaluationImplementation()
   , lambda_(lambda)
   , shift_(shift)

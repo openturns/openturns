@@ -15,7 +15,7 @@ try:
     graph = field.drawMarginal(0, False)
     graph = field.drawMarginal(0, True)
     # A 2D->1D field
-    mesh = IntervalMesher([10]*2).build(Interval([-2.0]*2, [2.0]*2))
+    mesh = IntervalMesher([10] * 2).build(Interval([-2.0] * 2, [2.0] * 2))
     function = SymbolicFunction(["x0", "x1"], ["x0 - x1"])
     field = Field(mesh, function(mesh.getVertices()))
     graph = field.draw()

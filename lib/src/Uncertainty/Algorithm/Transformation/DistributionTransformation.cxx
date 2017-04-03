@@ -42,7 +42,7 @@ DistributionTransformation::DistributionTransformation ()
 
 /* Parameter constructor */
 DistributionTransformation::DistributionTransformation (const Distribution & distribution,
-                                                        const Distribution & measure)
+    const Distribution & measure)
   : Function(Build(distribution, measure))
   , left_(distribution)
   , right_(measure)
@@ -52,7 +52,7 @@ DistributionTransformation::DistributionTransformation (const Distribution & dis
 
 /* Parameter constructor */
 Function DistributionTransformation::Build (const Distribution & distribution,
-                                                         const Distribution & measure)
+    const Distribution & measure)
 {
 
   Function transformation;

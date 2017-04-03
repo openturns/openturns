@@ -48,7 +48,7 @@ try:
     myGraph.add(myCurve2)
     for i in range(4):
         myGraph.setLogScale(i)
-        myGraph.draw("Graph_Curve_b_OT_" + str(i)+ ".png")
+        myGraph.draw("Graph_Curve_b_OT_" + str(i) + ".png")
 
 except:
     import sys

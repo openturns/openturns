@@ -74,10 +74,10 @@ public:
 protected:
   SimulatedAnnealingLHS() {};
   friend class Factory<SimulatedAnnealingLHS>;
-  
+
 private:
-   TemperatureProfile profile_;
-   Sample initialDesign_;
+  TemperatureProfile profile_;
+  Sample initialDesign_;
 
 }; /* class SimulatedAnnealingLHS */
 

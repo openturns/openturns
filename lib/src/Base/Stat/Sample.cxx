@@ -29,7 +29,7 @@ CLASSNAMEINIT(Sample);
 
 /* Factory of Sample from CSV file */
 Sample Sample::ImportFromCSVFile(const FileName & fileName,
-    const String & csvSeparator)
+                                 const String & csvSeparator)
 {
   Sample sample(SampleImplementation::BuildFromCSVFile(fileName, csvSeparator));
   return sample;
@@ -37,7 +37,7 @@ Sample Sample::ImportFromCSVFile(const FileName & fileName,
 
 /* Factory of Sample from Text file */
 Sample Sample::ImportFromTextFile(const FileName & fileName,
-    const String & separator)
+                                  const String & separator)
 {
   Sample sample(SampleImplementation::BuildFromTextFile(fileName, separator));
   return sample;
@@ -45,7 +45,7 @@ Sample Sample::ImportFromTextFile(const FileName & fileName,
 
 /* Save to CSV file */
 void Sample::exportToCSVFile(const FileName & filename,
-                                      const String & csvSeparator) const
+                             const String & csvSeparator) const
 {
   getImplementation()->exportToCSVFile(filename, csvSeparator);
 }
@@ -72,7 +72,7 @@ Sample::Sample()
 
 /* Constructor with size and dimension */
 Sample::Sample(const UnsignedInteger size,
-                                 const UnsignedInteger dim)
+               const UnsignedInteger dim)
   : TypedInterfaceObject<SampleImplementation>(new SampleImplementation(size, dim))
 {
   // Nothing to do
@@ -94,7 +94,7 @@ Sample::Sample(const Implementation & implementation)
 
 /* Constructor from a Point (all elements are equal to the Point) */
 Sample::Sample(const UnsignedInteger size,
-                                 const Point & point)
+               const Point & point)
   : TypedInterfaceObject<SampleImplementation>(new SampleImplementation(size, point))
 {
   // Nothing to do
@@ -102,8 +102,8 @@ Sample::Sample(const UnsignedInteger size,
 
 /* Partial copy constructor */
 Sample::Sample(const Sample other,
-                                 const UnsignedInteger first,
-                                 const UnsignedInteger last)
+               const UnsignedInteger first,
+               const UnsignedInteger last)
   : TypedInterfaceObject<SampleImplementation>(new SampleImplementation(*other.getImplementation(), other.getImplementation()->begin() + first, other.getImplementation()->begin() + last))
 {
   // Nothing to do
@@ -158,7 +158,7 @@ NSI_const_point Sample::operator [] (const UnsignedInteger index) const
 
 
 Scalar & Sample::operator () (const UnsignedInteger i,
-    const UnsignedInteger j)
+                              const UnsignedInteger j)
 {
 #ifdef DEBUG_BOUNDCHECKING
   // No copyOnWrite() as the at() method already do it
@@ -170,7 +170,7 @@ Scalar & Sample::operator () (const UnsignedInteger i,
 }
 
 const Scalar & Sample::operator () (const UnsignedInteger i,
-    const UnsignedInteger j) const
+                                    const UnsignedInteger j) const
 {
 #ifdef DEBUG_BOUNDCHECKING
   return this->at(i, j);
@@ -194,7 +194,7 @@ NSI_const_point Sample::at (const UnsignedInteger index) const
 }
 
 Scalar & Sample::at (const UnsignedInteger i,
-                                       const UnsignedInteger j)
+                     const UnsignedInteger j)
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than size (" << getSize() << ")";
   if (j >= getDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than dimension (" << getDimension() << ")";
@@ -203,7 +203,7 @@ Scalar & Sample::at (const UnsignedInteger i,
 }
 
 const Scalar & Sample::at (const UnsignedInteger i,
-    const UnsignedInteger j) const
+                           const UnsignedInteger j) const
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than size (" << getSize() << ")";
   if (j >= getDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than dimension (" << getDimension() << ")";
@@ -317,7 +317,7 @@ void Sample::stack(const Sample & sample)
 
 
 void Sample::erase(const UnsignedInteger first,
-                            const UnsignedInteger last)
+                   const UnsignedInteger last)
 {
   copyOnWrite();
   getImplementation()->erase(first, last);
@@ -535,7 +535,7 @@ Point Sample::computeQuantile(const Scalar prob) const
  * Get the empirical CDF of the sample
  */
 Scalar Sample::computeEmpiricalCDF(const Point & point,
-    const Bool tail) const
+                                   const Bool tail) const
 {
   return getImplementation()->computeEmpiricalCDF(point, tail);
 }

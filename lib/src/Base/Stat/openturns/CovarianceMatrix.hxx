@@ -78,7 +78,7 @@ public:
 
   /** Resolution of a linear system */
   Point solveLinearSystem(const Point & b,
-                                   const Bool keepIntact = true);
+                          const Bool keepIntact = true);
 
   Matrix solveLinearSystem(const Matrix & b,
                            const Bool keepIntact = true);

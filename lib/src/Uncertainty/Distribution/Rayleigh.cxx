@@ -203,7 +203,7 @@ Point Rayleigh::computeCDFGradient(const Point & point) const
 
 /* Get the quantile of the distribution */
 Scalar Rayleigh::computeScalarQuantile(const Scalar prob,
-    const Bool tail) const
+                                       const Bool tail) const
 {
   if (tail) return gamma_ + sigma_ * std::sqrt(-2.0 * std::log(prob));
   return gamma_ + sigma_ * std::sqrt(-2.0 * log1p(-prob));

@@ -137,7 +137,7 @@ private:
 
   /** Get the quantile of the distribution */
   Scalar computeScalarQuantile(const Scalar prob,
-                                        const Bool tail = false) const;
+                               const Bool tail = false) const;
 
   /** The probability parameter of the Bernoulli distribution */
   Scalar p_;

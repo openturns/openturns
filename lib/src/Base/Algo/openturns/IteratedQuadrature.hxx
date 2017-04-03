@@ -56,15 +56,15 @@ public:
    */
   using IntegrationAlgorithmImplementation::integrate;
   Point integrate(const Function & function,
-                           const Interval & interval) const;
+                  const Interval & interval) const;
 
   // This method allows to get the estimated integration error as a scalar
   Point integrate(const Function & function,
-                           const Scalar a,
-                           const Scalar b,
-                           const FunctionCollection & lowerBounds,
-                           const FunctionCollection & upperBounds,
-                           const Bool check = true) const;
+                  const Scalar a,
+                  const Scalar b,
+                  const FunctionCollection & lowerBounds,
+                  const FunctionCollection & upperBounds,
+                  const Bool check = true) const;
 
   /** String converter */
   virtual String __repr__() const;

@@ -50,7 +50,7 @@ public:
 
   /** Constructor from RandomVector */
   EventDomain(const RandomVectorImplementation & antecedent,
-                            const Domain & domain);
+              const Domain & domain);
 
   /** Virtual contructor */
   virtual EventDomain * clone() const;

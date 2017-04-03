@@ -61,11 +61,11 @@ String Bisection::__repr__() const
 
 /* Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] given function(infPoint) and function(supPoint) with the bisection method */
 Scalar Bisection::solve(const Function & function,
-                                 const Scalar value,
-                                 const Scalar infPoint,
-                                 const Scalar supPoint,
-                                 const Scalar infValue,
-                                 const Scalar supValue) const
+                        const Scalar value,
+                        const Scalar infPoint,
+                        const Scalar supPoint,
+                        const Scalar infValue,
+                        const Scalar supValue) const
 {
   if ((function.getInputDimension() != 1) || (function.getOutputDimension() != 1)) throw InvalidDimensionException(HERE) << "Error: the bisection method requires a scalar function, here input dimension=" << function.getInputDimension() << " and output dimension=" << function.getOutputDimension();
   /* We transform the equation function(x) = value into function(x) - value = 0 */

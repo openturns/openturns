@@ -99,21 +99,27 @@ try:
     # Get 95% survival function
     inverseSurvival = Point(distribution.computeInverseSurvivalFunction(0.95))
     print("InverseSurvival=", repr(inverseSurvival))
-    print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
+    print("Survival(inverseSurvival)=%.6f" %
+          distribution.computeSurvivalFunction(inverseSurvival))
     # Confidence regions
-    interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
+    interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(
+        0.95)
     print("Minimum volume interval=", interval)
     print("threshold=", threshold)
-    levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
+    levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(
+        0.95)
     print("Minimum volume level set=", levelSet)
     print("beta=", beta)
-    interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
+    interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(
+        0.95)
     print("Bilateral confidence interval=", interval)
     print("beta=", beta)
-    interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
+    interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+        0.95, False)
     print("Unilateral confidence interval (lower tail)=", interval)
     print("beta=", beta)
-    interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
+    interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+        0.95, True)
     print("Unilateral confidence interval (upper tail)=", interval)
     print("beta=", beta)
     mean = distribution.getMean()

@@ -37,8 +37,8 @@ SymbolicEvaluation::SymbolicEvaluation()
 
 /* Default constructor */
 SymbolicEvaluation::SymbolicEvaluation(const Description & inputVariablesNames,
-    const Description & outputVariablesNames,
-    const Description & formulas)
+                                       const Description & outputVariablesNames,
+                                       const Description & formulas)
   : EvaluationImplementation()
   , inputVariablesNames_(inputVariablesNames)
   , outputVariablesNames_(outputVariablesNames)

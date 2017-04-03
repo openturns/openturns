@@ -82,7 +82,7 @@ BasisSequence BasisSequenceFactory::build(const Sample & y,
 }
 
 BasisSequence BasisSequenceFactory::build(LeastSquaresMethod & method,
-                                          const Sample & y)
+    const Sample & y)
 {
   return getImplementation()->build(method, y);
 }

@@ -43,8 +43,8 @@ public:
 
   /** Default constructor */
   IndicatorEvaluation(const EvaluationPointer & p_evaluation,
-      const ComparisonOperator & comparisonOperator,
-      const Scalar threshold);
+                      const ComparisonOperator & comparisonOperator,
+                      const Scalar threshold);
 
   /** Virtual constructor */
   virtual IndicatorEvaluation * clone() const;

@@ -154,7 +154,7 @@ private:
 
   /** Get the quantile of the LogNormal distribution */
   Scalar computeScalarQuantile(const Scalar prob,
-                                        const Bool tail = false) const;
+                               const Bool tail = false) const;
 
   /** Compute the integrand that is involved in the computation of the characteristic function */
   NumericalComplex characteristicIntegrand(const Scalar eta,

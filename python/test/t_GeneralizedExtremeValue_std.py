@@ -7,12 +7,12 @@ TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    all_cases = [GeneralizedExtremeValue(2.0, 1.5, -0.15), \
-                 GeneralizedExtremeValue(2.0, 1.5,  0.0), \
+    all_cases = [GeneralizedExtremeValue(2.0, 1.5, -0.15),
+                 GeneralizedExtremeValue(2.0, 1.5,  0.0),
                  GeneralizedExtremeValue(2.0, 1.5,  0.15)]
     for i in range(len(all_cases)):
         distribution = all_cases[i]
-        print("#"*50)
+        print("#" * 50)
         print("Distribution ", distribution)
 
         # Is this distribution elliptical ?
@@ -27,39 +27,44 @@ try:
 
         # Test for sampling
         size = 10000
-        oneSample = distribution.getSample( size )
+        oneSample = distribution.getSample(size)
         print("oneSample first=", oneSample[0], " last=", oneSample[size - 1])
         print("mean=", oneSample.computeMean())
         print("covariance=", oneSample.computeCovariance())
         size = 100
         for i in range(2):
-            print("Kolmogorov test for the generator, sample size=", size, " is ", FittingTest.Kolmogorov(distribution.getSample(size), distribution).getBinaryQualityMeasure())
+            print(
+                "Kolmogorov test for the generator, sample size=", size, " is ",
+                  FittingTest.Kolmogorov(distribution.getSample(size), distribution).getBinaryQualityMeasure())
             size *= size
 
         # Define a point
-        point = [1.0]*distribution.getDimension()
+        point = [1.0] * distribution.getDimension()
         print("Point= ", point)
 
         # Show PDF and CDF of point
         eps = 1e-5
-        DDF = distribution.computeDDF( point )
+        DDF = distribution.computeDDF(point)
         print("ddf     =", DDF)
-        print("ddf (FD)=", (distribution.computePDF(point[0] + eps) - distribution.computePDF(point[0] - eps)) / (2.0 * eps))
-        LPDF = distribution.computeLogPDF( point )
+        print(
+            "ddf (FD)=", (distribution.computePDF(point[0] + eps) - distribution.computePDF(point[0] - eps)) / (2.0 * eps))
+        LPDF = distribution.computeLogPDF(point)
         print("log pdf=", LPDF)
-        PDF = distribution.computePDF( point )
+        PDF = distribution.computePDF(point)
         print("pdf     =", PDF)
-        print("pdf (FD)=", (distribution.computeCDF(point[0] + eps) - distribution.computeCDF(point[0] -eps)) / (2.0 * eps))
-        CDF = distribution.computeCDF( point )
+        print(
+            "pdf (FD)=", (distribution.computeCDF(point[0] + eps) - distribution.computeCDF(point[0] - eps)) / (2.0 * eps))
+        CDF = distribution.computeCDF(point)
         print("cdf=", CDF)
-        CCDF = distribution.computeComplementaryCDF( point )
+        CCDF = distribution.computeComplementaryCDF(point)
         print("ccdf=", CCDF)
-        Survival = distribution.computeSurvivalFunction( point )
+        Survival = distribution.computeSurvivalFunction(point)
         print("survival=", Survival)
         InverseSurvival = distribution.computeInverseSurvivalFunction(0.95)
         print("Inverse survival=", InverseSurvival)
-        print("Survival(inverse survival)=", distribution.computeSurvivalFunction(InverseSurvival))
-        PDFgr = distribution.computePDFGradient( point )
+        print("Survival(inverse survival)=",
+              distribution.computeSurvivalFunction(InverseSurvival))
+        PDFgr = distribution.computePDFGradient(point)
         print("pdf gradient     =", PDFgr)
         PDFgrFD = Point(3)
         PDFgrFD[0] = (GeneralizedExtremeValue(distribution.getMu() + eps, distribution.getSigma(), distribution.getXi()).computePDF(point) -
@@ -69,7 +74,7 @@ try:
         PDFgrFD[2] = (GeneralizedExtremeValue(distribution.getMu(), distribution.getSigma(), distribution.getXi() + eps).computePDF(point) -
                       GeneralizedExtremeValue(distribution.getMu(), distribution.getSigma(), distribution.getXi() - eps).computePDF(point)) / (2.0 * eps)
         print("pdf gradient (FD)=", PDFgrFD)
-        CDFgr = distribution.computeCDFGradient( point )
+        CDFgr = distribution.computeCDFGradient(point)
         print("cdf gradient     =", CDFgr)
         CDFgrFD = Point(3)
         CDFgrFD[0] = (GeneralizedExtremeValue(distribution.getMu() + eps, distribution.getSigma(), distribution.getXi()).computeCDF(point) -
@@ -79,23 +84,28 @@ try:
         CDFgrFD[2] = (GeneralizedExtremeValue(distribution.getMu(), distribution.getSigma(), distribution.getXi() + eps).computeCDF(point) -
                       GeneralizedExtremeValue(distribution.getMu(), distribution.getSigma(), distribution.getXi() - eps).computeCDF(point)) / (2.0 * eps)
         print("cdf gradient (FD)=", CDFgrFD)
-        quantile = distribution.computeQuantile( 0.95 )
+        quantile = distribution.computeQuantile(0.95)
         print("quantile=", quantile)
         print("cdf(quantile)=", distribution.computeCDF(quantile))
         # Confidence regions
-        prob, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
+        prob, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(
+            0.95)
         print("Minimum volume interval=", prob)
         print("threshold=", threshold)
-        levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
+        levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(
+            0.95)
         print("Minimum volume level set=", levelSet)
         print("beta=", beta)
-        interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
+        interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(
+            0.95)
         print("Bilateral confidence interval=", interval)
         print("beta=", beta)
-        interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
+        interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+            0.95, False)
         print("Unilateral confidence interval (lower tail)=", interval)
         print("beta=", beta)
-        interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
+        interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+            0.95, True)
         print("Unilateral confidence interval (upper tail)=", interval)
         print("beta=", beta)
         mean = distribution.getMean()
@@ -117,14 +127,18 @@ try:
         parameters = distribution.getParametersCollection()
         print("parameters=", parameters)
         for i in range(6):
-            print("standard moment n=", i, ", value=", distribution.getStandardMoment(i))
-        print("Standard representative=", distribution.getStandardRepresentative())
+            print("standard moment n=", i, ", value=",
+                  distribution.getStandardMoment(i))
+        print("Standard representative=",
+              distribution.getStandardRepresentative())
         print("mu=", distribution.getMu())
         print("sigma=", distribution.getSigma())
         print("xi=", distribution.getXi())
         print("Actual distribution=", distribution.getActualDistribution())
-        distribution.setActualDistribution(distribution.getActualDistribution())
+        distribution.setActualDistribution(
+            distribution.getActualDistribution())
         print("Distribution from actual distribution=", distribution)
 except:
     import sys
-    print("t_GeneralizedExtremeValue_std.py", sys.exc_info()[0], sys.exc_info()[1])
+    print("t_GeneralizedExtremeValue_std.py",
+          sys.exc_info()[0], sys.exc_info()[1])

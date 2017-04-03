@@ -107,11 +107,11 @@ public:
   virtual void load(Advocate & adv);
 
   static Sample Generate(const Distribution & distribution,
-                                  const UnsignedInteger size,
-                                  const Bool computeSecondOrder = true);
+                         const UnsignedInteger size,
+                         const Bool computeSecondOrder = true);
 
   static Sample Generate(const WeightedExperiment & experiment,
-                                  const Bool computeSecondOrder = true);
+                         const Bool computeSecondOrder = true);
 
   static Graph DrawImportanceFactors(const PointWithDescription & importanceFactors,
                                      const String & title);
@@ -131,29 +131,29 @@ protected:
 
   /** Internal method that compute Vi/VTi using a collection of samples */
   virtual Sample computeIndices(const Sample & design,
-                                         Sample & VTi) const;
+                                Sample & VTi) const;
 
   /** Internal method that returns a boostrap NS collection of size inputDimension + 2 */
   Sample getBootstrapDesign(const Indices & indices) const;
 
   /** Function that computes merged indices using Vi/VTi + variance  */
   Point computeAggregatedIndices(const Sample & Vi,
-                                          const Sample & VTi,
-                                          const Point & variance,
-                                          Point & mergedTotal) const;
+                                 const Sample & VTi,
+                                 const Point & variance,
+                                 Point & mergedTotal) const;
 
   /** void method that computes confidence interval */
   void computeIndicesInterval() const;
 
   /** Multiplication and sum of two Samples */
   Point computeSumDotSamples(const Sample & x,
-                                      const Sample & y) const;
+                             const Sample & y) const;
 
   /** Multiplication and sum of two (sub)samples that are in the same Samples */
   Point computeSumDotSamples(const Sample & sample,
-                                      const UnsignedInteger size,
-                                      const UnsignedInteger indexX,
-                                      const UnsignedInteger indexY) const;
+                             const UnsignedInteger size,
+                             const UnsignedInteger indexX,
+                             const UnsignedInteger indexY) const;
 
 
   /** Designs : input & output designs */

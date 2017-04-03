@@ -41,7 +41,7 @@ OptimalLHSExperiment::OptimalLHSExperiment(const LHSExperiment & lhs)
 
 /* Default constructor */
 OptimalLHSExperiment::OptimalLHSExperiment(const LHSExperiment & lhs,
-                                                   const SpaceFilling & spaceFilling)
+    const SpaceFilling & spaceFilling)
   : WeightedExperimentImplementation(lhs.getDistribution(), lhs.getSize())
   , spaceFilling_(spaceFilling)
 {
@@ -59,7 +59,7 @@ void OptimalLHSExperiment::setLHS(const LHSExperiment & lhs)
   const UnsignedInteger dimension = distribution.getDimension();
   marginals_.resize(dimension);
   for (UnsignedInteger j = 0; j < dimension; ++ j)
-     marginals_[j] = distribution.getMarginal(j);
+    marginals_[j] = distribution.getMarginal(j);
 }
 
 /* Virtual constructor method */

@@ -104,7 +104,7 @@ public:
   ComplexMatrix solveLinearSystem(const ComplexMatrix & b,
                                   const Bool keepIntact = true);
   NumericalComplexCollection solveLinearSystem(const NumericalComplexCollection & b,
-                                               const Bool keepIntact = true);
+      const Bool keepIntact = true);
 
   /** String converter */
   virtual String __repr__() const;

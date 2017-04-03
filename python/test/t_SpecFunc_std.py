@@ -17,4 +17,5 @@ for x in [0, 1, 2, 3, 4, 10, 100, 1000]:
 for n in [4, 5, 17]:
     for k in [2, 0, 7, 3]:
         if k <= n:
-            print('n=', n, 'k=', k, 'binom=', ot.SpecFunc.BinomialCoefficient(n, k))
+            print('n=', n, 'k=', k, 'binom=',
+                  ot.SpecFunc.BinomialCoefficient(n, k))

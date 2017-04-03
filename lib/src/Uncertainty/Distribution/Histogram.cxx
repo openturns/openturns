@@ -210,7 +210,7 @@ Point Histogram::computeCDFGradient(const Point & point) const
 
 /* Get the quantile of the distribution */
 Scalar Histogram::computeScalarQuantile(const Scalar prob,
-    const Bool tail) const
+                                        const Bool tail) const
 {
   const Scalar p = tail ? 1.0 - prob : prob;
   if (p <= 0.0) return first_;

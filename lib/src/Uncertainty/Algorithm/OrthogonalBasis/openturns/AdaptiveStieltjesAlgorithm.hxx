@@ -72,7 +72,7 @@ private:
 
   /** Compute dot products taking into account the singularities of the weights */
   Point computeDotProduct(const Function & kernel,
-				   const UnsignedInteger n) const;
+                          const UnsignedInteger n) const;
 
   // Structure used to compute the two dot-products needed for the computation of three-terms relation coefficients
   struct DotProductWrapper

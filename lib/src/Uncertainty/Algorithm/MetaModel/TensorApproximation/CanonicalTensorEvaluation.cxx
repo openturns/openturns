@@ -30,19 +30,19 @@ static const Factory<CanonicalTensorEvaluation> Factory_CanonicalTensorEvaluatio
 
 
 CanonicalTensorEvaluation::CanonicalTensorEvaluation()
-: EvaluationImplementation()
+  : EvaluationImplementation()
 {
   // Nothing to do
 }
 
 
 CanonicalTensorEvaluation::CanonicalTensorEvaluation(const FunctionFamilyCollection & functionFamilies,
-                                                     const Indices & nk,
-                                                     const UnsignedInteger rank)
-: EvaluationImplementation()
-, degrees_(nk)
-, coefficients_(nk.getSize())
-, basis_(nk.getSize())
+    const Indices & nk,
+    const UnsignedInteger rank)
+  : EvaluationImplementation()
+  , degrees_(nk)
+  , coefficients_(nk.getSize())
+  , basis_(nk.getSize())
 {
   const UnsignedInteger dimension = functionFamilies.getSize();
   if (dimension != nk.getSize())
@@ -139,9 +139,9 @@ CanonicalTensorEvaluation CanonicalTensorEvaluation::getMarginalRank(const Unsig
 String CanonicalTensorEvaluation::__repr__() const
 {
   return OSS() << "class=" << getClassName()
-               << " degrees=" << degrees_
-               << " coefficients=" << coefficients_
-               << " basis=" << basis_;
+         << " degrees=" << degrees_
+         << " coefficients=" << coefficients_
+         << " basis=" << basis_;
 }
 
 String CanonicalTensorEvaluation::__str__(const String & offset) const

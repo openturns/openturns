@@ -158,7 +158,7 @@ private:
 
   /** Get the quantile of the distribution */
   Scalar computeScalarQuantile(const Scalar prob,
-                                        const Bool tail = false) const;
+                               const Bool tail = false) const;
 
   /** RT accessor that avoid a check between the setting of r and the setting of t */
   void setRT(const Scalar r,

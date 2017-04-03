@@ -70,7 +70,7 @@ public:
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   Scalar computeConditionalPDF(const Scalar x,
-                                        const Point & y) const;
+                               const Point & y) const;
 
   /** Compute the archimedean generator of the archimedean copula, i.e.
    *  the function phi such that the CDF of the copula can

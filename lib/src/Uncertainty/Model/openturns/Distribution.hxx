@@ -151,13 +151,13 @@ public:
 
   /** Compute the PDF of 1D distributions over a regular grid */
   Sample computePDF(const Scalar xMin,
-                             const Scalar xMax,
-                             const UnsignedInteger pointNumber) const;
+                    const Scalar xMax,
+                    const UnsignedInteger pointNumber) const;
 
   /** Compute the log-PDF of 1D distributions over a regular grid */
   Sample computeLogPDF(const Scalar xMin,
-				const Scalar xMax,
-				const UnsignedInteger pointNumber) const;
+                       const Scalar xMax,
+                       const UnsignedInteger pointNumber) const;
 
   /** Get the CDF of the distribution */
   Scalar computeCDF(const Scalar scalar) const;
@@ -170,7 +170,7 @@ public:
   Point computeInverseSurvivalFunction(const Scalar prob) const;
 #ifndef SWIG
   Point computeInverseSurvivalFunction(const Scalar prob,
-						Scalar & marginalProb) const;
+                                       Scalar & marginalProb) const;
 #endif
 
   Sample computeCDF(const Sample & sample) const;
@@ -179,12 +179,12 @@ public:
 
   /** Compute the CDF of 1D distributions over a regular grid */
   Sample computeCDF(const Scalar xMin,
-                             const Scalar xMax,
-                             const UnsignedInteger pointNumber) const;
+                    const Scalar xMax,
+                    const UnsignedInteger pointNumber) const;
 
   Sample computeComplementaryCDF(const Scalar xMin,
-                                          const Scalar xMax,
-                                          const UnsignedInteger pointNumber) const;
+                                 const Scalar xMax,
+                                 const UnsignedInteger pointNumber) const;
 
   /** Get the probability content of an interval */
   Scalar computeProbability(const Interval & interval) const;
@@ -214,19 +214,19 @@ public:
 
   /** Get the quantile of the distribution */
   Point computeQuantile(const Scalar prob,
-                                 const Bool tail = false) const;
+                        const Bool tail = false) const;
 #ifndef SWIG
   Point computeQuantile(const Scalar prob,
-                                 const Bool tail,
-				 Scalar & marginalProb) const;
+                        const Bool tail,
+                        Scalar & marginalProb) const;
 #endif
   Sample computeQuantile(const Point & prob,
-                                  const Bool tail = false) const;
+                         const Bool tail = false) const;
   /** Compute the quantile over a regular grid */
   Sample computeQuantile(const Scalar qMin,
-                                  const Scalar qMax,
-                                  const UnsignedInteger pointNumber,
-                                  const Bool tail = false) const;
+                         const Scalar qMax,
+                         const UnsignedInteger pointNumber,
+                         const Bool tail = false) const;
 
   /** Get the product minimum volume interval containing a given probability of the distribution */
   Interval computeMinimumVolumeInterval(const Scalar prob) const;
@@ -273,7 +273,7 @@ public:
 
   /** Get the shifted moments of the distribution */
   Point getShiftedMoment(const UnsignedInteger n,
-                                  const Point & shift) const;
+                         const Point & shift) const;
 
   /** Inverse of the Cholesky factor of the covariance matrix accessor */
   TriangularMatrix getInverseCholesky() const;
@@ -363,19 +363,19 @@ public:
 
   /** Compute the DDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   virtual Scalar computeConditionalDDF(const Scalar x,
-      const Point & y) const;
+                                       const Point & y) const;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   virtual Scalar computeConditionalPDF(const Scalar x,
-      const Point & y) const;
+                                       const Point & y) const;
   virtual Point computeConditionalPDF(const Point & x,
-      const Sample & y) const;
+                                      const Sample & y) const;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   virtual Scalar computeConditionalCDF(const Scalar x,
-      const Point & y) const;
+                                       const Point & y) const;
   virtual Point computeConditionalCDF(const Point & x,
-      const Sample & y) const;
+                                      const Sample & y) const;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
   virtual Scalar computeConditionalQuantile(const Scalar q,
@@ -430,30 +430,30 @@ public:
 
   /** Draw the log-PDF of the distribution when its dimension is 1 */
   virtual Graph drawLogPDF(const Scalar xMin,
-			   const Scalar xMax,
-			   const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
+                           const Scalar xMax,
+                           const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
   virtual Graph drawLogPDF(const UnsignedInteger pointNumber) const;
-  
+
   /** Draw the log-PDF of a 1D marginal */
   virtual Graph drawMarginal1DLogPDF(const UnsignedInteger marginalIndex,
-				     const Scalar xMin,
-				     const Scalar xMax,
-				     const UnsignedInteger pointNumber) const;
-  
+                                     const Scalar xMin,
+                                     const Scalar xMax,
+                                     const UnsignedInteger pointNumber) const;
+
   /** Draw the log-PDF of the distribution when its dimension is 2 */
   virtual Graph drawLogPDF(const Point & xMin,
-			   const Point & xMax,
-			   const Indices & pointNumber) const;
+                           const Point & xMax,
+                           const Indices & pointNumber) const;
   virtual Graph drawLogPDF(const Point & xMin,
-			   const Point & xMax) const;
+                           const Point & xMax) const;
   virtual Graph drawLogPDF(const Indices & pointNumber) const;
 
   /** Draw the PDF of a 2D marginal */
   virtual Graph drawMarginal2DLogPDF(const UnsignedInteger firstMarginal,
-				     const UnsignedInteger secondMarginal,
-				     const Point & xMin,
-				     const Point & xMax,
-				     const Indices & pointNumber) const;
+                                     const UnsignedInteger secondMarginal,
+                                     const Point & xMin,
+                                     const Point & xMax,
+                                     const Indices & pointNumber) const;
 
   /** Draw the CDF of the distribution when its dimension is 1 or 2 */
   virtual Graph drawCDF() const;

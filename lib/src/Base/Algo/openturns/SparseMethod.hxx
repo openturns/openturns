@@ -46,8 +46,8 @@ public:
 
   /** Parameters constructor */
   SparseMethod(const LeastSquaresMethod & method,
-              const BasisSequenceFactory & basisSequenceFactory = LARS(),
-              const FittingAlgorithm & fittingAlgorithm = CorrectedLeaveOneOut());
+               const BasisSequenceFactory & basisSequenceFactory = LARS(),
+               const FittingAlgorithm & fittingAlgorithm = CorrectedLeaveOneOut());
 
   /** Virtual constructor */
   virtual SparseMethod * clone() const;

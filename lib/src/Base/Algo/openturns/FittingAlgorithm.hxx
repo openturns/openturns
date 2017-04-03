@@ -55,24 +55,24 @@ public:
 
   /** Perform cross-validation */
   Scalar run(const Sample & x,
-                      const Sample & y,
-                      const Point & weight,
-                      const Basis & psi,
-                      const Indices & indices) const;
+             const Sample & y,
+             const Point & weight,
+             const Basis & psi,
+             const Indices & indices) const;
 
   Scalar run(const Sample & x,
-                      const Sample & y,
-                      const Basis & psi,
-                      const Indices & indices) const;
+             const Sample & y,
+             const Basis & psi,
+             const Indices & indices) const;
 
 #ifndef SWIG
   Scalar run(const Sample & y,
-                      const Point & weight,
-                      const Indices & indices,
-                      const DesignProxy & proxy) const;
+             const Point & weight,
+             const Indices & indices,
+             const DesignProxy & proxy) const;
 
   Scalar run(LeastSquaresMethod & method,
-                      const Sample & y) const;
+             const Sample & y) const;
 #endif
 
 }; /* class FittingAlgorithm */

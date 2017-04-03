@@ -102,7 +102,7 @@ Matrix MaternModel::partialGradient(const Point & s,
     if (nu_ == 0.5)
     {
       Matrix gradient(spatialDimension_, 1);
-      for (UnsignedInteger i = 0; i < spatialDimension_; ++i) gradient(i, 0) = -amplitude_[0] * amplitude_[0]/ scale_[i];
+      for (UnsignedInteger i = 0; i < spatialDimension_; ++i) gradient(i, 0) = -amplitude_[0] * amplitude_[0] / scale_[i];
       return gradient;
     }
     // Zero gradient for p > 1

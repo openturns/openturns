@@ -36,7 +36,7 @@ const UnsignedInteger    SobolSequence::MaximumBase2Logarithm    = 62;
 const Scalar SobolSequence::Epsilon                  = 1.0 / power2(MaximumBase2Logarithm);
 const UnsignedInteger    SobolSequence::MaximumInitialDegree     = 8;
 
-const UnsignedInteger SobolSequence::InitialBase[MaximumNumberOfDimension*MaximumInitialDegree] =
+const UnsignedInteger SobolSequence::InitialBase[MaximumNumberOfDimension * MaximumInitialDegree] =
 {
   1,   0,   0,   0,   0,   0,   0,   0,
   1,   0,   0,   0,   0,   0,   0,   0,

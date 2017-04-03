@@ -29,12 +29,12 @@ CLASSNAMEINIT(QuadraticFunction);
 
 /* Default constructor */
 QuadraticFunction::QuadraticFunction (const Point & center,
-    const Point & constant,
-    const Matrix & linear,
-    const SymmetricTensor & quadratic)
+                                      const Point & constant,
+                                      const Matrix & linear,
+                                      const SymmetricTensor & quadratic)
   : Function(new QuadraticEvaluation(center, constant, linear, quadratic),
-                          new LinearGradient(center, linear, quadratic),
-                          new ConstantHessian(quadratic))
+             new LinearGradient(center, linear, quadratic),
+             new ConstantHessian(quadratic))
 {
   // Nothing to do
 }

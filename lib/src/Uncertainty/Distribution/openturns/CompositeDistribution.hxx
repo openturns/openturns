@@ -119,7 +119,7 @@ public:
 
   /** Compute the shifted moments of the distribution */
   Point computeShiftedMomentContinuous(const UnsignedInteger n,
-      const Point & shift) const;
+                                       const Point & shift) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

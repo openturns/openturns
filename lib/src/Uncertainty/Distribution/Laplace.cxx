@@ -190,7 +190,7 @@ Point Laplace::computeCDFGradient(const Point & point) const
 
 /* Get the quantile of the distribution */
 Scalar Laplace::computeScalarQuantile(const Scalar prob,
-    const Bool tail) const
+                                      const Bool tail) const
 {
   const Scalar d = tail ? 0.5 - prob : prob - 0.5;
   if (d < 0.0) return mu_ + log1p(2.0 * d) / lambda_;

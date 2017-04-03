@@ -56,7 +56,7 @@ String RungeKutta::__repr__() const
 
 /* Perform cross-validation */
 Sample RungeKutta::solve(const Point & initialState,
-                                  const Point & timeGrid) const
+                         const Point & timeGrid) const
 {
   if (initialState.getDimension() != transitionFunction_.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the initial state has a dimension=" << initialState.getDimension() << ", expected dimension=" << transitionFunction_.getInputDimension();
   // Quick return if the time grid is empty
@@ -80,8 +80,8 @@ Sample RungeKutta::solve(const Point & initialState,
 
 /* Perform one step of the RungeKutta method */
 Point RungeKutta::computeStep(const Scalar t,
-                                       const Point & state,
-                                       const Scalar h) const
+                              const Point & state,
+                              const Scalar h) const
 {
   const Point k1(transitionFunction_(t, state));
   const Point k2(transitionFunction_(t + 0.5 * h, state + k1 * (0.5 * h)));

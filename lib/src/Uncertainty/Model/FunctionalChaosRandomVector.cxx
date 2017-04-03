@@ -135,8 +135,8 @@ Scalar FunctionalChaosRandomVector::getSobolIndex(const Indices & variableIndice
           if (isProperSubset)
           {
             // Second, check that the other coefficients are 0
-	    if (*std::max_element(multiIndices.begin(), multiIndices.end()) == 0)
-	      covarianceVariables += coefficientI * coefficientI;
+            if (*std::max_element(multiIndices.begin(), multiIndices.end()) == 0)
+              covarianceVariables += coefficientI * coefficientI;
           }
         } // *std::max_element(multiIndices.begin(), multiIndices.end())s > 0
       } // if coefficientI <> 0

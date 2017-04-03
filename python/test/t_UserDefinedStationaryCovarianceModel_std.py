@@ -54,7 +54,8 @@ try:
     # Test the drawing method as a nonstationary model, in the covariance range
     graph = myModel.draw(0, 0, -2.0, 2.0, 21, True, False)
     print(graph)
-    # Test the drawing method as a nonstationary model, in the correlation range
+    # Test the drawing method as a nonstationary model, in the correlation
+    # range
     graph = myModel.draw(0, 0, -2.0, 2.0, 21, True, True)
     print(graph)
 

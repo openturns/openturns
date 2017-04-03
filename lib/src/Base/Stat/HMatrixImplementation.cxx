@@ -78,7 +78,7 @@ public:
   ParallelBlockData(UnsignedInteger outputDimension,
                     UnsignedInteger rowOffset, UnsignedInteger rowCount,
                     UnsignedInteger colOffset, UnsignedInteger colCount)
-    : list_couples_(rowCount*colCount)
+    : list_couples_(rowCount * colCount)
     , outputDimension_(outputDimension)
     , rowOffset_(rowOffset)
     , rowCount_(rowCount)

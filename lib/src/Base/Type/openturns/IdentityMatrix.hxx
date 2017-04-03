@@ -57,7 +57,7 @@ public:
   /** Operator () gives access to the elements of the matrix (read only) */
   /** The element of the matrix is designated by its row number i and its column number j */
   const Scalar & operator () (const UnsignedInteger i,
-                                       const UnsignedInteger j) const;
+                              const UnsignedInteger j) const;
 #endif
 
   /** Multiplications */
@@ -76,20 +76,20 @@ public:
 
   /** Resolution of a linear system */
   Point solveLinearSystem(const Point & b,
-                                   const Bool keepIntact = true);
+                          const Bool keepIntact = true);
 
   Matrix solveLinearSystem(const Matrix & b,
                            const Bool keepIntact = true);
 
   /** Compute determinant */
   Scalar computeLogAbsoluteDeterminant(Scalar & sign,
-      const Bool keepIntact = true);
+                                       const Bool keepIntact = true);
   Scalar computeDeterminant(const Bool keepIntact = true);
 
   /** Compute eigenvalues */
   Point computeEigenValues(const Bool keepIntact = true);
   Point computeEV(SquareMatrix & v,
-                           const Bool keepIntact = true);
+                  const Bool keepIntact = true);
 
   /** Check if the matrix is SPD */
   virtual Bool isPositiveDefinite(const Bool keepIntact = true);
@@ -101,9 +101,9 @@ public:
   Point computeSingularValues(const Bool keepIntact = true);
 
   Point computeSVD(Matrix & u,
-                            Matrix & vT,
-                            const Bool fullSVD = false,
-                            const Bool keepIntact = true);
+                   Matrix & vT,
+                   const Bool fullSVD = false,
+                   const Bool keepIntact = true);
 
 protected:
 
@@ -116,7 +116,7 @@ private:
   /** Operator () gives access to the elements of the matrix (to modify these elements) */
   /** The element of the matrix is designated by its row number i and its column number j */
   Scalar & operator () (const UnsignedInteger i,
-                                 const UnsignedInteger j);
+                        const UnsignedInteger j);
 }; /* class IdentityMatrix */
 
 END_NAMESPACE_OPENTURNS

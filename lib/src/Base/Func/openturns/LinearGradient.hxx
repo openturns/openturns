@@ -50,8 +50,8 @@ public:
 
   /** Parameter constructor */
   LinearGradient(const Point & center,
-      const Matrix & constant,
-      const SymmetricTensor & linear);
+                 const Matrix & constant,
+                 const SymmetricTensor & linear);
 
 
   /** Virtual constructor */

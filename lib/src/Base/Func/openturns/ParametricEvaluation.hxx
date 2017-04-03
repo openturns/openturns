@@ -44,9 +44,9 @@ public:
 
   /** Parameters constructor */
   ParametricEvaluation(const Function & function,
-                                     const Indices & set,
-                                     const Point & referencePoint,
-                                     const Bool parametersSet = true);
+                       const Indices & set,
+                       const Point & referencePoint,
+                       const Bool parametersSet = true);
 
   /** Virtual constructor method */
   ParametricEvaluation * clone() const;
@@ -55,7 +55,7 @@ public:
   using EvaluationImplementation::operator();
   Point operator() (const Point & point) const;
   Sample operator() (const Point & point,
-                              const Sample & parameters);
+                     const Sample & parameters);
   Sample operator() (const Sample & inS) const;
 
   /** Parameters positions accessor */
@@ -91,8 +91,8 @@ public:
 
 protected:
   ParametricEvaluation(const ParametricEvaluation & evaluation,
-                                     const Indices & set,
-                                     const Point & referencePoint);
+                       const Indices & set,
+                       const Point & referencePoint);
 
 private:
 

@@ -45,7 +45,7 @@ public:
 
   /** Constructor with size */
   explicit PointWithDescription(const UnsignedInteger size,
-                                         const Scalar value = 0.0);
+                                const Scalar value = 0.0);
 
   /** Constructor from a collection */
   PointWithDescription(const Collection<Scalar> & coll);

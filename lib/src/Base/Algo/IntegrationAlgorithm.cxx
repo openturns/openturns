@@ -59,21 +59,21 @@ IntegrationAlgorithm::IntegrationAlgorithm(IntegrationAlgorithmImplementation * 
  * is an n-D interval
  */
 Point IntegrationAlgorithm::integrate(const Function & function,
-    const Interval & interval) const
+                                      const Interval & interval) const
 {
   return getImplementation()->integrate(function, interval);
 }
 
 Point IntegrationAlgorithm::integrate(const Function & function,
-    const Interval & interval,
-    Scalar & error) const
+                                      const Interval & interval,
+                                      Scalar & error) const
 {
   return getImplementation()->integrate(function, interval, error);
 }
 
 Point IntegrationAlgorithm::integrate(const Function & function,
-    const Interval & interval,
-    Point & error) const
+                                      const Interval & interval,
+                                      Point & error) const
 {
   return getImplementation()->integrate(function, interval, error);
 }

@@ -82,12 +82,12 @@ public:
   {
     OSS oss(true);
     oss << "class=KernelFunction"
-	<< " nu=" << nu_
-	<< " p=" << p_
-	<< " x=" << x_
-	<< " n=" << n_
-	<< " chiSquare=" << chiSquare_
-	<< " normal=" << normal_;
+        << " nu=" << nu_
+        << " p=" << p_
+        << " x=" << x_
+        << " n=" << n_
+        << " chiSquare=" << chiSquare_
+        << " normal=" << normal_;
     return oss;
   }
 
@@ -95,13 +95,13 @@ public:
   {
     OSS oss(false);
     oss << "KernelFunction("
-	<< "nu=" << nu_
-	<< ", p=" << p_
-	<< ", x=" << n_
-	<< ", n=" << n_
-	<< ", chiSquare=" << chiSquare_
-	<< ", normal=" << normal_
-	<< ")";
+        << "nu=" << nu_
+        << ", p=" << p_
+        << ", x=" << n_
+        << ", n=" << n_
+        << ", chiSquare=" << chiSquare_
+        << ", normal=" << normal_
+        << ")";
     return oss;
   }
 
@@ -155,10 +155,10 @@ public:
   {
     OSS oss(true);
     oss << "class=ConstraintFunction"
-	<< " nu=" << nu_
-	<< " p=" << p_
-	<< " n=" << n_
-	<< " kernel=" << kernel_;
+        << " nu=" << nu_
+        << " p=" << p_
+        << " n=" << n_
+        << " kernel=" << kernel_;
     return oss;
   }
 
@@ -166,11 +166,11 @@ public:
   {
     OSS oss(false);
     oss << "ConstraintFunction("
-	<< "nu=" << nu_
-	<< ", p=" << p_
-	<< ", n=" << n_
-	<< ", kernel=" << kernel_
-	<< ")";
+        << "nu=" << nu_
+        << ", p=" << p_
+        << ", n=" << n_
+        << ", kernel=" << kernel_
+        << ")";
     return oss;
   }
 
@@ -182,9 +182,9 @@ private:
 }; // ConstraintFunction
 
 Scalar KFactor(const Scalar n,
-                        const Scalar nu,
-                        const Scalar p,
-                        const Scalar alpha)
+               const Scalar nu,
+               const Scalar p,
+               const Scalar alpha)
 {
   if (!(n >= 1.0)) throw InvalidArgumentException(HERE) << "Error: n must be greater than 1, here n=" << n;
   if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Error: nu must be positive, here nu=" << nu;

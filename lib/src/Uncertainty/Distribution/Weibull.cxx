@@ -243,7 +243,7 @@ Point Weibull::computeCDFGradient(const Point & point) const
 
 /* Get the quantile of the distribution */
 Scalar Weibull::computeScalarQuantile(const Scalar prob,
-    const Bool tail) const
+                                      const Bool tail) const
 {
   if (tail) return gamma_ + alpha_ * std::pow(-std::log(prob), 1.0 / beta_);
   return gamma_ + alpha_ * std::pow(-std::log(1.0 - prob), 1.0 / beta_);

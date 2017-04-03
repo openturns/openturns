@@ -93,7 +93,7 @@ Scalar SpaceFillingC2::evaluate(const Sample & sample) const
 
 /** Compute criterion when performing an elementary perturbation */
 Scalar SpaceFillingC2::perturbLHS(Sample& oldDesign, OT::Scalar oldCriterion,
-    UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const
+                                  UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const
 {
   const UnsignedInteger size(oldDesign.getSize());
   const UnsignedInteger dimension(oldDesign.getDimension());
@@ -139,7 +139,7 @@ Scalar SpaceFillingC2::perturbLHS(Sample& oldDesign, OT::Scalar oldCriterion,
   // Add c_{row1, row1}
   oldSum += prod1Row1 / size / size - 2.0 * prod2Row1 / size;
   // Add c_{row2, row2}
-  oldSum += prod1Row2 / size / size - 2.0 * prod2Row2/ size;
+  oldSum += prod1Row2 / size / size - 2.0 * prod2Row2 / size;
   // Swap coordinates
   std::swap(pt1[column], pt2[column]);
   Scalar newSum = 0.0;
@@ -180,7 +180,7 @@ Scalar SpaceFillingC2::perturbLHS(Sample& oldDesign, OT::Scalar oldCriterion,
   // Add c_{row1, row1}
   newSum += prod1Row1 / size / size - 2.0 * prod2Row1 / size;
   // Add c_{row2, row2}
-  newSum += prod1Row2 / size / size - 2.0 * prod2Row2/ size;
+  newSum += prod1Row2 / size / size - 2.0 * prod2Row2 / size;
   // Swap coordinates to restore original sample
   std::swap(pt1[column], pt2[column]);
   // Final result

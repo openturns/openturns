@@ -69,11 +69,11 @@ String Secant::__repr__() const
    see http://www.netlib.org/toms/626
 */
 Scalar Secant::solve(const Function & function,
-                              const Scalar value,
-                              const Scalar infPoint,
-                              const Scalar supPoint,
-                              const Scalar infValue,
-                              const Scalar supValue) const
+                     const Scalar value,
+                     const Scalar infPoint,
+                     const Scalar supPoint,
+                     const Scalar infValue,
+                     const Scalar supValue) const
 {
   if ((function.getInputDimension() != 1) || (function.getOutputDimension() != 1)) throw InvalidDimensionException(HERE) << "Error: the secant method requires a scalar function, here input dimension=" << function.getInputDimension() << " and output dimension=" << function.getOutputDimension();
   /* We transform the equation function(x) = value into function(x) - value = 0 */

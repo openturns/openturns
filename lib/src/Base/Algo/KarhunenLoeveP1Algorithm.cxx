@@ -46,7 +46,7 @@ KarhunenLoeveP1Algorithm::KarhunenLoeveP1Algorithm()
 
 /* Constructor with parameters */
 KarhunenLoeveP1Algorithm::KarhunenLoeveP1Algorithm(const Mesh & mesh,
-						   const CovarianceModel & covariance,
+    const CovarianceModel & covariance,
     const Scalar threshold)
   : KarhunenLoeveAlgorithmImplementation(covariance, threshold)
   , mesh_(mesh)
@@ -96,18 +96,18 @@ void KarhunenLoeveP1Algorithm::run()
   CovarianceMatrix G;
   if (dimension == 1) G = gram;
   else
+  {
+    G = CovarianceMatrix(augmentedDimension);
+    for (UnsignedInteger i = 0; i < numVertices; ++i)
     {
-      G = CovarianceMatrix(augmentedDimension);
-      for (UnsignedInteger i = 0; i < numVertices; ++i)
-	{
-	  for (UnsignedInteger j = 0; j <= i; ++j)
-	    {
-	      const Scalar gij = gram(i, j);
-	      for (UnsignedInteger k = 0; k < dimension; ++k)
-		G(i * dimension + k, j * dimension + k) = gij;
-	    } // Loop over j
-	} // Loop over i
-    }
+      for (UnsignedInteger j = 0; j <= i; ++j)
+      {
+        const Scalar gij = gram(i, j);
+        for (UnsignedInteger k = 0; k < dimension; ++k)
+          G(i * dimension + k, j * dimension + k) = gij;
+      } // Loop over j
+    } // Loop over i
+  }
   // Discretize the covariance model
   LOGINFO("Discretize the covariance model");
   CovarianceMatrix C(covariance_.discretize(mesh_));
@@ -137,10 +137,10 @@ void KarhunenLoeveP1Algorithm::run()
   Scalar cumulatedVariance = std::abs(eigenValues[0]);
   // Find the cut-off in the eigenvalues
   while ((K < eigenValues.getSize()) && (eigenValues[K] >= threshold_ * cumulatedVariance))
-    {
-      cumulatedVariance += eigenValues[K];
-      ++K;
-    }
+  {
+    cumulatedVariance += eigenValues[K];
+    ++K;
+  }
   // Reduce and rescale the eigenvectors
   MatrixImplementation transposedProjection(augmentedDimension, K);
   Point selectedEV(K);

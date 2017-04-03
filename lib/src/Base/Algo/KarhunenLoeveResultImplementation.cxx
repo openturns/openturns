@@ -108,11 +108,11 @@ Basis KarhunenLoeveResultImplementation::getScaledModes() const
   const Point zero(dimension);
   const IdentityMatrix id(dimension);
   for (UnsignedInteger i = 0; i < scaledModes.getSize(); ++i)
-    {
-      const Function modeI(modes_.build(i));
-      LinearFunction scaling(zero, zero, id * std::sqrt(eigenvalues_[i]));
-      scaledModes[i] = ComposedFunction(scaling, modeI);
-    }
+  {
+    const Function modeI(modes_.build(i));
+    LinearFunction scaling(zero, zero, id * std::sqrt(eigenvalues_[i]));
+    scaledModes[i] = ComposedFunction(scaling, modeI);
+  }
   return scaledModes;
 }
 
@@ -152,8 +152,8 @@ struct ProjectBasisPolicy
   const KarhunenLoeveResultImplementation & result_;
 
   ProjectBasisPolicy( const Basis & basis,
-                    Sample & output,
-                    const KarhunenLoeveResultImplementation & result)
+                      Sample & output,
+                      const KarhunenLoeveResultImplementation & result)
     : basis_(basis)
     , output_(output)
     , result_(result)
@@ -182,8 +182,8 @@ struct ProjectSamplePolicy
   const KarhunenLoeveResultImplementation & result_;
 
   ProjectSamplePolicy( const ProcessSample & sample,
-                    Sample & output,
-                    const KarhunenLoeveResultImplementation & result)
+                       Sample & output,
+                       const KarhunenLoeveResultImplementation & result)
     : sample_(sample)
     , output_(output)
     , result_(result)
@@ -191,7 +191,7 @@ struct ProjectSamplePolicy
 
   inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
   {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++ i) 
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++ i)
       output_[i] = result_.project(sample_.getField(i));
   }
 
@@ -203,7 +203,7 @@ Sample KarhunenLoeveResultImplementation::project(const ProcessSample & sample) 
   Sample result(size, projection_.getNbRows());
   const ProjectSamplePolicy policy( sample, result, *this );
   TBB::ParallelFor( 0, size, policy );
-  return result;  
+  return result;
 }
 
 /* Lift method */
@@ -213,10 +213,10 @@ Function KarhunenLoeveResultImplementation::lift(const Point & coefficients) con
   Point scaledCoefficients(dimension);
   Collection<Function> functions(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
-    {
-      scaledCoefficients[i] = std::sqrt(eigenvalues_[i]) * coefficients[i];
-      functions[i] = modes_.build(i);
-    }
+  {
+    scaledCoefficients[i] = std::sqrt(eigenvalues_[i]) * coefficients[i];
+    functions[i] = modes_.build(i);
+  }
   return LinearCombinationFunction(functions, scaledCoefficients);
 }
 

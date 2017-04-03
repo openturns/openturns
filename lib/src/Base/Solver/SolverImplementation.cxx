@@ -148,9 +148,9 @@ UnsignedInteger SolverImplementation::getUsedFunctionEvaluation() const
 
 /** Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] */
 Scalar SolverImplementation::solve(const Function & function,
-    const Scalar value,
-    const Scalar infPoint,
-    const Scalar supPoint) const
+                                   const Scalar value,
+                                   const Scalar infPoint,
+                                   const Scalar supPoint) const
 {
   if ((function.getInputDimension() != 1) || (function.getOutputDimension() != 1)) throw InvalidDimensionException(HERE) << "Error: solver implementation requires a scalar function, here input dimension=" << function.getInputDimension() << " and output dimension=" << function.getOutputDimension();
   if (maximumFunctionEvaluation_ < 2) throw InternalException(HERE) << "Error: solver needs to evaluate the function at least two times, here maximumFunctionEvaluation=" << maximumFunctionEvaluation_;
@@ -164,11 +164,11 @@ Scalar SolverImplementation::solve(const Function & function,
 
 /** Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] given function(infPoint) and function(supPoint) */
 Scalar SolverImplementation::solve(const Function & function,
-    const Scalar value,
-    const Scalar infPoint,
-    const Scalar supPoint,
-    const Scalar infValue,
-    const Scalar supValue) const
+                                   const Scalar value,
+                                   const Scalar infPoint,
+                                   const Scalar supPoint,
+                                   const Scalar infValue,
+                                   const Scalar supValue) const
 {
   throw NotYetImplementedException(HERE) << "In SolverImplementation::solve(const Function & function, const Scalar value, const Scalar infPoint, const Scalar supPoint, const Scalar infValue, const Scalar supValue) const";
 }

@@ -418,14 +418,14 @@ Scalar KernelMixture::computeProbability(const Interval & interval) const
   }
   const Scalar probabilityEpsilon = kernel_.getCDFEpsilon();
   for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    Scalar probabilityAtom = kernel_.computeProbability(Interval((lowerBound[0] - sample_[i][0]) * bandwidthInverse_[0], (upperBound[0] - sample_[i][0]) * bandwidthInverse_[0]));
+    for (UnsignedInteger j = 1; j < dimension; ++j)
     {
-      Scalar probabilityAtom = kernel_.computeProbability(Interval((lowerBound[0] - sample_[i][0]) * bandwidthInverse_[0], (upperBound[0] - sample_[i][0]) * bandwidthInverse_[0]));
-      for (UnsignedInteger j = 1; j < dimension; ++j)
-	{
-	  if (probabilityAtom < probabilityEpsilon) break;
-	  probabilityAtom *= kernel_.computeProbability(Interval((lowerBound[j] - sample_[i][j]) * bandwidthInverse_[j], (upperBound[j] - sample_[i][j]) * bandwidthInverse_[j]));
-	}
-      probability += probabilityAtom;
+      if (probabilityAtom < probabilityEpsilon) break;
+      probabilityAtom *= kernel_.computeProbability(Interval((lowerBound[j] - sample_[i][j]) * bandwidthInverse_[j], (upperBound[j] - sample_[i][j]) * bandwidthInverse_[j]));
+    }
+    probability += probabilityAtom;
   } /* end for */
   return probability / size;
 }

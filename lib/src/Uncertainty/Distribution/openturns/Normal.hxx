@@ -100,7 +100,7 @@ public:
 
   /** Compute the radial distribution CDF */
   Scalar computeRadialDistributionCDF(const Scalar radius,
-      const Bool tail = false) const;
+                                      const Bool tail = false) const;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalPDF;
@@ -161,7 +161,7 @@ private:
 
   /** Quantile computation for dimension=1 */
   Scalar computeScalarQuantile(const Scalar prob,
-                                        const Bool tail = false) const;
+                               const Bool tail = false) const;
 
   /** Check if the distribution has independent copula */
   void checkIndependentCopula();

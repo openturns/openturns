@@ -621,14 +621,15 @@ void ComposedDistribution::computeCovariance() const
     //             =\int_{\R^2}(x_i-\mu_i)(x_j-\mu_j)p_i(x_i)p_j(x_j}c_{i,j}(F_i(x_i),F_j(x_j))dx_idx_j
     // Let u_i=F_i(x_i) and u_j=F_j(u_j) so du_idu_j=p_i(x_i)p_j(x_j)dx_idx_j
     // \Sigma_{i,j}=\int_{[0,1]^2}(F_i^{-1}(u_i)-\mu_i)(F_j^{-1}(u_j)-\mu_j)c_{i,j}(u_i,u_j)du_idu_j
-    
+
     // To ensure that the mean is up to date
     mean_ = getMean();
     // Compute the weights and nodes of the 1D gauss quadrature over [-1, 1]
     // Generate only the square-root of integrationNodesNumber_ 1D nodes in
     // order to have a total workload of integrationNodesNumber_
     const UnsignedInteger oldIntegrationNodesNumber = integrationNodesNumber_;
-    integrationNodesNumber_ = static_cast<UnsignedInteger>(std::ceil(std::sqrt(1.0 * integrationNodesNumber_)));    Point gaussWeights;
+    integrationNodesNumber_ = static_cast<UnsignedInteger>(std::ceil(std::sqrt(1.0 * integrationNodesNumber_)));
+    Point gaussWeights;
     Point gaussNodes(getGaussNodesAndWeights(gaussWeights));
     integrationNodesNumber_ = oldIntegrationNodesNumber;
     // Convert the nodes and weights for the interval [0, 1]

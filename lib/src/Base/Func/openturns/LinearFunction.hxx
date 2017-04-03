@@ -49,8 +49,8 @@ public:
 
   /** Default constructor */
   LinearFunction(const Point & center,
-                              const Point & constant,
-                              const Matrix & linear);
+                 const Point & constant,
+                 const Matrix & linear);
 
 
   /** Comparison operator */

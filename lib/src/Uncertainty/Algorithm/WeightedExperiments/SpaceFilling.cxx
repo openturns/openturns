@@ -65,7 +65,7 @@ Scalar SpaceFilling::evaluate(const Sample & sample) const
 
 /** Compute criterion when performing an elementary perturbation */
 Scalar SpaceFilling::perturbLHS(Sample& oldDesign, OT::Scalar oldCriterion,
-    UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const
+                                UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const
 {
   return getImplementation()->perturbLHS(oldDesign, oldCriterion, row1, row2, column);
 }

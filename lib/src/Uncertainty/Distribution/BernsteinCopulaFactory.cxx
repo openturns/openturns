@@ -116,13 +116,13 @@ Distribution BernsteinCopulaFactory::buildSequential(const Sample & empiricalCop
   LOGINFO("BernsteinCopulaFactory - Create the resulting Bernstein copula");
   Mixture::DistributionCollection atomsMixture(size);
   for (UnsignedInteger i = 0; i < size; ++i)
-    {
-      const Point nu(empiricalCopulaSample[i] * binNumber);
-      Mixture::DistributionCollection atomsKernel(dimension);
-      for (UnsignedInteger j = 0; j < dimension; ++j)
-        atomsKernel[j] = Beta(std::floor(nu[j]) + 1.0, binNumber + 1.0, 0.0, 1.0);
-      atomsMixture[i] = ComposedDistribution(atomsKernel);
-    }
+  {
+    const Point nu(empiricalCopulaSample[i] * binNumber);
+    Mixture::DistributionCollection atomsKernel(dimension);
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+      atomsKernel[j] = Beta(std::floor(nu[j]) + 1.0, binNumber + 1.0, 0.0, 1.0);
+    atomsMixture[i] = ComposedDistribution(atomsKernel);
+  }
   Mixture result(atomsMixture);
   // Here we know that the mixture is a copula even if none of its atoms is.
   result.isCopula_ = true;

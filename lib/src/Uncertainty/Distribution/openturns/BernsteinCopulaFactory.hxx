@@ -53,13 +53,13 @@ public:
   virtual Distribution build(const Sample & sample,
                              const UnsignedInteger binNumber);
 
- private:
+private:
   virtual Distribution buildParallel(const Sample & sample,
-				     const UnsignedInteger binNumber);
+                                     const UnsignedInteger binNumber);
 
   virtual Distribution buildSequential(const Sample & sample,
-				       const UnsignedInteger binNumber);
- public:
+                                       const UnsignedInteger binNumber);
+public:
 
   /** Compute the number of bins according to the inverse power rule */
   UnsignedInteger computeBinNumber(const Sample & sample);

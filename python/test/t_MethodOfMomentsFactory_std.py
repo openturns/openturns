@@ -22,4 +22,3 @@ factory = ot.MethodOfMomentsFactory(ot.Beta())
 factory.setKnownParameter([-1.0, 1.0], [2, 3])
 inf_distribution = factory.build(sample)
 print('estimated distribution=', inf_distribution)
-

@@ -117,13 +117,13 @@ int main(int argc, char *argv[])
     fullprint << "log-pdf gradient     =" << logPDFgr << std::endl;
     Point logPDFgrFD(4);
     logPDFgrFD[0] = (Trapezoidal(distribution.getA() + eps, distribution.getB(), distribution.getC(), distribution.getD()).computeLogPDF(point) -
-                  Trapezoidal(distribution.getA() - eps, distribution.getB(), distribution.getC(), distribution.getD()).computeLogPDF(point)) / (2.0 * eps);
+                     Trapezoidal(distribution.getA() - eps, distribution.getB(), distribution.getC(), distribution.getD()).computeLogPDF(point)) / (2.0 * eps);
     logPDFgrFD[1] = (Trapezoidal(distribution.getA(), distribution.getB() + eps, distribution.getC(), distribution.getD()).computeLogPDF(point) -
-                  Trapezoidal(distribution.getA(), distribution.getB() - eps, distribution.getC(), distribution.getD()).computeLogPDF(point)) / (2.0 * eps);
+                     Trapezoidal(distribution.getA(), distribution.getB() - eps, distribution.getC(), distribution.getD()).computeLogPDF(point)) / (2.0 * eps);
     logPDFgrFD[2] = (Trapezoidal(distribution.getA(), distribution.getB(), distribution.getC() + eps, distribution.getD()).computeLogPDF(point) -
-                  Trapezoidal(distribution.getA(), distribution.getB(), distribution.getC() - eps, distribution.getD()).computeLogPDF(point)) / (2.0 * eps);
+                     Trapezoidal(distribution.getA(), distribution.getB(), distribution.getC() - eps, distribution.getD()).computeLogPDF(point)) / (2.0 * eps);
     logPDFgrFD[3] = (Trapezoidal(distribution.getA(), distribution.getB(), distribution.getC(), distribution.getD() + eps).computeLogPDF(point) -
-                  Trapezoidal(distribution.getA(), distribution.getB(), distribution.getC(), distribution.getD() - eps).computeLogPDF(point)) / (2.0 * eps);
+                     Trapezoidal(distribution.getA(), distribution.getB(), distribution.getC(), distribution.getD() - eps).computeLogPDF(point)) / (2.0 * eps);
     fullprint << "log-pdf gradient (FD)=" << logPDFgrFD << std::endl;
     Point CDFgr = distribution.computeCDFGradient( point );
     fullprint << "cdf gradient     =" << CDFgr << std::endl;

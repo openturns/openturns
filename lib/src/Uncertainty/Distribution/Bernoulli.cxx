@@ -148,7 +148,7 @@ Point Bernoulli::computeCDFGradient(const Point & point) const
 
 /* Get the quantile of the distribution */
 Scalar Bernoulli::computeScalarQuantile(const Scalar prob,
-    const Bool tail) const
+                                        const Bool tail) const
 {
   if (prob < 1.0 - p_) return (tail ? 1.0 : 0.0);
   return (tail ? 0.0 : 1.0);

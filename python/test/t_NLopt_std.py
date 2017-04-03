@@ -64,7 +64,7 @@ for algoName in algoNames:
                     algo.setProblem(problem)
                     algo.setMaximumEvaluationNumber(5000)
                     algo.setStartingPoint(startingPoint)
-                    #algo.setInitialStep([0.1] * dim)
+                    # algo.setInitialStep([0.1] * dim)
                     localAlgo = ot.NLopt('LD_MMA')
                     algo.setLocalSolver(localAlgo)
                     print('algo=', algo)

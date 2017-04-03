@@ -6,9 +6,9 @@ import openturns as ot
 # First, build two functions from R^3->R^2
 functions = list()
 functions.append(ot.SymbolicFunction(['x1', 'x2', 'x3'], [
-                  'x1^3 * sin(x2 + 2.5 * x3) - (x1 + x2)^2 / (1.0 + x3^2)', 'x1^1 * sin(x3 + 2.5 * x1) - (x2 + x3)^2 / (1.0 + x1^2)']))
+    'x1^3 * sin(x2 + 2.5 * x3) - (x1 + x2)^2 / (1.0 + x3^2)', 'x1^1 * sin(x3 + 2.5 * x1) - (x2 + x3)^2 / (1.0 + x1^2)']))
 functions.append(ot.SymbolicFunction(['x1', 'x2', 'x3'], [
-                  'exp(-x1 * x2 + x3) / cos(1.0 + x2 * x3 - x1)', 'exp(-x2 * x3 + x1) / cos(1.0 + x3 * x1 - x2)']))
+    'exp(-x1 * x2 + x3) / cos(1.0 + x2 * x3 - x1)', 'exp(-x2 * x3 + x1) / cos(1.0 + x3 * x1 - x2)']))
 # Second, build the function
 myFunction = ot.AggregatedFunction(functions)
 inPoint = ot.Point([1.2, 2.3, 3.4])

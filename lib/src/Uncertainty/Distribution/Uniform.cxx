@@ -229,7 +229,7 @@ Point Uniform::computeCDFGradient(const Point & point) const
 
 /* Get the quantile of the distribution */
 Scalar Uniform::computeScalarQuantile(const Scalar prob,
-    const Bool tail) const
+                                      const Bool tail) const
 {
   if (tail) return b_ - prob * (b_ - a_);
   return a_ + prob * (b_ - a_);

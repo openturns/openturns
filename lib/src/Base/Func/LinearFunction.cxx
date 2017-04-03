@@ -29,11 +29,11 @@ CLASSNAMEINIT(LinearFunction);
 
 /* Default constructor */
 LinearFunction::LinearFunction(const Point & center,
-    const Point & constant,
-    const Matrix & linear)
+                               const Point & constant,
+                               const Matrix & linear)
   : Function(new LinearEvaluation(center, constant, linear.transpose()),
-                          new ConstantGradient(linear.transpose()),
-                          new ConstantHessian(SymmetricTensor(center.getDimension(), constant.getDimension())))
+             new ConstantGradient(linear.transpose()),
+             new ConstantHessian(SymmetricTensor(center.getDimension(), constant.getDimension())))
 {
   // Nothing to do
 }

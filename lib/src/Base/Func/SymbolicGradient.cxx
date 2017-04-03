@@ -203,7 +203,7 @@ UnsignedInteger SymbolicGradient::getOutputDimension() const
 
 /* Accessor to a specific formula */
 String SymbolicGradient::getFormula(const UnsignedInteger i,
-    const UnsignedInteger j) const
+                                    const UnsignedInteger j) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if ((i >= inputDimension) || (j >= getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: cannot access to a formula outside of the gradient dimensions.";

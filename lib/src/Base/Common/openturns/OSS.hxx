@@ -212,7 +212,7 @@ struct AllElementsPredicate : public std::unary_function<_Tp, Bool>
 };
 
 template < typename _Tp, typename _UnaryPredicate = AllElementsPredicate<_Tp>, typename _CharT = char,
-         typename _Traits = std::char_traits<_CharT> >
+           typename _Traits = std::char_traits<_CharT> >
 class OSS_iterator
   : public std::iterator<std::output_iterator_tag, void, void, void, void>
 {

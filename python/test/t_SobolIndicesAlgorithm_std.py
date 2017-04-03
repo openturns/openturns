@@ -2,7 +2,7 @@
 
 from __future__ import print_function
 import openturns as ot
-#from openturns.viewer import PlotSensitivity
+# from openturns.viewer import PlotSensitivity
 
 ot.TESTPREAMBLE()
 ot.RandomGenerator.SetSeed(0)
@@ -65,8 +65,10 @@ try:
     # transform and get an asymptotic confidence interval
     ot.ResourceMap.SetAsBool(
         "MartinezSensitivityAlgorithm-UseAsymptoticInterval", True)
-    interval_fo_asymptotic = sensitivity_algorithm.getFirstOrderIndicesInterval()
-    interval_to_asymptotic = sensitivity_algorithm.getTotalOrderIndicesInterval()
+    interval_fo_asymptotic = sensitivity_algorithm.getFirstOrderIndicesInterval(
+    )
+    interval_to_asymptotic = sensitivity_algorithm.getTotalOrderIndicesInterval(
+    )
     print("Martinez method : asymptotic intervals")
     print("First order indices interval = ", interval_fo_asymptotic)
     print("Total order indices interval = ", interval_to_asymptotic)

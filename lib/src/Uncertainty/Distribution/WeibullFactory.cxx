@@ -75,7 +75,7 @@ Weibull WeibullFactory::buildAsWeibull(const Sample & sample) const
     parameters[0] = mean;
     parameters[1] = sigma;
     parameters[2] = gamma;
-    Weibull result(buildAsWeibull(WeibullMuSigma()(parameters)));  
+    Weibull result(buildAsWeibull(WeibullMuSigma()(parameters)));
     result.setDescription(sample.getDescription());
     return result;
   }

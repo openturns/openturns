@@ -85,7 +85,7 @@ try:
         [1.933, 1.18, 1.644], [10.85], 2.0)
     algo2 = ot.KrigingAlgorithm(
         inputSample, outputSample, covarianceModel, basis, True)
-    algo2.setOptimizeParameters(False);
+    algo2.setOptimizeParameters(False)
     algo2.run()
     result2 = algo2.getResult()
 

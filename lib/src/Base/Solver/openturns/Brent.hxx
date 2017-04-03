@@ -54,11 +54,11 @@ public:
   /* Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] given function(infPoint) and function(supPoint) with the Brent method */
   using SolverImplementation::solve;
   Scalar solve(const Function & function,
-                        const Scalar value,
-                        const Scalar infPoint,
-                        const Scalar supPoint,
-                        const Scalar infValue,
-                        const Scalar supValue) const;
+               const Scalar value,
+               const Scalar infPoint,
+               const Scalar supPoint,
+               const Scalar infValue,
+               const Scalar supValue) const;
 
 private:
 

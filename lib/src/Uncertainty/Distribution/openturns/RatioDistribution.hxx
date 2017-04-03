@@ -68,25 +68,25 @@ public:
   Scalar computePDF(const Point & point) const;
 private:
   Scalar computePDFQ1(const Scalar x,
-                               const Scalar a,
-                               const Scalar b,
-                               const Scalar c,
-                               const Scalar d) const;
+                      const Scalar a,
+                      const Scalar b,
+                      const Scalar c,
+                      const Scalar d) const;
   Scalar computePDFQ2(const Scalar x,
-                               const Scalar a,
-                               const Scalar b,
-                               const Scalar c,
-                               const Scalar d) const;
+                      const Scalar a,
+                      const Scalar b,
+                      const Scalar c,
+                      const Scalar d) const;
   Scalar computePDFQ3(const Scalar x,
-                               const Scalar a,
-                               const Scalar b,
-                               const Scalar c,
-                               const Scalar d) const;
+                      const Scalar a,
+                      const Scalar b,
+                      const Scalar c,
+                      const Scalar d) const;
   Scalar computePDFQ4(const Scalar x,
-                               const Scalar a,
-                               const Scalar b,
-                               const Scalar c,
-                               const Scalar d) const;
+                      const Scalar a,
+                      const Scalar b,
+                      const Scalar c,
+                      const Scalar d) const;
 public:
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   NumericalComplex computeCharacteristicFunction(const Scalar x) const;

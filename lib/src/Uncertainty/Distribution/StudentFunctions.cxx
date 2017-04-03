@@ -43,8 +43,8 @@ namespace StudentFunctions
 /********************************************************************************************************************************/
 /* CDF */
 Scalar StudentCDF(const Scalar nu,
-                           const Scalar x,
-                           const Bool tail)
+                  const Scalar x,
+                  const Bool tail)
 {
   if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Error: nu must be positive, here nu=" << nu;
   if (x == 0.0) return 0.5;
@@ -94,8 +94,8 @@ Scalar StudentCDF(const Scalar nu,
    eprint http://eprints.maths.ox.ac.uk/184/1/tdist.pdf
 */
 Scalar StudentQuantile(const Scalar nu,
-                                const Scalar p,
-                                const Bool tail)
+                       const Scalar p,
+                       const Bool tail)
 {
   if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Error: nu must be positive, here nu=" << nu;
   if (p == 0.5) return 0.0;
@@ -223,9 +223,9 @@ Scalar StudentRealization(const Scalar nu)
    Computational Statistics & Data Analysis, 43 (2003) pp 249-267
 */
 Scalar NonCentralStudentCDF(const Scalar nu,
-                                     const Scalar delta,
-                                     const Scalar x,
-                                     const Bool tail)
+                            const Scalar delta,
+                            const Scalar x,
+                            const Bool tail)
 {
   // Check nu
   if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu=" << nu << " should be strictly positive.";
@@ -374,11 +374,11 @@ Scalar NonCentralStudentCDF(const Scalar nu,
    Computational Statistics & Data Analysis, 43 (2003) pp 249-267
 */
 Scalar NonCentralStudentCDFAlt0(const Scalar nu,
-    const Scalar delta,
-    const Scalar x,
-    const Bool tail,
-    const Scalar precision,
-    const UnsignedInteger maximumIteration)
+                                const Scalar delta,
+                                const Scalar x,
+                                const Bool tail,
+                                const Scalar precision,
+                                const UnsignedInteger maximumIteration)
 {
   // Check nu
   if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu=" << nu << " should be strictly positive.";
@@ -510,8 +510,8 @@ Scalar NonCentralStudentCDFAlt0(const Scalar nu,
 /* PDF
    We use the relation between the PDF and the CDF in order to reduce the computation of the PDF to two computations of the CDF */
 Scalar NonCentralStudentPDF(const Scalar nu,
-                                     const Scalar delta,
-                                     const Scalar x)
+                            const Scalar delta,
+                            const Scalar x)
 {
   // Check nu
   if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu=" << nu << " should be strictly positive.";
@@ -538,10 +538,10 @@ Scalar NonCentralStudentPDF(const Scalar nu,
 /* edition, 1995, Wiley Inter-Science                                                                       */
 /************************************************************************************************************/
 Scalar NonCentralStudentPDFAlt0(const Scalar nu,
-    const Scalar delta,
-    const Scalar x,
-    const Scalar precision,
-    const UnsignedInteger maximumIteration)
+                                const Scalar delta,
+                                const Scalar x,
+                                const Scalar precision,
+                                const UnsignedInteger maximumIteration)
 {
   // Check nu
   if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu=" << nu << " should be strictly positive.";
@@ -632,7 +632,7 @@ Scalar NonCentralStudentPDFAlt0(const Scalar nu,
    sqrt(2 * nu) * N / sqrt(G) is distributed according to NonCentralStudent(nu, delta)
 */
 Scalar NonCentralStudentRealization(const Scalar nu,
-    const Scalar delta)
+                                    const Scalar delta)
 {
   const Scalar n = DistFunc::rNormal() + delta;
   Scalar g = -1.0;

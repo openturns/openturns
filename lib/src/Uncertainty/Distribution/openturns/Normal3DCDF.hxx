@@ -27,12 +27,12 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 Scalar Normal3DCDF(const Scalar x1,
-                            const Scalar x2,
-                            const Scalar x3,
-                            const Scalar rho12,
-                            const Scalar rho13,
-                            const Scalar rho23,
-                            const Bool tail);
+                   const Scalar x2,
+                   const Scalar x3,
+                   const Scalar rho12,
+                   const Scalar rho13,
+                   const Scalar rho23,
+                   const Bool tail);
 
 END_NAMESPACE_OPENTURNS
 

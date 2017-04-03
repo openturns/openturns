@@ -7,7 +7,7 @@ from math import *
 TESTPREAMBLE()
 
 try:
-    #Log.Show( Log.Flags() | Log.INFO )
+    # Log.Show( Log.Flags() | Log.INFO )
 
     # Problem parameters
     dimension = 3
@@ -29,7 +29,7 @@ try:
     sob_T3 = [sob_3[0]]
     # Create the Ishigami function
     model = Function(['xi1', 'xi2', 'xi3'], ['y'], [
-                                  "sin(xi1) + (" + str(a) + ") * (sin(xi2)) ^ 2 + (" + str(b) + ") * xi3^4 * sin(xi1)"])
+        "sin(xi1) + (" + str(a) + ") * (sin(xi2)) ^ 2 + (" + str(b) + ") * xi3^4 * sin(xi1)"])
 
     # Create the input distribution
     marginalX = DistributionCollection(dimension)

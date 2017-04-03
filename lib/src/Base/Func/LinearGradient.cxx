@@ -40,8 +40,8 @@ LinearGradient::LinearGradient()
 
 /* Parameter constructor */
 LinearGradient::LinearGradient(const Point & center,
-    const Matrix & constant,
-    const SymmetricTensor & linear)
+                               const Matrix & constant,
+                               const SymmetricTensor & linear)
   : GradientImplementation()
   , center_(center)
   , constant_(constant)

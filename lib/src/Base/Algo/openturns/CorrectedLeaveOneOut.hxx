@@ -49,19 +49,19 @@ public:
 
   /** Perform cross-validation */
   virtual Scalar run(const Sample & x,
-                              const Sample & y,
-                              const Point & weight,
-                              const Basis & psi,
-                              const Indices & indices) const;
+                     const Sample & y,
+                     const Point & weight,
+                     const Basis & psi,
+                     const Indices & indices) const;
 
 #ifndef SWIG
   virtual Scalar run(const Sample & y,
-                              const Point & weight,
-                              const Indices & indices,
-                              const DesignProxy & proxy) const;
+                     const Point & weight,
+                     const Indices & indices,
+                     const DesignProxy & proxy) const;
 
   virtual Scalar run(LeastSquaresMethod & method,
-                              const Sample & y) const;
+                     const Sample & y) const;
 #endif
 
   /** Method save() stores the object through the StorageManager */

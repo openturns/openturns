@@ -303,7 +303,7 @@ Point Gamma::computeCDFGradient(const Point & point) const
 
 /* Get the quantile of the distribution */
 Scalar Gamma::computeScalarQuantile(const Scalar prob,
-    const Bool tail) const
+                                    const Bool tail) const
 {
   return gamma_ + DistFunc::qGamma(k_, prob, tail) / lambda_;
 }

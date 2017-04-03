@@ -86,7 +86,7 @@ private:
 
   /** Compute the dot product between two general polynomials according to the measure */
   Scalar dotProduct(const UniVariatePolynomial & p1,
-                             const UniVariatePolynomial & p2) const;
+                    const UniVariatePolynomial & p2) const;
 
   /** Cache to store the raw moments */
   mutable ScalarCollection standardMoments_;

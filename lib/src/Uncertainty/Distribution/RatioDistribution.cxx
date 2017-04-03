@@ -159,10 +159,10 @@ Scalar RatioDistribution::computePDF(const Point & point) const
 
 /* Get the PDF of the distribution: PDF(x) = \int_Q1 PDF_left(u) * PDF_right(x / u) * du / |u| when both right and left are positive */
 Scalar RatioDistribution::computePDFQ1(const Scalar x,
-    const Scalar a,
-    const Scalar b,
-    const Scalar c,
-    const Scalar d) const
+                                       const Scalar a,
+                                       const Scalar b,
+                                       const Scalar c,
+                                       const Scalar d) const
 {
   const Scalar ac = a * c;
   const Scalar ad = a * d;
@@ -192,10 +192,10 @@ Scalar RatioDistribution::computePDFQ1(const Scalar x,
 
 /* Get the PDF of the distribution: PDF(x) = \int_Q2 PDF_left(u) * PDF_right(x / u) * du / |u| when right is negative and left is positive */
 Scalar RatioDistribution::computePDFQ2(const Scalar x,
-    const Scalar a,
-    const Scalar b,
-    const Scalar c,
-    const Scalar d) const
+                                       const Scalar a,
+                                       const Scalar b,
+                                       const Scalar c,
+                                       const Scalar d) const
 {
   const Scalar ac = a * c;
   const Scalar ad = a * d;
@@ -225,10 +225,10 @@ Scalar RatioDistribution::computePDFQ2(const Scalar x,
 
 /* Get the PDF of the distribution: PDF(x) = \int_Q3 PDF_left(u) * PDF_right(x / u) * du / |u| when both right and left are negative */
 Scalar RatioDistribution::computePDFQ3(const Scalar x,
-    const Scalar a,
-    const Scalar b,
-    const Scalar c,
-    const Scalar d) const
+                                       const Scalar a,
+                                       const Scalar b,
+                                       const Scalar c,
+                                       const Scalar d) const
 {
   const Scalar ac = a * c;
   const Scalar ad = a * d;
@@ -258,10 +258,10 @@ Scalar RatioDistribution::computePDFQ3(const Scalar x,
 
 /* Get the PDF of the distribution: PDF(x) = \int_Q4 PDF_left(u) * PDF_right(x / u) * du / |u| when right is positive and left is negative */
 Scalar RatioDistribution::computePDFQ4(const Scalar x,
-    const Scalar a,
-    const Scalar b,
-    const Scalar c,
-    const Scalar d) const
+                                       const Scalar a,
+                                       const Scalar b,
+                                       const Scalar c,
+                                       const Scalar d) const
 {
   const Scalar ac = a * c;
   const Scalar ad = a * d;

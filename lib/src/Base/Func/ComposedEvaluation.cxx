@@ -24,7 +24,7 @@ static const Factory<ComposedEvaluation> Factory_ComposedEvaluation;
 
 /* Default constructor */
 ComposedEvaluation::ComposedEvaluation(const EvaluationPointer & p_leftFunction,
-    const EvaluationPointer & p_rightFunction)
+                                       const EvaluationPointer & p_rightFunction)
   : EvaluationImplementation()
   , p_leftFunction_(p_leftFunction)
   , p_rightFunction_(p_rightFunction)

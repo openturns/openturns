@@ -167,7 +167,7 @@ SquareMatrix SquareMatrix::power(const UnsignedInteger n) const
 
 /* Resolution of a linear system */
 Point SquareMatrix::solveLinearSystem(const Point & b,
-    const Bool keepIntact)
+                                      const Bool keepIntact)
 {
   return getImplementation()->solveLinearSystemSquare(b, keepIntact);
 }

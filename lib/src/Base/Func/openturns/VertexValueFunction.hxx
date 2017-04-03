@@ -48,17 +48,17 @@ public:
 
   /** Parameter constructor */
   explicit VertexValueFunction(const Function & function,
-                            const UnsignedInteger meshDimension = 1);
+                               const UnsignedInteger meshDimension = 1);
 
 #ifndef SWIG
   /** Parameter constructor */
   explicit VertexValueFunction(const EvaluationPointer & p_evaluation,
-                            const UnsignedInteger meshDimension = 1);
+                               const UnsignedInteger meshDimension = 1);
 #endif
 
   /** Parameter constructor */
   explicit VertexValueFunction(const EvaluationImplementation & evaluation,
-                            const UnsignedInteger meshDimension = 1);
+                               const UnsignedInteger meshDimension = 1);
 
   /** Virtual constructor */
   virtual VertexValueFunction * clone() const;

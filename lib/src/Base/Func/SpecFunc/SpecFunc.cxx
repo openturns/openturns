@@ -130,12 +130,12 @@ Scalar SpecFunc::SmallCaseBesselI0(const Scalar x)
 Scalar SpecFunc::LargeCaseLogBesselI0(const Scalar x)
 {
   static Scalar A[12] = {0.125, 7.03125e-02,
-                                  7.32421875e-02, 1.1215209960938e-01,
-                                  2.2710800170898e-01, 5.7250142097473e-01,
-                                  1.7277275025845, 6.0740420012735,
-                                  2.4380529699556e+01, 1.1001714026925e+02,
-                                  5.5133589612202e+02, 3.0380905109224e+03
-                                 };
+                         7.32421875e-02, 1.1215209960938e-01,
+                         2.2710800170898e-01, 5.7250142097473e-01,
+                         1.7277275025845, 6.0740420012735,
+                         2.4380529699556e+01, 1.1001714026925e+02,
+                         5.5133589612202e+02, 3.0380905109224e+03
+                        };
   const Scalar ax = std::abs(x);
   UnsignedInteger k0 = 12;
   if (ax >= 35.0) k0 = 9;
@@ -190,12 +190,12 @@ Scalar SpecFunc::SmallCaseBesselI1(const Scalar x)
 Scalar SpecFunc::LargeCaseLogBesselI1(const Scalar x)
 {
   static Scalar B[12] = { -0.375, -1.171875e-01,
-                                   -1.025390625e-01, -1.4419555664063e-01,
-                                   -2.7757644653320e-01, -6.7659258842468e-01,
-                                   -1.9935317337513, -6.8839142681099,
-                                   -2.7248827311269e+01, -1.2159789187654e+02,
-                                   -6.0384407670507e+02, -3.3022722944809e+03
-                                 };
+                          -1.025390625e-01, -1.4419555664063e-01,
+                          -2.7757644653320e-01, -6.7659258842468e-01,
+                          -1.9935317337513, -6.8839142681099,
+                          -2.7248827311269e+01, -1.2159789187654e+02,
+                          -6.0384407670507e+02, -3.3022722944809e+03
+                        };
   const Scalar ax = std::abs(x);
   UnsignedInteger k0 = 12;
   if (ax >= 35.0) k0 = 9;
@@ -238,19 +238,19 @@ Scalar SpecFunc::LogBesselI1(const Scalar x)
 Scalar SpecFunc::LargeCaseDeltaLogBesselI10(const Scalar x)
 {
   static Scalar A[12] = {0.125, 7.03125e-02,
-                                  7.32421875e-02, 1.1215209960938e-01,
-                                  2.2710800170898e-01, 5.7250142097473e-01,
-                                  1.7277275025845, 6.0740420012735,
-                                  2.4380529699556e+01, 1.1001714026925e+02,
-                                  5.5133589612202e+02, 3.0380905109224e+03
-                                 };
+                         7.32421875e-02, 1.1215209960938e-01,
+                         2.2710800170898e-01, 5.7250142097473e-01,
+                         1.7277275025845, 6.0740420012735,
+                         2.4380529699556e+01, 1.1001714026925e+02,
+                         5.5133589612202e+02, 3.0380905109224e+03
+                        };
   static Scalar B[12] = { -0.375, -1.171875e-01,
-                                   -1.025390625e-01, -1.4419555664063e-01,
-                                   -2.7757644653320e-01, -6.7659258842468e-01,
-                                   -1.9935317337513, -6.8839142681099,
-                                   -2.7248827311269e+01, -1.2159789187654e+02,
-                                   -6.0384407670507e+02, -3.3022722944809e+03
-                                 };
+                          -1.025390625e-01, -1.4419555664063e-01,
+                          -2.7757644653320e-01, -6.7659258842468e-01,
+                          -1.9935317337513, -6.8839142681099,
+                          -2.7248827311269e+01, -1.2159789187654e+02,
+                          -6.0384407670507e+02, -3.3022722944809e+03
+                        };
   const Scalar ax = std::abs(x);
   UnsignedInteger k0 = 12;
   if (ax >= 35.0) k0 = 9;
@@ -278,7 +278,7 @@ Scalar SpecFunc::DeltaLogBesselI10(const Scalar x)
 
 // Logarithm of the modified second kind Bessel function of order nu: LogBesselK(nu, x)=log(\frac{\pi}{2}\frac{I_{-\nu}(x)-I_[\nu}(x)}{\sin{\nu\pi}})
 Scalar SpecFunc::LogBesselK(const Scalar nu,
-                                     const Scalar x)
+                            const Scalar x)
 {
   if (!(x > 0.0)) throw InvalidArgumentException(HERE) << "Error: x must be positive, here x=" << x;
   // Reflection formula
@@ -324,7 +324,7 @@ Scalar SpecFunc::LogBesselK(const Scalar nu,
 
 // Modified second kind Bessel function of order nu: BesselK(nu, x)=\frac{\pi}{2}\frac{I_{-\nu}(x)-I_[\nu}(x)}{\sin{\nu\pi}}
 Scalar SpecFunc::BesselK(const Scalar nu,
-                                  const Scalar x)
+                         const Scalar x)
 {
 #ifdef OPENTURNS_HAVE_BOOST
   return boost::math::cyl_bessel_k(nu, x);
@@ -350,7 +350,7 @@ Scalar SpecFunc::BesselK(const Scalar nu,
 
 // Modified second kind Bessel derivative function of order nu: BesselKDerivative(nu, x)=dBesselK(nu, x) / dx
 Scalar SpecFunc::BesselKDerivative(const Scalar nu,
-    const Scalar x)
+                                   const Scalar x)
 {
 #if defined(OPENTURNS_HAVE_BOOST) && (BOOST_VERSION >= 105600)
   return boost::math::cyl_bessel_k_prime(nu, x);
@@ -362,7 +362,7 @@ Scalar SpecFunc::BesselKDerivative(const Scalar nu,
 
 // LnBeta function: LnBeta(a, b) = \log(Beta(a, b))
 Scalar SpecFunc::LnBeta(const Scalar a,
-                                 const Scalar b)
+                        const Scalar b)
 {
   const Scalar first = std::min(a, b);
   if (!(first > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute the LogBeta function when a or b is nonpositive, a=" << a << ", b=" << b;
@@ -400,32 +400,32 @@ Scalar SpecFunc::LnBeta(const Scalar a,
 
 // LogBeta = LnBeta
 Scalar SpecFunc::LogBeta(const Scalar a,
-                                  const Scalar b)
+                         const Scalar b)
 {
   return LnBeta(a, b);
 }
 
 // Beta function: Beta(a, b) = \int_0^1 t^{a-1}(1-t)^{b-1} dt
 Scalar SpecFunc::Beta(const Scalar a,
-                               const Scalar b)
+                      const Scalar b)
 {
   return exp(LnBeta(a, b));
 }
 
 // Incomplete Beta function: BetaInc(a, b, x) = \int_0^x t^{a-1}(1-t)^{b-1} dt
 Scalar SpecFunc::IncompleteBeta(const Scalar a,
-    const Scalar b,
-    const Scalar x,
-    const Bool tail)
+                                const Scalar b,
+                                const Scalar x,
+                                const Bool tail)
 {
   return RegularizedIncompleteBeta(a, b, x, tail) * Beta(a, b);
 }
 
 // Incomplete Beta function inverse
 Scalar SpecFunc::IncompleteBetaInverse(const Scalar a,
-    const Scalar b,
-    const Scalar x,
-    const Bool tail)
+                                       const Scalar b,
+                                       const Scalar x,
+                                       const Bool tail)
 {
   return RegularizedIncompleteBetaInverse(a, b, x / Beta(a, b), tail);
 }
@@ -461,7 +461,7 @@ NumericalComplex SpecFunc::Dawson(const NumericalComplex & z)
 
 // Debye function of order n: DebyeN(x, n) = n / x^n \int_0^x t^n/(\exp(t)-1) dt
 Scalar SpecFunc::Debye(const Scalar x,
-                                const UnsignedInteger n)
+                       const UnsignedInteger n)
 {
   if ((n == 0) || (n > 20)) throw InvalidArgumentException(HERE) << "Error: cannot compute Debye function of order outside of {1,...,20}";
   if (x < 0.0) return Debye(-x, n) - n * x / (n + 1.0);
@@ -643,16 +643,16 @@ Scalar SpecFunc::LogGamma1p(const Scalar a)
 
 // Incomplete Gamma function: IncompleteGamma(a, x) = \int_0^x t^{a-1}\exp(-t) dt
 Scalar SpecFunc::IncompleteGamma(const Scalar a,
-    const Scalar x,
-    const Bool tail)
+                                 const Scalar x,
+                                 const Bool tail)
 {
   return GammaFunctions::IncompleteGamma(a, x, tail);
 }
 
 // Incomplete Gamma function inverse with respect to x
 Scalar SpecFunc::IncompleteGammaInverse(const Scalar a,
-    const Scalar x,
-    const Bool tail)
+                                        const Scalar x,
+                                        const Bool tail)
 {
   return GammaFunctions::IncompleteGammaInverse(a, x, tail);
 }
@@ -745,8 +745,8 @@ Scalar SpecFunc::TriGamma(const Scalar x)
 
 // Hypergeometric function of type (1,1): HyperGeom_1_1(p1, q1, x) = \sum_{n=0}^{\infty} [\prod_{k=0}^{n-1} (p1 + k) / (q1 + k)] * x^n / n!
 Scalar SpecFunc::HyperGeom_1_1(const Scalar p1,
-                                        const Scalar q1,
-                                        const Scalar x)
+                               const Scalar q1,
+                               const Scalar x)
 {
   if (q1 == p1) return exp(x);
   if (x == 0) return 1.0;
@@ -808,9 +808,9 @@ NumericalComplex SpecFunc::HyperGeom_1_1(const Scalar p1,
 
 // Hypergeometric function of type (2,1): HyperGeom_2_1(p1, p2, q1, x) = sum_{n=0}^{\infty} [prod_{k=0}^{n-1} (p1 + k) . (p2 + k) / (q1 + k)] * x^n / n!
 Scalar SpecFunc::HyperGeom_2_1(const Scalar p1,
-                                        const Scalar p2,
-                                        const Scalar q1,
-                                        const Scalar x)
+                               const Scalar p2,
+                               const Scalar q1,
+                               const Scalar x)
 {
   Scalar pochhammerP1 = p1;
   Scalar pochhammerP2 = p2;
@@ -837,10 +837,10 @@ Scalar SpecFunc::HyperGeom_2_1(const Scalar p1,
 
 // Hypergeometric function of type (2,2): HyperGeom_2_1(p1, p2, q1, q2, x) = sum_{n=0}^{\infty} [prod_{k=0}^{n-1} (p1 + k) . (p2 + k) / (q1 + k) / (q2 + k)] * x^n / n!
 Scalar SpecFunc::HyperGeom_2_2(const Scalar p1,
-                                        const Scalar p2,
-                                        const Scalar q1,
-                                        const Scalar q2,
-                                        const Scalar x)
+                               const Scalar p2,
+                               const Scalar q1,
+                               const Scalar q2,
+                               const Scalar x)
 {
   if (x == 0.0) return 1.0;
   Scalar pochhammerP1 = p1;
@@ -978,7 +978,7 @@ Scalar SpecFunc::ErfInverse(const Scalar x)
    Robert M. Corless, G. H. Gonnet, D. E. G. Hare, D. J. Jeffrey, and D. E. Knuth, "On the Lambert W Function", Advances in Computational Mathematics, volume 5, 1996, pp. 329--359
 */
 Scalar SpecFunc::LambertW(const Scalar x,
-                                   const Bool principal)
+                          const Bool principal)
 {
   Scalar w = -1.0;
   // -0.36787944117144232159552377016146086 = -1 / exp(1)
@@ -1125,7 +1125,7 @@ Scalar SpecFunc::Cbrt(const Scalar x)
 }
 
 UnsignedInteger SpecFunc::BinomialCoefficient(const UnsignedInteger n,
-                                              const UnsignedInteger k)
+    const UnsignedInteger k)
 {
   if (k > n) return 0; // by convention
   UnsignedInteger value = 1;

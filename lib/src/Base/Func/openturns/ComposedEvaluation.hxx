@@ -36,7 +36,7 @@ public:
 
   /** Default constructor */
   ComposedEvaluation(const EvaluationPointer & p_leftFunction,
-      const EvaluationPointer & p_rightFunction);
+                     const EvaluationPointer & p_rightFunction);
 
 
   /** Virtual constructor */

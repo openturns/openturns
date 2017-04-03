@@ -92,7 +92,7 @@ private:
       for the given measure and Qk the k-th monic orthogonal polynomial of
       the reference factory */
   Scalar getMixedMoment(const int j,
-                                 const UnsignedInteger k) const;
+                        const UnsignedInteger k) const;
 
   /** Recurrence coefficients (alphak, betak) of the monic orthogonal polynomials
       Pk+1(x) = (x - alphak) * Pk(x) - betak * Pk-1(x) */

@@ -530,12 +530,12 @@ void RandomMixture::setDistributionCollection(const DistributionCollection & col
 
   // Special case: distributionCollection_ is empty because all the atoms were Dirac distributions, so they have all been merged into the constant. As we need at least one atom for the algorithms to work we convert the constant back into a unique Dirac distribution. This case can occur only in dimension 1
   if (distributionCollection_.getSize() == 0)
-    {
-      distributionCollection_.add(Dirac(constant_));
-      weights.add(Point(1, 1.0));
-      constant_[0] = 0.0; 
-    }
-  
+  {
+    distributionCollection_.add(Dirac(constant_));
+    weights.add(Point(1, 1.0));
+    constant_[0] = 0.0;
+  }
+
   if (dimension == 1) setWeights(Matrix(1, distributionCollection_.getSize() , weights.getImplementation()->getData()));
 
   // We cannot use parallelism if we have more than one atom due to the characteristic function cache
@@ -619,11 +619,11 @@ Sample RandomMixture::getSample(const UnsignedInteger size) const
   MatrixImplementation sample(atomSize, size);
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < atomSize; ++i)
-    {
-      const Point atomSample(distributionCollection_[i].getSample(size).getImplementation()->getData());
-      std::copy(atomSample.begin(), atomSample.end(), sample.begin() + index); 
-      index += size;
-    }
+  {
+    const Point atomSample(distributionCollection_[i].getSample(size).getImplementation()->getData());
+    std::copy(atomSample.begin(), atomSample.end(), sample.begin() + index);
+    index += size;
+  }
   SampleImplementation result(size, getDimension());
   result.setData(weights_.getImplementation()->genProd(sample).transpose());
   return result + constant_;
@@ -636,11 +636,11 @@ Sample RandomMixture::getSampleByQMC(const UnsignedInteger size) const
   UnsignedInteger index = 0;
   const Point u(SobolSequence(1).generate(size).getImplementation()->getData());
   for (UnsignedInteger i = 0; i < atomSize; ++i)
-    {
-      const Point atomSample(distributionCollection_[i].computeQuantile(u).getImplementation()->getData());
-      std::copy(atomSample.begin(), atomSample.end(), sample.begin() + index); 
-      index += size;
-    }
+  {
+    const Point atomSample(distributionCollection_[i].computeQuantile(u).getImplementation()->getData());
+    std::copy(atomSample.begin(), atomSample.end(), sample.begin() + index);
+    index += size;
+  }
   SampleImplementation result(size, getDimension());
   result.setData(weights_.getImplementation()->genProd(sample).transpose());
   return result + constant_;
@@ -871,9 +871,9 @@ Scalar RandomMixture::computePDF(const Point & point) const
 
 /*  Compute the PDF of 1D distributions over a regular grid. The precision is reduced as this method is for drawing purpose only. */
 Sample RandomMixture::computePDF(const Scalar xMin,
-    const Scalar xMax,
-    const UnsignedInteger pointNumber,
-    Sample & grid) const
+                                 const Scalar xMax,
+                                 const UnsignedInteger pointNumber,
+                                 Sample & grid) const
 {
   if (getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: this method is available only for 1D distribution";
   return computePDF(Point(1, xMin), Point(1, xMax), Indices(1, pointNumber), grid);
@@ -911,9 +911,9 @@ struct EquivalentNormalPDFSumPolicy
 
 /* Compute the PDF of nD distributions over a regular grid */
 Sample RandomMixture::computePDF(const Point & xMin,
-    const Point & xMax,
-    const Indices & pointNumber,
-    Sample & grid) const
+                                 const Point & xMax,
+                                 const Indices & pointNumber,
+                                 Sample & grid) const
 {
   if (xMin.getDimension() != xMax.getDimension()) throw InvalidArgumentException(HERE) << "Error: the two corner points must have the same dimension. Here, dim(xMin)=" << xMin.getDimension() << " and dim(xMax)=" << xMax.getDimension();
   if (xMin.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the corner points must have the same dimension as the distribution. Here, dim(xMin)=" << xMin.getDimension() << " and distribution dimension=" << dimension_;
@@ -1830,9 +1830,9 @@ Scalar RandomMixture::computeComplementaryCDF(const Point & point) const
 
 /*  Compute the CDF of 1D distributions over a regular grid. The precision is reduced as this method is for drawing purpose only. */
 Sample RandomMixture::computeCDF(const Scalar xMin,
-    const Scalar xMax,
-    const UnsignedInteger pointNumber,
-    Sample & grid) const
+                                 const Scalar xMax,
+                                 const UnsignedInteger pointNumber,
+                                 Sample & grid) const
 {
   return DistributionImplementation::computeCDF(xMin, xMax, pointNumber, grid);
 }
@@ -1940,9 +1940,9 @@ Scalar RandomMixture::computeProbability(const Interval & interval) const
 
 /*  Compute the quantile over a regular grid */
 Sample RandomMixture::computeQuantile(const Scalar qMin,
-    const Scalar qMax,
-    const UnsignedInteger pointNumber,
-    const Bool tail) const
+                                      const Scalar qMax,
+                                      const UnsignedInteger pointNumber,
+                                      const Bool tail) const
 {
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot compute the quantile over a regular 1D grid if the dimension is > 1";
   Sample result(pointNumber, 2);

@@ -5,12 +5,14 @@ import unittest as ut
 from math import pi, log, log10, floor
 
 import openturns as ot
-from openturns.testing import assert_almost_equal # (value, reference, rtol, atol)
+from openturns.testing import assert_almost_equal  # (value, reference, rtol, atol)
 
 ot.TESTPREAMBLE()
 
 # Prevent from using unittest.TestLoader.loadTestsFromTestCase
 # so as not to get the test execution duration
+
+
 def loadTestsFromTestCase(cls):
     """Launch the tests of the test case class"""
     import sys
@@ -41,7 +43,9 @@ def loadTestsFromTestCase(cls):
     if is_tearDownClass_there:
         cls.tearDownClass()
 
+
 class TestInverseWishartMethods(ut.TestCase):
+
     """Test case for the class InverseWishart"""
 
     @classmethod
@@ -49,12 +53,12 @@ class TestInverseWishartMethods(ut.TestCase):
         # attributes to compare a one-dimensional InverseWishart to the
         # equivalent InverseGamma distribution
         U = ot.Uniform(0., 1.)
-        scale = 10.*U.getRealization()[0]
-        DoF = 3.+ U.getRealization()[0] # Degrees of Freedom
-        cls.k, cls.beta = 0.5*DoF, 0.5*scale
+        scale = 10. * U.getRealization()[0]
+        DoF = 3. + U.getRealization()[0]  # Degrees of Freedom
+        cls.k, cls.beta = 0.5 * DoF, 0.5 * scale
         cls.one_dimensional_inverse_wishart \
             = ot.InverseWishart(ot.CovarianceMatrix([[scale]]), DoF)
-        cls.inverse_gamma = ot.InverseGamma(cls.k, 1./cls.beta)
+        cls.inverse_gamma = ot.InverseGamma(cls.k, 1. / cls.beta)
         # attributes to test a multi-dimensional InverseWishart
         cls.dimension = 5
         cls.DoF = cls.dimension + 3 + U.getRealization()[0]
@@ -67,15 +71,16 @@ class TestInverseWishartMethods(ut.TestCase):
             for j in range(i):
                 cls.L[i, j] = U.getRealization()[0]
         cls.determinant *= cls.determinant
-        cls.Scale = ot.CovarianceMatrix(cls.L*cls.L.transpose())
+        cls.Scale = ot.CovarianceMatrix(cls.L * cls.L.transpose())
 
     def test_computeLogPDF_1D_case(self):
         """Test InverseWishart.computeLogPDF in the one-dimensional case"""
         k, beta = self.k, self.beta
+
         def logPDF(x):
             if x <= 0.:
                 raise ValueError("math domain error")
-            return k*log(beta) - ot.SpecFunc_LogGamma(k) - (k+1)*log(x) - beta/x
+            return k * log(beta) - ot.SpecFunc_LogGamma(k) - (k + 1) * log(x) - beta / x
         data = ((self.inverse_gamma.drawPDF()).getDrawable(0)).getData()
         i = 0
         while data[i, 0] <= 0.:
@@ -93,11 +98,11 @@ class TestInverseWishartMethods(ut.TestCase):
     # The log multi-gamma function appears in the log PDF
     def logmultigamma(self, p, x):
         """Computes the logarithm of the multi-gamma function at x"""
-        logmgpx = 0.25*p*(p-1)*log(pi)
-        for i in range(1, p+1):
-            logmgpx = logmgpx + ot.SpecFunc_LnGamma(x + 0.5*(1-i))
+        logmgpx = 0.25 * p * (p - 1) * log(pi)
+        for i in range(1, p + 1):
+            logmgpx = logmgpx + ot.SpecFunc_LnGamma(x + 0.5 * (1 - i))
         return logmgpx
-            
+
     # Test InverseWishart.computeLogPDF in the special case of diagonal matrices
     # (scale covariance matrix and point/matrice at which to evaluate the
     # PDF) by comparing the logarithm of the ratio of the InverseWishart PDF
@@ -105,7 +110,7 @@ class TestInverseWishartMethods(ut.TestCase):
     def test_computeLogPDF_diagonal_case(self):
         """Test InverseWishart.computeLogPDF in the case of diagonal matrices"""
         dimension, DoF = self.dimension, self.DoF
-        k = 0.5*(DoF + dimension - 1)
+        k = 0.5 * (DoF + dimension - 1)
         diagX = ot.Uniform(0.5, 1.).getSample(dimension)
         Scale = ot.CovarianceMatrix(dimension)
         X = ot.CovarianceMatrix(dimension)
@@ -113,12 +118,13 @@ class TestInverseWishartMethods(ut.TestCase):
             Scale[d, d], X[d, d] = self.Scale[d, d], diagX[d, 0]
         inverse_wishart = ot.InverseWishart(Scale, DoF)
         logdensity = inverse_wishart.computeLogPDF(X)
-        logratio = - self.logmultigamma(dimension, 0.5*DoF) \
-                 + dimension*ot.SpecFunc_LnGamma(0.5*(DoF+dimension-1))
+        logratio = - self.logmultigamma(dimension, 0.5 * DoF) \
+            + dimension * ot.SpecFunc_LnGamma(0.5 * (DoF + dimension - 1))
         for d in range(dimension):
-            inverse_gamma = ot.InverseGamma(k, 2./Scale[d, d])
+            inverse_gamma = ot.InverseGamma(k, 2. / Scale[d, d])
             logdensity = logdensity - inverse_gamma.computeLogPDF(diagX[d, 0])
-            logratio = logratio + 0.5*(1-dimension)*log(0.5*Scale[d, d])
+            logratio = logratio + 0.5 * \
+                (1 - dimension) * log(0.5 * Scale[d, d])
         assert_almost_equal(logdensity, logratio)
 
     # Test InverseWishart.computeLogPDF by evaluating the log PDF
@@ -128,9 +134,9 @@ class TestInverseWishartMethods(ut.TestCase):
         dimension, DoF = self.dimension, self.DoF
         Scale, determinant = self.Scale, self.determinant
         inverse_wishart = ot.InverseWishart(Scale, DoF)
-        logPDFatX = - self.logmultigamma(dimension, 0.5*DoF) \
-                  - 0.5*(DoF*dimension*log(2.) + dimension \
-                        + (dimension + 1)*log(determinant))
+        logPDFatX = - self.logmultigamma(dimension, 0.5 * DoF) \
+            - 0.5 * (DoF * dimension * log(2.) + dimension
+                     + (dimension + 1) * log(determinant))
         assert_almost_equal(inverse_wishart.computeLogPDF(Scale), logPDFatX)
 
     # Compare the empirical expectations of a large matrix sample
@@ -142,14 +148,14 @@ class TestInverseWishartMethods(ut.TestCase):
         Identity = ot.CovarianceMatrix(d)
         Scale_wishart = ot.CovarianceMatrix(Scale.solveLinearSystem(Identity))
         inverse_wishart = ot.InverseWishart(Scale, DoF)
-        sample_inverse = ot.Sample(N, (d*(d+1))//2)
-        sample = ot.Sample(N, (d*(d+1))//2)
+        sample_inverse = ot.Sample(N, (d * (d + 1)) // 2)
+        sample = ot.Sample(N, (d * (d + 1)) // 2)
         for i in range(N):
             M_inverse = inverse_wishart.getRealizationAsMatrix()
             M = M_inverse.solveLinearSystem(Identity)
             indice = 0
             for j in range(d):
-                for k in range(j+1):
+                for k in range(j + 1):
                     sample_inverse[i, indice] = M_inverse[k, j]
                     sample[i, indice] = M[k, j]
                     indice += 1
@@ -157,17 +163,17 @@ class TestInverseWishartMethods(ut.TestCase):
         mean = sample.computeMean()
         theoretical_mean_inverse = inverse_wishart.getMean()
         theoretical_mean = (ot.Wishart(Scale_wishart, DoF)).getMean()
-        indice, coefficient = 0, 1./(DoF - d - 1)
+        indice, coefficient = 0, 1. / (DoF - d - 1)
         for j in range(d):
-            for k in range(j+1):
+            for k in range(j + 1):
                 assert_almost_equal(theoretical_mean_inverse[indice],
-                                    coefficient*Scale[k, j])
+                                    coefficient * Scale[k, j])
                 assert_almost_equal(theoretical_mean[indice],
-                                    DoF*Scale_wishart[k, j])
+                                    DoF * Scale_wishart[k, j])
                 assert_almost_equal(mean_inverse[indice],
-                                    coefficient*Scale[k, j], 0.1, 1.E-3)
+                                    coefficient * Scale[k, j], 0.1, 1.E-3)
                 assert_almost_equal(mean[indice],
-                                    DoF*Scale_wishart[k, j], 0.1, 1.E-3)
+                                    DoF * Scale_wishart[k, j], 0.1, 1.E-3)
                 indice += 1
 
 
@@ -211,14 +217,14 @@ print("Point= ", repr(point))
 
 # Show PDF and CDF of point
 eps = 1e-5
-#max = distribution.getB() + distribution.getA()
-#min = distribution.getB() - distribution.getA()
+# max = distribution.getB() + distribution.getA()
+# min = distribution.getB() - distribution.getA()
 # derivative of PDF with regards its arguments
 DDF = distribution.computeDDF(point)
 print("ddf     =", repr(DDF))
 # by the finite difference technique
 print("ddf (FD)=", repr(ot.Point(1, (distribution.computePDF(point + ot.Point(1, eps)) -
-                                              distribution.computePDF(point + ot.Point(1, -eps))) / (2.0 * eps))))
+                                     distribution.computePDF(point + ot.Point(1, -eps))) / (2.0 * eps))))
 
 # PDF value
 LPDF = distribution.computeLogPDF(point)
@@ -237,22 +243,22 @@ print("ccdf=%.6f" % CCDF)
 PDFgr = distribution.computePDFGradient(point)
 print("pdf gradient     =", repr(PDFgr))
 # by the finite difference technique
-#PDFgrFD = Point(2)
-#PDFgrFD[0] = (Arcsine(distribution.getA() + eps, distribution.getB()).computePDF(point) -
-              #Arcsine(distribution.getA() - eps, distribution.getB()).computePDF(point)) / (2.0 * eps)
-#PDFgrFD[1] = (Arcsine(distribution.getA(), distribution.getB() + eps).computePDF(point) -
-              #Arcsine(distribution.getA(), distribution.getB() - eps).computePDF(point)) / (2.0 * eps)
-#print("pdf gradient (FD)=", repr(PDFgrFD))
+# PDFgrFD = Point(2)
+# PDFgrFD[0] = (Arcsine(distribution.getA() + eps, distribution.getB()).computePDF(point) -
+              # Arcsine(distribution.getA() - eps, distribution.getB()).computePDF(point)) / (2.0 * eps)
+# PDFgrFD[1] = (Arcsine(distribution.getA(), distribution.getB() + eps).computePDF(point) -
+              # Arcsine(distribution.getA(), distribution.getB() - eps).computePDF(point)) / (2.0 * eps)
+# print("pdf gradient (FD)=", repr(PDFgrFD))
 
 # derivative of the PDF with regards the parameters of the distribution
 CDFgr = distribution.computeCDFGradient(point)
 print("cdf gradient     =", repr(CDFgr))
-#CDFgrFD = Point(2)
-#CDFgrFD[0] = (Arcsine(distribution.getA() + eps, distribution.getB()).computeCDF(point) -
-              #Arcsine(distribution.getA() - eps, distribution.getB()).computeCDF(point)) / (2.0 * eps)
-#CDFgrFD[1] = (Arcsine(distribution.getA(), distribution.getB() + eps).computeCDF(point) -
-              #Arcsine(distribution.getA(), distribution.getB() - eps).computeCDF(point)) / (2.0 * eps)
-#print("cdf gradient (FD)=",  repr(CDFgrFD))
+# CDFgrFD = Point(2)
+# CDFgrFD[0] = (Arcsine(distribution.getA() + eps, distribution.getB()).computeCDF(point) -
+              # Arcsine(distribution.getA() - eps, distribution.getB()).computeCDF(point)) / (2.0 * eps)
+# CDFgrFD[1] = (Arcsine(distribution.getA(), distribution.getB() + eps).computeCDF(point) -
+              # Arcsine(distribution.getA(), distribution.getB() - eps).computeCDF(point)) / (2.0 * eps)
+# print("cdf gradient (FD)=",  repr(CDFgrFD))
 
 # quantile
 quantile = distribution.computeQuantile(0.95)
@@ -261,22 +267,27 @@ print("cdf(quantile)=%.6f" % distribution.computeCDF(quantile))
 # Get 95% survival function
 inverseSurvival = ot.Point(distribution.computeInverseSurvivalFunction(0.95))
 print("InverseSurvival=", repr(inverseSurvival))
-print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
+print("Survival(inverseSurvival)=%.6f" %
+      distribution.computeSurvivalFunction(inverseSurvival))
 
 # Confidence regions
-interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
+interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(
+    0.95)
 print("Minimum volume interval=", interval)
 print("threshold=", ot.Point(1, threshold))
 levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
 print("Minimum volume level set=", levelSet)
 print("beta=", ot.Point(1, beta))
-interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
+interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(
+    0.95)
 print("Bilateral confidence interval=", interval)
 print("beta=", ot.Point(1, beta))
-interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
+interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+    0.95, False)
 print("Unilateral confidence interval (lower tail)=", interval)
 print("beta=", ot.Point(1, beta))
-interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
+interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+    0.95, True)
 print("Unilateral confidence interval (upper tail)=", interval)
 print("beta=", ot.Point(1, beta))
 

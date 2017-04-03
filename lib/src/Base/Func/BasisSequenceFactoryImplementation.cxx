@@ -90,7 +90,7 @@ BasisSequence BasisSequenceFactoryImplementation::build(const Sample & y,
 }
 
 BasisSequence BasisSequenceFactoryImplementation::build(LeastSquaresMethod & method,
-                                                        const Sample & y)
+    const Sample & y)
 {
 //   BasisSequence basisSequence(method.buildCurrentBasis());
   BasisSequence basisSequence(method.getBasis());

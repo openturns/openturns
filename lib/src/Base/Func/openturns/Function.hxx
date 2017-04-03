@@ -85,7 +85,7 @@ public:
    * @param right The right %Function (aka g)
    */
   Function(const Function & left,
-                        const Function & right);
+           const Function & right);
 
   /** @brief Analytical formula constructor
    *
@@ -100,19 +100,19 @@ public:
    * @param formulas The ordered collection of analytical expressions to compute the output variables
    */
   Function(const Description & inputVariablesNames,
-                        const Description & outputVariablesNames,
-                        const Description & formulas);
+           const Description & outputVariablesNames,
+           const Description & formulas);
 
   /** Same as the previous one, but with default names for the output variables
    * @deprecated */
   Function(const Description & inputVariablesNames,
-                        const Description & formulas);
+           const Description & formulas);
 
   /** Indicator function constructor
     * @deprecated */
   Function(const Function & function,
-                        const ComparisonOperator & comparisonOperator,
-                        const Scalar threshold);
+           const ComparisonOperator & comparisonOperator,
+           const Scalar threshold);
 
   /** Aggregated function constructor: the output is the aggregation of the several functions */
   Function(const FunctionCollection & functionCollection);
@@ -120,17 +120,17 @@ public:
   /** Linear combination function constructor
     * @deprecated */
   Function(const FunctionCollection & functionCollection,
-                        const Point & coefficients);
+           const Point & coefficients);
 
   /** Dual linear combination function constructor */
   Function(const FunctionCollection & functionCollection,
-                        const Sample & coefficients);
+           const Sample & coefficients);
 
-  /** Simplified analytical formula constructor 
+  /** Simplified analytical formula constructor
    * @deprecated */
   Function(const String & inputVariableName,
-                        const String & formula,
-                        const String & outputVariableName = "outputVariable");
+           const String & formula,
+           const String & outputVariableName = "outputVariable");
 
 #ifndef SWIG
   /** Constructor from evaluation */
@@ -138,14 +138,14 @@ public:
 
   /** Constructor from implementations */
   Function(const EvaluationPointer & evaluationImplementation,
-                        const GradientPointer & gradientImplenmentation,
-                        const HessianPointer  & hessianImplementation);
+           const GradientPointer & gradientImplenmentation,
+           const HessianPointer  & hessianImplementation);
 #endif
 
   /** Constructor from samples
     * @deprecated */
   Function(const Sample & inputSample,
-                        const Sample & outputSample);
+           const Sample & outputSample);
 
   /** Constructor from field using P1 Lagrange interpolation */
   Function(const Field & field);
@@ -153,9 +153,9 @@ public:
   /** Constructor by splitting the input of a function between variables and parameters
    * @deprecated */
   Function(const Function & function,
-                        const Indices & set,
-                        const Point & referencePoint,
-                        const Bool parametersSet = true);
+           const Indices & set,
+           const Point & referencePoint,
+           const Bool parametersSet = true);
 
   /** Comparison operator */
   Bool operator ==(const Function & other) const;
@@ -284,9 +284,9 @@ public:
   /** Operator () */
   Point operator() (const Point & inP) const;
   Point operator() (const Point & inP,
-                             const Point & parameter);
+                    const Point & parameter);
   Sample operator() (const Point & point,
-                              const Sample & parameters);
+                     const Sample & parameters);
 
   Sample operator() (const Sample & inS) const;
 

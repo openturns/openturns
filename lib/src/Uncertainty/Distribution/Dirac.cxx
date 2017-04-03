@@ -136,7 +136,7 @@ Scalar Dirac::computeCDF(const Point & point) const
 
 /* Compute the multivariate quantile of the distribution */
 Point Dirac::computeQuantile(const Scalar prob,
-                                      const Bool tail) const
+                             const Bool tail) const
 {
   return point_;
 }
@@ -162,7 +162,7 @@ Point Dirac::computeCDFGradient(const Point & point) const
 
 /* Get the quantile of the distribution */
 Scalar Dirac::computeScalarQuantile(const Scalar prob,
-    const Bool tail) const
+                                    const Bool tail) const
 {
   return point_[0];
 }

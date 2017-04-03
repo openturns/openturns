@@ -90,8 +90,8 @@ void SymmetricTensor::checkSymmetry() const
 /* Operator () gives access to the elements of the symmetric tensor (to modify these elements and their symmetric element) */
 /* The element of the symmetric tensor is designated by its row number i, its column number j and its sheet number k*/
 Scalar & SymmetricTensor::operator () (const UnsignedInteger i,
-    const UnsignedInteger j,
-    const UnsignedInteger k)
+                                       const UnsignedInteger j,
+                                       const UnsignedInteger k)
 {
   copyOnWrite();
   hasBeenSymmetrized_ = false;

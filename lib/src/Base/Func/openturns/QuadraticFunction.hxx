@@ -50,9 +50,9 @@ public:
 
   /** Default constructor */
   QuadraticFunction (const Point & center,
-                                  const Point & constant,
-                                  const Matrix & linear,
-                                  const SymmetricTensor & quadratic);
+                     const Point & constant,
+                     const Matrix & linear,
+                     const SymmetricTensor & quadratic);
 
 
   /** Comparison operator */

@@ -100,9 +100,9 @@ public:
   /** Drawing method */
   virtual Graph draw(const UnsignedInteger rowIndex = 0,
                      const UnsignedInteger columnIndex = 0,
-		     const Scalar minimumFrequency = ResourceMap::GetAsScalar("SpectralModel-DefaultMinimumFrequency"),
-		     const Scalar maximumFrequency = ResourceMap::GetAsScalar("SpectralModel-DefaultMaximumFrequency"),
-		     const UnsignedInteger frequencyNumber = ResourceMap::GetAsUnsignedInteger("SpectralModel-DefaultFrequencyNumber"),
+                     const Scalar minimumFrequency = ResourceMap::GetAsScalar("SpectralModel-DefaultMinimumFrequency"),
+                     const Scalar maximumFrequency = ResourceMap::GetAsScalar("SpectralModel-DefaultMaximumFrequency"),
+                     const UnsignedInteger frequencyNumber = ResourceMap::GetAsUnsignedInteger("SpectralModel-DefaultFrequencyNumber"),
                      const Bool module = true) const;
 
 protected:

@@ -80,7 +80,7 @@ UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUs
 
 /* Build a covariance model based on a spectral model and a frequency grid */
 UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUserDefinedStationaryCovarianceModel(const SpectralModel & mySpectralModel,
-														   const RegularGrid & frequencyGrid) const
+    const RegularGrid & frequencyGrid) const
 {
   // We get the dimension of the model
   const UnsignedInteger dimension = mySpectralModel.getDimension();

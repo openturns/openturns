@@ -74,7 +74,7 @@ public:
   /** Get the quantile of the distribution */
   using DistributionImplementation::computeQuantile;
   Point computeQuantile(const Scalar prob,
-                                 const Bool tail = false) const;
+                        const Bool tail = false) const;
 
   /** Compute the survival function */
   using CopulaImplementation::computeSurvivalFunction;

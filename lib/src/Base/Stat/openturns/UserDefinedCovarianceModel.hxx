@@ -68,7 +68,7 @@ public:
   using CovarianceModelImplementation::discretize;
   virtual CovarianceMatrix discretize(const Mesh & mesh) const;
   virtual Sample discretizeRow(const Sample & vertices,
-                                        const UnsignedInteger p) const;
+                               const UnsignedInteger p) const;
 
   /** Mesh accessor */
   Mesh getMesh() const;

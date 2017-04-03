@@ -26,7 +26,7 @@ static const Factory<ProductEvaluation> Factory_ProductEvaluation;
 
 /* Default constructor */
 ProductEvaluation::ProductEvaluation(const EvaluationPointer & p_leftEvaluation,
-    const EvaluationPointer & p_rightEvaluation)
+                                     const EvaluationPointer & p_rightEvaluation)
   : EvaluationImplementation()
   , p_leftEvaluation_(p_leftEvaluation)
   , p_rightEvaluation_(p_rightEvaluation)

@@ -22,13 +22,13 @@ try:
     print(basis.getSubBasis([1, 2]))
     print(basis.isFunctional())
     print(basis.isOrthogonal())
-    #print(basis[1])
-    #print(basis[0:2])
+    # print(basis[1])
+    # print(basis[0:2])
 
-    #basis[1] = ot.Function(['x'], ['z'], ['x^42'])
-    #print('basis =', basis)
-    #basis[0:2] = basis[1:3]
-    #print('basis =', basis)
+    # basis[1] = ot.Function(['x'], ['z'], ['x^42'])
+    # print('basis =', basis)
+    # basis[0:2] = basis[1:3]
+    # print('basis =', basis)
 except:
     import sys
     print("t_Basis_std.py", sys.exc_info()[0], sys.exc_info()[1])

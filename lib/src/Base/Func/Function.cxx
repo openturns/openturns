@@ -83,7 +83,7 @@ Function::Function(const EvaluationImplementation & evaluation)
 
 /* Composition constructor */
 Function::Function(const Function & left,
-    const Function & right)
+                   const Function & right)
   : TypedInterfaceObject<FunctionImplementation>(new ComposedFunction(left.getImplementation(), right.getImplementation()))
 {
   Log::Warn(OSS() << "Function(FunctionCollection, Sample) is deprecated: use ComposedFunction");
@@ -91,8 +91,8 @@ Function::Function(const Function & left,
 
 /* Analytical formula constructor */
 Function::Function(const Description & inputVariablesNames,
-    const Description & outputVariablesNames,
-    const Description & formulas)
+                   const Description & outputVariablesNames,
+                   const Description & formulas)
   : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation(inputVariablesNames, outputVariablesNames, formulas))
 {
   // Nothing to do
@@ -100,7 +100,7 @@ Function::Function(const Description & inputVariablesNames,
 
 /* Analytical formula constructor */
 Function::Function(const Description & inputVariablesNames,
-    const Description & formulas)
+                   const Description & formulas)
   : TypedInterfaceObject<FunctionImplementation>()
 {
   Log::Warn(OSS() << "Function(Description, Description) is deprecated: use SymbolicFunction");
@@ -113,8 +113,8 @@ Function::Function(const Description & inputVariablesNames,
 
 /* Indicator function constructor */
 Function::Function(const Function & function,
-    const ComparisonOperator & comparisonOperator,
-    const Scalar threshold)
+                   const ComparisonOperator & comparisonOperator,
+                   const Scalar threshold)
   : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation(new IndicatorEvaluation(function.getEvaluation(), comparisonOperator, threshold), new NoGradient(), new NoHessian()))
 {
   Log::Warn(OSS() << "Function(Function, ComparisonOperator, Scalar) is deprecated: use IndicatorFunction");
@@ -133,7 +133,7 @@ Function::Function(const FunctionCollection & functionCollection)
 
 /* Linear combination function constructor */
 Function::Function(const FunctionCollection & functionCollection,
-    const Point & coefficients)
+                   const Point & coefficients)
   : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation())
 {
   Log::Warn(OSS() << "Function(FunctionCollection, Point) is deprecated: use LinearCombinationFunction");
@@ -145,7 +145,7 @@ Function::Function(const FunctionCollection & functionCollection,
 
 /* Dual linear combination function constructor */
 Function::Function(const FunctionCollection & functionCollection,
-    const Sample & coefficients)
+                   const Sample & coefficients)
   : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation())
 {
   Log::Warn(OSS() << "Function(FunctionCollection, Sample) is deprecated: use DualLinearCombinationFunction");
@@ -157,8 +157,8 @@ Function::Function(const FunctionCollection & functionCollection,
 
 /* Simplified analytical formula constructor */
 Function::Function(const String & inputVariableName,
-    const String & formula,
-    const String & outputVariableName)
+                   const String & formula,
+                   const String & outputVariableName)
   : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation(Description(1, inputVariableName), Description(1, outputVariableName), Description(1, formula)))
 {
   Log::Warn(OSS() << "Function(String, String, String) is deprecated: use SymbolicFunction");
@@ -175,8 +175,8 @@ Function::Function(const EvaluationPointer & evaluationImplementation)
 
 /* Constructor from implementations */
 Function::Function(const EvaluationPointer & evaluationImplementation,
-    const GradientPointer & gradientImplementation,
-    const HessianPointer  & hessianImplementation)
+                   const GradientPointer & gradientImplementation,
+                   const HessianPointer  & hessianImplementation)
   : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation(evaluationImplementation, gradientImplementation, hessianImplementation))
 {
   // Nothing to do
@@ -184,7 +184,7 @@ Function::Function(const EvaluationPointer & evaluationImplementation,
 
 /* Constructor from samples */
 Function::Function(const Sample & inputSample,
-    const Sample & outputSample)
+                   const Sample & outputSample)
   : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation( inputSample, outputSample ))
 {
   Log::Warn(OSS() << "Function(Sample, Sample) is deprecated: use DatabaseFunction");
@@ -199,9 +199,9 @@ Function::Function(const Field & field)
 
 /* Constructor by splitting the input of a function between variables and parameters */
 Function::Function(const Function & function,
-    const Indices & set,
-    const Point & referencePoint,
-    const Bool parametersSet)
+                   const Indices & set,
+                   const Point & referencePoint,
+                   const Bool parametersSet)
   : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation())
 {
   Log::Warn(OSS() << "Function(Function, Indices, Point, Bool) is deprecated: use ParametricFunction");
@@ -448,7 +448,7 @@ Matrix Function::parameterGradient(const Point & inP) const
 }
 
 Matrix Function::parameterGradient(const Point & inP,
-    const Point & parameter)
+                                   const Point & parameter)
 {
   copyOnWrite();
   return getImplementation()->parameterGradient(inP, parameter);
@@ -485,14 +485,14 @@ Point Function::operator() (const Point & inP) const
 }
 
 Point Function::operator() (const Point & inP,
-    const Point & parameter)
+                            const Point & parameter)
 {
   copyOnWrite();
   return getImplementation()->operator()(inP, parameter);
 }
 
 Sample Function::operator() (const Point & inP,
-    const Sample & parameters)
+                             const Sample & parameters)
 {
   copyOnWrite();
   return getImplementation()->operator()(inP, parameters);
@@ -517,7 +517,7 @@ Matrix Function::gradient(const Point & inP) const
 }
 
 Matrix Function::gradient(const Point & inP,
-                                       const Point & parameters)
+                          const Point & parameters)
 {
   copyOnWrite();
   return getImplementation()->gradient(inP, parameters);
@@ -530,7 +530,7 @@ SymmetricTensor Function::hessian(const Point & inP) const
 }
 
 SymmetricTensor Function::hessian(const Point & inP,
-    const Point & parameters)
+                                  const Point & parameters)
 {
   copyOnWrite();
   return getImplementation()->hessian(inP, parameters);
@@ -593,43 +593,43 @@ UnsignedInteger Function::getHessianCallsNumber() const
 
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
 Graph Function::draw(const UnsignedInteger inputMarginal,
-                                  const UnsignedInteger outputMarginal,
-                                  const Point & centralPoint,
-                                  const Scalar xMin,
-                                  const Scalar xMax,
-                                  const UnsignedInteger pointNumber,
-                                  const GraphImplementation::LogScale scale) const
+                     const UnsignedInteger outputMarginal,
+                     const Point & centralPoint,
+                     const Scalar xMin,
+                     const Scalar xMax,
+                     const UnsignedInteger pointNumber,
+                     const GraphImplementation::LogScale scale) const
 {
   return getImplementation()->draw(inputMarginal, outputMarginal, centralPoint, xMin, xMax, pointNumber, scale);
 }
 
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
 Graph Function::draw(const UnsignedInteger firstInputMarginal,
-                                  const UnsignedInteger secondInputMarginal,
-                                  const UnsignedInteger outputMarginal,
-                                  const Point & centralPoint,
-                                  const Point & xMin,
-                                  const Point & xMax,
-                                  const Indices & pointNumber,
-                                  const GraphImplementation::LogScale scale) const
+                     const UnsignedInteger secondInputMarginal,
+                     const UnsignedInteger outputMarginal,
+                     const Point & centralPoint,
+                     const Point & xMin,
+                     const Point & xMax,
+                     const Indices & pointNumber,
+                     const GraphImplementation::LogScale scale) const
 {
   return getImplementation()->draw(firstInputMarginal, secondInputMarginal, outputMarginal, centralPoint, xMin, xMax, pointNumber, scale);
 }
 
 /* Draw the output of the function with respect to its input when the input and output dimensions are 1 */
 Graph Function::draw(const Scalar xMin,
-                                  const Scalar xMax,
-                                  const UnsignedInteger pointNumber,
-                                  const GraphImplementation::LogScale scale) const
+                     const Scalar xMax,
+                     const UnsignedInteger pointNumber,
+                     const GraphImplementation::LogScale scale) const
 {
   return getImplementation()->draw(xMin, xMax, pointNumber, scale);
 }
 
 /* Draw the output of the function with respect to its input when the input dimension is 2 and the output dimension is 1 */
 Graph Function::draw(const Point & xMin,
-                                  const Point & xMax,
-                                  const Indices & pointNumber,
-                                  const GraphImplementation::LogScale scale) const
+                     const Point & xMax,
+                     const Indices & pointNumber,
+                     const GraphImplementation::LogScale scale) const
 {
   return getImplementation()->draw(xMin, xMax, pointNumber, scale);
 }

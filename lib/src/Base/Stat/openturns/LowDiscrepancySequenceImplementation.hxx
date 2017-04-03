@@ -77,7 +77,7 @@ public:
 private:
   /** Compute the local discrepancy of a sample, given a multidimensionnal interval */
   static Scalar ComputeLocalDiscrepancy(const Sample & sample,
-      const Interval & interval);
+                                        const Interval & interval);
 
 protected:
   typedef Collection<Unsigned64BitsInteger>                           Unsigned64BitsIntegerCollection;

@@ -42,7 +42,7 @@ public:
 
   /** Composition constructor */
   ProductFunction(const Implementation & p_left,
-                               const Implementation & p_right);
+                  const Implementation & p_right);
 
   /** Virtual constructor */
   virtual ProductFunction * clone() const;

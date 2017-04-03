@@ -64,7 +64,7 @@ public:
   using StationaryCovarianceModel::discretize;
   CovarianceMatrix discretize(const Sample & vertices) const;
   Sample discretizeRow(const Sample & vertices,
-                                const UnsignedInteger p) const;
+                       const UnsignedInteger p) const;
 
   using StationaryCovarianceModel::discretizeAndFactorize;
   TriangularMatrix discretizeAndFactorize(const Sample & vertices) const;
@@ -104,7 +104,7 @@ protected:
   virtual Point getFullParameter() const;
   virtual Description getFullParameterDescription() const;
 
-  
+
   friend struct DiracCovarianceModelDiscretizePolicy;
   friend struct DiracCovarianceModelDiscretizeAndFactorizePolicy;
   mutable TriangularMatrix covarianceFactor_;

@@ -45,7 +45,7 @@ public:
 
   /** Default constructor */
   explicit KarhunenLoeveAlgorithmImplementation(const CovarianceModel & covariance,
-						const Scalar threshold = 0.0);
+      const Scalar threshold = 0.0);
 
   /** Virtual constructor */
   virtual KarhunenLoeveAlgorithmImplementation * clone() const;

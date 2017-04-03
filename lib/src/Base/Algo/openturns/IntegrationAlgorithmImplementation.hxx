@@ -49,17 +49,17 @@ public:
    * is an n-D interval
    */
   virtual Point integrate(const Function & function,
-                                   const Interval & interval) const;
+                          const Interval & interval) const;
 
 #ifndef SWIG
   virtual Point integrate(const Function & function,
-                                   const Interval & interval,
-                                   Scalar & error) const;
+                          const Interval & interval,
+                          Scalar & error) const;
 #endif
 
   virtual Point integrate(const Function & function,
-                                   const Interval & interval,
-                                   Point & error) const;
+                          const Interval & interval,
+                          Point & error) const;
   /** String converter */
   virtual String __repr__() const;
 

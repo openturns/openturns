@@ -36,7 +36,7 @@ LinearCombinationFunction::LinearCombinationFunction ()
 
 /* Parameter constructor */
 LinearCombinationFunction::LinearCombinationFunction (const FunctionCollection & functionCollection,
-                                                      const Point & coefficients)
+    const Point & coefficients)
   : Function()
 {
   const LinearCombinationEvaluation evaluation(functionCollection, coefficients);

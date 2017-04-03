@@ -123,7 +123,7 @@ private:
 
   /** Compute the expectation of f(\theta)1_{\theta\leq \theta^*} with respect to the prior distribution of \theta */
   Point computeExpectation(const Function & f,
-                                    const Point & thetaStar) const;
+                           const Point & thetaStar) const;
 
   /** The conditioned distribution, i.e L(X|Theta) */
   Distribution conditionedDistribution_;

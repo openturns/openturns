@@ -58,15 +58,15 @@ public:
 
   /** Grade a point as if it were associated to a class */
   virtual Scalar grade(const Point & inP,
-                                const UnsignedInteger outC) const;
+                       const UnsignedInteger outC) const;
   virtual Point grade(const Sample & inS,
-                               const Indices & outC) const;
+                      const Indices & outC) const;
 
 protected:
   virtual Point gradeParallel(const Sample & inS,
-                           const Indices & outC) const;
+                              const Indices & outC) const;
   virtual Point gradeSequential(const Sample & inS,
-                                  const Indices & outC) const;
+                                const Indices & outC) const;
 public:
 
   /** String converter */

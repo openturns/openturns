@@ -59,11 +59,11 @@ IteratedQuadrature * IteratedQuadrature::clone() const
 /* Compute an approximation of \int_a^b\int_{L_1(x_1)}^{U_1(x_1)}\int_{L_1(x_1,x_2)}^{U_2(x_1,x_2)}\dots\int_{L_1(x_1,\dots,x_{n-1})}^{U_2(x_1,\dots,x_{n-1})} f(x_1,\dots,x_n)dx_1\dotsdx_n, where [a,b] is an 1D interval, L_k and U_k are functions from R^k into R.
  */
 Point IteratedQuadrature::integrate(const Function & function,
-    const Scalar a,
-    const Scalar b,
-    const FunctionCollection & lowerBounds,
-    const FunctionCollection & upperBounds,
-    const Bool check) const
+                                    const Scalar a,
+                                    const Scalar b,
+                                    const FunctionCollection & lowerBounds,
+                                    const FunctionCollection & upperBounds,
+                                    const Bool check) const
 {
   const UnsignedInteger inputDimension = function.getInputDimension();
   if (check)
@@ -90,7 +90,7 @@ Point IteratedQuadrature::integrate(const Function & function,
 }
 
 Point IteratedQuadrature::integrate(const Function & function,
-    const Interval & interval) const
+                                    const Interval & interval) const
 {
   const UnsignedInteger inputDimension = function.getInputDimension();
   if (interval.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected an interval of dimension=" << inputDimension << ", got dimension=" << interval.getDimension();

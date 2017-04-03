@@ -44,8 +44,8 @@ SparseMethod::SparseMethod()
 
 /* Parameters constructor */
 SparseMethod::SparseMethod(const LeastSquaresMethod & method,
-                          const BasisSequenceFactory & basisSequenceFactory,
-                          const FittingAlgorithm & fittingAlgorithm)
+                           const BasisSequenceFactory & basisSequenceFactory,
+                           const FittingAlgorithm & fittingAlgorithm)
   : LeastSquaresMethodImplementation(DesignProxy(), method.getCurrentIndices())
   , method_(method)
   , basisSequenceFactory_(basisSequenceFactory)

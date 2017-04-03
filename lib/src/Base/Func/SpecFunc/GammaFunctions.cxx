@@ -36,24 +36,24 @@ namespace GammaFunctions
 {
 
 Scalar IncompleteGamma(const Scalar a,
-                                const Scalar x,
-                                const Bool tail)
+                       const Scalar x,
+                       const Bool tail)
 {
   if (!(a > 0.0)) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
   return RegularizedIncompleteGamma(a, x, tail) * SpecFunc::Gamma(a);
 }
 
 Scalar IncompleteGammaInverse(const Scalar a,
-                                       const Scalar x,
-                                       const Bool tail)
+                              const Scalar x,
+                              const Bool tail)
 {
   if (!(a > 0.0)) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
   return RegularizedIncompleteGammaInverse(a, x / SpecFunc::Gamma(a), tail);
 }
 
 Scalar RegularizedIncompleteGamma(const Scalar a,
-    const Scalar x,
-    const Bool tail)
+                                  const Scalar x,
+                                  const Bool tail)
 {
   if (!(a > 0.0)) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
   if (x <= 0.0) return (tail ? 1.0 : 0.0);

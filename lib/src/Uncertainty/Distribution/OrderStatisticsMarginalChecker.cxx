@@ -173,13 +173,13 @@ void OrderStatisticsMarginalChecker::setOptimizationAlgorithm(const Optimization
 OptimizationAlgorithm OrderStatisticsMarginalChecker::getOptimizationSolver() const
 {
   Log::Warn(OSS() << "OrderStatisticsMarginalChecker::getOptimizationSolver is deprecated");
-  return getOptimizationAlgorithm(); 
+  return getOptimizationAlgorithm();
 }
 
 void OrderStatisticsMarginalChecker::setOptimizationSolver(const OptimizationAlgorithm & solver)
 {
   Log::Warn(OSS() << "OrderStatisticsMarginalChecker::setOptimizationSolver is deprecated");
-  setOptimizationAlgorithm(solver); 
+  setOptimizationAlgorithm(solver);
 }
 
 

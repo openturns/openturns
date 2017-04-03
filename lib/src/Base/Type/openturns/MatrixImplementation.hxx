@@ -90,12 +90,12 @@ public:
   /** Operator () gives access to the elements of the MatrixImplementation (to modify these elements) */
   /** The element of the MatrixImplementation is designated by its row number i and its column number j */
   Scalar & operator () (const UnsignedInteger i,
-                                 const UnsignedInteger j);
+                        const UnsignedInteger j);
 
   /** Operator () gives access to the elements of the MatrixImplementation (read only) */
   /** The element of the MatrixImplementation is designated by its row number i and its column number j */
   const Scalar & operator () (const UnsignedInteger i,
-                                       const UnsignedInteger j) const;
+                              const UnsignedInteger j) const;
 
   /** Get the dimensions of the MatrixImplementation */
   /** Number of rows */
@@ -140,14 +140,14 @@ public:
 
   /** Multiplications with a Point (must have consistent dimensions) */
   Point genVectProd (const Point & pt,
-                              const Bool transpose = false) const;
+                     const Bool transpose = false) const;
   Point symVectProd (const Point & pt) const;
 
   /** Using triangular matrix */
   ScalarCollection triangularVectProd (const ScalarCollection & pt,
-      const char side = 'L') const;
+                                       const char side = 'L') const;
   ScalarCollection triangularVectProd (const Point & pt,
-      const char side = 'L') const;
+                                       const char side = 'L') const;
 
   /** Multiplication with a Scalar */
   MatrixImplementation operator * (const Scalar s) const;
@@ -169,21 +169,21 @@ public:
 
   /** Resolution of a linear system in case of a rectangular matrix */
   Point solveLinearSystemRect(const Point & b,
-                                       const Bool keepIntact = true);
+                              const Bool keepIntact = true);
   MatrixImplementation solveLinearSystemRect(const MatrixImplementation & b,
       const Bool keepIntact = true);
 
   /** Resolution of a linear system in case of a square matrix */
   Point solveLinearSystemSquare(const Point & b,
-                                         const Bool keepIntact = true);
+                                const Bool keepIntact = true);
   MatrixImplementation solveLinearSystemSquare(const MatrixImplementation & b,
       const Bool keepIntact = true);
 
   /** Resolution of a linear system in case of a triangular matrix */
   Point solveLinearSystemTri(const Point & b,
-                                      const Bool keepIntact = true,
-                                      const Bool lower = true,
-                                      const Bool transpose = false);
+                             const Bool keepIntact = true,
+                             const Bool lower = true,
+                             const Bool transpose = false);
 
   MatrixImplementation solveLinearSystemTri(const MatrixImplementation & b,
       const Bool keepIntact = true,
@@ -192,13 +192,13 @@ public:
 
   /** Resolution of a linear system in case of a symmetric matrix */
   Point solveLinearSystemSym(const Point & b,
-                                      const Bool keepIntact = true);
+                             const Bool keepIntact = true);
   MatrixImplementation solveLinearSystemSym(const MatrixImplementation & b,
       const Bool keepIntact = true);
 
   /** Resolution of a linear system in case of a covariance matrix */
   Point solveLinearSystemCov(const Point & b,
-                                      const Bool keepIntact = true);
+                             const Bool keepIntact = true);
   MatrixImplementation solveLinearSystemCov(const MatrixImplementation & b,
       const Bool keepIntact = true);
 
@@ -209,10 +209,10 @@ public:
 
   /** Compute determinant */
   Scalar computeLogAbsoluteDeterminant(Scalar & sign,
-      const Bool keepIntact = true);
+                                       const Bool keepIntact = true);
   Scalar computeDeterminant(const Bool keepIntact = true);
   Scalar computeLogAbsoluteDeterminantSym(Scalar & sign,
-      const Bool keepIntact = true);
+                                          const Bool keepIntact = true);
   Scalar computeDeterminantSym(const Bool keepIntact = true);
 
   /** Compute trace */
@@ -224,16 +224,16 @@ public:
       const Bool keepIntact = true);
   Point computeEigenValuesSym(const Bool keepIntact = true);
   Point computeEVSym(MatrixImplementation & v,
-                              const Bool keepIntact = true);
+                     const Bool keepIntact = true);
 
   /** Compute singular values */
   Point computeSingularValues(const Bool keepIntact = true);
 
   /** Build the singular value decomposition */
   Point computeSVD(MatrixImplementation & u,
-                            MatrixImplementation & vT,
-                            const Bool fullSVD = false,
-                            const Bool keepIntact = true);
+                   MatrixImplementation & vT,
+                   const Bool fullSVD = false,
+                   const Bool keepIntact = true);
 
   /** Check if the matrix is symmetric */
   virtual Bool isSymmetric() const;

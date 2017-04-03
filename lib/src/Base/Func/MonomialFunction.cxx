@@ -56,7 +56,7 @@ MonomialFunction * MonomialFunction::clone() const
 String MonomialFunction::__repr__() const
 {
   return OSS(true) << "class=" << getClassName()
-                   << " degree=" << degree_;
+         << " degree=" << degree_;
 }
 
 

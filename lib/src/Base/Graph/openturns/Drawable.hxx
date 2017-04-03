@@ -184,8 +184,8 @@ public:
 
   /** Convert an HSV triplet into an RGB triplet */
   static Point ConvertFromHSVIntoRGB(const Scalar hue,
-      const Scalar saturation,
-      const Scalar value);
+                                     const Scalar saturation,
+                                     const Scalar value);
 
   /** Convert an HSV triplet to a valid hexadecimal code */
   static String ConvertFromHSV(const Scalar hue,

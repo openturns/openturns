@@ -54,7 +54,7 @@ public:
 public:
   /** Parameter constructor */
   DualLinearCombinationEvaluation(const FunctionCollection & functionsCollection,
-      const Sample & coefficients);
+                                  const Sample & coefficients);
 
   /** Virtual constructor */
   virtual DualLinearCombinationEvaluation * clone() const;

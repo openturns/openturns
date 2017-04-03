@@ -53,10 +53,10 @@ public:
    */
   using IntegrationAlgorithmImplementation::integrate;
   Point integrate(const Function & function,
-                           const Interval & interval) const;
+                  const Interval & interval) const;
   Point integrateWithNodes(const Function & function,
-                                    const Interval & interval,
-                                    Sample & adaptedNodes) const;
+                           const Interval & interval,
+                           Sample & adaptedNodes) const;
 
   /** Discretization accessor */
   Indices getDiscretization() const;

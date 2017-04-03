@@ -49,8 +49,8 @@ public:
 
   /* Estimate an upper bound of the quantile of the random vector for the given quantile level and confidence level, using the marginIndex upper statistics */
   Point computeQuantileBound(const Scalar quantileLevel,
-                                      const Scalar confidenceLevel,
-                                      const UnsignedInteger marginIndex = 0) const;
+                             const Scalar confidenceLevel,
+                             const UnsignedInteger marginIndex = 0) const;
 
 private:
   /* Random vector for which one want to compute a quantile */

@@ -86,7 +86,7 @@ public:
   /** Get the quantile of the distribution */
   using DistributionImplementation::computeQuantile;
   virtual Point computeQuantile(const Scalar prob,
-                                         const Bool tail = false) const;
+                                const Bool tail = false) const;
 
   /** Get the product minimum volume interval containing a given probability of the distribution */
   Interval computeMinimumVolumeIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const;

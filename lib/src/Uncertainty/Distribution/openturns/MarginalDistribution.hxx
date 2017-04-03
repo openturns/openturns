@@ -156,7 +156,7 @@ private:
 
   /** Expand the given marginal point to the underlying distribution argument point */
   Point expandPoint(const Point & point,
-                             const Bool upper = true) const;
+                    const Bool upper = true) const;
 
   /** Reduce the given point to the marginal point */
   Point reducePoint(const Point & point) const;

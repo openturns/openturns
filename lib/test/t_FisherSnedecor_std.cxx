@@ -110,9 +110,9 @@ int main(int argc, char *argv[])
     fullprint << "log-pdf gradient     =" << logPDFgr << std::endl;
     Point logPDFgrFD(2);
     logPDFgrFD[0] = (FisherSnedecor(distribution.getD1() + eps, distribution.getD2()).computeLogPDF(point) -
-                  FisherSnedecor(distribution.getD1() - eps, distribution.getD2()).computeLogPDF(point)) / (2.0 * eps);
+                     FisherSnedecor(distribution.getD1() - eps, distribution.getD2()).computeLogPDF(point)) / (2.0 * eps);
     logPDFgrFD[1] = (FisherSnedecor(distribution.getD1(), distribution.getD2() + eps).computeLogPDF(point) -
-                  FisherSnedecor(distribution.getD1(), distribution.getD2() - eps).computeLogPDF(point)) / (2.0 * eps);
+                     FisherSnedecor(distribution.getD1(), distribution.getD2() - eps).computeLogPDF(point)) / (2.0 * eps);
     fullprint << "log-pdf gradient (FD)=" << logPDFgrFD << std::endl;
     Point CDFgr = distribution.computeCDFGradient( point );
     fullprint << "cdf gradient     =" << CDFgr << std::endl;

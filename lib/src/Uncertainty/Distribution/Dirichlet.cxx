@@ -297,14 +297,14 @@ Scalar Dirichlet::computeCDF(const Point & point) const
 
 /* Get the quantile of the distribution */
 Scalar Dirichlet::computeScalarQuantile(const Scalar prob,
-    const Bool tail) const
+                                        const Bool tail) const
 {
   return DistFunc::qBeta(theta_[0], theta_[1], prob, tail);
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 Scalar Dirichlet::computeConditionalPDF(const Scalar x,
-    const Point & y) const
+                                        const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -318,7 +318,7 @@ Scalar Dirichlet::computeConditionalPDF(const Scalar x,
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 Scalar Dirichlet::computeConditionalCDF(const Scalar x,
-    const Point & y) const
+                                        const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";

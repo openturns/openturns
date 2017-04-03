@@ -43,11 +43,11 @@ public:
 
   /** Parameters constructor */
   RankMCovarianceModel(const Point & variance,
-		       const Basis & basis);
+                       const Basis & basis);
 
   /** Parameters constructor */
   RankMCovarianceModel(const CovarianceMatrix & covariance,
-		       const Basis & basis);
+                       const Basis & basis);
 
   /** Virtual copy constructor */
   RankMCovarianceModel * clone() const;
@@ -55,7 +55,7 @@ public:
   /** Computation of the covariance function */
   using CovarianceModelImplementation::operator();
   CovarianceMatrix operator() (const Point & s,
-      const Point & t) const;
+                               const Point & t) const;
 
   /** Gradient */
   virtual Matrix partialGradient(const Point & s,
@@ -94,7 +94,7 @@ protected:
 private:
   /** The variance of the rank m decomposition, of dimension>0 only if the covariance is diagonal */
   Point variance_;
-  
+
   /** The covariance matrix of the decomposition, of dimension>0 only if not diagonal */
   CovarianceMatrix covariance_;
 

@@ -51,7 +51,7 @@ public:
 
   /** Compute criterion when performing an elementary perturbation */
   Scalar perturbLHS(Sample& oldDesign, Scalar oldCriterion,
-      UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const;
+                    UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const;
 
 private:
 

@@ -68,8 +68,8 @@ OrthogonalProductFunctionFactory::OrthogonalProductFunctionFactory(const Functio
   : OrthogonalFunctionFactory()
 {
   if (coll.getSize() != phi.getDimension()) throw InvalidArgumentException(HERE) << "Error: the enumerate function must have a dimension equal to the collection size";
-  buildTensorizedFunctionFactory(coll, phi); 
-  buildMeasure(coll); 
+  buildTensorizedFunctionFactory(coll, phi);
+  buildMeasure(coll);
 }
 
 
@@ -132,7 +132,7 @@ void OrthogonalProductFunctionFactory::load(Advocate & adv)
 
 /*  Build product function factory */
 void OrthogonalProductFunctionFactory::buildTensorizedFunctionFactory(const FunctionFamilyCollection & coll,
-     const EnumerateFunction & phi)
+    const EnumerateFunction & phi)
 {
   TensorizedUniVariateFunctionFactory::FunctionFamilyCollection functionColl;
   const UnsignedInteger size = coll.getSize();
@@ -140,7 +140,7 @@ void OrthogonalProductFunctionFactory::buildTensorizedFunctionFactory(const Func
   {
     functionColl.add(UniVariateFunctionFamily(*coll[i].getImplementation()));
   }
-  tensorizedFunctionFactory_.setFunctionFamilyCollection(functionColl); 
+  tensorizedFunctionFactory_.setFunctionFamilyCollection(functionColl);
   tensorizedFunctionFactory_.setEnumerateFunction(phi);
 }
 

@@ -1204,9 +1204,9 @@ Point MatrixImplementation::computeSingularValues(const Bool keepIntact)
 
 /* Compute the singular values and singular decomposition of a matrix */
 Point MatrixImplementation::computeSVD(MatrixImplementation & u,
-    MatrixImplementation & vT,
-    const Bool fullSVD,
-    const Bool keepIntact)
+                                       MatrixImplementation & vT,
+                                       const Bool fullSVD,
+                                       const Bool keepIntact)
 {
   int m(nbRows_);
   int n(nbColumns_);

@@ -52,7 +52,7 @@ public:
 
   /** Solve the ODE */
   virtual Sample solve(const Point & initialState,
-                                const Point & timeGrid) const;
+                       const Point & timeGrid) const;
 
   /** Transition function accessor */
   void setTransitionFunction(const FieldFunction & transitionFunction);

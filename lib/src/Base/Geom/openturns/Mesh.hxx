@@ -97,7 +97,7 @@ public:
    * is a weighted sum of its values at the vertices
    */
   Point computeWeights() const;
-  
+
   /** Comparison operator */
   Bool operator == (const Mesh & rhs) const;
 

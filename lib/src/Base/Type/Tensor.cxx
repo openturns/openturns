@@ -127,8 +127,8 @@ String Tensor::__str__(const String & offset) const
 /* Operator () gives access to the elements of the tensor (to modify these elements) */
 /* The element of the tensor is designated by its row number i, its column number j and its sheet number k */
 Scalar & Tensor::operator () (const UnsignedInteger i,
-                                       const UnsignedInteger j,
-                                       const UnsignedInteger k)
+                              const UnsignedInteger j,
+                              const UnsignedInteger k)
 {
   copyOnWrite();
   return (*getImplementation())(i, j, k);
@@ -137,8 +137,8 @@ Scalar & Tensor::operator () (const UnsignedInteger i,
 /* Operator () gives access to the elements of the tensor (read only) */
 /* The element of the tensor is designated by its row number i, its column number j and its sheet number k */
 const Scalar & Tensor::operator () (const UnsignedInteger i,
-    const UnsignedInteger j,
-    const UnsignedInteger k) const
+                                    const UnsignedInteger j,
+                                    const UnsignedInteger k) const
 {
   return (*getImplementation())(i, j, k);
 }

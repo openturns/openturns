@@ -38,7 +38,7 @@ public:
 
   /** Default constructor */
   ProductEvaluation(const EvaluationPointer & p_leftEvaluation,
-      const EvaluationPointer & p_rightEvaluation);
+                    const EvaluationPointer & p_rightEvaluation);
 
 
   /** Virtual constructor */

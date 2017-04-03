@@ -154,7 +154,7 @@ Point FisherSnedecor::computeLogPDFGradient(const Point & point) const
   // it follows that d(LnBeta(x,y)) = dBeta(x,y) / Beta(x,y) = DiGamma(X) - DiGamma(x+y)
   // Rest is very easy to derivate
   logPdfGradient[0] = 0.5 * ( std::log(d1_ * x / d1xd2) + 1.0 - SpecFunc::DiGamma(0.5 * d1_) + SpecFunc::DiGamma(0.5 * d1_ + 0.5 * d2_) - (d1_ + d2_) * x / d1xd2);
-  logPdfGradient[1] = 0.5 * (-d1_  / d2_ - SpecFunc::DiGamma(0.5 * d2_) + SpecFunc::DiGamma(0.5 * d1_ + 0.5 * d2_) -log1p(d1_ * x / d2_) + (d1_  + d2_) * (d1_ * x  / d2_) / d1xd2);
+  logPdfGradient[1] = 0.5 * (-d1_  / d2_ - SpecFunc::DiGamma(0.5 * d2_) + SpecFunc::DiGamma(0.5 * d1_ + 0.5 * d2_) - log1p(d1_ * x / d2_) + (d1_  + d2_) * (d1_ * x  / d2_) / d1xd2);
   return logPdfGradient;
 }
 

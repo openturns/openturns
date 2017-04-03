@@ -62,9 +62,9 @@ BEGIN_NAMESPACE_OPENTURNS
 #define NORMAL2DCDF_EPS 1.0e-15
 
 Scalar Normal2DCDF(const Scalar x1,
-                            const Scalar x2,
-                            const Scalar rho,
-                            const Bool tail)
+                   const Scalar x2,
+                   const Scalar rho,
+                   const Bool tail)
 {
   Scalar absRho = std::abs(rho);
   if (!(absRho <= 1.0)) throw InvalidArgumentException(HERE) << "Error: the correlation coefficient must be in [-1,1], here rho=" << rho;

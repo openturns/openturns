@@ -56,7 +56,7 @@ MCMC::MCMC( const Distribution & prior,
   , history_(Full())
   , conditional_(conditional)
 
-  // when not provided, set the model to the identity
+    // when not provided, set the model to the identity
   , model_()
   , burnIn_(ResourceMap::GetAsUnsignedInteger("MCMC-DefaultBurnIn"))
   , thinning_(ResourceMap::GetAsUnsignedInteger("MCMC-DefaultThinning"))

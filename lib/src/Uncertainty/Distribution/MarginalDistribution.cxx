@@ -364,7 +364,7 @@ Bool MarginalDistribution::isIntegral() const
 
 /* Method to expand a given point in the marginal space to a point in the underlying distribution space */
 Point MarginalDistribution::expandPoint(const Point & point,
-    const Bool upper) const
+                                        const Bool upper) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << point.getDimension();

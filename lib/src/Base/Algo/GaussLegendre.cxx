@@ -65,15 +65,15 @@ GaussLegendre * GaussLegendre::clone() const
 /* Compute an approximation of \int_a^b f(x_1,\dots,x_n)dx_1\dotsdx_n, where [a,b] is an n-D interval.
  */
 Point GaussLegendre::integrate(const Function & function,
-                                        const Interval & interval) const
+                               const Interval & interval) const
 {
   Sample adaptedNodes;
   return integrateWithNodes(function, interval, adaptedNodes);
 }
 
 Point GaussLegendre::integrateWithNodes(const Function & function,
-    const Interval & interval,
-    Sample & adaptedNodes) const
+                                        const Interval & interval,
+                                        Sample & adaptedNodes) const
 {
   const UnsignedInteger inputDimension = discretization_.getSize();
   if (interval.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected an interval of dimension=" << inputDimension << ", got dimension=" << interval.getDimension();

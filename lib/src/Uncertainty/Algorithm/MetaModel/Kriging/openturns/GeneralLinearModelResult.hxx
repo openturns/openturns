@@ -58,27 +58,27 @@ public:
 
   /** Parameter constructor without any cholesky factor*/
   GeneralLinearModelResult(const Sample & inputData,
-                               const Sample & outputData,
-                               const Function & metaModel,
-                               const Point & residuals,
-                               const Point & relativeErrors,
-                               const BasisCollection & basis,
-                               const PointCollection & trendCoefficients,
-                               const CovarianceModel & covarianceModel,
-			       const Scalar optimalLogLikelihood);
+                           const Sample & outputData,
+                           const Function & metaModel,
+                           const Point & residuals,
+                           const Point & relativeErrors,
+                           const BasisCollection & basis,
+                           const PointCollection & trendCoefficients,
+                           const CovarianceModel & covarianceModel,
+                           const Scalar optimalLogLikelihood);
 
   /** Parameter constructor with Cholesky factor (Lapack)*/
   GeneralLinearModelResult(const Sample & inputData,
-                               const Sample & outputData,
-                               const Function & metaModel,
-                               const Point & residuals,
-                               const Point & relativeErrors,
-                               const BasisCollection & basis,
-                               const PointCollection & trendCoefficients,
-                               const CovarianceModel & covarianceModel,
-			       const Scalar optimalLogLikelihood,
-                               const TriangularMatrix & covarianceCholeskyFactor,
-                               const HMatrix & covarianceHMatrix);
+                           const Sample & outputData,
+                           const Function & metaModel,
+                           const Point & residuals,
+                           const Point & relativeErrors,
+                           const BasisCollection & basis,
+                           const PointCollection & trendCoefficients,
+                           const CovarianceModel & covarianceModel,
+                           const Scalar optimalLogLikelihood,
+                           const TriangularMatrix & covarianceCholeskyFactor,
+                           const HMatrix & covarianceHMatrix);
 
   /** Virtual constructor */
   GeneralLinearModelResult * clone() const;

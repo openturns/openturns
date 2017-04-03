@@ -46,11 +46,11 @@ public:
 
   /** Composition constructor */
   ComposedFunction(const Implementation & p_left,
-                                const Implementation & p_right);
+                   const Implementation & p_right);
 
   /** Composition constructor */
   ComposedFunction(const Function & left,
-                                const Function & right);
+                   const Function & right);
 
   /** Virtual constructor */
   virtual ComposedFunction * clone() const;

@@ -67,7 +67,7 @@ public:
 
   /** Get the k nearest neighbours of the given point */
   virtual Sample getNearestNeighbours(const Point & x,
-      const UnsignedInteger k) const;
+                                      const UnsignedInteger k) const;
 
   /** Get the index of the nearest neighbour of the given point */
   virtual UnsignedInteger getNearestNeighbourIndex(const Point & x) const;

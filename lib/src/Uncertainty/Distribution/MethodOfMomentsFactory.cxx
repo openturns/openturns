@@ -85,9 +85,9 @@ class MethodOfMomentsEvaluation : public EvaluationImplementation
 {
 public:
   MethodOfMomentsEvaluation(const Point & refMoments,
-                                        const Distribution & distribution,
-                                        const Point & knownParameterValues,
-                                        const Indices & knownParameterIndices)
+                            const Distribution & distribution,
+                            const Point & knownParameterValues,
+                            const Indices & knownParameterIndices)
     : EvaluationImplementation()
     , refMoments_(refMoments)
     , refSign_(refMoments.getSize())

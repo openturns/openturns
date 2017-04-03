@@ -34,7 +34,7 @@ FieldFunction::FieldFunction(const UnsignedInteger spatialDimension)
 
 /* Constructor from Function */
 FieldFunction::FieldFunction(const Function & function,
-                                     const UnsignedInteger spatialDimension)
+                             const UnsignedInteger spatialDimension)
   : TypedInterfaceObject<FieldFunctionImplementation>(ValueFunction(function, spatialDimension).clone())
 {
   // Nothing to do
@@ -113,13 +113,13 @@ Mesh FieldFunction::getOutputMesh(const Mesh & inputMesh) const
 
 /* Operator () */
 Point FieldFunction::operator() (const Scalar timeStamp,
-    const Point & inP) const
+                                 const Point & inP) const
 {
   return getImplementation()->operator()(timeStamp, inP);
 }
 
 Point FieldFunction::operator() (const Point & location,
-    const Point & inP) const
+                                 const Point & inP) const
 {
   return getImplementation()->operator()(location, inP);
 }

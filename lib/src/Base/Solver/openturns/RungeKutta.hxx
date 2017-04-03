@@ -50,7 +50,7 @@ public:
 
   /** Perform cross-validation */
   Sample solve(const Point & initialState,
-                        const Point & timeGrid) const;
+               const Point & timeGrid) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -61,8 +61,8 @@ public:
 private:
   /** Perform one step of the RungeKutta method */
   Point computeStep(const Scalar t,
-                             const Point & state,
-                             const Scalar h) const;
+                    const Point & state,
+                    const Scalar h) const;
 
 }; /* class RungeKutta */
 

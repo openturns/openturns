@@ -45,10 +45,10 @@ InverseNatafEllipticalDistributionEvaluation::InverseNatafEllipticalDistribution
 InverseNatafEllipticalDistributionEvaluation::InverseNatafEllipticalDistributionEvaluation(const Point & mean,
     const TriangularMatrix & cholesky)
   : LinearEvaluation(
-    Point(mean.getDimension(), 0.0),
-    mean,
-    cholesky.transpose()
-  )
+      Point(mean.getDimension(), 0.0),
+      mean,
+      cholesky.transpose()
+    )
 {
   // Nothing to do
 }

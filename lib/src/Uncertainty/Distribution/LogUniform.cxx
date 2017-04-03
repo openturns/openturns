@@ -229,8 +229,8 @@ Point LogUniform::getSkewness() const
   Scalar t14 = aLog_ * aLog_;
   Scalar t30 = a_ * b_;
   Scalar t39 = 12.0 * t2 + 12.0 * t4 - 4.0 * t4 * t6 + 2.0 * t4 * t9 - 9.0 * t4 * bLog_ + 2.0 * t4 * t14 + 9.0 * t4 *
-                        aLog_ - 9.0 * t2 * aLog_ + 2.0 * t2 * t9 + 2.0 * b_ * a_ * t9 + 9.0 * t2 * bLog_ - 4.0 * t2 * t6 - 4.0 * t30 * t6 + 2.0 * b_ * a_ *
-                        t14 - 24.0 * t30 + 2.0 * t2 * t14;
+               aLog_ - 9.0 * t2 * aLog_ + 2.0 * t2 * t9 + 2.0 * b_ * a_ * t9 + 9.0 * t2 * bLog_ - 4.0 * t2 * t6 - 4.0 * t30 * t6 + 2.0 * b_ * a_ *
+               t14 - 24.0 * t30 + 2.0 * t2 * t14;
   Scalar t42 = std::sqrt(b_ - a_);
   Scalar t45 = -bLog_ + aLog_;
   Scalar t46 = t45 * t45;
@@ -250,8 +250,8 @@ Point LogUniform::getKurtosis() const
   Scalar t17 = aLog_ * aLog_;
   Scalar t33 = a_ * b_;
   Scalar t42 = 12.0 * t5 + 12.0 * t7 - 4.0 * t7 * t9 + 2.0 * t7 * t12 - 9.0 * t7 * bLog_ + 2.0 * t7 * t17 + 9.0 * t7 *
-                        aLog_ - 9.0 * t5 * aLog_ + 2.0 * t5 * t12 + 2.0 * b_ * a_ * t12 + 9.0 * t5 * bLog_ - 4.0 * t5 * t9 - 4.0 * t33 * t9 + 2.0 * b_ *
-                        a_ * t17 - 24.0 * t33 + 2.0 * t5 * t17;
+               aLog_ - 9.0 * t5 * aLog_ + 2.0 * t5 * t12 + 2.0 * b_ * a_ * t12 + 9.0 * t5 * bLog_ - 4.0 * t5 * t9 - 4.0 * t33 * t9 + 2.0 * b_ *
+               a_ * t17 - 24.0 * t33 + 2.0 * t5 * t17;
   Scalar t50 = std::pow(-2.0 * a_ + aLog_ * b_ + 2.0 * b_ + aLog_ * a_ - bLog_ * b_ - bLog_ * a_, 2.0);
   Scalar t54 = 2.0 / 3.0 / t50 * t42 * (-bLog_ + aLog_) / (-b_ + a_);
   return Point(1, t54);

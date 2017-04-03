@@ -4,7 +4,7 @@ from __future__ import print_function
 import openturns as ot
 import math as m
 
-#ot.Log.Show(ot.Log.ALL)
+# ot.Log.Show(ot.Log.ALL)
 
 basisSize = 3
 sampleSize = 5
@@ -31,7 +31,8 @@ methods = [ot.SVDMethod(proxy, full),
            ot.QRMethod(proxy, full),
            ot.SparseMethod(ot.QRMethod(proxy, full))]
 
-y = ot.Normal([1.0] * sampleSize, [0.1] * sampleSize, ot.CorrelationMatrix(sampleSize)).getRealization()
+y = ot.Normal([1.0] * sampleSize, [0.1] * sampleSize,
+              ot.CorrelationMatrix(sampleSize)).getRealization()
 yAt = design.transpose() * y
 
 for method in methods:

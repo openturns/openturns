@@ -18,4 +18,3 @@ fig = plt.figure(figsize=(10, 4))
 plt.suptitle('P1 Lagrange interpolation')
 func_axis = fig.add_subplot(111)
 view = View(graph, figure=fig, axes=[func_axis], add_legend=False)
-

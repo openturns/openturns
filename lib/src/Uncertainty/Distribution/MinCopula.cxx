@@ -122,7 +122,7 @@ Scalar MinCopula::computeSurvivalFunction(const Point & point) const
 
 /* Get the quantile of the distribution */
 Point MinCopula::computeQuantile(const Scalar prob,
-    const Bool tail) const
+                                 const Bool tail) const
 {
   if ((prob < 0.0) || (prob > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
   // Special case for boarding values

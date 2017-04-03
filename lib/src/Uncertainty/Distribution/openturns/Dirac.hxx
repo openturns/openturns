@@ -79,7 +79,7 @@ public:
   /** Get the quantile of the distribution */
   using DistributionImplementation::computeQuantile;
   Point computeQuantile(const Scalar prob,
-                                 const Bool tail = false) const;
+                        const Bool tail = false) const;
 
   /** Get the PDFGradient of the distribution */
   using DiscreteDistribution::computePDFGradient;
@@ -167,7 +167,7 @@ private:
 
   /** Get the quantile of the distribution */
   Scalar computeScalarQuantile(const Scalar prob,
-                                        const Bool tail = false) const;
+                               const Bool tail = false) const;
 
   /** The support of the Dirac distribution */
   Point point_;

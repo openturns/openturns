@@ -82,7 +82,7 @@ NSI_const_point Field::operator[](const UnsignedInteger index) const
 }
 
 Scalar & Field::operator () (const UnsignedInteger i,
-                                      const UnsignedInteger j)
+                             const UnsignedInteger j)
 {
 #ifdef DEBUG_BOUNDCHECKING
   // No copyOnWrite() as the at() method already do it
@@ -94,7 +94,7 @@ Scalar & Field::operator () (const UnsignedInteger i,
 }
 
 const Scalar & Field::operator () (const UnsignedInteger i,
-    const UnsignedInteger j) const
+                                   const UnsignedInteger j) const
 {
 #ifdef DEBUG_BOUNDCHECKING
   return this->at(i, j);
@@ -118,7 +118,7 @@ NSI_const_point Field::at (const UnsignedInteger index) const
 }
 
 Scalar & Field::at (const UnsignedInteger i,
-                             const UnsignedInteger j)
+                    const UnsignedInteger j)
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
   if (j > getDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is greater than dimension (" << getDimension() << ")";
@@ -127,7 +127,7 @@ Scalar & Field::at (const UnsignedInteger i,
 }
 
 const Scalar & Field::at (const UnsignedInteger i,
-                                   const UnsignedInteger j) const
+                          const UnsignedInteger j) const
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
   if (j > getDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is greater than dimension (" << getDimension() << ")";

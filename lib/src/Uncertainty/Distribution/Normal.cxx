@@ -467,7 +467,7 @@ Point Normal::computeCDFGradient(const Point & point) const
 
 /* Compute the scalar quantile of the 1D normal distribution */
 Scalar Normal::computeScalarQuantile(const Scalar prob,
-    const Bool tail) const
+                                     const Bool tail) const
 {
   return mean_[0] + sigma_[0] * DistFunc::qNormal(prob, tail);
 } // computeScalarQuantile
@@ -481,7 +481,7 @@ Scalar Normal::computeScalarQuantile(const Scalar prob,
    See [Lebrun, Dutfoy, "Rosenblatt and Nataf transformation"]
 */
 Scalar Normal::computeConditionalPDF(const Scalar x,
-    const Point & y) const
+                                     const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -500,7 +500,7 @@ Scalar Normal::computeConditionalPDF(const Scalar x,
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 Scalar Normal::computeConditionalCDF(const Scalar x,
-    const Point & y) const
+                                     const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";

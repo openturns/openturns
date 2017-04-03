@@ -56,30 +56,30 @@ public:
   using IntegrationAlgorithmImplementation::integrate;
 #ifndef SWIG
   virtual Point integrate(const Function & function,
-                                   const Interval & interval,
-                                   Scalar & error) const;
+                          const Interval & interval,
+                          Scalar & error) const;
 
   // This method allows to get the estimated integration error as a scalar
   virtual Point integrate(const Function & function,
-                                   const Scalar a,
-                                   const Scalar b,
-                                   Scalar & error,
-                                   Point & ai,
-                                   Point & bi,
-                                   Sample & fi,
-                                   Point & ei) const;
+                          const Scalar a,
+                          const Scalar b,
+                          Scalar & error,
+                          Point & ai,
+                          Point & bi,
+                          Sample & fi,
+                          Point & ei) const;
 
 #endif
   // This method allows to get the estimated integration error as a Point,
   // needed by Python
   virtual Point integrate(const Function & function,
-                                   const Scalar a,
-                                   const Scalar b,
-                                   Point & error,
-                                   Point & ai,
-                                   Point & bi,
-                                   Sample & fi,
-                                   Point & ei) const;
+                          const Scalar a,
+                          const Scalar b,
+                          Point & error,
+                          Point & ai,
+                          Point & bi,
+                          Sample & fi,
+                          Point & ei) const;
 
   /** Maximum sub-intervals accessor */
   UnsignedInteger getMaximumSubIntervals() const;
@@ -103,9 +103,9 @@ private:
 
   /** Compute the local GaussKronrod rule over [a, b] */
   Point computeRule(const Function & function,
-                             const Scalar a,
-                             const Scalar b,
-                             Scalar & localError) const;
+                    const Scalar a,
+                    const Scalar b,
+                    Scalar & localError) const;
 
   /* Maximum number of sub-intervals */
   UnsignedInteger maximumSubIntervals_;

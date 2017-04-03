@@ -51,25 +51,25 @@ String CorrectedLeaveOneOut::__repr__() const
 
 /* Perform cross-validation */
 Scalar CorrectedLeaveOneOut::run(const Sample & x,
-    const Sample & y,
-    const Point & weight,
-    const Basis & basis,
-    const Indices & indices) const
+                                 const Sample & y,
+                                 const Point & weight,
+                                 const Basis & basis,
+                                 const Indices & indices) const
 {
   return FittingAlgorithmImplementation::run(x, y, weight, basis, indices);
 }
 
 
 Scalar CorrectedLeaveOneOut::run(const Sample & y,
-    const Point & weight,
-    const Indices & indices,
-    const DesignProxy & proxy) const
+                                 const Point & weight,
+                                 const Indices & indices,
+                                 const DesignProxy & proxy) const
 {
   return FittingAlgorithmImplementation::run(y, weight, indices, proxy);
 }
 
 Scalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method,
-                                          const Sample & y) const
+                                 const Sample & y) const
 {
   const Sample x(method.getInputSample());
 

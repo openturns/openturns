@@ -91,7 +91,7 @@ public:
 
   /** Get the quantile of the distribution */
   Scalar computeScalarQuantile(const Scalar prob,
-                                        const Bool tail = false) const;
+                               const Bool tail = false) const;
 
   /** Get the support of a discrete distribution that intersect a given interval */
   using DistributionImplementation::getSupport;

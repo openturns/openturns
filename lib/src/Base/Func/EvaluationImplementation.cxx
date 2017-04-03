@@ -447,12 +447,12 @@ UnsignedInteger EvaluationImplementation::getCallsNumber() const
 
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
 Graph EvaluationImplementation::draw(const UnsignedInteger inputMarginal,
-    const UnsignedInteger outputMarginal,
-    const Point & centralPoint,
-    const Scalar xMin,
-    const Scalar xMax,
-    const UnsignedInteger pointNumber,
-    const GraphImplementation::LogScale scale) const
+                                     const UnsignedInteger outputMarginal,
+                                     const Point & centralPoint,
+                                     const Scalar xMin,
+                                     const Scalar xMax,
+                                     const UnsignedInteger pointNumber,
+                                     const GraphImplementation::LogScale scale) const
 {
   if (getInputDimension() < 1) throw InvalidArgumentException(HERE) << "Error: cannot use this version of the draw() method with a function of input dimension less than 1";
   if (inputMarginal >= getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given input marginal index=" << inputMarginal << " must be less than the input dimension=" << getInputDimension();
@@ -495,13 +495,13 @@ Graph EvaluationImplementation::draw(const UnsignedInteger inputMarginal,
 
 /* Draw the given 1D marginal output as a function of the given 2D marginal input around the given central point */
 Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
-    const UnsignedInteger secondInputMarginal,
-    const UnsignedInteger outputMarginal,
-    const Point & centralPoint,
-    const Point & xMin,
-    const Point & xMax,
-    const Indices & pointNumber,
-    const GraphImplementation::LogScale scale) const
+                                     const UnsignedInteger secondInputMarginal,
+                                     const UnsignedInteger outputMarginal,
+                                     const Point & centralPoint,
+                                     const Point & xMin,
+                                     const Point & xMax,
+                                     const Indices & pointNumber,
+                                     const GraphImplementation::LogScale scale) const
 {
   if (getInputDimension() < 2) throw InvalidArgumentException(HERE) << "Error: cannot use this version of the draw() method with a function of input dimension less than 2";
   if ((xMin.getDimension() != 2) || (xMax.getDimension() != 2) || (pointNumber.getSize() != 2)) throw InvalidArgumentException(HERE) << "Error: xMin, xMax and PointNumber must be bidimensional";
@@ -594,9 +594,9 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
 
 /* Draw the output of the function with respect to its input when the input and output dimensions are 1 */
 Graph EvaluationImplementation::draw(const Scalar xMin,
-    const Scalar xMax,
-    const UnsignedInteger pointNumber,
-    const GraphImplementation::LogScale scale) const
+                                     const Scalar xMax,
+                                     const UnsignedInteger pointNumber,
+                                     const GraphImplementation::LogScale scale) const
 {
   if (getInputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw a function with input dimension=" << getInputDimension() << " different from 1 using this method. See the other draw() methods.";
   if (getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw a function with output dimension=" << getOutputDimension() << " different from 1 using this method. See the other draw() methods.";
@@ -605,9 +605,9 @@ Graph EvaluationImplementation::draw(const Scalar xMin,
 
 /* Draw the output of the function with respect to its input when the input dimension is 2 and the output dimension is 1 */
 Graph EvaluationImplementation::draw(const Point & xMin,
-    const Point & xMax,
-    const Indices & pointNumber,
-    const GraphImplementation::LogScale scale) const
+                                     const Point & xMax,
+                                     const Indices & pointNumber,
+                                     const GraphImplementation::LogScale scale) const
 {
   if (getInputDimension() == 1) return draw(xMin[0], xMax[0], pointNumber[0], scale);
   if ((getInputDimension() == 0) || (getInputDimension() > 2)) throw InvalidArgumentException(HERE) << "Error: cannot draw a function with input dimension=" << getInputDimension() << " different from 1 or 2 using this method. See the other draw() methods.";

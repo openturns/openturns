@@ -52,8 +52,8 @@ public:
 
   /** Constructor from RandomVector */
   EventRandomVector(const RandomVectorImplementation & antecedent,
-                                  const ComparisonOperator & op,
-                                  const Scalar threshold);
+                    const ComparisonOperator & op,
+                    const Scalar threshold);
 
   /** Virtual constructor */
   virtual EventRandomVector * clone() const;

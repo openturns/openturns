@@ -156,8 +156,8 @@ private:
 
   /** the function that samples the sphere (radius) with N points */
   Sample sampleSphere(const Scalar radius,
-                               const UnsignedInteger dimension,
-                               const UnsignedInteger pointNumber) const;
+                      const UnsignedInteger dimension,
+                      const UnsignedInteger pointNumber) const;
 
   /**  the function that evaluates the HyperSphereSurfaceRatio (see documentation) */
   Scalar computeHyperSphereSurfaceRatio();

@@ -288,7 +288,7 @@ Indices KDTree::getNearestNeighboursIndices(const Point & x,
 
 /* Get the k nearest neighbours of the given point */
 Sample KDTree::getNearestNeighbours(const Point & x,
-    const UnsignedInteger k) const
+                                    const UnsignedInteger k) const
 {
   if (k > points_.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot return more neighbours than points in the database!";
   const Indices indices(getNearestNeighboursIndices(x, k));

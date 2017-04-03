@@ -143,7 +143,7 @@ Bool TriangularMatrix::isLowerTriangular() const
 /* The element of the matrix is designated by its row number i and its column number j */
 /* the first element of the matrix is m(0,0) */
 Scalar & TriangularMatrix::operator() (const UnsignedInteger i,
-    const UnsignedInteger j)
+                                       const UnsignedInteger j)
 {
   if (isLowerTriangular() && (i < j))
     throw InvalidArgumentException(HERE) << "Error; The triangular matrix is lower. "

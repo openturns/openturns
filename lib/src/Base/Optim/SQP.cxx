@@ -256,7 +256,8 @@ void SQP::run()
     if (stopCallback_.first)
     {
       Bool stop = stopCallback_.first(stopCallback_.second);
-      if (stop) {
+      if (stop)
+      {
         convergence = true;
         LOGWARN(OSS() << "SQP was stopped by user");
       }

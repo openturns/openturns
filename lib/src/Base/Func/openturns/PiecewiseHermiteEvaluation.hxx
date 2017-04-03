@@ -48,13 +48,13 @@ public:
 
   /** Parameter constructor */
   PiecewiseHermiteEvaluation(const Point & locations,
-      const Point & values,
-      const Point & derivatives);
+                             const Point & values,
+                             const Point & derivatives);
 
   /** Parameter constructor */
   PiecewiseHermiteEvaluation(const Point & locations,
-      const Sample & values,
-      const Sample & derivatives);
+                             const Sample & values,
+                             const Sample & derivatives);
 
   /** Virtual constructor */
   virtual PiecewiseHermiteEvaluation * clone() const;

@@ -33,14 +33,14 @@ static const Factory<RandomGeneratorState> Factory_RandomGeneratorState;
 
 /* Default constructor */
 RandomGeneratorState::RandomGeneratorState()
-: buffer_(0), index_(0)
+  : buffer_(0), index_(0)
 {
   // Nothing to do
 }
 
 /* Standard constructor */
 RandomGeneratorState::RandomGeneratorState(const Indices buffer, const UnsignedInteger index)
-: buffer_(buffer), index_(index)
+  : buffer_(buffer), index_(index)
 {
   // Nothing to do
 }

@@ -57,7 +57,7 @@ public:
 
   virtual void initialize();
   virtual void updateBasis(LeastSquaresMethod & method,
-                            const Sample & y);
+                           const Sample & y);
 #endif
   /** String converter */
   virtual String __repr__() const;

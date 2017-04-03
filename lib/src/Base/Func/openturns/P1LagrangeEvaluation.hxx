@@ -120,8 +120,8 @@ private:
 
   public:
     P1LagrangeEvaluationComputeSamplePolicy(const Sample & input,
-        Sample & output,
-        const P1LagrangeEvaluation & lagrange)
+                                            Sample & output,
+                                            const P1LagrangeEvaluation & lagrange)
       : input_(input)
       , output_(output)
       , lagrange_(lagrange)

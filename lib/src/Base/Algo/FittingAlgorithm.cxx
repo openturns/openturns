@@ -61,32 +61,32 @@ String FittingAlgorithm::__str__(const String & offset) const
 }
 
 Scalar FittingAlgorithm::run(const Sample & x,
-                                      const Sample & y,
-                                      const Point & weight,
-                                      const Basis & basis,
-                                      const Indices & indices) const
+                             const Sample & y,
+                             const Point & weight,
+                             const Basis & basis,
+                             const Indices & indices) const
 {
   return getImplementation()->run(x, y, weight, basis, indices);
 }
 
 Scalar FittingAlgorithm::run(const Sample & x,
-                                      const Sample & y,
-                                      const Basis & basis,
-                                      const Indices & indices) const
+                             const Sample & y,
+                             const Basis & basis,
+                             const Indices & indices) const
 {
   return getImplementation()->run(x, y, basis, indices);
 }
 
 Scalar FittingAlgorithm::run(const Sample & y,
-                                      const Point & weight,
-                                      const Indices & indices,
-                                      const DesignProxy & proxy) const
+                             const Point & weight,
+                             const Indices & indices,
+                             const DesignProxy & proxy) const
 {
   return getImplementation()->run(y, weight, indices, proxy);
 }
 
 Scalar FittingAlgorithm::run(LeastSquaresMethod & method,
-                                      const Sample & y) const
+                             const Sample & y) const
 {
   return getImplementation()->run(method, y);
 }

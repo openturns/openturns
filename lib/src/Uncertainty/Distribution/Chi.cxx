@@ -231,7 +231,7 @@ Point Chi::computeCDFGradient(const Point & point) const
 
 /* Get the quantile of the distribution */
 Scalar Chi::computeScalarQuantile(const Scalar prob,
-    const Bool tail) const
+                                  const Bool tail) const
 {
   return M_SQRT2 * std::sqrt(DistFunc::qGamma(0.5 * nu_, prob, tail));
 }

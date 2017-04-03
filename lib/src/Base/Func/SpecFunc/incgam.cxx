@@ -245,8 +245,8 @@ Scalar alpha(const Scalar x)
 } // alpha
 
 Scalar dompart(const Scalar a,
-                        const Scalar x,
-                        const Bool qt)
+               const Scalar x,
+               const Bool qt)
 {
   // dompart is approx. of  x^a * exp(-x) / gamma(a+1) ;
   Scalar r = -1.0;
@@ -272,7 +272,7 @@ Scalar dompart(const Scalar a,
 } // dompart
 
 Scalar chepolsum(const Scalar x,
-                          const Point & a)
+                 const Point & a)
 {
   //{a[0]/2+a[1]T1(x)+...a[n]Tn(x); series of Chebychev polynomials}
   const UnsignedInteger n = a.getDimension() - 1;
@@ -326,8 +326,8 @@ Scalar gamstar(const Scalar x)
 } // gamstar
 
 Scalar fractio(const Scalar x,
-                        const Point & r,
-                        const Point & s)
+               const Point & r,
+               const Point & s)
 {
   const UnsignedInteger n = r.getSize() - 1;
   Scalar a = r[n];
@@ -341,9 +341,9 @@ Scalar fractio(const Scalar x,
 } // fractio
 
 Scalar pqasymp(const Scalar a,
-                        const Scalar x,
-                        const Scalar dp,
-                        const Bool p)
+               const Scalar x,
+               const Scalar dp,
+               const Bool p)
 {
   if (dp == 0.0) return (p ? 0.0 : 1.0);
   const SignedInteger s = p ? -1 : 1;
@@ -363,7 +363,7 @@ Scalar pqasymp(const Scalar a,
 } // FUNCTION pqasymp;
 
 Scalar saeta(const Scalar a,
-                      const Scalar eta)
+             const Scalar eta)
 {
   Point fm(27);
   fm[0] = 1.0;
@@ -411,8 +411,8 @@ Scalar saeta(const Scalar a,
 } // saeta
 
 Scalar qfraction(const Scalar a,
-                          const Scalar x,
-                          const Scalar dp)
+                 const Scalar x,
+                 const Scalar dp)
 {
   if (dp == 0.0) return 0.0;
   Scalar p = 0.0;
@@ -437,8 +437,8 @@ Scalar qfraction(const Scalar a,
 } // qfraction
 
 Scalar qtaylor(const Scalar a,
-                        const Scalar x,
-                        const Scalar dp)
+               const Scalar x,
+               const Scalar dp)
 {
   if (dp == 0.0) return 0.0;
   const Scalar lnx = log(x);
@@ -465,8 +465,8 @@ Scalar qtaylor(const Scalar a,
 } // qtaylor
 
 Scalar ptaylor(const Scalar a,
-                        const Scalar x,
-                        const Scalar dp)
+               const Scalar x,
+               const Scalar dp)
 {
   if (dp == 0.0) return 0.0;
   Scalar p = 1.0;
@@ -687,8 +687,8 @@ Scalar inverfc(const Scalar x)
 } // inverfc
 
 Scalar ratfun(const Scalar x,
-                       const Point & ak,
-                       const Point & bk)
+              const Point & ak,
+              const Point & bk)
 {
   return (ak[0] + x * (ak[1] + x * (ak[2] + x * (ak[3] + x * ak[4])))) / (bk[0] + x * (bk[1] + x * (bk[2] + x * (bk[3] + x * bk[4]))));
 } // ratfun

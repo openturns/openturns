@@ -48,11 +48,11 @@ public:
 
   /** Default constructor */
   ProductHessian(const EvaluationPointer & p_leftEvaluation,
-      const GradientPointer & p_leftGradient,
-      const HessianPointer & p_leftHessian,
-      const EvaluationPointer & p_rightEvaluation,
-      const GradientPointer & p_rightGradient,
-      const HessianPointer & p_rightHessian);
+                 const GradientPointer & p_leftGradient,
+                 const HessianPointer & p_leftHessian,
+                 const EvaluationPointer & p_rightEvaluation,
+                 const GradientPointer & p_rightGradient,
+                 const HessianPointer & p_rightHessian);
 
   /** Virtual constructor */
   virtual ProductHessian * clone() const;

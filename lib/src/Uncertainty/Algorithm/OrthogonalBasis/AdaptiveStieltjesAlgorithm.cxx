@@ -154,31 +154,31 @@ AdaptiveStieltjesAlgorithm::Coefficients AdaptiveStieltjesAlgorithm::getRecurren
 
 /* Compute dot products taking into account the singularities of the weights */
 Point AdaptiveStieltjesAlgorithm::computeDotProduct(const Function & kernel,
-							     const UnsignedInteger n) const
+    const UnsignedInteger n) const
 {
   if (measure_.isContinuous())
+  {
+    const GaussKronrod algo(ResourceMap::GetAsUnsignedInteger("AdaptiveStieltjesAlgorithm-MaximumSubIntervalsBetweenRoots") * (n + 1), ResourceMap::GetAsScalar("AdaptiveStieltjesAlgorithm-MaximumError"), GaussKronrodRule(GaussKronrodRule::G7K15));
+    Point bounds(1, measure_.getRange().getLowerBound()[0]);
+    bounds.add(measure_.getSingularities());
+    bounds.add(measure_.getRange().getUpperBound()[0]);
+    Scalar a = bounds[0];
+    Scalar b = bounds[1];
+    Point dotProduct(algo.integrate(kernel, Interval(a, b)));
+    for (UnsignedInteger i = 2; i < bounds.getSize(); ++i)
     {
-      const GaussKronrod algo(ResourceMap::GetAsUnsignedInteger("AdaptiveStieltjesAlgorithm-MaximumSubIntervalsBetweenRoots") * (n + 1), ResourceMap::GetAsScalar("AdaptiveStieltjesAlgorithm-MaximumError"), GaussKronrodRule(GaussKronrodRule::G7K15));
-      Point bounds(1, measure_.getRange().getLowerBound()[0]);
-      bounds.add(measure_.getSingularities());
-      bounds.add(measure_.getRange().getUpperBound()[0]);
-      Scalar a = bounds[0];
-      Scalar b = bounds[1];
-      Point dotProduct(algo.integrate(kernel, Interval(a, b)));
-      for (UnsignedInteger i = 2; i < bounds.getSize(); ++i)
-	{
-	  a = b;
-	  b = bounds[i];
-	  const Point value(algo.integrate(kernel, Interval(a, b)));
-	  dotProduct += value;
-	}
-      return dotProduct;
+      a = b;
+      b = bounds[i];
+      const Point value(algo.integrate(kernel, Interval(a, b)));
+      dotProduct += value;
     }
+    return dotProduct;
+  }
   if (measure_.isDiscrete())
-    {
-      const Sample nodes(measure_.getSupport());
-      return kernel(nodes).computeMean() * nodes.getSize();
-    }
+  {
+    const Sample nodes(measure_.getSupport());
+    return kernel(nodes).computeMean() * nodes.getSize();
+  }
   throw NotYetImplementedException(HERE) << "In AdaptiveStieltjesAlgorithm::computeDotProduct";
 }
 

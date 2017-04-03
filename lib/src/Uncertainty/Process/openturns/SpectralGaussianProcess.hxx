@@ -53,21 +53,21 @@ public:
 
   /** Standard constructor  - The timeGrid imposes the frequencies values*/
   SpectralGaussianProcess(const SecondOrderModel & model,
-                        const RegularGrid & grid);
+                          const RegularGrid & grid);
 
   /** Standard constructor with spectralModel - The timeGrid imposes the frequencies values*/
   SpectralGaussianProcess(const SpectralModel & spectralModel,
-                        const RegularGrid & grid);
+                          const RegularGrid & grid);
 
   /** Specific constructor  - The frequency parameters impose the time grid */
   SpectralGaussianProcess(const SecondOrderModel & model,
-                        const Scalar maximalFrequency,
-                        const UnsignedInteger nFrequency);
+                          const Scalar maximalFrequency,
+                          const UnsignedInteger nFrequency);
 
   /** Specific constructor  - The frequency parameters impose the time grid */
   SpectralGaussianProcess(const SpectralModel & spectralModel,
-                        const Scalar maximalFrequency,
-                        const UnsignedInteger nFrequency);
+                          const Scalar maximalFrequency,
+                          const UnsignedInteger nFrequency);
 
   /** Virtual constructor */
   virtual SpectralGaussianProcess * clone() const;

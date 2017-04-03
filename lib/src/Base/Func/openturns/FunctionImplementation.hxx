@@ -73,17 +73,17 @@ public:
 
   /** Analytical formula constructor */
   FunctionImplementation(const Description & inputVariablesNames,
-                                      const Description & outputVariablesNames,
-                                      const Description & formulas);
+                         const Description & outputVariablesNames,
+                         const Description & formulas);
 
   /** Database constructor */
   FunctionImplementation(const Sample & inputSample,
-                                      const Sample & outputSample);
+                         const Sample & outputSample);
 
   /** Constructor from implementations */
   FunctionImplementation(const EvaluationPointer & funcImpl,
-                                      const GradientPointer & gradImpl,
-                                      const HessianPointer  & hessImpl);
+                         const GradientPointer & gradImpl,
+                         const HessianPointer  & hessImpl);
 
   /** Single function implementation constructor */
   FunctionImplementation(const EvaluationPointer & evaluationImplementation);
@@ -203,9 +203,9 @@ public:
   virtual Point operator() (const Point & inP) const;
 
   virtual Point operator()(const Point & inP,
-                                    const Point & parameter);
+                           const Point & parameter);
   virtual Sample operator() (const Point & point,
-                                      const Sample & parameters);
+                             const Sample & parameters);
 
   virtual Sample operator() (const Sample & inS) const;
 

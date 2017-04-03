@@ -122,14 +122,14 @@ public:
 
   /** Resolution of a linear system */
   Point solveLinearSystem(const Point & b,
-                                   const Bool keepIntact = true);
+                          const Bool keepIntact = true);
 
   Matrix solveLinearSystem(const Matrix & b,
                            const Bool keepIntact = true);
 
   /** Compute determinant */
   Scalar computeLogAbsoluteDeterminant(Scalar & sign,
-      const Bool keepIntact = true);
+                                       const Bool keepIntact = true);
   Scalar computeDeterminant(const Bool keepIntact = true);
 
   /** Compute trace */

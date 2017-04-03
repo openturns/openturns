@@ -166,7 +166,7 @@ NumericalComplex Skellam::computeLogGeneratingFunction(const NumericalComplex & 
 
 /* Get the quantile of the distribution */
 Scalar Skellam::computeScalarQuantile(const Scalar prob,
-    const Bool tail) const
+                                      const Bool tail) const
 {
   return ceil(DistributionImplementation::computeScalarQuantile(prob, tail));
 }

@@ -54,7 +54,7 @@ DDF = distribution.computeDDF(point)
 print("ddf     =", repr(DDF))
 # by the finite difference technique
 print("ddf (FD)=", repr(Point(1, (distribution.computePDF(point + Point(1, eps)) -
-                                           distribution.computePDF(point + Point(1, -eps))) / (2.0 * eps))))
+                                  distribution.computePDF(point + Point(1, -eps))) / (2.0 * eps))))
 
 # PDF value
 LPDF = distribution.computeLogPDF(point)
@@ -97,22 +97,27 @@ print("cdf(quantile)=%.6f" % distribution.computeCDF(quantile))
 # Get 95% survival function
 inverseSurvival = Point(distribution.computeInverseSurvivalFunction(0.95))
 print("InverseSurvival=", repr(inverseSurvival))
-print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
+print("Survival(inverseSurvival)=%.6f" %
+      distribution.computeSurvivalFunction(inverseSurvival))
 
 # Confidence regions
-interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
+interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(
+    0.95)
 print("Minimum volume interval=", interval)
 print("threshold=", Point(1, threshold))
 levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
 print("Minimum volume level set=", levelSet)
 print("beta=", Point(1, beta))
-interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
+interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(
+    0.95)
 print("Bilateral confidence interval=", interval)
 print("beta=", Point(1, beta))
-interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
+interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+    0.95, False)
 print("Unilateral confidence interval (lower tail)=", interval)
 print("beta=", Point(1, beta))
-interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
+interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+    0.95, True)
 print("Unilateral confidence interval (upper tail)=", interval)
 print("beta=", Point(1, beta))
 
@@ -132,4 +137,3 @@ for i in range(6):
     print("standard moment n=", i, " value=",
           distribution.getStandardMoment(i))
 print("Standard representative=", distribution.getStandardRepresentative())
-

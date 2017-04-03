@@ -92,13 +92,13 @@ try:
     # by the finite difference technique
     logPDFgrFD = Point(4)
     logPDFgrFD[0] = (Trapezoidal(distribution.getA() + eps, distribution.getB(), distribution.getC(), distribution.getD()).computeLogPDF(point) -
-                  Trapezoidal(distribution.getA() - eps, distribution.getB(), distribution.getC(), distribution.getD()).computeLogPDF(point)) / (2.0 * eps)
+                     Trapezoidal(distribution.getA() - eps, distribution.getB(), distribution.getC(), distribution.getD()).computeLogPDF(point)) / (2.0 * eps)
     logPDFgrFD[1] = (Trapezoidal(distribution.getA(), distribution.getB() + eps, distribution.getC(), distribution.getD()).computeLogPDF(point) -
-                  Trapezoidal(distribution.getA(), distribution.getB() - eps, distribution.getC(), distribution.getD()).computeLogPDF(point)) / (2.0 * eps)
+                     Trapezoidal(distribution.getA(), distribution.getB() - eps, distribution.getC(), distribution.getD()).computeLogPDF(point)) / (2.0 * eps)
     logPDFgrFD[2] = (Trapezoidal(distribution.getA(), distribution.getB(), distribution.getC() + eps, distribution.getD()).computeLogPDF(point) -
-                  Trapezoidal(distribution.getA(), distribution.getB(), distribution.getC() - eps, distribution.getD()).computeLogPDF(point)) / (2.0 * eps)
+                     Trapezoidal(distribution.getA(), distribution.getB(), distribution.getC() - eps, distribution.getD()).computeLogPDF(point)) / (2.0 * eps)
     logPDFgrFD[3] = (Trapezoidal(distribution.getA(), distribution.getB(), distribution.getC(), distribution.getD() + eps).computeLogPDF(point) -
-                  Trapezoidal(distribution.getA(), distribution.getB(), distribution.getC(), distribution.getD() - eps).computeLogPDF(point)) / (2.0 * eps)
+                     Trapezoidal(distribution.getA(), distribution.getB(), distribution.getC(), distribution.getD() - eps).computeLogPDF(point)) / (2.0 * eps)
     print("log-pdf gradient (FD)=", repr(logPDFgrFD))
 
     # derivative of the PDF with regards the parameters of the distribution
@@ -122,22 +122,28 @@ try:
     # Get 95% survival function
     inverseSurvival = Point(distribution.computeInverseSurvivalFunction(0.95))
     print("InverseSurvival=", repr(inverseSurvival))
-    print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
+    print("Survival(inverseSurvival)=%.6f" %
+          distribution.computeSurvivalFunction(inverseSurvival))
 
     # Confidence regions
-    interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
+    interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(
+        0.95)
     print("Minimum volume interval=", interval)
     print("threshold=", Point(1, threshold))
-    levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
+    levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(
+        0.95)
     print("Minimum volume level set=", levelSet)
     print("beta=", Point(1, beta))
-    interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
+    interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(
+        0.95)
     print("Bilateral confidence interval=", interval)
     print("beta=", Point(1, beta))
-    interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
+    interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+        0.95, False)
     print("Unilateral confidence interval (lower tail)=", interval)
     print("beta=", Point(1, beta))
-    interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
+    interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+        0.95, True)
     print("Unilateral confidence interval (upper tail)=", interval)
     print("beta=", Point(1, beta))
 

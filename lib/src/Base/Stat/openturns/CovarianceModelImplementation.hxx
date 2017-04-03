@@ -91,10 +91,10 @@ public:
 
   // Special case for 1D model
   virtual Scalar computeAsScalar (const Scalar s,
-      const Scalar t) const;
+                                  const Scalar t) const;
 
   virtual Scalar computeAsScalar (const Point & s,
-      const Point & t) const;
+                                  const Point & t) const;
 
   virtual CovarianceMatrix operator() (const Scalar tau) const;
   virtual CovarianceMatrix operator() (const Point & tau) const;
@@ -117,7 +117,7 @@ public:
   virtual CovarianceMatrix discretize(const Mesh & mesh) const;
   virtual CovarianceMatrix discretize(const Sample & vertices) const;
   virtual Sample discretizeRow(const Sample & vertices,
-                                        const UnsignedInteger p) const;
+                               const UnsignedInteger p) const;
 
   /** Discretize and factorize the covariance function on a given TimeGrid/Mesh */
   virtual TriangularMatrix discretizeAndFactorize(const RegularGrid & timeGrid) const;
@@ -188,13 +188,13 @@ public:
 
   /** Drawing method */
   virtual Graph draw(const UnsignedInteger rowIndex = 0,
-		     const UnsignedInteger columnIndex = 0,
-		     const Scalar tMin = ResourceMap::GetAsScalar("CovarianceModel-DefaultTMin"),
-		     const Scalar tMax = ResourceMap::GetAsScalar("CovarianceModel-DefaultTMax"),
-		     const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("CovarianceModel-DefaultPointNumber"),
-		     const Bool asStationary = true,
-		     const Bool correlationFlag = false) const;
-  
+                     const UnsignedInteger columnIndex = 0,
+                     const Scalar tMin = ResourceMap::GetAsScalar("CovarianceModel-DefaultTMin"),
+                     const Scalar tMax = ResourceMap::GetAsScalar("CovarianceModel-DefaultTMax"),
+                     const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("CovarianceModel-DefaultPointNumber"),
+                     const Bool asStationary = true,
+                     const Bool correlationFlag = false) const;
+
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
 
@@ -205,7 +205,7 @@ protected:
   virtual void setFullParameter(const Point & parameter);
   virtual Point getFullParameter() const;
   virtual Description getFullParameterDescription() const;
-  
+
   // set the covariance structure
   void updateSpatialCovariance();
 

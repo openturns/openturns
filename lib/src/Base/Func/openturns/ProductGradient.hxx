@@ -47,9 +47,9 @@ public:
 
   /** Default constructor */
   ProductGradient(const EvaluationPointer & p_leftEvaluation,
-      const GradientPointer & p_leftGradient,
-      const EvaluationPointer & p_rightEvaluation,
-      const GradientPointer & p_rightGradient);
+                  const GradientPointer & p_leftGradient,
+                  const EvaluationPointer & p_rightEvaluation,
+                  const GradientPointer & p_rightGradient);
 
 
   /** Virtual constructor */

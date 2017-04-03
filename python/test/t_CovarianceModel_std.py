@@ -3,6 +3,7 @@
 from __future__ import print_function
 import openturns as ot
 
+
 def test_model(myModel, test_grad=True, x1=None, x2=None):
 
     print('myModel = ',  myModel)
@@ -96,7 +97,8 @@ myDefautModel = ot.ExponentiallyDampedCosineModel([2.0], [3.0], 1.5)
 print('myDefautModel = ',  myDefautModel)
 test_model(myDefautModel)
 
-myModel = ot.ExponentiallyDampedCosineModel([2.0] * spatialDimension, [3.0], 1.5)
+myModel = ot.ExponentiallyDampedCosineModel(
+    [2.0] * spatialDimension, [3.0], 1.5)
 test_model(myModel)
 
 myDefautModel = ot.SphericalModel([2.0], [3.0], 4.5)
@@ -116,8 +118,10 @@ dimension = 2
 spatialCorrelation = ot.CorrelationMatrix(dimension)
 for j in range(dimension):
     for i in range(j + 1, dimension):
-        spatialCorrelation[i,j] = (i + 1.0)  / dimension - (j + 1.0) / dimension
-myModel = ot.DiracCovarianceModel(spatialDimension, amplitude, spatialCorrelation)
+        spatialCorrelation[i, j] = (
+            i + 1.0) / dimension - (j + 1.0) / dimension
+myModel = ot.DiracCovarianceModel(
+    spatialDimension, amplitude, spatialCorrelation)
 test_model(myModel, x1=[0.5, 0.0], x2=[0.5, 0.0])
 
 myDefautModel = ot.ProductCovarianceModel()

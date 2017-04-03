@@ -19,9 +19,10 @@ try:
     for i in range(sampleSize):
         X[i, 0] = 3.0 + (8.0 * i) / sampleSize
     Y = model(X)
-    
+
     # Add a small noise to data
-    Y += ot.GaussianProcess(ot.AbsoluteExponential([0.1], [0.2]), ot.Mesh(X)).getRealization().getValues()
+    Y += ot.GaussianProcess(ot.AbsoluteExponential(
+        [0.1], [0.2]), ot.Mesh(X)).getRealization().getValues()
 
     basis = ot.LinearBasisFactory(spatialDimension).build()
     # Case of a misspecified covariance model
@@ -37,7 +38,8 @@ try:
     # Now without estimating covariance parameters
     basis = ot.LinearBasisFactory(spatialDimension).build()
     covarianceModel = ot.DiracCovarianceModel(spatialDimension)
-    algo = ot.GeneralLinearModelAlgorithm(X, Y, covarianceModel, basis, True, True)
+    algo = ot.GeneralLinearModelAlgorithm(
+        X, Y, covarianceModel, basis, True, True)
     algo.setOptimizeParameters(False)
     algo.run()
     result = algo.getResult()
@@ -46,7 +48,8 @@ try:
     print("===================================================\n")
 
     # Case of a well specified covariance model
-    # Test the optimization when the amplitude is deduced analytically from the scale
+    # Test the optimization when the amplitude is deduced analytically from
+    # the scale
     covarianceModel = ot.AbsoluteExponential(spatialDimension)
     algo = ot.GeneralLinearModelAlgorithm(X, Y, covarianceModel, basis)
     algo.run()
@@ -54,14 +57,16 @@ try:
     print("\ncovariance (reduced, unbiased)=", result.getCovarianceModel())
     print("trend (reduced, unbiased)=", result.getTrendCoefficients())
     print("===================================================\n")
-    ot.ResourceMap.SetAsBool("GeneralLinearModelAlgorithm-UnbiasedVariance", False)
+    ot.ResourceMap.SetAsBool(
+        "GeneralLinearModelAlgorithm-UnbiasedVariance", False)
     algo = ot.GeneralLinearModelAlgorithm(X, Y, covarianceModel, basis)
     algo.run()
     result = algo.getResult()
     print("\ncovariance (reduced, biased)=", result.getCovarianceModel())
     print("trend (reduced, biased)=", result.getTrendCoefficients())
     print("===================================================\n")
-    ot.ResourceMap.SetAsBool("GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate", False)
+    ot.ResourceMap.SetAsBool(
+        "GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate", False)
     algo = ot.GeneralLinearModelAlgorithm(X, Y, covarianceModel, basis)
     algo.run()
     result = algo.getResult()

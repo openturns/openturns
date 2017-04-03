@@ -34,12 +34,12 @@ static const Factory<ProductFunction> Factory_ProductFunction;
 
 /* Composition constructor */
 ProductFunction::ProductFunction(const Implementation & p_left,
-    const Implementation & p_right)
+                                 const Implementation & p_right)
   : FunctionImplementation(new ProductEvaluation(p_left->getEvaluation(), p_right->getEvaluation()),
-                                        new NoGradient(),
-                                        new NoHessian()),
-  p_leftFunction_(p_left),
-  p_rightFunction_(p_right)
+                           new NoGradient(),
+                           new NoHessian()),
+    p_leftFunction_(p_left),
+    p_rightFunction_(p_right)
 {
   //  try{
   GradientPointer p_gradientImplementation(new ProductGradient(p_leftFunction_->getEvaluation(), p_leftFunction_->getGradient(), p_rightFunction_->getEvaluation(), p_rightFunction_->getGradient()));

@@ -337,7 +337,7 @@ int main(int argc, char *argv[])
     RandomMixture mixture2(Collection<Distribution>(1, Dirac()));
     // After what it was impossible to draw the PDF or the CDF due to a lack of support computation
     Graph graphPDF(mixture2.drawPDF());
-    Graph graphCDF(mixture2.drawCDF());    
+    Graph graphCDF(mixture2.drawCDF());
   }
   catch (TestFailed & ex)
   {

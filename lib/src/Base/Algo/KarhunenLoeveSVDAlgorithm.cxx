@@ -125,16 +125,16 @@ void KarhunenLoeveSVDAlgorithm::run()
   // Compute the empirical mean if the sample is not centered
   Point mean;
   if (!centeredSample_)
+  {
+    LOGINFO("Noncentered sample: compute mean");
+    const Scalar unbiasedRatio = size / (size - 1.0);
+    mean = Point(augmentedDimension);
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
-      LOGINFO("Noncentered sample: compute mean");
-      const Scalar unbiasedRatio = size / (size - 1.0);
-      mean = Point(augmentedDimension);
-      for (UnsignedInteger i = 0; i < size; ++i)
-	{
-	  mean += sampleWeights_[i] * sample_[i].getImplementation()->getData();
-	  sampleWeights_[i] *= unbiasedRatio;
-	}
+      mean += sampleWeights_[i] * sample_[i].getImplementation()->getData();
+      sampleWeights_[i] *= unbiasedRatio;
     }
+  }
   if (uniformVerticesWeights_)
   {
     LOGINFO("Uniform vertices weights");
@@ -150,7 +150,7 @@ void KarhunenLoeveSVDAlgorithm::run()
     }
   } // uniformVerticesWeights
   else
-  // Take the vertices weights into account
+    // Take the vertices weights into account
   {
     LOGINFO("Non-uniform vertices weights");
     Point coeffs(verticesNumber);
@@ -164,12 +164,12 @@ void KarhunenLoeveSVDAlgorithm::run()
       for (UnsignedInteger j = 0; j < verticesNumber; ++j)
       {
         const Scalar wJ = coeffs[j];
-	const Point currentPoint(currentSample[j]);
+        const Point currentPoint(currentSample[j]);
         for (UnsignedInteger k = 0; k < dimension; ++k)
-	  {
-	    designMatrix[shift] = wI * wJ * currentPoint[k];
-	    ++shift;
-	  } // k
+        {
+          designMatrix[shift] = wI * wJ * currentPoint[k];
+          ++shift;
+        } // k
       } // j
     } // i
   } // !uniformWeights
@@ -187,10 +187,10 @@ void KarhunenLoeveSVDAlgorithm::run()
   Scalar cumulatedVariance = std::abs(eigenValues[0]);
   // Find the cut-off in the eigenvalues
   while ((K < eigenValues.getSize()) && (eigenValues[K] >= threshold_ * cumulatedVariance))
-    {
-      cumulatedVariance += eigenValues[K];
-      ++K;
-    }
+  {
+    cumulatedVariance += eigenValues[K];
+    ++K;
+  }
   LOGINFO("Create eigenmodes values");
   // Stores the eigenmodes values in-place to avoid wasting memory
   MatrixImplementation & eigenModesValues = U;
@@ -202,12 +202,12 @@ void KarhunenLoeveSVDAlgorithm::run()
     {
       for (UnsignedInteger i = 0; i < verticesNumber; ++i)
       {
-	const Scalar coefficient = 1.0 / std::sqrt(verticesWeights_[i]);
-	for (UnsignedInteger k = 0; k < dimension; ++k)
-	  {
-	    eigenModesValues[index] *= coefficient;
-	    ++index;
-	  } // k
+        const Scalar coefficient = 1.0 / std::sqrt(verticesWeights_[i]);
+        for (UnsignedInteger k = 0; k < dimension; ++k)
+        {
+          eigenModesValues[index] *= coefficient;
+          ++index;
+        } // k
       } // i
     } // j
   } // !uniformVerticesWeights_
@@ -237,26 +237,26 @@ void KarhunenLoeveSVDAlgorithm::run()
     //              =\diag{1/\sqrt{\lambda}}[(W.eigenModesValues)^t]F
     // so M^t=[W.eigenModesValues.\diag{1/\sqrt{\lambda}}]^t
     if (uniformVerticesWeights_)
-      {
-	a *= (factor * verticesWeights_[0] / sqrt(selectedEV[k]));
-	std::copy(a.begin(), a.end(), transposedProjection.begin() + index);
-	index += augmentedDimension;
-      } // uniformVerticesWeights_
+    {
+      a *= (factor * verticesWeights_[0] / sqrt(selectedEV[k]));
+      std::copy(a.begin(), a.end(), transposedProjection.begin() + index);
+      index += augmentedDimension;
+    } // uniformVerticesWeights_
     else
+    {
+      const Scalar inverseSqrtLambda = factor / sqrt(selectedEV[k]);
+      UnsignedInteger shift = 0;
+      for (UnsignedInteger i = 0; i < verticesNumber; ++i)
       {
-	const Scalar inverseSqrtLambda = factor / sqrt(selectedEV[k]);
-	UnsignedInteger shift = 0;
-	for (UnsignedInteger i = 0; i < verticesNumber; ++i)
-	  {
-	    const Scalar coefficient = verticesWeights_[i] * inverseSqrtLambda;
-	    for (UnsignedInteger j = 0; j < dimension; ++j)
-	      {
-		transposedProjection[index] = coefficient * a[shift];
-		++shift;
-		++index;
-	      } // j
-	  } // i
-      } // !uniformVerticesWeights_
+        const Scalar coefficient = verticesWeights_[i] * inverseSqrtLambda;
+        for (UnsignedInteger j = 0; j < dimension; ++j)
+        {
+          transposedProjection[index] = coefficient * a[shift];
+          ++shift;
+          ++index;
+        } // j
+      } // i
+    } // !uniformVerticesWeights_
   } // k
   LOGINFO("Create KL result");
   covariance_ = RankMCovarianceModel(selectedEV, modes);
@@ -281,10 +281,10 @@ void KarhunenLoeveSVDAlgorithm::setVerticesWeights(const Point & verticesWeights
   if (!(verticesWeights.getSize() == verticesNumber)) throw InvalidArgumentException(HERE) << "Error: expected vertices weights of dimension=" << verticesNumber << ", got dimension=" << verticesWeights.getSize();
   const Scalar weight0 = verticesWeights[0];
   for (UnsignedInteger i = 0; i < verticesNumber; ++i)
-    {
-      if (!(verticesWeights[i] > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected positive vertices weights, here weights[" << i << "]=" << verticesWeights[i];
-      uniformVerticesWeights_ = uniformVerticesWeights_ && (verticesWeights[i] == weight0);
-    }
+  {
+    if (!(verticesWeights[i] > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected positive vertices weights, here weights[" << i << "]=" << verticesWeights[i];
+    uniformVerticesWeights_ = uniformVerticesWeights_ && (verticesWeights[i] == weight0);
+  }
   verticesWeights_ = verticesWeights;
 }
 
@@ -301,11 +301,11 @@ void KarhunenLoeveSVDAlgorithm::setSampleWeights(const Point & sampleWeights)
   const Scalar weight0 = sampleWeights[0];
   Scalar weightSum = 0.0;
   for (UnsignedInteger i = 0; i < sampleSize; ++i)
-    {
-      if (!(sampleWeights[i] > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected positive sample weights, here weights[" << i << "]=" << sampleWeights[i];
-      uniformSampleWeights_ = uniformSampleWeights_ && (sampleWeights[i] == weight0);
-      weightSum += sampleWeights[i];
-    }
+  {
+    if (!(sampleWeights[i] > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected positive sample weights, here weights[" << i << "]=" << sampleWeights[i];
+    uniformSampleWeights_ = uniformSampleWeights_ && (sampleWeights[i] == weight0);
+    weightSum += sampleWeights[i];
+  }
   // Normalize the sample weights to have an unbiased estimator of the mean
   sampleWeights_ = sampleWeights / weightSum;
 }

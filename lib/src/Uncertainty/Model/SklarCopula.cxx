@@ -250,7 +250,7 @@ Point SklarCopula::computeCDFGradient(const Point & point) const
 /* Get the quantile of the distribution
    F(x_1,\dots,x_n) = C(F_1(x_1),\dots,F_n(x_n)) */
 Point SklarCopula::computeQuantile(const Scalar prob,
-    const Bool tail) const
+                                   const Bool tail) const
 {
   const UnsignedInteger dimension = getDimension();
   const Scalar epsilon = cdfEpsilon_;

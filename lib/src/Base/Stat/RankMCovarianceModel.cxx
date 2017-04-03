@@ -141,23 +141,23 @@ CovarianceMatrix RankMCovarianceModel::discretize(const Sample & vertices) const
   MatrixImplementation::iterator start = basisDiscretization.begin();
   // If the covariance is diagonal
   if (covariance_.getDimension() == 0)
+  {
+    for (UnsignedInteger i = 0; i < basisSize; ++i)
     {
-      for (UnsignedInteger i = 0; i < basisSize; ++i)
-	{
-	  const Point data(functions_[i](vertices).getImplementation()->getData() * std::sqrt(variance_[i]));
-	  std::copy(data.begin(), data.end(), start);
-	  start += fullSize;
-	}
-      // C = M.M^t
-      return basisDiscretization.computeGram(false);
-    }
-  // Here covariance_ is left untouched by computeCholesky(), but the method in not const
-  for (UnsignedInteger i = 0; i < basisSize; ++i)
-    {
-      const Point data(functions_[i](vertices).getImplementation()->getData());
+      const Point data(functions_[i](vertices).getImplementation()->getData() * std::sqrt(variance_[i]));
       std::copy(data.begin(), data.end(), start);
       start += fullSize;
     }
+    // C = M.M^t
+    return basisDiscretization.computeGram(false);
+  }
+  // Here covariance_ is left untouched by computeCholesky(), but the method in not const
+  for (UnsignedInteger i = 0; i < basisSize; ++i)
+  {
+    const Point data(functions_[i](vertices).getImplementation()->getData());
+    std::copy(data.begin(), data.end(), start);
+    start += fullSize;
+  }
   return (covariance_.getImplementation()->symProd(basisDiscretization, 'R')).genProd(basisDiscretization, false, true);
 }
 

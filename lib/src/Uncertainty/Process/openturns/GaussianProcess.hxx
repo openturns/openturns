@@ -49,21 +49,21 @@ public:
 
   /** Standard constructor  */
   GaussianProcess(const TrendTransform & trend,
-                        const SecondOrderModel  & model,
-                        const Mesh & mesh);
+                  const SecondOrderModel  & model,
+                  const Mesh & mesh);
 
   /** Standard constructor  */
   GaussianProcess(const TrendTransform & trend,
-                        const CovarianceModel & covarianceModel,
-                        const Mesh & mesh);
+                  const CovarianceModel & covarianceModel,
+                  const Mesh & mesh);
 
   /** Standard constructor  */
   GaussianProcess(const SecondOrderModel  & model,
-                        const Mesh & mesh);
+                  const Mesh & mesh);
 
   /** Standard constructor  */
   GaussianProcess(const CovarianceModel & covarianceModel,
-                        const Mesh & mesh);
+                  const Mesh & mesh);
 
   /** Virtual constructor */
   virtual GaussianProcess * clone() const;

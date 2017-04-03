@@ -29,73 +29,73 @@ BEGIN_NAMESPACE_OPENTURNS
 namespace BetaFunctions
 {
 Scalar IncompleteBeta(const Scalar a,
-                               const Scalar b,
-                               const Scalar x,
-                               const Bool tail = false);
+                      const Scalar b,
+                      const Scalar x,
+                      const Bool tail = false);
 
 Scalar IncompleteBetaInverse(const Scalar a,
-                                      const Scalar b,
-                                      const Scalar x,
-                                      const Bool tail = false);
+                             const Scalar b,
+                             const Scalar x,
+                             const Bool tail = false);
 
 Scalar IncompleteBetaP(const Scalar a,
-                                const Scalar b,
-                                const Scalar x);
+                       const Scalar b,
+                       const Scalar x);
 
 Scalar IncompleteBetaQ(const Scalar a,
-                                const Scalar b,
-                                const Scalar x);
+                       const Scalar b,
+                       const Scalar x);
 
 Scalar RegularizedIncompleteBeta(const Scalar a,
-    const Scalar b,
-    const Scalar x,
-    const Bool tail = false);
+                                 const Scalar b,
+                                 const Scalar x,
+                                 const Bool tail = false);
 
 Scalar RegularizedIncompleteBetaSlatec(const Scalar a,
-    const Scalar b,
-    const Scalar x,
-    const Bool tail);
+                                       const Scalar b,
+                                       const Scalar x,
+                                       const Bool tail);
 
 Scalar RegularizedIncompleteBetaInverse(const Scalar a,
-    const Scalar b,
-    const Scalar x,
-    const Bool tail = false);
+                                        const Scalar b,
+                                        const Scalar x,
+                                        const Bool tail = false);
 
 Scalar RegularizedIncompleteBetaP(const Scalar a,
-    const Scalar b,
-    const Scalar x);
+                                  const Scalar b,
+                                  const Scalar x);
 
 Scalar RegularizedIncompleteBetaQ(const Scalar a,
-    const Scalar b,
-    const Scalar x);
+                                  const Scalar b,
+                                  const Scalar x);
 
 Scalar RegularizedIncompleteBetaContinuedFraction(const Scalar a,
     const Scalar b,
     const Scalar x);
 
 Scalar BRATIO(const Scalar a,
-                       const Scalar b,
-                       const Scalar x,
-                       const Bool tail);
+              const Scalar b,
+              const Scalar x,
+              const Bool tail);
 
 Scalar BPSER(const Scalar a,
-                      const Scalar b,
-                      const Scalar x);
+             const Scalar b,
+             const Scalar x);
 
 Scalar BUP(const Scalar a,
-                    const Scalar b,
-                    const Scalar x,
-                    const Scalar y,
-                    const UnsignedInteger n);
+           const Scalar b,
+           const Scalar x,
+           const Scalar y,
+           const UnsignedInteger n);
 
 Scalar ALGDIV(const Scalar a,
-                       const Scalar b);
+              const Scalar b);
 
 Scalar BGRAT(const Scalar a,
-                      const Scalar b,
-                      const Scalar x,
-                      const Scalar y,
-                      const Scalar w);
+             const Scalar b,
+             const Scalar x,
+             const Scalar y,
+             const Scalar w);
 
 } // BetaFunctions
 

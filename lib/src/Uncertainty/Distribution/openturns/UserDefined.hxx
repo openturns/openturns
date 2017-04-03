@@ -147,7 +147,7 @@ private:
 
   /** Quantile computation for dimension=1 */
   Scalar computeScalarQuantile(const Scalar prob,
-                                        const Bool tail = false) const;
+                               const Bool tail = false) const;
 
   /** The collection of couple (xi, pi) */
   Sample points_;

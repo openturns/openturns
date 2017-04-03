@@ -8,4 +8,4 @@ astyle --suffix=none --style=ansi             --indent=spaces=2 --indent-switche
 
 # python
 /usr/share/doc/python2.7/examples/Tools/scripts/reindent.py --verbose --recurse python/
-~/.local/bin/autopep8 --verbose --in-place --recursive python/
+autopep8 --verbose --in-place --recursive python/

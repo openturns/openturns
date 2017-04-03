@@ -45,8 +45,8 @@ DatabaseEvaluation::DatabaseEvaluation()
 
 /* Default constructor */
 DatabaseEvaluation::DatabaseEvaluation(const Sample & inputSample,
-    const Sample & outputSample,
-    const Bool activateCache)
+                                       const Sample & outputSample,
+                                       const Bool activateCache)
   : EvaluationImplementation()
 {
   setSample(inputSample, outputSample, activateCache);
@@ -113,8 +113,8 @@ Sample DatabaseEvaluation::getOutputSample() const
 
 
 void DatabaseEvaluation::setSample(const Sample & inputSample,
-    const Sample & outputSample,
-    const Bool activateCache)
+                                   const Sample & outputSample,
+                                   const Bool activateCache)
 {
   const UnsignedInteger size = inputSample.getSize();
 

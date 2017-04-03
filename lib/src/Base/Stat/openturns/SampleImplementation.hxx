@@ -189,7 +189,7 @@ OT_API OStream & operator << (OStream & OS, const NSI_const_point & point);
 
 inline
 Point operator * (const NSI_point & point,
-                           const Scalar val)
+                  const Scalar val)
 {
   Point res(point.getDimension(), 0.);
   for(UnsignedInteger i = 0; i < point.getDimension(); ++i) res[i] = point[i] * val;
@@ -198,14 +198,14 @@ Point operator * (const NSI_point & point,
 
 inline
 Point operator * (const Scalar val,
-                           const NSI_point & point)
+                  const NSI_point & point)
 {
   return point * val;
 }
 
 inline
 Point operator * (const NSI_const_point & point,
-                           const Scalar val)
+                  const Scalar val)
 {
   Point res(point.getDimension(), 0.);
   for(UnsignedInteger i = 0; i < point.getDimension(); ++i) res[i] = point[i] * val;
@@ -214,7 +214,7 @@ Point operator * (const NSI_const_point & point,
 
 inline
 Point operator * (const Scalar val,
-                           const NSI_const_point & point)
+                  const NSI_const_point & point)
 {
   return point * val;
 }
@@ -501,11 +501,11 @@ public:
 
   /** Standard constructor */
   SampleImplementation(const UnsignedInteger size,
-                                const UnsignedInteger dim);
+                       const UnsignedInteger dim);
 
   /** Constructor from a Point */
   SampleImplementation(const UnsignedInteger size,
-                                const Point & point);
+                       const Point & point);
 
 #ifndef SWIG
   /** Constructor from a collection of Point */
@@ -516,8 +516,8 @@ public:
 
   /** Partial copy constructor */
   SampleImplementation(const SampleImplementation & other,
-                                const_iterator first,
-                                const_iterator last);
+                       const_iterator first,
+                       const_iterator last);
 
   inline iterator begin()
   {
@@ -715,7 +715,7 @@ public:
    * Get the empirical CDF of the sample
    */
   Scalar computeEmpiricalCDF(const Point & point,
-                                      const Bool tail = false) const;
+                             const Bool tail = false) const;
 
   /** Maximum accessor */
   virtual Point getMax() const;

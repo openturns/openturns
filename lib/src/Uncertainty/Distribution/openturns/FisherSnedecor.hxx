@@ -132,7 +132,7 @@ private:
 
   /** Get the quantile of the Triangular distribution */
   Scalar computeScalarQuantile(const Scalar prob,
-                                        const Bool tail = false) const;
+                               const Bool tail = false) const;
 
   /** Update the derivative attributes */
   void update();

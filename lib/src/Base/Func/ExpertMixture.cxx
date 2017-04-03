@@ -159,10 +159,10 @@ Sample ExpertMixture::operator() (const Sample & inS) const
     const Point grades = classifier_.grade(mixedSample, Indices(size, classIndex));
     for (UnsignedInteger i = 0; i < size; ++i)
       if (grades[i] > bestGrades[i])
-	{
-	  bestGrades[i] = grades[i];
-	  bestValues[i] = localValues[i];
-	}
+      {
+        bestGrades[i] = grades[i];
+        bestValues[i] = localValues[i];
+      }
   } // classIndex
   return bestValues;
 }

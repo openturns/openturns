@@ -73,12 +73,12 @@ public:
 
   /** Bayesian Information Criterion computation */
   static Scalar BIC(const Sample & sample,
-                             const Distribution & distribution,
-                             const UnsignedInteger estimatedParameters = 0);
+                    const Distribution & distribution,
+                    const UnsignedInteger estimatedParameters = 0);
 
   /** Bayesian Information Criterion computation */
   static Scalar BIC(const Sample & sample,
-                             const DistributionFactory & factory);
+                    const DistributionFactory & factory);
 
   /** Kolmogorov fitting test for continuous distributions */
   static TestResult Kolmogorov(const Sample & sample,

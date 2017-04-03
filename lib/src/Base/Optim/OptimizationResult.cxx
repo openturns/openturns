@@ -370,7 +370,7 @@ Graph OptimizationResult::drawOptimalValueHistory() const
   {
     const UnsignedInteger j = 0;
     if (!((minimization && (data[i][j] < data[i - 1][j]))
-      || (!minimization && (data[i][j] > data[i - 1][j]))))
+          || (!minimization && (data[i][j] > data[i - 1][j]))))
     {
       data[i][j] = data[i - 1][j];
     }

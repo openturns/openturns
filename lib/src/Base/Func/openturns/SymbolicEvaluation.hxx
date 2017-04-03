@@ -37,8 +37,8 @@ public:
 
   /** Default constructor */
   SymbolicEvaluation(const Description & inputVariablesNames,
-      const Description & outputVariablesNames,
-      const Description & formulas);
+                     const Description & outputVariablesNames,
+                     const Description & formulas);
 
   /** Virtual constructor */
   virtual SymbolicEvaluation * clone() const;

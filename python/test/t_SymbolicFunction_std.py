@@ -124,4 +124,3 @@ print('OK')
 # str ctor
 model = ot.SymbolicFunction('x', '3*x')
 assert model(x)[0] == 3.0 * x[0], 'str ctor eval'
-

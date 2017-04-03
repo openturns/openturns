@@ -53,7 +53,10 @@ public:
   virtual Scalar evaluate(const Sample& sample) const;
 
   /** Accessor */
-  Bool isMinimizationProblem() const { return minimization_; }
+  Bool isMinimizationProblem() const
+  {
+    return minimization_;
+  }
 
   /** String converter */
   virtual String __repr__() const;
@@ -66,7 +69,7 @@ public:
 
   /** Compute criterion when performing an elementary perturbation */
   virtual Scalar perturbLHS(Sample& oldDesign, Scalar oldCriterion,
-      UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const;
+                            UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const;
 
 protected:
   /** Normalize argument before computing criterion */

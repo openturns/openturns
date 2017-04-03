@@ -391,8 +391,8 @@ String Drawable::ConvertFromRGBA(const Scalar red,
 
 /* Convert an HSV triplet into an RGB triplet */
 Point Drawable::ConvertFromHSVIntoRGB(const Scalar hue,
-    const Scalar saturation,
-    const Scalar value)
+                                      const Scalar saturation,
+                                      const Scalar value)
 {
   return DrawableImplementation::ConvertFromHSVIntoRGB(hue, saturation, value);
 }

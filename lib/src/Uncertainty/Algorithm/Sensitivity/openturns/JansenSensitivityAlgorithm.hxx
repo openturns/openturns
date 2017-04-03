@@ -68,7 +68,7 @@ protected:
 
   /** Internal method that compute Vi/VTi using a huge sample */
   Sample computeIndices(const Sample & sample,
-                                 Sample & VTi) const;
+                        Sample & VTi) const;
 }; /* class JansenSensitivityAlgorithm */
 
 END_NAMESPACE_OPENTURNS

@@ -186,4 +186,3 @@ for n in range(2):
     except Exception as exc:
         # print exc
         print('exception handling: ok')
-

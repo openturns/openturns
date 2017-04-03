@@ -42,8 +42,8 @@ public:
 
   /** Parameters constructor to use when the two bounds are finite */
   GeneralizedExtremeValue(const Scalar mu,
-			  const Scalar sigma,
-			  const Scalar xi);
+                          const Scalar sigma,
+                          const Scalar xi);
 
   /** Comparison operator */
   Bool operator ==(const GeneralizedExtremeValue & other) const;
@@ -140,7 +140,7 @@ private:
 
   /** Get the quantile of the distribution */
   Scalar computeScalarQuantile(const Scalar prob,
-                                        const Bool tail = false) const;
+                               const Bool tail = false) const;
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange();
@@ -153,9 +153,9 @@ private:
 
   /** Set the whole set of parameters with check */
   void setMuSigmaXi(const Scalar mu,
-		    const Scalar sigma,
-		    const Scalar xi);
-  
+                    const Scalar sigma,
+                    const Scalar xi);
+
   /** The actual distribution in {Weibull, Frechet, Gumbel} */
   Distribution actualDistribution_;
   Scalar mu_;

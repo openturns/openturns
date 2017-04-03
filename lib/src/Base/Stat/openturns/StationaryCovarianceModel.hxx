@@ -64,7 +64,7 @@ public:
   virtual CovarianceMatrix operator() (const Point & tau) const;
   using CovarianceModelImplementation::computeAsScalar;
   virtual Scalar computeAsScalar (const Point & s,
-      const Point & t) const;
+                                  const Point & t) const;
   virtual Scalar computeAsScalar (const Point & tau) const;
 
   /** Computation of the covariance matrix */

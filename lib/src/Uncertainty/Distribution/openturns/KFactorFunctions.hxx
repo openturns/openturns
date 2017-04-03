@@ -28,9 +28,9 @@ BEGIN_NAMESPACE_OPENTURNS
 namespace KFactorFunctions
 {
 Scalar KFactor(const Scalar n,
-			const Scalar nu,
-			const Scalar p,
-			const Scalar alpha);
+               const Scalar nu,
+               const Scalar p,
+               const Scalar alpha);
 } // KFactorFunctions
 
 END_NAMESPACE_OPENTURNS

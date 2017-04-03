@@ -73,12 +73,12 @@ try:
     distribution = ot.Normal(2)
     size = 30
     sample2D = distribution.getSample(size)
-    cloud = ot.Cloud(sample2D, "red", "fsquare", "Sample2D Cloud");
+    cloud = ot.Cloud(sample2D, "red", "fsquare", "Sample2D Cloud")
     graph.add(cloud)
 
     # Display extrema indices
-    x1 = [ x[0] for x in sample2D[:,0]]
-    x2 = [ x[0] for x in sample2D[:,1]]
+    x1 = [x[0] for x in sample2D[:, 0]]
+    x2 = [x[0] for x in sample2D[:, 1]]
     idx = [0] * 4
     idx[0] = x1.index(min(x1))
     idx[1] = x1.index(max(x1))
@@ -87,7 +87,7 @@ try:
 
     labels = ot.Description(sample2D.getSize())
     for i in range(4):
-      labels[idx[i]] = str(idx[i])
+        labels[idx[i]] = str(idx[i])
 
     position = ot.Description(sample2D.getSize(), "top")
     position[idx[0]] = "right"
@@ -160,7 +160,8 @@ try:
 
     # Convergence graph curve
     aCollection = []
-    aCollection.append(ot.LogNormalFactory().build(ot.LogNormalMuSigma()([300.0, 30.0, 0.0])))
+    aCollection.append(ot.LogNormalFactory().build(
+        ot.LogNormalMuSigma()([300.0, 30.0, 0.0])))
     aCollection.append(ot.Normal(75e3, 5e3))
     myDistribution = ot.ComposedDistribution(aCollection)
     vect = ot.RandomVector(myDistribution)

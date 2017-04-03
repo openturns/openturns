@@ -46,7 +46,7 @@ SymbolicFunction::SymbolicFunction ()
 
 /* Parameter constructor */
 SymbolicFunction::SymbolicFunction (const String & inputVariablesName,
-                                        const String & formula)
+                                    const String & formula)
   : Function()
 {
   *this = SymbolicFunction(Description(1, inputVariablesName), Description(1, formula));
@@ -55,7 +55,7 @@ SymbolicFunction::SymbolicFunction (const String & inputVariablesName,
 
 /* Parameter constructor */
 SymbolicFunction::SymbolicFunction (const Description & inputVariablesNames,
-                                        const Description & formulas)
+                                    const Description & formulas)
   : Function()
 {
 #ifdef OPENTURNS_HAVE_MUPARSER

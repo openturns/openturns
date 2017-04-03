@@ -444,7 +444,7 @@ Matrix FunctionImplementation::gradient(const Point & inP) const
 }
 
 Matrix FunctionImplementation::gradient(const Point & inP,
-    const Point & parameters)
+                                        const Point & parameters)
 {
   if (useDefaultGradientImplementation_) LOGWARN(OSS() << "You are using a default implementation for the gradient. Be careful, your computation can be severely wrong!");
   setParameter(parameters);
@@ -555,43 +555,43 @@ Description FunctionImplementation::GetValidOperators()
 
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
 Graph FunctionImplementation::draw(const UnsignedInteger inputMarginal,
-    const UnsignedInteger outputMarginal,
-    const Point & centralPoint,
-    const Scalar xMin,
-    const Scalar xMax,
-    const UnsignedInteger pointNumber,
-    const GraphImplementation::LogScale scale) const
+                                   const UnsignedInteger outputMarginal,
+                                   const Point & centralPoint,
+                                   const Scalar xMin,
+                                   const Scalar xMax,
+                                   const UnsignedInteger pointNumber,
+                                   const GraphImplementation::LogScale scale) const
 {
   return p_evaluationImplementation_->draw(inputMarginal, outputMarginal, centralPoint, xMin, xMax, pointNumber, scale);
 }
 
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
 Graph FunctionImplementation::draw(const UnsignedInteger firstInputMarginal,
-    const UnsignedInteger secondInputMarginal,
-    const UnsignedInteger outputMarginal,
-    const Point & centralPoint,
-    const Point & xMin,
-    const Point & xMax,
-    const Indices & pointNumber,
-    const GraphImplementation::LogScale scale) const
+                                   const UnsignedInteger secondInputMarginal,
+                                   const UnsignedInteger outputMarginal,
+                                   const Point & centralPoint,
+                                   const Point & xMin,
+                                   const Point & xMax,
+                                   const Indices & pointNumber,
+                                   const GraphImplementation::LogScale scale) const
 {
   return p_evaluationImplementation_->draw(firstInputMarginal, secondInputMarginal, outputMarginal, centralPoint, xMin, xMax, pointNumber, scale);
 }
 
 /* Draw the output of the function with respect to its input when the input and output dimensions are 1 */
 Graph FunctionImplementation::draw(const Scalar xMin,
-    const Scalar xMax,
-    const UnsignedInteger pointNumber,
-    const GraphImplementation::LogScale scale) const
+                                   const Scalar xMax,
+                                   const UnsignedInteger pointNumber,
+                                   const GraphImplementation::LogScale scale) const
 {
   return p_evaluationImplementation_->draw(xMin, xMax, pointNumber, scale);
 }
 
 /* Draw the output of the function with respect to its input when the input dimension is 2 and the output dimension is 1 */
 Graph FunctionImplementation::draw(const Point & xMin,
-    const Point & xMax,
-    const Indices & pointNumber,
-    const GraphImplementation::LogScale scale) const
+                                   const Point & xMax,
+                                   const Indices & pointNumber,
+                                   const GraphImplementation::LogScale scale) const
 {
   return p_evaluationImplementation_->draw(xMin, xMax, pointNumber, scale);
 }

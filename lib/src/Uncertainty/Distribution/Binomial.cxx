@@ -287,7 +287,7 @@ void Binomial::computeRange()
 
 /* Get the quantile of the distribution */
 Scalar Binomial::computeScalarQuantile(const Scalar prob,
-    const Bool tail) const
+                                       const Bool tail) const
 {
   LOGDEBUG(OSS() << "in Binomial::computeScalarQuantile, prob=" << prob << ", tail=" << (tail ? "true" : "false"));
   if (prob <= 0.0) return (tail ? n_ : 0.0);

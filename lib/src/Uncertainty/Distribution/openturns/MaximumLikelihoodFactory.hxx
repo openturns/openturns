@@ -61,7 +61,7 @@ public:
 
   /** Optimization solver accessor */
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
-  OptimizationAlgorithm getOptimizationAlgorithm() const;  
+  OptimizationAlgorithm getOptimizationAlgorithm() const;
 
   // @deprecated
   void setOptimizationSolver(const OptimizationAlgorithm & solver);

@@ -115,13 +115,13 @@ int main(int argc, char *argv[])
     fullprint << "log-pdf gradient     =" << logPDFgr << std::endl;
     Point logPDFgrFD(4);
     logPDFgrFD[0] = (TruncatedNormal(distribution.getMu() + eps, distribution.getSigma(), distribution.getA(), distribution.getB()).computeLogPDF(point) -
-                  TruncatedNormal(distribution.getMu() - eps, distribution.getSigma(), distribution.getA(), distribution.getB()).computeLogPDF(point)) / (2.0 * eps);
+                     TruncatedNormal(distribution.getMu() - eps, distribution.getSigma(), distribution.getA(), distribution.getB()).computeLogPDF(point)) / (2.0 * eps);
     logPDFgrFD[1] = (TruncatedNormal(distribution.getMu(), distribution.getSigma() + eps, distribution.getA(), distribution.getB()).computeLogPDF(point) -
-                  TruncatedNormal(distribution.getMu(), distribution.getSigma() - eps, distribution.getA(), distribution.getB()).computeLogPDF(point)) / (2.0 * eps);
+                     TruncatedNormal(distribution.getMu(), distribution.getSigma() - eps, distribution.getA(), distribution.getB()).computeLogPDF(point)) / (2.0 * eps);
     logPDFgrFD[2] = (TruncatedNormal(distribution.getMu(), distribution.getSigma(), distribution.getA() + eps, distribution.getB()).computeLogPDF(point) -
-                  TruncatedNormal(distribution.getMu(), distribution.getSigma(), distribution.getA() - eps, distribution.getB()).computeLogPDF(point)) / (2.0 * eps);
+                     TruncatedNormal(distribution.getMu(), distribution.getSigma(), distribution.getA() - eps, distribution.getB()).computeLogPDF(point)) / (2.0 * eps);
     logPDFgrFD[3] = (TruncatedNormal(distribution.getMu(), distribution.getSigma(), distribution.getA(), distribution.getB() + eps).computeLogPDF(point) -
-                  TruncatedNormal(distribution.getMu(), distribution.getSigma(), distribution.getA(), distribution.getB() - eps).computeLogPDF(point)) / (2.0 * eps);
+                     TruncatedNormal(distribution.getMu(), distribution.getSigma(), distribution.getA(), distribution.getB() - eps).computeLogPDF(point)) / (2.0 * eps);
     fullprint << "log-pdf gradient (FD)=" << logPDFgrFD << std::endl;
     Point CDFgr = distribution.computeCDFGradient( point );
     fullprint << "cdf gradient     =" << CDFgr << std::endl;

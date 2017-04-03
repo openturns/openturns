@@ -29,9 +29,11 @@ p = [1.3]
 print("is p=", p, " in mesh? ", mesh1D.contains(p))
 point = [1.8]
 print("Nearest index(", point, ")=", mesh1D.getNearestVertexIndex(point))
-print("Nearest index(", point, "), simplex and coordinates=", mesh1D.getNearestVertexAndSimplexIndicesWithCoordinates(point))
+print("Nearest index(", point, "), simplex and coordinates=",
+      mesh1D.getNearestVertexAndSimplexIndicesWithCoordinates(point))
 point = [-1.8]
-print("Nearest index(", point, "), simplex and coordinates=", mesh1D.getNearestVertexAndSimplexIndicesWithCoordinates(point))
+print("Nearest index(", point, "), simplex and coordinates=",
+      mesh1D.getNearestVertexAndSimplexIndicesWithCoordinates(point))
 points = [[-0.25], [2.25]]
 print("Nearest index(", points, ")=", mesh1D.getNearestVertexIndex(points))
 print("P1 gram=\n", mesh1D.computeP1Gram())

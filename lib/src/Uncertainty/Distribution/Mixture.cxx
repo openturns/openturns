@@ -615,11 +615,11 @@ Point Mixture::getSingularities() const
   // Aggregate all the singularities of the atoms including the bounds of the range
   // as it can be singularities within the mixture range
   for (UnsignedInteger i = 0; i < distributionCollection_.getSize(); ++i)
-    {
-      singularities.add(distributionCollection_[i].getRange().getLowerBound()[0]);
-      singularities.add(distributionCollection_[i].getSingularities());
-      singularities.add(distributionCollection_[i].getRange().getUpperBound()[0]);
-    }
+  {
+    singularities.add(distributionCollection_[i].getRange().getLowerBound()[0]);
+    singularities.add(distributionCollection_[i].getSingularities());
+    singularities.add(distributionCollection_[i].getRange().getUpperBound()[0]);
+  }
   // The singularities of a distribution have to be strictly included into the
   // range of the distribution. As the range of a mixture is the bounding box
   // of the ranges of the atoms, the bounds of the mixture range are within

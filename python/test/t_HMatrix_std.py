@@ -4,6 +4,7 @@ from __future__ import print_function
 import openturns as ot
 import math as m
 
+
 class TestHMatrixRealAssemblyFunction(object):
 
     def __init__(self, vertices, scaling=1.0):
@@ -55,9 +56,9 @@ print('rows=', hmat.getNbRows())
 print('columns=', hmat.getNbColumns())
 print('norm=', ot.Point(1, hmat.norm()))
 if hmatRef.norm() < 1e-10:
-  print('norm(A-LLt) < 1e-10')
+    print('norm(A-LLt) < 1e-10')
 else:
-  print('norm(A-LLt) =', hmatRef.norm())
+    print('norm(A-LLt) =', hmatRef.norm())
 print('diagonal=', hmat.getDiagonal())
 print('compressionRatio= (%d, %d)' % hmat.compressionRatio())
 print('fullrkRatio= (%d, %d)' % hmat.fullrkRatio())
@@ -84,22 +85,24 @@ class TestHMatrixTensorRealAssemblyFunction(object):
 
 
 covarianceModel = ot.ExponentialModel([0.1] * 2, [1.0] * 2)
-hmat = factory.build(vertices, covarianceModel.getDimension(), True, parameters)
-blockAssembly = TestHMatrixTensorRealAssemblyFunction(covarianceModel, vertices)
+hmat = factory.build(
+    vertices, covarianceModel.getDimension(), True, parameters)
+blockAssembly = TestHMatrixTensorRealAssemblyFunction(
+    covarianceModel, vertices)
 hmat.assembleTensor(blockAssembly, covarianceModel.getDimension(), 'L')
 hmatRef = ot.HMatrix(hmat)
 hmat.factorize('LLt')
 normL = hmat.norm()
 hmatRef.gemm('N', 'T', -1.0, hmat, hmat, 1.0)
 if hmatRef.norm() < 1e-10:
-  print('norm(A-LLt) < 1e-10')
+    print('norm(A-LLt) < 1e-10')
 else:
-  print('norm(A-LLt) =', hmatRef.norm())
+    print('norm(A-LLt) =', hmatRef.norm())
 
 alpha = 0.1
 hmat.scale(alpha)
 normScaled = hmat.norm()
 if abs(normL - normScaled / alpha) < 1e-10:
-  print('|norm(L) - 10 * norm(0.1*L)| < 1e-10')
+    print('|norm(L) - 10 * norm(0.1*L)| < 1e-10')
 else:
-  print('|norm(L) - 10 * norm(0.1*L)| > 1e-10')
+    print('|norm(L) - 10 * norm(0.1*L)| > 1e-10')

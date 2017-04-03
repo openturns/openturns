@@ -31,9 +31,9 @@ static const Factory<ProductGradient> Factory_ProductGradient;
 
 /* Default constructor */
 ProductGradient::ProductGradient(const EvaluationPointer & p_leftEvaluation,
-    const GradientPointer & p_leftGradient,
-    const EvaluationPointer & p_rightEvaluation,
-    const GradientPointer & p_rightGradient)
+                                 const GradientPointer & p_leftGradient,
+                                 const EvaluationPointer & p_rightEvaluation,
+                                 const GradientPointer & p_rightGradient)
   : GradientImplementation(),
     p_leftEvaluation_(p_leftEvaluation),
     p_leftGradient_(p_leftGradient),

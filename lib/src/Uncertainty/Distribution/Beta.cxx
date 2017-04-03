@@ -218,7 +218,7 @@ Point Beta::computeCDFGradient(const Point & point) const
 
 /* Get the quantile of the distribution */
 Scalar Beta::computeScalarQuantile(const Scalar prob,
-    const Bool tail) const
+                                   const Bool tail) const
 {
   return a_ + (b_ - a_) * DistFunc::qBeta(r_, t_ - r_, prob, tail);
 }

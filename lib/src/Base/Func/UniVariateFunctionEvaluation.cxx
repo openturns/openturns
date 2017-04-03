@@ -59,7 +59,7 @@ UniVariateFunctionEvaluation * UniVariateFunctionEvaluation::clone() const
 String UniVariateFunctionEvaluation::__repr__() const
 {
   return OSS(true) << "class=" << GetClassName()
-                   << " function=" << function_;
+         << " function=" << function_;
 }
 
 String UniVariateFunctionEvaluation::__str__(const String & offset) const

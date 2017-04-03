@@ -216,7 +216,7 @@ Point Logistic::computeCDFGradient(const Point & point) const
 
 /* Get the quantile of the distribution */
 Scalar Logistic::computeScalarQuantile(const Scalar prob,
-    const Bool tail) const
+                                       const Bool tail) const
 {
   if (tail) return alpha_ + beta_ * std::log((1.0 - prob) / prob);
   return alpha_ + beta_ * std::log(prob / (1.0 - prob));

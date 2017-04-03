@@ -47,8 +47,8 @@ public:
 
   /** Default constructor */
   ComposedGradient(const GradientPointer & p_leftGradient,
-      const EvaluationPointer & p_rightFunction,
-      const GradientPointer & p_rightGradient);
+                   const EvaluationPointer & p_rightFunction,
+                   const GradientPointer & p_rightGradient);
 
 
   /** Virtual constructor */

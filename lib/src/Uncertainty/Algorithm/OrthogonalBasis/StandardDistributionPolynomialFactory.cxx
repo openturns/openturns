@@ -120,10 +120,10 @@ void StandardDistributionPolynomialFactory::checkSpecificFamily()
     Point width(size);
     Point height(size);
     for (UnsignedInteger i = 0; i < size; ++i)
-      {
-	width[i] = parameter[2 * i + 1];
-	height[i] = parameter[2 * i + 2];
-      }
+    {
+      width[i] = parameter[2 * i + 1];
+      height[i] = parameter[2 * i + 2];
+    }
 
     referenceFamily = HistogramPolynomialFactory(first, width, height);
     hasClassMatch = true;
@@ -143,26 +143,26 @@ void StandardDistributionPolynomialFactory::checkSpecificFamily()
     // Here we set directly the specific family as the reference distribution
     // of the family has a different type (Arcsine) than the given distribution
     if (alpha == -0.5 && beta == -0.5 && parameter[2] == -1.0 && parameter[3] == 1.0)
-      {
-	specificFamily_ = ChebychevFactory();
-	hasSpecificFamily_ = true;
-	// To avoid distribution comparison at the end of the method
-	hasClassMatch = false;
-      }
+    {
+      specificFamily_ = ChebychevFactory();
+      hasSpecificFamily_ = true;
+      // To avoid distribution comparison at the end of the method
+      hasClassMatch = false;
+    }
     // Here we set directly the specific family as the reference distribution
     // of the family has a different type (Uniform) than the given distribution
     else if (alpha == 0.0 && beta == 0.0 && parameter[2] == -1.0 && parameter[3] == 1.0)
-      {
-	specificFamily_ = LegendreFactory();
-	hasSpecificFamily_ = true;
-	// To avoid distribution comparison at the end of the method
-	hasClassMatch = false;
-      }
+    {
+      specificFamily_ = LegendreFactory();
+      hasSpecificFamily_ = true;
+      // To avoid distribution comparison at the end of the method
+      hasClassMatch = false;
+    }
     else
-      {
-	referenceFamily = JacobiFactory(alpha, beta);
-	hasClassMatch = true;
-      }
+    {
+      referenceFamily = JacobiFactory(alpha, beta);
+      hasClassMatch = true;
+    }
   }
   // Laguerre factory
   if (measureType == "Gamma")
@@ -175,12 +175,12 @@ void StandardDistributionPolynomialFactory::checkSpecificFamily()
   {
     const Point parameter(measure_.getParameter());
     if (parameter[0] == 1.0)
-      {
-	specificFamily_ = LaguerreFactory(0.0);
-	hasSpecificFamily_ = true;
-	// To avoid distribution comparison at the end of the method
-	hasClassMatch = false;
-      }
+    {
+      specificFamily_ = LaguerreFactory(0.0);
+      hasSpecificFamily_ = true;
+      // To avoid distribution comparison at the end of the method
+      hasClassMatch = false;
+    }
   }
   // Charlier factory
   if (measureType == "Poisson")

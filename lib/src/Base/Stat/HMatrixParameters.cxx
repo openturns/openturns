@@ -40,21 +40,21 @@ HMatrixParameters::HMatrixParameters()
   const UnsignedInteger resourceCompressionMethod = ResourceMap::GetAsUnsignedInteger("HMatrix-CompressionMethod");
   switch(resourceCompressionMethod)
   {
-  case 0:
-    compressionMethod_ = "SVD";
-    break;
-  case 1:
-    compressionMethod_ = "ACA full";
-    break;
-  case 2:
-    compressionMethod_ = "ACA partial";
-    break;
-  case 3:
-    compressionMethod_ = "ACA+";
-    break;
-  default:
-    throw InvalidArgumentException(HERE) << "Unknown compression method: " << resourceCompressionMethod << ", valid choices are: 0 (SVD), 1 (ACA full), 2 (ACA partial) or 3 (ACA+)";
-    break;
+    case 0:
+      compressionMethod_ = "SVD";
+      break;
+    case 1:
+      compressionMethod_ = "ACA full";
+      break;
+    case 2:
+      compressionMethod_ = "ACA partial";
+      break;
+    case 3:
+      compressionMethod_ = "ACA+";
+      break;
+    default:
+      throw InvalidArgumentException(HERE) << "Unknown compression method: " << resourceCompressionMethod << ", valid choices are: 0 (SVD), 1 (ACA full), 2 (ACA partial) or 3 (ACA+)";
+      break;
   }
 }
 

@@ -20,7 +20,6 @@ for r in range(rank):
 tensorGrad = ot.CanonicalTensorGradient(tensorEval)
 
 
-
 x = [1.0] * dim
 print(x)
 
@@ -39,7 +38,7 @@ for i in range(dim):
     fp = f(xp)
     dffd[i] = (f(xp)[0] - fx) / eps
 print('dffd', dffd)
-    
-#print(tensor)
+
+# print(tensor)
 
 ottest.assert_almost_equal(df, dffd, 1e-4)

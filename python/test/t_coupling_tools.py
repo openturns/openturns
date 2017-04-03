@@ -236,7 +236,7 @@ def check_get_line_col():
         raise Exception("! got " + str(result) + ' instead of ' +
                         str(value))
 
-    #coupling_tools.debug = True
+    # coupling_tools.debug = True
     value = 21
     just_before_line_ret = 80
     sys.stderr.write('char at pos ' + str(just_before_line_ret) + ':->' +
@@ -612,5 +612,3 @@ check_get_tokens_skip_line_col()
 check_get_tokens_perf()
 check_get_tokens_skip_perf()
 check_get_line_col_perf()
-
-

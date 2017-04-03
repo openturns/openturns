@@ -618,7 +618,7 @@ Bool operator ==(const SampleImplementation & lhs,
 }
 
 void SampleImplementation::erase(iterator first,
-    iterator last)
+                                 iterator last)
 {
   PersistentCollection<Scalar>::iterator f = data_.begin() + (first - begin()) * dimension_;
   PersistentCollection<Scalar>::iterator l = data_.begin() + (last - begin()) * dimension_;
@@ -627,7 +627,7 @@ void SampleImplementation::erase(iterator first,
 }
 
 void SampleImplementation::erase(const UnsignedInteger first,
-    const UnsignedInteger last)
+                                 const UnsignedInteger last)
 {
   PersistentCollection<Scalar>::iterator f = data_.begin() + first * dimension_;
   PersistentCollection<Scalar>::iterator l = data_.begin() + last * dimension_;
@@ -1017,10 +1017,10 @@ CovarianceMatrix SampleImplementation::computeCovariance() const
     UnsignedInteger baseIndex = 0;
     for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
-      const Scalar deltaI = *(it+i) - mean[i];
+      const Scalar deltaI = *(it + i) - mean[i];
       for (UnsignedInteger j = i; j < dimension_; ++j)
       {
-        const Scalar deltaJ = *(it+j) - mean[j];
+        const Scalar deltaJ = *(it + j) - mean[j];
         accumulated[baseIndex + j] += deltaI * deltaJ;
       }
       baseIndex += dimension_;

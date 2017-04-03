@@ -54,7 +54,8 @@ try:
     # Get 95% survival function
     inverseSurvival = Point(copula.computeInverseSurvivalFunction(0.95))
     print("InverseSurvival=", repr(inverseSurvival))
-    print("Survival(inverseSurvival)=%.6f" % copula.computeSurvivalFunction(inverseSurvival))
+    print("Survival(inverseSurvival)=%.6f" %
+          copula.computeSurvivalFunction(inverseSurvival))
     # Extract the marginals
     for i in range(dim):
         margin = copula.getMarginal(i)

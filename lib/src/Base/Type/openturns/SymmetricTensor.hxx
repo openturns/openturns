@@ -77,14 +77,14 @@ public:
   /** Operator () gives access to the elements of the symmetric tensor (to modify these elements and their symmetric element) */
   /** The element of the symmetric tensor is designated by its row number i, its column number j and its sheet number k*/
   Scalar & operator () (const UnsignedInteger i,
-                                 const UnsignedInteger j,
-                                 const UnsignedInteger k);
+                        const UnsignedInteger j,
+                        const UnsignedInteger k);
 
   /** Operator () gives access to the elements of the tensor (read only) */
   /** The element of the tensor is designated by its row number i and its column number j */
   const Scalar & operator () (const UnsignedInteger i,
-                                       const UnsignedInteger j,
-                                       const UnsignedInteger k) const;
+                              const UnsignedInteger j,
+                              const UnsignedInteger k) const;
 #endif
 
   /** getSheet returns the sheet specified by its sheet number k */

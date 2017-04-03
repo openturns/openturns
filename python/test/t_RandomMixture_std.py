@@ -82,26 +82,34 @@ try:
         print("quantile (ref)=", distributionReference.computeQuantile(0.95))
         print("cdf(quantile)=%.6f" % distribution.computeCDF(quantile))
         # Get 95% survival function
-        inverseSurvival = Point(distribution.computeInverseSurvivalFunction(0.95))
+        inverseSurvival = Point(
+            distribution.computeInverseSurvivalFunction(0.95))
         print("InverseSurvival=", repr(inverseSurvival))
-        print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
+        print("Survival(inverseSurvival)=%.6f" %
+              distribution.computeSurvivalFunction(inverseSurvival))
 
         # Confidence regions
         if distribution.getDimension() <= 1 and testIndex <= 1:
-            print("dimension=", distribution.getDimension(), "test case=", testIndex)
-            interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
+            print("dimension=", distribution.getDimension(),
+                  "test case=", testIndex)
+            interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(
+                0.95)
             print("Minimum volume interval=", interval)
             print("threshold=", Point(1, threshold))
-            levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
+            levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(
+                0.95)
             print("Minimum volume level set=", levelSet)
             print("beta=", Point(1, beta))
-            interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
+            interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(
+                0.95)
             print("Bilateral confidence interval=", interval)
             print("beta=", Point(1, beta))
-            interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
+            interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+                0.95, False)
             print("Unilateral confidence interval (lower tail)=", interval)
             print("beta=", Point(1, beta))
-            interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
+            interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+                0.95, True)
             print("Unilateral confidence interval (upper tail)=", interval)
             print("beta=", Point(1, beta))
 
@@ -166,7 +174,7 @@ try:
     result, norms = distribution.project(collFactories)
     print("projections=", result)
     print("norms=", norms)
-    #------------------------------ Multivariate tests ------------------------------#
+    # ------------------------------ Multivariate tests ------------------------------#
     # 2D RandomMixture
     collection = DistributionCollection(0)
     collection.add(Normal(0.0, 1.0))

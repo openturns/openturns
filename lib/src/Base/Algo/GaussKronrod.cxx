@@ -67,8 +67,8 @@ GaussKronrod * GaussKronrod::clone() const
  * is an 1D interval and f a scalar function
  */
 Point GaussKronrod::integrate(const Function & function,
-                                       const Interval & interval,
-                                       Scalar & error) const
+                              const Interval & interval,
+                              Scalar & error) const
 {
   if (interval.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given interval should be 1D, here dimension=" << interval.getDimension();
   Point ai(0);
@@ -79,13 +79,13 @@ Point GaussKronrod::integrate(const Function & function,
 }
 
 Point GaussKronrod::integrate(const Function & function,
-                                       const Scalar a,
-                                       const Scalar b,
-                                       Scalar & error,
-                                       Point & ai,
-                                       Point & bi,
-                                       Sample & fi,
-                                       Point & ei) const
+                              const Scalar a,
+                              const Scalar b,
+                              Scalar & error,
+                              Point & ai,
+                              Point & bi,
+                              Sample & fi,
+                              Point & ei) const
 {
   if (function.getInputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can integrate only 1D function, here input dimension=" << function.getInputDimension();
   const UnsignedInteger outputDimension = function.getOutputDimension();
@@ -136,13 +136,13 @@ Point GaussKronrod::integrate(const Function & function,
 }
 
 Point GaussKronrod::integrate(const Function & function,
-                                       const Scalar a,
-                                       const Scalar b,
-                                       Point & error,
-                                       Point & ai,
-                                       Point & bi,
-                                       Sample & fi,
-                                       Point & ei) const
+                              const Scalar a,
+                              const Scalar b,
+                              Point & error,
+                              Point & ai,
+                              Point & bi,
+                              Sample & fi,
+                              Point & ei) const
 {
   // Here we initialize the error to a 1D Point in order to use the interface with scalar error
   error = Point(1);
@@ -151,9 +151,9 @@ Point GaussKronrod::integrate(const Function & function,
 
 /* Compute the local GaussKronrod rule over [a, b]. */
 Point GaussKronrod::computeRule(const Function & function,
-    const Scalar a,
-    const Scalar b,
-    Scalar & localError) const
+                                const Scalar a,
+                                const Scalar b,
+                                Scalar & localError) const
 {
   const Scalar width = 0.5 * (b - a);
   const Scalar center = 0.5 * (a + b);

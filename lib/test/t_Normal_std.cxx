@@ -274,15 +274,15 @@ int main(int argc, char *argv[])
       // }
       {
         // Comparison with a clone
-	Normal other(distribution.getDimension());
-	other.setParameter(distribution.getParameter());
+        Normal other(distribution.getDimension());
+        other.setParameter(distribution.getParameter());
         const Bool equal = distribution == other;
         fullprint << "Comparison with a clone " << std::boolalpha << equal << std::endl;
       }
       {
         // Comparison with another member of the same family
-	Normal other(distribution.getDimension());
-	other.setParameter(distribution.getParameter() * 0.5);
+        Normal other(distribution.getDimension());
+        other.setParameter(distribution.getParameter() * 0.5);
         const Bool equal = distribution == other;
         fullprint << "Comparison with another member " << std::boolalpha << equal << std::endl;
       }

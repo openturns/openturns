@@ -45,19 +45,19 @@ public:
 
   /** Parameters constructor */
   KarhunenLoeveSVDAlgorithm(const ProcessSample & sample,
-			    const Scalar threshold = 0.0,
-			    const Bool centeredSample = false);
+                            const Scalar threshold = 0.0,
+                            const Bool centeredSample = false);
 
   KarhunenLoeveSVDAlgorithm(const ProcessSample & sample,
-			    const Point & verticesWeights,
-			    const Scalar threshold = 0.0,
-			    const Bool centeredSample = false);
+                            const Point & verticesWeights,
+                            const Scalar threshold = 0.0,
+                            const Bool centeredSample = false);
 
   KarhunenLoeveSVDAlgorithm(const ProcessSample & sample,
-			    const Point & verticesWeights,
-			    const Point & sampleWeights,
-			    const Scalar threshold = 0.0,
-			    const Bool centeredSample = false);
+                            const Point & verticesWeights,
+                            const Point & sampleWeights,
+                            const Scalar threshold = 0.0,
+                            const Bool centeredSample = false);
 
   /** Virtual copy constructor */
   virtual KarhunenLoeveSVDAlgorithm * clone() const;
@@ -74,22 +74,22 @@ public:
 
   /** Vertices weights accessor */
   Point getVerticesWeights() const;
- private:
+private:
   void setVerticesWeights(const Point & verticesWeights);
- public:
-  
+public:
+
   /** Sample weights accessor */
   Point getSampleWeights() const;
- private:
+private:
   void setSampleWeights(const Point & sampleWeights);
- public:
-  
+public:
+
   /** Covariance model accessors */
   CovarianceModel getCovarianceModel() const;
- private:
+private:
   /** Hide the covariance model accessor as it has no meaning in the SVD context */
   void setCovarianceModel(const CovarianceModel & covariance);
- public:
+public:
 
   /** String converter */
   virtual String __repr__() const;

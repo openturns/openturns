@@ -25,7 +25,9 @@ import sys
 
 __all__ = ["View", "PlotDesign"]
 
+
 class View(object):
+
     """
     Create the figure.
 
@@ -380,7 +382,7 @@ class View(object):
                     clabel_kwargs.setdefault('fontsize', 8)
                     # Use labels
                     fmt = {}
-                    for l,s in zip(np.array(drawable.getLevels()), drawable.getLabels()):
+                    for l, s in zip(np.array(drawable.getLevels()), drawable.getLabels()):
                         fmt[l] = s
                     clabel_kwargs.setdefault('fmt', fmt)
                     plt.clabel(contourset, **clabel_kwargs)
@@ -452,7 +454,8 @@ class View(object):
                     vertical_default = 'center'
                 positions = drawable.getTextPositions()
                 for i, text in enumerate(drawable.getTextAnnotations()):
-                    if len(text) == 0: continue
+                    if len(text) == 0:
+                        continue
                     horizontal = horizontal_default
                     vertical = vertical_default
                     # Text.getTextPositions() describes position of text with respect
@@ -460,14 +463,15 @@ class View(object):
                     # which side of the text bounding box is positioned, its meaning is
                     # thus inverted.
                     if positions[i] == 'left':
-                        horizontal='right'
+                        horizontal = 'right'
                     elif positions[i] == 'right':
-                        horizontal='left'
+                        horizontal = 'left'
                     elif positions[i] == 'top':
-                        vertical='bottom'
+                        vertical = 'bottom'
                     elif positions[i] == 'bottom':
-                        vertical='top'
-                    self._ax[0].text(x[i][0], y[i][0], text, horizontalalignment=horizontal, verticalalignment=vertical, **text_kwargs)
+                        vertical = 'top'
+                    self._ax[0].text(
+                        x[i][0], y[i][0], text, horizontalalignment=horizontal, verticalalignment=vertical, **text_kwargs)
 
             else:
                 raise ValueError(
@@ -589,8 +593,6 @@ def ToSVGString(graph):
     return svgBytes.decode('utf-8')
 
 
-
-
 def PlotDesign(design, bounds, Nx, Ny, figure=None, axes=[], plot_kwargs={}, axes_kwargs={}, text_kwargs={}):
     """
     Plot a design using a scatter plot approach (plots 2D marginals).
@@ -682,7 +684,7 @@ def PlotDesign(design, bounds, Nx, Ny, figure=None, axes=[], plot_kwargs={}, axe
         x = data.getMarginal(0)
         y = data.getMarginal(1)
         # x axis
-        x_min =  bounds.getLowerBound()[0]
+        x_min = bounds.getLowerBound()[0]
         x_max = bounds.getUpperBound()[0]
         dx = x_max - x_min
         # y axis
@@ -701,7 +703,7 @@ def PlotDesign(design, bounds, Nx, Ny, figure=None, axes=[], plot_kwargs={}, axe
         dxdiv = float(Nx)
         yk = [y_min, y_max]
         for k in range(Nx):
-            xk = [x_min + k*dx/dxdiv, x_min + k*dx/dxdiv]
+            xk = [x_min + k * dx / dxdiv, x_min + k * dx / dxdiv]
             axes[0].plot(xk, yk, 'k-')
         xk = [x_max, x_max]
         axes[0].plot(xk, yk, 'k-')
@@ -716,12 +718,13 @@ def PlotDesign(design, bounds, Nx, Ny, figure=None, axes=[], plot_kwargs={}, axe
     for i in range(dim):
         for j in range(dim):
             if len(axes) <= dim * dim:
-                axes.append(figure.add_subplot(dim, dim, 1 + i * dim + j, **axes_kwargs))
+                axes.append(
+                    figure.add_subplot(dim, dim, 1 + i * dim + j, **axes_kwargs))
             if i != j:
                 x = data.getMarginal(i)
                 y = data.getMarginal(j)
                 # x axis
-                x_min =  bounds.getLowerBound()[i]
+                x_min = bounds.getLowerBound()[i]
                 x_max = bounds.getUpperBound()[i]
                 dx = x_max - x_min
                 # y axis

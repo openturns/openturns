@@ -88,7 +88,7 @@ protected:
   /* Solver & optimization problem for log-likelihood maximization */
   OptimizationAlgorithm solver_;
   OptimizationProblem problem_;
-  
+
   /* Known parameter */
   Point knownParameterValues_;
   Indices knownParameterIndices_;

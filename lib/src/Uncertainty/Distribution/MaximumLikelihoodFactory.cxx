@@ -89,9 +89,9 @@ class LogLikelihoodEvaluation : public EvaluationImplementation
 {
 public:
   LogLikelihoodEvaluation(const Sample & sample,
-                                        const Distribution & distribution,
-                                        const Point & knownParameterValues,
-                                        const Indices & knownParameterIndices)
+                          const Distribution & distribution,
+                          const Point & knownParameterValues,
+                          const Indices & knownParameterIndices)
     : EvaluationImplementation()
     , sample_(sample)
     , distribution_(distribution)

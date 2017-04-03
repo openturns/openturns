@@ -80,7 +80,7 @@ public:
 
   /** getResidual */
   Sample getResidual(const Sample & predictor,
-                              const Sample & measured) const;
+                     const Sample & measured) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

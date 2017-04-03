@@ -42,8 +42,8 @@ LinearEvaluation::LinearEvaluation()
 
 /* Parameter constructor */
 LinearEvaluation::LinearEvaluation(const Point & center,
-    const Point & constant,
-    const Matrix & linear)
+                                   const Point & constant,
+                                   const Matrix & linear)
   : EvaluationImplementation()
   , center_(center)
   , constant_(constant)

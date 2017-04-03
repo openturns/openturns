@@ -35,7 +35,7 @@ static const Factory<GeometricProfile> Factory_GeometricProfile;
 /* Default constructor */
 GeometricProfile::GeometricProfile(const Scalar T0, const Scalar c, const UnsignedInteger iMax)
   : TemperatureProfileImplementation(T0, iMax)
-    , c_(c)
+  , c_(c)
 {
   if (!(c <= 0.0 || c < 1.0)) throw InvalidArgumentException(HERE) << "Argument c must be between 0 and 1 exclusive";
   logc_ = std::log(c);

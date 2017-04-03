@@ -330,7 +330,7 @@ Point Student::computeCDFGradient(const Point & point) const
    Samuel Kotz, Saralees Nadarajah, "Multivariate t Distributions and Their Applications", Cambridge University Press, 2001.
 */
 Scalar Student::computeConditionalPDF(const Scalar x,
-    const Point & y) const
+                                      const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -347,7 +347,7 @@ Scalar Student::computeConditionalPDF(const Scalar x,
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 Scalar Student::computeConditionalCDF(const Scalar x,
-    const Point & y) const
+                                      const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -630,7 +630,7 @@ Scalar Student::getNu() const
 
 /* Quantile computation for dimension=1 */
 Scalar Student::computeScalarQuantile(const Scalar prob,
-    const Bool tail) const
+                                      const Bool tail) const
 {
   return mean_[0] + sigma_[0] * DistFunc::qStudent(nu_, prob, tail);
 }

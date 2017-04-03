@@ -51,7 +51,7 @@ public:
 
   /** Constructor from Function */
   explicit FieldFunction(const Function & function,
-                             const UnsignedInteger spatialDimension = 1);
+                         const UnsignedInteger spatialDimension = 1);
 
   /** Constructor from FieldFunctionImplementation */
   FieldFunction(const FieldFunctionImplementation & implementation);
@@ -75,9 +75,9 @@ public:
 
   /** Operator () */
   Point operator() (const Scalar timeStamp,
-                             const Point & inP) const;
+                    const Point & inP) const;
   Point operator() (const Point & location,
-                             const Point & inP) const;
+                    const Point & inP) const;
   Field operator() (const Field & inFld) const;
   ProcessSample operator() (const ProcessSample & inPS) const;
 

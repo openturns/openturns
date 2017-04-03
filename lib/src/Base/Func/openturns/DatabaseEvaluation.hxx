@@ -46,8 +46,8 @@ public:
 
   /** Default constructor */
   DatabaseEvaluation(const Sample & inputSample,
-      const Sample & outputSample,
-      const Bool activateCache = true);
+                     const Sample & outputSample,
+                     const Bool activateCache = true);
 
   /** Virtual constructor */
   virtual DatabaseEvaluation * clone() const;

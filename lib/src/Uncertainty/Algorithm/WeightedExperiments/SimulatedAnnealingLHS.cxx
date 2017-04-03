@@ -38,10 +38,10 @@ static const Factory<SimulatedAnnealingLHS> Factory_SimulatedAnnealingLHS;
 
 /** Geometric temperature profil */
 SimulatedAnnealingLHS::SimulatedAnnealingLHS(const LHSExperiment & lhs, const TemperatureProfile & profile,
-  const SpaceFilling & spaceFilling)
-    : OptimalLHSExperiment(lhs, spaceFilling)
-    , profile_(profile)
-    , initialDesign_()
+    const SpaceFilling & spaceFilling)
+  : OptimalLHSExperiment(lhs, spaceFilling)
+  , profile_(profile)
+  , initialDesign_()
 {
   if (spaceFilling.getImplementation()->getClassName() == "SpaceFillingMinDist")
   {
@@ -52,12 +52,12 @@ SimulatedAnnealingLHS::SimulatedAnnealingLHS(const LHSExperiment & lhs, const Te
 
 /** SimulatedAnnealingLHS constructor with LHS*/
 SimulatedAnnealingLHS::SimulatedAnnealingLHS (const Sample & initialDesign,
-                                              const Distribution & distribution,
-                                              const TemperatureProfile & profile,
-                                              const SpaceFilling & spaceFilling)
-    : OptimalLHSExperiment()
-    , profile_(profile)
-    , initialDesign_(initialDesign)
+    const Distribution & distribution,
+    const TemperatureProfile & profile,
+    const SpaceFilling & spaceFilling)
+  : OptimalLHSExperiment()
+  , profile_(profile)
+  , initialDesign_(initialDesign)
 {
   if (spaceFilling.getImplementation()->getClassName() == "SpaceFillingMinDist")
   {
@@ -125,7 +125,7 @@ Sample SimulatedAnnealingLHS::generateWithRestart(UnsignedInteger nRestart) cons
       //          RandomGenerator::Generate() is called here.
       const Scalar bernoulliTrial = RandomGenerator::Generate();
       const Scalar newCriterion = spaceFilling_.perturbLHS(optimalDesign, optimalValue, row1, row2, columnIndex);
-      const Scalar criteriaDifference = std::min(std::exp((optimalValue-newCriterion)/T), 1.0);
+      const Scalar criteriaDifference = std::min(std::exp((optimalValue - newCriterion) / T), 1.0);
       // Decision with respect to criteriaDifference
       if (optimalValue >= newCriterion)
       {

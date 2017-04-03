@@ -62,9 +62,9 @@ public:
   virtual void load(Advocate & adv);
 
 private:
-   UnsignedInteger N_;
-   MonteCarloLHS() {};
-   friend class Factory<MonteCarloLHS>;
+  UnsignedInteger N_;
+  MonteCarloLHS() {};
+  friend class Factory<MonteCarloLHS>;
 }; /* class MonteCarloLHS */
 
 } /* namespace OT */

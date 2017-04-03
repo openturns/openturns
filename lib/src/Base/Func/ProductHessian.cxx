@@ -31,11 +31,11 @@ static const Factory<ProductHessian> Factory_ProductHessian;
 
 /* Default constructor */
 ProductHessian::ProductHessian(const EvaluationPointer & p_leftEvaluation,
-    const GradientPointer & p_leftGradient,
-    const HessianPointer & p_leftHessian,
-    const EvaluationPointer & p_rightEvaluation,
-    const GradientPointer & p_rightGradient,
-    const HessianPointer & p_rightHessian)
+                               const GradientPointer & p_leftGradient,
+                               const HessianPointer & p_leftHessian,
+                               const EvaluationPointer & p_rightEvaluation,
+                               const GradientPointer & p_rightGradient,
+                               const HessianPointer & p_rightHessian)
   : HessianImplementation(),
     p_leftEvaluation_(p_leftEvaluation),
     p_leftGradient_(p_leftGradient),

@@ -56,8 +56,8 @@ ARMA::ARMA(const ARMACoefficients & ARCoefficients,
            const ARMACoefficients & MACoefficients,
            const WhiteNoise & whiteNoise)
   : ProcessImplementation()
-  // Don't initialize these attributes before to check if they are valid
-  // as they can be huge
+    // Don't initialize these attributes before to check if they are valid
+    // as they can be huge
   , ARCoefficients_()
   , MACoefficients_()
   , p_(ARCoefficients.getSize())
@@ -88,8 +88,8 @@ ARMA::ARMA(const ARMACoefficients & ARCoefficients,
            const WhiteNoise & whiteNoise,
            const ARMAState & state)
   : ProcessImplementation()
-  // Don't initialize these attributes before to check if they are valid
-  // as they can be huge
+    // Don't initialize these attributes before to check if they are valid
+    // as they can be huge
   , ARCoefficients_()
   , MACoefficients_()
   , p_(ARCoefficients.getSize())

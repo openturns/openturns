@@ -41,14 +41,14 @@ TruncatedNormal::TruncatedNormal()
   , b_(1.0)
   , aNorm_(-1.0)
   , bNorm_(1.0)
-  // 0.24197072451914333757 = exp(-1/2)/sqrt{2\pi}
+    // 0.24197072451914333757 = exp(-1/2)/sqrt{2\pi}
   , phiANorm_(0.24197072451914333757)
   , phiBNorm_(0.24197072451914333757)
-  // 0.15865525393145704647 = Phi(-1)
+    // 0.15865525393145704647 = Phi(-1)
   , PhiANorm_(0.15865525393145704647)
-  // 0.84134474606854292578 = Phi(1)
+    // 0.84134474606854292578 = Phi(1)
   , PhiBNorm_(0.84134474606854292578)
-  // 1.46479477349154407761 = 1 / (Phi(1) - Phi(-1))
+    // 1.46479477349154407761 = 1 / (Phi(1) - Phi(-1))
   , normalizationFactor_(1.46479477349154407761)
 {
   setName("TruncatedNormal");
@@ -246,18 +246,18 @@ Interval TruncatedNormal::computeMinimumVolumeIntervalWithMarginalProbability(co
 
   // 1)
   if (phiANorm_ >= phiBNorm_)
-    {
-      // Find \alpha
-      PDFWrapper pdfWrapper(this);
-      Brent solver(quantileEpsilon_, pdfEpsilon_, pdfEpsilon_, quantileIterations_);
-      const Scalar alpha = solver.solve(pdfWrapper, normalizationFactor_ * phiANorm_ / sigma_ , mu_, b_);
-      const Scalar probability = computeProbability(Interval(a_, alpha));
-      // 1a)
-      if (probability >= prob)
-	return computeUnivariateMinimumVolumeIntervalByRootFinding(prob, marginalProb);
-      // 1b)
-      return computeUnilateralConfidenceIntervalWithMarginalProbability(prob, false, marginalProb);
-    }
+  {
+    // Find \alpha
+    PDFWrapper pdfWrapper(this);
+    Brent solver(quantileEpsilon_, pdfEpsilon_, pdfEpsilon_, quantileIterations_);
+    const Scalar alpha = solver.solve(pdfWrapper, normalizationFactor_ * phiANorm_ / sigma_ , mu_, b_);
+    const Scalar probability = computeProbability(Interval(a_, alpha));
+    // 1a)
+    if (probability >= prob)
+      return computeUnivariateMinimumVolumeIntervalByRootFinding(prob, marginalProb);
+    // 1b)
+    return computeUnilateralConfidenceIntervalWithMarginalProbability(prob, false, marginalProb);
+  }
   // 2)
   // Find \beta
   PDFWrapper pdfWrapper(this);

@@ -51,7 +51,7 @@ public:
 public:
   /** Parameter constructor */
   LinearCombinationEvaluation(const FunctionCollection & functionsCollection,
-      const Point & coefficients);
+                              const Point & coefficients);
 
   /** Virtual constructor */
   virtual LinearCombinationEvaluation * clone() const;

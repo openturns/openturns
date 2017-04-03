@@ -124,7 +124,7 @@ private:
   Sample currentPointSample_;// X
   Sample currentLevelSample_;//f(X)
   UnsignedInteger seedNumber_;// number of seed points
-  
+
 } ; /* class SubsetSampling */
 
 END_NAMESPACE_OPENTURNS

@@ -219,8 +219,8 @@ Distribution FittingTest::BestModelChiSquared(const Sample & sample,
 
 /* Bayesian Information Criterion computation */
 Scalar FittingTest::BIC(const Sample & sample,
-                                 const Distribution & distribution,
-                                 const UnsignedInteger estimatedParameters)
+                        const Distribution & distribution,
+                        const UnsignedInteger estimatedParameters)
 {
   if (sample.getDimension() != distribution.getDimension()) throw InvalidArgumentException(HERE) << "Error: the sample dimension and the distribution dimension must be equal";
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: the sample is empty";
@@ -239,7 +239,7 @@ Scalar FittingTest::BIC(const Sample & sample,
 
 /* Bayesian Information Criterion computation */
 Scalar FittingTest::BIC(const Sample & sample,
-                                 const DistributionFactory & factory)
+                        const DistributionFactory & factory)
 {
   const Distribution distribution(factory.build(sample));
   return BIC(sample, distribution, distribution.getParameterDimension());

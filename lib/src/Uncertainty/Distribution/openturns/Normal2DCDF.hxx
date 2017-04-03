@@ -27,9 +27,9 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 Scalar Normal2DCDF(const Scalar x1,
-                            const Scalar x2,
-                            const Scalar rho,
-                            const Bool tail);
+                   const Scalar x2,
+                   const Scalar rho,
+                   const Bool tail);
 
 END_NAMESPACE_OPENTURNS
 

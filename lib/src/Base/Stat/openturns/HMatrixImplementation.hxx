@@ -72,7 +72,7 @@ public:
   virtual ~HMatrixTensorRealAssemblyFunction() {}
 
   HMatrixTensorRealAssemblyFunction(const UnsignedInteger outputDimension)
-  : dimension_(outputDimension) {}
+    : dimension_(outputDimension) {}
 
   UnsignedInteger getDimension() const
   {

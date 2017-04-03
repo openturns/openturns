@@ -6,7 +6,7 @@ import openturns as ot
 eps = 0.4
 # Instance creation
 myFunc = ot.Function(['x1', 'x2'], ['f1', 'f2', 'f3'], [
-                                  'x1*sin(x2)', 'cos(x1+x2)', '(x2+1)*exp(x1-2*x2)'])
+    'x1*sin(x2)', 'cos(x1+x2)', '(x2+1)*exp(x1-2*x2)'])
 center = ot.Point(myFunc.getInputDimension())
 for i in range(center.getDimension()):
     center[i] = 1.0 + i

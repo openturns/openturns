@@ -50,7 +50,7 @@ public:
 
   /** Constructor with size */
   explicit Point(const UnsignedInteger size,
-                          const Scalar value = 0.0);
+                 const Scalar value = 0.0);
 
   /** Constructor from a collection */
   Point(const Collection<Scalar> & coll);
@@ -151,29 +151,29 @@ OT_API Bool operator < (const Point & lhs,
 
 /** Product operator */
 OT_API Point operator * (const Scalar scalar,
-                                  const Point & point);
+                         const Point & point);
 
 /** Product operator */
 OT_API Point operator * (const Point & point,
-                                  const Scalar scalar);
+                         const Scalar scalar);
 
 /** Division operator */
 OT_API Point operator / (const Point & point,
-                                  const Scalar scalar);
+                         const Scalar scalar);
 
 /** Addition operator */
 OT_API Point operator + (const Point & lhs,
-                                  const Point & rhs);
+                         const Point & rhs);
 
 /** Substraction operator */
 OT_API Point operator - (const Point & lhs,
-                                  const Point & rhs);
+                         const Point & rhs);
 
 #endif
 
 /** Dot product operator */
 OT_API Scalar dot(const Point & lhs,
-                           const Point & rhs);
+                  const Point & rhs);
 
 
 

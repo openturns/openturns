@@ -87,33 +87,33 @@ Indices MixtureClassifier::classifySequential(const Sample & inS) const
   // The expansive part: the computation of the log-PDF, here we benefit
   // from possible parallelism in computeLogPDF() for each atom
   for (UnsignedInteger classIndex = 0; classIndex < mixtureSize; ++classIndex)
-    {
-      const Distribution atom(mixture_.getDistributionCollection()[classIndex]);
-      atomsLogPDF[classIndex] = atom.computeLogPDF(inS).getImplementation()->getData();
-      logWeights[classIndex] = std::log(atom.getWeight());
-    }
+  {
+    const Distribution atom(mixture_.getDistributionCollection()[classIndex]);
+    atomsLogPDF[classIndex] = atom.computeLogPDF(inS).getImplementation()->getData();
+    logWeights[classIndex] = std::log(atom.getWeight());
+  }
   // Now grade the points
   // The outer loop is on the classes and the inner loop on the point to
   // benefit from data locality
   Point bestGrades(size, -SpecFunc::MaxScalar);
   Indices bestClasses(size);
   for (UnsignedInteger classIndex = 0; classIndex < mixtureSize; ++classIndex)
+  {
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
-      for (UnsignedInteger i = 0; i < size; ++i)
-	{
-	  const Scalar grade = logWeights[classIndex] + atomsLogPDF[classIndex][i];
-	  if (grade > bestGrades[i])
-	    {
-	      bestGrades[i] = grade;
-	      bestClasses[i] = classIndex;
-	    } // grade > bestGrades[i]
-	} // for i
-    } // for classIndex
+      const Scalar grade = logWeights[classIndex] + atomsLogPDF[classIndex][i];
+      if (grade > bestGrades[i])
+      {
+        bestGrades[i] = grade;
+        bestClasses[i] = classIndex;
+      } // grade > bestGrades[i]
+    } // for i
+  } // for classIndex
   return bestClasses;
 }
 
 Scalar MixtureClassifier::grade(const Point& inP,
-    const UnsignedInteger outC) const
+                                const UnsignedInteger outC) const
 {
   const UnsignedInteger size = mixture_.getDistributionCollection().getSize();
   if (outC >= size) throw InvalidDimensionException(HERE) << "Class number (=" << outC << ") must be lower than size (=" << size << ").";

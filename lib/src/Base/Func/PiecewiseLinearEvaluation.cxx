@@ -145,10 +145,10 @@ void PiecewiseLinearEvaluation::setLocations(const Point & locations)
   std::stable_sort(locationsAndValues.begin(), locationsAndValues.end());
   locations_ = Point(size);
   for (UnsignedInteger i = 0; i < size; ++i)
-    {
-      locations_[i] = locationsAndValues[i].first;
-      values_[i] = locationsAndValues[i].second;      
-    }
+  {
+    locations_[i] = locationsAndValues[i].first;
+    values_[i] = locationsAndValues[i].second;
+  }
   const Scalar step = locations_[1] - locations_[0];
   const Scalar epsilon = ResourceMap::GetAsScalar("PiecewiseLinearEvaluation-EpsilonRegular") * std::abs(step);
   isRegular_ = true;

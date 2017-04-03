@@ -53,13 +53,13 @@ public:
   using ClassifierImplementation::classify;
   virtual UnsignedInteger classify(const Point & inP) const;
 
- private:
+private:
   Indices classifySequential(const Sample & inS) const;
- public:
+public:
 
   /** Grade a point as if it were associated to a class */
   virtual Scalar grade(const Point & inP,
-                                const UnsignedInteger outC) const;
+                       const UnsignedInteger outC) const;
 
   /** Mixture accessors */
   Mixture getMixture() const;

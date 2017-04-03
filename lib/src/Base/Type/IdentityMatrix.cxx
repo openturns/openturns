@@ -57,7 +57,7 @@ String IdentityMatrix::__repr__() const
 
 /* Operator () : should do nothing, in order to prevent any modification on the matrix */
 Scalar & IdentityMatrix::operator() (const UnsignedInteger i,
-    const UnsignedInteger j)
+                                     const UnsignedInteger j)
 {
   copyOnWrite();
   return (*getImplementation())(i, j);
@@ -105,7 +105,7 @@ CorrelationMatrix IdentityMatrix::operator * (const CorrelationMatrix & m) const
 
 /* Resolution of a linear system */
 Point IdentityMatrix::solveLinearSystem(const Point & b,
-    const Bool keepIntact)
+                                        const Bool keepIntact)
 {
   return b;
 }
@@ -136,7 +136,7 @@ Point IdentityMatrix::computeEigenValues(const Bool keepIntact)
 }
 
 Point IdentityMatrix::computeEV(SquareMatrix & v,
-    const Bool keepIntact)
+                                const Bool keepIntact)
 {
   v = *this;
   return Point(getNbRows(), 1.0);
@@ -150,9 +150,9 @@ Point IdentityMatrix::computeSingularValues(const Bool keepIntact)
 
 /* Compute singular values */
 Point IdentityMatrix::computeSVD(Matrix & u,
-    Matrix & vT,
-    const Bool fullSVD,
-    const Bool keepIntact)
+                                 Matrix & vT,
+                                 const Bool fullSVD,
+                                 const Bool keepIntact)
 {
   u = *this;
   vT = *this;

@@ -47,21 +47,21 @@ try:
     print("psample2=", psample2)
 
     # TimeSeriesCollection
-    ## collection = TimeSeriesCollection()
+    # collection = TimeSeriesCollection()
     # collection.add(timeSeries)
 
-    ## sample *= [0.1]
-    ## newtimeSeries = TimeSeries(timeGrid, sample)
+    # sample *= [0.1]
+    # newtimeSeries = TimeSeries(timeGrid, sample)
     # collection.add(newtimeSeries)
 
     # We create a ProcessSample with collection arguments arguments
-    ## psample3 = ProcessSample(collection)
+    # psample3 = ProcessSample(collection)
 
     # psample3.setName("PSample3")
     # print "Constructor based on collection "
     # print "psample3=", psample3
 
-    ## ts = psample3[1]
+    # ts = psample3[1]
     # print "last element of psample3=", (ts)
     # print "psample3 mean=", psample3.computeMean()
     # print "psample3 temporal mean=", psample3.computeTemporalMean()

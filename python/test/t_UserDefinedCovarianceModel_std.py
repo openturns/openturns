@@ -60,4 +60,3 @@ print(graph)
 # Test the drawing method as a nonstationary model, in the correlation range
 graph = myModel.draw(0, 0, 0.0, 2.0, 21, False, True)
 print(graph)
-

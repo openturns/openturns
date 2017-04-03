@@ -102,23 +102,28 @@ try:
     # Get 95% survival function
     inverseSurvival = Point(distribution.computeInverseSurvivalFunction(0.95))
     print("InverseSurvival=", repr(inverseSurvival))
-    print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
+    print("Survival(inverseSurvival)=%.6f" %
+          distribution.computeSurvivalFunction(inverseSurvival))
     # Confidence regions
     if distribution.getDimension() <= 2:
         threshold = Point()
-        print("Minimum volume interval=", distribution.computeMinimumVolumeInterval(0.95, threshold))
+        print("Minimum volume interval=",
+              distribution.computeMinimumVolumeInterval(0.95, threshold))
         print("threshold=", threshold)
         beta = Point()
         levelSet = distribution.computeMinimumVolumeLevelSet(0.95, beta)
         print("Minimum volume level set=", levelSet)
         print("beta=", beta)
-        print("Bilateral confidence interval=", distribution.computeBilateralConfidenceInterval(0.95, beta))
+        print("Bilateral confidence interval=",
+              distribution.computeBilateralConfidenceInterval(0.95, beta))
         print("beta=", beta)
-        print("Unilateral confidence interval (lower tail)=", distribution.computeUnilateralConfidenceInterval(0.95, False, beta))
+        print("Unilateral confidence interval (lower tail)=",
+              distribution.computeUnilateralConfidenceInterval(0.95, False, beta))
         print("beta=", beta)
-        print("Unilateral confidence interval (upper tail)=", distribution.computeUnilateralConfidenceInterval(0.95, True, beta))
+        print("Unilateral confidence interval (upper tail)=",
+              distribution.computeUnilateralConfidenceInterval(0.95, True, beta))
         print("beta=", beta)
-    
+
     # Reference : Normal nD, correlation matrix = identity
     ref = Normal(mean, sigma,  CorrelationMatrix(dim))
     print("Reference=")

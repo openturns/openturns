@@ -62,7 +62,7 @@ Scalar CorrelationAnalysis::SpearmanCorrelation(const Sample & inputSample,
 
 /* Compute the Standard Regression Coefficients (SRC) between the input sample and the output sample */
 Point CorrelationAnalysis::SRC(const Sample & inputSample,
-                                        const Sample & outputSample)
+                               const Sample & outputSample)
 {
   if (outputSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
@@ -86,7 +86,7 @@ Point CorrelationAnalysis::SRC(const Sample & inputSample,
 
 /* Compute the Partial Correlation Coefficients (PCC) between the input sample and the output sample */
 Point CorrelationAnalysis::PCC(const Sample & inputSample,
-                                        const Sample & outputSample)
+                               const Sample & outputSample)
 {
   if (inputSample.getDimension() < 2) throw InvalidDimensionException(HERE) << "Error: input sample must have dimension > 1";
   if (outputSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
@@ -119,7 +119,7 @@ Point CorrelationAnalysis::PCC(const Sample & inputSample,
 
 /* Compute the Standard Rank Regression Coefficients (SRRC) between the input sample and the output sample */
 Point CorrelationAnalysis::SRRC(const Sample & inputSample,
-    const Sample & outputSample)
+                                const Sample & outputSample)
 {
   if (outputSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
@@ -128,7 +128,7 @@ Point CorrelationAnalysis::SRRC(const Sample & inputSample,
 
 /* Compute the Partial Rank Correlation Coefficients (PRCC) between the input sample and the output sample */
 Point CorrelationAnalysis::PRCC(const Sample & inputSample,
-    const Sample & outputSample)
+                                const Sample & outputSample)
 {
   // Perform the basic checks of the inputs, to avoid costly ranking if finally PCC will fail
   if (inputSample.getDimension() < 2) throw InvalidDimensionException(HERE) << "Error: input sample must have dimension > 1";

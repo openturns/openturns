@@ -118,7 +118,7 @@ Sample LinearModel::getPredicted(const Sample & predictor) const
 
 /* getResidual */
 Sample LinearModel::getResidual(const Sample & predictor,
-    const Sample & measured) const
+                                const Sample & measured) const
 {
   if (predictor.getDimension() + 1 != regression_.getDimension()) throw InvalidArgumentException(HERE) << "Error: predictors must have a dimension compatible with the linear model dimension";
   UnsignedInteger size = predictor.getSize();

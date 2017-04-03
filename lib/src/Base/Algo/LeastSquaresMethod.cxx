@@ -149,9 +149,9 @@ Matrix LeastSquaresMethod::computeWeightedDesign(bool whole) const
 }
 
 LeastSquaresMethod LeastSquaresMethod::Build(const String name,
-                                             const DesignProxy & proxy,
-                                             const Point & weight,
-                                             const Indices & indices)
+    const DesignProxy & proxy,
+    const Point & weight,
+    const Indices & indices)
 {
   if      (name == "SVD")      return SVDMethod(proxy, weight, indices);
   else if (name == "Cholesky") return CholeskyMethod(proxy, weight, indices);
@@ -162,8 +162,8 @@ LeastSquaresMethod LeastSquaresMethod::Build(const String name,
 
 
 LeastSquaresMethod LeastSquaresMethod::Build(const String name,
-                                             const DesignProxy & proxy,
-                                             const Indices & indices)
+    const DesignProxy & proxy,
+    const Indices & indices)
 {
   if      (name == "SVD")      return SVDMethod(proxy, indices);
   else if (name == "Cholesky") return CholeskyMethod(proxy, indices);

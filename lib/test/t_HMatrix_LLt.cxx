@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
     const Scalar normL(hmat.norm());
     const Scalar alpha(0.1);
     hmat.scale(alpha);
-    fullprint << "|| L || - 10.0 * || 0.1 * L || " << ((std::abs(normL - hmat.norm()/alpha) < threshold) ? " < " : " > ") << threshold << std::endl;
+    fullprint << "|| L || - 10.0 * || 0.1 * L || " << ((std::abs(normL - hmat.norm() / alpha) < threshold) ? " < " : " > ") << threshold << std::endl;
   }
   catch (NotYetImplementedException & ex)
   {

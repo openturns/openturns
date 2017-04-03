@@ -45,8 +45,8 @@ public:
 
   /** Parameter constructor */
   HistogramPolynomialFactory(const Scalar first,
-			     const Point & width,
-			     const Point & height);
+                             const Point & width,
+                             const Point & height);
 
   /** Virtual constructor */
   virtual HistogramPolynomialFactory * clone() const;

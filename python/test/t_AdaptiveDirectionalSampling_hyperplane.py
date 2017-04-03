@@ -64,11 +64,11 @@ for dim in [3, 5, 8][1:2]:
 
             for n in [100, 1000][1:]:
                 for gamma1 in [0.25, 0.5, 0.75][1:2]:
-                    #algo = ot.MonteCarlo(event)
+                    # algo = ot.MonteCarlo(event)
                     # algo.setMaximumOuterSampling(100*n)
                     # algo.setMaximumCoefficientOfVariation(-1.)
                     # algo.run()
-                    #result = algo.getResult()
+                    # result = algo.getResult()
                     # print result
                     algo = ot.AdaptiveDirectionalSampling(event)
                     algo.setMaximumOuterSampling(n)

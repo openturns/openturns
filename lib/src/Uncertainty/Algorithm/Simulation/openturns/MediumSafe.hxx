@@ -56,7 +56,7 @@ public:
 
   /** Solve gives all the roots found applying the root strategy */
   ScalarCollection solve(const Function & function,
-                                  const Scalar value);
+                         const Scalar value);
 
   /** String converter */
   String __repr__() const;

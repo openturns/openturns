@@ -122,9 +122,9 @@ private:
               Scalar & marginalRelativeError);
 
   void rankMComponent (const Sample & x,
-              const Sample & y,
-              CanonicalTensorEvaluation & tensor,
-              const UnsignedInteger j);
+                       const Sample & y,
+                       CanonicalTensorEvaluation & tensor,
+                       const UnsignedInteger j);
 
   /** The isoprobabilistic transformation maps the distribution into the orthogonal measure */
   Function transformation_;

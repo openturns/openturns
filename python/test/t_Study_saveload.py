@@ -70,7 +70,8 @@ try:
     simulationResult = ot.SimulationResult(ot.Event(), 0.5, 0.01, 150, 4)
     myStudy.add('simulationResult', simulationResult)
 
-    cNameList = ['MonteCarlo', 'LHS', 'QuasiMonteCarlo', 'RandomizedQuasiMonteCarlo',
+    cNameList = [
+        'MonteCarlo', 'LHS', 'QuasiMonteCarlo', 'RandomizedQuasiMonteCarlo',
                  'DirectionalSampling', 'RandomizedLHS', 'SimulationSensitivityAnalysis']
     for cName in cNameList:
         otClass = getattr(ot, cName)
@@ -166,7 +167,7 @@ try:
     # TensorApproximationAlgorithm/Result
     dim = 1
     model = ot.Function(['x'], ['y'], ['x*sin(x)'])
-    distribution = ot.ComposedDistribution([ot.Uniform()]*dim)
+    distribution = ot.ComposedDistribution([ot.Uniform()] * dim)
     factoryCollection = [ot.FourierSeriesFactory()] * dim
     functionFactory = ot.OrthogonalProductFunctionFactory(factoryCollection)
     size = 10
@@ -174,7 +175,8 @@ try:
     Y = model(X)
     nk = [5] * dim
     rank = 1
-    algo = ot.TensorApproximationAlgorithm(X, Y, distribution, functionFactory, nk, rank)
+    algo = ot.TensorApproximationAlgorithm(
+        X, Y, distribution, functionFactory, nk, rank)
     algo.run()
     tensorResult = algo.getResult()
     myStudy.add('tensorResult', tensorResult)
@@ -259,7 +261,8 @@ try:
     # Tensor
     tensorResult = ot.MetaModelResult()
     myStudy.fillObject('tensorResult', tensorResult)
-    ot.testing.assert_almost_equal(tensorResult.getMetaModel()(tensorIn), tensorRef)
+    ot.testing.assert_almost_equal(
+        tensorResult.getMetaModel()(tensorIn), tensorRef)
 
     # cleanup
     os.remove(fileName)

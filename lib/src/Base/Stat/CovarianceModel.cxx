@@ -137,7 +137,7 @@ Matrix CovarianceModel::partialGradient(const Point & s,
 
 /* Gradient wrt parameters */
 Matrix CovarianceModel::parameterGradient(const Point & s,
-                                          const Point & t) const
+    const Point & t) const
 {
   return getImplementation()->parameterGradient(s, t);
 }
@@ -159,7 +159,7 @@ CovarianceMatrix CovarianceModel::discretize(const Sample & vertices) const
 }
 
 Sample CovarianceModel::discretizeRow(const Sample & vertices,
-    const UnsignedInteger p) const
+                                      const UnsignedInteger p) const
 {
   return getImplementation()->discretizeRow(vertices, p);
 }
@@ -316,12 +316,12 @@ Bool CovarianceModel::isDiagonal() const
 
 /* Drawing method */
 Graph CovarianceModel::draw(const UnsignedInteger rowIndex,
-			    const UnsignedInteger columnIndex,
-			    const Scalar tMin,
-			    const Scalar tMax,
-			    const UnsignedInteger pointNumber,
-			    const Bool asStationary,
-			    const Bool correlationFlag) const
+                            const UnsignedInteger columnIndex,
+                            const Scalar tMin,
+                            const Scalar tMax,
+                            const UnsignedInteger pointNumber,
+                            const Bool asStationary,
+                            const Bool correlationFlag) const
 {
   return getImplementation()->draw(rowIndex, columnIndex, tMin, tMax, pointNumber, asStationary, correlationFlag);
 }

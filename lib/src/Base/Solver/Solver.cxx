@@ -72,20 +72,20 @@ String Solver::__repr__() const
 
 /* Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] */
 Scalar Solver::solve(const Function & function,
-                              const Scalar value,
-                              const Scalar infPoint,
-                              const Scalar supPoint) const
+                     const Scalar value,
+                     const Scalar infPoint,
+                     const Scalar supPoint) const
 {
   return getImplementation()->solve(function, value, infPoint, supPoint);
 }
 
 /* Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] given function(infPoint) and function(supPoint) */
 Scalar Solver::solve(const Function & function,
-                              const Scalar value,
-                              const Scalar infPoint,
-                              const Scalar supPoint,
-                              const Scalar infValue,
-                              const Scalar supValue) const
+                     const Scalar value,
+                     const Scalar infPoint,
+                     const Scalar supPoint,
+                     const Scalar infValue,
+                     const Scalar supValue) const
 {
   return getImplementation()->solve(function, value, infPoint, supPoint, infValue, supValue);
 }

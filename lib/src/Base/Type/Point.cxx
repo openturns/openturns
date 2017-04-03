@@ -37,14 +37,14 @@ static const Factory<Point> Factory_Point;
 /* Default constructor */
 Point::Point()
   : PersistentCollection<Scalar>() //,
-  // p_description_()
+    // p_description_()
 {
   // Nothing to do
 }
 
 /* Constructor with size */
 Point::Point(const UnsignedInteger size,
-                               const Scalar value)
+             const Scalar value)
   : PersistentCollection<Scalar>(size, value)
 {
   // Nothing to do
@@ -129,7 +129,7 @@ Point::iterator Point::erase(UnsignedInteger position)
 
 /* Addition operator */
 Point operator + (const Point & lhs,
-                           const Point & rhs)
+                  const Point & rhs)
 {
   int n = lhs.getDimension();
   if (n != (int)rhs.getDimension())
@@ -211,7 +211,7 @@ Point & Point::operator -=(const Point & other)
 
 /* Product operator */
 Point operator *(const Point & point,
-                          const Scalar scalar)
+                 const Scalar scalar)
 {
   int n = point.getDimension();
   double alpha = scalar;
@@ -222,7 +222,7 @@ Point operator *(const Point & point,
 }
 
 Point operator *(const Scalar scalar,
-                          const Point & point)
+                 const Point & point)
 {
   int n = point.getDimension();
   double alpha = scalar;
@@ -244,7 +244,7 @@ Point & Point::operator *=(const Scalar scalar)
 
 /* Division operator */
 Point operator /(const Point & point,
-                          const Scalar scalar)
+                 const Scalar scalar)
 {
   if (scalar == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot divide by 0.";
   int n = point.getDimension();
@@ -269,7 +269,7 @@ Point & Point::operator /=(const Scalar scalar)
 
 /* Dot product operator */
 Scalar dot(const Point & lhs,
-                    const Point & rhs)
+           const Point & rhs)
 {
   int n = lhs.getDimension();
   if (n != (int)rhs.getDimension())

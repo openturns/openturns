@@ -48,11 +48,11 @@ public:
 
   /** Factory of Sample from CSV file */
   static Sample ImportFromCSVFile(const FileName & fileName,
-      const String & csvSeparator = ResourceMap::Get( "csv-file-separator" ));
+                                  const String & csvSeparator = ResourceMap::Get( "csv-file-separator" ));
 
   /** Factory of Sample from Text file */
   static Sample ImportFromTextFile(const FileName & fileName,
-      const String & separator = " ");
+                                   const String & separator = " ");
 
   /** Export Sample into CSV file */
   void exportToCSVFile(const FileName & fileName,
@@ -72,16 +72,16 @@ public:
 
   /** Constructor with size and dimension */
   Sample(const UnsignedInteger size,
-                  const UnsignedInteger dim);
+         const UnsignedInteger dim);
 
   /** Constructor from a Point (all elements are equal to the Point) */
   Sample(const UnsignedInteger size,
-                  const Point & point);
+         const Point & point);
 
   /** Partial copy constructor */
   Sample(const Sample other,
-                  const UnsignedInteger first,
-                  const UnsignedInteger last);
+         const UnsignedInteger first,
+         const UnsignedInteger last);
 
 #ifndef SWIG
   /** Constructor from a collection of Point */
@@ -114,13 +114,13 @@ public:
   NSI_point at (const UnsignedInteger index);
   NSI_const_point at (const UnsignedInteger index) const;
   Scalar & operator () (const UnsignedInteger i,
-                                 const UnsignedInteger j);
-  const Scalar & operator () (const UnsignedInteger i,
-                                       const UnsignedInteger j) const;
-  Scalar & at (const UnsignedInteger i,
                         const UnsignedInteger j);
-  const Scalar & at (const UnsignedInteger i,
+  const Scalar & operator () (const UnsignedInteger i,
                               const UnsignedInteger j) const;
+  Scalar & at (const UnsignedInteger i,
+               const UnsignedInteger j);
+  const Scalar & at (const UnsignedInteger i,
+                     const UnsignedInteger j) const;
 
   void erase(SampleImplementation::iterator first, SampleImplementation::iterator last);
 #endif
@@ -267,7 +267,7 @@ public:
    * Get the empirical CDF of the sample
    */
   Scalar computeEmpiricalCDF(const Point & point,
-                                      const Bool tail = false) const;
+                             const Bool tail = false) const;
 
   /**
    * Get the position of a point in the sample.

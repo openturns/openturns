@@ -44,8 +44,8 @@ EventRandomVector::EventRandomVector()
 
 /* Constructor from RandomVector */
 EventRandomVector::EventRandomVector(const RandomVectorImplementation & antecedent,
-    const ComparisonOperator & op,
-    const Scalar threshold)
+                                     const ComparisonOperator & op,
+                                     const Scalar threshold)
   : CompositeRandomVector()
   , operator_(op)
   , threshold_(threshold)

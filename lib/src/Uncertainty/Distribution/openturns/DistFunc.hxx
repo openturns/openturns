@@ -47,19 +47,19 @@ public:
   // For Beta distribution. WARNING: here we adopt the classical definition
   // If tail=false, compute P(X<=x), else P(X>x)
   static Scalar pBeta(const Scalar p1,
-                               const Scalar p2,
-                               const Scalar x,
-                               const Bool tail = false);
+                      const Scalar p2,
+                      const Scalar x,
+                      const Bool tail = false);
   // If tail=false, compute x such that P(X<=x)=q, else x such that P(X>x)=q
   static Scalar qBeta(const Scalar p1,
-                               const Scalar p2,
-                               const Scalar p,
-                               const Bool tail = false);
+                      const Scalar p2,
+                      const Scalar p,
+                      const Bool tail = false);
   static Scalar rBeta(const Scalar p1,
-                               const Scalar p2);
+                      const Scalar p2);
   static Point rBeta(const Scalar p1,
-                              const Scalar p2,
-                              const UnsignedInteger size);
+                     const Scalar p2,
+                     const UnsignedInteger size);
   // For the Binomial distribution
 private:
   static Scalar fcBinomial(const UnsignedInteger k);
@@ -72,96 +72,96 @@ public:
                            const UnsignedInteger size);
   // For Gamma distribution
   static Scalar pGamma(const Scalar k,
-                                const Scalar x,
-                                const Bool tail = false);
+                       const Scalar x,
+                       const Bool tail = false);
   static Scalar qGamma(const Scalar k,
-                                const Scalar p,
-                                const Bool tail = false);
+                       const Scalar p,
+                       const Bool tail = false);
   static Scalar rGamma(const Scalar k);
   static Point rGamma(const Scalar k,
-                               const UnsignedInteger size);
+                      const UnsignedInteger size);
   // For Kolmogorov distribution
   static Scalar pKolmogorov(const UnsignedInteger n,
-                                     const Scalar x,
-                                     const Bool tail = false);
+                            const Scalar x,
+                            const Bool tail = false);
 
   // For NonCentralChiSquare distribution
   static Scalar dNonCentralChiSquare(const Scalar nu,
-      const Scalar lambda,
-      const Scalar x,
-      const Scalar precision = ResourceMap::GetAsScalar("DistFunc-Precision"),
-      const UnsignedInteger maximumIteration = ResourceMap::GetAsScalar("DistFunc-MaximumIteration"));
+                                     const Scalar lambda,
+                                     const Scalar x,
+                                     const Scalar precision = ResourceMap::GetAsScalar("DistFunc-Precision"),
+                                     const UnsignedInteger maximumIteration = ResourceMap::GetAsScalar("DistFunc-MaximumIteration"));
   static Scalar pNonCentralChiSquare(const Scalar nu,
-      const Scalar lambda,
-      const Scalar x,
-      const Bool tail = false,
-      const Scalar precision = ResourceMap::GetAsScalar("DistFunc-Precision"),
-      const UnsignedInteger maximumIteration = ResourceMap::GetAsScalar("DistFunc-MaximumIteration"));
+                                     const Scalar lambda,
+                                     const Scalar x,
+                                     const Bool tail = false,
+                                     const Scalar precision = ResourceMap::GetAsScalar("DistFunc-Precision"),
+                                     const UnsignedInteger maximumIteration = ResourceMap::GetAsScalar("DistFunc-MaximumIteration"));
   static Scalar rNonCentralChiSquare(const Scalar nu,
-      const Scalar lambda);
+                                     const Scalar lambda);
   static Point rNonCentralChiSquare(const Scalar nu,
-      const Scalar lambda,
-      const UnsignedInteger size);
+                                    const Scalar lambda,
+                                    const UnsignedInteger size);
   // For NonCentralStudent distribution
   static Scalar dNonCentralStudent(const Scalar nu,
-      const Scalar delta,
-      const Scalar x);
+                                   const Scalar delta,
+                                   const Scalar x);
   static Scalar dNonCentralStudentAlt0(const Scalar nu,
-      const Scalar delta,
-      const Scalar x,
-      const Scalar precision = ResourceMap::GetAsScalar("DistFunc-Precision"),
-      const UnsignedInteger maximumIteration = ResourceMap::GetAsScalar("DistFunc-MaximumIteration"));
+                                       const Scalar delta,
+                                       const Scalar x,
+                                       const Scalar precision = ResourceMap::GetAsScalar("DistFunc-Precision"),
+                                       const UnsignedInteger maximumIteration = ResourceMap::GetAsScalar("DistFunc-MaximumIteration"));
   static Scalar pNonCentralStudent(const Scalar nu,
-      const Scalar delta,
-      const Scalar x,
-      const Bool tail = false);
+                                   const Scalar delta,
+                                   const Scalar x,
+                                   const Bool tail = false);
   static Scalar rNonCentralStudent(const Scalar nu,
-      const Scalar delta);
+                                   const Scalar delta);
   static Point rNonCentralStudent(const Scalar nu,
-      const Scalar delta,
-      const UnsignedInteger size);
+                                  const Scalar delta,
+                                  const UnsignedInteger size);
   // For Normal distribution
   static Scalar pNormal(const Scalar x,
-                                 const Bool tail = false);
+                        const Bool tail = false);
   static Scalar pNormal2D(const Scalar x1,
-                                   const Scalar x2,
-                                   const Scalar rho,
-                                   const Bool tail = false);
+                          const Scalar x2,
+                          const Scalar rho,
+                          const Bool tail = false);
   static Scalar pNormal3D(const Scalar x1,
-                                   const Scalar x2,
-                                   const Scalar x3,
-                                   const Scalar rho12,
-                                   const Scalar rho13,
-                                   const Scalar rho23,
-                                   const Bool tail = false);
+                          const Scalar x2,
+                          const Scalar x3,
+                          const Scalar rho12,
+                          const Scalar rho13,
+                          const Scalar rho23,
+                          const Bool tail = false);
   static Scalar qNormal(const Scalar p,
-                                 const Bool tail = false);
+                        const Bool tail = false);
   static Scalar rNormal();
   static Point rNormal(const UnsignedInteger size);
   // For Poisson distribution
   static Scalar qPoisson(const Scalar lambda,
-                                  const Scalar p,
-                                  const Bool tail = false);
+                         const Scalar p,
+                         const Bool tail = false);
   static UnsignedInteger rPoisson(const Scalar lambda);
   static Indices rPoisson(const Scalar lambda,
                           const UnsignedInteger size);
   // For Student distribution
   static Scalar pStudent(const Scalar nu,
-                                  const Scalar x,
-                                  const Bool tail = false);
+                         const Scalar x,
+                         const Bool tail = false);
   static Scalar qStudent(const Scalar nu,
-                                  const Scalar p,
-                                  const Bool tail = false);
+                         const Scalar p,
+                         const Bool tail = false);
   static Scalar rStudent(const Scalar nu);
   static Point rStudent(const Scalar nu,
-                                 const UnsignedInteger size);
+                        const UnsignedInteger size);
   static Point rUniformTriangle(const Point & a,
-                                         const Point & b,
-                                         const Point & c);
+                                const Point & b,
+                                const Point & c);
   static Sample rUniformTriangle(const Point & a,
-                                          const Point & b,
-                                          const Point & c,
-                                          const UnsignedInteger size);
+                                 const Point & b,
+                                 const Point & c,
+                                 const UnsignedInteger size);
 
   // For TruncatedNormal distribution
   //      static Scalar rTruncatedNormal(const Scalar a, const Scalar b);
@@ -170,33 +170,33 @@ public:
 
   // K factor for exact two-sided tolerance intervals of normal pooled populations
   static Scalar kFactorPooled(const UnsignedInteger n,
-                                       const UnsignedInteger m,
-                                       const Scalar p,
-                                       const Scalar alpha);
+                              const UnsignedInteger m,
+                              const Scalar p,
+                              const Scalar alpha);
 
   // K factor for exact two-sided tolerance intervals of a normal population
   static Scalar kFactor(const UnsignedInteger n,
-                                 const Scalar p,
-                                 const Scalar alpha);
+                        const Scalar p,
+                        const Scalar alpha);
 
   // Asymptotic distribution of the DickeyFuller distribution
   static Scalar pDickeyFullerTrend(const Scalar x,
-      const Bool tail = false);
+                                   const Bool tail = false);
 
   static Scalar pDickeyFullerConstant(const Scalar x,
-      const Bool tail = false);
+                                      const Bool tail = false);
 
   static Scalar pDickeyFullerNoConstant(const Scalar x,
-      const Bool tail = false);
+                                        const Bool tail = false);
 
   static Scalar qDickeyFullerTrend(const Scalar p,
-      const Bool tail = false);
+                                   const Bool tail = false);
 
   static Scalar qDickeyFullerConstant(const Scalar p,
-      const Bool tail = false);
+                                      const Bool tail = false);
 
   static Scalar qDickeyFullerNoConstant(const Scalar p,
-      const Bool tail = false);
+                                        const Bool tail = false);
 
 }; /* class DistFunc */
 

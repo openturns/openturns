@@ -81,7 +81,7 @@ private:
 
   /** Frequency grid over which the model is discretized */
   RegularGrid frequencyGrid_;
-  
+
 } ; /* class UserDefinedSpectralModel */
 
 END_NAMESPACE_OPENTURNS

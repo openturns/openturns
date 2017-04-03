@@ -63,7 +63,7 @@ public:
 
   // @deprecated
   void setOptimizationSolver(const OptimizationAlgorithm & solver);
-  OptimizationAlgorithm getOptimizationSolver() const;  
+  OptimizationAlgorithm getOptimizationSolver() const;
 
   void setStartingPoints(const Sample & sample);
   Sample getStartingPoints() const;

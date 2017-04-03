@@ -310,7 +310,7 @@ Point Distribution::getCenteredMoment(const UnsignedInteger n) const
 
 /* Get the shifted moments of the distribution */
 Point Distribution::getShiftedMoment(const UnsignedInteger n,
-    const Point & shift) const
+                                     const Point & shift) const
 {
   return getImplementation()->getShiftedMoment(n, shift);
 }
@@ -418,7 +418,7 @@ Point Distribution::computeInverseSurvivalFunction(const Scalar prob) const
 }
 
 Point Distribution::computeInverseSurvivalFunction(const Scalar prob,
-							    Scalar & marginalProb) const
+    Scalar & marginalProb) const
 {
   return getImplementation()->computeInverseSurvivalFunction(prob, marginalProb);
 }
@@ -529,8 +529,8 @@ Scalar Distribution::computeProbability(const Interval & interval) const
 
 /*  Compute the PDF of 1D distributions over a regular grid */
 Sample Distribution::computePDF(const Scalar xMin,
-    const Scalar xMax,
-    const UnsignedInteger pointNumber) const
+                                const Scalar xMax,
+                                const UnsignedInteger pointNumber) const
 {
   Sample grid;
   return getImplementation()->computePDF(xMin, xMax, pointNumber, grid);
@@ -538,8 +538,8 @@ Sample Distribution::computePDF(const Scalar xMin,
 
 /*  Compute the log-PDF of 1D distributions over a regular grid */
 Sample Distribution::computeLogPDF(const Scalar xMin,
-    const Scalar xMax,
-    const UnsignedInteger pointNumber) const
+                                   const Scalar xMax,
+                                   const UnsignedInteger pointNumber) const
 {
   Sample grid;
   return getImplementation()->computeLogPDF(xMin, xMax, pointNumber, grid);
@@ -547,8 +547,8 @@ Sample Distribution::computeLogPDF(const Scalar xMin,
 
 /*  Compute the CDF of 1D distributions over a regular grid */
 Sample Distribution::computeCDF(const Scalar xMin,
-    const Scalar xMax,
-    const UnsignedInteger pointNumber) const
+                                const Scalar xMax,
+                                const UnsignedInteger pointNumber) const
 {
   Sample grid;
   return getImplementation()->computeCDF(xMin, xMax, pointNumber, grid);
@@ -607,20 +607,20 @@ Interval Distribution::getRange() const
 
 /* Get the quantile of the distribution */
 Point Distribution::computeQuantile(const Scalar prob,
-    const Bool tail) const
+                                    const Bool tail) const
 {
   return getImplementation()->computeQuantile(prob, tail);
 }
 
 Point Distribution::computeQuantile(const Scalar prob,
-					     const Bool tail,
-					     Scalar & marginalProb) const
+                                    const Bool tail,
+                                    Scalar & marginalProb) const
 {
   return getImplementation()->computeQuantile(prob, tail, marginalProb);
 }
 
 Sample Distribution::computeQuantile(const Point & prob,
-    const Bool tail) const
+                                     const Bool tail) const
 {
   return getImplementation()->computeQuantile(prob, tail);
 }
@@ -667,7 +667,7 @@ Interval Distribution::computeBilateralConfidenceIntervalWithMarginalProbability
    where in both cases \beta is such that P(X\in\prod_{i=1}^d[a_i, b_i])=p
 */
 Interval Distribution::computeUnilateralConfidenceInterval(const Scalar prob,
-							   const Bool tail) const
+    const Bool tail) const
 {
   return getImplementation()->computeUnilateralConfidenceInterval(prob, tail);
 }
@@ -693,9 +693,9 @@ LevelSet Distribution::computeMinimumVolumeLevelSetWithThreshold(const Scalar pr
 
 /* Compute the quantile over a regular grid */
 Sample Distribution::computeQuantile(const Scalar qMin,
-    const Scalar qMax,
-    const UnsignedInteger pointNumber,
-    const Bool tail) const
+                                     const Scalar qMax,
+                                     const UnsignedInteger pointNumber,
+                                     const Bool tail) const
 {
   return getImplementation()->computeQuantile(qMin, qMax, pointNumber, tail);
 }
@@ -942,8 +942,8 @@ Graph Distribution::drawPDF() const
 
 /* Draw the log-PDF of the distribution when its dimension is 1 */
 Graph Distribution::drawLogPDF(const Scalar xMin,
-			       const Scalar xMax,
-			       const UnsignedInteger pointNumber) const
+                               const Scalar xMax,
+                               const UnsignedInteger pointNumber) const
 {
   return getImplementation()->drawLogPDF(xMin, xMax, pointNumber);
 }
@@ -956,24 +956,24 @@ Graph Distribution::drawLogPDF(const UnsignedInteger pointNumber) const
 
 /* Draw the log-PDF of a 1D marginal */
 Graph Distribution::drawMarginal1DLogPDF(const UnsignedInteger marginalIndex,
-					 const Scalar xMin,
-					 const Scalar xMax,
-					 const UnsignedInteger pointNumber) const
+    const Scalar xMin,
+    const Scalar xMax,
+    const UnsignedInteger pointNumber) const
 {
   return getImplementation()->drawMarginal1DLogPDF(marginalIndex, xMin, xMax, pointNumber);
 }
 
 /* Draw the log-PDF of the distribution when its dimension is 2 */
 Graph Distribution::drawLogPDF(const Point & xMin,
-			       const Point & xMax,
-			       const Indices & pointNumber) const
+                               const Point & xMax,
+                               const Indices & pointNumber) const
 {
   return getImplementation()->drawLogPDF(xMin, xMax, pointNumber);
 }
 
 /* Draw the log-PDF of the distribution when its dimension is 2 */
 Graph Distribution::drawLogPDF(const Point & xMin,
-			       const Point & xMax) const
+                               const Point & xMax) const
 {
   return getImplementation()->drawLogPDF(xMin, xMax);
 }
@@ -986,10 +986,10 @@ Graph Distribution::drawLogPDF(const Indices & pointNumber) const
 
 /* Draw the log-PDF of a 2D marginal */
 Graph Distribution::drawMarginal2DLogPDF(const UnsignedInteger firstMarginal,
-					 const UnsignedInteger secondMarginal,
-					 const Point & xMin,
-					 const Point & xMax,
-					 const Indices & pointNumber) const
+    const UnsignedInteger secondMarginal,
+    const Point & xMin,
+    const Point & xMax,
+    const Indices & pointNumber) const
 {
   return getImplementation()->drawMarginal2DLogPDF(firstMarginal, secondMarginal, xMin, xMax, pointNumber);
 }

@@ -151,7 +151,7 @@ private:
 
   /** Get the quantile of the distribution */
   Scalar computeScalarQuantile(const Scalar prob,
-                                        const Bool tail = false) const;
+                               const Bool tail = false) const;
 
   /** The lambda of the Laplace distribution */
   Scalar lambda_;

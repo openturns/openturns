@@ -34,7 +34,7 @@ int main(int argc, char **argv)
             << std::endl;
 
   // --------------------------------------------------
-  //  ------------ MonteCarlo algorithm  ------------- 
+  //  ------------ MonteCarlo algorithm  -------------
   // --------------------------------------------------
 
   // RandomBruteForce MonteCarlo with N designs

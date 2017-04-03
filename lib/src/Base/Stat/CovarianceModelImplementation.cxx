@@ -250,7 +250,7 @@ Matrix CovarianceModelImplementation::partialGradient (const Point & s,
 
 /* Gradient */
 Matrix CovarianceModelImplementation::parameterGradient(const Point & s,
-                                                        const Point & t) const
+    const Point & t) const
 {
   const Point parameter(getParameter());
   const UnsignedInteger size = parameter.getSize();
@@ -575,23 +575,23 @@ void CovarianceModelImplementation::setFullParameter(const Point & parameter)
   // First the scale parameter
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < spatialDimension_; ++ i)
-    {
-      scale_[i] = parameter[index];
-      ++ index;
-    }
+  {
+    scale_[i] = parameter[index];
+    ++ index;
+  }
   // Second the amplitude parameter
   for (UnsignedInteger i = 0; i < dimension_; ++ i)
-    {
-      amplitude_[i] = parameter[index];
-      ++ index;
-    }
+  {
+    amplitude_[i] = parameter[index];
+    ++ index;
+  }
   // Third the spatial correation parameter, only the lower triangle
   for (UnsignedInteger i = 0; i < dimension_; ++ i)
     for (UnsignedInteger j = 0; j < i; ++ j)
-      {
-        spatialCorrelation_(i, j) = parameter[index];
-        ++ index;
-      }
+    {
+      spatialCorrelation_(i, j) = parameter[index];
+      ++ index;
+    }
   isDiagonal_ = spatialCorrelation_.isDiagonal();
   updateSpatialCovariance();
 }
@@ -708,12 +708,12 @@ CovarianceModelImplementation::Implementation CovarianceModelImplementation::get
 
 /* Drawing method */
 Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
-					  const UnsignedInteger columnIndex,
-					  const Scalar tMin,
-					  const Scalar tMax,
-					  const UnsignedInteger pointNumber,
-					  const Bool asStationary,
-					  const Bool correlationFlag) const
+    const UnsignedInteger columnIndex,
+    const Scalar tMin,
+    const Scalar tMax,
+    const UnsignedInteger pointNumber,
+    const Bool asStationary,
+    const Bool correlationFlag) const
 {
   if (spatialDimension_ != 1) throw NotDefinedException(HERE) << "Error: can draw covariance models only if spatial dimension=1, here spatial dimension=" << spatialDimension_;
   if (rowIndex >= dimension_) throw InvalidArgumentException(HERE) << "Error: the given row index must be less than " << dimension_ << ", here rowIndex=" << rowIndex;
@@ -721,52 +721,52 @@ Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
   if (pointNumber < 2) throw InvalidArgumentException(HERE) << "Error: cannot draw the model with pointNumber<2, here pointNumber=" << pointNumber;
   // Check if the model is stationary and if we want to draw it this way
   if (asStationary && isStationary())
+  {
+    // Here we compute the normalization for the correlation instead of using
+    // the amplitude attribute for models for which it is not given
+    Scalar ratio = 1.0;
+    if (correlationFlag)
     {
-      // Here we compute the normalization for the correlation instead of using
-      // the amplitude attribute for models for which it is not given
-      Scalar ratio = 1.0;
-      if (correlationFlag)
-	{
-	  ratio = (*this)(0.0)(rowIndex, columnIndex);
-	  // If ratio == 0, the covariance is zero everywhere
-	  if (ratio == 0.0) ratio = 1.0;
-	}
-      Sample data(pointNumber, 2);
-      for (UnsignedInteger i = 0; i < pointNumber; ++i)
-	{
-	  const Scalar tau = (i * tMin + (pointNumber - i - 1.0) * tMax) / (pointNumber - 1.0);
-	  const Scalar value((*this)(tau)(rowIndex, columnIndex) / ratio);
-	  data[i][0] = tau;
-	  data[i][1] = value;
-	}
-      Graph graph(getName(), "tau", (correlationFlag ? "correlation" : "covariance"), true, "topright");
-      Curve curve(data);
-      curve.setLineWidth(2);
-      curve.setColor("red");
-      graph.add(curve);
-      return graph;
+      ratio = (*this)(0.0)(rowIndex, columnIndex);
+      // If ratio == 0, the covariance is zero everywhere
+      if (ratio == 0.0) ratio = 1.0;
     }
+    Sample data(pointNumber, 2);
+    for (UnsignedInteger i = 0; i < pointNumber; ++i)
+    {
+      const Scalar tau = (i * tMin + (pointNumber - i - 1.0) * tMax) / (pointNumber - 1.0);
+      const Scalar value((*this)(tau)(rowIndex, columnIndex) / ratio);
+      data[i][0] = tau;
+      data[i][1] = value;
+    }
+    Graph graph(getName(), "tau", (correlationFlag ? "correlation" : "covariance"), true, "topright");
+    Curve curve(data);
+    curve.setLineWidth(2);
+    curve.setColor("red");
+    graph.add(curve);
+    return graph;
+  }
   // Here we draw a non-stationary model
   const Sample gridT = RegularGrid(tMin, (tMax - tMin) / (pointNumber - 1.0), pointNumber).getVertices();
   CovarianceMatrix matrix(discretize(gridT));
   const UnsignedInteger dimension = matrix.getDimension();
   // Normalize the data if needed
   if (correlationFlag)
+  {
+    Point sigma(dimension);
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+      sigma[i] = std::sqrt(matrix(i, i));
+    for (UnsignedInteger j = 0; j < dimension; ++j)
     {
-      Point sigma(dimension);
-      for (UnsignedInteger i = 0; i < dimension; ++i)
-	sigma[i] = std::sqrt(matrix(i, i));
-      for (UnsignedInteger j = 0; j < dimension; ++j)
-	{
-	  for (UnsignedInteger i = 0; i < j; ++i)
-	    {
-	      const Scalar scaling = sigma[i] * sigma[j];
-	      if (scaling == 0.0) matrix(i, j) = 0.0;
-	      else matrix(i, j) /= scaling;
-	    } // i
-	  matrix(j, j) = 1.0;
-	} // j
-    } // correlationFlag
+      for (UnsignedInteger i = 0; i < j; ++i)
+      {
+        const Scalar scaling = sigma[i] * sigma[j];
+        if (scaling == 0.0) matrix(i, j) = 0.0;
+        else matrix(i, j) /= scaling;
+      } // i
+      matrix(j, j) = 1.0;
+    } // j
+  } // correlationFlag
   matrix.checkSymmetry();
   Sample data(pointNumber * pointNumber, 1);
   data.getImplementation()->setData(*matrix.getImplementation());

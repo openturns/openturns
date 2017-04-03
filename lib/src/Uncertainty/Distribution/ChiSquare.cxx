@@ -224,7 +224,7 @@ Point ChiSquare::computeCDFGradient(const Point & point) const
 
 /* Get the quantile of the distribution */
 Scalar ChiSquare::computeScalarQuantile(const Scalar prob,
-    const Bool tail) const
+                                        const Bool tail) const
 {
   return 2.0 * DistFunc::qGamma(0.5 * nu_, prob, tail);
 }

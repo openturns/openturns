@@ -169,7 +169,7 @@ private:
 
   /** Get the quantile of the TruncatedNormal distribution */
   Scalar computeScalarQuantile(const Scalar prob,
-                                        const Bool tail = false) const;
+                               const Bool tail = false) const;
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange();

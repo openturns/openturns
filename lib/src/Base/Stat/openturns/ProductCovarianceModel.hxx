@@ -53,7 +53,7 @@ public:
   /** Computation of the covariance function */
   using CovarianceModelImplementation::computeStandardRepresentative;
   Scalar computeStandardRepresentative(const Point & s,
-      const Point & t) const;
+                                       const Point & t) const;
 
   /** Gradient */
   virtual Matrix partialGradient(const Point & s,

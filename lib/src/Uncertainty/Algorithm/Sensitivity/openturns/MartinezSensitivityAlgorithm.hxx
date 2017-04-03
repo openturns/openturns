@@ -80,7 +80,7 @@ protected:
 
   /** Internal method that compute Vi/VTi using a huge sample */
   Sample computeIndices(const Sample & sample,
-                                 Sample & VTi) const;
+                        Sample & VTi) const;
 
   // Compute the fisher transform
   void computeAsymptoticInterval() const;

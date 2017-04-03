@@ -44,7 +44,7 @@ public:
   /** Virtual constructor */
   virtual CanonicalTensorEvaluation * clone() const;
 
-    /** Evaluation operator */
+  /** Evaluation operator */
   virtual Point operator() (const Point & point) const;
 
   /** Dimension accessor */

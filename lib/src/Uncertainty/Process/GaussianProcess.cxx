@@ -59,8 +59,8 @@ GaussianProcess::GaussianProcess()
 
 /* Standard constructor  */
 GaussianProcess::GaussianProcess(const TrendTransform & trend,
-    const SecondOrderModel & model,
-    const Mesh & mesh)
+                                 const SecondOrderModel & model,
+                                 const Mesh & mesh)
   : ProcessImplementation()
   , covarianceModel_(model.getCovarianceModel())
   , covarianceCholeskyFactor_(0)
@@ -81,8 +81,8 @@ GaussianProcess::GaussianProcess(const TrendTransform & trend,
 
 /* Standard constructor  */
 GaussianProcess::GaussianProcess(const TrendTransform & trend,
-    const CovarianceModel & covarianceModel,
-    const Mesh & mesh)
+                                 const CovarianceModel & covarianceModel,
+                                 const Mesh & mesh)
   : ProcessImplementation()
   , covarianceModel_(covarianceModel)
   , covarianceCholeskyFactor_(0)
@@ -103,7 +103,7 @@ GaussianProcess::GaussianProcess(const TrendTransform & trend,
 
 /* Standard constructor  */
 GaussianProcess::GaussianProcess(const SecondOrderModel & model,
-    const Mesh & mesh)
+                                 const Mesh & mesh)
   : ProcessImplementation()
   , covarianceModel_(model.getCovarianceModel())
   , covarianceCholeskyFactor_(0)
@@ -127,7 +127,7 @@ GaussianProcess::GaussianProcess(const SecondOrderModel & model,
 
 /* Standard constructor  */
 GaussianProcess::GaussianProcess(const CovarianceModel & covarianceModel,
-    const Mesh & mesh)
+                                 const Mesh & mesh)
   : ProcessImplementation()
   , covarianceModel_(covarianceModel)
   , covarianceCholeskyFactor_(0)

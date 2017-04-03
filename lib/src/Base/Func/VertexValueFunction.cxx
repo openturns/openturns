@@ -39,7 +39,7 @@ VertexValueFunction::VertexValueFunction(const UnsignedInteger meshDimension)
 
 /* Parameter constructor */
 VertexValueFunction::VertexValueFunction(const Function & function,
-                                   const UnsignedInteger meshDimension)
+    const UnsignedInteger meshDimension)
   : FieldFunctionImplementation(meshDimension)
   , p_evaluation_(function.getEvaluation())
 {
@@ -54,7 +54,7 @@ VertexValueFunction::VertexValueFunction(const Function & function,
 
 /* Parameter constructor */
 VertexValueFunction::VertexValueFunction(const EvaluationPointer & p_evaluation,
-                                   const UnsignedInteger meshDimension)
+    const UnsignedInteger meshDimension)
   : FieldFunctionImplementation(meshDimension)
   , p_evaluation_(p_evaluation)
 {
@@ -69,7 +69,7 @@ VertexValueFunction::VertexValueFunction(const EvaluationPointer & p_evaluation,
 
 /* Parameter constructor */
 VertexValueFunction::VertexValueFunction(const EvaluationImplementation & evaluation,
-                                   const UnsignedInteger meshDimension)
+    const UnsignedInteger meshDimension)
   : FieldFunctionImplementation(meshDimension)
   , p_evaluation_(evaluation.clone())
 {

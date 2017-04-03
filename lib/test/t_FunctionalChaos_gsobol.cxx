@@ -25,7 +25,7 @@ using namespace OT;
 using namespace OT::Test;
 
 Scalar sobol(const Indices & indices,
-                      const Point & a)
+             const Point & a)
 {
   Scalar value = 1.0;
   for (UnsignedInteger i = 0; i < indices.getSize(); ++i)

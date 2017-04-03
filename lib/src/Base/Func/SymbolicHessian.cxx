@@ -221,8 +221,8 @@ SymmetricTensor SymbolicHessian::hessian(const Point & inP) const
 
 /* Accessor to a specific formula */
 String SymbolicHessian::getFormula(const UnsignedInteger i,
-    const UnsignedInteger j,
-    const UnsignedInteger k) const
+                                   const UnsignedInteger j,
+                                   const UnsignedInteger k) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if ((i >= inputDimension) || (j >= inputDimension) || (k >= getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: cannot access to a formula outside of the hessian dimensions.";

@@ -46,18 +46,18 @@ public:
 
   /** Parameter constructor */
   KarhunenLoeveQuadratureAlgorithm(const Domain & domain,
-				   const CovarianceModel & covariance,
-    const WeightedExperiment & experiment,
-    const Basis & basis,
-    const UnsignedInteger basisSize,
-    const Bool mustScale,
-    const Scalar threshold = 0.0);
+                                   const CovarianceModel & covariance,
+                                   const WeightedExperiment & experiment,
+                                   const Basis & basis,
+                                   const UnsignedInteger basisSize,
+                                   const Bool mustScale,
+                                   const Scalar threshold = 0.0);
 
   /** Parameter constructor for the Legendre/GaussProduct case */
   KarhunenLoeveQuadratureAlgorithm(const Domain & domain,
-				   const CovarianceModel & covariance,
-				   const UnsignedInteger basisSize,
-				   const Scalar threshold = 0.0);
+                                   const CovarianceModel & covariance,
+                                   const UnsignedInteger basisSize,
+                                   const Scalar threshold = 0.0);
 
   /** Virtual copy constructor */
   virtual KarhunenLoeveQuadratureAlgorithm * clone() const;
@@ -110,7 +110,7 @@ private:
   UnsignedInteger basisSize_;
 
   /** Scaling flag */
-  Bool mustScale_;  
+  Bool mustScale_;
 } ; /* class KarhunenLoeveQuadratureAlgorithm */
 
 END_NAMESPACE_OPENTURNS

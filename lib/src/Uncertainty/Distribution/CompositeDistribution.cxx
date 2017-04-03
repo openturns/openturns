@@ -329,8 +329,8 @@ Scalar CompositeDistribution::computePDF(const Point & point) const
       const Scalar numerator = antecedent_.computePDF(fInvX);
       if (numerator > 0.0)
       {
-	const Matrix gradient(function_.gradient(fInvX));
-	if (!(gradient.getNbRows() == 1 && gradient.getNbColumns() == 1)) throw InternalException(HERE) << "Error: the given function has no actual gradient. Consider using finite differences.";
+        const Matrix gradient(function_.gradient(fInvX));
+        if (!(gradient.getNbRows() == 1 && gradient.getNbColumns() == 1)) throw InternalException(HERE) << "Error: the given function has no actual gradient. Consider using finite differences.";
         const Scalar denominator = std::abs(function_.gradient(fInvX)(0, 0));
         if (SpecFunc::IsNormal(denominator)) pdf += numerator / denominator;
         LOGDEBUG(OSS() << "i=" << i << ", a=" << a << ", fA=" << fA << ", x=" << x << ", b=" << b << ", fB=" << fB << ", fInvX=" << fInvX << ", numerator=" << numerator << ", denominator=" << denominator << ", pdf=" << pdf);
@@ -368,10 +368,10 @@ Scalar CompositeDistribution::computeCDF(const Point & point) const
     {
       LOGDEBUG(OSS() << "increasing");
       if (x >= fB)
-	{
-	  cdf += probabilities_[i] - probabilities_[i - 1];
-	  LOGDEBUG(OSS() << "x >= fB, i=" << i << ", a=" << a << ", fA=" << fA << ", x=" << x << ", b=" << b << ", fB=" << fB << ", cdf=" << cdf);
-	}
+      {
+        cdf += probabilities_[i] - probabilities_[i - 1];
+        LOGDEBUG(OSS() << "x >= fB, i=" << i << ", a=" << a << ", fA=" << fA << ", x=" << x << ", b=" << b << ", fB=" << fB << ", cdf=" << cdf);
+      }
       else if (x > fA)
       {
         const Point fInvX(1, solver_.solve(function_, x, a, b, fA, fB));
@@ -388,10 +388,10 @@ Scalar CompositeDistribution::computeCDF(const Point & point) const
     {
       LOGDEBUG(OSS() << "decreasing");
       if (x >= fA)
-	{
-	  cdf += probabilities_[i] - probabilities_[i - 1];
-	  LOGDEBUG(OSS() << "x >= fA, i=" << i << ", a=" << a << ", fA=" << fA << ", x=" << x << ", b=" << b << ", fB=" << fB << ", cdf=" << cdf);
-	}
+      {
+        cdf += probabilities_[i] - probabilities_[i - 1];
+        LOGDEBUG(OSS() << "x >= fA, i=" << i << ", a=" << a << ", fA=" << fA << ", x=" << x << ", b=" << b << ", fB=" << fB << ", cdf=" << cdf);
+      }
       else if (x > fB)
       {
         const Point fInvX(1, solver_.solve(function_, x, a, b, fA, fB));

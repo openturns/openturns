@@ -40,7 +40,7 @@ EventDomain::EventDomain()
 
 /* Constructor from RandomVector */
 EventDomain::EventDomain(const RandomVectorImplementation & antecedent,
-    const Domain & domain)
+                         const Domain & domain)
   : CompositeRandomVector()
   , domain_(domain)
 {

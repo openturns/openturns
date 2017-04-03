@@ -52,7 +52,7 @@ ODESolverImplementation * ODESolverImplementation::clone() const
 
 /* Solve the ODE */
 Sample ODESolverImplementation::solve(const Point & initialState,
-    const Point & timeGrid) const
+                                      const Point & timeGrid) const
 {
   throw NotYetImplementedException(HERE) << "In ODESolverImplementation::solve(const Point & initialState, const Point & timeGrid) const";
 }

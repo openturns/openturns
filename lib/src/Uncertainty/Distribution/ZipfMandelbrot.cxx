@@ -112,9 +112,9 @@ Point ZipfMandelbrot::getRealization() const
   const Scalar uniformRealization = 1.0 - RandomGenerator::Generate();
 
   ScalarCollection::const_iterator it(lower_bound(harmonicNumbers_.begin(),
-      harmonicNumbers_.end(),
-      uniformRealization * getHarmonicNumbers(n_))
-                                              );
+                                      harmonicNumbers_.end(),
+                                      uniformRealization * getHarmonicNumbers(n_))
+                                     );
   return Point(1, it - harmonicNumbers_.begin() + 1);
 }
 

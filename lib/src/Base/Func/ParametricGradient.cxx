@@ -52,7 +52,7 @@ ParametricGradient * ParametricGradient::clone() const
 
 /* Gradient operator */
 Matrix ParametricGradient::gradient(const Point & point,
-    const Point & parameters) const
+                                    const Point & parameters) const
 {
   const UnsignedInteger parametersDimension = parameters.getDimension();
   if (parametersDimension != p_evaluation_->getParametersPositions().getSize()) throw InvalidArgumentException(HERE) << "Error: expected a parameters of dimension=" << p_evaluation_->getParametersPositions().getSize() << ", got dimension=" << parametersDimension;

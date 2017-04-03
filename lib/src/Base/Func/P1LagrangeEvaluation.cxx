@@ -105,10 +105,10 @@ void P1LagrangeEvaluation::setMesh(const Mesh & mesh)
   for (UnsignedInteger i = 0; i < verticesToSimplices.getSize(); ++i)
     if (verticesToSimplices[i].getSize() == 0) pendingVertices.add(i);
   if (pendingVertices.getSize() > 0)
-    {
-      LOGWARN(OSS() << "There are " << pendingVertices.getSize() << " pending vertices. Check the simplices of the mesh");
-      LOGDEBUG(OSS() << "The pending vertices indices are " << pendingVertices);
-    }
+  {
+    LOGWARN(OSS() << "There are " << pendingVertices.getSize() << " pending vertices. Check the simplices of the mesh");
+    LOGDEBUG(OSS() << "The pending vertices indices are " << pendingVertices);
+  }
 }
 
 Mesh P1LagrangeEvaluation::getMesh() const
@@ -188,12 +188,12 @@ Point P1LagrangeEvaluation::evaluate( const Point & inP ) const
   // As a first guess, take the value at the nearest index. It will be the final value if no simplex contains the point
   Point result(values_[nearestIndex]);
   if (coordinates.getSize() > 0)
-    {
-      const Indices simplex(mesh_.getSimplex(vertexAndSimplexIndices[1]));
-      result = values_[simplex[0]] * coordinates[0];
-      for (UnsignedInteger j = 1; j < simplex.getSize(); ++j)
-	result += values_[simplex[j]] * coordinates[j];
-    }
+  {
+    const Indices simplex(mesh_.getSimplex(vertexAndSimplexIndices[1]));
+    result = values_[simplex[0]] * coordinates[0];
+    for (UnsignedInteger j = 1; j < simplex.getSize(); ++j)
+      result += values_[simplex[j]] * coordinates[j];
+  }
   return result;
 }
 

@@ -43,7 +43,7 @@ public:
 
   /** Constructor with temperature T0 & iMax*/
   TemperatureProfileImplementation(const Scalar T0,
-                              const UnsignedInteger iMax);
+                                   const UnsignedInteger iMax);
 
   /** Virtual constructor method */
   TemperatureProfileImplementation * clone() const;
@@ -56,7 +56,7 @@ public:
 
   /** get iMax */
   virtual UnsignedInteger getIMax() const;
-  
+
   /** String converter */
   virtual String __repr__() const;
 
@@ -67,8 +67,8 @@ public:
   virtual void load(Advocate & adv);
 
 protected:
-    Scalar T0_;
-    UnsignedInteger iMax_;
+  Scalar T0_;
+  UnsignedInteger iMax_;
 
 }; /* class TemperatureProfileImplementation */
 

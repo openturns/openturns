@@ -174,7 +174,7 @@ NSI_const_point FieldImplementation::at (const UnsignedInteger index) const
 }
 
 Scalar & FieldImplementation::at (const UnsignedInteger i,
-    const UnsignedInteger j)
+                                  const UnsignedInteger j)
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
   if (j >= getDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is not less than dimension (" << getDimension() << ")";
@@ -183,7 +183,7 @@ Scalar & FieldImplementation::at (const UnsignedInteger i,
 }
 
 const Scalar & FieldImplementation::at (const UnsignedInteger i,
-    const UnsignedInteger j) const
+                                        const UnsignedInteger j) const
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
   if (j >= getDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is not less than dimension (" << getDimension() << ")";
@@ -410,43 +410,43 @@ Graph FieldImplementation::draw() const
     Description palette(levelsNumber);
     for (UnsignedInteger i = 0; i < levelsNumber; ++i)
       palette[i] = Curve::ConvertFromHSV((270.0 * (levelsNumber - i - 1)) / levelsNumber, 1.0, 1.0);
-    
+
     for (UnsignedInteger i = 0; i < values_.getSize(); ++i)
+    {
+      const Point x(vertices[i]);
+      Point v(values_[i]);
+      Scalar arrowLength = v.norm();
+      const UnsignedInteger paletteIndex = static_cast<UnsignedInteger>((levelsNumber - 0.5) * (arrowLength - normMin) / (normMax - normMin));
+      const String color = palette[paletteIndex];
+      v *= rho;
+      arrowLength *= rho;
+      // Draw the arrow head only if the arrow is large enough
+      if (arrowLength > delta)
       {
-	const Point x(vertices[i]);
-	Point v(values_[i]);
-	Scalar arrowLength = v.norm();
-	const UnsignedInteger paletteIndex = static_cast<UnsignedInteger>((levelsNumber - 0.5) * (arrowLength - normMin) / (normMax - normMin));
-	const String color = palette[paletteIndex];
-	v *= rho;
-	arrowLength *= rho;
-	// Draw the arrow head only if the arrow is large enough
-	if (arrowLength > delta)
-	  {
-	    Sample data(6, 2);
-	    const Point u(v / arrowLength);
-	    data[0] = x;
-	    data[1] = x + v - u * delta;
-	    data[2][0] = data[1][0] + u[1] * (-0.5 * delta);
-	    data[2][1] = data[1][1] + u[0] * ( 0.5 * delta);
-	    data[3] = x + v;
-	    data[4][0] = data[1][0] + u[1] * ( 0.5 * delta);
-	    data[4][1] = data[1][1] + u[0] * (-0.5 * delta);
-	    data[5] = data[1];
-	    Curve curve(data);
-	    curve.setColor(color);
-	    graph.add(curve);
-	  } // arrowLength > delta
-	else
-	  {
-	    Sample data(2, 2);
-	    data[0] = x;
-	    data[1] = x + v;
-	    Curve curve(data);
-	    curve.setColor(color);
-	    graph.add(curve);
-	  } // arrowLength <= delta
-      } // for i
+        Sample data(6, 2);
+        const Point u(v / arrowLength);
+        data[0] = x;
+        data[1] = x + v - u * delta;
+        data[2][0] = data[1][0] + u[1] * (-0.5 * delta);
+        data[2][1] = data[1][1] + u[0] * ( 0.5 * delta);
+        data[3] = x + v;
+        data[4][0] = data[1][0] + u[1] * ( 0.5 * delta);
+        data[4][1] = data[1][1] + u[0] * (-0.5 * delta);
+        data[5] = data[1];
+        Curve curve(data);
+        curve.setColor(color);
+        graph.add(curve);
+      } // arrowLength > delta
+      else
+      {
+        Sample data(2, 2);
+        data[0] = x;
+        data[1] = x + v;
+        Curve curve(data);
+        curve.setColor(color);
+        graph.add(curve);
+      } // arrowLength <= delta
+    } // for i
     return graph;
   }
   return drawMarginal(0, false);
@@ -534,16 +534,16 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
             data[0] = x0 + ((level - v0) / (v2 - v0)) * (x2 - x0);
             // if level <= v1, the second point is on the [x0, x1] segment
             if (level <= v1)
-	      {
-		if (v1 == v0) data[1] = x1;
-		else data[1] = x0 + ((level - v0) / (v1 - v0)) * (x1 - x0);
-	      }
-	    // if level >= v1, the second point is on the [x1, x2] segment
+            {
+              if (v1 == v0) data[1] = x1;
+              else data[1] = x0 + ((level - v0) / (v1 - v0)) * (x1 - x0);
+            }
+            // if level >= v1, the second point is on the [x1, x2] segment
             else
-	      {
-		if (v2 == v1) data[1] = x1;
-		else data[1] = x2 + ((level - v2) / (v1 - v2)) * (x1 - x2);
-	      }
+            {
+              if (v2 == v1) data[1] = x1;
+              else data[1] = x2 + ((level - v2) / (v1 - v2)) * (x1 - x2);
+            }
             graph.add(Curve(data, palette[j], "solid"));
           } // (level >= v0) && (level <= v2)
         } // j
