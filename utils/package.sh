@@ -81,10 +81,10 @@ debuild -us -uc -S
 # rpm files
 echo "-- Copying files to $obs"
 cp -v /tmp/$pkgname-$pkgver/distro/rpm/$pkgname.spec /tmp/$pkgname-$pkgver.tar.bz2 $obs
-cp -v /tmp/"$pkgname"_$debver.orig.tar.bz2 /tmp/"$pkgname"_$debver-$rel.dsc /tmp/"$pkgname"_$debver-$rel.debian.tar.gz $obs
+cp -v /tmp/"$pkgname"_$debver.orig.tar.bz2 /tmp/"$pkgname"_$debver-$rel.dsc /tmp/"$pkgname"_$debver-$rel.debian.tar.xz $obs
 
 
 # build binary packages
-# debuild -us -uc
+#DEB_BUILD_OPTIONS="parallel=16" debuild -us -uc
 
 

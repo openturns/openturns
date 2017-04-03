@@ -1,3 +1,10 @@
+openturns (1.9~rc1-1) experimental; urgency=low
+
+  [ Julien Schueller ]
+  * New upstream pre-release.
+
+ -- Denis Barbier <barbier@debian.org>  Mon, 03 Apr 2017 18:14:47 +0200
+
 openturns (1.8-1) experimental; urgency=low
 
   [ Julien Schueller ]
