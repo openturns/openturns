@@ -39,7 +39,7 @@ public:
   InverseBoxCoxHessian();
 
   /** Parameter constructor */
-  InverseBoxCoxHessian(const InverseBoxCoxEvaluation & evaluation);
+  explicit InverseBoxCoxHessian(const InverseBoxCoxEvaluation & evaluation);
 
   /** Virtual constructor */
   virtual InverseBoxCoxHessian * clone() const;

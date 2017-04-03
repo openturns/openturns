@@ -39,7 +39,7 @@ public:
   BoxCoxGradient();
 
   /** Parameter constructor */
-  BoxCoxGradient(const BoxCoxEvaluation & evaluation);
+  explicit BoxCoxGradient(const BoxCoxEvaluation & evaluation);
 
   /** Virtual constructor */
   virtual BoxCoxGradient * clone() const;

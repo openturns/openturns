@@ -49,7 +49,7 @@ public:
   InverseTrendTransform();
 
   /** Parameter constructor */
-  InverseTrendTransform(const Function & function);
+  explicit InverseTrendTransform(const Function & function);
 
   /** Parameter constructor */
   InverseTrendTransform(const EvaluationPointer & p_evaluation);

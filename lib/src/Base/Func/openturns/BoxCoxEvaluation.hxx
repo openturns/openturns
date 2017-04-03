@@ -41,10 +41,10 @@ public:
   BoxCoxEvaluation();
 
   /** Parameter constructor */
-  BoxCoxEvaluation(const Point & lamda);
+  explicit BoxCoxEvaluation(const Point & lamda);
 
   BoxCoxEvaluation(const Point & lamda,
-                                 const Point & shift);
+                   const Point & shift);
 
   /** Virtual constructor */
   virtual BoxCoxEvaluation * clone() const;

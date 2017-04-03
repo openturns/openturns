@@ -47,7 +47,7 @@ public:
   P1LagrangeEvaluation();
 
   /** Default constructor */
-  P1LagrangeEvaluation(const Field & field);
+  explicit P1LagrangeEvaluation(const Field & field);
 
   /** Virtual constructor */
   virtual P1LagrangeEvaluation * clone() const;

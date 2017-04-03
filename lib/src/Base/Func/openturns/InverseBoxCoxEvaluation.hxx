@@ -40,10 +40,10 @@ public:
   InverseBoxCoxEvaluation();
 
   /** Parameter constructor */
-  InverseBoxCoxEvaluation(const Point & lamda);
+  explicit InverseBoxCoxEvaluation(const Point & lamda);
 
   InverseBoxCoxEvaluation(const Point & lamda,
-                                        const Point & shift);
+                          const Point & shift);
 
   /** Virtual constructor */
   virtual InverseBoxCoxEvaluation * clone() const;

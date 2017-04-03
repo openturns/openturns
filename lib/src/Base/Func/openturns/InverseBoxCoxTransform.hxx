@@ -46,13 +46,13 @@ public:
   InverseBoxCoxTransform();
 
   /** Standard parameter constructor */
-  InverseBoxCoxTransform(const Point & lambda);
+  explicit InverseBoxCoxTransform(const Point & lambda);
 
   InverseBoxCoxTransform(const Point & lambda,
                          const Point & shift);
 
   /** 1D Scalar parameter constructor */
-  InverseBoxCoxTransform(const Scalar & lambda);
+  explicit InverseBoxCoxTransform(const Scalar & lambda);
 
   InverseBoxCoxTransform(const Scalar & lambda,
                          const Scalar & shift);

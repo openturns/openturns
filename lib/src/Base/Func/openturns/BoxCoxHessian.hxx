@@ -39,7 +39,7 @@ public:
   BoxCoxHessian();
 
   /** Parameter constructor */
-  BoxCoxHessian(const BoxCoxEvaluation & evaluation);
+  explicit BoxCoxHessian(const BoxCoxEvaluation & evaluation);
 
   /** Virtual constructor */
   virtual BoxCoxHessian * clone() const;

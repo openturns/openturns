@@ -46,13 +46,13 @@ public:
   BoxCoxTransform();
 
   /** Standard parameter constructor */
-  BoxCoxTransform(const Point & lambda);
+  explicit BoxCoxTransform(const Point & lambda);
 
   BoxCoxTransform(const Point & lambda,
                   const Point & shift);
 
   /** 1D Scalar parameter constructor */
-  BoxCoxTransform(const Scalar & lambda);
+  explicit BoxCoxTransform(const Scalar & lambda);
 
   BoxCoxTransform(const Scalar & lambda,
                   const Scalar & shift);

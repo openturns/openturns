@@ -48,7 +48,7 @@ public:
   TrendTransform();
 
   /** Parameter constructor */
-  TrendTransform(const Function & function);
+  explicit TrendTransform(const Function & function);
 
   /** Parameter constructor */
   TrendTransform(const EvaluationPointer & p_evaluation);

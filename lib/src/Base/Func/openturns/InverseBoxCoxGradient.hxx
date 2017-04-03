@@ -39,7 +39,7 @@ public:
   InverseBoxCoxGradient();
 
   /** Parameter constructor */
-  InverseBoxCoxGradient(const InverseBoxCoxEvaluation & evaluation);
+  explicit InverseBoxCoxGradient(const InverseBoxCoxEvaluation & evaluation);
 
   /** Virtual constructor */
   virtual InverseBoxCoxGradient * clone() const;
