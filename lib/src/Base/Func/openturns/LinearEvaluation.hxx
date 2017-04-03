@@ -25,7 +25,7 @@
 #ifndef OPENTURNS_LINEARNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
 #define OPENTURNS_LINEARNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
 
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/NumericalSample.hxx"
 #include "openturns/Matrix.hxx"
@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class LinearEvaluation
  */
 class OT_API LinearEvaluation
-  : public NumericalMathEvaluationImplementation
+  : public EvaluationImplementation
 {
   CLASSNAME;
 public:

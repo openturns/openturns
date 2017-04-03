@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef OPENTURNS_NUMERICALMATHEVALUATIONIMPLEMENTATION_HXX
-#define OPENTURNS_NUMERICALMATHEVALUATIONIMPLEMENTATION_HXX
+#ifndef OPENTURNS_EVALUATIONIMPLEMENTATION_HXX
+#define OPENTURNS_EVALUATIONIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/NumericalPoint.hxx"
@@ -40,31 +40,31 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class NumericalMathEvaluationImplementation
+ * @class EvaluationImplementation
  *
  * This class offers an abstract interface for the implementation
  * of an real numerical mathematical function into the platform.
  */
-class OT_API NumericalMathEvaluationImplementation
+class OT_API EvaluationImplementation
   : public PersistentObject
 {
   CLASSNAME;
 public:
 
-  typedef Pointer<NumericalMathEvaluationImplementation>      Implementation;
+  typedef Pointer<EvaluationImplementation>      Implementation;
   typedef PersistentCollection<NumericalScalar>               CacheKeyType;
   typedef PersistentCollection<NumericalScalar>               CacheValueType;
   typedef Cache<CacheKeyType, CacheValueType>                 CacheType;
   typedef Pointer<CacheType>                                  CacheImplementation;
 
   /** Default constructor */
-  NumericalMathEvaluationImplementation();
+  EvaluationImplementation();
 
   /** Virtual constructor */
-  virtual NumericalMathEvaluationImplementation * clone() const;
+  virtual EvaluationImplementation * clone() const;
 
   /** Comparison operator */
-  Bool operator ==(const NumericalMathEvaluationImplementation & other) const;
+  Bool operator ==(const EvaluationImplementation & other) const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -255,9 +255,9 @@ private:
   /** The description of the input components */
   Description outputDescription_;
 
-}; /* class NumericalMathEvaluationImplementation */
+}; /* class EvaluationImplementation */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_NUMERICALMATHEVALUATIONIMPLEMENTATION_HXX */
+#endif /* OPENTURNS_EVALUATIONIMPLEMENTATION_HXX */

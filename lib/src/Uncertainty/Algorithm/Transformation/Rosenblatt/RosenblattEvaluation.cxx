@@ -32,7 +32,7 @@ static const Factory<RosenblattEvaluation> Factory_RosenblattEvaluation;
 
 /* Default constructor */
 RosenblattEvaluation::RosenblattEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , distribution_()
 {
   // Nothing to do
@@ -40,7 +40,7 @@ RosenblattEvaluation::RosenblattEvaluation()
 
 /* Parameter constructor */
 RosenblattEvaluation::RosenblattEvaluation(const Distribution & distribution)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , distribution_(distribution)
 {
   Description description(distribution.getDescription());
@@ -117,14 +117,14 @@ String RosenblattEvaluation::__str__(const String & offset) const
 /* Method save() stores the object through the StorageManager */
 void RosenblattEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute( "distribution_", distribution_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void RosenblattEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute( "distribution_", distribution_ );
 }
 

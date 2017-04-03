@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_EXPERTMIXTURE_HXX
 #define OPENTURNS_EXPERTMIXTURE_HXX
 
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/Classifier.hxx"
@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API ExpertMixture
-  : public NumericalMathEvaluationImplementation
+  : public EvaluationImplementation
 {
   CLASSNAME;
 
@@ -60,7 +60,7 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** Operator () */
-  using NumericalMathEvaluationImplementation::operator();
+  using EvaluationImplementation::operator();
   NumericalPoint operator() (const NumericalPoint & inP) const;
   NumericalSample operator() (const NumericalSample & inS) const;
 

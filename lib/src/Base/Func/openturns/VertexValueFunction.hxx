@@ -23,7 +23,7 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/FieldFunctionImplementation.hxx"
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/NumericalMathFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -41,7 +41,7 @@ class OT_API VertexValueFunction
   CLASSNAME;
 public:
 
-  typedef NumericalMathEvaluationImplementation::Implementation EvaluationPointer;
+  typedef EvaluationImplementation::Implementation EvaluationPointer;
 
   /** Default constructor */
   explicit VertexValueFunction(const UnsignedInteger meshDimension = 1);
@@ -57,7 +57,7 @@ public:
 #endif
 
   /** Parameter constructor */
-  explicit VertexValueFunction(const NumericalMathEvaluationImplementation & evaluation,
+  explicit VertexValueFunction(const EvaluationImplementation & evaluation,
                             const UnsignedInteger meshDimension = 1);
 
   /** Virtual constructor */

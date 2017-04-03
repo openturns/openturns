@@ -25,8 +25,8 @@
 #define OPENTURNS_CENTEREDFINITEDIFFERENCEHESSIAN_HXX
 
 #include "openturns/FiniteDifferenceHessian.hxx"
-#include "openturns/NumericalMathHessianImplementation.hxx"
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/HessianImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/SymmetricTensor.hxx"
 
@@ -49,7 +49,7 @@ class OT_API CenteredFiniteDifferenceHessian
   CLASSNAME;
 public:
 
-  typedef Pointer<NumericalMathEvaluationImplementation>               EvaluationPointer;
+  typedef Pointer<EvaluationImplementation>               EvaluationPointer;
 
   /** Default constructor */
   CenteredFiniteDifferenceHessian();

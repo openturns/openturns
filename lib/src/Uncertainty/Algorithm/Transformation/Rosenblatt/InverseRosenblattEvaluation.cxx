@@ -32,7 +32,7 @@ static const Factory<InverseRosenblattEvaluation> Factory_InverseRosenblattEvalu
 
 /* Default constructor */
 InverseRosenblattEvaluation::InverseRosenblattEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , distribution_()
 {
   // Nothing to do
@@ -40,7 +40,7 @@ InverseRosenblattEvaluation::InverseRosenblattEvaluation()
 
 /* Parameter constructor */
 InverseRosenblattEvaluation::InverseRosenblattEvaluation(const Distribution & distribution)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , distribution_(distribution)
 {
   Description description(Description::BuildDefault(distribution.getDimension(), "X"));
@@ -125,14 +125,14 @@ String InverseRosenblattEvaluation::__str__(const String & offset) const
 /* Method save() stores the object through the StorageManager */
 void InverseRosenblattEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute( "distribution_", distribution_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void InverseRosenblattEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute( "distribution_", distribution_ );
 }
 

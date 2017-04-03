@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_PARAMETRICEVALUATION_HXX
 #define OPENTURNS_PARAMETRICEVALUATION_HXX
 
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/StorageManager.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/NumericalMathFunction.hxx"
@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * ParametricEvaluation implements the concept of parametric function for its evaluation part
  */
 class OT_API ParametricEvaluation
-  : public NumericalMathEvaluationImplementation
+  : public EvaluationImplementation
 {
   CLASSNAME;
 
@@ -53,7 +53,7 @@ public:
   ParametricEvaluation * clone() const;
 
   /** Evaluation operator */
-  using NumericalMathEvaluationImplementation::operator();
+  using EvaluationImplementation::operator();
   NumericalPoint operator() (const NumericalPoint & point) const;
   NumericalSample operator() (const NumericalPoint & point,
                               const NumericalSample & parameters);

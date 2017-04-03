@@ -31,7 +31,7 @@ static const Factory<ParametricEvaluation> Factory_ParametricEvaluation;
 
 /* Default constructor */
 ParametricEvaluation::ParametricEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , function_()
   , parametersPositions_(0)
   , inputPositions_(0)
@@ -44,7 +44,7 @@ ParametricEvaluation::ParametricEvaluation(const NumericalMathFunction & functio
     const Indices & set,
     const NumericalPoint & referencePoint,
     const Bool parametersSet)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , function_(function)
   , parametersPositions_(0)
   , inputPositions_(0)
@@ -98,7 +98,7 @@ ParametricEvaluation::ParametricEvaluation(const NumericalMathFunction & functio
 ParametricEvaluation::ParametricEvaluation(const ParametricEvaluation & evaluation,
     const Indices & set,
     const NumericalPoint & referencePoint)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , function_()
   , parametersPositions_(0)
   , inputPositions_(0)
@@ -299,7 +299,7 @@ String ParametricEvaluation::__str__(const String & offset) const
 /* Method save() stores the object through the StorageManager */
 void ParametricEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save( adv );
+  EvaluationImplementation::save( adv );
   adv.saveAttribute( "function_", function_ );
   adv.saveAttribute( "parametersPositions_", parametersPositions_ );
   adv.saveAttribute( "inputPositions_", inputPositions_ );
@@ -308,7 +308,7 @@ void ParametricEvaluation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void ParametricEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load( adv );
+  EvaluationImplementation::load( adv );
   adv.loadAttribute( "function_", function_ );
   adv.loadAttribute( "parametersPositions_", parametersPositions_ );
   adv.loadAttribute( "inputPositions_", inputPositions_ );

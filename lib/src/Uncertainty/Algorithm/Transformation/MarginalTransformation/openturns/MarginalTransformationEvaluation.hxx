@@ -22,7 +22,7 @@
 #define OPENTURNS_MARGINALTRANSFORMATIONEVALUATION_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/NumericalMathFunction.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/NumericalPoint.hxx"
@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class offers an interface for the Nataf function for elliptical distributions
  */
 class OT_API MarginalTransformationEvaluation
-  : public NumericalMathEvaluationImplementation
+  : public EvaluationImplementation
 {
   CLASSNAME;
 public:
@@ -66,7 +66,7 @@ public:
   virtual MarginalTransformationEvaluation * clone() const;
 
   /** Evaluation */
-  using NumericalMathEvaluationImplementation::operator();
+  using EvaluationImplementation::operator();
   NumericalPoint operator () (const NumericalPoint & inP) const;
 
   /** Gradient according to the marginal parameters */

@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_LINEARCOMBINATIONGRADIENT_HXX
 #define OPENTURNS_LINEARCOMBINATIONGRADIENT_HXX
 
-#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/GradientImplementation.hxx"
 #include "openturns/LinearCombinationEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API LinearCombinationGradient
-  : public NumericalMathGradientImplementation
+  : public GradientImplementation
 {
   CLASSNAME;
 public:

@@ -25,7 +25,7 @@ static const Factory<IndicatorEvaluation> Factory_IndicatorEvaluation;
 
 /* Default constructor */
 IndicatorEvaluation::IndicatorEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , p_evaluation_()
   , comparisonOperator_()
   , threshold_(0.0)
@@ -37,7 +37,7 @@ IndicatorEvaluation::IndicatorEvaluation()
 IndicatorEvaluation::IndicatorEvaluation(const EvaluationPointer & p_evaluation,
     const ComparisonOperator & comparisonOperator,
     const NumericalScalar threshold)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , p_evaluation_()
   , comparisonOperator_(comparisonOperator)
   , threshold_(threshold)
@@ -135,7 +135,7 @@ void IndicatorEvaluation::setThreshold(const NumericalScalar threshold)
 /* Method save() stores the object through the StorageManager */
 void IndicatorEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute( "evaluation_", *p_evaluation_ );
   adv.saveAttribute( "comparisonOperator_", comparisonOperator_ );
   adv.saveAttribute( "threshold_", threshold_ );
@@ -144,8 +144,8 @@ void IndicatorEvaluation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void IndicatorEvaluation::load(Advocate & adv)
 {
-  TypedInterfaceObject<NumericalMathEvaluationImplementation> evaluation;
-  NumericalMathEvaluationImplementation::load(adv);
+  TypedInterfaceObject<EvaluationImplementation> evaluation;
+  EvaluationImplementation::load(adv);
   adv.loadAttribute( "evaluation_", evaluation );
   p_evaluation_ = evaluation.getImplementation();
   adv.loadAttribute( "comparisonOperator_", comparisonOperator_ );

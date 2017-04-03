@@ -36,7 +36,7 @@ static const Factory<PythonGradient> Factory_PythonGradient;
 
 /* Default constructor */
 PythonGradient::PythonGradient()
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , pyObj_(0)
 {
   // Nothing to do
@@ -45,7 +45,7 @@ PythonGradient::PythonGradient()
 
 /* Constructor from Python object*/
 PythonGradient::PythonGradient(PyObject * pyCallable)
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , pyObj_(pyCallable)
 {
   Py_XINCREF(pyCallable);
@@ -66,7 +66,7 @@ PythonGradient * PythonGradient::clone() const
 
 /* Copy constructor */
 PythonGradient::PythonGradient(const PythonGradient & other)
-  : NumericalMathGradientImplementation(other)
+  : GradientImplementation(other)
   , pyObj_(other.pyObj_)
 {
   Py_XINCREF(pyObj_);
@@ -175,7 +175,7 @@ UnsignedInteger PythonGradient::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void PythonGradient::save(Advocate & adv) const
 {
-  NumericalMathGradientImplementation::save(adv);
+  GradientImplementation::save(adv);
 
   pickleSave(adv, pyObj_);
 }
@@ -184,7 +184,7 @@ void PythonGradient::save(Advocate & adv) const
 /* Method save() reloads the object from the StorageManager */
 void PythonGradient::load(Advocate & adv)
 {
-  NumericalMathGradientImplementation::load(adv);
+  GradientImplementation::load(adv);
 
   pickleLoad(adv, pyObj_);
 }

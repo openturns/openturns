@@ -28,9 +28,9 @@
 #include "openturns/Field.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Pointer.hxx"
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
-#include "openturns/NumericalMathGradientImplementation.hxx"
-#include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
+#include "openturns/GradientImplementation.hxx"
+#include "openturns/HessianImplementation.hxx"
 #include "openturns/Description.hxx"
 #include "openturns/Graph.hxx"
 
@@ -53,9 +53,9 @@ public:
 
   /* Some typedefs for easy reading */
   typedef Pointer<NumericalMathFunctionImplementation>           Implementation;
-  typedef NumericalMathEvaluationImplementation::Implementation  EvaluationPointer;
-  typedef NumericalMathGradientImplementation::Implementation    GradientPointer;
-  typedef NumericalMathHessianImplementation::Implementation     HessianPointer;
+  typedef EvaluationImplementation::Implementation  EvaluationPointer;
+  typedef GradientImplementation::Implementation    GradientPointer;
+  typedef HessianImplementation::Implementation     HessianPointer;
 
 public:
 

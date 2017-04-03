@@ -23,7 +23,7 @@
 #define OPENTURNS_PYTHONEVALUATION_HXX
 
 #include <Python.h>
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class binds a Python function to an OpenTURNS' NumericalMathFunction
  */
 class PythonEvaluation
-  : public NumericalMathEvaluationImplementation
+  : public EvaluationImplementation
 {
   CLASSNAME;
 public:

@@ -36,7 +36,7 @@ static const Factory<InverseNatafIndependentCopulaGradient> Factory_InverseNataf
 
 /* Default constructor */
 InverseNatafIndependentCopulaGradient::InverseNatafIndependentCopulaGradient()
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , dimension_()
 {
   // Nothing to do
@@ -44,7 +44,7 @@ InverseNatafIndependentCopulaGradient::InverseNatafIndependentCopulaGradient()
 
 /* Parameter constructor */
 InverseNatafIndependentCopulaGradient::InverseNatafIndependentCopulaGradient(const UnsignedInteger dimension)
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , dimension_(dimension)
 {
   // Nothing to do
@@ -100,14 +100,14 @@ UnsignedInteger InverseNatafIndependentCopulaGradient::getOutputDimension() cons
 /* Method save() stores the object through the StorageManager */
 void InverseNatafIndependentCopulaGradient::save(Advocate & adv) const
 {
-  NumericalMathGradientImplementation::save(adv);
+  GradientImplementation::save(adv);
   adv.saveAttribute( "dimension_", dimension_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void InverseNatafIndependentCopulaGradient::load(Advocate & adv)
 {
-  NumericalMathGradientImplementation::load(adv);
+  GradientImplementation::load(adv);
   adv.loadAttribute( "dimension_", dimension_ );
 }
 

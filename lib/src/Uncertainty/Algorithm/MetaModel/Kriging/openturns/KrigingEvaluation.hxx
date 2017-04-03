@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_KRIGINGEVALUATION_HXX
 #define OPENTURNS_KRIGINGEVALUATION_HXX
 
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/TBB.hxx"
 #include "openturns/Collection.hxx"
@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class permits prediction on a gaussian process
  */
 class OT_API KrigingEvaluation
-  : public NumericalMathEvaluationImplementation
+  : public EvaluationImplementation
 {
   CLASSNAME
 

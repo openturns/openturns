@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_UNIVARIATEFUNCTIONEVALUATION_HXX
 #define OPENTURNS_UNIVARIATEFUNCTIONEVALUATION_HXX
 
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/UniVariateFunction.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/NumericalPoint.hxx"
@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API UniVariateFunctionEvaluation
-  : public NumericalMathEvaluationImplementation
+  : public EvaluationImplementation
 {
   CLASSNAME;
 public:

@@ -27,7 +27,7 @@ static const Factory<ProductEvaluation> Factory_ProductEvaluation;
 /* Default constructor */
 ProductEvaluation::ProductEvaluation(const EvaluationPointer & p_leftEvaluation,
     const EvaluationPointer & p_rightEvaluation)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , p_leftEvaluation_(p_leftEvaluation)
   , p_rightEvaluation_(p_rightEvaluation)
 {
@@ -164,7 +164,7 @@ UnsignedInteger ProductEvaluation::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void ProductEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute( "leftEvaluation_", *p_leftEvaluation_ );
   adv.saveAttribute( "rightEvaluation_", *p_rightEvaluation_ );
 }
@@ -172,7 +172,7 @@ void ProductEvaluation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void ProductEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.saveAttribute( "leftEvaluation_", *p_leftEvaluation_ );
   adv.saveAttribute( "rightEvaluation_", *p_rightEvaluation_ );
 }

@@ -31,7 +31,7 @@ static const Factory<AggregatedGradient> Factory_AggregatedGradient;
 
 /* Default constructor */
 AggregatedGradient::AggregatedGradient()
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , evaluation_()
 {
   // Nothing to do
@@ -40,7 +40,7 @@ AggregatedGradient::AggregatedGradient()
 
 /* Parameters constructor */
 AggregatedGradient::AggregatedGradient(const AggregatedEvaluation & evaluation)
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , evaluation_(evaluation)
 {
   // Nothing to do

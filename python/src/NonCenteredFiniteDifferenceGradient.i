@@ -16,13 +16,13 @@ namespace OT {
  }
 
  NonCenteredFiniteDifferenceGradient(const NumericalPoint & epsilon,
-                                     const NumericalMathEvaluationImplementation & evaluation)
+                                     const EvaluationImplementation & evaluation)
  {
    return new OT::NonCenteredFiniteDifferenceGradient(epsilon, evaluation.clone());
  }
 
  NonCenteredFiniteDifferenceGradient(const NumericalScalar epsilon,
-                                     const NumericalMathEvaluationImplementation & evaluation)
+                                     const EvaluationImplementation & evaluation)
  {
    return new OT::NonCenteredFiniteDifferenceGradient(epsilon, evaluation.clone());
  }

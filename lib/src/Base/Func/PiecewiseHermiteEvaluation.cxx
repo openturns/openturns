@@ -35,7 +35,7 @@ static const Factory<PiecewiseHermiteEvaluation> Factory_PiecewiseHermiteEvaluat
 
 /* Default constructor */
 PiecewiseHermiteEvaluation::PiecewiseHermiteEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , locations_(1)
   , values_(1, 1)
   , derivatives_(1, 1)
@@ -48,7 +48,7 @@ PiecewiseHermiteEvaluation::PiecewiseHermiteEvaluation()
 PiecewiseHermiteEvaluation::PiecewiseHermiteEvaluation(const NumericalPoint & locations,
     const NumericalPoint & values,
     const NumericalPoint & derivatives)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , locations_(0)
   , values_(0, 0)
   , derivatives_(0, 0)
@@ -68,7 +68,7 @@ PiecewiseHermiteEvaluation::PiecewiseHermiteEvaluation(const NumericalPoint & lo
 PiecewiseHermiteEvaluation::PiecewiseHermiteEvaluation(const NumericalPoint & locations,
     const NumericalSample & values,
     const NumericalSample & derivatives)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , locations_(0)
   , values_(0, 0)
   , derivatives_(0, 0)
@@ -281,7 +281,7 @@ UnsignedInteger PiecewiseHermiteEvaluation::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void PiecewiseHermiteEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute( "locations_", locations_ );
   adv.saveAttribute( "values_", values_ );
   adv.saveAttribute( "derivatives_", derivatives_ );
@@ -292,7 +292,7 @@ void PiecewiseHermiteEvaluation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void PiecewiseHermiteEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute( "locations_", locations_ );
   adv.loadAttribute( "values_", values_ );
   adv.loadAttribute( "derivatives_", derivatives_ );

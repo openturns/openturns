@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_IDENTITYEVALUATION_HXX
 #define OPENTURNS_IDENTITYEVALUATION_HXX
 
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/NumericalSample.hxx"
 
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class IdentityEvaluation
  */
 class OT_API IdentityEvaluation
-  : public NumericalMathEvaluationImplementation
+  : public EvaluationImplementation
 {
   CLASSNAME;
 public:

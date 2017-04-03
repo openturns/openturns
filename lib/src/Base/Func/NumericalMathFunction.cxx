@@ -74,7 +74,7 @@ NumericalMathFunction::NumericalMathFunction(NumericalMathFunctionImplementation
 
 
 /* Constructor from implementation pointer */
-NumericalMathFunction::NumericalMathFunction(const NumericalMathEvaluationImplementation & evaluation)
+NumericalMathFunction::NumericalMathFunction(const EvaluationImplementation & evaluation)
   : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation(evaluation.clone()))
 {
   // Nothing to do
@@ -381,7 +381,7 @@ const NumericalMathFunction::EvaluationPointer & NumericalMathFunction::getEvalu
 }
 
 /* Gradient implementation accessors */
-void NumericalMathFunction::setGradient(const NumericalMathGradientImplementation & gradientImplementation)
+void NumericalMathFunction::setGradient(const GradientImplementation & gradientImplementation)
 {
   copyOnWrite();
   getImplementation()->setGradient(GradientPointer(gradientImplementation.clone()));
@@ -399,7 +399,7 @@ const NumericalMathFunction::GradientPointer & NumericalMathFunction::getGradien
 }
 
 /* Hessian implementation accessors */
-void NumericalMathFunction::setHessian(const NumericalMathHessianImplementation & hessianImplementation)
+void NumericalMathFunction::setHessian(const HessianImplementation & hessianImplementation)
 {
   copyOnWrite();
   getImplementation()->setHessian(HessianPointer(hessianImplementation.clone()));

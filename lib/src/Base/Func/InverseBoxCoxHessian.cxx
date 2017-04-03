@@ -24,14 +24,14 @@ static const Factory<InverseBoxCoxHessian> Factory_InverseBoxCoxHessian;
 
 /* Default constructor */
 InverseBoxCoxHessian::InverseBoxCoxHessian()
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
 InverseBoxCoxHessian::InverseBoxCoxHessian(const InverseBoxCoxEvaluation & evaluation)
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
   , evaluation_(evaluation)
 {
   // Nothing to do
@@ -126,14 +126,14 @@ NumericalPoint InverseBoxCoxHessian::getShift() const
 /* Method save() stores the object through the StorageManager */
 void InverseBoxCoxHessian::save(Advocate & adv) const
 {
-  NumericalMathHessianImplementation::save(adv);
+  HessianImplementation::save(adv);
   adv.saveAttribute( "evaluation_", evaluation_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void InverseBoxCoxHessian::load(Advocate & adv)
 {
-  NumericalMathHessianImplementation::load(adv);
+  HessianImplementation::load(adv);
   adv.loadAttribute( "evaluation_", evaluation_ );
 }
 

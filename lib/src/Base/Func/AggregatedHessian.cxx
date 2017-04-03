@@ -32,7 +32,7 @@ static const Factory<AggregatedHessian> Factory_AggregatedHessian;
 
 /* Default constructor */
 AggregatedHessian::AggregatedHessian()
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
   , evaluation_()
 {
   // Nothing to do
@@ -41,7 +41,7 @@ AggregatedHessian::AggregatedHessian()
 
 /* Parameters constructor */
 AggregatedHessian::AggregatedHessian(const AggregatedEvaluation & evaluation)
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
   , evaluation_(evaluation)
 {
   // Nothing to do

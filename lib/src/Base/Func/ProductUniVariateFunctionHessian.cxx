@@ -31,7 +31,7 @@ static const Factory<ProductUniVariateFunctionHessian> Factory_ProductUniVariate
 
 /* Default constructor */
 ProductUniVariateFunctionHessian::ProductUniVariateFunctionHessian()
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
 {
   // Nothing to do
 }
@@ -39,7 +39,7 @@ ProductUniVariateFunctionHessian::ProductUniVariateFunctionHessian()
 
 /* Constructor */
 ProductUniVariateFunctionHessian::ProductUniVariateFunctionHessian(const Pointer<ProductUniVariateFunctionEvaluation> & p_evaluation)
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
   , p_evaluation_(p_evaluation)
 {
   // Nothing to do
@@ -130,14 +130,14 @@ UnsignedInteger ProductUniVariateFunctionHessian::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void ProductUniVariateFunctionHessian::save(Advocate & adv) const
 {
-  NumericalMathHessianImplementation::save(adv);
+  HessianImplementation::save(adv);
   adv.saveAttribute("evaluation_", *p_evaluation_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void ProductUniVariateFunctionHessian::load(Advocate & adv)
 {
-  NumericalMathHessianImplementation::load(adv);
+  HessianImplementation::load(adv);
   TypedInterfaceObject<ProductUniVariateFunctionEvaluation> evaluation;
   adv.loadAttribute("evaluation_", evaluation);
   p_evaluation_ = evaluation.getImplementation();

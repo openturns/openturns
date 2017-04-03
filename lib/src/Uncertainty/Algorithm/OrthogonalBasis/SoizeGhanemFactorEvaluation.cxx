@@ -31,7 +31,7 @@ static const Factory<SoizeGhanemFactorEvaluation> Factory_SoizeGhanemFactorEvalu
 
 /* Default constructor */
 SoizeGhanemFactorEvaluation::SoizeGhanemFactorEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , measure_()
   , useCopula_()
   , copula_()
@@ -45,7 +45,7 @@ SoizeGhanemFactorEvaluation::SoizeGhanemFactorEvaluation()
 SoizeGhanemFactorEvaluation::SoizeGhanemFactorEvaluation(const Distribution & measure,
     const Collection<Distribution> & marginals,
     const Bool useCopula)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , measure_(measure)
   , useCopula_(useCopula)
   , copula_()
@@ -204,7 +204,7 @@ String SoizeGhanemFactorEvaluation::__str__(const String & offset) const
 /* Method save() stores the object through the StorageManager */
 void SoizeGhanemFactorEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute( "measure_", measure_ );
   adv.saveAttribute( "marginals_", marginals_ );
   adv.saveAttribute( "useCopula_", useCopula_ );
@@ -215,7 +215,7 @@ void SoizeGhanemFactorEvaluation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void SoizeGhanemFactorEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute( "measure_", measure_ );
   adv.loadAttribute( "marginals_", marginals_ );
   adv.loadAttribute( "useCopula_", useCopula_ );

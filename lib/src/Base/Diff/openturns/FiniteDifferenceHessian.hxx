@@ -23,8 +23,8 @@
 #ifndef OPENTURNS_FINITEDIFFERENCE_HXX
 #define OPENTURNS_FINITEDIFFERENCE_HXX
 
-#include "openturns/NumericalMathHessianImplementation.hxx"
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/HessianImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/Pointer.hxx"
 #include "openturns/FiniteDifferenceStep.hxx"
 
@@ -39,12 +39,12 @@ BEGIN_NAMESPACE_OPENTURNS
  * finite difference formula
  */
 class OT_API FiniteDifferenceHessian
-  : public NumericalMathHessianImplementation
+  : public HessianImplementation
 {
   CLASSNAME;
 public:
 
-  typedef Pointer<NumericalMathEvaluationImplementation>                          EvaluationPointer;
+  typedef Pointer<EvaluationImplementation>                          EvaluationPointer;
 
   /** Default constructor */
   FiniteDifferenceHessian();

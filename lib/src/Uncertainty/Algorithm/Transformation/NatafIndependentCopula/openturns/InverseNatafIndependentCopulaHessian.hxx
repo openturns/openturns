@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_INVERSENATAFINDEPENDENTCOPULAHESSIAN_HXX
 #define OPENTURNS_INVERSENATAFINDEPENDENTCOPULAHESSIAN_HXX
 
-#include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/HessianImplementation.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/StorageManager.hxx"
 
@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class offers an interface for the InverseNataf function for independent distributions
  */
 class OT_API InverseNatafIndependentCopulaHessian
-  : public NumericalMathHessianImplementation
+  : public HessianImplementation
 {
   CLASSNAME;
 public:

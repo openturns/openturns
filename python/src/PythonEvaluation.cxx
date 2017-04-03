@@ -28,9 +28,9 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-typedef NumericalMathEvaluationImplementation::CacheKeyType             CacheKeyType;
-typedef NumericalMathEvaluationImplementation::CacheValueType           CacheValueType;
-typedef NumericalMathEvaluationImplementation::CacheType                CacheType;
+typedef EvaluationImplementation::CacheKeyType             CacheKeyType;
+typedef EvaluationImplementation::CacheValueType           CacheValueType;
+typedef EvaluationImplementation::CacheType                CacheType;
 
 
 CLASSNAMEINIT(PythonEvaluation);
@@ -41,7 +41,7 @@ static const Factory<PythonEvaluation> Factory_PythonEvaluation;
 
 /* Default constructor */
 PythonEvaluation::PythonEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , pyObj_(0)
 {
   // Nothing to do
@@ -50,7 +50,7 @@ PythonEvaluation::PythonEvaluation()
 
 /* Constructor from Python object*/
 PythonEvaluation::PythonEvaluation(PyObject * pyCallable)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , pyObj_(pyCallable)
 {
   Py_XINCREF(pyCallable);
@@ -110,7 +110,7 @@ PythonEvaluation * PythonEvaluation::clone() const
 
 /* Copy constructor */
 PythonEvaluation::PythonEvaluation(const PythonEvaluation & other)
-  : NumericalMathEvaluationImplementation(other)
+  : EvaluationImplementation(other)
   , pyObj_(other.pyObj_)
 {
   Py_XINCREF(pyObj_);
@@ -378,7 +378,7 @@ UnsignedInteger PythonEvaluation::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void PythonEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
 
   pickleSave(adv, pyObj_);
 }
@@ -387,7 +387,7 @@ void PythonEvaluation::save(Advocate & adv) const
 /* Method save() reloads the object from the StorageManager */
 void PythonEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
 
   pickleLoad(adv, pyObj_);
 }

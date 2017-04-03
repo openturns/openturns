@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_METHODBOUNDEVALUATION_HXX
 #define OPENTURNS_METHODBOUNDEVALUATION_HXX
 
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/NumericalMathFunctionImplementation.hxx"
 #include "openturns/NumericalPoint.hxx"
 
@@ -103,7 +103,7 @@ struct MethodAdapter : public ReturnTypeAdapter<ReturnType_>, public ArgumentTyp
  */
 template <typename EvaluableObject, typename ReturnType_, typename ArgumentType_>
 class MethodBoundEvaluation
-  : public NumericalMathEvaluationImplementation
+  : public EvaluationImplementation
 {
 public:
 

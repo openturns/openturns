@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_KRIGINGGRADIENT_HXX
 #define OPENTURNS_KRIGINGGRADIENT_HXX
 
-#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/GradientImplementation.hxx"
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/Basis.hxx"
 
@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
   * This class permits prediction on a gaussian process
   */
 class OT_API KrigingGradient
-  : public NumericalMathGradientImplementation
+  : public GradientImplementation
 {
   CLASSNAME
 
@@ -69,7 +69,7 @@ public:
   virtual Bool isActualImplementation() const;
 
   /** Operator () */
-//   using NumericalMathGradientImplementation::gradient;
+//   using GradientImplementation::gradient;
   Matrix gradient(const NumericalPoint & inP) const;
 
   /** Accessor for input point dimension */

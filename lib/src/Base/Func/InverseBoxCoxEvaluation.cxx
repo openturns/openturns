@@ -23,14 +23,14 @@ static const Factory<InverseBoxCoxEvaluation> Factory_InverseBoxCoxEvaluation;
 
 /* Default constructor */
 InverseBoxCoxEvaluation::InverseBoxCoxEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
 InverseBoxCoxEvaluation::InverseBoxCoxEvaluation(const NumericalPoint & lambda)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , lambda_(lambda)
   , shift_(lambda.getDimension())
 {
@@ -40,7 +40,7 @@ InverseBoxCoxEvaluation::InverseBoxCoxEvaluation(const NumericalPoint & lambda)
 
 InverseBoxCoxEvaluation::InverseBoxCoxEvaluation(const NumericalPoint & lambda,
     const NumericalPoint & shift)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , lambda_(lambda)
   , shift_(shift)
 {
@@ -189,7 +189,7 @@ UnsignedInteger InverseBoxCoxEvaluation::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void InverseBoxCoxEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute( "lambda_", lambda_ );
   adv.saveAttribute( "shift_", shift_ );
 }
@@ -197,7 +197,7 @@ void InverseBoxCoxEvaluation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void InverseBoxCoxEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute( "lambda_", lambda_ );
   adv.loadAttribute( "shift_", shift_ );
 }

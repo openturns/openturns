@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_AGGREGATEDGRADIENT_HXX
 #define OPENTURNS_AGGREGATEDGRADIENT_HXX
 
-#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/GradientImplementation.hxx"
 #include "openturns/AggregatedEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API AggregatedGradient
-  : public NumericalMathGradientImplementation
+  : public GradientImplementation
 {
   CLASSNAME;
 public:

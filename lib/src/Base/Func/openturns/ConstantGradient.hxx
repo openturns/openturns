@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_CONSTANTGRADIENT_HXX
 #define OPENTURNS_CONSTANTGRADIENT_HXX
 
-#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/GradientImplementation.hxx"
 #include "openturns/Matrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * gradient may be loaded in an external way through a wrapper.
  */
 class OT_API ConstantGradient
-  : public NumericalMathGradientImplementation
+  : public GradientImplementation
 {
   CLASSNAME;
 public:

@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_NOHESSIAN_HXX
 #define OPENTURNS_NOHESSIAN_HXX
 
-#include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/HessianImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * hessian may be loaded in an external way through a wrapper.
  */
 class OT_API NoHessian
-  : public NumericalMathHessianImplementation
+  : public HessianImplementation
 {
   CLASSNAME;
 public:

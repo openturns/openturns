@@ -32,7 +32,7 @@ static const Factory<QuadraticEvaluation> Factory_QuadraticEvaluation;
 
 /* Default constructor */
 QuadraticEvaluation::QuadraticEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
 {
   // Nothing to do
 }
@@ -42,7 +42,7 @@ QuadraticEvaluation::QuadraticEvaluation(const NumericalPoint & center,
     const NumericalPoint & constant,
     const Matrix & linear,
     const SymmetricTensor & quadratic)
-  : NumericalMathEvaluationImplementation(),
+  : EvaluationImplementation(),
     center_(center),
     constant_(constant),
     linear_(linear.transpose()),
@@ -153,7 +153,7 @@ UnsignedInteger QuadraticEvaluation::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void QuadraticEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute( "center_", center_ );
   adv.saveAttribute( "constant_", constant_ );
   adv.saveAttribute( "linear_", linear_ );
@@ -163,7 +163,7 @@ void QuadraticEvaluation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void QuadraticEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute( "center_", center_ );
   adv.loadAttribute( "constant_", constant_ );
   adv.loadAttribute( "linear_", linear_ );

@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_AGGREGATEDHESSIAN_HXX
 #define OPENTURNS_AGGREGATEDHESSIAN_HXX
 
-#include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/HessianImplementation.hxx"
 #include "openturns/AggregatedEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API AggregatedHessian
-  : public NumericalMathHessianImplementation
+  : public HessianImplementation
 {
   CLASSNAME;
 public:

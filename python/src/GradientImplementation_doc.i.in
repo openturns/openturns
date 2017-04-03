@@ -1,9 +1,9 @@
-%feature("docstring") OT::NumericalMathGradientImplementation
+%feature("docstring") OT::GradientImplementation
 "Numerical math gradient implementation.
 
 See also
 --------
-NumericalMathFunction, NumericalMathHessianImplementation
+NumericalMathFunction, HessianImplementation
 
 Notes
 -----
@@ -12,7 +12,7 @@ This object is the result of the method *getGradient* of a
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathGradientImplementation::getCallsNumber
+%feature("docstring") OT::GradientImplementation::getCallsNumber
 "Accessor to the number of times the gradient has been called.
 
 Returns
@@ -23,7 +23,7 @@ calls_number : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathGradientImplementation::getInputDimension
+%feature("docstring") OT::GradientImplementation::getInputDimension
 "Accessor to the number of the inputs.
 
 Returns
@@ -33,7 +33,7 @@ number_inputs : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathGradientImplementation::getOutputDimension
+%feature("docstring") OT::GradientImplementation::getOutputDimension
 "Accessor to the number of the outputs.
 
 Returns
@@ -43,7 +43,7 @@ number_outputs : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathGradientImplementation::getMarginal
+%feature("docstring") OT::GradientImplementation::getMarginal
 "Accessor to the gradient implementation of a specific output.
 
 Parameters
@@ -55,13 +55,13 @@ indices : sequence of integer
 
 Returns
 -------
-gradientImplementation : :class:`~openturns.NumericalMathGradientImplementation`
+gradientImplementation : :class:`~openturns.GradientImplementation`
     A gradient implementation restricted to its compenents functions which
     indices are *i* or *indices*."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathGradientImplementation::gradient
+%feature("docstring") OT::GradientImplementation::gradient
 "Return the Jacobian transposed matrix of the implementation at a point.
 
 Parameters
@@ -76,7 +76,7 @@ gradient : :class:`~openturns.Matrix`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathGradientImplementation::isActualImplementation
+%feature("docstring") OT::GradientImplementation::isActualImplementation
 "Accessor to the validity flag.
 
 Returns
@@ -86,7 +86,7 @@ is_impl : bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathGradientImplementation::getParameter
+%feature("docstring") OT::GradientImplementation::getParameter
 "Accessor to the parameter values.
 
 Returns
@@ -96,7 +96,7 @@ parameter : :class:`~openturns.NumericalPoint`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathGradientImplementation::setParameter
+%feature("docstring") OT::GradientImplementation::setParameter
 "Accessor to the parameter values.
 
 Parameters

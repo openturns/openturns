@@ -35,7 +35,7 @@ static const Factory<LinearEvaluation> Factory_LinearEvaluation;
 
 /* Default constructor */
 LinearEvaluation::LinearEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
 {
   // Nothing to do
 }
@@ -44,7 +44,7 @@ LinearEvaluation::LinearEvaluation()
 LinearEvaluation::LinearEvaluation(const NumericalPoint & center,
     const NumericalPoint & constant,
     const Matrix & linear)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , center_(center)
   , constant_(constant)
   , linear_(linear.transpose())
@@ -165,7 +165,7 @@ UnsignedInteger LinearEvaluation::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void LinearEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute( "center_", center_ );
   adv.saveAttribute( "constant_", constant_ );
   adv.saveAttribute( "linear_", linear_ );
@@ -174,7 +174,7 @@ void LinearEvaluation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void LinearEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute( "center_", center_ );
   adv.loadAttribute( "constant_", constant_ );
   adv.loadAttribute( "linear_", linear_ );

@@ -33,7 +33,7 @@ static const Factory<ComposedGradient> Factory_ComposedGradient;
 ComposedGradient::ComposedGradient(const GradientPointer & p_leftGradient,
     const EvaluationPointer & p_rightFunction,
     const GradientPointer & p_rightGradient)
-  : NumericalMathGradientImplementation(),
+  : GradientImplementation(),
     p_leftGradient_(p_leftGradient),
     p_rightFunction_(p_rightFunction),
     p_rightGradient_(p_rightGradient)
@@ -96,7 +96,7 @@ UnsignedInteger ComposedGradient::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void ComposedGradient::save(Advocate & adv) const
 {
-  NumericalMathGradientImplementation::save(adv);
+  GradientImplementation::save(adv);
   adv.saveAttribute( "leftGradient_", *p_leftGradient_ );
   adv.saveAttribute( "rightFunction_", *p_rightFunction_ );
   adv.saveAttribute( "rightGradient_", *p_rightGradient_ );
@@ -105,9 +105,9 @@ void ComposedGradient::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void ComposedGradient::load(Advocate & adv)
 {
-  TypedInterfaceObject<NumericalMathEvaluationImplementation> evaluationValue;
-  TypedInterfaceObject<NumericalMathGradientImplementation> gradientValue;
-  NumericalMathGradientImplementation::load(adv);
+  TypedInterfaceObject<EvaluationImplementation> evaluationValue;
+  TypedInterfaceObject<GradientImplementation> gradientValue;
+  GradientImplementation::load(adv);
   adv.loadAttribute( "leftGradient_", gradientValue );
   p_leftGradient_ = gradientValue.getImplementation();
   adv.loadAttribute( "rightFunction_", evaluationValue );

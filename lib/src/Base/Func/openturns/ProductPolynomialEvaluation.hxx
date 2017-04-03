@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_PRODUCTPOLYNOMIALEVALUATION_HXX
 #define OPENTURNS_PRODUCTPOLYNOMIALEVALUATION_HXX
 
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/UniVariatePolynomial.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/NumericalPoint.hxx"
@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API ProductPolynomialEvaluation
-  : public NumericalMathEvaluationImplementation
+  : public EvaluationImplementation
 {
   CLASSNAME;
 public:

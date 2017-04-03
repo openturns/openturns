@@ -35,13 +35,13 @@ namespace KFactorFunctions
 
 #define KFactorFunctions_RMAX 8.5
 
-class KernelFunction: public NumericalMathEvaluationImplementation
+class KernelFunction: public EvaluationImplementation
 {
 public:
   KernelFunction(const NumericalScalar nu,
                  const NumericalScalar p,
                  const NumericalScalar n)
-    : NumericalMathEvaluationImplementation()
+    : EvaluationImplementation()
     , nu_(nu)
     , p_(p)
     , x_(1.0)
@@ -114,13 +114,13 @@ private:
   Normal normal_;
 }; // KernelFunction
 
-class ConstraintFunction: public NumericalMathEvaluationImplementation
+class ConstraintFunction: public EvaluationImplementation
 {
 public:
   ConstraintFunction(const NumericalScalar nu,
                      const NumericalScalar p,
                      const NumericalScalar n)
-    : NumericalMathEvaluationImplementation()
+    : EvaluationImplementation()
     , nu_(nu)
     , p_(p)
     , n_(n)

@@ -610,9 +610,9 @@ void NumericalMathFunctionImplementation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void NumericalMathFunctionImplementation::load(Advocate & adv)
 {
-  TypedInterfaceObject<NumericalMathEvaluationImplementation> evaluationValue;
-  TypedInterfaceObject<NumericalMathGradientImplementation> gradientValue;
-  TypedInterfaceObject<NumericalMathHessianImplementation> hessianValue;
+  TypedInterfaceObject<EvaluationImplementation> evaluationValue;
+  TypedInterfaceObject<GradientImplementation> gradientValue;
+  TypedInterfaceObject<HessianImplementation> hessianValue;
   PersistentObject::load(adv);
   adv.loadAttribute( "evaluationImplementation_", evaluationValue );
   p_evaluationImplementation_ = evaluationValue.getImplementation();

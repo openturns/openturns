@@ -1,7 +1,7 @@
 // SWIG file BaseFuncTemplateDefs.i
 
-%template(NumericalMathEvaluationImplementationPointer) OT::Pointer<OT::NumericalMathEvaluationImplementation>;
+%template(EvaluationImplementationPointer) OT::Pointer<OT::EvaluationImplementation>;
 %template(NumericalMathFunctionImplementationPointer) OT::Pointer<OT::NumericalMathFunctionImplementation>;
-%template(NumericalMathGradientImplementationPointer) OT::Pointer<OT::NumericalMathGradientImplementation>;
-%template(NumericalMathHessianImplementationPointer) OT::Pointer<OT::NumericalMathHessianImplementation>;
+%template(GradientImplementationPointer) OT::Pointer<OT::GradientImplementation>;
+%template(HessianImplementationPointer) OT::Pointer<OT::HessianImplementation>;
 %template(UniVariatePolynomialImplementationPointer) OT::Pointer<OT::UniVariatePolynomialImplementation>;

@@ -34,7 +34,7 @@ static const Factory<LinearCombinationHessian> Factory_LinearCombinationHessian;
 
 /* Default constructor */
 LinearCombinationHessian::LinearCombinationHessian()
-  : NumericalMathHessianImplementation(),
+  : HessianImplementation(),
     evaluation_()
 {
   // Nothing to do
@@ -43,7 +43,7 @@ LinearCombinationHessian::LinearCombinationHessian()
 
 /* Parameters constructor */
 LinearCombinationHessian::LinearCombinationHessian(const LinearCombinationEvaluation & evaluation)
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
   , evaluation_(evaluation)
 {
   // Nothing to do

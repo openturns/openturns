@@ -29,7 +29,7 @@ static const Factory<MarginalTransformationHessian> Factory_MarginalTransformati
 
 /* Default constructor */
 MarginalTransformationHessian::MarginalTransformationHessian():
-  NumericalMathHessianImplementation(),
+  HessianImplementation(),
   evaluation_()
 {
   // Nothing to do
@@ -37,7 +37,7 @@ MarginalTransformationHessian::MarginalTransformationHessian():
 
 /* Parameter constructor */
 MarginalTransformationHessian::MarginalTransformationHessian(const MarginalTransformationEvaluation & evaluation):
-  NumericalMathHessianImplementation(),
+  HessianImplementation(),
   evaluation_(evaluation)
 {
   // Nothing to do
@@ -113,14 +113,14 @@ String MarginalTransformationHessian::__str__(const String & offset) const
 /* Method save() stores the object through the StorageManager */
 void MarginalTransformationHessian::save(Advocate & adv) const
 {
-  NumericalMathHessianImplementation::save(adv);
+  HessianImplementation::save(adv);
   adv.saveAttribute( "evaluation_", evaluation_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void MarginalTransformationHessian::load(Advocate & adv)
 {
-  NumericalMathHessianImplementation::load(adv);
+  HessianImplementation::load(adv);
   adv.loadAttribute( "evaluation_", evaluation_ );
 }
 

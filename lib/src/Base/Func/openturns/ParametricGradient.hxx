@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_PARAMETRICGRADIENT_HXX
 #define OPENTURNS_PARAMETRICGRADIENT_HXX
 
-#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/GradientImplementation.hxx"
 #include "openturns/StorageManager.hxx"
 #include "openturns/ParametricEvaluation.hxx"
 
@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * ParametricGradient implements the concept of parametric function for its gradient part
  */
 class OT_API ParametricGradient
-  : public NumericalMathGradientImplementation
+  : public GradientImplementation
 {
   CLASSNAME;
 
@@ -51,7 +51,7 @@ public:
   ParametricGradient * clone() const;
 
   /** Gradient operator */
-  using NumericalMathGradientImplementation::gradient;
+  using GradientImplementation::gradient;
   Matrix gradient(const NumericalPoint & point) const;
   Matrix gradient(const NumericalPoint & point,
                   const NumericalPoint & parameters) const;

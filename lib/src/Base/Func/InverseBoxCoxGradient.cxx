@@ -24,14 +24,14 @@ static const Factory<InverseBoxCoxGradient> Factory_InverseBoxCoxGradient;
 
 /* Default constructor */
 InverseBoxCoxGradient::InverseBoxCoxGradient()
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
 InverseBoxCoxGradient::InverseBoxCoxGradient(const InverseBoxCoxEvaluation & evaluation)
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , evaluation_(evaluation)
 {
   // Nothing to do
@@ -126,14 +126,14 @@ NumericalPoint InverseBoxCoxGradient::getShift() const
 /* Method save() stores the object through the StorageManager */
 void InverseBoxCoxGradient::save(Advocate & adv) const
 {
-  NumericalMathGradientImplementation::save(adv);
+  GradientImplementation::save(adv);
   adv.saveAttribute( "evaluation_", evaluation_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void InverseBoxCoxGradient::load(Advocate & adv)
 {
-  NumericalMathGradientImplementation::load(adv);
+  GradientImplementation::load(adv);
   adv.loadAttribute( "evaluation_", evaluation_ );
 }
 

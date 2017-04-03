@@ -37,7 +37,7 @@ static const Factory<NatafIndependentCopulaEvaluation> Factory_NatafIndependentC
 
 /* Default constructor */
 NatafIndependentCopulaEvaluation::NatafIndependentCopulaEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , dimension_()
 {
   // Nothing to do
@@ -45,7 +45,7 @@ NatafIndependentCopulaEvaluation::NatafIndependentCopulaEvaluation()
 
 /* Parameter constructor */
 NatafIndependentCopulaEvaluation::NatafIndependentCopulaEvaluation(const UnsignedInteger dimension)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , dimension_(dimension)
 {
   Description description(Description::BuildDefault(dimension_, "X"));
@@ -124,14 +124,14 @@ UnsignedInteger NatafIndependentCopulaEvaluation::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void NatafIndependentCopulaEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute( "dimension_", dimension_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void NatafIndependentCopulaEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute( "dimension_", dimension_ );
 }
 

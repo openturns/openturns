@@ -16,7 +16,7 @@
 #ifndef OPENTURNS_INDICATORNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
 #define OPENTURNS_INDICATORNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
 
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/ComparisonOperator.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -30,13 +30,13 @@ BEGIN_NAMESPACE_OPENTURNS
  * The class that implement the composition of two numerical math functions implementations.
  */
 class OT_API IndicatorEvaluation
-  : public NumericalMathEvaluationImplementation
+  : public EvaluationImplementation
 {
   CLASSNAME;
 public:
 
   /* Some typedefs for easy reading */
-  typedef Pointer<NumericalMathEvaluationImplementation>           EvaluationPointer;
+  typedef Pointer<EvaluationImplementation>           EvaluationPointer;
 
   /** Default constructor */
   IndicatorEvaluation();
@@ -56,7 +56,7 @@ public:
   virtual String __repr__() const;
 
   /** Operator () */
-  using NumericalMathEvaluationImplementation::operator();
+  using EvaluationImplementation::operator();
   NumericalPoint operator() (const NumericalPoint & inP) const;
 
   /** Accessor for the underlying evaluation */

@@ -24,7 +24,7 @@
 #define OPENTURNS_NONCENTEREDFINITEDIFFERENCEGRADIENT_HXX
 
 #include "openturns/FiniteDifferenceGradient.hxx"
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/Pointer.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -46,7 +46,7 @@ class OT_API NonCenteredFiniteDifferenceGradient
   CLASSNAME;
 public:
 
-  typedef Pointer<NumericalMathEvaluationImplementation>        EvaluationPointer;
+  typedef Pointer<EvaluationImplementation>        EvaluationPointer;
 
   /** Default constructor */
   NonCenteredFiniteDifferenceGradient();

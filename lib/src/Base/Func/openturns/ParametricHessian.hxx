@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_PARAMETRICHESSIAN_HXX
 #define OPENTURNS_PARAMETRICHESSIAN_HXX
 
-#include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/HessianImplementation.hxx"
 #include "openturns/StorageManager.hxx"
 #include "openturns/ParametricEvaluation.hxx"
 
@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * ParametricHessian implements the concept of parametric function for its hessian part
  */
 class OT_API ParametricHessian
-  : public NumericalMathHessianImplementation
+  : public HessianImplementation
 {
   CLASSNAME;
 
@@ -51,7 +51,7 @@ public:
   ParametricHessian * clone() const;
 
   /** Hessian operator */
-  using NumericalMathHessianImplementation::hessian;
+  using HessianImplementation::hessian;
   SymmetricTensor hessian(const NumericalPoint & point) const;
   SymmetricTensor hessian(const NumericalPoint & point,
                           const NumericalPoint & parameters) const;

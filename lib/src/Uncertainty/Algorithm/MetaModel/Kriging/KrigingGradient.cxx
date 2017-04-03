@@ -32,7 +32,7 @@ static const Factory<KrigingGradient> Factory_KrigingGradient;
 
 /* Constructor with parameters */
 KrigingGradient::KrigingGradient()
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , basis_()
   , inputSample_()
   , covarianceModel_()
@@ -49,7 +49,7 @@ KrigingGradient::KrigingGradient(const BasisCollection & basis,
                                  const CovarianceModel & covarianceModel,
                                  const NumericalPointCollection & beta,
                                  const NumericalSample & gamma)
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , basis_(basis)
   , inputSample_(inputSample)
   , covarianceModel_(covarianceModel)
@@ -175,7 +175,7 @@ UnsignedInteger KrigingGradient::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void KrigingGradient::save(Advocate & adv) const
 {
-  NumericalMathGradientImplementation::save(adv);
+  GradientImplementation::save(adv);
   adv.saveAttribute("basis_", basis_);
   adv.saveAttribute("inputSample_", inputSample_);
   adv.saveAttribute("covarianceModel_", covarianceModel_);
@@ -186,7 +186,7 @@ void KrigingGradient::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void KrigingGradient::load(Advocate & adv)
 {
-  NumericalMathGradientImplementation::load(adv);
+  GradientImplementation::load(adv);
   adv.loadAttribute("basis_", basis_);
   adv.loadAttribute("inputSample_", inputSample_);
   adv.loadAttribute("covarianceModel_", covarianceModel_);

@@ -36,7 +36,7 @@ static const Factory<PythonHessian> Factory_PythonHessian;
 
 /* Default constructor */
 PythonHessian::PythonHessian()
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
   , pyObj_(0)
 {
   // Nothing to do
@@ -45,7 +45,7 @@ PythonHessian::PythonHessian()
 
 /* Constructor from Python object*/
 PythonHessian::PythonHessian(PyObject * pyCallable)
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
   , pyObj_(pyCallable)
 {
   Py_XINCREF(pyCallable);
@@ -66,7 +66,7 @@ PythonHessian * PythonHessian::clone() const
 
 /* Copy constructor */
 PythonHessian::PythonHessian(const PythonHessian & other)
-  : NumericalMathHessianImplementation(other)
+  : HessianImplementation(other)
   , pyObj_(other.pyObj_)
 {
   Py_XINCREF(pyObj_);
@@ -179,7 +179,7 @@ UnsignedInteger PythonHessian::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void PythonHessian::save(Advocate & adv) const
 {
-  NumericalMathHessianImplementation::save(adv);
+  HessianImplementation::save(adv);
 
   pickleSave(adv, pyObj_);
 }
@@ -188,7 +188,7 @@ void PythonHessian::save(Advocate & adv) const
 /* Method save() reloads the object from the StorageManager */
 void PythonHessian::load(Advocate & adv)
 {
-  NumericalMathHessianImplementation::load(adv);
+  HessianImplementation::load(adv);
 
   pickleLoad(adv, pyObj_);
 }

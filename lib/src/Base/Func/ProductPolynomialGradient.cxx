@@ -33,7 +33,7 @@ static const Factory<ProductPolynomialGradient> Factory_ProductPolynomialGradien
 
 /* Default constructor */
 ProductPolynomialGradient::ProductPolynomialGradient()
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , polynomials_()
 {
   // Nothing to do
@@ -42,7 +42,7 @@ ProductPolynomialGradient::ProductPolynomialGradient()
 
 /* Constructor */
 ProductPolynomialGradient::ProductPolynomialGradient(const PolynomialCollection & coll)
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , polynomials_(coll)
 {
   // Nothing to do
@@ -119,14 +119,14 @@ UnsignedInteger ProductPolynomialGradient::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void ProductPolynomialGradient::save(Advocate & adv) const
 {
-  NumericalMathGradientImplementation::save(adv);
+  GradientImplementation::save(adv);
   adv.saveAttribute( "polynomials_", polynomials_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void ProductPolynomialGradient::load(Advocate & adv)
 {
-  NumericalMathGradientImplementation::load(adv);
+  GradientImplementation::load(adv);
   adv.loadAttribute( "polynomials_", polynomials_ );
 }
 

@@ -35,7 +35,7 @@ static const Factory<ProductUniVariateFunctionEvaluation> Factory_ProductUniVari
 
 /* Default constructor */
 ProductUniVariateFunctionEvaluation::ProductUniVariateFunctionEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , functions_()
 {
   // Nothing to do
@@ -44,7 +44,7 @@ ProductUniVariateFunctionEvaluation::ProductUniVariateFunctionEvaluation()
 
 /* Constructor */
 ProductUniVariateFunctionEvaluation::ProductUniVariateFunctionEvaluation(const UniVariateFunctionCollection & coll)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , functions_(coll)
 {
   // Set the descriptions
@@ -154,14 +154,14 @@ UnsignedInteger ProductUniVariateFunctionEvaluation::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void ProductUniVariateFunctionEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute("functions_", functions_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void ProductUniVariateFunctionEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute("functions_", functions_);
 }
 

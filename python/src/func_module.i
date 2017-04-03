@@ -42,9 +42,9 @@
 %include TimeSeries.i 
 %include ProcessSample.i 
 %include SpecFunc.i
-%include NumericalMathEvaluationImplementation.i
-%include NumericalMathGradientImplementation.i
-%include NumericalMathHessianImplementation.i
+%include EvaluationImplementation.i
+%include GradientImplementation.i
+%include HessianImplementation.i
 %include NoEvaluation.i
 %include NoGradient.i
 %include NoHessian.i

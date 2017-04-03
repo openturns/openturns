@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_NOEVALUATION_HXX
 #define OPENTURNS_NOEVALUATION_HXX
 
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * Class for unavailable evaluation implementations
  */
 class OT_API NoEvaluation
-  : public NumericalMathEvaluationImplementation
+  : public EvaluationImplementation
 {
   CLASSNAME;
 public:

@@ -31,14 +31,14 @@ static const Factory<ConstantGradient> Factory_ConstantGradient;
 
 /* Default constructor */
 ConstantGradient::ConstantGradient()
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
 ConstantGradient::ConstantGradient(const Matrix & constant)
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , constant_(constant)
 {
   /* Check if the dimensions of the constant term is compatible with the linear term */
@@ -116,14 +116,14 @@ UnsignedInteger ConstantGradient::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void ConstantGradient::save(Advocate & adv) const
 {
-  NumericalMathGradientImplementation::save(adv);
+  GradientImplementation::save(adv);
   adv.saveAttribute( "constant_", constant_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void ConstantGradient::load(Advocate & adv)
 {
-  NumericalMathGradientImplementation::load(adv);
+  GradientImplementation::load(adv);
   adv.loadAttribute( "constant_", constant_ );
 }
 

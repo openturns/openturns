@@ -33,7 +33,7 @@ static const Factory<LinearCombinationGradient> Factory_LinearCombinationGradien
 
 /* Default constructor */
 LinearCombinationGradient::LinearCombinationGradient()
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , evaluation_()
 {
   // Nothing to do
@@ -42,7 +42,7 @@ LinearCombinationGradient::LinearCombinationGradient()
 
 /* Parameters constructor */
 LinearCombinationGradient::LinearCombinationGradient(const LinearCombinationEvaluation & evaluation)
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , evaluation_(evaluation)
 {
   // Nothing to do

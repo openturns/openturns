@@ -588,7 +588,7 @@ OT_NumericalMathFunction_getImplementation_doc
 
 Returns
 -------
-function : :class:`~openturns.NumericalMathEvaluationImplementation`
+function : :class:`~openturns.EvaluationImplementation`
     The evaluation function.
 
 Examples
@@ -609,7 +609,7 @@ OT_NumericalMathFunction_getEvaluation_doc
 
 Returns
 -------
-gradient : :class:`~openturns.NumericalMathGradientImplementation`
+gradient : :class:`~openturns.GradientImplementation`
     The gradient function."
 %enddef
 %feature("docstring") OT::NumericalMathFunctionImplementation::getGradient
@@ -622,7 +622,7 @@ OT_NumericalMathFunction_getGradient_doc
 
 Returns
 -------
-hessian : :class:`~openturns.NumericalMathHessianImplementation`
+hessian : :class:`~openturns.HessianImplementation`
     The hessian function."
 %enddef
 %feature("docstring") OT::NumericalMathFunctionImplementation::getHessian
@@ -635,7 +635,7 @@ OT_NumericalMathFunction_getHessian_doc
 
 Parameters
 ----------
-function : :class:`~openturns.NumericalMathEvaluationImplementation`
+function : :class:`~openturns.EvaluationImplementation`
     The evaluation function."
 %enddef
 %feature("docstring") OT::NumericalMathFunctionImplementation::setEvaluation
@@ -648,7 +648,7 @@ OT_NumericalMathFunction_setEvaluation_doc
 
 Parameters
 ----------
-gradient_function : :class:`~openturns.NumericalMathGradientImplementation`
+gradient_function : :class:`~openturns.GradientImplementation`
     The gradient function.
 
 Examples
@@ -670,7 +670,7 @@ OT_NumericalMathFunction_setGradient_doc
 
 Parameters
 ----------
-hessian_function : :class:`~openturns.NumericalMathHessianImplementation`
+hessian_function : :class:`~openturns.HessianImplementation`
     The hessian function.
 
 Examples

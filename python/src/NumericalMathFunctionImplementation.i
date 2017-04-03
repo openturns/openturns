@@ -6,9 +6,9 @@
 
 %include NumericalMathFunctionImplementation_doc.i
 
-%template(EvaluationImplementation) OT::Pointer<OT::NumericalMathEvaluationImplementation>;
-%template(GradientImplementation)   OT::Pointer<OT::NumericalMathGradientImplementation>;
-%template(HessianImplementation)    OT::Pointer<OT::NumericalMathHessianImplementation>;
+%template(EvaluationImplementation) OT::Pointer<OT::EvaluationImplementation>;
+%template(GradientImplementation)   OT::Pointer<OT::GradientImplementation>;
+%template(HessianImplementation)    OT::Pointer<OT::HessianImplementation>;
 
 %ignore OT::NumericalMathFunctionImplementation::getUseDefaultGradientImplementation;
 %ignore OT::NumericalMathFunctionImplementation::setUseDefaultGradientImplementation;

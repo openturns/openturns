@@ -31,7 +31,7 @@ static const Factory<ExpertMixture> Factory_ExpertMixture;
 
 /* Default constructor */
 ExpertMixture::ExpertMixture()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , experts_()
   , classifier_()
 {
@@ -42,7 +42,7 @@ ExpertMixture::ExpertMixture()
 /* Constructor */
 ExpertMixture::ExpertMixture(const Basis & experts,
                              const Classifier & classifier)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , experts_(experts)
   , classifier_(classifier)
 {
@@ -183,7 +183,7 @@ UnsignedInteger ExpertMixture::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void ExpertMixture::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute( "experts_", experts_ );
   adv.saveAttribute( "classifier_", classifier_ );
 }
@@ -192,7 +192,7 @@ void ExpertMixture::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void ExpertMixture::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute( "experts_", experts_ );
   adv.loadAttribute( "classifier_", classifier_ );
 }

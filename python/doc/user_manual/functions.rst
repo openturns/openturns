@@ -81,7 +81,7 @@ Evaluation functions
     :toctree: _generated/
     :template: class.rst_t
 
-    NumericalMathEvaluationImplementation
+    EvaluationImplementation
     AggregatedEvaluation
     SymbolicEvaluation
     ComposedEvaluation
@@ -107,7 +107,7 @@ Gradient functions
     :toctree: _generated/
     :template: class.rst_t
 
-    NumericalMathGradientImplementation
+    GradientImplementation
     SymbolicGradient
     ComposedGradient
     ConstantGradient
@@ -125,7 +125,7 @@ Hessian functions
     :toctree: _generated/
     :template: class.rst_t
 
-    NumericalMathHessianImplementation
+    HessianImplementation
     SymbolicHessian
     ComposedHessian
     ConstantHessian

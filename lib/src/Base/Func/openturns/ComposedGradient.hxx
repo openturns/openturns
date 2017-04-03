@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_COMPOSEDGRADIENT_HXX
 #define OPENTURNS_COMPOSEDGRADIENT_HXX
 
-#include "openturns/NumericalMathGradientImplementation.hxx"
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/GradientImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -36,14 +36,14 @@ BEGIN_NAMESPACE_OPENTURNS
  * its gradient and its hessian. This class has no implementation class
  */
 class OT_API ComposedGradient
-  : public NumericalMathGradientImplementation
+  : public GradientImplementation
 {
   CLASSNAME;
 public:
 
   /* Some typedefs for easy reading */
-  typedef Pointer<NumericalMathEvaluationImplementation>         EvaluationPointer;
-  typedef Pointer<NumericalMathGradientImplementation>           GradientPointer;
+  typedef Pointer<EvaluationImplementation>         EvaluationPointer;
+  typedef Pointer<GradientImplementation>           GradientPointer;
 
   /** Default constructor */
   ComposedGradient(const GradientPointer & p_leftGradient,

@@ -34,7 +34,7 @@ ProductGradient::ProductGradient(const EvaluationPointer & p_leftEvaluation,
     const GradientPointer & p_leftGradient,
     const EvaluationPointer & p_rightEvaluation,
     const GradientPointer & p_rightGradient)
-  : NumericalMathGradientImplementation(),
+  : GradientImplementation(),
     p_leftEvaluation_(p_leftEvaluation),
     p_leftGradient_(p_leftGradient),
     p_rightEvaluation_(p_rightEvaluation),
@@ -109,7 +109,7 @@ UnsignedInteger ProductGradient::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void ProductGradient::save(Advocate & adv) const
 {
-  NumericalMathGradientImplementation::save(adv);
+  GradientImplementation::save(adv);
   adv.saveAttribute( "leftEvaluation_", *p_leftEvaluation_ );
   adv.saveAttribute( "leftGradient_", *p_leftGradient_ );
   adv.saveAttribute( "rightEvaluation_", *p_rightEvaluation_ );
@@ -119,9 +119,9 @@ void ProductGradient::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void ProductGradient::load(Advocate & adv)
 {
-  TypedInterfaceObject<NumericalMathEvaluationImplementation> evaluationValue;
-  TypedInterfaceObject<NumericalMathGradientImplementation> gradientValue;
-  NumericalMathGradientImplementation::load(adv);
+  TypedInterfaceObject<EvaluationImplementation> evaluationValue;
+  TypedInterfaceObject<GradientImplementation> gradientValue;
+  GradientImplementation::load(adv);
   adv.loadAttribute( "leftEvaluation_", evaluationValue );
   p_leftEvaluation_ = evaluationValue.getImplementation();
   adv.loadAttribute( "leftGradient_", gradientValue );

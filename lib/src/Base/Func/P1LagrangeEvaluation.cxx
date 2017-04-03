@@ -34,14 +34,14 @@ static const Factory<P1LagrangeEvaluation> Factory_P1LagrangeEvaluation;
 
 /* Default constructor */
 P1LagrangeEvaluation::P1LagrangeEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
 {
   // Nothing to do
 }
 
 /* Default constructor */
 P1LagrangeEvaluation::P1LagrangeEvaluation(const Field & field)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
 {
   setField(field);
 }
@@ -236,7 +236,7 @@ UnsignedInteger P1LagrangeEvaluation::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void P1LagrangeEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute("mesh_", mesh_);
   adv.saveAttribute("values_", values_);
 }
@@ -244,7 +244,7 @@ void P1LagrangeEvaluation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void P1LagrangeEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute("mesh_", mesh_);
   adv.loadAttribute("values_", values_);
 }

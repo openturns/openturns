@@ -18,7 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/GradientImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/OTconfig.hxx"
 #ifdef OPENTURNS_HAVE_MUPARSER
@@ -31,12 +31,12 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(NumericalMathGradientImplementation);
+CLASSNAMEINIT(GradientImplementation);
 
-static const Factory<NumericalMathGradientImplementation> Factory_NumericalMathGradientImplementation;
+static const Factory<GradientImplementation> Factory_GradientImplementation;
 
 /* Default constructor */
-NumericalMathGradientImplementation::NumericalMathGradientImplementation()
+GradientImplementation::GradientImplementation()
   : PersistentObject()
   , callsNumber_(0)
   , parameter_(0)
@@ -45,35 +45,35 @@ NumericalMathGradientImplementation::NumericalMathGradientImplementation()
 }
 
 /* Virtual constructor */
-NumericalMathGradientImplementation * NumericalMathGradientImplementation::clone() const
+GradientImplementation * GradientImplementation::clone() const
 {
-  return new NumericalMathGradientImplementation(*this);
+  return new GradientImplementation(*this);
 }
 
 /* Comparison operator */
-Bool NumericalMathGradientImplementation::operator ==(const NumericalMathGradientImplementation & other) const
+Bool GradientImplementation::operator ==(const GradientImplementation & other) const
 {
   return true;
 }
 
 /* String converter */
-String NumericalMathGradientImplementation::__repr__() const
+String GradientImplementation::__repr__() const
 {
   OSS oss(true);
-  oss << "class=" << NumericalMathGradientImplementation::GetClassName()
+  oss << "class=" << GradientImplementation::GetClassName()
       << " name=" << getName();
   return oss;
 }
 
 /* String converter */
-String NumericalMathGradientImplementation::__str__(const String & offset) const
+String GradientImplementation::__str__(const String & offset) const
 {
-  return OSS(false) << offset << "NumericalMathGradientImplementation";
+  return OSS(false) << offset << "GradientImplementation";
 }
 
 
 /* Test for actual implementation */
-Bool NumericalMathGradientImplementation::isActualImplementation() const
+Bool GradientImplementation::isActualImplementation() const
 {
   return true;
 }
@@ -81,13 +81,13 @@ Bool NumericalMathGradientImplementation::isActualImplementation() const
 /* Here is the interface that all derived class must implement */
 
 /* Gradient method */
-Matrix NumericalMathGradientImplementation::gradient(const NumericalPoint & inP) const
+Matrix GradientImplementation::gradient(const NumericalPoint & inP) const
 {
-  throw NotYetImplementedException(HERE) << "In NumericalMathGradientImplementation::gradient(const NumericalPoint & inP) const";
+  throw NotYetImplementedException(HERE) << "In GradientImplementation::gradient(const NumericalPoint & inP) const";
 }
 
 /* Gradient method */
-Matrix NumericalMathGradientImplementation::gradient (const NumericalPoint & inP,
+Matrix GradientImplementation::gradient (const NumericalPoint & inP,
     const NumericalPoint & parameter)
 {
   setParameter(parameter);
@@ -95,43 +95,43 @@ Matrix NumericalMathGradientImplementation::gradient (const NumericalPoint & inP
 }
 
 /* Accessor for input point dimension */
-UnsignedInteger NumericalMathGradientImplementation::getInputDimension() const
+UnsignedInteger GradientImplementation::getInputDimension() const
 {
-  throw NotYetImplementedException(HERE) << "In NumericalMathGradientImplementation::getInputDimension() const";
+  throw NotYetImplementedException(HERE) << "In GradientImplementation::getInputDimension() const";
 }
 
 /* Accessor for output point dimension */
-UnsignedInteger NumericalMathGradientImplementation::getOutputDimension() const
+UnsignedInteger GradientImplementation::getOutputDimension() const
 {
-  throw NotYetImplementedException(HERE) << "In NumericalMathGradientImplementation::getOutputDimension() const";
+  throw NotYetImplementedException(HERE) << "In GradientImplementation::getOutputDimension() const";
 }
 
 /* Get the number of calls to operator() */
-UnsignedInteger NumericalMathGradientImplementation::getCallsNumber() const
+UnsignedInteger GradientImplementation::getCallsNumber() const
 {
   return callsNumber_;
 }
 
 /* Parameters value and description accessor */
-NumericalPoint NumericalMathGradientImplementation::getParameter() const
+NumericalPoint GradientImplementation::getParameter() const
 {
   return parameter_;
 }
 
-void NumericalMathGradientImplementation::setParameter(const NumericalPoint & parameter)
+void GradientImplementation::setParameter(const NumericalPoint & parameter)
 {
   parameter_ = parameter;
 }
 
 /* Get the i-th marginal function */
-NumericalMathGradientImplementation::Implementation NumericalMathGradientImplementation::getMarginal(const UnsignedInteger i) const
+GradientImplementation::Implementation GradientImplementation::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
   return getMarginal(Indices(1, i));
 }
 
 /* Get the function corresponding to indices components */
-NumericalMathGradientImplementation::Implementation NumericalMathGradientImplementation::getMarginal(const Indices & indices) const
+GradientImplementation::Implementation GradientImplementation::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and must be different";
   // Here we use the linear algebra representation of the marginal extraction operation in order to extract the marginal gradient.
@@ -167,14 +167,14 @@ NumericalMathGradientImplementation::Implementation NumericalMathGradientImpleme
 }
 
 /* Method save() stores the object through the StorageManager */
-void NumericalMathGradientImplementation::save(Advocate & adv) const
+void GradientImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute( "callsNumber_", callsNumber_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
-void NumericalMathGradientImplementation::load(Advocate & adv)
+void GradientImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute( "callsNumber_", callsNumber_ );

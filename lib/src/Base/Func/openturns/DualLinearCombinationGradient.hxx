@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_DUALLINEARCOMBINATIONGRADIENT_HXX
 #define OPENTURNS_DUALLINEARCOMBINATIONGRADIENT_HXX
 
-#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/GradientImplementation.hxx"
 #include "openturns/DualLinearCombinationEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API DualLinearCombinationGradient
-  : public NumericalMathGradientImplementation
+  : public GradientImplementation
 {
   CLASSNAME;
 public:

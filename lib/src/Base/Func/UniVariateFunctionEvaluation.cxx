@@ -30,7 +30,7 @@ static const Factory<UniVariateFunctionEvaluation> Factory_UniVariateFunctionEva
 
 /* Default constructor */
 UniVariateFunctionEvaluation::UniVariateFunctionEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , function_()
 {
   // Nothing to do
@@ -39,7 +39,7 @@ UniVariateFunctionEvaluation::UniVariateFunctionEvaluation()
 
 /* Constructor */
 UniVariateFunctionEvaluation::UniVariateFunctionEvaluation(const UniVariateFunction & function)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , function_(function)
 {
   // Set the descriptions
@@ -100,14 +100,14 @@ UnsignedInteger UniVariateFunctionEvaluation::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void UniVariateFunctionEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute("function_", function_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void UniVariateFunctionEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute("function_", function_);
 }
 

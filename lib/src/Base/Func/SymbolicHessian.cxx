@@ -31,7 +31,7 @@ static const Factory<SymbolicHessian> Factory_SymbolicHessian;
 
 /* Default constructor */
 SymbolicHessian::SymbolicHessian()
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
   , isInitialized_(false)
   , isAnalytical_(true)
   , evaluation_()
@@ -41,7 +41,7 @@ SymbolicHessian::SymbolicHessian()
 
 /* Default constructor */
 SymbolicHessian::SymbolicHessian(const SymbolicEvaluation & evaluation)
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
   , isInitialized_(false)
   , isAnalytical_(true)
   , evaluation_(evaluation)
@@ -285,14 +285,14 @@ SymbolicHessian::Implementation SymbolicHessian::getMarginal(const Indices & ind
 /* Method save() stores the object through the StorageManager */
 void SymbolicHessian::save(Advocate & adv) const
 {
-  NumericalMathHessianImplementation::save(adv);
+  HessianImplementation::save(adv);
   adv.saveAttribute( "evaluation_", evaluation_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void SymbolicHessian::load(Advocate & adv)
 {
-  NumericalMathHessianImplementation::load(adv);
+  HessianImplementation::load(adv);
   adv.loadAttribute( "evaluation_", evaluation_ );
   *this = SymbolicHessian(evaluation_);
 }

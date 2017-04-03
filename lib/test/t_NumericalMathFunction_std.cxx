@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   {
 
     // Test basic functionnalities
-    //checkClassWithClassName<ComputedNumericalMathEvaluationImplementation>();
+    //checkClassWithClassName<ComputedEvaluationImplementation>();
 
     /** Instance creation */
     Description input(2);

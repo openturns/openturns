@@ -87,7 +87,7 @@ mesh of the field on which :math:`g` will be applied:
 
 Returns
 -------
-g : :class:`~openturns.NumericalMathEvaluationImplementation`
+g : :class:`~openturns.EvaluationImplementation`
     Evaluation function of :math:`g: \Rset^d \mapsto \Rset^q`.
 
 Examples

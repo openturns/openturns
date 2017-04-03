@@ -37,7 +37,7 @@ static const Factory<LinearCombinationEvaluation> Factory_LinearCombinationEvalu
 
 /* Default constructor */
 LinearCombinationEvaluation::LinearCombinationEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , functionsCollection_(0)
   , coefficients_(0)
   , isZero_(false)
@@ -49,7 +49,7 @@ LinearCombinationEvaluation::LinearCombinationEvaluation()
 /* Parameters constructor */
 LinearCombinationEvaluation::LinearCombinationEvaluation(const NumericalMathFunctionCollection & functionsCollection,
     const NumericalPoint & coefficients)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , functionsCollection_(0)
   , coefficients_(0)
   , isZero_(false)

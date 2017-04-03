@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_PRODUCTUNIVARIATEFUNCTIONGRADIENT_HXX
 #define OPENTURNS_PRODUCTUNIVARIATEFUNCTIONGRADIENT_HXX
 
-#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/GradientImplementation.hxx"
 #include "openturns/ProductUniVariateFunctionEvaluation.hxx"
 
 
@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API ProductUniVariateFunctionGradient
-  : public NumericalMathGradientImplementation
+  : public GradientImplementation
 {
   CLASSNAME;
 public:

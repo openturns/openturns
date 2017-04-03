@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_CONSTANTHESSIAN_HXX
 #define OPENTURNS_CONSTANTHESSIAN_HXX
 
-#include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/HessianImplementation.hxx"
 #include "openturns/SymmetricTensor.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * of a vector (aka NumericalPoint) through the hessian.
  */
 class OT_API ConstantHessian
-  : public NumericalMathHessianImplementation
+  : public HessianImplementation
 {
   CLASSNAME;
 public:

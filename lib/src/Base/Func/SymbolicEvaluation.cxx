@@ -27,7 +27,7 @@ static const Factory<SymbolicEvaluation> Factory_SymbolicEvaluation;
 
 /* Default constructor */
 SymbolicEvaluation::SymbolicEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , inputVariablesNames_()
   , outputVariablesNames_()
   , formulas_()
@@ -39,7 +39,7 @@ SymbolicEvaluation::SymbolicEvaluation()
 SymbolicEvaluation::SymbolicEvaluation(const Description & inputVariablesNames,
     const Description & outputVariablesNames,
     const Description & formulas)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , inputVariablesNames_(inputVariablesNames)
   , outputVariablesNames_(outputVariablesNames)
   , formulas_(formulas)
@@ -168,7 +168,7 @@ Description SymbolicEvaluation::getFormulas() const
 /* Method save() stores the object through the StorageManager */
 void SymbolicEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute( "inputVariablesNames_", inputVariablesNames_ );
   adv.saveAttribute( "outputVariablesNames_", outputVariablesNames_ );
   adv.saveAttribute( "formulas_", formulas_ );
@@ -177,7 +177,7 @@ void SymbolicEvaluation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void SymbolicEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute( "inputVariablesNames_", inputVariablesNames_ );
   adv.loadAttribute( "outputVariablesNames_", outputVariablesNames_ );
   adv.loadAttribute( "formulas_", formulas_ );

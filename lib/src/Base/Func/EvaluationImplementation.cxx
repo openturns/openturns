@@ -21,7 +21,7 @@
 #include <algorithm>
 #include <iterator>
 
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/ComposedEvaluation.hxx"
 #include "openturns/OTconfig.hxx"
 #ifdef OPENTURNS_HAVE_MUPARSER
@@ -38,9 +38,9 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-typedef NumericalMathEvaluationImplementation::CacheType NumericalMathEvaluationImplementationCache;
+typedef EvaluationImplementation::CacheType EvaluationImplementationCache;
 
-static const Factory<NumericalMathEvaluationImplementationCache> Factory_NumericalMathEvaluationImplementationCache;
+static const Factory<EvaluationImplementationCache> Factory_EvaluationImplementationCache;
 
 /* These methods are implemented here for the needs of Cache */
 /* We should be careful because they may interfere with other definitions placed elsewhere */
@@ -53,13 +53,13 @@ TEMPLATE_CLASSNAMEINIT(PersistentCollection<PersistentCollection<NumericalScalar
 static const Factory<PersistentCollection<PersistentCollection<NumericalScalar> > > Factory_PersistentCollection_PersistentCollection_NumericalScalar;
 
 
-CLASSNAMEINIT(NumericalMathEvaluationImplementation);
+CLASSNAMEINIT(EvaluationImplementation);
 
-static const Factory<NumericalMathEvaluationImplementation> Factory_NumericalMathEvaluationImplementation;
+static const Factory<EvaluationImplementation> Factory_EvaluationImplementation;
 
 
 /* Default constructor */
-NumericalMathEvaluationImplementation::NumericalMathEvaluationImplementation()
+EvaluationImplementation::EvaluationImplementation()
   : PersistentObject()
   , callsNumber_(0)
   , p_cache_(new CacheType)
@@ -75,26 +75,26 @@ NumericalMathEvaluationImplementation::NumericalMathEvaluationImplementation()
 }
 
 /* Virtual constructor */
-NumericalMathEvaluationImplementation * NumericalMathEvaluationImplementation::clone() const
+EvaluationImplementation * EvaluationImplementation::clone() const
 {
-  return new NumericalMathEvaluationImplementation(*this);
+  return new EvaluationImplementation(*this);
 }
 
 
 /* Comparison operator */
-Bool NumericalMathEvaluationImplementation::operator ==(const NumericalMathEvaluationImplementation & other) const
+Bool EvaluationImplementation::operator ==(const EvaluationImplementation & other) const
 {
   return true;
 }
 
 /* String converter */
-String NumericalMathEvaluationImplementation::__repr__() const
+String EvaluationImplementation::__repr__() const
 {
   NumericalPointWithDescription parameters(parameter_);
   parameters.setDescription(parameterDescription_);
 
   OSS oss(true);
-  oss << "class=" << NumericalMathEvaluationImplementation::GetClassName()
+  oss << "class=" << EvaluationImplementation::GetClassName()
       << " name=" << getName()
       << " input description=" << inputDescription_
       << " output description=" << outputDescription_
@@ -103,13 +103,13 @@ String NumericalMathEvaluationImplementation::__repr__() const
 }
 
 /* String converter */
-String NumericalMathEvaluationImplementation::__str__(const String & offset) const
+String EvaluationImplementation::__str__(const String & offset) const
 {
-  return OSS(false) << offset << "NumericalMathEvaluationImplementation";
+  return OSS(false) << offset << "EvaluationImplementation";
 }
 
 /* Description Accessor */
-void NumericalMathEvaluationImplementation::setDescription(const Description & description)
+void EvaluationImplementation::setDescription(const Description & description)
 {
   if (description.getSize() != getInputDimension() + getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the description must have a size of input dimension + output dimension, here size=" << description.getSize() << ", input dimension=" << getInputDimension() << ", output dimension=" << getOutputDimension();
   inputDescription_ = Description(getInputDimension());
@@ -120,7 +120,7 @@ void NumericalMathEvaluationImplementation::setDescription(const Description & d
 
 
 /* Description Accessor */
-Description NumericalMathEvaluationImplementation::getDescription() const
+Description EvaluationImplementation::getDescription() const
 {
   Description description(getInputDescription());
   Description outputDescription(getOutputDescription());
@@ -129,33 +129,33 @@ Description NumericalMathEvaluationImplementation::getDescription() const
 }
 
 /* Input description Accessor */
-void NumericalMathEvaluationImplementation::setInputDescription(const Description & inputDescription)
+void EvaluationImplementation::setInputDescription(const Description & inputDescription)
 {
   if (inputDescription.getSize() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the input description must have a size=" << inputDescription.getSize() << " equal to the input dimension=" << getInputDimension();
   inputDescription_ = inputDescription;
 }
 
-Description NumericalMathEvaluationImplementation::getInputDescription() const
+Description EvaluationImplementation::getInputDescription() const
 {
   if (inputDescription_.getSize() == 0) return Description::BuildDefault(getInputDimension(), "x");
   return inputDescription_;
 }
 
 /* Output description Accessor */
-void NumericalMathEvaluationImplementation::setOutputDescription(const Description & outputDescription)
+void EvaluationImplementation::setOutputDescription(const Description & outputDescription)
 {
   if (outputDescription.getSize() != getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the output description must have a size=" << outputDescription.getSize() << " equal to the output dimension=" << getOutputDimension();
   outputDescription_ = outputDescription;
 }
 
-Description NumericalMathEvaluationImplementation::getOutputDescription() const
+Description EvaluationImplementation::getOutputDescription() const
 {
   if (outputDescription_.getSize() == 0) return Description::BuildDefault(getOutputDimension(), "y");
   return outputDescription_;
 }
 
 /* Test for actual implementation */
-Bool NumericalMathEvaluationImplementation::isActualImplementation() const
+Bool EvaluationImplementation::isActualImplementation() const
 {
   return true;
 }
@@ -163,7 +163,7 @@ Bool NumericalMathEvaluationImplementation::isActualImplementation() const
 /* Here is the interface that all derived class must implement */
 
 /* Operator () */
-NumericalSample NumericalMathEvaluationImplementation::operator() (const NumericalSample & inSample) const
+NumericalSample EvaluationImplementation::operator() (const NumericalSample & inSample) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inSample.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inSample.getDimension();
@@ -179,7 +179,7 @@ NumericalSample NumericalMathEvaluationImplementation::operator() (const Numeric
 
 
 /* Operator () */
-Field NumericalMathEvaluationImplementation::operator() (const Field & inField) const
+Field EvaluationImplementation::operator() (const Field & inField) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inField.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given time series has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inField.getDimension();
@@ -188,27 +188,27 @@ Field NumericalMathEvaluationImplementation::operator() (const Field & inField) 
 
 
 /* Enable or disable the internal cache */
-void NumericalMathEvaluationImplementation::enableCache() const
+void EvaluationImplementation::enableCache() const
 {
   p_cache_->enable();
 }
 
-void NumericalMathEvaluationImplementation::disableCache() const
+void EvaluationImplementation::disableCache() const
 {
   p_cache_->disable();
 }
 
-Bool NumericalMathEvaluationImplementation::isCacheEnabled() const
+Bool EvaluationImplementation::isCacheEnabled() const
 {
   return p_cache_->isEnabled();
 }
 
-UnsignedInteger NumericalMathEvaluationImplementation::getCacheHits() const
+UnsignedInteger EvaluationImplementation::getCacheHits() const
 {
   return p_cache_->getHits();
 }
 
-void NumericalMathEvaluationImplementation::addCacheContent(const NumericalSample& inSample, const NumericalSample& outSample)
+void EvaluationImplementation::addCacheContent(const NumericalSample& inSample, const NumericalSample& outSample)
 {
   p_cache_->enable();
   const UnsignedInteger size = inSample.getSize();
@@ -218,7 +218,7 @@ void NumericalMathEvaluationImplementation::addCacheContent(const NumericalSampl
   }
 }
 
-NumericalSample NumericalMathEvaluationImplementation::getCacheInput() const
+NumericalSample EvaluationImplementation::getCacheInput() const
 {
   Bool cacheEnabled = isCacheEnabled();
   enableCache();
@@ -230,7 +230,7 @@ NumericalSample NumericalMathEvaluationImplementation::getCacheInput() const
   return inSample;
 }
 
-NumericalSample NumericalMathEvaluationImplementation::getCacheOutput() const
+NumericalSample EvaluationImplementation::getCacheOutput() const
 {
   Bool cacheEnabled = isCacheEnabled();
   enableCache();
@@ -245,58 +245,58 @@ NumericalSample NumericalMathEvaluationImplementation::getCacheOutput() const
   return outSample;
 }
 
-void NumericalMathEvaluationImplementation::clearCache() const
+void EvaluationImplementation::clearCache() const
 {
   p_cache_->clear();
 }
 
 /* Enable or disable the input/output history */
-void NumericalMathEvaluationImplementation::enableHistory() const
+void EvaluationImplementation::enableHistory() const
 {
   isHistoryEnabled_ = true;
 }
 
-void NumericalMathEvaluationImplementation::disableHistory() const
+void EvaluationImplementation::disableHistory() const
 {
   isHistoryEnabled_ = false;
 }
 
-Bool NumericalMathEvaluationImplementation::isHistoryEnabled() const
+Bool EvaluationImplementation::isHistoryEnabled() const
 {
   return isHistoryEnabled_;
 }
 
-void NumericalMathEvaluationImplementation::clearHistory() const
+void EvaluationImplementation::clearHistory() const
 {
   inputStrategy_ = Full();
   outputStrategy_ = Full();
 }
 
-HistoryStrategy NumericalMathEvaluationImplementation::getHistoryInput() const
+HistoryStrategy EvaluationImplementation::getHistoryInput() const
 {
   return inputStrategy_;
 }
 
-HistoryStrategy NumericalMathEvaluationImplementation::getHistoryOutput() const
+HistoryStrategy EvaluationImplementation::getHistoryOutput() const
 {
   return outputStrategy_;
 }
 
 /* Input point / parameter history accessor */
-NumericalSample NumericalMathEvaluationImplementation::getInputPointHistory() const
+NumericalSample EvaluationImplementation::getInputPointHistory() const
 {
   if (getParameterDimension() == 0) return inputStrategy_.getSample();
-  throw NotYetImplementedException(HERE) << "in NumericalMathEvaluationImplementation::getInputPointHistory";
+  throw NotYetImplementedException(HERE) << "in EvaluationImplementation::getInputPointHistory";
 }
 
-NumericalSample NumericalMathEvaluationImplementation::getInputParameterHistory() const
+NumericalSample EvaluationImplementation::getInputParameterHistory() const
 {
-  throw NotYetImplementedException(HERE) << "in NumericalMathEvaluationImplementation::getInputParameterHistory";
+  throw NotYetImplementedException(HERE) << "in EvaluationImplementation::getInputParameterHistory";
 }
 
 
 /* Gradient according to the marginal parameters */
-Matrix NumericalMathEvaluationImplementation::parameterGradient(const NumericalPoint & inP) const
+Matrix EvaluationImplementation::parameterGradient(const NumericalPoint & inP) const
 {
   NumericalPoint parameter(getParameter());
   const UnsignedInteger parameterDimension = parameter.getDimension();
@@ -310,7 +310,7 @@ Matrix NumericalMathEvaluationImplementation::parameterGradient(const NumericalP
     inS[1 + i][i] += epsilon;
   }
   // operator()(x, theta) is non-const as it sets the parameter
-  Pointer<NumericalMathEvaluationImplementation> p_evaluation(clone());
+  Pointer<EvaluationImplementation> p_evaluation(clone());
   NumericalSample outS(p_evaluation->operator()(inP, inS));
 
   Matrix grad(parameterDimension, outputDimension);
@@ -325,42 +325,42 @@ Matrix NumericalMathEvaluationImplementation::parameterGradient(const NumericalP
 }
 
 /* Parameters value accessor */
-NumericalPoint NumericalMathEvaluationImplementation::getParameter() const
+NumericalPoint EvaluationImplementation::getParameter() const
 {
   return parameter_;
 }
 
-void NumericalMathEvaluationImplementation::setParameter(const NumericalPoint & parameter)
+void EvaluationImplementation::setParameter(const NumericalPoint & parameter)
 {
   parameter_ = parameter;
 }
 
-void NumericalMathEvaluationImplementation::setParameterDescription(const Description & description)
+void EvaluationImplementation::setParameterDescription(const Description & description)
 {
   parameterDescription_ = description;
 }
 
 /* Parameters description accessor */
-Description NumericalMathEvaluationImplementation::getParameterDescription() const
+Description EvaluationImplementation::getParameterDescription() const
 {
   return parameterDescription_;
 }
 
 
 /* Operator () */
-NumericalPoint NumericalMathEvaluationImplementation::operator() (const NumericalPoint & inP) const
+NumericalPoint EvaluationImplementation::operator() (const NumericalPoint & inP) const
 {
-  throw NotYetImplementedException(HERE) << "In NumericalMathEvaluationImplementation::operator() (const NumericalPoint & inP) const";
+  throw NotYetImplementedException(HERE) << "In EvaluationImplementation::operator() (const NumericalPoint & inP) const";
 }
 
-NumericalPoint NumericalMathEvaluationImplementation::operator() (const NumericalPoint & inP,
+NumericalPoint EvaluationImplementation::operator() (const NumericalPoint & inP,
     const NumericalPoint & parameter)
 {
   setParameter(parameter);
   return (*this)(inP);
 }
 
-NumericalSample NumericalMathEvaluationImplementation::operator() (const NumericalPoint & inP,
+NumericalSample EvaluationImplementation::operator() (const NumericalPoint & inP,
     const NumericalSample & parameters)
 {
   const UnsignedInteger size = parameters.getSize();
@@ -374,32 +374,32 @@ NumericalSample NumericalMathEvaluationImplementation::operator() (const Numeric
 }
 
 /* Accessor for input point dimension */
-UnsignedInteger NumericalMathEvaluationImplementation::getInputDimension() const
+UnsignedInteger EvaluationImplementation::getInputDimension() const
 {
-  throw NotYetImplementedException(HERE) << "In NumericalMathEvaluationImplementation::getInputDimension() const";
+  throw NotYetImplementedException(HERE) << "In EvaluationImplementation::getInputDimension() const";
 }
 
 /* Accessor for output point dimension */
-UnsignedInteger NumericalMathEvaluationImplementation::getOutputDimension() const
+UnsignedInteger EvaluationImplementation::getOutputDimension() const
 {
-  throw NotYetImplementedException(HERE) << "In NumericalMathEvaluationImplementation::getOutputDimension() const";
+  throw NotYetImplementedException(HERE) << "In EvaluationImplementation::getOutputDimension() const";
 }
 
 /* Accessor for input point dimension */
-UnsignedInteger NumericalMathEvaluationImplementation::getParameterDimension() const
+UnsignedInteger EvaluationImplementation::getParameterDimension() const
 {
   return getParameter().getDimension();
 }
 
 /* Get the i-th marginal function */
-NumericalMathEvaluationImplementation::Implementation NumericalMathEvaluationImplementation::getMarginal(const UnsignedInteger i) const
+EvaluationImplementation::Implementation EvaluationImplementation::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
   return getMarginal(Indices(1, i));
 }
 
 /* Get the function corresponding to indices components */
-NumericalMathEvaluationImplementation::Implementation NumericalMathEvaluationImplementation::getMarginal(const Indices & indices) const
+EvaluationImplementation::Implementation EvaluationImplementation::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and must be different";
   // We build an analytical function that extract the needed component
@@ -439,14 +439,14 @@ NumericalMathEvaluationImplementation::Implementation NumericalMathEvaluationImp
 }
 
 /* Get the number of calls to operator() */
-UnsignedInteger NumericalMathEvaluationImplementation::getCallsNumber() const
+UnsignedInteger EvaluationImplementation::getCallsNumber() const
 {
   return callsNumber_;
 }
 
 
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
-Graph NumericalMathEvaluationImplementation::draw(const UnsignedInteger inputMarginal,
+Graph EvaluationImplementation::draw(const UnsignedInteger inputMarginal,
     const UnsignedInteger outputMarginal,
     const NumericalPoint & centralPoint,
     const NumericalScalar xMin,
@@ -494,7 +494,7 @@ Graph NumericalMathEvaluationImplementation::draw(const UnsignedInteger inputMar
 }
 
 /* Draw the given 1D marginal output as a function of the given 2D marginal input around the given central point */
-Graph NumericalMathEvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
+Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
     const UnsignedInteger secondInputMarginal,
     const UnsignedInteger outputMarginal,
     const NumericalPoint & centralPoint,
@@ -593,7 +593,7 @@ Graph NumericalMathEvaluationImplementation::draw(const UnsignedInteger firstInp
 }
 
 /* Draw the output of the function with respect to its input when the input and output dimensions are 1 */
-Graph NumericalMathEvaluationImplementation::draw(const NumericalScalar xMin,
+Graph EvaluationImplementation::draw(const NumericalScalar xMin,
     const NumericalScalar xMax,
     const UnsignedInteger pointNumber,
     const GraphImplementation::LogScale scale) const
@@ -604,7 +604,7 @@ Graph NumericalMathEvaluationImplementation::draw(const NumericalScalar xMin,
 }
 
 /* Draw the output of the function with respect to its input when the input dimension is 2 and the output dimension is 1 */
-Graph NumericalMathEvaluationImplementation::draw(const NumericalPoint & xMin,
+Graph EvaluationImplementation::draw(const NumericalPoint & xMin,
     const NumericalPoint & xMax,
     const Indices & pointNumber,
     const GraphImplementation::LogScale scale) const
@@ -617,7 +617,7 @@ Graph NumericalMathEvaluationImplementation::draw(const NumericalPoint & xMin,
 
 
 /* Method save() stores the object through the StorageManager */
-void NumericalMathEvaluationImplementation::save(Advocate & adv) const
+void EvaluationImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute( "callsNumber_", callsNumber_ );
@@ -629,7 +629,7 @@ void NumericalMathEvaluationImplementation::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void NumericalMathEvaluationImplementation::load(Advocate & adv)
+void EvaluationImplementation::load(Advocate & adv)
 {
   TypedInterfaceObject<CacheType> cache;
   PersistentObject::load(adv);

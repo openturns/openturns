@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_NUMERICALMATHGRADIENTIMPLEMENTATION_HXX
-#define OPENTURNS_NUMERICALMATHGRADIENTIMPLEMENTATION_HXX
+#ifndef OPENTURNS_GRADIENTIMPLEMENTATION_HXX
+#define OPENTURNS_GRADIENTIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/NumericalPoint.hxx"
@@ -34,30 +34,30 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class NumericalMathGradientImplementation
+ * @class GradientImplementation
  *
  * This class offers an abstract interface for the implementation
  * of an real numerical mathematical Gradient into the platform.
  */
-class OT_API NumericalMathGradientImplementation
+class OT_API GradientImplementation
   : public PersistentObject
 {
   CLASSNAME;
 public:
 
-  typedef Pointer<NumericalMathGradientImplementation> Implementation;
+  typedef Pointer<GradientImplementation> Implementation;
 
 
   /** Default constructor */
-  NumericalMathGradientImplementation();
+  GradientImplementation();
 
   /** The Gradient that actually realizes assignment between objects */
 
   /** Virtual constructor */
-  virtual NumericalMathGradientImplementation * clone() const;
+  virtual GradientImplementation * clone() const;
 
   /** Comparison operator */
-  Bool operator ==(const NumericalMathGradientImplementation & other) const;
+  Bool operator ==(const GradientImplementation & other) const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -111,9 +111,9 @@ private:
   /** The value of the parameters */
   NumericalPoint parameter_;
 
-}; /* class NumericalMathGradientImplementation */
+}; /* class GradientImplementation */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_NUMERICALMATHGRADIENTIMPLEMENTATION_HXX */
+#endif /* OPENTURNS_GRADIENTIMPLEMENTATION_HXX */

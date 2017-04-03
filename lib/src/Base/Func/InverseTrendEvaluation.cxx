@@ -23,7 +23,7 @@ static const Factory<InverseTrendEvaluation> Factory_InverseTrendEvaluation;
 
 /* Default constructor */
 InverseTrendEvaluation::InverseTrendEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , function_()
 {
   // Nothing to do
@@ -31,7 +31,7 @@ InverseTrendEvaluation::InverseTrendEvaluation()
 
 /* Parameter constructor */
 InverseTrendEvaluation::InverseTrendEvaluation(const NumericalMathFunction & function)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , function_(function)
 {
   Description inputDescription(function.getInputDescription());
@@ -116,14 +116,14 @@ UnsignedInteger InverseTrendEvaluation::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void InverseTrendEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute( "function_", function_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void InverseTrendEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute( "function_", function_ );
 }
 

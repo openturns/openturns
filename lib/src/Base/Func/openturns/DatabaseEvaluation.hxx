@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_DATABASENUMERICALMATHFUNCTIONEVALUATIONIMPLEMENTATION_HXX
 #define OPENTURNS_DATABASENUMERICALMATHFUNCTIONEVALUATIONIMPLEMENTATION_HXX
 
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/KDTree.hxx"
@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * Provided two samples X (input) and Y (output), returns Yi when evaluated on Xi.
  */
 class OT_API DatabaseEvaluation
-  : public NumericalMathEvaluationImplementation
+  : public EvaluationImplementation
 {
   CLASSNAME;
   friend class NumericalMathFunctionImplementation;

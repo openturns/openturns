@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_PRODUCTHESSIAN_HXX
 #define OPENTURNS_PRODUCTHESSIAN_HXX
 
-#include "openturns/NumericalMathHessianImplementation.hxx"
-#include "openturns/NumericalMathGradientImplementation.hxx"
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/HessianImplementation.hxx"
+#include "openturns/GradientImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -36,15 +36,15 @@ BEGIN_NAMESPACE_OPENTURNS
  * The class that implement the composition of two numerical math hessians
  */
 class OT_API ProductHessian
-  : public NumericalMathHessianImplementation
+  : public HessianImplementation
 {
   CLASSNAME;
 public:
 
   /* Some typedefs for easy reading */
-  typedef Pointer<NumericalMathHessianImplementation>          HessianPointer;
-  typedef Pointer<NumericalMathGradientImplementation>         GradientPointer;
-  typedef Pointer<NumericalMathEvaluationImplementation>       EvaluationPointer;
+  typedef Pointer<HessianImplementation>          HessianPointer;
+  typedef Pointer<GradientImplementation>         GradientPointer;
+  typedef Pointer<EvaluationImplementation>       EvaluationPointer;
 
   /** Default constructor */
   ProductHessian(const EvaluationPointer & p_leftEvaluation,

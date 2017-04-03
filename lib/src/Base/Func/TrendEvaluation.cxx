@@ -23,7 +23,7 @@ static const Factory<TrendEvaluation> Factory_TrendEvaluation;
 
 /* Default constructor */
 TrendEvaluation::TrendEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , function_()
 {
   // Nothing to do
@@ -31,7 +31,7 @@ TrendEvaluation::TrendEvaluation()
 
 /* Parameter constructor */
 TrendEvaluation::TrendEvaluation(const NumericalMathFunction & function)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , function_(function)
 {
   Description inputDescription(function.getInputDescription());
@@ -116,14 +116,14 @@ UnsignedInteger TrendEvaluation::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void TrendEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute( "function_", function_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void TrendEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute( "function_", function_ );
 }
 

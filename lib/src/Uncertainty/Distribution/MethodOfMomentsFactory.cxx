@@ -30,7 +30,7 @@
 #include "openturns/TNC.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Matrix.hxx"
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -81,14 +81,14 @@ String MethodOfMomentsFactory::__str__(const String & offset) const
   return this->getClassName();
 }
 
-class MethodOfMomentsEvaluation : public NumericalMathEvaluationImplementation
+class MethodOfMomentsEvaluation : public EvaluationImplementation
 {
 public:
   MethodOfMomentsEvaluation(const NumericalPoint & refMoments,
                                         const Distribution & distribution,
                                         const NumericalPoint & knownParameterValues,
                                         const Indices & knownParameterIndices)
-    : NumericalMathEvaluationImplementation()
+    : EvaluationImplementation()
     , refMoments_(refMoments)
     , refSign_(refMoments.getSize())
     , distribution_(distribution)

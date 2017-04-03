@@ -27,9 +27,9 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-typedef NumericalMathEvaluationImplementation::CacheKeyType             CacheKeyType;
-typedef NumericalMathEvaluationImplementation::CacheValueType           CacheValueType;
-typedef NumericalMathEvaluationImplementation::CacheType                CacheType;
+typedef EvaluationImplementation::CacheKeyType             CacheKeyType;
+typedef EvaluationImplementation::CacheValueType           CacheValueType;
+typedef EvaluationImplementation::CacheType                CacheType;
 
 CLASSNAMEINIT(DatabaseEvaluation);
 
@@ -38,7 +38,7 @@ static const Factory<DatabaseEvaluation> Factory_DatabaseEvaluation;
 
 /* Default constructor */
 DatabaseEvaluation::DatabaseEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
 {
   // Nothing to do
 }
@@ -47,7 +47,7 @@ DatabaseEvaluation::DatabaseEvaluation()
 DatabaseEvaluation::DatabaseEvaluation(const NumericalSample & inputSample,
     const NumericalSample & outputSample,
     const Bool activateCache)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
 {
   setSample(inputSample, outputSample, activateCache);
 }
@@ -175,7 +175,7 @@ NumericalSample DatabaseEvaluation::operator()( const NumericalSample & inS ) co
   if (inS.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inS.getDimension();
   NumericalSample result;
   if (inS == inputSample_) result = outputSample_;
-  else result = NumericalMathEvaluationImplementation::operator()(inS);
+  else result = EvaluationImplementation::operator()(inS);
   callsNumber_ += inS.getSize();
   if (isHistoryEnabled_)
   {
@@ -202,7 +202,7 @@ UnsignedInteger DatabaseEvaluation::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void DatabaseEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute("inputSample_", inputSample_);
   adv.saveAttribute("outputSample_", outputSample_);
 }
@@ -210,7 +210,7 @@ void DatabaseEvaluation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void DatabaseEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute("inputSample_", inputSample_);
   adv.loadAttribute("outputSample_", outputSample_);
 }

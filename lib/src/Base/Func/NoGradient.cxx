@@ -32,7 +32,7 @@ static const Factory<NoGradient> Factory_NoGradient;
 
 /* Default constructor */
 NoGradient::NoGradient()
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
 {
   // Nothing to do
 }

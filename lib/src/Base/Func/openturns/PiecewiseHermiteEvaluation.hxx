@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_PIECEWISEHERMITEEVALUATION_HXX
 #define OPENTURNS_PIECEWISEHERMITEEVALUATION_HXX
 
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/NumericalMathFunction.hxx"
@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API PiecewiseHermiteEvaluation
-  : public NumericalMathEvaluationImplementation
+  : public EvaluationImplementation
 {
   CLASSNAME;
 public:
@@ -64,7 +64,7 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** Evaluation operator */
-  using NumericalMathEvaluationImplementation::operator ();
+  using EvaluationImplementation::operator ();
   NumericalPoint operator () (const NumericalPoint & inP) const;
 
   /** Compute the derivative */

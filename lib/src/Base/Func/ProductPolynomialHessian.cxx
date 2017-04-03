@@ -31,7 +31,7 @@ static const Factory<ProductPolynomialHessian> Factory_ProductPolynomialHessian;
 
 /* Default constructor */
 ProductPolynomialHessian::ProductPolynomialHessian()
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
   , polynomials_()
 {
   // Nothing to do
@@ -40,7 +40,7 @@ ProductPolynomialHessian::ProductPolynomialHessian()
 
 /* Constructor */
 ProductPolynomialHessian::ProductPolynomialHessian(const PolynomialCollection & coll)
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
   , polynomials_(coll)
 {
   // Nothing to do
@@ -131,14 +131,14 @@ UnsignedInteger ProductPolynomialHessian::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void ProductPolynomialHessian::save(Advocate & adv) const
 {
-  NumericalMathHessianImplementation::save(adv);
+  HessianImplementation::save(adv);
   adv.saveAttribute( "polynomials_", polynomials_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void ProductPolynomialHessian::load(Advocate & adv)
 {
-  NumericalMathHessianImplementation::load(adv);
+  HessianImplementation::load(adv);
   adv.loadAttribute( "polynomials_", polynomials_ );
 }
 

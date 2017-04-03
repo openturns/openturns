@@ -31,7 +31,7 @@ static const Factory<ParametricGradient> Factory_ParametricGradient;
 
 /* Default constructor */
 ParametricGradient::ParametricGradient()
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , p_evaluation_()
 {
   // Nothing to do
@@ -39,7 +39,7 @@ ParametricGradient::ParametricGradient()
 
 /* Parameter constructor */
 ParametricGradient::ParametricGradient(const EvaluationPointer & p_evaluation)
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , p_evaluation_(p_evaluation)
 {
   // Nothing to do
@@ -124,14 +124,14 @@ String ParametricGradient::__str__(const String & offset) const
 /* Method save() stores the object through the StorageManager */
 void ParametricGradient::save(Advocate & adv) const
 {
-  NumericalMathGradientImplementation::save( adv );
+  GradientImplementation::save( adv );
   adv.saveAttribute( "evaluation_", *p_evaluation_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void ParametricGradient::load(Advocate & adv)
 {
-  NumericalMathGradientImplementation::load( adv );
+  GradientImplementation::load( adv );
   TypedInterfaceObject<ParametricEvaluation> evaluation;
   adv.loadAttribute( "evaluation_", evaluation );
   p_evaluation_ = evaluation.getImplementation();

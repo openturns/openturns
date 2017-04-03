@@ -33,7 +33,7 @@ static const Factory<FiniteDifferenceHessian> Factory_FiniteDifferenceHessian;
 
 /* Default constructor */
 FiniteDifferenceHessian::FiniteDifferenceHessian()
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
   , p_evaluation_(new NoEvaluation)
 {
   // Nothing to do
@@ -43,7 +43,7 @@ FiniteDifferenceHessian::FiniteDifferenceHessian()
 FiniteDifferenceHessian::FiniteDifferenceHessian(
   const NumericalPoint & epsilon,
   const EvaluationPointer & p_evaluation)
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
   , p_evaluation_(p_evaluation)
   , finiteDifferenceStep_(epsilon)
 {
@@ -59,7 +59,7 @@ FiniteDifferenceHessian::FiniteDifferenceHessian(
 /* SecondParameter constructor */
 FiniteDifferenceHessian::FiniteDifferenceHessian(const NumericalScalar epsilon,
     const EvaluationPointer & p_evaluation)
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
   , p_evaluation_(p_evaluation)
   , finiteDifferenceStep_(NumericalPoint(p_evaluation->getInputDimension(), epsilon))
 {
@@ -71,7 +71,7 @@ FiniteDifferenceHessian::FiniteDifferenceHessian(const NumericalScalar epsilon,
 FiniteDifferenceHessian::FiniteDifferenceHessian(
   const FiniteDifferenceStep & finiteDifferenceStep,
   const EvaluationPointer & p_evaluation)
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
   , p_evaluation_(p_evaluation)
   , finiteDifferenceStep_(finiteDifferenceStep)
 {
@@ -152,7 +152,7 @@ SymmetricTensor FiniteDifferenceHessian::hessian(const NumericalPoint & inP) con
 /* Method save() stores the object through the StorageManager */
 void FiniteDifferenceHessian::save(Advocate & adv) const
 {
-  NumericalMathHessianImplementation::save(adv);
+  HessianImplementation::save(adv);
   adv.saveAttribute( "evaluation_", *p_evaluation_ );
   adv.saveAttribute( "finiteDifferenceStep_", finiteDifferenceStep_ );
 }
@@ -160,8 +160,8 @@ void FiniteDifferenceHessian::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void FiniteDifferenceHessian::load(Advocate & adv)
 {
-  NumericalMathHessianImplementation::load(adv);
-  TypedInterfaceObject<NumericalMathEvaluationImplementation> evaluation;
+  HessianImplementation::load(adv);
+  TypedInterfaceObject<EvaluationImplementation> evaluation;
   adv.loadAttribute( "evaluation_", evaluation );
   p_evaluation_ = evaluation.getImplementation();
   adv.loadAttribute( "finiteDifferenceStep_", finiteDifferenceStep_ );

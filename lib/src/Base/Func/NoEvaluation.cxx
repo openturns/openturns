@@ -32,7 +32,7 @@ static const Factory<NoEvaluation> Factory_NoEvaluation;
 
 /* Default constructor */
 NoEvaluation::NoEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
 {
   // Nothing to do
 }

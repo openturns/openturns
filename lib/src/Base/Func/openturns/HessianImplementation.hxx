@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_NUMERICALMATHHESSIANIMPLEMENTATION_HXX
-#define OPENTURNS_NUMERICALMATHHESSIANIMPLEMENTATION_HXX
+#ifndef OPENTURNS_HESSIANIMPLEMENTATION_HXX
+#define OPENTURNS_HESSIANIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/NumericalPoint.hxx"
@@ -33,28 +33,28 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class NumericalMathHessianImplementation
+ * @class HessianImplementation
  *
  * This class offers an abstract interface for the implementation
  * of an real numerical mathematical hessian into the platform.
  */
-class OT_API NumericalMathHessianImplementation
+class OT_API HessianImplementation
   : public PersistentObject
 {
   CLASSNAME;
 public:
 
-  typedef Pointer<NumericalMathHessianImplementation> Implementation;
+  typedef Pointer<HessianImplementation> Implementation;
 
 
   /** Default constructor */
-  NumericalMathHessianImplementation();
+  HessianImplementation();
 
   /** Virtual constructor */
-  virtual NumericalMathHessianImplementation * clone() const;
+  virtual HessianImplementation * clone() const;
 
   /** Comparison operator */
-  Bool operator ==(const NumericalMathHessianImplementation & other) const;
+  Bool operator ==(const HessianImplementation & other) const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -109,9 +109,9 @@ protected:
 private:
 
 
-}; /* class NumericalMathHessianImplementation */
+}; /* class HessianImplementation */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_NUMERICALMATHHESSIANIMPLEMENTATION_HXX */
+#endif /* OPENTURNS_HESSIANIMPLEMENTATION_HXX */

@@ -29,7 +29,7 @@ static const Factory<MarginalTransformationGradient> Factory_MarginalTransformat
 
 /* ParameterDefault constructor */
 MarginalTransformationGradient::MarginalTransformationGradient()
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , evaluation_()
 {
   // Nothing to do
@@ -37,7 +37,7 @@ MarginalTransformationGradient::MarginalTransformationGradient()
 
 /* Parameter constructor */
 MarginalTransformationGradient::MarginalTransformationGradient(const MarginalTransformationEvaluation & evaluation)
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , evaluation_(evaluation)
 {
   // Nothing to do
@@ -109,14 +109,14 @@ String MarginalTransformationGradient::__str__(const String & offset) const
 /* Method save() stores the object through the StorageManager */
 void MarginalTransformationGradient::save(Advocate & adv) const
 {
-  NumericalMathGradientImplementation::save(adv);
+  GradientImplementation::save(adv);
   adv.saveAttribute( "evaluation_", evaluation_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void MarginalTransformationGradient::load(Advocate & adv)
 {
-  NumericalMathGradientImplementation::load(adv);
+  GradientImplementation::load(adv);
   adv.loadAttribute( "evaluation_", evaluation_ );
 }
 

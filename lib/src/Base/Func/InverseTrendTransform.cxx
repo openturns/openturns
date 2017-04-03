@@ -21,7 +21,7 @@
 #include "openturns/InverseTrendTransform.hxx"
 #include "openturns/TrendTransform.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/NumericalSample.hxx"
 #include "openturns/Exception.hxx"
 
@@ -59,7 +59,7 @@ InverseTrendTransform::InverseTrendTransform(const EvaluationPointer & p_evaluat
 }
 
 /* Parameter constructor */
-InverseTrendTransform::InverseTrendTransform(const NumericalMathEvaluationImplementation & evaluation)
+InverseTrendTransform::InverseTrendTransform(const EvaluationImplementation & evaluation)
   : VertexValueFunction(evaluation.getInputDimension())
 {
   p_evaluation_ = evaluation.clone();

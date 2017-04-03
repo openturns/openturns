@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_PRODUCTUNIVARIATEFUNCTIONHESSIAN_HXX
 #define OPENTURNS_PRODUCTUNIVARIATEFUNCTIONHESSIAN_HXX
 
-#include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/HessianImplementation.hxx"
 #include "openturns/ProductUniVariateFunctionEvaluation.hxx"
 
 
@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API ProductUniVariateFunctionHessian
-  : public NumericalMathHessianImplementation
+  : public HessianImplementation
 {
   CLASSNAME;
 public:

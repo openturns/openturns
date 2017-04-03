@@ -30,7 +30,7 @@ static const Factory<CanonicalTensorEvaluation> Factory_CanonicalTensorEvaluatio
 
 
 CanonicalTensorEvaluation::CanonicalTensorEvaluation()
-: NumericalMathEvaluationImplementation()
+: EvaluationImplementation()
 {
   // Nothing to do
 }
@@ -39,7 +39,7 @@ CanonicalTensorEvaluation::CanonicalTensorEvaluation()
 CanonicalTensorEvaluation::CanonicalTensorEvaluation(const FunctionFamilyCollection & functionFamilies,
                                                      const Indices & nk,
                                                      const UnsignedInteger rank)
-: NumericalMathEvaluationImplementation()
+: EvaluationImplementation()
 , degrees_(nk)
 , coefficients_(nk.getSize())
 , basis_(nk.getSize())
@@ -216,7 +216,7 @@ UnsignedInteger CanonicalTensorEvaluation::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void CanonicalTensorEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute("degrees_", degrees_);
   adv.saveAttribute("coefficients_", coefficients_);
   adv.saveAttribute("basis_", basis_);
@@ -225,7 +225,7 @@ void CanonicalTensorEvaluation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void CanonicalTensorEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute("degrees_", degrees_);
   adv.loadAttribute("coefficients_", coefficients_);
   adv.loadAttribute("basis_", basis_);

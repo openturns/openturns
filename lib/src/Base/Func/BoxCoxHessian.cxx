@@ -24,14 +24,14 @@ static const Factory<BoxCoxHessian> Factory_BoxCoxHessian;
 
 /* Default constructor */
 BoxCoxHessian::BoxCoxHessian()
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
 BoxCoxHessian::BoxCoxHessian(const BoxCoxEvaluation & evaluation)
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
   , evaluation_(evaluation)
 {
   // Nothing to do
@@ -127,14 +127,14 @@ NumericalPoint BoxCoxHessian::getShift() const
 /* Method save() stores the object through the StorageManager */
 void BoxCoxHessian::save(Advocate & adv) const
 {
-  NumericalMathHessianImplementation::save(adv);
+  HessianImplementation::save(adv);
   adv.saveAttribute( "evaluation_", evaluation_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void BoxCoxHessian::load(Advocate & adv)
 {
-  NumericalMathHessianImplementation::load(adv);
+  HessianImplementation::load(adv);
   adv.loadAttribute( "evaluation_", evaluation_ );
 }
 

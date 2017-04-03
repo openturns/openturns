@@ -29,7 +29,7 @@ static const Factory<SymbolicGradient> Factory_SymbolicGradient;
 
 /* Default constructor */
 SymbolicGradient::SymbolicGradient()
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , isInitialized_(false)
   , isAnalytical_(true)
   , evaluation_()
@@ -39,7 +39,7 @@ SymbolicGradient::SymbolicGradient()
 
 /* Default constructor */
 SymbolicGradient::SymbolicGradient(const SymbolicEvaluation & evaluation)
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , isInitialized_(false)
   , isAnalytical_(true)
   , evaluation_(evaluation)
@@ -238,14 +238,14 @@ SymbolicGradient::Implementation SymbolicGradient::getMarginal(const Indices & i
 /* Method save() stores the object through the StorageManager */
 void SymbolicGradient::save(Advocate & adv) const
 {
-  NumericalMathGradientImplementation::save(adv);
+  GradientImplementation::save(adv);
   adv.saveAttribute( "evaluation_", evaluation_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void SymbolicGradient::load(Advocate & adv)
 {
-  NumericalMathGradientImplementation::load(adv);
+  GradientImplementation::load(adv);
   adv.loadAttribute( "evaluation_", evaluation_ );
   *this = SymbolicGradient(evaluation_);
 }

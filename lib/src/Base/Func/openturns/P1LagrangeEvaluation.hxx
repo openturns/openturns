@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_P1LAGRANGEEVALUATION_HXX
 #define OPENTURNS_P1LAGRANGEEVALUATION_HXX
 
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Field.hxx"
 
@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * Provided a field, compute the P1 piecewise-linear Lagrange interpolation.
  */
 class OT_API P1LagrangeEvaluation
-  : public NumericalMathEvaluationImplementation
+  : public EvaluationImplementation
 {
   CLASSNAME;
   friend class NumericalMathFunctionImplementation;

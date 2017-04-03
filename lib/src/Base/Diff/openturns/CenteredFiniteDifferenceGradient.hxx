@@ -24,7 +24,7 @@
 #define OPENTURNS_CENTEREDFINITEDIFFERENCEGRADIENT_HXX
 
 #include "openturns/FiniteDifferenceGradient.hxx"
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/Matrix.hxx"
 
@@ -47,7 +47,7 @@ class OT_API CenteredFiniteDifferenceGradient
   CLASSNAME;
 public:
 
-  typedef Pointer<NumericalMathEvaluationImplementation>                EvaluationPointer;
+  typedef Pointer<EvaluationImplementation>                EvaluationPointer;
 
   /** Default constructor */
   CenteredFiniteDifferenceGradient();

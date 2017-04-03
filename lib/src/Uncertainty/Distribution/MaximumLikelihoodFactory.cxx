@@ -33,8 +33,8 @@
 #include "openturns/TNC.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Matrix.hxx"
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
-#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
+#include "openturns/GradientImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -85,14 +85,14 @@ String MaximumLikelihoodFactory::__str__(const String & offset) const
   return this->getClassName();
 }
 
-class LogLikelihoodEvaluation : public NumericalMathEvaluationImplementation
+class LogLikelihoodEvaluation : public EvaluationImplementation
 {
 public:
   LogLikelihoodEvaluation(const NumericalSample & sample,
                                         const Distribution & distribution,
                                         const NumericalPoint & knownParameterValues,
                                         const Indices & knownParameterIndices)
-    : NumericalMathEvaluationImplementation()
+    : EvaluationImplementation()
     , sample_(sample)
     , distribution_(distribution)
     , knownParameterValues_(knownParameterValues)
@@ -181,14 +181,14 @@ private:
   Indices unknownParameterIndices_;
 };
 
-class LogLikelihoodGradient : public NumericalMathGradientImplementation
+class LogLikelihoodGradient : public GradientImplementation
 {
 public:
   LogLikelihoodGradient(const NumericalSample & sample,
                         const Distribution & distribution,
                         const NumericalPoint & knownParameterValues,
                         const Indices & knownParameterIndices)
-    : NumericalMathGradientImplementation()
+    : GradientImplementation()
     , sample_(sample)
     , distribution_(distribution)
     , knownParameterValues_(knownParameterValues)

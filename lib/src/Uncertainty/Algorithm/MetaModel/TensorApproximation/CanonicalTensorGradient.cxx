@@ -34,7 +34,7 @@ static const Factory<CanonicalTensorGradient> Factory_CanonicalTensorGradient;
 
 /* Default constructor */
 CanonicalTensorGradient::CanonicalTensorGradient()
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , evaluation_()
 {
   // Nothing to do
@@ -42,7 +42,7 @@ CanonicalTensorGradient::CanonicalTensorGradient()
 
 /* Default constructor */
 CanonicalTensorGradient::CanonicalTensorGradient(const CanonicalTensorEvaluation & evaluation)
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , evaluation_(evaluation)
 {
   // Nothing to do
@@ -156,14 +156,14 @@ UnsignedInteger CanonicalTensorGradient::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void CanonicalTensorGradient::save(Advocate & adv) const
 {
-  NumericalMathGradientImplementation::save(adv);
+  GradientImplementation::save(adv);
   adv.saveAttribute("evaluation_", evaluation_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void CanonicalTensorGradient::load(Advocate & adv)
 {
-  NumericalMathGradientImplementation::load(adv);
+  GradientImplementation::load(adv);
   adv.loadAttribute("evaluation_", evaluation_);
   *this = CanonicalTensorGradient(evaluation_);
 }

@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_QUADRATICEVALUATION_HXX
 #define OPENTURNS_QUADRATICEVALUATION_HXX
 
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/SymmetricTensor.hxx"
@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * evaluation may be loaded in an external way through a wrapper.
  */
 class OT_API QuadraticEvaluation
-  : public NumericalMathEvaluationImplementation
+  : public EvaluationImplementation
 {
   CLASSNAME;
 public:

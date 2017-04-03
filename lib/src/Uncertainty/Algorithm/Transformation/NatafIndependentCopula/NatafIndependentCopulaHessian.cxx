@@ -38,7 +38,7 @@ static const Factory<NatafIndependentCopulaHessian> Factory_NatafIndependentCopu
 
 /* Default constructor */
 NatafIndependentCopulaHessian::NatafIndependentCopulaHessian()
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
   , dimension_()
 {
   // Nothing to do
@@ -46,7 +46,7 @@ NatafIndependentCopulaHessian::NatafIndependentCopulaHessian()
 
 /* Parameter constructor */
 NatafIndependentCopulaHessian::NatafIndependentCopulaHessian(const UnsignedInteger dimension)
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
   , dimension_(dimension)
 {
   // Nothing to do
@@ -107,14 +107,14 @@ UnsignedInteger NatafIndependentCopulaHessian::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void NatafIndependentCopulaHessian::save(Advocate & adv) const
 {
-  NumericalMathHessianImplementation::save(adv);
+  HessianImplementation::save(adv);
   adv.saveAttribute( "dimension_", dimension_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void NatafIndependentCopulaHessian::load(Advocate & adv)
 {
-  NumericalMathHessianImplementation::load(adv);
+  HessianImplementation::load(adv);
   adv.loadAttribute( "dimension_", dimension_ );
 }
 

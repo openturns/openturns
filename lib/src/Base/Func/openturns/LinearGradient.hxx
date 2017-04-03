@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_LINEARGRADIENT_HXX
 #define OPENTURNS_LINEARGRADIENT_HXX
 
-#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/GradientImplementation.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/SymmetricTensor.hxx"
 
@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * gradient may be loaded in an external way through a wrapper.
  */
 class OT_API LinearGradient
-  : public NumericalMathGradientImplementation
+  : public GradientImplementation
 {
   CLASSNAME;
 public:

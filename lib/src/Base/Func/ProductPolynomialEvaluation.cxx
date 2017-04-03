@@ -35,7 +35,7 @@ static const Factory<ProductPolynomialEvaluation> Factory_ProductPolynomialEvalu
 
 /* Default constructor */
 ProductPolynomialEvaluation::ProductPolynomialEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , polynomials_()
 {
   // Nothing to do
@@ -44,7 +44,7 @@ ProductPolynomialEvaluation::ProductPolynomialEvaluation()
 
 /* Constructor */
 ProductPolynomialEvaluation::ProductPolynomialEvaluation(const PolynomialCollection & coll)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , polynomials_(coll)
 {
   // Set the descriptions
@@ -200,14 +200,14 @@ UnsignedInteger ProductPolynomialEvaluation::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void ProductPolynomialEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute( "polynomials_", polynomials_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void ProductPolynomialEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute( "polynomials_", polynomials_ );
 }
 

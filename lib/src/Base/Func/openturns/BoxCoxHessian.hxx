@@ -15,7 +15,7 @@
 #ifndef OPENTURNS_BOXCOXHESSIAN_HXX
 #define OPENTURNS_BOXCOXHESSIAN_HXX
 
-#include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/HessianImplementation.hxx"
 #include "openturns/BoxCoxEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API BoxCoxHessian
-  : public NumericalMathHessianImplementation
+  : public HessianImplementation
 {
   CLASSNAME;
 public:
@@ -52,7 +52,7 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Hessian evaluation method */
-  using NumericalMathHessianImplementation::hessian;
+  using HessianImplementation::hessian;
   SymmetricTensor hessian(const NumericalPoint & inP) const;
 
   /** Accessor for input point dimension */

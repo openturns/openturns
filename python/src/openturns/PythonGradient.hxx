@@ -23,17 +23,17 @@
 #define OPENTURNS_PYTHONGRADIENT_HXX
 
 #include <Python.h>
-#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/GradientImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class PythonGradient
  *
- * This class binds a Python function to a NumericalMathGradientImplementation
+ * This class binds a Python function to a GradientImplementation
  */
 class PythonGradient
-  : public NumericalMathGradientImplementation
+  : public GradientImplementation
 {
   CLASSNAME;
 public:

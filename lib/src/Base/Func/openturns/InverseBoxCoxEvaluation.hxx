@@ -15,7 +15,7 @@
 #ifndef OPENTURNS_INVERSEBOXCOXEVALUATION_HXX
 #define OPENTURNS_INVERSEBOXCOXEVALUATION_HXX
 
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/NumericalSample.hxx"
 
@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API InverseBoxCoxEvaluation
-  : public NumericalMathEvaluationImplementation
+  : public EvaluationImplementation
 {
   CLASSNAME;
 public:
@@ -56,7 +56,7 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Operator () */
-  using NumericalMathEvaluationImplementation::operator();
+  using EvaluationImplementation::operator();
   NumericalPoint operator() (const NumericalPoint & inP) const;
   NumericalSample operator() (const NumericalSample & inS) const;
 

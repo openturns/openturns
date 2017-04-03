@@ -33,7 +33,7 @@ static const Factory<ProductUniVariateFunctionGradient> Factory_ProductUniVariat
 
 /* Default constructor */
 ProductUniVariateFunctionGradient::ProductUniVariateFunctionGradient()
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
 {
   // Nothing to do
 }
@@ -41,7 +41,7 @@ ProductUniVariateFunctionGradient::ProductUniVariateFunctionGradient()
 
 /* Constructor */
 ProductUniVariateFunctionGradient::ProductUniVariateFunctionGradient(const Pointer<ProductUniVariateFunctionEvaluation> & p_evaluation)
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , p_evaluation_(p_evaluation)
 {
   // Nothing to do
@@ -118,14 +118,14 @@ UnsignedInteger ProductUniVariateFunctionGradient::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void ProductUniVariateFunctionGradient::save(Advocate & adv) const
 {
-  NumericalMathGradientImplementation::save(adv);
+  GradientImplementation::save(adv);
   adv.saveAttribute("evaluation_", *p_evaluation_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void ProductUniVariateFunctionGradient::load(Advocate & adv)
 {
-  NumericalMathGradientImplementation::load(adv);
+  GradientImplementation::load(adv);
   TypedInterfaceObject<ProductUniVariateFunctionEvaluation> evaluation;
   adv.loadAttribute("evaluation_", evaluation);
   p_evaluation_ = evaluation.getImplementation();

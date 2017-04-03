@@ -31,14 +31,14 @@ static const Factory<ConstantHessian> Factory_ConstantHessian;
 
 /* Default constructor */
 ConstantHessian::ConstantHessian()
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
 ConstantHessian::ConstantHessian(const SymmetricTensor & constant)
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
   , constant_(constant)
 {
   /* Check if the dimensions of the constant term is compatible with the linear term */
@@ -116,14 +116,14 @@ UnsignedInteger ConstantHessian::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void ConstantHessian::save(Advocate & adv) const
 {
-  NumericalMathHessianImplementation::save(adv);
+  HessianImplementation::save(adv);
   adv.saveAttribute( "constant_", constant_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void ConstantHessian::load(Advocate & adv)
 {
-  NumericalMathHessianImplementation::load(adv);
+  HessianImplementation::load(adv);
   adv.loadAttribute( "constant_", constant_ );
 }
 

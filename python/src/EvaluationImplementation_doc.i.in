@@ -1,8 +1,8 @@
-%feature("docstring") OT::NumericalMathEvaluationImplementation
+%feature("docstring") OT::EvaluationImplementation
 "Numerical math evaluation implementation.
 
 Available constructors:
-    NumericalMathEvaluationImplementation()
+    EvaluationImplementation()
 
 See also
 --------
@@ -13,7 +13,7 @@ DualLinearCombinationEvaluation, LinearFunction
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::addCacheContent
+%feature("docstring") OT::EvaluationImplementation::addCacheContent
 "Add input numerical points and associated output to the cache.
 
 Parameters
@@ -26,37 +26,37 @@ output_sample : 2-d sequence of float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::clearCache
+%feature("docstring") OT::EvaluationImplementation::clearCache
 "Empty the content of the cache."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::clearHistory
+%feature("docstring") OT::EvaluationImplementation::clearHistory
 "Empty the content of the history."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::disableCache
+%feature("docstring") OT::EvaluationImplementation::disableCache
 "Disable the cache mechanism."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::disableHistory
+%feature("docstring") OT::EvaluationImplementation::disableHistory
 "Disable the history mechanism."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::enableCache
+%feature("docstring") OT::EvaluationImplementation::enableCache
 "Enable the cache mechanism."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::enableHistory
+%feature("docstring") OT::EvaluationImplementation::enableHistory
 "Enable the history mechanism."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::getCacheHits
+%feature("docstring") OT::EvaluationImplementation::getCacheHits
 "Accessor to the number of computations saved thanks to the cache mecanism.
 
 Returns
@@ -67,7 +67,7 @@ cacheHits : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::getCacheInput
+%feature("docstring") OT::EvaluationImplementation::getCacheInput
 "Accessor to all the input numerical points stored in the cache mecanism.
 
 Returns
@@ -77,7 +77,7 @@ cacheInput : :class:`~openturns.NumericalSample`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::getCacheOutput
+%feature("docstring") OT::EvaluationImplementation::getCacheOutput
 "Accessor to all the output numerical points stored in the cache mecanism.
 
 Returns
@@ -87,7 +87,7 @@ cacheInput : :class:`~openturns.NumericalSample`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::getCallsNumber
+%feature("docstring") OT::EvaluationImplementation::getCallsNumber
 "Accessor to the number of times the function has been called.
 
 Returns
@@ -98,7 +98,7 @@ calls_number : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::getDescription
+%feature("docstring") OT::EvaluationImplementation::getDescription
 "Accessor to the description of the inputs and outputs.
 
 Returns
@@ -116,7 +116,7 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::getHistoryInput
+%feature("docstring") OT::EvaluationImplementation::getHistoryInput
 "Accessor to the history of the input values.
 
 Returns
@@ -126,7 +126,7 @@ input_history : :class:`~openturns.NumericalSample`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::getHistoryOutput
+%feature("docstring") OT::EvaluationImplementation::getHistoryOutput
 "Accessor to the history of the output values.
 
 Returns
@@ -136,7 +136,7 @@ output_history : :class:`~openturns.NumericalSample`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::getInputPointHistory 
+%feature("docstring") OT::EvaluationImplementation::getInputPointHistory 
 "Accessor to the history of the input points values.
 
 Returns
@@ -146,7 +146,7 @@ history : :class:`~openturns.NumericalSample`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::getInputParameterHistory 
+%feature("docstring") OT::EvaluationImplementation::getInputParameterHistory 
 "Accessor to the history of the input parameter values.
 
 Returns
@@ -156,7 +156,7 @@ history : :class:`~openturns.NumericalSample`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::getInputDescription
+%feature("docstring") OT::EvaluationImplementation::getInputDescription
 "Accessor to the description of the inputs.
 
 Returns
@@ -174,7 +174,7 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::getInputDimension
+%feature("docstring") OT::EvaluationImplementation::getInputDimension
 "Accessor to the number of the inputs.
 
 Returns
@@ -192,7 +192,7 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::getMarginal
+%feature("docstring") OT::EvaluationImplementation::getMarginal
 "Accessor to marginal.
 
 Parameters
@@ -209,7 +209,7 @@ marginal : :class:`~openturns.NumericalMathFunction`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::getOutputDescription
+%feature("docstring") OT::EvaluationImplementation::getOutputDescription
 "Accessor to the description of the outputs.
 
 Returns
@@ -227,7 +227,7 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::getOutputDimension
+%feature("docstring") OT::EvaluationImplementation::getOutputDimension
 "Accessor to the number of the outputs.
 
 Returns
@@ -245,7 +245,7 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::getParameterDimension
+%feature("docstring") OT::EvaluationImplementation::getParameterDimension
 "Accessor to the dimension of the parameter.
 
 Returns
@@ -255,7 +255,7 @@ parameter_dimension : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::isCacheEnabled
+%feature("docstring") OT::EvaluationImplementation::isCacheEnabled
 "Test whether the cache mechanism is enabled or not.
 
 Returns
@@ -266,7 +266,7 @@ isCacheEnabled : bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::isHistoryEnabled
+%feature("docstring") OT::EvaluationImplementation::isHistoryEnabled
 "Test whether the history mechanism is enabled or not.
 
 Returns
@@ -277,7 +277,7 @@ isHistoryEnabled : bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::setDescription
+%feature("docstring") OT::EvaluationImplementation::setDescription
 "Accessor to the description of the inputs and outputs.
 
 Parameters
@@ -298,7 +298,7 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::setInputDescription
+%feature("docstring") OT::EvaluationImplementation::setInputDescription
 "Accessor to the description of the inputs.
 
 Returns
@@ -308,7 +308,7 @@ description : :class:`~openturns.Description`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::setOutputDescription
+%feature("docstring") OT::EvaluationImplementation::setOutputDescription
 "Accessor to the description of the outputs.
 
 Returns
@@ -318,7 +318,7 @@ description : :class:`~openturns.Description`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::parameterGradient
+%feature("docstring") OT::EvaluationImplementation::parameterGradient
 "Gradient against the parameters.
 
 Parameters
@@ -333,7 +333,7 @@ parameter_gradient : :class:`~openturns.Matrix`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::getParameter
+%feature("docstring") OT::EvaluationImplementation::getParameter
 "Accessor to the parameter values.
 
 Returns
@@ -343,7 +343,7 @@ parameter : :class:`~openturns.NumericalPoint`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::setParameter
+%feature("docstring") OT::EvaluationImplementation::setParameter
 "Accessor to the parameter values.
 
 Parameters
@@ -353,7 +353,7 @@ parameter : sequence of float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::getParameterDescription
+%feature("docstring") OT::EvaluationImplementation::getParameterDescription
 "Accessor to the parameter description.
 
 Returns
@@ -363,7 +363,7 @@ parameter : :class:`~openturns.Description`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::setParameterDescription
+%feature("docstring") OT::EvaluationImplementation::setParameterDescription
 "Accessor to the parameter description.
 
 Parameters
@@ -373,7 +373,7 @@ parameter : :class:`~openturns.Description`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::draw
+%feature("docstring") OT::EvaluationImplementation::draw
 "Draw the output of function as a :class:`~openturns.Graph`.
 
 Available usages:
@@ -448,7 +448,7 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathEvaluationImplementation::isActualImplementation
+%feature("docstring") OT::EvaluationImplementation::isActualImplementation
 "Accessor to the validity flag.
 
 Returns

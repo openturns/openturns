@@ -18,7 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/HessianImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/OTconfig.hxx"
@@ -33,12 +33,12 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(NumericalMathHessianImplementation);
+CLASSNAMEINIT(HessianImplementation);
 
-static const Factory<NumericalMathHessianImplementation> Factory_NumericalMathHessianImplementation;
+static const Factory<HessianImplementation> Factory_HessianImplementation;
 
 /* Default constructor */
-NumericalMathHessianImplementation::NumericalMathHessianImplementation()
+HessianImplementation::HessianImplementation()
   : PersistentObject()
   , callsNumber_(0)
 {
@@ -46,34 +46,34 @@ NumericalMathHessianImplementation::NumericalMathHessianImplementation()
 }
 
 /* Virtual constructor */
-NumericalMathHessianImplementation * NumericalMathHessianImplementation::clone() const
+HessianImplementation * HessianImplementation::clone() const
 {
-  return new NumericalMathHessianImplementation(*this);
+  return new HessianImplementation(*this);
 }
 
 /* Comparison operator */
-Bool NumericalMathHessianImplementation::operator ==(const NumericalMathHessianImplementation & other) const
+Bool HessianImplementation::operator ==(const HessianImplementation & other) const
 {
   return true;
 }
 
 /* String converter */
-String NumericalMathHessianImplementation::__repr__() const
+String HessianImplementation::__repr__() const
 {
   OSS oss(true);
-  oss << "class=" << NumericalMathHessianImplementation::GetClassName()
+  oss << "class=" << HessianImplementation::GetClassName()
       << " name=" << getName();
   return oss;
 }
 
 /* String converter */
-String NumericalMathHessianImplementation::__str__(const String & offset) const
+String HessianImplementation::__str__(const String & offset) const
 {
-  return OSS(false) << offset << "NumericalMathHessianImplementation";
+  return OSS(false) << offset << "HessianImplementation";
 }
 
 /* Test for actual implementation */
-Bool NumericalMathHessianImplementation::isActualImplementation() const
+Bool HessianImplementation::isActualImplementation() const
 {
   return true;
 }
@@ -81,12 +81,12 @@ Bool NumericalMathHessianImplementation::isActualImplementation() const
 /* Here is the interface that all derived class must implement */
 
 /* Hessian method */
-SymmetricTensor NumericalMathHessianImplementation::hessian(const NumericalPoint & inP) const
+SymmetricTensor HessianImplementation::hessian(const NumericalPoint & inP) const
 {
-  throw NotYetImplementedException(HERE) << "In NumericalMathHessianImplementation::hessian(const NumericalPoint & inP) const";
+  throw NotYetImplementedException(HERE) << "In HessianImplementation::hessian(const NumericalPoint & inP) const";
 }
 
-SymmetricTensor NumericalMathHessianImplementation::hessian(const NumericalPoint & inP,
+SymmetricTensor HessianImplementation::hessian(const NumericalPoint & inP,
     const NumericalPoint & parameters)
 {
   setParameter(parameters);
@@ -94,44 +94,44 @@ SymmetricTensor NumericalMathHessianImplementation::hessian(const NumericalPoint
 }
 
 /* Accessor for input point dimension */
-UnsignedInteger NumericalMathHessianImplementation::getInputDimension() const
+UnsignedInteger HessianImplementation::getInputDimension() const
 {
-  throw NotYetImplementedException(HERE) << "In NumericalMathHessianImplementation::getInputDimension() const";
+  throw NotYetImplementedException(HERE) << "In HessianImplementation::getInputDimension() const";
 }
 
 /* Accessor for output point dimension */
-UnsignedInteger NumericalMathHessianImplementation::getOutputDimension() const
+UnsignedInteger HessianImplementation::getOutputDimension() const
 {
-  throw NotYetImplementedException(HERE) << "In NumericalMathHessianImplementation::getOutputDimension() const";
+  throw NotYetImplementedException(HERE) << "In HessianImplementation::getOutputDimension() const";
 }
 
 /* Get the number of calls to operator() */
-UnsignedInteger NumericalMathHessianImplementation::getCallsNumber() const
+UnsignedInteger HessianImplementation::getCallsNumber() const
 {
   return callsNumber_;
 }
 
 /* Parameters value and description accessor */
-NumericalPoint NumericalMathHessianImplementation::getParameter() const
+NumericalPoint HessianImplementation::getParameter() const
 {
   return parameter_;
 }
 
-void NumericalMathHessianImplementation::setParameter(const NumericalPoint & parameter)
+void HessianImplementation::setParameter(const NumericalPoint & parameter)
 {
   parameter_ = parameter;
 }
 
 
 /* Get the i-th marginal function */
-NumericalMathHessianImplementation::Implementation NumericalMathHessianImplementation::getMarginal(const UnsignedInteger i) const
+HessianImplementation::Implementation HessianImplementation::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
   return getMarginal(Indices(1, i));
 }
 
 /* Get the function corresponding to indices components */
-NumericalMathHessianImplementation::Implementation NumericalMathHessianImplementation::getMarginal(const Indices & indices) const
+HessianImplementation::Implementation HessianImplementation::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and must be different";
   // Here we use the linear algebra representation of the marginal extraction operation in order to extract the marginal hessian.
@@ -164,14 +164,14 @@ NumericalMathHessianImplementation::Implementation NumericalMathHessianImplement
 }
 
 /* Method save() stores the object through the StorageManager */
-void NumericalMathHessianImplementation::save(Advocate & adv) const
+void HessianImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute( "callsNumber_", callsNumber_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
-void NumericalMathHessianImplementation::load(Advocate & adv)
+void HessianImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute( "callsNumber_", callsNumber_ );

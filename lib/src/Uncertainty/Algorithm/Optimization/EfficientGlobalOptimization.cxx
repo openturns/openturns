@@ -65,13 +65,13 @@ EfficientGlobalOptimization::EfficientGlobalOptimization(const OptimizationProbl
 }
 
 
-class ExpectedImprovementEvaluation : public NumericalMathEvaluationImplementation
+class ExpectedImprovementEvaluation : public EvaluationImplementation
 {
 public:
   ExpectedImprovementEvaluation (const NumericalScalar optimalValue,
                                       const KrigingResult & metaModelResult,
                                       const NumericalMathFunction & noiseModel)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , optimalValue_(optimalValue)
   , metaModelResult_(metaModelResult)
   , noiseModel_(noiseModel)

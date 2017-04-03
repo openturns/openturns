@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_PRODUCTPOLYNOMIALGRADIENT_HXX
 #define OPENTURNS_PRODUCTPOLYNOMIALGRADIENT_HXX
 
-#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/GradientImplementation.hxx"
 #include "openturns/UniVariatePolynomial.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/NumericalPoint.hxx"
@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API ProductPolynomialGradient
-  : public NumericalMathGradientImplementation
+  : public GradientImplementation
 {
   CLASSNAME;
 public:

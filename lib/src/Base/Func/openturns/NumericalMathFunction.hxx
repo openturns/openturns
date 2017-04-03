@@ -67,7 +67,7 @@ public:
 #endif
 
   /** Constructor from evaluation implementation */
-  NumericalMathFunction(const NumericalMathEvaluationImplementation & evaluation);
+  NumericalMathFunction(const EvaluationImplementation & evaluation);
 
   /** @brief Composition constructor
    *
@@ -250,14 +250,14 @@ public:
   const EvaluationPointer & getEvaluation() const;
 
   /** Gradient implementation accessors */
-  void setGradient(const NumericalMathGradientImplementation & gradient);
+  void setGradient(const GradientImplementation & gradient);
 #ifndef SWIG
   void setGradient(const GradientPointer & gradient);
 #endif
   const GradientPointer & getGradient() const;
 
   /** Hessian implementation accessors */
-  void setHessian(const NumericalMathHessianImplementation & hessian);
+  void setHessian(const HessianImplementation & hessian);
 #ifndef SWIG
   void setHessian(const HessianPointer & hessian);
 #endif

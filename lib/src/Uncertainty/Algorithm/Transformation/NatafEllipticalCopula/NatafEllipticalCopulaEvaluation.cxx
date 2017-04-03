@@ -37,7 +37,7 @@ static const Factory<NatafEllipticalCopulaEvaluation> Factory_NatafEllipticalCop
 
 /* Default constructor */
 NatafEllipticalCopulaEvaluation::NatafEllipticalCopulaEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , standardDistribution_()
   , cholesky_()
 {
@@ -47,7 +47,7 @@ NatafEllipticalCopulaEvaluation::NatafEllipticalCopulaEvaluation()
 /* Parameter constructor */
 NatafEllipticalCopulaEvaluation::NatafEllipticalCopulaEvaluation(const Distribution & standardDistribution,
     const TriangularMatrix & cholesky)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , standardDistribution_(standardDistribution)
   , cholesky_(cholesky)
 {
@@ -129,7 +129,7 @@ UnsignedInteger NatafEllipticalCopulaEvaluation::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void NatafEllipticalCopulaEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute( "standardDistribution_", standardDistribution_ );
   adv.saveAttribute( "cholesky_", cholesky_ );
 }
@@ -137,7 +137,7 @@ void NatafEllipticalCopulaEvaluation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void NatafEllipticalCopulaEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute( "standardDistribution_", standardDistribution_ );
   adv.loadAttribute( "cholesky_", cholesky_ );
 }

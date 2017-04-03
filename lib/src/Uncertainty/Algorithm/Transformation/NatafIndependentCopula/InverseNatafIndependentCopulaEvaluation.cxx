@@ -34,7 +34,7 @@ CLASSNAMEINIT(InverseNatafIndependentCopulaEvaluation);
 
 /* Parameter constructor */
 InverseNatafIndependentCopulaEvaluation::InverseNatafIndependentCopulaEvaluation(const UnsignedInteger dimension)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , dimension_(dimension)
 {
   Description description(Description::BuildDefault(dimension_, "X"));

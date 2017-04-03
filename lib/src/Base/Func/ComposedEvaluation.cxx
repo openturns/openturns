@@ -25,7 +25,7 @@ static const Factory<ComposedEvaluation> Factory_ComposedEvaluation;
 /* Default constructor */
 ComposedEvaluation::ComposedEvaluation(const EvaluationPointer & p_leftFunction,
     const EvaluationPointer & p_rightFunction)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , p_leftFunction_(p_leftFunction)
   , p_rightFunction_(p_rightFunction)
 {
@@ -185,7 +185,7 @@ UnsignedInteger ComposedEvaluation::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void ComposedEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute( "leftFunction_", *p_leftFunction_ );
   adv.saveAttribute( "rightFunction_", *p_rightFunction_ );
 }
@@ -193,8 +193,8 @@ void ComposedEvaluation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void ComposedEvaluation::load(Advocate & adv)
 {
-  TypedInterfaceObject<NumericalMathEvaluationImplementation> evaluationValue;
-  NumericalMathEvaluationImplementation::load(adv);
+  TypedInterfaceObject<EvaluationImplementation> evaluationValue;
+  EvaluationImplementation::load(adv);
   adv.loadAttribute( "leftFunction_", evaluationValue );
   p_leftFunction_ = evaluationValue.getImplementation();
   adv.loadAttribute( "rightFunction_", evaluationValue );

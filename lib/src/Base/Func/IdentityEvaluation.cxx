@@ -30,7 +30,7 @@ static const Factory<IdentityEvaluation> Factory_IdentityEvaluation;
 
 /* Parameter constructor */
 IdentityEvaluation::IdentityEvaluation(const UnsignedInteger dimension)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , dimension_(dimension)
 {
   /* Check if the dimension of the constant term is compatible with the linear term */
@@ -112,14 +112,14 @@ UnsignedInteger IdentityEvaluation::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void IdentityEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute( "dimension_", dimension_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void IdentityEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute( "dimension_", dimension_ );
 }
 

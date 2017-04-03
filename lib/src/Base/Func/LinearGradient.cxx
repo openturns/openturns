@@ -33,7 +33,7 @@ static const Factory<LinearGradient> Factory_LinearGradient;
 
 /* Default constructor */
 LinearGradient::LinearGradient()
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
 {
   // Nothing to do
 }
@@ -42,7 +42,7 @@ LinearGradient::LinearGradient()
 LinearGradient::LinearGradient(const NumericalPoint & center,
     const Matrix & constant,
     const SymmetricTensor & linear)
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , center_(center)
   , constant_(constant)
   , linear_(linear)
@@ -142,7 +142,7 @@ UnsignedInteger LinearGradient::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void LinearGradient::save(Advocate & adv) const
 {
-  NumericalMathGradientImplementation::save(adv);
+  GradientImplementation::save(adv);
   adv.saveAttribute( "center_", center_ );
   adv.saveAttribute( "constant_", constant_ );
   adv.saveAttribute( "linear_", linear_ );
@@ -151,7 +151,7 @@ void LinearGradient::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void LinearGradient::load(Advocate & adv)
 {
-  NumericalMathGradientImplementation::load(adv);
+  GradientImplementation::load(adv);
   adv.loadAttribute( "center_", center_ );
   adv.loadAttribute( "constant_", constant_ );
   adv.loadAttribute( "linear_", linear_ );

@@ -33,7 +33,7 @@ static const Factory<PersistentCollection<Basis> > Factory_PersistentCollection_
 
 /* Constructor with parameters */
 KrigingEvaluation::KrigingEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
 {
   // Nothing to do
 }
@@ -45,7 +45,7 @@ KrigingEvaluation::KrigingEvaluation (const BasisCollection & basis,
                                       const CovarianceModel & covarianceModel,
                                       const NumericalPointCollection & beta,
                                       const NumericalSample & gamma)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , basis_(basis)
   , inputSample_(inputSample)
   , covarianceModel_(covarianceModel)
@@ -258,7 +258,7 @@ UnsignedInteger KrigingEvaluation::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void KrigingEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute("basis_", basis_);
   adv.saveAttribute("inputSample_", inputSample_);
   adv.saveAttribute("covarianceModel_", covarianceModel_);
@@ -269,7 +269,7 @@ void KrigingEvaluation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void KrigingEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute("basis_", basis_);
   adv.loadAttribute("inputSample_", inputSample_);
   adv.loadAttribute("covarianceModel_", covarianceModel_);

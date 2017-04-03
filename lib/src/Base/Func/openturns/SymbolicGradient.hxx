@@ -15,7 +15,7 @@
 #ifndef OPENTURNS_SYMBOLICGRADIENT_HXX
 #define OPENTURNS_SYMBOLICGRADIENT_HXX
 
-#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/GradientImplementation.hxx"
 #include "openturns/SymbolicEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The class that implement the gradient of an analytical function.
  */
 class OT_API SymbolicGradient
-  : public NumericalMathGradientImplementation
+  : public GradientImplementation
 {
   CLASSNAME;
 public:
@@ -48,7 +48,7 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** Operator () */
-  using NumericalMathGradientImplementation::gradient;
+  using GradientImplementation::gradient;
   Matrix gradient(const NumericalPoint & inP) const;
 
   /** Accessor for input point dimension */

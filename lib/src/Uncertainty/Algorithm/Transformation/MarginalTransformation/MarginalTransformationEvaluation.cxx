@@ -35,7 +35,7 @@ static const Factory<MarginalTransformationEvaluation> Factory_MarginalTransform
 
 /* Default constructor */
 MarginalTransformationEvaluation::MarginalTransformationEvaluation():
-  NumericalMathEvaluationImplementation(),
+  EvaluationImplementation(),
   inputDistributionCollection_(),
   outputDistributionCollection_(),
   direction_()
@@ -47,7 +47,7 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation():
 MarginalTransformationEvaluation::MarginalTransformationEvaluation(const DistributionCollection & inputDistributionCollection,
     const DistributionCollection & outputDistributionCollection,
     const Bool simplify):
-  NumericalMathEvaluationImplementation(),
+  EvaluationImplementation(),
   inputDistributionCollection_(inputDistributionCollection),
   outputDistributionCollection_(outputDistributionCollection),
   direction_(FROMTO),
@@ -242,7 +242,7 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
 /* Parameter constructor */
 MarginalTransformationEvaluation::MarginalTransformationEvaluation(const DistributionCollection & distributionCollection,
     const UnsignedInteger direction):
-  NumericalMathEvaluationImplementation(),
+  EvaluationImplementation(),
   inputDistributionCollection_(0),
   outputDistributionCollection_(0),
   direction_(direction),
@@ -526,7 +526,7 @@ String MarginalTransformationEvaluation::__str__(const String & offset) const
 /* Method save() stores the object through the StorageManager */
 void MarginalTransformationEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute( "inputDistributionCollection_", inputDistributionCollection_ );
   adv.saveAttribute( "outputDistributionCollection_", outputDistributionCollection_ );
   adv.saveAttribute( "direction_", direction_ );
@@ -535,7 +535,7 @@ void MarginalTransformationEvaluation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void MarginalTransformationEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute( "inputDistributionCollection_", inputDistributionCollection_ );
   adv.loadAttribute( "outputDistributionCollection_", outputDistributionCollection_ );
   UnsignedInteger direction = FROMTO;

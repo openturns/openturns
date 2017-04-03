@@ -33,7 +33,7 @@ static const Factory<DualLinearCombinationEvaluation> Factory_DualLinearCombinat
 
 /* Default constructor */
 DualLinearCombinationEvaluation::DualLinearCombinationEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , functionsCollection_(0)
   , coefficients_(0, 0)
 {
@@ -44,7 +44,7 @@ DualLinearCombinationEvaluation::DualLinearCombinationEvaluation()
 /* Parameters constructor */
 DualLinearCombinationEvaluation::DualLinearCombinationEvaluation(const NumericalMathFunctionCollection & functionsCollection,
     const NumericalSample & coefficients)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , functionsCollection_(0)
   , coefficients_(0, 0)
 {
@@ -61,7 +61,7 @@ DualLinearCombinationEvaluation * DualLinearCombinationEvaluation::clone() const
 /* Description accessor */
 void DualLinearCombinationEvaluation::setDescription(const Description & description)
 {
-  NumericalMathEvaluationImplementation::setDescription(description);
+  EvaluationImplementation::setDescription(description);
   const Description inputDescription(getInputDescription());
   const UnsignedInteger inputDimension = getInputDimension();
   const UnsignedInteger size = functionsCollection_.getSize();

@@ -36,7 +36,7 @@ ProductHessian::ProductHessian(const EvaluationPointer & p_leftEvaluation,
     const EvaluationPointer & p_rightEvaluation,
     const GradientPointer & p_rightGradient,
     const HessianPointer & p_rightHessian)
-  : NumericalMathHessianImplementation(),
+  : HessianImplementation(),
     p_leftEvaluation_(p_leftEvaluation),
     p_leftGradient_(p_leftGradient),
     p_leftHessian_(p_leftHessian),
@@ -141,7 +141,7 @@ UnsignedInteger ProductHessian::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void ProductHessian::save(Advocate & adv) const
 {
-  NumericalMathHessianImplementation::save(adv);
+  HessianImplementation::save(adv);
   adv.saveAttribute( "leftGradient_", *p_leftGradient_ );
   adv.saveAttribute( "leftHessian_", *p_leftHessian_ );
   adv.saveAttribute( "rightEvaluation_", *p_rightEvaluation_ );
@@ -152,10 +152,10 @@ void ProductHessian::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void ProductHessian::load(Advocate & adv)
 {
-  TypedInterfaceObject<NumericalMathEvaluationImplementation> evaluationValue;
-  TypedInterfaceObject<NumericalMathGradientImplementation> gradientValue;
-  TypedInterfaceObject<NumericalMathHessianImplementation> hessianValue;
-  NumericalMathHessianImplementation::load(adv);
+  TypedInterfaceObject<EvaluationImplementation> evaluationValue;
+  TypedInterfaceObject<GradientImplementation> gradientValue;
+  TypedInterfaceObject<HessianImplementation> hessianValue;
+  HessianImplementation::load(adv);
   adv.loadAttribute( "leftGradient_", gradientValue );
   p_leftGradient_ = gradientValue.getImplementation();
   adv.loadAttribute( "leftHessian_", hessianValue );

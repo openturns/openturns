@@ -15,7 +15,7 @@
 #ifndef OPENTURNS_SYMBOLICHESSIAN_HXX
 #define OPENTURNS_SYMBOLICHESSIAN_HXX
 
-#include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/HessianImplementation.hxx"
 #include "openturns/SymbolicEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The class that implement the Hessian of analytical functions.
  */
 class OT_API SymbolicHessian
-  : public NumericalMathHessianImplementation
+  : public HessianImplementation
 {
   CLASSNAME;
 public:
@@ -48,7 +48,7 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** Operator () */
-  using NumericalMathHessianImplementation::hessian;
+  using HessianImplementation::hessian;
   SymmetricTensor hessian(const NumericalPoint & inP) const;
 
   /** Accessor to a specific formula */

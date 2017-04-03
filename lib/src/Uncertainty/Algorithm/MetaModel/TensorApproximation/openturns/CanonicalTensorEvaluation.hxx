@@ -23,12 +23,12 @@
 
 #include "openturns/OrthogonalUniVariateFunctionFamily.hxx"
 #include "openturns/Basis.hxx"
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 
-class OT_API CanonicalTensorEvaluation : public NumericalMathEvaluationImplementation
+class OT_API CanonicalTensorEvaluation : public EvaluationImplementation
 {
   CLASSNAME;
 public:

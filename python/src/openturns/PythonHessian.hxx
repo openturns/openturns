@@ -23,17 +23,17 @@
 #define OPENTURNS_PYTHONHESSIAN_HXX
 
 #include <Python.h>
-#include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/HessianImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class PythonHessian
  *
- * This class binds a Python function to a NumericalMathHessianImplementation
+ * This class binds a Python function to a HessianImplementation
  */
 class PythonHessian
-  : public NumericalMathHessianImplementation
+  : public HessianImplementation
 {
   CLASSNAME;
 public:

@@ -23,8 +23,8 @@
 #ifndef OPENTURNS_FINITEDIFFERENCEGRADIENT_HXX
 #define OPENTURNS_FINITEDIFFERENCEGRADIENT_HXX
 
-#include "openturns/NumericalMathGradientImplementation.hxx"
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/GradientImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/Pointer.hxx"
 #include "openturns/FiniteDifferenceStep.hxx"
 
@@ -39,12 +39,12 @@ BEGIN_NAMESPACE_OPENTURNS
  * finite difference formula
  */
 class OT_API FiniteDifferenceGradient
-  : public NumericalMathGradientImplementation
+  : public GradientImplementation
 {
   CLASSNAME;
 public:
 
-  typedef Pointer<NumericalMathEvaluationImplementation>                          EvaluationPointer;
+  typedef Pointer<EvaluationImplementation>                          EvaluationPointer;
 
   /** Default constructor */
   FiniteDifferenceGradient();

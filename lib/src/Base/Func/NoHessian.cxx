@@ -32,7 +32,7 @@ static const Factory<NoHessian> Factory_NoHessian;
 
 /* Default constructor */
 NoHessian::NoHessian()
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
 {
   // Nothing to do
 }

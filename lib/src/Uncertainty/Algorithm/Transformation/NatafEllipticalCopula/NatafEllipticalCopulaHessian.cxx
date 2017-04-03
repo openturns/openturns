@@ -35,7 +35,7 @@ static const Factory<NatafEllipticalCopulaHessian> Factory_NatafEllipticalCopula
 
 /* Default constructor */
 NatafEllipticalCopulaHessian::NatafEllipticalCopulaHessian()
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
   , standardDistribution_()
   , inverseCholesky_()
 {
@@ -45,7 +45,7 @@ NatafEllipticalCopulaHessian::NatafEllipticalCopulaHessian()
 /* Parameter constructor */
 NatafEllipticalCopulaHessian::NatafEllipticalCopulaHessian(const Distribution & standardDistribution,
     const TriangularMatrix & inverseCholesky)
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
   , standardDistribution_(standardDistribution)
   , inverseCholesky_(inverseCholesky)
 {
@@ -118,7 +118,7 @@ UnsignedInteger NatafEllipticalCopulaHessian::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void NatafEllipticalCopulaHessian::save(Advocate & adv) const
 {
-  NumericalMathHessianImplementation::save(adv);
+  HessianImplementation::save(adv);
   adv.saveAttribute( "standardDistribution_", standardDistribution_ );
   adv.saveAttribute( "inverseCholesky_", inverseCholesky_ );
 }
@@ -126,7 +126,7 @@ void NatafEllipticalCopulaHessian::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void NatafEllipticalCopulaHessian::load(Advocate & adv)
 {
-  NumericalMathHessianImplementation::load(adv);
+  HessianImplementation::load(adv);
   adv.loadAttribute( "standardDistribution_", standardDistribution_ );
   adv.loadAttribute( "inverseCholesky_", inverseCholesky_ );
 }

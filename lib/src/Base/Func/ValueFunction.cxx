@@ -20,7 +20,7 @@
  */
 #include "openturns/ValueFunction.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/NoEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -60,7 +60,7 @@ ValueFunction::ValueFunction(const EvaluationPointer & p_evaluation,
 }
 
 /* Parameter constructor */
-ValueFunction::ValueFunction(const NumericalMathEvaluationImplementation & evaluation,
+ValueFunction::ValueFunction(const EvaluationImplementation & evaluation,
                                  const UnsignedInteger meshDimension)
   : FieldFunctionImplementation(meshDimension)
   , p_evaluation_(evaluation.clone())
@@ -135,7 +135,7 @@ ValueFunction::EvaluationPointer ValueFunction::getEvaluation() const
 /* Method load() reloads the object from the StorageManager */
 void ValueFunction::load(Advocate & adv)
 {
-  TypedInterfaceObject<NumericalMathEvaluationImplementation> evaluationValue;
+  TypedInterfaceObject<EvaluationImplementation> evaluationValue;
   PersistentObject::load(adv);
   adv.loadAttribute( "evaluation_", evaluationValue );
   p_evaluation_ = evaluationValue.getImplementation();

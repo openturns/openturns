@@ -35,7 +35,7 @@ static const Factory<PiecewiseLinearEvaluation> Factory_PiecewiseLinearEvaluatio
 
 /* Default constructor */
 PiecewiseLinearEvaluation::PiecewiseLinearEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , locations_(0)
   , values_(0, 0)
 {
@@ -46,7 +46,7 @@ PiecewiseLinearEvaluation::PiecewiseLinearEvaluation()
 /* Parameters constructor */
 PiecewiseLinearEvaluation::PiecewiseLinearEvaluation(const NumericalPoint & locations,
     const NumericalPoint & values)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , locations_(0)
   , values_(0, 0)
 {
@@ -61,7 +61,7 @@ PiecewiseLinearEvaluation::PiecewiseLinearEvaluation(const NumericalPoint & loca
 /* Parameters constructor */
 PiecewiseLinearEvaluation::PiecewiseLinearEvaluation(const NumericalPoint & locations,
     const NumericalSample & values)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , locations_(0)
   , values_(0, values.getDimension())
 {
@@ -223,7 +223,7 @@ UnsignedInteger PiecewiseLinearEvaluation::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void PiecewiseLinearEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute( "locations_", locations_ );
   adv.saveAttribute( "values_", values_ );
 }
@@ -232,7 +232,7 @@ void PiecewiseLinearEvaluation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void PiecewiseLinearEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute( "locations_", locations_ );
   adv.loadAttribute( "values_", values_ );
 }

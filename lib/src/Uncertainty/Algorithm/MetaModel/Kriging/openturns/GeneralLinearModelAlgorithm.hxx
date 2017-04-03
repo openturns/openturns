@@ -167,12 +167,12 @@ protected:
 private:
 
   // Helper class to compute the reduced log-likelihood function of the model
-  class ReducedLogLikelihoodEvaluation: public NumericalMathEvaluationImplementation
+  class ReducedLogLikelihoodEvaluation: public EvaluationImplementation
   {
   public:
     // Constructor from a GLM algorithm
     ReducedLogLikelihoodEvaluation(GeneralLinearModelAlgorithm & algorithm)
-      : NumericalMathEvaluationImplementation()
+      : EvaluationImplementation()
       , algorithm_(algorithm)
     {
       // Nothing to do

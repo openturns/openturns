@@ -31,7 +31,7 @@ static const Factory<ParametricHessian> Factory_ParametricHessian;
 
 /* Default constructor */
 ParametricHessian::ParametricHessian()
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
   , p_evaluation_()
 {
   // Nothing to do
@@ -39,7 +39,7 @@ ParametricHessian::ParametricHessian()
 
 /* Parameter constructor */
 ParametricHessian::ParametricHessian(const EvaluationPointer & p_evaluation)
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
   , p_evaluation_(p_evaluation)
 {
   // Nothing to do
@@ -130,14 +130,14 @@ String ParametricHessian::__str__(const String & offset) const
 /* Method save() stores the object through the StorageManager */
 void ParametricHessian::save(Advocate & adv) const
 {
-  NumericalMathHessianImplementation::save( adv );
+  HessianImplementation::save( adv );
   adv.saveAttribute( "evaluation_", *p_evaluation_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void ParametricHessian::load(Advocate & adv)
 {
-  NumericalMathHessianImplementation::load( adv );
+  HessianImplementation::load( adv );
   TypedInterfaceObject<ParametricEvaluation> evaluation;
   adv.loadAttribute( "evaluation_", evaluation );
   p_evaluation_ = evaluation.getImplementation();

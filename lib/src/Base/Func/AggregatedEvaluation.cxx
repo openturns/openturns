@@ -33,7 +33,7 @@ static const Factory<AggregatedEvaluation> Factory_AggregatedEvaluation;
 
 /* Default constructor */
 AggregatedEvaluation::AggregatedEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , functionsCollection_(0)
   , outputDimension_(0)
 {
@@ -43,7 +43,7 @@ AggregatedEvaluation::AggregatedEvaluation()
 
 /* Parameters constructor */
 AggregatedEvaluation::AggregatedEvaluation(const NumericalMathFunctionCollection & functionsCollection)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , functionsCollection_(0)
   , outputDimension_(0)
 {
@@ -200,7 +200,7 @@ AggregatedEvaluation::Implementation AggregatedEvaluation::getMarginal(const Ind
     // All the indices have been taken into account
     if (currentPosition == indicesSize) break;
     // Check if a bad case occurs: one index related to function i is found after indices related to function j, with j > i. In this case we use the generic marginal extraction
-    if (currentIndex < lowerIndex) return NumericalMathEvaluationImplementation::getMarginal(indices);
+    if (currentIndex < lowerIndex) return EvaluationImplementation::getMarginal(indices);
   }
   return new AggregatedEvaluation(marginalFunctions);
 }
@@ -283,7 +283,7 @@ Description AggregatedEvaluation::getParameterDescription() const
 /* Method save() stores the object through the StorageManager */
 void AggregatedEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute( "functionsCollection_", functionsCollection_ );
   adv.saveAttribute( "outputDimension_", outputDimension_ );
 }
@@ -292,7 +292,7 @@ void AggregatedEvaluation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void AggregatedEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute( "functionsCollection_", functionsCollection_ );
   adv.loadAttribute( "outputDimension_", outputDimension_ );
 }

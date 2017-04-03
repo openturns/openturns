@@ -245,9 +245,9 @@ ot_add_python_module(func func_module.i
                       LinearEnumerateFunction.i LinearEnumerateFunction_doc.i.in
                       HyperbolicAnisotropicEnumerateFunction.i HyperbolicAnisotropicEnumerateFunction_doc.i.in
                       SpecFunc.i SpecFunc_doc.i.in
-                      NumericalMathEvaluationImplementation.i NumericalMathEvaluationImplementation_doc.i.in
-                      NumericalMathGradientImplementation.i NumericalMathGradientImplementation_doc.i.in
-                      NumericalMathHessianImplementation.i NumericalMathHessianImplementation_doc.i.in
+                      EvaluationImplementation.i EvaluationImplementation_doc.i.in
+                      GradientImplementation.i GradientImplementation_doc.i.in
+                      HessianImplementation.i HessianImplementation_doc.i.in
                       NoEvaluation.i
                       NoGradient.i
                       NoHessian.i

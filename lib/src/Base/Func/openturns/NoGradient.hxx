@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_NOGRADIENT_HXX
 #define OPENTURNS_NOGRADIENT_HXX
 
-#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/GradientImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * gradient may be loaded in an external way through a wrapper.
  */
 class OT_API NoGradient
-  : public NumericalMathGradientImplementation
+  : public GradientImplementation
 {
   CLASSNAME;
 public:

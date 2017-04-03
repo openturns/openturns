@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_PRODUCTPOLYNOMIALHESSIAN_HXX
 #define OPENTURNS_PRODUCTPOLYNOMIALHESSIAN_HXX
 
-#include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/HessianImplementation.hxx"
 #include "openturns/UniVariatePolynomial.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/NumericalPoint.hxx"
@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API ProductPolynomialHessian
-  : public NumericalMathHessianImplementation
+  : public HessianImplementation
 {
   CLASSNAME;
 public:

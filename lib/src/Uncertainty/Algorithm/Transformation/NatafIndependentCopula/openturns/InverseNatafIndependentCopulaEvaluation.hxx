@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_INVERSENATAFINDEPENDENTCOPULAEVALUATION_HXX
 #define OPENTURNS_INVERSENATAFINDEPENDENTCOPULAEVALUATION_HXX
 
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/NumericalPoint.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class offers an interface for the InverseNataf function for independent distributions
  */
 class OT_API InverseNatafIndependentCopulaEvaluation
-  : public NumericalMathEvaluationImplementation
+  : public EvaluationImplementation
 {
   CLASSNAME;
 public:

@@ -15,7 +15,7 @@
 #ifndef OPENTURNS_BOXCOXGRADIENT_HXX
 #define OPENTURNS_BOXCOXGRADIENT_HXX
 
-#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/GradientImplementation.hxx"
 #include "openturns/BoxCoxEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API BoxCoxGradient
-  : public NumericalMathGradientImplementation
+  : public GradientImplementation
 {
   CLASSNAME;
 public:
@@ -52,7 +52,7 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Gradient evaluation method */
-  using NumericalMathGradientImplementation::gradient;
+  using GradientImplementation::gradient;
   Matrix gradient(const NumericalPoint & inP) const;
 
   /** Accessor for input point dimension */

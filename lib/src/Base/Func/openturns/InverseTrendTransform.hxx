@@ -43,7 +43,7 @@ class OT_API InverseTrendTransform
   CLASSNAME;
 public:
 
-  typedef NumericalMathEvaluationImplementation::Implementation EvaluationPointer;
+  typedef EvaluationImplementation::Implementation EvaluationPointer;
 
   /** Default constructor */
   InverseTrendTransform();
@@ -55,7 +55,7 @@ public:
   InverseTrendTransform(const EvaluationPointer & p_evaluation);
 
   /** Parameter constructor */
-  InverseTrendTransform(const NumericalMathEvaluationImplementation & evaluation);
+  InverseTrendTransform(const EvaluationImplementation & evaluation);
 
   /** Virtual constructor */
   virtual InverseTrendTransform * clone() const;

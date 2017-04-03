@@ -24,14 +24,14 @@ static const Factory<BoxCoxGradient> Factory_BoxCoxGradient;
 
 /* Default constructor */
 BoxCoxGradient::BoxCoxGradient()
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
 BoxCoxGradient::BoxCoxGradient(const BoxCoxEvaluation & evaluation)
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , evaluation_(evaluation)
 {
   // Nothing to do
@@ -127,14 +127,14 @@ NumericalPoint BoxCoxGradient::getShift() const
 /* Method save() stores the object through the StorageManager */
 void BoxCoxGradient::save(Advocate & adv) const
 {
-  NumericalMathGradientImplementation::save(adv);
+  GradientImplementation::save(adv);
   adv.saveAttribute( "evaluation_", evaluation_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void BoxCoxGradient::load(Advocate & adv)
 {
-  NumericalMathGradientImplementation::load(adv);
+  GradientImplementation::load(adv);
   adv.loadAttribute( "evaluation_", evaluation_ );
 }
 

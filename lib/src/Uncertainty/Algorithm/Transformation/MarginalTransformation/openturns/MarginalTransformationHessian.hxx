@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_MARGINALTRANSFORMATIONHESSIAN_HXX
 #define OPENTURNS_MARGINALTRANSFORMATIONHESSIAN_HXX
 
-#include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/HessianImplementation.hxx"
 #include "openturns/MarginalTransformationEvaluation.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/SymmetricTensor.hxx"
@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class offers an interface for the Nataf function for elliptical distributions
  */
 class OT_API MarginalTransformationHessian
-  : public NumericalMathHessianImplementation
+  : public HessianImplementation
 {
   CLASSNAME;
 public:

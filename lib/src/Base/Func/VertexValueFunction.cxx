@@ -20,7 +20,7 @@
  */
 #include "openturns/VertexValueFunction.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/NoEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -68,7 +68,7 @@ VertexValueFunction::VertexValueFunction(const EvaluationPointer & p_evaluation,
 }
 
 /* Parameter constructor */
-VertexValueFunction::VertexValueFunction(const NumericalMathEvaluationImplementation & evaluation,
+VertexValueFunction::VertexValueFunction(const EvaluationImplementation & evaluation,
                                    const UnsignedInteger meshDimension)
   : FieldFunctionImplementation(meshDimension)
   , p_evaluation_(evaluation.clone())
@@ -147,7 +147,7 @@ VertexValueFunction::EvaluationPointer VertexValueFunction::getEvaluation() cons
 /* Method load() reloads the object from the StorageManager */
 void VertexValueFunction::load(Advocate & adv)
 {
-  TypedInterfaceObject<NumericalMathEvaluationImplementation> evaluationValue;
+  TypedInterfaceObject<EvaluationImplementation> evaluationValue;
   PersistentObject::load(adv);
   adv.loadAttribute( "evaluation_", evaluationValue );
   p_evaluation_ = evaluationValue.getImplementation();

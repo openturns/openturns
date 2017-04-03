@@ -32,8 +32,8 @@
 #include "openturns/SquareMatrix.hxx"
 #include "openturns/Graph.hxx"
 #include "openturns/Description.hxx"
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
-#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
+#include "openturns/GradientImplementation.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/UniVariatePolynomial.hxx"
 #include "openturns/PiecewiseHermiteEvaluation.hxx"
@@ -914,13 +914,13 @@ protected:
     const UnsignedInteger dimension_;
   }; // struct SurvivalFunctionWrapper
 
-  class MinimumVolumeLevelSetEvaluation: public NumericalMathEvaluationImplementation
+  class MinimumVolumeLevelSetEvaluation: public EvaluationImplementation
   {
   public:
     // Here we use a smart pointer instead of a const C++ pointer because the life-cycle of the
     // object goes outside of the calling method
     MinimumVolumeLevelSetEvaluation(const DistributionImplementation::Implementation & p_distribution)
-      : NumericalMathEvaluationImplementation()
+      : EvaluationImplementation()
       , p_distribution_(p_distribution)
     {
       // Nothing to do
@@ -989,13 +989,13 @@ protected:
     const DistributionImplementation::Implementation p_distribution_;
   }; // class MinimumVolumeLevelSetEvaluation
 
-  class MinimumVolumeLevelSetGradient: public NumericalMathGradientImplementation
+  class MinimumVolumeLevelSetGradient: public GradientImplementation
   {
   public:
     // Here we use a smart pointer instead of a const C++ pointer because the life-cycle of the
     // object goes outside of the calling method
     MinimumVolumeLevelSetGradient(const DistributionImplementation::Implementation & p_distribution)
-      : NumericalMathGradientImplementation()
+      : GradientImplementation()
       , p_distribution_(p_distribution)
     {
       // Nothing to do

@@ -15,7 +15,7 @@
 #ifndef OPENTURNS_SYMBOLICEVALUATION_HXX
 #define OPENTURNS_SYMBOLICEVALUATION_HXX
 
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/SymbolicParser.hxx"
 #include "openturns/Pointer.hxx"
 
@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The class that implement the evaluation of an analytical function.
  */
 class OT_API SymbolicEvaluation
-  : public NumericalMathEvaluationImplementation
+  : public EvaluationImplementation
 {
   CLASSNAME;
 public:
@@ -51,7 +51,7 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** Operator () */
-  using NumericalMathEvaluationImplementation::operator();
+  using EvaluationImplementation::operator();
   NumericalPoint operator() (const NumericalPoint & inP) const;
   NumericalSample operator() (const NumericalSample & inS) const;
 

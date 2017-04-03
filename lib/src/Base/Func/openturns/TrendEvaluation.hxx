@@ -15,7 +15,7 @@
 #ifndef OPENTURNS_TRENDEVALUATION_HXX
 #define OPENTURNS_TRENDEVALUATION_HXX
 
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/NumericalMathFunction.hxx"
 #include "openturns/NumericalPoint.hxx"
 
@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API TrendEvaluation
-  : public NumericalMathEvaluationImplementation
+  : public EvaluationImplementation
 {
   CLASSNAME;
 public:
@@ -53,7 +53,7 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Operator () */
-  using NumericalMathEvaluationImplementation::operator();
+  using EvaluationImplementation::operator();
   NumericalPoint operator() (const NumericalPoint & inP) const;
 
   /** Accessor for input point dimension */

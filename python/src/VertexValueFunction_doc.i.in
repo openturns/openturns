@@ -87,7 +87,7 @@ mesh of the field on which :math:`h` will be applied:
 
 Returns
 -------
-h : :class:`~openturns.NumericalMathEvaluationImplementation`
+h : :class:`~openturns.EvaluationImplementation`
     Evaluation function of
     :math:`h: \Rset^n \times \Rset^d \mapsto \Rset^q`.
 

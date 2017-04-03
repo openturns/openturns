@@ -16,7 +16,7 @@
 #ifndef OPENTURNS_COMPOSEDNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
 #define OPENTURNS_COMPOSEDNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
 
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -26,13 +26,13 @@ BEGIN_NAMESPACE_OPENTURNS
  * The class that implement the composition of two numerical math functions implementations.
  */
 class OT_API ComposedEvaluation
-  : public NumericalMathEvaluationImplementation
+  : public EvaluationImplementation
 {
   CLASSNAME;
 public:
 
   /* Some typedefs for easy reading */
-  typedef Pointer<NumericalMathEvaluationImplementation> EvaluationPointer;
+  typedef Pointer<EvaluationImplementation> EvaluationPointer;
 
   /** Default constructor */
   ComposedEvaluation(const EvaluationPointer & p_leftFunction,
@@ -50,7 +50,7 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** Operator () */
-  using NumericalMathEvaluationImplementation::operator();
+  using EvaluationImplementation::operator();
   NumericalPoint operator() (const NumericalPoint & inP) const;
 
   NumericalSample operator() (const NumericalSample & inS) const;

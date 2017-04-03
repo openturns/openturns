@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_DUALLINEARCOMBINATIONHESSIAN_HXX
 #define OPENTURNS_DUALLINEARCOMBINATIONHESSIAN_HXX
 
-#include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/HessianImplementation.hxx"
 #include "openturns/DualLinearCombinationEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API DualLinearCombinationHessian
-  : public NumericalMathHessianImplementation
+  : public HessianImplementation
 {
   CLASSNAME;
 public:

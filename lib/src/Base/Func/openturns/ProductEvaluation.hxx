@@ -18,7 +18,7 @@
 #ifndef OPENTURNS_PRODUCTNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
 #define OPENTURNS_PRODUCTNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
 
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -28,13 +28,13 @@ BEGIN_NAMESPACE_OPENTURNS
  * The class that implement the composition of two numerical math functions implementations.
  */
 class OT_API ProductEvaluation
-  : public NumericalMathEvaluationImplementation
+  : public EvaluationImplementation
 {
   CLASSNAME;
 public:
 
   /* Some typedefs for easy reading */
-  typedef Pointer<NumericalMathEvaluationImplementation>          EvaluationPointer;
+  typedef Pointer<EvaluationImplementation>          EvaluationPointer;
 
   /** Default constructor */
   ProductEvaluation(const EvaluationPointer & p_leftEvaluation,

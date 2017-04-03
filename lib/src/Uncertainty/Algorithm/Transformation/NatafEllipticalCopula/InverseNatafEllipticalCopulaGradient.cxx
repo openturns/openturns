@@ -35,7 +35,7 @@ static const Factory<InverseNatafEllipticalCopulaGradient> Factory_InverseNatafE
 
 /* Default constructor */
 InverseNatafEllipticalCopulaGradient::InverseNatafEllipticalCopulaGradient()
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , standardDistribution_()
   , cholesky_()
 {
@@ -45,7 +45,7 @@ InverseNatafEllipticalCopulaGradient::InverseNatafEllipticalCopulaGradient()
 /* Parameter constructor */
 InverseNatafEllipticalCopulaGradient::InverseNatafEllipticalCopulaGradient(const Distribution & standardDistribution,
     const TriangularMatrix & cholesky)
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , standardDistribution_(standardDistribution)
   , cholesky_(cholesky)
 {
@@ -114,7 +114,7 @@ UnsignedInteger InverseNatafEllipticalCopulaGradient::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void InverseNatafEllipticalCopulaGradient::save(Advocate & adv) const
 {
-  NumericalMathGradientImplementation::save(adv);
+  GradientImplementation::save(adv);
   adv.saveAttribute( "standardDistribution_", standardDistribution_ );
   adv.saveAttribute( "cholesky_", cholesky_ );
 }
@@ -122,7 +122,7 @@ void InverseNatafEllipticalCopulaGradient::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void InverseNatafEllipticalCopulaGradient::load(Advocate & adv)
 {
-  NumericalMathGradientImplementation::load(adv);
+  GradientImplementation::load(adv);
   adv.loadAttribute( "standardDistribution_", standardDistribution_ );
   adv.loadAttribute( "cholesky_", cholesky_ );
 }

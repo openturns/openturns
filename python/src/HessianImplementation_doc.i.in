@@ -1,9 +1,9 @@
-%feature("docstring") OT::NumericalMathHessianImplementation
+%feature("docstring") OT::HessianImplementation
 "Numerical math hessian implementation.
 
 See also
 --------
-NumericalMathFunction, NumericalMathGradientImplementation
+NumericalMathFunction, GradientImplementation
 
 Notes
 -----
@@ -12,7 +12,7 @@ This object is the result of the method *getHessian* of a
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathHessianImplementation::getCallsNumber
+%feature("docstring") OT::HessianImplementation::getCallsNumber
 "Accessor to the number of times the hessian has been called.
 
 Returns
@@ -23,7 +23,7 @@ calls_number : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathHessianImplementation::getInputDimension
+%feature("docstring") OT::HessianImplementation::getInputDimension
 "Accessor to the number of the inputs.
 
 Returns
@@ -33,7 +33,7 @@ number_inputs : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathHessianImplementation::getOutputDimension
+%feature("docstring") OT::HessianImplementation::getOutputDimension
 "Accessor to the number of the outputs.
 
 Returns
@@ -43,7 +43,7 @@ number_outputs : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathHessianImplementation::getMarginal
+%feature("docstring") OT::HessianImplementation::getMarginal
 "Accessor to the hessian implementation of a specific output.
 
 Parameters
@@ -55,13 +55,13 @@ indices : sequence of integer
 
 Returns
 -------
-hessianImplementation : :class:`~openturns.NumericalMathHessianImplementation`
+hessianImplementation : :class:`~openturns.HessianImplementation`
     A hessian implementation restricted to its compenents functions which
     indices are *i* or *indices*."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathHessianImplementation::hessian
+%feature("docstring") OT::HessianImplementation::hessian
 "Return the Jacobian transposed matrix of the implementation at a point.
 
 Parameters
@@ -76,7 +76,7 @@ hessian : :class:`~openturns.Matrix`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathHessianImplementation::isActualImplementation
+%feature("docstring") OT::HessianImplementation::isActualImplementation
 "Accessor to the validity flag.
 
 Returns
@@ -86,7 +86,7 @@ is_impl : bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathHessianImplementation::getParameter
+%feature("docstring") OT::HessianImplementation::getParameter
 "Accessor to the parameter values.
 
 Returns
@@ -96,7 +96,7 @@ parameter : :class:`~openturns.NumericalPoint`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NumericalMathHessianImplementation::setParameter
+%feature("docstring") OT::HessianImplementation::setParameter
 "Accessor to the parameter values.
 
 Parameters
