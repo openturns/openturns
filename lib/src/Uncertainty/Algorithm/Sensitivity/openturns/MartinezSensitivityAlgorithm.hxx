@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_MARTINEZSENSITIVITYALGORITHM_HXX
 #define OPENTURNS_MARTINEZSENSITIVITYALGORITHM_HXX
 
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/SobolIndicesAlgorithmImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

@@ -50,13 +50,13 @@ MarginalTransformationHessian * MarginalTransformationHessian::clone() const
 }
 
 /* Hessian */
-SymmetricTensor MarginalTransformationHessian::hessian(const NumericalPoint & inP) const
+SymmetricTensor MarginalTransformationHessian::hessian(const Point & inP) const
 {
   const UnsignedInteger dimension = getOutputDimension();
   SymmetricTensor result(dimension, dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    if (evaluation_.getSimplifications()[i] && evaluation_.getExpressions()[i].getHessian()->getClassName() == "SymbolicHessian") result(i, i, i) = evaluation_.getExpressions()[i].hessian(NumericalPoint(1, inP[i]))(0, 0, 0);
+    if (evaluation_.getSimplifications()[i] && evaluation_.getExpressions()[i].getHessian()->getClassName() == "SymbolicHessian") result(i, i, i) = evaluation_.getExpressions()[i].hessian(Point(1, inP[i]))(0, 0, 0);
     else
     {
       // (`@`(-(`@`((D@@2)(G), 1/G))/(`@`(D(G), 1/G))^3, F))*D(F)^2+(`@`(1/(`@`(D(G), 1/G)), F))*(D@@2)(F)
@@ -70,7 +70,7 @@ SymmetricTensor MarginalTransformationHessian::hessian(const NumericalPoint & in
         if (upperTail) inputCDF = evaluation_.inputDistributionCollection_[i].computeComplementaryCDF(inP[i]);
         // The upper tail CDF is defined by CDF(x, upper) = P(X>x)
         // The upper tail quantile is defined by Quantile(CDF(x, upper), upper) = x
-        const NumericalPoint  outputQuantile(evaluation_.outputDistributionCollection_[i].computeQuantile(inputCDF, upperTail));
+        const Point  outputQuantile(evaluation_.outputDistributionCollection_[i].computeQuantile(inputCDF, upperTail));
         const NumericalScalar outputPDF = evaluation_.outputDistributionCollection_[i].computePDF(outputQuantile);
         if (outputPDF > 0.0)
         {

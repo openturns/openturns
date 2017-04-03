@@ -290,8 +290,8 @@ ComplexMatrix::NumericalComplexCollection ComplexMatrix::operator* (const Numeri
   return getImplementation()->genVectProd(collection) ;
 }
 
-/* Multiplication with a NumericalPoint  */
-ComplexMatrix::NumericalComplexCollection ComplexMatrix::operator* (const NumericalPoint & point) const
+/* Multiplication with a Point  */
+ComplexMatrix::NumericalComplexCollection ComplexMatrix::operator* (const Point & point) const
 {
   return getImplementation()->genVectProd(point) ;
 }

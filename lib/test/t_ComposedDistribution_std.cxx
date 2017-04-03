@@ -37,11 +37,11 @@ int main(int argc, char *argv[])
     // Test basic functionnalities
     //checkClassWithClassName<TestObject>();
 
-    NumericalPoint mean(3);
+    Point mean(3);
     mean[0] = 1.0;
     mean[1] = 2.0;
     mean[2] = 3.0;
-    NumericalPoint sigma(3);
+    Point sigma(3);
     sigma[0] = 2.0;
     sigma[1] = 3.0;
     sigma[2] = 4.0;
@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
     fullprint << "Independent copula= " << (distribution.hasIndependentCopula() ? "true" : "false") << std::endl;
 
     // Test for realization of distribution
-    NumericalPoint oneRealization = distribution.getRealization();
+    Point oneRealization = distribution.getRealization();
     fullprint << "oneRealization=" << oneRealization << std::endl;
 
     // Test for sampling
@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
     fullprint << "anotherSample covariance=" << anotherSample.computeCovariance() << std::endl;
 
     // Define a point
-    NumericalPoint zero(dim, 0.0);
+    Point zero(dim, 0.0);
 
     // Show PDF and CDF of zero point
     NumericalScalar zeroPDF = distribution.computePDF( zero );
@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
               << " cdf=" << zeroCDF
               << std::endl;
     // Get 95% quantile
-    NumericalPoint quantile = distribution.computeQuantile( 0.95 );
+    Point quantile = distribution.computeQuantile( 0.95 );
     fullprint << "Quantile=" << quantile << std::endl;
     fullprint << "CDF(quantile)=" << distribution.computeCDF(quantile) << std::endl;
 
@@ -134,8 +134,8 @@ int main(int argc, char *argv[])
     {
       Distribution margin(distribution.getMarginal(i));
       fullprint << "margin=" << margin << std::endl;
-      fullprint << "margin PDF=" << margin.computePDF(NumericalPoint(1)) << std::endl;
-      fullprint << "margin CDF=" << margin.computeCDF(NumericalPoint(1)) << std::endl;
+      fullprint << "margin PDF=" << margin.computePDF(Point(1)) << std::endl;
+      fullprint << "margin CDF=" << margin.computeCDF(Point(1)) << std::endl;
       fullprint << "margin quantile=" << margin.computeQuantile(0.95) << std::endl;
       fullprint << "margin realization=" << margin.getRealization() << std::endl;
     }
@@ -147,8 +147,8 @@ int main(int argc, char *argv[])
     fullprint << "indices=" << indices << std::endl;
     Distribution margins(distribution.getMarginal(indices));
     fullprint << "margins=" << margins << std::endl;
-    fullprint << "margins PDF=" << margins.computePDF(NumericalPoint(2)) << std::endl;
-    fullprint << "margins CDF=" << margins.computeCDF(NumericalPoint(2)) << std::endl;
+    fullprint << "margins PDF=" << margins.computePDF(Point(2)) << std::endl;
+    fullprint << "margins CDF=" << margins.computeCDF(Point(2)) << std::endl;
     quantile = margins.computeQuantile(0.5);
     fullprint << "margins quantile=" << quantile << std::endl;
     fullprint << "margins CDF(quantile)=" << margins.computeCDF(quantile) << std::endl;
@@ -167,7 +167,7 @@ int main(int argc, char *argv[])
     fullprint << "Distribution " << distribution << std::endl;
     fullprint << "Parameters " << distribution.getParametersCollection() << std::endl;
     // Show PDF and CDF at point
-    NumericalPoint point(dim, 0.0);
+    Point point(dim, 0.0);
     fullprint << "PDF      =" << distribution.computePDF(point) << std::endl;
     fullprint << "PDF (ref)=" << distributionRef.computePDF(point) << std::endl;
     fullprint << "CDF      =" << distribution.computeCDF(point) << std::endl;
@@ -175,7 +175,7 @@ int main(int argc, char *argv[])
     NumericalScalar Survival = distribution.computeSurvivalFunction(point);
     fullprint << "Survival      =" << Survival << std::endl;
     fullprint << "Survival (ref)=" << distribution.computeSurvivalFunction(point) << std::endl;
-    NumericalPoint InverseSurvival = distribution.computeInverseSurvivalFunction(0.95);
+    Point InverseSurvival = distribution.computeInverseSurvivalFunction(0.95);
     fullprint << "Inverse survival=" << InverseSurvival << std::endl;
     fullprint << "Survival(inverse survival)=" << distribution.computeSurvivalFunction(InverseSurvival) << std::endl;
 
@@ -205,13 +205,13 @@ int main(int argc, char *argv[])
     // Moments
     fullprint << "Mean      =" << distribution.getMean() << std::endl;
     fullprint << "Mean (ref)=" << distributionRef.getMean() << std::endl;
-    NumericalPoint standardDeviation = distribution.getStandardDeviation();
+    Point standardDeviation = distribution.getStandardDeviation();
     fullprint << "Standard deviation      =" << standardDeviation << std::endl;
     fullprint << "Standard deviation (ref)=" << distributionRef.getStandardDeviation() << std::endl;
-    NumericalPoint skewness = distribution.getSkewness();
+    Point skewness = distribution.getSkewness();
     fullprint << "Skewness       =" << skewness << std::endl;
     fullprint << "Skewness (ref)==" << distributionRef.getSkewness() << std::endl;
-    NumericalPoint kurtosis = distribution.getKurtosis();
+    Point kurtosis = distribution.getKurtosis();
     fullprint << "Kurtosis      =" << kurtosis << std::endl;
     fullprint << "Kurtosis (ref)=" << distributionRef.getKurtosis() << std::endl;
     fullprint << "Covariance      =" << distribution.getCovariance() << std::endl;

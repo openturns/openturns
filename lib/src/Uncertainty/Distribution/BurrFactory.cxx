@@ -22,7 +22,7 @@
 #include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/Brent.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -53,7 +53,7 @@ struct BurrFactoryParameterConstraint
     // Nothing to do
   };
 
-  NumericalPoint computeConstraint(const NumericalPoint & parameter) const
+  Point computeConstraint(const Point & parameter) const
   {
     const NumericalScalar c = parameter[0];
     if (!(c > 0.0)) throw InvalidArgumentException(HERE) << "Error: the c parameter must be positive.";
@@ -80,7 +80,7 @@ struct BurrFactoryParameterConstraint
 
     /* MLE equation first parameter */
     const NumericalScalar relation = 1.0 + (c / size) * (sumRatio - k * sumScaledRatio);
-    return NumericalPoint(1, relation);
+    return Point(1, relation);
   }
 
   const Sample & sample_;
@@ -94,7 +94,7 @@ BurrFactory::Implementation BurrFactory::build(const Sample & sample) const
   return buildAsBurr(sample).clone();
 }
 
-BurrFactory::Implementation BurrFactory::build(const NumericalPoint & parameters) const
+BurrFactory::Implementation BurrFactory::build(const Point & parameters) const
 {
   return buildAsBurr(parameters).clone();
 }
@@ -112,20 +112,20 @@ Burr BurrFactory::buildAsBurr(const Sample & sample) const
 
   if (!(sample.getMin()[0] > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot build a Burr distribution based on a sample with nonpositive values.";
   BurrFactoryParameterConstraint constraint(sample);
-  const Function f(bindMethod<BurrFactoryParameterConstraint, NumericalPoint, NumericalPoint>(constraint, &BurrFactoryParameterConstraint::computeConstraint, 1, 1));
+  const Function f(bindMethod<BurrFactoryParameterConstraint, Point, Point>(constraint, &BurrFactoryParameterConstraint::computeConstraint, 1, 1));
   // Find a bracketing interval
   NumericalScalar a = 1.0;
   NumericalScalar b = 2.0;
-  NumericalScalar fA = f(NumericalPoint(1, a))[0];
-  NumericalScalar fB = f(NumericalPoint(1, b))[0];
+  NumericalScalar fA = f(Point(1, a))[0];
+  NumericalScalar fB = f(Point(1, b))[0];
   // While f has the same sign at the two bounds, update the interval
   while ((fA * fB > 0.0))
   {
     a = 0.5 * a;
-    fA = f(NumericalPoint(1, a))[0];
+    fA = f(Point(1, a))[0];
     if (fA * fB <= 0.0) break;
     b = 2.0 * b;
-    fB = f(NumericalPoint(1, b))[0];
+    fB = f(Point(1, b))[0];
   }
   // Solve the constraint equation
   Brent solver(ResourceMap::GetAsNumericalScalar( "BurrFactory-AbsolutePrecision" ), ResourceMap::GetAsNumericalScalar( "BurrFactory-RelativePrecision" ), ResourceMap::GetAsNumericalScalar( "BurrFactory-ResidualPrecision" ), ResourceMap::GetAsUnsignedInteger( "BurrFactory-MaximumIteration" ));
@@ -140,7 +140,7 @@ Burr BurrFactory::buildAsBurr(const Sample & sample) const
   return result;
 }
 
-Burr BurrFactory::buildAsBurr(const NumericalPoint & parameters) const
+Burr BurrFactory::buildAsBurr(const Point & parameters) const
 {
   try
   {

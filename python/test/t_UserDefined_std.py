@@ -31,7 +31,7 @@ try:
     print("oneSample=Ok", repr(oneSample))
 
     # Define a point
-    point = NumericalPoint(distribution.getDimension(), 2.0)
+    point = Point(distribution.getDimension(), 2.0)
 
     # Show PDF and CDF of a point
     pointPDF = distribution.computePDF(point)

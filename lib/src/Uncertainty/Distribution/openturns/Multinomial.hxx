@@ -43,7 +43,7 @@ public:
 
   /** Parameters constructor */
   Multinomial(const UnsignedInteger n,
-              const NumericalPoint & p);
+              const Point & p);
 
 
   /** Comparison operator */
@@ -64,30 +64,30 @@ public:
   virtual Multinomial * clone() const;
 
   /** Get one realization of the distribution */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Get the PDF of the distribution */
   using DiscreteDistribution::computePDF;
-  NumericalScalar computePDF(const NumericalPoint & point) const;
+  NumericalScalar computePDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using DiscreteDistribution::computeCDF;
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
+  NumericalScalar computeCDF(const Point & point) const;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalPDF;
   NumericalScalar computeConditionalPDF(const NumericalScalar x,
-                                        const NumericalPoint & y) const;
+                                        const Point & y) const;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalCDF;
   NumericalScalar computeConditionalCDF(const NumericalScalar x,
-                                        const NumericalPoint & y) const;
+                                        const Point & y) const;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalQuantile;
   NumericalScalar computeConditionalQuantile(const NumericalScalar q,
-      const NumericalPoint & y) const;
+      const Point & y) const;
 
   /** Get the i-th marginal distribution */
   using DiscreteDistribution::getMarginal;
@@ -102,7 +102,7 @@ public:
   Sample getSupport() const;
 
   /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
+  PointWithDescriptionCollection getParametersCollection() const;
 
   /** Check if the distribution is elliptical */
   Bool isElliptical() const;
@@ -110,8 +110,8 @@ public:
   /* Interface specific to Multinomial */
 
   /** P vector accessor */
-  void setP(const NumericalPoint & p);
-  NumericalPoint getP() const;
+  void setP(const Point & p);
+  Point getP() const;
 
   /** N accessor */
   void setN(const UnsignedInteger n);
@@ -141,7 +141,7 @@ private:
 
   /** Compute the generating function of a sum of truncated Poisson distributions as needed in the computeCDF() method */
   NumericalComplex computeGlobalPhi(const NumericalComplex & z,
-                                    const NumericalPoint & x) const;
+                                    const Point & x) const;
 
   /** Compute the generating function of a truncated Poisson distributions as needed in the computeCDF() method */
   NumericalComplex computeLocalPhi(const NumericalComplex & z,
@@ -162,7 +162,7 @@ private:
   UnsignedInteger n_;
 
   /** The vector of probabilities of the Multinomial distribution */
-  NumericalPoint p_;
+  Point p_;
 
   /** The sum of probabilities of the Multinomial distribution */
   NumericalScalar sumP_;

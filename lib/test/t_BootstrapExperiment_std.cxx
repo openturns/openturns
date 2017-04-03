@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     fullprint << "ref. sample=" << refSample << std::endl;
     BootstrapExperiment myPlane(refSample);
     fullprint << "myPlane = " << myPlane << std::endl;
-    NumericalPoint weights(0);
+    Point weights(0);
     Sample sample(myPlane.generateWithWeights(weights));
     fullprint << "sample = " << sample << std::endl;
     fullprint << "weights = " << weights << std::endl;

@@ -37,9 +37,9 @@ int main(int argc, char *argv[])
     {
       fullprint << "krawtchouk(" << i << ")=" << krawtchouk.build(i).__str__() << std::endl;
     }
-    NumericalPoint roots(krawtchouk.getRoots(10));
+    Point roots(krawtchouk.getRoots(10));
     fullprint << "krawtchouk(10) roots=" << roots << std::endl;
-    NumericalPoint weights;
+    Point weights;
     roots = krawtchouk.getNodesAndWeights(10, weights);
     fullprint << "krawtchouk(10) roots=" << roots << " and weights=" << weights << std::endl;
   }

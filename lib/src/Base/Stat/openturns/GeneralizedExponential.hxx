@@ -40,11 +40,11 @@ public:
   explicit GeneralizedExponential(const UnsignedInteger spatialDimension = 1);
 
   /** Parameters constructor */
-  GeneralizedExponential(const NumericalPoint & scale,
+  GeneralizedExponential(const Point & scale,
                          const NumericalScalar p);
 
-  GeneralizedExponential(const NumericalPoint & scale,
-                         const NumericalPoint & amplitude,
+  GeneralizedExponential(const Point & scale,
+                         const Point & amplitude,
                          const NumericalScalar p);
 
   /** Virtual copy constructor */
@@ -52,11 +52,11 @@ public:
 
   /** Computation of the covariance function */
   using StationaryCovarianceModel::computeStandardRepresentative;
-  NumericalScalar computeStandardRepresentative(const NumericalPoint & tau) const;
+  NumericalScalar computeStandardRepresentative(const Point & tau) const;
 
   /** Gradient */
-  virtual Matrix partialGradient(const NumericalPoint & s,
-                                 const NumericalPoint & t) const;
+  virtual Matrix partialGradient(const Point & s,
+                                 const Point & t) const;
 
   /** P accessor */
   NumericalScalar getP() const;
@@ -77,8 +77,8 @@ public:
 protected:
 
   /** Parameter accessor */
-  virtual void setFullParameter(const NumericalPoint & parameter);
-  virtual NumericalPoint getFullParameter() const;
+  virtual void setFullParameter(const Point & parameter);
+  virtual Point getFullParameter() const;
   virtual Description getFullParameterDescription() const;
 
 private:

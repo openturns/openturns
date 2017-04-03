@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-String printNumericalPoint(const NumericalPoint & point, const UnsignedInteger digits)
+String printPoint(const Point & point, const UnsignedInteger digits)
 {
   OSS oss;
   oss << "[";
@@ -55,12 +55,12 @@ int main(int argc, char *argv[])
 
     UnsignedInteger dim = myFunction.getInputDimension();
     /* We create a normal distribution point of dimension 1 */
-    NumericalPoint mean(dim, 0.0);
+    Point mean(dim, 0.0);
     mean[0] = 50.0; // E
     mean[1] =  1.0; // F
     mean[2] = 10.0; // L
     mean[3] =  5.0; // I
-    NumericalPoint sigma(dim, 1.0);
+    Point sigma(dim, 1.0);
     IdentityMatrix R(dim);
     Normal myDistribution(mean, sigma, R);
 
@@ -79,12 +79,12 @@ int main(int argc, char *argv[])
     fullprint << "result=" << result << std::endl;
 
     UnsignedInteger digits = 5;
-    fullprint << "standard space design point=" << printNumericalPoint(result.getStandardSpaceDesignPoint(), digits) << std::endl;
-    fullprint << "physical space design point=" << printNumericalPoint(result.getPhysicalSpaceDesignPoint(), digits) << std::endl;
+    fullprint << "standard space design point=" << printPoint(result.getStandardSpaceDesignPoint(), digits) << std::endl;
+    fullprint << "physical space design point=" << printPoint(result.getPhysicalSpaceDesignPoint(), digits) << std::endl;
     fullprint << "is standard point origin in failure space? " << (result.getIsStandardPointOriginInFailureSpace() ? "true" : "false") << std::endl;
-    fullprint << "importance factors=" << printNumericalPoint(result.getImportanceFactors(), digits) << std::endl;
-    fullprint << "importance factors (classical)=" << printNumericalPoint(result.getImportanceFactors(AnalyticalResult::CLASSICAL), digits) << std::endl;
-    fullprint << "importance factors (physical) =" << printNumericalPoint(result.getImportanceFactors(AnalyticalResult::PHYSICAL), digits) << std::endl;
+    fullprint << "importance factors=" << printPoint(result.getImportanceFactors(), digits) << std::endl;
+    fullprint << "importance factors (classical)=" << printPoint(result.getImportanceFactors(AnalyticalResult::CLASSICAL), digits) << std::endl;
+    fullprint << "importance factors (physical) =" << printPoint(result.getImportanceFactors(AnalyticalResult::PHYSICAL), digits) << std::endl;
     fullprint << "Hasofer reliability index=" << std::setprecision(digits) << result.getHasoferReliabilityIndex() << std::endl;
     fullprint << "graph importance factors=" << result.drawImportanceFactors() << std::endl;
     fullprint << "graph importance factors (classical)=" << result.drawImportanceFactors(AnalyticalResult::CLASSICAL) << std::endl;

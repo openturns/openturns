@@ -34,9 +34,9 @@ int main(int argc, char *argv[])
   try
   {
 
-    NumericalPoint meanPoint(1);
+    Point meanPoint(1);
     meanPoint[0] = 1.0;
-    NumericalPoint sigma(1);
+    Point sigma(1);
     sigma[0] = 3.0;
     CorrelationMatrix R(1);
     R(0, 0) = 1.0;
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
     Sample anotherSample = distribution.getSample( size );
 
     // Define a point
-    NumericalPoint zero(dimension, 0.0);
+    Point zero(dimension, 0.0);
 
     // Show PDF and CDF of zero point
     NumericalScalar zeroPDF = distribution.computePDF( zero );
@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
               << " cdf=" << zeroCDF
               << std::endl;
     // Get 95% quantile
-    NumericalPoint quantile = distribution.computeQuantile( 0.95 );
+    Point quantile = distribution.computeQuantile( 0.95 );
     fullprint << "Quantile=" << quantile << std::endl;
     fullprint << "CDF(quantile)=" << distribution.computeCDF(quantile) << std::endl;
 
@@ -89,8 +89,8 @@ int main(int argc, char *argv[])
     fullprint << "indices=" << indices << std::endl;
     Distribution margins(distribution.getMarginal(indices));
     fullprint << "margins=" << margins << std::endl;
-    fullprint << "margins PDF=" << margins.computePDF(NumericalPoint(2)) << std::endl;
-    fullprint << "margins CDF=" << margins.computeCDF(NumericalPoint(2)) << std::endl;
+    fullprint << "margins PDF=" << margins.computePDF(Point(2)) << std::endl;
+    fullprint << "margins CDF=" << margins.computeCDF(Point(2)) << std::endl;
     quantile = margins.computeQuantile(0.5);
     fullprint << "margins quantile=" << quantile << std::endl;
     fullprint << "margins CDF(quantile)=" << margins.computeCDF(quantile) << std::endl;

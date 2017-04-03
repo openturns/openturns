@@ -70,20 +70,20 @@ LinearModel LinearModelFactory::build(const Sample & samplePred,
   // Parse result file
   std::ifstream resultFile(resultFileName.c_str(), std::ios::in);
   UnsignedInteger dimension = samplePred.getDimension() + 1;
-  NumericalPoint regression(dimension);
+  Point regression(dimension);
   // Read the regression parameters
   for (UnsignedInteger i = 0; i < dimension; i++)
   {
     resultFile >> regression[i];
   }
   // Read the lower bounds of the intervals
-  NumericalPoint lowerBounds(dimension);
+  Point lowerBounds(dimension);
   for (UnsignedInteger i = 0; i < dimension; i++)
   {
     resultFile >> lowerBounds[i];
   }
   // Read the upper bounds of the intervals
-  NumericalPoint upperBounds(dimension);
+  Point upperBounds(dimension);
   for (UnsignedInteger i = 0; i < dimension; i++)
   {
     resultFile >> upperBounds[i];

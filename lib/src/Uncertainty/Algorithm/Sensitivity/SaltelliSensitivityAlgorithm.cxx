@@ -76,18 +76,18 @@ Sample SaltelliSensitivityAlgorithm::computeIndices(const Sample & sample,
 
   // Compute muA = mean(yA)
   const Sample yA(sample, 0, size);
-  const NumericalPoint muA(yA.computeMean());
+  const Point muA(yA.computeMean());
 
   // Compute cross mean term
-  const NumericalPoint crossSquareMean(computeSumDotSamples(sample, size_, 0, size_) / size_);
+  const Point crossSquareMean(computeSumDotSamples(sample, size_, 0, size_) / size_);
 
   for (UnsignedInteger p = 0; p < inputDimension; ++p)
   {
     // yE correspond to the block that start at index (p + 2) * size_
     // For first order indices, compute yE * yB
-    const NumericalPoint yEDotyB(computeSumDotSamples(sample, size_, size_, (2 + p) * size_));
+    const Point yEDotyB(computeSumDotSamples(sample, size_, size_, (2 + p) * size_));
     // For total order indices, compute yE * yA
-    const NumericalPoint yEDotyA(computeSumDotSamples(sample, size_, 0, (2 + p) * size_));
+    const Point yEDotyA(computeSumDotSamples(sample, size_, 0, (2 + p) * size_));
 
     for (UnsignedInteger q = 0; q < outputDimension; ++q)
     {

@@ -60,7 +60,7 @@ public:
   virtual UnsignedInteger getDimension() const;
 
   /** Realization accessor */
-  virtual NumericalPoint getRealization() const;
+  virtual Point getRealization() const;
 
   /** Numerical sample accessor */
   virtual Sample getSample(const UnsignedInteger size) const;

@@ -14,7 +14,7 @@ try:
     factory = ot.KarhunenLoeveQuadratureFactory(
         domain, experiment, basis, basisSize, mustScale, threshold)
     model = ot.AbsoluteExponential([1.0] * dim)
-    lambd = ot.NumericalPoint()
+    lambd = ot.Point()
     KLModes = factory.build(model, lambd)
     #print("KL modes=", KLModes)
     print("KL eigenvalues=", lambd)

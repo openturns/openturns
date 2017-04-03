@@ -43,7 +43,7 @@ KrigingEvaluation::KrigingEvaluation()
 KrigingEvaluation::KrigingEvaluation (const BasisCollection & basis,
                                       const Sample & inputSample,
                                       const CovarianceModel & covarianceModel,
-                                      const NumericalPointCollection & beta,
+                                      const PointCollection & beta,
                                       const Sample & gamma)
   : EvaluationImplementation()
   , basis_(basis)
@@ -64,7 +64,7 @@ KrigingEvaluation::KrigingEvaluation (const BasisCollection & basis,
   if (gamma.getSize() != inputSample.getSize()) throw InvalidArgumentException(HERE) << "In KrigingEvaluation::KrigingEvaluation, error: the number of covariance coefficients=" << gamma.getSize() << " is different from the output sample dimension=" << covarianceModel.getDimension();
   setInputDescription(Description::BuildDefault(getInputDimension(), "x"));
   setOutputDescription(Description::BuildDefault(getOutputDimension(), "y"));
-  setParameter(NumericalPoint(getInputDimension()));
+  setParameter(Point(getInputDimension()));
   setParameterDescription(Description(getInputDimension()));
 }
 
@@ -108,11 +108,11 @@ Bool KrigingEvaluation::isActualImplementation() const
 // Helper for the parallel version of the point-based evaluation operator
 struct KrigingEvaluationPointFunctor
 {
-  const NumericalPoint & input_;
+  const Point & input_;
   const KrigingEvaluation & evaluation_;
-  NumericalPoint accumulator_;
+  Point accumulator_;
 
-  KrigingEvaluationPointFunctor(const NumericalPoint & input,
+  KrigingEvaluationPointFunctor(const Point & input,
                                 const KrigingEvaluation & evaluation)
     : input_(input)
     , evaluation_(evaluation)
@@ -142,20 +142,20 @@ struct KrigingEvaluationPointFunctor
 }; // struct KrigingEvaluationPointFunctor
 
 /* Operator () */
-NumericalPoint KrigingEvaluation::operator()(const NumericalPoint & inP) const
+Point KrigingEvaluation::operator()(const Point & inP) const
 {
   const UnsignedInteger trainingSize = inputSample_.getSize();
   // Evaluate the kernel part in parallel
   KrigingEvaluationPointFunctor functor( inP, *this );
   TBB::ParallelReduce( 0, trainingSize, functor );
-  NumericalPoint value(functor.accumulator_);
+  Point value(functor.accumulator_);
   // Evaluate the basis part sequentially
   // Number of basis is 0 or outputDimension
   for (UnsignedInteger i = 0; i < basis_.getSize(); ++i)
   {
     // Get local basis -> basis_[i]
     const Basis localBasis(basis_[i]);
-    const NumericalPoint betaBasis(beta_[i]);
+    const Point betaBasis(beta_[i]);
     const UnsignedInteger basisSize = localBasis.getSize();
     for (UnsignedInteger j = 0; j < basisSize; ++j)
       value[i] += localBasis[j](inP)[0] * betaBasis[j];
@@ -218,7 +218,7 @@ Sample KrigingEvaluation::operator()(const Sample & inS) const
   {
     // Get local basis -> basis_[i]
     const Basis localBasis(basis_[i]);
-    const NumericalPoint betaBasis(beta_[i]);
+    const Point betaBasis(beta_[i]);
     const UnsignedInteger basisSize = localBasis.getSize();
     // For the i-th Basis (marginal), take into account the trend
     Sample fi(size, 1);

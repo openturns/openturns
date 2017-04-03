@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     // We populate the empty sample with numerous data
     for (int i = 0; i < N; i++)
     {
-      NumericalPoint point(2);
+      Point point(2);
       point[0] = 1000 + i;
       point[1] = 2000 + i;
       sample[i] = point;

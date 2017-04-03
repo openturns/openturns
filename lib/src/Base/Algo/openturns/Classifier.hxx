@@ -55,13 +55,13 @@ public:
   Classifier(const Sample & inS, const Indices & outC);
 
   /** Associate a point with a class */
-  UnsignedInteger classify(const NumericalPoint & inP) const;
+  UnsignedInteger classify(const Point & inP) const;
   Indices classify(const Sample & inS) const;
 
   /** Grade a point as if it were associated to a class */
-  NumericalScalar grade(const NumericalPoint & inP,
+  NumericalScalar grade(const Point & inP,
                         UnsignedInteger outC) const;
-  NumericalPoint grade(const Sample & inS,
+  Point grade(const Sample & inS,
                        const Indices & outC) const;
 
   /** Parallelization flag accessor */

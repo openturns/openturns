@@ -22,7 +22,7 @@ print('vect=', vect)
 
 # Check standard methods of class RandomVector
 print('vect dimension=', vect.getDimension())
-p = ot.NumericalPoint()
+p = ot.Point()
 r = vect.getRealization(p)
 print('vect realization=', repr(r))
 print('parameters value=', repr(p))

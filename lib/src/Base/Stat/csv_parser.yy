@@ -82,16 +82,16 @@ std::string ToString(double val)
 
 void clearPoint(OT::CSVParserState & theState, yyscan_t yyscanner)
 {
-  theState.Point = OT::NumericalPoint();
+  theState.point = OT::Point();
 }
 void printPoint(OT::CSVParserState & theState, yyscan_t yyscanner, OT::SampleImplementation &impl, OT::UnsignedInteger & theDimension)
 {
-  LOGDEBUG(OT::OSS() << "file " << theState.theFileName << " line " << csvget_lineno(yyscanner) << ": Point=" << theState.Point.__repr__());
+  LOGDEBUG(OT::OSS() << "file " << theState.theFileName << " line " << csvget_lineno(yyscanner) << ": point=" << theState.point.__repr__());
 
   if (theDimension == 0) {
-    theDimension = theState.Point.getDimension();
-    impl.add(theState.Point);
-  } else if (theDimension == theState.Point.getDimension()) impl.add(theState.Point);
+    theDimension = theState.point.getDimension();
+    impl.add(theState.point);
+  } else if (theDimension == theState.point.getDimension()) impl.add(theState.point);
 }
 
 
@@ -142,7 +142,7 @@ spaces: SPACE
 	;
 
 field:    { theState.St = ""; } escapedField    { theState.Header.add(theState.St); }
-	  | { theState.St = ""; } nonEscapedField { if (theState.Type==OT::CSVParserState::RealField) theState.Point.add(theState.Val); else theState.Header.add(theState.St); }
+	  | { theState.St = ""; } nonEscapedField { if (theState.Type==OT::CSVParserState::RealField) theState.point.add(theState.Val); else theState.Header.add(theState.St); }
 	;
 
 

@@ -32,9 +32,9 @@ int main(int argc, char *argv[])
   try
   {
     /* Amplitude values */
-    NumericalPoint amplitude(1, 1.0);
+    Point amplitude(1, 1.0);
     /* Scale values */
-    NumericalPoint scale(1, 1.0);
+    Point scale(1, 1.0);
     /* Frequency values */
     NumericalScalar frequency = 0.1;
 

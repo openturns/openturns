@@ -40,7 +40,7 @@ Contour::Contour(const UnsignedInteger dimX,
   : DrawableImplementation(data, legend)
   , x_(Sample(dimX, 1))
   , y_(Sample(dimY, 1))
-  , levels_(NumericalPoint(ResourceMap::GetAsUnsignedInteger( "Contour-DefaultLevelsNumber" )))
+  , levels_(Point(ResourceMap::GetAsUnsignedInteger( "Contour-DefaultLevelsNumber" )))
   , labels_(ResourceMap::GetAsUnsignedInteger( "Contour-DefaultLevelsNumber" ))
   , drawLabels_(true)
 {
@@ -63,7 +63,7 @@ Contour::Contour(const UnsignedInteger dimX,
 Contour::Contour(const Sample & x,
                  const Sample & y,
                  const Sample & data,
-                 const NumericalPoint & levels,
+                 const Point & levels,
                  const Description & labels,
                  const Bool drawLabels,
                  const String & legend)
@@ -119,12 +119,12 @@ void Contour::setY(const Sample & y)
 }
 
 /* Accessor for levels */
-NumericalPoint Contour::getLevels() const
+Point Contour::getLevels() const
 {
   return levels_;
 }
 
-void Contour::setLevels(const NumericalPoint & levels)
+void Contour::setLevels(const Point & levels)
 {
   levels_ = levels;
   if (levels.getDimension() != labels_.getSize()) buildDefaultLabels();
@@ -243,7 +243,7 @@ void Contour::buildDefaultLevels(const UnsignedInteger number)
   // Use the empirical quantiles
   const Sample sortedData(data_.sort(0));
   const UnsignedInteger size = data_.getSize();
-  levels_ = NumericalPoint(number);
+  levels_ = Point(number);
   for (UnsignedInteger i = 0; i < number; ++i) levels_[i] = sortedData[static_cast<UnsignedInteger>(size * (i + 0.5) / number)][0];
   levels_.erase(std::unique(levels_.begin(), levels_.end()), levels_.end());
 }

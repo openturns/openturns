@@ -23,7 +23,7 @@
 #define OPENTURNS_INCGAM_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -60,7 +60,7 @@ NumericalScalar dompart(const NumericalScalar a,
 
 // a[0]/2+a[1]T1(x)+...a[n]Tn(x); series of Chebychev polynomials
 NumericalScalar chepolsum(const NumericalScalar x,
-                          const NumericalPoint & a);
+                          const Point & a);
 
 // function g in 1/gamma(x+1) = 1+x*(x-1)*g(x), -1 <= x <= 1
 NumericalScalar auxgam(const NumericalScalar x);
@@ -74,8 +74,8 @@ NumericalScalar errorfunction(const NumericalScalar x,
                               const Bool expo);
 
 NumericalScalar fractio(const NumericalScalar x,
-                        const NumericalPoint & r,
-                        const NumericalPoint & s);
+                        const Point & r,
+                        const Point & s);
 
 NumericalScalar pqasymp(const NumericalScalar a,
                         const NumericalScalar x,
@@ -110,8 +110,8 @@ NumericalScalar invq(const NumericalScalar x);
 NumericalScalar inverfc(const NumericalScalar x);
 
 NumericalScalar ratfun(const NumericalScalar x,
-                       const NumericalPoint & ak,
-                       const NumericalPoint & bk);
+                       const Point & ak,
+                       const Point & bk);
 
 } // GammaFunctions
 

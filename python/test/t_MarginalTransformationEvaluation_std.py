@@ -11,10 +11,10 @@ try:
     coll1 = DistributionCollection(0)
     coll1.add(Normal(1.0, 2.5))
     coll1.add(Gamma(1.5, 3.0, 0.0))
-    pointLow = NumericalPoint(0)
+    pointLow = Point(0)
     pointLow.add(coll1[0].computeQuantile(0.25)[0])
     pointLow.add(coll1[1].computeQuantile(0.25)[0])
-    pointHigh = NumericalPoint(0)
+    pointHigh = Point(0)
     pointHigh.add(coll1[0].computeQuantile(0.75)[0])
     pointHigh.add(coll1[1].computeQuantile(0.75)[0])
     coll2 = DistributionCollection(0)
@@ -110,8 +110,8 @@ try:
     transformation = MarginalTransformationEvaluation(
         coll1, MarginalTransformationEvaluation.TO)
     print("transformation=", repr(transformation))
-    uLow = NumericalPoint(coll1.getSize(), 0.25)
-    uHigh = NumericalPoint(coll1.getSize(), 0.75)
+    uLow = Point(coll1.getSize(), 0.25)
+    uHigh = Point(coll1.getSize(), 0.75)
     print("transformation(", uLow, ")=", repr(transformation(uLow)))
     print("transformation(", uHigh, ")=", repr(transformation(uHigh)))
     # Validation using finite difference

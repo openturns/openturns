@@ -92,14 +92,14 @@ Poisson * Poisson::clone() const
 }
 
 /* Get one realization of the distribution */
-NumericalPoint Poisson::getRealization() const
+Point Poisson::getRealization() const
 {
-  return NumericalPoint(1, DistFunc::rPoisson(lambda_));
+  return Point(1, DistFunc::rPoisson(lambda_));
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Poisson::computePDF(const NumericalPoint & point) const
+NumericalScalar Poisson::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -110,7 +110,7 @@ NumericalScalar Poisson::computePDF(const NumericalPoint & point) const
 
 
 /* Get the CDF of the distribution */
-NumericalScalar Poisson::computeCDF(const NumericalPoint & point) const
+NumericalScalar Poisson::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -119,7 +119,7 @@ NumericalScalar Poisson::computeCDF(const NumericalPoint & point) const
   return DistFunc::pGamma(floor(k) + 1.0, lambda_, true);
 }
 
-NumericalScalar Poisson::computeComplementaryCDF(const NumericalPoint & point) const
+NumericalScalar Poisson::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -129,25 +129,25 @@ NumericalScalar Poisson::computeComplementaryCDF(const NumericalPoint & point) c
 }
 
 /* Get the PDF gradient of the distribution */
-NumericalPoint Poisson::computePDFGradient(const NumericalPoint & point) const
+Point Poisson::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar k = point[0];
-  NumericalPoint pdfGradient(1, 0.0);
+  Point pdfGradient(1, 0.0);
   if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return pdfGradient;
-  return NumericalPoint(1, (k - lambda_) * std::exp((k - 1.0) * std::log(lambda_) - lambda_ - SpecFunc::LnGamma(k + 1.0)));
+  return Point(1, (k - lambda_) * std::exp((k - 1.0) * std::log(lambda_) - lambda_ - SpecFunc::LnGamma(k + 1.0)));
 }
 
 
 /* Get the CDF gradient of the distribution */
-NumericalPoint Poisson::computeCDFGradient(const NumericalPoint & point) const
+Point Poisson::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar k = point[0];
-  if (k < -supportEpsilon_) return NumericalPoint(1, 0.0);
-  return NumericalPoint(1, -std::exp(floor(k) * std::log(lambda_) - lambda_ - SpecFunc::LnGamma(floor(k) + 1.0)));
+  if (k < -supportEpsilon_) return Point(1, 0.0);
+  return Point(1, -std::exp(floor(k) * std::log(lambda_) - lambda_ - SpecFunc::LnGamma(floor(k) + 1.0)));
 }
 
 /* Get the quantile of the distribution */
@@ -182,26 +182,26 @@ NumericalComplex Poisson::computeLogGeneratingFunction(const NumericalComplex & 
 /* Compute the mean of the distribution */
 void Poisson::computeMean() const
 {
-  mean_ = NumericalPoint(1, lambda_);
+  mean_ = Point(1, lambda_);
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint Poisson::getStandardDeviation() const
+Point Poisson::getStandardDeviation() const
 {
-  return NumericalPoint(1, std::sqrt(lambda_));
+  return Point(1, std::sqrt(lambda_));
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint Poisson::getSkewness() const
+Point Poisson::getSkewness() const
 {
-  return NumericalPoint(1, 1.0 / std::sqrt(lambda_));
+  return Point(1, 1.0 / std::sqrt(lambda_));
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint Poisson::getKurtosis() const
+Point Poisson::getKurtosis() const
 {
-  return NumericalPoint(1, 3.0 + 1.0 / lambda_);
+  return Point(1, 3.0 + 1.0 / lambda_);
 }
 
 /* Compute the covariance of the distribution */
@@ -220,17 +220,17 @@ Sample Poisson::getSupport(const Interval & interval) const
   const UnsignedInteger kMax = static_cast< UnsignedInteger > (floor(interval.getUpperBound()[0]));
   Sample result(0, 1);
   for (UnsignedInteger k = kMin; k <= kMax; ++k)
-    result.add(NumericalPoint(1, k));
+    result.add(Point(1, k));
   return result;
 }
 
 /* Parameters value accessor */
-NumericalPoint Poisson::getParameter() const
+Point Poisson::getParameter() const
 {
-  return NumericalPoint(1, lambda_);
+  return Point(1, lambda_);
 }
 
-void Poisson::setParameter(const NumericalPoint & parameter)
+void Poisson::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize();
   const NumericalScalar w = getWeight();

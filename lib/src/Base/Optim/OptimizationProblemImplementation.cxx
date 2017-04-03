@@ -191,8 +191,8 @@ void OptimizationProblemImplementation::setLevelFunction(const Function & levelF
   levelFunction_ = levelFunction;
   dimension_ = levelFunction_.getInputDimension();
   // Update objective function
-  const NumericalPoint center(dimension_);
-  const NumericalPoint constant(1);
+  const Point center(dimension_);
+  const Point constant(1);
   const Matrix linear(dimension_, 1);
   const IdentityMatrix identity(dimension_);
   const SymmetricTensor quadratic(dimension_, 1, *(identity.getImplementation().get()));
@@ -220,9 +220,9 @@ void OptimizationProblemImplementation::setLevelValue(NumericalScalar levelValue
 
 void OptimizationProblemImplementation::setNearestPointConstraints()
 {
-  const NumericalPoint center(dimension_);
+  const Point center(dimension_);
   const Matrix linear(dimension_, 1);
-  LinearFunction constantFunction(center, NumericalPoint(1, levelValue_), linear.transpose());
+  LinearFunction constantFunction(center, Point(1, levelValue_), linear.transpose());
   Function equalityConstraint(levelFunction_);
   equalityConstraint_ = equalityConstraint.operator - (constantFunction);
   inequalityConstraint_ = Function();

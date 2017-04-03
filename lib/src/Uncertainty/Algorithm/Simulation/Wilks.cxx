@@ -58,7 +58,7 @@ UnsignedInteger Wilks::ComputeSampleSize(const NumericalScalar quantileLevel,
   UnsignedInteger n = (UnsignedInteger)(ceil((quantileLevel * x2 + 2.0 * marginIndex + sqrt(quantileLevel * x2 * (quantileLevel * x2 + 4.0 * marginIndex))) / (2.0 * (1.0 - quantileLevel))));
   // Initialize cQuantileLevel to cQuantileLevel[i] = Binomial(n, n - marginIndex + i) * quantileLevel ^ (n - marginIndex + i) * (1 - quantileLevel) ^ (marginIndex - i)
   // For i = marginIndex, cQuantileLevel[i] = quantileLevel ^ n
-  NumericalPoint cQuantileLevel(marginIndex + 1, pow(quantileLevel, static_cast<int>(n)));
+  Point cQuantileLevel(marginIndex + 1, pow(quantileLevel, static_cast<int>(n)));
   // Descending recursion n! / (m - i)! / (n - m + i)! = n! / (m - (i - 1))! / (n - m + (i - 1))! * (m - (i - 1)) / (n - m + i)
   // -> Binomial(n, n - m + i - 1) = Binomial(n, n - m + i) * (n - m + i) / (m - i)
   for (UnsignedInteger i = marginIndex; i > 0; --i) cQuantileLevel[i - 1] = cQuantileLevel[i] * (1.0 - quantileLevel) / quantileLevel * (n - marginIndex + i) / (marginIndex - i + 1.0);
@@ -80,7 +80,7 @@ UnsignedInteger Wilks::ComputeSampleSize(const NumericalScalar quantileLevel,
 }
 
 /* Estimate an upper bound of the quantile of the random vector for the given quantile level and confidence level, using the marginIndex upper statistics */
-NumericalPoint Wilks::computeQuantileBound(const NumericalScalar quantileLevel,
+Point Wilks::computeQuantileBound(const NumericalScalar quantileLevel,
     const NumericalScalar confidenceLevel,
     const UnsignedInteger marginIndex) const
 {

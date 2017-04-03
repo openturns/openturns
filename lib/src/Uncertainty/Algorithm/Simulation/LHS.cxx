@@ -20,7 +20,7 @@
  */
 #include "openturns/LHS.hxx"
 #include "openturns/LHSExperiment.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/RandomVector.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/ComparisonOperatorImplementation.hxx"
@@ -73,10 +73,10 @@ Sample LHS::computeBlockSample()
   // Compute the total sample base position
   UnsignedInteger basePosition = blockIndex_ * blockSize;
   // First, compute the input sub-sample based on the shuffling
-  Sample inputSample(blockSize, NumericalPoint(dimension_));
+  Sample inputSample(blockSize, Point(dimension_));
   for(UnsignedInteger index = 0; index < blockSize; ++index)
   {
-    const NumericalPoint u(RandomGenerator::Generate(dimension_));
+    const Point u(RandomGenerator::Generate(dimension_));
     for(UnsignedInteger component = 0; component < dimension_; ++component)
     {
       NumericalScalar xi = (shuffle_(component, basePosition) + u[component]) / totalSize;

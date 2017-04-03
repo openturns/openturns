@@ -26,7 +26,7 @@
 #include "openturns/Matrix.hxx"
 #include "openturns/SymmetricMatrix.hxx"
 #include "openturns/IdentityMatrix.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -173,8 +173,8 @@ public:
   /** ComplexMatrix multiplication with IdentityMatrix argument */
   ComplexMatrix operator * (const IdentityMatrix & m) const;
 
-  /** Multiplication with a NumericalPoint  */
-  virtual NumericalComplexCollection operator* (const NumericalPoint & point) const;
+  /** Multiplication with a Point  */
+  virtual NumericalComplexCollection operator* (const Point & point) const;
 
   /** Multiplication with a NumericalScalarCollection  */
   virtual  NumericalComplexCollection operator* (const NumericalScalarCollection & collection) const;

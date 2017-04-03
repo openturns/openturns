@@ -53,13 +53,13 @@ public:
   virtual void run();
 
   /** Computes the Lagrange multipliers associated with the constraints as a post-processing of the result. Actual algorithms should overload this method. */
-  NumericalPoint computeLagrangeMultipliers(const NumericalPoint & x) const;
+  Point computeLagrangeMultipliers(const Point & x) const;
 
   /** Starting point accessor */
-  NumericalPoint getStartingPoint() const;
+  Point getStartingPoint() const;
 
   /** Starting point accessor */
-  void setStartingPoint(const NumericalPoint & startingPoint);
+  void setStartingPoint(const Point & startingPoint);
 
   /** Problem accessor */
   OptimizationProblem getProblem() const;
@@ -136,7 +136,7 @@ protected:
   std::pair< StopCallback, void *> stopCallback_;
 
 private:
-  NumericalPoint startingPoint_;
+  Point startingPoint_;
   OptimizationProblem  problem_;
 
   /** Number of outermost iterations (in case of nested iterations) */

@@ -128,7 +128,7 @@ NumericalScalar RegularGrid::getValue(const UnsignedInteger i) const
   return vertices_[i][0];
 }
 
-NumericalPoint RegularGrid::getValues() const
+Point RegularGrid::getValues() const
 {
   return vertices_.getImplementation()->getData();
 }
@@ -140,7 +140,7 @@ Bool RegularGrid::isRegular() const
 }
 
 /* Get the index of the nearest vertex */
-UnsignedInteger RegularGrid::getNearestVertexIndex(const NumericalPoint & point) const
+UnsignedInteger RegularGrid::getNearestVertexIndex(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension 1, got a point of dimension " << point.getDimension();
   const NumericalScalar x = point[0];

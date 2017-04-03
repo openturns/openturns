@@ -57,14 +57,14 @@ Basis QuadraticBasisFactory::build() const
 {
   Basis basis;
   // constant term
-  basis.add(LinearFunction (NumericalPoint(inputDimension_, 0.0), NumericalPoint(1, 1.0), Matrix(1, inputDimension_)));
+  basis.add(LinearFunction (Point(inputDimension_, 0.0), Point(1, 1.0), Matrix(1, inputDimension_)));
 
   // linear terms
   for ( UnsignedInteger i = 0; i < inputDimension_; ++ i )
   {
     Matrix linear(1, inputDimension_);
     linear(0, i) = 1.0;
-    basis.add(LinearFunction (NumericalPoint(inputDimension_, 0.0), NumericalPoint(1, 0.0), linear));
+    basis.add(LinearFunction (Point(inputDimension_, 0.0), Point(1, 0.0), linear));
   }
 
   // square terms
@@ -74,8 +74,8 @@ Basis QuadraticBasisFactory::build() const
     {
       SymmetricTensor quadratic(inputDimension_, 1);
       quadratic(i, j, 0) = 1.0;
-      NumericalPoint center(inputDimension_, 0.0);
-      NumericalPoint constant(1, 0.0);
+      Point center(inputDimension_, 0.0);
+      Point constant(1, 0.0);
       Matrix linear(inputDimension_, 1);
       basis.add(QuadraticFunction(center, constant, linear, quadratic));
     }

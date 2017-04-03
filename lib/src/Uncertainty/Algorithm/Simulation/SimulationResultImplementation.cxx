@@ -177,13 +177,13 @@ NumericalScalar SimulationResultImplementation::getConfidenceLength(const Numeri
 }
 
 /* Mean point conditioned to the event realization accessor */
-NumericalPoint SimulationResultImplementation::getMeanPointInEventDomain() const
+Point SimulationResultImplementation::getMeanPointInEventDomain() const
 {
   return SimulationSensitivityAnalysis(event_).computeMeanPointInEventDomain();
 }
 
 /* Get the importance factors based on the mean point in the event domain. The mean point is transformed into the standard space, then the importance factors are obtained as the normalized squared cosine directors. */
-NumericalPointWithDescription SimulationResultImplementation::getImportanceFactors() const
+PointWithDescription SimulationResultImplementation::getImportanceFactors() const
 {
   return SimulationSensitivityAnalysis(event_).computeImportanceFactors();
 }

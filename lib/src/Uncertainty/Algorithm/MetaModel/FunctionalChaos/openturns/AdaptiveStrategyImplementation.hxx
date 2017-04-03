@@ -23,7 +23,7 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/OrthogonalBasis.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/Function.hxx"
@@ -72,7 +72,7 @@ public:
   virtual void computeInitialBasis();
 
   /** Update the basis for the next iteration of approximation */
-  virtual void updateBasis(const NumericalPoint & alpha_k,
+  virtual void updateBasis(const Point & alpha_k,
                            const NumericalScalar residual,
                            const NumericalScalar relativeError);
 

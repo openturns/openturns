@@ -10,9 +10,9 @@ try:
     try:
 
         # Instanciate one distribution object
-        meanPoint = NumericalPoint(1)
+        meanPoint = Point(1)
         meanPoint[0] = 1.0
-        sigma = NumericalPoint(1)
+        sigma = Point(1)
         sigma[0] = 1.0
         R = CorrelationMatrix(1)
         distribution = Normal(meanPoint, sigma, R)

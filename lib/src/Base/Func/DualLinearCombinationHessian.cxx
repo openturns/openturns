@@ -57,7 +57,7 @@ DualLinearCombinationHessian * DualLinearCombinationHessian::clone() const
 
 
 /* Hessian method */
-SymmetricTensor DualLinearCombinationHessian::hessian(const NumericalPoint & inP) const
+SymmetricTensor DualLinearCombinationHessian::hessian(const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
@@ -67,7 +67,7 @@ SymmetricTensor DualLinearCombinationHessian::hessian(const NumericalPoint & inP
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const SymmetricTensor hessianI(evaluation_.functionsCollection_[i].hessian(inP));
-    const NumericalPoint coefficientI(evaluation_.coefficients_[i]);
+    const Point coefficientI(evaluation_.coefficients_[i]);
     for (UnsignedInteger j = 0; j < inputDimension; ++j)
       for (UnsignedInteger k = 0; k <= j; ++k)
         for (UnsignedInteger n = 0; n < outputDimension; ++n)

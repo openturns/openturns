@@ -52,13 +52,13 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** Operator () */
-  NumericalPoint operator() (const NumericalPoint & inP) const;
+  Point operator() (const Point & inP) const;
 
   Sample operator() (const Sample & inS) const;
 
   /** Parameters value accessor */
-  virtual NumericalPoint getParameter() const;
-  virtual void setParameter(const NumericalPoint & parameter);
+  virtual Point getParameter() const;
+  virtual void setParameter(const Point & parameter);
 
   /** Parameters description accessor */
   virtual Description getParameterDescription() const;

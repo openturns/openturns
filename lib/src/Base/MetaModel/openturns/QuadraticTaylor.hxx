@@ -23,7 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/SymmetricTensor.hxx"
 #include "openturns/Function.hxx"
@@ -48,7 +48,7 @@ public:
   QuadraticTaylor();
 
   /** Constructor with parameters */
-  QuadraticTaylor(const NumericalPoint & center,
+  QuadraticTaylor(const Point & center,
                   const Function & inputFunction);
 
 
@@ -62,10 +62,10 @@ public:
   void run();
 
   /** Center accessor */
-  NumericalPoint getCenter() const;
+  Point getCenter() const;
 
   /** Constant accessor */
-  NumericalPoint getConstant() const;
+  Point getConstant() const;
 
   /** Linear accessor */
   Matrix getLinear() const;
@@ -83,10 +83,10 @@ protected:
 
 private:
 
-  NumericalPoint center_;
+  Point center_;
   Function inputFunction_;
   Function responseSurface_;
-  NumericalPoint constant_;
+  Point constant_;
   Matrix linear_;
   SymmetricTensor quadratic_;
 

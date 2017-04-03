@@ -39,7 +39,7 @@ NonCenteredFiniteDifferenceGradient::NonCenteredFiniteDifferenceGradient() :
 }
 
 /* Parameter constructor */
-NonCenteredFiniteDifferenceGradient::NonCenteredFiniteDifferenceGradient(const NumericalPoint & epsilon,
+NonCenteredFiniteDifferenceGradient::NonCenteredFiniteDifferenceGradient(const Point & epsilon,
     const EvaluationPointer & p_evaluation)
   : FiniteDifferenceGradient(epsilon, p_evaluation)
 {
@@ -87,10 +87,10 @@ String NonCenteredFiniteDifferenceGradient::__str__(const String & offset) const
 /* Here is the interface that all derived class must implement */
 
 /* Gradient () */
-Matrix NonCenteredFiniteDifferenceGradient::gradient(const NumericalPoint & inP) const
+Matrix NonCenteredFiniteDifferenceGradient::gradient(const Point & inP) const
 {
   const UnsignedInteger inputDimension = inP.getDimension();
-  NumericalPoint step(finiteDifferenceStep_.operator()(inP));
+  Point step(finiteDifferenceStep_.operator()(inP));
   if (inputDimension != step.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   /* At which points do we have to compute the evaluation for the decentered finite difference. We need 1+dim pionts. */
   Sample gridPoints(inputDimension + 1, inP);
@@ -98,7 +98,7 @@ Matrix NonCenteredFiniteDifferenceGradient::gradient(const NumericalPoint & inP)
   /* Evaluate the evaluation */
   Sample gridValues(p_evaluation_->operator()(gridPoints));
   /* Get the value at the center of the grid */
-  NumericalPoint center(gridValues[inputDimension]);
+  Point center(gridValues[inputDimension]);
   /* Compute the gradient */
   Matrix result(p_evaluation_->getInputDimension(), p_evaluation_->getOutputDimension());
   for (UnsignedInteger i = 0; i < result.getNbRows(); ++i)

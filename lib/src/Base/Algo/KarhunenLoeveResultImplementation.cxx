@@ -22,7 +22,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/KarhunenLoeveResultImplementation.hxx"
 #include "openturns/LinearFunction.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/IdentityMatrix.hxx"
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/LinearCombinationFunction.hxx"
@@ -50,7 +50,7 @@ KarhunenLoeveResultImplementation::KarhunenLoeveResultImplementation()
 /* Default constructor */
 KarhunenLoeveResultImplementation::KarhunenLoeveResultImplementation(const CovarianceModel & covariance,
     const NumericalScalar threshold,
-    const NumericalPoint & eigenvalues,
+    const Point & eigenvalues,
     const Basis & modes,
     const ProcessSample & modesAsProcessSample,
     const Matrix & projection)
@@ -84,7 +84,7 @@ CovarianceModel KarhunenLoeveResultImplementation::getCovarianceModel() const
 }
 
 /* Eigenvalues accessor */
-NumericalPoint KarhunenLoeveResultImplementation::getEigenValues() const
+Point KarhunenLoeveResultImplementation::getEigenValues() const
 {
   return eigenvalues_;
 }
@@ -105,7 +105,7 @@ Basis KarhunenLoeveResultImplementation::getScaledModes() const
 {
   Collection<Function> scaledModes(modes_.getSize());
   const UnsignedInteger dimension = modes_.getDimension();
-  const NumericalPoint zero(dimension);
+  const Point zero(dimension);
   const IdentityMatrix id(dimension);
   for (UnsignedInteger i = 0; i < scaledModes.getSize(); ++i)
     {
@@ -131,14 +131,14 @@ Matrix KarhunenLoeveResultImplementation::getProjectionMatrix() const
 }
 
 /* Projection method */
-NumericalPoint KarhunenLoeveResultImplementation::project(const Function & function) const
+Point KarhunenLoeveResultImplementation::project(const Function & function) const
 {
-  // Evaluate the function over the vertices of the mesh and cast it into a NumericalPoint
-  const NumericalPoint functionValues(function(modesAsProcessSample_.getMesh().getVertices()).getImplementation()->getData());
+  // Evaluate the function over the vertices of the mesh and cast it into a Point
+  const Point functionValues(function(modesAsProcessSample_.getMesh().getVertices()).getImplementation()->getData());
   return projection_ * functionValues;
 }
 
-NumericalPoint KarhunenLoeveResultImplementation::project(const Field & field) const
+Point KarhunenLoeveResultImplementation::project(const Field & field) const
 {
   if (field.getMesh() == modesAsProcessSample_.getMesh())
     return projection_ * field.getValues().getImplementation()->getData();
@@ -207,10 +207,10 @@ Sample KarhunenLoeveResultImplementation::project(const ProcessSample & sample) 
 }
 
 /* Lift method */
-Function KarhunenLoeveResultImplementation::lift(const NumericalPoint & coefficients) const
+Function KarhunenLoeveResultImplementation::lift(const Point & coefficients) const
 {
   const UnsignedInteger dimension = eigenvalues_.getDimension();
-  NumericalPoint scaledCoefficients(dimension);
+  Point scaledCoefficients(dimension);
   Collection<Function> functions(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
     {
@@ -220,7 +220,7 @@ Function KarhunenLoeveResultImplementation::lift(const NumericalPoint & coeffici
   return LinearCombinationFunction(functions, scaledCoefficients);
 }
 
-Field KarhunenLoeveResultImplementation::liftAsField(const NumericalPoint & coefficients) const
+Field KarhunenLoeveResultImplementation::liftAsField(const Point & coefficients) const
 {
   const UnsignedInteger dimension = eigenvalues_.getDimension();
   Sample values(modesAsProcessSample_.getMesh().getVerticesNumber(), modesAsProcessSample_.getDimension());

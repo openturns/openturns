@@ -51,7 +51,7 @@ BernoulliFactory::Implementation BernoulliFactory::build(const Sample & sample) 
   return buildAsBernoulli(sample).clone();
 }
 
-BernoulliFactory::Implementation BernoulliFactory::build(const NumericalPoint & parameters) const
+BernoulliFactory::Implementation BernoulliFactory::build(const Point & parameters) const
 {
   return buildAsBernoulli(parameters).clone();
 }
@@ -80,7 +80,7 @@ Bernoulli BernoulliFactory::buildAsBernoulli(const Sample & sample) const
   return result;
 }
 
-Bernoulli BernoulliFactory::buildAsBernoulli(const NumericalPoint & parameters) const
+Bernoulli BernoulliFactory::buildAsBernoulli(const Point & parameters) const
 {
   try
   {

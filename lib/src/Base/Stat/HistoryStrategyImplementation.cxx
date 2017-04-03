@@ -52,9 +52,9 @@ HistoryStrategyImplementation * HistoryStrategyImplementation::clone() const
 }
 
 /* Store the point according to the strategy */
-void HistoryStrategyImplementation::store(const NumericalPoint & point)
+void HistoryStrategyImplementation::store(const Point & point)
 {
-  throw NotYetImplementedException(HERE) << "In HistoryStrategyImplementation::store(const NumericalPoint & point)";
+  throw NotYetImplementedException(HERE) << "In HistoryStrategyImplementation::store(const Point & point)";
 }
 
 /* Store the sample according to the strategy */

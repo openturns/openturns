@@ -124,8 +124,8 @@ public:
   /** SymmetricMatrix integer power */
   SymmetricMatrix power(const UnsignedInteger n) const;
 
-  /** Multiplication with a NumericalPoint (must have consistent dimensions) */
-  NumericalPoint operator * (const NumericalPoint & p) const;
+  /** Multiplication with a Point (must have consistent dimensions) */
+  Point operator * (const Point & p) const;
 
   /** Multiplication with a NumericalScalar */
   SymmetricMatrix operator * (const NumericalScalar & s) const;
@@ -134,7 +134,7 @@ public:
   SymmetricMatrix operator / (const NumericalScalar & s) const;
 
   /** Resolution of a linear system */
-  NumericalPoint solveLinearSystem(const NumericalPoint & b,
+  Point solveLinearSystem(const Point & b,
                                    const Bool keepIntact = true);
 
   Matrix solveLinearSystem(const Matrix & b,
@@ -146,8 +146,8 @@ public:
   NumericalScalar computeDeterminant(const Bool keepIntact = true);
 
   /** Compute eigenvalues */
-  NumericalPoint computeEigenValues(const Bool keepIntact = true);
-  NumericalPoint computeEV(SquareMatrix & v,
+  Point computeEigenValues(const Bool keepIntact = true);
+  Point computeEV(SquareMatrix & v,
                            const Bool keepIntact = true);
 
   /** Comparison operators */

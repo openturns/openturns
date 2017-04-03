@@ -12,7 +12,7 @@ ts1.setName('Ts1')
 
 # We populate the empty ts
 for p in range(3):
-    pt = ot.NumericalPoint(dim)
+    pt = ot.Point(dim)
     for i in range(dim):
         pt[i] = 10. * (p + 1) + i
     ts1.add(pt)
@@ -24,7 +24,7 @@ secondElement = ts1[1]
 print('second element=', secondElement)
 
 # We set the third element to a valid new element
-newPoint = ot.NumericalPoint(dim + 1)
+newPoint = ot.Point(dim + 1)
 for i in range(dim):
     newPoint[i + 1] = 1000. * (i + 1)
 ts1[2] = newPoint

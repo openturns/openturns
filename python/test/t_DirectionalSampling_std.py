@@ -14,7 +14,7 @@ try:
 
     dim = myFunction.getInputDimension()
     # We create a normal distribution point of dimension 1
-    mean = NumericalPoint(dim, 0.0)
+    mean = Point(dim, 0.0)
     # E
     mean[0] = 50.0
     # F
@@ -23,7 +23,7 @@ try:
     mean[2] = 10.0
     # I
     mean[3] = 5.0
-    sigma = NumericalPoint(dim, 1.0)
+    sigma = Point(dim, 1.0)
     R = IdentityMatrix(dim)
     myDistribution = Normal(mean, sigma, R)
 

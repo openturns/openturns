@@ -8,7 +8,7 @@ from math import *
 TESTPREAMBLE()
 
 
-def printNumericalPoint(point, digits):
+def printPoint(point, digits):
     oss = "["
     eps = pow(0.1, digits)
     for i in range(point.getDimension()):
@@ -33,7 +33,7 @@ try:
     dim = myFunction.getInputDimension()
 
     # We create a normal distribution point of dimension 1
-    mean = NumericalPoint(dim, 0.0)
+    mean = Point(dim, 0.0)
     # E
     mean[0] = 50.0
     # F
@@ -42,7 +42,7 @@ try:
     mean[2] = 10.0
     # I
     mean[3] = 5.0
-    sigma = NumericalPoint(dim, 1.0)
+    sigma = Point(dim, 1.0)
     R = IdentityMatrix(dim)
     myDistribution = Normal(mean, sigma, R)
 
@@ -81,16 +81,16 @@ try:
     print("event probability=%.6f" % result.getEventProbability())
     print("generalized reliability index=%.6f" %
           result.getGeneralisedReliabilityIndex())
-    print("standard space design point=", printNumericalPoint(
+    print("standard space design point=", printPoint(
         result.getStandardSpaceDesignPoint(), digits))
-    print("physical space design point=", printNumericalPoint(
+    print("physical space design point=", printPoint(
         result.getPhysicalSpaceDesignPoint(), digits))
 
     # Is the standard point origin in failure space?
     print("is standard point origin in failure space? %s" %
           (result.getIsStandardPointOriginInFailureSpace() and "true" or "false"))
 
-    print("importance factors=", printNumericalPoint(
+    print("importance factors=", printPoint(
         result.getImportanceFactors(), digits))
     print("Hasofer reliability index=%.6f" %
           result.getHasoferReliabilityIndex())

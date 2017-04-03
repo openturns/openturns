@@ -77,7 +77,7 @@ OT_Domain_getDimension_doc
 
 Returns
 -------
-lower : :class:`~openturns.NumericalPoint`
+lower : :class:`~openturns.Point`
     The lower bound of an axes-aligned bounding box of the domain."
 %enddef
 %feature("docstring") OT::DomainImplementation::getLowerBound
@@ -104,7 +104,7 @@ OT_Domain_getNumericalVolume_doc
 
 Returns
 -------
-upper : :class:`~openturns.NumericalPoint`
+upper : :class:`~openturns.Point`
     The upper bound of an axes-aligned bounding box of the domain."
 %enddef
 %feature("docstring") OT::DomainImplementation::getUpperBound

@@ -24,7 +24,7 @@
 #include <cmath>
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Sample.hxx"
-#include "openturns/NumericalPointWithDescription.hxx"
+#include "openturns/PointWithDescription.hxx"
 #include "openturns/ComparisonOperator.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/Graph.hxx"
@@ -67,12 +67,12 @@ public:
   virtual SimulationSensitivityAnalysis * clone() const;
 
   /** Mean point in event domain computation */
-  NumericalPoint computeMeanPointInEventDomain() const;
-  NumericalPoint computeMeanPointInEventDomain(const NumericalScalar threshold) const;
+  Point computeMeanPointInEventDomain() const;
+  Point computeMeanPointInEventDomain(const NumericalScalar threshold) const;
 
   /** Importance factors computation */
-  NumericalPointWithDescription computeImportanceFactors() const;
-  NumericalPointWithDescription computeImportanceFactors(const NumericalScalar threshold) const;
+  PointWithDescription computeImportanceFactors() const;
+  PointWithDescription computeImportanceFactors(const NumericalScalar threshold) const;
 
 public:
 

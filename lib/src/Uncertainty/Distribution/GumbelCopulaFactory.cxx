@@ -48,7 +48,7 @@ GumbelCopulaFactory::Implementation GumbelCopulaFactory::build(const Sample & sa
   return buildAsGumbelCopula(sample).clone();
 }
 
-GumbelCopulaFactory::Implementation GumbelCopulaFactory::build(const NumericalPoint & parameters) const
+GumbelCopulaFactory::Implementation GumbelCopulaFactory::build(const Point & parameters) const
 {
   return buildAsGumbelCopula(parameters).clone();
 }
@@ -69,7 +69,7 @@ GumbelCopula GumbelCopulaFactory::buildAsGumbelCopula(const Sample & sample) con
   return result;
 }
 
-GumbelCopula GumbelCopulaFactory::buildAsGumbelCopula(const NumericalPoint & parameters) const
+GumbelCopula GumbelCopulaFactory::buildAsGumbelCopula(const Point & parameters) const
 {
   try
   {

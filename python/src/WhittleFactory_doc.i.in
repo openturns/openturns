@@ -131,7 +131,7 @@ p = [1, 2, 4] and q = [4,5,6]:
 
 To get the quantified AICc, AIC and BIC criteria:
 
->>> myCriterion = ot.NumericalPoint()
+>>> myCriterion = ot.Point()
 >>> myARMA_42 = myFactory_42.build(ot.TimeSeries(myTimeSeries), myCriterion)
 >>> AICc, AIC, BIC = myCriterion[0:3]"
 
@@ -149,7 +149,7 @@ Parameters
 ----------
 myTimeSeries : :class:`~openturns.TimeSeries`
     One realization of the  process.
-criterion : :class:`~openturns.NumericalPoint` with the default implementation, optional
+criterion : :class:`~openturns.Point` with the default implementation, optional
     To get the evaluation of the AICc, AIC and BIC criteria
 myProcessSample : :class:`~openturns.ProcessSample`
     Several realizations of the  process.
@@ -279,7 +279,7 @@ verboseMode : bool
 
 Parameters
 ----------
-startPointsList : a list of :class:`~openturns.NumericalPoint`
+startPointsList : a list of :class:`~openturns.Point`
     Starting points for the optimization step, for each pair of orders that will be tested.
 "
 // ---------------------------------------------------------------------
@@ -289,6 +289,6 @@ startPointsList : a list of :class:`~openturns.NumericalPoint`
 
 Returns
 -------
-startPointsList : a list of :class:`~openturns.NumericalPoint`
+startPointsList : a list of :class:`~openturns.Point`
     Starting points for the optimization step, for each pair of orders that will be tested.
 "

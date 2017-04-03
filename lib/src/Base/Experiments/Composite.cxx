@@ -39,8 +39,8 @@ Composite::Composite()
 }
 
 /* Constructor with parameters */
-Composite::Composite(const NumericalPoint & center,
-                     const NumericalPoint & levels)
+Composite::Composite(const Point & center,
+                     const Point & levels)
   : StratifiedExperiment(center, levels)
 {
   // Nothing to do
@@ -48,8 +48,8 @@ Composite::Composite(const NumericalPoint & center,
 
 /* Constructor with parameters */
 Composite::Composite(const UnsignedInteger dimension,
-                     const NumericalPoint & levels)
-  : StratifiedExperiment(NumericalPoint(dimension, 0.0), levels)
+                     const Point & levels)
+  : StratifiedExperiment(Point(dimension, 0.0), levels)
 {
   // Nothing to do
 }

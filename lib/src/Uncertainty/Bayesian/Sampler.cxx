@@ -50,7 +50,7 @@ UnsignedInteger Sampler::getDimension() const
 
 
 /* Return true if comparison succeeds */
-NumericalPoint Sampler::getRealization() const
+Point Sampler::getRealization() const
 {
   return getImplementation()->getRealization();
 }

@@ -49,7 +49,7 @@ RayleighFactory::Implementation RayleighFactory::build(const Sample & sample) co
   return buildAsRayleigh(sample).clone();
 }
 
-RayleighFactory::Implementation RayleighFactory::build(const NumericalPoint & parameters) const
+RayleighFactory::Implementation RayleighFactory::build(const Point & parameters) const
 {
   return buildAsRayleigh(parameters).clone();
 }
@@ -92,7 +92,7 @@ Rayleigh RayleighFactory::buildAsRayleigh(const Sample & sample) const
   }
 }
 
-Rayleigh RayleighFactory::buildAsRayleigh(const NumericalPoint & parameters) const
+Rayleigh RayleighFactory::buildAsRayleigh(const Point & parameters) const
 {
   try
   {

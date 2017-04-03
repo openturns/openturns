@@ -74,7 +74,7 @@ Examples
 
 Returns
 -------
-center : :class:`~openturns.NumericalPoint`
+center : :class:`~openturns.Point`
     Point :math:`\vect{x}_0` where the Taylor expansion of the function is
     performed."
 
@@ -85,7 +85,7 @@ center : :class:`~openturns.NumericalPoint`
 
 Returns
 -------
-constantVector : :class:`~openturns.NumericalPoint`
+constantVector : :class:`~openturns.Point`
     Constant vector of the approximation, equal to :math:`h(x_0)`."
 
 // ---------------------------------------------------------------------

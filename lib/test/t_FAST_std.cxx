@@ -61,22 +61,22 @@ int main(int argc, char *argv[])
     NumericalScalar a = 7.0;
     NumericalScalar b = 0.1;
     NumericalScalar covTh = (pow(b, 2.0) * pow(M_PI, 8.0)) / 18.0 + (b * pow(M_PI, 4.0)) / 5.0 + (pow(a, 2.0)) / 8.0 + 1.0 / 2.0;
-    NumericalPoint sob_1(3);
+    Point sob_1(3);
     sob_1[0] = (b * pow(M_PI, 4.0) / 5.0 + pow(b, 2.0) * pow(M_PI, 8.0) / 50.0 + 1.0 / 2.0) / covTh;
     sob_1[1] = (pow(a, 2.0) / 8.0) / covTh;
     sob_1[2] = 0.0;
-    NumericalPoint sob_2(3);
+    Point sob_2(3);
     sob_2[0] = 0.0;
     sob_2[1] = (pow(b, 2.0) * pow(M_PI, 8.0) / 18.0 - pow(b, 2.0) * pow(M_PI, 8.0) / 50.0) / covTh;
     sob_2[2] = 0.0;
-    NumericalPoint sob_3(1, 0.0);
-    NumericalPoint sob_T1(3);
+    Point sob_3(1, 0.0);
+    Point sob_T1(3);
     sob_T1[0] = sob_1[0] + sob_2[0] + sob_2[1] + sob_3[0];
     sob_T1[1] = sob_1[1] + sob_2[0] + sob_2[2] + sob_3[0];
     sob_T1[2] = sob_1[2] + sob_2[1] + sob_2[2] + sob_3[0];
 
-    NumericalPoint firstOrderFastIndices(sensitivityFast.getFirstOrderIndices());
-    NumericalPoint totalOrderFastIndices(sensitivityFast.getTotalOrderIndices());
+    Point firstOrderFastIndices(sensitivityFast.getFirstOrderIndices());
+    Point totalOrderFastIndices(sensitivityFast.getTotalOrderIndices());
     for(UnsignedInteger i = 0; i < inputDimension; ++i)
     {
       NumericalScalar value = firstOrderFastIndices[i];
@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
     fullprint << std::endl;
     // // Test with G-Sobol function
     covTh = 1.0;
-    NumericalPoint a_i(inputDimension);
+    Point a_i(inputDimension);
     Description formulaGSobol(1);
     formulaGSobol[0] = "1.0";
     for (UnsignedInteger i = 0; i < inputDimension; ++i)
@@ -115,8 +115,8 @@ int main(int argc, char *argv[])
     firstOrderFastIndices = sensitivityFast.getFirstOrderIndices();
     totalOrderFastIndices = sensitivityFast.getTotalOrderIndices();
     // First-order indices
-    NumericalPoint V_i(inputDimension);
-    NumericalPoint Vtot_i(inputDimension);
+    Point V_i(inputDimension);
+    Point Vtot_i(inputDimension);
     NumericalScalar prod_V_i = 1.0;
     for(UnsignedInteger i = 0; i < inputDimension; ++i)
     {

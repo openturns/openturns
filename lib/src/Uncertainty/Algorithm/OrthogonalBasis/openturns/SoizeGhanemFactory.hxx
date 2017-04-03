@@ -26,7 +26,7 @@
 #include "openturns/Distribution.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/OrthogonalProductPolynomialFactory.hxx"

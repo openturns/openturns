@@ -51,41 +51,41 @@ int main(int argc, char *argv[])
     // We populate the empty ts
     for (UnsignedInteger p = 0; p < 3; ++p)
     {
-      NumericalPoint pt(DIM);
+      Point pt(DIM);
       for (UnsignedInteger i = 0; i < DIM; ++i) pt[i] = 10. * (p + 1) + i;
       ts1.add( pt );
     }
     fullprint << "ts1=" << ts1 << std::endl;
 
     // We get the second element of the ts
-    NumericalPoint secondElement = ts1[1];
+    Point secondElement = ts1[1];
     fullprint << "second element=" << secondElement << std::endl;
 
     // We set the third element to a valid new element
-    NumericalPoint newPoint(DIM + 1);
+    Point newPoint(DIM + 1);
     for (UnsignedInteger i = 0; i < DIM; ++i) newPoint[i + 1] = 1000. * (i + 1);
     ts1[2] = newPoint;
     fullprint << "ts1=" << ts1 << std::endl;
 
     // We get the values of the second element of the ts
-    NumericalPoint values1 = ts1.getValueAtIndex(1);
+    Point values1 = ts1.getValueAtIndex(1);
     fullprint << "values of the second element=" << values1 << std::endl;
 
     // We set new values for the second element of the ts
-    NumericalPoint newValues = values1 * 2.;
+    Point newValues = values1 * 2.;
     ts1.setValueAtIndex(1, newValues);
-    NumericalPoint values2 = ts1.getValueAtIndex(1);
+    Point values2 = ts1.getValueAtIndex(1);
     fullprint << "ts1=" << ts1 << std::endl;
     fullprint << "modified values of the second element=" << values2 << " should be " << newValues << std::endl;
 
     // We get the values of the second element of the ts
-    NumericalPoint values3 = ts1.getValueAtNearestTime( -1.0 );
+    Point values3 = ts1.getValueAtNearestTime( -1.0 );
     fullprint << "values at t=-1.0 =" << values3 << std::endl;
-    NumericalPoint values4 = ts1.getValueAtNearestTime( 1.45 );
+    Point values4 = ts1.getValueAtNearestTime( 1.45 );
     fullprint << "values at t=1.45 =" << values4 << std::endl;
-    NumericalPoint values5 = ts1.getValueAtNearestTime( 1.54 );
+    Point values5 = ts1.getValueAtNearestTime( 1.54 );
     fullprint << "values at t=1.54 =" << values5 << std::endl;
-    NumericalPoint values6 = ts1.getValueAtNearestTime( 14.5 );
+    Point values6 = ts1.getValueAtNearestTime( 14.5 );
     fullprint << "values at t=14.5 =" << values6 << std::endl;
 
     // We set new values for the third element of the ts
@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
     // {
     //   // We get the tenth element of the ts
     //   // THIS SHOULD NORMALY FAIL
-    //   NumericalPoint tenthElement = ts1.at(9);
+    //   Point tenthElement = ts1.at(9);
 
     //   // Normally, we should never go here
     //   throw TestFailed("Exception has NOT been thrown or catched !");
@@ -122,7 +122,7 @@ int main(int argc, char *argv[])
 
     // We append a sample to a time series
     TimeSeries ts5(3, DIM);
-    Sample ns1(3, NumericalPoint(DIM, 99.9));
+    Sample ns1(3, Point(DIM, 99.9));
     fullprint << "ts5=" << ts5 << std::endl;
     ts5.add( ns1 );
     fullprint << "ts5=" << ts5 << std::endl;

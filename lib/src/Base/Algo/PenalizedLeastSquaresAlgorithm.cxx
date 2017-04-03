@@ -65,7 +65,7 @@ PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const Sample & x,
 /* Parameters constructor */
 PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const Sample & x,
     const Sample & y,
-    const NumericalPoint & weight,
+    const Point & weight,
     const Basis & psi,
     const Indices & indices,
     const NumericalScalar penalizationFactor,
@@ -86,7 +86,7 @@ PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const Sample & x,
 /* Parameters constructor */
 PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const Sample & x,
     const Sample & y,
-    const NumericalPoint & weight,
+    const Point & weight,
     const Basis & psi,
     const Indices & indices,
     const NumericalScalar penalizationFactor,
@@ -118,7 +118,7 @@ void PenalizedLeastSquaresAlgorithm::run(const DesignProxy & proxy)
   // Here we use directly a MatrixImplementation in order to have access to
   // the flat indexing of the data
   MatrixImplementation basisMatrix;
-  NumericalPoint rightHandSide;
+  Point rightHandSide;
   // We have four cases:
   // + no penalization and uniform weights
   // + no penalization and non-uniform weights
@@ -138,7 +138,7 @@ void PenalizedLeastSquaresAlgorithm::run(const DesignProxy & proxy)
     if (!hasUniformWeight_)
     {
       // Now we take the weights into account. It is better to access the matrix in a column-wise fashion, so we precompute the square-roots of the weights as they act on a row-wise fashion on the design matrix. We scale the right-hand side in the same loop.
-      NumericalPoint weightSqrt(sampleSize);
+      Point weightSqrt(sampleSize);
       for (UnsignedInteger i = 0; i < sampleSize; ++i)
       {
         weightSqrt[i] = std::sqrt(weight_[i]);
@@ -192,7 +192,7 @@ void PenalizedLeastSquaresAlgorithm::run(const DesignProxy & proxy)
     {
       const NumericalScalar rho = std::sqrt(penalizationFactor_);
       // Here the upper part of the matrix and the right-hand side have to be changed to take into account the weights, the lower part to take into account the regularization
-      NumericalPoint weightSqrt(sampleSize);
+      Point weightSqrt(sampleSize);
       for (UnsignedInteger i = 0; i < sampleSize; ++i)
       {
         weightSqrt[i] = std::sqrt(weight_[i]);

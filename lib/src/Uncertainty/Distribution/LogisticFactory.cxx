@@ -49,7 +49,7 @@ LogisticFactory::Implementation LogisticFactory::build(const Sample & sample) co
   return buildAsLogistic(sample).clone();
 }
 
-LogisticFactory::Implementation LogisticFactory::build(const NumericalPoint & parameters) const
+LogisticFactory::Implementation LogisticFactory::build(const Point & parameters) const
 {
   return buildAsLogistic(parameters).clone();
 }
@@ -76,7 +76,7 @@ Logistic LogisticFactory::buildAsLogistic(const Sample & sample) const
   return result;
 }
 
-Logistic LogisticFactory::buildAsLogistic(const NumericalPoint & parameters) const
+Logistic LogisticFactory::buildAsLogistic(const Point & parameters) const
 {
   try
   {

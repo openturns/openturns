@@ -19,8 +19,8 @@ Create a Study object:
 
 Add PersistentObjects to the study:
 
->>> # a NumericalPoint:
->>> point = ot.NumericalPoint(3, 0.0)
+>>> # a Point:
+>>> point = ot.Point(3, 0.0)
 >>> point[0] = 10.0
 >>> point[1] = 11.0
 >>> point[2] = 12.0
@@ -49,8 +49,8 @@ Load data from the study:
 
 Create data from the ones stored in the study:
 
->>> # a NumericalPoint:
->>> otherPoint = ot.NumericalPoint()
+>>> # a Point:
+>>> otherPoint = ot.Point()
 >>> myStudy.fillObject('point', otherPoint)
 >>> # a Simulation::Result:
 >>> otherSimulationResult = ot.SimulationResult()

@@ -35,7 +35,7 @@ CLASSNAMEINIT(QuadrantSampling);
 /* Constructor with parameters */
 QuadrantSampling::QuadrantSampling (const SamplingStrategy & samplingStrategy,
                                     const UnsignedInteger quadrantIndex,
-                                    const NumericalPoint & quadrantOrientation)
+                                    const Point & quadrantOrientation)
 
   : SamplingStrategyImplementation(samplingStrategy.getDimension())
   , samplingStrategy_(samplingStrategy)
@@ -78,12 +78,12 @@ Sample QuadrantSampling::generate() const
   {
     for (UnsignedInteger i = 0; i < size; ++ i)
     {
-      NumericalPoint inP(strataDimension);
+      Point inP(strataDimension);
       for (UnsignedInteger j = 0; j < strataDimension; ++ j)
       {
         inP[j] = result[i][strataIndices_[j]];
       }
-      const NumericalPoint rotP(R_ * inP);
+      const Point rotP(R_ * inP);
       for (UnsignedInteger j = 0; j < strataDimension; ++ j)
       {
         result[i][strataIndices_[j]] = rotP[j];
@@ -108,14 +108,14 @@ UnsignedInteger QuadrantSampling::getQuadrantIndex() const
   return quadrantIndex_;
 }
 
-void QuadrantSampling::setQuadrantOrientation(const NumericalPoint & quadrantOrientation)
+void QuadrantSampling::setQuadrantOrientation(const Point & quadrantOrientation)
 {
   if ((quadrantOrientation.getDimension() > 0) && (quadrantOrientation.getDimension() != getDimension())) throw InvalidDimensionException(HERE) << "Quadrant orientation dimension (" << quadrantOrientation.getDimension() << " ) should be " << getDimension();
   quadrantOrientation_ = quadrantOrientation;
   updateRotation();
 }
 
-NumericalPoint QuadrantSampling::getQuadrantOrientation() const
+Point QuadrantSampling::getQuadrantOrientation() const
 {
   return quadrantOrientation_;
 }
@@ -152,7 +152,7 @@ void QuadrantSampling::updateRotation()
   {
     const UnsignedInteger p = getStrataIndices().getSize();
 
-    NumericalPoint u(p);
+    Point u(p);
     for (UnsignedInteger j = 0; j < p; ++ j)
     {
       u[j] = quadrantOrientation_[strataIndices_[j]];
@@ -172,7 +172,7 @@ void QuadrantSampling::updateRotation()
         f[k] -= dot(f[k], f[i]) * f[i];
       }
       // fk = fk / ||fk||
-      f[k] /= NumericalPoint(f[k]).norm();
+      f[k] /= Point(f[k]).norm();
     }
 
     // H is the transformation E -> F, columns = fk

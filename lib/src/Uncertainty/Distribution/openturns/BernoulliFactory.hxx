@@ -45,10 +45,10 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
   Implementation build(const Sample & sample) const;
-  Implementation build(const NumericalPoint & parameters) const;
+  Implementation build(const Point & parameters) const;
   Implementation build() const;
   Bernoulli buildAsBernoulli(const Sample & sample) const;
-  Bernoulli buildAsBernoulli(const NumericalPoint & parameters) const;
+  Bernoulli buildAsBernoulli(const Point & parameters) const;
   Bernoulli buildAsBernoulli() const;
 
   DistributionFactoryResult buildEstimator(const Sample & sample) const;

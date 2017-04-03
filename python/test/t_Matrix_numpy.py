@@ -8,53 +8,53 @@ TESTPREAMBLE()
 
 try:
 
-    # Check tuple / NumericalPoint conversion
+    # Check tuple / Point conversion
     t0 = (0.5, 1.5)
-    p0 = NumericalPoint(t0)
-    print("tuple", t0, "=> NumericalPoint", p0)
+    p0 = Point(t0)
+    print("tuple", t0, "=> Point", p0)
 
     t1 = tuple(p0)
-    print("NumericalPoint", p0, "=> tuple", t1)
+    print("Point", p0, "=> tuple", t1)
 
-    print("NumericalPoint", p0, "+ tuple", t0, "=> NumericalPoint", p0 + t0)
+    print("Point", p0, "+ tuple", t0, "=> Point", p0 + t0)
 
-    # Check list / NumericalPoint conversion
+    # Check list / Point conversion
     l0 = [0.5, 1.5]
-    p0 = NumericalPoint(l0)
-    print("list", l0, "=> NumericalPoint", p0)
+    p0 = Point(l0)
+    print("list", l0, "=> Point", p0)
 
     l1 = list(p0)
-    print("NumericalPoint", p0, "=> list", l1)
+    print("Point", p0, "=> list", l1)
 
-    print("NumericalPoint", p0, "+ list", l0, "=> NumericalPoint", p0 + l0)
+    print("Point", p0, "+ list", l0, "=> Point", p0 + l0)
 
-    # Check sequence protocol for NumericalPoint
+    # Check sequence protocol for Point
     for x in p0:
         print("value", x)
     x0 = p0[0]
     p0[0] = x0
     if x0 not in p0:
-        raise ValueError("NumericalPoint badly implements __contains__()")
+        raise ValueError("Point badly implements __contains__()")
 
-    # Check array / NumericalPoint conversion
+    # Check array / Point conversion
     a0 = np.array((0.5, 1.5))
-    p0 = NumericalPoint(a0)
-    print("array", a0, "=> NumericalPoint", p0)
+    p0 = Point(a0)
+    print("array", a0, "=> Point", p0)
 
     a1 = np.array(p0)
-    print("NumericalPoint", p0, "=> array", a1)
+    print("Point", p0, "=> array", a1)
 
-    print("NumericalPoint", p0, "+ array", a0, "=> NumericalPoint", p0 + a0)
-    print("array", a0, "+ NumericalPoint", p0, "=> array", a0 + p0)
+    print("Point", p0, "+ array", a0, "=> Point", p0 + a0)
+    print("array", a0, "+ Point", p0, "=> array", a0 + p0)
 
     # See ticket #423
     m0 = np.array([[1, 1], [2, 2], [3, 3]])
     try:
-        p0 = NumericalPoint(m0)
+        p0 = Point(m0)
         print(p0)
     except:
         print(
-            'Conversion from 2d-array => NumericalPoint failed (as expected :)')
+            'Conversion from 2d-array => Point failed (as expected :)')
 
     # Check tuple / Sample conversion
     t0 = ((1., 2.), (3., 4.))
@@ -93,15 +93,15 @@ try:
         ('E', 'F', 'L', 'I'), ('d',), ('-F*L^3/(3.*E*I)',))
 
     t0 = (1., 2., 3., 4.)
-    print("NumericalPoint", F(t0), "= F( tuple", t0, ")")
+    print("Point", F(t0), "= F( tuple", t0, ")")
 
     # Check list / Function interoperability
     l0 = [1., 2., 3., 4.]
-    print("NumericalPoint", F(l0), "= F( list", l0, ")")
+    print("Point", F(l0), "= F( list", l0, ")")
 
     # Check array / Function interoperability
     a0 = np.array((1., 2., 3., 4.))
-    print("NumericalPoint", F(a0), "= F( array", a0, ")")
+    print("Point", F(a0), "= F( array", a0, ")")
     a1 = np.array(((1., 2., 3., 4.), (5., 6., 7., 8.)))
     print("Sample", F(a1), "= F( array", a1, ")")
 
@@ -111,9 +111,9 @@ try:
 
     PYNMF = PythonFunction(4, 1, aFunc)
 
-    print("NumericalPoint", PYNMF(t0), "= PYNMF( tuple", t0, ")")
-    print("NumericalPoint", PYNMF(l0), "= PYNMF( list",  l0, ")")
-    print("NumericalPoint", PYNMF(a0), "= PYNMF( array", a0, ")")
+    print("Point", PYNMF(t0), "= PYNMF( tuple", t0, ")")
+    print("Point", PYNMF(l0), "= PYNMF( list",  l0, ")")
+    print("Point", PYNMF(a0), "= PYNMF( array", a0, ")")
     print("Sample", PYNMF(a1), "= PYNMF( array", a1, ")")
 
     # Check 2-d array which nested dim is size=1 / Function
@@ -124,7 +124,7 @@ try:
     PYNMF = PythonFunction(1, 1, aFunc2)
 
     a0 = np.array(([1.]))
-    print("NumericalPoint", PYNMF(a0), "= PYNMF( array", a0, ")")
+    print("Point", PYNMF(a0), "= PYNMF( array", a0, ")")
     a1 = np.array(([1.], [2.], [3.]))
     print("Sample", PYNMF(a1), "= PYNMF( array", a1, ")")
 

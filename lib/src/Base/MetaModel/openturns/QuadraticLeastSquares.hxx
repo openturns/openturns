@@ -23,7 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Function.hxx"
 
@@ -62,7 +62,7 @@ public:
   void run();
 
   /** Constant accessor */
-  NumericalPoint getConstant() const;
+  Point getConstant() const;
 
   /** Linear accessor */
   Matrix getLinear() const;
@@ -90,7 +90,7 @@ private:
   Sample dataOut_;
   Function inputFunction_;
   Function responseSurface_;
-  NumericalPoint constant_;
+  Point constant_;
   Matrix linear_;
   SymmetricTensor quadratic_;
 

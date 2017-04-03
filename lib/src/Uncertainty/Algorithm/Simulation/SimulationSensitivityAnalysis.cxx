@@ -117,7 +117,7 @@ SimulationSensitivityAnalysis * SimulationSensitivityAnalysis::clone() const
 }
 
 /* Mean point in event domain computation */
-NumericalPoint SimulationSensitivityAnalysis::computeMeanPointInEventDomain(const NumericalScalar threshold) const
+Point SimulationSensitivityAnalysis::computeMeanPointInEventDomain(const NumericalScalar threshold) const
 {
   const UnsignedInteger inputSize = inputSample_.getSize();
   Sample filteredSample(0, inputSample_.getDimension());
@@ -128,20 +128,20 @@ NumericalPoint SimulationSensitivityAnalysis::computeMeanPointInEventDomain(cons
   return filteredSample.computeMean();
 }
 
-NumericalPoint SimulationSensitivityAnalysis::computeMeanPointInEventDomain() const
+Point SimulationSensitivityAnalysis::computeMeanPointInEventDomain() const
 {
   return computeMeanPointInEventDomain(threshold_);
 }
 
 /* Importance factors computation */
-NumericalPointWithDescription SimulationSensitivityAnalysis::computeImportanceFactors(const NumericalScalar threshold) const
+PointWithDescription SimulationSensitivityAnalysis::computeImportanceFactors(const NumericalScalar threshold) const
 {
-  NumericalPointWithDescription result(transformation_(computeMeanPointInEventDomain(threshold)).normalizeSquare());
+  PointWithDescription result(transformation_(computeMeanPointInEventDomain(threshold)).normalizeSquare());
   result.setDescription(inputSample_.getDescription());
   return result;
 }
 
-NumericalPointWithDescription SimulationSensitivityAnalysis::computeImportanceFactors() const
+PointWithDescription SimulationSensitivityAnalysis::computeImportanceFactors() const
 {
   return computeImportanceFactors(threshold_);
 }
@@ -214,7 +214,7 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
   Collection<Sample> dataCollection(inputDimension, Sample(0, 2));
   // Now, we can go through the data and accumulate the importance factors. If we just call the computeImportanceFactors() method directly, the cost is O(size^2), which is too expensive for typical situations.
   // Aggregate the points in the event
-  NumericalPoint accumulator(inputDimension);
+  Point accumulator(inputDimension);
   // Here, we cannot use a simple loop as we have to deal with ties
   SignedInteger i = iStart;
   UnsignedInteger accumulated = 0;
@@ -227,7 +227,7 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
     while (!comparisonOperator_(mergedSample[i][inputDimension], currentThreshold))
     {
       // Accumulate the current threshold candidate, as it will be accepted as soon as a valid threshold will be found
-      const NumericalPoint current(mergedSample[iThreshold]);
+      const Point current(mergedSample[iThreshold]);
       for (UnsignedInteger j = 0; j < inputDimension; ++j) accumulator[j] += current[j];
       ++accumulated;
       iThreshold += step;
@@ -246,7 +246,7 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
       while (comparisonOperator_(mergedSample[iTies][inputDimension], currentThreshold))
       {
         // Accumulate the current threshold
-        const NumericalPoint current(mergedSample[iTies]);
+        const Point current(mergedSample[iTies]);
         for (UnsignedInteger j = 0; j < inputDimension; ++j) accumulator[j] += current[j];
         ++accumulated;
         iTies += step;
@@ -268,15 +268,15 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
       // Check if the point is in the exploration range
       if ((xValue >= lower) && (xValue <= upper))
       {
-        NumericalPoint importanceFactors;
+        Point importanceFactors;
         // Check if the importance factors are well-defined for the current threshold
         try
         {
           importanceFactors = transformation_(accumulator / accumulated).normalizeSquare();
-          const NumericalPoint ref(computeImportanceFactors(currentThreshold));
+          const Point ref(computeImportanceFactors(currentThreshold));
           for (UnsignedInteger j = 0; j < inputDimension; ++j)
           {
-            NumericalPoint point(2);
+            Point point(2);
             point[0] = xValue;
             point[1] = 100.0 * importanceFactors[j];
             dataCollection[j].add(point);

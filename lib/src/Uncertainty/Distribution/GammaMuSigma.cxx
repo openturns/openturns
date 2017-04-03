@@ -66,12 +66,12 @@ Bool GammaMuSigma::operator ==(const GammaMuSigma & other) const
 /* Build a distribution based on a set of native parameters */
 Distribution GammaMuSigma::getDistribution() const
 {
-  NumericalPoint newParameters(3);
+  Point newParameters(3);
   newParameters[0] = mu_;
   newParameters[1] = sigma_;
   newParameters[2] = gamma_;
 
-  NumericalPoint nativeParameters(operator()(newParameters));
+  Point nativeParameters(operator()(newParameters));
 
   return GammaFactory().build(nativeParameters);
 }
@@ -105,7 +105,7 @@ Matrix GammaMuSigma::gradient() const
 
 
 /* Conversion operator */
-NumericalPoint GammaMuSigma::operator () (const NumericalPoint & inP) const
+Point GammaMuSigma::operator () (const Point & inP) const
 {
   if (inP.getDimension() != 3) throw InvalidArgumentException(HERE) << "the given point must have dimension=3, here dimension=" << inP.getDimension();
   const NumericalScalar mu = inP[0];
@@ -118,7 +118,7 @@ NumericalPoint GammaMuSigma::operator () (const NumericalPoint & inP) const
   const NumericalScalar k = lambda * lambda;
   lambda /= sigma;
 
-  NumericalPoint nativeParameters(inP);
+  Point nativeParameters(inP);
   nativeParameters[0] = k;
   nativeParameters[1] = lambda;
 
@@ -126,7 +126,7 @@ NumericalPoint GammaMuSigma::operator () (const NumericalPoint & inP) const
 }
 
 
-NumericalPoint GammaMuSigma::inverse(const NumericalPoint & inP) const
+Point GammaMuSigma::inverse(const Point & inP) const
 {
   if (inP.getDimension() != 3) throw InvalidArgumentException(HERE) << "the given point must have dimension=3, here dimension=" << inP.getDimension();
   const NumericalScalar k = inP[0];
@@ -139,7 +139,7 @@ NumericalPoint GammaMuSigma::inverse(const NumericalPoint & inP) const
   NumericalScalar mu = gamma + k / lambda;
   const NumericalScalar sigma = std::sqrt(k) / lambda;
 
-  NumericalPoint muSigmaParameters(inP);
+  Point muSigmaParameters(inP);
   muSigmaParameters[0] = mu;
   muSigmaParameters[1] = sigma;
 
@@ -148,7 +148,7 @@ NumericalPoint GammaMuSigma::inverse(const NumericalPoint & inP) const
 
 
 /* Parameters value and description accessor */
-void GammaMuSigma::setValues(const NumericalPoint & inP)
+void GammaMuSigma::setValues(const Point & inP)
 {
   if (inP.getDimension() != 3) throw InvalidArgumentException(HERE) << "the given point must have dimension=3, here dimension=" << inP.getDimension();
   mu_ = inP[0];
@@ -156,9 +156,9 @@ void GammaMuSigma::setValues(const NumericalPoint & inP)
   gamma_ = inP[2];
 }
 
-NumericalPoint GammaMuSigma::getValues() const
+Point GammaMuSigma::getValues() const
 {
-  NumericalPoint point(3);
+  Point point(3);
   point[0] = mu_;
   point[1] = sigma_;
   point[2] = gamma_;

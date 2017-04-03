@@ -40,22 +40,22 @@ public:
   explicit SquaredExponential(const UnsignedInteger spatialDimension = 1);
 
   /** Parameters constructor */
-  SquaredExponential(const NumericalPoint & scale);
+  SquaredExponential(const Point & scale);
 
   /** Parameters constructor */
-  SquaredExponential(const NumericalPoint & scale,
-                     const NumericalPoint & amplitude);
+  SquaredExponential(const Point & scale,
+                     const Point & amplitude);
 
   /** Virtual copy constructor */
   SquaredExponential * clone() const;
 
   /** Computation of the covariance function */
   using StationaryCovarianceModel::computeStandardRepresentative;
-  NumericalScalar computeStandardRepresentative(const NumericalPoint & tau) const;
+  NumericalScalar computeStandardRepresentative(const Point & tau) const;
 
   /** Gradient */
-  virtual Matrix partialGradient(const NumericalPoint & s,
-                                 const NumericalPoint & t) const;
+  virtual Matrix partialGradient(const Point & s,
+                                 const Point & t) const;
 
   /** String converter */
   String __repr__() const;

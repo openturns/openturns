@@ -55,12 +55,12 @@ RosenblattEvaluation * RosenblattEvaluation::clone() const
 }
 
 /* Evaluation */
-NumericalPoint RosenblattEvaluation::operator () (const NumericalPoint & inP) const
+Point RosenblattEvaluation::operator () (const Point & inP) const
 {
   const UnsignedInteger dimension = getOutputDimension();
   if (inP.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << inP.getDimension();
-  NumericalPoint result(dimension);
-  NumericalPoint y(0);
+  Point result(dimension);
+  Point y(0);
   // Apply Phi^{-1} o conditional CDF over the components
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
@@ -78,9 +78,9 @@ NumericalPoint RosenblattEvaluation::operator () (const NumericalPoint & inP) co
 }
 
 /* Gradient according to the marginal parameters. */
-Matrix RosenblattEvaluation::parameterGradient(const NumericalPoint & inP) const
+Matrix RosenblattEvaluation::parameterGradient(const Point & inP) const
 {
-  throw NotYetImplementedException(HERE) << "In RosenblattEvaluation::parameterGradient(const NumericalPoint & inP) const";
+  throw NotYetImplementedException(HERE) << "In RosenblattEvaluation::parameterGradient(const Point & inP) const";
 }
 
 /* Accessor for input point dimension */

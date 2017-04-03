@@ -33,7 +33,7 @@ CLASSNAMEINIT(Pie);
 static const Factory<Pie> Factory_Pie;
 
 /* Default constructor */
-Pie::Pie(const NumericalPoint & data)
+Pie::Pie(const Point & data)
   : DrawableImplementation()
   , palette_(0)
   , radius_(1.0)
@@ -47,7 +47,7 @@ Pie::Pie(const NumericalPoint & data)
 }
 
 /* Constructor with parameters */
-Pie::Pie(const NumericalPoint & data,
+Pie::Pie(const Point & data,
          const Description & labels)
   : DrawableImplementation()
   , palette_()
@@ -61,9 +61,9 @@ Pie::Pie(const NumericalPoint & data,
 }
 
 /* Constructor with parameters */
-Pie::Pie(const NumericalPoint & data,
+Pie::Pie(const Point & data,
          const Description & labels,
-         const NumericalPoint & center,
+         const Point & center,
          const NumericalScalar & radius,
          const Description & palette)
   : DrawableImplementation()
@@ -93,11 +93,11 @@ String Pie::__repr__() const
 }
 
 /* Accessor for center */
-NumericalPoint Pie::getCenter() const
+Point Pie::getCenter() const
 {
   return center_;
 }
-void Pie::setCenter(const NumericalPoint & center)
+void Pie::setCenter(const Point & center)
 {
   center_ = center;
 }
@@ -196,7 +196,7 @@ Bool Pie::IsValidColorPalette(const Description & palette)
   return IsValid;
 }
 
-void Pie::checkData(const NumericalPoint & data) const
+void Pie::checkData(const Point & data) const
 {
   const UnsignedInteger size = data.getSize();
   // Check if there is any data to display

@@ -114,8 +114,8 @@ Chi * Chi::clone() const
 /* Compute the numerical range of the distribution given the parameters values */
 void Chi::computeRange()
 {
-  const NumericalPoint lowerBound(1, 0.0);
-  const NumericalPoint upperBound(computeUpperBound());
+  const Point lowerBound(1, 0.0);
+  const Point upperBound(computeUpperBound());
   const Interval::BoolCollection finiteLowerBound(1, true);
   const Interval::BoolCollection finiteUpperBound(1, false);
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
@@ -132,25 +132,25 @@ void Chi::update()
 
 
 /* Get one realization of the distribution */
-NumericalPoint Chi::getRealization() const
+Point Chi::getRealization() const
 {
-  return NumericalPoint(1, std::sqrt(2.0 * DistFunc::rGamma(0.5 * nu_)));
+  return Point(1, std::sqrt(2.0 * DistFunc::rGamma(0.5 * nu_)));
 }
 
 
 /* Get the DDF of the distribution */
-NumericalPoint Chi::computeDDF(const NumericalPoint & point) const
+Point Chi::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0];
-  if (x <= 0.0) return NumericalPoint(1, 0.0);
-  return NumericalPoint(1, (( nu_ - 1.0) / x - x) * computePDF(point));
+  if (x <= 0.0) return Point(1, 0.0);
+  return Point(1, (( nu_ - 1.0) / x - x) * computePDF(point));
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Chi::computePDF(const NumericalPoint & point) const
+NumericalScalar Chi::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -159,7 +159,7 @@ NumericalScalar Chi::computePDF(const NumericalPoint & point) const
   return std::exp(computeLogPDF(point));
 }
 
-NumericalScalar Chi::computeLogPDF(const NumericalPoint & point) const
+NumericalScalar Chi::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -170,7 +170,7 @@ NumericalScalar Chi::computeLogPDF(const NumericalPoint & point) const
 
 
 /* Get the CDF of the distribution */
-NumericalScalar Chi::computeCDF(const NumericalPoint & point) const
+NumericalScalar Chi::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -180,7 +180,7 @@ NumericalScalar Chi::computeCDF(const NumericalPoint & point) const
   return DistFunc::pGamma(0.5 * nu_, 0.5 * x * x);
 }
 
-NumericalScalar Chi::computeComplementaryCDF(const NumericalPoint & point) const
+NumericalScalar Chi::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -203,11 +203,11 @@ NumericalComplex Chi::computeCharacteristicFunction(const NumericalScalar x) con
 }
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint Chi::computePDFGradient(const NumericalPoint & point) const
+Point Chi::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  NumericalPoint pdfGradient(1, 0.0);
+  Point pdfGradient(1, 0.0);
   const NumericalScalar x = point[0];
   if (x <= 0.0) return pdfGradient;
   NumericalScalar pdf = computePDF(point);
@@ -217,11 +217,11 @@ NumericalPoint Chi::computePDFGradient(const NumericalPoint & point) const
 }
 
 /* Get the CDFGradient of the distribution */
-NumericalPoint Chi::computeCDFGradient(const NumericalPoint & point) const
+Point Chi::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  NumericalPoint cdfGradient(1, 0.0);
+  Point cdfGradient(1, 0.0);
   const NumericalScalar x = point[0];
   if (x <= 0.0) return cdfGradient;
   NumericalScalar eps = std::pow(cdfEpsilon_, 1.0 / 3.0);
@@ -239,7 +239,7 @@ NumericalScalar Chi::computeScalarQuantile(const NumericalScalar prob,
 
 void Chi::computeMean() const
 {
-  mean_ = NumericalPoint(1, M_SQRT2 * std::exp( SpecFunc::LnGamma(0.5 * (nu_ + 1.0)) - SpecFunc::LnGamma(0.5 * nu_)));
+  mean_ = Point(1, M_SQRT2 * std::exp( SpecFunc::LnGamma(0.5 * (nu_ + 1.0)) - SpecFunc::LnGamma(0.5 * nu_)));
   isAlreadyComputedMean_ = true;
 }
 
@@ -251,41 +251,41 @@ void Chi::computeCovariance() const
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint Chi::getStandardDeviation() const
+Point Chi::getStandardDeviation() const
 {
-  return NumericalPoint(1, std::sqrt(getCovariance()(0, 0)) );
+  return Point(1, std::sqrt(getCovariance()(0, 0)) );
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint Chi::getSkewness() const
+Point Chi::getSkewness() const
 {
   const NumericalScalar mu = getMean()[0];
   const NumericalScalar sigma = getStandardDeviation()[0];
-  return NumericalPoint(1, mu * (1 - 2.0 * sigma * sigma) / std::pow(sigma, 3.0));
+  return Point(1, mu * (1 - 2.0 * sigma * sigma) / std::pow(sigma, 3.0));
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint Chi::getKurtosis() const
+Point Chi::getKurtosis() const
 {
   const NumericalScalar mu = getMean()[0];
   const NumericalScalar sigma = getStandardDeviation()[0];
   const NumericalScalar gamma1 = getSkewness()[0];
-  return NumericalPoint(1, 3.0 + 2.0 * (1.0 - sigma * (mu * gamma1 + sigma)) / std::pow(sigma, 2.0));
+  return Point(1, 3.0 + 2.0 * (1.0 - sigma * (mu * gamma1 + sigma)) / std::pow(sigma, 2.0));
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Chi::getStandardMoment(const UnsignedInteger n) const
+Point Chi::getStandardMoment(const UnsignedInteger n) const
 {
-  return NumericalPoint(1, std::exp(0.5 * n * M_LN2 + SpecFunc::LnGamma(0.5 * (n + nu_)) - SpecFunc::LnGamma(0.5 * nu_)));
+  return Point(1, std::exp(0.5 * n * M_LN2 + SpecFunc::LnGamma(0.5 * (n + nu_)) - SpecFunc::LnGamma(0.5 * nu_)));
 }
 
 /* Parameters value accessor */
-NumericalPoint Chi::getParameter() const
+Point Chi::getParameter() const
 {
-  return NumericalPoint(1, nu_);
+  return Point(1, nu_);
 }
 
-void Chi::setParameter(const NumericalPoint & parameter)
+void Chi::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize();
   const NumericalScalar w = getWeight();

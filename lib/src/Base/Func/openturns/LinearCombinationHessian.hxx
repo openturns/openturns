@@ -53,7 +53,7 @@ public:
   virtual LinearCombinationHessian * clone() const;
 
   /** Hessian method */
-  SymmetricTensor hessian(const NumericalPoint & inP) const;
+  SymmetricTensor hessian(const Point & inP) const;
 
   /** Accessor for input point dimension */
   UnsignedInteger getInputDimension() const;

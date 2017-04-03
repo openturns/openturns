@@ -44,7 +44,7 @@ static const Factory<SORMResult> Factory_SORMResult;
 /*
  * @brief  Standard constructor: the class is defined by an optimisation algorithm, a failure event and a physical starting point
  */
-SORMResult::SORMResult(const NumericalPoint & standardSpaceDesignPoint,
+SORMResult::SORMResult(const Point & standardSpaceDesignPoint,
                        const Event & limitStateVariable,
                        const Bool isStandardPointOriginInFailureSpace):
   AnalyticalResult(standardSpaceDesignPoint, limitStateVariable, isStandardPointOriginInFailureSpace),
@@ -66,7 +66,7 @@ SORMResult::SORMResult(const NumericalPoint & standardSpaceDesignPoint,
   /* compute its gradient */
   const Matrix gradient(limitStateFunction.gradient(getStandardSpaceDesignPoint()));
   /* Get the first column */
-  gradientLimitStateFunction_ = gradient * NumericalPoint(1, 1.0);
+  gradientLimitStateFunction_ = gradient * Point(1, 1.0);
   /* compute its hessian */
   const SymmetricTensor hessian(limitStateFunction.hessian(getStandardSpaceDesignPoint()));
   /* Get the first sheet */
@@ -110,7 +110,7 @@ void SORMResult::computeSortedCurvatures() const
   // If the dimension is zero, throw an exception
   if (dimension == 0) throw NotDefinedException(HERE) << "Error: the curvatures cannot be computed when the dimension is zero.";
   const NumericalScalar inverseGradientNorm = 1.0 / gradientLimitStateFunction_.norm();
-  const NumericalPoint unitGradientLimitStateFunction(inverseGradientNorm * gradientLimitStateFunction_);
+  const Point unitGradientLimitStateFunction(inverseGradientNorm * gradientLimitStateFunction_);
   SquareMatrix kroneckerUnitGradientLimitStateFunction(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
     for (UnsignedInteger j = 0; j < dimension; ++j)
@@ -118,7 +118,7 @@ void SORMResult::computeSortedCurvatures() const
   /* W = (uGrad.uGrad^t -Id) * Hess(g) */
   const SquareMatrix id = IdentityMatrix(dimension);
   const SquareMatrix::NumericalComplexCollection eigenValues(((kroneckerUnitGradientLimitStateFunction - id) * hessianLimitStateFunction_).computeEigenValues());
-  NumericalPoint realEigenValues(dimension);
+  Point realEigenValues(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i) realEigenValues[i] = eigenValues[i].real();
 
   /* The curvatures are proportional to the eigenvalues of W
@@ -131,7 +131,7 @@ void SORMResult::computeSortedCurvatures() const
 } // end SORMResult::computeCurvatures
 
 /* SortedCurvatures accessor */
-NumericalPoint SORMResult::getSortedCurvatures() const
+Point SORMResult::getSortedCurvatures() const
 {
   if (!isAlreadyComputedSortedCurvatures_) computeSortedCurvatures();
   return sortedCurvatures_;
@@ -148,7 +148,7 @@ NumericalScalar SORMResult::getEventProbabilityBreitung() const
   /* Make sure the curvatures have been computed*/
   getSortedCurvatures();
   const NumericalScalar beta = getHasoferReliabilityIndex();
-  const NumericalPoint minusBeta(1, -beta);
+  const Point minusBeta(1, -beta);
   const NumericalScalar standardCDFBeta = standardMarginal_.computeCDF(minusBeta);
 
   /* test if all curvatures verifie 1 + beta * curvature  > 0 */
@@ -186,7 +186,7 @@ NumericalScalar SORMResult::getEventProbabilityHohenBichler() const
   }
   /* Make sure the curvatures have been computed*/
   getSortedCurvatures();
-  const NumericalPoint minusBeta(1, -getHasoferReliabilityIndex());
+  const Point minusBeta(1, -getHasoferReliabilityIndex());
   const NumericalScalar standardPDFBeta = standardMarginal_.computePDF(minusBeta);
   const NumericalScalar standardCDFBeta = standardMarginal_.computeCDF(minusBeta);
 
@@ -230,7 +230,7 @@ NumericalScalar SORMResult::getEventProbabilityTvedt() const
   getSortedCurvatures();
 
   const NumericalScalar beta = getHasoferReliabilityIndex();
-  const NumericalPoint minusBeta(1, -beta);
+  const Point minusBeta(1, -beta);
 
   /* test if all curvatures verifie 1 + (beta+1) * curvature  > 0 */
   /* curvatures are sorted with increasing order and stocked in the attribute SortedCurvatures */

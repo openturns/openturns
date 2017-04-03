@@ -47,12 +47,12 @@ public:
   PiecewiseHermiteEvaluation();
 
   /** Parameter constructor */
-  PiecewiseHermiteEvaluation(const NumericalPoint & locations,
-      const NumericalPoint & values,
-      const NumericalPoint & derivatives);
+  PiecewiseHermiteEvaluation(const Point & locations,
+      const Point & values,
+      const Point & derivatives);
 
   /** Parameter constructor */
-  PiecewiseHermiteEvaluation(const NumericalPoint & locations,
+  PiecewiseHermiteEvaluation(const Point & locations,
       const Sample & values,
       const Sample & derivatives);
 
@@ -65,14 +65,14 @@ public:
 
   /** Evaluation operator */
   using EvaluationImplementation::operator ();
-  NumericalPoint operator () (const NumericalPoint & inP) const;
+  Point operator () (const Point & inP) const;
 
   /** Compute the derivative */
-  NumericalPoint derivate(const NumericalPoint & inP) const;
+  Point derivate(const Point & inP) const;
 
   /** Locations accessor */
-  NumericalPoint getLocations() const;
-  void setLocations(const NumericalPoint & locations);
+  Point getLocations() const;
+  void setLocations(const Point & locations);
 
   /** Values accessor */
   Sample getValues() const;
@@ -83,7 +83,7 @@ public:
   void setDerivatives(const Sample & derivatives);
 
   /** Simultaneous locations and values acessor */
-  void setLocationsValuesAndDerivatives(const NumericalPoint & locations,
+  void setLocationsValuesAndDerivatives(const Point & locations,
                                         const Sample & values,
                                         const Sample & derivatives);
 
@@ -104,7 +104,7 @@ protected:
 
 private:
   // The locations
-  NumericalPoint locations_;
+  Point locations_;
 
   // The values
   Sample values_;

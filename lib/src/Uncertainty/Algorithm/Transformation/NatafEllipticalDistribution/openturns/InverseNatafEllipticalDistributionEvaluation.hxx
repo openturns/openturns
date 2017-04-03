@@ -24,7 +24,7 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/LinearEvaluation.hxx"
 #include "openturns/TriangularMatrix.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/StorageManager.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -45,14 +45,14 @@ public:
   InverseNatafEllipticalDistributionEvaluation();
 
   /** Parameter constructor */
-  InverseNatafEllipticalDistributionEvaluation(const NumericalPoint & mean,
+  InverseNatafEllipticalDistributionEvaluation(const Point & mean,
       const TriangularMatrix & cholesky);
 
   /** Virtual constructor */
   virtual InverseNatafEllipticalDistributionEvaluation * clone() const;
 
   /** Gradient according to the marginal parameters */
-  virtual Matrix parameterGradient(const NumericalPoint & inP) const;
+  virtual Matrix parameterGradient(const Point & inP) const;
 
   /** String converter */
   virtual String __repr__() const;

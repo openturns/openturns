@@ -77,7 +77,7 @@ SobolIndicesAlgorithm::SobolIndicesAlgorithm(const WeightedExperiment & experime
 }
 
 /* First order indices accessor */
-NumericalPoint SobolIndicesAlgorithm::getFirstOrderIndices(const UnsignedInteger marginalIndex) const
+Point SobolIndicesAlgorithm::getFirstOrderIndices(const UnsignedInteger marginalIndex) const
 {
   return getImplementation()->getFirstOrderIndices(marginalIndex);
 }
@@ -95,7 +95,7 @@ SymmetricMatrix SobolIndicesAlgorithm::getSecondOrderIndices(const UnsignedInteg
 }
 
 /* Total order indices accessor */
-NumericalPoint SobolIndicesAlgorithm::getTotalOrderIndices(const UnsignedInteger marginalIndex) const
+Point SobolIndicesAlgorithm::getTotalOrderIndices(const UnsignedInteger marginalIndex) const
 {
   return getImplementation()->getTotalOrderIndices(marginalIndex);
 }
@@ -107,13 +107,13 @@ Interval SobolIndicesAlgorithm::getTotalOrderIndicesInterval() const
 }
 
 /* Aggregated first order indices accessor for multivariate samples */
-NumericalPoint SobolIndicesAlgorithm::getAggregatedFirstOrderIndices() const
+Point SobolIndicesAlgorithm::getAggregatedFirstOrderIndices() const
 {
   return getImplementation()->getAggregatedFirstOrderIndices();
 }
 
 /* Aggregated total order indices accessor for multivariate samples */
-NumericalPoint SobolIndicesAlgorithm::getAggregatedTotalOrderIndices() const
+Point SobolIndicesAlgorithm::getAggregatedTotalOrderIndices() const
 {
   return getImplementation()->getAggregatedTotalOrderIndices();
 }

@@ -53,7 +53,7 @@ public:
   Sample getY() const;
 
   /** Weights accessors */
-  NumericalPoint getWeight() const;
+  Point getWeight() const;
 
   /** Basis accessor */
   Basis getPsi() const;
@@ -73,7 +73,7 @@ public:
 #endif
 
   /** Acccessor to the coefficients of the selected metamodel on the provided basis */
-  NumericalPoint getCoefficients();
+  Point getCoefficients();
 
   /** Acccessor to the residual of the selected metamodel on the provided basis */
   NumericalScalar getResidual();

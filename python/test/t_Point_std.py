@@ -7,7 +7,7 @@ TESTPREAMBLE()
 
 try:
     # Default constructor */
-    point1 = NumericalPoint()
+    point1 = Point()
     ref_point1 = point1
 
     # Check method add()
@@ -24,7 +24,7 @@ try:
     print("point1[1] = %.6f" % val2)
 
     # Constructor with size
-    point2 = NumericalPoint(2)
+    point2 = Point(2)
     ref_point2 = point2
 
     # Check operator[] methods
@@ -37,7 +37,7 @@ try:
     print("point2[1] = %.6f" % val2)
 
     # Copy constructor
-    point3 = NumericalPoint(ref_point1)
+    point3 = Point(ref_point1)
     ref_point3 = point3
 
     val1 = ref_point3[0]
@@ -48,11 +48,11 @@ try:
     # Constructor from indices
     indices = Indices(5)
     indices.fill()
-    point = NumericalPoint(indices)
+    point = Point(indices)
     print("point=", point)
 
     # Constructor from python sequence
-    point4 = NumericalPoint((1000., 1001.))
+    point4 = Point((1000., 1001.))
     i = 0
     for coord in point4:
         print("point4[%d] = %.6f" % (i, coord))
@@ -61,12 +61,12 @@ try:
     # Comparison operator
     if ref_point2 != ref_point2:
         print(
-            "OT::Base::Type::NumericalPoint.operator == does NOT return the correct value. Says that point2 and point2 are DIFFERENT though they are equal.")
+            "OT::Base::Type::Point.operator == does NOT return the correct value. Says that point2 and point2 are DIFFERENT though they are equal.")
         raise RuntimeError()
 
     if ref_point2 == ref_point3:
         print(
-            "OT::Base::Type::NumericalPoint.operator == does NOT return the correct value. Says that point2 and point3 are EQUAL though they are different.")
+            "OT::Base::Type::Point.operator == does NOT return the correct value. Says that point2 and point3 are EQUAL though they are different.")
         raise RuntimeError()
 
     # Addition/Substraction/Product operators
@@ -88,36 +88,36 @@ try:
     ref_point8 = point8
     print("point8 = ", repr(ref_point8))
 
-    point9 = NumericalPoint(2, 5.0) / 2.0
+    point9 = Point(2, 5.0) / 2.0
     print("point9 = ", point9)
 
-    point10 = NumericalPoint(2, 5.0)
+    point10 = Point(2, 5.0)
     point10 /= 2.0
     print("point10 = ", point10)
 
     # We create an orthonormal base (O,i,j)
-    i = NumericalPoint(2)
+    i = Point(2)
     i[0] = 1
     i[1] = 0
     print("i = ", repr(i))
 
-    j = NumericalPoint(2)
+    j = Point(2)
     j[0] = 0
     j[1] = 1
     print("j = ", repr(j))
 
-    # BUG PYTHON for I = NumericalPoint(2. * i)
-    I = NumericalPoint(i * 2.)
+    # BUG PYTHON for I = Point(2. * i)
+    I = Point(i * 2.)
     print("I = ", repr(I))
 
-    J = NumericalPoint(j * 3.)
+    J = Point(j * 3.)
     print("J = ", repr(J))
 
     dotProduct = dot(I, J)
     print("dotProduct = %.6f" % dotProduct)
 
     # slicing
-    point8 = NumericalPoint((1., 2., 3., 4., 5.))
+    point8 = Point((1., 2., 3., 4., 5.))
     print('point8[2] = ', point8[2])
     print('point8[1:3] = ', point8[1:3])
     print('point8[:] = ', point8[:])
@@ -125,12 +125,12 @@ try:
     print('point8 = ', point8)
 
     # equality
-    pt1 = NumericalPoint([1.1, 2.2, 3.3])
-    pt2 = NumericalPoint((1.1, 2.2, 3.3))
+    pt1 = Point([1.1, 2.2, 3.3])
+    pt2 = Point((1.1, 2.2, 3.3))
     print("Equality ? ", (pt1 == pt2))
 
     # non-regression for #754
-    pt = NumericalPoint([-3, -5, 6])
+    pt = Point([-3, -5, 6])
     print('pt = ', pt)
 
     # last

@@ -102,14 +102,14 @@ void Mesh::setVertices(const Sample & vertices)
 }
 
 /* Vertex accessor */
-NumericalPoint Mesh::getVertex(const UnsignedInteger index) const
+Point Mesh::getVertex(const UnsignedInteger index) const
 {
   if (index >= getVerticesNumber()) throw InvalidArgumentException(HERE) << "Error: the vertex index=" << index << " must be less than the number of vertices=" << getVerticesNumber();
   return vertices_[index];
 }
 
 void Mesh::setVertex(const UnsignedInteger index,
-                     const NumericalPoint & vertex)
+                     const Point & vertex)
 {
   isAlreadyComputedVolume_ = false;
   vertices_[index] = vertex;
@@ -169,7 +169,7 @@ Bool Mesh::isValid() const
 }
 
 /* Check if the given point is in the mesh */
-Bool Mesh::contains(const NumericalPoint & point) const
+Bool Mesh::contains(const Point & point) const
 {
   const UnsignedInteger simplicesSize = getSimplicesNumber();
   for (UnsignedInteger i = 0; i < simplicesSize; ++i) if (checkPointInSimplex(point, i)) return true;
@@ -185,7 +185,7 @@ SquareMatrix Mesh::buildSimplexMatrix(const UnsignedInteger index) const
   // Loop over the vertices of the simplex
   for (UnsignedInteger j = 0; j <= dimension_; ++j)
   {
-    const NumericalPoint vertexJ(vertices_[vertexIndices[j]]);
+    const Point vertexJ(vertices_[vertexIndices[j]]);
     for (UnsignedInteger i = 0; i < dimension_; ++i) matrix(i, j) = vertexJ[i];
     matrix(dimension_, j) = 1.0;
   }
@@ -193,20 +193,20 @@ SquareMatrix Mesh::buildSimplexMatrix(const UnsignedInteger index) const
 }
 
 /* Check if the given point is in the given simplex */
-Bool Mesh::checkPointInSimplex(const NumericalPoint & point,
+Bool Mesh::checkPointInSimplex(const Point & point,
                                const UnsignedInteger index) const
 {
-  NumericalPoint alpha;
+  Point alpha;
   return checkPointInSimplexWithCoordinates(point, index, alpha);
 }
 
 /* Check if the given point is in the given simplex and returns its barycentric coordinates */
-Bool Mesh::checkPointInSimplexWithCoordinates(const NumericalPoint & point,
+Bool Mesh::checkPointInSimplexWithCoordinates(const Point & point,
     const UnsignedInteger index,
-    NumericalPoint & coordinates) const
+    Point & coordinates) const
 {
   SquareMatrix matrix(buildSimplexMatrix(index));
-  NumericalPoint v(point);
+  Point v(point);
   v.add(1.0);
   coordinates = matrix.solveLinearSystem(v, false);
   for (UnsignedInteger i = 0; i <= dimension_; ++i) if ((coordinates[i] < 0.0) || (coordinates[i] > 1.0)) return false;
@@ -229,11 +229,11 @@ UnsignedInteger Mesh::getSimplicesNumber() const
 struct NearestFunctor
 {
   const Mesh & mesh_;
-  const NumericalPoint & point_;
+  const Point & point_;
   NumericalScalar minDistance_;
   UnsignedInteger minIndex_;
 
-  NearestFunctor(const Mesh & mesh, const NumericalPoint & point)
+  NearestFunctor(const Mesh & mesh, const Point & point)
     : mesh_(mesh), point_(point), minDistance_(SpecFunc::MaxNumericalScalar), minIndex_(0) {}
 
   NearestFunctor(const NearestFunctor & other, TBB::Split)
@@ -264,7 +264,7 @@ struct NearestFunctor
 }; /* end struct NearestFunctor */
 
 /* Get the index of the nearest vertex */
-UnsignedInteger Mesh::getNearestVertexIndex(const NumericalPoint & point) const
+UnsignedInteger Mesh::getNearestVertexIndex(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension " << getDimension() << ", got a point of dimension " << point.getDimension();
   if (!tree_.isEmpty()) return tree_.getNearestNeighbourIndex(point);
@@ -274,8 +274,8 @@ UnsignedInteger Mesh::getNearestVertexIndex(const NumericalPoint & point) const
 }
 
 /* Get the index of the nearest vertex and the index of the containing simplex if any */
-Indices Mesh::getNearestVertexAndSimplexIndicesWithCoordinates(const NumericalPoint & point,
-    NumericalPoint & coordinates) const
+Indices Mesh::getNearestVertexAndSimplexIndicesWithCoordinates(const Point & point,
+    Point & coordinates) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension " << getDimension() << ", got a point of dimension " << point.getDimension();
   const UnsignedInteger nearestIndex = getNearestVertexIndex(point);
@@ -283,7 +283,7 @@ Indices Mesh::getNearestVertexAndSimplexIndicesWithCoordinates(const NumericalPo
   // To be sure that the vertices to simplices map is up to date
   if (verticesToSimplices_.getSize() == 0) (void) getVerticesToSimplicesMap();
   const Indices simplicesCandidates(verticesToSimplices_[nearestIndex]);
-  coordinates = NumericalPoint(0);
+  coordinates = Point(0);
   for (UnsignedInteger i = 0; i < simplicesCandidates.getSize(); ++i)
   {
     const UnsignedInteger simplexIndex = simplicesCandidates[i];
@@ -294,12 +294,12 @@ Indices Mesh::getNearestVertexAndSimplexIndicesWithCoordinates(const NumericalPo
     }
   } // Loop over the simplices candidates
   // If no simplex contains the given point, reset the coordinates vector
-  if (result.getSize() == 1) coordinates = NumericalPoint(0);
+  if (result.getSize() == 1) coordinates = Point(0);
   return result;
 }
 
 /* Get the nearest vertex */
-NumericalPoint Mesh::getNearestVertex(const NumericalPoint & point) const
+Point Mesh::getNearestVertex(const Point & point) const
 {
   return vertices_[getNearestVertexIndex(point)];
 }
@@ -383,7 +383,7 @@ CovarianceMatrix Mesh::computeP1Gram() const
   // If no simplex, the P1 gram matrix is null
   if (simplices_.getSize() == 0) return CovarianceMatrix(0);
   const UnsignedInteger simplexSize = getVertices().getDimension() + 1;
-  SquareMatrix elementaryGram(simplexSize, NumericalPoint(simplexSize * simplexSize, 1.0 / SpecFunc::Gamma(simplexSize + 2.0)));
+  SquareMatrix elementaryGram(simplexSize, Point(simplexSize * simplexSize, 1.0 / SpecFunc::Gamma(simplexSize + 2.0)));
   for (UnsignedInteger i = 0; i < simplexSize; ++i) elementaryGram(i, i) *= 2.0;
   const UnsignedInteger verticesSize = vertices_.getSize();
   const UnsignedInteger simplicesSize = simplices_.getSize();
@@ -457,13 +457,13 @@ Bool Mesh::isRegular() const
 }
 
 /* Lower bound of the bounding box */
-NumericalPoint Mesh::getLowerBound() const
+Point Mesh::getLowerBound() const
 {
   return vertices_.getMin();
 }
 
 /* Upper bound of the bounding box */
-NumericalPoint Mesh::getUpperBound() const
+Point Mesh::getUpperBound() const
 {
   return vertices_.getMax();
 }
@@ -491,18 +491,18 @@ Mesh::IndicesCollection Mesh::getVerticesToSimplicesMap() const
 /* Compute weights such that an integral of a function over the mesh
  * is a weighted sum of its values at the vertices
  */
-NumericalPoint Mesh::computeWeights() const
+Point Mesh::computeWeights() const
 {
   // First compute the volume of the simplices
   const UnsignedInteger numSimplices = getSimplicesNumber();
-  NumericalPoint simplicesVolume(numSimplices);
+  Point simplicesVolume(numSimplices);
   for (UnsignedInteger i = 0; i < numSimplices; ++i)
     simplicesVolume[i] = computeSimplexVolume(i);
   // Second compute the map between vertices and simplices
   const IndicesCollection verticesToSimplices(getVerticesToSimplicesMap());
   // Then compute the weights of the vertices by distributing the volume of each simplex among its vertices
   const UnsignedInteger numVertices = getVerticesNumber();
-  NumericalPoint weights(numVertices, 0.0);
+  Point weights(numVertices, 0.0);
   for (UnsignedInteger i = 0; i < numVertices; ++i)
     {
       const Indices vertexSimplices(verticesToSimplices[i]);
@@ -558,7 +558,7 @@ Graph Mesh::draw1D() const
   if (verticesSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot draw a mesh with no vertex.";
   Graph graph(String(OSS() << "Mesh " << getName()), "x", "y", true, "topright");
   // The vertices
-  Cloud vertices(vertices_, Sample(verticesSize, NumericalPoint(1, 0.0)));
+  Cloud vertices(vertices_, Sample(verticesSize, Point(1, 0.0)));
   vertices.setColor("red");
   vertices.setLegend(String(OSS() << verticesSize << " node" << (verticesSize > 1 ? "s" : "")));
   // The simplices
@@ -639,7 +639,7 @@ Graph Mesh::draw3D(const Bool drawEdge,
   checkValidity();
   // First, check if the matrix is a rotation matrix of R^3
   if (rotation.getDimension() != 3) throw InvalidArgumentException(HERE) << "Error: the matrix is not a 3d square matrix.";
-  if (NumericalPoint((rotation * rotation.transpose() - IdentityMatrix(3)).getImplementation()).norm() > 1e-5) throw InvalidArgumentException(HERE) << "Error: the matrix is not a rotation matrix.";
+  if (Point((rotation * rotation.transpose() - IdentityMatrix(3)).getImplementation()).norm() > 1e-5) throw InvalidArgumentException(HERE) << "Error: the matrix is not a rotation matrix.";
   const UnsignedInteger verticesSize = getVerticesNumber();
   const UnsignedInteger simplicesSize = getSimplicesNumber();
   if (verticesSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot draw a mesh with no vertex or no simplex.";
@@ -649,7 +649,7 @@ Graph Mesh::draw3D(const Bool drawEdge,
   if (!rotation.isDiagonal()) visuVertices *= rotation;
   // Third, split all the simplices into triangles and compute their mean depth
   Sample trianglesAndDepth(0, 4);
-  NumericalPoint triWithDepth(4);
+  Point triWithDepth(4);
   for (UnsignedInteger i = 0; i < simplicesSize; ++i)
   {
     const UnsignedInteger i0 = simplices_[i][0];
@@ -697,7 +697,7 @@ Graph Mesh::draw3D(const Bool drawEdge,
     Sample data(3, 2);
     if (clippedRho < 1.0)
     {
-      const NumericalPoint center((visuVertices[i0] + visuVertices[i1] + visuVertices[i2]) / 3.0);
+      const Point center((visuVertices[i0] + visuVertices[i1] + visuVertices[i2]) / 3.0);
       data[0][0] = center[0];
       data[0][1] = center[1];
       data[1][0] = center[0];
@@ -739,14 +739,14 @@ Graph Mesh::draw3D(const Bool drawEdge,
 
     if (shading)
     {
-      const NumericalPoint ab(visuVertices[i1] - visuVertices[i0]);
-      const NumericalPoint ac(visuVertices[i2] - visuVertices[i0]);
-      NumericalPoint N(3);
+      const Point ab(visuVertices[i1] - visuVertices[i0]);
+      const Point ac(visuVertices[i2] - visuVertices[i0]);
+      Point N(3);
       N[0] = ab[1] * ac[2] - ab[2] * ac[1];
       N[1] = ab[2] * ac[0] - ab[0] * ac[2];
       N[2] = ab[0] * ac[1] - ab[1] * ac[0];
       const NumericalScalar cosTheta = std::abs(N[2]) / N.norm();
-      NumericalPoint R(N * (2.0 * cosTheta));
+      Point R(N * (2.0 * cosTheta));
       R[2] -= 1.0;
       const NumericalScalar cosPhi = std::abs(R[2] / R.norm());
       redFace     *= 0.1 + 0.7 * cosTheta + 0.2 * pow(cosPhi, 50) * redLight;

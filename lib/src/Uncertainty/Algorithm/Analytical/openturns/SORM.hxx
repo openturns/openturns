@@ -51,7 +51,7 @@ public:
   /** Constructor with parameters */
   SORM(const OptimizationAlgorithm & nearestPointAlgorithm,
        const Event & event,
-       const NumericalPoint & physicalStartingPoint);
+       const Point & physicalStartingPoint);
 
 
   /** Virtual constructor */

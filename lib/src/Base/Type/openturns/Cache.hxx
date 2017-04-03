@@ -26,7 +26,7 @@
 #include "openturns/PersistentObject.hxx"
 #include "openturns/StorageManager.hxx"
 #include "openturns/Collection.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/OStream.hxx"
@@ -57,8 +57,8 @@ OStream & operator << ( OStream & OS, const std::pair< K_, std::pair< V_, U_ > >
  * Cache holds the already computed points to speed up calculations
  * Like any cache system, this objet saves time by keeping some costly data
  * and provides access to them through a key.
- * Here the key is the input NumericalPoint of a Function and the
- * value is the output NumericalPoint that was computed.
+ * Here the key is the input Point of a Function and the
+ * value is the output Point that was computed.
  * When used with ComputedFunctionImplementation objects the Cache
  * may greatly speed up the computations of Analytical algorithms (like FORM
  * or SORM). Its advantage is more doubtful with other FunctionImplementations

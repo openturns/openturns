@@ -83,7 +83,7 @@ UnsignedInteger RandomVectorImplementation::getDimension() const
 }
 
 /* Realization accessor */
-NumericalPoint RandomVectorImplementation::getRealization() const
+Point RandomVectorImplementation::getRealization() const
 {
   throw NotYetImplementedException(HERE) << "In RandomVectorImplementation::getRealization() const";
 }
@@ -98,7 +98,7 @@ Sample RandomVectorImplementation::getSample(const UnsignedInteger size) const
 }
 
 /* Mean accessor */
-NumericalPoint RandomVectorImplementation::getMean() const
+Point RandomVectorImplementation::getMean() const
 {
   throw NotYetImplementedException(HERE) << "In RandomVectorImplementation::getMean() const";
 }

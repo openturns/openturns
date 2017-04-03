@@ -117,7 +117,7 @@ Examples
 
 Returns
 -------
-acceptanceRate : :class:`~openturns.NumericalPoint` of dimension :math:`d`
+acceptanceRate : :class:`~openturns.Point` of dimension :math:`d`
     Sequence whose the :math:`j^{th}` component corresponds to the acceptance
     rate of the candidates :math:`\vect{c}^k` obtained from a state
     :math:`\vect{\theta}^k` by only changing its :math:`j^{th}` component, that

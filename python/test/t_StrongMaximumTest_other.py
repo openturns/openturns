@@ -32,8 +32,8 @@ try:
 
     dim = myFunction.getInputDimension()
     # We create a normal distribution point of dimension 1
-    mean = NumericalPoint(dim, 0.0)
-    sigma = NumericalPoint(dim, 1.0)
+    mean = Point(dim, 0.0)
+    sigma = Point(dim, 1.0)
     R = IdentityMatrix(dim)
     myDistribution = Normal(mean, sigma, R)
 
@@ -49,12 +49,12 @@ try:
         output, Greater(), seuil)
 
     # We create the design point
-    designPoint = NumericalPoint(dim, 0.0)
+    designPoint = Point(dim, 0.0)
     C = 0.6
     designPoint[0] = - sqrt(seuil) + C
 
     # We create the "second" design point
-    pseudoDesignPoint = NumericalPoint(dim, 0.0)
+    pseudoDesignPoint = Point(dim, 0.0)
     pseudoDesignPoint[0] = sqrt(seuil) + C
 
     importanceLevel = 0.01

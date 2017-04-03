@@ -32,10 +32,10 @@ int main(int argc, char *argv[])
 
   try
   {
-    NumericalPoint mu(4, 0.0);
-    NumericalPoint sigma(4, 1.0);
-    NumericalPoint a(4);
-    NumericalPoint b(4);
+    Point mu(4, 0.0);
+    Point sigma(4, 1.0);
+    Point a(4);
+    Point b(4);
     a[0] = -4.0;
     b[0] = 4.0;
     a[1] = -1.0;
@@ -72,12 +72,12 @@ int main(int argc, char *argv[])
     // Test for constant sample
     TruncatedNormalFactory factory;
     UnsignedInteger size = 10000;
-    Sample sample(size, NumericalPoint(1, 0.0));
+    Sample sample(size, Point(1, 0.0));
     // Test for constant sample
-    sample = Sample(size, NumericalPoint(1, 0.0));
+    sample = Sample(size, Point(1, 0.0));
     Distribution estimatedDistribution(factory.build(sample));
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
-    sample = Sample(size, NumericalPoint(1, 1.0));
+    sample = Sample(size, Point(1, 1.0));
     estimatedDistribution = factory.build(sample);
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
   }

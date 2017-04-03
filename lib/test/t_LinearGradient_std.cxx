@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
     UnsignedInteger inputDimension = 3;
     UnsignedInteger outputDimension = 2;
     // Center
-    NumericalPoint center(inputDimension);
+    Point center(inputDimension);
     center[0] = -1.0;
     center[1] = 0.5;
     center[2] = 1.0;
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
 
     LinearGradient myGradient(center, constant, linear);
     myGradient.setName("linearGradient");
-    NumericalPoint inPoint(inputDimension);
+    Point inPoint(inputDimension);
     inPoint[0] = 7.0;
     inPoint[1] = 8.0;
     inPoint[2] = 9.0;

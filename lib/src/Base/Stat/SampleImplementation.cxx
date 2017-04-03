@@ -52,9 +52,9 @@ int csvparse (OT::CSVParserState & theState, yyscan_t yyscanner, FILE * theFile,
 BEGIN_NAMESPACE_OPENTURNS
 
 
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<NumericalPoint>);
+TEMPLATE_CLASSNAMEINIT(PersistentCollection<Point>);
 
-static const Factory<PersistentCollection<NumericalPoint> > Factory_PersistentCollection_NumericalPoint;
+static const Factory<PersistentCollection<Point> > Factory_PersistentCollection_Point;
 
 NSI_point::NSI_point(SampleImplementation * p_nsi, const UnsignedInteger index)
   : p_nsi_(p_nsi), index_(index), dimension_(p_nsi->dimension_) {}
@@ -73,7 +73,7 @@ NSI_point & NSI_point::operator = (const NSI_point & rhs)
 //   return *this;
 // }
 
-// NSI_point & NSI_point::operator = (const NumericalPoint & rhs)
+// NSI_point & NSI_point::operator = (const Point & rhs)
 // {
 //   if ( getDimension() == rhs.getDimension() )
 //     std::copy( rhs.begin(), rhs.end(), begin() );
@@ -104,7 +104,7 @@ NSI_point & NSI_point::operator += (const NSI_point & other)
 {
   if (getDimension() != other.getDimension())
     throw InvalidArgumentException(HERE)
-        << "NumericalPoints of different dimensions cannot be added (LHS dimension = "
+        << "Points of different dimensions cannot be added (LHS dimension = "
         << getDimension()
         << "; RHS dimension = "
         << other.getDimension();
@@ -117,7 +117,7 @@ NSI_point & NSI_point::operator -= (const NSI_point & other)
 {
   if (getDimension() != other.getDimension())
     throw InvalidArgumentException(HERE)
-        << "NumericalPoints of different dimensions cannot be substracted (LHS dimension = "
+        << "Points of different dimensions cannot be substracted (LHS dimension = "
         << getDimension()
         << "; RHS dimension = "
         << other.getDimension();
@@ -126,11 +126,11 @@ NSI_point & NSI_point::operator -= (const NSI_point & other)
   return *this;
 }
 
-NSI_point & NSI_point::operator += (const NumericalPoint & other)
+NSI_point & NSI_point::operator += (const Point & other)
 {
   if (getDimension() != other.getDimension())
     throw InvalidArgumentException(HERE)
-        << "NumericalPoints of different dimensions cannot be added (LHS dimension = "
+        << "Points of different dimensions cannot be added (LHS dimension = "
         << getDimension()
         << "; RHS dimension = "
         << other.getDimension();
@@ -139,11 +139,11 @@ NSI_point & NSI_point::operator += (const NumericalPoint & other)
   return *this;
 }
 
-NSI_point & NSI_point::operator -= (const NumericalPoint & other)
+NSI_point & NSI_point::operator -= (const Point & other)
 {
   if (getDimension() != other.getDimension())
     throw InvalidArgumentException(HERE)
-        << "NumericalPoints of different dimensions cannot be substracted (LHS dimension = "
+        << "Points of different dimensions cannot be substracted (LHS dimension = "
         << getDimension()
         << "; RHS dimension = "
         << other.getDimension();
@@ -203,13 +203,13 @@ bool operator >= (const NSI_point & lhs, const NSI_point & rhs)
 
 std::ostream & operator <<(std::ostream & os, const NSI_point & point)
 {
-  return os << NumericalPoint( point );
+  return os << Point( point );
 }
 
 
 OStream & operator << (OStream & OS, const NSI_point & point)
 {
-  OS.getStream() << NumericalPoint( point ).__repr__();
+  OS.getStream() << Point( point ).__repr__();
   return OS;
 }
 
@@ -268,13 +268,13 @@ bool operator >= (const NSI_const_point & lhs, const NSI_const_point & rhs)
 
 std::ostream & operator <<(std::ostream & os, const NSI_const_point & point)
 {
-  return os << NumericalPoint( point );
+  return os << Point( point );
 }
 
 
 OStream & operator << (OStream & OS, const NSI_const_point & point)
 {
-  OS.getStream() << NumericalPoint( point ).__repr__();
+  OS.getStream() << Point( point ).__repr__();
   return OS;
 }
 
@@ -359,7 +359,7 @@ SampleImplementation SampleImplementation::BuildFromTextFile(const FileName & fi
   {
     if (line.size() != 0)
     {
-      NumericalPoint dataRow(0);
+      Point dataRow(0);
       // Change the separator if it is not a space
       if (separator != " ")
       {
@@ -371,7 +371,7 @@ SampleImplementation SampleImplementation::BuildFromTextFile(const FileName & fi
       std::copy(std::istream_iterator<std::string>(strstr),
                 std::istream_iterator<std::string>(), back_inserter(words));
 
-      // Check and store the fields in a NumericalPoint
+      // Check and store the fields in a Point
       for(UnsignedInteger i = 0; i < words.size(); i++)
       {
         std::istringstream iss(words[i]);
@@ -520,9 +520,9 @@ SampleImplementation::SampleImplementation(const UnsignedInteger size,
   // Nothing to do
 }
 
-/* Constructor from a NumericalPoint */
+/* Constructor from a Point */
 SampleImplementation::SampleImplementation(const UnsignedInteger size,
-    const NumericalPoint & point)
+    const Point & point)
   : PersistentObject()
   , size_(size)
   , dimension_(point.getDimension())
@@ -535,8 +535,8 @@ SampleImplementation::SampleImplementation(const UnsignedInteger size,
 }
 
 
-/* Constructor from a collection of NumericalPoint */
-SampleImplementation::SampleImplementation(const Collection<NumericalPoint> & coll)
+/* Constructor from a collection of Point */
+SampleImplementation::SampleImplementation(const Collection<Point> & coll)
   : PersistentObject()
   , size_(coll.getSize())
   , dimension_((coll.getSize() > 0) ? coll[0].getDimension() : 0)
@@ -643,7 +643,7 @@ void SampleImplementation::clear()
 
 
 /* Raw internal format accessor */
-NumericalPoint SampleImplementation::getData() const
+Point SampleImplementation::getData() const
 {
   return data_;
 }
@@ -655,7 +655,7 @@ void SampleImplementation::setData(const Collection<NumericalScalar> & data)
 }
 
 /* Whether the list contains the value val */
-Bool SampleImplementation::contains(const NumericalPoint & val) const
+Bool SampleImplementation::contains(const Point & val) const
 {
   for (UnsignedInteger i = 0; i < size_; ++i) if ( (*this)[i] == val ) return true;
   return false;
@@ -872,7 +872,7 @@ String SampleImplementation::__str__(const String & offset) const
 
 
 /* Appends an element to the collection */
-SampleImplementation & SampleImplementation::add(const NumericalPoint & point)
+SampleImplementation & SampleImplementation::add(const Point & point)
 {
   if (point.getDimension() != dimension_)
     throw InvalidArgumentException(HERE) << "Point has invalid dimension ("
@@ -975,10 +975,10 @@ public:
  * Gives the mean of the sample, based on the formula
  * mean = sum of the elements in the sample / size of the sample
  */
-NumericalPoint SampleImplementation::computeMean() const
+Point SampleImplementation::computeMean() const
 {
   if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the mean of an empty sample.";
-  NumericalPoint accumulated(dimension_);
+  Point accumulated(dimension_);
 
   const_data_iterator it(data_begin());
   const const_data_iterator guard(data_end());
@@ -1004,11 +1004,11 @@ CovarianceMatrix SampleImplementation::computeCovariance() const
 {
   if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the covariance of an empty sample.";
   // Special case for a sample of size 1
-  if (size_ == 1) return CovarianceMatrix(dimension_, NumericalPoint(dimension_ * dimension_));
+  if (size_ == 1) return CovarianceMatrix(dimension_, Point(dimension_ * dimension_));
 
-  const NumericalPoint mean(computeMean());
+  const Point mean(computeMean());
   const UnsignedInteger squaredDim(dimension_ * dimension_);
-  NumericalPoint accumulated(squaredDim);
+  Point accumulated(squaredDim);
 
   const_data_iterator it(data_begin());
   const const_data_iterator guard(data_end());
@@ -1049,15 +1049,15 @@ TriangularMatrix SampleImplementation::computeStandardDeviation() const
 /*
  * Gives the variance of the sample (by component)
  */
-NumericalPoint SampleImplementation::computeVariance() const
+Point SampleImplementation::computeVariance() const
 {
   if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the variance per component of an empty sample.";
 
   // Special case for a sample of size 1
-  if (size_ == 1) return NumericalPoint(dimension_, 0.0);
+  if (size_ == 1) return Point(dimension_, 0.0);
 
-  const NumericalPoint mean( computeMean() );
-  NumericalPoint accumulated(dimension_);
+  const Point mean( computeMean() );
+  Point accumulated(dimension_);
 
   const_data_iterator it(data_begin());
   const const_data_iterator guard(data_end());
@@ -1081,10 +1081,10 @@ NumericalPoint SampleImplementation::computeVariance() const
 /*
  * Gives the standard deviation of each component of the sample
  */
-NumericalPoint SampleImplementation::computeStandardDeviationPerComponent() const
+Point SampleImplementation::computeStandardDeviationPerComponent() const
 {
   if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the standard deviation per component of an empty sample.";
-  NumericalPoint sd(computeVariance());
+  Point sd(computeVariance());
   for (UnsignedInteger i = 0; i < dimension_; ++i) sd[i] = sqrt(sd[i]);
   return sd;
 }
@@ -1106,7 +1106,7 @@ CorrelationMatrix SampleImplementation::computeLinearCorrelation() const
   if (dimension_ == 1) return correlation;
 
   const CovarianceMatrix covariance(computeCovariance());
-  NumericalPoint sd(dimension_);
+  Point sd(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     sd[i] = sqrt( covariance(i, i) );
@@ -1261,7 +1261,7 @@ SampleImplementation SampleImplementation::sort() const
   // Special case for 1D sample
   if (dimension_ == 1)
   {
-    NumericalPoint sortedData(data_);
+    Point sortedData(data_);
     TBB::ParallelSort(sortedData.begin(), sortedData.end());
     sortedSample.setData(sortedData);
     return sortedSample;
@@ -1288,10 +1288,10 @@ SampleImplementation SampleImplementation::sort(const UnsignedInteger index) con
 
 struct Sortable
 {
-  NumericalPoint values_;
+  Point values_;
   UnsignedInteger index_;
   Sortable() : values_(1, 0.0), index_(0) {}
-  Sortable(const NumericalPoint & values, const UnsignedInteger index) : values_(values), index_(index) {}
+  Sortable(const Point & values, const UnsignedInteger index) : values_(values), index_(index) {}
   Bool operator < (const Sortable & other) const
   {
     return values_[index_] < other.values_[other.index_];
@@ -1307,7 +1307,7 @@ SampleImplementation SampleImplementation::sortAccordingToAComponent(const Unsig
   for (UnsignedInteger i = 0; i < size_; ++i) sortables[i] = Sortable((*this)[i], index);
   TBB::ParallelSort(sortables.begin(), sortables.end());
   SampleImplementation sortedSample(size_, dimension_);
-  for (UnsignedInteger i = 0; i < size_; ++i) sortedSample[i] = NumericalPoint(sortables[i].values_);
+  for (UnsignedInteger i = 0; i < size_; ++i) sortedSample[i] = Point(sortables[i].values_);
   if (!p_description_.isNull()) sortedSample.setDescription(getDescription());
   return sortedSample;
 }
@@ -1349,13 +1349,13 @@ CorrelationMatrix SampleImplementation::computeSpearmanCorrelation() const
 struct ComputeKendallPolicy
 {
   const SampleImplementation & input_;
-  NumericalPoint & output_;
+  Point & output_;
   const Indices & indicesX_;
   const Indices & indicesY_;
   const Bool smallCase_;
 
   ComputeKendallPolicy( const SampleImplementation & input,
-                        NumericalPoint & output,
+                        Point & output,
                         const Indices & indicesX,
                         const Indices & indicesY,
                         const Bool smallCase)
@@ -1373,8 +1373,8 @@ struct ComputeKendallPolicy
       const UnsignedInteger size = input_.getSize();
       const UnsignedInteger indX = indicesX_[i];
       const UnsignedInteger indY = indicesY_[i];
-      NumericalPoint x(size);
-      NumericalPoint y(size);
+      Point x(size);
+      Point y(size);
       for (UnsignedInteger k = 0; k < size; ++k)
       {
         x[k] = input_[k][indX];
@@ -1410,7 +1410,7 @@ CorrelationMatrix SampleImplementation::computeKendallTau() const
     } // end for j
   } // end for i
   // Now the computation
-  NumericalPoint result(caseNumber);
+  Point result(caseNumber);
   const ComputeKendallPolicy policy( *this, result, indX, indY, smallCase );
   TBB::ParallelFor( 0, caseNumber, policy );
   index = 0;
@@ -1429,7 +1429,7 @@ CorrelationMatrix SampleImplementation::computeKendallTau() const
 /*
  * Gives the range of the sample (by component)
  */
-NumericalPoint SampleImplementation::computeRange() const
+Point SampleImplementation::computeRange() const
 {
   if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the range per component of an empty sample.";
   return getMax() - getMin();
@@ -1438,7 +1438,7 @@ NumericalPoint SampleImplementation::computeRange() const
 /*
  * Gives the median of the sample (by component)
  */
-NumericalPoint SampleImplementation::computeMedian() const
+Point SampleImplementation::computeMedian() const
 {
   if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the median per component of an empty sample.";
   return computeQuantilePerComponent(0.5);
@@ -1446,7 +1446,7 @@ NumericalPoint SampleImplementation::computeMedian() const
 
 struct SkewnessPerComponentPolicy
 {
-  typedef NumericalPoint value_type;
+  typedef Point value_type;
 
   const value_type & mean_;
   const UnsignedInteger dimension_;
@@ -1481,17 +1481,17 @@ struct SkewnessPerComponentPolicy
 /*
  * Gives the skewness of the sample (by component)
  */
-NumericalPoint SampleImplementation::computeSkewness() const
+Point SampleImplementation::computeSkewness() const
 {
   if (size_ < 2) throw InternalException(HERE) << "Error: cannot compute the skewness per component of a sample of size less than 2.";
 
-  if (size_ == 2) return NumericalPoint(dimension_, 0.0);
+  if (size_ == 2) return Point(dimension_, 0.0);
 
-  const NumericalPoint mean(computeMean());
+  const Point mean(computeMean());
   const SkewnessPerComponentPolicy policy ( mean );
   ReductionFunctor<SkewnessPerComponentPolicy> functor( *this, policy );
   TBB::ParallelReduce( 0, size_, functor );
-  NumericalPoint skewness(dimension_);
+  Point skewness(dimension_);
   const NumericalScalar factor = size_ * sqrt(size_ - 1.0) / (size_ - 2);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
@@ -1503,7 +1503,7 @@ NumericalPoint SampleImplementation::computeSkewness() const
 
 struct KurtosisPerComponentPolicy
 {
-  typedef NumericalPoint value_type;
+  typedef Point value_type;
 
   const value_type & mean_;
   const UnsignedInteger dimension_;
@@ -1538,17 +1538,17 @@ struct KurtosisPerComponentPolicy
 /*
  * Gives the kurtosis of the sample (by component)
  */
-NumericalPoint SampleImplementation::computeKurtosis() const
+Point SampleImplementation::computeKurtosis() const
 {
   if (size_ < 3) throw InternalException(HERE) << "Error: cannot compute the kurtosis per component of a sample of size less than 3.";
 
-  if (size_ == 3) return NumericalPoint(dimension_, 0.0);
+  if (size_ == 3) return Point(dimension_, 0.0);
 
-  const NumericalPoint mean(computeMean());
+  const Point mean(computeMean());
   const KurtosisPerComponentPolicy policy ( mean );
   ReductionFunctor<KurtosisPerComponentPolicy> functor( *this, policy );
   TBB::ParallelReduce( 0, size_, functor );
-  NumericalPoint kurtosis(dimension_);
+  Point kurtosis(dimension_);
   const NumericalScalar factor1 = (size_ + 1.0) * size_ * (size_ - 1.0) / ((size_ - 2.0) * (size_ - 3.0));
   const NumericalScalar factor2 = -3.0 * (3.0 * size_ - 5.0) / ((size_ - 2.0) * (size_ - 3.0));
   for (UnsignedInteger i = 0; i < dimension_; ++i)
@@ -1561,7 +1561,7 @@ NumericalPoint SampleImplementation::computeKurtosis() const
 
 struct CenteredMomentPerComponentPolicy
 {
-  typedef NumericalPoint value_type;
+  typedef Point value_type;
 
   const value_type & mean_;
   const UnsignedInteger k_;
@@ -1595,18 +1595,18 @@ struct CenteredMomentPerComponentPolicy
 /*
  * Gives the centered moment of order k of the sample (by component)
  */
-NumericalPoint SampleImplementation::computeCenteredMoment(const UnsignedInteger k) const
+Point SampleImplementation::computeCenteredMoment(const UnsignedInteger k) const
 {
   if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the centered moments per component of an empty sample.";
 
   // Special case: order 0, return (1,...,1)
-  if (k == 0) return NumericalPoint(dimension_, 1.0);
+  if (k == 0) return Point(dimension_, 1.0);
   // Special case: order 1, return (0,...,0)
-  if (k == 1) return NumericalPoint(dimension_, 0.0);
+  if (k == 1) return Point(dimension_, 0.0);
   // Special case: order 2, return biased variance estimator
   if (k == 2) return computeVariance() * (size_ - 1.0) / size_;
   // General case
-  const NumericalPoint mean(computeMean());
+  const Point mean(computeMean());
 
   const CenteredMomentPerComponentPolicy policy ( mean, k );
   ReductionFunctor<CenteredMomentPerComponentPolicy> functor( *this, policy );
@@ -1617,16 +1617,16 @@ NumericalPoint SampleImplementation::computeCenteredMoment(const UnsignedInteger
 /*
  * Gives the raw moment of order k of the sample (by component)
  */
-NumericalPoint SampleImplementation::computeRawMoment(const UnsignedInteger k) const
+Point SampleImplementation::computeRawMoment(const UnsignedInteger k) const
 {
   if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the centered moments per component of an empty sample.";
 
   if (size_ == 0) throw InvalidArgumentException(HERE) << "Cannot compute centered moments on an empty sample";
 
   // Special case: order 0, return (size,...,size)
-  if (k == 0) return NumericalPoint(dimension_, 1.0);
+  if (k == 0) return Point(dimension_, 1.0);
 
-  const NumericalPoint zero(dimension_);
+  const Point zero(dimension_);
   const CenteredMomentPerComponentPolicy policy ( zero, k );
   ReductionFunctor<CenteredMomentPerComponentPolicy> functor( *this, policy );
   TBB::ParallelReduce( 0, size_, functor );
@@ -1636,7 +1636,7 @@ NumericalPoint SampleImplementation::computeRawMoment(const UnsignedInteger k) c
 /*
  * Gives the quantile per component of the sample
  */
-NumericalPoint SampleImplementation::computeQuantilePerComponent(const NumericalScalar prob) const
+Point SampleImplementation::computeQuantilePerComponent(const NumericalScalar prob) const
 {
   if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the quantile per component of an empty sample.";
   if (!(prob >= 0.0) || !(prob <= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
@@ -1650,8 +1650,8 @@ NumericalPoint SampleImplementation::computeQuantilePerComponent(const Numerical
   const UnsignedInteger index = static_cast<UnsignedInteger>( floor( scalarIndex) );
   const NumericalScalar beta = scalarIndex - index;
   const NumericalScalar alpha = 1.0 - beta;
-  NumericalPoint quantile(dimension_);
-  NumericalPoint component(size_);
+  Point quantile(dimension_);
+  Point component(size_);
   for (UnsignedInteger j = 0; j < dimension_; ++j)
   {
     for (UnsignedInteger i = 0; i < size_; ++i)
@@ -1669,7 +1669,7 @@ NumericalPoint SampleImplementation::computeQuantilePerComponent(const Numerical
 /*
  * Gives the N-dimension quantile of the sample
  */
-NumericalPoint SampleImplementation::computeQuantile(const NumericalScalar prob) const
+Point SampleImplementation::computeQuantile(const NumericalScalar prob) const
 {
   if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the quantile of an empty sample.";
 
@@ -1681,12 +1681,12 @@ struct CDFPolicy
 {
   typedef NumericalScalar value_type;
 
-  const NumericalPoint & point_;
+  const Point & point_;
   const Bool tail_;
   const UnsignedInteger dimension_;
 
   CDFPolicy( const SampleImplementation & nsi,
-             const NumericalPoint & point,
+             const Point & point,
              const Bool tail )
     : point_(point), tail_(tail), dimension_(nsi.getDimension()) {}
 
@@ -1716,7 +1716,7 @@ struct CDFPolicy
 /*
  * Get the empirical CDF of the sample
  */
-NumericalScalar SampleImplementation::computeEmpiricalCDF(const NumericalPoint & point,
+NumericalScalar SampleImplementation::computeEmpiricalCDF(const Point & point,
     const Bool tail) const
 {
   if (size_ == 0) throw InvalidArgumentException(HERE) << "Cannot compute the empirical CDF of an empty sample.";
@@ -1731,7 +1731,7 @@ NumericalScalar SampleImplementation::computeEmpiricalCDF(const NumericalPoint &
 
 struct MaxPerComponentPolicy
 {
-  typedef NumericalPoint value_type;
+  typedef Point value_type;
 
   static inline value_type GetInvariant(const SampleImplementation & nsi)
   {
@@ -1749,7 +1749,7 @@ struct MaxPerComponentPolicy
 
 struct MinPerComponentPolicy
 {
-  typedef NumericalPoint value_type;
+  typedef Point value_type;
 
   static inline value_type GetInvariant(const SampleImplementation & nsi)
   {
@@ -1767,7 +1767,7 @@ struct MinPerComponentPolicy
 
 
 /* Maximum accessor */
-NumericalPoint SampleImplementation::getMax() const
+Point SampleImplementation::getMax() const
 {
   if (size_ == 0) throw InternalException(HERE) << "Impossible to get the maximum of an empty Sample";
 
@@ -1778,7 +1778,7 @@ NumericalPoint SampleImplementation::getMax() const
 }
 
 /* Minimum accessor */
-NumericalPoint SampleImplementation::getMin() const
+Point SampleImplementation::getMin() const
 {
   if (size_ == 0) throw InternalException(HERE) << "Impossible to get the minimum of an empty Sample";
 
@@ -1791,10 +1791,10 @@ NumericalPoint SampleImplementation::getMin() const
 
 struct TranslationPolicy
 {
-  const NumericalPoint & translation_;
+  const Point & translation_;
   const UnsignedInteger dimension_;
 
-  TranslationPolicy( const NumericalPoint & translation)
+  TranslationPolicy( const Point & translation)
     : translation_(translation), dimension_(translation_.getDimension()) {}
 
   inline void inplace_op( NSI_point point ) const
@@ -1807,7 +1807,7 @@ struct TranslationPolicy
 /*
  * Translate realizations in-place
  */
-void SampleImplementation::translate(const NumericalPoint & translation)
+void SampleImplementation::translate(const Point & translation)
 {
   if (dimension_ != translation.getDimension())
     throw InvalidArgumentException(HERE) << "Translation point has incorrect dimension. Got " << translation.getDimension()
@@ -1822,11 +1822,11 @@ void SampleImplementation::translate(const NumericalPoint & translation)
 
 SampleImplementation & SampleImplementation::operator += (const NumericalScalar translation)
 {
-  translate(NumericalPoint(dimension_, translation));
+  translate(Point(dimension_, translation));
   return *this;
 }
 
-SampleImplementation & SampleImplementation::operator += (const NumericalPoint & translation)
+SampleImplementation & SampleImplementation::operator += (const Point & translation)
 {
   translate(translation);
   return *this;
@@ -1878,7 +1878,7 @@ SampleImplementation & SampleImplementation::operator -= (const NumericalScalar 
   return operator +=(-translation);
 }
 
-SampleImplementation & SampleImplementation::operator -= (const NumericalPoint & translation)
+SampleImplementation & SampleImplementation::operator -= (const Point & translation)
 {
   return operator +=(translation * (-1.0));
 }
@@ -1894,10 +1894,10 @@ SampleImplementation & SampleImplementation::operator -= (const SampleImplementa
 
 SampleImplementation SampleImplementation::operator + (const NumericalScalar translation) const
 {
-  return operator+(NumericalPoint(dimension_, translation));
+  return operator+(Point(dimension_, translation));
 }
 
-SampleImplementation SampleImplementation::operator + (const NumericalPoint & translation) const
+SampleImplementation SampleImplementation::operator + (const Point & translation) const
 {
   SampleImplementation sample(*this);
   sample += translation;
@@ -1915,10 +1915,10 @@ SampleImplementation SampleImplementation::operator + (const SampleImplementatio
 
 SampleImplementation SampleImplementation::operator - (const NumericalScalar translation) const
 {
-  return operator-(NumericalPoint(dimension_, translation));
+  return operator-(Point(dimension_, translation));
 }
 
-SampleImplementation SampleImplementation::operator - (const NumericalPoint & translation) const
+SampleImplementation SampleImplementation::operator - (const Point & translation) const
 {
   SampleImplementation sample(*this);
   sample -= translation;
@@ -1936,10 +1936,10 @@ SampleImplementation SampleImplementation::operator - (const SampleImplementatio
 
 struct ScalingPolicy
 {
-  const NumericalPoint & scale_;
+  const Point & scale_;
   const UnsignedInteger dimension_;
 
-  ScalingPolicy( const NumericalPoint & scale) : scale_(scale), dimension_(scale_.getDimension()) {}
+  ScalingPolicy( const Point & scale) : scale_(scale), dimension_(scale_.getDimension()) {}
 
   inline void inplace_op( NSI_point point ) const
   {
@@ -1977,7 +1977,7 @@ void SampleImplementation::scale(const SquareMatrix & scaling)
   TBB::ParallelFor( 0, size_, functor );
 }
 
-void SampleImplementation::scale(const NumericalPoint & scaling)
+void SampleImplementation::scale(const Point & scaling)
 {
   if (dimension_ != scaling.getDimension())
     throw InvalidArgumentException(HERE) << "Scaling point has incorrect dimension. Got " << scaling.getDimension()
@@ -1992,11 +1992,11 @@ void SampleImplementation::scale(const NumericalPoint & scaling)
 
 SampleImplementation & SampleImplementation::operator *= (const NumericalScalar scaling)
 {
-  scale(NumericalPoint(dimension_, scaling));
+  scale(Point(dimension_, scaling));
   return *this;
 }
 
-SampleImplementation & SampleImplementation::operator *= (const NumericalPoint & scaling)
+SampleImplementation & SampleImplementation::operator *= (const Point & scaling)
 {
   scale(scaling);
   return *this;
@@ -2010,12 +2010,12 @@ SampleImplementation & SampleImplementation::operator *= (const SquareMatrix & s
 
 SampleImplementation & SampleImplementation::operator /= (const NumericalScalar scaling)
 {
-  return operator/=(NumericalPoint(dimension_, scaling));
+  return operator/=(Point(dimension_, scaling));
 }
 
-SampleImplementation & SampleImplementation::operator /= (const NumericalPoint & scaling)
+SampleImplementation & SampleImplementation::operator /= (const Point & scaling)
 {
-  NumericalPoint inverseScaling(getDimension());
+  Point inverseScaling(getDimension());
   for (UnsignedInteger i = 0; i < getDimension(); ++ i)
   {
     if (scaling[i] == 0.0) throw InvalidArgumentException(HERE) << "Error: the scaling must have nonzero components, here scaling=" << scaling;
@@ -2035,10 +2035,10 @@ SampleImplementation & SampleImplementation::operator /= (const SquareMatrix & s
 
 SampleImplementation SampleImplementation::operator * (const NumericalScalar scaling) const
 {
-  return operator*(NumericalPoint(dimension_, scaling));
+  return operator*(Point(dimension_, scaling));
 }
 
-SampleImplementation SampleImplementation::operator * (const NumericalPoint & scaling) const
+SampleImplementation SampleImplementation::operator * (const Point & scaling) const
 {
   SampleImplementation nsi(*this);
   nsi *= scaling;
@@ -2056,10 +2056,10 @@ SampleImplementation SampleImplementation::operator * (const SquareMatrix & scal
 
 SampleImplementation SampleImplementation::operator / (const NumericalScalar scaling) const
 {
-  return operator/(NumericalPoint(dimension_, scaling));
+  return operator/(Point(dimension_, scaling));
 }
 
-SampleImplementation SampleImplementation::operator / (const NumericalPoint & scaling) const
+SampleImplementation SampleImplementation::operator / (const Point & scaling) const
 {
   SampleImplementation nsi(*this);
   nsi /= scaling;
@@ -2121,7 +2121,7 @@ SampleImplementation SampleImplementation::getMarginal(const Indices & indices) 
   {
     for (UnsignedInteger j = 0; j < outputDimension; ++j)
     {
-      // We access directly to the component of the NumericalPoint for performance reason
+      // We access directly to the component of the Point for performance reason
       marginalSample[i][j] = operator[](i)[indices[j]];
     }
   }

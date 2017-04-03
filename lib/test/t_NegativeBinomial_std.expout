@@ -11,11 +11,11 @@ Distribution class=NegativeBinomial name=NegativeBinomial dimension=1 r=4.5 p=0.
 Distribution NegativeBinomial(r = 4.5, p = 0.7)
 Elliptical = false
 Continuous = false
-oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[7]
-oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[10] last=class=NumericalPoint name=Unnamed dimension=1 values=[6]
-mean=class=NumericalPoint name=Unnamed dimension=1 values=[10.4746]
+oneRealization=class=Point name=Unnamed dimension=1 values=[7]
+oneSample first=class=Point name=Unnamed dimension=1 values=[10] last=class=Point name=Unnamed dimension=1 values=[6]
+mean=class=Point name=Unnamed dimension=1 values=[10.4746]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[35.6333]
-Point= class=NumericalPoint name=Unnamed dimension=1 values=[5]
+Point= class=Point name=Unnamed dimension=1 values=[5]
 log pdf=-2.75315
 pdf     =0.063727
 pdf (FD)=0.063727
@@ -26,21 +26,21 @@ characteristic function=(-0.00363296,-1.48315e-05)
 log characteristic function=(-5.6177,-3.13751)
 generating function=(-0.00492972,0.00369566)
 log generating function=(-5.08949,2.4983)
-quantile=class=NumericalPoint name=Unnamed dimension=1 values=[22]
+quantile=class=Point name=Unnamed dimension=1 values=[22]
 cdf(quantile)=0.959829
-mean=class=NumericalPoint name=Unnamed dimension=1 values=[10.5]
-standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[5.91608]
-skewness=class=NumericalPoint name=Unnamed dimension=1 values=[0.957841]
-kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[4.3619]
+mean=class=Point name=Unnamed dimension=1 values=[10.5]
+standard deviation=class=Point name=Unnamed dimension=1 values=[5.91608]
+skewness=class=Point name=Unnamed dimension=1 values=[0.957841]
+kurtosis=class=Point name=Unnamed dimension=1 values=[4.3619]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[35]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 parameters=[[r : 4.5, p : 0.7]]
-standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
-standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[10.5]
-standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[145.25]
-standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[2458.46]
-standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[48980.9]
-standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[1.12011e+06]
+standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[10.5]
+standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[145.25]
+standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[2458.46]
+standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[48980.9]
+standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[1.12011e+06]
 Standard representative=NegativeBinomial(r = 4.5, p = 0.7)

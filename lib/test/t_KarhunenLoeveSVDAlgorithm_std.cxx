@@ -37,12 +37,12 @@ int main(int argc, char *argv[])
     {
       // 1D mesh, 1D covariance, uniform weight, automatic centering, more samples
       // than vertices
-      AbsoluteExponential cov1D(NumericalPoint(1, 1.0));
+      AbsoluteExponential cov1D(Point(1, 1.0));
       ProcessSample sample(GaussianProcess(cov1D, mesh).getSample(16));
       KarhunenLoeveSVDAlgorithm algo(sample, 0.0);
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
-      NumericalPoint lambda(result.getEigenValues());
+      Point lambda(result.getEigenValues());
       ProcessSample KLModes(result.getModesAsProcessSample());
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
@@ -55,12 +55,12 @@ int main(int argc, char *argv[])
     }
     {
       // 1D mesh, 1D covariance, uniform weight, automatic centering
-      AbsoluteExponential cov1D(NumericalPoint(1, 1.0));
+      AbsoluteExponential cov1D(Point(1, 1.0));
       ProcessSample sample(GaussianProcess(cov1D, mesh).getSample(6));
       KarhunenLoeveSVDAlgorithm algo(sample, 0.0);
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
-      NumericalPoint lambda(result.getEigenValues());
+      Point lambda(result.getEigenValues());
       ProcessSample KLModes(result.getModesAsProcessSample());
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
@@ -73,12 +73,12 @@ int main(int argc, char *argv[])
     }
     {
       // 1D mesh, 1D covariance, uniform weight, declared centered
-      AbsoluteExponential cov1D(NumericalPoint(1, 1.0));
+      AbsoluteExponential cov1D(Point(1, 1.0));
       ProcessSample sample(GaussianProcess(cov1D, mesh).getSample(6));
       KarhunenLoeveSVDAlgorithm algo(sample, 0.0, true);
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
-      NumericalPoint lambda(result.getEigenValues());
+      Point lambda(result.getEigenValues());
       ProcessSample KLModes(result.getModesAsProcessSample());
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
@@ -91,13 +91,13 @@ int main(int argc, char *argv[])
     }
     {
       // 1D mesh, 1D covariance, nonuniform weight, automatic centering
-      AbsoluteExponential cov1D(NumericalPoint(1, 1.0));
-      NumericalPoint weights(mesh.computeWeights());
+      AbsoluteExponential cov1D(Point(1, 1.0));
+      Point weights(mesh.computeWeights());
       ProcessSample sample(GaussianProcess(cov1D, mesh).getSample(6));
       KarhunenLoeveSVDAlgorithm algo(sample, weights, 0.0, true);
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
-      NumericalPoint lambda(result.getEigenValues());
+      Point lambda(result.getEigenValues());
       ProcessSample KLModes(result.getModesAsProcessSample());
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
@@ -112,8 +112,8 @@ int main(int argc, char *argv[])
       // 1D mesh, 1D covariance, uniform weight, automatic centering
       CorrelationMatrix R(2);
       R(0, 1) = 0.5;
-      NumericalPoint scale(1, 1.0);
-      NumericalPoint amplitude(2);
+      Point scale(1, 1.0);
+      Point amplitude(2);
       amplitude[0] = 1.0;
       amplitude[1] = 2.0;
       ExponentialModel cov2D(scale, amplitude, R);
@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
       KarhunenLoeveSVDAlgorithm algo(sample, 0.0);
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
-      NumericalPoint lambda(result.getEigenValues());
+      Point lambda(result.getEigenValues());
       ProcessSample KLModes(result.getModesAsProcessSample());
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;

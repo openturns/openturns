@@ -22,7 +22,7 @@
 #define OPENTURNS_PARAMETRICFUNCTION_HXX
 
 #include "openturns/Function.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/SymmetricTensor.hxx"
 
@@ -45,7 +45,7 @@ public:
   /** Parameter constructor */
   ParametricFunction (const Function & function,
                       const Indices & set,
-                      const NumericalPoint & referencePoint,
+                      const Point & referencePoint,
                       const Bool parametersSet = true);
 
   /** Comparison operator */

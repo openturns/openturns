@@ -23,7 +23,7 @@
 #include "openturns/Simulation.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/Curve.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -237,7 +237,7 @@ void Simulation::run()
     coefficientOfVariation = result_.getCoefficientOfVariation();
     standardDeviation = result_.getStandardDeviation();
     // Update the history
-    NumericalPoint convergencePoint(2);
+    Point convergencePoint(2);
     convergencePoint[0] = probabilityEstimate;
     // Get the variance estimate from the result in order to deal with simulation
     // methods that do not provide variance estimate (conventional value: -1.0)
@@ -295,7 +295,7 @@ Graph Simulation::drawProbabilityConvergence(const NumericalScalar level) const
     if (varianceEstimate >= 0.0)
     {
       const NumericalScalar confidenceLength = SimulationResult(event_, probabilityEstimate, varianceEstimate, i + 1, blockSize_).getConfidenceLength(level);
-      NumericalPoint pt(2);
+      Point pt(2);
       pt[0] = i + 1;
       pt[1] = probabilityEstimate - 0.5 * confidenceLength;
       dataLowerBound.add(pt);

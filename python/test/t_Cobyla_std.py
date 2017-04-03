@@ -5,7 +5,7 @@ import openturns as ot
 import math as m
 
 
-def printNumericalPoint(point, digits):
+def printPoint(point, digits):
     oss = "["
     eps = pow(0.1, digits)
     format = "%." + str(digits) + "f"
@@ -25,20 +25,20 @@ def printNumericalPoint(point, digits):
 # linear
 levelFunction = ot.Function(
     ["x1", "x2", "x3", "x4"], ["y1"], ["x1+2*x2-3*x3+4*x4"])
-startingPoint = ot.NumericalPoint(4, 0.0)
+startingPoint = ot.Point(4, 0.0)
 algo = ot.Cobyla(ot.OptimizationProblem(levelFunction, 3.0))
 algo.setStartingPoint(startingPoint)
 print('algo=', algo)
 algo.run()
 result = algo.getResult()
-print('x^=', printNumericalPoint(result.getOptimalPoint(), 4))
-print('f(x^)=', printNumericalPoint(result.getOptimalValue(), 4))
-print('lambda^=', printNumericalPoint(result.getLagrangeMultipliers(), 4))
+print('x^=', printPoint(result.getOptimalPoint(), 4))
+print('f(x^)=', printPoint(result.getOptimalValue(), 4))
+print('lambda^=', printPoint(result.getLagrangeMultipliers(), 4))
 
 # non-linear
 levelFunction = ot.Function(
     ["x1", "x2", "x3", "x4"], ["y1"], ["x1*cos(x1)+2*x2*x3-3*x3+4*x3*x4"])
-startingPoint = ot.NumericalPoint(4, 0.0)
+startingPoint = ot.Point(4, 0.0)
 algo = ot.Cobyla(ot.OptimizationProblem(levelFunction, 3.0))
 algo.setStartingPoint(startingPoint)
 algo.setMaximumIterationNumber(400)
@@ -50,9 +50,9 @@ algo.run()
 print('algo=', algo)
 algo.run()
 result = algo.getResult()
-print('x^=', printNumericalPoint(result.getOptimalPoint(), 4))
-print('f(x^)=', printNumericalPoint(result.getOptimalValue(), 4))
-print('lambda^=', printNumericalPoint(result.getLagrangeMultipliers(), 4))
+print('x^=', printPoint(result.getOptimalPoint(), 4))
+print('f(x^)=', printPoint(result.getOptimalValue(), 4))
+print('lambda^=', printPoint(result.getLagrangeMultipliers(), 4))
 
 # bounds
 linear = ot.Function(
@@ -74,6 +74,6 @@ for minimization in [True, False]:
     print('algo=', algo)
     algo.run()
     result = algo.getResult()
-    print('x^=', printNumericalPoint(result.getOptimalPoint(), 4))
-    print('f(x^)=', printNumericalPoint(result.getOptimalValue(), 4))
-    print('lambda^=', printNumericalPoint(result.getLagrangeMultipliers(), 4))
+    print('x^=', printPoint(result.getOptimalPoint(), 4))
+    print('f(x^)=', printPoint(result.getOptimalValue(), 4))
+    print('lambda^=', printPoint(result.getLagrangeMultipliers(), 4))

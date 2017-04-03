@@ -74,7 +74,7 @@ UserDefinedStationaryCovarianceModel * UserDefinedStationaryCovarianceModel::clo
 }
 
 /* Computation of the covariance function */
-CovarianceMatrix UserDefinedStationaryCovarianceModel::operator()(const NumericalPoint & tau) const
+CovarianceMatrix UserDefinedStationaryCovarianceModel::operator()(const Point & tau) const
 {
   if (tau.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();
   // If the grid size is one, return the covariance function

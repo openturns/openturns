@@ -9,10 +9,10 @@ RandomGenerator.SetSeed(0)
 try:
     # Instanciate one distribution object
     dimension = 3
-    meanPoint = NumericalPoint(dimension, 1.0)
+    meanPoint = Point(dimension, 1.0)
     meanPoint[0] = 0.5
     meanPoint[1] = -0.5
-    sigma = NumericalPoint(dimension, 1.0)
+    sigma = Point(dimension, 1.0)
     sigma[0] = 2.0
     sigma[1] = 3.0
     R = CorrelationMatrix(dimension)
@@ -23,14 +23,14 @@ try:
     aCollection = DistributionCollection()
 
     aCollection.add(Normal(meanPoint, sigma, R))
-    meanPoint += NumericalPoint(meanPoint.getDimension(), 1.0)
+    meanPoint += Point(meanPoint.getDimension(), 1.0)
     aCollection.add(Normal(meanPoint, sigma, R))
-    meanPoint += NumericalPoint(meanPoint.getDimension(), 1.0)
+    meanPoint += Point(meanPoint.getDimension(), 1.0)
     aCollection.add(Normal(meanPoint, sigma, R))
 
     # Instanciate one distribution object
     distribution = Mixture(
-        aCollection, NumericalPoint(aCollection.getSize(), 2.0))
+        aCollection, Point(aCollection.getSize(), 2.0))
     print("Distribution ", repr(distribution))
     print("Weights = ", repr(distribution.getWeights()))
     weights = distribution.getWeights()
@@ -59,7 +59,7 @@ try:
     print("covariance=", repr(oneSample.computeCovariance()))
 
     # Define a point
-    point = NumericalPoint(distribution.getDimension(), 1.0)
+    point = Point(distribution.getDimension(), 1.0)
     print("Point= ", repr(point))
 
     # Show PDF and CDF of point
@@ -69,11 +69,11 @@ try:
     DDF = distribution.computeDDF(point)
     print("ddf     =", repr(DDF))
     # by the finite difference technique
-    ddfFD = NumericalPoint(dimension)
+    ddfFD = Point(dimension)
     for i in range(dimension):
-        left = NumericalPoint(point)
+        left = Point(point)
         left[i] += eps
-        right = NumericalPoint(point)
+        right = Point(point)
         right[i] -= eps
         ddfFD[i] = (distribution.computePDF(left) -
                     distribution.computePDF(right)) / (2.0 * eps)
@@ -86,8 +86,8 @@ try:
     print("pdf     =%.6f" % PDF)
     # by the finite difference technique from CDF
     if (dimension == 1):
-        print("pdf (FD)=%.6f" % ((distribution.computeCDF(point + NumericalPoint(1, eps)) -
-                                  distribution.computeCDF(point + NumericalPoint(1, -eps))) / (2.0 * eps)))
+        print("pdf (FD)=%.6f" % ((distribution.computeCDF(point + Point(1, eps)) -
+                                  distribution.computeCDF(point + Point(1, -eps))) / (2.0 * eps)))
 
     # derivative of the PDF with regards the parameters of the distribution
     CDF = distribution.computeCDF(point)
@@ -97,7 +97,7 @@ try:
     # PDFgr = distribution.computePDFGradient( point )
     # print "pdf gradient     =" , repr(PDFgr)
     # by the finite difference technique
-    # PDFgrFD = NumericalPoint(4)
+    # PDFgrFD = Point(4)
     # PDFgrFD[0] = (Mixture(distribution.getR() + eps, distribution.getT(), distribution.getA(), distribution.getB()).computePDF(point) -
     #                   Mixture(distribution.getR() - eps, distribution.getT(), distribution.getA(), distribution.getB()).computePDF(point)) / (2.0 * eps)
     #     PDFgrFD[1] = (Mixture(distribution.getR(), distribution.getT() + eps, distribution.getA(), distribution.getB()).computePDF(point) -
@@ -111,7 +111,7 @@ try:
     # derivative of the PDF with regards the parameters of the distribution
     # CDFgr = distribution.computeCDFGradient( point )
     # print "cdf gradient     =" , repr(CDFgr)
-    # CDFgrFD = NumericalPoint(4)
+    # CDFgrFD = Point(4)
     # CDFgrFD[0] = (Mixture(distribution.getR() + eps, distribution.getT(), distribution.getA(), distribution.getB()).computeCDF(point) -
     #                   Mixture(distribution.getR() - eps, distribution.getT(), distribution.getA(), distribution.getB()).computeCDF(point)) / (2.0 * eps)
     #     CDFgrFD[1] = (Mixture(distribution.getR(), distribution.getT() + eps, distribution.getA(), distribution.getB()).computeCDF(point) -
@@ -127,26 +127,26 @@ try:
     print("quantile=", repr(quantile))
     print("cdf(quantile)=%.6f" % distribution.computeCDF(quantile))
     # Get 95% survival function
-    inverseSurvival = NumericalPoint(distribution.computeInverseSurvivalFunction(0.95))
+    inverseSurvival = Point(distribution.computeInverseSurvivalFunction(0.95))
     print("InverseSurvival=", repr(inverseSurvival))
     print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
     # Confidence regions
     if distribution.getDimension() <= 2:
         interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
         print("Minimum volume interval=", interval)
-        print("threshold=", NumericalPoint(1, threshold))
+        print("threshold=", Point(1, threshold))
         levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
         print("Minimum volume level set=", levelSet)
-        print("beta=", NumericalPoint(1, beta))
+        print("beta=", Point(1, beta))
         interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
         print("Bilateral confidence interval=", interval)
-        print("beta=", NumericalPoint(1, beta))
+        print("beta=", Point(1, beta))
         interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
         print("Unilateral confidence interval (lower tail)=", interval)
-        print("beta=", NumericalPoint(1, beta))
+        print("beta=", Point(1, beta))
         interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
         print("Unilateral confidence interval (upper tail)=", interval)
-        print("beta=", NumericalPoint(1, beta))
+        print("beta=", Point(1, beta))
     
     mean = distribution.getMean()
     print("mean=", repr(mean))

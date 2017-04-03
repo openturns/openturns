@@ -68,7 +68,7 @@ N : int
 
 Returns
 -------
-P : :class:`~openturns.NumericalPoint`
+P : :class:`~openturns.Point`
     Component probabilities :math:`\vect{p}`."
 
 // ---------------------------------------------------------------------

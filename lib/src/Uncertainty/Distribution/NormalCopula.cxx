@@ -57,7 +57,7 @@ NormalCopula::NormalCopula(const UnsignedInteger dim)
 NormalCopula::NormalCopula(const CorrelationMatrix & correlation)
   : CopulaImplementation()
   , correlation_(correlation)
-  , normal_(NumericalPoint(correlation.getNbRows(), 0.0), NumericalPoint(correlation.getNbRows(), 1.0), correlation)
+  , normal_(Point(correlation.getNbRows(), 0.0), Point(correlation.getNbRows(), 1.0), correlation)
 {
   setName("NormalCopula");
   // The range is generic for all the copulas
@@ -103,13 +103,13 @@ NormalCopula * NormalCopula::clone() const
 }
 
 /* Get one realization of the distribution */
-NumericalPoint NormalCopula::getRealization() const
+Point NormalCopula::getRealization() const
 {
   UnsignedInteger dimension = getDimension();
   if (hasIndependentCopula()) return RandomGenerator::Generate(dimension);
   else
   {
-    NumericalPoint realization(normal_.getRealization());
+    Point realization(normal_.getRealization());
     for (UnsignedInteger i = 0; i < dimension; ++i) realization[i] = DistFunc::pNormal(realization[i]);
     return realization;
   }
@@ -144,7 +144,7 @@ Sample NormalCopula::getSampleParallel(const UnsignedInteger size) const
   {
     const UnsignedInteger dimension = getDimension();
     Sample result(size, dimension);
-    const NumericalPoint rawData(RandomGenerator::Generate(dimension * size));
+    const Point rawData(RandomGenerator::Generate(dimension * size));
     result.getImplementation()->setData(rawData);
     result.setName(getName());
     result.setDescription(getDescription());
@@ -170,7 +170,7 @@ Sample NormalCopula::getSample(const UnsignedInteger size) const
 }
 
 /* Get the DDF of the distribution */
-NumericalPoint NormalCopula::computeDDF(const NumericalPoint & point) const
+Point NormalCopula::computeDDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
@@ -179,10 +179,10 @@ NumericalPoint NormalCopula::computeDDF(const NumericalPoint & point) const
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     // If outside of the support return 0.0
-    if ((point[i] <= 0.0) || (point[i] >= 1.0)) return NumericalPoint(dimension, 0.0);
+    if ((point[i] <= 0.0) || (point[i] >= 1.0)) return Point(dimension, 0.0);
   }
-  NumericalPoint x(dimension);
-  NumericalPoint marginalPDF(dimension);
+  Point x(dimension);
+  Point marginalPDF(dimension);
   NumericalScalar marginalPDFProduct = 1.0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
@@ -193,15 +193,15 @@ NumericalPoint NormalCopula::computeDDF(const NumericalPoint & point) const
     marginalPDF[i] = pdfI;
     marginalPDFProduct *= pdfI;
   }
-  const NumericalPoint ddfNorm(normal_.computeDDF(x));
+  const Point ddfNorm(normal_.computeDDF(x));
   const NumericalScalar pdfNorm = normal_.computePDF(x);
-  NumericalPoint ddf(dimension);
+  Point ddf(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i) ddf[i] = (ddfNorm[i] + x[i] * pdfNorm) / (marginalPDFProduct * marginalPDF[i]);
   return ddf;
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar NormalCopula::computePDF(const NumericalPoint & point) const
+NumericalScalar NormalCopula::computePDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
@@ -218,7 +218,7 @@ NumericalScalar NormalCopula::computePDF(const NumericalPoint & point) const
   // Compute the multiplicative factor between the copula PDF
   // and the PDF of the associated generic normal using the specific form of
   // the standard normal PDF
-  NumericalPoint normalPoint(dimension);
+  Point normalPoint(dimension);
   NumericalScalar value = 0.0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
@@ -232,7 +232,7 @@ NumericalScalar NormalCopula::computePDF(const NumericalPoint & point) const
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar NormalCopula::computeCDF(const NumericalPoint & point) const
+NumericalScalar NormalCopula::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
@@ -253,7 +253,7 @@ NumericalScalar NormalCopula::computeCDF(const NumericalPoint & point) const
   const UnsignedInteger activeDimension = indices.getSize();
   // Quick return if all the components are >= 1
   if (activeDimension == 0) return 1.0;
-  NumericalPoint normalPoint(activeDimension);
+  Point normalPoint(activeDimension);
   for (UnsignedInteger i = 0; i < activeDimension; ++i) normalPoint[i] = DistFunc::qNormal(point[indices[i]]);
   // In the usual case when the given point is in the interior of the support
   // use the associated normal distribution
@@ -263,7 +263,7 @@ NumericalScalar NormalCopula::computeCDF(const NumericalPoint & point) const
 } // computeCDF
 
 /* Get the survival function of the distribution */
-NumericalScalar NormalCopula::computeSurvivalFunction(const NumericalPoint & point) const
+NumericalScalar NormalCopula::computeSurvivalFunction(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
@@ -284,7 +284,7 @@ NumericalScalar NormalCopula::computeSurvivalFunction(const NumericalPoint & poi
   const UnsignedInteger activeDimension = indices.getSize();
   // Quick return if all the components are >= 1
   if (activeDimension == 0) return 1.0;
-  NumericalPoint normalPoint(activeDimension);
+  Point normalPoint(activeDimension);
   for (UnsignedInteger i = 0; i < activeDimension; ++i) normalPoint[i] = DistFunc::qNormal(point[indices[i]]);
   // In the usual case when the given point is in the interior of the support
   // use the associated normal distribution
@@ -303,10 +303,10 @@ NumericalScalar NormalCopula::computeProbability(const Interval & interval) cons
   const Interval intersect(interval.intersect(Interval(dimension)));
   // If the intersection is empty
   if (intersect.isNumericallyEmpty()) return 0.0;
-  const NumericalPoint lowerBoundIntersect(intersect.getLowerBound());
-  const NumericalPoint upperBoundIntersect(intersect.getUpperBound());
-  NumericalPoint lowerBound(dimension);
-  NumericalPoint upperBound(dimension);
+  const Point lowerBoundIntersect(intersect.getLowerBound());
+  const Point upperBoundIntersect(intersect.getUpperBound());
+  Point lowerBound(dimension);
+  Point upperBound(dimension);
   Interval::BoolCollection finiteLowerBound(dimension);
   Interval::BoolCollection finiteUpperBound(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -367,19 +367,19 @@ CorrelationMatrix NormalCopula::getShapeMatrix() const
 }
 
 /* Get the PDF gradient of the distribution */
-NumericalPoint NormalCopula::computePDFGradient(const NumericalPoint & point) const
+Point NormalCopula::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
-  throw NotYetImplementedException(HERE) << "In NormalCopula::computePDFGradient(const NumericalPoint & point) const";
+  throw NotYetImplementedException(HERE) << "In NormalCopula::computePDFGradient(const Point & point) const";
 }
 
 /* Get the CDF gradient of the distribution */
-NumericalPoint NormalCopula::computeCDFGradient(const NumericalPoint & point) const
+Point NormalCopula::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
-  throw NotYetImplementedException(HERE) << "In NormalCopula::computeCDFGradient(const NumericalPoint & point) const";
+  throw NotYetImplementedException(HERE) << "In NormalCopula::computeCDFGradient(const Point & point) const";
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1)
@@ -391,35 +391,35 @@ NumericalPoint NormalCopula::computeCDFGradient(const NumericalPoint & point) co
    See [Lebrun, Dutfoy, "Rosenblatt and Nataf transformation"]
 */
 NumericalScalar NormalCopula::computeConditionalPDF(const NumericalScalar x,
-    const NumericalPoint & y) const
+    const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return 1.0;
   // General case
-  NumericalPoint u(conditioningDimension);
+  Point u(conditioningDimension);
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i) u[i] = DistFunc::qNormal(y[i]);
   return normal_.computeConditionalPDF(DistFunc::qNormal(x), u);
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 NumericalScalar NormalCopula::computeConditionalCDF(const NumericalScalar x,
-    const NumericalPoint & y) const
+    const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return x;
   // General case
-  NumericalPoint u(conditioningDimension);
+  Point u(conditioningDimension);
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i) u[i] = DistFunc::qNormal(y[i]);
   return normal_.computeConditionalCDF(DistFunc::qNormal(x), u);
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
 NumericalScalar NormalCopula::computeConditionalQuantile(const NumericalScalar q,
-    const NumericalPoint & y) const
+    const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -429,7 +429,7 @@ NumericalScalar NormalCopula::computeConditionalQuantile(const NumericalScalar q
   // Special case when no contitioning or independent copula
   if ((conditioningDimension == 0) || hasIndependentCopula()) return q;
   // General case
-  NumericalPoint u(conditioningDimension);
+  Point u(conditioningDimension);
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i) u[i] = DistFunc::qNormal(y[i]);
   return DistFunc::pNormal(normal_.computeConditionalQuantile(q, u));
 }
@@ -488,15 +488,15 @@ Bool NormalCopula::hasIndependentCopula() const
 }
 
 /* Parameters value and description accessor */
-NormalCopula::NumericalPointWithDescriptionCollection NormalCopula::getParametersCollection() const
+NormalCopula::PointWithDescriptionCollection NormalCopula::getParametersCollection() const
 {
   const UnsignedInteger dimension = getDimension();
-  NumericalPointWithDescriptionCollection parameters(0);
+  PointWithDescriptionCollection parameters(0);
   if (dimension > 1)
   {
     // Put the dependence parameters
     const UnsignedInteger parametersDimension = dimension * (dimension - 1) / 2;
-    NumericalPointWithDescription point(parametersDimension);
+    PointWithDescription point(parametersDimension);
     Description description(parametersDimension);
     point.setName(getName());
     UnsignedInteger dependenceIndex = 0;
@@ -517,11 +517,11 @@ NormalCopula::NumericalPointWithDescriptionCollection NormalCopula::getParameter
   return parameters;
 } // getParametersCollection
 
-void NormalCopula::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void NormalCopula::setParametersCollection(const PointCollection & parametersCollection)
 {
   // Check if the given parameters are ok
   if (parametersCollection.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: the given collection has a size=" << parametersCollection.getSize() << " but should be of size=1";
-  const NumericalPoint parameters(parametersCollection[0]);
+  const Point parameters(parametersCollection[0]);
   const UnsignedInteger dimension = getDimension();
   if (parameters.getDimension() != dimension * (dimension - 1) / 2) throw InvalidArgumentException(HERE) << "Error: got " << parameters.getDimension() << " parameters instead of " << dimension * (dimension - 1) / 2;
   if (dimension == 1) return;
@@ -536,10 +536,10 @@ void NormalCopula::setParametersCollection(const NumericalPointCollection & para
   }
 }
 
-NumericalPoint NormalCopula::getParameter() const
+Point NormalCopula::getParameter() const
 {
   const UnsignedInteger dimension = getDimension();
-  NumericalPoint point;
+  Point point;
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
     for (UnsignedInteger j = 0; j < i; ++ j)
@@ -550,7 +550,7 @@ NumericalPoint NormalCopula::getParameter() const
   return point;
 }
 
-void NormalCopula::setParameter(const NumericalPoint & parameter)
+void NormalCopula::setParameter(const Point & parameter)
 {
   // N = ((d-1)*d)/2
   const UnsignedInteger size = parameter.getSize();

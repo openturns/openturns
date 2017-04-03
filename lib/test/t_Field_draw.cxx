@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     }
     // A 2D->1D field
     {
-      Mesh mesh(IntervalMesher(Indices(2, 10)).build(Interval(NumericalPoint(2, -2.0), NumericalPoint(2, 2.0))));
+      Mesh mesh(IntervalMesher(Indices(2, 10)).build(Interval(Point(2, -2.0), Point(2, 2.0))));
       SymbolicFunction function(Description::BuildDefault(2, "x"), Description(1, "x0+x1"));
       Field field(mesh, function(mesh.getVertices()));
       Graph graph(field.draw());
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     }
     // A 2D->2D field
     {
-      Mesh mesh(IntervalMesher(Indices(2, 10)).build(Interval(NumericalPoint(2, -2.0), NumericalPoint(2, 2.0))));
+      Mesh mesh(IntervalMesher(Indices(2, 10)).build(Interval(Point(2, -2.0), Point(2, 2.0))));
       SymbolicFunction function(Description::BuildDefault(2, "x"), Description::BuildDefault(2, "x"));
       Field field(mesh, function(mesh.getVertices()));
       Graph graph(field.draw());

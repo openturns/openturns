@@ -50,7 +50,7 @@ GeometricFactory::Implementation GeometricFactory::build(const Sample & sample) 
   return buildAsGeometric(sample).clone();
 }
 
-GeometricFactory::Implementation GeometricFactory::build(const NumericalPoint & parameters) const
+GeometricFactory::Implementation GeometricFactory::build(const Point & parameters) const
 {
   return buildAsGeometric(parameters).clone();
 }
@@ -78,7 +78,7 @@ Geometric GeometricFactory::buildAsGeometric(const Sample & sample) const
   return result;
 }
 
-Geometric GeometricFactory::buildAsGeometric(const NumericalPoint & parameters) const
+Geometric GeometricFactory::buildAsGeometric(const Point & parameters) const
 {
   try
   {

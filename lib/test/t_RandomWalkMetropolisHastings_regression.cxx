@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
     SymbolicFunction fullModel(fullVariables, formulas);
     Indices parametersPosition(chainDim);
     parametersPosition.fill();
-    NumericalPoint parametersValue(parametersPosition.getSize(), 0.0);
+    Point parametersValue(parametersPosition.getSize(), 0.0);
     ParametricFunction model(fullModel, parametersPosition, parametersValue);
 
     // calibration parameters
@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
     }
 
     // prior distribution
-    NumericalPoint sigma0(chainDim, 10.0);// sigma0= (10.,10.,10.)
+    Point sigma0(chainDim, 10.0);// sigma0= (10.,10.,10.)
     CorrelationMatrix Q0(chainDim);// precision matrix
     CorrelationMatrix Q0_inv(chainDim);// covariance matrix
     for ( UnsignedInteger i = 0; i < chainDim; ++ i )
@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
       Q0(i, i) = 1.0 / Q0_inv (i, i);
     }
     std::cout << "Q0=" << Q0 << std::endl;
-    NumericalPoint mu0(chainDim, 0.0);// mu0 = (0.0, 0.0, 0.0)
+    Point mu0(chainDim, 0.0);// mu0 = (0.0, 0.0, 0.0)
     Distribution prior(Normal( mu0, Q0_inv ) );// x0 ~ N(mu0, sigma0)
     std::cout << "x~" << prior << std::endl;
 
@@ -127,15 +127,15 @@ int main(int argc, char *argv[])
     sampler.setCalibrationStrategyPerComponent(calibrationColl);
 
     // get a realization
-    NumericalPoint realization(sampler.getRealization());
+    Point realization(sampler.getRealization());
     std::cout << "y1=" << realization << std::endl;
 
     // try to generate a sample
     UnsignedInteger sampleSize = 1000;
     Sample sample(sampler.getSample(sampleSize));
 
-    NumericalPoint x_mu(sample.computeMean());
-    NumericalPoint x_sigma(sample.computeStandardDeviationPerComponent());
+    Point x_mu(sample.computeMean());
+    Point x_sigma(sample.computeStandardDeviationPerComponent());
 
     // print acceptance rate
     std::cout << "acceptance rate=" << sampler.getAcceptanceRate() << std::endl;
@@ -154,26 +154,26 @@ int main(int argc, char *argv[])
     SquareMatrix Qn_inv(chainDim);
     for ( UnsignedInteger j = 0; j < chainDim; ++j )
     {
-      NumericalPoint I_j(chainDim);
+      Point I_j(chainDim);
       I_j[j] = 1.0;
-      NumericalPoint Qn_inv_j(Qn.solveLinearSystem(I_j));
+      Point Qn_inv_j(Qn.solveLinearSystem(I_j));
       for ( UnsignedInteger i = 0; i < chainDim; ++i )
       {
         Qn_inv(i, j) = Qn_inv_j[i];
       }
     }
-    NumericalPoint sigma_exp(chainDim);
+    Point sigma_exp(chainDim);
     for ( UnsignedInteger i = 0; i < chainDim; ++i )
     {
       sigma_exp[i] = sqrt(Qn_inv(i, i));
     }
-    NumericalPoint y_vec(obsSize);
+    Point y_vec(obsSize);
     for ( UnsignedInteger i = 0; i < obsSize; ++i )
     {
       y_vec[i] = y_obs[i][0];
     }
-    NumericalPoint x_emp(Qn.solveLinearSystem(P.transpose()*y_vec));
-    NumericalPoint mu_exp(Qn.solveLinearSystem(P.transpose()*P * x_emp + Q0 * mu0));
+    Point x_emp(Qn.solveLinearSystem(P.transpose()*y_vec));
+    Point mu_exp(Qn.solveLinearSystem(P.transpose()*P * x_emp + Q0 * mu0));
 
     std::cout << "sample mean=" << x_mu << std::endl;
     std::cout << "expected mean=" << mu_exp << std::endl;

@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_FINITEDIFFERENCESTEPIMPLEMENTATION_HXX
 #define OPENTURNS_FINITEDIFFERENCESTEPIMPLEMENTATION_HXX
 
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -39,14 +39,14 @@ public:
   FiniteDifferenceStepImplementation();
 
   /** Parameters constructor */
-  explicit FiniteDifferenceStepImplementation(const NumericalPoint & epsilon);
+  explicit FiniteDifferenceStepImplementation(const Point & epsilon);
 
   /** String converter */
   virtual String __repr__() const;
 
   /** Epsilon accessor */
-  virtual void setEpsilon(const NumericalPoint & epsilon);
-  virtual NumericalPoint getEpsilon() const;
+  virtual void setEpsilon(const Point & epsilon);
+  virtual Point getEpsilon() const;
 
   /* Here is the interface that all derived class must implement */
 
@@ -54,7 +54,7 @@ public:
   virtual FiniteDifferenceStepImplementation * clone() const;
 
   /** Compute value */
-  virtual NumericalPoint operator()(const NumericalPoint & inP) const;
+  virtual Point operator()(const Point & inP) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -64,7 +64,7 @@ public:
 
 protected:
   /* The small increments */
-  NumericalPoint epsilon_;
+  Point epsilon_;
 
 };
 

@@ -71,7 +71,7 @@ UnsignedInteger SamplerImplementation::getDimension() const
 }
 
 
-NumericalPoint SamplerImplementation::getRealization() const
+Point SamplerImplementation::getRealization() const
 {
   throw NotYetImplementedException(HERE) << "In SamplerImplementation::getRealization() const";
 }

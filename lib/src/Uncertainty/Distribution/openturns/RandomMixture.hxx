@@ -59,13 +59,13 @@ public:
 
   /** Parameter constructor - 1D */
   explicit RandomMixture(const DistributionCollection & coll,
-                         const NumericalPoint & weights,
+                         const Point & weights,
                          const NumericalScalar constant = 0.0);
 
   /** Parameter constructor - nD */
   RandomMixture(const DistributionCollection & coll,
                 const Matrix & weights,
-                const NumericalPoint constant);
+                const Point constant);
 
   /** Parameter constructor - nD */
   RandomMixture(const DistributionCollection & coll,
@@ -74,7 +74,7 @@ public:
   /** Parameter constructor - nD */
   RandomMixture(const DistributionCollection & coll,
                 const Sample & weights,
-                const NumericalPoint constant);
+                const Point constant);
 
   /** Parameter constructor - nD */
   RandomMixture(const DistributionCollection & coll,
@@ -99,8 +99,8 @@ public:
   void setFFTAlgorithm(const FFT & fft);
 
   /** Constant accessor */
-  void setConstant(const NumericalPoint & constant);
-  NumericalPoint getConstant() const;
+  void setConstant(const Point & constant);
+  Point getConstant() const;
 
 
 
@@ -110,7 +110,7 @@ public:
   virtual RandomMixture * clone() const;
 
   /** Get one realization of the RandomMixture */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Get a sample of the RandomMixture */
   Sample getSample(const UnsignedInteger size) const;
@@ -121,11 +121,11 @@ public:
 
   /** Get the DDF of the RandomMixture */
   using DistributionImplementation::computeDDF;
-  NumericalPoint computeDDF(const NumericalPoint & point) const;
+  Point computeDDF(const Point & point) const;
 
   /** Get the PDF of the RandomMixture */
   using DistributionImplementation::computePDF;
-  NumericalScalar computePDF(const NumericalPoint & point) const;
+  NumericalScalar computePDF(const Point & point) const;
 
   /** Compute the PDF over a regular grid */
   Sample computePDF(const NumericalScalar xMin,
@@ -134,8 +134,8 @@ public:
                              Sample & grid) const;
 
   /* Compute the PDF of over a regular grid */
-  Sample computePDF(const NumericalPoint & xMin,
-                             const NumericalPoint & xMax,
+  Sample computePDF(const Point & xMin,
+                             const Point & xMax,
                              const Indices & pointNumber,
                              Sample & grid) const;
 
@@ -160,26 +160,26 @@ private:
   friend struct AddPDFOn1DGridPolicy;
   friend struct AddPDFOn2DGridPolicy;
   friend struct AddPDFOn3DGridPolicy;
-  NumericalComplex computeDeltaCharacteristicFunction(const NumericalPoint & x) const;
+  NumericalComplex computeDeltaCharacteristicFunction(const Point & x) const;
 
   /** Update cache of the characteristic function */
   void updateCacheDeltaCharacteristicFunction(const Sample & points) const;
 
   /** Contribution to computePDF on a 1D grid */
-  void addPDFOn1DGrid(const Indices & pointNumber, const NumericalPoint & h, const NumericalPoint & tau, Sample & result) const;
+  void addPDFOn1DGrid(const Indices & pointNumber, const Point & h, const Point & tau, Sample & result) const;
 
   /** Contribution to computePDF on a 2D grid */
-  void addPDFOn2DGrid(const Indices & pointNumber, const NumericalPoint & h, const NumericalPoint & tau, Sample & result) const;
+  void addPDFOn2DGrid(const Indices & pointNumber, const Point & h, const Point & tau, Sample & result) const;
 
   /** Contribution to computePDF on a 3D grid */
-  void addPDFOn3DGrid(const Indices & pointNumber, const NumericalPoint & h, const NumericalPoint & tau, Sample & result) const;
+  void addPDFOn3DGrid(const Indices & pointNumber, const Point & h, const Point & tau, Sample & result) const;
 
 public:
   /** Get the CDF of the RandomMixture */
   using DistributionImplementation::computeCDF;
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
+  NumericalScalar computeCDF(const Point & point) const;
   using DistributionImplementation::computeComplementaryCDF;
-  NumericalScalar computeComplementaryCDF(const NumericalPoint & point) const;
+  NumericalScalar computeComplementaryCDF(const Point & point) const;
 
   /** Compute the CDF over a regular grid */
   Sample computeCDF(const NumericalScalar xMin,
@@ -203,21 +203,21 @@ public:
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   using DistributionImplementation::computeCharacteristicFunction;
   NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
-  NumericalComplex computeCharacteristicFunction(const NumericalPoint & x) const;
+  NumericalComplex computeCharacteristicFunction(const Point & x) const;
   using DistributionImplementation::computeLogCharacteristicFunction;
   NumericalComplex computeLogCharacteristicFunction(const NumericalScalar x) const;
-  NumericalComplex computeLogCharacteristicFunction(const NumericalPoint & x) const;
+  NumericalComplex computeLogCharacteristicFunction(const Point & x) const;
 
   /** Get the PDF gradient of the distribution */
   using DistributionImplementation::computePDFGradient;
-  NumericalPoint computePDFGradient(const NumericalPoint & point) const;
+  Point computePDFGradient(const Point & point) const;
 
   /** Get the CDF gradient of the distribution */
   using DistributionImplementation::computeCDFGradient;
-  NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
+  Point computeCDFGradient(const Point & point) const;
 
   /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
+  PointWithDescriptionCollection getParametersCollection() const;
 
   /** Weights distribution accessor */
 protected:
@@ -254,8 +254,8 @@ public:
   NumericalScalar getBeta() const;
 
   /** Reference bandwidth accessor */
-  void setReferenceBandwidth(const NumericalPoint & bandwidth);
-  NumericalPoint getReferenceBandwidth() const;
+  void setReferenceBandwidth(const Point & bandwidth);
+  Point getReferenceBandwidth() const;
 
   /** PDF epsilon accessor. For other distributions, it is a read-only attribute. */
   void setPDFPrecision(const NumericalScalar pdfPrecision);
@@ -265,7 +265,7 @@ public:
 
   /** Project a RandomMixture distribution over a collection of DistributionFactory by using sampling and Kolmogorov distance. */
   DistributionCollection project(const DistributionFactoryCollection & factoryCollection,
-                                 NumericalPoint & kolmogorovNorm,
+                                 Point & kolmogorovNorm,
                                  const UnsignedInteger size = ResourceMap::GetAsUnsignedInteger( "RandomMixture-ProjectionDefaultSize" )) const;
 
   /** Tell if the distribution has independent copula */
@@ -310,19 +310,19 @@ private:
       factory_(factory) {};
 
     /** Compute the Kolmogorov distance based on the given data, for a given parameter set */
-    NumericalPoint computeNorm(const NumericalPoint & parameters) const
+    Point computeNorm(const Point & parameters) const
     {
       NumericalScalar norm = 0.0;
       try
       {
-        const Distribution candidate(factory_.build(NumericalPointCollection(1, parameters)));
+        const Distribution candidate(factory_.build(PointCollection(1, parameters)));
         for (UnsignedInteger i = 0; i < dataX_.getSize(); ++i)
           norm += std::pow(candidate.computeCDF(dataX_[i][0]) - dataY_[i][0], 2);
-        return NumericalPoint(1, norm);
+        return Point(1, norm);
       }
       catch(...)
       {
-        return NumericalPoint(1, SpecFunc::MaxNumericalScalar);
+        return Point(1, SpecFunc::MaxNumericalScalar);
       }
     }
 
@@ -357,17 +357,17 @@ private:
   NumericalScalar computeEquivalentNormalCDFSum(const NumericalScalar s, const NumericalScalar t) const;
 
   friend struct EquivalentNormalPDFSumPolicy;
-  NumericalScalar computeEquivalentNormalPDFSum(const NumericalPoint & y, const NumericalPoint & gridStep,
+  NumericalScalar computeEquivalentNormalPDFSum(const Point & y, const Point & gridStep,
       UnsignedInteger imax, UnsignedInteger & levelMax) const;
 public:
   /** Get the standard deviation of the distribution */
-  NumericalPoint getStandardDeviation() const;
+  Point getStandardDeviation() const;
 
   /** Get the skewness of the distribution */
-  NumericalPoint getSkewness() const;
+  Point getSkewness() const;
 
   /** Get the kurtosis of the distribution */
-  NumericalPoint getKurtosis() const;
+  Point getKurtosis() const;
 
 private:
   /** Compute the position indicator */
@@ -389,7 +389,7 @@ private:
   DistributionPersistentCollection distributionCollection_;
 
   /** The constant term of the mixture */
-  NumericalPoint constant_;
+  Point constant_;
 
   /** The Weight matrix */
   Matrix weights_;
@@ -421,7 +421,7 @@ private:
   UnsignedInteger blockMax_;
 
   /** Reference bandwidth */
-  NumericalPoint referenceBandwidth_;
+  Point referenceBandwidth_;
 
   /** Reference bandwidth factor */
   NumericalScalar referenceBandwidthFactor_;

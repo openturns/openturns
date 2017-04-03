@@ -147,7 +147,7 @@ Field ConditionedNormalProcess::getRealization() const
   // 1) L.X product with L: cholesky factor, X the gaussian vector
   // Constantes values
   const UnsignedInteger fullSize = covarianceCholeskyFactor_.getDimension();
-  NumericalPoint gaussianPoint(fullSize);
+  Point gaussianPoint(fullSize);
   // N independent gaussian realizations
   for (UnsignedInteger index = 0; index < fullSize; ++index) gaussianPoint[index] = DistFunc::rNormal();
 

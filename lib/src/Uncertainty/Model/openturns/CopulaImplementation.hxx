@@ -48,10 +48,10 @@ protected:
 public:
 
   /** Compute the survival function */
-  virtual NumericalScalar computeSurvivalFunction(const NumericalPoint & point) const;
+  virtual NumericalScalar computeSurvivalFunction(const Point & point) const;
 
   /** Get the mean of the copula */
-  NumericalPoint getMean() const;
+  Point getMean() const;
 
   /** Get the Spearman correlation of the copula */
   CorrelationMatrix getSpearmanCorrelation() const;
@@ -60,13 +60,13 @@ public:
   CorrelationMatrix getKendallTau() const;
 
   /** Get the standard deviation of the copula */
-  NumericalPoint getStandardDeviation() const;
+  Point getStandardDeviation() const;
 
   /** Get the skewness of the copula */
-  NumericalPoint getSkewness() const;
+  Point getSkewness() const;
 
   /** Get the kurtosis of the copula */
-  NumericalPoint getKurtosis() const;
+  Point getKurtosis() const;
 
   /** Get the i-th marginal copula */
   using ContinuousDistribution::getMarginal;
@@ -84,7 +84,7 @@ public:
   /* Methods inherited from upper classes */
 
   /** Generic implementation of the quantile computation for continuous copulas */
-  NumericalPoint computeQuantile(const NumericalScalar prob,
+  Point computeQuantile(const NumericalScalar prob,
                                  const Bool tail = false) const;
 
 protected:
@@ -110,11 +110,11 @@ private:
       // Nothing to do
     }
 
-    NumericalPoint computeDiagonal(const NumericalPoint & u) const
+    Point computeDiagonal(const Point & u) const
     {
-      const NumericalPoint point(dimension_, u[0]);
+      const Point point(dimension_, u[0]);
       const NumericalScalar cdf = p_distribution_->computeCDF(point);
-      const NumericalPoint value(1, cdf);
+      const Point value(1, cdf);
       return value;
     }
 

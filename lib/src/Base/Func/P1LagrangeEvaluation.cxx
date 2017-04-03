@@ -153,16 +153,16 @@ Sample P1LagrangeEvaluation::getValues() const
 /* Here is the interface that all derived class must implement */
 
 /* Operator () */
-NumericalPoint P1LagrangeEvaluation::operator()( const NumericalPoint & inP ) const
+Point P1LagrangeEvaluation::operator()( const Point & inP ) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
-  NumericalPoint result;
+  Point result;
   CacheKeyType inKey(inP.getCollection());
 
   if ( isCacheEnabled() && p_cache_->hasKey(inKey) )
   {
-    result = NumericalPoint::ImplementationType( p_cache_->find(inKey) );
+    result = Point::ImplementationType( p_cache_->find(inKey) );
   }
   else
   {
@@ -178,15 +178,15 @@ NumericalPoint P1LagrangeEvaluation::operator()( const NumericalPoint & inP ) co
 }
 
 /* Evaluation method */
-NumericalPoint P1LagrangeEvaluation::evaluate( const NumericalPoint & inP ) const
+Point P1LagrangeEvaluation::evaluate( const Point & inP ) const
 {
-  NumericalPoint coordinates(0);
+  Point coordinates(0);
   const Indices vertexAndSimplexIndices(mesh_.getNearestVertexAndSimplexIndicesWithCoordinates(inP, coordinates));
   // Here, perform the P1 interpolation
   // First get the index of the nearest vertex
   const UnsignedInteger nearestIndex = vertexAndSimplexIndices[0];
   // As a first guess, take the value at the nearest index. It will be the final value if no simplex contains the point
-  NumericalPoint result(values_[nearestIndex]);
+  Point result(values_[nearestIndex]);
   if (coordinates.getSize() > 0)
     {
       const Indices simplex(mesh_.getSimplex(vertexAndSimplexIndices[1]));

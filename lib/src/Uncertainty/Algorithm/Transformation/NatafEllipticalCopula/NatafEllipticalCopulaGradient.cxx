@@ -81,7 +81,7 @@ String NatafEllipticalCopulaGradient::__repr__() const
  *               = GijQ'(xj)
  * thus, (DT)ij = Jji = GjiQ'(xi)
  */
-Matrix NatafEllipticalCopulaGradient::gradient(const NumericalPoint & inP) const
+Matrix NatafEllipticalCopulaGradient::gradient(const Point & inP) const
 {
   UnsignedInteger dimension = getInputDimension();
   const Distribution standardMarginal(standardDistribution_.getMarginal(0));

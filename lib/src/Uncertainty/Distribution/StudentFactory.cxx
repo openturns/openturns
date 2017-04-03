@@ -47,7 +47,7 @@ StudentFactory::Implementation StudentFactory::build(const Sample & sample) cons
   return buildAsStudent(sample).clone();
 }
 
-StudentFactory::Implementation StudentFactory::build(const NumericalPoint & parameter) const
+StudentFactory::Implementation StudentFactory::build(const Point & parameter) const
 {
   return buildAsStudent(parameter).clone();
 }
@@ -75,7 +75,7 @@ Student StudentFactory::buildAsStudent(const Sample & sample) const
   return result;
 }
 
-Student StudentFactory::buildAsStudent(const NumericalPoint & parameter) const
+Student StudentFactory::buildAsStudent(const Point & parameter) const
 {
   try
   {

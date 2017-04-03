@@ -50,7 +50,7 @@ ArcsineFactory::Implementation ArcsineFactory::build(const Sample & sample) cons
   return buildAsArcsine(sample).clone();
 }
 
-ArcsineFactory::Implementation ArcsineFactory::build(const NumericalPoint & parameters) const
+ArcsineFactory::Implementation ArcsineFactory::build(const Point & parameters) const
 {
   return buildAsArcsine(parameters).clone();
 }
@@ -71,7 +71,7 @@ Arcsine ArcsineFactory::buildAsArcsine(const Sample & sample) const
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Arcsine distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   NumericalScalar mean = sample.computeMean()[0];
   NumericalScalar standardDeviation = sample.computeStandardDeviationPerComponent()[0];
-  NumericalPoint parameters(2);
+  Point parameters(2);
   parameters[0] = mean;
   parameters[1] = standardDeviation;
   Arcsine result(buildAsArcsine(ArcsineMuSigma()(parameters)));
@@ -79,7 +79,7 @@ Arcsine ArcsineFactory::buildAsArcsine(const Sample & sample) const
   return result;
 }
 
-Arcsine ArcsineFactory::buildAsArcsine(const NumericalPoint & parameters) const
+Arcsine ArcsineFactory::buildAsArcsine(const Point & parameters) const
 {
   try
   {

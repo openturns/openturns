@@ -66,8 +66,8 @@ int main(int argc, char *argv[])
       SaltelliSensitivityAlgorithm sensitivitySobol(inputDesign, outputDesign, size);
 
       const SymmetricMatrix secondOrderIndices( sensitivitySobol.getSecondOrderIndices() );
-      const NumericalPoint firstOrderIndices(sensitivitySobol.getFirstOrderIndices());
-      const NumericalPoint totalOrderIndices(sensitivitySobol.getTotalOrderIndices());
+      const Point firstOrderIndices(sensitivitySobol.getFirstOrderIndices());
+      const Point totalOrderIndices(sensitivitySobol.getTotalOrderIndices());
 
       fullprint << "Method = " << sensitivitySobol.getClassName() << std::endl;
       fullprint << "First order Sobol indice of Y|X1 = " << firstOrderIndices[0] << std::endl;
@@ -89,8 +89,8 @@ int main(int argc, char *argv[])
       JansenSensitivityAlgorithm sensitivitySobol(inputDesign, outputDesign, size);
 
       const SymmetricMatrix secondOrderIndices( sensitivitySobol.getSecondOrderIndices() );
-      const NumericalPoint firstOrderIndices(sensitivitySobol.getFirstOrderIndices());
-      const NumericalPoint totalOrderIndices(sensitivitySobol.getTotalOrderIndices());
+      const Point firstOrderIndices(sensitivitySobol.getFirstOrderIndices());
+      const Point totalOrderIndices(sensitivitySobol.getTotalOrderIndices());
 
       fullprint << "Method = " << sensitivitySobol.getClassName() << std::endl;
       fullprint << "First order Sobol indice of Y|X1 = " << firstOrderIndices[0] << std::endl;
@@ -111,8 +111,8 @@ int main(int argc, char *argv[])
       MauntzKucherenkoSensitivityAlgorithm sensitivitySobol(inputDesign, outputDesign, size);
 
       const SymmetricMatrix secondOrderIndices( sensitivitySobol.getSecondOrderIndices() );
-      const NumericalPoint firstOrderIndices(sensitivitySobol.getFirstOrderIndices());
-      const NumericalPoint totalOrderIndices(sensitivitySobol.getTotalOrderIndices());
+      const Point firstOrderIndices(sensitivitySobol.getFirstOrderIndices());
+      const Point totalOrderIndices(sensitivitySobol.getTotalOrderIndices());
 
       fullprint << "Method = " << sensitivitySobol.getClassName() << std::endl;
       fullprint << "First order Sobol indice of Y|X1 = " << firstOrderIndices[0] << std::endl;
@@ -133,8 +133,8 @@ int main(int argc, char *argv[])
       MartinezSensitivityAlgorithm sensitivitySobol(inputDesign, outputDesign, size);
 
       const SymmetricMatrix secondOrderIndices( sensitivitySobol.getSecondOrderIndices() );
-      const NumericalPoint firstOrderIndices(sensitivitySobol.getFirstOrderIndices());
-      const NumericalPoint totalOrderIndices(sensitivitySobol.getTotalOrderIndices());
+      const Point firstOrderIndices(sensitivitySobol.getFirstOrderIndices());
+      const Point totalOrderIndices(sensitivitySobol.getTotalOrderIndices());
 
       fullprint << "Method = " << sensitivitySobol.getClassName() << std::endl;
       fullprint << "First order Sobol indice of Y|X1 = " << firstOrderIndices[0] << std::endl;

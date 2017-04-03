@@ -10,7 +10,7 @@ try:
 
     # Generate the data for the curves to be drawn
     size = 50
-    cursor = NumericalPoint(2)
+    cursor = Point(2)
 
     # curve y = 2x for x in [-25]
     data1 = Sample(size, 2)

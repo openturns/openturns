@@ -24,7 +24,7 @@
 #include "openturns/MetaModelResult.hxx"
 #include "openturns/MetaModelAlgorithm.hxx"
 #include "openturns/Indices.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/AdaptiveStrategy.hxx"
@@ -64,7 +64,7 @@ public:
 
   /** Constructor */
   FunctionalChaosAlgorithm(const Sample & inputSample,
-                           const NumericalPoint & weights,
+                           const Point & weights,
                            const Sample & outputSample,
                            const Distribution & distribution,
                            const AdaptiveStrategy & adaptiveStrategy,
@@ -87,7 +87,7 @@ public:
 
   /** Constructor */
   FunctionalChaosAlgorithm(const Sample & inputSample,
-                           const NumericalPoint & weights,
+                           const Point & weights,
                            const Sample & outputSample,
                            const Distribution & distribution,
                            const AdaptiveStrategy & adaptiveStrategy);
@@ -137,7 +137,7 @@ private:
   /** Marginal computation */
   void runMarginal(const UnsignedInteger marginalIndex,
                    Indices & indices,
-                   NumericalPoint & coefficients,
+                   Point & coefficients,
                    NumericalScalar & residual,
                    NumericalScalar & relativeError);
 

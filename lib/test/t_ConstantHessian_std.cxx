@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 
     ConstantHessian myHessian(constant);
     myHessian.setName("constantHessian");
-    NumericalPoint inPoint(inputDimension);
+    Point inPoint(inputDimension);
     inPoint[0] = 7.0;
     inPoint[1] = 8.0;
     inPoint[2] = 9.0;

@@ -181,7 +181,7 @@ TestResult LinearModelTest::LinearModelHarrisonMcCabe(const Sample & firstSample
   NumericalScalar sumSelectResiduals = 0;
   for(UnsignedInteger i = 0; i < breakIndex; ++i)
   {
-    const NumericalPoint residual(residuals[i]);
+    const Point residual(residuals[i]);
     sumSelectResiduals += residual.normSquare();
   }
 
@@ -199,7 +199,7 @@ TestResult LinearModelTest::LinearModelHarrisonMcCabe(const Sample & firstSample
     NumericalScalar sumSelectResidualsSimulation = 0;
     for (UnsignedInteger j = 0; j < breakIndex; ++ j)
     {
-      const NumericalPoint stantardSamplePoint(stantardSample[j]);
+      const Point stantardSamplePoint(stantardSample[j]);
       sumSelectResidualsSimulation += stantardSamplePoint.normSquare();
     }
     const NumericalScalar sumSquaredResidualsSimulation = stantardSample.computeVariance()[0] * (residualSize - 1);
@@ -243,7 +243,7 @@ TestResult LinearModelTest::LinearModelBreuschPagan(const Sample & firstSample,
   Sample w(residualSize, 1);
   for(UnsignedInteger i = 0; i < residualSize; ++i)
   {
-    const NumericalPoint residual(residuals[i]);
+    const Point residual(residuals[i]);
     w[i][0] = (residual.normSquare() - residualsVariance);
   }
 
@@ -291,7 +291,7 @@ TestResult LinearModelTest::LinearModelDurbinWatson(const Sample & firstSample,
   NumericalScalar sumSquaredDifference = 0;
   for(UnsignedInteger i = 1; i < residualSize; ++i)
   {
-    const NumericalPoint residualDifference(residuals[i] - residuals[i - 1]);
+    const Point residualDifference(residuals[i] - residuals[i - 1]);
     sumSquaredDifference += residualDifference.normSquare();
   }
 

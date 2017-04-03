@@ -45,10 +45,10 @@ int main(int argc, char *argv[])
     const UnsignedInteger spatialDimension = 1;
 
     /* Amplitude values */
-    NumericalPoint amplitude(dimension);
+    Point amplitude(dimension);
 
     /* Scale values */
-    NumericalPoint scale(spatialDimension, 1.0);
+    Point scale(spatialDimension, 1.0);
     /* Spatial correclation */
     CorrelationMatrix spatialCorrelation(dimension);
     for (UnsignedInteger index = 0 ; index < dimension; ++index)

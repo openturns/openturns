@@ -99,15 +99,15 @@ void CumulativeDistributionNetwork::computeRange()
   const UnsignedInteger size = distributionCollection_.getSize();
   if (size == 0) return;
   const UnsignedInteger dim = getDimension();
-  const NumericalPoint infiniteLowerBounds(dim, -SpecFunc::MaxNumericalScalar);
-  const NumericalPoint infiniteUpperBounds(dim,  SpecFunc::MaxNumericalScalar);
+  const Point infiniteLowerBounds(dim, -SpecFunc::MaxNumericalScalar);
+  const Point infiniteUpperBounds(dim,  SpecFunc::MaxNumericalScalar);
   const Interval::BoolCollection infiniteLowerBoundsFlags(dim, false);
   const Interval::BoolCollection infiniteUpperBoundsFlags(dim, false);
   Interval range(infiniteLowerBounds, infiniteUpperBounds, infiniteLowerBoundsFlags, infiniteUpperBoundsFlags);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    NumericalPoint lowerBounds(infiniteLowerBounds);
-    NumericalPoint upperBounds(infiniteUpperBounds);
+    Point lowerBounds(infiniteLowerBounds);
+    Point upperBounds(infiniteUpperBounds);
     Interval::BoolCollection lowerBoundsFlags(infiniteLowerBoundsFlags);
     Interval::BoolCollection upperBoundsFlags(infiniteUpperBoundsFlags);
     Interval cdfRange(distributionCollection_[i].getRange());
@@ -176,7 +176,7 @@ CumulativeDistributionNetwork * CumulativeDistributionNetwork::clone() const
 
 
 /* Get one realization of the CumulativeDistributionNetwork */
-NumericalPoint CumulativeDistributionNetwork::getRealization() const
+Point CumulativeDistributionNetwork::getRealization() const
 {
   return DistributionImplementation::getRealizationByInversion();
 }
@@ -188,18 +188,18 @@ Sample CumulativeDistributionNetwork::getSample(const UnsignedInteger size) cons
 }
 
 /* Extract the components of a full dimension point to feed the index distribution */
-NumericalPoint CumulativeDistributionNetwork::reducePoint(const NumericalPoint & point,
+Point CumulativeDistributionNetwork::reducePoint(const Point & point,
     const UnsignedInteger index) const
 {
   const Indices indices(graph_[index]);
   const UnsignedInteger size = indices.getSize();
-  NumericalPoint reducedPoint(size);
+  Point reducedPoint(size);
   for (UnsignedInteger i = 0; i < size; ++i) reducedPoint[i] = point[indices[i]];
   return reducedPoint;
 }
 
 /* Get the PDF of the CumulativeDistributionNetwork */
-NumericalScalar CumulativeDistributionNetwork::computePDF(const NumericalPoint & point) const
+NumericalScalar CumulativeDistributionNetwork::computePDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -208,7 +208,7 @@ NumericalScalar CumulativeDistributionNetwork::computePDF(const NumericalPoint &
 
 
 /* Get the CDF of the CumulativeDistributionNetwork */
-NumericalScalar CumulativeDistributionNetwork::computeCDF(const NumericalPoint & point) const
+NumericalScalar CumulativeDistributionNetwork::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();

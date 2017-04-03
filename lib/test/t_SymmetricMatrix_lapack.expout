@@ -2,8 +2,8 @@ matrix1=class=SymmetricMatrix dimension=2 implementation=class=MatrixImplementat
 matrix1=
 [[  1  5 ]
  [  5 12 ]]
-pt=class=NumericalPoint name=Unnamed dimension=2 values=[5,0]
-result=class=NumericalPoint name=Unnamed dimension=2 values=[-4.61538,1.92308]
+pt=class=Point name=Unnamed dimension=2 values=[5,0]
+result=class=Point name=Unnamed dimension=2 values=[-4.61538,1.92308]
 determinant=-13
 result2=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=3 values=[-4.61538,1.92308,-8.84615,3.76923,-13.0769,5.61538]
 result2=

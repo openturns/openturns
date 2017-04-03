@@ -83,12 +83,12 @@ String ComposedEvaluation::__str__(const String & offset) const
 }
 
 /* Operator () */
-NumericalPoint ComposedEvaluation::operator() (const NumericalPoint & inP) const
+Point ComposedEvaluation::operator() (const Point & inP) const
 {
   if (inP.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a Function with an argument of invalid dimension";
   ++callsNumber_;
-  const NumericalPoint rightValue(p_rightFunction_->operator()(inP));
-  const NumericalPoint leftValue(p_leftFunction_->operator()(rightValue));
+  const Point rightValue(p_rightFunction_->operator()(inP));
+  const Point leftValue(p_leftFunction_->operator()(rightValue));
   if (isHistoryEnabled_)
   {
     inputStrategy_.store(inP);
@@ -113,18 +113,18 @@ Sample ComposedEvaluation::operator() (const Sample & inSample) const
 }
 
 /* Parameters value accessor */
-NumericalPoint ComposedEvaluation::getParameter() const
+Point ComposedEvaluation::getParameter() const
 {
-  NumericalPoint parameter(p_rightFunction_->getParameter());
+  Point parameter(p_rightFunction_->getParameter());
   parameter.add(p_leftFunction_->getParameter());
   return parameter;
 }
 
-void ComposedEvaluation::setParameter(const NumericalPoint & parameter)
+void ComposedEvaluation::setParameter(const Point & parameter)
 {
-  NumericalPoint rightParameter(p_rightFunction_->getParameter());
+  Point rightParameter(p_rightFunction_->getParameter());
   const UnsignedInteger rightDimension = rightParameter.getDimension();
-  NumericalPoint leftParameter(p_leftFunction_->getParameter());
+  Point leftParameter(p_leftFunction_->getParameter());
   const UnsignedInteger leftDimension = leftParameter.getDimension();
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < rightDimension; ++ i)

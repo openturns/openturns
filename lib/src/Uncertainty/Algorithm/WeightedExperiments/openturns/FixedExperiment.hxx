@@ -47,7 +47,7 @@ public:
 
   /** Parameters constructor */
   FixedExperiment(const Sample & sample,
-                  const NumericalPoint & weights);
+                  const Point & weights);
 
   /** Virtual constructor */
   virtual FixedExperiment * clone() const;
@@ -61,7 +61,7 @@ public:
   void setDistribution(const Distribution & distribution);
 
   /** Sample generation */
-  Sample generateWithWeights(NumericalPoint & weights) const;
+  Sample generateWithWeights(Point & weights) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -73,7 +73,7 @@ protected:
 private:
   // The fixed sample that will be returned at each call
   Sample sample_;
-  NumericalPoint weights_;
+  Point weights_;
 
 }; /* class FixedExperiment */
 

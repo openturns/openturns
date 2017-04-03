@@ -50,7 +50,7 @@ BinomialFactory::Implementation BinomialFactory::build(const Sample & sample) co
   return buildAsBinomial(sample).clone();
 }
 
-BinomialFactory::Implementation BinomialFactory::build(const NumericalPoint & parameters) const
+BinomialFactory::Implementation BinomialFactory::build(const Point & parameters) const
 {
   return buildAsBinomial(parameters).clone();
 }
@@ -157,7 +157,7 @@ NumericalScalar BinomialFactory::ComputeLogLikelihood(const UnsignedInteger n,
 }
 
 
-Binomial BinomialFactory::buildAsBinomial(const NumericalPoint & parameters) const
+Binomial BinomialFactory::buildAsBinomial(const Point & parameters) const
 {
   try
   {

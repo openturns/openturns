@@ -53,7 +53,7 @@ public:
   /** Perform cross-validation */
   virtual NumericalScalar run(const Sample & x,
                               const Sample & y,
-                              const NumericalPoint & weight,
+                              const Point & weight,
                               const Basis & psi,
                               const Indices & indices) const;
 
@@ -64,7 +64,7 @@ public:
 
 #ifndef SWIG
   virtual NumericalScalar run(const Sample & y,
-                              const NumericalPoint & weight,
+                              const Point & weight,
                               const Indices & indices,
                               const DesignProxy & proxy) const;
 

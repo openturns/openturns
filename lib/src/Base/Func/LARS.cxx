@@ -84,7 +84,7 @@ void LARS::updateBasis(LeastSquaresMethod & method,
 //   if (x.getDimension() != psi.getDimension()) throw InvalidArgumentException( HERE ) << "Sample dimension (" << x.getDimension() << ") does not match basis dimension (" << psi.getDimension() << ").";
 
   // get y as as point
-  const NumericalPoint mY(y.getImplementation()->getData());
+  const Point mY(y.getImplementation()->getData());
 
   // precompute the design matrix on the whole basis
   if (mPsiX_.getNbRows() == 0)
@@ -94,10 +94,10 @@ void LARS::updateBasis(LeastSquaresMethod & method,
   const UnsignedInteger basisSize = mPsiX_.getNbColumns();
 
   // regression coefficients
-  if (coefficients_.getDimension() == 0) coefficients_ = NumericalPoint(basisSize);
+  if (coefficients_.getDimension() == 0) coefficients_ = Point(basisSize);
 
   // current least-square state
-  if (mu_.getDimension() == 0) mu_ = NumericalPoint(sampleSize);
+  if (mu_.getDimension() == 0) mu_ = Point(sampleSize);
 
   conservedPsi_k_ranks_ = currentIndices_;
   addedPsi_k_ranks_.clear();
@@ -108,7 +108,7 @@ void LARS::updateBasis(LeastSquaresMethod & method,
   if ((iterations < maximumNumberOfIterations) && (relativeConvergence_ > maximumRelativeConvergence_))
   {
     // find the predictor most correlated with the current residual
-    const NumericalPoint cC(mPsiX_.getImplementation()->genVectProd(mY - mu_, true));
+    const Point cC(mPsiX_.getImplementation()->genVectProd(mY - mu_, true));
     UnsignedInteger candidatePredictor = 0;
     NumericalScalar cMax = -1.0;
     for (UnsignedInteger j = 0; j < basisSize; ++ j)
@@ -135,10 +135,10 @@ void LARS::updateBasis(LeastSquaresMethod & method,
     // Starting from here, predictors_ has a size at least equal to 1
     // store the sign of the correlation
     UnsignedInteger predictorsSize = predictors_.getSize();
-    NumericalPoint sC(predictorsSize);
+    Point sC(predictorsSize);
     for (UnsignedInteger j = 0; j < predictorsSize; ++ j) sC[j] = (cC[predictors_[j]] < 0.0 ? -1.0 : 1.0);
     // store correlations of the inactive set
-    NumericalPoint cI;
+    Point cI;
     for (UnsignedInteger j = 0; j < basisSize; ++ j)
       if (!inPredictors_[j]) cI.add(cC[j]);
 
@@ -148,17 +148,17 @@ void LARS::updateBasis(LeastSquaresMethod & method,
 
     if (getVerbose()) LOGINFO(OSS() << "matrix of elements of the active set built.");
 
-    NumericalPoint ga1(method.solveNormal(sC));
+    Point ga1(method.solveNormal(sC));
     if (getVerbose()) LOGINFO( OSS() << "Solved normal equation.");
 
     // normalization coefficient
     NumericalScalar cNorm = 1.0 / sqrt(dot(sC, ga1));
 
     // descent direction
-    const NumericalPoint descentDirectionAk(cNorm * ga1);
-    const NumericalPoint u(mPsiAk * descentDirectionAk);
-    const NumericalPoint d2(mPsiX_.getImplementation()->genVectProd(u, true));
-    NumericalPoint d;
+    const Point descentDirectionAk(cNorm * ga1);
+    const Point u(mPsiAk * descentDirectionAk);
+    const Point d2(mPsiX_.getImplementation()->genVectProd(u, true));
+    Point d;
     for (UnsignedInteger j = 0; j < basisSize; ++ j)
       if (!inPredictors_[j]) d.add(d2[j]);
 

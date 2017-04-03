@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
     Distribution prior = ComposedDistribution( priorColl );
 
     // choose the initial state within the prior
-    NumericalPoint initialState(prior.getRealization());
+    Point initialState(prior.getRealization());
 
     // conditional distribution
     Distribution conditional = Normal();
@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
     std::cout << "dimension=" << dimension << std::endl;
 
     // get a realization
-    NumericalPoint realization(randomVector.getRealization());
+    Point realization(randomVector.getRealization());
     std::cout << "realization=" << realization << std::endl;
 
     // get a sample

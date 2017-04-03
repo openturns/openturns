@@ -23,7 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Sample.hxx"
 
@@ -57,7 +57,7 @@ public:
                                const Bool tail = false);
   static NumericalScalar rBeta(const NumericalScalar p1,
                                const NumericalScalar p2);
-  static NumericalPoint rBeta(const NumericalScalar p1,
+  static Point rBeta(const NumericalScalar p1,
                               const NumericalScalar p2,
                               const UnsignedInteger size);
   // For the Binomial distribution
@@ -78,7 +78,7 @@ public:
                                 const NumericalScalar p,
                                 const Bool tail = false);
   static NumericalScalar rGamma(const NumericalScalar k);
-  static NumericalPoint rGamma(const NumericalScalar k,
+  static Point rGamma(const NumericalScalar k,
                                const UnsignedInteger size);
   // For Kolmogorov distribution
   static NumericalScalar pKolmogorov(const UnsignedInteger n,
@@ -99,7 +99,7 @@ public:
       const UnsignedInteger maximumIteration = ResourceMap::GetAsNumericalScalar("DistFunc-MaximumIteration"));
   static NumericalScalar rNonCentralChiSquare(const NumericalScalar nu,
       const NumericalScalar lambda);
-  static NumericalPoint rNonCentralChiSquare(const NumericalScalar nu,
+  static Point rNonCentralChiSquare(const NumericalScalar nu,
       const NumericalScalar lambda,
       const UnsignedInteger size);
   // For NonCentralStudent distribution
@@ -117,7 +117,7 @@ public:
       const Bool tail = false);
   static NumericalScalar rNonCentralStudent(const NumericalScalar nu,
       const NumericalScalar delta);
-  static NumericalPoint rNonCentralStudent(const NumericalScalar nu,
+  static Point rNonCentralStudent(const NumericalScalar nu,
       const NumericalScalar delta,
       const UnsignedInteger size);
   // For Normal distribution
@@ -137,7 +137,7 @@ public:
   static NumericalScalar qNormal(const NumericalScalar p,
                                  const Bool tail = false);
   static NumericalScalar rNormal();
-  static NumericalPoint rNormal(const UnsignedInteger size);
+  static Point rNormal(const UnsignedInteger size);
   // For Poisson distribution
   static NumericalScalar qPoisson(const NumericalScalar lambda,
                                   const NumericalScalar p,
@@ -153,14 +153,14 @@ public:
                                   const NumericalScalar p,
                                   const Bool tail = false);
   static NumericalScalar rStudent(const NumericalScalar nu);
-  static NumericalPoint rStudent(const NumericalScalar nu,
+  static Point rStudent(const NumericalScalar nu,
                                  const UnsignedInteger size);
-  static NumericalPoint rUniformTriangle(const NumericalPoint & a,
-                                         const NumericalPoint & b,
-                                         const NumericalPoint & c);
-  static Sample rUniformTriangle(const NumericalPoint & a,
-                                          const NumericalPoint & b,
-                                          const NumericalPoint & c,
+  static Point rUniformTriangle(const Point & a,
+                                         const Point & b,
+                                         const Point & c);
+  static Sample rUniformTriangle(const Point & a,
+                                          const Point & b,
+                                          const Point & c,
                                           const UnsignedInteger size);
 
   // For TruncatedNormal distribution

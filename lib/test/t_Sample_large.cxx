@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
       try
       {
         // We access the element of the sample
-        NumericalPoint p(sample.at(0));
+        Point p(sample.at(0));
         fullprint << "p=" << p << std::endl;
 
         // We should NEVER go here
@@ -68,12 +68,12 @@ int main(int argc, char *argv[])
       fullprint << "sample=" << sample << std::endl;
 
       // We access the element of the sample
-      NumericalPoint p(sample[0]);
+      Point p(sample[0]);
       fullprint << "p=" << p << std::endl;
       try
       {
         // We try to access past the last element of the point
-        NumericalPoint err( sample.at(2) );
+        Point err( sample.at(2) );
 
         // We should NEVER go here
         throw TestFailed("Exception NOT thrown");
@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
         sample(i, 1) = i;
       }
 
-      NumericalPoint mean = sample.computeMean();
+      Point mean = sample.computeMean();
 
       fullprint << "sample first point=" << sample[0]      << std::endl;
       fullprint << "sample last  point=" << sample[size - 1] << std::endl;

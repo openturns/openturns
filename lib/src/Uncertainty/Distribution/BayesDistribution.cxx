@@ -92,15 +92,15 @@ Bool BayesDistribution::equals(const DistributionImplementation & other) const
 void BayesDistribution::computeRange()
 {
   // First, the conditioning distribution
-  const NumericalPoint lowerBoundConditioning(conditioningDistribution_.getRange().getLowerBound());
+  const Point lowerBoundConditioning(conditioningDistribution_.getRange().getLowerBound());
   const Interval::BoolCollection finiteLowerBoundConditioning(conditioningDistribution_.getRange().getFiniteLowerBound());
-  const NumericalPoint upperBoundConditioning(conditioningDistribution_.getRange().getUpperBound());
+  const Point upperBoundConditioning(conditioningDistribution_.getRange().getUpperBound());
   const Interval::BoolCollection finiteUpperBoundConditioning(conditioningDistribution_.getRange().getFiniteUpperBound());
   // Then, the conditioned distribution
   const ConditionalDistribution deconditioned(conditionedDistribution_, conditioningDistribution_, linkFunction_);
-  NumericalPoint lowerBound(deconditioned.getRange().getLowerBound());
+  Point lowerBound(deconditioned.getRange().getLowerBound());
   Interval::BoolCollection finiteLowerBound(deconditioned.getRange().getFiniteLowerBound());
-  NumericalPoint upperBound(deconditioned.getRange().getUpperBound());
+  Point upperBound(deconditioned.getRange().getUpperBound());
   Interval::BoolCollection finiteUpperBound(deconditioned.getRange().getFiniteUpperBound());
   // Merge everything
   lowerBound.add(lowerBoundConditioning);
@@ -138,31 +138,31 @@ BayesDistribution * BayesDistribution::clone() const
 }
 
 /* Get one realization of the distribution */
-NumericalPoint BayesDistribution::getRealization() const
+Point BayesDistribution::getRealization() const
 {
-  const NumericalPoint y(conditioningDistribution_.getRealization());
+  const Point y(conditioningDistribution_.getRealization());
   Distribution deconditioned(conditionedDistribution_);
   deconditioned.setParameter(linkFunction_(y));
-  NumericalPoint x(deconditioned.getRealization());
+  Point x(deconditioned.getRealization());
   x.add(y);
   return x;
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar BayesDistribution::computePDF(const NumericalPoint & point) const
+NumericalScalar BayesDistribution::computePDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
   const UnsignedInteger conditionedDimension = conditionedDistribution_.getDimension();
   const UnsignedInteger conditioningDimension = conditioningDistribution_.getDimension();
-  NumericalPoint y(conditioningDimension);
+  Point y(conditioningDimension);
   std::copy(point.begin() + conditionedDimension, point.end(), y.begin());
   const NumericalScalar conditioningPDF = conditioningDistribution_.computePDF(y);
   if (conditioningPDF == 0.0) return 0.0;
   Distribution deconditioned(conditionedDistribution_);
-  const NumericalPoint parameters(linkFunction_(y));
+  const Point parameters(linkFunction_(y));
   deconditioned.setParameter(parameters);
-  NumericalPoint x(conditionedDimension);
+  Point x(conditionedDimension);
   std::copy(point.begin(), point.begin() + conditionedDimension, x.begin());
   const NumericalScalar deconditionedPDF = deconditioned.computePDF(x);
   return deconditionedPDF * conditioningPDF;

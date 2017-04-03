@@ -80,9 +80,9 @@ SimulatedAnnealingLHS * SimulatedAnnealingLHS::clone() const
 }
 
 /* Generate design method */
-Sample SimulatedAnnealingLHS::generateWithWeights(NumericalPoint & weights) const
+Sample SimulatedAnnealingLHS::generateWithWeights(Point & weights) const
 {
-  weights = NumericalPoint(size_, 1.0 / size_);
+  weights = Point(size_, 1.0 / size_);
   return generateWithRestart(0);
 }
 
@@ -141,7 +141,7 @@ Sample SimulatedAnnealingLHS::generateWithRestart(UnsignedInteger nRestart) cons
         }
       }
       LOGDEBUG(OSS() << "Current optimal value =" << optimalValue);
-      NumericalPoint historyElement(3);
+      Point historyElement(3);
       historyElement[0] = optimalValue;
       historyElement[1] = criteriaDifference;
       historyElement[2] = T;

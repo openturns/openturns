@@ -15,11 +15,11 @@ try:
     indicator = IndicatorFunction(
         analytical, Less(), 0.0)
     # Does it work?
-    x = NumericalPoint(2, 1.0)
+    x = Point(2, 1.0)
     value = analytical(x)[0]
     print("Value of the function=", repr(value),
           " value of the indicator=", repr(indicator(x)))
-    x = NumericalPoint(2, -1.0)
+    x = Point(2, -1.0)
     value = analytical(x)[0]
     print("Value of the function=", repr(value),
           " value of the indicator=", repr(indicator(x)))

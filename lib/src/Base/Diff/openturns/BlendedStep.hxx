@@ -41,12 +41,12 @@ public:
   BlendedStep();
 
   /** Parameters constructor */
-  explicit BlendedStep(const NumericalPoint & epsilon,
+  explicit BlendedStep(const Point & epsilon,
                        const NumericalScalar eta = ResourceMap::GetAsNumericalScalar( "BlendedStep-DefaultEta" ));
 
   /** Parameters constructor */
-  BlendedStep(const NumericalPoint & epsilon,
-              const NumericalPoint & eta);
+  BlendedStep(const Point & epsilon,
+              const Point & eta);
 
   /** String converter */
   virtual String __repr__() const;
@@ -57,7 +57,7 @@ public:
   virtual BlendedStep * clone() const;
 
   /** Compute step */
-  virtual NumericalPoint operator()(const NumericalPoint & inP) const;
+  virtual Point operator()(const Point & inP) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -66,12 +66,12 @@ public:
   void load(Advocate & adv);
 
   /** Eta accessor */
-  void setEta(const NumericalPoint & eta);
-  NumericalPoint getEta() const;
+  void setEta(const Point & eta);
+  Point getEta() const;
 
 protected:
   /** Step offset */
-  NumericalPoint eta_;
+  Point eta_;
 
 };
 

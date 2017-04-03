@@ -99,8 +99,8 @@ Weibull * Weibull::clone() const
 /* Compute the numerical range of the distribution given the parameters values */
 void Weibull::computeRange()
 {
-  const NumericalPoint lowerBound(1, gamma_);
-  const NumericalPoint upperBound(computeUpperBound());
+  const Point lowerBound(1, gamma_);
+  const Point upperBound(computeUpperBound());
   const Interval::BoolCollection finiteLowerBound(1, true);
   const Interval::BoolCollection finiteUpperBound(1, false);
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
@@ -108,26 +108,26 @@ void Weibull::computeRange()
 
 
 /* Get one realization of the distribution */
-NumericalPoint Weibull::getRealization() const
+Point Weibull::getRealization() const
 {
-  return NumericalPoint(1, gamma_ + alpha_ * std::pow(-std::log(1.0 - RandomGenerator::Generate()), 1.0 / beta_));
+  return Point(1, gamma_ + alpha_ * std::pow(-std::log(1.0 - RandomGenerator::Generate()), 1.0 / beta_));
 }
 
 
 /* Get the DDF of the distribution */
-NumericalPoint Weibull::computeDDF(const NumericalPoint & point) const
+Point Weibull::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0] - gamma_;
-  if (x <= 0.0) return NumericalPoint(1, 0.0);
+  if (x <= 0.0) return Point(1, 0.0);
   const NumericalScalar powX = std::pow(x / alpha_, beta_);
-  return NumericalPoint(1, (beta_ * (1.0 - powX) - 1.0) / (x * x) * beta_ * powX * std::exp(-powX));
+  return Point(1, (beta_ * (1.0 - powX) - 1.0) / (x * x) * beta_ * powX * std::exp(-powX));
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Weibull::computePDF(const NumericalPoint & point) const
+NumericalScalar Weibull::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -136,7 +136,7 @@ NumericalScalar Weibull::computePDF(const NumericalPoint & point) const
   return std::exp(computeLogPDF(point));
 }
 
-NumericalScalar Weibull::computeLogPDF(const NumericalPoint & point) const
+NumericalScalar Weibull::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -148,7 +148,7 @@ NumericalScalar Weibull::computeLogPDF(const NumericalPoint & point) const
 
 
 /* Get the CDF of the distribution */
-NumericalScalar Weibull::computeCDF(const NumericalPoint & point) const
+NumericalScalar Weibull::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -157,7 +157,7 @@ NumericalScalar Weibull::computeCDF(const NumericalPoint & point) const
   return -expm1(-std::pow(x / alpha_, beta_));
 }
 
-NumericalScalar Weibull::computeComplementaryCDF(const NumericalPoint & point) const
+NumericalScalar Weibull::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -210,12 +210,12 @@ NumericalComplex Weibull::computeCharacteristicFunction(const NumericalScalar x)
 }
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint Weibull::computePDFGradient(const NumericalPoint & point) const
+Point Weibull::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0] - gamma_;
-  NumericalPoint pdfGradient(3, 0.0);
+  Point pdfGradient(3, 0.0);
   if (x <= 0.0) return pdfGradient;
   const NumericalScalar powX = std::pow(x / alpha_, beta_);
   const NumericalScalar factor = powX / x * std::exp(-powX);
@@ -226,12 +226,12 @@ NumericalPoint Weibull::computePDFGradient(const NumericalPoint & point) const
 }
 
 /* Get the CDFGradient of the distribution */
-NumericalPoint Weibull::computeCDFGradient(const NumericalPoint & point) const
+Point Weibull::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0] - gamma_;
-  NumericalPoint cdfGradient(3, 0.0);
+  Point cdfGradient(3, 0.0);
   if (x <= 0.0) return cdfGradient;
   const NumericalScalar powX = std::pow(x / alpha_, beta_);
   const NumericalScalar factor = powX * std::exp(-powX);
@@ -252,35 +252,35 @@ NumericalScalar Weibull::computeScalarQuantile(const NumericalScalar prob,
 /* compute the mean of the distribution */
 void Weibull::computeMean() const
 {
-  mean_ =  NumericalPoint(1, gamma_ + alpha_ * SpecFunc::Gamma(1.0 + 1.0 / beta_));
+  mean_ =  Point(1, gamma_ + alpha_ * SpecFunc::Gamma(1.0 + 1.0 / beta_));
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint Weibull::getStandardDeviation() const
+Point Weibull::getStandardDeviation() const
 {
-  return NumericalPoint(1, alpha_ * std::sqrt(SpecFunc::Gamma(1.0 + 2.0 / beta_) - std::pow(SpecFunc::Gamma(1.0 + 1.0 / beta_), 2.0)));
+  return Point(1, alpha_ * std::sqrt(SpecFunc::Gamma(1.0 + 2.0 / beta_) - std::pow(SpecFunc::Gamma(1.0 + 1.0 / beta_), 2.0)));
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint Weibull::getSkewness() const
+Point Weibull::getSkewness() const
 {
   const NumericalScalar gamma1 = SpecFunc::Gamma(1.0 + 1.0 / beta_);
   const NumericalScalar gamma1_2 = gamma1 * gamma1;
   const NumericalScalar gamma2 = SpecFunc::Gamma(1.0 + 2.0 / beta_);
   const NumericalScalar gamma3 = SpecFunc::Gamma(1.0 + 3.0 / beta_);
-  return NumericalPoint(1, (2.0 * gamma1_2 * gamma1 - 3.0 * gamma1 * gamma2 + gamma3) / std::pow((gamma2 - gamma1_2), 1.5));
+  return Point(1, (2.0 * gamma1_2 * gamma1 - 3.0 * gamma1 * gamma2 + gamma3) / std::pow((gamma2 - gamma1_2), 1.5));
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint Weibull::getKurtosis() const
+Point Weibull::getKurtosis() const
 {
   const NumericalScalar gamma1 = SpecFunc::Gamma(1.0 + 1.0 / beta_);
   const NumericalScalar gamma1_2 = gamma1 * gamma1;
   const NumericalScalar gamma2 = SpecFunc::Gamma(1.0 + 2.0 / beta_);
   const NumericalScalar gamma3 = SpecFunc::Gamma(1.0 + 3.0 / beta_);
   const NumericalScalar gamma4 = SpecFunc::Gamma(1.0 + 4.0 / beta_);
-  return NumericalPoint(1, (6.0 * gamma1_2 * gamma2 + gamma4 - 4.0 * gamma1 * gamma3 - 3.0 * gamma1_2 * gamma1_2) / std::pow(gamma2 - gamma1_2, 2.0));
+  return Point(1, (6.0 * gamma1_2 * gamma2 + gamma4 - 4.0 * gamma1 * gamma3 - 3.0 * gamma1_2 * gamma1_2) / std::pow(gamma2 - gamma1_2, 2.0));
 }
 
 /* Compute the covariance of the distribution */
@@ -292,9 +292,9 @@ void Weibull::computeCovariance() const
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Weibull::getStandardMoment(const UnsignedInteger n) const
+Point Weibull::getStandardMoment(const UnsignedInteger n) const
 {
-  return NumericalPoint(1, SpecFunc::Gamma(1.0 + n / beta_));
+  return Point(1, SpecFunc::Gamma(1.0 + n / beta_));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
@@ -304,16 +304,16 @@ Weibull::Implementation Weibull::getStandardRepresentative() const
 }
 
 /* Parameters value accessor */
-NumericalPoint Weibull::getParameter() const
+Point Weibull::getParameter() const
 {
-  NumericalPoint point(3);
+  Point point(3);
   point[0] = alpha_;
   point[1] = beta_;
   point[2] = gamma_;
   return point;
 }
 
-void Weibull::setParameter(const NumericalPoint & parameter)
+void Weibull::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();

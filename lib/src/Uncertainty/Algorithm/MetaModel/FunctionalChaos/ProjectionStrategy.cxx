@@ -89,7 +89,7 @@ Sample ProjectionStrategy::getOutputSample() const
 }
 
 /* Weights accessor */
-NumericalPoint ProjectionStrategy::getWeights() const
+Point ProjectionStrategy::getWeights() const
 {
   return getImplementation()->getWeights();
 }
@@ -107,7 +107,7 @@ NumericalScalar ProjectionStrategy::getRelativeError() const
 }
 
 /* Relative error accessor */
-NumericalPoint ProjectionStrategy::getCoefficients() const
+Point ProjectionStrategy::getCoefficients() const
 {
   return getImplementation()->getCoefficients();
 }

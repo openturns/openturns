@@ -51,7 +51,7 @@ public:
   virtual String __repr__() const;
 
   /** Compute the gradient of a product of univariate polynomials */
-  virtual Matrix gradient(const NumericalPoint & inP) const;
+  virtual Matrix gradient(const Point & inP) const;
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;

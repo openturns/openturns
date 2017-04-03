@@ -1,9 +1,9 @@
 sample= class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=3 dimension=2 data=[[1,1.5],[2,2.5],[3,3.5]]
-Estimated distribution= class=UserDefined name=UserDefined dimension=2 points=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=3 dimension=2 data=[[1,1.5],[2,2.5],[3,3.5]] probabilities=class=NumericalPoint name=Unnamed dimension=3 values=[0.333333,0.333333,0.333333]
+Estimated distribution= class=UserDefined name=UserDefined dimension=2 points=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=3 dimension=2 data=[[1,1.5],[2,2.5],[3,3.5]] probabilities=class=Point name=Unnamed dimension=3 values=[0.333333,0.333333,0.333333]
 Default distribution= UserDefined({x = [0], p = 1})
 Sample                = 0 : [ 1   1.5 ]
 1 : [ 2   2.5 ]
 2 : [ 3   3.5 ]
 Estimated UserDefined= UserDefined({x = [1,1.5], p = 0.333333}, {x = [2,2.5], p = 0.333333}, {x = [3,3.5], p = 0.333333})
 Default UserDefined= UserDefined({x = [0], p = 1})
-Estimated distribution= class=UserDefined name=UserDefined dimension=1 points=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=1 dimension=1 data=[[10]] probabilities=class=NumericalPoint name=Unnamed dimension=1 values=[1]
+Estimated distribution= class=UserDefined name=UserDefined dimension=1 points=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=1 dimension=1 data=[[10]] probabilities=class=Point name=Unnamed dimension=1 values=[1]

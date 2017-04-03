@@ -8,7 +8,7 @@ TESTPREAMBLE()
 try:
     inputDimension = 2
 
-    x = NumericalPoint(inputDimension)
+    x = Point(inputDimension)
     for i in range(inputDimension):
         x[i] = 2. + i
 

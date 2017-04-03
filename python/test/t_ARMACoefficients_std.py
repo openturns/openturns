@@ -56,17 +56,17 @@ try:
     print("coefficients2 = ", repr(coefficients2))
 
     # 1D case
-    point = NumericalPoint(dimension * dimension, 0.0)
+    point = Point(dimension * dimension, 0.0)
     point[0] = 1.
     point[1] = 2.
     point[2] = 3.
     point[3] = 4.
 
-    # ARMACoefficients NumericalPoint constructor
+    # ARMACoefficients Point constructor
     coefficients3 = ARMACoefficients(point)
 
     # print  of the new collection
-    print("Using NumericalPoint constructor ")
+    print("Using Point constructor ")
     print("coefficients3 = ", repr(coefficients3))
 
     # ARMACoefficients with polynomial constructor

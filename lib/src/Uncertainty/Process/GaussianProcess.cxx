@@ -328,12 +328,12 @@ Sample GaussianProcess::getRealizationGibbs() const
   const UnsignedInteger nMax = std::max(static_cast<UnsignedInteger>(1), ResourceMap::GetAsUnsignedInteger("GaussianProcess-GibbsMaximumIteration"));
 
   Sample values(size, 1);
-  NumericalPoint diagonal(size);
+  Point diagonal(size);
   const KPermutationsDistribution permutationDistribution(size, size);
   for (UnsignedInteger n = 0; n < nMax; ++n)
   {
     LOGINFO(OSS() << "Gibbs sampler - start iteration " << n + 1 << " over " << nMax);
-    const NumericalPoint permutation(permutationDistribution.getRealization());
+    const Point permutation(permutationDistribution.getRealization());
     for (UnsignedInteger i = 0; i < size; ++i)
     {
       const UnsignedInteger index = static_cast< UnsignedInteger >(permutation[i]);
@@ -341,7 +341,7 @@ Sample GaussianProcess::getRealizationGibbs() const
       // Here we work on the normalized covariance, ie the correlation
       Sample covarianceRow(covarianceModel_.discretizeRow(vertices, index));
       diagonal[index] = covarianceRow[index][0];
-      const NumericalPoint delta(1, (DistFunc::rNormal() - values[index][0]) / diagonal[index]);
+      const Point delta(1, (DistFunc::rNormal() - values[index][0]) / diagonal[index]);
       values += covarianceRow * delta;
     }
   }
@@ -356,10 +356,10 @@ Sample GaussianProcess::getRealizationCholesky() const
   // Constantes values
   const UnsignedInteger size = getMesh().getVerticesNumber();
   const UnsignedInteger fullSize = covarianceCholeskyFactor_.getDimension();
-  const NumericalPoint gaussianPoint(DistFunc::rNormal(fullSize));
+  const Point gaussianPoint(DistFunc::rNormal(fullSize));
 
   SampleImplementation values(size, dimension_);
-  const NumericalPoint rawResult(covarianceCholeskyFactor_ * gaussianPoint);
+  const Point rawResult(covarianceCholeskyFactor_ * gaussianPoint);
   LOGINFO(OSS() << "In GaussianProcess::getRealizationCholesky(), size=" << size << ", fullSize=" << fullSize << ", gaussianPoint dimension=" << gaussianPoint.getDimension() << ", rawResult dimension=" << rawResult.getDimension());
   values.setData(rawResult);
   return values;
@@ -370,9 +370,9 @@ Sample GaussianProcess::getRealizationHMatrix() const
   if (!isInitialized_) initialize();
   const UnsignedInteger size = getMesh().getVerticesNumber();
   const UnsignedInteger fullSize = covarianceHMatrix_.getNbRows();
-  const NumericalPoint gaussianPoint(DistFunc::rNormal(fullSize));
+  const Point gaussianPoint(DistFunc::rNormal(fullSize));
 
-  NumericalPoint y(fullSize);
+  Point y(fullSize);
   covarianceHMatrix_.gemv('N', 1.0, gaussianPoint, 0.0, y);
   Sample values(size, dimension_);
   values.getImplementation()->setData(y);

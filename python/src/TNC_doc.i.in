@@ -56,7 +56,7 @@ Examples
 
 Returns
 -------
-scale : :class:`~openturns.NumericalPoint`
+scale : :class:`~openturns.Point`
     Scaling factors to apply to each variable
 
     if empty, the factors are min-max for interval bounded variables
@@ -84,7 +84,7 @@ scale : sequence of float
 
 Returns
 -------
-offset : :class:`~openturns.NumericalPoint`
+offset : :class:`~openturns.Point`
     Constant to substract to each variable
 
     if empty, the constant are (min-max)/2 for interval bounded

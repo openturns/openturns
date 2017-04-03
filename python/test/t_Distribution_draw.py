@@ -8,10 +8,10 @@ pointNumber = 251
 
 try:
     dist1D = Normal(2.0, 4.0)
-    dist2D = Normal(NumericalPoint(2, 2.0),
-                    NumericalPoint(2, 4.0), CorrelationMatrix(2))
-    distND = Normal(NumericalPoint(5, 2.0),
-                    NumericalPoint(5, 4.0), CorrelationMatrix(5))
+    dist2D = Normal(Point(2, 2.0),
+                    Point(2, 4.0), CorrelationMatrix(2))
+    distND = Normal(Point(5, 2.0),
+                    Point(5, 4.0), CorrelationMatrix(5))
     # Check drawing methods for 1D distributions
     # PDF
     graphPDF = dist1D.drawPDF()

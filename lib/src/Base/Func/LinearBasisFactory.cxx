@@ -57,14 +57,14 @@ Basis LinearBasisFactory::build() const
   Basis basis;
 
   // constant term
-  basis.add(LinearFunction (NumericalPoint(inputDimension_, 0.0), NumericalPoint(1, 1.0), Matrix(1, inputDimension_)));
+  basis.add(LinearFunction (Point(inputDimension_, 0.0), Point(1, 1.0), Matrix(1, inputDimension_)));
 
   // linear term
   for ( UnsignedInteger i = 0; i < inputDimension_; ++ i )
   {
     Matrix linear(1, inputDimension_);
     linear(0, i) = 1.0;
-    basis.add(LinearFunction (NumericalPoint(inputDimension_, 0.0), NumericalPoint(1, 0.0), linear));
+    basis.add(LinearFunction (Point(inputDimension_, 0.0), Point(1, 0.0), linear));
   }
 
   return basis;

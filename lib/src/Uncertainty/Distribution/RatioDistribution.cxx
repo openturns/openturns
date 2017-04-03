@@ -118,13 +118,13 @@ void RatioDistribution::computeRange()
 }
 
 /* Get one realization of the distribution */
-NumericalPoint RatioDistribution::getRealization() const
+Point RatioDistribution::getRealization() const
 {
-  return NumericalPoint(1, left_.getRealization()[0] * right_.getRealization()[0]);
+  return Point(1, left_.getRealization()[0] * right_.getRealization()[0]);
 }
 
 /* Get the PDF of the distribution: PDF(x) = \int_R PDF_left(u) * PDF_right(x / u) * du / |u| */
-NumericalScalar RatioDistribution::computePDF(const NumericalPoint & point) const
+NumericalScalar RatioDistribution::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -170,7 +170,7 @@ NumericalScalar RatioDistribution::computePDFQ1(const NumericalScalar x,
   const NumericalScalar bd = b * d;
   GaussKronrod algo;
   const PDFKernelWrapper pdfKernelWrapper(left_, right_, x);
-  const Function pdfKernel(bindMethod<PDFKernelWrapper, NumericalPoint, NumericalPoint>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
+  const Function pdfKernel(bindMethod<PDFKernelWrapper, Point, Point>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
   if (c == 0.0)
   {
     if ((x >= 0.0) && (x < ad)) return algo.integrate(pdfKernel, Interval(a, b), pdfEpsilon_)[0];
@@ -203,7 +203,7 @@ NumericalScalar RatioDistribution::computePDFQ2(const NumericalScalar x,
   const NumericalScalar bd = b * d;
   GaussKronrod algo;
   const PDFKernelWrapper pdfKernelWrapper(left_, right_, x);
-  const Function pdfKernel(bindMethod<PDFKernelWrapper, NumericalPoint, NumericalPoint>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
+  const Function pdfKernel(bindMethod<PDFKernelWrapper, Point, Point>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
   if (c == 0.0)
   {
     if ((x >= ad) && (x < bd)) return algo.integrate(pdfKernel, Interval(a, x / d), pdfEpsilon_)[0];
@@ -236,7 +236,7 @@ NumericalScalar RatioDistribution::computePDFQ3(const NumericalScalar x,
   const NumericalScalar bd = b * d;
   GaussKronrod algo;
   const PDFKernelWrapper pdfKernelWrapper(left_, right_, x);
-  const Function pdfKernel(bindMethod<PDFKernelWrapper, NumericalPoint, NumericalPoint>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
+  const Function pdfKernel(bindMethod<PDFKernelWrapper, Point, Point>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
   if (d == 0.0)
   {
     if ((x >= bc) && (x < ac)) return algo.integrate(pdfKernel, Interval(a, x / c), pdfEpsilon_)[0];
@@ -269,7 +269,7 @@ NumericalScalar RatioDistribution::computePDFQ4(const NumericalScalar x,
   const NumericalScalar bd = b * d;
   GaussKronrod algo;
   const PDFKernelWrapper pdfKernelWrapper(left_, right_, x);
-  const Function pdfKernel(bindMethod<PDFKernelWrapper, NumericalPoint, NumericalPoint>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
+  const Function pdfKernel(bindMethod<PDFKernelWrapper, Point, Point>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
   if (d == 0.0)
   {
     if ((x >= ac) && (x <= 0.0)) return algo.integrate(pdfKernel, Interval(a, b), pdfEpsilon_)[0];
@@ -303,11 +303,11 @@ NumericalComplex RatioDistribution::computeCharacteristicFunction(const Numerica
   const NumericalScalar bLeft = left_.getRange().getUpperBound()[0];
   GaussKronrod algo;
   const CFKernelWrapper cfKernelWrapper(left_, right_, x);
-  const Function cfKernel(bindMethod<CFKernelWrapper, NumericalPoint, NumericalPoint>(cfKernelWrapper, &CFKernelWrapper::eval, 1, 2));
+  const Function cfKernel(bindMethod<CFKernelWrapper, Point, Point>(cfKernelWrapper, &CFKernelWrapper::eval, 1, 2));
   NumericalScalar negativeError = 0.0;
-  const NumericalPoint negativePart(algo.integrate(cfKernel, Interval(aLeft, muLeft), negativeError));
+  const Point negativePart(algo.integrate(cfKernel, Interval(aLeft, muLeft), negativeError));
   NumericalScalar positiveError = 0.0;
-  const NumericalPoint positivePart(algo.integrate(cfKernel, Interval(muLeft, bLeft), positiveError));
+  const Point positivePart(algo.integrate(cfKernel, Interval(muLeft, bLeft), positiveError));
   NumericalComplex value(negativePart[0] + positivePart[0], negativePart[1] + positivePart[1]);
   return value;
 }
@@ -315,7 +315,7 @@ NumericalComplex RatioDistribution::computeCharacteristicFunction(const Numerica
 /* Compute the mean of the distribution */
 void RatioDistribution::computeMean() const
 {
-  mean_ = NumericalPoint(1, left_.getMean()[0] * right_.getMean()[0]);
+  mean_ = Point(1, left_.getMean()[0] * right_.getMean()[0]);
   isAlreadyComputedMean_ = true;
 }
 
@@ -332,21 +332,21 @@ void RatioDistribution::computeCovariance() const
 }
 
 /* Parameters value accessor */
-NumericalPoint RatioDistribution::getParameter() const
+Point RatioDistribution::getParameter() const
 {
-  NumericalPoint point(left_.getParameter());
+  Point point(left_.getParameter());
   point.add(right_.getParameter());
   return point;
 }
 
-void RatioDistribution::setParameter(const NumericalPoint & parameter)
+void RatioDistribution::setParameter(const Point & parameter)
 {
   const UnsignedInteger leftSize = left_.getParameterDimension();
   const UnsignedInteger rightSize = right_.getParameterDimension();
   if (parameter.getSize() != leftSize + rightSize)
     throw InvalidArgumentException(HERE) << "Error: expected " << leftSize + rightSize << " values, got " << parameter.getSize();
-  NumericalPoint newLeftParameters(leftSize);
-  NumericalPoint newRightParameters(rightSize);
+  Point newLeftParameters(leftSize);
+  Point newRightParameters(rightSize);
   std::copy(parameter.begin(), parameter.begin() + leftSize, newLeftParameters.begin());
   std::copy(parameter.begin() + leftSize, parameter.end(), newRightParameters.begin());
   Distribution newLeft(left_);

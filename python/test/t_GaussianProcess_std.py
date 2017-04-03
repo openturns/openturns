@@ -12,9 +12,9 @@ try:
     spatialDimension = 1
 
     # Amplitude values
-    amplitude = NumericalPoint(defaultDimension, 1.0)
+    amplitude = Point(defaultDimension, 1.0)
     # Scale values
-    scale = NumericalPoint(defaultDimension, 1.0)
+    scale = Point(defaultDimension, 1.0)
 
     # Second order model with parameters
     myModel = ExponentialCauchy(scale, amplitude)

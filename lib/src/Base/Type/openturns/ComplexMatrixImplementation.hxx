@@ -23,7 +23,7 @@
 
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Collection.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/MatrixImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -183,12 +183,12 @@ public:
   /** Multiplications with a NumericalComplexCollection (must have consistent dimensions) */
   NumericalComplexCollection genVectProd (const NumericalComplexCollection & pt) const;
   NumericalComplexCollection genVectProd (const NumericalScalarCollection & pt) const;
-  NumericalComplexCollection genVectProd (const NumericalPoint & pt) const;
+  NumericalComplexCollection genVectProd (const Point & pt) const;
 
   /** Using some optimization (for Hermitian matrix) */
   NumericalComplexCollection hermVectProd (const NumericalComplexCollection & pt) const;
   NumericalComplexCollection hermVectProd (const NumericalScalarCollection & pt) const;
-  NumericalComplexCollection hermVectProd (const NumericalPoint & pt) const;
+  NumericalComplexCollection hermVectProd (const Point & pt) const;
 
   /** Using triangular matrix */
   NumericalComplexCollection triangularVectProd(const NumericalComplexCollection & pt,
@@ -197,7 +197,7 @@ public:
       const char side = 'L') const;
 
 
-  NumericalComplexCollection triangularVectProd(const NumericalPoint & pt,
+  NumericalComplexCollection triangularVectProd(const Point & pt,
       const char side = 'L') const;
 
   /** Check if the matrix is self-adjoint */

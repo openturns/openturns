@@ -73,7 +73,7 @@ String InverseNatafIndependentCopulaGradient::__repr__() const
  * Jij = dSi/duj = Phi'(ui) if i = j
  *               = 0 else
  */
-Matrix InverseNatafIndependentCopulaGradient::gradient(const NumericalPoint & inP) const
+Matrix InverseNatafIndependentCopulaGradient::gradient(const Point & inP) const
 {
   Matrix result(dimension_, dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)

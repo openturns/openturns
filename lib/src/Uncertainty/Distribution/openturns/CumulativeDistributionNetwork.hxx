@@ -77,18 +77,18 @@ public:
   virtual CumulativeDistributionNetwork * clone() const;
 
   /** Get one realization of the CumulativeDistributionNetwork */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Get many realizations of the CumulativeDistributionNetwork */
   Sample getSample(const UnsignedInteger size) const;
 
   /** Get the PDF of the CumulativeDistributionNetwork */
   using DistributionImplementation::computePDF;
-  NumericalScalar computePDF(const NumericalPoint & point) const;
+  NumericalScalar computePDF(const Point & point) const;
 
   /** Get the CDF of the CumulativeDistributionNetwork */
   using DistributionImplementation::computeCDF;
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
+  NumericalScalar computeCDF(const Point & point) const;
 
   /** Get the i-th marginal distribution */
   Implementation getMarginal(const UnsignedInteger i) const;
@@ -123,7 +123,7 @@ private:
   void computeRange();
 
   /** Extract the components of a full dimension point to feed the index distribution */
-  NumericalPoint reducePoint(const NumericalPoint & point,
+  Point reducePoint(const Point & point,
                              const UnsignedInteger index) const;
 
   /** The collection of distribution of the cumulativeDistributionNetwork */

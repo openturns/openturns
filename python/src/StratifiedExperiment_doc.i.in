@@ -27,7 +27,7 @@ A StratifiedExperiment object can be used only through its derived classes:
 
 Returns
 -------
-center : :class:`~openturns.NumericalPoint`
+center : :class:`~openturns.Point`
     Sequence which has different meanings according to the nature of the
     stratified experiment: Axial, Composite, Factorial or Box (see
     corresponding documentation)."
@@ -51,7 +51,7 @@ center : sequence of float
 
 Returns
 -------
-levels : :class:`~openturns.NumericalPoint`
+levels : :class:`~openturns.Point`
     Sequence which has different meanings according to the nature of the
     stratified experiment: Axial, Composite, Factorial or Box (see
     corresponding documentation)."

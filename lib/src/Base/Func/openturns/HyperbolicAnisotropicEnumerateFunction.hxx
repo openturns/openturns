@@ -24,7 +24,7 @@
 #include <list>
 
 #include "openturns/EnumerateFunctionImplementation.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -53,7 +53,7 @@ public:
                                          const NumericalScalar q = ResourceMap::GetAsNumericalScalar("HyperbolicAnisotropicEnumerateFunction-DefaultQ"));
 
   /** Parameter constructor */
-  HyperbolicAnisotropicEnumerateFunction(const NumericalPoint & weight,
+  HyperbolicAnisotropicEnumerateFunction(const Point & weight,
                                          const NumericalScalar q = ResourceMap::GetAsNumericalScalar("HyperbolicAnisotropicEnumerateFunction-DefaultQ"));
 
   /** Virtual constrcutor */
@@ -82,8 +82,8 @@ public:
   NumericalScalar getQ() const;
 
   /** Weight accessor */
-  void setWeight(const NumericalPoint & weight);
-  NumericalPoint getWeight() const;
+  void setWeight(const Point & weight);
+  Point getWeight() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -104,7 +104,7 @@ protected:
 private:
 
   /** Weight of each component */
-  NumericalPoint weight_;
+  Point weight_;
 
   /** Q-Norm q term */
   NumericalScalar q_;

@@ -38,8 +38,8 @@ QuadraticEvaluation::QuadraticEvaluation()
 }
 
 /* Parameter constructor f(x) = constant + linear.x + 1/2 x'.quadratic.x */
-QuadraticEvaluation::QuadraticEvaluation(const NumericalPoint & center,
-    const NumericalPoint & constant,
+QuadraticEvaluation::QuadraticEvaluation(const Point & center,
+    const Point & constant,
     const Matrix & linear,
     const SymmetricTensor & quadratic)
   : EvaluationImplementation(),
@@ -93,13 +93,13 @@ String QuadraticEvaluation::__str__(const String & offset) const
 }
 
 /* Accessor for the center */
-NumericalPoint QuadraticEvaluation::getCenter() const
+Point QuadraticEvaluation::getCenter() const
 {
   return center_;
 }
 
 /* Accessor for the constant term */
-NumericalPoint QuadraticEvaluation::getConstant() const
+Point QuadraticEvaluation::getConstant() const
 {
   return constant_;
 }
@@ -119,12 +119,12 @@ SymmetricTensor QuadraticEvaluation::getQuadratic() const
 /* Here is the interface that all derived class must implement */
 
 /* Operator () */
-NumericalPoint QuadraticEvaluation::operator() (const NumericalPoint & inP) const
+Point QuadraticEvaluation::operator() (const Point & inP) const
 {
   if ((inP.getDimension() != linear_.getNbColumns()) || (inP.getDimension() != quadratic_.getNbRows())) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   /* We don't have a true linear algebra with tensors, so we must perform the tensor/vector product by hand */
-  const NumericalPoint delta(inP - center_);
-  NumericalPoint result(constant_ + linear_ * delta);
+  const Point delta(inP - center_);
+  Point result(constant_ + linear_ * delta);
   /* As we don't have a sheet extractor yet, we can't use the following code */
   const UnsignedInteger sheetNumber = quadratic_.getNbSheets();
   for(UnsignedInteger index = 0; index < sheetNumber; ++index)

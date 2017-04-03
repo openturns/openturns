@@ -66,7 +66,7 @@ public:
   virtual SobolIndicesAlgorithmImplementation * clone() const;
 
   /** First order indices accessor */
-  virtual NumericalPoint getFirstOrderIndices(const UnsignedInteger marginalIndex = 0) const;
+  virtual Point getFirstOrderIndices(const UnsignedInteger marginalIndex = 0) const;
 
   /** Interval for the first order indices accessor */
   virtual Interval getFirstOrderIndicesInterval() const;
@@ -75,16 +75,16 @@ public:
   virtual SymmetricMatrix getSecondOrderIndices(const UnsignedInteger marginalIndex = 0) const;
 
   /** Total order indices accessor */
-  virtual NumericalPoint getTotalOrderIndices(const UnsignedInteger marginalIndex = 0) const;
+  virtual Point getTotalOrderIndices(const UnsignedInteger marginalIndex = 0) const;
 
   /** Interval for the total order indices accessor */
   virtual Interval getTotalOrderIndicesInterval() const;
 
   /** Aggregated first order indices accessor for multivariate samples */
-  NumericalPoint getAggregatedFirstOrderIndices() const;
+  Point getAggregatedFirstOrderIndices() const;
 
   /** Aggregated total order indices accessor for multivariate samples */
-  NumericalPoint getAggregatedTotalOrderIndices() const;
+  Point getAggregatedTotalOrderIndices() const;
 
   // Setters for bootstrap size
   UnsignedInteger getBootstrapSize() const;
@@ -113,10 +113,10 @@ public:
   static Sample Generate(const WeightedExperiment & experiment,
                                   const Bool computeSecondOrder = true);
 
-  static Graph DrawImportanceFactors(const NumericalPointWithDescription & importanceFactors,
+  static Graph DrawImportanceFactors(const PointWithDescription & importanceFactors,
                                      const String & title);
 
-  static Graph DrawImportanceFactors(const NumericalPoint & values,
+  static Graph DrawImportanceFactors(const Point & values,
                                      const Description & names,
                                      const String & title);
 
@@ -137,20 +137,20 @@ protected:
   Sample getBootstrapDesign(const Indices & indices) const;
 
   /** Function that computes merged indices using Vi/VTi + variance  */
-  NumericalPoint computeAggregatedIndices(const Sample & Vi,
+  Point computeAggregatedIndices(const Sample & Vi,
                                           const Sample & VTi,
-                                          const NumericalPoint & variance,
-                                          NumericalPoint & mergedTotal) const;
+                                          const Point & variance,
+                                          Point & mergedTotal) const;
 
   /** void method that computes confidence interval */
   void computeIndicesInterval() const;
 
   /** Multiplication and sum of two Samples */
-  NumericalPoint computeSumDotSamples(const Sample & x,
+  Point computeSumDotSamples(const Sample & x,
                                       const Sample & y) const;
 
   /** Multiplication and sum of two (sub)samples that are in the same Samples */
-  NumericalPoint computeSumDotSamples(const Sample & sample,
+  Point computeSumDotSamples(const Sample & sample,
                                       const UnsignedInteger size,
                                       const UnsignedInteger indexX,
                                       const UnsignedInteger indexY) const;
@@ -172,7 +172,7 @@ protected:
   NumericalScalar confidenceLevel_;
 
   /** Variance of the reference output sample */
-  NumericalPoint referenceVariance_;
+  Point referenceVariance_;
 
   /** Variance conditionnaly to the i-th variable => Si = Vi/Var*/
   mutable Sample varianceI_;
@@ -181,10 +181,10 @@ protected:
   mutable Sample varianceTI_;
 
   /** Aggregated first order indices */
-  mutable NumericalPoint mergedFirstOrderIndices_;
+  mutable Point mergedFirstOrderIndices_;
 
   /** Aggregated total order indices */
-  mutable NumericalPoint mergedTotalOrderIndices_;
+  mutable Point mergedTotalOrderIndices_;
 
   /** Second order indices */
   mutable SymmetricTensor secondOrderIndices_;

@@ -63,11 +63,11 @@ f : :class:`~openturns.Function`, :math:`f: \Rset \mapsto \Rset^p`
     The integrand function.
 interval : :class:`~openturns.Interval`, :math:`interval \in \Rset` 
     The integration domain. 
-error : :class:`~openturns.NumericalPoint`
+error : :class:`~openturns.Point`
     The error estimation of the approximation.
 a,b : float 
     Bounds of the integration interval.
-ai, bi, ei : :class:`~openturns.NumericalPoint`; 
+ai, bi, ei : :class:`~openturns.Point`; 
     *ai* is the set of lower bounds of the subintervals; 
 
     *bi* the corresponding upper bounds; 
@@ -78,7 +78,7 @@ fi : :class:`~openturns.Sample`
 
 Returns
 -------
-value : :class:`~openturns.NumericalPoint`
+value : :class:`~openturns.Point`
     Approximation of the integral.
 
 
@@ -98,10 +98,10 @@ Use the high-level usage:
 
 Use the low-level usage:
 
->>> error = ot.NumericalPoint()
->>> ai = ot.NumericalPoint()
->>> bi = ot.NumericalPoint()
->>> ei = ot.NumericalPoint()
+>>> error = ot.Point()
+>>> ai = ot.Point()
+>>> bi = ot.Point()
+>>> ei = ot.Point()
 >>> fi = ot.Sample()
 >>> value2 = algoGK.integrate(f, a, b, error, ai, bi, fi, ei)[0]
 >>> print(value2)

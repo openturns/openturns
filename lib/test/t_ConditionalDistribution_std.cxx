@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
       fullprint << "Independent copula= " << (distribution.hasIndependentCopula() ? "true" : "false") << std::endl;
 
       // Test for realization of distribution
-      NumericalPoint oneRealization = distribution.getRealization();
+      Point oneRealization = distribution.getRealization();
       fullprint << "oneRealization=" << oneRealization << std::endl;
 
       // Test for sampling
@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
       fullprint << "anotherSample covariance=" << anotherSample.computeCovariance() << std::endl;
 
       // Define a point
-      NumericalPoint zero(dim, 0.0);
+      Point zero(dim, 0.0);
 
       // Show PDF and CDF of zero point
       NumericalScalar zeroPDF = distribution.computePDF( zero );
@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
                 << " cdf=" << zeroCDF
                 << std::endl;
       // Get 95% quantile
-      NumericalPoint quantile = distribution.computeQuantile( 0.95 );
+      Point quantile = distribution.computeQuantile( 0.95 );
       fullprint << "Quantile=" << quantile << std::endl;
       fullprint << "CDF(quantile)=" << distribution.computeCDF(quantile) << std::endl;
     }
@@ -137,7 +137,7 @@ int main(int argc, char *argv[])
       fullprint << "Independent copula= " << (distribution.hasIndependentCopula() ? "true" : "false") << std::endl;
 
       // Test for realization of distribution
-      NumericalPoint oneRealization = distribution.getRealization();
+      Point oneRealization = distribution.getRealization();
       fullprint << "oneRealization=" << oneRealization << std::endl;
 
       // Test for sampling
@@ -152,7 +152,7 @@ int main(int argc, char *argv[])
       fullprint << "anotherSample covariance=" << anotherSample.computeCovariance() << std::endl;
 
       // Define a point
-      NumericalPoint zero(dim, 0.0);
+      Point zero(dim, 0.0);
 
       // Show PDF and CDF of zero point
       NumericalScalar zeroPDF = distribution.computePDF( zero );
@@ -162,7 +162,7 @@ int main(int argc, char *argv[])
                 << " cdf=" << zeroCDF
                 << std::endl;
       // Get 95% quantile
-      NumericalPoint quantile = distribution.computeQuantile( 0.95 );
+      Point quantile = distribution.computeQuantile( 0.95 );
       fullprint << "Quantile=" << quantile << std::endl;
       fullprint << "CDF(quantile)=" << distribution.computeCDF(quantile) << std::endl;
       // Extract the marginals
@@ -170,8 +170,8 @@ int main(int argc, char *argv[])
       {
         Distribution margin(distribution.getMarginal(j));
         fullprint << "margin=" << margin << std::endl;
-        fullprint << "margin PDF=" << margin.computePDF(NumericalPoint(1)) << std::endl;
-        fullprint << "margin CDF=" << margin.computeCDF(NumericalPoint(1)) << std::endl;
+        fullprint << "margin PDF=" << margin.computePDF(Point(1)) << std::endl;
+        fullprint << "margin CDF=" << margin.computeCDF(Point(1)) << std::endl;
         fullprint << "margin quantile=" << margin.computeQuantile(0.95) << std::endl;
         fullprint << "margin realization=" << margin.getRealization() << std::endl;
       }

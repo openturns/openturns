@@ -22,7 +22,7 @@
 #define OPENTURNS_QUADRATICNUMERICALMATHFUNCTION_HXX
 
 #include "openturns/Function.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/SymmetricTensor.hxx"
 
@@ -49,8 +49,8 @@ public:
   /* Some typedefs for easy reading */
 
   /** Default constructor */
-  QuadraticFunction (const NumericalPoint & center,
-                                  const NumericalPoint & constant,
+  QuadraticFunction (const Point & center,
+                                  const Point & constant,
                                   const Matrix & linear,
                                   const SymmetricTensor & quadratic);
 

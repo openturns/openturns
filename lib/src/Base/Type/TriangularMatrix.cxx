@@ -229,8 +229,8 @@ TriangularMatrix::NumericalScalarCollection TriangularMatrix::operator * (const 
   return getImplementation()->triangularVectProd(pt, uplo) ;
 }
 
-/* Multiplication with a NumericalPoint (must have consistent dimensions) */
-TriangularMatrix::NumericalScalarCollection TriangularMatrix::operator * (const NumericalPoint & pt) const
+/* Multiplication with a Point (must have consistent dimensions) */
+TriangularMatrix::NumericalScalarCollection TriangularMatrix::operator * (const Point & pt) const
 {
   char uplo(isLowerTriangular() ? 'L' : 'U');
   return getImplementation()->triangularVectProd(pt, uplo) ;
@@ -250,7 +250,7 @@ TriangularMatrix TriangularMatrix::operator / (const NumericalScalar s) const
 
 
 /* Resolution of a linear system */
-NumericalPoint TriangularMatrix::solveLinearSystem (const NumericalPoint & b,
+Point TriangularMatrix::solveLinearSystem (const Point & b,
     const Bool keepIntact)
 {
   return getImplementation()->solveLinearSystemTri(b, keepIntact, isLowerTriangular_);

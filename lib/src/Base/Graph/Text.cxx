@@ -96,8 +96,8 @@ Text::Text(const Sample & dataX,
   textPositions_ = Description(data_.getSize(), textPosition);
 }
 
-Text::Text(const NumericalPoint & dataX,
-           const NumericalPoint & dataY,
+Text::Text(const Point & dataX,
+           const Point & dataY,
            const Description & textAnnotations,
            const String & textPosition,
            const String & legend)

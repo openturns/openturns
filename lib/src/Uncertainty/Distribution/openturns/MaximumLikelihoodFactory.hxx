@@ -57,7 +57,7 @@ public:
   virtual Implementation build(const Sample & sample) const;
 
   /** Build a distribution based on a set of parameters */
-  virtual NumericalPoint buildParameter(const Sample & sample) const;
+  virtual Point buildParameter(const Sample & sample) const;
 
   /** Optimization solver accessor */
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
@@ -75,8 +75,8 @@ public:
   void setOptimizationInequalityConstraint(const Function & optimizationInequalityConstraint);
 
   /** Accessor to known parameter */
-  void setKnownParameter(const NumericalPoint & values, const Indices & positions);
-  NumericalPoint getKnownParameterValues() const;
+  void setKnownParameter(const Point & values, const Indices & positions);
+  Point getKnownParameterValues() const;
   Indices getKnownParameterIndices() const;
 
   /** Method save() stores the object through the StorageManager */
@@ -99,7 +99,7 @@ protected:
   Function optimizationInequalityConstraint_;
 
   /* Known parameter */
-  NumericalPoint knownParameterValues_;
+  Point knownParameterValues_;
   Indices knownParameterIndices_;
 
 }; /* class MaximumLikelihoodFactory */

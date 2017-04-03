@@ -970,7 +970,7 @@ OT_Function_draw_doc
 
 Returns
 -------
-parameter : :class:`~openturns.NumericalPoint`
+parameter : :class:`~openturns.Point`
     The parameter values."
 %enddef
 %feature("docstring") OT::FunctionImplementation::getParameter

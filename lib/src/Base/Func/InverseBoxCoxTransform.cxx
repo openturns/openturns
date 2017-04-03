@@ -35,7 +35,7 @@ InverseBoxCoxTransform::InverseBoxCoxTransform()
 }
 
 /* Standard parameter constructor */
-InverseBoxCoxTransform::InverseBoxCoxTransform(const NumericalPoint & lambda)
+InverseBoxCoxTransform::InverseBoxCoxTransform(const Point & lambda)
   : Function()
 {
   const InverseBoxCoxEvaluation evaluation(lambda);
@@ -45,8 +45,8 @@ InverseBoxCoxTransform::InverseBoxCoxTransform(const NumericalPoint & lambda)
 }
 
 /* NumericalScalarCollection parameter constructor */
-InverseBoxCoxTransform::InverseBoxCoxTransform(const NumericalPoint & lambda,
-    const NumericalPoint & shift)
+InverseBoxCoxTransform::InverseBoxCoxTransform(const Point & lambda,
+    const Point & shift)
   : Function()
 {
   const InverseBoxCoxEvaluation evaluation(lambda, shift);
@@ -59,7 +59,7 @@ InverseBoxCoxTransform::InverseBoxCoxTransform(const NumericalPoint & lambda,
 InverseBoxCoxTransform::InverseBoxCoxTransform(const NumericalScalar & lambda)
   : Function()
 {
-  const InverseBoxCoxEvaluation evaluation(NumericalPoint(1, lambda));
+  const InverseBoxCoxEvaluation evaluation(Point(1, lambda));
   setEvaluation(evaluation.clone());
   setGradient(InverseBoxCoxGradient(evaluation).clone());
   setHessian(InverseBoxCoxHessian(evaluation).clone());
@@ -69,7 +69,7 @@ InverseBoxCoxTransform::InverseBoxCoxTransform(const NumericalScalar & lambda,
     const NumericalScalar & shift)
   : Function()
 {
-  const InverseBoxCoxEvaluation evaluation(NumericalPoint(1, lambda), NumericalPoint(1, shift));
+  const InverseBoxCoxEvaluation evaluation(Point(1, lambda), Point(1, shift));
   setEvaluation(evaluation.clone());
   setGradient(InverseBoxCoxGradient(evaluation).clone());
   setHessian(InverseBoxCoxHessian(evaluation).clone());
@@ -82,13 +82,13 @@ InverseBoxCoxTransform * InverseBoxCoxTransform::clone() const
 }
 
 /* Lambda accessor */
-NumericalPoint InverseBoxCoxTransform::getLambda() const
+Point InverseBoxCoxTransform::getLambda() const
 {
   return dynamic_cast<InverseBoxCoxEvaluation *>(getEvaluation().get())->getLambda();
 }
 
 /* Shift accessor */
-NumericalPoint InverseBoxCoxTransform::getShift() const
+Point InverseBoxCoxTransform::getShift() const
 {
   return dynamic_cast<InverseBoxCoxEvaluation *>(getEvaluation().get())->getShift();
 }

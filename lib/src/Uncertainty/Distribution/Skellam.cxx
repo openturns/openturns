@@ -98,15 +98,15 @@ Skellam * Skellam::clone() const
 }
 
 /* Get one realization of the distribution */
-NumericalPoint Skellam::getRealization() const
+Point Skellam::getRealization() const
 {
   // Must cast the second Poisson realization to avoid overflow by taking the opposite of an UnsignedInteger
-  return NumericalPoint(1, DistFunc::rPoisson(lambda1_) - static_cast<NumericalScalar>(DistFunc::rPoisson(lambda2_)));
+  return Point(1, DistFunc::rPoisson(lambda1_) - static_cast<NumericalScalar>(DistFunc::rPoisson(lambda2_)));
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Skellam::computePDF(const NumericalPoint & point) const
+NumericalScalar Skellam::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -118,7 +118,7 @@ NumericalScalar Skellam::computePDF(const NumericalPoint & point) const
 
 
 /* Get the CDF of the distribution */
-NumericalScalar Skellam::computeCDF(const NumericalPoint & point) const
+NumericalScalar Skellam::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -128,18 +128,18 @@ NumericalScalar Skellam::computeCDF(const NumericalPoint & point) const
 }
 
 /* Get the PDF gradient of the distribution */
-NumericalPoint Skellam::computePDFGradient(const NumericalPoint & point) const
+Point Skellam::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-  throw NotYetImplementedException(HERE) << "In Skellam::computePDFGradient(const NumericalPoint & point) const";
+  throw NotYetImplementedException(HERE) << "In Skellam::computePDFGradient(const Point & point) const";
 }
 
 
 /* Get the CDF gradient of the distribution */
-NumericalPoint Skellam::computeCDFGradient(const NumericalPoint & point) const
+Point Skellam::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-  throw NotYetImplementedException(HERE) << "In Skellam::computeCDFGradient(const NumericalPoint & point) const";
+  throw NotYetImplementedException(HERE) << "In Skellam::computeCDFGradient(const Point & point) const";
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
@@ -174,26 +174,26 @@ NumericalScalar Skellam::computeScalarQuantile(const NumericalScalar prob,
 /* Compute the mean of the distribution */
 void Skellam::computeMean() const
 {
-  mean_ = NumericalPoint(1, lambda1_ - lambda2_);
+  mean_ = Point(1, lambda1_ - lambda2_);
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint Skellam::getStandardDeviation() const
+Point Skellam::getStandardDeviation() const
 {
-  return NumericalPoint(1, std::sqrt(lambda1_ + lambda2_));
+  return Point(1, std::sqrt(lambda1_ + lambda2_));
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint Skellam::getSkewness() const
+Point Skellam::getSkewness() const
 {
-  return NumericalPoint(1, (lambda1_ - lambda2_) * std::pow(lambda1_ + lambda2_, -1.5));
+  return Point(1, (lambda1_ - lambda2_) * std::pow(lambda1_ + lambda2_, -1.5));
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint Skellam::getKurtosis() const
+Point Skellam::getKurtosis() const
 {
-  return NumericalPoint(1, 3.0 + 1.0 / (lambda1_ + lambda2_));
+  return Point(1, 3.0 + 1.0 / (lambda1_ + lambda2_));
 }
 
 /* Compute the covariance of the distribution */
@@ -212,20 +212,20 @@ Sample Skellam::getSupport(const Interval & interval) const
   const SignedInteger kMax = static_cast< SignedInteger > (floor(interval.getUpperBound()[0]));
   Sample result(0, 1);
   for (SignedInteger k = kMin; k <= kMax; ++k)
-    result.add(NumericalPoint(1, k));
+    result.add(Point(1, k));
   return result;
 }
 
 /* Parameters value accessor */
-NumericalPoint Skellam::getParameter() const
+Point Skellam::getParameter() const
 {
-  NumericalPoint point(2);
+  Point point(2);
   point[0] = lambda1_;
   point[1] = lambda2_;
   return point;
 }
 
-void Skellam::setParameter(const NumericalPoint & parameter)
+void Skellam::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();

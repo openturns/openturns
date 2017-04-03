@@ -73,7 +73,7 @@ String InverseNatafIndependentCopulaHessian::__repr__() const
  * Hijk = d2Si/dujduk = Phi''(ui) if i = j = k
  *                    = 0 else
  */
-SymmetricTensor InverseNatafIndependentCopulaHessian::hessian(const NumericalPoint & inP) const
+SymmetricTensor InverseNatafIndependentCopulaHessian::hessian(const Point & inP) const
 {
   SymmetricTensor result(dimension_, dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)

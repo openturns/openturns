@@ -45,8 +45,8 @@ public:
 
   /** Parameter constructor */
   HistogramPolynomialFactory(const NumericalScalar first,
-			     const NumericalPoint & width,
-			     const NumericalPoint & height);
+			     const Point & width,
+			     const Point & height);
 
   /** Virtual constructor */
   virtual HistogramPolynomialFactory * clone() const;
@@ -59,10 +59,10 @@ public:
   NumericalScalar getFirst() const;
 
   /** Width accessor */
-  NumericalPoint getWidth() const;
+  Point getWidth() const;
 
   /** Height accessor */
-  NumericalPoint getHeight() const;
+  Point getHeight() const;
 
   /** String converter */
   String __repr__() const;
@@ -76,7 +76,7 @@ public:
 private:
 
   /** Compute dot products taking into account the singularities of the weights */
-  NumericalPoint computeDotProduct(const OrthogonalUniVariatePolynomial & qN) const;
+  Point computeDotProduct(const OrthogonalUniVariatePolynomial & qN) const;
 
   /** Underlying histogram */
   const Histogram * p_histogram_;
@@ -88,7 +88,7 @@ private:
   mutable CoefficientsPersistentCollection monicRecurrenceCoefficients_;
 
   /** Cache to store the squared norm of the monic orthogonal polynomials */
-  mutable NumericalPoint monicSquaredNorms_;
+  mutable Point monicSquaredNorms_;
 
 } ; /* class HistogramPolynomialFactory */
 

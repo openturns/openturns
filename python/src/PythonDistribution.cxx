@@ -127,7 +127,7 @@ String PythonDistribution::__str__(const String & offset) const
 
 /* Here is the interface that all derived class must implement */
 
-NumericalPoint PythonDistribution::getRealization() const
+Point PythonDistribution::getRealization() const
 {
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getRealization") ) )
   {
@@ -140,7 +140,7 @@ NumericalPoint PythonDistribution::getRealization() const
     {
       handleException();
     }
-    NumericalPoint result(convert< _PySequence_, NumericalPoint >(callResult.get()));
+    Point result(convert< _PySequence_, Point >(callResult.get()));
     if (result.getDimension() != getDimension()) throw InvalidDimensionException(HERE) << "Realization returned by PythonDistribution has incorrect dimension. Got " << result.getDimension() << ". Expected" << getDimension();
     return result;
   }
@@ -177,7 +177,7 @@ Sample PythonDistribution::getSample(const UnsignedInteger size) const
 
 
 /* Get the DDF of the distribution */
-NumericalPoint PythonDistribution::computeDDF(const NumericalPoint & inP) const
+Point PythonDistribution::computeDDF(const Point & inP) const
 {
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("computeDDF")))
   {
@@ -185,7 +185,7 @@ NumericalPoint PythonDistribution::computeDDF(const NumericalPoint & inP) const
     if (dimension != getDimension())
       throw InvalidDimensionException(HERE) << "Input point has incorrect dimension. Got " << dimension << ". Expected " << getDimension();
     ScopedPyObjectPointer methodName(convert< String, _PyString_>( "computeDDF" ));
-    ScopedPyObjectPointer point(convert<NumericalPoint, _PySequence_>(inP));
+    ScopedPyObjectPointer point(convert<Point, _PySequence_>(inP));
     ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
                                      methodName.get(),
                                      point.get(), NULL));
@@ -193,7 +193,7 @@ NumericalPoint PythonDistribution::computeDDF(const NumericalPoint & inP) const
     {
       handleException();
     }
-    NumericalPoint result(convert< _PySequence_, NumericalPoint >(callResult.get()));
+    Point result(convert< _PySequence_, Point >(callResult.get()));
     if (result.getDimension() != dimension) throw InvalidDimensionException(HERE) << "DDF returned by PythonDistribution has incorrect dimension. Got " << result.getDimension() << ". Expected" << dimension;
     return result;
   }
@@ -204,7 +204,7 @@ NumericalPoint PythonDistribution::computeDDF(const NumericalPoint & inP) const
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar PythonDistribution::computePDF(const NumericalPoint & inP) const
+NumericalScalar PythonDistribution::computePDF(const Point & inP) const
 {
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("computePDF")))
   {
@@ -212,7 +212,7 @@ NumericalScalar PythonDistribution::computePDF(const NumericalPoint & inP) const
     if (dimension != getDimension())
       throw InvalidDimensionException(HERE) << "Input point has incorrect dimension. Got " << dimension << ". Expected " << getDimension();
     ScopedPyObjectPointer methodName(convert< String, _PyString_>("computePDF"));
-    ScopedPyObjectPointer point(convert< NumericalPoint, _PySequence_ >(inP));
+    ScopedPyObjectPointer point(convert< Point, _PySequence_ >(inP));
     ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
                                      methodName.get(),
                                      point.get(), NULL));
@@ -230,7 +230,7 @@ NumericalScalar PythonDistribution::computePDF(const NumericalPoint & inP) const
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar PythonDistribution::computeLogPDF(const NumericalPoint & inP) const
+NumericalScalar PythonDistribution::computeLogPDF(const Point & inP) const
 {
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("computeLogPDF")))
   {
@@ -238,7 +238,7 @@ NumericalScalar PythonDistribution::computeLogPDF(const NumericalPoint & inP) co
     if (dimension != getDimension())
       throw InvalidDimensionException(HERE) << "Input point has incorrect dimension. Got " << dimension << ". Expected " << getDimension();
     ScopedPyObjectPointer methodName(convert< String, _PyString_>( "computeLogPDF" ));
-    ScopedPyObjectPointer point(convert< NumericalPoint, _PySequence_ >( inP ));
+    ScopedPyObjectPointer point(convert< Point, _PySequence_ >( inP ));
     ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
                                      methodName.get(),
                                      point.get(), NULL));
@@ -256,13 +256,13 @@ NumericalScalar PythonDistribution::computeLogPDF(const NumericalPoint & inP) co
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar PythonDistribution::computeCDF(const NumericalPoint & inP) const
+NumericalScalar PythonDistribution::computeCDF(const Point & inP) const
 {
   const UnsignedInteger dimension = inP.getDimension();
   if (dimension != getDimension())
     throw InvalidDimensionException(HERE) << "Input point has incorrect dimension. Got " << dimension << ". Expected " << getDimension();
   ScopedPyObjectPointer methodName(convert< String, _PyString_>("computeCDF"));
-  ScopedPyObjectPointer point(convert< NumericalPoint, _PySequence_ >(inP));
+  ScopedPyObjectPointer point(convert< Point, _PySequence_ >(inP));
   ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
                                    methodName.get(),
                                    point.get(), NULL));
@@ -276,7 +276,7 @@ NumericalScalar PythonDistribution::computeCDF(const NumericalPoint & inP) const
 
 
 /* Get the complementary CDF of the distribution */
-NumericalScalar PythonDistribution::computeComplementaryCDF(const NumericalPoint & inP) const
+NumericalScalar PythonDistribution::computeComplementaryCDF(const Point & inP) const
 {
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("computeComplementaryCDF") ) )
   {
@@ -284,7 +284,7 @@ NumericalScalar PythonDistribution::computeComplementaryCDF(const NumericalPoint
     if (dimension != getDimension())
       throw InvalidDimensionException(HERE) << "Input point has incorrect dimension. Got " << dimension << ". Expected " << getDimension();
     ScopedPyObjectPointer methodName(convert< String, _PyString_>( "computeComplementaryCDF" ));
-    ScopedPyObjectPointer point(convert< NumericalPoint, _PySequence_ >( inP ));
+    ScopedPyObjectPointer point(convert< Point, _PySequence_ >( inP ));
     ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs ( pyObj_,
                                      methodName.get(),
                                      point.get(), NULL));
@@ -303,7 +303,7 @@ NumericalScalar PythonDistribution::computeComplementaryCDF(const NumericalPoint
 
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint PythonDistribution::computeQuantile(const NumericalScalar prob, const Bool tail) const
+Point PythonDistribution::computeQuantile(const NumericalScalar prob, const Bool tail) const
 {
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("computeQuantile")))
   {
@@ -318,7 +318,7 @@ NumericalPoint PythonDistribution::computeQuantile(const NumericalScalar prob, c
     {
       handleException();
     }
-    NumericalPoint result(convert< _PySequence_, NumericalPoint >(callResult.get()));
+    Point result(convert< _PySequence_, Point >(callResult.get()));
     if (result.getDimension() != dimension) throw InvalidDimensionException(HERE) << "Quantile returned by PythonDistribution has incorrect dimension. Got " << result.getDimension() << ". Expected" << dimension;
     return result;
   }
@@ -354,7 +354,7 @@ NumericalComplex PythonDistribution::computeCharacteristicFunction(const Numeric
 }
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint PythonDistribution::computePDFGradient(const NumericalPoint & inP) const
+Point PythonDistribution::computePDFGradient(const Point & inP) const
 {
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("computePDFGradient")))
   {
@@ -362,7 +362,7 @@ NumericalPoint PythonDistribution::computePDFGradient(const NumericalPoint & inP
     if (dimension != getDimension())
       throw InvalidDimensionException(HERE) << "Input point has incorrect dimension. Got " << dimension << ". Expected " << getDimension();
     ScopedPyObjectPointer methodName(convert< String, _PyString_>("computePDFGradient"));
-    ScopedPyObjectPointer point(convert< NumericalPoint, _PySequence_ >(inP));
+    ScopedPyObjectPointer point(convert< Point, _PySequence_ >(inP));
     ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
                                      methodName.get(),
                                      point.get(), NULL));
@@ -370,7 +370,7 @@ NumericalPoint PythonDistribution::computePDFGradient(const NumericalPoint & inP
     {
       handleException();
     }
-    NumericalPoint result(convert< _PySequence_, NumericalPoint >(callResult.get()));
+    Point result(convert< _PySequence_, Point >(callResult.get()));
     if (result.getDimension() != dimension) throw InvalidDimensionException(HERE) << "PDFGradient returned by PythonDistribution has incorrect dimension. Got " << result.getDimension() << ". Expected" << dimension;
     return result;
   }
@@ -381,7 +381,7 @@ NumericalPoint PythonDistribution::computePDFGradient(const NumericalPoint & inP
 }
 
 /* Get the CDFGradient of the distribution */
-NumericalPoint PythonDistribution::computeCDFGradient(const NumericalPoint & inP) const
+Point PythonDistribution::computeCDFGradient(const Point & inP) const
 {
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("computeCDFGradient")))
   {
@@ -389,7 +389,7 @@ NumericalPoint PythonDistribution::computeCDFGradient(const NumericalPoint & inP
     if (dimension != getDimension())
       throw InvalidDimensionException(HERE) << "Input point has incorrect dimension. Got " << dimension << ". Expected " << getDimension();
     ScopedPyObjectPointer methodName(convert< String, _PyString_>( "computeCDFGradient"));
-    ScopedPyObjectPointer point(convert< NumericalPoint, _PySequence_ >(inP));
+    ScopedPyObjectPointer point(convert< Point, _PySequence_ >(inP));
     ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
                                      methodName.get(),
                                      point.get(), NULL));
@@ -397,7 +397,7 @@ NumericalPoint PythonDistribution::computeCDFGradient(const NumericalPoint & inP
     {
       handleException();
     }
-    NumericalPoint result(convert< _PySequence_, NumericalPoint >(callResult.get()));
+    Point result(convert< _PySequence_, Point >(callResult.get()));
     if (result.getDimension() != dimension) throw InvalidDimensionException(HERE) << "CDFGradient returned by PythonDistribution has incorrect dimension. Got " << result.getDimension() << ". Expected" << dimension;
     return result;
   }
@@ -455,7 +455,7 @@ NumericalScalar PythonDistribution::getRoughness() const
 }
 
 /* Mean accessor */
-NumericalPoint PythonDistribution::getMean() const
+Point PythonDistribution::getMean() const
 {
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getMean")))
   {
@@ -466,7 +466,7 @@ NumericalPoint PythonDistribution::getMean() const
     {
       handleException();
     }
-    NumericalPoint result(convert< _PySequence_, NumericalPoint >(callResult.get()));
+    Point result(convert< _PySequence_, Point >(callResult.get()));
     if (result.getDimension() != getDimension()) throw InvalidDimensionException(HERE) << "Mean returned by PythonDistribution has incorrect dimension. Got " << result.getDimension() << ". Expected" << getDimension();
     return result;
   }
@@ -477,7 +477,7 @@ NumericalPoint PythonDistribution::getMean() const
 }
 
 /* Standard deviation accessor */
-NumericalPoint PythonDistribution::getStandardDeviation() const
+Point PythonDistribution::getStandardDeviation() const
 {
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getStandardDeviation") ) )
   {
@@ -488,7 +488,7 @@ NumericalPoint PythonDistribution::getStandardDeviation() const
     {
       handleException();
     }
-    NumericalPoint result(convert< _PySequence_, NumericalPoint >(callResult.get()));
+    Point result(convert< _PySequence_, Point >(callResult.get()));
     if (result.getDimension() != getDimension()) throw InvalidDimensionException(HERE) << "Standard deviation returned by PythonDistribution has incorrect dimension. Got " << result.getDimension() << ". Expected" << getDimension();
     return result;
   }
@@ -499,7 +499,7 @@ NumericalPoint PythonDistribution::getStandardDeviation() const
 }
 
 /* Skewness accessor */
-NumericalPoint PythonDistribution::getSkewness() const
+Point PythonDistribution::getSkewness() const
 {
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getSkewness") ) )
   {
@@ -510,7 +510,7 @@ NumericalPoint PythonDistribution::getSkewness() const
     {
       handleException();
     }
-    NumericalPoint result(convert< _PySequence_, NumericalPoint >(callResult.get()));
+    Point result(convert< _PySequence_, Point >(callResult.get()));
     if (result.getDimension() != getDimension()) throw InvalidDimensionException(HERE) << "Skewness returned by PythonDistribution has incorrect dimension. Got " << result.getDimension() << ". Expected" << getDimension();
     return result;
   }
@@ -521,7 +521,7 @@ NumericalPoint PythonDistribution::getSkewness() const
 }
 
 /* Kurtosis accessor */
-NumericalPoint PythonDistribution::getKurtosis() const
+Point PythonDistribution::getKurtosis() const
 {
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getKurtosis") ) )
   {
@@ -532,7 +532,7 @@ NumericalPoint PythonDistribution::getKurtosis() const
     {
       handleException();
     }
-    NumericalPoint result(convert< _PySequence_, NumericalPoint >(callResult.get()));
+    Point result(convert< _PySequence_, Point >(callResult.get()));
     if (result.getDimension() != getDimension()) throw InvalidDimensionException(HERE) << "Kurtosis returned by PythonDistribution has incorrect dimension. Got " << result.getDimension() << ". Expected" << getDimension();
     return result;
   }
@@ -544,7 +544,7 @@ NumericalPoint PythonDistribution::getKurtosis() const
 
 
 /* Get the raw moments of the distribution */
-NumericalPoint PythonDistribution::getStandardMoment(const UnsignedInteger n) const
+Point PythonDistribution::getStandardMoment(const UnsignedInteger n) const
 {
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getStandardMoment") ) )
   {
@@ -557,7 +557,7 @@ NumericalPoint PythonDistribution::getStandardMoment(const UnsignedInteger n) co
     {
       handleException();
     }
-    NumericalPoint result(convert< _PySequence_, NumericalPoint >(callResult.get()));
+    Point result(convert< _PySequence_, Point >(callResult.get()));
     if (result.getDimension() != getDimension()) throw InvalidDimensionException(HERE) << "Moment returned by PythonDistribution has incorrect dimension. Got " << result.getDimension() << ". Expected" << getDimension();
     return result;
   }
@@ -569,7 +569,7 @@ NumericalPoint PythonDistribution::getStandardMoment(const UnsignedInteger n) co
 
 
 /* Get the raw moments of the distribution */
-NumericalPoint PythonDistribution::getMoment(const UnsignedInteger n) const
+Point PythonDistribution::getMoment(const UnsignedInteger n) const
 {
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getMoment") ) )
   {
@@ -582,7 +582,7 @@ NumericalPoint PythonDistribution::getMoment(const UnsignedInteger n) const
     {
       handleException();
     }
-    NumericalPoint result(convert< _PySequence_, NumericalPoint >(callResult.get()));
+    Point result(convert< _PySequence_, Point >(callResult.get()));
     if (result.getDimension() != getDimension()) throw InvalidDimensionException(HERE) << "Moment returned by PythonDistribution has incorrect dimension. Got " << result.getDimension() << ". Expected" << getDimension();
     return result;
   }
@@ -593,7 +593,7 @@ NumericalPoint PythonDistribution::getMoment(const UnsignedInteger n) const
 }
 
 /* Get the centered moments of the distribution */
-NumericalPoint PythonDistribution::getCenteredMoment(const UnsignedInteger n) const
+Point PythonDistribution::getCenteredMoment(const UnsignedInteger n) const
 {
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getCenteredMoment") ) )
   {
@@ -606,7 +606,7 @@ NumericalPoint PythonDistribution::getCenteredMoment(const UnsignedInteger n) co
     {
       handleException();
     }
-    NumericalPoint result(convert< _PySequence_, NumericalPoint >(callResult.get()));
+    Point result(convert< _PySequence_, Point >(callResult.get()));
     if (result.getDimension() != getDimension()) throw InvalidDimensionException(HERE) << "Centered moment returned by PythonDistribution has incorrect dimension. Got " << result.getDimension() << ". Expected" << getDimension();
     return result;
   }
@@ -805,7 +805,7 @@ inline
 Interval
 convert< _PyObject_, Interval >(PyObject * pyObj)
 {
-  NumericalPoint lowerBound;
+  Point lowerBound;
   if ( PyObject_HasAttrString( pyObj, const_cast<char *>("getLowerBound") ) )
   {
     ScopedPyObjectPointer callResult(PyObject_CallMethod( pyObj,
@@ -816,10 +816,10 @@ convert< _PyObject_, Interval >(PyObject * pyObj)
     {
       handleException();
     }
-    lowerBound = convert< _PySequence_, NumericalPoint >(callResult.get());
+    lowerBound = convert< _PySequence_, Point >(callResult.get());
   }
 
-  NumericalPoint upperBound;
+  Point upperBound;
   if ( PyObject_HasAttrString( pyObj, const_cast<char *>("getUpperBound") ) )
   {
     ScopedPyObjectPointer callResult(PyObject_CallMethod( pyObj,
@@ -830,7 +830,7 @@ convert< _PyObject_, Interval >(PyObject * pyObj)
     {
       handleException();
     }
-    upperBound = convert< _PySequence_, NumericalPoint >(callResult.get());
+    upperBound = convert< _PySequence_, Point >(callResult.get());
   }
 
   Indices finiteLowerBound;

@@ -42,14 +42,14 @@ Histogram::Histogram()
 {
   setName( "Histogram" );
   // This call set also the range.
-  setData(NumericalPoint(1, 1.0), NumericalPoint(1, 1.0));
+  setData(Point(1, 1.0), Point(1, 1.0));
   setDimension( 1 );
 }
 
 /* Parameters constructor */
 Histogram::Histogram(const NumericalScalar first,
-                     const NumericalPoint & width,
-                     const NumericalPoint & height)
+                     const Point & width,
+                     const Point & height)
   : ContinuousDistribution()
   , first_(first)
   , width_(0)
@@ -112,23 +112,23 @@ void Histogram::computeRange()
 }
 
 /* Get one realization of the distribution */
-NumericalPoint Histogram::getRealization() const
+Point Histogram::getRealization() const
 {
   return computeQuantile(RandomGenerator::Generate());
 }
 
 
 /* Get the DDF of the distribution */
-NumericalPoint Histogram::computeDDF(const NumericalPoint & point) const
+Point Histogram::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  return NumericalPoint(1, 0.0);
+  return Point(1, 0.0);
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Histogram::computePDF(const NumericalPoint & point) const
+NumericalScalar Histogram::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   NumericalScalar x = point[0] - first_;
@@ -149,7 +149,7 @@ NumericalScalar Histogram::computePDF(const NumericalPoint & point) const
 
 
 /* Get the CDF of the distribution */
-NumericalScalar Histogram::computeCDF(const NumericalPoint & point) const
+NumericalScalar Histogram::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -193,19 +193,19 @@ NumericalComplex Histogram::computeCharacteristicFunction(const NumericalScalar 
 }
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint Histogram::computePDFGradient(const NumericalPoint & point) const
+Point Histogram::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  throw NotYetImplementedException(HERE) << "In Histogram::computePDFGradient(const NumericalPoint & point) const";
+  throw NotYetImplementedException(HERE) << "In Histogram::computePDFGradient(const Point & point) const";
 }
 
 /* Get the CDFGradient of the distribution */
-NumericalPoint Histogram::computeCDFGradient(const NumericalPoint & point) const
+Point Histogram::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  throw NotYetImplementedException(HERE) << "In Histogram::computeCDFGradient(const NumericalPoint & point) const";
+  throw NotYetImplementedException(HERE) << "In Histogram::computeCDFGradient(const Point & point) const";
 }
 
 /* Get the quantile of the distribution */
@@ -257,7 +257,7 @@ void Histogram::computeMean() const
     mean += 0.5 * width_[i] * height_[i] * (lower + upper);
     lower = upper;
   }
-  mean_ = NumericalPoint(1, mean);
+  mean_ = Point(1, mean);
   isAlreadyComputedMean_ = true;
 }
 
@@ -280,9 +280,9 @@ void Histogram::computeCovariance() const
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Histogram::getStandardMoment(const UnsignedInteger n) const
+Point Histogram::getStandardMoment(const UnsignedInteger n) const
 {
-  if (n == 0) return NumericalPoint(1, 1.0);
+  if (n == 0) return Point(1, 1.0);
   NumericalScalar value = 0.0;
   const UnsignedInteger size = width_.getSize();
   NumericalScalar xPrec = -1.0;
@@ -294,7 +294,7 @@ NumericalPoint Histogram::getStandardMoment(const UnsignedInteger n) const
     xPrec = x;
   }
   value /= (n + 1) * factor;
-  return NumericalPoint(1, value);
+  return Point(1, value);
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
@@ -311,10 +311,10 @@ Histogram::Implementation Histogram::getStandardRepresentative() const
 /* Parameters value and description accessor */
 
 /* Parameters value accessor */
-NumericalPoint Histogram::getParameter() const
+Point Histogram::getParameter() const
 {
   const UnsignedInteger size = width_.getSize();
-  NumericalPoint parameter(1 + 2 * size);
+  Point parameter(1 + 2 * size);
   parameter[0] = first_;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -324,14 +324,14 @@ NumericalPoint Histogram::getParameter() const
   return parameter;
 }
 
-void Histogram::setParameter(const NumericalPoint & parameter)
+void Histogram::setParameter(const Point & parameter)
 {
   if (parameter.getSize() % 2 == 0) throw InvalidArgumentException(HERE) << "Error: expected an odd number of values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();
   const UnsignedInteger size = (parameter.getSize() - 1) / 2;
   first_ = parameter[0];
-  width_ = NumericalPoint(size);
-  height_ = NumericalPoint(size);
+  width_ = Point(size);
+  height_ = Point(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     width_[i] = parameter[2 * i + 1];
@@ -385,16 +385,16 @@ NumericalScalar Histogram::getFirst() const
 }
 
 
-void Histogram::setData(const NumericalPoint & l,
-                        const NumericalPoint & h)
+void Histogram::setData(const Point & l,
+                        const Point & h)
 {
   NumericalScalar surface = 0.0;
   const UnsignedInteger size = l.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the given width has a size of 0.";
   if (size != h.getSize()) throw InvalidArgumentException(HERE) << "Error: the width and the height must have the same size.";
 
-  cumulatedWidth_ = NumericalPoint(size);
-  cumulatedSurface_ = NumericalPoint(size);
+  cumulatedWidth_ = Point(size);
+  cumulatedSurface_ = Point(size);
   // first, check that all the heights and widths are >=0
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -410,8 +410,8 @@ void Histogram::setData(const NumericalPoint & l,
   if (surface < ResourceMap::GetAsNumericalScalar("Distribution-DefaultCDFEpsilon")) throw InvalidArgumentException(HERE) << "Error: the surface of the histogram is zero.";
   // Normalization
   NumericalScalar normalizationFactor = 1.0 / surface;
-  width_ = NumericalPoint(size, 1.0);
-  height_ = NumericalPoint(size, 1.0);
+  width_ = Point(size, 1.0);
+  height_ = Point(size, 1.0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     width_[i] = l[i];
@@ -426,25 +426,25 @@ void Histogram::setData(const NumericalPoint & l,
 }
 
 
-NumericalPoint Histogram::getWidth() const
+Point Histogram::getWidth() const
 {
   return width_;
 }
 
 
-NumericalPoint Histogram::getHeight() const
+Point Histogram::getHeight() const
 {
   return height_;
 }
 
 
 /* Get the PDF singularities inside of the range - 1D only */
-NumericalPoint Histogram::getSingularities() const
+Point Histogram::getSingularities() const
 {
   const UnsignedInteger size = width_.getSize();
   // Here we know that size > 0
   NumericalScalar x = first_ + width_[0];
-  NumericalPoint singularities(1, x);
+  Point singularities(1, x);
   for (UnsignedInteger i = 1; i < size - 1; ++i)
   {
     x += width_[i];
@@ -572,7 +572,7 @@ Graph Histogram::drawPDF(const NumericalScalar xMin,
   Curve curve(dataFull, "red", "solid", 2, "");
   curve.setLegend(title);
   graphPDF.add(curve);
-  NumericalPoint bb(graphPDF.getBoundingBox());
+  Point bb(graphPDF.getBoundingBox());
   bb[3] *= 1.1;
   graphPDF.setBoundingBox(bb);
   return graphPDF;

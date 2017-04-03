@@ -49,7 +49,7 @@ LogUniformFactory::Implementation LogUniformFactory::build(const Sample & sample
   return buildAsLogUniform(sample).clone();
 }
 
-LogUniformFactory::Implementation LogUniformFactory::build(const NumericalPoint & parameters) const
+LogUniformFactory::Implementation LogUniformFactory::build(const Point & parameters) const
 {
   return buildAsLogUniform(parameters).clone();
 }
@@ -82,7 +82,7 @@ LogUniform LogUniformFactory::buildAsLogUniform(const Sample & sample) const
   return result;
 }
 
-LogUniform LogUniformFactory::buildAsLogUniform(const NumericalPoint & parameters) const
+LogUniform LogUniformFactory::buildAsLogUniform(const Point & parameters) const
 {
   try
   {

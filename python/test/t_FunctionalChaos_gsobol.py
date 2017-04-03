@@ -21,7 +21,7 @@ try:
     # Create the Sobol function
     # Reference analytical values
     meanTh = 1.0
-    a = NumericalPoint(dimension)
+    a = Point(dimension)
     inputVariables = Description(dimension)
     outputVariables = Description(1)
     outputVariables[0] = "y"

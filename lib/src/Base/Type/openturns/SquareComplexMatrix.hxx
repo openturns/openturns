@@ -102,14 +102,14 @@ public:
   /** SquareComplexMatrix integer power */
   SquareComplexMatrix power(const UnsignedInteger n) const;
 
-  /** Multiplication with a NumericalPoint (must have consistent dimensions) */
+  /** Multiplication with a Point (must have consistent dimensions) */
   NumericalComplexCollection operator * (const NumericalComplexCollection & p) const;
 
-  /** Multiplication with a NumericalPoint (must have consistent dimensions) */
+  /** Multiplication with a Point (must have consistent dimensions) */
   NumericalComplexCollection operator * (const NumericalScalarCollection & p) const;
 
-  /** Multiplication with a NumericalPoint (must have consistent dimensions) */
-  NumericalComplexCollection operator * (const NumericalPoint & p) const;
+  /** Multiplication with a Point (must have consistent dimensions) */
+  NumericalComplexCollection operator * (const Point & p) const;
 
   /** Multiplication with a NumericalComplex */
   SquareComplexMatrix operator * (const NumericalComplex s) const;

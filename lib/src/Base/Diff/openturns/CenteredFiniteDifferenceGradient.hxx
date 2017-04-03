@@ -25,7 +25,7 @@
 
 #include "openturns/FiniteDifferenceGradient.hxx"
 #include "openturns/EvaluationImplementation.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Matrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -53,7 +53,7 @@ public:
   CenteredFiniteDifferenceGradient();
 
   /** Parameter constructor */
-  CenteredFiniteDifferenceGradient(const NumericalPoint & epsilon,
+  CenteredFiniteDifferenceGradient(const Point & epsilon,
                                    const EvaluationPointer & p_evaluation);
 
   /** Second parameter constructor */
@@ -79,7 +79,7 @@ public:
    * @param in The point where the gradient is computed
    * @result A matrix constructed with the dF_i/dx_j values (Jacobian transposed)
    */
-  virtual Matrix gradient(const NumericalPoint & inP) const;
+  virtual Matrix gradient(const Point & inP) const;
 
 protected:
 

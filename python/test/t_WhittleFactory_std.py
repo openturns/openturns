@@ -17,8 +17,8 @@ try:
     q = 1
 
     # ARMACoefficients intializing
-    arCoefficients = NumericalPoint(p, 0.80)
-    maCoefficients = NumericalPoint(q, 0.50)
+    arCoefficients = Point(p, 0.80)
+    maCoefficients = Point(q, 0.50)
 
     # ARMA creation
     myARMA = ARMA(ARMACoefficients(arCoefficients),
@@ -37,7 +37,7 @@ try:
     # factory.setVerbose(False)
     print("factory=", factory)
     print("factory as an ARMA factory=", ARMAFactory(factory))
-    informationCriteria = NumericalPoint()
+    informationCriteria = Point()
     result = factory.build(TimeSeries(timeSeries), informationCriteria)
     # print "Estimated ARMA=", result
     # print "Information criteria=", informationCriteria
@@ -53,7 +53,7 @@ try:
     qIndices.fill()
     factory = WhittleFactory(pIndices, qIndices)
     print("factory=", factory)
-    informationCriteria = NumericalPoint()
+    informationCriteria = Point()
     result = factory.build(TimeSeries(timeSeries), informationCriteria)
     # print "Estimated ARMA=", result
     # print "Information criteria=", informationCriteria

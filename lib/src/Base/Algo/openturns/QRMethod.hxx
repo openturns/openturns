@@ -41,7 +41,7 @@ public:
 
   /** Parameters constructor */
   QRMethod(const DesignProxy & proxy,
-           const NumericalPoint & weight,
+           const Point & weight,
            const Indices & indices);
 
   /** Parameters constructor */
@@ -55,13 +55,13 @@ public:
   String __repr__() const;
 
   /** Solve least-squares problem, ie x=\argmin |D(Mx-b)|^2 */
-  NumericalPoint solve(const NumericalPoint & rhs);
-  NumericalPoint solveNormal(const NumericalPoint & rhs);
+  Point solve(const Point & rhs);
+  Point solveNormal(const Point & rhs);
 
   CovarianceMatrix getGramInverse() const;
 
-  NumericalPoint getGramInverseDiag() const;
-  NumericalPoint getHDiag() const;
+  Point getGramInverseDiag() const;
+  Point getHDiag() const;
 
   NumericalScalar getGramInverseTrace() const;
 

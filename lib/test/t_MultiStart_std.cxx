@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-inline String printNumericalPoint(const NumericalPoint & point, const UnsignedInteger digits)
+inline String printPoint(const Point & point, const UnsignedInteger digits)
 {
   OSS oss;
   oss << "[";
@@ -52,9 +52,9 @@ int main(int argc, char *argv[])
     Function model(inVars, outVar, formula);
 
     UnsignedInteger dim = model.getInputDimension();
-    NumericalPoint startingPoint(dim);
+    Point startingPoint(dim);
 
-    Interval bounds(NumericalPoint(dim, -3.0), NumericalPoint(dim, 3.0));
+    Interval bounds(Point(dim, -3.0), Point(dim, 3.0));
 
     // problem
     OptimizationProblem problem(model);

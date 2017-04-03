@@ -22,7 +22,7 @@
 #define OPENTURNS_QUADRATICEVALUATION_HXX
 
 #include "openturns/EvaluationImplementation.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/SymmetricTensor.hxx"
 
@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * This class offers an interface for an real numerical mathematical evaluation
  * implementations into the platform. It realizes the computation of the image vector
- * of a vector (aka NumericalPoint) through the evaluation. The
+ * of a vector (aka Point) through the evaluation. The
  * evaluation may be loaded in an external way through a wrapper.
  */
 class OT_API QuadraticEvaluation
@@ -50,8 +50,8 @@ public:
   QuadraticEvaluation();
 
   /** Parameter constructor */
-  QuadraticEvaluation(const NumericalPoint & center,
-      const NumericalPoint & constant,
+  QuadraticEvaluation(const Point & center,
+      const Point & constant,
       const Matrix & linear,
       const SymmetricTensor & quadratic);
 
@@ -69,7 +69,7 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Operator () */
-  virtual NumericalPoint operator() (const NumericalPoint & inP) const;
+  virtual Point operator() (const Point & inP) const;
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;
@@ -78,10 +78,10 @@ public:
   virtual UnsignedInteger getOutputDimension() const;
 
   /** Accessor for the center */
-  NumericalPoint getCenter() const;
+  Point getCenter() const;
 
   /** Accessor for the constant term */
-  NumericalPoint getConstant() const;
+  Point getConstant() const;
 
   /** Accessor for the linear term */
   Matrix getLinear() const;
@@ -99,8 +99,8 @@ protected:
 
 
 private:
-  NumericalPoint center_;
-  NumericalPoint constant_;
+  Point center_;
+  Point constant_;
   Matrix linear_;
   SymmetricTensor quadratic_;
 }; /* class QuadraticEvaluation */

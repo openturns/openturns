@@ -32,11 +32,11 @@ try:
     # Probabilistic model
     #
 
-    mean = NumericalPoint(dim, 0.0)
+    mean = Point(dim, 0.0)
     mean[0] = 0.0
     mean[1] = 0.0
 
-    sigma = NumericalPoint(dim, 0.0)
+    sigma = Point(dim, 0.0)
     sigma[0] = 1.0
     sigma[1] = 1.0
 

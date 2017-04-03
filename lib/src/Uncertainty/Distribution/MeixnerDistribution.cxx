@@ -208,11 +208,11 @@ MeixnerDistribution * MeixnerDistribution::clone() const
 /* Compute the numerical range of the distribution given the parameters values */
 void MeixnerDistribution::computeRange()
 {
-  const NumericalPoint mu(getMean());
-  const NumericalPoint sigma(getStandardDeviation());
+  const Point mu(getMean());
+  const Point sigma(getStandardDeviation());
   const NumericalScalar logPDF = computeLogPDF(mu);
   const NumericalScalar logPDFEpsilon = std::log(getPDFEpsilon());
-  NumericalPoint lowerBound(mu);
+  Point lowerBound(mu);
   // Find the numerical lower bound based on the PDF value
   NumericalScalar logPDFLower = logPDF;
   while (logPDFLower > logPDFEpsilon)
@@ -221,8 +221,8 @@ void MeixnerDistribution::computeRange()
     logPDFLower = computeLogPDF(lowerBound);
   }
   // Find the numerical upper bound based on the PDF value
-  NumericalPoint upperBound(mu);
-  NumericalPoint stepUpper(sigma);
+  Point upperBound(mu);
+  Point stepUpper(sigma);
   NumericalScalar logPDFUpper = logPDF;
   while (logPDFUpper > logPDFEpsilon)
   {
@@ -242,14 +242,14 @@ struct MeixnerBounds
     // Nothing to do
   }
 
-  NumericalPoint computeObjectiveB(const NumericalPoint & point) const
+  Point computeObjectiveB(const Point & point) const
   {
-    return NumericalPoint(1, distribution_.computePDF(point));
+    return Point(1, distribution_.computePDF(point));
   }
 
-  NumericalPoint computeObjectiveCD(const NumericalPoint & point) const
+  Point computeObjectiveCD(const Point & point) const
   {
-    return NumericalPoint(1, point[0] * std::sqrt(distribution_.computePDF(point)));
+    return Point(1, point[0] * std::sqrt(distribution_.computePDF(point)));
   }
 
   const MeixnerDistribution & distribution_;
@@ -270,14 +270,14 @@ public:
     return new MeixnerBoundB(*this);
   }
 
-  NumericalPoint operator() (const NumericalPoint & point) const
+  Point operator() (const Point & point) const
   {
-    return NumericalPoint(1, p_distribution_->computePDF(point));
+    return Point(1, p_distribution_->computePDF(point));
   }
 
-  Matrix gradient(const NumericalPoint & point) const
+  Matrix gradient(const Point & point) const
   {
-    const NumericalPoint value = p_distribution_->computeDDF(point);
+    const Point value = p_distribution_->computeDDF(point);
     return MatrixImplementation(getInputDimension(), getOutputDimension(), value);
   }
 
@@ -341,18 +341,18 @@ public:
     return new MeixnerBoundCD(*this);
   }
 
-  NumericalPoint operator() (const NumericalPoint & point) const
+  Point operator() (const Point & point) const
   {
     const NumericalScalar pdf = p_distribution_->computePDF(point);
-    return NumericalPoint(1, point[0] * std::sqrt(pdf));
+    return Point(1, point[0] * std::sqrt(pdf));
   }
 
-  Matrix gradient(const NumericalPoint & point) const
+  Matrix gradient(const Point & point) const
   {
     const NumericalScalar sqrtPDF = std::sqrt(p_distribution_->computePDF(point));
     if (sqrtPDF <= 0.0) return MatrixImplementation(1, 1);
-    const NumericalPoint ddf(p_distribution_->computeDDF(point));
-    const NumericalPoint value(1, sqrtPDF + 0.5 * point[0] * ddf[0] / sqrtPDF);
+    const Point ddf(p_distribution_->computeDDF(point));
+    const Point value(1, sqrtPDF + 0.5 * point[0] * ddf[0] / sqrtPDF);
     return MatrixImplementation(1, 1, value);
   }
 
@@ -452,7 +452,7 @@ void MeixnerDistribution::update()
    then \{(u,v)\,|\,0\leq u\leq b,c\leq v\leq d\} is an enclosing region for
    \{(u,v)\,|\,0\leq u\leq\sqrt{p(u/v)}\}
 */
-NumericalPoint MeixnerDistribution::getRealization() const
+Point MeixnerDistribution::getRealization() const
 {
   while (true)
   {
@@ -460,19 +460,19 @@ NumericalPoint MeixnerDistribution::getRealization() const
     if (u == 0.0) continue;
     const NumericalScalar v = c_ + dc_ * RandomGenerator::Generate();
     const NumericalScalar rho = v / u;
-    if (2.0 * std::log(u) <= computeLogPDF(rho)) return NumericalPoint(1, rho);
+    if (2.0 * std::log(u) <= computeLogPDF(rho)) return Point(1, rho);
   }
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar MeixnerDistribution::computePDF(const NumericalPoint & point) const
+NumericalScalar MeixnerDistribution::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   return std::exp(computeLogPDF(point));
 }
 
-NumericalScalar MeixnerDistribution::computeLogPDF(const NumericalPoint & point) const
+NumericalScalar MeixnerDistribution::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -481,7 +481,7 @@ NumericalScalar MeixnerDistribution::computeLogPDF(const NumericalPoint & point)
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar MeixnerDistribution::computeCDF(const NumericalPoint & point) const
+NumericalScalar MeixnerDistribution::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   if (point[0] <= getMean()[0]) return cdfApproximation_(point)[0];
@@ -489,7 +489,7 @@ NumericalScalar MeixnerDistribution::computeCDF(const NumericalPoint & point) co
 }
 
 /* Get the complementary CDF of the distribution */
-NumericalScalar MeixnerDistribution::computeComplementaryCDF(const NumericalPoint & point) const
+NumericalScalar MeixnerDistribution::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   if (point[0] <= getMean()[0]) return 1.0 - cdfApproximation_(point)[0];
@@ -536,26 +536,26 @@ NumericalComplex MeixnerDistribution::computeLogCharacteristicFunction(const Num
 /* Compute the mean of the distribution */
 void MeixnerDistribution::computeMean() const
 {
-  mean_ = NumericalPoint(1, alpha_ * delta_ * std::tan(0.5 * beta_) + mu_);
+  mean_ = Point(1, alpha_ * delta_ * std::tan(0.5 * beta_) + mu_);
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint MeixnerDistribution::getStandardDeviation() const
+Point MeixnerDistribution::getStandardDeviation() const
 {
-  return NumericalPoint(1, alpha_ * std::sqrt(delta_ / (1.0 + std::cos(beta_))));
+  return Point(1, alpha_ * std::sqrt(delta_ / (1.0 + std::cos(beta_))));
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint MeixnerDistribution::getSkewness() const
+Point MeixnerDistribution::getSkewness() const
 {
-  return NumericalPoint(1, std::sin(0.5 * beta_) * std::sqrt(2.0 / delta_));
+  return Point(1, std::sin(0.5 * beta_) * std::sqrt(2.0 / delta_));
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint MeixnerDistribution::getKurtosis() const
+Point MeixnerDistribution::getKurtosis() const
 {
-  return NumericalPoint(1, 3.0 + (2.0 - std::cos(beta_)) / delta_);
+  return Point(1, 3.0 + (2.0 - std::cos(beta_)) / delta_);
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
@@ -573,9 +573,9 @@ void MeixnerDistribution::computeCovariance() const
 }
 
 /* Parameters value and description accessor */
-NumericalPoint MeixnerDistribution::getParameter() const
+Point MeixnerDistribution::getParameter() const
 {
-  NumericalPoint point(4);
+  Point point(4);
   point[0] = alpha_;
   point[1] = beta_;
   point[2] = delta_;
@@ -583,7 +583,7 @@ NumericalPoint MeixnerDistribution::getParameter() const
   return point;
 }
 
-void MeixnerDistribution::setParameter(const NumericalPoint & parameter)
+void MeixnerDistribution::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 4) throw InvalidArgumentException(HERE) << "Error: expected 4 values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();

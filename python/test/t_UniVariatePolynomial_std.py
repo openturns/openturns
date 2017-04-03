@@ -12,9 +12,9 @@ try:
     print("P=", P)
     print("P(", point, ")=", P(point))
 
-    # Constructor: construct the 1D polynomial with a vector of NumericalPoint
+    # Constructor: construct the 1D polynomial with a vector of Point
     # e.g. UniVariatePolynomial P1 ( coefficients )
-    coefficients = NumericalPoint(6)
+    coefficients = Point(6)
     coefficients[0] = 1.3
     coefficients[1] = 2.4
     coefficients[2] = 2.0
@@ -41,7 +41,7 @@ try:
     print("P1.incrementDegree()=", P1.incrementDegree())
 
     # Sum of two polynomials
-    coefficients = NumericalPoint(3)
+    coefficients = Point(3)
     coefficients[0] = -2.5
     coefficients[1] = 3.5
     coefficients[2] = -1.2

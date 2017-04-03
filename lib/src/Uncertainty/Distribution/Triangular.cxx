@@ -102,31 +102,31 @@ void Triangular::computeRange()
 }
 
 /* Get one realization of the distribution */
-NumericalPoint Triangular::getRealization() const
+Point Triangular::getRealization() const
 {
   const NumericalScalar ma = m_ - a_;
   const NumericalScalar ba = b_ - a_;
   const NumericalScalar prob = RandomGenerator::Generate();
-  if (ba * prob < ma) return NumericalPoint(1, a_ + std::sqrt(prob * ba * ma));
-  return NumericalPoint(1, b_ - std::sqrt((1.0 - prob) * ba * (b_ - m_)));
+  if (ba * prob < ma) return Point(1, a_ + std::sqrt(prob * ba * ma));
+  return Point(1, b_ - std::sqrt((1.0 - prob) * ba * (b_ - m_)));
 }
 
 
 /* Get the DDF of the distribution */
-NumericalPoint Triangular::computeDDF(const NumericalPoint & point) const
+Point Triangular::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0];
-  if ((x <= a_) || (x > b_)) return NumericalPoint(1, 0.0);
+  if ((x <= a_) || (x > b_)) return Point(1, 0.0);
   const NumericalScalar ddf = 2.0 / (b_ - a_);
-  if (x < m_) return NumericalPoint(1, ddf / (m_ - a_));
-  return NumericalPoint(1, ddf / (m_ - b_));
+  if (x < m_) return Point(1, ddf / (m_ - a_));
+  return Point(1, ddf / (m_ - b_));
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Triangular::computePDF(const NumericalPoint & point) const
+NumericalScalar Triangular::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -139,7 +139,7 @@ NumericalScalar Triangular::computePDF(const NumericalPoint & point) const
 
 
 /* Get the CDF of the distribution */
-NumericalScalar Triangular::computeCDF(const NumericalPoint & point) const
+NumericalScalar Triangular::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -171,13 +171,13 @@ NumericalComplex Triangular::computeLogCharacteristicFunction(const NumericalSca
 }
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint Triangular::computePDFGradient(const NumericalPoint & point) const
+Point Triangular::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0];
-  if ((x <= a_) || (x > b_)) return NumericalPoint(1, 0.0);
-  NumericalPoint pdfGradient(3);
+  if ((x <= a_) || (x > b_)) return Point(1, 0.0);
+  Point pdfGradient(3);
   const NumericalScalar ba = b_ - a_;
   const NumericalScalar ma = m_ - a_;
   const NumericalScalar bm = b_ - m_;
@@ -198,13 +198,13 @@ NumericalPoint Triangular::computePDFGradient(const NumericalPoint & point) cons
 }
 
 /* Get the CDFGradient of the distribution */
-NumericalPoint Triangular::computeCDFGradient(const NumericalPoint & point) const
+Point Triangular::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0];
-  if ((x < a_) || (x > b_)) return NumericalPoint(1, 0.0);
-  NumericalPoint cdfGradient(3);
+  if ((x < a_) || (x > b_)) return Point(1, 0.0);
+  Point cdfGradient(3);
   const NumericalScalar ba = b_ - a_;
   const NumericalScalar ma = m_ - a_;
   const NumericalScalar bm = b_ - m_;
@@ -252,20 +252,20 @@ NumericalScalar Triangular::getRoughness() const
 /* Compute the mean of the distribution */
 void Triangular::computeMean() const
 {
-  mean_ = NumericalPoint(1, (a_ + m_ + b_) / 3.0);
+  mean_ = Point(1, (a_ + m_ + b_) / 3.0);
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint Triangular::getStandardDeviation() const
+Point Triangular::getStandardDeviation() const
 {
   const NumericalScalar ma = m_ - a_;
   const NumericalScalar bm = b_ - m_;
-  return NumericalPoint(1, std::sqrt((bm * bm + bm * ma + ma * ma) / 18.0));
+  return Point(1, std::sqrt((bm * bm + bm * ma + ma * ma) / 18.0));
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint Triangular::getSkewness() const
+Point Triangular::getSkewness() const
 {
   const NumericalScalar ma = m_ - a_;
   const NumericalScalar bm = b_ - m_;
@@ -273,14 +273,14 @@ NumericalPoint Triangular::getSkewness() const
   const NumericalScalar den = std::pow(bm * bm + bm * ma + ma * ma, 1.5);
   NumericalScalar num = (ba + ma) * (bm - ma) * (bm + ba);
   // 0.2828427124746190097603378 = sqrt(2) / 5
-  return NumericalPoint(1, 0.2828427124746190097603378 * num / den);
+  return Point(1, 0.2828427124746190097603378 * num / den);
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint Triangular::getKurtosis() const
+Point Triangular::getKurtosis() const
 {
   // 2.4 = 12/5
-  return NumericalPoint(1, 2.4);
+  return Point(1, 2.4);
 }
 
 /* Compute the covariance of the distribution */
@@ -294,21 +294,21 @@ void Triangular::computeCovariance() const
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Triangular::getStandardMoment(const UnsignedInteger n) const
+Point Triangular::getStandardMoment(const UnsignedInteger n) const
 {
   const NumericalScalar mu = ((m_ - a_) + (m_ - b_)) / (b_ - a_);
   // Even order
   if (n % 2 == 0)
   {
     // Vertical part?
-    if (1.0 - std::abs(mu) < ResourceMap::GetAsNumericalScalar("Distribution-DefaultPDFEpsilon")) return NumericalPoint(1, 1.0 / (n + 1.0));
+    if (1.0 - std::abs(mu) < ResourceMap::GetAsNumericalScalar("Distribution-DefaultPDFEpsilon")) return Point(1, 1.0 / (n + 1.0));
     // Usual case
-    return NumericalPoint(1, 2.0 * (1.0 - std::pow(mu, n + 2.0)) / ((n + 1.0) * (n + 2.0) * (1.0 - mu) * (1.0 + mu)));
+    return Point(1, 2.0 * (1.0 - std::pow(mu, n + 2.0)) / ((n + 1.0) * (n + 2.0) * (1.0 - mu) * (1.0 + mu)));
   }
   // Odd order
   // Vertical part?
-  if (1.0 - std::abs(mu) < ResourceMap::GetAsNumericalScalar("Distribution-DefaultPDFEpsilon")) return NumericalPoint(1, 1.0 / (n + 2.0));
-  return NumericalPoint(1, 2.0 * mu * (1.0 - std::pow(mu, n + 1.0)) / ((n + 1.0) * (n + 2.0) * (1.0 - mu) * (1.0 + mu)));
+  if (1.0 - std::abs(mu) < ResourceMap::GetAsNumericalScalar("Distribution-DefaultPDFEpsilon")) return Point(1, 1.0 / (n + 2.0));
+  return Point(1, 2.0 * mu * (1.0 - std::pow(mu, n + 1.0)) / ((n + 1.0) * (n + 2.0) * (1.0 - mu) * (1.0 + mu)));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
@@ -318,16 +318,16 @@ Triangular::Implementation Triangular::getStandardRepresentative() const
 }
 
 /* Parameters value accessor */
-NumericalPoint Triangular::getParameter() const
+Point Triangular::getParameter() const
 {
-  NumericalPoint point(3);
+  Point point(3);
   point[0] = a_;
   point[1] = m_;
   point[2] = b_;
   return point;
 }
 
-void Triangular::setParameter(const NumericalPoint & parameter)
+void Triangular::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();
@@ -393,11 +393,11 @@ NumericalScalar Triangular::getB() const
 
 
 /* Get the PDF singularities inside of the range - 1D only */
-NumericalPoint Triangular::getSingularities() const
+Point Triangular::getSingularities() const
 {
-  if (m_ == a_) return NumericalPoint(0);
-  if (m_ == b_) return NumericalPoint(0);
-  return NumericalPoint(1, m_);
+  if (m_ == a_) return Point(0);
+  if (m_ == b_) return Point(0);
+  return Point(1, m_);
 }
 
 /* Method save() stores the object through the StorageManager */

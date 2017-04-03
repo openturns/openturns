@@ -52,10 +52,10 @@ int main(int argc, char *argv[])
     // Defining RandomMixture
     const UnsignedInteger N = 16;
     Indices points(2, N);
-    NumericalPoint mean(dist_2D.getMean());
-    NumericalPoint sigma(dist_2D.getStandardDeviation());
-    NumericalPoint xMin(mean - 2.9 * sigma);
-    NumericalPoint xMax(mean + 2.9 * sigma);
+    Point mean(dist_2D.getMean());
+    Point sigma(dist_2D.getStandardDeviation());
+    Point xMin(mean - 2.9 * sigma);
+    Point xMax(mean + 2.9 * sigma);
     Sample grid;
     fullprint << "distribution = " << dist_2D << std::endl;
     fullprint << "distribution = " << dist_2D.__str__() << std::endl;

@@ -21,7 +21,7 @@
 #include <cmath>
 #include <fstream>
 #include "openturns/FittingTest.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Description.hxx"
 #include "openturns/Path.hxx"
 #include "openturns/ResourceMap.hxx"
@@ -401,7 +401,7 @@ TestResult FittingTest::RunRTest(const Sample & sample,
   cmdFile << "sample <- data.matrix(read.table(\"" << dataFileName << "\"))" << std::endl;
   cmdFile << "res <- computeTest" << testName << distribution.getImplementation()->getClassName();
   cmdFile << "(sample, ";
-  const NumericalPoint parameters(distribution.getParametersCollection()[0]);
+  const Point parameters(distribution.getParametersCollection()[0]);
   const UnsignedInteger parametersNumber = parameters.getDimension();
   for (UnsignedInteger i = 0; i < parametersNumber; ++i) cmdFile << parameters[i] << ", ";
   cmdFile << level << ", " << estimatedParameters << ")" << std::endl;

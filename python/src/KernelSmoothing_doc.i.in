@@ -44,7 +44,7 @@ Parameters
 ----------
 sample : 2-d sequence of float
     Data on which the distribution is fitted. Any dimension.
-bandwidth : :class:`~openturns.NumericalPoint`, optional
+bandwidth : :class:`~openturns.Point`, optional
     Contains the bandwith in each direction. If not specified, the bandwith is calculated using the mixed rule from data.
 
 Returns
@@ -89,7 +89,7 @@ Compare the PDFs:
 
 Returns
 -------
-bandwidth : :class:`~openturns.NumericalPoint`
+bandwidth : :class:`~openturns.Point`
     Bandwith used in each direction. 
 "
 
@@ -119,7 +119,7 @@ boundaryCorrection : bool
 
 Returns
 -------
-bandwidth : :class:`~openturns.NumericalPoint`
+bandwidth : :class:`~openturns.Point`
     Bandwith wich components are evaluated according to the Silverman rule supposing a normal distribution. The bandwith is based on the evaluation of the interquartiles rather than the standard deviation of the distribution and the sample.
 "
 
@@ -129,7 +129,7 @@ bandwidth : :class:`~openturns.NumericalPoint`
 
 Returns
 -------
-bandwidth : :class:`~openturns.NumericalPoint`
+bandwidth : :class:`~openturns.Point`
     Bandwith wich components are evaluated according to the plugin rule. 
 
 Notes
@@ -143,7 +143,7 @@ Warning! It can take a lot of time for large samples, as the cost is  quadratic 
 
 Returns
 -------
-bandwidth : :class:`~openturns.NumericalPoint`
+bandwidth : :class:`~openturns.Point`
     Bandwith wich components are evaluated according to a mixed rule.
 
 Notes

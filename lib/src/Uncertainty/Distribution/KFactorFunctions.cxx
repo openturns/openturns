@@ -57,10 +57,10 @@ public:
     return new KernelFunction(*this);
   }
 
-  NumericalPoint operator() (const NumericalPoint & point) const
+  Point operator() (const Point & point) const
   {
     const NumericalScalar z = point[0];
-    return NumericalPoint(1, chiSquare_.computeComplementaryCDF(nu_ * NonCentralChiSquare(1.0, z * z).computeQuantile(p_) / (x_ * x_)) * normal_.computePDF(z));
+    return Point(1, chiSquare_.computeComplementaryCDF(nu_ * NonCentralChiSquare(1.0, z * z).computeQuantile(p_) / (x_ * x_)) * normal_.computePDF(z));
   }
 
   void setX(const NumericalScalar x)
@@ -134,7 +134,7 @@ public:
     return new ConstraintFunction(*this);
   }
 
-  NumericalPoint operator() (const NumericalPoint & point) const
+  Point operator() (const Point & point) const
   {
     const NumericalScalar x = point[0];
     kernel_.setX(x);

@@ -96,33 +96,33 @@ Laplace * Laplace::clone() const
 }
 
 /* Get one realization of the distribution */
-NumericalPoint Laplace::getRealization() const
+Point Laplace::getRealization() const
 {
   const NumericalScalar d = RandomGenerator::Generate() - 0.5;
-  if (d < 0.0) return NumericalPoint(1, mu_ + log1p(2.0 * d) / lambda_);
-  return NumericalPoint(1, mu_ - log1p(-2.0 * d) / lambda_);
+  if (d < 0.0) return Point(1, mu_ + log1p(2.0 * d) / lambda_);
+  return Point(1, mu_ - log1p(-2.0 * d) / lambda_);
 }
 
 
 /* Get the DDF of the distribution */
-NumericalPoint Laplace::computeDDF(const NumericalPoint & point) const
+Point Laplace::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar value = computePDF(point) * lambda_;
-  return (point[0] < mu_ ? NumericalPoint(1, value) : NumericalPoint(1, -value));
+  return (point[0] < mu_ ? Point(1, value) : Point(1, -value));
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Laplace::computePDF(const NumericalPoint & point) const
+NumericalScalar Laplace::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   return 0.5 * lambda_ * std::exp(-lambda_ * std::abs(point[0] - mu_));
 }
 
-NumericalScalar Laplace::computeLogPDF(const NumericalPoint & point) const
+NumericalScalar Laplace::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -130,7 +130,7 @@ NumericalScalar Laplace::computeLogPDF(const NumericalPoint & point) const
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar Laplace::computeCDF(const NumericalPoint & point) const
+NumericalScalar Laplace::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -140,7 +140,7 @@ NumericalScalar Laplace::computeCDF(const NumericalPoint & point) const
 }
 
 /* Get the complementary CDF of the distribution */
-NumericalScalar Laplace::computeComplementaryCDF(const NumericalPoint & point) const
+NumericalScalar Laplace::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -163,11 +163,11 @@ NumericalComplex Laplace::computeLogCharacteristicFunction(const NumericalScalar
 }
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint Laplace::computePDFGradient(const NumericalPoint & point) const
+Point Laplace::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  NumericalPoint pdfGradient(2, 0.0);
+  Point pdfGradient(2, 0.0);
   const NumericalScalar factor = std::abs(point[0] - mu_) * lambda_;
   const NumericalScalar expFactor = std::exp(-factor);
   pdfGradient[0] = 0.5 * expFactor * (1.0 - factor);
@@ -176,11 +176,11 @@ NumericalPoint Laplace::computePDFGradient(const NumericalPoint & point) const
 }
 
 /* Get the CDFGradient of the distribution */
-NumericalPoint Laplace::computeCDFGradient(const NumericalPoint & point) const
+Point Laplace::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  NumericalPoint cdfGradient(2, 0.0);
+  Point cdfGradient(2, 0.0);
   const NumericalScalar factor = std::abs(point[0] - mu_) * lambda_;
   const NumericalScalar expFactor = std::exp(-factor);
   cdfGradient[0] = 0.5 * factor / lambda_ * expFactor;
@@ -200,33 +200,33 @@ NumericalScalar Laplace::computeScalarQuantile(const NumericalScalar prob,
 /* Compute the mean of the distribution */
 void Laplace::computeMean() const
 {
-  mean_ = NumericalPoint(1, mu_);
+  mean_ = Point(1, mu_);
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint Laplace::getStandardDeviation() const
+Point Laplace::getStandardDeviation() const
 {
-  return NumericalPoint(1, std::sqrt(2.0) / lambda_);
+  return Point(1, std::sqrt(2.0) / lambda_);
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint Laplace::getSkewness() const
+Point Laplace::getSkewness() const
 {
-  return NumericalPoint(1, 0.0);
+  return Point(1, 0.0);
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint Laplace::getKurtosis() const
+Point Laplace::getKurtosis() const
 {
-  return NumericalPoint(1, 6.0);
+  return Point(1, 6.0);
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Laplace::getStandardMoment(const UnsignedInteger n) const
+Point Laplace::getStandardMoment(const UnsignedInteger n) const
 {
-  if ((n % 2) == 1) return NumericalPoint(1, 0.0);
-  return NumericalPoint(1, SpecFunc::Gamma(n + 1));
+  if ((n % 2) == 1) return Point(1, 0.0);
+  return Point(1, SpecFunc::Gamma(n + 1));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
@@ -244,15 +244,15 @@ void Laplace::computeCovariance() const
 }
 
 /* Parameters value and description accessor */
-NumericalPoint Laplace::getParameter() const
+Point Laplace::getParameter() const
 {
-  NumericalPoint point(2);
+  Point point(2);
   point[0] = lambda_;
   point[1] = mu_;
   return point;
 }
 
-void Laplace::setParameter(const NumericalPoint & parameter)
+void Laplace::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();
@@ -314,9 +314,9 @@ NumericalScalar Laplace::getLambda() const
 }
 
 /* Get the PDF singularities inside of the range - 1D only */
-NumericalPoint Laplace::getSingularities() const
+Point Laplace::getSingularities() const
 {
-  return NumericalPoint(1, mu_);
+  return Point(1, mu_);
 }
 
 /* Method save() stores the object through the StorageManager */

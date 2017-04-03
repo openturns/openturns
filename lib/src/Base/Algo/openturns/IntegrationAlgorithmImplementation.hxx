@@ -48,18 +48,18 @@ public:
   /** Compute an approximation of \int_{[a,b]}f(x)dx, where [a,b]
    * is an n-D interval
    */
-  virtual NumericalPoint integrate(const Function & function,
+  virtual Point integrate(const Function & function,
                                    const Interval & interval) const;
 
 #ifndef SWIG
-  virtual NumericalPoint integrate(const Function & function,
+  virtual Point integrate(const Function & function,
                                    const Interval & interval,
                                    NumericalScalar & error) const;
 #endif
 
-  virtual NumericalPoint integrate(const Function & function,
+  virtual Point integrate(const Function & function,
                                    const Interval & interval,
-                                   NumericalPoint & error) const;
+                                   Point & error) const;
   /** String converter */
   virtual String __repr__() const;
 

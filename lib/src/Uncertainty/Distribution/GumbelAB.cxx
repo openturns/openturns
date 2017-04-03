@@ -60,11 +60,11 @@ Bool GumbelAB::operator ==(const GumbelAB & other) const
 /* Build a distribution based on a set of native parameters */
 Distribution GumbelAB::getDistribution() const
 {
-  NumericalPoint newParameters(2);
+  Point newParameters(2);
   newParameters[0] = a_;
   newParameters[1] = b_;
 
-  NumericalPoint nativeParameters(operator()(newParameters));
+  Point nativeParameters(operator()(newParameters));
   return GumbelFactory().build(nativeParameters);
 }
 
@@ -89,7 +89,7 @@ Matrix GumbelAB::gradient() const
 
 
 /* Conversion operator */
-NumericalPoint GumbelAB::operator () (const NumericalPoint & inP) const
+Point GumbelAB::operator () (const Point & inP) const
 {
   if (inP.getDimension() != 2) throw InvalidArgumentException(HERE) << "the given point must have dimension=2, here dimension=" << inP.getDimension();
   const NumericalScalar a = inP[0];
@@ -100,7 +100,7 @@ NumericalPoint GumbelAB::operator () (const NumericalPoint & inP) const
   const NumericalScalar alpha = 1 / b;
   const NumericalScalar beta = a;
 
-  NumericalPoint nativeParameters(inP);
+  Point nativeParameters(inP);
   nativeParameters[0] = alpha;
   nativeParameters[1] = beta;
 
@@ -108,7 +108,7 @@ NumericalPoint GumbelAB::operator () (const NumericalPoint & inP) const
 }
 
 
-NumericalPoint GumbelAB::inverse(const NumericalPoint & inP) const
+Point GumbelAB::inverse(const Point & inP) const
 {
   if (inP.getDimension() != 2) throw InvalidArgumentException(HERE) << "the given point must have dimension=2, here dimension=" << inP.getDimension();
   const NumericalScalar alpha = inP[0];
@@ -119,7 +119,7 @@ NumericalPoint GumbelAB::inverse(const NumericalPoint & inP) const
   const NumericalScalar a = beta;
   const NumericalScalar b = 1.0 / alpha;
 
-  NumericalPoint abParameters(inP);
+  Point abParameters(inP);
   abParameters[0] = a;
   abParameters[1] = b;
 
@@ -127,16 +127,16 @@ NumericalPoint GumbelAB::inverse(const NumericalPoint & inP) const
 }
 
 /* Parameters value and description accessor */
-void GumbelAB::setValues(const NumericalPoint & inP)
+void GumbelAB::setValues(const Point & inP)
 {
   if (inP.getDimension() != 2) throw InvalidArgumentException(HERE) << "the given point must have dimension=2, here dimension=" << inP.getDimension();
   a_ = inP[0];
   b_ = inP[1];
 }
 
-NumericalPoint GumbelAB::getValues() const
+Point GumbelAB::getValues() const
 {
-  NumericalPoint point(2);
+  Point point(2);
   point[0] = a_;
   point[1] = b_;
   return point;

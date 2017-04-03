@@ -52,8 +52,8 @@ OptimizationResult::OptimizationResult()
 }
 
 /* Standard constructor */
-OptimizationResult::OptimizationResult(const NumericalPoint & optimalPoint,
-                                       const NumericalPoint &  optimalValue,
+OptimizationResult::OptimizationResult(const Point & optimalPoint,
+                                       const Point &  optimalValue,
                                        const UnsignedInteger iterationNumber,
                                        const NumericalScalar absoluteError,
                                        const NumericalScalar relativeError,
@@ -87,23 +87,23 @@ OptimizationResult * OptimizationResult::clone() const
 }
 
 /* OptimalPoint accessors */
-NumericalPoint OptimizationResult::getOptimalPoint() const
+Point OptimizationResult::getOptimalPoint() const
 {
   return optimalPoint_;
 }
 
-void OptimizationResult::setOptimalPoint(const NumericalPoint & optimalPoint)
+void OptimizationResult::setOptimalPoint(const Point & optimalPoint)
 {
   optimalPoint_ = optimalPoint;
 }
 
 /* Optimal value accessors */
-NumericalPoint OptimizationResult::getOptimalValue() const
+Point OptimizationResult::getOptimalValue() const
 {
   return optimalValue_;
 }
 
-void OptimizationResult::setOptimalValue(const NumericalPoint &  optimalValue)
+void OptimizationResult::setOptimalValue(const Point &  optimalValue)
 {
   optimalValue_ = optimalValue;
 }
@@ -208,12 +208,12 @@ OptimizationProblem OptimizationResult::getProblem() const
 }
 
 /* Lagrange multipliers accessor */
-void OptimizationResult::setLagrangeMultipliers(const NumericalPoint & lagrangeMultipliers)
+void OptimizationResult::setLagrangeMultipliers(const Point & lagrangeMultipliers)
 {
   lagrangeMultipliers_ = lagrangeMultipliers;
 }
 
-NumericalPoint OptimizationResult::getLagrangeMultipliers() const
+Point OptimizationResult::getLagrangeMultipliers() const
 {
   return lagrangeMultipliers_;
 }
@@ -284,8 +284,8 @@ void OptimizationResult::load(Advocate & adv)
 }
 
 /* Incremental history storage */
-void OptimizationResult::store(const NumericalPoint & x,
-                               const NumericalPoint & y,
+void OptimizationResult::store(const Point & x,
+                               const Point & y,
                                const NumericalScalar absoluteError,
                                const NumericalScalar relativeError,
                                const NumericalScalar residualError,
@@ -302,10 +302,10 @@ void OptimizationResult::store(const NumericalPoint & x,
   constraintError_ = constraintError;
 
   // append values
-  absoluteErrorHistory_.store(NumericalPoint(1, absoluteError));
-  relativeErrorHistory_.store(NumericalPoint(1, relativeError));
-  residualErrorHistory_.store(NumericalPoint(1, residualError));
-  constraintErrorHistory_.store(NumericalPoint(1, constraintError));
+  absoluteErrorHistory_.store(Point(1, absoluteError));
+  relativeErrorHistory_.store(Point(1, relativeError));
+  residualErrorHistory_.store(Point(1, residualError));
+  constraintErrorHistory_.store(Point(1, constraintError));
 
   inputHistory_.store(x);
   outputHistory_.store(y);

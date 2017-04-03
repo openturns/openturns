@@ -32,7 +32,7 @@ the **openturns** Python package*
 
 ::
 
-    from openturns import NumericalPoint
+    from openturns import Point
     from openturns.base import Sample
     from openturns.uncertainty import RandomVector
 
@@ -152,7 +152,7 @@ sometimes called *interface definition* or *interface specification*).
 ::
 
     #include "openturns/OSS.hxx"
-    #include "openturns/NumericalPoint.hxx"
+    #include "openturns/Point.hxx"
 
 *Example for the inclusion of system function or external library header
 files*
@@ -344,7 +344,7 @@ reason, the underscore is used as a suffix.
 
     void removeElement(const UnsignedInteger index);
 
-    NumericalPoint meanValue;
+    Point meanValue;
 
 *Example of tolerated notations:*
 
@@ -357,7 +357,7 @@ reason, the underscore is used as a suffix.
     UnsignedInteger nbMaxElements;    // usual abbreviations: nb, Max
 
     void
-    addPoint(NumericalPoint pt) { // no confusion in the context
+    addPoint(Point pt) { // no confusion in the context
       add(pt);
     }
 
@@ -369,7 +369,7 @@ reason, the underscore is used as a suffix.
     NumericalScalar zzz, zz2;
     const char *foo, *hello, tempo, bogus;
 
-    void adElt(NumericalPoint pt);
+    void adElt(Point pt);
 
     UnsignedInteger numSmplPt;
 
@@ -530,8 +530,8 @@ from A:*
       UnsignedInteger getDimension() const;
 
       //* return the i-th element
-      NumericalPoint         operator[] (UnsignedInteger i);
-      const NumericalPoint & operator[] (UnsignedInteger i) const;
+      Point         operator[] (UnsignedInteger i);
+      const Point & operator[] (UnsignedInteger i) const;
     };
 
 *Example:*
@@ -544,11 +544,11 @@ from A:*
       inline UnsignedInteger getDimension() const { return dimension_; }
 
       //* compute the mean point of the sample
-      inline NumericalPoint computeMeanValue() const;
+      inline Point computeMeanValue() const;
     };
 
     //* inline methods
-    NumericalPoint computeMeanValue() const;
+    Point computeMeanValue() const;
     {
     /* ... some non trivial processing */
     return meanValue;
@@ -569,7 +569,7 @@ constructors that have a single mandatory argument plus optional arguments.
 
     class A {
     public :
-      explicit A(const NumericalPoint value);
+      explicit A(const Point value);
     };
 
 *Optional argument:*
@@ -587,7 +587,7 @@ constructors that have a single mandatory argument plus optional arguments.
 
     class A {
     public :
-      explicit A(const NumericalPoint value, UnsignedInteger max = 6);
+      explicit A(const Point value, UnsignedInteger max = 6);
     };
 
 Inheritance
@@ -597,7 +597,7 @@ Inheritance
 
 ::
 
-    class NumericalPoint : public std::vector<double> {
+    class Point : public std::vector<double> {
     public:
       Point(NumericalScalar x,
             NumericalScalar y,
@@ -830,7 +830,7 @@ Atomic types (integer, bool, ...) can use the copy operator for readability.
 
 ::
 
-    NumericalPoint p2(p1);
+    Point p2(p1);
     Bool a = b;
 
 *Example to avoid:*

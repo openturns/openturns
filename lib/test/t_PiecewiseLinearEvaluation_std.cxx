@@ -33,20 +33,20 @@ int main(int argc, char *argv[])
   {
     SymbolicFunction ref("x", "sin(x)");
     UnsignedInteger size = 12;
-    NumericalPoint locations(size);
-    NumericalPoint values(size);
+    Point locations(size);
+    Point values(size);
     // Build locations/values with non-increasing locations
     for (UnsignedInteger i = 0; i < size; ++i)
     {
       locations[i] = 10.0 * i * i / (size - 1.0) / (size - 1.0);
-      values[i] = ref(NumericalPoint(1, locations[i]))[0];
+      values[i] = ref(Point(1, locations[i]))[0];
     }
     PiecewiseLinearEvaluation evaluation(locations, values);
     fullprint << "evaluation=" << evaluation << std::endl;
     // Check the values
     for (UnsignedInteger i = 0; i < 2 * size; ++i)
     {
-      NumericalPoint x(1, -1.0 + 12.0 * i / (2.0 * size - 1.0));
+      Point x(1, -1.0 + 12.0 * i / (2.0 * size - 1.0));
       fullprint << "f(" << x[0] << ")=" << evaluation(x) << ", ref=" << ref(x) << std::endl;
     }
   }

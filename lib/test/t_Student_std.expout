@@ -2,63 +2,63 @@ Testing class Student
 checkConstructorAndDestructor()
 checkCopyConstructor()
 streamObject(const T & anObject)
-class=Student name=Student dimension=1 nu=5 mean=class=NumericalPoint name=Unnamed dimension=1 values=[-0.5] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+class=Student name=Student dimension=1 nu=5 mean=class=Point name=Unnamed dimension=1 values=[-0.5] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 streamObject(const T & anObject)
-class=Student name=Student dimension=1 nu=5 mean=class=NumericalPoint name=Unnamed dimension=1 values=[-0.5] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+class=Student name=Student dimension=1 nu=5 mean=class=Point name=Unnamed dimension=1 values=[-0.5] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-Distribution class=Student name=Student dimension=1 nu=6.5 mean=class=NumericalPoint name=Unnamed dimension=1 values=[-0.5] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[5] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+Distribution class=Student name=Student dimension=1 nu=6.5 mean=class=Point name=Unnamed dimension=1 values=[-0.5] sigma=class=Point name=Unnamed dimension=1 values=[5] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 Distribution Student(nu = 6.5, mu = -0.5, sigma = 5)
 Elliptical = true
 Continuous = true
-oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[4.41402]
-oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[9.59681] last=class=NumericalPoint name=Unnamed dimension=1 values=[-0.842336]
-mean=class=NumericalPoint name=Unnamed dimension=1 values=[-0.543433]
+oneRealization=class=Point name=Unnamed dimension=1 values=[4.41402]
+oneSample first=class=Point name=Unnamed dimension=1 values=[9.59681] last=class=Point name=Unnamed dimension=1 values=[-0.842336]
+mean=class=Point name=Unnamed dimension=1 values=[-0.543433]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[34.9875]
 Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
-Point= class=NumericalPoint name=Unnamed dimension=1 values=[1]
-ddf     =class=NumericalPoint name=Unnamed dimension=1 values=[-0.00498004]
-ddf (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[-0.00498004]
+Point= class=Point name=Unnamed dimension=1 values=[1]
+ddf     =class=Point name=Unnamed dimension=1 values=[-0.00498004]
+ddf (FD)=class=Point name=Unnamed dimension=1 values=[-0.00498004]
 log pdf=-2.61826
 pdf     =0.0729299
 pdf (FD)=0.0729299
 cdf=0.613229
 ccdf=0.386771
 survival=0.386771
-Inverse survival=class=NumericalPoint name=Unnamed dimension=1 values=[-10.0837]
+Inverse survival=class=Point name=Unnamed dimension=1 values=[-10.0837]
 Survival(inverse survival)=0.95
-pdf gradient     =class=NumericalPoint name=Unnamed dimension=3 values=[0.000499835,0.00498004,-0.013092]
-pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=3 values=[0.000499835,0.00498004,-0.013092]
-cdf gradient     =class=NumericalPoint name=Unnamed dimension=3 values=[0.000700682,-0.0729299,-0.021879]
-cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=3 values=[0.000700682,-0.0729299,-0.021879]
-quantile=class=NumericalPoint name=Unnamed dimension=1 values=[9.08368]
+pdf gradient     =class=Point name=Unnamed dimension=3 values=[0.000499835,0.00498004,-0.013092]
+pdf gradient (FD)=class=Point name=Unnamed dimension=3 values=[0.000499835,0.00498004,-0.013092]
+cdf gradient     =class=Point name=Unnamed dimension=3 values=[0.000700682,-0.0729299,-0.021879]
+cdf gradient (FD)=class=Point name=Unnamed dimension=3 values=[0.000700682,-0.0729299,-0.021879]
+quantile=class=Point name=Unnamed dimension=1 values=[9.08368]
 cdf(quantile)=0.95
-Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-12.51] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[11.51] finite lower bound=[1] finite upper bound=[1]
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-12.51] upper bound=class=Point name=Unnamed dimension=1 values=[11.51] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
-Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Student(nu = 6.5, mu = -0.5, sigma = 5)) gradientImplementation=MinimumVolumeLevelSetGradient(Student(nu = 6.5, mu = -0.5, sigma = 5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=NumericalPoint name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Student(nu = 6.5, mu = -0.5, sigma = 5)) level=4.94915
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Student(nu = 6.5, mu = -0.5, sigma = 5)) gradientImplementation=MinimumVolumeLevelSetGradient(Student(nu = 6.5, mu = -0.5, sigma = 5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Student(nu = 6.5, mu = -0.5, sigma = 5)) level=4.94915
 beta=0.00708941
-Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-12.51] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[11.51] finite lower bound=[1] finite upper bound=[1]
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-12.51] upper bound=class=Point name=Unnamed dimension=1 values=[11.51] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-1358.08] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[9.08368] finite lower bound=[1] finite upper bound=[1]
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-1358.08] upper bound=class=Point name=Unnamed dimension=1 values=[9.08368] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-10.0837] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[1357.08] finite lower bound=[1] finite upper bound=[1]
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-10.0837] upper bound=class=Point name=Unnamed dimension=1 values=[1357.08] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-mean=class=NumericalPoint name=Unnamed dimension=1 values=[-0.5]
-standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[6.00925]
-skewness=class=NumericalPoint name=Unnamed dimension=1 values=[0]
-kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[5.4]
+mean=class=Point name=Unnamed dimension=1 values=[-0.5]
+standard deviation=class=Point name=Unnamed dimension=1 values=[6.00925]
+skewness=class=Point name=Unnamed dimension=1 values=[0]
+kurtosis=class=Point name=Unnamed dimension=1 values=[5.4]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[36.1111]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 parameters=[[nu : 6.5, mean_0 : -0.5, standard_deviation_0 : 5]]
-standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
-standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[0]
-standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[1.44444]
-standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[0]
-standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[11.2667]
-standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[0]
+standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[0]
+standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[1.44444]
+standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[0]
+standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[11.2667]
+standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[0]
 Standard representative=Student(nu = 6.5, mu = 0, sigma = 1)
 density generator=0.2245
 pdf via density generator=0.0729299

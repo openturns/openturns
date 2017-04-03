@@ -105,7 +105,7 @@ NumericalScalar AbdoRackwitz::computeLineSearch()
   /* Initialization of the line search */
   /* We start with step=1 */
   NumericalScalar step = 1.0;
-  NumericalPoint currentStepPoint;
+  Point currentStepPoint;
   NumericalScalar currentStepLevelValue = -1.0;
   NumericalScalar currentStepTheta = -1.0;
   do
@@ -150,7 +150,7 @@ void AbdoRackwitz::run()
   // reset result
   result_ = OptimizationResult();
   result_.setProblem(getProblem());
-  result_.store(currentPoint_, NumericalPoint(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
+  result_.store(currentPoint_, Point(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
 
   while ( (!convergence) && (iterationNumber <= getMaximumIterationNumber()) )
   {
@@ -158,7 +158,7 @@ void AbdoRackwitz::run()
     ++iterationNumber;
 
     /* Compute the level function gradient at the current point -> Grad(G) */
-    currentGradient_ = levelFunction.gradient(currentPoint_) * NumericalPoint(1, 1.0);
+    currentGradient_ = levelFunction.gradient(currentPoint_) * Point(1, 1.0);
     if (getVerbose()) LOGINFO(OSS() << "current point=" << currentPoint_ << " current level value=" << currentLevelValue_ << " current gradient=" << currentGradient_);
     /* Compute the current Lagrange multiplier */
     const NumericalScalar normGradientSquared = currentGradient_.normSquare();
@@ -193,8 +193,8 @@ void AbdoRackwitz::run()
 
     // update result
     result_.setIterationNumber(iterationNumber);
-    result_.store(currentPoint_, NumericalPoint(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
-    result_.setLagrangeMultipliers(NumericalPoint(1, currentLambda_));
+    result_.store(currentPoint_, Point(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
+    result_.setLagrangeMultipliers(Point(1, currentLambda_));
 
     LOGINFO(getResult().__repr__());
 

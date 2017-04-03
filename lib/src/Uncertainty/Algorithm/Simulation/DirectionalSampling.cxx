@@ -118,8 +118,8 @@ NumericalScalar DirectionalSampling::computeMeanContribution(const NumericalScal
   // Here we know that the number of points is even. We can integrate the contributions.
   const UnsignedInteger segmentNumber = xK.getSize() / 2;
   // Quadrature rule
-  NumericalPoint weights;
-  const NumericalPoint nodes(inputDistribution_->getGaussNodesAndWeights(weights));
+  Point weights;
+  const Point nodes(inputDistribution_->getGaussNodesAndWeights(weights));
   const UnsignedInteger nodesSize = nodes.getSize();
   NumericalScalar value = 0.0;
   for (UnsignedInteger segmentIndex = 0; segmentIndex < segmentNumber; ++segmentIndex)
@@ -145,18 +145,18 @@ NumericalScalar DirectionalSampling::computeTotalContribution(const Sample & dir
   const UnsignedInteger sampleSize = directionSample.getSize();
   const UnsignedInteger dimension = directionSample.getDimension();
   NumericalScalar totalContribution = 0.0;
-  // meanPointInEventDomain = NumericalPoint(dimension);
+  // meanPointInEventDomain = Point(dimension);
   UnsignedInteger contributionNumber = 0;
   Matrix linear(dimension, 1);
   // For each direction
   for (UnsignedInteger indexDirection = 0; indexDirection < sampleSize; ++indexDirection)
   {
-    const NumericalPoint direction(directionSample[indexDirection]);
+    const Point direction(directionSample[indexDirection]);
     // First compute the roots along this direction
     // 1. Build the scalar function along the direction
     // 1.1 Build the linear function along the direction
     for (UnsignedInteger indexComponent = 0; indexComponent < dimension; ++indexComponent) linear(indexComponent, 0) = direction[indexComponent];
-    const LinearFunction ray(NumericalPoint(1, 0.0), NumericalPoint(dimension, 0.0), linear);
+    const LinearFunction ray(Point(1, 0.0), Point(dimension, 0.0), linear);
     // 1.2 Build the function along the ray
     const ComposedFunction functionAlongRay(standardFunction_, ray);
     // 2. Solve the function along the ray

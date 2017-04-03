@@ -41,7 +41,7 @@ where:
 
 Returns
 -------
-center : :class:`~openturns.NumericalPoint`
+center : :class:`~openturns.Point`
     The center :math:`\vect{b}`."
 
 // ---------------------------------------------------------------------
@@ -51,7 +51,7 @@ center : :class:`~openturns.NumericalPoint`
 
 Returns
 -------
-constant : :class:`~openturns.NumericalPoint`
+constant : :class:`~openturns.Point`
     The constant :math:`\vect{c}`."
 
 // ---------------------------------------------------------------------

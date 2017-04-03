@@ -39,10 +39,10 @@ try:
     # Probabilistic model
     #
 
-    mean = NumericalPoint(dim, 0.2)
+    mean = Point(dim, 0.2)
     mean[0] = 0.5
 
-    sigma = NumericalPoint(dim, 0.1)
+    sigma = Point(dim, 0.1)
 
     R = CorrelationMatrix(dim)
     myDistribution = Normal(mean, sigma, R)

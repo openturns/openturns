@@ -126,7 +126,7 @@ Notes
 
 Returns
 -------
-factors : :class:`~openturns.NumericalPointWithDescription`
+factors : :class:`~openturns.PointWithDescription`
     Sequence containing the importance factors with a description for each
     component."
 
@@ -170,7 +170,7 @@ index : float
 
 Returns
 -------
-sensitivity : :class:`~openturns.NumericalPointWithDescription`
+sensitivity : :class:`~openturns.PointWithDescription`
     Sequence containing the sensitivities of the Hasofer Reliability Index to
     the parameters of the probabilistic input vector (marginals and dependence
     structure) with a description for each component."
@@ -192,7 +192,7 @@ limitStateVariable : :class:`~openturns.Event`
 
 Returns
 -------
-meanPoint : :class:`~openturns.NumericalPoint`
+meanPoint : :class:`~openturns.Point`
     Mean point of the standard space distribution restricted to the event
     domain:
     :math:`\displaystyle \frac{1}{E_1(-\beta)}\int_{\beta}^{\infty} u_1 p_1(u_1)\di{u_1}`
@@ -220,7 +220,7 @@ meanPoint : sequence of float
 
 Returns
 -------
-designPoint : :class:`~openturns.NumericalPoint`
+designPoint : :class:`~openturns.Point`
     Design point in the physical space resulting from the optimization
     algorithm."
 
@@ -231,7 +231,7 @@ designPoint : :class:`~openturns.NumericalPoint`
 
 Returns
 -------
-designPoint : :class:`~openturns.NumericalPoint`
+designPoint : :class:`~openturns.Point`
     Design point in the standard space resulting from the optimization
     algorithm."
 

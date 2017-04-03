@@ -50,7 +50,7 @@ TruncatedNormalFactory::Implementation TruncatedNormalFactory::build(const Sampl
   return buildAsTruncatedNormal(sample).clone();
 }
 
-TruncatedNormalFactory::Implementation TruncatedNormalFactory::build(const NumericalPoint & parameters) const
+TruncatedNormalFactory::Implementation TruncatedNormalFactory::build(const Point & parameters) const
 {
   return buildAsTruncatedNormal(parameters).clone();
 }
@@ -80,15 +80,15 @@ TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const Sample & sa
   const NumericalScalar alpha = 2.0 / (xMax - xMin);
   const NumericalScalar beta = 0.5 * (xMin + xMax);
   Sample normalizedSample(sample);
-  normalizedSample -= NumericalPoint(1, beta);
-  normalizedSample *= NumericalPoint(1, alpha);
+  normalizedSample -= Point(1, beta);
+  normalizedSample *= Point(1, alpha);
 
   const UnsignedInteger dimension = 2;// optimize (mu, sigma)
-  NumericalPoint parametersLowerBound(dimension, -SpecFunc::MaxNumericalScalar);
+  Point parametersLowerBound(dimension, -SpecFunc::MaxNumericalScalar);
   parametersLowerBound[1] = ResourceMap::GetAsNumericalScalar( "TruncatedNormalFactory-SigmaLowerBound");
   Interval::BoolCollection parametersLowerFlags(dimension, false);
   parametersLowerFlags[1] = true;
-  NumericalPoint startingPoint(dimension);
+  Point startingPoint(dimension);
   startingPoint[0] = normalizedSample.computeMean()[0];
   startingPoint[1] = normalizedSample.computeStandardDeviationPerComponent()[0];
 
@@ -97,7 +97,7 @@ TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const Sample & sa
   MaximumLikelihoodFactory factory(buildAsTruncatedNormal());
 
   // bounds are fixed
-  NumericalPoint knownParameterValues(2, oneEps);
+  Point knownParameterValues(2, oneEps);
   knownParameterValues[0] = -oneEps;
   Indices knownParameterIndices(2);
   knownParameterIndices.fill(2);
@@ -109,15 +109,15 @@ TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const Sample & sa
   factory.setOptimizationAlgorithm(solver);
 
   // override bounds
-  Interval bounds(parametersLowerBound, NumericalPoint(dimension, SpecFunc::MaxNumericalScalar), parametersLowerFlags, Interval::BoolCollection(dimension, false));
+  Interval bounds(parametersLowerBound, Point(dimension, SpecFunc::MaxNumericalScalar), parametersLowerFlags, Interval::BoolCollection(dimension, false));
   factory.setOptimizationBounds(bounds);
 
-  const NumericalPoint parameters(factory.buildParameter(normalizedSample));
+  const Point parameters(factory.buildParameter(normalizedSample));
 
   // The parameters are scaled back
   // X_norm = alpha * (X - beta)
   // X = beta + X_norm / alpha
-  NumericalPoint scaledParameters(4, beta);
+  Point scaledParameters(4, beta);
   scaledParameters[0] += parameters[0] / alpha;// mu
   scaledParameters[1] = parameters[1] / alpha;// sigma
   scaledParameters[2] -= oneEps / alpha;// a
@@ -128,7 +128,7 @@ TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const Sample & sa
   return result;
 }
 
-TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const NumericalPoint & parameters) const
+TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const Point & parameters) const
 {
   try
   {

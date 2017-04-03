@@ -48,7 +48,7 @@ NormalCopulaFactory::Implementation NormalCopulaFactory::build(const Sample & sa
   return buildAsNormalCopula(sample).clone();
 }
 
-NormalCopulaFactory::Implementation NormalCopulaFactory::build(const NumericalPoint & parameters) const
+NormalCopulaFactory::Implementation NormalCopulaFactory::build(const Point & parameters) const
 {
   return buildAsNormalCopula(parameters).clone();
 }
@@ -74,7 +74,7 @@ NormalCopula NormalCopulaFactory::buildAsNormalCopula(const Sample & sample) con
   }
 }
 
-NormalCopula NormalCopulaFactory::buildAsNormalCopula(const NumericalPoint & parameters) const
+NormalCopula NormalCopulaFactory::buildAsNormalCopula(const Point & parameters) const
 {
   try
   {

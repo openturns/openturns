@@ -1,20 +1,20 @@
-Distribution  class=Dirichlet name=Dirichlet dimension=1 theta=class=NumericalPoint name=Unnamed dimension=2 values=[0.25,0.5]
+Distribution  class=Dirichlet name=Dirichlet dimension=1 theta=class=Point name=Unnamed dimension=2 values=[0.25,0.5]
 Distribution  Dirichlet(theta = [0.25,0.5])
 Elliptical =  False
 Continuous =  True
-oneRealization= class=NumericalPoint name=Unnamed dimension=1 values=[0.168034]
-oneSample first= class=NumericalPoint name=Unnamed dimension=1 values=[0.240694]  last= class=NumericalPoint name=Unnamed dimension=1 values=[0.0030253]
-mean= class=NumericalPoint name=Unnamed dimension=1 values=[0.335127]
+oneRealization= class=Point name=Unnamed dimension=1 values=[0.168034]
+oneSample first= class=Point name=Unnamed dimension=1 values=[0.240694]  last= class=Point name=Unnamed dimension=1 values=[0.0030253]
+mean= class=Point name=Unnamed dimension=1 values=[0.335127]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.127543]
 Kolmogorov test for the generator, sample size= 100  is accepted
 Kolmogorov test for the generator, sample size= 1000  is accepted
-Point=  class=NumericalPoint name=Unnamed dimension=1 values=[0.5]
+Point=  class=Point name=Unnamed dimension=1 values=[0.5]
 log pdf= -0.79067254
 pdf     = 0.45353967
 cdf= 0.6831129
-quantile= class=NumericalPoint name=Unnamed dimension=1 values=[0.982959]
+quantile= class=Point name=Unnamed dimension=1 values=[0.982959]
 cdf(quantile)= 0.950000
-InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[1.8464e-05]
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[1.8464e-05]
 Survival(inverseSurvival)=0.950000
 Minimum volume interval= [0, 0.983456]
 threshold= [0.95]
@@ -27,13 +27,13 @@ Unilateral confidence interval (lower tail)= [0, 0.982959]
 beta= [0.95]
 Unilateral confidence interval (upper tail)= [1.8464e-05, 1]
 beta= [0.95]
-mean= class=NumericalPoint name=Unnamed dimension=1 values=[0.333333]
-standard deviation= class=NumericalPoint name=Unnamed dimension=1 values=[0.125988]
-skewness= class=NumericalPoint name=Unnamed dimension=1 values=[1.92418]
-kurtosis= class=NumericalPoint name=Unnamed dimension=1 values=[1.90909]
+mean= class=Point name=Unnamed dimension=1 values=[0.333333]
+standard deviation= class=Point name=Unnamed dimension=1 values=[0.125988]
+skewness= class=Point name=Unnamed dimension=1 values=[1.92418]
+kurtosis= class=Point name=Unnamed dimension=1 values=[1.90909]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.126984]
 margin= Dirichlet(theta = [0.25,0.5])
 margin PDF= 0.45353967
 margin CDF= 0.6831129
-margin quantile= class=NumericalPoint name=Unnamed dimension=1 values=[0.982959]
-margin realization= class=NumericalPoint name=Unnamed dimension=1 values=[0.599821]
+margin quantile= class=Point name=Unnamed dimension=1 values=[0.982959]
+margin realization= class=Point name=Unnamed dimension=1 values=[0.599821]

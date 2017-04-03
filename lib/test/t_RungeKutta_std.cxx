@@ -46,11 +46,11 @@ int main(int argc, char *argv[])
     VertexValueFunction phi(f);
     RungeKutta solver(phi);
     fullprint << "ODE solver=" << solver << std::endl;
-    NumericalPoint initialState(2);
+    Point initialState(2);
     initialState[0] =  1.0;
     initialState[1] = -1.0;
     UnsignedInteger nt = 100;
-    NumericalPoint timeGrid(nt);
+    Point timeGrid(nt);
     for (UnsignedInteger i = 0; i < nt; ++i)
     {
       timeGrid[i] = pow(i, 2.0) / pow(nt - 1.0, 2.0);
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
     Sample result(solver.solve(initialState, timeGrid));
     fullprint << "result=" << result << std::endl;
     fullprint << "last value=" << result[nt - 1] << std::endl;
-    NumericalPoint ref(2);
+    Point ref(2);
     NumericalScalar t = timeGrid[nt - 1];
     ref[0] = -1.0 + t + 2.0 * exp(-t);
     ref[1] = -2.0 + -2.0 * t - t * t + exp(t);

@@ -8,7 +8,7 @@ size = 20
 dim = 2
 refSample = ot.Sample(size, dim)
 for i in range(size):
-    p = ot.NumericalPoint(dim)
+    p = ot.Point(dim)
     for j in range(dim):
         p[j] = i + j
     refSample[i] = p

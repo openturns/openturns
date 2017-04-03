@@ -25,7 +25,7 @@ try:
     myRealization = TimeSeries(myTimeGrid, mySample)
 
     # Create the lambda parameter
-    lambdaVector = NumericalPoint(dimension)
+    lambdaVector = Point(dimension)
     for index in range(dimension):
         lambdaVector[index] = (index + 2.) * 0.1
 

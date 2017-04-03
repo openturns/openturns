@@ -149,8 +149,8 @@ OrthogonalUniVariatePolynomial::NumericalComplexCollection OrthogonalUniVariateP
   // gauss integration rule
   char jobz('N');
   int ljobz(1);
-  NumericalPoint d(n);
-  NumericalPoint e(n - 1);
+  Point d(n);
+  Point e(n - 1);
   Coefficients recurrenceCoefficientsI(recurrenceCoefficients_[0]);
   NumericalScalar alphaPrec = recurrenceCoefficientsI[0];
   d[0] = -recurrenceCoefficientsI[1] / alphaPrec;
@@ -163,7 +163,7 @@ OrthogonalUniVariatePolynomial::NumericalComplexCollection OrthogonalUniVariateP
   }
   int ldz(n);
   SquareMatrix z(n);
-  NumericalPoint work(2 * n - 2);
+  Point work(2 * n - 2);
   int info;
   dstev_(&jobz, &ldz, &d[0], &e[0], &z(0, 0), &ldz, &work[0], &info, &ljobz);
   if (info != 0) throw InternalException(HERE) << "Lapack DSTEV: error code=" << info;

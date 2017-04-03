@@ -260,11 +260,11 @@ NumericalScalar DistFunc::rBeta(const NumericalScalar p1,
   } // End Atkinson and Whittaker 2
 } // End of rBeta
 
-NumericalPoint DistFunc::rBeta(const NumericalScalar p1,
+Point DistFunc::rBeta(const NumericalScalar p1,
                                const NumericalScalar p2,
                                const UnsignedInteger size)
 {
-  NumericalPoint result(size);
+  Point result(size);
   for (UnsignedInteger i = 0; i < size; ++i) result[i] = rBeta(p1, p2);
   return result;
 }
@@ -496,10 +496,10 @@ NumericalScalar DistFunc::rGamma(const NumericalScalar k)
   }
 } // End of rGamma
 
-NumericalPoint DistFunc::rGamma(const NumericalScalar k,
+Point DistFunc::rGamma(const NumericalScalar k,
                                 const UnsignedInteger size)
 {
-  NumericalPoint result(size);
+  Point result(size);
   for (UnsignedInteger i = 0; i < size; ++i) result[i] = rGamma(k);
   return result;
 }
@@ -699,11 +699,11 @@ NumericalScalar DistFunc::rNonCentralChiSquare(const NumericalScalar nu,
   return 2.0 * rGamma(0.5 * nu + n);
 }
 
-NumericalPoint DistFunc::rNonCentralChiSquare(const NumericalScalar nu,
+Point DistFunc::rNonCentralChiSquare(const NumericalScalar nu,
     const NumericalScalar lambda,
     const UnsignedInteger size)
 {
-  NumericalPoint result(size);
+  Point result(size);
   for (UnsignedInteger i = 0; i < size; ++i) result[i] = rNonCentralChiSquare(nu, lambda);
   return result;
 }
@@ -773,11 +773,11 @@ NumericalScalar DistFunc::rNonCentralStudent(const NumericalScalar nu,
   return StudentFunctions::NonCentralStudentRealization(nu, delta);
 }
 
-NumericalPoint DistFunc::rNonCentralStudent(const NumericalScalar nu,
+Point DistFunc::rNonCentralStudent(const NumericalScalar nu,
     const NumericalScalar delta,
     const UnsignedInteger size)
 {
-  NumericalPoint result(size);
+  Point result(size);
   for (UnsignedInteger i = 0; i < size; ++i) result[i] = StudentFunctions::NonCentralStudentRealization(nu, delta);
   return result;
 }
@@ -921,9 +921,9 @@ NumericalScalar DistFunc::rNormal()
   }
 }
 
-NumericalPoint DistFunc::rNormal(const UnsignedInteger size)
+Point DistFunc::rNormal(const UnsignedInteger size)
 {
-  NumericalPoint result(size);
+  Point result(size);
   for (UnsignedInteger i = 0; i < size; ++i) result[i] = rNormal();
   return result;
 }
@@ -1034,10 +1034,10 @@ NumericalScalar DistFunc::rStudent(const NumericalScalar nu)
   return StudentFunctions::StudentRealization(nu);
 }
 
-NumericalPoint DistFunc::rStudent(const NumericalScalar nu,
+Point DistFunc::rStudent(const NumericalScalar nu,
                                   const UnsignedInteger size)
 {
-  NumericalPoint result(size);
+  Point result(size);
   for (UnsignedInteger i = 0; i < size; ++i) result[i] = StudentFunctions::StudentRealization(nu);
   return result;
 }
@@ -1352,9 +1352,9 @@ NumericalScalar DistFunc::qDickeyFullerNoConstant(const NumericalScalar p,
   throw NotYetImplementedException(HERE) << "In DistFunc::qDickeyFullerNoConstant(const NumericalScalar p, const Bool tail): cannot give quantile value for the level " << p << ". Value is missing in table";
 }
 
-NumericalPoint DistFunc::rUniformTriangle(const NumericalPoint & a,
-    const NumericalPoint & b,
-    const NumericalPoint & c)
+Point DistFunc::rUniformTriangle(const Point & a,
+    const Point & b,
+    const Point & c)
 {
   const UnsignedInteger dimension = a.getDimension();
   if (b.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the second point has a dimension=" << b.getDimension() << ", expected dimension=" << dimension;
@@ -1371,14 +1371,14 @@ NumericalPoint DistFunc::rUniformTriangle(const NumericalPoint & a,
     y = 1.0 - sqrtU;
     z = -z;
   }
-  NumericalPoint result(dimension);
+  Point result(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i) result[i] = x * a[i] + y * b[i] + z * c[i];
   return result;
 }
 
-Sample DistFunc::rUniformTriangle(const NumericalPoint & a,
-    const NumericalPoint & b,
-    const NumericalPoint & c,
+Sample DistFunc::rUniformTriangle(const Point & a,
+    const Point & b,
+    const Point & c,
     const UnsignedInteger size)
 {
   // Here we reproduce the algorithm in order to avoid costly data copy and tests

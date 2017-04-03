@@ -25,7 +25,7 @@
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/Matrix.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Distribution.hxx"
@@ -67,10 +67,10 @@ public:
 
   /** Evaluation */
   using EvaluationImplementation::operator();
-  NumericalPoint operator () (const NumericalPoint & inP) const;
+  Point operator () (const Point & inP) const;
 
   /** Gradient according to the marginal parameters */
-  Matrix parameterGradient(const NumericalPoint & inP) const;
+  Matrix parameterGradient(const Point & inP) const;
 
   /** Accessor for input point dimension */
   UnsignedInteger getInputDimension() const;

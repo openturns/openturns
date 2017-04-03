@@ -22,7 +22,7 @@
 #define OPENTURNS_RANDOMVECTORIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Function.hxx"
@@ -72,13 +72,13 @@ public:
   virtual UnsignedInteger getDimension() const;
 
   /** Realization accessor */
-  virtual NumericalPoint getRealization() const;
+  virtual Point getRealization() const;
 
   /** Numerical sample accessor */
   virtual Sample getSample(const UnsignedInteger size) const;
 
   /** Mean accessor */
-  virtual NumericalPoint getMean() const;
+  virtual Point getMean() const;
 
   /** Covariance accessor */
   virtual CovarianceMatrix getCovariance() const;

@@ -192,7 +192,7 @@ Distribution DistributionFactory::build(const Sample & sample) const
   return getImplementation()->build(sample);
 }
 
-Distribution DistributionFactory::build(const NumericalPoint & parameters) const
+Distribution DistributionFactory::build(const Point & parameters) const
 {
   return getImplementation()->build(parameters);
 }

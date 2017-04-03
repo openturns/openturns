@@ -128,8 +128,8 @@ public:
   Interval getOptimizationBounds() const;
 
   /** Observation noise accessor */
-  void setNoise(const NumericalPoint & noise);
-  NumericalPoint getNoise() const;
+  void setNoise(const Point & noise);
+  Point getNoise() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -142,7 +142,7 @@ protected:
   NumericalScalar maximizeReducedLogLikelihood();
 
   // Compute the output log-likelihood function
-  NumericalPoint computeReducedLogLikelihood(const NumericalPoint & parameters) const;
+  Point computeReducedLogLikelihood(const Point & parameters) const;
   NumericalScalar computeLapackLogDeterminantCholesky() const;
   NumericalScalar computeHMatLogDeterminantCholesky() const;
 
@@ -162,7 +162,7 @@ protected:
 
 
   friend class KrigingAlgorithm;
-  NumericalPoint getRho() const;
+  Point getRho() const;
 
 private:
 
@@ -184,9 +184,9 @@ private:
     }
 
     // It is a simple call to the computeReducedLogLikelihood() of the algo
-    NumericalPoint operator() (const NumericalPoint & point) const
+    Point operator() (const Point & point) const
     {
-      const NumericalPoint value(algorithm_.computeReducedLogLikelihood(point));
+      const Point value(algorithm_.computeReducedLogLikelihood(point));
       return value;
     }
 
@@ -274,9 +274,9 @@ private:
   Interval optimizationBounds_;
 
   // The coefficients of the current output conditional expectation part
-  mutable NumericalPoint beta_;
+  mutable Point beta_;
   // Temporarly used to compute gamma
-  mutable NumericalPoint rho_;
+  mutable Point rho_;
   // The current output Gram matrix
   mutable Matrix F_;
 
@@ -306,7 +306,7 @@ private:
   Bool optimizeParameters_;
   
   /** Observation noise */
-  NumericalPoint noise_;
+  Point noise_;
 
   /** Flag to tell if the amplitude parameters are estimated using an analytical derivation */
   Bool analyticalAmplitude_;

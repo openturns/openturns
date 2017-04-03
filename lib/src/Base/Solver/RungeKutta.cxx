@@ -55,8 +55,8 @@ String RungeKutta::__repr__() const
 }
 
 /* Perform cross-validation */
-Sample RungeKutta::solve(const NumericalPoint & initialState,
-                                  const NumericalPoint & timeGrid) const
+Sample RungeKutta::solve(const Point & initialState,
+                                  const Point & timeGrid) const
 {
   if (initialState.getDimension() != transitionFunction_.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the initial state has a dimension=" << initialState.getDimension() << ", expected dimension=" << transitionFunction_.getInputDimension();
   // Quick return if the time grid is empty
@@ -64,13 +64,13 @@ Sample RungeKutta::solve(const NumericalPoint & initialState,
   Sample result(steps, transitionFunction_.getOutputDimension());
   if (steps == 0) return result;
   NumericalScalar t = timeGrid[0];
-  NumericalPoint state(initialState);
+  Point state(initialState);
   result[0] = state;
   for (UnsignedInteger i = 1; i < steps; ++i)
   {
     const NumericalScalar newT = timeGrid[i];
     const NumericalScalar timeStep = newT - t;
-    const NumericalPoint phi(computeStep(t, state, timeStep));
+    const Point phi(computeStep(t, state, timeStep));
     state += timeStep * phi;
     result[i] = state;
     t = newT;
@@ -79,14 +79,14 @@ Sample RungeKutta::solve(const NumericalPoint & initialState,
 }
 
 /* Perform one step of the RungeKutta method */
-NumericalPoint RungeKutta::computeStep(const NumericalScalar t,
-                                       const NumericalPoint & state,
+Point RungeKutta::computeStep(const NumericalScalar t,
+                                       const Point & state,
                                        const NumericalScalar h) const
 {
-  const NumericalPoint k1(transitionFunction_(t, state));
-  const NumericalPoint k2(transitionFunction_(t + 0.5 * h, state + k1 * (0.5 * h)));
-  const NumericalPoint k3(transitionFunction_(t + 0.5 * h, state + k2 * (0.5 * h)));
-  const NumericalPoint k4(transitionFunction_(t + h, state + k3 * h));
+  const Point k1(transitionFunction_(t, state));
+  const Point k2(transitionFunction_(t + 0.5 * h, state + k1 * (0.5 * h)));
+  const Point k3(transitionFunction_(t + 0.5 * h, state + k2 * (0.5 * h)));
+  const Point k4(transitionFunction_(t + h, state + k3 * h));
   return (k1 + k2 * 2.0 + k3 * 2.0 + k4) * (1.0 / 6.0);
 }
 

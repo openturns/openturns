@@ -78,7 +78,7 @@ struct BernsteinCopulaFactoryPolicy
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
-      const NumericalPoint nu(input_[i] * binNumber_);
+      const Point nu(input_[i] * binNumber_);
       Mixture::DistributionCollection atomsKernel(dimension_);
       for (UnsignedInteger j = 0; j < dimension_; ++j)
         atomsKernel[j] = Beta(std::floor(nu[j]) + 1.0, binNumber_ + 1.0, 0.0, 1.0);
@@ -117,7 +117,7 @@ Distribution BernsteinCopulaFactory::buildSequential(const Sample & empiricalCop
   Mixture::DistributionCollection atomsMixture(size);
   for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const NumericalPoint nu(empiricalCopulaSample[i] * binNumber);
+      const Point nu(empiricalCopulaSample[i] * binNumber);
       Mixture::DistributionCollection atomsKernel(dimension);
       for (UnsignedInteger j = 0; j < dimension; ++j)
         atomsKernel[j] = Beta(std::floor(nu[j]) + 1.0, binNumber + 1.0, 0.0, 1.0);
@@ -137,7 +137,7 @@ Distribution BernsteinCopulaFactory::build(const Sample & sample,
   if (size == 0) throw InvalidDimensionException(HERE) << "Error: cannot build a copula using the Bernstein copula factory based on an empty sample";
   const UnsignedInteger dimension = sample.getDimension();
   LOGINFO("BernsteinCopulaFactory - Create the empirical copula sample");
-  const Sample empiricalCopulaSample(sample.rank() * NumericalPoint(dimension, (1.0 - SpecFunc::NumericalScalarEpsilon) / size));
+  const Sample empiricalCopulaSample(sample.rank() * Point(dimension, (1.0 - SpecFunc::NumericalScalarEpsilon) / size));
   if (isParallel_)
     return buildParallel(empiricalCopulaSample, binNumber);
   return buildSequential(empiricalCopulaSample, binNumber);

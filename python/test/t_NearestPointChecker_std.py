@@ -19,7 +19,7 @@ try:
         random = 0.1
 
         for index in range(sampleSize):
-            point = NumericalPoint(levelFunction.getInputDimension())
+            point = Point(levelFunction.getInputDimension())
             norm = 0.0
             for coordinate in range(levelFunction.getInputDimension()):
                 point[coordinate] = sqrt(-2.0 * log(random))

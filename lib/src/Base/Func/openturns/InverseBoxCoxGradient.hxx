@@ -53,7 +53,7 @@ public:
 
   /** Gradient evaluation method */
   using GradientImplementation::gradient;
-  Matrix gradient(const NumericalPoint & inP) const;
+  Matrix gradient(const Point & inP) const;
 
   /** Accessor for input point dimension */
   UnsignedInteger getInputDimension() const;
@@ -62,10 +62,10 @@ public:
   UnsignedInteger getOutputDimension() const;
 
   /** Accessor for the lambda point */
-  NumericalPoint getLambda() const;
+  Point getLambda() const;
 
   /** Accessor for the shift */
-  NumericalPoint getShift() const;
+  Point getShift() const;
 
   /** Accessor for the evaluation */
   InverseBoxCoxEvaluation getEvaluation() const;

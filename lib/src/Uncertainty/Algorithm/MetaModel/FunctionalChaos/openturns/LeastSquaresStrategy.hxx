@@ -63,7 +63,7 @@ public:
 
   /** Parameter constructor */
   LeastSquaresStrategy(const Sample & inputSample,
-                       const NumericalPoint & weights,
+                       const Point & weights,
                        const Sample & outputSample,
                        const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory(true));
 

@@ -23,7 +23,7 @@
 
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/Indices.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Classifier.hxx"
 #include "openturns/Basis.hxx"
 
@@ -61,7 +61,7 @@ public:
 
   /** Operator () */
   using EvaluationImplementation::operator();
-  NumericalPoint operator() (const NumericalPoint & inP) const;
+  Point operator() (const Point & inP) const;
   Sample operator() (const Sample & inS) const;
 
   /** Accessor for input point dimension */

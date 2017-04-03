@@ -45,10 +45,10 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
   Implementation build(const Sample & sample) const;
-  Implementation build(const NumericalPoint & parameters) const;
+  Implementation build(const Point & parameters) const;
   Implementation build() const;
   Dirac buildAsDirac(const Sample & sample) const;
-  Dirac buildAsDirac(const NumericalPoint & parameters) const;
+  Dirac buildAsDirac(const Point & parameters) const;
   Dirac buildAsDirac() const;
 
 }; /* class DiracFactory */

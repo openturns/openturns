@@ -47,7 +47,7 @@ ChiFactory::Implementation ChiFactory::build(const Sample & sample) const
   return buildAsChi(sample).clone();
 }
 
-ChiFactory::Implementation ChiFactory::build(const NumericalPoint & parameters) const
+ChiFactory::Implementation ChiFactory::build(const Point & parameters) const
 {
   return buildAsChi(parameters).clone();
 }
@@ -80,7 +80,7 @@ Chi ChiFactory::buildAsChi(const Sample & sample) const
   }
 }
 
-Chi ChiFactory::buildAsChi(const NumericalPoint & parameters) const
+Chi ChiFactory::buildAsChi(const Point & parameters) const
 {
   try
   {

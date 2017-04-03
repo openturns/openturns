@@ -6,12 +6,12 @@ from openturns import *
 TESTPREAMBLE()
 
 try:
-    sample1 = Sample(5, NumericalPoint(1, 2.0))
+    sample1 = Sample(5, Point(1, 2.0))
     sample2 = Sample(sample1)
-    sample2[0] = NumericalPoint(1, 3.0)
+    sample2[0] = Point(1, 3.0)
     print("sample1=", repr(sample1))
     print("sample2=", repr(sample2))
-    sample1[1] = NumericalPoint(1, -5.0)
+    sample1[1] = Point(1, -5.0)
     print("sample1=", repr(sample1))
     print("sample2=", repr(sample2))
     sample1[3, 0] = 6.0

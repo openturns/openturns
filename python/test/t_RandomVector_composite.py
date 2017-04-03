@@ -20,8 +20,8 @@ try:
     for i in range(1, dim):
         R[i, i - 1] = 0.5
 
-    m = NumericalPoint(dim, 1.0)
-    s = NumericalPoint(dim, 2.0)
+    m = Point(dim, 1.0)
+    s = Point(dim, 2.0)
     distribution = Normal(m, s, R)
     ref_distribution = distribution
     print("distribution = ", repr(ref_distribution))

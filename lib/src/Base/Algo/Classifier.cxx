@@ -55,7 +55,7 @@ Classifier::Classifier(const Sample & inS, const Indices & outC)
 }
 
 /* Classify a point */
-UnsignedInteger Classifier::classify(const NumericalPoint & inP) const
+UnsignedInteger Classifier::classify(const Point & inP) const
 {
   return getImplementation()->classify(inP);
 }
@@ -67,13 +67,13 @@ Indices Classifier::classify(const Sample & inS) const
 }
 
 /* Grade a point */
-NumericalScalar Classifier::grade(const NumericalPoint & inP, UnsignedInteger hClass) const
+NumericalScalar Classifier::grade(const Point & inP, UnsignedInteger hClass) const
 {
   return getImplementation()->grade(inP, hClass);
 }
 
 /* Grade a sample */
-NumericalPoint Classifier::grade(const Sample & inS, const Indices & hClass) const
+Point Classifier::grade(const Sample & inS, const Indices & hClass) const
 {
   return getImplementation()->grade(inS, hClass);
 }

@@ -26,7 +26,7 @@
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Interval.hxx"
 #include "openturns/Indices.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Collection.hxx"
 
@@ -57,7 +57,7 @@ public:
   UnsignedInteger getDimension() const;
 
   /** Generate a quasi-random vector of numbers uniformly distributed over [0, 1) */
-  virtual NumericalPoint generate() const;
+  virtual Point generate() const;
 
   /** Generate a sample of pseudo-random vectors of numbers uniformly distributed over [0, 1) */
   virtual Sample generate(const UnsignedInteger size) const;

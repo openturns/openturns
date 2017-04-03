@@ -128,7 +128,7 @@ index : float
 
 Returns
 -------
-curvatures : :class:`~openturns.NumericalPoint`
+curvatures : :class:`~openturns.Point`
     Curvatures of the standard limite state function at the standard design
     point :math:`(\kappa_i)_{1 \leq i \leq n-1}` with :math:`n` the dimension
     of the random vector :math:`\vect{X}`."

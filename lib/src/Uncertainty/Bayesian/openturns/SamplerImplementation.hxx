@@ -64,7 +64,7 @@ public:
   virtual UnsignedInteger getDimension() const;
 
   /** @copydoc Sampler::getRealization() const */
-  virtual NumericalPoint getRealization() const;
+  virtual Point getRealization() const;
 
   /** @copydoc Sampler::getSample() const */
   virtual Sample getSample(const UnsignedInteger size) const;

@@ -56,7 +56,7 @@ collDist : :class:`~openturns.Distribution`,
 
 Returns
 -------
-weights : :class:`~openturns.NumericalPoint` with each component :math:`\geq 0`."
+weights : :class:`~openturns.Point` with each component :math:`\geq 0`."
 
 
 

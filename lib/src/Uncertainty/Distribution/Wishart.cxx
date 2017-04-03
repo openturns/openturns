@@ -101,8 +101,8 @@ void Wishart::computeRange()
   const UnsignedInteger p = cholesky_.getDimension();
   const NumericalScalar bound = ChiSquare(1.0).getRange().getUpperBound()[0];
   UnsignedInteger index = 0;
-  NumericalPoint upper(getDimension());
-  NumericalPoint lower(getDimension());
+  Point upper(getDimension());
+  Point lower(getDimension());
   for (UnsignedInteger i = 0; i < p; ++i)
     for (UnsignedInteger j = 0; j <= i; ++j)
     {
@@ -114,11 +114,11 @@ void Wishart::computeRange()
 }
 
 /* Get one realization of the distribution */
-NumericalPoint Wishart::getRealization() const
+Point Wishart::getRealization() const
 {
   const CovarianceMatrix X(getRealizationAsMatrix());
   const UnsignedInteger p = X.getDimension();
-  NumericalPoint realization(getDimension());
+  Point realization(getDimension());
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < p; ++i)
     for (UnsignedInteger j = 0; j <= i; ++j)
@@ -157,7 +157,7 @@ NumericalScalar Wishart::computePDF(const CovarianceMatrix & m) const
   return pdf;
 }
 
-NumericalScalar Wishart::computePDF(const NumericalPoint & point) const
+NumericalScalar Wishart::computePDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
   const NumericalScalar logPDF = computeLogPDF(point);
@@ -165,7 +165,7 @@ NumericalScalar Wishart::computePDF(const NumericalPoint & point) const
   return pdf;
 }
 
-NumericalScalar Wishart::computeLogPDF(const NumericalPoint & point) const
+NumericalScalar Wishart::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
   const UnsignedInteger p = cholesky_.getDimension();
@@ -209,7 +209,7 @@ NumericalScalar Wishart::computeLogPDF(const CovarianceMatrix & m) const
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar Wishart::computeCDF(const NumericalPoint & point) const
+NumericalScalar Wishart::computeCDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
   return ContinuousDistribution::computeCDF(point);
@@ -220,7 +220,7 @@ void Wishart::computeMean() const
 {
   const CovarianceMatrix V((cholesky_ * cholesky_.transpose()).getImplementation());
   const UnsignedInteger p = cholesky_.getDimension();
-  mean_ = NumericalPoint(getDimension());
+  mean_ = Point(getDimension());
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < p; ++i)
     for (UnsignedInteger j = 0; j <= i; ++j)
@@ -232,10 +232,10 @@ void Wishart::computeMean() const
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint Wishart::getStandardDeviation() const /*throw(NotDefinedException)*/
+Point Wishart::getStandardDeviation() const /*throw(NotDefinedException)*/
 {
   const UnsignedInteger p = cholesky_.getDimension();
-  NumericalPoint sigma(getDimension());
+  Point sigma(getDimension());
   const CovarianceMatrix V(getV());
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < p; ++i)
@@ -249,9 +249,9 @@ NumericalPoint Wishart::getStandardDeviation() const /*throw(NotDefinedException
 
 
 /* Parameters value and description accessor */
-Wishart::NumericalPointWithDescriptionCollection Wishart::getParametersCollection() const
+Wishart::PointWithDescriptionCollection Wishart::getParametersCollection() const
 {
-  NumericalPointWithDescription point(getDimension() + 1);
+  PointWithDescription point(getDimension() + 1);
   Description description(point.getDimension());
   const UnsignedInteger p = cholesky_.getDimension();
   UnsignedInteger index = 0;
@@ -266,11 +266,11 @@ Wishart::NumericalPointWithDescriptionCollection Wishart::getParametersCollectio
   point[index] = nu_;
   description[index] = "nu";
   point.setDescription(description);
-  NumericalPointWithDescriptionCollection parameters(point.getDimension());
+  PointWithDescriptionCollection parameters(point.getDimension());
   return parameters;
 }
 
-void Wishart::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void Wishart::setParametersCollection(const PointCollection & parametersCollection)
 {
   const NumericalScalar w = getWeight();
   const NumericalScalar pReal = 0.5 * std::sqrt(8.0 * parametersCollection.getSize() - 7.0) - 0.5;
@@ -289,11 +289,11 @@ void Wishart::setParametersCollection(const NumericalPointCollection & parameter
   setWeight(w);
 }
 
-NumericalPoint Wishart::getParameter() const
+Point Wishart::getParameter() const
 {
   const CovarianceMatrix V(getCovariance());
   const UnsignedInteger p = V.getDimension();
-  NumericalPoint point((p * (p + 1)) / 2 + 1);
+  Point point((p * (p + 1)) / 2 + 1);
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < p; ++ i)
     for (UnsignedInteger j = 0; j <= i; ++ j)
@@ -305,7 +305,7 @@ NumericalPoint Wishart::getParameter() const
   return point;
 }
 
-void Wishart::setParameter(const NumericalPoint & parameter)
+void Wishart::setParameter(const Point & parameter)
 {
   const UnsignedInteger size = parameter.getSize();
   const NumericalScalar pReal = 0.5 * std::sqrt(8.0 * size - 7.0) - 0.5;

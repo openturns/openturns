@@ -77,7 +77,7 @@ BoxCoxEvaluation BoxCoxHessian::getEvaluation() const
 }
 
 /* Hessian evaluation method */
-SymmetricTensor BoxCoxHessian::hessian(const NumericalPoint & inP) const
+SymmetricTensor BoxCoxHessian::hessian(const Point & inP) const
 {
   const UnsignedInteger dimension = getInputDimension();
   if (inP.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << dimension << ", got " << inP.getDimension();
@@ -113,13 +113,13 @@ UnsignedInteger BoxCoxHessian::getOutputDimension() const
 }
 
 /* Accessor for the lambda */
-NumericalPoint BoxCoxHessian::getLambda() const
+Point BoxCoxHessian::getLambda() const
 {
   return evaluation_.getLambda();
 }
 
 /* Accessor for the shift */
-NumericalPoint BoxCoxHessian::getShift() const
+Point BoxCoxHessian::getShift() const
 {
   return evaluation_.getShift();
 }

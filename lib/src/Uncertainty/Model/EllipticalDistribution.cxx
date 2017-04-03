@@ -49,8 +49,8 @@ EllipticalDistribution::EllipticalDistribution()
 }
 
 /* Parameter constructor */
-EllipticalDistribution::EllipticalDistribution(const NumericalPoint & mean,
-    const NumericalPoint & sigma,
+EllipticalDistribution::EllipticalDistribution(const Point & mean,
+    const Point & sigma,
     const CorrelationMatrix & R,
     const NumericalScalar covarianceScalingFactor)
   : ContinuousDistribution()
@@ -102,17 +102,17 @@ Bool EllipticalDistribution::equals(const DistributionImplementation & other) co
 }
 
 /* Centers and reduces a value u = Diag(sigma_)^(-1) * (x - mean_) */
-NumericalPoint EllipticalDistribution::normalize(const NumericalPoint & x) const
+Point EllipticalDistribution::normalize(const Point & x) const
 {
-  NumericalPoint u(x - mean_);
+  Point u(x - mean_);
   for (UnsignedInteger i = 0; i < getDimension(); ++i) u[i] /= sigma_[i];
   return u;
 }
 
 /* Decenters and scales a value x = mean_ + Diag(sigma_) * u */
-NumericalPoint EllipticalDistribution::denormalize(const NumericalPoint & u) const
+Point EllipticalDistribution::denormalize(const Point & u) const
 {
-  NumericalPoint x(mean_);
+  Point x(mean_);
   for (UnsignedInteger i = 0; i < getDimension(); ++i) x[i] += sigma_[i] * u[i];
   return x;
 }
@@ -171,7 +171,7 @@ NumericalScalar EllipticalDistribution::computeDensityGeneratorSecondDerivative(
 }
 
 /* Get the DDF of the distribution */
-NumericalPoint EllipticalDistribution::computeDDF(const NumericalPoint & point) const
+Point EllipticalDistribution::computeDDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -181,7 +181,7 @@ NumericalPoint EllipticalDistribution::computeDDF(const NumericalPoint & point) 
     case 1:
     {
       const NumericalScalar iLx = (point[0] - mean_[0]) / sigma_[0];
-      return NumericalPoint(1, 2.0 * normalizationFactor_ * computeDensityGeneratorDerivative(iLx * iLx) * inverseCholesky_(0, 0) * iLx);
+      return Point(1, 2.0 * normalizationFactor_ * computeDensityGeneratorDerivative(iLx * iLx) * inverseCholesky_(0, 0) * iLx);
     }
     break;
     case 2:
@@ -189,7 +189,7 @@ NumericalPoint EllipticalDistribution::computeDDF(const NumericalPoint & point) 
       const NumericalScalar deltaX = point[0] - mean_[0];
       const NumericalScalar deltaY = point[1] - mean_[1];
       NumericalScalar iLx, iLy;
-      NumericalPoint result(2);
+      Point result(2);
       if (inverseCholesky_.isLowerTriangular())
       {
         iLx = inverseCholesky_(0, 0) * deltaX;
@@ -217,7 +217,7 @@ NumericalPoint EllipticalDistribution::computeDDF(const NumericalPoint & point) 
       const NumericalScalar deltaY = point[1] - mean_[1];
       const NumericalScalar deltaZ = point[2] - mean_[2];
       NumericalScalar iLx, iLy, iLz;
-      NumericalPoint result(3);
+      Point result(3);
       if (inverseCholesky_.isLowerTriangular())
       {
         iLx = inverseCholesky_(0, 0) * deltaX;
@@ -244,14 +244,14 @@ NumericalPoint EllipticalDistribution::computeDDF(const NumericalPoint & point) 
     }
     break;
     default:
-      const NumericalPoint iLx(inverseCholesky_ * (point - mean_));
+      const Point iLx(inverseCholesky_ * (point - mean_));
       const NumericalScalar betaSquare = iLx.normSquare();
       return 2.0 * normalizationFactor_ * computeDensityGeneratorDerivative(betaSquare) * inverseCholesky_.transpose() * iLx;
   }
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar EllipticalDistribution::computePDF(const NumericalPoint & point) const
+NumericalScalar EllipticalDistribution::computePDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -306,25 +306,25 @@ NumericalScalar EllipticalDistribution::computePDF(const NumericalPoint & point)
     }
     break;
     default:
-      const NumericalPoint iLx(inverseCholesky_ * (point - mean_));
+      const Point iLx(inverseCholesky_ * (point - mean_));
       const NumericalScalar betaSquare = iLx.normSquare();
       return normalizationFactor_ * computeDensityGenerator(betaSquare);
   }
 }
 
 /* Get the PDF gradient of the distribution */
-NumericalPoint EllipticalDistribution::computePDFGradient(const NumericalPoint & point) const
+Point EllipticalDistribution::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalPoint minusGardientMean(computeDDF(point));
+  const Point minusGardientMean(computeDDF(point));
   const UnsignedInteger dimension = getDimension();
-  const NumericalPoint u(normalize(point));
-  const NumericalPoint iRu(inverseR_ * u);
+  const Point u(normalize(point));
+  const Point iRu(inverseR_ * u);
   const NumericalScalar betaSquare = dot(u, iRu);
   const NumericalScalar phi = computeDensityGenerator(betaSquare);
   const NumericalScalar phiDerivative = computeDensityGeneratorDerivative(betaSquare);
-  NumericalPoint pdfGradient(2 * dimension);
+  Point pdfGradient(2 * dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     NumericalScalar iSigma = 1.0 / sigma_[i];
@@ -337,7 +337,7 @@ NumericalPoint EllipticalDistribution::computePDFGradient(const NumericalPoint &
 }
 
 /* Get the survival function of the distribution */
-NumericalScalar EllipticalDistribution::computeSurvivalFunction(const NumericalPoint & point) const
+NumericalScalar EllipticalDistribution::computeSurvivalFunction(const Point & point) const
 {
   return computeCDF(2.0 * mean_ - point);
 }
@@ -354,7 +354,7 @@ LevelSet EllipticalDistribution::computeMinimumVolumeLevelSetWithThreshold(const
   if (getDimension() == 1) return DistributionImplementation::computeMinimumVolumeLevelSetWithThreshold(prob, threshold);
   RadialCDFWrapper radialWrapper(this);
   const Distribution standard(getStandardDistribution());
-  NumericalPoint point(getDimension());
+  Point point(getDimension());
   const NumericalScalar xMax = standard.getRange().getUpperBound().norm();
   Brent solver(quantileEpsilon_, pdfEpsilon_, pdfEpsilon_, quantileIterations_);
   point[0] = solver.solve(radialWrapper, prob, 0.0, xMax, 0.0, 1.0);
@@ -409,7 +409,7 @@ void EllipticalDistribution::update()
 }
 
 /* Mean point accessor */
-void EllipticalDistribution::setMean(const NumericalPoint & mean)
+void EllipticalDistribution::setMean(const Point & mean)
 {
   if (mean.getDimension() != getDimension())
     throw InvalidArgumentException(HERE)
@@ -439,7 +439,7 @@ void EllipticalDistribution::computeCovariance() const
 }
 
 /* Sigma accessor */
-void EllipticalDistribution::setSigma(const NumericalPoint & sigma)
+void EllipticalDistribution::setSigma(const Point & sigma)
 {
   if (sigma.getDimension() != getDimension())
     throw InvalidArgumentException(HERE)
@@ -457,7 +457,7 @@ void EllipticalDistribution::setSigma(const NumericalPoint & sigma)
 }
 
 /* Sigma accessor */
-NumericalPoint EllipticalDistribution::getSigma() const
+Point EllipticalDistribution::getSigma() const
 {
   return sigma_;
 }
@@ -466,7 +466,7 @@ NumericalPoint EllipticalDistribution::getSigma() const
    Warning! This method MUST be overloaded for elliptical distributions without finite second moment:
    it is possible to have a well-defined sigma vector but no standard deviation, think about Stundent
    distribution with nu < 2 */
-NumericalPoint EllipticalDistribution::getStandardDeviation() const
+Point EllipticalDistribution::getStandardDeviation() const
 {
   return std::sqrt(covarianceScalingFactor_) * sigma_;
 }
@@ -530,9 +530,9 @@ EllipticalDistribution::IsoProbabilisticTransformation EllipticalDistribution::g
   // (d/dmu, d/dsigma)
   // There is no gradient according to the dependence parameters yet (28/10/2006)
   const UnsignedInteger dimension = getDimension();
-  NumericalPoint parameters(2 * dimension);
+  Point parameters(2 * dimension);
   Description description(parameters.getDimension());
-  NumericalPointWithDescriptionCollection parametersCollection(getParametersCollection());
+  PointWithDescriptionCollection parametersCollection(getParametersCollection());
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const Description parametersDescription(parametersCollection[i].getDescription());
@@ -560,9 +560,9 @@ EllipticalDistribution::InverseIsoProbabilisticTransformation EllipticalDistribu
   // (d/dmu, d/dsigma)
   // There is no gradient according to the dependence parameters yet (28/10/2006)
   const UnsignedInteger dimension = getDimension();
-  NumericalPoint parameters(2 * dimension);
+  Point parameters(2 * dimension);
   Description description(parameters.getDimension());
-  NumericalPointWithDescriptionCollection parametersCollection(getParametersCollection());
+  PointWithDescriptionCollection parametersCollection(getParametersCollection());
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const Description parametersDescription(parametersCollection[i].getDescription());
@@ -583,22 +583,22 @@ EllipticalDistribution::Implementation EllipticalDistribution::getStandardDistri
 {
   EllipticalDistribution * p_standardDistribution(clone());
   const UnsignedInteger dimension = getDimension();
-  p_standardDistribution->setMean(NumericalPoint(dimension, 0.0));
-  p_standardDistribution->setSigma(NumericalPoint(dimension, 1.0));
+  p_standardDistribution->setMean(Point(dimension, 0.0));
+  p_standardDistribution->setSigma(Point(dimension, 1.0));
   p_standardDistribution->setCorrelation(CorrelationMatrix(dimension));
   return p_standardDistribution;
 }
 
 /* Parameters value and description accessor */
-EllipticalDistribution::NumericalPointWithDescriptionCollection EllipticalDistribution::getParametersCollection() const
+EllipticalDistribution::PointWithDescriptionCollection EllipticalDistribution::getParametersCollection() const
 {
   const UnsignedInteger dimension = getDimension();
-  NumericalPointWithDescriptionCollection parameters(dimension + (dimension > 1 ? 1 : 0));
+  PointWithDescriptionCollection parameters(dimension + (dimension > 1 ? 1 : 0));
   // First put the marginal parameters
   const Description description(getDescription());
   for (UnsignedInteger marginalIndex = 0; marginalIndex < dimension; ++marginalIndex)
   {
-    NumericalPointWithDescription point(2);
+    PointWithDescription point(2);
     Description marginalDescription(point.getDimension());
     point[0] = mean_[marginalIndex];
     point[1] = sigma_[marginalIndex];
@@ -611,7 +611,7 @@ EllipticalDistribution::NumericalPointWithDescriptionCollection EllipticalDistri
   if (dimension > 1)
   {
     // Second put the dependence parameters
-    NumericalPointWithDescription point(dimension * (dimension - 1) / 2);
+    PointWithDescription point(dimension * (dimension - 1) / 2);
     Description dependenceDescription(point.getDimension());
     point.setName("dependence");
     UnsignedInteger dependenceIndex = 0;
@@ -630,13 +630,13 @@ EllipticalDistribution::NumericalPointWithDescriptionCollection EllipticalDistri
   return parameters;
 } // getParametersCollection
 
-void EllipticalDistribution::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void EllipticalDistribution::setParametersCollection(const PointCollection & parametersCollection)
 {
   const UnsignedInteger size = parametersCollection.getSize();
   const UnsignedInteger dimension = size > 1 ? size - 1 : size;
   setDimension(dimension);
-  mean_ = NumericalPoint(dimension);
-  sigma_ = NumericalPoint(dimension);
+  mean_ = Point(dimension);
+  sigma_ = Point(dimension);
   R_ = CorrelationMatrix(dimension);
   if (dimension == 1)
   {
@@ -668,10 +668,10 @@ void EllipticalDistribution::setParametersCollection(const NumericalPointCollect
   isAlreadyComputedCovariance_ = false;
 }
 
-NumericalPoint EllipticalDistribution::getParameter() const
+Point EllipticalDistribution::getParameter() const
 {
   const UnsignedInteger dimension = getDimension();
-  NumericalPoint point(2 * dimension + (dimension > 1 ? ((dimension - 1)*dimension) / 2 : 0));
+  Point point(2 * dimension + (dimension > 1 ? ((dimension - 1)*dimension) / 2 : 0));
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     point[2 * i] = mean_[i];
@@ -689,15 +689,15 @@ NumericalPoint EllipticalDistribution::getParameter() const
   return point;
 }
 
-void EllipticalDistribution::setParameter(const NumericalPoint & parameters)
+void EllipticalDistribution::setParameter(const Point & parameters)
 {
   // N = 2*d+((d-1)*d)/2
   const UnsignedInteger size = parameters.getSize();
   NumericalScalar dimReal = 0.5 * std::sqrt(9.0 + 8.0 * size) - 1.5;
   if (dimReal != round(dimReal)) throw InvalidArgumentException(HERE) << "Error: invalid parameter number for EllipticalDistribution";
   const UnsignedInteger dimension = dimReal;
-  mean_ = NumericalPoint(dimension);
-  sigma_ = NumericalPoint(dimension);
+  mean_ = Point(dimension);
+  sigma_ = Point(dimension);
   R_ = CorrelationMatrix(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {

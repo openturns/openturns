@@ -24,7 +24,7 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/Matrix.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/StorageManager.hxx"
 
@@ -52,10 +52,10 @@ public:
   virtual RosenblattEvaluation * clone() const;
 
   /** Evaluation */
-  NumericalPoint operator () (const NumericalPoint & inP) const;
+  Point operator () (const Point & inP) const;
 
   /** Gradient according to the marginal parameters */
-  virtual Matrix parameterGradient(const NumericalPoint & inP) const;
+  virtual Matrix parameterGradient(const Point & inP) const;
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;

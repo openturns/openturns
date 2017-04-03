@@ -15,7 +15,7 @@ namespace OT {
    return new OT::NonCenteredFiniteDifferenceGradient(other);
  }
 
- NonCenteredFiniteDifferenceGradient(const NumericalPoint & epsilon,
+ NonCenteredFiniteDifferenceGradient(const Point & epsilon,
                                      const EvaluationImplementation & evaluation)
  {
    return new OT::NonCenteredFiniteDifferenceGradient(epsilon, evaluation.clone());

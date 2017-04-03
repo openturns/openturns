@@ -24,7 +24,7 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/HessianImplementation.hxx"
 #include "openturns/SquareMatrix.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/StorageManager.hxx"
 
@@ -54,7 +54,7 @@ public:
   virtual InverseNatafEllipticalCopulaHessian * clone() const;
 
   /** Hessian */
-  SymmetricTensor hessian(const NumericalPoint & inP) const;
+  SymmetricTensor hessian(const Point & inP) const;
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;

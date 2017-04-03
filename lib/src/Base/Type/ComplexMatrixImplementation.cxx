@@ -118,7 +118,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::solveLinearSystemRect (
   int nrhs(q);
   int lwork(-1);
   NumericalComplexCollection work(1);
-  NumericalPoint rwork(2 * n);
+  Point rwork(2 * n);
   int info;
   std::vector<int> jpiv(n);
   double rcond(ResourceMap::GetAsNumericalScalar("Matrix-DefaultSmallPivot"));
@@ -722,8 +722,8 @@ ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementat
   return prod;
 }
 
-/* Multiplications with a NumericalPoint */
-ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementation::genVectProd(const NumericalPoint & pt) const
+/* Multiplications with a Point */
+ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementation::genVectProd(const Point & pt) const
 {
   if (nbColumns_ != pt.getSize() ) throw InvalidDimensionException(HERE) << "Invalid dimension in matrix/vector product";
 
@@ -782,7 +782,7 @@ ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementat
   return prod;
 }
 
-ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementation::hermVectProd(const NumericalPoint & pt) const
+ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementation::hermVectProd(const Point & pt) const
 {
   if (nbColumns_ != pt.getSize() ) throw InvalidDimensionException(HERE) << "Invalid dimension in matrix/vector product";
 
@@ -858,7 +858,7 @@ ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementat
   return x;
 }
 
-ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementation::triangularVectProd(const NumericalPoint & pt,
+ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementation::triangularVectProd(const Point & pt,
     const char side) const
 {
   char uplo(side);

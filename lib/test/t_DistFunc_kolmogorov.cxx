@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     nValues.add(20000);
     nValues.add(100000);
     nValues.add(1000000);
-    NumericalPoint xValues(0);
+    Point xValues(0);
     xValues.add(0.0001);
     xValues.add(0.0002);
     xValues.add(0.0005);

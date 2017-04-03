@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
     // prior distribution
     NumericalScalar mu0 = 25.0;
 
-    NumericalPoint sigma0s;
+    Point sigma0s;
     sigma0s.add(0.1);
     sigma0s.add(1.0);
     //sigma0s.add(2.0);
@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
       Distribution prior = ComposedDistribution( priorColl );
 
       // choose the initial state within the prior
-      NumericalPoint initialState(prior.getRealization());
+      Point initialState(prior.getRealization());
 
       // conditional distribution
       Distribution conditional = Normal();
@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
 
       std::cout << "prior variance=" << pow(sigma0, 2.) << std::endl;
 
-      NumericalPoint realization(sampler.getRealization());
+      Point realization(sampler.getRealization());
       std::cout << "  realization=" << realization << std::endl;
 
       std::cout << "  w=" << w << std::endl;

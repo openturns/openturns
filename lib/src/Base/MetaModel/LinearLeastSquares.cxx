@@ -100,7 +100,7 @@ void LinearLeastSquares::run()
   {
     /* build the componentMatrix */
     /* get the current sample x */
-    const NumericalPoint currentSample(dataIn_[sampleIndex]);
+    const Point currentSample(dataIn_[sampleIndex]);
     UnsignedInteger rowIndex = 0;
     /* First the constant term */
     componentMatrix(sampleIndex, rowIndex) = 1.0;
@@ -133,7 +133,7 @@ void LinearLeastSquares::run()
       ++coefficientsIndex;
     } // linear term
   } // output components
-  const NumericalPoint center(inputDimension, 0.0);
+  const Point center(inputDimension, 0.0);
   /* Build the several implementations and set them into the response surface */
   responseSurface_.setEvaluation(new LinearEvaluation(center, constant_, linear_));
   responseSurface_.setGradient(new ConstantGradient(linear_));
@@ -162,7 +162,7 @@ void LinearLeastSquares::setDataOut(const Sample & dataOut)
 }
 
 /* Constant accessor */
-NumericalPoint LinearLeastSquares::getConstant() const
+Point LinearLeastSquares::getConstant() const
 {
   return constant_;
 }

@@ -49,8 +49,8 @@ HistogramPolynomialFactory::HistogramPolynomialFactory()
 
 /* Parameter constructor */
 HistogramPolynomialFactory::HistogramPolynomialFactory(const NumericalScalar first,
-    const NumericalPoint & width,
-    const NumericalPoint & height)
+    const Point & width,
+    const Point & height)
   : OrthogonalUniVariatePolynomialFactory(Histogram(first, width, height))
   , p_histogram_(dynamic_cast<const Histogram*>(&(*measure_.getImplementation())))
   , legendre_()
@@ -113,7 +113,7 @@ HistogramPolynomialFactory::Coefficients HistogramPolynomialFactory::getRecurren
   // Compute the dot products of the monic orthogonal polynomial of degree cacheSize
   // \beta_n = Rn / Rn-1 with Rn-1 = \beta_{n-1}Rn-2 = \beta_{n-1}\beta_{n-2}Rn-3 = ... = \prod_{k=0}^{n-1}\beta_k
   // Compute Rn and <x.Qn, Qn>
-  const NumericalPoint dotProduct(computeDotProduct(OrthogonalUniVariatePolynomial(monicRecurrenceCoefficients_)));
+  const Point dotProduct(computeDotProduct(OrthogonalUniVariatePolynomial(monicRecurrenceCoefficients_)));
   monicSquaredNorms_.add(dotProduct[0]);
   monicCoefficients[1] = -dotProduct[1] / monicSquaredNorms_[n + 1];
   monicCoefficients[2] = -monicSquaredNorms_[n + 1] / monicSquaredNorms_[n];
@@ -123,23 +123,23 @@ HistogramPolynomialFactory::Coefficients HistogramPolynomialFactory::getRecurren
 }
 
 /* Compute dot products taking into account the singularities of the weights */
-NumericalPoint HistogramPolynomialFactory::computeDotProduct(const OrthogonalUniVariatePolynomial & qN) const
+Point HistogramPolynomialFactory::computeDotProduct(const OrthogonalUniVariatePolynomial & qN) const
 {
   // Here we have integrals of qN(x)^2 and x*qN(x)^2, so a polynomial of maximal degree 2N+1, we need a N+1 Legendre quadrature rule
   const UnsignedInteger n = qN.getDegree();
-  NumericalPoint weights;
-  const NumericalPoint nodes(legendre_.getNodesAndWeights(n + 1, weights));
+  Point weights;
+  const Point nodes(legendre_.getNodesAndWeights(n + 1, weights));
   const NumericalScalar first = p_histogram_->getFirst();
-  const NumericalPoint width(p_histogram_->getWidth());
-  const NumericalPoint height(p_histogram_->getHeight());
+  const Point width(p_histogram_->getWidth());
+  const Point height(p_histogram_->getHeight());
   NumericalScalar a = first;
-  NumericalPoint dotProduct(2);
+  Point dotProduct(2);
   for (UnsignedInteger i = 0; i < width.getSize(); ++i)
   {
     const NumericalScalar ab = width[i];
     const NumericalScalar b = a + ab;
     const NumericalScalar c = a + b;
-    NumericalPoint value(2);
+    Point value(2);
     // Here we integrate qN^2 and xqN^2 over [a,b]
     for (UnsignedInteger j = 0; j <= n; ++j)
     {
@@ -162,13 +162,13 @@ NumericalScalar HistogramPolynomialFactory::getFirst() const
 }
 
 /* Width accessor */
-NumericalPoint HistogramPolynomialFactory::getWidth() const
+Point HistogramPolynomialFactory::getWidth() const
 {
   return p_histogram_->getWidth();
 }
 
 /* Height accessor */
-NumericalPoint HistogramPolynomialFactory::getHeight() const
+Point HistogramPolynomialFactory::getHeight() const
 {
   return p_histogram_->getHeight();
 }

@@ -106,8 +106,8 @@ public:
   /** SquareMatrix integer power */
   SquareMatrix power(const UnsignedInteger n) const;
 
-  /** Multiplication with a NumericalPoint (must have consistent dimensions) */
-  NumericalPoint operator * (const NumericalPoint & p) const;
+  /** Multiplication with a Point (must have consistent dimensions) */
+  Point operator * (const Point & p) const;
 
   /** Multiplication with a NumericalScalar */
   SquareMatrix operator * (const NumericalScalar s) const;
@@ -121,7 +121,7 @@ public:
   SquareMatrix operator / (const NumericalScalar s) const;
 
   /** Resolution of a linear system */
-  NumericalPoint solveLinearSystem(const NumericalPoint & b,
+  Point solveLinearSystem(const Point & b,
                                    const Bool keepIntact = true);
 
   Matrix solveLinearSystem(const Matrix & b,

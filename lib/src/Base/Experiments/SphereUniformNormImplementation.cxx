@@ -22,7 +22,7 @@
 #include "openturns/SphereUniformNormImplementation.hxx"
 #include "openturns/StorageManager.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Exception.hxx"
 
@@ -33,7 +33,7 @@ class SphereUniformNorm1D
 {
 public:
 
-  SphereUniformNorm1D(const NumericalPoint & step, const Bool symmetric)
+  SphereUniformNorm1D(const Point & step, const Bool symmetric)
     : SphereUniformNormImplementation(step, symmetric)
   {
     if (step.getDimension() != 1) throw InvalidDimensionException(HERE) << "Expected a point of dimension 1";
@@ -46,12 +46,12 @@ public:
     Sample points(size, 1);
     if (distance == 0)
     {
-      points[0] = NumericalPoint(1, 0.0);
+      points[0] = Point(1, 0.0);
     }
     else
     {
       const NumericalScalar cx = distance * stepX_;
-      NumericalPoint element(1, cx);
+      Point element(1, cx);
       element[0] = cx;
       points[0] = element;
       if (!isSymmetric())
@@ -87,7 +87,7 @@ class SphereUniformNorm2D
 {
 public:
 
-  SphereUniformNorm2D(const NumericalPoint & step, const Bool symmetric)
+  SphereUniformNorm2D(const Point & step, const Bool symmetric)
     : SphereUniformNormImplementation(step, symmetric)
   {
     // nothing to do
@@ -109,7 +109,7 @@ public:
     const NumericalScalar cy = distance * stepY_;
     if (isSymmetric())
     {
-      NumericalPoint element(2, 0.0);
+      Point element(2, 0.0);
       element[1] = cy;
       // 1) top
       for (UnsignedInteger ix = 0; ix < 2 * distance; ++ix, ++iterator)
@@ -127,7 +127,7 @@ public:
     }
     else
     {
-      NumericalPoint element(2, 0.0);
+      Point element(2, 0.0);
       // 1) left
       element[0] = - cx;
       for (UnsignedInteger iy = 0; iy < 2 * distance; ++iy, ++iterator)
@@ -190,7 +190,7 @@ class SphereUniformNorm3D
 
 public:
 
-  SphereUniformNorm3D(const NumericalPoint & step, const Bool symmetric)
+  SphereUniformNorm3D(const Point & step, const Bool symmetric)
     : SphereUniformNormImplementation(step, symmetric)
   {
     // nothing to do
@@ -214,7 +214,7 @@ public:
     const NumericalScalar cz = distance * stepZ_;
     if (isSymmetric())
     {
-      NumericalPoint element(3, 0.0);
+      Point element(3, 0.0);
       // 1) contour (like 2D case) for each z
       for (UnsignedInteger iz = 0; iz <= 2 * distance; ++iz)
       {
@@ -248,7 +248,7 @@ public:
     }
     else
     {
-      NumericalPoint element(3, 0.0);
+      Point element(3, 0.0);
       // 1) contour (like 2D case) for each z
       for (UnsignedInteger iz = 0; iz <= 2 * distance; ++iz)
       {
@@ -330,7 +330,7 @@ private:
 CLASSNAMEINIT(SphereUniformNormImplementation);
 
 /** Default constructor */
-SphereUniformNormImplementation::SphereUniformNormImplementation(const NumericalPoint & step, const Bool symmetric)
+SphereUniformNormImplementation::SphereUniformNormImplementation(const Point & step, const Bool symmetric)
   : PersistentObject()
   , step_(step)
   , symmetric_(symmetric)
@@ -345,7 +345,7 @@ SphereUniformNormImplementation * SphereUniformNormImplementation::clone() const
 }
 
 /** Factory of SphereUniformNormImplementation from grid steps */
-SphereUniformNormImplementation::Implementation SphereUniformNormImplementation::GetFromGridSteps(const NumericalPoint & step, const Bool symmetric)
+SphereUniformNormImplementation::Implementation SphereUniformNormImplementation::GetFromGridSteps(const Point & step, const Bool symmetric)
 {
   switch(step.getDimension())
   {

@@ -8,11 +8,11 @@ TESTPREAMBLE()
 try:
     # The 1D interface
     dim = 2
-    a = NumericalPoint(dim, -1.0)
-    b = NumericalPoint(dim, 2.0)
+    a = Point(dim, -1.0)
+    b = Point(dim, 2.0)
     domain = Domain(Interval(a, b))
-    p1 = NumericalPoint(dim, 0.5)
-    p2 = NumericalPoint(dim, 2.5)
+    p1 = Point(dim, 0.5)
+    p2 = Point(dim, 2.5)
     print("Domain=", domain)
     # Accessors
     print("Dimension=", domain.getDimension())

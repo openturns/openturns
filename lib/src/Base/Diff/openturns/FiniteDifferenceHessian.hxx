@@ -50,7 +50,7 @@ public:
   FiniteDifferenceHessian();
 
   /** First Parameter constructor  */
-  FiniteDifferenceHessian(const NumericalPoint & epsilon,
+  FiniteDifferenceHessian(const Point & epsilon,
                           const EvaluationPointer & p_evaluation);
 
   /** SecondParameter constructor */
@@ -78,7 +78,7 @@ public:
   virtual UnsignedInteger getOutputDimension() const;
 
   /** Accessor for the epsilon */
-  virtual NumericalPoint getEpsilon() const;
+  virtual Point getEpsilon() const;
 
   /** Accessor for the evaluation */
   virtual EvaluationPointer getEvaluation() const;
@@ -102,7 +102,7 @@ public:
    * @param in The point where the gradient is computed
    * @result A matrix constructed with the dF_i/dx_j values (Jacobian transposed)
    */
-  virtual SymmetricTensor hessian(const NumericalPoint & inP) const;
+  virtual SymmetricTensor hessian(const Point & inP) const;
 
 protected:
   /* The underlying evaluation object */

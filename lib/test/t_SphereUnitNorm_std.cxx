@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
       for (UnsignedInteger dimension = 1 ; dimension <= 3; ++dimension)
       {
         // d- dimensional SphereUniformNorm
-        const NumericalPoint step(dimension, 1.0);
+        const Point step(dimension, 1.0);
         // Create d-dimensional sphere using static constructor
         SphereUniformNorm sphereUnitNorm(SphereUniformNorm::GetFromGridSteps(step, symmetric));
         fullprint << "sphereUnitNorm = " << sphereUnitNorm << std::endl;

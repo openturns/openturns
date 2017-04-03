@@ -53,14 +53,14 @@ int main(int argc, char *argv[])
         NumericalScalar ref = cos(a) - cos(b);
         fullprint << "value=" << value << ", ref=" << ref << ", true error below bound? " << (std::abs(ref - value) < algo.getMaximumError() ? "true" : "false") << ", estimated error below bound? " << (error < algo.getMaximumError() ? "true" : "false") << std::endl;
         // Low-level interface
-//         NumericalPoint ai;
-//         NumericalPoint bi;
+//         Point ai;
+//         Point bi;
 //         Sample fi;
-//         NumericalPoint ei;
+//         Point ei;
 //         NumericalScalar value2(algo.integrate(f, a, b, error, ai, bi, fi, ei)[0]);
 //         ai.add(b);
 //         Graph g(f.draw(a, b, 512));
-//         Cloud lower(ai, NumericalPoint(ai.getDimension()));
+//         Cloud lower(ai, Point(ai.getDimension()));
 //         lower.setColor("magenta");
 //         g.add(lower);
 //         g.draw(String(OSS() << "Smooth_function_adaptation_" << i));
@@ -83,14 +83,14 @@ int main(int argc, char *argv[])
         fullprint << "value=" << value << ", ref=" << ref << ", true error below bound? " << (std::abs(ref - value) < algo.getMaximumError() ? "true" : "false") << ", estimated error below bound? " << (error < algo.getMaximumError() ? "true" : "false") << std::endl;
 
         // Low-level interface
-//         NumericalPoint ai;
-//         NumericalPoint bi;
+//         Point ai;
+//         Point bi;
 //         Sample fi;
-//         NumericalPoint ei;
+//         Point ei;
 //         NumericalScalar value2(algo.integrate(f, a, b, error, ai, bi, fi, ei)[0]);
 //         ai.add(b);
 //         Graph g(f.draw(a, b, 512));
-//         Cloud lower(ai, NumericalPoint(ai.getDimension()));
+//         Cloud lower(ai, Point(ai.getDimension()));
 //         lower.setColor("magenta");
 //         g.add(lower);
 //         g.draw(String(OSS() << "Nonsmooth_function_adaptation_" << i));

@@ -78,13 +78,13 @@ String ComposedHessian::__repr__() const
 }
 
 /* Method hessian() returns the symmetric tensor of the second gradient of the function at point */
-SymmetricTensor ComposedHessian::hessian(const NumericalPoint & inP) const
+SymmetricTensor ComposedHessian::hessian(const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   ++callsNumber_;
   // Hessian of the composed function fog, g:R^n->R^p, f:R^p->R^q so fog:R^n->R^q
-  const NumericalPoint p_rightIn(p_rightFunction_->operator()(inP));
+  const Point p_rightIn(p_rightFunction_->operator()(inP));
   const Matrix p_rightGradientIn(p_rightGradient_->gradient(inP));
   const SymmetricTensor p_rightHessianIn(p_rightHessian_->hessian(inP));
   const Matrix p_leftGradientIn(p_leftGradient_->gradient(p_rightIn));

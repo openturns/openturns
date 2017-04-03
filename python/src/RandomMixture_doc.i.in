@@ -133,7 +133,7 @@ Examples
 
 Returns
 -------
-out : :class:`~openturns.NumericalPoint`
+out : :class:`~openturns.Point`
     The constant term
 
 Examples
@@ -391,7 +391,7 @@ of the PDF over the range :math:`[mean \pm \beta\sigma]`.
 
 Returns
 -------
-out : :class:`~openturns.NumericalPoint`
+out : :class:`~openturns.Point`
     The reference bandwidth
 
 Examples

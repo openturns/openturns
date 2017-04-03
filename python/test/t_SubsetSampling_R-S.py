@@ -14,10 +14,10 @@ dim = limitState.getInputDimension()
 # Probabilistic model
 ##########################################################################
 
-mean = ot.NumericalPoint(dim, 0.0)
+mean = ot.Point(dim, 0.0)
 mean[0] = 7.
 mean[1] = 2.
-sigma = ot.NumericalPoint(dim, 1.0)
+sigma = ot.Point(dim, 1.0)
 
 R = ot.IdentityMatrix(dim)
 myDistribution = ot.Normal(mean, sigma, R)

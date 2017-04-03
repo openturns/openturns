@@ -11,7 +11,7 @@ try:
     sample = Sample(size, dimension)
     # Fill-in the sample
     for i in range(size):
-        p = NumericalPoint(dimension)
+        p = Point(dimension)
         for j in range(dimension):
             p[j] = i + j * 1.0 / dimension
         sample[i] = p

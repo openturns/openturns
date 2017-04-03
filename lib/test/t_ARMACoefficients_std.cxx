@@ -84,18 +84,18 @@ int main(int argc, char *argv[])
     fullprint << "coefficients2 = " << coefficients2 << std::endl;
 
     /* 1D case */
-    NumericalPoint point(dim * dim, 1.0);
+    Point point(dim * dim, 1.0);
     point[0] = 1;
     point[1] = 2;
     point[2] = 3;
     point[3] = 4;
 
-    /* ARMACoefficients NumericalPoint constructor */
+    /* ARMACoefficients Point constructor */
     ARMACoefficients coefficients3(point);
     coefficients3.add(s);
 
     /*fullprint of the new collection*/
-    fullprint << "Using NumericalPoint constructor " << std::endl;
+    fullprint << "Using Point constructor " << std::endl;
     fullprint << "coefficients3 = " << coefficients3 << std::endl;
 
     /* ARMACoefficients with polynomial constructor */

@@ -104,8 +104,8 @@ void BarPlot::setOrigin(const NumericalScalar origin)
 BarPlot::BoundingBox BarPlot::getBoundingBox() const
 {
   BoundingBox boundingBox(BoundingBoxSize);
-  const NumericalPoint max(data_.getMax());
-  const NumericalPoint min(data_.getMin());
+  const Point max(data_.getMax());
+  const Point min(data_.getMin());
   boundingBox[0] = origin_;
   boundingBox[1] = origin_;
   const UnsignedInteger size = data_.getSize();

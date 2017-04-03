@@ -72,11 +72,11 @@ String IndicatorEvaluation::__repr__() const
 }
 
 /* Operator () */
-NumericalPoint IndicatorEvaluation::operator() (const NumericalPoint & inP) const
+Point IndicatorEvaluation::operator() (const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
-  const NumericalPoint result(1, (comparisonOperator_.compare(p_evaluation_->operator()(inP)[0], threshold_) ? 1.0 : 0.0));
+  const Point result(1, (comparisonOperator_.compare(p_evaluation_->operator()(inP)[0], threshold_) ? 1.0 : 0.0));
   ++callsNumber_;
   if (isHistoryEnabled_)
   {

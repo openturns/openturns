@@ -338,7 +338,7 @@ parameter_gradient : :class:`~openturns.Matrix`
 
 Returns
 -------
-parameter : :class:`~openturns.NumericalPoint`
+parameter : :class:`~openturns.Point`
     The parameter values."
 
 // ---------------------------------------------------------------------

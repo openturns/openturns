@@ -237,8 +237,8 @@ TriangularComplexMatrix::NumericalComplexCollection TriangularComplexMatrix::ope
   return getImplementation()->triangularVectProd(pt, uplo) ;
 }
 
-/* Multiplication with a NumericalPoint (must have consistent dimensions) */
-TriangularComplexMatrix::NumericalComplexCollection TriangularComplexMatrix::operator * (const NumericalPoint & pt) const
+/* Multiplication with a Point (must have consistent dimensions) */
+TriangularComplexMatrix::NumericalComplexCollection TriangularComplexMatrix::operator * (const Point & pt) const
 {
   char uplo('L');
   if (!isLowerTriangular()) uplo = 'R';

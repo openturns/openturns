@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
     coll.add(Gamma(1.5, 3.0));
     InverseMarginalTransformationHessian transformation(coll);
     fullprint << "transformation=" << transformation << std::endl;
-    NumericalPoint point(coll.getSize(), 0.75);
+    Point point(coll.getSize(), 0.75);
     fullprint << "transformation(" << point << ")=" << transformation.hessian(point) << std::endl;
     fullprint << "input dimension=" << transformation.getInputDimension() << std::endl;
     fullprint << "output dimension=" << transformation.getOutputDimension() << std::endl;

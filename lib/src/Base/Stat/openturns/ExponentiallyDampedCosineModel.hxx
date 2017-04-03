@@ -24,7 +24,7 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/StationaryCovarianceModel.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/CorrelationMatrix.hxx"
 #include "openturns/Mesh.hxx"
 
@@ -49,8 +49,8 @@ public:
   explicit ExponentiallyDampedCosineModel(const UnsignedInteger spatialDimension = 1);
 
   /** Standard constructor with scale and amplitude parameters */
-  ExponentiallyDampedCosineModel(const NumericalPoint & scale,
-                                 const NumericalPoint & amplitude,
+  ExponentiallyDampedCosineModel(const Point & scale,
+                                 const Point & amplitude,
                                  const NumericalScalar frequency);
 
   /** Virtual copy constructor */
@@ -58,10 +58,10 @@ public:
 
   /** Computation of the covariance function, stationary interface */
   using StationaryCovarianceModel::computeStandardRepresentative;
-  NumericalScalar computeStandardRepresentative(const NumericalPoint & tau) const;
+  NumericalScalar computeStandardRepresentative(const Point & tau) const;
   using StationaryCovarianceModel::operator();
-  CovarianceMatrix operator() (const NumericalPoint & tau) const;
-  NumericalScalar computeAsScalar(const NumericalPoint & tau) const;
+  CovarianceMatrix operator() (const Point & tau) const;
+  NumericalScalar computeAsScalar(const Point & tau) const;
 
   /** Discretize the covariance function on a given TimeGrid */
   using StationaryCovarianceModel::discretize;
@@ -83,8 +83,8 @@ public:
 protected:
 
   /** Parameter accessor */
-  virtual void setFullParameter(const NumericalPoint & parameter);
-  virtual NumericalPoint getFullParameter() const;
+  virtual void setFullParameter(const Point & parameter);
+  virtual Point getFullParameter() const;
   virtual Description getFullParameterDescription() const;
 
 public:

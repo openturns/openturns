@@ -51,7 +51,7 @@ Y : :class:`~openturns.Sample`
 
 Returns
 -------
-coef : :class:`~openturns.NumericalPoint`
+coef : :class:`~openturns.Point`
     The coefficients of the linear model: :math:`(a_0, a_1, \ldots, a_n)`."
 
 // ---------------------------------------------------------------------

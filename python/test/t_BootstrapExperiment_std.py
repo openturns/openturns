@@ -11,7 +11,7 @@ try:
     dim = 6
     refSample = Sample(size, dim)
     for i in range(size):
-        p = NumericalPoint(dim)
+        p = Point(dim)
         for j in range(dim):
             p[j] = i + j
         refSample[i] = p

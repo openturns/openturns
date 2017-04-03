@@ -22,7 +22,7 @@
 #include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/Brent.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -53,12 +53,12 @@ struct RiceFactoryParameterConstraint
     // Nothing to do
   };
 
-  NumericalPoint computeConstraint(const NumericalPoint & parameter) const
+  Point computeConstraint(const Point & parameter) const
   {
     // Here u = \theta^2 wrt reference
     const NumericalScalar u = parameter[0];
     const NumericalScalar relation = u - (r2p1_ * computeXi(u) - 2.0);
-    return NumericalPoint(1, relation);
+    return Point(1, relation);
   }
 
   NumericalScalar computeXi(const NumericalScalar u) const
@@ -79,7 +79,7 @@ RiceFactory::Implementation RiceFactory::build(const Sample & sample) const
   return buildAsRice(sample).clone();
 }
 
-RiceFactory::Implementation RiceFactory::build(const NumericalPoint & parameters) const
+RiceFactory::Implementation RiceFactory::build(const Point & parameters) const
 {
   return buildAsRice(parameters).clone();
 }
@@ -101,12 +101,12 @@ Rice RiceFactory::buildAsRice(const Sample & sample) const
   const NumericalScalar std = sample.computeStandardDeviationPerComponent()[0];
   // Koay inversion method
   RiceFactoryParameterConstraint constraint(mu / std);
-  const Function f(bindMethod<RiceFactoryParameterConstraint, NumericalPoint, NumericalPoint>(constraint, &RiceFactoryParameterConstraint::computeConstraint, 1, 1));
+  const Function f(bindMethod<RiceFactoryParameterConstraint, Point, Point>(constraint, &RiceFactoryParameterConstraint::computeConstraint, 1, 1));
   // Find a bracketing interval
   NumericalScalar a = 1.0;
   NumericalScalar b = 2.0;
-  NumericalScalar fA = f(NumericalPoint(1, a))[0];
-  NumericalScalar fB = f(NumericalPoint(1, b))[0];
+  NumericalScalar fA = f(Point(1, a))[0];
+  NumericalScalar fB = f(Point(1, b))[0];
   const NumericalScalar largeValue = std::sqrt(SpecFunc::MaxNumericalScalar);
   const UnsignedInteger maximumIteration = ResourceMap::GetAsUnsignedInteger( "RiceFactory-MaximumIteration" );
   UnsignedInteger iteration = 0;
@@ -114,10 +114,10 @@ Rice RiceFactory::buildAsRice(const Sample & sample) const
   while ((fA * fB > 0.0) && (std::abs(fA) < largeValue) && (std::abs(fB) < largeValue) && (b < largeValue) && (iteration < maximumIteration))
   {
     a = 0.5 * a;
-    fA = f(NumericalPoint(1, a))[0];
+    fA = f(Point(1, a))[0];
     if (fA * fB <= 0.0) break;
     b = 2.0 * b;
-    fB = f(NumericalPoint(1, b))[0];
+    fB = f(Point(1, b))[0];
     LOGDEBUG(OSS() << "a=" << a << ", fa=" << fA << ", b=" << b << ", fb=" << fB);
     ++iteration;
   }
@@ -143,7 +143,7 @@ Rice RiceFactory::buildAsRice(const Sample & sample) const
   }
 }
 
-Rice RiceFactory::buildAsRice(const NumericalPoint & parameters) const
+Rice RiceFactory::buildAsRice(const Point & parameters) const
 {
   try
   {

@@ -61,7 +61,7 @@ UnsignedInteger UsualRandomVector::getDimension() const
 }
 
 /* Realization accessor */
-NumericalPoint UsualRandomVector::getRealization() const
+Point UsualRandomVector::getRealization() const
 {
   return distribution_.getRealization();
 }
@@ -75,7 +75,7 @@ Sample UsualRandomVector::getSample(const UnsignedInteger size) const
 }
 
 /* Mean accessor */
-NumericalPoint UsualRandomVector::getMean() const
+Point UsualRandomVector::getMean() const
 {
   return distribution_.getMean();
 }

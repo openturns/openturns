@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-static NumericalPoint clean(NumericalPoint in)
+static Point clean(Point in)
 {
   UnsignedInteger dim = in.getDimension();
   for(UnsignedInteger i = 0; i < dim; i++)
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     fullprint << "Continuous = " << (distribution.isContinuous() ? "true" : "false") << std::endl;
 
     // Test for realization of distribution
-    NumericalPoint oneRealization = distribution.getRealization();
+    Point oneRealization = distribution.getRealization();
     fullprint << "oneRealization=" << oneRealization << std::endl;
 
     // Test for sampling
@@ -64,34 +64,34 @@ int main(int argc, char *argv[])
     fullprint << "covariance=" << oneSample.computeCovariance() << std::endl;
 
     // Define a point
-    NumericalPoint point( distribution.getDimension(), 2.5 );
+    Point point( distribution.getDimension(), 2.5 );
     fullprint << "Point= " << point << std::endl;
 
     // Show PDF and CDF of point
-    NumericalPoint DDF = distribution.computeDDF( point );
+    Point DDF = distribution.computeDDF( point );
     fullprint << "ddf      =" << DDF << std::endl;
     NumericalScalar PDF = distribution.computePDF( point );
     fullprint << "pdf      =" << PDF << std::endl;
     NumericalScalar CDF = distribution.computeCDF( point );
     fullprint << "cdf      =" << CDF << std::endl;
-    NumericalPoint PDFgr = distribution.computePDFGradient( point );
+    Point PDFgr = distribution.computePDFGradient( point );
     fullprint << "pdf gradient      =" << clean(PDFgr) << std::endl;
-    NumericalPoint CDFgr = distribution.computeCDFGradient( point );
+    Point CDFgr = distribution.computeCDFGradient( point );
     fullprint << "cdf gradient      =" << clean(CDFgr) << std::endl;
-    NumericalPoint quantile = distribution.computeQuantile( 0.95 );
+    Point quantile = distribution.computeQuantile( 0.95 );
     fullprint << "quantile     =" << quantile << std::endl;
     fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
-    NumericalPoint mean = distribution.getMean();
+    Point mean = distribution.getMean();
     fullprint << "mean      =" << mean << std::endl;
-    NumericalPoint standardDeviation = distribution.getStandardDeviation();
+    Point standardDeviation = distribution.getStandardDeviation();
     fullprint << "standard deviation      =" << standardDeviation << std::endl;
-    NumericalPoint skewness = distribution.getSkewness();
+    Point skewness = distribution.getSkewness();
     fullprint << "skewness      =" << skewness << std::endl;
-    NumericalPoint kurtosis = distribution.getKurtosis();
+    Point kurtosis = distribution.getKurtosis();
     fullprint << "kurtosis      =" << kurtosis << std::endl;
     CovarianceMatrix covariance = distribution.getCovariance();
     fullprint << "covariance      =" << covariance << std::endl;
-    ProductDistribution::NumericalPointWithDescriptionCollection parameters = distribution.getParametersCollection();
+    ProductDistribution::PointWithDescriptionCollection parameters = distribution.getParametersCollection();
     fullprint << "parameters      =" << parameters << std::endl;
     for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
     fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;

@@ -41,8 +41,8 @@ ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const UnsignedInt
 }
 
 /** Standard constructor with amplitude and scale parameters */
-ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const NumericalPoint & scale,
-    const NumericalPoint & amplitude,
+ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const Point & scale,
+    const Point & amplitude,
     const NumericalScalar frequency)
   : StationaryCovarianceModel(scale, amplitude)
   , frequency_(0.0)
@@ -60,7 +60,7 @@ ExponentiallyDampedCosineModel * ExponentiallyDampedCosineModel::clone() const
 /* Computation of the covariance function, stationary interface
  * C_{0,0}(tau) = amplitude_ * exp(-|tau / scale_|) * cos(2 * pi * frequency_ * |tau / scale|)
  */
-CovarianceMatrix ExponentiallyDampedCosineModel::operator() (const NumericalPoint & tau) const
+CovarianceMatrix ExponentiallyDampedCosineModel::operator() (const Point & tau) const
 {
   CovarianceMatrix covarianceMatrix(dimension_);
 
@@ -68,16 +68,16 @@ CovarianceMatrix ExponentiallyDampedCosineModel::operator() (const NumericalPoin
   return covarianceMatrix;
 }
 
-NumericalScalar ExponentiallyDampedCosineModel::computeAsScalar(const NumericalPoint & tau) const
+NumericalScalar ExponentiallyDampedCosineModel::computeAsScalar(const Point & tau) const
 {
   return amplitude_[0] * computeStandardRepresentative(tau);
 }
 
-NumericalScalar ExponentiallyDampedCosineModel::computeStandardRepresentative(const NumericalPoint & tau) const
+NumericalScalar ExponentiallyDampedCosineModel::computeStandardRepresentative(const Point & tau) const
 {
   if (tau.getDimension() != spatialDimension_)
     throw InvalidArgumentException(HERE) << "In ExponentiallyDampedCosineModel::computeStandardRepresentative: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();
-  NumericalPoint tauOverTheta(spatialDimension_);
+  Point tauOverTheta(spatialDimension_);
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
 
   const NumericalScalar absTau = tauOverTheta.norm();
@@ -101,7 +101,7 @@ CovarianceMatrix ExponentiallyDampedCosineModel::discretize(const RegularGrid & 
   // has to be copied
   for (UnsignedInteger diag = 0; diag < size; ++diag)
   {
-    const NumericalScalar covTau = computeAsScalar(NumericalPoint(1, diag * timeStep));
+    const NumericalScalar covTau = computeAsScalar(Point(1, diag * timeStep));
     for (UnsignedInteger i = 0; i < size - diag; ++i) cov(i, i + diag) = covTau;
   }
 
@@ -149,16 +149,16 @@ NumericalScalar ExponentiallyDampedCosineModel::getFrequency() const
   return frequency_;
 }
 
-void ExponentiallyDampedCosineModel::setFullParameter(const NumericalPoint & parameter)
+void ExponentiallyDampedCosineModel::setFullParameter(const Point & parameter)
 {
   CovarianceModelImplementation::setFullParameter(parameter);
   setFrequency(parameter[parameter.getSize() - 1]);
 }
 
-NumericalPoint ExponentiallyDampedCosineModel::getFullParameter() const
+Point ExponentiallyDampedCosineModel::getFullParameter() const
 {
   // Get the generic parameter
-  NumericalPoint parameter(CovarianceModelImplementation::getFullParameter());
+  Point parameter(CovarianceModelImplementation::getFullParameter());
   // Add the specific one
   parameter.add(frequency_);
   return parameter;

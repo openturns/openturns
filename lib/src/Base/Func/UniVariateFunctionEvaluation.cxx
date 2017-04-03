@@ -71,11 +71,11 @@ String UniVariateFunctionEvaluation::__str__(const String & offset) const
 
 
 /* Operator (): Evaluate a product of 1D polynomials for one sample */
-NumericalPoint UniVariateFunctionEvaluation::operator() (const NumericalPoint & inP) const
+Point UniVariateFunctionEvaluation::operator() (const Point & inP) const
 {
   const UnsignedInteger inDimension(inP.getDimension());
   if (inDimension != 1) throw InvalidArgumentException(HERE) << "Error: trying to evaluate an UniVariateFunction with an argument of invalid dimension";
-  const NumericalPoint result(1, function_(inP[0]));
+  const Point result(1, function_(inP[0]));
   if (isHistoryEnabled_)
   {
     inputStrategy_.store(inP);

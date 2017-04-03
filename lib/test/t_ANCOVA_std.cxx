@@ -97,8 +97,8 @@ int main(int argc, char *argv[])
     // Post-process the results
     FunctionalChaosResult result(algo.getResult());
     ANCOVA ancova(result, sample);
-    NumericalPoint indices(ancova.getIndices());
-    NumericalPoint uncorrelatedIndices(ancova.getUncorrelatedIndices());
+    Point indices(ancova.getIndices());
+    Point uncorrelatedIndices(ancova.getUncorrelatedIndices());
 
     for(UnsignedInteger i = 0; i < dimension; ++i)
     {

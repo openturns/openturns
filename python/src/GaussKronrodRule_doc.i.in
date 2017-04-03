@@ -65,7 +65,7 @@ gkPair : :class:`~openturns.GaussKronrodPair`
 
 Returns
 -------
-otherGaussWeights : :class:`~openturns.NumericalPoint`
+otherGaussWeights : :class:`~openturns.Point`
     The  weights :math:`(\omega_k)_{1 \leq k \leq n}`"
 
 // ---------------------------------------------------------------------
@@ -74,7 +74,7 @@ otherGaussWeights : :class:`~openturns.NumericalPoint`
 
 Returns
 -------
-otherKronrodNodes : :class:`~openturns.NumericalPoint`
+otherKronrodNodes : :class:`~openturns.Point`
     The  positive nodes :math:`(\xi_k)_{1 \leq k \leq n}`
 "
 // ---------------------------------------------------------------------
@@ -83,7 +83,7 @@ otherKronrodNodes : :class:`~openturns.NumericalPoint`
 
 Returns
 -------
-otherKronrodWeights : :class:`~openturns.NumericalPoint`
+otherKronrodWeights : :class:`~openturns.Point`
     The  weights :math:`(\alpha_k)_{1 \leq k \leq m}`.
 "
 // ---------------------------------------------------------------------
@@ -92,7 +92,7 @@ otherKronrodWeights : :class:`~openturns.NumericalPoint`
 
 Returns
 -------
-otherKronrodNodes : :class:`~openturns.NumericalPoint`
+otherKronrodNodes : :class:`~openturns.Point`
     The  positive nodes :math:`(\zeta_k)_{1 \leq k \leq m}`
     It contains the positive Gauss nodes as we have :math:`\zeta_{2j}=\xi_j`.
 "

@@ -55,10 +55,10 @@ public:
   UnsignedInteger getNumberOfSteps();
 
   /** Stepwise result accessors */
-  NumericalPoint getThresholdPerStep() const;
-  NumericalPoint getGammaPerStep() const;
-  NumericalPoint getCoefficientOfVariationPerStep() const;
-  NumericalPoint getProbabilityEstimatePerStep() const;
+  Point getThresholdPerStep() const;
+  Point getGammaPerStep() const;
+  Point getCoefficientOfVariationPerStep() const;
+  Point getProbabilityEstimatePerStep() const;
 
   /** Keep event sample */
   void setKeepEventSample(bool keepEventSample);
@@ -111,10 +111,10 @@ private:
 
   // some results
   UnsignedInteger numberOfSteps_;// number of subset steps
-  NumericalPoint thresholdPerStep_;// intermediate thresholds
-  NumericalPoint gammaPerStep_;// intermediate gammas
-  NumericalPoint coefficientOfVariationPerStep_;// intermediate COVS
-  NumericalPoint probabilityEstimatePerStep_;// intermediate PFs
+  Point thresholdPerStep_;// intermediate thresholds
+  Point gammaPerStep_;// intermediate gammas
+  Point coefficientOfVariationPerStep_;// intermediate COVS
+  Point probabilityEstimatePerStep_;// intermediate PFs
   Sample eventInputSample_;// event input sample
   Sample eventOutputSample_;// event output sample
 

@@ -43,7 +43,7 @@ inline void testSVD(UnsignedInteger m, UnsignedInteger n)
   matrix1.setName("matrix1");
   fullprint << "matrix1= " << matrix1.__str__() << std::endl;
 
-  NumericalPoint result1 ;
+  Point result1 ;
   result1 = matrix1.computeSingularValues();
   fullprint << "svd (svd only)= " << result1 << std::endl;
 

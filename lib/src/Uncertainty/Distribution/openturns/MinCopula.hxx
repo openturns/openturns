@@ -57,28 +57,28 @@ public:
   virtual MinCopula * clone() const;
 
   /** Get one realization of the MinCopula distribution */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Get the DDF of the MinCopula distribution */
   using CopulaImplementation::computeDDF;
-  NumericalPoint computeDDF(const NumericalPoint & point) const;
+  Point computeDDF(const Point & point) const;
 
   /** Get the PDF of the MinCopula distribution */
   using CopulaImplementation::computePDF;
-  NumericalScalar computePDF(const NumericalPoint & point) const;
+  NumericalScalar computePDF(const Point & point) const;
 
   /** Get the CDF of the MinCopula distribution */
   using CopulaImplementation::computeCDF;
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
+  NumericalScalar computeCDF(const Point & point) const;
 
   /** Get the quantile of the distribution */
   using DistributionImplementation::computeQuantile;
-  NumericalPoint computeQuantile(const NumericalScalar prob,
+  Point computeQuantile(const NumericalScalar prob,
                                  const Bool tail = false) const;
 
   /** Compute the survival function */
   using CopulaImplementation::computeSurvivalFunction;
-  NumericalScalar computeSurvivalFunction(const NumericalPoint & point) const;
+  NumericalScalar computeSurvivalFunction(const Point & point) const;
 
   /** Get the Kendall concordance of the distribution */
   CorrelationMatrix getKendallTau() const;

@@ -61,7 +61,7 @@ Multinomial MultinomialFactory::buildAsMultinomial(const Sample & sample) const
   // Check if each component of the sample is an integer, compute the mean and extract the maximum value
   UnsignedInteger size = sample.getSize();
   UnsignedInteger dimension = sample.getDimension();
-  NumericalPoint p(dimension, 0.0);
+  Point p(dimension, 0.0);
   NumericalScalar max = sample[0][0];
   for (UnsignedInteger i = 0; i < size; i++)
   {

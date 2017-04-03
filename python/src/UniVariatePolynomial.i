@@ -17,7 +17,7 @@ namespace OT {
   OT::UniVariatePolynomial
   convert<_PySequence_,OT::UniVariatePolynomial>(PyObject * pyObj)
   {
-    return OT::convert<OT::_PySequence_,OT::NumericalPoint>(pyObj);
+    return OT::convert<OT::_PySequence_,OT::Point>(pyObj);
   }
 
 } /* namespace OT */
@@ -37,7 +37,7 @@ UniVariatePolynomial(const UniVariatePolynomial & other) { return new OT::UniVar
 
 UniVariatePolynomial(PyObject * pyObj)
 {
- return new OT::UniVariatePolynomial( OT::convert<OT::_PySequence_,OT::NumericalPoint>(pyObj) );
+ return new OT::UniVariatePolynomial( OT::convert<OT::_PySequence_,OT::Point>(pyObj) );
 }
 
 }

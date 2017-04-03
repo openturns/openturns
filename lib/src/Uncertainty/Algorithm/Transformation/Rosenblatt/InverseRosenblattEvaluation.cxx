@@ -55,12 +55,12 @@ InverseRosenblattEvaluation * InverseRosenblattEvaluation::clone() const
 }
 
 /* Evaluation */
-NumericalPoint InverseRosenblattEvaluation::operator () (const NumericalPoint & inP) const
+Point InverseRosenblattEvaluation::operator () (const Point & inP) const
 {
   const UnsignedInteger dimension = getOutputDimension();
   if (inP.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << inP.getDimension();
-  NumericalPoint result(dimension);
-  NumericalPoint y(0);
+  Point result(dimension);
+  Point y(0);
   // Apply conditional Quantile o Phi over the components
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
@@ -86,9 +86,9 @@ NumericalPoint InverseRosenblattEvaluation::operator () (const NumericalPoint & 
  *       = 0
  * => dQ/dp(y, p) = - dF/dp(Q(y, p), p) / f(Q(y, p), p)
  */
-Matrix InverseRosenblattEvaluation::parameterGradient(const NumericalPoint & inP) const
+Matrix InverseRosenblattEvaluation::parameterGradient(const Point & inP) const
 {
-  throw NotYetImplementedException(HERE) << "In InverseRosenblattEvaluation::parameterGradient(const NumericalPoint & inP) const";
+  throw NotYetImplementedException(HERE) << "In InverseRosenblattEvaluation::parameterGradient(const Point & inP) const";
 }
 
 /* Accessor for input point dimension */

@@ -38,11 +38,11 @@ int main(int argc, char *argv[])
     fullprint << "mesh1D=" << mesh1D << std::endl;
     IntervalMesher mesher2D(Indices(2, 4));
     fullprint << "mesher2D=" << mesher2D << std::endl;
-    Mesh mesh2D(mesher2D.build(Interval(NumericalPoint(2, -1.0), NumericalPoint(2, 2.0))));
+    Mesh mesh2D(mesher2D.build(Interval(Point(2, -1.0), Point(2, 2.0))));
     fullprint << "mesh2D=" << mesh2D << std::endl;
     IntervalMesher mesher3D(Indices(3, 3));
     fullprint << "mesher3D=" << mesher3D << std::endl;
-    Mesh mesh3D(mesher3D.build(Interval(NumericalPoint(3, -1.0), NumericalPoint(3, 2.0))));
+    Mesh mesh3D(mesher3D.build(Interval(Point(3, -1.0), Point(3, 2.0))));
     fullprint << "mesh3D=" << mesh3D << std::endl;
   }
   catch (TestFailed & ex)

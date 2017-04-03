@@ -20,7 +20,7 @@
  */
 
 #include "openturns/SphereUniformNorm.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -28,12 +28,12 @@ CLASSNAMEINIT(SphereUniformNorm);
 
 /** Default constructor */
 SphereUniformNorm::SphereUniformNorm()
-  : TypedInterfaceObject<SphereUniformNormImplementation>(new SphereUniformNormImplementation(NumericalPoint(0), true))
+  : TypedInterfaceObject<SphereUniformNormImplementation>(new SphereUniformNormImplementation(Point(0), true))
 {
 }
 
 /** Default constructor */
-SphereUniformNorm::SphereUniformNorm(const NumericalPoint step, const Bool symmetric)
+SphereUniformNorm::SphereUniformNorm(const Point step, const Bool symmetric)
   : TypedInterfaceObject<SphereUniformNormImplementation>(new SphereUniformNormImplementation(step, symmetric))
 {
   // Nothing to do
@@ -58,7 +58,7 @@ SphereUniformNorm::SphereUniformNorm(SphereUniformNormImplementation * p_impleme
 }
 
 /** Constructor from grid steps */
-SphereUniformNorm SphereUniformNorm::GetFromGridSteps(const NumericalPoint & step, const Bool symmetric)
+SphereUniformNorm SphereUniformNorm::GetFromGridSteps(const Point & step, const Bool symmetric)
 {
   SphereUniformNorm result(SphereUniformNormImplementation::GetFromGridSteps(step, symmetric));
   return result;

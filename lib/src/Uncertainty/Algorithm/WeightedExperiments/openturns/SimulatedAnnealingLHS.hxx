@@ -59,7 +59,7 @@ public:
   SimulatedAnnealingLHS * clone() const;
 
   /** Compute design method **/
-  virtual Sample generateWithWeights(NumericalPoint & weights) const;
+  virtual Sample generateWithWeights(Point & weights) const;
   Sample generateWithRestart(UnsignedInteger nRestart) const;
 
   /** String converter */

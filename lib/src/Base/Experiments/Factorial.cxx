@@ -38,8 +38,8 @@ Factorial::Factorial()
 }
 
 /* Constructor with parameters */
-Factorial::Factorial(const NumericalPoint & center,
-                     const NumericalPoint & levels)
+Factorial::Factorial(const Point & center,
+                     const Point & levels)
   : StratifiedExperiment(center, levels)
 {
   // Nothing to do
@@ -47,8 +47,8 @@ Factorial::Factorial(const NumericalPoint & center,
 
 /* Constructor with parameters */
 Factorial::Factorial(const UnsignedInteger dimension,
-                     const NumericalPoint & levels)
-  : StratifiedExperiment(NumericalPoint(dimension, 0.0), levels)
+                     const Point & levels)
+  : StratifiedExperiment(Point(dimension, 0.0), levels)
 {
   // Nothing to do
 }

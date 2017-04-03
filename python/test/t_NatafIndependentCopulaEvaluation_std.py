@@ -12,7 +12,7 @@ try:
     dim = 2
     transformation = NatafIndependentCopulaEvaluation(dim)
     print("transformation=", repr(transformation))
-    point = NumericalPoint(dim, 0.75)
+    point = Point(dim, 0.75)
     print("transformation(", point, ")=", repr(transformation(point)))
     print("transformation parameters gradient=", repr(
         transformation.parameterGradient(point)))

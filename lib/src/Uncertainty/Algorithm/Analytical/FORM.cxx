@@ -42,7 +42,7 @@ FORM::FORM()
  */
 FORM::FORM(const OptimizationAlgorithm & nearestPointAlgorithm,
            const Event & event,
-           const NumericalPoint & physicalStartingPoint):
+           const Point & physicalStartingPoint):
   Analytical(nearestPointAlgorithm, event, physicalStartingPoint)
 {
   // Nothing to do

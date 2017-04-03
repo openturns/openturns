@@ -72,14 +72,14 @@ public:
   virtual ConditionalDistribution * clone() const;
 
   /** Get one realization of the distribution */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
+  PointWithDescriptionCollection getParametersCollection() const;
 
   /** Parameters value accessors */
-  void setParameter(const NumericalPoint & parameter);
-  NumericalPoint getParameter() const;
+  void setParameter(const Point & parameter);
+  Point getParameter() const;
 
   /** Parameters description accessor */
   Description getParameterDescription() const;
@@ -122,8 +122,8 @@ private:
       const Function & linkFunction);
 
   /** Compute the expectation of f(\theta)1_{\theta\leq \theta^*} with respect to the prior distribution of \theta */
-  NumericalPoint computeExpectation(const Function & f,
-                                    const NumericalPoint & thetaStar) const;
+  Point computeExpectation(const Function & f,
+                                    const Point & thetaStar) const;
 
   /** The conditioned distribution, i.e L(X|Theta) */
   Distribution conditionedDistribution_;
@@ -144,22 +144,22 @@ private:
   Indices continuousMarginalsIndices_;
 
   /** Lower bounds of the continuous marginals */
-  NumericalPoint continuousLowerBounds_;
+  Point continuousLowerBounds_;
 
   /** Upper bounds of the continuous marginals */
-  NumericalPoint continuousUpperBounds_;
+  Point continuousUpperBounds_;
 
   /** Standard continuous integration nodes */
   Sample continuousNodes_;
 
   /** Standard continuous weights */
-  NumericalPoint continuousWeights_;
+  Point continuousWeights_;
 
   /** Discrete integration nodes */
   Sample discreteNodes_;
 
   /** Values of the Dirac marginals */
-  NumericalPoint diracValues_;
+  Point diracValues_;
 
 }; /* class ConditionalDistribution */
 

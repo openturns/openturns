@@ -46,7 +46,7 @@ UniformFactory::Implementation UniformFactory::build(const Sample & sample) cons
   return buildAsUniform(sample).clone();
 }
 
-UniformFactory::Implementation UniformFactory::build(const NumericalPoint & parameters) const
+UniformFactory::Implementation UniformFactory::build(const Point & parameters) const
 {
   return buildAsUniform(parameters).clone();
 }
@@ -78,7 +78,7 @@ Uniform UniformFactory::buildAsUniform(const Sample & sample) const
   return result;
 }
 
-Uniform UniformFactory::buildAsUniform(const NumericalPoint & parameters) const
+Uniform UniformFactory::buildAsUniform(const Point & parameters) const
 {
   try
   {

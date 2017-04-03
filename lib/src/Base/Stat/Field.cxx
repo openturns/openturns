@@ -135,25 +135,25 @@ const NumericalScalar & Field::at (const UnsignedInteger i,
 }
 
 /* Values accessor */
-NumericalPoint Field::getValueAtIndex(const UnsignedInteger index) const
+Point Field::getValueAtIndex(const UnsignedInteger index) const
 {
   return getImplementation()->getValueAtIndex(index);
 }
 
 void Field::setValueAtIndex(const UnsignedInteger index,
-                            const NumericalPoint & val)
+                            const Point & val)
 {
   copyOnWrite();
   getImplementation()->setValueAtIndex(index, val);
 }
 
-NumericalPoint Field::getValueAtNearestPosition(const NumericalPoint & position) const
+Point Field::getValueAtNearestPosition(const Point & position) const
 {
   return getImplementation()->getValueAtNearestPosition(position);
 }
 
-void Field::setValueAtNearestPosition(const NumericalPoint & position,
-                                      const NumericalPoint & val)
+void Field::setValueAtNearestPosition(const Point & position,
+                                      const Point & val)
 {
   copyOnWrite();
   getImplementation()->setValueAtNearestPosition(position, val);
@@ -254,13 +254,13 @@ Mesh Field::asDeformedMesh() const
 }
 
 /* Compute the spatial mean of the field */
-NumericalPoint Field::getSpatialMean() const
+Point Field::getSpatialMean() const
 {
   return getImplementation()->getSpatialMean();
 }
 
 /* Compute the temporal mean of the field */
-NumericalPoint Field::getTemporalMean() const
+Point Field::getTemporalMean() const
 {
   return getImplementation()->getTemporalMean();
 }

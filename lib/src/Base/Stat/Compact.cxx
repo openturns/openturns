@@ -63,7 +63,7 @@ Compact * Compact::clone() const
 }
 
 /* Store the point according to the strategy */
-void Compact::store(const NumericalPoint & point)
+void Compact::store(const Point & point)
 {
   if (!isInitialized_)
   {

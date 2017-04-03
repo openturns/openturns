@@ -57,10 +57,10 @@ int main(int argc, char *argv[])
     fullprint << "sigma = " << distribution.getStandardDeviation() << std::endl;
     const UnsignedInteger N = 4;
     Indices points(3, N);
-    NumericalPoint mean(distribution.getMean());
-    NumericalPoint sigma(distribution.getStandardDeviation());
-    NumericalPoint xMin(mean - 2.9 * sigma);
-    NumericalPoint xMax(mean + 2.9 * sigma);
+    Point mean(distribution.getMean());
+    Point sigma(distribution.getStandardDeviation());
+    Point xMin(mean - 2.9 * sigma);
+    Point xMax(mean + 2.9 * sigma);
     Sample grid;
     Sample result(distribution.computePDF(xMin, xMax, points, grid));
     for (UnsignedInteger i = 0; i < grid.getSize(); ++i)

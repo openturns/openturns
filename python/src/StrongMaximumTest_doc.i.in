@@ -243,7 +243,7 @@ number : int, :math:`N > 0`
 
 Returns
 -------
-point : :class:`~openturns.NumericalPoint`
+point : :class:`~openturns.Point`
     Design point in the standard space."
 
 // ---------------------------------------------------------------------

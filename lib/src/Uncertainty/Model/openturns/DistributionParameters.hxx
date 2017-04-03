@@ -35,7 +35,7 @@ class OT_API DistributionParameters
 {
   CLASSNAME;
 public:
-  typedef Collection<NumericalPointWithDescription> NumericalPointWithDescriptionCollection;
+  typedef Collection<PointWithDescription> PointWithDescriptionCollection;
 
   /** Default constructor */
   DistributionParameters();
@@ -55,20 +55,20 @@ public:
   Distribution getDistribution() const;
 
   /** Evaluate native parameters */
-  NumericalPoint evaluate() const;
+  Point evaluate() const;
 
   /** Compute jacobian / native parameters */
   Matrix gradient() const;
 
   /** Conversion operator */
-  NumericalPoint operator () (const NumericalPoint & inP) const;
+  Point operator () (const Point & inP) const;
 
   /** Conversion from native parameters */
-  NumericalPoint inverse(const NumericalPoint & inP) const;
+  Point inverse(const Point & inP) const;
 
   /** Parameters value and description accessor */
-  void setValues(const NumericalPoint & values);
-  NumericalPoint getValues() const;
+  void setValues(const Point & values);
+  Point getValues() const;
   Description getDescription() const;
 
   /** String converter */

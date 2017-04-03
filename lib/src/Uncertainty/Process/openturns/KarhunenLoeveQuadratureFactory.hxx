@@ -31,7 +31,7 @@
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Function.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/ProcessSample.hxx"
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Matrix.hxx"
@@ -73,7 +73,7 @@ public:
    * of the integral
    */
   Basis build(const CovarianceModel & covarianceModel,
-              NumericalPoint & eigenvalues) const;
+              Point & eigenvalues) const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -99,7 +99,7 @@ private:
 
   /** Quadrature nodes and weights */
   Sample nodes_;
-  NumericalPoint weights_;
+  Point weights_;
 
   /** Scaled design matrix */
   mutable Matrix theta_;

@@ -36,7 +36,7 @@ static const Factory<Analytical> Factory_Analytical;
  */
 Analytical::Analytical(const OptimizationAlgorithm & nearestPointAlgorithm,
                        const Event & event,
-                       const NumericalPoint & physicalStartingPoint)
+                       const Point & physicalStartingPoint)
   : PersistentObject(),
     nearestPointAlgorithm_(nearestPointAlgorithm),
     event_(event),
@@ -57,13 +57,13 @@ Analytical * Analytical::clone() const
 }
 
 /* Physical starting point accessor */
-NumericalPoint Analytical::getPhysicalStartingPoint() const
+Point Analytical::getPhysicalStartingPoint() const
 {
   return physicalStartingPoint_;
 }
 
 /* Physical starting point accessor */
-void Analytical::setPhysicalStartingPoint(const NumericalPoint & physicalStartingPoint)
+void Analytical::setPhysicalStartingPoint(const Point & physicalStartingPoint)
 {
   physicalStartingPoint_ = physicalStartingPoint;
 }
@@ -122,13 +122,13 @@ void Analytical::run()
   /* store the optimization result into the analytical result */
   result_.setOptimizationResult(nearestPointAlgorithm_.getResult());
   /* set standard space design point in Result */
-  NumericalPoint standardSpaceDesignPoint(nearestPointAlgorithm_.getResult().getOptimalPoint());
+  Point standardSpaceDesignPoint(nearestPointAlgorithm_.getResult().getOptimalPoint());
   standardSpaceDesignPoint.setName("Standard Space Design Point");
   result_.setStandardSpaceDesignPoint(standardSpaceDesignPoint);
 
   /* set isStandardPointOriginInFailureSpace in Result */
-  NumericalPoint origin(standardSpaceDesignPoint.getDimension(), 0.0);
-  NumericalPoint value(standardEvent.getImplementation()->getFunction().operator()(origin));
+  Point origin(standardSpaceDesignPoint.getDimension(), 0.0);
+  Point value(standardEvent.getImplementation()->getFunction().operator()(origin));
 
   result_.setIsStandardPointOriginInFailureSpace(event_.getOperator().compare(value[0], event_.getThreshold()));
 } /* Analytical::run() */

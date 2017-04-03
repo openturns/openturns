@@ -56,7 +56,7 @@ LinearCombinationGradient * LinearCombinationGradient::clone() const
 
 
 /* Gradient method */
-Matrix LinearCombinationGradient::gradient(const NumericalPoint & inP) const
+Matrix LinearCombinationGradient::gradient(const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();

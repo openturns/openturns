@@ -22,7 +22,7 @@
 #define OPENTURNS_LINEARCOMBINATIONFUNCTION_HXX
 
 #include "openturns/Function.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/SymmetricTensor.hxx"
 
@@ -43,7 +43,7 @@ public:
 
   /** Parameter constructor */
   LinearCombinationFunction(const FunctionCollection & functionCollection,
-                            const NumericalPoint & coefficients);
+                            const Point & coefficients);
 
   /** Comparison operator */
   Bool operator ==(const LinearCombinationFunction & other) const;

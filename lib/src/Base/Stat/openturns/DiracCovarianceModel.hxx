@@ -42,11 +42,11 @@ public:
 
   /** Parameters constructor */
   DiracCovarianceModel(const UnsignedInteger spatialDimension,
-                       const NumericalPoint & amplitude);
+                       const Point & amplitude);
 
   /** Parameters constructor */
   DiracCovarianceModel(const UnsignedInteger spatialDimension,
-                       const NumericalPoint & amplitude,
+                       const Point & amplitude,
                        const CorrelationMatrix & correlation);
 
   /** Parameters constructor */
@@ -58,7 +58,7 @@ public:
 
   /** Computation of the covariance function */
   using StationaryCovarianceModel::operator();
-  CovarianceMatrix operator() (const NumericalPoint & tau) const;
+  CovarianceMatrix operator() (const Point & tau) const;
 
   /** Discretize the covariance function */
   using StationaryCovarianceModel::discretize;
@@ -75,12 +75,12 @@ public:
                             const HMatrixParameters & parameters) const;
 
   /** Gradient */
-  Matrix partialGradient(const NumericalPoint & s,
-                         const NumericalPoint & t) const;
+  Matrix partialGradient(const Point & s,
+                         const Point & t) const;
 
   /** Scale/amplitude set accessors */
-  void setScale(const NumericalPoint & scale);
-  void setAmplitude(const NumericalPoint & amplitude);
+  void setScale(const Point & scale);
+  void setAmplitude(const Point & amplitude);
   void setSpatialCorrelation(const CorrelationMatrix & correlation);
 
   /** Is it a stationary covariance model ? */
@@ -100,8 +100,8 @@ public:
 
 protected:
   /** Parameter accessor */
-  virtual void setFullParameter(const NumericalPoint & parameter);
-  virtual NumericalPoint getFullParameter() const;
+  virtual void setFullParameter(const Point & parameter);
+  virtual Point getFullParameter() const;
   virtual Description getFullParameterDescription() const;
 
   

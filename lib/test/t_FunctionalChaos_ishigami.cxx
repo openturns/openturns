@@ -40,24 +40,24 @@ int main(int argc, char *argv[])
     // Reference analytical values
     NumericalScalar meanTh = a / 2;
     NumericalScalar covTh = (pow(b, 2.0) * pow(M_PI, 8.0)) / 18.0 + (b * pow(M_PI, 4.0)) / 5.0 + (pow(a, 2.0)) / 8.0 + 1.0 / 2.0;
-    NumericalPoint sob_1(3);
+    Point sob_1(3);
     sob_1[0] = (b * pow(M_PI, 4.0) / 5.0 + pow(b, 2.0) * pow(M_PI, 8.0) / 50.0 + 1.0 / 2.0) / covTh;
     sob_1[1] = (pow(a, 2.0) / 8.0) / covTh;
     sob_1[2] = 0.0;
-    NumericalPoint sob_2(3);
+    Point sob_2(3);
     sob_2[0] = 0.0;
     sob_2[1] = (pow(b, 2.0) * pow(M_PI, 8.0) / 18.0 - pow(b, 2.0) * pow(M_PI, 8.0) / 50.0) / covTh;
     sob_2[2] = 0.0;
-    NumericalPoint sob_3(1, 0.0);
-    NumericalPoint sob_T1(3);
+    Point sob_3(1, 0.0);
+    Point sob_T1(3);
     sob_T1[0] = sob_1[0] + sob_2[0] + sob_2[1] + sob_3[0];
     sob_T1[1] = sob_1[1] + sob_2[0] + sob_2[2] + sob_3[0];
     sob_T1[2] = sob_1[2] + sob_2[1] + sob_2[2] + sob_3[0];
-    NumericalPoint sob_T2(3);
+    Point sob_T2(3);
     sob_T2[0] = sob_2[0] + sob_3[0];
     sob_T2[1] = sob_2[1] + sob_3[0];
     sob_T2[2] = sob_2[2] + sob_3[0];
-    NumericalPoint sob_T3(sob_3);
+    Point sob_T3(sob_3);
     // Create the Ishigami function
     Description inputVariables(dimension);
     inputVariables[0] = "xi1";
@@ -136,9 +136,9 @@ int main(int argc, char *argv[])
         fullprint << "//////////////////////////////////////////////////////////////////////" << std::endl;
         fullprint << algo.getAdaptiveStrategy() << std::endl;
         fullprint << algo.getProjectionStrategy() << std::endl;
-        NumericalPoint residuals(result.getResiduals());
+        Point residuals(result.getResiduals());
         fullprint << "residuals=" << std::fixed << std::setprecision(5) << residuals << std::endl;
-        NumericalPoint relativeErrors(result.getRelativeErrors());
+        Point relativeErrors(result.getRelativeErrors());
         fullprint << "relative errors=" << std::fixed << std::setprecision(5) << relativeErrors << std::endl;
 
         // Post-process the results

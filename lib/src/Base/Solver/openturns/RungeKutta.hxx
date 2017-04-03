@@ -49,8 +49,8 @@ public:
   virtual String __repr__() const;
 
   /** Perform cross-validation */
-  Sample solve(const NumericalPoint & initialState,
-                        const NumericalPoint & timeGrid) const;
+  Sample solve(const Point & initialState,
+                        const Point & timeGrid) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -60,8 +60,8 @@ public:
 
 private:
   /** Perform one step of the RungeKutta method */
-  NumericalPoint computeStep(const NumericalScalar t,
-                             const NumericalPoint & state,
+  Point computeStep(const NumericalScalar t,
+                             const Point & state,
                              const NumericalScalar h) const;
 
 }; /* class RungeKutta */

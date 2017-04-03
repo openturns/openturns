@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-String printNumericalPoint(const NumericalPoint & point, const UnsignedInteger digits)
+String printPoint(const Point & point, const UnsignedInteger digits)
 {
   OSS oss;
   oss << "[";
@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
   {
     UnsignedInteger inputDimension = 2;
 
-    NumericalPoint x(inputDimension);
+    Point x(inputDimension);
     for (UnsignedInteger i = 0; i < inputDimension; ++ i)
     {
       x[i] = 2. + i;
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
       std::cout << "basis=" << basis << std::endl;
 
       AggregatedFunction f(basis);
-      NumericalPoint y(f(x));
+      Point y(f(x));
       std::cout << "y=" << y << std::endl;
     }
     {
@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
       std::cout << "basis=" << basis << std::endl;
 
       AggregatedFunction f(basis);
-      NumericalPoint y(f(x));
+      Point y(f(x));
       std::cout << "y=" << y << std::endl;
     }
     {
@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
       std::cout << "basis=" << basis << std::endl;
 
       AggregatedFunction f(basis);
-      NumericalPoint y(f(x));
+      Point y(f(x));
       std::cout << "y=" << y << std::endl;
     }
   }

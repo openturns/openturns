@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    NumericalPoint levels(2, 0.0);
+    Point levels(2, 0.0);
     levels.setName("levels");
     levels[0] = 4;
     levels[1] = 4;

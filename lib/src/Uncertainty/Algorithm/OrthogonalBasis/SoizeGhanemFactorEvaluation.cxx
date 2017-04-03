@@ -83,14 +83,14 @@ Bool SoizeGhanemFactorEvaluation::operator ==(const SoizeGhanemFactorEvaluation 
  *  arbitrary probability measure". SIAM Journal on Scientific Computing,
  *  Society for Industrial and Applied Mathematics, 2004, 26 (2), pp.395-410.
  */
-NumericalPoint SoizeGhanemFactorEvaluation::operator() (const NumericalPoint & inP) const
+Point SoizeGhanemFactorEvaluation::operator() (const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
-  NumericalPoint result(1);
+  Point result(1);
   if (useCopula_)
   {
-    NumericalPoint u(inputDimension);
+    Point u(inputDimension);
     for (UnsignedInteger i = 0; i < inputDimension; ++i)
       u[i] = marginals_[i].computeCDF(inP[i]);
     result[0] = 1.0 / std::sqrt(std::max(SpecFunc::MinNumericalScalar, copula_.computePDF(u)));

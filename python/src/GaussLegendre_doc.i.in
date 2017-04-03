@@ -58,7 +58,7 @@ xi : :class:`~openturns.Sample`
 
 Returns
 -------
-value : :class:`~openturns.NumericalPoint`
+value : :class:`~openturns.Point`
     Approximation of the integral.
 
 
@@ -98,6 +98,6 @@ nodes : :class:`~openturns.Sample`
 
 Returns
 -------
-weights : :class:`~openturns.NumericalPoint`
+weights : :class:`~openturns.Point`
     The tensorized Gauss-Legendre integration weights on :math:`[0,1]^d` where :math:`d>0` is the dimension of the integration algorithm."
 

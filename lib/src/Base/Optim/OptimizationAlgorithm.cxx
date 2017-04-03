@@ -56,12 +56,12 @@ OptimizationAlgorithm::OptimizationAlgorithm(const OptimizationProblem & problem
 }
 
 /* Starting point accessor */
-NumericalPoint OptimizationAlgorithm::getStartingPoint() const
+Point OptimizationAlgorithm::getStartingPoint() const
 {
   return getImplementation()->getStartingPoint();
 }
 
-void OptimizationAlgorithm::setStartingPoint(const NumericalPoint & startingPoint)
+void OptimizationAlgorithm::setStartingPoint(const Point & startingPoint)
 {
   copyOnWrite();
   getImplementation()->setStartingPoint(startingPoint);

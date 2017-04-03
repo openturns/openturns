@@ -41,7 +41,7 @@ FiniteDifferenceHessian::FiniteDifferenceHessian()
 
 /* First Parameter constructor  */
 FiniteDifferenceHessian::FiniteDifferenceHessian(
-  const NumericalPoint & epsilon,
+  const Point & epsilon,
   const EvaluationPointer & p_evaluation)
   : HessianImplementation()
   , p_evaluation_(p_evaluation)
@@ -61,7 +61,7 @@ FiniteDifferenceHessian::FiniteDifferenceHessian(const NumericalScalar epsilon,
     const EvaluationPointer & p_evaluation)
   : HessianImplementation()
   , p_evaluation_(p_evaluation)
-  , finiteDifferenceStep_(NumericalPoint(p_evaluation->getInputDimension(), epsilon))
+  , finiteDifferenceStep_(Point(p_evaluation->getInputDimension(), epsilon))
 {
   // Check if epsilon is exactly zero
   if (epsilon == 0.0) throw InvalidArgumentException(HERE) << "The given scalar epsilon is equal to 0.0";
@@ -75,7 +75,7 @@ FiniteDifferenceHessian::FiniteDifferenceHessian(
   , p_evaluation_(p_evaluation)
   , finiteDifferenceStep_(finiteDifferenceStep)
 {
-  NumericalPoint epsilon(getEpsilon());
+  Point epsilon(getEpsilon());
   //Check if the dimension of the constant term is compatible with the linear and quadratic terms
   if (epsilon.getDimension() != p_evaluation->getInputDimension()) throw InvalidDimensionException(HERE) << "Epsilon dimension is incompatible with the given evaluation";
 
@@ -109,7 +109,7 @@ String FiniteDifferenceHessian:: __repr__() const
 }
 
 /* Accessor for epsilon */
-NumericalPoint FiniteDifferenceHessian::getEpsilon() const
+Point FiniteDifferenceHessian::getEpsilon() const
 {
   return finiteDifferenceStep_.getEpsilon();
 }
@@ -144,9 +144,9 @@ FiniteDifferenceStep FiniteDifferenceHessian::getFiniteDifferenceStep() const
 }
 
 /* Evaluation method */
-SymmetricTensor FiniteDifferenceHessian::hessian(const NumericalPoint & inP) const
+SymmetricTensor FiniteDifferenceHessian::hessian(const Point & inP) const
 {
-  throw NotYetImplementedException(HERE) << "In FiniteDifferenceHessian::hessian(const NumericalPoint & inP) const";
+  throw NotYetImplementedException(HERE) << "In FiniteDifferenceHessian::hessian(const Point & inP) const";
 }
 
 /* Method save() stores the object through the StorageManager */

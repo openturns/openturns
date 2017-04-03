@@ -33,26 +33,26 @@ try:
     print("covariance=", sampleCovariance)
 
     # Define a point
-    point = NumericalPoint(distribution.getDimension(), 0.0)
+    point = Point(distribution.getDimension(), 0.0)
     print("Point= ", point)
 
     # Show PDF and CDF of point
     PDF = distribution.computePDF(point)
     print("pdf     =", PDF)
-    print("pdf (FD)=", (distribution.computeCDF(point + NumericalPoint(1, 0)) -
-                        distribution.computeCDF(point + NumericalPoint(1, -1))))
+    print("pdf (FD)=", (distribution.computeCDF(point + Point(1, 0)) -
+                        distribution.computeCDF(point + Point(1, -1))))
     CDF = distribution.computeCDF(point)
     print("cdf=", CDF)
 
     # Define a point
-    point = NumericalPoint(distribution.getSupport(distribution.getRange())[0])
+    point = Point(distribution.getSupport(distribution.getRange())[0])
     print("Point= ", point)
 
     # Show PDF and CDF of point
     PDF = distribution.computePDF(point)
     print("pdf     =", PDF)
-    print("pdf (FD)=", (distribution.computeCDF(point + NumericalPoint(1, 0)) -
-                        distribution.computeCDF(point + NumericalPoint(1, -1))))
+    print("pdf (FD)=", (distribution.computeCDF(point + Point(1, 0)) -
+                        distribution.computeCDF(point + Point(1, -1))))
     CDF = distribution.computeCDF(point)
     print("cdf=", CDF)
     CF = distribution.computeCharacteristicFunction(0.5)
@@ -82,7 +82,7 @@ try:
     # N-D tests
 
     dim = 4
-    distribution = Dirac(NumericalPoint(dim, 2.3))
+    distribution = Dirac(Point(dim, 2.3))
     print("Distribution ", distribution)
 
     # Is this distribution elliptical ?
@@ -108,26 +108,26 @@ try:
     print("covariance=", sampleCovariance)
 
     # Define a point
-    point = NumericalPoint(dim, 0.0)
+    point = Point(dim, 0.0)
     print("Point= ", point)
 
     # Show PDF and CDF of point
     PDF = distribution.computePDF(point)
     print("pdf     =", PDF)
-    print("pdf (FD)=", (distribution.computeCDF(point + NumericalPoint(dim, 0)) -
-                        distribution.computeCDF(point + NumericalPoint(dim, -1))))
+    print("pdf (FD)=", (distribution.computeCDF(point + Point(dim, 0)) -
+                        distribution.computeCDF(point + Point(dim, -1))))
     CDF = distribution.computeCDF(point)
     print("cdf=", CDF)
 
     # Define a point
-    point = NumericalPoint(distribution.getSupport(distribution.getRange())[0])
+    point = Point(distribution.getSupport(distribution.getRange())[0])
     print("Point= ", point)
 
     # Show PDF and CDF of point
     PDF = distribution.computePDF(point)
     print("pdf     =", PDF)
-    print("pdf (FD)=", (distribution.computeCDF(point + NumericalPoint(dim, 0)) -
-                        distribution.computeCDF(point + NumericalPoint(dim, -1))))
+    print("pdf (FD)=", (distribution.computeCDF(point + Point(dim, 0)) -
+                        distribution.computeCDF(point + Point(dim, -1))))
     CDF = distribution.computeCDF(point)
     print("cdf=", CDF)
 

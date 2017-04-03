@@ -38,9 +38,9 @@ int main(int argc, char *argv[])
     TrendEvaluation myFunction(f);
     myFunction.setName("TrendFunction");
 
-    NumericalPoint inPoint(dimension, 3.0);
+    Point inPoint(dimension, 3.0);
     // result of the function
-    NumericalPoint outPoint = myFunction( inPoint );
+    Point outPoint = myFunction( inPoint );
     fullprint << "myFunction=" << myFunction << std::endl;
     fullprint << myFunction.getName() << "( " << inPoint << " ) = " << outPoint << std::endl;
 
@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     Sample inSample(size, dimension);
     for (UnsignedInteger index = 0 ; index < size; ++index)
     {
-      inSample[index] = NumericalPoint(dimension, index + 1);
+      inSample[index] = Point(dimension, index + 1);
     }
 
     // result of the function

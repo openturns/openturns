@@ -11,14 +11,14 @@ Distribution class=Geometric name=Geometric dimension=1 p=0.7
 Distribution Geometric(p = 0.7)
 Elliptical = false
 Continuous = false
-oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[1]
-oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[1] last=class=NumericalPoint name=Unnamed dimension=1 values=[1]
-mean=class=NumericalPoint name=Unnamed dimension=1 values=[1.4309]
+oneRealization=class=Point name=Unnamed dimension=1 values=[1]
+oneSample first=class=Point name=Unnamed dimension=1 values=[1] last=class=Point name=Unnamed dimension=1 values=[1]
+mean=class=Point name=Unnamed dimension=1 values=[1.4309]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.618887]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-Point= class=NumericalPoint name=Unnamed dimension=1 values=[3]
+Point= class=Point name=Unnamed dimension=1 values=[3]
 log pdf=-2.76462
 pdf     =0.063
 pdf (FD)=0.063
@@ -29,22 +29,22 @@ characteristic function=(-0.536222,0.0586605)
 log characteristic function=(-0.61726,3.03263)
 generating function=(0.101124,0.561798)
 log generating function=(-0.56067,1.3927)
-pdf gradient     =class=NumericalPoint name=Unnamed dimension=1 values=[-0.33]
-pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[-0.33]
-cdf gradient     =class=NumericalPoint name=Unnamed dimension=1 values=[0.27]
-cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[0.27]
-quantile=class=NumericalPoint name=Unnamed dimension=1 values=[3]
+pdf gradient     =class=Point name=Unnamed dimension=1 values=[-0.33]
+pdf gradient (FD)=class=Point name=Unnamed dimension=1 values=[-0.33]
+cdf gradient     =class=Point name=Unnamed dimension=1 values=[0.27]
+cdf gradient (FD)=class=Point name=Unnamed dimension=1 values=[0.27]
+quantile=class=Point name=Unnamed dimension=1 values=[3]
 cdf(quantile)=0.973
-mean=class=NumericalPoint name=Unnamed dimension=1 values=[1.42857]
-standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[0.782461]
-skewness=class=NumericalPoint name=Unnamed dimension=1 values=[2.37346]
-kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[10.6333]
+mean=class=Point name=Unnamed dimension=1 values=[1.42857]
+standard deviation=class=Point name=Unnamed dimension=1 values=[0.782461]
+skewness=class=Point name=Unnamed dimension=1 values=[2.37346]
+kurtosis=class=Point name=Unnamed dimension=1 values=[10.6333]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.612245]
 parameters=[[p : 0.7]]
-standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
-standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[1.42857]
-standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[2.65306]
-standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[6.67638]
-standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[22.1449]
-standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[91.9266]
+standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[1.42857]
+standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[2.65306]
+standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[6.67638]
+standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[22.1449]
+standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[91.9266]
 Standard representative=Geometric(p = 0.7)

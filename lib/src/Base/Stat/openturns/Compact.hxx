@@ -52,7 +52,7 @@ public:
 
   /** Store the point according to the strategy */
   using HistoryStrategyImplementation::store;
-  void store(const NumericalPoint & point);
+  void store(const Point & point);
 
   /** Sample accessor */
   Sample getSample() const;

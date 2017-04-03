@@ -22,7 +22,7 @@
 #define OPENTURNS_PROJECTIONSTRATEGYIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/Function.hxx"
@@ -73,7 +73,7 @@ public:
 
   /** Parameter constructor */
   ProjectionStrategyImplementation(const Sample & inputSample,
-                                   const NumericalPoint & weights,
+                                   const Point & weights,
                                    const Sample & outputSample);
 
   /** Virtual constructor */
@@ -91,7 +91,7 @@ public:
   virtual Sample getOutputSample() const;
 
   /** Weights accessor */
-  virtual NumericalPoint getWeights() const;
+  virtual Point getWeights() const;
 
   /** Residual accessor */
   virtual NumericalScalar getResidual() const;
@@ -100,7 +100,7 @@ public:
   virtual NumericalScalar getRelativeError() const;
 
   /** Relative error accessor */
-  virtual NumericalPoint getCoefficients() const;
+  virtual Point getCoefficients() const;
 
   /** Experiment accessors */
   virtual void setExperiment(const WeightedExperiment & weightedExperiment);
@@ -125,7 +125,7 @@ public:
 protected:
 
   /** The collection of Alpha_k coefficients */
-  NumericalPoint alpha_k_p_;
+  Point alpha_k_p_;
 
   /** Residual */
   NumericalScalar residual_p_;
@@ -143,7 +143,7 @@ protected:
   Sample inputSample_;
 
   // The weights associated with the sample
-  NumericalPoint weights_;
+  Point weights_;
 
   // The sample value of the model
   Sample outputSample_;

@@ -13,7 +13,7 @@ try:
 
     # We populate the empty sample with numerous data
     for i in range(N):
-        point = NumericalPoint(2)
+        point = Point(2)
         point[0] = 1000 + i
         point[1] = 2000 + i
         sample[i] = point

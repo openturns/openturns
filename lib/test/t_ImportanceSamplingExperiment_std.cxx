@@ -34,11 +34,11 @@ int main(int argc, char *argv[])
   {
     Normal distribution(4);
     Normal weightingDistribution(distribution);
-    weightingDistribution.setMean(NumericalPoint(4, 1.0));
+    weightingDistribution.setMean(Point(4, 1.0));
     UnsignedInteger size = 10;
     ImportanceSamplingExperiment myPlane(distribution, weightingDistribution, size);
     fullprint << "myPlane = " << myPlane << std::endl;
-    NumericalPoint weights(0);
+    Point weights(0);
     Sample sample(myPlane.generateWithWeights(weights));
     fullprint << "sample = " << sample << std::endl;
     fullprint << "weights = " << weights << std::endl;

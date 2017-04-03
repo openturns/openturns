@@ -43,12 +43,12 @@ public:
   Axial();
 
   /** Constructor with parameters */
-  Axial(const NumericalPoint & center,
-        const NumericalPoint & levels);
+  Axial(const Point & center,
+        const Point & levels);
 
   /** Constructor with parameters */
   Axial(const UnsignedInteger dimension,
-        const NumericalPoint & levels);
+        const Point & levels);
 
   /** Virtual constructor */
   virtual Axial * clone() const;

@@ -135,7 +135,7 @@ marginalIndex : int, :math:`0 \leq i < n`, optional
 
 Returns
 -------
-indices : :class:`~openturns.NumericalPoint`
+indices : :class:`~openturns.Point`
     List of the ANCOVA indices measuring uncorrelated effects of the inputs.
     The effects of the correlation are represented by the indices resulting
     from the subtraction of the :meth:`getIndices` and
@@ -154,7 +154,7 @@ marginalIndex : int, :math:`0 \leq i < n`, optional
 
 Returns
 -------
-indices : :class:`~openturns.NumericalPoint`
+indices : :class:`~openturns.Point`
     List of the ANCOVA indices measuring the contribution of the
     input variables to the variance of the model. These indices are made up
     of a *physical* part and a *correlated* part. The first one is obtained

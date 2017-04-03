@@ -92,25 +92,25 @@ Gumbel * Gumbel::clone() const
 }
 
 /* Get one realization of the distribution */
-NumericalPoint Gumbel::getRealization() const
+Point Gumbel::getRealization() const
 {
-  return NumericalPoint(1, beta_ - std::log(-std::log(RandomGenerator::Generate())) / alpha_);
+  return Point(1, beta_ - std::log(-std::log(RandomGenerator::Generate())) / alpha_);
 }
 
 
 
 /* Get the DDF of the distribution */
-NumericalPoint Gumbel::computeDDF(const NumericalPoint & point) const
+Point Gumbel::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar expX = std::exp(-alpha_ * (point[0] - beta_));
-  return NumericalPoint(1, alpha_ * alpha_ * (expX - 1.0) * expX * std::exp(-expX));
+  return Point(1, alpha_ * alpha_ * (expX - 1.0) * expX * std::exp(-expX));
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Gumbel::computePDF(const NumericalPoint & point) const
+NumericalScalar Gumbel::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -118,7 +118,7 @@ NumericalScalar Gumbel::computePDF(const NumericalPoint & point) const
   return alpha_ * expX * std::exp(-expX);
 }
 
-NumericalScalar Gumbel::computeLogPDF(const NumericalPoint & point) const
+NumericalScalar Gumbel::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -128,7 +128,7 @@ NumericalScalar Gumbel::computeLogPDF(const NumericalPoint & point) const
 
 
 /* Get the CDF of the distribution */
-NumericalScalar Gumbel::computeCDF(const NumericalPoint & point) const
+NumericalScalar Gumbel::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -137,7 +137,7 @@ NumericalScalar Gumbel::computeCDF(const NumericalPoint & point) const
   return std::exp(-expX);
 }
 
-NumericalScalar Gumbel::computeComplementaryCDF(const NumericalPoint & point) const
+NumericalScalar Gumbel::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -170,28 +170,28 @@ NumericalComplex Gumbel::computeLogCharacteristicFunction(const NumericalScalar 
 }
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint Gumbel::computePDFGradient(const NumericalPoint & point) const
+Point Gumbel::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0] - beta_;
   const NumericalScalar expX = std::exp(-alpha_ * x);
   const NumericalScalar pdf = alpha_ * expX * std::exp(-expX);
-  NumericalPoint pdfGradient(2);
+  Point pdfGradient(2);
   pdfGradient[0] = (1.0 / alpha_ - x * (1.0 - expX)) * pdf;
   pdfGradient[1] = alpha_ * (1.0 - expX) * pdf;
   return pdfGradient;
 }
 
 /* Get the CDFGradient of the distribution */
-NumericalPoint Gumbel::computeCDFGradient(const NumericalPoint & point) const
+Point Gumbel::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0] - beta_;
   const NumericalScalar expX = std::exp(-alpha_ * x);
   const NumericalScalar cdf = std::exp(-expX);
-  NumericalPoint cdfGradient(2);
+  Point cdfGradient(2);
   cdfGradient[0] = x * expX * cdf;
   cdfGradient[1] = -alpha_ * expX * cdf;
   return cdfGradient;
@@ -208,28 +208,28 @@ NumericalScalar Gumbel::computeScalarQuantile(const NumericalScalar prob,
 /* Compute the mean of the distribution */
 void Gumbel::computeMean() const
 {
-  mean_ = NumericalPoint(1, beta_ + SpecFunc::EulerConstant / alpha_);
+  mean_ = Point(1, beta_ + SpecFunc::EulerConstant / alpha_);
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint Gumbel::getStandardDeviation() const
+Point Gumbel::getStandardDeviation() const
 {
-  return NumericalPoint(1, SpecFunc::PI_SQRT6 / alpha_);
+  return Point(1, SpecFunc::PI_SQRT6 / alpha_);
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint Gumbel::getSkewness() const
+Point Gumbel::getSkewness() const
 {
   // 1.139547099404648657492793 = 12 * sqrt(6) * Zeta(3) / Pi^3
-  return NumericalPoint(1, 1.139547099404648657492793);
+  return Point(1, 1.139547099404648657492793);
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint Gumbel::getKurtosis() const
+Point Gumbel::getKurtosis() const
 {
   // 5.4 = 27/5
-  return NumericalPoint(1, 5.4);
+  return Point(1, 5.4);
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
@@ -247,15 +247,15 @@ void Gumbel::computeCovariance() const
 }
 
 /* Parameters value accessor */
-NumericalPoint Gumbel::getParameter() const
+Point Gumbel::getParameter() const
 {
-  NumericalPoint point(2);
+  Point point(2);
   point[0] = alpha_;
   point[1] = beta_;
   return point;
 }
 
-void Gumbel::setParameter(const NumericalPoint & parameter)
+void Gumbel::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameter.getSize();
   const NumericalScalar w = getWeight();

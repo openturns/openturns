@@ -36,8 +36,8 @@ Axial::Axial()
 }
 
 /* Constructor with parameters */
-Axial::Axial(const NumericalPoint & center,
-             const NumericalPoint & levels)
+Axial::Axial(const Point & center,
+             const Point & levels)
   : StratifiedExperiment(center, levels)
 {
   // Nothing to do
@@ -45,8 +45,8 @@ Axial::Axial(const NumericalPoint & center,
 
 /* Constructor with parameters */
 Axial::Axial(const UnsignedInteger dimension,
-             const NumericalPoint & levels)
-  : StratifiedExperiment(NumericalPoint(dimension, 0.0), levels)
+             const Point & levels)
+  : StratifiedExperiment(Point(dimension, 0.0), levels)
 {
   // Nothing to do
 }

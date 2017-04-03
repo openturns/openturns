@@ -14,7 +14,7 @@ coefficients.add([1.5, 2.5, -0.5])
 coefficients.add([-3.5, 0.5, -1.5])
 # Third, build the function
 myFunction = ot.DualLinearCombinationFunction(functions, coefficients)
-inPoint = ot.NumericalPoint([1.2, 2.3, 3.4])
+inPoint = ot.Point([1.2, 2.3, 3.4])
 print('myFunction=', myFunction)
 print('Value at ', inPoint, '=', myFunction(inPoint))
 print('Gradient at ', inPoint, '=', myFunction.gradient(inPoint))

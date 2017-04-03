@@ -39,8 +39,8 @@ MetaModelResult::MetaModelResult()
 /* Standard constructor */
 MetaModelResult::MetaModelResult(const Function & model,
                                  const Function & metaModel,
-                                 const NumericalPoint & residuals,
-                                 const NumericalPoint & relativeErrors)
+                                 const Point & residuals,
+                                 const Point & relativeErrors)
   : PersistentObject()
   , model_(model)
   , metaModel_(metaModel)
@@ -79,23 +79,23 @@ Function MetaModelResult::getMetaModel() const
 }
 
 /* Marginal residuals accessor */
-void MetaModelResult::setResiduals(const NumericalPoint & residuals)
+void MetaModelResult::setResiduals(const Point & residuals)
 {
   residuals_ = residuals;
 }
 
-NumericalPoint MetaModelResult::getResiduals() const
+Point MetaModelResult::getResiduals() const
 {
   return residuals_;
 }
 
 /* Relative error accessor */
-void MetaModelResult::setRelativeErrors(const NumericalPoint & relativeErrors)
+void MetaModelResult::setRelativeErrors(const Point & relativeErrors)
 {
   relativeErrors_ = relativeErrors;
 }
 
-NumericalPoint MetaModelResult::getRelativeErrors() const
+Point MetaModelResult::getRelativeErrors() const
 {
   return relativeErrors_;
 }

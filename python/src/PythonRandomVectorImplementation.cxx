@@ -140,7 +140,7 @@ UnsignedInteger PythonRandomVectorImplementation::getDimension() const
   return dim;
 }
 
-NumericalPoint PythonRandomVectorImplementation::getRealization() const
+Point PythonRandomVectorImplementation::getRealization() const
 {
   ScopedPyObjectPointer result(PyObject_CallMethod ( pyObj_,
                                const_cast<char *>( "getRealization" ),
@@ -149,7 +149,7 @@ NumericalPoint PythonRandomVectorImplementation::getRealization() const
   {
     handleException();
   }
-  NumericalPoint point(convert<_PySequence_, NumericalPoint>(result.get()));
+  Point point(convert<_PySequence_, Point>(result.get()));
   return point;
 }
 
@@ -181,7 +181,7 @@ Sample PythonRandomVectorImplementation::getSample(const UnsignedInteger size) c
 
 
 /* Mean accessor */
-NumericalPoint PythonRandomVectorImplementation::getMean() const
+Point PythonRandomVectorImplementation::getMean() const
 {
   ScopedPyObjectPointer result(PyObject_CallMethod ( pyObj_,
                                const_cast<char *>( "getMean" ),
@@ -191,7 +191,7 @@ NumericalPoint PythonRandomVectorImplementation::getMean() const
     handleException();
   }
 
-  NumericalPoint mean(convert<_PySequence_, NumericalPoint>(result.get()));
+  Point mean(convert<_PySequence_, Point>(result.get()));
   if (mean.getDimension() != getDimension()) throw InvalidDimensionException(HERE) << "Mean returned by PythonRandomVector has incorrect dimension. Got " << mean.getDimension() << ". Expected" << getDimension();
   return mean;
 }

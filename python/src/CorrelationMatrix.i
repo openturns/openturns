@@ -37,7 +37,7 @@ namespace OT {
   OTMatrixAccessors()
 
   // These should be inherited from CovarianceMatrix 
-  NumericalPoint __mul__(NumericalPoint p) { return (*self) * p; } 
+  Point __mul__(Point p) { return (*self) * p; } 
   Matrix __mul__(NumericalScalar s) { return (*self) * s; }
 
 } // CorrelationMatrix

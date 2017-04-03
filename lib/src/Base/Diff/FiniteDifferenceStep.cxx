@@ -34,7 +34,7 @@ FiniteDifferenceStep::FiniteDifferenceStep()
 }
 
 /* Parameters constructor */
-FiniteDifferenceStep::FiniteDifferenceStep(const NumericalPoint & eps)
+FiniteDifferenceStep::FiniteDifferenceStep(const Point & eps)
   : TypedInterfaceObject<FiniteDifferenceStepImplementation>(new ConstantStep(eps))
 {
   // Nothing to do
@@ -64,19 +64,19 @@ String FiniteDifferenceStep::__repr__() const
 }
 
 /* Epsilon accessor */
-void FiniteDifferenceStep::setEpsilon(const NumericalPoint & epsilon)
+void FiniteDifferenceStep::setEpsilon(const Point & epsilon)
 {
   copyOnWrite();
   getImplementation()->setEpsilon(epsilon);
 }
 
-NumericalPoint FiniteDifferenceStep::getEpsilon() const
+Point FiniteDifferenceStep::getEpsilon() const
 {
   return getImplementation()->getEpsilon();
 }
 
 /* Compute step */
-NumericalPoint FiniteDifferenceStep::operator()(const NumericalPoint & in) const
+Point FiniteDifferenceStep::operator()(const Point & in) const
 {
   return getImplementation()->operator()(in);
 }

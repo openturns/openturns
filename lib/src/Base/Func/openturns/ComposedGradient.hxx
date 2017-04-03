@@ -61,7 +61,7 @@ public:
   virtual String __repr__() const;
 
   /** Method gradient() returns the Jacobian transposed matrix of the function at point */
-  Matrix gradient(const NumericalPoint & inP) const;
+  Matrix gradient(const Point & inP) const;
 
   /** Accessor for input point dimension */
   UnsignedInteger getInputDimension() const;

@@ -133,21 +133,21 @@ MaximumDistribution * MaximumDistribution::clone() const
 void MaximumDistribution::computeRange()
 {
   if (allSame_) setRange(distribution_.getRange());
-  const NumericalPoint lower(distribution_.getRange().getLowerBound());
-  const NumericalPoint upper(distribution_.getRange().getUpperBound());
+  const Point lower(distribution_.getRange().getLowerBound());
+  const Point upper(distribution_.getRange().getUpperBound());
   setRange(Interval(*std::max_element(lower.begin(), lower.end()), *std::max_element(upper.begin(), upper.end())));
 }
 
 /* Get one realization of the distribution */
-NumericalPoint MaximumDistribution::getRealization() const
+Point MaximumDistribution::getRealization() const
 {
   if (allSame_) return distribution_.getSample(variablesNumber_).getMax();
-  const NumericalPoint realization(distribution_.getRealization());
-  return NumericalPoint(1, *std::max_element(realization.begin(), realization.end()));
+  const Point realization(distribution_.getRealization());
+  return Point(1, *std::max_element(realization.begin(), realization.end()));
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar MaximumDistribution::computePDF(const NumericalPoint & point) const
+NumericalScalar MaximumDistribution::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   if ((point[0] <= getRange().getLowerBound()[0]) || (point[0] >= getRange().getUpperBound()[0])) return 0.0;
@@ -157,7 +157,7 @@ NumericalScalar MaximumDistribution::computePDF(const NumericalPoint & point) co
   if (!distribution_.hasIndependentCopula()) DistributionImplementation::computePDF(point);
   // Special treatment of the independent copula case
   const UnsignedInteger size = distribution_.getDimension();
-  NumericalPoint marginalCDF(size);
+  Point marginalCDF(size);
   NumericalScalar product = 1.0;
   DistributionCollection marginals(size);
   for (UnsignedInteger i = 0; i < size; ++i)
@@ -178,24 +178,24 @@ NumericalScalar MaximumDistribution::computePDF(const NumericalPoint & point) co
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar MaximumDistribution::computeCDF(const NumericalPoint & point) const
+NumericalScalar MaximumDistribution::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   // Special case for identical independent variables
   if (allSame_) return std::pow(distribution_.computeCDF(point), static_cast<NumericalScalar>(variablesNumber_));
   // General case
-  return distribution_.computeCDF(NumericalPoint(distribution_.getDimension(), point[0]));
+  return distribution_.computeCDF(Point(distribution_.getDimension(), point[0]));
 }
 
 /* Parameters value and description accessor */
-MaximumDistribution::NumericalPointWithDescriptionCollection MaximumDistribution::getParametersCollection() const
+MaximumDistribution::PointWithDescriptionCollection MaximumDistribution::getParametersCollection() const
 {
   // This is done on purpose to distinguish the case allSame == True
   if (allSame_) return getDistribution().getParametersCollection();
   return distribution_.getParametersCollection();
 }
 
-void MaximumDistribution::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void MaximumDistribution::setParametersCollection(const PointCollection & parametersCollection)
 {
   // This trick is needed n order to cope with the case allSame == True
   if (allSame_)

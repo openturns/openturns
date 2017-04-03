@@ -43,7 +43,7 @@ SVDMethod::SVDMethod()
 
 /* Default constructor */
 SVDMethod::SVDMethod(const DesignProxy & proxy,
-                     const NumericalPoint & weight,
+                     const Point & weight,
                      const Indices & indices)
   : LeastSquaresMethodImplementation(proxy, weight, indices)
 {
@@ -111,7 +111,7 @@ void SVDMethod::update(const Indices& addedIndices,
 }
 
 
-NumericalPoint SVDMethod::solve(const NumericalPoint & rhs)
+Point SVDMethod::solve(const Point & rhs)
 {
   // This call insures that the decomposition has already been computed.
   // No cost if it is up to date.
@@ -122,35 +122,35 @@ NumericalPoint SVDMethod::solve(const NumericalPoint & rhs)
   const UnsignedInteger svdSize = singularValues_.getSize();
 
   // First step
-  NumericalPoint b(rhs);
+  Point b(rhs);
   if (!hasUniformWeight_)
   {
     const UnsignedInteger size = rhs.getSize();
     for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weightSqrt_[i];
   }
-  const NumericalPoint c(u_.getImplementation()->genVectProd(b, true));
+  const Point c(u_.getImplementation()->genVectProd(b, true));
   // Second step
-  NumericalPoint d(svdSize);
+  Point d(svdSize);
   for (UnsignedInteger i = 0; i < svdSize; ++i) d[i] = c[i] / singularValues_[i];
   // Third step
-  const NumericalPoint coefficients(vT_.getImplementation()->genVectProd(d, true));
+  const Point coefficients(vT_.getImplementation()->genVectProd(d, true));
   return coefficients;
 }
 
 
-NumericalPoint SVDMethod::solveNormal(const NumericalPoint & rhs)
+Point SVDMethod::solveNormal(const Point & rhs)
 {
   update(Indices(0), currentIndices_, Indices(0));
   const UnsignedInteger basisSize = currentIndices_.getSize();
 
-  NumericalPoint b(rhs);
+  Point b(rhs);
   if (!hasUniformWeight_)
   {
     const UnsignedInteger size = rhs.getSize();
     for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weight_[i];
   }
   // G^-1= V*S^-2*V^T
-  NumericalPoint coefficients(vT_ * b);
+  Point coefficients(vT_ * b);
   for (UnsignedInteger i = 0; i < basisSize; ++i)
   {
     const NumericalScalar sv = singularValues_[i];
@@ -188,11 +188,11 @@ NumericalScalar SVDMethod::getGramInverseTrace() const
 }
 
 
-NumericalPoint SVDMethod::getHDiag() const
+Point SVDMethod::getHDiag() const
 {
   const UnsignedInteger sampleSize = u_.getNbRows();
   const UnsignedInteger basisSize = currentIndices_.getSize();
-  NumericalPoint h(sampleSize);
+  Point h(sampleSize);
   // matrices are stored by columns
   MatrixImplementation::const_iterator u_iterator(u_.getImplementation()->begin());
   for (UnsignedInteger j = 0; j < basisSize; ++ j)
@@ -206,7 +206,7 @@ NumericalPoint SVDMethod::getHDiag() const
   return h;
 }
 
-NumericalPoint SVDMethod::getGramInverseDiag() const
+Point SVDMethod::getGramInverseDiag() const
 {
   // G^{-1}=V\Sigma^{-2}V^T
   const UnsignedInteger m = vT_.getNbRows();
@@ -214,7 +214,7 @@ NumericalPoint SVDMethod::getGramInverseDiag() const
   const MatrixImplementation & vTimpl(*vT_.getImplementation());
   UnsignedInteger index = 0;
   const UnsignedInteger svdSize = singularValues_.getSize();
-  NumericalPoint diag(n);
+  Point diag(n);
   for (UnsignedInteger j = 0; j < n; ++j)
   {
     NumericalScalar diag_value = 0.0;

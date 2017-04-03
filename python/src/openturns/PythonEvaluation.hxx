@@ -66,7 +66,7 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Operator () */
-  virtual NumericalPoint operator() (const NumericalPoint & inP) const;
+  virtual Point operator() (const Point & inP) const;
 
   virtual Sample operator() (const Sample & inS) const;
 

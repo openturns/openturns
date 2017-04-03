@@ -54,7 +54,7 @@ public:
   }
 
   /** Get the indices of the k nearest neighbours of the given point */
-  Indices getNearestNeighboursIndices(const KDTree::KDNode::KDNodePointer & p_node, const NumericalPoint & x, const bool sorted)
+  Indices getNearestNeighboursIndices(const KDTree::KDNode::KDNodePointer & p_node, const Point & x, const bool sorted)
   {
     if (size_ != 0)
     {
@@ -97,7 +97,7 @@ private:
      Complexity: O(k) at each insertion, O(log(n)) expected insertions
   */
   void collectNearestNeighbours(const KDTree::KDNode::KDNodePointer & p_node,
-                                const NumericalPoint & x,
+                                const Point & x,
                                 const UnsignedInteger activeDimension)
   {
     const NumericalScalar delta = x[activeDimension] - sample_[p_node->index_][activeDimension];
@@ -247,7 +247,7 @@ Bool KDTree::isEmpty() const
 }
 
 /* Insert the given point into the tree */
-void KDTree::insert(const NumericalPoint & point)
+void KDTree::insert(const Point & point)
 {
   if (point.getDimension() != points_.getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << points_.getDimension() << ", got dimension=" << point.getDimension();
   points_.add(point);
@@ -267,7 +267,7 @@ void KDTree::insert(KDNode::KDNodePointer & p_node,
 }
 
 /* Get the indices of the k nearest neighbours of the given point */
-Indices KDTree::getNearestNeighboursIndices(const NumericalPoint & x,
+Indices KDTree::getNearestNeighboursIndices(const Point & x,
     const UnsignedInteger k,
     const bool sorted) const
 {
@@ -287,7 +287,7 @@ Indices KDTree::getNearestNeighboursIndices(const NumericalPoint & x,
 }
 
 /* Get the k nearest neighbours of the given point */
-Sample KDTree::getNearestNeighbours(const NumericalPoint & x,
+Sample KDTree::getNearestNeighbours(const Point & x,
     const UnsignedInteger k) const
 {
   if (k > points_.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot return more neighbours than points in the database!";
@@ -297,20 +297,20 @@ Sample KDTree::getNearestNeighbours(const NumericalPoint & x,
   return result;
 }
 
-UnsignedInteger KDTree::getNearestNeighbourIndex(const NumericalPoint & x) const
+UnsignedInteger KDTree::getNearestNeighbourIndex(const Point & x) const
 {
   if (points_.getSize() == 1) return 0;
   NumericalScalar smallestDistance = SpecFunc::MaxNumericalScalar;
   return getNearestNeighbourIndex(p_root_, x, smallestDistance, 0);
 }
 
-NumericalPoint KDTree::getNearestNeighbour(const NumericalPoint & x) const
+Point KDTree::getNearestNeighbour(const Point & x) const
 {
   return points_[getNearestNeighbourIndex(x)];
 }
 
 UnsignedInteger KDTree::getNearestNeighbourIndex(const KDNode::KDNodePointer & p_node,
-    const NumericalPoint & x,
+    const Point & x,
     NumericalScalar & bestSquaredDistance,
     const UnsignedInteger activeDimension) const
 {

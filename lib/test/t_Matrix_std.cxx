@@ -151,13 +151,13 @@ int main(int argc, char *argv[])
   fullprint << "test number ten : multiplication with a numerical point method" << std::endl;
 
   /* Create the numerical point */
-  NumericalPoint pt ;
+  Point pt ;
   pt.add(1.) ;
   pt.add(2.) ;
   fullprint << "pt = " << pt << std::endl;
 
   /* Check the product method */
-  NumericalPoint ptResult = matrix1.operator * ( pt ) ;
+  Point ptResult = matrix1.operator * ( pt ) ;
   fullprint << "ptResult = " << ptResult << std::endl;
 
   /** TEST NUMBER ELEVEN : MULTIPLICATION AND DIVISION BY A NUMERICAL SCALAR METHODS */
@@ -199,7 +199,7 @@ int main(int argc, char *argv[])
   fullprint << "test number fourteen : multiplication with a numerical point method" << std::endl;
 
   /* Create the numerical point */
-  NumericalPoint pt_test ;
+  Point pt_test ;
   pt_test.add(1.) ;
   pt_test.add(2.) ;
   fullprint << "pt_test = " << pt_test << std::endl;
@@ -213,7 +213,7 @@ int main(int argc, char *argv[])
   Matrix id = B.operator * (A);
 
   /* Check the product method */
-  NumericalPoint ptResult2 = id.operator * ( pt_test ) ;
+  Point ptResult2 = id.operator * ( pt_test ) ;
   fullprint << "A = " << A << std::endl;
   fullprint << "B = " << B << std::endl;
   fullprint << "id = " << id << std::endl;

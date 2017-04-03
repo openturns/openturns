@@ -123,24 +123,24 @@ void Beta::update()
 
 
 /* Get one realization of the distribution */
-NumericalPoint Beta::getRealization() const
+Point Beta::getRealization() const
 {
-  return NumericalPoint(1, a_ + (b_ - a_) * DistFunc::rBeta(r_, t_ - r_));
+  return Point(1, a_ + (b_ - a_) * DistFunc::rBeta(r_, t_ - r_));
 }
 
 /* Get the DDF of the distribution */
-NumericalPoint Beta::computeDDF(const NumericalPoint & point) const
+Point Beta::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0];
-  if ((x <= a_) || (x > b_)) return NumericalPoint(1, 0.0);
-  return NumericalPoint(1, ((r_ - 1.0) / (x - a_) - (t_ - r_ - 1.0) / (b_ - x)) * computePDF(point));
+  if ((x <= a_) || (x > b_)) return Point(1, 0.0);
+  return Point(1, ((r_ - 1.0) / (x - a_) - (t_ - r_ - 1.0) / (b_ - x)) * computePDF(point));
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Beta::computePDF(const NumericalPoint & point) const
+NumericalScalar Beta::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -150,7 +150,7 @@ NumericalScalar Beta::computePDF(const NumericalPoint & point) const
   return std::exp(computeLogPDF(point));
 }
 
-NumericalScalar Beta::computeLogPDF(const NumericalPoint & point) const
+NumericalScalar Beta::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -162,7 +162,7 @@ NumericalScalar Beta::computeLogPDF(const NumericalPoint & point) const
 
 
 /* Get the CDF of the distribution */
-NumericalScalar Beta::computeCDF(const NumericalPoint & point) const
+NumericalScalar Beta::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -173,11 +173,11 @@ NumericalScalar Beta::computeCDF(const NumericalPoint & point) const
 }
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint Beta::computePDFGradient(const NumericalPoint & point) const
+Point Beta::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  NumericalPoint pdfGradient(4, 0.0);
+  Point pdfGradient(4, 0.0);
   const NumericalScalar x = point[0];
   if ((x <= a_) || (x > b_)) return pdfGradient;
   const NumericalScalar pdf = computePDF(point);
@@ -195,11 +195,11 @@ NumericalPoint Beta::computePDFGradient(const NumericalPoint & point) const
 }
 
 /* Get the CDFGradient of the distribution */
-NumericalPoint Beta::computeCDFGradient(const NumericalPoint & point) const
+Point Beta::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  NumericalPoint cdfGradient(4, 0.0);
+  Point cdfGradient(4, 0.0);
   const NumericalScalar x = point[0];
   if ((x <= a_) || (x > b_)) return cdfGradient;
   const NumericalScalar cdf = computeCDF(point);
@@ -243,26 +243,26 @@ NumericalScalar Beta::getRoughness() const
 /* Compute the mean of the distribution */
 void Beta::computeMean() const
 {
-  mean_ = NumericalPoint(1, a_ + (b_ - a_) * r_ / t_);
+  mean_ = Point(1, a_ + (b_ - a_) * r_ / t_);
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint Beta::getStandardDeviation() const
+Point Beta::getStandardDeviation() const
 {
-  return NumericalPoint(1, (b_ - a_) / t_ * std::sqrt(r_ * (t_ - r_) / (t_ + 1.0)));
+  return Point(1, (b_ - a_) / t_ * std::sqrt(r_ * (t_ - r_) / (t_ + 1.0)));
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint Beta::getSkewness() const
+Point Beta::getSkewness() const
 {
-  return NumericalPoint(1, 2.0 * (t_ - 2.0 * r_) / (t_ + 2.0) * std::sqrt((t_ + 1.0) / (r_ * (t_ - r_))));
+  return Point(1, 2.0 * (t_ - 2.0 * r_) / (t_ + 2.0) * std::sqrt((t_ + 1.0) / (r_ * (t_ - r_))));
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint Beta::getKurtosis() const
+Point Beta::getKurtosis() const
 {
-  return NumericalPoint(1, 3.0 * (1.0 + t_) * (2.0 * t_ * t_ + r_ * (t_ - 6.0) * (t_ - r_)) / (r_ * (t_ - r_) * (3.0 + t_) * (2.0 + t_)));
+  return Point(1, 3.0 * (1.0 + t_) * (2.0 * t_ * t_ + r_ * (t_ - 6.0) * (t_ - r_)) / (r_ * (t_ - r_) * (3.0 + t_) * (2.0 + t_)));
 }
 
 /* Compute the covariance of the distribution */
@@ -275,12 +275,12 @@ void Beta::computeCovariance() const
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Beta::getStandardMoment(const UnsignedInteger n) const
+Point Beta::getStandardMoment(const UnsignedInteger n) const
 {
-  if (n == 0) return NumericalPoint(1, 1.0);
+  if (n == 0) return Point(1, 1.0);
   // Here we have to convert n to a signed type else -n will produce an overflow
   const NumericalScalar value = (n % 2 == 0 ? 1.0 : -1.0) * SpecFunc::HyperGeom_2_1(r_, -static_cast<NumericalScalar>(n), t_, 2.0);
-  return NumericalPoint(1, value);
+  return Point(1, value);
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
@@ -290,9 +290,9 @@ Beta::Implementation Beta::getStandardRepresentative() const
 }
 
 /* Parameters value accessor */
-NumericalPoint Beta::getParameter() const
+Point Beta::getParameter() const
 {
-  NumericalPoint point(4);
+  Point point(4);
   point[0] = r_;
   point[1] = t_;
   point[2] = a_;
@@ -300,7 +300,7 @@ NumericalPoint Beta::getParameter() const
   return point;
 }
 
-void Beta::setParameter(const NumericalPoint & parameter)
+void Beta::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 4) throw InvalidArgumentException(HERE) << "Error: expected 4 values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();

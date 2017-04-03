@@ -60,17 +60,17 @@ String ContinuousDistribution::__repr__() const
 }
 
 /* Get the DDF of the distribution */
-NumericalPoint ContinuousDistribution::computeDDF(const NumericalPoint & point) const
+Point ContinuousDistribution::computeDDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
-  NumericalPoint ddf(dimension);
+  Point ddf(dimension);
   const NumericalScalar h = std::pow(pdfEpsilon_, 1.0 / 3.0);
   LOGINFO(OSS() << "h=" << h);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    NumericalPoint left(point);
+    Point left(point);
     left[i] += h;
-    NumericalPoint right(point);
+    Point right(point);
     right[i] -= h;
     const NumericalScalar denom = left[i] - right[i];
     const NumericalScalar pdfLeft = computePDF(left);
@@ -82,20 +82,20 @@ NumericalPoint ContinuousDistribution::computeDDF(const NumericalPoint & point) 
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar ContinuousDistribution::computePDF(const NumericalPoint & point) const
+NumericalScalar ContinuousDistribution::computePDF(const Point & point) const
 {
-  throw NotYetImplementedException(HERE) << "In ContinuousDistribution::computePDF(const NumericalPoint & point) const";
+  throw NotYetImplementedException(HERE) << "In ContinuousDistribution::computePDF(const Point & point) const";
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar ContinuousDistribution::computeCDF(const NumericalPoint & point) const
+NumericalScalar ContinuousDistribution::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
-  const NumericalPoint lowerBounds(getRange().getLowerBound());
-  const NumericalPoint upperBounds(getRange().getUpperBound());
+  const Point lowerBounds(getRange().getLowerBound());
+  const Point upperBounds(getRange().getUpperBound());
   // Indices of the components to take into account in the computation
   Indices toKeep(0);
-  NumericalPoint reducedPoint(0);
+  Point reducedPoint(0);
   for (UnsignedInteger k = 0; k < dimension; ++ k)
   {
     const NumericalScalar xK = point[k];
@@ -133,12 +133,12 @@ NumericalScalar ContinuousDistribution::computeCDF(const NumericalPoint & point)
 }
 
 /* Get the survival function of the distribution */
-NumericalScalar ContinuousDistribution::computeSurvivalFunction(const NumericalPoint & point) const
+NumericalScalar ContinuousDistribution::computeSurvivalFunction(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (dimension == 1) return computeComplementaryCDF(point);
-  const NumericalPoint lowerBounds(getRange().getLowerBound());
-  const NumericalPoint upperBounds(getRange().getUpperBound());
+  const Point lowerBounds(getRange().getLowerBound());
+  const Point upperBounds(getRange().getUpperBound());
   Bool allOutside = true;
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
@@ -158,12 +158,12 @@ Collection<PiecewiseHermiteEvaluation> ContinuousDistribution::interpolateCDF(co
   const NumericalScalar xMin = getRange().getLowerBound()[0];
   const NumericalScalar xMax = getRange().getUpperBound()[0];
   const NumericalScalar mu = getMean()[0];
-  NumericalPoint locationsCDF(n);
-  NumericalPoint locationsCCDF(n);
-  NumericalPoint valuesCDF(n);
-  NumericalPoint valuesCCDF(n);
-  NumericalPoint derivativesCDF(n);
-  NumericalPoint derivativesCCDF(n);
+  Point locationsCDF(n);
+  Point locationsCCDF(n);
+  Point valuesCDF(n);
+  Point valuesCCDF(n);
+  Point derivativesCDF(n);
+  Point derivativesCCDF(n);
   NumericalScalar xCDFOld = xMin;
   NumericalScalar xCCDFOld = xMax;
   locationsCDF[0] = xMin;
@@ -177,10 +177,10 @@ Collection<PiecewiseHermiteEvaluation> ContinuousDistribution::interpolateCDF(co
     const NumericalScalar xCCDF = xMax - i * stepCCDF;
     locationsCDF[i] = xCDF;
     locationsCCDF[n - i - 1] = xCCDF;
-    NumericalPoint ai;
-    NumericalPoint bi;
+    Point ai;
+    Point bi;
     Sample fi;
-    NumericalPoint ei;
+    Point ei;
     NumericalScalar error = -1.0;
     valuesCDF[i] = valuesCDF[i - 1] + algo.integrate(pdfWrapper, xCDFOld, xCDF, error, ai, bi, fi, ei)[0];
     valuesCCDF[n - i - 1] = valuesCCDF[n - i] + algo.integrate(pdfWrapper, xCCDF, xCCDFOld, error, ai, bi, fi, ei)[0];

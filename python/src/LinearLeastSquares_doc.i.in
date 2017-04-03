@@ -111,7 +111,7 @@ dataIn : :class:`~openturns.Sample`
 
 Returns
 -------
-constantVector : :class:`~openturns.NumericalPoint`
+constantVector : :class:`~openturns.Point`
     Constant vector of the approximation, equal to :math:`a_0`."
 
 // ---------------------------------------------------------------------

@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     functions[1] = SymbolicFunction(inVar, formula);
     // Second, build the function
     AggregatedFunction myFunction(functions);
-    NumericalPoint inPoint(3);
+    Point inPoint(3);
     inPoint[0] = 1.2;
     inPoint[1] = 2.3;
     inPoint[2] = 3.4;

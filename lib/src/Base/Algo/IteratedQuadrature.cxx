@@ -58,7 +58,7 @@ IteratedQuadrature * IteratedQuadrature::clone() const
 
 /* Compute an approximation of \int_a^b\int_{L_1(x_1)}^{U_1(x_1)}\int_{L_1(x_1,x_2)}^{U_2(x_1,x_2)}\dots\int_{L_1(x_1,\dots,x_{n-1})}^{U_2(x_1,\dots,x_{n-1})} f(x_1,\dots,x_n)dx_1\dotsdx_n, where [a,b] is an 1D interval, L_k and U_k are functions from R^k into R.
  */
-NumericalPoint IteratedQuadrature::integrate(const Function & function,
+Point IteratedQuadrature::integrate(const Function & function,
     const NumericalScalar a,
     const NumericalScalar b,
     const FunctionCollection & lowerBounds,
@@ -89,23 +89,23 @@ NumericalPoint IteratedQuadrature::integrate(const Function & function,
   return algorithm_.integrate(partialFunction, Interval(a, b));
 }
 
-NumericalPoint IteratedQuadrature::integrate(const Function & function,
+Point IteratedQuadrature::integrate(const Function & function,
     const Interval & interval) const
 {
   const UnsignedInteger inputDimension = function.getInputDimension();
   if (interval.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected an interval of dimension=" << inputDimension << ", got dimension=" << interval.getDimension();
   if (interval.getDimension() == 1) return algorithm_.integrate(function, interval);
   // Build the bound functions associated with the interval
-  const NumericalPoint lower(interval.getLowerBound());
-  const NumericalPoint upper(interval.getUpperBound());
+  const Point lower(interval.getLowerBound());
+  const Point upper(interval.getUpperBound());
   NumericalScalar a = lower[0];
   NumericalScalar b = upper[0];
   FunctionCollection lowerBounds(inputDimension - 1);
   FunctionCollection upperBounds(inputDimension - 1);
   for (UnsignedInteger i = 1; i < inputDimension; ++i)
   {
-    lowerBounds[i - 1] = DatabaseFunction(Sample(1, i), Sample(1, NumericalPoint(1, lower[i])));
-    upperBounds[i - 1] = DatabaseFunction(Sample(1, i), Sample(1, NumericalPoint(1, upper[i])));
+    lowerBounds[i - 1] = DatabaseFunction(Sample(1, i), Sample(1, Point(1, lower[i])));
+    upperBounds[i - 1] = DatabaseFunction(Sample(1, i), Sample(1, Point(1, upper[i])));
   }
   return integrate(function, a, b, lowerBounds, upperBounds, false);
 }

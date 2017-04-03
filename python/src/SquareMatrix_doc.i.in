@@ -212,7 +212,7 @@ keep_intact : bool, optional
 
 Returns
 -------
-solution : :class:`~openturns.NumericalPoint` or :class:`~openturns.Matrix`
+solution : :class:`~openturns.Point` or :class:`~openturns.Matrix`
     The solution of the square linear system.
 
 Notes
@@ -230,7 +230,7 @@ Examples
 >>> import openturns as ot
 >>> import numpy as np
 >>> M = ot.SquareMatrix([[1.0, 2.0], [3.0, 4.0]])
->>> b = ot.NumericalPoint([1.0] * 2)
+>>> b = ot.Point([1.0] * 2)
 >>> x = M.solveLinearSystem(b)
 >>> np.testing.assert_array_almost_equal(M * x, b)"
 

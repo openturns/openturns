@@ -113,15 +113,15 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   if (normalize_)
   {
     const UnsignedInteger dimension = inputSample_.getDimension();
-    const NumericalPoint mean(inputSample_.computeMean());
-    const NumericalPoint stdev(inputSample_.computeStandardDeviationPerComponent());
+    const Point mean(inputSample_.computeMean());
+    const Point stdev(inputSample_.computeStandardDeviationPerComponent());
     SquareMatrix linear(dimension);
     for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
       linear(j, j) = 1.0;
       if (std::abs(stdev[j]) > SpecFunc::MinNumericalScalar) linear(j, j) /= stdev[j];
     }
-    const NumericalPoint zero(dimension);
+    const Point zero(dimension);
     setInputTransformation(LinearFunction(mean, zero, linear));
   }
   initializeMethod();
@@ -179,15 +179,15 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   if (normalize_)
   {
     const UnsignedInteger dimension = inputSample_.getDimension();
-    const NumericalPoint mean(inputSample_.computeMean());
-    const NumericalPoint stdev(inputSample_.computeStandardDeviationPerComponent());
+    const Point mean(inputSample_.computeMean());
+    const Point stdev(inputSample_.computeStandardDeviationPerComponent());
     SquareMatrix linear(dimension);
     for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
       linear(j, j) = 1.0;
       if (std::abs(stdev[j]) > SpecFunc::NumericalScalarEpsilon) linear(j, j) /= stdev[j];
     }
-    const NumericalPoint zero(dimension);
+    const Point zero(dimension);
     setInputTransformation(LinearFunction(mean, zero, linear));
   }
   initializeMethod();
@@ -291,15 +291,15 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   if (normalize_)
   {
     const UnsignedInteger dimension = inputSample_.getDimension();
-    const NumericalPoint mean(inputSample_.computeMean());
-    const NumericalPoint stdev(inputSample_.computeStandardDeviationPerComponent());
+    const Point mean(inputSample_.computeMean());
+    const Point stdev(inputSample_.computeStandardDeviationPerComponent());
     SquareMatrix linear(dimension);
     for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
       linear(j, j) = 1.0;
       if (std::abs(stdev[j]) > SpecFunc::MinNumericalScalar) linear(j, j) /= stdev[j];
     }
-    const NumericalPoint zero(dimension);
+    const Point zero(dimension);
     setInputTransformation(LinearFunction(mean, zero, linear));
   }
   initializeMethod();
@@ -420,7 +420,7 @@ void GeneralLinearModelAlgorithm::setCovarianceModel(const CovarianceModel & cov
           // the analytical formula to be correct.
           // Now, the amplitude has disapear form the active parameters so it must
           // be updated using the amplitude accessor.
-          reducedCovarianceModel_.setAmplitude(NumericalPoint(1, 1.0));
+          reducedCovarianceModel_.setAmplitude(Point(1, 1.0));
           break;
         }
     } // reducedCovarianceModel_.getDimension() == 1
@@ -430,8 +430,8 @@ void GeneralLinearModelAlgorithm::setCovarianceModel(const CovarianceModel & cov
   const UnsignedInteger optimizationDimension = reducedCovarianceModel_.getParameter().getSize();
   if (optimizationDimension > 0)
   {
-    const NumericalPoint lowerBound(optimizationDimension, ResourceMap::GetAsNumericalScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound"));
-    const NumericalPoint upperBound(optimizationDimension, ResourceMap::GetAsNumericalScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound"));
+    const Point lowerBound(optimizationDimension, ResourceMap::GetAsNumericalScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound"));
+    const Point upperBound(optimizationDimension, ResourceMap::GetAsNumericalScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound"));
     optimizationBounds_ = Interval(lowerBound, upperBound);
   }
   else optimizationBounds_ = Interval();
@@ -481,7 +481,7 @@ void GeneralLinearModelAlgorithm::setBasisCollection(const BasisCollection & bas
 void GeneralLinearModelAlgorithm::checkYCentered(const Sample & Y)
 {
   const NumericalScalar meanEpsilon = ResourceMap::GetAsNumericalScalar("GeneralLinearModelAlgorithm-MeanEpsilon");
-  const NumericalPoint meanY(Y.computeMean());
+  const Point meanY(Y.computeMean());
   for (UnsignedInteger k = 0; k < meanY.getDimension(); ++k)
   {
     if (std::abs(meanY[k]) > meanEpsilon)
@@ -599,16 +599,16 @@ void GeneralLinearModelAlgorithm::run()
   NumericalScalar optimalLogLikelihood = maximizeReducedLogLikelihood();
   LOGINFO("Store the estimates");
   // Here we do the work twice:
-  // 1) To get a collection of NumericalPoint for the result class
+  // 1) To get a collection of Point for the result class
   // 2) To get same results as Sample for the trend NMF
-  Collection<NumericalPoint> trendCoefficients(basisCollection_.getSize());
+  Collection<Point> trendCoefficients(basisCollection_.getSize());
   Sample trendCoefficientsSample(beta_.getSize(), reducedCovarianceModel_.getDimension());
 
   UnsignedInteger cumulatedSize = 0;
   for (UnsignedInteger outputIndex = 0; outputIndex < basisCollection_.getSize(); ++ outputIndex)
   {
     const UnsignedInteger localBasisSize = basisCollection_[outputIndex].getSize();
-    NumericalPoint beta_i(localBasisSize);
+    Point beta_i(localBasisSize);
     for(UnsignedInteger basisElement = 0; basisElement < localBasisSize; ++ basisElement)
     {
       beta_i[basisElement] = beta_[cumulatedSize];
@@ -646,12 +646,12 @@ void GeneralLinearModelAlgorithm::run()
   if (normalize_) metaModel = ComposedFunction(metaModel, inputTransformation_);
 
   // compute residual, relative error
-  const NumericalPoint outputVariance(outputSample_.computeVariance());
+  const Point outputVariance(outputSample_.computeVariance());
   const Sample mY(metaModel(inputSample_));
-  const NumericalPoint squaredResiduals((outputSample_ - mY).computeRawMoment(2));
+  const Point squaredResiduals((outputSample_ - mY).computeRawMoment(2));
 
-  NumericalPoint residuals(outputDimension);
-  NumericalPoint relativeErrors(outputDimension);
+  Point residuals(outputDimension);
+  Point relativeErrors(outputDimension);
 
   const UnsignedInteger size = inputSample_.getSize();
   for ( UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex )
@@ -693,7 +693,7 @@ void GeneralLinearModelAlgorithm::run()
 NumericalScalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
 {
   // initial guess
-  NumericalPoint initialParameters(reducedCovarianceModel_.getParameter());
+  Point initialParameters(reducedCovarianceModel_.getParameter());
   Indices initialActiveParameters(reducedCovarianceModel_.getActiveParameter());
   // We use the functional form of the log-likelihood computation to benefit from the cache mechanism
   Function reducedLogLikelihoodFunction(getObjectiveFunction());
@@ -718,7 +718,7 @@ NumericalScalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
   LOGINFO(OSS(false) << "Solve problem=" << problem << " using solver=" << solver_);
   solver_.run();
   const NumericalScalar optimalLogLikelihood = solver_.getResult().getOptimalValue()[0];
-  const NumericalPoint optimalParameters = solver_.getResult().getOptimalPoint();
+  const Point optimalParameters = solver_.getResult().getOptimalPoint();
   // Check if the optimal value corresponds to the last computed value, in order to
   // see if the by-products (Cholesky factor etc) are correct
   if (lastReducedLogLikelihood_ != optimalLogLikelihood)
@@ -732,7 +732,7 @@ NumericalScalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
   return optimalLogLikelihood;
 }
 
-NumericalPoint GeneralLinearModelAlgorithm::computeReducedLogLikelihood(const NumericalPoint & parameters) const
+Point GeneralLinearModelAlgorithm::computeReducedLogLikelihood(const Point & parameters) const
 {
   // Check that the parameters have a size compatible with the covariance model
   if (parameters.getSize() != reducedCovarianceModel_.getParameter().getSize())
@@ -743,7 +743,7 @@ NumericalPoint GeneralLinearModelAlgorithm::computeReducedLogLikelihood(const Nu
   NumericalScalar logDeterminant = 0.0;
   // If the amplitude is deduced from the other parameters, work with
   // the correlation function
-  if (analyticalAmplitude_) reducedCovarianceModel_.setAmplitude(NumericalPoint(1, 1.0));
+  if (analyticalAmplitude_) reducedCovarianceModel_.setAmplitude(Point(1, 1.0));
   reducedCovarianceModel_.setParameter(parameters);
   // First, compute the log-determinant of the Cholesky factor of the covariance
   // matrix. As a by-product, also compute rho.
@@ -763,7 +763,7 @@ NumericalPoint GeneralLinearModelAlgorithm::computeReducedLogLikelihood(const Nu
     const UnsignedInteger size = inputSample_.getSize();
     const NumericalScalar sigma = std::sqrt(rho_.normSquare() / (ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-UnbiasedVariance") ? size - beta_.getSize() : size));
     LOGDEBUG(OSS(false) << "sigma=" << sigma);
-    reducedCovarianceModel_.setAmplitude(NumericalPoint(1, sigma));
+    reducedCovarianceModel_.setAmplitude(Point(1, sigma));
     logDeterminant += 2.0 * size * std::log(sigma);
     rho_ /= sigma;
     LOGDEBUG(OSS(false) << "rho_=" << rho_);
@@ -776,7 +776,7 @@ NumericalPoint GeneralLinearModelAlgorithm::computeReducedLogLikelihood(const Nu
   // For the general multidimensional case, we have to compute the general log-likelihood (ie including marginal variances)
   else lastReducedLogLikelihood_ = -0.5 * (logDeterminant + epsilon);
   LOGINFO(OSS(false) << "Reduced log-likelihood=" << lastReducedLogLikelihood_);
-  return NumericalPoint(1, lastReducedLogLikelihood_);
+  return Point(1, lastReducedLogLikelihood_);
 }
 
 
@@ -823,7 +823,7 @@ NumericalScalar GeneralLinearModelAlgorithm::computeLapackLogDeterminantCholesky
   LOGDEBUG(OSS(false) << "L=\n" << covarianceCholeskyFactor_);
 
   // y corresponds to output data
-  const NumericalPoint y(outputSample_.getImplementation()->getData());
+  const Point y(outputSample_.getImplementation()->getData());
   LOGDEBUG(OSS(false) << "y=" << y);
   // rho = L^{-1}y
   LOGINFO("Solve L.rho = y");
@@ -911,8 +911,8 @@ NumericalScalar GeneralLinearModelAlgorithm::computeHMatLogDeterminantCholesky()
     LOGWARN(OSS() <<  "Warning! Scaling up to "  << cumulatedScaling << " was needed in order to get an admissible covariance. ");
 
   // y corresponds to output data
-  // The PersistentCollection is returned as NumericalPoint with the right memory map
-  NumericalPoint y(outputSample_.getImplementation()->getData());
+  // The PersistentCollection is returned as Point with the right memory map
+  Point y(outputSample_.getImplementation()->getData());
   // rho = L^{-1}y
   LOGINFO("Solve L.rho = y");
   rho_ = covarianceCholeskyFactorHMatrix_.solveLower(y);
@@ -928,7 +928,7 @@ NumericalScalar GeneralLinearModelAlgorithm::computeHMatLogDeterminantCholesky()
   }
   LOGINFO("Compute log(sqrt(|det(C)|)) = log(|det(L)|)");
   NumericalScalar logDetL = 0.0;
-  NumericalPoint diagonal(covarianceCholeskyFactorHMatrix_.getDiagonal());
+  Point diagonal(covarianceCholeskyFactorHMatrix_.getDiagonal());
   for (UnsignedInteger i = 0; i < rho_.getSize(); ++i )
   {
     const NumericalScalar lii = diagonal[i];
@@ -1011,7 +1011,7 @@ Interval GeneralLinearModelAlgorithm::getOptimizationBounds() const
 }
 
 /* Observation noise accessor */
-void GeneralLinearModelAlgorithm::setNoise(const NumericalPoint & noise)
+void GeneralLinearModelAlgorithm::setNoise(const Point & noise)
 {
   const UnsignedInteger size = inputSample_.getSize();
   if (noise.getSize() != size) throw InvalidArgumentException(HERE) << "Noise size=" << noise.getSize()  << " does not match sample size=" << size;
@@ -1021,13 +1021,13 @@ void GeneralLinearModelAlgorithm::setNoise(const NumericalPoint & noise)
 }
 
 
-NumericalPoint GeneralLinearModelAlgorithm::getNoise() const
+Point GeneralLinearModelAlgorithm::getNoise() const
 {
   return noise_;
 }
 
 
-NumericalPoint GeneralLinearModelAlgorithm::getRho() const
+Point GeneralLinearModelAlgorithm::getRho() const
 {
   return rho_;
 }

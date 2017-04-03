@@ -39,7 +39,7 @@ Some explanations of the code :
    point. The in and out array size must correspond to the sizes set in
    the PythonFunction constructor. In this example, X will be an array
    of size 2 and Y must be an array of size 1. The output point can be a
-   Python list, an  NumericalPoint or a Numpy array.
+   Python list, an  Point or a Numpy array.
 
 -  Construct the PythonFunction by passing function reference.
 

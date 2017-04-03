@@ -49,8 +49,8 @@ int main(int argc, char *argv[])
 
     /* We create a distribution */
     UnsignedInteger dim = myFunc.getInputDimension();
-    NumericalPoint meanPoint(dim, 0.2);
-    NumericalPoint sigma(dim);
+    Point meanPoint(dim, 0.2);
+    Point sigma(dim);
     for (UnsignedInteger i = 0; i < dim; i++)
     {
       sigma[i] = 0.1 * (i + 1);

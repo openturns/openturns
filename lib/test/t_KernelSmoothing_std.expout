@@ -2,49 +2,49 @@ kernel=Normal
 kernel bandwidth=[0.681867, 1.14073]
 mean(smoothed)=[0.575394, -0.412442] mean(exact)=[0.5, -0.5]
 covariance(smoothed)=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4.2591,2.77149,2.77149,9.81845] covariance(exact)=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4,3,3,9]
-Point= class=NumericalPoint name=Unnamed dimension=2 values=[0,0]
+Point= class=Point name=Unnamed dimension=2 values=[0,0]
  pdf(smoothed)= 0.025801 pdf(exact)=0.0280502
  cdf(smoothed)= 0.271892 cdf(exact)=0.305529
 kernel=Epanechnikov
 kernel bandwidth=[1.5247, 2.55075]
 mean(smoothed)=[0.575394, -0.412442] mean(exact)=[0.5, -0.5]
 covariance(smoothed)=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4.2591,2.77149,2.77149,9.81845] covariance(exact)=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4,3,3,9]
-Point= class=NumericalPoint name=Unnamed dimension=2 values=[0,0]
+Point= class=Point name=Unnamed dimension=2 values=[0,0]
  pdf(smoothed)= 0.025933 pdf(exact)=0.0280502
  cdf(smoothed)= 0.272041 cdf(exact)=0.305529
 kernel=Uniform
 kernel bandwidth=[1.18103, 1.9758]
 mean(smoothed)=[0.575394, -0.412442] mean(exact)=[0.5, -0.5]
 covariance(smoothed)=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4.2591,2.77149,2.77149,9.81845] covariance(exact)=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4,3,3,9]
-Point= class=NumericalPoint name=Unnamed dimension=2 values=[0,0]
+Point= class=Point name=Unnamed dimension=2 values=[0,0]
  pdf(smoothed)= 0.0246413 pdf(exact)=0.0280502
  cdf(smoothed)= 0.272447 cdf(exact)=0.305529
 kernel=Triangular
 kernel bandwidth=[1.67023, 2.7942]
 mean(smoothed)=[0.575394, -0.412442] mean(exact)=[0.5, -0.5]
 covariance(smoothed)=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4.2591,2.77149,2.77149,9.81845] covariance(exact)=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4,3,3,9]
-Point= class=NumericalPoint name=Unnamed dimension=2 values=[0,0]
+Point= class=Point name=Unnamed dimension=2 values=[0,0]
  pdf(smoothed)= 0.0255707 pdf(exact)=0.0280502
  cdf(smoothed)= 0.272078 cdf(exact)=0.305529
 kernel=Logistic
 kernel bandwidth=[0.375933, 0.628917]
 mean(smoothed)=[0.575394, -0.412442] mean(exact)=[0.5, -0.5]
 covariance(smoothed)=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4.2591,2.77149,2.77149,9.81845] covariance(exact)=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4,3,3,9]
-Point= class=NumericalPoint name=Unnamed dimension=2 values=[0,0]
+Point= class=Point name=Unnamed dimension=2 values=[0,0]
  pdf(smoothed)= 0.025701 pdf(exact)=0.0280502
  cdf(smoothed)= 0.27191 cdf(exact)=0.305529
 kernel=Beta
 kernel bandwidth=[1.5247, 2.55075]
 mean(smoothed)=[0.575394, -0.412442] mean(exact)=[0.5, -0.5]
 covariance(smoothed)=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4.2591,2.77149,2.77149,9.81845] covariance(exact)=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4,3,3,9]
-Point= class=NumericalPoint name=Unnamed dimension=2 values=[0,0]
+Point= class=Point name=Unnamed dimension=2 values=[0,0]
  pdf(smoothed)= 0.025933 pdf(exact)=0.0280502
  cdf(smoothed)= 0.272041 cdf(exact)=0.305529
 kernel=Beta
 kernel bandwidth=[1.80405, 3.01809]
 mean(smoothed)=[0.575394, -0.412442] mean(exact)=[0.5, -0.5]
 covariance(smoothed)=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4.2591,2.77149,2.77149,9.81845] covariance(exact)=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4,3,3,9]
-Point= class=NumericalPoint name=Unnamed dimension=2 values=[0,0]
+Point= class=Point name=Unnamed dimension=2 values=[0,0]
  pdf(smoothed)= 0.0259139 pdf(exact)=0.0280502
  cdf(smoothed)= 0.27195 cdf(exact)=0.305529
 kernel=Normal

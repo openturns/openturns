@@ -83,13 +83,13 @@ public:
     return new ExpectedImprovementEvaluation(*this);
   }
 
-  NumericalPoint operator()(const NumericalPoint & x) const
+  Point operator()(const Point & x) const
   {
     const NumericalScalar mx = metaModelResult_.getMetaModel()(x)[0];
     const NumericalScalar fmMk = optimalValue_ - mx;
     const NumericalScalar sk2 = metaModelResult_.getConditionalCovariance(x)(0, 0);
     const NumericalScalar sk = sqrt(sk2);
-    if (!SpecFunc::IsNormal(sk)) return NumericalPoint(1, -SpecFunc::MaxNumericalScalar);
+    if (!SpecFunc::IsNormal(sk)) return Point(1, -SpecFunc::MaxNumericalScalar);
     const NumericalScalar ratio = fmMk / sk;
     NumericalScalar ei = fmMk * normal_.computeCDF(ratio) + sk * normal_.computePDF(ratio);
     if (noiseModel_.getOutputDimension() == 1) // if provided
@@ -98,7 +98,7 @@ public:
       if (!(noiseVariance >= 0.0)) throw InvalidArgumentException(HERE) << "Noise model must be positive";
       ei *= (1.0 - sqrt(noiseVariance) / sqrt(noiseVariance + sk2));
     }
-    return NumericalPoint(1, ei);
+    return Point(1, ei);
   }
 
   Sample operator()(const Sample & theta) const
@@ -148,7 +148,7 @@ void EfficientGlobalOptimization::run()
   Sample inputSample(krigingResult_.getInputSample());
   Sample outputSample(model(inputSample));
   UnsignedInteger size = inputSample.getSize();
-  NumericalPoint noise(size);
+  Point noise(size);
   const Bool hasNoise = model.getOutputDimension() == 2;
   if (hasNoise)
   {
@@ -168,9 +168,9 @@ void EfficientGlobalOptimization::run()
   Bool convergence = false;
 
   // select the best feasible point
-  NumericalPoint optimizer;
+  Point optimizer;
   NumericalScalar optimalValue = problem.isMinimization() ? SpecFunc::MaxNumericalScalar : -SpecFunc::MaxNumericalScalar;
-  NumericalPoint optimizerPrev; // previous optimizer
+  Point optimizerPrev; // previous optimizer
   NumericalScalar optimalValuePrev = optimalValue;// previous optimal value
   for (UnsignedInteger index = 0; index < size; ++ index)
   {
@@ -205,7 +205,7 @@ void EfficientGlobalOptimization::run()
   }
 
   // compute minimum distance
-  NumericalPoint minimumDistance(dimension, SpecFunc::MaxNumericalScalar);
+  Point minimumDistance(dimension, SpecFunc::MaxNumericalScalar);
   if (!hasNoise)
   {
     for (UnsignedInteger i1 = 0; i1 < size; ++ i1)
@@ -251,7 +251,7 @@ void EfficientGlobalOptimization::run()
       NumericalScalar optimalU = problem.isMinimization() ? SpecFunc::MaxNumericalScalar : -SpecFunc::MaxNumericalScalar;
       for (UnsignedInteger i = 0; i < size; ++ i)
       {
-        const NumericalPoint x(inputSample[i]);
+        const Point x(inputSample[i]);
         const NumericalScalar mx = krigingResult_.getMetaModel()(x)[0];
         const NumericalScalar sk2 = krigingResult_.getConditionalCovariance(x)(0, 0);
         const NumericalScalar u = mx + aeiTradeoff_ * sqrt(sk2);
@@ -270,8 +270,8 @@ void EfficientGlobalOptimization::run()
     {
       // Sample uniformly into the bounds
       const Interval bounds(problem.getBounds());
-      const NumericalPoint lowerBound(bounds.getLowerBound());
-      const NumericalPoint upperBound(bounds.getUpperBound());
+      const Point lowerBound(bounds.getLowerBound());
+      const Point upperBound(bounds.getUpperBound());
       const Interval::BoolCollection finiteLowerBound(bounds.getFiniteLowerBound());
       const Interval::BoolCollection finiteUpperBound(bounds.getFiniteUpperBound());
       ComposedDistribution::DistributionCollection coll;
@@ -306,12 +306,12 @@ void EfficientGlobalOptimization::run()
     const OptimizationResult improvementResult(solver_.getResult());
 
     // store improvement
-    NumericalPoint improvementValue(improvementResult.getOptimalValue());
+    Point improvementValue(improvementResult.getOptimalValue());
     expectedImprovement_.add(improvementValue);
 
-    const NumericalPoint newPoint(improvementResult.getOptimalPoint());
-    const NumericalPoint newOutput(model(newPoint));
-    const NumericalPoint newValue(NumericalPoint(1, newOutput[0]));// noise can be provided on the 2nd marginal
+    const Point newPoint(improvementResult.getOptimalPoint());
+    const Point newOutput(model(newPoint));
+    const Point newValue(Point(1, newOutput[0]));// noise can be provided on the 2nd marginal
 
     LOGINFO(OSS() << "New point x=" << newPoint << " f(x)=" << newValue << "iteration=" << iterationNumber + 1);
 
@@ -353,7 +353,7 @@ void EfficientGlobalOptimization::run()
         }
       }
 
-      const NumericalPoint scale(metaModelResult.getCovarianceModel().getScale());
+      const Point scale(metaModelResult.getCovarianceModel().getScale());
       for (UnsignedInteger j = 0; j < dimension; ++ j)
       {
         const Bool minDistStop = scale[j] < minimumDistance[j] / correlationLengthFactor_;
@@ -381,7 +381,7 @@ void EfficientGlobalOptimization::run()
     ++ iterationNumber;
   }
   result.setOptimalPoint(optimizer);
-  result.setOptimalValue(NumericalPoint(1, optimalValue));
+  result.setOptimalValue(Point(1, optimalValue));
   result.setIterationNumber(iterationNumber);
   setResult(result);
 }

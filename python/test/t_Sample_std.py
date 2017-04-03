@@ -12,13 +12,13 @@ try:
     sample1.setDescription(('a0', 'a1'))
 
     # We populate the empty sample
-    point1 = NumericalPoint(2)
+    point1 = Point(2)
     point1[0] = 10.
     point1[1] = 20.
-    point2 = NumericalPoint(2)
+    point2 = Point(2)
     point2[0] = 11.
     point2[1] = 21.
-    point3 = NumericalPoint(2)
+    point3 = Point(2)
     point3[0] = 12.
     point3[1] = 22.
     sample1.add(point1)
@@ -31,7 +31,7 @@ try:
     print("second element=", repr(secondElement))
 
     # We set the third element to a valid new element
-    newPoint = NumericalPoint(2)
+    newPoint = Point(2)
     newPoint[0] = 1000
     newPoint[1] = 2000
     sample1[2] = newPoint
@@ -54,7 +54,7 @@ try:
         pass
 
     # We try to create a sample with 5 times the same point
-    samePoint = NumericalPoint(3)
+    samePoint = Point(3)
     samePoint[0] = 1000.
     samePoint[1] = 2000.
     samePoint[2] = 3000.
@@ -62,7 +62,7 @@ try:
     print("sample3=", repr(sample3))
 
     # We append a new point to the sample...
-    anotherNewPoint = NumericalPoint(3)
+    anotherNewPoint = Point(3)
     anotherNewPoint[0] = -1000.
     anotherNewPoint[1] = -2000.
     anotherNewPoint[2] = -3000.

@@ -52,9 +52,9 @@ public:
 
   /** Gradient operator */
   using GradientImplementation::gradient;
-  Matrix gradient(const NumericalPoint & point) const;
-  Matrix gradient(const NumericalPoint & point,
-                  const NumericalPoint & parameters) const;
+  Matrix gradient(const Point & point) const;
+  Matrix gradient(const Point & point,
+                  const Point & parameters) const;
 
   /** Evaluation accessor */
   ParametricEvaluation getEvaluation() const;

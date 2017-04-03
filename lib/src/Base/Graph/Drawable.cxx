@@ -52,7 +52,7 @@ String Drawable::__repr__() const
 /* Here is the interface */
 
 /* Accessor for bounding box of the drawable */
-NumericalPoint Drawable::getBoundingBox() const
+Point Drawable::getBoundingBox() const
 {
   return getImplementation()->getBoundingBox();
 }
@@ -158,12 +158,12 @@ void Drawable::setPattern(const String style)
 }
 
 /* Accessor for center */
-NumericalPoint Drawable::getCenter() const
+Point Drawable::getCenter() const
 {
   return getImplementation()->getCenter();
 }
 
-void Drawable::setCenter(const NumericalPoint & center)
+void Drawable::setCenter(const Point & center)
 {
   copyOnWrite();
   getImplementation()->setCenter(center);
@@ -242,12 +242,12 @@ void Drawable::setY(const Sample & y)
 }
 
 /* Accessor for levels */
-NumericalPoint Drawable::getLevels() const
+Point Drawable::getLevels() const
 {
   return getImplementation()->getLevels();
 }
 
-void Drawable::setLevels(const NumericalPoint & levels)
+void Drawable::setLevels(const Point & levels)
 {
   copyOnWrite();
   getImplementation()->setLevels(levels);
@@ -390,7 +390,7 @@ String Drawable::ConvertFromRGBA(const NumericalScalar red,
 }
 
 /* Convert an HSV triplet into an RGB triplet */
-NumericalPoint Drawable::ConvertFromHSVIntoRGB(const NumericalScalar hue,
+Point Drawable::ConvertFromHSVIntoRGB(const NumericalScalar hue,
     const NumericalScalar saturation,
     const NumericalScalar value)
 {

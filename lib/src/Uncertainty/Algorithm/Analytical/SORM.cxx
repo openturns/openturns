@@ -43,7 +43,7 @@ SORM::SORM()
  */
 SORM::SORM(const OptimizationAlgorithm & nearestPointAlgorithm,
            const Event & event,
-           const NumericalPoint & physicalStartingPoint):
+           const Point & physicalStartingPoint):
   Analytical(nearestPointAlgorithm, event, physicalStartingPoint),
   sormResult_()
 {

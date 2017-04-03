@@ -63,7 +63,7 @@ class OT_API HMatrix :
   void scale(NumericalScalar alpha);
 
   /** Compute y <- alpha op(this) * x + beta * y */
-  void gemv(char trans, NumericalScalar alpha, const NumericalPoint& x, NumericalScalar beta, NumericalPoint& y) const;
+  void gemv(char trans, NumericalScalar alpha, const Point& x, NumericalScalar beta, Point& y) const;
 
   /** Compute this <- alpha op(A) * p(B) + beta * this */
   void gemm(char transA, char transB, NumericalScalar alpha, const HMatrix& a, const HMatrix& b, NumericalScalar beta);
@@ -75,16 +75,16 @@ class OT_API HMatrix :
   NumericalScalar norm() const;
 
   /** Get the diagonal */
-  NumericalPoint getDiagonal() const;
+  Point getDiagonal() const;
 
   /** Solve system op(A)*X = b */
-  NumericalPoint solve(const NumericalPoint& b, Bool trans = false) const;
+  Point solve(const Point& b, Bool trans = false) const;
 
   /** Solve system op(A)*X = m */
   Matrix solve(const Matrix& m, Bool trans = false) const;
 
   /** Solve system op(L)*X = b */
-  NumericalPoint solveLower(const NumericalPoint& b, Bool trans = false) const;
+  Point solveLower(const Point& b, Bool trans = false) const;
 
   /** Solve system op(L)*X = m */
   Matrix solveLower(const Matrix& m, Bool trans = false) const;

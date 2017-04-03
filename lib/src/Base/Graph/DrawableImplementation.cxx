@@ -896,7 +896,7 @@ String DrawableImplementation::ConvertFromRGBA(const NumericalScalar red,
 }
 
 /* Convert an HSV triplet to a valid hexadecimal code */
-NumericalPoint DrawableImplementation::ConvertFromHSVIntoRGB(const NumericalScalar hue,
+Point DrawableImplementation::ConvertFromHSVIntoRGB(const NumericalScalar hue,
     const NumericalScalar saturation,
     const NumericalScalar value)
 {
@@ -905,7 +905,7 @@ NumericalPoint DrawableImplementation::ConvertFromHSVIntoRGB(const NumericalScal
   const NumericalScalar l = value * (1.0 - saturation);
   const NumericalScalar m = value * (1.0 - f * saturation);
   const NumericalScalar n = value * (1.0 - (1.0 - f) * saturation);
-  NumericalPoint redGreenBlue(3);
+  Point redGreenBlue(3);
   switch (i)
   {
     case 0:
@@ -949,7 +949,7 @@ String DrawableImplementation::ConvertFromHSV(const NumericalScalar hue,
     const NumericalScalar saturation,
     const NumericalScalar value)
 {
-  const NumericalPoint redGreenBlue(ConvertFromHSVIntoRGB(hue, saturation, value));
+  const Point redGreenBlue(ConvertFromHSVIntoRGB(hue, saturation, value));
   return ConvertFromRGB(redGreenBlue[0], redGreenBlue[1], redGreenBlue[2]);
 }
 
@@ -959,7 +959,7 @@ String DrawableImplementation::ConvertFromHSVA(const NumericalScalar hue,
     const NumericalScalar value,
     const NumericalScalar alpha)
 {
-  const NumericalPoint redGreenBlue(ConvertFromHSVIntoRGB(hue, saturation, value));
+  const Point redGreenBlue(ConvertFromHSVIntoRGB(hue, saturation, value));
   return ConvertFromRGBA(redGreenBlue[0], redGreenBlue[1], redGreenBlue[2], alpha);
 }
 
@@ -1159,9 +1159,9 @@ void DrawableImplementation::checkData(const Sample & data) const
   throw NotYetImplementedException(HERE) << "DrawableImplementation::checkData(const Sample & data) const";
 }
 
-void DrawableImplementation::checkData(const NumericalPoint & data) const
+void DrawableImplementation::checkData(const Point & data) const
 {
-  throw NotYetImplementedException(HERE) << "In DrawableImplementation::checkData(const NumericalPoint & data) const";
+  throw NotYetImplementedException(HERE) << "In DrawableImplementation::checkData(const Point & data) const";
 }
 
 /* Data Accessor */
@@ -1177,7 +1177,7 @@ void DrawableImplementation::setData(const Sample & data)
   data_ = data;
 }
 
-void DrawableImplementation::setData(const NumericalPoint & data)
+void DrawableImplementation::setData(const Point & data)
 {
   checkData(data);
   const UnsignedInteger size = data.getDimension();
@@ -1189,8 +1189,8 @@ void DrawableImplementation::setData(const NumericalPoint & data)
 DrawableImplementation::BoundingBox DrawableImplementation::getBoundingBox() const
 {
   BoundingBox boundingBox(BoundingBoxSize);
-  const NumericalPoint min(data_.getMin());
-  const NumericalPoint max(data_.getMax());
+  const Point min(data_.getMin());
+  const Point max(data_.getMax());
   boundingBox[0] = min[0];
   boundingBox[1] = max[0];
   boundingBox[2] = min[1];
@@ -1288,12 +1288,12 @@ void DrawableImplementation::setPattern(const String style)
 }
 
 /* Accessor for center */
-NumericalPoint DrawableImplementation::getCenter() const
+Point DrawableImplementation::getCenter() const
 {
   throw NotDefinedException(HERE) << "Error: no center in " << getClassName();
 }
 
-void DrawableImplementation::setCenter(const NumericalPoint & center)
+void DrawableImplementation::setCenter(const Point & center)
 {
   throw NotDefinedException(HERE) << "Error: no center in " << getClassName();
 }
@@ -1365,12 +1365,12 @@ void DrawableImplementation::setY(const Sample & y)
 }
 
 /* Accessor for levels */
-NumericalPoint DrawableImplementation::getLevels() const
+Point DrawableImplementation::getLevels() const
 {
   throw NotDefinedException(HERE) << "Error: no levels in " << getClassName();
 }
 
-void DrawableImplementation::setLevels(const NumericalPoint & levels)
+void DrawableImplementation::setLevels(const Point & levels)
 {
   throw NotDefinedException(HERE) << "Error: no levels in " << getClassName();
 }

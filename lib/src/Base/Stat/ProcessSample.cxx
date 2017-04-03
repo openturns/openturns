@@ -172,7 +172,7 @@ Field ProcessSample::computeMean() const
   if (size == 1) return Field(mesh_, data_[0]);
   Sample meanValues(data_[0]);
   for (UnsignedInteger i = 1; i < size; ++i) meanValues += data_[i];
-  meanValues *= NumericalPoint(getDimension(), 1.0 / size);
+  meanValues *= Point(getDimension(), 1.0 / size);
   return Field(mesh_, meanValues);
 }
 

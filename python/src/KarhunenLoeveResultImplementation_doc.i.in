@@ -14,7 +14,7 @@ covModel : :class:`~openturns.CovarianceModel`
     The covariance model.
 s : float, positive
     The minimal relative amplitude of the eigenvalues to consider in the decomposition wrt the maximum eigenvalue.
-lambda : :class:`~openturns.NumericalPoint`
+lambda : :class:`~openturns.Point`
     The first eigenvalues of the Fredholm problem.
 modes : :class:`~openturns.Basis`
     The first modes  of the Fredholm problem.
@@ -115,7 +115,7 @@ OT_KarhunenLoeveResult_getCovarianceModel_doc
 
 Returns
 -------
-eigenVal : :class:`~openturns.NumericalPoint`
+eigenVal : :class:`~openturns.Point`
     The most significant eigenvalues.
 
 Notes
@@ -250,7 +250,7 @@ OT_KarhunenLoeveResult_getScaledModes_doc
 
 Parameters
 ----------
-coef : :class:`~openturns.NumericalPoint`
+coef : :class:`~openturns.Point`
     The coefficients :math:`(\xi_1, \dots, \xi_K)`.
 
 Returns
@@ -272,7 +272,7 @@ OT_KarhunenLoeveResult_lift_doc
 
 Parameters
 ----------
-coef : :class:`~openturns.NumericalPoint`
+coef : :class:`~openturns.Point`
     The coefficients :math:`(\xi_1, \dots, \xi_K)`.
 
 Returns

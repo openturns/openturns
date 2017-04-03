@@ -1,10 +1,10 @@
-%feature("docstring") OT::NumericalPointWithDescription
+%feature("docstring") OT::PointWithDescription
 "Collection of real values with a description for each component.
 
 Available constructors:
-    NumericalPointWithDescription(*size=0, value=0.0*)
+    PointWithDescription(*size=0, value=0.0*)
 
-    NumericalPointWithDescription(*sequence*)
+    PointWithDescription(*sequence*)
 
 Parameters
 ----------
@@ -21,9 +21,9 @@ Examples
 
 Use the first constructor:
 
->>> print(ot.NumericalPointWithDescription(2))
+>>> print(ot.PointWithDescription(2))
 [ : 0,  : 0]
->>> vector = ot.NumericalPointWithDescription(2, 3.0)
+>>> vector = ot.PointWithDescription(2, 3.0)
 >>> print(vector)
 [ : 3,  : 3]
 >>> vector.setDescription(['c1', 'c2'])
@@ -32,7 +32,7 @@ Use the first constructor:
 
 Use the second constructor:
 
->>> vector = ot.NumericalPointWithDescription([('C1', 2.0), ('C2', 3.0), ('C3', 4.5)])
+>>> vector = ot.PointWithDescription([('C1', 2.0), ('C2', 3.0), ('C3', 4.5)])
 >>> print(vector)
 [C1 : 2, C2 : 3, C3 : 4.5]
 >>> print(vector.getDescription())

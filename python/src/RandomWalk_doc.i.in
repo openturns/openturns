@@ -3,7 +3,7 @@
 
 Parameters
 ----------
-origin : :class:`~openturns.NumericalPoint` 
+origin : :class:`~openturns.Point` 
     Origin of the random walk.
 
 distribution : :class:`~openturns.Distribution` 
@@ -32,7 +32,7 @@ Create a random walk:
 >>> import openturns as ot
 >>> myTimeGrid = ot.RegularGrid(0, 0.1, 10)
 >>> myDist = ot.ComposedDistribution([ot.Normal(), ot.Exponential(0.2)], ot.ClaytonCopula(0.5))
->>> myOrigin = ot.NumericalPoint(myDist.getMean())
+>>> myOrigin = ot.Point(myDist.getMean())
 >>> myRandomWalk = ot.RandomWalk(myOrigin, myDist, myTimeGrid)
 
 Get a realization:
@@ -54,7 +54,7 @@ distribution : :class:`~openturns.Distribution`
 
 Returns
 -------
-origin : :class:`~openturns.NumericalPoint` 
+origin : :class:`~openturns.Point` 
     The origin of the random walk."
 
 // ---------------------------------------------------------------------
@@ -72,6 +72,6 @@ distribution : :class:`~openturns.Distribution`
 
 Parameters
 ----------
-origin : :class:`~openturns.NumericalPoint` 
+origin : :class:`~openturns.Point` 
     The origin of the random walk."
 

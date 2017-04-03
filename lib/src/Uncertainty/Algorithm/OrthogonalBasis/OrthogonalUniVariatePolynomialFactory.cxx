@@ -157,12 +157,12 @@ void OrthogonalUniVariatePolynomialFactory::initializeCache()
 }
 
 /* Roots of the polynomial of degree n */
-NumericalPoint OrthogonalUniVariatePolynomialFactory::getRoots(const UnsignedInteger n) const
+Point OrthogonalUniVariatePolynomialFactory::getRoots(const UnsignedInteger n) const
 {
   // As a specialized UniVariatePolynomial, the roots are complex
   const OrthogonalUniVariatePolynomial::NumericalComplexCollection complexRoots(build(n).getRoots());
   // But in fact we know that they are real
-  NumericalPoint roots(n);
+  Point roots(n);
   for (UnsignedInteger i = 0; i < n; ++i)
     roots[i] = complexRoots[i].real();
   return roots;
@@ -170,15 +170,15 @@ NumericalPoint OrthogonalUniVariatePolynomialFactory::getRoots(const UnsignedInt
 
 /* Nodes and weights of the polynomial of degree n as the eigenvalues of the associated Jacobi matrix and the square
    of the first component of the associated normalized eigenvectors */
-NumericalPoint OrthogonalUniVariatePolynomialFactory::getNodesAndWeights(const UnsignedInteger n,
-    NumericalPoint & weights) const
+Point OrthogonalUniVariatePolynomialFactory::getNodesAndWeights(const UnsignedInteger n,
+    Point & weights) const
 {
   if (n == 0) throw InvalidArgumentException(HERE) << "Error: cannot compute the roots and weights of a constant polynomial.";
   // gauss integration rule
   char jobz('V');
   int ljobz(1);
-  NumericalPoint d(n);
-  NumericalPoint e(n - 1);
+  Point d(n);
+  Point e(n - 1);
   Coefficients recurrenceCoefficientsI(getRecurrenceCoefficients(0));
   NumericalScalar alphaPrec = recurrenceCoefficientsI[0];
   d[0] = -recurrenceCoefficientsI[1] / alphaPrec;
@@ -191,11 +191,11 @@ NumericalPoint OrthogonalUniVariatePolynomialFactory::getNodesAndWeights(const U
   }
   int ldz(n);
   SquareMatrix z(n);
-  NumericalPoint work(2 * n - 2);
+  Point work(2 * n - 2);
   int info;
   dstev_(&jobz, &ldz, &d[0], &e[0], &z(0, 0), &ldz, &work[0], &info, &ljobz);
   if (info != 0) throw InternalException(HERE) << "Lapack DSTEV: error code=" << info;
-  weights = NumericalPoint(n);
+  weights = Point(n);
   for (UnsignedInteger i = 0; i < n; ++i) weights[i] = z(0, i) * z(0, i);
   return d;
 }

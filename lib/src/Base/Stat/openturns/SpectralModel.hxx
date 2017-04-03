@@ -75,14 +75,14 @@ public:
                      const Bool module = true) const;
 
   /** Amplitude accessor */
-  NumericalPoint getAmplitude() const;
+  Point getAmplitude() const;
 
-  void setAmplitude(const NumericalPoint & amplitude);
+  void setAmplitude(const Point & amplitude);
 
   /** Scale accessor */
-  NumericalPoint getScale() const;
+  Point getScale() const;
 
-  void setScale(const NumericalPoint & scale);
+  void setScale(const Point & scale);
 
   /** Spatial correlation accessor */
   CorrelationMatrix getSpatialCorrelation() const;

@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-inline String printNumericalPoint(const NumericalPoint & point, const UnsignedInteger digits)
+inline String printPoint(const Point & point, const UnsignedInteger digits)
 {
   OSS oss;
   oss << "[";
@@ -57,13 +57,13 @@ int main(int argc, char *argv[])
     NonCenteredFiniteDifferenceGradient myGradient(1e-7, levelFunction.getEvaluation());
     /** Substitute the gradient */
     levelFunction.setGradient(new NonCenteredFiniteDifferenceGradient(myGradient));
-    NumericalPoint startingPoint(4, 0.0);
+    Point startingPoint(4, 0.0);
     AbdoRackwitz myAlgorithm(OptimizationProblem(levelFunction, 3.0));
     myAlgorithm.setStartingPoint(startingPoint);
     fullprint << "myAlgorithm = " << myAlgorithm << std::endl;
     myAlgorithm.run();
-    fullprint << "result = " << printNumericalPoint(myAlgorithm.getResult().getOptimalPoint(), 4) << std::endl;
-    fullprint << "multipliers = " << printNumericalPoint(myAlgorithm.getResult().getLagrangeMultipliers(), 4) << std::endl;
+    fullprint << "result = " << printPoint(myAlgorithm.getResult().getOptimalPoint(), 4) << std::endl;
+    fullprint << "multipliers = " << printPoint(myAlgorithm.getResult().getLagrangeMultipliers(), 4) << std::endl;
 
   }
   catch (TestFailed & ex)
@@ -88,13 +88,13 @@ int main(int argc, char *argv[])
     fullprint << "myGradient=" << myGradient << std::endl;
     /** Substitute the gradient */
     levelFunction.setGradient(new NonCenteredFiniteDifferenceGradient(myGradient));
-    NumericalPoint startingPoint(4, 0.0);
+    Point startingPoint(4, 0.0);
     AbdoRackwitz myAlgorithm(OptimizationProblem(levelFunction, -0.5));
     myAlgorithm.setStartingPoint(startingPoint);
     fullprint << "myAlgorithm = " << myAlgorithm << std::endl;
     myAlgorithm.run();
     OptimizationResult result(myAlgorithm.getResult());
-    fullprint << "result = " << printNumericalPoint(result.getOptimalPoint(), 4) << std::endl;
+    fullprint << "result = " << printPoint(result.getOptimalPoint(), 4) << std::endl;
     Graph convergence(result.drawErrorHistory());
     fullprint << "evaluation calls number=" << levelFunction.getEvaluationCallsNumber() << std::endl;
     fullprint << "gradient   calls number=" << levelFunction.getGradientCallsNumber() << std::endl;

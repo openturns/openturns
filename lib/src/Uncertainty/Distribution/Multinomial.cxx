@@ -52,12 +52,12 @@ Multinomial::Multinomial()
   setName("Multinomial");
   // This method compute the range also
   setN(1);
-  setP( NumericalPoint(1, 0.5) );
+  setP( Point(1, 0.5) );
 }
 
 /* Parameters constructor */
 Multinomial::Multinomial(const UnsignedInteger n,
-                         const NumericalPoint & p)
+                         const Point & p)
   : DiscreteDistribution()
   , n_(0)
   , p_(0)
@@ -114,18 +114,18 @@ Multinomial * Multinomial::clone() const
 void Multinomial::computeRange()
 {
   const UnsignedInteger dimension = getDimension();
-  const NumericalPoint lowerBound(dimension, 0.0);
-  const NumericalPoint upperBound(dimension, n_);
+  const Point lowerBound(dimension, 0.0);
+  const Point upperBound(dimension, n_);
   const Interval::BoolCollection finiteLowerBound(dimension, true);
   const Interval::BoolCollection finiteUpperBound(dimension, true);
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
 }
 
 /* Get one realization of the distribution */
-NumericalPoint Multinomial::getRealization() const
+Point Multinomial::getRealization() const
 {
   const UnsignedInteger dimension = getDimension();
-  NumericalPoint realization(dimension);
+  Point realization(dimension);
   /* We use an elementary algorithm based on the definition of the Multinomial distribution:
    * the i-th component is generated using a Binomial distribution */
   UnsignedInteger n = n_;
@@ -142,7 +142,7 @@ NumericalPoint Multinomial::getRealization() const
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar Multinomial::computePDF(const NumericalPoint & point) const
+NumericalScalar Multinomial::computePDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -175,7 +175,7 @@ NumericalScalar Multinomial::computePDF(const NumericalPoint & point) const
 
 /* Compute the generating function of a sum of truncated Poisson distributions as needed in the computeCDF() method */
 NumericalComplex Multinomial::computeGlobalPhi(const NumericalComplex & z,
-    const NumericalPoint & x) const
+    const Point & x) const
 {
   // Initialize with the non truncated term
   NumericalComplex value(std::exp(-(1.0 - sumP_) * n_ * (1.0 - z)));
@@ -229,7 +229,7 @@ NumericalComplex Multinomial::computeLocalPhi(const NumericalComplex & z,
    Algorithm described in:
    R. Lebrun, "Efficient time/space algorithm to compute rectangular probabilities of multinomial, multivariate hypergeometric and multivariate Polya distributions", Statistics and Computing, submitted (2011).
 */
-NumericalScalar Multinomial::computeCDF(const NumericalPoint & point) const
+NumericalScalar Multinomial::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -272,8 +272,8 @@ NumericalScalar Multinomial::computeCDF(const NumericalPoint & point) const
   if (size < dimension)
   {
     // reduce the dimension to the active indices
-    NumericalPoint pReduced(size);
-    NumericalPoint xReduced(size);
+    Point pReduced(size);
+    Point xReduced(size);
     for (UnsignedInteger i = 0; i < size; ++i)
     {
       pReduced[i] = p_[indices[i]];
@@ -321,7 +321,7 @@ NumericalScalar Multinomial::computeScalarQuantile(const NumericalScalar prob,
    For Multinomial distribution, the conditional distribution is Binomial
 */
 NumericalScalar Multinomial::computeConditionalPDF(const NumericalScalar x,
-    const NumericalPoint & y) const
+    const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -347,7 +347,7 @@ NumericalScalar Multinomial::computeConditionalPDF(const NumericalScalar x,
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 NumericalScalar Multinomial::computeConditionalCDF(const NumericalScalar x,
-    const NumericalPoint & y) const
+    const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -373,7 +373,7 @@ NumericalScalar Multinomial::computeConditionalCDF(const NumericalScalar x,
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
 NumericalScalar Multinomial::computeConditionalQuantile(const NumericalScalar q,
-    const NumericalPoint & y) const
+    const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -418,7 +418,7 @@ Multinomial::Implementation Multinomial::getMarginal(const Indices & indices) co
   if (dimension == 1) return clone();
   // General case
   const UnsignedInteger outputDimension = indices.getSize();
-  NumericalPoint marginalP(outputDimension);
+  Point marginalP(outputDimension);
   // Extract the correlation matrix, the marginal standard deviations and means
   for (UnsignedInteger i = 0; i < outputDimension; ++i)
   {
@@ -435,8 +435,8 @@ Sample Multinomial::getSupport(const Interval & interval) const
   if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
   Sample support(0, dimension);
   // Quick return if the lower bound of the interval is already outside of the support
-  const NumericalPoint lowerBound(interval.getLowerBound());
-  const NumericalPoint upperBound(interval.getUpperBound());
+  const Point lowerBound(interval.getLowerBound());
+  const Point upperBound(interval.getUpperBound());
   NumericalScalar sumLower = 0.0;
   NumericalScalar sumUpper = 0.0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -465,7 +465,7 @@ Sample Multinomial::getSupport(const Interval & interval) const
   const UnsignedInteger size = fullSupport.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalPoint point(fullSupport[i]);
+    const Point point(fullSupport[i]);
     const Bool isInside = interval.contains(point);
     if (isInside) support.add(point);
   }
@@ -511,13 +511,13 @@ void Multinomial::computeCovariance() const
 }
 
 /* Parameters value and description accessor */
-Multinomial::NumericalPointWithDescriptionCollection Multinomial::getParametersCollection() const
+Multinomial::PointWithDescriptionCollection Multinomial::getParametersCollection() const
 {
   const UnsignedInteger dimension = getDimension();
-  NumericalPointWithDescriptionCollection parameters((dimension == 1 ? 1 : dimension + 1));
+  PointWithDescriptionCollection parameters((dimension == 1 ? 1 : dimension + 1));
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    NumericalPointWithDescription point(2);
+    PointWithDescription point(2);
     point[0] = n_;
     point[1] = p_[i];
     Description description(2);
@@ -531,7 +531,7 @@ Multinomial::NumericalPointWithDescriptionCollection Multinomial::getParametersC
   }
   if (dimension > 1)
   {
-    NumericalPointWithDescription point(dimension + 1);
+    PointWithDescription point(dimension + 1);
     Description description(dimension + 1);
     point[0] = n_;
     description[0] = "n";
@@ -556,7 +556,7 @@ Bool Multinomial::isElliptical() const
 }
 
 /* P accessor */
-void Multinomial::setP(const NumericalPoint & p)
+void Multinomial::setP(const Point & p)
 {
   // We check that the elements are all positive
   const UnsignedInteger dimension = p.getDimension();
@@ -586,7 +586,7 @@ void Multinomial::setP(const NumericalPoint & p)
 }
 
 /* P accessor */
-NumericalPoint Multinomial::getP() const
+Point Multinomial::getP() const
 {
   return p_;
 }

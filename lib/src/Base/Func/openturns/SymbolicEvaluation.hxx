@@ -52,7 +52,7 @@ public:
 
   /** Operator () */
   using EvaluationImplementation::operator();
-  NumericalPoint operator() (const NumericalPoint & inP) const;
+  Point operator() (const Point & inP) const;
   Sample operator() (const Sample & inS) const;
 
   /** Accessor for input point dimension */

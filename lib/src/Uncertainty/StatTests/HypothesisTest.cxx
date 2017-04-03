@@ -22,7 +22,7 @@
 #include <fstream>
 #include "openturns/HypothesisTest.hxx"
 #include "openturns/HypothesisTest.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Path.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/ResourceMap.hxx"
@@ -254,7 +254,7 @@ HypothesisTest::TestResultCollection HypothesisTest::RunTwoSamplesASelectionRTes
   resultFile >> pThreshold;
 
   // Fourth, test values
-  NumericalPoint pValues(size);
+  Point pValues(size);
   if (testName == "PartialRegression")
     resultFile >> intercept;
   for (UnsignedInteger i = 0; i < size; ++ i) resultFile >> pValues[i];

@@ -22,7 +22,7 @@
 
 #include "openturns/SolverImplementation.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
@@ -156,7 +156,7 @@ NumericalScalar SolverImplementation::solve(const Function & function,
   if (maximumFunctionEvaluation_ < 2) throw InternalException(HERE) << "Error: solver needs to evaluate the function at least two times, here maximumFunctionEvaluation=" << maximumFunctionEvaluation_;
   /* We take into account the fact that we use 2 function calls when using the other solve method */
   maximumFunctionEvaluation_ -= 2;
-  NumericalScalar root = solve(function, value, infPoint, supPoint, function(NumericalPoint(1, infPoint))[0], function(NumericalPoint(1, supPoint))[0]);
+  NumericalScalar root = solve(function, value, infPoint, supPoint, function(Point(1, infPoint))[0], function(Point(1, supPoint))[0]);
   maximumFunctionEvaluation_ += 2;
   usedFunctionEvaluation_ += 2;
   return root;

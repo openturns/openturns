@@ -45,9 +45,9 @@ int main(int argc, char *argv[])
     {
       fullprint << "laguerre(" << i << ")=" << laguerre.build(i).__str__() << std::endl;
     }
-    NumericalPoint roots(laguerre.getRoots(10));
+    Point roots(laguerre.getRoots(10));
     fullprint << "laguerre(10) roots=" << roots << std::endl;
-    NumericalPoint weights;
+    Point weights;
     roots = laguerre.getNodesAndWeights(10, weights);
     fullprint << "laguerre(10) roots=" << roots << " and weights=" << weights << std::endl;
   }

@@ -56,7 +56,7 @@ DualLinearCombinationGradient * DualLinearCombinationGradient::clone() const
 
 
 /* Gradient method */
-Matrix DualLinearCombinationGradient::gradient(const NumericalPoint & inP) const
+Matrix DualLinearCombinationGradient::gradient(const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
@@ -66,7 +66,7 @@ Matrix DualLinearCombinationGradient::gradient(const NumericalPoint & inP) const
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Matrix gradientI(evaluation_.functionsCollection_[i].gradient(inP));
-    const NumericalPoint coefficientI(evaluation_.coefficients_[i]);
+    const Point coefficientI(evaluation_.coefficients_[i]);
     for (UnsignedInteger j = 0; j < inputDimension; ++j)
       for (UnsignedInteger k = 0; k < outputDimension; ++k)
         result(j, k) += gradientI(j, 0) * coefficientI[k];

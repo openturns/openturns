@@ -32,11 +32,11 @@ int main(int argc, char *argv[])
   try
   {
     NumericalScalar first = -2.0;
-    NumericalPoint width;
+    Point width;
     width.add(1.0);
     width.add(2.0);
     width.add(1.5);
-    NumericalPoint height;
+    Point height;
     height.add(2.0);
     height.add(5.0);
     height.add(3.5);
@@ -46,10 +46,10 @@ int main(int argc, char *argv[])
     {
       fullprint << "histogramPolynomial(" << i << ")=" << histogramPolynomial.build(i).__str__() << std::endl;
     }
-    NumericalPoint roots(histogramPolynomial.getRoots(10));
+    Point roots(histogramPolynomial.getRoots(10));
     fullprint << "histogramPolynomial(10) roots=" << roots << std::endl;
-    NumericalPoint weights;
-    NumericalPoint nodes(histogramPolynomial.getNodesAndWeights(10, weights));
+    Point weights;
+    Point nodes(histogramPolynomial.getNodesAndWeights(10, weights));
     fullprint << "histogramPolynomial(10) nodes=" << nodes << " and weights=" << weights <<  std::endl;
   }
   catch (TestFailed & ex)

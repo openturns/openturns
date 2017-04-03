@@ -24,7 +24,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/Sample.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/SymmetricTensor.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -49,19 +49,19 @@ public:
       const UnsignedInteger index = 0);
 
   /** Compute the Standard Regression Coefficients (SRC) between the input sample and the output sample */
-  static NumericalPoint SRC(const Sample & inputSample,
+  static Point SRC(const Sample & inputSample,
                             const Sample & outputSample);
 
   /** Compute the Partial Correlation Coefficients (PCC) between the input sample and the output sample */
-  static NumericalPoint PCC(const Sample & inputSample,
+  static Point PCC(const Sample & inputSample,
                             const Sample & outputSample);
 
   /** Compute the Standard Rank Regression Coefficients (SRRC) between the input sample and the output sample */
-  static NumericalPoint SRRC(const Sample & inputSample,
+  static Point SRRC(const Sample & inputSample,
                              const Sample & outputSample);
 
   /** Compute the Partial Rank Correlation Coefficients (PRCC) between the input sample and the output sample */
-  static NumericalPoint PRCC(const Sample & inputSample,
+  static Point PRCC(const Sample & inputSample,
                              const Sample & outputSample);
 
 private:

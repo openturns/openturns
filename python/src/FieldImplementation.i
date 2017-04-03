@@ -21,7 +21,7 @@
 namespace OT{
 %extend FieldImplementation {
 
-const NumericalPoint __getitem__ (SignedInteger index) const
+const Point __getitem__ (SignedInteger index) const
 {
   if (index < 0) {
     index += self->getSize();
@@ -30,7 +30,7 @@ const NumericalPoint __getitem__ (SignedInteger index) const
 }
 
 void __setitem__ (SignedInteger index,
-                  const NumericalPoint & val)
+                  const Point & val)
 {
   if (index < 0) {
     index += self->getSize();

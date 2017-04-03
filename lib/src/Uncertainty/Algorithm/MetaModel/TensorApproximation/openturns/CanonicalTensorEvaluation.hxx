@@ -45,7 +45,7 @@ public:
   virtual CanonicalTensorEvaluation * clone() const;
 
     /** Evaluation operator */
-  virtual NumericalPoint operator() (const NumericalPoint & point) const;
+  virtual Point operator() (const Point & point) const;
 
   /** Dimension accessor */
   virtual UnsignedInteger getInputDimension() const;
@@ -54,8 +54,8 @@ public:
   Indices getDegrees() const;
 
   /** Coefficients accessor for rank m along i-th component */
-  void setCoefficients(const UnsignedInteger i, const UnsignedInteger j, const NumericalPoint & coefficients);
-  NumericalPoint getCoefficients(const UnsignedInteger i, const UnsignedInteger j) const;
+  void setCoefficients(const UnsignedInteger i, const UnsignedInteger j, const Point & coefficients);
+  Point getCoefficients(const UnsignedInteger i, const UnsignedInteger j) const;
 
   /** Basis accessor along i-th component */
   Basis getBasis(const UnsignedInteger i) const;

@@ -9,7 +9,7 @@ RandomGenerator.SetSeed(0)
 try:
 
     # Instanciate one distribution object
-    distribution = Multinomial(5, NumericalPoint(3, 0.25))
+    distribution = Multinomial(5, Point(3, 0.25))
     print("Distribution ", repr(distribution))
     print("Distribution ", distribution)
 
@@ -31,13 +31,13 @@ try:
     print("covariance=", repr(oneSample.computeCovariance()))
 
     print("support=\n" + str(distribution.getSupport()))
-    interval = Interval(NumericalPoint(distribution.getDimension(), 1.0),
-                        NumericalPoint(distribution.getDimension(), 3.0))
+    interval = Interval(Point(distribution.getDimension(), 1.0),
+                        Point(distribution.getDimension(), 3.0))
     print("support restricted to the interval=\n" + str(interval) +
           " gives=\n" + str(distribution.getSupport(interval)))
 
     # Define a point
-    point = NumericalPoint(distribution.getDimension(), 1.0)
+    point = Point(distribution.getDimension(), 1.0)
     print("Point= ", repr(point))
 
     # Show PDF and CDF at point

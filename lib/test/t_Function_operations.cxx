@@ -46,13 +46,13 @@ int main(int argc, char *argv[])
       Function f2(inVar, outVar, formula);
       // Third, build the product function
       Function myFunction(f1 * f2);
-      NumericalPoint inPoint(3);
+      Point inPoint(3);
       inPoint[0] = 1.2;
       inPoint[1] = 2.3;
       inPoint[2] = 3.4;
       fullprint << "myFunction=" << myFunction << std::endl;
       fullprint << "myFunction=" << myFunction.__str__() << std::endl;
-      const NumericalPoint value(myFunction(inPoint));
+      const Point value(myFunction(inPoint));
       fullprint << "Value at " << inPoint << "=\n" << value << std::endl;
       fullprint << "Value at " << inPoint << "=\n" << value.__str__() << std::endl;
       const Matrix gradient(myFunction.gradient(inPoint));
@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
       formula[0] = "x0 + x1 + x2";
       formula[1] = "-2 * x0 + 3 * x2 * x1 - x1";
       Function f2(inVar, outVar, formula);
-      NumericalPoint inPoint(3);
+      Point inPoint(3);
       inPoint[0] = 1.2;
       inPoint[1] = 2.3;
       inPoint[2] = 3.4;
@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
       {
         fullprint << "mySum=" << mySum << std::endl;
         fullprint << "mySum=" << mySum.__str__() << std::endl;
-        const NumericalPoint value(mySum(inPoint));
+        const Point value(mySum(inPoint));
         fullprint << "Value at " << inPoint << "=\n" << value << std::endl;
         fullprint << "Value at " << inPoint << "=\n" << value.__str__() << std::endl;
         const Matrix gradient(mySum.gradient(inPoint));
@@ -97,7 +97,7 @@ int main(int argc, char *argv[])
       {
         fullprint << "myDiff=" << myDiff << std::endl;
         fullprint << "myDiff=" << myDiff.__str__() << std::endl;
-        const NumericalPoint value(myDiff(inPoint));
+        const Point value(myDiff(inPoint));
         fullprint << "Value at " << inPoint << "=\n" << value << std::endl;
         fullprint << "Value at " << inPoint << "=\n" << value.__str__() << std::endl;
         const Matrix gradient(myDiff.gradient(inPoint));

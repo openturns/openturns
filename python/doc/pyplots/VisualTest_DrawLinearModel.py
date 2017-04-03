@@ -12,8 +12,8 @@ sample = distribution.getSample(size)
 firstSample = ot.Sample(size, 1)
 secondSample = ot.Sample(size, 1)
 for i in range(size):
-    firstSample[i] = ot.NumericalPoint(1, sample[i, 0])
-    secondSample[i] = ot.NumericalPoint(1, sample[i, 1])
+    firstSample[i] = ot.Point(1, sample[i, 0])
+    secondSample[i] = ot.Point(1, sample[i, 1])
 
 lmtest = ot.LinearModelFactory().build(firstSample, secondSample)
 

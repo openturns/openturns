@@ -20,7 +20,7 @@
  */
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/MediumSafe.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Log.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -77,7 +77,7 @@ MediumSafe::NumericalScalarCollection MediumSafe::solve(const Function & functio
   // If it has not yet been computed, compute it and store it
   catch (NotDefinedException &)
   {
-    infValue = function(NumericalPoint(1, infPoint))[0];
+    infValue = function(Point(1, infPoint))[0];
     setOriginValue(infValue);
   }
   // If the origin is in the failure domain, this strategy does not try to find another root
@@ -93,7 +93,7 @@ MediumSafe::NumericalScalarCollection MediumSafe::solve(const Function & functio
   while(infPoint < maximumDistance)
   {
     const NumericalScalar supPoint = std::min(infPoint + stepSize, maximumDistance);
-    const NumericalScalar supValue = function(NumericalPoint(1, supPoint))[0];
+    const NumericalScalar supValue = function(Point(1, supPoint))[0];
     // With this strategy, we stop after the first zero found
     if ((infValue - value) * (supValue - value) < 0.0)
     {

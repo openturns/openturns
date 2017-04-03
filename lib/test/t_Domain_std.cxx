@@ -33,11 +33,11 @@ int main(int argc, char *argv[])
   {
     // The 1D interface
     UnsignedInteger dim = 2;
-    NumericalPoint a(dim, -1.0);
-    NumericalPoint b(dim, 2.0);
+    Point a(dim, -1.0);
+    Point b(dim, 2.0);
     Domain domain  = Interval(a, b);
-    NumericalPoint p1(dim, 0.5);
-    NumericalPoint p2(dim, 2.5);
+    Point p1(dim, 0.5);
+    Point p2(dim, 2.5);
     fullprint << "Domain= " << domain << std::endl;
     // Accessors
     fullprint << "Dimension= " << domain.getDimension() << std::endl;

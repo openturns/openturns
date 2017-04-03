@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
       formula[0] = "2.0+x-2*y+x*y-x^2-3*y^2+x*y^2";
       SymbolicFunction f(inputVar, formula);
       fullprint << "f=" << f << std::endl;
-      Graph graph(f.draw(NumericalPoint(2, -10.0), NumericalPoint(2, 10.0), Indices(2, 21)));
+      Graph graph(f.draw(Point(2, -10.0), Point(2, 10.0), Indices(2, 21)));
       fullprint << "graph=" << graph << std::endl;
       graph.draw("NMFDraw2D.png");
     }
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
       formulas[0] = "x0 * sin(x1 + 2.0 * x2) - 2.0 * x1 * cos(3.0 * x0 - x2)";
       formulas[1] = "x1 * cos(x2 + 2.0 * x1) + 2.0 * x0 * cos(3.0 * x1 - x0)";
       SymbolicFunction f(inputVars, formulas);
-      NumericalPoint centralPoint(3);
+      Point centralPoint(3);
       centralPoint[0] = 1.0;
       centralPoint[1] = -0.5;
       centralPoint[2] = 1.5;
@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
       fullprint << "graph1D=" << graph1D << std::endl;
       graph1D.draw("NMFDraw1DFull.png");
       // Second output as a function of second and third inputs around central point
-      Graph graph2D(f.draw(1, 2, 1, centralPoint, NumericalPoint(2, -5.0), NumericalPoint(2, 5.0), Indices(2, 21)));
+      Graph graph2D(f.draw(1, 2, 1, centralPoint, Point(2, -5.0), Point(2, 5.0), Indices(2, 21)));
       fullprint << "graph1D=" << graph2D << std::endl;
       graph2D.draw("NMFDraw2DFull.png");
     }

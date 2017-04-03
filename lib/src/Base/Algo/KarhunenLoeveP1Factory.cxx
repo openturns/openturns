@@ -74,7 +74,7 @@ KarhunenLoeveP1Factory * KarhunenLoeveP1Factory::clone() const
  * where C is a given covariance model, using P1 approximation
  */
 Basis KarhunenLoeveP1Factory::build(const CovarianceModel & covarianceModel,
-                                    NumericalPoint & selectedEV) const
+                                    Point & selectedEV) const
 {
   const ProcessSample resultAsProcessSample(buildAsProcessSample(covarianceModel, selectedEV));
   Basis result(0);
@@ -104,7 +104,7 @@ Basis KarhunenLoeveP1Factory::build(const CovarianceModel & covarianceModel,
    with I the dxd identity matrix
 */
 ProcessSample KarhunenLoeveP1Factory::buildAsProcessSample(const CovarianceModel & covarianceModel,
-    NumericalPoint & selectedEV) const
+    Point & selectedEV) const
 {
   const UnsignedInteger numVertices = mesh_.getVerticesNumber();
   // Extend the Gram matrix of the mesh
@@ -133,14 +133,14 @@ ProcessSample KarhunenLoeveP1Factory::buildAsProcessSample(const CovarianceModel
   }
   eigenPairs = eigenPairs.sortAccordingToAComponent(augmentedDimension);
   SquareMatrix eigenVectors(augmentedDimension);
-  NumericalPoint eigenValues(augmentedDimension);
+  Point eigenValues(augmentedDimension);
   for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
   {
     for (UnsignedInteger j = 0; j < augmentedDimension; ++j) eigenVectors(i, j) = eigenPairs[j][i];
     eigenValues[i] = -eigenPairs[i][augmentedDimension];
   }
   LOGINFO(OSS(false) << "eigenVectors=\n" << eigenVectors << ", eigenValues=" << eigenValues);
-  selectedEV = NumericalPoint(0);
+  selectedEV = Point(0);
   ProcessSample result(mesh_, 0, dimension);
   UnsignedInteger j = 0;
   while ((j < augmentedDimension) && (eigenValues[j] > threshold_ * std::abs(eigenValues[0])))

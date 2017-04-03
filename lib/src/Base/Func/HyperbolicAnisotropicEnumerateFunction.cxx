@@ -52,7 +52,7 @@ HyperbolicAnisotropicEnumerateFunction::HyperbolicAnisotropicEnumerateFunction(c
 
 
 /* Parameter constructor */
-HyperbolicAnisotropicEnumerateFunction::HyperbolicAnisotropicEnumerateFunction(const NumericalPoint & weight,
+HyperbolicAnisotropicEnumerateFunction::HyperbolicAnisotropicEnumerateFunction(const Point & weight,
     const NumericalScalar q)
   : EnumerateFunctionImplementation(weight.getDimension())
   , weight_(weight)
@@ -238,7 +238,7 @@ NumericalScalar HyperbolicAnisotropicEnumerateFunction::getQ() const
 
 
 /* Weight accessor */
-void HyperbolicAnisotropicEnumerateFunction::setWeight(const NumericalPoint & weight)
+void HyperbolicAnisotropicEnumerateFunction::setWeight(const Point & weight)
 {
   for (UnsignedInteger i = 0; i < getDimension(); ++ i)
   {
@@ -251,7 +251,7 @@ void HyperbolicAnisotropicEnumerateFunction::setWeight(const NumericalPoint & we
 }
 
 
-NumericalPoint HyperbolicAnisotropicEnumerateFunction::getWeight() const
+Point HyperbolicAnisotropicEnumerateFunction::getWeight() const
 {
   return weight_;
 }

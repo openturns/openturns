@@ -39,12 +39,12 @@ int main(int argc, char *argv[])
     fullprint << "matrix1=" << matrix1 << std::endl;
     fullprint << "matrix1=\n" << matrix1.__str__() << std::endl;
 
-    NumericalPoint pt ;
+    Point pt ;
     pt.add(5.0);
     pt.add(0.0);
     fullprint << "pt=" << pt << std::endl;
 
-    NumericalPoint result ;
+    Point result ;
     result = matrix1.solveLinearSystem(pt);
     fullprint << "result=" << result << std::endl;
     //    fullprint << "verif. " << matrix1 * result - pt << std::endl;

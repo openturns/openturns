@@ -24,7 +24,7 @@
 #include "openturns/SimulationResultImplementation.hxx"
 #include "openturns/Pointer.hxx"
 #include "openturns/TypedInterfaceObject.hxx"
-#include "openturns/NumericalPointWithDescription.hxx"
+#include "openturns/PointWithDescription.hxx"
 #include "openturns/Graph.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -76,10 +76,10 @@ public:
   NumericalScalar getStandardDeviation() const;
 
   /** Mean point conditioned to the event realization accessor */
-  NumericalPoint getMeanPointInEventDomain() const;
+  Point getMeanPointInEventDomain() const;
 
   /** Importance factors accessor */
-  NumericalPointWithDescription getImportanceFactors() const;
+  PointWithDescription getImportanceFactors() const;
 
   /** Draw the importance factors */
   Graph drawImportanceFactors() const;

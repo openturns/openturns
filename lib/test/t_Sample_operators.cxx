@@ -38,13 +38,13 @@ int main(int argc, char *argv[])
     sample1.setName("Sample1");
 
     // We populate the empty sample
-    NumericalPoint point1(2);
+    Point point1(2);
     point1[0] = 10.;
     point1[1] = 20.;
-    NumericalPoint point2(2);
+    Point point2(2);
     point2[0] = 11.;
     point2[1] = 21.;
-    NumericalPoint point3(2);
+    Point point3(2);
     point3[0] = 12.;
     point3[1] = 22.;
     sample1.add(point1);
@@ -58,13 +58,13 @@ int main(int argc, char *argv[])
     sample2.setName("Sample2");
 
     // We populate the empty sample
-    NumericalPoint point4(2);
+    Point point4(2);
     point4[0] = 30.;
     point4[1] = 40.;
-    NumericalPoint point5(2);
+    Point point5(2);
     point5[0] = 31.;
     point5[1] = 41.;
-    NumericalPoint point6(2);
+    Point point6(2);
     point6[0] = 32.;
     point6[1] = 42.;
     sample2.add(point4);
@@ -87,12 +87,12 @@ int main(int argc, char *argv[])
     fullprint << "sample4=" << sample4 << std::endl;
 
     // translation ==> += operator
-    NumericalPoint translation(2, 5.0);
+    Point translation(2, 5.0);
     sample1 += translation;
     fullprint << "after a translation of vector=" << translation << " sample1=" << sample1 << std::endl;
 
     // scaling ==> *= operator
-    NumericalPoint scaling(2, 2.0);
+    Point scaling(2, 2.0);
     sample1 *= scaling;
     fullprint << "after a scaling of vector=" << scaling << " sample1=" << sample1 << std::endl;
 

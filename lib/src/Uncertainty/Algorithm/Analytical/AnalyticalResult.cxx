@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 typedef Distribution::InverseIsoProbabilisticTransformation InverseIsoProbabilisticTransformation;
-typedef PersistentCollection<NumericalPointWithDescription> PersistentSensitivity;
+typedef PersistentCollection<PointWithDescription> PersistentSensitivity;
 
 CLASSNAMEINIT(AnalyticalResult);
 
@@ -48,7 +48,7 @@ static const Factory<AnalyticalResult> Factory_AnalyticalResult;
 /*
  * @brief  Standard constructor
  */
-AnalyticalResult::AnalyticalResult(const NumericalPoint & standardSpaceDesignPoint,
+AnalyticalResult::AnalyticalResult(const Point & standardSpaceDesignPoint,
                                    const Event & limitStateVariable,
                                    const Bool isStandardPointOriginInFailureSpace):
   PersistentObject(),
@@ -76,7 +76,7 @@ AnalyticalResult::AnalyticalResult():
   physicalSpaceDesignPoint_(0),
   // Fake event based on a fake 1D composite random vector, which requires a fake 1D Function
   limitStateVariable_(RandomVector(CompositeRandomVector(Function(Description(0), Description(1), Description(1)),
-                                   ConstantRandomVector(NumericalPoint(0)))),
+                                   ConstantRandomVector(Point(0)))),
                       Less(), 0.0),
   isStandardPointOriginInFailureSpace_(false),
   hasoferReliabilityIndex_(0.0),
@@ -98,14 +98,14 @@ AnalyticalResult * AnalyticalResult::clone() const
 }
 
 /* StandardSpaceDesignPoint accessor */
-NumericalPoint AnalyticalResult::getStandardSpaceDesignPoint() const
+Point AnalyticalResult::getStandardSpaceDesignPoint() const
 {
   return standardSpaceDesignPoint_;
 }
 
 
 /* StandardSpaceDesignPoint accessor */
-void AnalyticalResult::setStandardSpaceDesignPoint(const NumericalPoint & standardSpaceDesignPoint)
+void AnalyticalResult::setStandardSpaceDesignPoint(const Point & standardSpaceDesignPoint)
 {
   standardSpaceDesignPoint_ = standardSpaceDesignPoint;
   computePhysicalSpaceDesignPoint();
@@ -125,13 +125,13 @@ void AnalyticalResult::computePhysicalSpaceDesignPoint() const
 }
 
 /* PhysicalSpaceDesignPoint accessor */
-void AnalyticalResult::setPhysicalSpaceDesignPoint(const NumericalPoint & physicalSpaceDesignPoint)
+void AnalyticalResult::setPhysicalSpaceDesignPoint(const Point & physicalSpaceDesignPoint)
 {
   physicalSpaceDesignPoint_ = physicalSpaceDesignPoint;
 }
 
 /* PhysicalSpaceDesignPoint accessor */
-NumericalPoint AnalyticalResult::getPhysicalSpaceDesignPoint() const
+Point AnalyticalResult::getPhysicalSpaceDesignPoint() const
 {
   return physicalSpaceDesignPoint_;
 }
@@ -158,7 +158,7 @@ void AnalyticalResult::setIsStandardPointOriginInFailureSpace(const Bool isStand
 void AnalyticalResult::computeImportanceFactors() const
 {
   const UnsignedInteger dimension = standardSpaceDesignPoint_.getDimension();
-  importanceFactors_ = NumericalPoint(dimension, -1.0);
+  importanceFactors_ = Point(dimension, -1.0);
   /* First, check that the importance factors are well-defined */
   if (standardSpaceDesignPoint_.norm() > 0.0)
   {
@@ -174,7 +174,7 @@ void AnalyticalResult::computeImportanceFactors() const
     // for each marginals */
     for (UnsignedInteger marginalIndex = 0; marginalIndex < dimension; ++marginalIndex)
     {
-      const NumericalScalar y = inputDistribution.getMarginal(marginalIndex).computeCDF(NumericalPoint(1, physicalSpaceDesignPoint_[marginalIndex]));
+      const NumericalScalar y = inputDistribution.getMarginal(marginalIndex).computeCDF(Point(1, physicalSpaceDesignPoint_[marginalIndex]));
       importanceFactors_[marginalIndex] = standardMarginalDistribution.computeQuantile(y)[0];
     }
     importanceFactors_ = importanceFactors_.normalizeSquare();
@@ -191,7 +191,7 @@ void AnalyticalResult::computeImportanceFactors() const
 void AnalyticalResult::computeClassicalImportanceFactors() const
 {
   const UnsignedInteger dimension = standardSpaceDesignPoint_.getDimension();
-  classicalImportanceFactors_ = NumericalPoint(dimension, -1.0);
+  classicalImportanceFactors_ = Point(dimension, -1.0);
   /* First, check that the importance factors are well-defined */
   const NumericalScalar beta2 = standardSpaceDesignPoint_.normSquare();
   if (beta2 > 0.0) classicalImportanceFactors_ = standardSpaceDesignPoint_.normalizeSquare();
@@ -210,13 +210,13 @@ void AnalyticalResult::computePhysicalImportanceFactors() const
   const Event myEvent(getLimitStateVariable());
   const StandardEvent mystandardEvent(myEvent);
   const NumericalScalar sign = myEvent.getOperator().compare(0., 1.) ? 1.0 : -1.0;
-  const NumericalPoint currentStandardGradient(mystandardEvent.getImplementation()->getFunction().gradient(getStandardSpaceDesignPoint()) * NumericalPoint(1, 1.0));
-  const NumericalPoint alpha(sign / currentStandardGradient.norm() * currentStandardGradient);
+  const Point currentStandardGradient(mystandardEvent.getImplementation()->getFunction().gradient(getStandardSpaceDesignPoint()) * Point(1, 1.0));
+  const Point alpha(sign / currentStandardGradient.norm() * currentStandardGradient);
   const Distribution physicalDistribution(myEvent.getImplementation()->getAntecedent()->getDistribution());
   const InverseIsoProbabilisticTransformation inverseIsoProbabilisticTransformation(physicalDistribution.getInverseIsoProbabilisticTransformation());
   const Matrix isoGradient(inverseIsoProbabilisticTransformation.gradient(standardSpaceDesignPoint_));
   physicalImportanceFactors_ = (isoGradient * alpha).normalizeSquare();
-  const NumericalPoint currentPhysicalGradient(limitStateVariable_.getImplementation()->getFunction().gradient(getPhysicalSpaceDesignPoint()) * NumericalPoint(1, 1.0));
+  const Point currentPhysicalGradient(limitStateVariable_.getImplementation()->getFunction().gradient(getPhysicalSpaceDesignPoint()) * Point(1, 1.0));
   physicalImportanceFactors_ = currentPhysicalGradient.normalizeSquare();
   physicalImportanceFactors_.setName("Physical importance factors");
   physicalImportanceFactors_.setDescription(myEvent.getImplementation()->getAntecedent()->getDescription());
@@ -233,8 +233,8 @@ void AnalyticalResult::computeMeanPointInStandardEventDomain() const
   NumericalScalar scaling = hasoferReliabilityIndex_ * p_standardDistribution->computeRadialDistributionCDF(hasoferReliabilityIndex_, true);
   NumericalScalar a = hasoferReliabilityIndex_;
   // Quadrature rule
-  NumericalPoint weights;
-  const NumericalPoint nodes(p_standardDistribution->getGaussNodesAndWeights(weights));
+  Point weights;
+  const Point nodes(p_standardDistribution->getGaussNodesAndWeights(weights));
   const UnsignedInteger nodesSize = nodes.getSize();
   NumericalScalar sum = 0.0;
   const NumericalScalar quantileEpsilon = ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon");
@@ -252,19 +252,19 @@ void AnalyticalResult::computeMeanPointInStandardEventDomain() const
 }
 
 /* Mean point conditioned to the event realization accessor */
-NumericalPoint AnalyticalResult::getMeanPointInStandardEventDomain() const
+Point AnalyticalResult::getMeanPointInStandardEventDomain() const
 {
   if (!isAlreadyComputedMeanPointInStandardEventDomain_) computeMeanPointInStandardEventDomain();
   return meanPointInStandardEventDomain_;
 }
 
-void AnalyticalResult::setMeanPointInStandardEventDomain(const NumericalPoint & meanPointInStandardEventDomain)
+void AnalyticalResult::setMeanPointInStandardEventDomain(const Point & meanPointInStandardEventDomain)
 {
   meanPointInStandardEventDomain_ = meanPointInStandardEventDomain;
 }
 
 /* ImportanceFactors accessor */
-NumericalPointWithDescription AnalyticalResult::getImportanceFactors(const ImportanceFactorType type) const
+PointWithDescription AnalyticalResult::getImportanceFactors(const ImportanceFactorType type) const
 {
   switch(type)
   {
@@ -318,30 +318,30 @@ void AnalyticalResult::computeHasoferReliabilityIndexSensitivity() const
 {
   /* get Set1 : parameters of the physical distribution */
   const Distribution physicalDistribution(limitStateVariable_.getImplementation()->getAntecedent()->getDistribution());
-  const NumericalPointWithDescriptionCollection set1(physicalDistribution.getParametersCollection());
+  const PointWithDescriptionCollection set1(physicalDistribution.getParametersCollection());
   /* get Set2 : parameters of the physical model */
   const Function physicalModel(limitStateVariable_.getImplementation()->getFunction());
-  NumericalPointWithDescription set2(physicalModel.getParameter());
+  PointWithDescription set2(physicalModel.getParameter());
   set2.setDescription(physicalModel.getParameterDescription());
   const Bool isSet2Empty = set2.getDimension() == 0;
   /* get SetIso : parameters included in the isoprobabilistic transformation which is a subset of Set1 */
   const InverseIsoProbabilisticTransformation inverseIsoProbabilisticTransformation(physicalDistribution.getInverseIsoProbabilisticTransformation());
-  NumericalPointWithDescription setIso(inverseIsoProbabilisticTransformation.getParameter());
+  PointWithDescription setIso(inverseIsoProbabilisticTransformation.getParameter());
   setIso.setDescription(inverseIsoProbabilisticTransformation.getParameterDescription());
   /* scaling factor between sensitivity and gradients (ref doc : factor = -lambda/beta) */
   /* gradient of the standard limite state function */
   const Matrix physicalGradientMatrix(physicalModel.gradient(physicalSpaceDesignPoint_));
   const Matrix isoGradient(inverseIsoProbabilisticTransformation.gradient(standardSpaceDesignPoint_));
-  const NumericalPoint standardFunctionGradient(isoGradient * (physicalGradientMatrix * NumericalPoint(1, 1.0)));
+  const Point standardFunctionGradient(isoGradient * (physicalGradientMatrix * Point(1, 1.0)));
   const NumericalScalar gradientNorm = standardFunctionGradient.norm();
   NumericalScalar gradientToSensitivity = 0.0;
   if (gradientNorm > 0.0) gradientToSensitivity = -(limitStateVariable_.getOperator().compare(1.0, 0.0) ? 1.0 : -1.0) / gradientNorm;
   /* evaluate the gradients of the physical model with respect to Set2 (ref doc : K2) */
-  NumericalPoint physicalGradient;
-  if (!isSet2Empty) physicalGradient = physicalModel.parameterGradient(physicalSpaceDesignPoint_) * NumericalPoint(1, 1.0);
+  Point physicalGradient;
+  if (!isSet2Empty) physicalGradient = physicalModel.parameterGradient(physicalSpaceDesignPoint_) * Point(1, 1.0);
   /* evaluate the gradients of the isoprobabilistic transformation with respect to SetIso (ref doc : KS) */
-  NumericalPoint isoProbabilisticGradient;
-  if (setIso.getDimension() > 0) isoProbabilisticGradient = inverseIsoProbabilisticTransformation.parameterGradient(standardSpaceDesignPoint_) * (physicalGradientMatrix * NumericalPoint(1, 1.0));
+  Point isoProbabilisticGradient;
+  if (setIso.getDimension() > 0) isoProbabilisticGradient = inverseIsoProbabilisticTransformation.parameterGradient(standardSpaceDesignPoint_) * (physicalGradientMatrix * Point(1, 1.0));
   /* associate to each element of Set1 the gradient value */
   /* hasoferReliabilityIndexSensitivity is the collection Set1 + one other collection wich is Set2 */
   const UnsignedInteger set1Size = set1.getSize();
@@ -350,9 +350,9 @@ void AnalyticalResult::computeHasoferReliabilityIndexSensitivity() const
 
   for (UnsignedInteger sensitivityIndex = 0; sensitivityIndex < set1Size; ++sensitivityIndex)
   {
-    const NumericalPointWithDescription currentParameters(set1[sensitivityIndex]);
+    const PointWithDescription currentParameters(set1[sensitivityIndex]);
     const UnsignedInteger currentDimension = currentParameters.getDimension();
-    NumericalPointWithDescription currentSensitivity(currentDimension);
+    PointWithDescription currentSensitivity(currentDimension);
     const Description currentDescription(currentParameters.getDescription());
     // the currentSensitivity gets the description and the name from set1
     currentSensitivity.setDescription(currentDescription);
@@ -369,7 +369,7 @@ void AnalyticalResult::computeHasoferReliabilityIndexSensitivity() const
     hasoferReliabilityIndexSensitivity_[sensitivityIndex] = currentSensitivity;
   } // sensitivityIndex
 
-  /* if set2 is not empty : convert the matrix isoProbabilisticGradient, which has n rows and 1 column, into a NumericalPoint */
+  /* if set2 is not empty : convert the matrix isoProbabilisticGradient, which has n rows and 1 column, into a Point */
   if (size > set1Size)
   {
     hasoferReliabilityIndexSensitivity_[set1Size] = gradientToSensitivity * physicalGradient;
@@ -379,7 +379,7 @@ void AnalyticalResult::computeHasoferReliabilityIndexSensitivity() const
 } // end computeHasoferReliabilityIndexSensitivity()
 
 
-/* Returns the position of the given (value, name) into the NumericalPoint or the dimension of the NumericalPoint if failed */
+/* Returns the position of the given (value, name) into the Point or the dimension of the Point if failed */
 UnsignedInteger AnalyticalResult::computePosition(const String & marginalName, const String & marginalParameterName, const Description & parameterSetNames) const
 {
   const UnsignedInteger dimension = parameterSetNames.getSize();

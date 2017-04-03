@@ -53,7 +53,7 @@ hmat.factorize('LU')
 
 print('rows=', hmat.getNbRows())
 print('columns=', hmat.getNbColumns())
-print('norm=', ot.NumericalPoint(1, hmat.norm()))
+print('norm=', ot.Point(1, hmat.norm()))
 if hmatRef.norm() < 1e-10:
   print('norm(A-LLt) < 1e-10')
 else:
@@ -63,7 +63,7 @@ print('compressionRatio= (%d, %d)' % hmat.compressionRatio())
 print('fullrkRatio= (%d, %d)' % hmat.fullrkRatio())
 
 # vector multiply
-y = ot.NumericalPoint(hmat.getNbColumns())
+y = ot.Point(hmat.getNbColumns())
 x = [2.0] * hmat.getNbColumns()
 hmat.gemv('N', 1.0, x, 3.0, y)
 print('y=', y)

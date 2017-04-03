@@ -25,7 +25,7 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
 #include "openturns/OptimizationProblem.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -106,16 +106,16 @@ private:
   NumericalScalar currentSigma_;
 
   /** Abdo Rackwitz current point */
-  NumericalPoint currentPoint_;
+  Point currentPoint_;
 
   /** Abdo Rackwitz current direction */
-  NumericalPoint currentDirection_;
+  Point currentDirection_;
 
   /** Abdo Rackwitz current level value */
   NumericalScalar currentLevelValue_;
 
   /** Abdo Rackwitz current gradient as a column vector */
-  NumericalPoint currentGradient_;
+  Point currentGradient_;
 
   /** Abdo Rackwitz current Lagrange multiplier */
   NumericalScalar currentLambda_;

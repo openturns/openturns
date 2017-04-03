@@ -275,17 +275,17 @@ NumericalScalar NonCentralStudentCDF(const NumericalScalar nu,
   // Estimate the position of the modus MOD of the FUNC
   mode = (x * std::sqrt(4 * nu * nuMinus2 + xSquare * (delta * delta + 4 * nuMinus2)) - delta * (xSquare + 2 * nu)) / (2 * (xSquare + nu));
   const NumericalScalar dZ = std::min(0.5 * std::abs(mode + delta), 0.01);
-  NumericalPoint dMode(3);
+  Point dMode(3);
   dMode[0] = mode - dZ;
   dMode[1] = mode;
   dMode[2] = mode + dZ;
   const NumericalScalar theta = nu / xSquare;
-  NumericalPoint q(3);
+  Point q(3);
   q[0] = theta * std::pow(dMode[0] + delta, 2);
   q[1] = theta * std::pow(dMode[1] + delta, 2);
   q[2] = theta * std::pow(dMode[2] + delta, 2);
   // Estimate the value of log(FUNC) around the mode point
-  NumericalPoint logFMode(3);
+  Point logFMode(3);
   logFMode[0] = const1 + 0.5 * (nuMinus2 * std::log(q[0] / nu) + nu - q[0] - dMode[0] * dMode[0]);
   logFMode[1] = const1 + 0.5 * (nuMinus2 * std::log(q[1] / nu) + nu - q[1] - dMode[1] * dMode[1]);
   logFMode[2] = const1 + 0.5 * (nuMinus2 * std::log(q[2] / nu) + nu - q[2] - dMode[2] * dMode[2]);
@@ -333,8 +333,8 @@ NumericalScalar NonCentralStudentCDF(const NumericalScalar nu,
   // Second, compute the contribution of each subinterval by Gauss-Legendre integration with 15 nodes on 16 intervals
   const GaussKronrodRule rule(GaussKronrodRule::G7K15);
   const NumericalScalar wg0 = rule.getZeroGaussWeight();
-  const NumericalPoint wg(rule.getOtherGaussWeights());
-  const NumericalPoint xg(rule.getOtherKronrodNodes());
+  const Point wg(rule.getOtherGaussWeights());
+  const Point xg(rule.getOtherKronrodNodes());
   const UnsignedInteger iMax = 8;
   const NumericalScalar dLowerBound = (mode - lowerBound) / iMax;
   const NumericalScalar wLowerBound = 0.5 * dLowerBound;

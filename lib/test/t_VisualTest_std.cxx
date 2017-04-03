@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
     UnsignedInteger dimension = 2;
     CorrelationMatrix R(dimension);
     R(0, 1) = 0.8;
-    Normal distribution(NumericalPoint(dimension, 3.0), NumericalPoint(dimension, 2.0), R);
+    Normal distribution(Point(dimension, 3.0), Point(dimension, 2.0), R);
     UnsignedInteger size = 100;
     Sample sample2D(distribution.getSample(size));
     Sample firstSample(size, 1);
@@ -93,10 +93,10 @@ int main(int argc, char *argv[])
       secondSample[i][0] = sample2D[i][1];
     }
 
-    Graph sampleSampleClouds(VisualTest::DrawClouds(sample2D, Normal(NumericalPoint(dimension, 2.0), NumericalPoint(dimension, 3.0), R).getSample(size / 2)));
+    Graph sampleSampleClouds(VisualTest::DrawClouds(sample2D, Normal(Point(dimension, 2.0), Point(dimension, 3.0), R).getSample(size / 2)));
     fullprint << "sampleSampleClouds = " << sampleSampleClouds << std::endl;
 
-    Graph sampleDistributionClouds(VisualTest::DrawClouds(sample2D, Normal(NumericalPoint(dimension, 2.5), NumericalPoint(dimension, 1.0), R)));
+    Graph sampleDistributionClouds(VisualTest::DrawClouds(sample2D, Normal(Point(dimension, 2.5), Point(dimension, 1.0), R)));
     fullprint << "sampleDistributionClouds = " << sampleDistributionClouds << std::endl;
   }
 
@@ -105,7 +105,7 @@ int main(int argc, char *argv[])
     UnsignedInteger dimension = 2;
     CorrelationMatrix R(dimension);
     R(0, 1) = 0.8;
-    Normal distribution(NumericalPoint(dimension, 3.0), NumericalPoint(dimension, 2.0), R);
+    Normal distribution(Point(dimension, 3.0), Point(dimension, 2.0), R);
     UnsignedInteger size = 100;
     Sample sample2D(distribution.getSample(size));
     Sample firstSample(size, 1);

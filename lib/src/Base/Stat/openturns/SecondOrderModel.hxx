@@ -81,10 +81,10 @@ public:
   virtual CovarianceMatrix computeCovariance(const NumericalScalar tau) const;
 
 
-  virtual CovarianceMatrix computeCovariance(const NumericalPoint & s,
-      const NumericalPoint & t) const;
+  virtual CovarianceMatrix computeCovariance(const Point & s,
+      const Point & t) const;
 
-  virtual CovarianceMatrix computeCovariance(const NumericalPoint & tau) const;
+  virtual CovarianceMatrix computeCovariance(const Point & tau) const;
 
   /** Computation of the spectral density function */
   virtual HermitianMatrix computeSpectralDensity(const NumericalScalar frequency) const;

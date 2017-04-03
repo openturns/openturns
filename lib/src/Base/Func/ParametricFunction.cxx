@@ -37,7 +37,7 @@ ParametricFunction::ParametricFunction ()
 /* Parameter constructor */
 ParametricFunction::ParametricFunction (const Function & function,
                                         const Indices & set,
-                                        const NumericalPoint & referencePoint,
+                                        const Point & referencePoint,
                                         const Bool parametersSet)
   : Function()
 {

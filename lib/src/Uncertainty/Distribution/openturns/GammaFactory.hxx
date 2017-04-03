@@ -46,10 +46,10 @@ public:
   using DistributionFactoryImplementation::build;
 
   Implementation build(const Sample & sample) const;
-  Implementation build(const NumericalPoint & parameters) const;
+  Implementation build(const Point & parameters) const;
   Implementation build() const;
   Gamma buildAsGamma(const Sample & sample) const;
-  Gamma buildAsGamma(const NumericalPoint & parameters) const;
+  Gamma buildAsGamma(const Point & parameters) const;
   Gamma buildAsGamma() const;
 
 }; /* class GammaFactory */

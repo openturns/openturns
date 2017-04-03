@@ -80,7 +80,7 @@ public:
   NumericalScalar getValue(const UnsignedInteger i) const;
 
   /** Get all the values as a sample */
-  NumericalPoint getValues() const;
+  Point getValues() const;
 
   /** Check if the given grid follows the current grid */
   Bool follows(const RegularGrid & starter) const;
@@ -89,7 +89,7 @@ public:
   Bool isRegular() const;
 
   /** Get the index of the nearest vertex */
-  UnsignedInteger getNearestVertexIndex(const NumericalPoint & point) const;
+  UnsignedInteger getNearestVertexIndex(const Point & point) const;
 
   /**
    * String converter

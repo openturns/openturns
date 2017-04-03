@@ -41,15 +41,15 @@ int main(int argc, char *argv[])
     // Evaluation of y = ax + b (a: scale, b: translate)
 
     // scale
-    const NumericalPoint scale(1, 3.0);
+    const Point scale(1, 3.0);
     outputSample *= scale;
 
     // translate sample
-    const NumericalPoint translate(1, 3.1);
+    const Point translate(1, 3.1);
     outputSample += translate;
 
     // Finally inverse transform using an arbitrary lambda
-    const NumericalPoint lambda(1, 1.8);
+    const Point lambda(1, 1.8);
     const InverseBoxCoxEvaluation  boxCoxFunction(lambda);
 
     // transform y using BoxCox function
@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
     GeneralLinearModelResult result;
     const Basis basis = LinearBasisFactory(1).build();
     const DiracCovarianceModel covarianceModel;
-    const NumericalPoint shift(1, 1.0e-1);
+    const Point shift(1, 1.0e-1);
     BoxCoxTransform myBoxCox = factory.build(inputSample, outputSample, covarianceModel, basis, shift, result);
 
     fullprint << "myBoxCox (GLM)=" << myBoxCox << std::endl;

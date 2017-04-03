@@ -90,9 +90,9 @@ String SymbolicEvaluation::__str__(const String & offset) const
 
 
 /* Operator () */
-NumericalPoint SymbolicEvaluation::operator() (const NumericalPoint & inP) const
+Point SymbolicEvaluation::operator() (const Point & inP) const
 {
-  NumericalPoint result(parser_(inP));
+  Point result(parser_(inP));
   ++ callsNumber_;
   if (isHistoryEnabled_)
   {

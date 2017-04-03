@@ -101,8 +101,8 @@ void InverseWishart::computeRange()
   const UnsignedInteger p = cholesky_.getDimension();
   const NumericalScalar bound = ChiSquare(1.0).getRange().getUpperBound()[0];
   UnsignedInteger index = 0;
-  NumericalPoint upper(getDimension());
-  NumericalPoint lower(getDimension());
+  Point upper(getDimension());
+  Point lower(getDimension());
   for (UnsignedInteger i = 0; i < p; ++i)
     for (UnsignedInteger j = 0; j <= i; ++j)
     {
@@ -114,11 +114,11 @@ void InverseWishart::computeRange()
 }
 
 /* Get one realization of the distribution */
-NumericalPoint InverseWishart::getRealization() const
+Point InverseWishart::getRealization() const
 {
   const CovarianceMatrix X(getRealizationAsMatrix());
   const UnsignedInteger p = X.getDimension();
-  NumericalPoint realization(getDimension());
+  Point realization(getDimension());
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < p; ++i)
     for (UnsignedInteger j = 0; j <= i; ++j)
@@ -157,7 +157,7 @@ NumericalScalar InverseWishart::computePDF(const CovarianceMatrix & m) const
   return pdf;
 }
 
-NumericalScalar InverseWishart::computePDF(const NumericalPoint & point) const
+NumericalScalar InverseWishart::computePDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
   const NumericalScalar logPDF = computeLogPDF(point);
@@ -165,7 +165,7 @@ NumericalScalar InverseWishart::computePDF(const NumericalPoint & point) const
   return pdf;
 }
 
-NumericalScalar InverseWishart::computeLogPDF(const NumericalPoint & point) const
+NumericalScalar InverseWishart::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
   const UnsignedInteger p = cholesky_.getDimension();
@@ -209,7 +209,7 @@ NumericalScalar InverseWishart::computeLogPDF(const CovarianceMatrix & m) const
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar InverseWishart::computeCDF(const NumericalPoint & point) const
+NumericalScalar InverseWishart::computeCDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
   return ContinuousDistribution::computeCDF(point);
@@ -220,7 +220,7 @@ void InverseWishart::computeMean() const
 {
   const CovarianceMatrix V((cholesky_ * cholesky_.transpose()).getImplementation());
   const UnsignedInteger p = cholesky_.getDimension();
-  mean_ = NumericalPoint(getDimension());
+  mean_ = Point(getDimension());
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < p; ++i)
     for (UnsignedInteger j = 0; j <= i; ++j)
@@ -256,9 +256,9 @@ void InverseWishart::computeCovariance() const
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint InverseWishart::getStandardDeviation() const /*throw(NotDefinedException)*/
+Point InverseWishart::getStandardDeviation() const /*throw(NotDefinedException)*/
 {
-  NumericalPoint sigma(getDimension());
+  Point sigma(getDimension());
   // If the covariance has already been computed, use it
   if (isAlreadyComputedCovariance_)
   {
@@ -281,11 +281,11 @@ NumericalPoint InverseWishart::getStandardDeviation() const /*throw(NotDefinedEx
 }
 
 
-NumericalPoint InverseWishart::getParameter() const
+Point InverseWishart::getParameter() const
 {
   const CovarianceMatrix V(getCovariance());
   const UnsignedInteger p = V.getDimension();
-  NumericalPoint point((p * (p + 1)) / 2 + 1);
+  Point point((p * (p + 1)) / 2 + 1);
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < p; ++ i)
     for (UnsignedInteger j = 0; j <= i; ++ j)
@@ -297,7 +297,7 @@ NumericalPoint InverseWishart::getParameter() const
   return point;
 }
 
-void InverseWishart::setParameter(const NumericalPoint & parameter)
+void InverseWishart::setParameter(const Point & parameter)
 {
   const UnsignedInteger size = parameter.getSize();
   const NumericalScalar pReal = 0.5 * std::sqrt(8.0 * size - 7.0) - 0.5;

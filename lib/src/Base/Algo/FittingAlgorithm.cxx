@@ -62,7 +62,7 @@ String FittingAlgorithm::__str__(const String & offset) const
 
 NumericalScalar FittingAlgorithm::run(const Sample & x,
                                       const Sample & y,
-                                      const NumericalPoint & weight,
+                                      const Point & weight,
                                       const Basis & basis,
                                       const Indices & indices) const
 {
@@ -78,7 +78,7 @@ NumericalScalar FittingAlgorithm::run(const Sample & x,
 }
 
 NumericalScalar FittingAlgorithm::run(const Sample & y,
-                                      const NumericalPoint & weight,
+                                      const Point & weight,
                                       const Indices & indices,
                                       const DesignProxy & proxy) const
 {

@@ -512,7 +512,7 @@ History criterion=      [ PhiP criterion ]
 98 : [ 41.3947        ]
 99 : [ 17.6512        ]
 Final criteria: C2=0.025627, PhiP=14.312989
-lhs= class=SimulatedAnnealingLHS name=Unnamed bounds=class=Interval name=Unnamed dimension=3 lower bound=class=NumericalPoint name=Unnamed dimension=3 values=[0,0,0] upper bound=class=NumericalPoint name=Unnamed dimension=3 values=[1,1,1] finite lower bound=[1,1,1] finite upper bound=[1,1,1] spaceFilling=class=SpaceFilling implementation=class=SpaceFillingC2 minimization=true profile=class=TemperatureProfile implementation=class=GeometricProfile name=Unnamed T0=10 c=0.95 iMax=2000
+lhs= class=SimulatedAnnealingLHS name=Unnamed bounds=class=Interval name=Unnamed dimension=3 lower bound=class=Point name=Unnamed dimension=3 values=[0,0,0] upper bound=class=Point name=Unnamed dimension=3 values=[1,1,1] finite lower bound=[1,1,1] finite upper bound=[1,1,1] spaceFilling=class=SpaceFilling implementation=class=SpaceFillingC2 minimization=true profile=class=TemperatureProfile implementation=class=GeometricProfile name=Unnamed T0=10 c=0.95 iMax=2000
 Generating design using SimulatedAnnealing geometric temperature & C2 criterion=      [ X0    X1    X2    ]
  0 : [ 0.655 0.045 0.475 ]
  1 : [ 0.965 0.775 0.115 ]
@@ -639,7 +639,7 @@ History probability=        [ Temperature  ]
 1998 : [  3.10287e-44 ]
 1999 : [  2.94773e-44 ]
 Final criteria: C2=0.013700, PhiP=14.744212
-lhs= class=SimulatedAnnealingLHS name=Unnamed bounds=class=Interval name=Unnamed dimension=3 lower bound=class=NumericalPoint name=Unnamed dimension=3 values=[0,0,0] upper bound=class=NumericalPoint name=Unnamed dimension=3 values=[1,1,1] finite lower bound=[1,1,1] finite upper bound=[1,1,1] spaceFilling=class=SpaceFilling implementation=class=SpaceFillingPhiP p=50 profile=class=TemperatureProfile implementation=class=GeometricProfile name=Unnamed T0=10 c=0.95 iMax=2000
+lhs= class=SimulatedAnnealingLHS name=Unnamed bounds=class=Interval name=Unnamed dimension=3 lower bound=class=Point name=Unnamed dimension=3 values=[0,0,0] upper bound=class=Point name=Unnamed dimension=3 values=[1,1,1] finite lower bound=[1,1,1] finite upper bound=[1,1,1] spaceFilling=class=SpaceFilling implementation=class=SpaceFillingPhiP p=50 profile=class=TemperatureProfile implementation=class=GeometricProfile name=Unnamed T0=10 c=0.95 iMax=2000
 Generating design using SimulatedAnnealing geometric temperature & C2 criterion=      [ X0    X1    X2    ]
  0 : [ 0.955 0.595 0.645 ]
  1 : [ 0.175 0.695 0.175 ]
@@ -766,7 +766,7 @@ History probability=        [ Temperature  ]
 1998 : [  3.10287e-44 ]
 1999 : [  2.94773e-44 ]
 Final criteria: C2=0.019991, PhiP=6.401057
-lhs= class=SimulatedAnnealingLHS name=Unnamed bounds=class=Interval name=Unnamed dimension=3 lower bound=class=NumericalPoint name=Unnamed dimension=3 values=[0,0,0] upper bound=class=NumericalPoint name=Unnamed dimension=3 values=[1,1,1] finite lower bound=[1,1,1] finite upper bound=[1,1,1] spaceFilling=class=SpaceFilling implementation=class=SpaceFillingC2 minimization=true profile=class=TemperatureProfile implementation=class=LinearProfile name=Unnamed T0=10 iMax=2000
+lhs= class=SimulatedAnnealingLHS name=Unnamed bounds=class=Interval name=Unnamed dimension=3 lower bound=class=Point name=Unnamed dimension=3 values=[0,0,0] upper bound=class=Point name=Unnamed dimension=3 values=[1,1,1] finite lower bound=[1,1,1] finite upper bound=[1,1,1] spaceFilling=class=SpaceFilling implementation=class=SpaceFillingC2 minimization=true profile=class=TemperatureProfile implementation=class=LinearProfile name=Unnamed T0=10 iMax=2000
 Generating design using linear temperature SimulatedAnnealing & C2 criterion =      [ X0    X1    X2    ]
  0 : [ 0.735 0.565 0.625 ]
  1 : [ 0.905 0.865 0.785 ]
@@ -893,7 +893,7 @@ History probability=        [ Temperature ]
 1998 : [  0.01       ]
 1999 : [  0.005      ]
 Final criteria: C2=0.041345, PhiP=40.824829
-lhs= class=SimulatedAnnealingLHS name=Unnamed bounds=class=Interval name=Unnamed dimension=3 lower bound=class=NumericalPoint name=Unnamed dimension=3 values=[0,0,0] upper bound=class=NumericalPoint name=Unnamed dimension=3 values=[1,1,1] finite lower bound=[1,1,1] finite upper bound=[1,1,1] spaceFilling=class=SpaceFilling implementation=class=SpaceFillingPhiP p=50 profile=class=TemperatureProfile implementation=class=LinearProfile name=Unnamed T0=10 iMax=2000
+lhs= class=SimulatedAnnealingLHS name=Unnamed bounds=class=Interval name=Unnamed dimension=3 lower bound=class=Point name=Unnamed dimension=3 values=[0,0,0] upper bound=class=Point name=Unnamed dimension=3 values=[1,1,1] finite lower bound=[1,1,1] finite upper bound=[1,1,1] spaceFilling=class=SpaceFilling implementation=class=SpaceFillingPhiP p=50 profile=class=TemperatureProfile implementation=class=LinearProfile name=Unnamed T0=10 iMax=2000
 Generating design using linear temperature SimulatedAnnealing & PhiP criterion =      [ X0    X1    X2    ]
  0 : [ 0.695 0.165 0.915 ]
  1 : [ 0.875 0.375 0.855 ]

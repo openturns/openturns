@@ -22,7 +22,7 @@
 #define OPENTURNS_DIRECTIONALSAMPLING_HXX
 
 #include "openturns/Simulation.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/StandardEvent.hxx"
 #include "openturns/RootStrategy.hxx"

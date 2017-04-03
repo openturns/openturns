@@ -24,7 +24,7 @@
 
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/FunctionImplementation.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -40,16 +40,16 @@ template <typename Tp_> struct ReturnTypeAdapter
 template <> struct ReturnTypeAdapter< NumericalScalar >
 {
   typedef NumericalScalar Type_;
-  static inline NumericalPoint toPoint( const NumericalScalar val )
+  static inline Point toPoint( const NumericalScalar val )
   {
-    return NumericalPoint(1, val) ;
+    return Point(1, val) ;
   }
 };
 
-template <> struct ReturnTypeAdapter< NumericalPoint >
+template <> struct ReturnTypeAdapter< Point >
 {
-  typedef NumericalPoint Type_;
-  static inline NumericalPoint toPoint( const NumericalPoint & val )
+  typedef Point Type_;
+  static inline Point toPoint( const Point & val )
   {
     return val ;
   }
@@ -67,16 +67,16 @@ template <typename Tp_> struct ArgumentTypeAdapter
 template <> struct ArgumentTypeAdapter< NumericalScalar >
 {
   typedef const NumericalScalar Type_;
-  static inline NumericalScalar fromPoint( const NumericalPoint & val )
+  static inline NumericalScalar fromPoint( const Point & val )
   {
     return val[0] ;
   }
 };
 
-template <> struct ArgumentTypeAdapter< NumericalPoint >
+template <> struct ArgumentTypeAdapter< Point >
 {
-  typedef const NumericalPoint & Type_;
-  static inline NumericalPoint fromPoint( const NumericalPoint & val )
+  typedef const Point & Type_;
+  static inline Point fromPoint( const Point & val )
   {
     return val ;
   }
@@ -152,9 +152,9 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Operator () */
-  virtual NumericalPoint operator() (const NumericalPoint & inP) const
+  virtual Point operator() (const Point & inP) const
   {
-    NumericalPoint result;
+    Point result;
     // Specific code if cache is enabled
     if (p_cache_->isEnabled())
     {
@@ -162,7 +162,7 @@ public:
       // Evaluate the binded method
       if ( p_cache_->hasKey( inKey ) )
       {
-        result = NumericalPoint::ImplementationType( p_cache_->find( inKey ) );
+        result = Point::ImplementationType( p_cache_->find( inKey ) );
       }
       else
       {

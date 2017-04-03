@@ -10,10 +10,10 @@ RandomGenerator.SetSeed(0)
 try:
     # Instanciate one distribution object
     dim = 2
-    meanPoint = NumericalPoint(dim, 1.0)
+    meanPoint = Point(dim, 1.0)
     meanPoint[0] = 0.5
     meanPoint[1] = -0.5
-    sigma = NumericalPoint(dim, 1.0)
+    sigma = Point(dim, 1.0)
     sigma[0] = 2.0
     sigma[1] = 3.0
     R = CorrelationMatrix(dim)
@@ -48,7 +48,7 @@ try:
         print("covariance=", repr(covarianceSmoothed),
               " covariance(exact)=", repr(covarianceExact))
         # Define a point
-        point = NumericalPoint(smoothed.getDimension(), 0.0)
+        point = Point(smoothed.getDimension(), 0.0)
 
         # Show PDF and CDF of point point
         pointPDF = smoothed.computePDF(point)
@@ -76,7 +76,7 @@ try:
                 print("Bounded underlying distribution? ", j ==
                       1, " bounded reconstruction? ", corr)
                 # Define a point
-                point = NumericalPoint(smoothed.getDimension(), -0.9)
+                point = Point(smoothed.getDimension(), -0.9)
 
                 # Show PDF and CDF of point point
                 pointPDF = smoothed.computePDF(point)

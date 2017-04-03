@@ -60,10 +60,10 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** Operator () */
-  virtual NumericalPoint operator() (const NumericalScalar timeStamp,
-                                     const NumericalPoint & inP) const;
-  virtual NumericalPoint operator() (const NumericalPoint & location,
-                                     const NumericalPoint & inP) const;
+  virtual Point operator() (const NumericalScalar timeStamp,
+                                     const Point & inP) const;
+  virtual Point operator() (const Point & location,
+                                     const Point & inP) const;
   virtual Field operator() (const Field & inFld) const;
   virtual ProcessSample operator() (const ProcessSample & inPS) const;
 

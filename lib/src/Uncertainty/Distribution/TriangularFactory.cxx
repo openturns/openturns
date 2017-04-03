@@ -54,7 +54,7 @@ TriangularFactory::Implementation TriangularFactory::build() const
   return buildAsTriangular().clone();
 }
 
-TriangularFactory::Implementation TriangularFactory::build(const NumericalPoint & parameters) const
+TriangularFactory::Implementation TriangularFactory::build(const Point & parameters) const
 {
   return buildAsTriangular(parameters).clone();
 }
@@ -83,7 +83,7 @@ Triangular TriangularFactory::buildAsTriangular(const Sample & sample) const
   return result;
 }
 
-Triangular TriangularFactory::buildAsTriangular(const NumericalPoint & parameters) const
+Triangular TriangularFactory::buildAsTriangular(const Point & parameters) const
 {
   try
   {

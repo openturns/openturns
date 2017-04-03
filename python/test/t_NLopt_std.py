@@ -5,7 +5,7 @@ import openturns as ot
 import math as m
 
 
-def printNumericalPoint(point, digits):
+def printPoint(point, digits):
     oss = "["
     eps = pow(0.1, digits)
     format = "%." + str(digits) + "f"
@@ -70,7 +70,7 @@ for algoName in algoNames:
                     print('algo=', algo)
                     algo.run()
                     result = algo.getResult()
-                    print('x^=', printNumericalPoint(
+                    print('x^=', printPoint(
                         result.getOptimalPoint(), 3))
                 except:
                     print('-- Not supported: algo=', algoName,
@@ -81,7 +81,7 @@ f = ot.Function(
     ["E", "F", "L", "I"], ["d"], ["-F*L^3/(3*E*I)"])
 dim = f.getInputDimension()
 mean = [50.0, 1.0, 10.0, 5.0]
-sigma = ot.NumericalPoint(dim, 1.0)
+sigma = ot.Point(dim, 1.0)
 R = ot.IdentityMatrix(dim)
 distribution = ot.Normal(mean, sigma, R)
 vect = ot.RandomVector(distribution)

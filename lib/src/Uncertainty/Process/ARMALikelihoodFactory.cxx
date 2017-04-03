@@ -150,7 +150,7 @@ ARMALikelihoodFactory * ARMALikelihoodFactory::clone() const
 
 /* Compute the log-likelihood function */
 
-NumericalScalar ARMALikelihoodFactory::computeLogLikelihood(const NumericalPoint & beta) const
+NumericalScalar ARMALikelihoodFactory::computeLogLikelihood(const Point & beta) const
 {
   // beta regroups all unknown parameters :
   // p square matrices of dimension m (AR part) ==> m * m * p scalar coefficients
@@ -205,7 +205,7 @@ NumericalScalar ARMALikelihoodFactory::computeLogLikelihood(const NumericalPoint
 
   covarianceMatrixCholesky_ = covarianceMatrix_.computeCholesky();
   covarianceMatrixCholeskyInverse_ = SquareMatrix(dimension_);
-  NumericalPoint rhs(dimension_);
+  Point rhs(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     for (UnsignedInteger j = 0; j < dimension_; ++j)
@@ -249,7 +249,7 @@ NumericalScalar ARMALikelihoodFactory::computeLogLikelihood(const NumericalPoint
   // Step (e): Compute the n vectors \eta_{i} = R a_{0,i}, i = 1, 2, ..., n-1
   Matrix eta(computeEta());
   // Step (f): Compute h vectors and premultiply them by M^{T}
-  NumericalPoint vector_h(computeVectorh(rxi, eta, matV1_Omega_V1TCholesky));
+  Point vector_h(computeVectorh(rxi, eta, matV1_Omega_V1TCholesky));
   // Step (g): Compute the symmetric matrix of size (dimension_ * currentG_) H^{T} H
   SymmetricMatrix matrix_HTH(computeHTH(rxi));
   // Step (h): Compute the symmetric matrix (I + M^{T} H^{T} H M)
@@ -299,11 +299,11 @@ NumericalScalar ARMALikelihoodFactory::computeLogLikelihood(const NumericalPoint
 
 /* Compute the log-likelihood constraint */
 
-NumericalPoint ARMALikelihoodFactory::computeLogLikelihoodInequalityConstraint(const NumericalPoint & beta) const
+Point ARMALikelihoodFactory::computeLogLikelihoodInequalityConstraint(const Point & beta) const
 {
   const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("ARMALikelihoodFactory-RootEpsilon");
 
-  NumericalPoint result(nbInequalityConstraint_, 0.0);
+  Point result(nbInequalityConstraint_, 0.0);
 
   UnsignedInteger constraintIndex = 0;
   UnsignedInteger currentIndex = 0;
@@ -387,7 +387,7 @@ NumericalPoint ARMALikelihoodFactory::computeLogLikelihoodInequalityConstraint(c
     }
   }
   // Computation of EigenValues without keeping intact (matrix not used after)
-  const NumericalPoint eigenValues(covarianceMatrix.computeEigenValues(false));
+  const Point eigenValues(covarianceMatrix.computeEigenValues(false));
 
   // Find the largest eigenvalue module
   NumericalScalar s = eigenValues[0];
@@ -401,13 +401,13 @@ NumericalPoint ARMALikelihoodFactory::computeLogLikelihoodInequalityConstraint(c
 /* Compute the log-likelihood function accessor */
 Function ARMALikelihoodFactory::getLogLikelihoodFunction() const
 {
-  return bindMethod <ARMALikelihoodFactory, NumericalScalar, NumericalPoint> ( *this, &ARMALikelihoodFactory::computeLogLikelihood, inputDimension_, 1);
+  return bindMethod <ARMALikelihoodFactory, NumericalScalar, Point> ( *this, &ARMALikelihoodFactory::computeLogLikelihood, inputDimension_, 1);
 }
 
 /* Compute the log-likelihood constraint accessor */
 Function ARMALikelihoodFactory::getLogLikelihoodInequalityConstraint() const
 {
-  return bindMethod <ARMALikelihoodFactory, NumericalPoint, NumericalPoint> ( *this, &ARMALikelihoodFactory::computeLogLikelihoodInequalityConstraint, inputDimension_ , nbInequalityConstraint_);
+  return bindMethod <ARMALikelihoodFactory, Point, Point> ( *this, &ARMALikelihoodFactory::computeLogLikelihoodInequalityConstraint, inputDimension_ , nbInequalityConstraint_);
 }
 
 /* Initialize optimization solver parameter using the ResourceMap */
@@ -583,7 +583,7 @@ ARMA ARMALikelihoodFactory::build(const TimeSeries & timeSeries) const
   if (invertible_ && currentQ_ > 0) ++m;
 
   // Current parameters vector \beta
-  NumericalPoint beta(n);
+  Point beta(n);
   UnsignedInteger currentIndex = 0;
   for (UnsignedInteger k = 0; k < currentP_; ++k)
   {
@@ -635,7 +635,7 @@ ARMA ARMALikelihoodFactory::build(const TimeSeries & timeSeries) const
   solver_.run();
 
   // optimal point
-  const NumericalPoint optpoint(solver_.getResult().getOptimalPoint());
+  const Point optpoint(solver_.getResult().getOptimalPoint());
   beta = optpoint;
 
   // Return result
@@ -690,7 +690,7 @@ ARMA ARMALikelihoodFactory::build(const TimeSeries & timeSeries) const
     }
   }
 
-  const Normal distribution(NumericalPoint(dimension_), cov);
+  const Normal distribution(Point(dimension_), cov);
   const RegularGrid timeGrid(timeSeries.getTimeGrid());
   const WhiteNoise whiteNoise(distribution, timeGrid);
   return ARMA(phi, theta, whiteNoise);
@@ -956,7 +956,7 @@ void ARMALikelihoodFactory::computeAutocovarianceMatrix() const
     const UnsignedInteger max1P = std::max(one, currentP_);
     const UnsignedInteger size = dimension_ * dimension_ * (max1P - 1) + dimension_ * (dimension_ + 1) / 2;
     SquareMatrix matA(size);
-    NumericalPoint rhs(size);
+    Point rhs(size);
 
     // Fill the first dimension_ * (dimension_ + 1) / 2 rows
     for (UnsignedInteger j = 0; j < dimension_; ++j)
@@ -1071,7 +1071,7 @@ void ARMALikelihoodFactory::computeAutocovarianceMatrix() const
     }
 
     // Solve the linear system
-    const NumericalPoint x(matA.solveLinearSystem(rhs));
+    const Point x(matA.solveLinearSystem(rhs));
     // Now we assemble the autocovariance matrices
     // Assembling \Gamma_{0}
     for (UnsignedInteger i = 0; i < dimension_; ++i)
@@ -1391,10 +1391,10 @@ Matrix ARMALikelihoodFactory::computeEta() const
   for (UnsignedInteger i = 1; i <= size; ++i)
   {
     // Compute \sum_{j=1}^{p} \phi_{j} w_{i-j}
-    NumericalPoint phiW(dimension_);
+    Point phiW(dimension_);
     for (UnsignedInteger j = 1; j <= currentP_ && j < i; ++j)
     {
-      NumericalPoint point(w_.getValueAtIndex(i - j - 1));
+      Point point(w_.getValueAtIndex(i - j - 1));
       for(UnsignedInteger ii = 0; ii < dimension_; ++ii)
       {
         NumericalScalar value = 0.0;
@@ -1406,7 +1406,7 @@ Matrix ARMALikelihoodFactory::computeEta() const
       }
     }
     // Compute \sum_{j=1}^{q} \theta_{j} a0_{i-j}
-    NumericalPoint thetaA0(dimension_);
+    Point thetaA0(dimension_);
     for (UnsignedInteger j = 1; j <= currentQ_ && j < i; ++j)
     {
       for(UnsignedInteger ii = 0; ii < dimension_; ++ii)
@@ -1420,7 +1420,7 @@ Matrix ARMALikelihoodFactory::computeEta() const
       }
     }
     // Compute a0_{i} = w_{i} - phiW + thetaA0;
-    NumericalPoint point(w_.getValueAtIndex(i - 1));
+    Point point(w_.getValueAtIndex(i - 1));
     for(UnsignedInteger ii = 0; ii < dimension_; ++ii)
     {
       for(UnsignedInteger h = 0; h < dimension_; ++h)
@@ -1440,12 +1440,12 @@ Matrix ARMALikelihoodFactory::computeEta() const
  *         = \sum_{i=0}^{n-j} (R \xi_{i})^{T} \eta_{i+j}
  * and premultiply by M^{T}
  */
-NumericalPoint ARMALikelihoodFactory::computeVectorh(const Matrix & rxi,
+Point ARMALikelihoodFactory::computeVectorh(const Matrix & rxi,
     const Matrix & eta,
     const Matrix & matV1_Omega_V1TCholesky) const
 {
   UnsignedInteger size = w_.getSize();
-  NumericalPoint vector_h(dimension_ * currentG_);
+  Point vector_h(dimension_ * currentG_);
 
   // size condition in the loop is due to possible truncation
   for (UnsignedInteger j = 1; j <= currentG_ && j <= size; ++j)
@@ -1465,7 +1465,7 @@ NumericalPoint ARMALikelihoodFactory::computeVectorh(const Matrix & rxi,
   }
 
   // Premultiply vector_h by M^{T}
-  NumericalPoint vector_MTh(dimension_ * currentG_);
+  Point vector_MTh(dimension_ * currentG_);
   for (UnsignedInteger i = 0; i < dimension_ * currentG_; ++i)
   {
     NumericalScalar value = 0.0;

@@ -82,7 +82,7 @@ ProjectionStrategyImplementation::ProjectionStrategyImplementation(const Weighte
 
 /* Parameter constructor */
 ProjectionStrategyImplementation::ProjectionStrategyImplementation(const Sample & inputSample,
-    const NumericalPoint & weights,
+    const Point & weights,
     const Sample & outputSample)
   : PersistentObject()
   , alpha_k_p_(0)
@@ -180,7 +180,7 @@ Sample ProjectionStrategyImplementation::getOutputSample() const
 }
 
 /* Weights accessor */
-NumericalPoint ProjectionStrategyImplementation::getWeights() const
+Point ProjectionStrategyImplementation::getWeights() const
 {
   return weights_;
 }
@@ -198,7 +198,7 @@ NumericalScalar ProjectionStrategyImplementation::getRelativeError() const
 }
 
 /* Relative error accessor */
-NumericalPoint ProjectionStrategyImplementation::getCoefficients() const
+Point ProjectionStrategyImplementation::getCoefficients() const
 {
   return alpha_k_p_;
 }

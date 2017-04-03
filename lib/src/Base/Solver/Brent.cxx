@@ -151,7 +151,7 @@ NumericalScalar Brent::solve(const Function & function,
     // If all the evaluation budget has been spent, return the approximation
     if (usedFunctionEvaluation == maximumFunctionEvaluation) break;
     // New evaluation
-    fB = function(NumericalPoint(1, b))[0] - value;
+    fB = function(Point(1, b))[0] - value;
     ++usedFunctionEvaluation;
     // Enforce that the root is within [b, c]
     if (fB * fC > 0.0)

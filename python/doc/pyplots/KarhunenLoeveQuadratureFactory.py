@@ -12,7 +12,7 @@ threshold = 0.001
 factory = ot.KarhunenLoeveQuadratureFactory(
     domain, experiment, basis, basisSize, mustScale, threshold)
 model = ot.AbsoluteExponential([1.0])
-ev = ot.NumericalPoint()
+ev = ot.Point()
 functions = factory.build(model, ev)
 g = ot.Graph()
 g.setXTitle("$t$")

@@ -28,8 +28,8 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(QuadraticFunction);
 
 /* Default constructor */
-QuadraticFunction::QuadraticFunction (const NumericalPoint & center,
-    const NumericalPoint & constant,
+QuadraticFunction::QuadraticFunction (const Point & center,
+    const Point & constant,
     const Matrix & linear,
     const SymmetricTensor & quadratic)
   : Function(new QuadraticEvaluation(center, constant, linear, quadratic),

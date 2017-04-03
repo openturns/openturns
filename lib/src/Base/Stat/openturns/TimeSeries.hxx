@@ -24,7 +24,7 @@
 #include <stdint.h> // for uint64_t
 #include <cmath>    // for nearbyint
 
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Description.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/PersistentCollection.hxx"
@@ -69,8 +69,8 @@ public:
   TimeSeries(const Field & field);
 
 #ifndef SWIG
-  /** Constructor from a collection of NumericalPoint */
-  TimeSeries(const Collection<NumericalPoint> & coll);
+  /** Constructor from a collection of Point */
+  TimeSeries(const Collection<Point> & coll);
 #endif
 
   /** Virtual constructor */
@@ -88,7 +88,7 @@ public:
   Bool operator ==(const TimeSeries & other) const;
 
   /** Append an element to the collection */
-  TimeSeries & add(const NumericalPoint & point);
+  TimeSeries & add(const Point & point);
 
   /** Append a sample to the collection */
   TimeSeries & add(const Sample & sample);

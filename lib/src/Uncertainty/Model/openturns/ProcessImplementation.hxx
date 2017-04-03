@@ -22,7 +22,7 @@
 #define OPENTURNS_PROCESSIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/Indices.hxx"

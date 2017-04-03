@@ -102,7 +102,7 @@ String ProductFunction::__str__(const String & offset) const
  * dH/dp = [dF/dpf(x, pf) . G(x, pg), dG/dpg(x, pg) . F(x, pf)]
  * and the needed gradient is (dH/dp)^t
  */
-Matrix ProductFunction::parameterGradient(const NumericalPoint & inP) const
+Matrix ProductFunction::parameterGradient(const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();

@@ -66,37 +66,37 @@ GaussKronrod * GaussKronrod::clone() const
 /* Compute an approximation of \int_{[a,b]}f(x)dx, where [a,b]
  * is an 1D interval and f a scalar function
  */
-NumericalPoint GaussKronrod::integrate(const Function & function,
+Point GaussKronrod::integrate(const Function & function,
                                        const Interval & interval,
                                        NumericalScalar & error) const
 {
   if (interval.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given interval should be 1D, here dimension=" << interval.getDimension();
-  NumericalPoint ai(0);
-  NumericalPoint bi(0);
+  Point ai(0);
+  Point bi(0);
   Sample fi(0, 0);
-  NumericalPoint ei(0);
+  Point ei(0);
   return integrate(function, interval.getLowerBound()[0], interval.getUpperBound()[0], error, ai, bi, fi, ei);
 }
 
-NumericalPoint GaussKronrod::integrate(const Function & function,
+Point GaussKronrod::integrate(const Function & function,
                                        const NumericalScalar a,
                                        const NumericalScalar b,
                                        NumericalScalar & error,
-                                       NumericalPoint & ai,
-                                       NumericalPoint & bi,
+                                       Point & ai,
+                                       Point & bi,
                                        Sample & fi,
-                                       NumericalPoint & ei) const
+                                       Point & ei) const
 {
   if (function.getInputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can integrate only 1D function, here input dimension=" << function.getInputDimension();
   const UnsignedInteger outputDimension = function.getOutputDimension();
   if (outputDimension == 0) throw InvalidArgumentException(HERE) << "Error: can integrate only non-zero output dimension function";
-  NumericalPoint result(outputDimension);
-  ai = NumericalPoint(maximumSubIntervals_);
+  Point result(outputDimension);
+  ai = Point(maximumSubIntervals_);
   ai[0] = a;
-  bi = NumericalPoint(maximumSubIntervals_);
+  bi = Point(maximumSubIntervals_);
   bi[0] = b;
   fi = Sample(maximumSubIntervals_, outputDimension);
-  ei = NumericalPoint(maximumSubIntervals_);
+  ei = Point(maximumSubIntervals_);
   UnsignedInteger ip = 0;
   UnsignedInteger im = 0;
   error = maximumError_;
@@ -111,7 +111,7 @@ NumericalPoint GaussKronrod::integrate(const Function & function,
     UnsignedInteger iErrorMax = 0;
     NumericalScalar errorMax = 0.0;
     error = 0.0;
-    result = NumericalPoint(outputDimension);
+    result = Point(outputDimension);
     for (UnsignedInteger i = 0; i <= im; ++i)
     {
       const NumericalScalar localError = ei[i];
@@ -135,22 +135,22 @@ NumericalPoint GaussKronrod::integrate(const Function & function,
   return result;
 }
 
-NumericalPoint GaussKronrod::integrate(const Function & function,
+Point GaussKronrod::integrate(const Function & function,
                                        const NumericalScalar a,
                                        const NumericalScalar b,
-                                       NumericalPoint & error,
-                                       NumericalPoint & ai,
-                                       NumericalPoint & bi,
+                                       Point & error,
+                                       Point & ai,
+                                       Point & bi,
                                        Sample & fi,
-                                       NumericalPoint & ei) const
+                                       Point & ei) const
 {
-  // Here we initialize the error to a 1D NumericalPoint in order to use the interface with scalar error
-  error = NumericalPoint(1);
+  // Here we initialize the error to a 1D Point in order to use the interface with scalar error
+  error = Point(1);
   return integrate(function, a, b, error[0], ai, bi, fi, ei);
 }
 
 /* Compute the local GaussKronrod rule over [a, b]. */
-NumericalPoint GaussKronrod::computeRule(const Function & function,
+Point GaussKronrod::computeRule(const Function & function,
     const NumericalScalar a,
     const NumericalScalar b,
     NumericalScalar & localError) const
@@ -168,9 +168,9 @@ NumericalPoint GaussKronrod::computeRule(const Function & function,
   }
   // Use possible parallelization of the evaluation
   const Sample y(function(x));
-  NumericalPoint value(y[0]);
-  NumericalPoint resultGauss(value * rule_.zeroGaussWeight_);
-  NumericalPoint resultGaussKronrod(value * rule_.zeroKronrodWeight_);
+  Point value(y[0]);
+  Point resultGauss(value * rule_.zeroGaussWeight_);
+  Point resultGaussKronrod(value * rule_.zeroKronrodWeight_);
   for (UnsignedInteger j = 0; j < (rule_.order_ - 1) / 2; ++j)
   {
     value = y[4 * j + 1] + y[4 * j + 2];

@@ -159,24 +159,24 @@ Bool PythonEvaluation::isActualImplementation() const
 /* Here is the interface that all derived class must implement */
 
 /* Operator () */
-NumericalPoint PythonEvaluation::operator() (const NumericalPoint & inP) const
+Point PythonEvaluation::operator() (const Point & inP) const
 {
   const UnsignedInteger dimension = inP.getDimension();
 
   if (dimension != getInputDimension())
     throw InvalidDimensionException(HERE) << "Input point has incorrect dimension. Got " << dimension << ". Expected " << getInputDimension();
 
-  NumericalPoint outP;
+  Point outP;
   CacheKeyType inKey(inP.getCollection());
   if (p_cache_->isEnabled() && p_cache_->hasKey(inKey))
   {
-    outP = NumericalPoint::ImplementationType(p_cache_->find(inKey));
+    outP = Point::ImplementationType(p_cache_->find(inKey));
   }
   else
   {
     ++ callsNumber_;
 
-    ScopedPyObjectPointer point(convert< NumericalPoint, _PySequence_ >(inP));
+    ScopedPyObjectPointer point(convert< Point, _PySequence_ >(inP));
     ScopedPyObjectPointer result(PyObject_CallFunctionObjArgs(pyObj_, point.get(), NULL));
 
     if (result.isNull())
@@ -186,11 +186,11 @@ NumericalPoint PythonEvaluation::operator() (const NumericalPoint & inP) const
 
     try
     {
-      outP = convert< _PySequence_, NumericalPoint >(result.get());
+      outP = convert< _PySequence_, Point >(result.get());
     }
     catch (InvalidArgumentException &)
     {
-      throw InvalidArgumentException(HERE) << "Output value for " << getName() << "._exec() method is not a sequence object (list, tuple, NumericalPoint, etc.)";
+      throw InvalidArgumentException(HERE) << "Output value for " << getName() << "._exec() method is not a sequence object (list, tuple, Point, etc.)";
     }
 
     if (outP.getDimension() != getOutputDimension())
@@ -229,20 +229,20 @@ Sample PythonEvaluation::operator() (const Sample & inS) const
   Sample toDo(0, inDim);
   if (useCache)
   {
-    std::set<NumericalPoint> uniqueValues;
+    std::set<Point> uniqueValues;
     for (UnsignedInteger i = 0; i < size; ++ i)
     {
       CacheKeyType inKey(inS[i].getCollection());
       if (p_cache_->hasKey(inKey))
       {
-        outS[i] = NumericalPoint::ImplementationType(p_cache_->find(inKey));
+        outS[i] = Point::ImplementationType(p_cache_->find(inKey));
       }
       else
       {
         uniqueValues.insert(inS[i]);
       }
     }
-    for(std::set<NumericalPoint>::const_iterator it = uniqueValues.begin(); it != uniqueValues.end(); ++ it)
+    for(std::set<Point>::const_iterator it = uniqueValues.begin(); it != uniqueValues.end(); ++ it)
     {
       // store unique values
       toDo.add(*it);
@@ -292,7 +292,7 @@ Sample PythonEvaluation::operator() (const Sample & inS) const
             {
               if (useCache)
               {
-                NumericalPoint outP(outDim);
+                Point outP(outDim);
                 for (UnsignedInteger j = 0; j < outDim; ++ j)
                 {
                   ScopedPyObjectPointer val(PySequence_GetItem(elt.get(), j));
@@ -338,7 +338,7 @@ Sample PythonEvaluation::operator() (const Sample & inS) const
       CacheKeyType inKey(inS[i].getCollection());
       if (tempCache.hasKey(inKey))
       {
-        outS[i] = NumericalPoint::ImplementationType(tempCache.find(inKey));
+        outS[i] = Point::ImplementationType(tempCache.find(inKey));
       }
     }
     p_cache_->merge(tempCache);

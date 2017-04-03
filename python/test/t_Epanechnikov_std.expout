@@ -2,25 +2,25 @@ Distribution  class=Epanechnikov name=Epanechnikov dimension=1
 Distribution  Epanechnikov()
 Elliptical =  True
 Continuous =  True
-oneRealization= class=NumericalPoint name=Unnamed dimension=1 values=[0.174954]
-oneSample first= class=NumericalPoint name=Unnamed dimension=1 values=[0.573175]  last= class=NumericalPoint name=Unnamed dimension=1 values=[-0.100711]
-mean= class=NumericalPoint name=Unnamed dimension=1 values=[0.00498178]
+oneRealization= class=Point name=Unnamed dimension=1 values=[0.174954]
+oneSample first= class=Point name=Unnamed dimension=1 values=[0.573175]  last= class=Point name=Unnamed dimension=1 values=[-0.100711]
+mean= class=Point name=Unnamed dimension=1 values=[0.00498178]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.203765]
 Kolmogorov test for the generator, sample size= 100  is accepted
 Kolmogorov test for the generator, sample size= 1000  is accepted
-Point=  class=NumericalPoint name=Unnamed dimension=1 values=[0.5]
-ddf     = class=NumericalPoint name=Unnamed dimension=1 values=[-0.75]
-ddf (FD)= class=NumericalPoint name=Unnamed dimension=1 values=[-0.75]
+Point=  class=Point name=Unnamed dimension=1 values=[0.5]
+ddf     = class=Point name=Unnamed dimension=1 values=[-0.75]
+ddf (FD)= class=Point name=Unnamed dimension=1 values=[-0.75]
 log pdf=-0.575364
 pdf     =0.562500
 pdf (FD)=0.562500
 cdf=0.843750
 ccdf=0.156250
-pdf gradient     = class=NumericalPoint name=Unnamed dimension=0 values=[]
-cdf gradient     = class=NumericalPoint name=Unnamed dimension=0 values=[]
-quantile= class=NumericalPoint name=Unnamed dimension=1 values=[0.729299]
+pdf gradient     = class=Point name=Unnamed dimension=0 values=[]
+cdf gradient     = class=Point name=Unnamed dimension=0 values=[]
+quantile= class=Point name=Unnamed dimension=1 values=[0.729299]
 cdf(quantile)=0.950000
-InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[-0.729299]
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[-0.729299]
 Survival(inverseSurvival)=0.950000
 Minimum volume interval= [-0.811401, 0.811401]
 threshold= [0.95]
@@ -33,12 +33,12 @@ Unilateral confidence interval (lower tail)= [-1, 0.729299]
 beta= [0.95]
 Unilateral confidence interval (upper tail)= [-0.729299, 1]
 beta= [0.95]
-mean= class=NumericalPoint name=Unnamed dimension=1 values=[0]
-standard deviation= class=NumericalPoint name=Unnamed dimension=1 values=[0.447214]
-skewness= class=NumericalPoint name=Unnamed dimension=1 values=[0]
-kurtosis= class=NumericalPoint name=Unnamed dimension=1 values=[2.14286]
+mean= class=Point name=Unnamed dimension=1 values=[0]
+standard deviation= class=Point name=Unnamed dimension=1 values=[0.447214]
+skewness= class=Point name=Unnamed dimension=1 values=[0]
+kurtosis= class=Point name=Unnamed dimension=1 values=[2.14286]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.2]
-parameters= [class=NumericalPointWithDescription name=X0 dimension=0 description=[] values=[]]
+parameters= [class=PointWithDescription name=X0 dimension=0 description=[] values=[]]
 standard moment n= 0  value= [1]
 standard moment n= 1  value= [0]
 standard moment n= 2  value= [0.2]

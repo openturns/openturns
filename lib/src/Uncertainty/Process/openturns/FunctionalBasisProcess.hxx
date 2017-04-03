@@ -24,7 +24,7 @@
 #include "openturns/ProcessImplementation.hxx"
 #include "openturns/Basis.hxx"
 #include "openturns/Distribution.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -112,7 +112,7 @@ private:
   Basis basis_;
 
   /** The last state */
-  mutable NumericalPoint state_;
+  mutable Point state_;
 
 }; /* class FunctionalBasisProcess */
 END_NAMESPACE_OPENTURNS

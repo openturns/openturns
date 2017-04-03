@@ -26,7 +26,7 @@ OT_FiniteDifferenceStep_doc
 
 Returns
 -------
-epsilon : :class:`~openturns.NumericalPoint`
+epsilon : :class:`~openturns.Point`
     If :class:`~openturns.ConstantStep` : Finite difference steps for each
     dimension.
 

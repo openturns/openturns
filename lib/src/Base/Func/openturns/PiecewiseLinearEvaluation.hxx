@@ -47,11 +47,11 @@ public:
   PiecewiseLinearEvaluation();
 
   /** Parameter constructor */
-  PiecewiseLinearEvaluation(const NumericalPoint & locations,
-                                          const NumericalPoint & values);
+  PiecewiseLinearEvaluation(const Point & locations,
+                                          const Point & values);
 
   /** Parameter constructor */
-  PiecewiseLinearEvaluation(const NumericalPoint & locations,
+  PiecewiseLinearEvaluation(const Point & locations,
                                           const Sample & values);
 
   /** Virtual constructor */
@@ -63,19 +63,19 @@ public:
 
   /** Evaluation operator */
   using EvaluationImplementation::operator ();
-  NumericalPoint operator () (const NumericalPoint & inP) const;
+  Point operator () (const Point & inP) const;
 
   /** Locations accessor */
-  NumericalPoint getLocations() const;
-  void setLocations(const NumericalPoint & locations);
+  Point getLocations() const;
+  void setLocations(const Point & locations);
 
   /** Values accessor */
   Sample getValues() const;
-  void setValues(const NumericalPoint & values);
+  void setValues(const Point & values);
   void setValues(const Sample & values);
 
   /** Simultaneous locations and values acessor */
-  void setLocationsAndValues(const NumericalPoint & locations,
+  void setLocationsAndValues(const Point & locations,
                              const Sample & values);
 
   /** Input dimension accessor */
@@ -95,7 +95,7 @@ protected:
 
 private:
   // The locations
-  NumericalPoint locations_;
+  Point locations_;
 
   // The values
   Sample values_;

@@ -58,8 +58,8 @@ int main(int argc, char *argv[])
         R(i, j) = NumericalScalar(j + 1) / dim;
       }
     }
-    NumericalPoint m(dim, 1.0);
-    NumericalPoint s(dim, 2.0);
+    Point m(dim, 1.0);
+    Point s(dim, 2.0);
     Normal distribution(m, s, R);
     const Normal & ref_distribution(distribution);
     fullprint << "distribution = " << ref_distribution << std::endl;

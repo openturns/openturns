@@ -114,14 +114,14 @@ Bool PythonHessian::isActualImplementation() const
 /* Here is the interface that all derived class must implement */
 
 /* Operator () */
-SymmetricTensor PythonHessian::hessian(const NumericalPoint & inP) const
+SymmetricTensor PythonHessian::hessian(const Point & inP) const
 {
   const UnsignedInteger dimension = inP.getDimension();
 
   if (dimension != getInputDimension())
     throw InvalidDimensionException(HERE) << "Input point has incorrect dimension. Got " << dimension << ". Expected " << getInputDimension();
 
-  ScopedPyObjectPointer point(convert< NumericalPoint, _PySequence_ >(inP));
+  ScopedPyObjectPointer point(convert< Point, _PySequence_ >(inP));
   ScopedPyObjectPointer methodName(convert< String, _PyString_ >("_hessian"));
   ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs(pyObj_,
                                    methodName.get(),

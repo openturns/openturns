@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_METAMODELALGORITHM_HXX
 #define OPENTURNS_METAMODELALGORITHM_HXX
 
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/Distribution.hxx"

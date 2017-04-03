@@ -48,10 +48,10 @@ public:
        const UnsignedInteger interferenceFactor = ResourceMap::GetAsUnsignedInteger("FAST-DefaultInterferenceFactor"));
 
   /** First order indices accessor */
-  NumericalPoint getFirstOrderIndices(const UnsignedInteger marginalIndex = 0) const;
+  Point getFirstOrderIndices(const UnsignedInteger marginalIndex = 0) const;
 
   /** Total order indices accessor */
-  NumericalPoint getTotalOrderIndices(const UnsignedInteger marginalIndex = 0) const;
+  Point getTotalOrderIndices(const UnsignedInteger marginalIndex = 0) const;
 
   /** FFT algorithm accessor */
   FFT getFFTAlgorithm() const;

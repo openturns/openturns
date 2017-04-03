@@ -128,25 +128,25 @@ void ChiSquare::update()
 
 
 /* Get one realization of the distribution */
-NumericalPoint ChiSquare::getRealization() const
+Point ChiSquare::getRealization() const
 {
-  return NumericalPoint(1, 2.0 * DistFunc::rGamma(0.5 * nu_));
+  return Point(1, 2.0 * DistFunc::rGamma(0.5 * nu_));
 }
 
 
 /* Get the DDF of the distribution */
-NumericalPoint ChiSquare::computeDDF(const NumericalPoint & point) const
+Point ChiSquare::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0];
-  if (x <= 0.0) return NumericalPoint(1, 0.0);
-  return NumericalPoint(1, ((0.5 * nu_ - 1.0) / x - 0.5) * computePDF(point));
+  if (x <= 0.0) return Point(1, 0.0);
+  return Point(1, ((0.5 * nu_ - 1.0) / x - 0.5) * computePDF(point));
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar ChiSquare::computePDF(const NumericalPoint & point) const
+NumericalScalar ChiSquare::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -155,7 +155,7 @@ NumericalScalar ChiSquare::computePDF(const NumericalPoint & point) const
   return std::exp(computeLogPDF(point));
 }
 
-NumericalScalar ChiSquare::computeLogPDF(const NumericalPoint & point) const
+NumericalScalar ChiSquare::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -165,7 +165,7 @@ NumericalScalar ChiSquare::computeLogPDF(const NumericalPoint & point) const
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar ChiSquare::computeCDF(const NumericalPoint & point) const
+NumericalScalar ChiSquare::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -175,7 +175,7 @@ NumericalScalar ChiSquare::computeCDF(const NumericalPoint & point) const
   return DistFunc::pGamma(0.5 * nu_, 0.5 * x);
 }
 
-NumericalScalar ChiSquare::computeComplementaryCDF(const NumericalPoint & point) const
+NumericalScalar ChiSquare::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -197,11 +197,11 @@ NumericalComplex ChiSquare::computeLogCharacteristicFunction(const NumericalScal
 }
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint ChiSquare::computePDFGradient(const NumericalPoint & point) const
+Point ChiSquare::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  NumericalPoint pdfGradient(1, 0.0);
+  Point pdfGradient(1, 0.0);
   const NumericalScalar x = point[0];
   if (x <= 0.0) return pdfGradient;
   NumericalScalar pdf = computePDF(point);
@@ -210,11 +210,11 @@ NumericalPoint ChiSquare::computePDFGradient(const NumericalPoint & point) const
 }
 
 /* Get the CDFGradient of the distribution */
-NumericalPoint ChiSquare::computeCDFGradient(const NumericalPoint & point) const
+Point ChiSquare::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  NumericalPoint cdfGradient(1, 0.0);
+  Point cdfGradient(1, 0.0);
   const NumericalScalar x = point[0];
   if (x <= 0.0) return cdfGradient;
   NumericalScalar eps = std::pow(cdfEpsilon_, 1.0 / 3.0);
@@ -232,26 +232,26 @@ NumericalScalar ChiSquare::computeScalarQuantile(const NumericalScalar prob,
 /* Compute the mean of the distribution */
 void ChiSquare::computeMean() const
 {
-  mean_ = NumericalPoint(1, nu_);
+  mean_ = Point(1, nu_);
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint ChiSquare::getStandardDeviation() const
+Point ChiSquare::getStandardDeviation() const
 {
-  return NumericalPoint(1, std::sqrt(2.0 * nu_));
+  return Point(1, std::sqrt(2.0 * nu_));
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint ChiSquare::getSkewness() const
+Point ChiSquare::getSkewness() const
 {
-  return NumericalPoint(1, std::sqrt(8.0 / nu_));
+  return Point(1, std::sqrt(8.0 / nu_));
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint ChiSquare::getKurtosis() const
+Point ChiSquare::getKurtosis() const
 {
-  return NumericalPoint(1, 3.0 + 12.0 / nu_);
+  return Point(1, 3.0 + 12.0 / nu_);
 }
 
 /* Compute the covariance of the distribution */
@@ -263,18 +263,18 @@ void ChiSquare::computeCovariance() const
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint ChiSquare::getStandardMoment(const UnsignedInteger n) const
+Point ChiSquare::getStandardMoment(const UnsignedInteger n) const
 {
-  return NumericalPoint(1, std::exp(n * M_LN2 + SpecFunc::LnGamma(n + 0.5 * nu_) - SpecFunc::LnGamma(0.5 * nu_)));
+  return Point(1, std::exp(n * M_LN2 + SpecFunc::LnGamma(n + 0.5 * nu_) - SpecFunc::LnGamma(0.5 * nu_)));
 }
 
 /* Parameters value accessor */
-NumericalPoint ChiSquare::getParameter() const
+Point ChiSquare::getParameter() const
 {
-  return NumericalPoint(1, nu_);
+  return Point(1, nu_);
 }
 
-void ChiSquare::setParameter(const NumericalPoint & parameter)
+void ChiSquare::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize();
   const NumericalScalar w = getWeight();

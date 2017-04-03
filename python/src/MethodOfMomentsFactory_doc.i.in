@@ -106,7 +106,7 @@ Examples
 
 Returns
 -------
-values : :class:`~openturns.NumericalPoint`
+values : :class:`~openturns.Point`
     Values of fixed parameters."
 
 // ---------------------------------------------------------------------

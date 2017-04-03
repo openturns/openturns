@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
     const UnsignedInteger dimension = 3;
 
     // Lambda
-    NumericalPoint lambda(dimension);
+    Point lambda(dimension);
     lambda[0] = 0.;
     lambda[1] = 0.5;
     lambda[2] = 1;
@@ -43,10 +43,10 @@ int main(int argc, char *argv[])
     InverseBoxCoxEvaluation myFunction(lambda);
     myFunction.setName("inverseBoxCoxFunction");
 
-    // In this test, we check that for a NumericalPoint with same values, the function is done by component
-    NumericalPoint inPoint(dimension, 2.0);
+    // In this test, we check that for a Point with same values, the function is done by component
+    Point inPoint(dimension, 2.0);
     // result of the function
-    NumericalPoint outPoint = myFunction( inPoint );
+    Point outPoint = myFunction( inPoint );
     fullprint << "myFunction=" << myFunction << std::endl;
     fullprint << myFunction.getName() << "( " << inPoint << " ) = " << outPoint << std::endl;
 
@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     Sample inSample(size, dimension);
     for (UnsignedInteger index = 0 ; index < size; ++index)
     {
-      inSample[index] = NumericalPoint(dimension, 1.0 / (index + 1));
+      inSample[index] = Point(dimension, 1.0 / (index + 1));
     }
 
     // result of the function

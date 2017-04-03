@@ -42,7 +42,7 @@ try:
         size *= 10
 
     # Define a point
-    point = NumericalPoint(distribution.getDimension(), 1.0)
+    point = Point(distribution.getDimension(), 1.0)
     print("Point= ", point)
 
     # Show PDF and CDF of point
@@ -53,8 +53,8 @@ try:
     print("log pdf= %.12g" % LPDF)
     PDF = distribution.computePDF(point)
     print("pdf     = %.10g" % PDF)
-    print("pdf (FD)= %.10g" % ((distribution.computeCDF(point + NumericalPoint(1, eps)) -
-                                distribution.computeCDF(point + NumericalPoint(1, -eps))) / (2.0 * eps)))
+    print("pdf (FD)= %.10g" % ((distribution.computeCDF(point + Point(1, eps)) -
+                                distribution.computeCDF(point + Point(1, -eps))) / (2.0 * eps)))
     CDF = distribution.computeCDF(point)
     print("cdf= %.12g" % CDF)
     CCDF = distribution.computeComplementaryCDF(point)
@@ -69,26 +69,26 @@ try:
     CDFTail = distribution.computeComplementaryCDF(quantileTail)
     print("cdf (tail)= %.12g" % CDFTail)
     # Get 95% survival function
-    inverseSurvival = NumericalPoint(distribution.computeInverseSurvivalFunction(0.95))
+    inverseSurvival = Point(distribution.computeInverseSurvivalFunction(0.95))
     print("InverseSurvival=", repr(inverseSurvival))
     print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
 
     # Confidence regions
     interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
     print("Minimum volume interval=", interval)
-    print("threshold=", NumericalPoint(1, threshold))
+    print("threshold=", Point(1, threshold))
     levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
     print("Minimum volume level set=", levelSet)
-    print("beta=", NumericalPoint(1, beta))
+    print("beta=", Point(1, beta))
     interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
     print("Bilateral confidence interval=", interval)
-    print("beta=", NumericalPoint(1, beta))
+    print("beta=", Point(1, beta))
     interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
     print("Unilateral confidence interval (lower tail)=", interval)
-    print("beta=", NumericalPoint(1, beta))
+    print("beta=", Point(1, beta))
     interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
     print("Unilateral confidence interval (upper tail)=", interval)
-    print("beta=", NumericalPoint(1, beta))
+    print("beta=", Point(1, beta))
     
     CF = distribution.computeCharacteristicFunction(point[0])
     print("characteristic function=(%.6g+%.6gj)" % (CF.real, CF.imag))

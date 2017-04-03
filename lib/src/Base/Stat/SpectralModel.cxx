@@ -91,24 +91,24 @@ Graph SpectralModel::draw(const UnsignedInteger rowIndex,
 }
 
 /** Amplitude accessor */
-NumericalPoint SpectralModel::getAmplitude() const
+Point SpectralModel::getAmplitude() const
 {
   return getImplementation()->getAmplitude();
 }
 
-void SpectralModel::setAmplitude(const NumericalPoint & amplitude)
+void SpectralModel::setAmplitude(const Point & amplitude)
 {
   copyOnWrite();
   return getImplementation()->setAmplitude(amplitude);
 }
 
 /** Scale accessor */
-NumericalPoint SpectralModel::getScale() const
+Point SpectralModel::getScale() const
 {
   return getImplementation()->getScale();
 }
 
-void SpectralModel::setScale(const NumericalPoint & scale)
+void SpectralModel::setScale(const Point & scale)
 {
   copyOnWrite();
   return getImplementation()->setScale(scale);

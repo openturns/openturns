@@ -45,9 +45,9 @@ PiecewiseHermiteEvaluation::PiecewiseHermiteEvaluation()
 
 
 /* Parameters constructor */
-PiecewiseHermiteEvaluation::PiecewiseHermiteEvaluation(const NumericalPoint & locations,
-    const NumericalPoint & values,
-    const NumericalPoint & derivatives)
+PiecewiseHermiteEvaluation::PiecewiseHermiteEvaluation(const Point & locations,
+    const Point & values,
+    const Point & derivatives)
   : EvaluationImplementation()
   , locations_(0)
   , values_(0, 0)
@@ -65,7 +65,7 @@ PiecewiseHermiteEvaluation::PiecewiseHermiteEvaluation(const NumericalPoint & lo
 
 
 /* Parameters constructor */
-PiecewiseHermiteEvaluation::PiecewiseHermiteEvaluation(const NumericalPoint & locations,
+PiecewiseHermiteEvaluation::PiecewiseHermiteEvaluation(const Point & locations,
     const Sample & values,
     const Sample & derivatives)
   : EvaluationImplementation()
@@ -104,7 +104,7 @@ String PiecewiseHermiteEvaluation::__str__(const String & offset) const
 
 
 /* Evaluation operator */
-NumericalPoint PiecewiseHermiteEvaluation::operator () (const NumericalPoint & inP) const
+Point PiecewiseHermiteEvaluation::operator () (const Point & inP) const
 {
   if (inP.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: expected an input point of dimension 1, got dimension=" << inP.getDimension();
   const NumericalScalar x = inP[0];
@@ -128,12 +128,12 @@ NumericalPoint PiecewiseHermiteEvaluation::operator () (const NumericalPoint & i
 
   const NumericalScalar h = locations_[iRight] - locations_[iLeft];
   const NumericalScalar theta = (x - locations_[iLeft]) / h;
-  const NumericalPoint vLeft(values_[iLeft]);
-  const NumericalPoint vRight(values_[iRight]);
-  const NumericalPoint dvLeft(derivatives_[iLeft]);
-  const NumericalPoint dvRight(derivatives_[iRight]);
+  const Point vLeft(values_[iLeft]);
+  const Point vRight(values_[iRight]);
+  const Point dvLeft(derivatives_[iLeft]);
+  const Point dvRight(derivatives_[iRight]);
   const UnsignedInteger dimension = getOutputDimension();
-  NumericalPoint value(dimension);
+  Point value(dimension);
   const NumericalScalar alpha = 1.0 - theta;
   const NumericalScalar beta = theta * alpha;
   const NumericalScalar gamma = 2.0 * theta - 1.0;
@@ -142,7 +142,7 @@ NumericalPoint PiecewiseHermiteEvaluation::operator () (const NumericalPoint & i
 }
 
 /* Compute the derivative */
-NumericalPoint PiecewiseHermiteEvaluation::derivate(const NumericalPoint & inP) const
+Point PiecewiseHermiteEvaluation::derivate(const Point & inP) const
 {
   if (inP.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: expected an input point of dimension 1, got dimension=" << inP.getDimension();
   const NumericalScalar x = inP[0];
@@ -166,12 +166,12 @@ NumericalPoint PiecewiseHermiteEvaluation::derivate(const NumericalPoint & inP) 
 
   const NumericalScalar h = locations_[iRight] - locations_[iLeft];
   const NumericalScalar theta = (x - locations_[iLeft]) / h;
-  const NumericalPoint vLeft(values_[iLeft]);
-  const NumericalPoint vRight(values_[iRight]);
-  const NumericalPoint dvLeft(derivatives_[iLeft]);
-  const NumericalPoint dvRight(derivatives_[iRight]);
+  const Point vLeft(values_[iLeft]);
+  const Point vRight(values_[iRight]);
+  const Point dvLeft(derivatives_[iLeft]);
+  const Point dvRight(derivatives_[iRight]);
   const UnsignedInteger dimension = getOutputDimension();
-  NumericalPoint value(dimension);
+  Point value(dimension);
   const NumericalScalar alpha = 1.0 - theta;
   const NumericalScalar beta = theta * alpha;
   const NumericalScalar gamma = 2.0 * theta - 1.0;
@@ -180,12 +180,12 @@ NumericalPoint PiecewiseHermiteEvaluation::derivate(const NumericalPoint & inP) 
 }
 
 /* Locations accessor */
-NumericalPoint PiecewiseHermiteEvaluation::getLocations() const
+Point PiecewiseHermiteEvaluation::getLocations() const
 {
   return locations_;
 }
 
-void PiecewiseHermiteEvaluation::setLocations(const NumericalPoint & locations)
+void PiecewiseHermiteEvaluation::setLocations(const Point & locations)
 {
   const UnsignedInteger size = locations.getSize();
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: there must be at least 2 points to build a piecewise Hermite interpolation function.";
@@ -227,7 +227,7 @@ void PiecewiseHermiteEvaluation::setDerivatives(const Sample & derivatives)
 }
 
 
-void PiecewiseHermiteEvaluation::setLocationsValuesAndDerivatives(const NumericalPoint & locations,
+void PiecewiseHermiteEvaluation::setLocationsValuesAndDerivatives(const Point & locations,
     const Sample & values,
     const Sample & derivatives)
 {
@@ -248,7 +248,7 @@ void PiecewiseHermiteEvaluation::setLocationsValuesAndDerivatives(const Numerica
       data[i][1 + outputDimension + j] = derivatives[i][j];
   }
   data = data.sortAccordingToAComponent(0);
-  locations_ = NumericalPoint(size);
+  locations_ = Point(size);
   values_ = Sample(size, outputDimension);
   derivatives_ = Sample(size, outputDimension);
   const NumericalScalar step = data[1][0] - data[0][0];

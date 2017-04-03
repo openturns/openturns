@@ -48,7 +48,7 @@ public:
   /** Constructor with parameters */
   FORM(const OptimizationAlgorithm & nearestPointAlgorithm,
        const Event & event,
-       const NumericalPoint & physicalStartingPoint);
+       const Point & physicalStartingPoint);
 
 
   /** Virtual constructor */

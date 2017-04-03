@@ -72,7 +72,7 @@ void HMatrix::scale(NumericalScalar alpha)
 }
 
 /** Compute y <- alpha op(this) * x + beta * y */
-void HMatrix::gemv(char trans, NumericalScalar alpha, const NumericalPoint& x, NumericalScalar beta, NumericalPoint& y) const
+void HMatrix::gemv(char trans, NumericalScalar alpha, const Point& x, NumericalScalar beta, Point& y) const
 {
   getImplementation()->gemv(trans, alpha, x, beta, y);
 }
@@ -98,13 +98,13 @@ NumericalScalar HMatrix::norm() const
 }
 
 /** Get the diagonal */
-NumericalPoint HMatrix::getDiagonal() const
+Point HMatrix::getDiagonal() const
 {
   return getImplementation()->getDiagonal();
 }
 
 /** Solve system op(A)*X = b */
-NumericalPoint HMatrix::solve(const NumericalPoint& b, Bool trans) const
+Point HMatrix::solve(const Point& b, Bool trans) const
 {
   return getImplementation()->solve(b, trans);
 }
@@ -116,7 +116,7 @@ Matrix HMatrix::solve(const Matrix& m, Bool trans) const
 }
 
 /** Solve system op(L)*X = b */
-NumericalPoint HMatrix::solveLower(const NumericalPoint& b, Bool trans) const
+Point HMatrix::solveLower(const Point& b, Bool trans) const
 {
   return getImplementation()->solveLower(b, trans);
 }

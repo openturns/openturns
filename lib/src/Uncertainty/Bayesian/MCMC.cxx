@@ -49,7 +49,7 @@ MCMC::MCMC()
 MCMC::MCMC( const Distribution & prior,
             const Distribution & conditional,
             const Sample & observations,
-            const NumericalPoint & initialState)
+            const Point & initialState)
   : SamplerImplementation()
   , initialState_(initialState)
   , currentState_(initialState)
@@ -62,7 +62,7 @@ MCMC::MCMC( const Distribution & prior,
   , thinning_(ResourceMap::GetAsUnsignedInteger("MCMC-DefaultThinning"))
 {
   const SymbolicFunction fullFunction(Description::BuildDefault(initialState.getDimension(), "x"), Description::BuildDefault(initialState.getDimension(), "x"));
-  model_ = ParametricFunction(fullFunction, Indices(0), NumericalPoint(0));
+  model_ = ParametricFunction(fullFunction, Indices(0), Point(0));
   setPrior(prior);
   if (model_.getInputDimension() != prior.getDimension()) throw InvalidDimensionException(HERE) << "The model input dimension (" << model_.getInputDimension() << ") does not match the dimension of the prior (" << prior.getDimension() << ").";
   setParameters(Sample(observations.getSize(), 0));
@@ -79,7 +79,7 @@ MCMC::MCMC( const Distribution & prior,
             const Function & model,
             const Sample & parameters,
             const Sample & observations,
-            const NumericalPoint & initialState)
+            const Point & initialState)
   : SamplerImplementation()
   , initialState_(initialState)
   , currentState_(initialState)
@@ -125,7 +125,7 @@ UnsignedInteger MCMC::getDimension() const
 
 
 /* Compute the likelihood w.r.t. observartions */
-NumericalScalar MCMC::computeLogLikelihood(const NumericalPoint & xi) const
+NumericalScalar MCMC::computeLogLikelihood(const Point & xi) const
 {
   NumericalScalar value = prior_.computeLogPDF(xi);
   if (value == SpecFunc::LogMinNumericalScalar) return SpecFunc::LogMinNumericalScalar;
@@ -134,7 +134,7 @@ NumericalScalar MCMC::computeLogLikelihood(const NumericalPoint & xi) const
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     // retrieve model data if available
-    const NumericalPoint zi(model_(xi, parameters_[i]));
+    const Point zi(model_(xi, parameters_[i]));
 
     Distribution pI(conditional_);
     pI.setParameter(zi);

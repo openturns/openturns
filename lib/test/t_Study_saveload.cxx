@@ -64,8 +64,8 @@ int main(int argc, char *argv[])
     study.setStorageManager(XMLStorageManager(fileName));
 
 
-    // Add a PersistentObject to the Study (here a NumericalPoint)
-    NumericalPoint numericalPoint(3, 0.);
+    // Add a PersistentObject to the Study (here a Point)
+    Point numericalPoint(3, 0.);
     numericalPoint[0] = 10.;
     numericalPoint[1] = 11.;
     numericalPoint[2] = 12.;
@@ -74,30 +74,30 @@ int main(int argc, char *argv[])
 
     // Add another PersistentObject to the Study (here a Sample)
     Sample numericalSample(3, 2);
-    NumericalPoint p2(2, 0.);
+    Point p2(2, 0.);
     p2[0] = 100.;
     p2[1] = 200.;
     numericalSample[0] = p2;
     p2.setName("One");
-    NumericalPoint p3(2, 0.);
+    Point p3(2, 0.);
     p3[0] = 101.;
     p3[1] = 201.;
     numericalSample[1] = p3;
     p3.setName("Two");
-    NumericalPoint p4(2, 0.);
+    Point p4(2, 0.);
     p4[0] = 102.;
     p4[1] = 202.;
     numericalSample[2] = p4;
     p4.setName("Three");
     study.add("mySample", numericalSample);
 
-    // Create a NumericalPoint that we will try to reinstaciate after reloading
-    NumericalPoint namedNumericalPoint(2, 1000.);
-    namedNumericalPoint.setName("point");
-    study.add("namedNumericalPoint", namedNumericalPoint);
+    // Create a Point that we will try to reinstaciate after reloading
+    Point namedPoint(2, 1000.);
+    namedPoint.setName("point");
+    study.add("namedPoint", namedPoint);
 
     // Add a point with a description
-    NumericalPointWithDescription numericalPointWithDescription(numericalPoint);
+    PointWithDescription numericalPointWithDescription(numericalPoint);
     Description desc = numericalPointWithDescription.getDescription();
     desc[0] = "x";
     desc[1] = "y";
@@ -121,9 +121,9 @@ int main(int argc, char *argv[])
     {
       // Instanciate one distribution object
       UnsignedInteger dim = 1;
-      NumericalPoint meanPoint(dim, 1.0);
+      Point meanPoint(dim, 1.0);
       meanPoint[0] = 0.5;
-      NumericalPoint sigma(dim, 1.0);
+      Point sigma(dim, 1.0);
       sigma[0] = 2.0;
       CorrelationMatrix R = IdentityMatrix(dim);
       Normal distribution1(meanPoint, sigma, R);
@@ -141,8 +141,8 @@ int main(int argc, char *argv[])
 
       // Construct empirical CDF for each sample
       Sample data1(nPoints, 2), data2(nPoints, 2);
-      NumericalPoint cursor1(2);
-      NumericalPoint cursor2(2);
+      Point cursor1(2);
+      Point cursor2(2);
       NumericalScalar count1;
       NumericalScalar count2;
 
@@ -187,7 +187,7 @@ int main(int argc, char *argv[])
     study.add("chiSquare", chiSquare);
 
     UnsignedInteger dim = 2;
-    NumericalPoint theta(dim + 1);
+    Point theta(dim + 1);
     for (UnsignedInteger i = 0; i <= dim; i++) theta[i] = 1.0 + (i + 1.0) / 4.0;
     Dirichlet dirichlet(theta);
     study.add("dirichlet", dirichlet);
@@ -261,7 +261,7 @@ int main(int argc, char *argv[])
     x[0][0] = 1.0;
     x[1][0] = 2.0;
     x[2][0] = 3.0;
-    NumericalPoint p(3);
+    Point p(3);
     p[0] = 0.3;
     p[1] = 0.1;
     p[2] = 0.6;
@@ -311,7 +311,7 @@ int main(int argc, char *argv[])
     // Create an Event Object
     Event event;
     {
-      NumericalPoint point(3);
+      Point point(3);
       point[0] = 101;
       point[1] = 202;
       point[2] = 303;
@@ -371,7 +371,7 @@ int main(int argc, char *argv[])
     // Create a TNC algorithm
     OptimizationAlgorithm tnc(new TNC());
     {
-      Interval bounds(NumericalPoint(3, -3.0), NumericalPoint(3, 5.0));
+      Interval bounds(Point(3, -3.0), Point(3, 5.0));
       Description input2(3);
       input2[0] = "x";
       input2[1] = "y";
@@ -388,12 +388,12 @@ int main(int argc, char *argv[])
       problem.setMinimization(true);
 
       tnc.setProblem(problem);
-      tnc.setStartingPoint(NumericalPoint(3, 1.0));
+      tnc.setStartingPoint(Point(3, 1.0));
     }
     study.add("tnc", tnc);
 
     // Create a SORM algorithm
-    SORM sorm(abdoRackwitz, event, NumericalPoint(3, 4.));
+    SORM sorm(abdoRackwitz, event, Point(3, 4.));
     study.add("sorm", sorm);
 
     // Create a FORMResult
@@ -416,16 +416,16 @@ int main(int argc, char *argv[])
       output3.setName("output");
       Event event(output3, Greater(), 1.0);
       event.setName("failureEvent");
-      NumericalPoint designPoint(2, 0.0);
+      Point designPoint(2, 0.0);
       designPoint[0] = 1.0;
-      formResult = FORMResult(NumericalPoint(2, 1.0), event, false);
+      formResult = FORMResult(Point(2, 1.0), event, false);
       formResult.setName("formResult");
       formResult.getImportanceFactors();
       formResult.getImportanceFactors(AnalyticalResult::CLASSICAL);
       formResult.getImportanceFactors(AnalyticalResult::PHYSICAL);
       formResult.getEventProbabilitySensitivity();
 
-      sormResult = SORMResult (NumericalPoint(2, 1.0), event, false);
+      sormResult = SORMResult (Point(2, 1.0), event, false);
       sormResult.setName("sormResult");
       sormResult.getEventProbabilityBreitung();
       sormResult.getEventProbabilityHohenBichler();
@@ -600,8 +600,8 @@ int main(int argc, char *argv[])
     {
       const UnsignedInteger defaultDimension = 1;
       const UnsignedInteger spatialDimension = 1;
-      NumericalPoint amplitude(defaultDimension, 1.0);
-      NumericalPoint scale(spatialDimension, 1.0);
+      Point amplitude(defaultDimension, 1.0);
+      Point scale(spatialDimension, 1.0);
       cauchyModel = CauchyModel (scale, amplitude);
       exponentialCauchy = ExponentialCauchy (scale, amplitude);
       absoluteExponential = AbsoluteExponential(scale, amplitude);
@@ -655,8 +655,8 @@ int main(int argc, char *argv[])
     Domain domain;
     {
       UnsignedInteger dim = 2;
-      NumericalPoint a(dim, -1.0);
-      NumericalPoint b(dim, 2.0);
+      Point a(dim, -1.0);
+      Point b(dim, 2.0);
       domain  = Interval(a, b);
     }
     study.add("domain", domain);
@@ -694,9 +694,9 @@ int main(int argc, char *argv[])
     BlendedStep blendedStep;
     {
       UnsignedInteger dimension = 2;
-      NumericalPoint epsilon( dimension, 1e-5 );
+      Point epsilon( dimension, 1e-5 );
       constantStep = ConstantStep(epsilon);
-      NumericalPoint eta( dimension, 1.0 );
+      Point eta( dimension, 1.0 );
       blendedStep = BlendedStep(epsilon, eta);
     }
     study.add("constantStep", constantStep);
@@ -794,10 +794,10 @@ int main(int argc, char *argv[])
     Mixture mixture;
     {
       UnsignedInteger dimension = 3;
-      NumericalPoint meanPoint(dimension, 1.0);
+      Point meanPoint(dimension, 1.0);
       meanPoint[0] = 0.5;
       meanPoint[1] = -0.5;
-      NumericalPoint sigma(dimension, 1.0);
+      Point sigma(dimension, 1.0);
       sigma[0] = 2.0;
       sigma[1] = 3.0;
       CorrelationMatrix R(dimension);
@@ -809,12 +809,12 @@ int main(int argc, char *argv[])
       Mixture::DistributionCollection aCollection;
 
       aCollection.add( Normal(meanPoint, sigma, R) );
-      meanPoint += NumericalPoint(dimension, 1.0);
+      meanPoint += Point(dimension, 1.0);
       aCollection.add( Normal(meanPoint, sigma, R) );
-      meanPoint += NumericalPoint(dimension, 1.0);
+      meanPoint += Point(dimension, 1.0);
       aCollection.add( Normal(meanPoint, sigma, R) );
 
-      mixture = Mixture(aCollection, NumericalPoint(aCollection.getSize(), 2.0));
+      mixture = Mixture(aCollection, Point(aCollection.getSize(), 2.0));
     }
     study.add("mixture", mixture);
 
@@ -845,7 +845,7 @@ int main(int argc, char *argv[])
     RandomWalk randomWalk;
     {
       Distribution dist = Uniform();
-      NumericalPoint origin(dist.getDimension());
+      Point origin(dist.getDimension());
       randomWalk = RandomWalk(origin, dist);
     }
     study.add("randomWalk", randomWalk);
@@ -866,10 +866,10 @@ int main(int argc, char *argv[])
     {
       UnsignedInteger dim = analytical.getInputDimension();
       double seuil(10);
-      NumericalPoint designPoint(dim, 0.0);
+      Point designPoint(dim, 0.0);
       double C(0.3);
       designPoint[0] = - sqrt(seuil) + C;
-      NumericalPoint pseudoDesignPoint(dim, 0.0);
+      Point pseudoDesignPoint(dim, 0.0);
       pseudoDesignPoint[0] = sqrt(seuil) + C;
       NumericalScalar importanceLevel = 0.01;
       NumericalScalar accuracyLevel = 2;
@@ -884,14 +884,14 @@ int main(int argc, char *argv[])
       Mixture::DistributionCollection aCollection;
       CorrelationMatrix R(2);
       R(0, 1) = -0.99;
-      NumericalPoint mean(2);
+      Point mean(2);
       mean[0] = -1.0;
       mean[1] = 1.0;
-      aCollection.add( Normal(mean, NumericalPoint(2, 1.0), R) );
+      aCollection.add( Normal(mean, Point(2, 1.0), R) );
       R(0, 1) = 0.99;
       mean[0] = 1.0;
-      aCollection.add( Normal(mean, NumericalPoint(2, 1.0), R) );
-      Mixture distribution(aCollection, NumericalPoint(aCollection.getSize(), 1.0));
+      aCollection.add( Normal(mean, Point(2, 1.0), R) );
+      Mixture distribution(aCollection, Point(aCollection.getSize(), 1.0));
       MixtureClassifier classifier(distribution);
       Basis experts(0);
       experts.add(SymbolicFunction("x", "-x"));
@@ -906,8 +906,8 @@ int main(int argc, char *argv[])
     {
       const UnsignedInteger dimension = 1;
       const UnsignedInteger spatialDimension = 1;
-      NumericalPoint amplitude(dimension);
-      NumericalPoint scale(spatialDimension);
+      Point amplitude(dimension);
+      Point scale(spatialDimension);
       CorrelationMatrix spatialCorrelation(dimension);
       for (UnsignedInteger index = 0 ; index < dimension; ++index)
       {
@@ -964,15 +964,15 @@ int main(int argc, char *argv[])
     //     fullprint << "saved  Study = " << study << std::endl;
     //     fullprint << "loaded Study = " << study2    << std::endl;
 
-    NumericalPoint namedNumericalPoint2;
-    study2.fillObjectByName( namedNumericalPoint2, "point" );
-    fullprint << "saved  NumericalPoint = " << namedNumericalPoint  << std::endl;
-    fullprint << "loaded NumericalPoint = " << namedNumericalPoint2 << std::endl;
+    Point namedPoint2;
+    study2.fillObjectByName( namedPoint2, "point" );
+    fullprint << "saved  Point = " << namedPoint  << std::endl;
+    fullprint << "loaded Point = " << namedPoint2 << std::endl;
 
 
     // Type
-    compare<NumericalPoint >( numericalPoint, study2, "Good");
-    compare<NumericalPointWithDescription >( numericalPointWithDescription, study2, "pDesc");
+    compare<Point >( numericalPoint, study2, "Good");
+    compare<PointWithDescription >( numericalPointWithDescription, study2, "pDesc");
     compare<Matrix >( matrix, study2, "m");
     compare<SquareMatrix>(squareMatrix, study2 );
     compare<SymmetricMatrix>(symmetricMatrix, study2 );

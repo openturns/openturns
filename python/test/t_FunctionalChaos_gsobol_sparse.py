@@ -16,7 +16,7 @@ try:
     # Reference analytical values
     meanTh = 1.0
     covTh = 1.0
-    a = NumericalPoint(dimension)
+    a = Point(dimension)
     a[0] = 1.0
     a[1] = 2.0
     a[2] = 5.0

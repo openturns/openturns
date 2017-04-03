@@ -40,7 +40,7 @@ CLASSNAMEINIT(TensorizedUniVariateFunctionFactory);
 
 static const Factory<TensorizedUniVariateFunctionFactory> Factory_TensorizedUniVariateFunctionFactory;
 
-typedef Collection<NumericalPoint> NumericalPointCollection;
+typedef Collection<Point> PointCollection;
 typedef ProductUniVariateFunctionEvaluation::UniVariateFunctionCollection UniVariateFunctionCollection;
 
 /* Default constructor */

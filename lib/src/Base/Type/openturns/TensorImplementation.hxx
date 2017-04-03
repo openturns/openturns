@@ -22,7 +22,7 @@
 #define OPENTURNS_TENSORIMPLEMENTATION_HXX
 
 #include "openturns/PersistentCollection.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/SymmetricMatrix.hxx"
 

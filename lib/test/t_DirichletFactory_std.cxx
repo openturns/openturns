@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    NumericalPoint theta(0);
+    Point theta(0);
     theta.add(0.2);
     theta.add(0.3);
     theta.add(0.4);

@@ -33,10 +33,10 @@ int main(int argc, char *argv[])
   {
     {
       Sample vertices(0, 1);
-      vertices.add(NumericalPoint(1, 0.5));
-      vertices.add(NumericalPoint(1, 1.5));
-      vertices.add(NumericalPoint(1, 2.1));
-      vertices.add(NumericalPoint(1, 2.7));
+      vertices.add(Point(1, 0.5));
+      vertices.add(Point(1, 1.5));
+      vertices.add(Point(1, 2.1));
+      vertices.add(Point(1, 2.7));
       Mesh::IndicesCollection simplicies(3, Indices(2));
       simplicies[0][0] = 0;
       simplicies[0][1] = 1;
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     }
     {
       Sample vertices(0, 2);
-      NumericalPoint p(2);
+      Point p(2);
 
       p[0] = 0.0;
       p[1] = 0.0;
@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
     }
     {
       Sample vertices(0, 3);
-      NumericalPoint p(3);
+      Point p(3);
 
       p[0] = 0.0;
       p[1] = 0.0;

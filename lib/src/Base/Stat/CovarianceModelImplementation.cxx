@@ -57,8 +57,8 @@ CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteg
 }
 
 /* Standard constructor with scale and amplitude scale parameter parameter */
-CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoint & scale,
-    const NumericalPoint & amplitude)
+CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale,
+    const Point & amplitude)
   : PersistentObject()
   , scale_(0)
   , spatialDimension_(scale.getDimension())
@@ -77,8 +77,8 @@ CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoin
 }
 
 /* Standard constructor with scale, amplitude and spatial correlation parameter parameter */
-CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoint & scale,
-    const NumericalPoint & amplitude,
+CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale,
+    const Point & amplitude,
     const CorrelationMatrix & spatialCorrelation)
   : PersistentObject()
   , scale_(0)
@@ -100,7 +100,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoin
 }
 
 /* Standard constructor with scale and spatial covariance parameter parameter */
-CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoint & scale,
+CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale,
     const CovarianceMatrix & spatialCovariance)
   : PersistentObject()
   , scale_(0)
@@ -115,7 +115,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const NumericalPoin
 {
   // spatialCovariance
   spatialCovariance_ = spatialCovariance;
-  NumericalPoint amplitude(dimension_);
+  Point amplitude(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i) amplitude[i] = sqrt(spatialCovariance(i, i));
   // Check that the amplitudes are valid
   setAmplitude(amplitude);
@@ -151,42 +151,42 @@ UnsignedInteger CovarianceModelImplementation::getSpatialDimension() const
 CovarianceMatrix CovarianceModelImplementation::operator() (const NumericalScalar s,
     const NumericalScalar t) const
 {
-  return operator() (NumericalPoint(1, s), NumericalPoint(1, t));
+  return operator() (Point(1, s), Point(1, t));
 }
 
-CovarianceMatrix CovarianceModelImplementation::operator() (const NumericalPoint & s,
-    const NumericalPoint & t) const
+CovarianceMatrix CovarianceModelImplementation::operator() (const Point & s,
+    const Point & t) const
 {
   const NumericalScalar rho = computeStandardRepresentative(s, t);
   return CovarianceMatrix((spatialCovariance_ * rho).getImplementation());
 }
 
 // compute standard representative computes the term \rho(s, t)
-NumericalScalar CovarianceModelImplementation::computeStandardRepresentative(const NumericalPoint & s,
-    const NumericalPoint & t) const
+NumericalScalar CovarianceModelImplementation::computeStandardRepresentative(const Point & s,
+    const Point & t) const
 {
-  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeStandardRepresentative(const NumericalPoint & s, const NumericalPoint & t) const";
+  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeStandardRepresentative(const Point & s, const Point & t) const";
 }
 
 NumericalScalar CovarianceModelImplementation::computeStandardRepresentative(const NumericalScalar & s,
     const NumericalScalar & t) const
 {
-  return computeStandardRepresentative(NumericalPoint(1, s), NumericalPoint(1, t));
+  return computeStandardRepresentative(Point(1, s), Point(1, t));
 }
 
-NumericalScalar CovarianceModelImplementation::computeStandardRepresentative(const NumericalPoint & tau) const
+NumericalScalar CovarianceModelImplementation::computeStandardRepresentative(const Point & tau) const
 {
-  return computeStandardRepresentative(NumericalPoint(dimension_), tau);
+  return computeStandardRepresentative(Point(dimension_), tau);
 }
 
 NumericalScalar CovarianceModelImplementation::computeStandardRepresentative(const NumericalScalar & tau) const
 {
-  return computeStandardRepresentative(NumericalPoint(1, tau));
+  return computeStandardRepresentative(Point(1, tau));
 }
 
 
-NumericalScalar CovarianceModelImplementation::computeAsScalar (const NumericalPoint & s,
-    const NumericalPoint & t) const
+NumericalScalar CovarianceModelImplementation::computeAsScalar (const Point & s,
+    const Point & t) const
 {
   if (dimension_ != 1) throw NotDefinedException(HERE) << "Error: the covariance model is of dimension=" << dimension_ << ", expected dimension=1.";
   return (*this)(s, t)(0, 0);
@@ -201,15 +201,15 @@ NumericalScalar CovarianceModelImplementation::computeAsScalar(const NumericalSc
 /* Computation of the covariance function */
 CovarianceMatrix CovarianceModelImplementation::operator() (const NumericalScalar tau) const
 {
-  return operator() (NumericalPoint(1, tau));
+  return operator() (Point(1, tau));
 }
 
-CovarianceMatrix CovarianceModelImplementation::operator() (const NumericalPoint & tau) const
+CovarianceMatrix CovarianceModelImplementation::operator() (const Point & tau) const
 {
-  return operator() (NumericalPoint(tau.getDimension()), tau);
+  return operator() (Point(tau.getDimension()), tau);
 }
 
-NumericalScalar CovarianceModelImplementation::computeAsScalar (const NumericalPoint & tau) const
+NumericalScalar CovarianceModelImplementation::computeAsScalar (const Point & tau) const
 {
   if (dimension_ != 1) throw NotDefinedException(HERE) << "Error: the covariance model is of dimension=" << dimension_ << ", expected dimension=1.";
   return (*this)(tau)(0, 0);
@@ -221,8 +221,8 @@ NumericalScalar CovarianceModelImplementation::computeAsScalar(const NumericalSc
 }
 
 /* Gradient */
-Matrix CovarianceModelImplementation::partialGradient (const NumericalPoint & s,
-    const NumericalPoint & t) const
+Matrix CovarianceModelImplementation::partialGradient (const Point & s,
+    const Point & t) const
 {
   if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
   if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
@@ -231,17 +231,17 @@ Matrix CovarianceModelImplementation::partialGradient (const NumericalPoint & s,
   // Convert result into MatrixImplementation to symmetrize & get the collection
   MatrixImplementation covarianceSTImplementation(*covarianceST.getImplementation());
   covarianceSTImplementation.symmetrize();
-  const NumericalPoint centralValue(covarianceSTImplementation);
+  const Point centralValue(covarianceSTImplementation);
   const NumericalScalar epsilon = std::sqrt(SpecFunc::NumericalScalarEpsilon);
   // Loop over the shifted points
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i)
   {
-    NumericalPoint currentPoint(s);
+    Point currentPoint(s);
     currentPoint[i] += epsilon;
     CovarianceMatrix localCovariance(operator()(currentPoint, t));
     MatrixImplementation localCovarianceImplementation(*localCovariance.getImplementation());
     localCovarianceImplementation.symmetrize();
-    const NumericalPoint currentValue(localCovarianceImplementation);
+    const Point currentValue(localCovarianceImplementation);
     for (UnsignedInteger j = 0; j < centralValue.getDimension(); ++j)
       gradient(i, j) = (currentValue[j] - centralValue[j]) / epsilon;
   }
@@ -249,10 +249,10 @@ Matrix CovarianceModelImplementation::partialGradient (const NumericalPoint & s,
 }
 
 /* Gradient */
-Matrix CovarianceModelImplementation::parameterGradient(const NumericalPoint & s,
-                                                        const NumericalPoint & t) const
+Matrix CovarianceModelImplementation::parameterGradient(const Point & s,
+                                                        const Point & t) const
 {
-  const NumericalPoint parameter(getParameter());
+  const Point parameter(getParameter());
   const UnsignedInteger size = parameter.getSize();
   const NumericalScalar epsilon = std::sqrt(SpecFunc::NumericalScalarEpsilon);
   Matrix gradient(size, (dimension_ * (dimension_ + 1)) / 2);
@@ -260,7 +260,7 @@ Matrix CovarianceModelImplementation::parameterGradient(const NumericalPoint & s
   Pointer<CovarianceModelImplementation> p_implementation(clone());
   for (UnsignedInteger k = 0; k < size; ++ k)
   {
-    NumericalPoint parameterP(parameter);
+    Point parameterP(parameter);
     parameterP[k] += epsilon;
     p_implementation->setParameter(parameterP);
     CovarianceMatrix covP = p_implementation->operator()(s, t);
@@ -359,7 +359,7 @@ TriangularMatrix CovarianceModelImplementation::discretizeAndFactorize(const Sam
 struct CovarianceModelScalarDiscretizeRowPolicy
 {
   const Sample & input_;
-  const NumericalPoint p_;
+  const Point p_;
   Sample & output_;
   const CovarianceModelImplementation & model_;
 
@@ -383,7 +383,7 @@ struct CovarianceModelScalarDiscretizeRowPolicy
 struct CovarianceModelDiscretizeRowPolicy
 {
   const Sample & input_;
-  const NumericalPoint p_;
+  const Point p_;
   Sample & output_;
   const CovarianceModelImplementation & model_;
   const UnsignedInteger dimension_;
@@ -499,12 +499,12 @@ HMatrix CovarianceModelImplementation::discretizeAndFactorizeHMatrix(const Sampl
 }
 
 /* Amplitude accessor */
-NumericalPoint CovarianceModelImplementation::getAmplitude() const
+Point CovarianceModelImplementation::getAmplitude() const
 {
   return amplitude_;
 }
 
-void CovarianceModelImplementation::setAmplitude(const NumericalPoint & amplitude)
+void CovarianceModelImplementation::setAmplitude(const Point & amplitude)
 {
   if (amplitude.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setAmplitude: the given amplitude has a dimension=" << amplitude.getDimension() << " different from the dimension=" << dimension_;
   for (UnsignedInteger index = 0; index < dimension_; ++index)
@@ -515,12 +515,12 @@ void CovarianceModelImplementation::setAmplitude(const NumericalPoint & amplitud
 }
 
 /* Scale accessor */
-NumericalPoint CovarianceModelImplementation::getScale() const
+Point CovarianceModelImplementation::getScale() const
 {
   return scale_;
 }
 
-void CovarianceModelImplementation::setScale(const NumericalPoint & scale)
+void CovarianceModelImplementation::setScale(const Point & scale)
 {
   if (scale.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setScale: the given scale has a dimension=" << scale.getDimension() << " different from the input dimension=" << spatialDimension_;
   for (UnsignedInteger index = 0; index < spatialDimension_; ++index)
@@ -569,7 +569,7 @@ void CovarianceModelImplementation::setNuggetFactor(const NumericalScalar nugget
   nuggetFactor_ = nuggetFactor;
 }
 
-void CovarianceModelImplementation::setFullParameter(const NumericalPoint & parameter)
+void CovarianceModelImplementation::setFullParameter(const Point & parameter)
 {
   // Here we manage only the generic parameters
   // First the scale parameter
@@ -597,11 +597,11 @@ void CovarianceModelImplementation::setFullParameter(const NumericalPoint & para
 }
 
 
-NumericalPoint CovarianceModelImplementation::getFullParameter() const
+Point CovarianceModelImplementation::getFullParameter() const
 {
   // Here we manage only the generic parameters
   // First the scale parameter
-  NumericalPoint parameter(getScale());
+  Point parameter(getScale());
   // Second the amplitude parameter
   parameter.add(getAmplitude());
   // Third the spatial correation parameter, only the lower triangle
@@ -643,26 +643,26 @@ Indices CovarianceModelImplementation::getActiveParameter() const
 }
 
 
-void CovarianceModelImplementation::setParameter(const NumericalPoint & parameter)
+void CovarianceModelImplementation::setParameter(const Point & parameter)
 {
   const UnsignedInteger activeSize = activeParameter_.getSize();
   if (activeSize == 0) return;
   // Brute-force approach: everything is updated
-  NumericalPoint fullParameter(getFullParameter());
+  Point fullParameter(getFullParameter());
   for (UnsignedInteger i = 0; i < activeSize; ++i)
     fullParameter[activeParameter_[i]] = parameter[i];
   setFullParameter(fullParameter);
 }
 
 
-NumericalPoint CovarianceModelImplementation::getParameter() const
+Point CovarianceModelImplementation::getParameter() const
 {
   // For now we use a brute-force approach: build all the parameters then extract the relevant ones
-  NumericalPoint result(0);
+  Point result(0);
   const UnsignedInteger activeSize = activeParameter_.getSize();
   // Quick return if no parameter
   if (activeSize == 0) return result;
-  const NumericalPoint parameter(getFullParameter());
+  const Point parameter(getFullParameter());
   if (activeSize == parameter.getSize()) return parameter;
   // Then filter only the active parameters
   for (UnsignedInteger i = 0; i < activeSize; ++ i)
@@ -753,7 +753,7 @@ Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
   // Normalize the data if needed
   if (correlationFlag)
     {
-      NumericalPoint sigma(dimension);
+      Point sigma(dimension);
       for (UnsignedInteger i = 0; i < dimension; ++i)
 	sigma[i] = std::sqrt(matrix(i, i));
       for (UnsignedInteger j = 0; j < dimension; ++j)
@@ -773,15 +773,15 @@ Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
   Graph graph(getName() + (correlationFlag ? String(" correlation") : String (" covariance")), "s", "t", true, "bottomright");
   graph.setGrid(true);
   Contour contour(pointNumber, pointNumber, data);
-  Contour isoValues(Contour(gridT, gridT, data, NumericalPoint(0), Description(0), true, ""));
+  Contour isoValues(Contour(gridT, gridT, data, Point(0), Description(0), true, ""));
   isoValues.buildDefaultLevels();
   isoValues.buildDefaultLabels();
-  const NumericalPoint levels(isoValues.getLevels());
+  const Point levels(isoValues.getLevels());
   const Description labels(isoValues.getLabels());
   for (UnsignedInteger i = 0; i < levels.getDimension(); ++i)
   {
     Contour current(isoValues);
-    current.setLevels(NumericalPoint(1, levels[i]));
+    current.setLevels(Point(1, levels[i]));
     current.setLabels(Description(1, labels[i]));
     current.setDrawLabels(false);
     current.setLegend(labels[i]);

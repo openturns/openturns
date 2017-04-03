@@ -69,7 +69,7 @@ public:
                         const Bool computeSecondOrder = true);
 
   /** First order indices accessor */
-  NumericalPoint getFirstOrderIndices(const UnsignedInteger marginalIndex = 0) const;
+  Point getFirstOrderIndices(const UnsignedInteger marginalIndex = 0) const;
 
   /** Interval for the first order indices accessor */
   Interval getFirstOrderIndicesInterval() const;
@@ -78,16 +78,16 @@ public:
   SymmetricMatrix getSecondOrderIndices(const UnsignedInteger marginalIndex = 0) const;
 
   /** Total order indices accessor */
-  NumericalPoint getTotalOrderIndices(const UnsignedInteger marginalIndex = 0) const;
+  Point getTotalOrderIndices(const UnsignedInteger marginalIndex = 0) const;
 
   /** Interval for the total order indices accessor */
   Interval getTotalOrderIndicesInterval() const;
 
   /** Aggregated first order indices accessor for multivariate samples */
-  NumericalPoint getAggregatedFirstOrderIndices() const;
+  Point getAggregatedFirstOrderIndices() const;
 
   /** Aggregated total order indices accessor for multivariate samples */
-  NumericalPoint getAggregatedTotalOrderIndices() const;
+  Point getAggregatedTotalOrderIndices() const;
 
   // Setters for bootstrap size
   UnsignedInteger getBootstrapSize() const;

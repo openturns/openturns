@@ -104,7 +104,7 @@ CorrelationMatrix IdentityMatrix::operator * (const CorrelationMatrix & m) const
 }
 
 /* Resolution of a linear system */
-NumericalPoint IdentityMatrix::solveLinearSystem(const NumericalPoint & b,
+Point IdentityMatrix::solveLinearSystem(const Point & b,
     const Bool keepIntact)
 {
   return b;
@@ -130,33 +130,33 @@ NumericalScalar IdentityMatrix::computeDeterminant(const Bool keepIntact)
 }
 
 /* Compute eigenvalues */
-NumericalPoint IdentityMatrix::computeEigenValues(const Bool keepIntact)
+Point IdentityMatrix::computeEigenValues(const Bool keepIntact)
 {
-  return NumericalPoint(getNbRows(), 1.0);
+  return Point(getNbRows(), 1.0);
 }
 
-NumericalPoint IdentityMatrix::computeEV(SquareMatrix & v,
+Point IdentityMatrix::computeEV(SquareMatrix & v,
     const Bool keepIntact)
 {
   v = *this;
-  return NumericalPoint(getNbRows(), 1.0);
+  return Point(getNbRows(), 1.0);
 }
 
 /* Compute singular values */
-NumericalPoint IdentityMatrix::computeSingularValues(const Bool keepIntact)
+Point IdentityMatrix::computeSingularValues(const Bool keepIntact)
 {
-  return NumericalPoint(getNbRows(), 1.0);
+  return Point(getNbRows(), 1.0);
 }
 
 /* Compute singular values */
-NumericalPoint IdentityMatrix::computeSVD(Matrix & u,
+Point IdentityMatrix::computeSVD(Matrix & u,
     Matrix & vT,
     const Bool fullSVD,
     const Bool keepIntact)
 {
   u = *this;
   vT = *this;
-  return NumericalPoint(getNbRows(), 1.0);
+  return Point(getNbRows(), 1.0);
 }
 
 /* Check if the matrix is SPD */

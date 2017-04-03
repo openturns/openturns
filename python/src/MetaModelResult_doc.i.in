@@ -78,7 +78,7 @@ metaModel : :class:`~openturns.Function`
 
 Returns
 -------
-residuals : :class:`~openturns.NumericalPoint`
+residuals : :class:`~openturns.Point`
     The residual values defined as follows for each output of the model:
     :math:`\displaystyle \frac{\sqrt{\sum_{i=1}^N (y_i - \hat{y_i})^2}}{N}`
     with :math:`y_i` the :math:`N` model's values and :math:`\hat{y_i}` the
@@ -104,7 +104,7 @@ residuals : sequence of float
 
 Returns
 -------
-relativeErrors : :class:`~openturns.NumericalPoint`
+relativeErrors : :class:`~openturns.Point`
     The relative errors  defined as follows for each output of the model:
     :math:`\displaystyle \frac{\sum_{i=1}^N (y_i - \hat{y_i})^2}{N \Var{\vect{Y}}}`
     with :math:`\vect{Y}` the vector of the :math:`N` model's values

@@ -23,7 +23,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -42,7 +42,7 @@ RandomWalk::RandomWalk()
 }
 
 /* Standard constructor */
-RandomWalk::RandomWalk(const NumericalPoint & origin,
+RandomWalk::RandomWalk(const Point & origin,
                        const Distribution & distribution)
   : ProcessImplementation()
   , origin_(origin)
@@ -55,7 +55,7 @@ RandomWalk::RandomWalk(const NumericalPoint & origin,
 }
 
 /* Standard constructor */
-RandomWalk::RandomWalk(const NumericalPoint & origin,
+RandomWalk::RandomWalk(const Point & origin,
                        const Distribution & distribution,
                        const RegularGrid & timeGrid)
   : ProcessImplementation()
@@ -130,7 +130,7 @@ TimeSeries RandomWalk::getFuture(const UnsignedInteger stepNumber) const
   const NumericalScalar timeStep = RegularGrid(mesh_).getStep();
   const RegularGrid futurTimeGrid(RegularGrid(mesh_).getEnd(), timeStep, stepNumber);
   Sample data(stepNumber, dimension_);
-  NumericalPoint previous(currentPosition_);
+  Point previous(currentPosition_);
   for (UnsignedInteger i = 0; i < stepNumber; ++i)
   {
     data[i] = previous + distribution_.getRealization();
@@ -143,7 +143,7 @@ TimeSeries RandomWalk::getFuture(const UnsignedInteger stepNumber) const
 RandomWalk::Implementation RandomWalk::getMarginal(const UnsignedInteger i) const
 {
   if (i >= dimension_) throw InvalidArgumentException(HERE) << "The index of a marginal process must be in the range [0, dim-1]";
-  return new RandomWalk(NumericalPoint(1, origin_[i]), distribution_.getMarginal(i), mesh_);
+  return new RandomWalk(Point(1, origin_[i]), distribution_.getMarginal(i), mesh_);
 }
 
 /* Get the marginal process corresponding to indices components */
@@ -151,7 +151,7 @@ RandomWalk::Implementation RandomWalk::getMarginal(const Indices & indices) cons
 {
   if (!indices.check(getDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal process must be in the range [0, dim-1] and must be different";
   const UnsignedInteger size = indices.getSize();
-  NumericalPoint marginalOrigin(size);
+  Point marginalOrigin(size);
   for (UnsignedInteger i = 0; i < size; ++i) marginalOrigin[i] = origin_[indices[i]];
   return new RandomWalk(marginalOrigin, distribution_.getMarginal(indices), mesh_);
 }
@@ -171,12 +171,12 @@ void RandomWalk::setDistribution(const Distribution & distribution)
 }
 
 /* Origin accessor */
-NumericalPoint RandomWalk::getOrigin() const
+Point RandomWalk::getOrigin() const
 {
   return origin_;
 }
 
-void RandomWalk::setOrigin(const NumericalPoint & origin)
+void RandomWalk::setOrigin(const Point & origin)
 {
   if (origin.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given origin has a dimension=" << origin.getDimension() << " incompatible with the process dimension=" << dimension_;
   origin_ = origin;

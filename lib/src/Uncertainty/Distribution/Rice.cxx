@@ -102,8 +102,8 @@ Rice * Rice::clone() const
 /* Compute the numerical range of the distribution given the parameters values */
 void Rice::computeRange()
 {
-  const NumericalPoint lowerBound(1, 0.0 );
-  const NumericalPoint upperBound(1, computeScalarQuantile(cdfEpsilon_, true));
+  const Point lowerBound(1, 0.0 );
+  const Point upperBound(1, computeScalarQuantile(cdfEpsilon_, true));
   const Interval::BoolCollection finiteLowerBound(1, true);
   const Interval::BoolCollection finiteUpperBound(1, false);
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
@@ -111,16 +111,16 @@ void Rice::computeRange()
 
 
 /* Get one realization of the distribution */
-NumericalPoint Rice::getRealization() const
+Point Rice::getRealization() const
 {
   const NumericalScalar x = sigma_ * DistFunc::rNormal() + nu_;
   const NumericalScalar y = sigma_ * DistFunc::rNormal();
-  return NumericalPoint(1.0, std::sqrt(x * x + y * y));
+  return Point(1.0, std::sqrt(x * x + y * y));
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Rice::computePDF(const NumericalPoint & point) const
+NumericalScalar Rice::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -133,7 +133,7 @@ NumericalScalar Rice::computePDF(const NumericalPoint & point) const
 
 
 /* Get the logarithm of the PDF of the distribution */
-NumericalScalar Rice::computeLogPDF(const NumericalPoint & point) const
+NumericalScalar Rice::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -146,7 +146,7 @@ NumericalScalar Rice::computeLogPDF(const NumericalPoint & point) const
 
 
 /* Get the CDF of the distribution */
-NumericalScalar Rice::computeCDF(const NumericalPoint & point) const
+NumericalScalar Rice::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -156,7 +156,7 @@ NumericalScalar Rice::computeCDF(const NumericalPoint & point) const
   return DistFunc::pNonCentralChiSquare(2, lambda , y, false, pdfEpsilon_, maximumIteration_);
 }
 
-NumericalScalar Rice::computeComplementaryCDF(const NumericalPoint & point) const
+NumericalScalar Rice::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -171,22 +171,22 @@ void Rice::computeMean() const
 {
   //1.253314137315500251207882 = sqrt(pi/2)
   const NumericalScalar x = -0.5 * std::pow(nu_ / sigma_, 2);
-  mean_ = NumericalPoint(1, sigma_ * 1.253314137315500251207882 * SpecFunc::HyperGeom_1_1(-0.5, 1, x));
+  mean_ = Point(1, sigma_ * 1.253314137315500251207882 * SpecFunc::HyperGeom_1_1(-0.5, 1, x));
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint Rice::getStandardDeviation() const
+Point Rice::getStandardDeviation() const
 {
   if (!isAlreadyComputedCovariance_) computeCovariance();
-  return NumericalPoint(1, std::sqrt(covariance_(0, 0)));
+  return Point(1, std::sqrt(covariance_(0, 0)));
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Rice::getStandardMoment(const UnsignedInteger n) const
+Point Rice::getStandardMoment(const UnsignedInteger n) const
 {
-  if (n == 0) return NumericalPoint(1, 1.0);
+  if (n == 0) return Point(1, 1.0);
   const NumericalScalar sigma2 = sigma_ * sigma_;
-  return NumericalPoint(1, std::pow(2.0 * sigma2, 0.5 * n) * SpecFunc::Gamma(1.0 + 0.5 * n) * SpecFunc::HyperGeom_1_1(-0.5 * n, 1.0, -0.5 * nu_ * nu_ / sigma2));
+  return Point(1, std::pow(2.0 * sigma2, 0.5 * n) * SpecFunc::Gamma(1.0 + 0.5 * n) * SpecFunc::HyperGeom_1_1(-0.5 * n, 1.0, -0.5 * nu_ * nu_ / sigma2));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
@@ -208,15 +208,15 @@ void Rice::computeCovariance() const
 }
 
 /* Parameters value accessor */
-NumericalPoint Rice::getParameter() const
+Point Rice::getParameter() const
 {
-  NumericalPoint point(2);
+  Point point(2);
   point[0] = sigma_;
   point[1] = nu_;
   return point;
 }
 
-void Rice::setParameter(const NumericalPoint & parameter)
+void Rice::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();

@@ -49,7 +49,7 @@ GumbelFactory::Implementation GumbelFactory::build(const Sample & sample) const
   return buildAsGumbel(sample).clone();
 }
 
-GumbelFactory::Implementation GumbelFactory::build(const NumericalPoint & parameters) const
+GumbelFactory::Implementation GumbelFactory::build(const Point & parameters) const
 {
   return buildAsGumbel(parameters).clone();
 }
@@ -70,7 +70,7 @@ Gumbel GumbelFactory::buildAsGumbel(const Sample & sample) const
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Gumbel distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   NumericalScalar mu = sample.computeMean()[0];
   NumericalScalar sigma = sample.computeStandardDeviationPerComponent()[0];
-  NumericalPoint parameters(2);
+  Point parameters(2);
   parameters[0] = mu;
   parameters[1] = sigma;
   Gumbel result(buildAsGumbel(GumbelMuSigma()(parameters)));
@@ -78,7 +78,7 @@ Gumbel GumbelFactory::buildAsGumbel(const Sample & sample) const
   return result;
 }
 
-Gumbel GumbelFactory::buildAsGumbel(const NumericalPoint & parameters) const
+Gumbel GumbelFactory::buildAsGumbel(const Point & parameters) const
 {
   try
   {

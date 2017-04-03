@@ -43,9 +43,9 @@ WhittleFactoryState::WhittleFactoryState()
 
 /* Standard constructor */
 WhittleFactoryState::WhittleFactoryState(const UnsignedInteger p,
-    const NumericalPoint & theta,
+    const Point & theta,
     const NumericalScalar sigma2,
-    const NumericalPoint & informationCriteria,
+    const Point & informationCriteria,
     const RegularGrid & timeGrid)
   : PersistentObject()
   , p_(p)
@@ -102,7 +102,7 @@ UnsignedInteger WhittleFactoryState::getQ() const
 }
 
 /* Theta accessor */
-NumericalPoint WhittleFactoryState::getTheta() const
+Point WhittleFactoryState::getTheta() const
 {
   return theta_;
 }
@@ -116,7 +116,7 @@ NumericalScalar WhittleFactoryState::getSigma2() const
 /* AR coefficients accessor */
 ARMACoefficients WhittleFactoryState::getARCoefficients() const
 {
-  NumericalPoint arCoefficients(p_);
+  Point arCoefficients(p_);
   for (UnsignedInteger k = 0; k < p_; ++k) arCoefficients[k] = theta_[k];
   return ARMACoefficients(arCoefficients);
 }
@@ -125,7 +125,7 @@ ARMACoefficients WhittleFactoryState::getARCoefficients() const
 ARMACoefficients WhittleFactoryState::getMACoefficients() const
 {
   const UnsignedInteger q = getQ();
-  NumericalPoint maCoefficients(q);
+  Point maCoefficients(q);
   for (UnsignedInteger k = 0; k < q; ++k) maCoefficients[k] = theta_[k + p_];
   return ARMACoefficients(maCoefficients);
 }
@@ -145,7 +145,7 @@ ARMA WhittleFactoryState::getARMA() const
 }
 
 /* Information criteria accessor */
-NumericalPoint WhittleFactoryState::getInformationCriteria() const
+Point WhittleFactoryState::getInformationCriteria() const
 {
   return informationCriteria_;
 }

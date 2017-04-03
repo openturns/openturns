@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-inline String printNumericalPoint(const NumericalPoint & point, const UnsignedInteger digits)
+inline String printPoint(const Point & point, const UnsignedInteger digits)
 {
   OSS oss;
   oss << "[";
@@ -56,9 +56,9 @@ int main(int argc, char *argv[])
     Function linear(inVars, outVar, formula);
 
     UnsignedInteger dim = linear.getInputDimension();
-    NumericalPoint startingPoint(dim);
+    Point startingPoint(dim);
 
-    Interval bounds(NumericalPoint(dim, -3.0), NumericalPoint(dim, 5.0));
+    Interval bounds(Point(dim, -3.0), Point(dim, 5.0));
 
     Description algoNames(NLopt::GetAlgorithmNames());
     for (UnsignedInteger i = 0; i < algoNames.getSize(); ++i)
@@ -94,14 +94,14 @@ int main(int argc, char *argv[])
               NLopt::SetSeed(0);
               algo.setProblem(problem);
               algo.setMaximumEvaluationNumber(5000);
-              //algo.setInitialStep(NumericalPoint(dim, 0.1));
+              //algo.setInitialStep(Point(dim, 0.1));
               NLopt localAlgo("LD_MMA");
               algo.setLocalSolver(localAlgo);
               algo.setStartingPoint(startingPoint);
               fullprint << "algo=" << algo << std::endl;
               algo.run();
               OptimizationResult result(algo.getResult());
-              fullprint << "x^=" << printNumericalPoint(result.getOptimalPoint(), 3) << std::endl;
+              fullprint << "x^=" << printPoint(result.getOptimalPoint(), 3) << std::endl;
             }
             catch (...)
             {

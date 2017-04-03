@@ -6,12 +6,12 @@ import openturns as ot
 inputDimension = 3
 outputDimension = 2
 # Center
-center = ot.NumericalPoint(inputDimension)
+center = ot.Point(inputDimension)
 center[0] = -1
 center[1] = 0.5
 center[2] = 1
 # Constant term
-constant = ot.NumericalPoint(outputDimension)
+constant = ot.Point(outputDimension)
 constant[0] = -1.0
 constant[1] = 2.0
 # Linear term
@@ -46,7 +46,7 @@ quadratic[2, 2, 1] = -12.0
 myFunction = ot.QuadraticEvaluation(
     center, constant, linear, quadratic)
 myFunction.setName('quadraticFunction')
-inPoint = ot.NumericalPoint(inputDimension)
+inPoint = ot.Point(inputDimension)
 inPoint[0] = 7.0
 inPoint[1] = 8.0
 inPoint[2] = 9.0

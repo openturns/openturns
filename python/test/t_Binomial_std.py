@@ -30,7 +30,7 @@ try:
     print("covariance=", repr(oneSample.computeCovariance()))
 
     # Define a point
-    point = NumericalPoint(distribution.getDimension(), 5.0)
+    point = Point(distribution.getDimension(), 5.0)
     print("Point= ", repr(point))
 
     # Show PDF and CDF of point
@@ -40,7 +40,7 @@ try:
     print("pdf     =%.6f" % PDF)
     # by the finite difference technique from CDF
     print("pdf (FD)=%.6f" % (distribution.computeCDF(
-        point + NumericalPoint(1, 0)) - distribution.computeCDF(point + NumericalPoint(1, -1))))
+        point + Point(1, 0)) - distribution.computeCDF(point + Point(1, -1))))
 
     # derivative of the PDF with regards the parameters of the distribution
     CDF = distribution.computeCDF(point)

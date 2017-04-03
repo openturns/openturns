@@ -95,7 +95,7 @@ j : int
 
 Returns
 -------
-beta : :class:`~openturns.NumericalPoint`
+beta : :class:`~openturns.Point`
     Coefficients for rank i and component j."
 
 // ---------------------------------------------------------------------

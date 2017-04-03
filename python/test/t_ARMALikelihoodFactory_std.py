@@ -24,7 +24,7 @@ sigma = 0.1
 cov = CovarianceMatrix(dimension)
 cov[0, 0] = sigma
 cov[1, 1] = 2.0 * sigma
-whiteNoiseDistribution = Normal(NumericalPoint(dimension, 0.0), cov)
+whiteNoiseDistribution = Normal(Point(dimension, 0.0), cov)
 
 # Building a process from a White Noise
 whiteNoise = WhiteNoise(whiteNoiseDistribution)

@@ -1,19 +1,19 @@
-P=class=UniVariatePolynomial coefficients=class=NumericalPoint name=Unnamed dimension=1 values=[0]
+P=class=UniVariatePolynomial coefficients=class=Point name=Unnamed dimension=1 values=[0]
 P(1.2)=0
-Initial coefficients=class=NumericalPoint name=Unnamed dimension=6 values=[1.3,2.4,2,-0.5,4,0]
-P1=class=UniVariatePolynomial coefficients=class=NumericalPoint name=Unnamed dimension=5 values=[1.3,2.4,2,-0.5,4]
+Initial coefficients=class=Point name=Unnamed dimension=6 values=[1.3,2.4,2,-0.5,4,0]
+P1=class=UniVariatePolynomial coefficients=class=Point name=Unnamed dimension=5 values=[1.3,2.4,2,-0.5,4]
 P1=1.3 + 2.4 * X + 2 * X^2 - 0.5 * X^3 + 4 * X^4
 P1=1.3 + 2.4 * Y + 2 * Y^2 - 0.5 * Y^3 + 4 * Y^4
 P1 degree=4
 P1 roots=[(0.495448,0.89576),(0.495448,-0.89576),(-0.432948,0.350305),(-0.432948,-0.350305)]
 P1(1.2)=14.4904
-P1*2.0 =class=UniVariatePolynomial coefficients=class=NumericalPoint name=Unnamed dimension=5 values=[2.6,4.8,4,-1,8]
-P1.incrementDegree(3)=class=UniVariatePolynomial coefficients=class=NumericalPoint name=Unnamed dimension=8 values=[0,0,0,1.3,2.4,2,-0.5,4]
-P1.incrementDegree(0)=class=UniVariatePolynomial coefficients=class=NumericalPoint name=Unnamed dimension=5 values=[1.3,2.4,2,-0.5,4]
-P1.incrementDegree(1)=class=UniVariatePolynomial coefficients=class=NumericalPoint name=Unnamed dimension=6 values=[0,1.3,2.4,2,-0.5,4]
-P1.incrementDegree()=class=UniVariatePolynomial coefficients=class=NumericalPoint name=Unnamed dimension=6 values=[0,1.3,2.4,2,-0.5,4]
-P2=class=UniVariatePolynomial coefficients=class=NumericalPoint name=Unnamed dimension=3 values=[-2.5,3.5,-1.2]
-P1+P2=class=UniVariatePolynomial coefficients=class=NumericalPoint name=Unnamed dimension=5 values=[-1.2,5.9,0.8,-0.5,4]
-P1-P2=class=UniVariatePolynomial coefficients=class=NumericalPoint name=Unnamed dimension=5 values=[3.8,-1.1,3.2,-0.5,4]
-P1*P2=class=UniVariatePolynomial coefficients=class=NumericalPoint name=Unnamed dimension=7 values=[-3.25,-1.45,1.84,5.37,-14.15,14.6,-4.8]
-P1*P2=class=UniVariatePolynomial coefficients=class=NumericalPoint name=Unnamed dimension=7 values=[-3.25,-1.45,1.84,5.37,-14.15,14.6,-4.8]
+P1*2.0 =class=UniVariatePolynomial coefficients=class=Point name=Unnamed dimension=5 values=[2.6,4.8,4,-1,8]
+P1.incrementDegree(3)=class=UniVariatePolynomial coefficients=class=Point name=Unnamed dimension=8 values=[0,0,0,1.3,2.4,2,-0.5,4]
+P1.incrementDegree(0)=class=UniVariatePolynomial coefficients=class=Point name=Unnamed dimension=5 values=[1.3,2.4,2,-0.5,4]
+P1.incrementDegree(1)=class=UniVariatePolynomial coefficients=class=Point name=Unnamed dimension=6 values=[0,1.3,2.4,2,-0.5,4]
+P1.incrementDegree()=class=UniVariatePolynomial coefficients=class=Point name=Unnamed dimension=6 values=[0,1.3,2.4,2,-0.5,4]
+P2=class=UniVariatePolynomial coefficients=class=Point name=Unnamed dimension=3 values=[-2.5,3.5,-1.2]
+P1+P2=class=UniVariatePolynomial coefficients=class=Point name=Unnamed dimension=5 values=[-1.2,5.9,0.8,-0.5,4]
+P1-P2=class=UniVariatePolynomial coefficients=class=Point name=Unnamed dimension=5 values=[3.8,-1.1,3.2,-0.5,4]
+P1*P2=class=UniVariatePolynomial coefficients=class=Point name=Unnamed dimension=7 values=[-3.25,-1.45,1.84,5.37,-14.15,14.6,-4.8]
+P1*P2=class=UniVariatePolynomial coefficients=class=Point name=Unnamed dimension=7 values=[-3.25,-1.45,1.84,5.37,-14.15,14.6,-4.8]

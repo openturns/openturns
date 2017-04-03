@@ -32,7 +32,7 @@ CLASSNAMEINIT(Event);
 
 /* Default constructor for save/load */
 Event::Event()
-  : RandomVector(CompositeRandomVector(SymbolicFunction("x", "x"), RandomVector(NumericalPoint(1, 0.0))), Less(), 0.0)
+  : RandomVector(CompositeRandomVector(SymbolicFunction("x", "x"), RandomVector(Point(1, 0.0))), Less(), 0.0)
 {
   // Nothing to do
 }

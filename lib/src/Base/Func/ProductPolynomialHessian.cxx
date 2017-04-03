@@ -62,14 +62,14 @@ String ProductPolynomialHessian::__repr__() const
 
 
 /* Compute the hessian of a product of univariate polynomials */
-SymmetricTensor ProductPolynomialHessian::hessian (const NumericalPoint & inP) const
+SymmetricTensor ProductPolynomialHessian::hessian (const Point & inP) const
 {
   const UnsignedInteger inDimension = inP.getDimension();
   if (inDimension != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a ProductPolynomialFunction with an argument of invalid dimension";
   NumericalScalar productEvaluation = 1.0;
-  NumericalPoint evaluations(inDimension);
-  NumericalPoint derivatives(inDimension);
-  NumericalPoint secondDerivatives(inDimension);
+  Point evaluations(inDimension);
+  Point derivatives(inDimension);
+  Point secondDerivatives(inDimension);
   for (UnsignedInteger i = 0; i < inDimension; ++i)
   {
     const NumericalScalar x = inP[i];

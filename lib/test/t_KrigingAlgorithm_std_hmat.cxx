@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
       Sample Y2(model(X2));
 
       Basis basis(ConstantBasisFactory(dimension).build());
-      SquaredExponential covarianceModel(NumericalPoint(1, 1e-05), NumericalPoint(1, 4.11749));
+      SquaredExponential covarianceModel(Point(1, 1e-05), Point(1, 4.11749));
       KrigingAlgorithm algo(X, Y, covarianceModel, basis);
 
       algo.run();
@@ -79,17 +79,17 @@ int main(int argc, char *argv[])
 
       assert_almost_equal(result.getMetaModel()(X), Y, 1e-3);
 
-      NumericalPoint residualRef(1, 5.57410e-06);
+      Point residualRef(1, 5.57410e-06);
       assert_almost_equal(result.getResiduals(), residualRef, 1e-3, 1e-4);
 
-      NumericalPoint relativeErrorRef(1, 9.17605e-12);
+      Point relativeErrorRef(1, 9.17605e-12);
       assert_almost_equal(result.getRelativeErrors(), relativeErrorRef, 1e-3, 1e-5);
 
       // Evaluation of the covariance on the X dataset
       CovarianceMatrix covMatrix(result.getConditionalCovariance(X));
 
       // Validation of the covariance ==> should be null on the learning set
-      assert_almost_equal(NumericalPoint(*covMatrix.getImplementation()), NumericalPoint(sampleSize * sampleSize), 8.95e-7, 8.95e-7);
+      assert_almost_equal(Point(*covMatrix.getImplementation()), Point(sampleSize * sampleSize), 8.95e-7, 8.95e-7);
 
     }
 
@@ -126,10 +126,10 @@ int main(int argc, char *argv[])
 
       // create algorithm
       Basis basis(ConstantBasisFactory(dimension).build());
-      NumericalPoint scale(2);
+      Point scale(2);
       scale[0] = 1e-05;
       scale[1] = 18.9;
-      NumericalPoint amplitude(1,  8.05);
+      Point amplitude(1,  8.05);
       SquaredExponential covarianceModel(scale, amplitude);
 
       KrigingAlgorithm algo(X, Y, covarianceModel, basis);
@@ -143,10 +143,10 @@ int main(int argc, char *argv[])
 
       assert_almost_equal(result.getMetaModel()(X), Y, 1e-3);
 
-      NumericalPoint residualRef(1, 1.17e-07);
+      Point residualRef(1, 1.17e-07);
       assert_almost_equal(result.getResiduals(), residualRef, 1e-3, 1e-5);
 
-      NumericalPoint relativeErrorRef(1, 1.48e-11);
+      Point relativeErrorRef(1, 1.48e-11);
       assert_almost_equal(result.getRelativeErrors(), relativeErrorRef, 1e-3, 1e-5);
 
       std::cout << "df(X0)=" << model.gradient(X[1]) << std::endl;
@@ -163,7 +163,7 @@ int main(int argc, char *argv[])
 
       // Validation of the gradient
       std::cout << "d^f(X0) & d^f(X0) FD similar ?" <<  std::endl;
-      assert_almost_equal(NumericalPoint(*gradientKriging.getImplementation()), NumericalPoint(*gradientKrigingFD.getImplementation()), 1e-3, 1e-3);
+      assert_almost_equal(Point(*gradientKriging.getImplementation()), Point(*gradientKrigingFD.getImplementation()), 1e-3, 1e-3);
       std::cout << "d^f(X0) & d^f(X0) FD are similar." <<  std::endl;
 
     }

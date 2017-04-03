@@ -43,10 +43,10 @@ public:
   ANCOVA(const FunctionalChaosResult & functionalChaosResult, const Sample & correlatedInput);
 
   /** Accessor to ANCOVA indices measuring uncorrelated effects */
-  NumericalPoint getUncorrelatedIndices(const UnsignedInteger marginalIndex = 0) const;
+  Point getUncorrelatedIndices(const UnsignedInteger marginalIndex = 0) const;
 
   /** Accessor to ANCOVA indices: total parts of variance of the output due to each input */
-  NumericalPoint getIndices(const UnsignedInteger marginalIndex = 0) const;
+  Point getIndices(const UnsignedInteger marginalIndex = 0) const;
 
 private:
 

@@ -38,8 +38,8 @@ print('sample4=', repr(sample4))
 
 sample5 = ot.Sample(sample2)
 m = ot.SquareMatrix([[1, 2], [3, 5]])
-v = ot.NumericalPoint(2, 3.0)
-t = ot.NumericalPoint(2, 5.0)
+v = ot.Point(2, 3.0)
+t = ot.Point(2, 5.0)
 
 print('sample5 =', sample5)
 

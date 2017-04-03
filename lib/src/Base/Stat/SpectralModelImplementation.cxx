@@ -34,8 +34,8 @@ static const Factory<SpectralModelImplementation> Factory_SpectralModelImplement
 SpectralModelImplementation::SpectralModelImplementation()
   : PersistentObject()
   , dimension_(1)
-  , scale_(NumericalPoint(1, 1.0))
-  , amplitude_(NumericalPoint(1, 1.0))
+  , scale_(Point(1, 1.0))
+  , amplitude_(Point(1, 1.0))
   , spatialDimension_(1)
   , spatialCorrelation_(0)
   , spatialCovariance_(0)
@@ -44,8 +44,8 @@ SpectralModelImplementation::SpectralModelImplementation()
   updateSpatialCovariance();
 }
 
-SpectralModelImplementation::SpectralModelImplementation(const NumericalPoint & scale,
-    const NumericalPoint & amplitude)
+SpectralModelImplementation::SpectralModelImplementation(const Point & scale,
+    const Point & amplitude)
   : PersistentObject()
   , dimension_(amplitude.getDimension())
   , scale_(0)
@@ -60,8 +60,8 @@ SpectralModelImplementation::SpectralModelImplementation(const NumericalPoint & 
   updateSpatialCovariance();
 }
 
-SpectralModelImplementation::SpectralModelImplementation(const NumericalPoint & scale,
-    const NumericalPoint & amplitude,
+SpectralModelImplementation::SpectralModelImplementation(const Point & scale,
+    const Point & amplitude,
     const CorrelationMatrix & spatialCorrelation)
   : PersistentObject()
   , dimension_(amplitude.getDimension())
@@ -80,7 +80,7 @@ SpectralModelImplementation::SpectralModelImplementation(const NumericalPoint & 
   updateSpatialCovariance();
 }
 
-SpectralModelImplementation::SpectralModelImplementation(const NumericalPoint & scale,
+SpectralModelImplementation::SpectralModelImplementation(const Point & scale,
     const CovarianceMatrix & spatialCovariance)
   : PersistentObject()
   , dimension_(spatialCovariance.getDimension())
@@ -94,7 +94,7 @@ SpectralModelImplementation::SpectralModelImplementation(const NumericalPoint & 
   // Check scale values
   setScale(scale);
   spatialCovariance_ = HermitianMatrix(dimension_);
-  amplitude_ = NumericalPoint(dimension_);
+  amplitude_ = Point(dimension_);
   // As spatialCovariance is a covariance matrix, we convert it into an HermitianMatrix
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
@@ -158,12 +158,12 @@ NumericalComplex SpectralModelImplementation::computeStandardRepresentative(cons
 }
 
 /* Amplitude accessor */
-NumericalPoint SpectralModelImplementation::getAmplitude() const
+Point SpectralModelImplementation::getAmplitude() const
 {
   return amplitude_;
 }
 
-void SpectralModelImplementation::setAmplitude(const NumericalPoint & amplitude)
+void SpectralModelImplementation::setAmplitude(const Point & amplitude)
 {
   for (UnsignedInteger index = 0; index < dimension_; ++index)
     if (amplitude[index] <= 0)
@@ -173,12 +173,12 @@ void SpectralModelImplementation::setAmplitude(const NumericalPoint & amplitude)
 }
 
 /* Scale accessor */
-NumericalPoint SpectralModelImplementation::getScale() const
+Point SpectralModelImplementation::getScale() const
 {
   return scale_;
 }
 
-void SpectralModelImplementation::setScale(const NumericalPoint & scale)
+void SpectralModelImplementation::setScale(const Point & scale)
 {
   for (UnsignedInteger index = 0; index < spatialDimension_; ++index)
     if (scale[index] <= 0)

@@ -109,9 +109,9 @@ UnsignedInteger RandomGenerator::IntegerGenerate(const UnsignedInteger n)
 }
 
 /* Generate a pseudo-random vector of numbers uniformly distributed over ]0, 1[ */
-NumericalPoint RandomGenerator::Generate(const UnsignedInteger size)
+Point RandomGenerator::Generate(const UnsignedInteger size)
 {
-  NumericalPoint result(size);
+  Point result(size);
   if (!IsInitialized)
   {
     SetSeed(ResourceMap::GetAsUnsignedInteger( "RandomGenerator-InitialSeed" ));

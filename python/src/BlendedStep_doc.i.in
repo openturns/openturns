@@ -45,7 +45,7 @@ Examples
 
 Returns
 -------
-eta : :class:`~openturns.NumericalPoint`
+eta : :class:`~openturns.Point`
     Finite difference step offsets for each dimension."
 
 // ---------------------------------------------------------------------

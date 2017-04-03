@@ -48,7 +48,7 @@ ClaytonCopulaFactory::Implementation ClaytonCopulaFactory::build(const Sample & 
   return buildAsClaytonCopula(sample).clone();
 }
 
-ClaytonCopulaFactory::Implementation ClaytonCopulaFactory::build(const NumericalPoint & parameters) const
+ClaytonCopulaFactory::Implementation ClaytonCopulaFactory::build(const Point & parameters) const
 {
   return buildAsClaytonCopula(parameters).clone();
 }
@@ -69,7 +69,7 @@ ClaytonCopula ClaytonCopulaFactory::buildAsClaytonCopula(const Sample & sample) 
   return result;
 }
 
-ClaytonCopula ClaytonCopulaFactory::buildAsClaytonCopula(const NumericalPoint & parameters) const
+ClaytonCopula ClaytonCopulaFactory::buildAsClaytonCopula(const Point & parameters) const
 {
   try
   {

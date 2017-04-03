@@ -67,7 +67,7 @@ public:
   /* Here is the interface that all derived class may implement */
 
   /** Realization accessor */
-  virtual NumericalPoint getRealization() const;
+  virtual Point getRealization() const;
 
   /** Numerical sample accessor */
   virtual Sample getSample(const UnsignedInteger size) const;

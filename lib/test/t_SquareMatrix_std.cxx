@@ -132,13 +132,13 @@ int main(int argc, char *argv[])
     fullprint << "test number ten : multiplication with a numerical point method" << std::endl;
 
     /* Create the numerical point */
-    NumericalPoint pt ;
+    Point pt ;
     pt.add(1.) ;
     pt.add(2.) ;
     fullprint << "pt = " << pt << std::endl;
 
     /* Check the product method */
-    NumericalPoint ptResult = squareMatrix1.operator * ( pt )  ;
+    Point ptResult = squareMatrix1.operator * ( pt )  ;
     fullprint << "ptResult = " << ptResult << std::endl;
 
     /** TEST NUMBER ELEVEN : MULTIPLICATION AND DIVISION BY A NUMERICAL SCALAR METHODS */

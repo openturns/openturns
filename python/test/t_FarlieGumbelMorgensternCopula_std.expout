@@ -24,7 +24,7 @@ anotherSample covariance= [[ 0.0845153 0.0201085 ]
 point=  [0.2,0.2]  pdf= 1.252  cdf= 0.05792
 Quantile= [0.683555,0.683555]
 CDF(quantile)= 0.5
-InverseSurvival= class=NumericalPoint name=Unnamed dimension=2 values=[0.0255431,0.0255431]
+InverseSurvival= class=Point name=Unnamed dimension=2 values=[0.0255431,0.0255431]
 Survival(inverseSurvival)=0.950000
 Minimum volume interval= [0.0126603, 0.98734]
 [0.0126603, 0.98734]

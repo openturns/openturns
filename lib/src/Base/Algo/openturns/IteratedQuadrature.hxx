@@ -55,11 +55,11 @@ public:
   /** Compute an approximation of \int_a^b\int_{L_1(x_1)}^{U_1(x_1)}\int_{L_1(x_1,x_2)}^{U_2(x_1,x_2)}\dots\int_{L_1(x_1,\dots,x_{n-1})}^{U_2(x_1,\dots,x_{n-1})} f(x_1,\dots,x_n)dx_1\dotsdx_n, where [a,b] is an 1D interval, L_k and U_k are functions from R^k into R.
    */
   using IntegrationAlgorithmImplementation::integrate;
-  NumericalPoint integrate(const Function & function,
+  Point integrate(const Function & function,
                            const Interval & interval) const;
 
   // This method allows to get the estimated integration error as a scalar
-  NumericalPoint integrate(const Function & function,
+  Point integrate(const Function & function,
                            const NumericalScalar a,
                            const NumericalScalar b,
                            const FunctionCollection & lowerBounds,
@@ -92,7 +92,7 @@ private:
       // Nothing to do
     }
 
-    NumericalPoint operator()(const NumericalPoint & point) const
+    Point operator()(const Point & point) const
     {
       // Create the arguments of the local integration problem
       const Indices index(1, 0);
@@ -107,7 +107,7 @@ private:
         lowerBounds[i] = ParametricFunction(lowerBounds_[i + 1], index, point);
         upperBounds[i] = ParametricFunction(upperBounds_[i + 1], index, point);
       }
-      const NumericalPoint value(quadrature_.integrate(function, a, b, lowerBounds, upperBounds, false));
+      const Point value(quadrature_.integrate(function, a, b, lowerBounds, upperBounds, false));
       for (UnsignedInteger i = 0; i < value.getDimension(); ++i)
         if (!SpecFunc::IsNormal(value[i])) throw InternalException(HERE) << "Error: NaN or Inf produced for x=" << point << " while integrating " << function;
       return value;
@@ -126,7 +126,7 @@ private:
       const Sample sampleB(upperBounds_[0](sample));
       for (UnsignedInteger k = 0; k < sampleSize; ++k)
       {
-        const NumericalPoint x(sample[k]);
+        const Point x(sample[k]);
         // Create the arguments of the local integration problem
         const ParametricFunction function(function_, index, x);
         const NumericalScalar a = sampleA[k][0];

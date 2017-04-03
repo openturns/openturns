@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/NLopt.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/SpecFunc.hxx"
@@ -197,7 +197,7 @@ void NLopt::run()
 {
 #ifdef OPENTURNS_HAVE_NLOPT
   const UnsignedInteger dimension = getProblem().getDimension();
-  NumericalPoint startingPoint(getStartingPoint());
+  Point startingPoint(getStartingPoint());
   if (startingPoint.getDimension() != dimension)
     throw InvalidArgumentException(HERE) << "Invalid starting point dimension (" << startingPoint.getDimension() << "), expected " << dimension;
 
@@ -228,8 +228,8 @@ void NLopt::run()
     Interval bounds(getProblem().getBounds());
     Interval::BoolCollection finiteLowerBound(bounds.getFiniteLowerBound());
     Interval::BoolCollection finiteUpperBound(bounds.getFiniteUpperBound());
-    NumericalPoint lowerBound(bounds.getLowerBound());
-    NumericalPoint upperBound(bounds.getUpperBound());
+    Point lowerBound(bounds.getLowerBound());
+    Point upperBound(bounds.getUpperBound());
     std::vector<double> lb(dimension, 0.0);
     std::vector<double> ub(dimension, 0.0);
     std::copy(lowerBound.begin(), lowerBound.end(), lb.begin());
@@ -285,7 +285,7 @@ void NLopt::run()
     local_opt.set_maxeval(p_localSolver_->getMaximumEvaluationNumber());
     if (p_localSolver_->getInitialStep().getDimension() > 0)
     {
-      NumericalPoint localInitialStep(p_localSolver_->getInitialStep());
+      Point localInitialStep(p_localSolver_->getInitialStep());
       if (localInitialStep.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Invalid local dx point dimension, expected " << dimension;
       std::vector<double> local_dx(dimension, 0.0);
       std::copy(localInitialStep.begin(), localInitialStep.end(), local_dx.begin());
@@ -321,7 +321,7 @@ void NLopt::run()
   }
   p_opt_ = 0;
 
-  NumericalPoint optimizer(dimension);
+  Point optimizer(dimension);
   std::copy(x.begin(), x.end(), optimizer.begin());
   OptimizationResult result;
   result.setProblem(getProblem());
@@ -335,12 +335,12 @@ void NLopt::run()
 
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    const NumericalPoint inP(evaluationInputHistory_[i]);
-    const NumericalPoint outP(evaluationOutputHistory_[i]);
+    const Point inP(evaluationInputHistory_[i]);
+    const Point outP(evaluationOutputHistory_[i]);
     if (i > 0)
     {
-      const NumericalPoint inPM(evaluationInputHistory_[i - 1]);
-      const NumericalPoint outPM(evaluationOutputHistory_[i - 1]);
+      const Point inPM(evaluationInputHistory_[i - 1]);
+      const Point outPM(evaluationOutputHistory_[i - 1]);
       absoluteError = (inP - inPM).normInf();
       relativeError = absoluteError / inP.normInf();
       residualError = std::abs(outP[0] - outPM[0]);
@@ -349,7 +349,7 @@ void NLopt::run()
   }
 
   result.setOptimalPoint(optimizer);
-  result.setOptimalValue(NumericalPoint(1, optimalValue));
+  result.setOptimalValue(Point(1, optimalValue));
   result.setLagrangeMultipliers(computeLagrangeMultipliers(optimizer));
   setResult(result);
 #else
@@ -412,12 +412,12 @@ String NLopt::getAlgorithmName() const
 }
 
 /* Initial derivative-free local-optimization algorithms step accessor */
-void NLopt::setInitialStep(const NumericalPoint & initialStep)
+void NLopt::setInitialStep(const Point & initialStep)
 {
   initialStep_ = initialStep;
 }
 
-NumericalPoint NLopt::getInitialStep() const
+Point NLopt::getInitialStep() const
 {
   return initialStep_;
 }
@@ -437,11 +437,11 @@ double NLopt::ComputeObjective(const std::vector<double> & x, std::vector<double
 {
   NLopt *algorithm = static_cast<NLopt *>(f_data);
   const UnsignedInteger dimension = algorithm->getProblem().getDimension();
-  NumericalPoint inP(dimension);
+  Point inP(dimension);
   std::copy(x.begin(), x.end(), inP.begin());
 
   // evaluation
-  NumericalPoint outP(algorithm->getProblem().getObjective()(inP));
+  Point outP(algorithm->getProblem().getObjective()(inP));
 
   // track input/outputs
   algorithm->evaluationInputHistory_.add(inP);
@@ -480,11 +480,11 @@ double NLopt::ComputeInequalityConstraint(const std::vector< double >& x, std::v
   NLopt *algorithm = mData->p_algo_;
   const UnsignedInteger marginalIndex = mData->marginalIndex_;
   const UnsignedInteger dimension = algorithm->getProblem().getDimension();
-  NumericalPoint inP(dimension);
+  Point inP(dimension);
   std::copy(x.begin(), x.end(), inP.begin());
 
   // evaluation
-  NumericalPoint outP(algorithm->getProblem().getInequalityConstraint()(inP));
+  Point outP(algorithm->getProblem().getInequalityConstraint()(inP));
 
   // gradient
   if (!grad.empty())
@@ -508,11 +508,11 @@ double NLopt::ComputeEqualityConstraint(const std::vector< double >& x, std::vec
   NLopt *algorithm = mData->p_algo_;
   const UnsignedInteger marginalIndex = mData->marginalIndex_;
   const UnsignedInteger dimension = algorithm->getProblem().getDimension();
-  NumericalPoint inP(dimension);
+  Point inP(dimension);
   std::copy(x.begin(), x.end(), inP.begin());
 
   // evaluation
-  NumericalPoint outP(algorithm->getProblem().getEqualityConstraint()(inP));
+  Point outP(algorithm->getProblem().getEqualityConstraint()(inP));
 
   // gradient
   if (!grad.empty())

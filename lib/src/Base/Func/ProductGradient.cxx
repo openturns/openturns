@@ -82,13 +82,13 @@ String ProductGradient::__repr__() const
  * grad(h)_{i,j} = d(fg)_j / dx_i = f . dg_j / dx_i + df / dx_i . g_j
  * grad(h) = f . grad(g) + grad(f) . g^t
  */
-Matrix ProductGradient::gradient(const NumericalPoint & inP) const
+Matrix ProductGradient::gradient(const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   ++callsNumber_;
   const NumericalScalar leftValue = p_leftEvaluation_->operator()(inP)[0];
-  const NumericalPoint rightValue(p_rightEvaluation_->operator()(inP));
+  const Point rightValue(p_rightEvaluation_->operator()(inP));
   const Matrix leftGradient(p_leftGradient_->gradient(inP));
   const Matrix rightGradient(p_rightGradient_->gradient(inP));
   return leftValue * rightGradient + leftGradient * Matrix(1, getOutputDimension(), rightValue);

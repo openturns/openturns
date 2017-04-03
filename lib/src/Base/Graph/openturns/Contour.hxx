@@ -52,7 +52,7 @@ public:
   Contour(const Sample & x,
           const Sample & y,
           const Sample & data,
-          const NumericalPoint & levels,
+          const Point & levels,
           const Description & labels,
           const Bool drawLabels = true,
           const String & legend = "");
@@ -60,7 +60,7 @@ public:
   /** Constructor with parameters
       Contour(const Sample & xy,
       const Sample & data,
-      const NumericalPoint & levels,
+      const Point & levels,
       const Description & labels,
       const Bool drawLabels = true,
       const String & legend = ""); */
@@ -77,8 +77,8 @@ public:
   void setY(const Sample & y);
 
   /** Accessor for levels */
-  NumericalPoint getLevels() const;
-  void setLevels(const NumericalPoint & levels);
+  Point getLevels() const;
+  void setLevels(const Point & levels);
 
   /** Accessor for labels */
   Description getLabels() const;
@@ -129,7 +129,7 @@ private:
   Sample y_;
 
   /** Values of the level sets */
-  NumericalPoint levels_;
+  Point levels_;
 
   /** Labels of the level sets. If none is given, it defaults to the level values. */
   Description labels_;

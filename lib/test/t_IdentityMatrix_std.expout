@@ -1,6 +1,6 @@
 matrix1 = class=IdentityMatrix dimension=2 implementation=class=MatrixImplementation name=matrix1 rows=2 columns=2 values=[1,0,0,1]
-pt = class=NumericalPoint name=Unnamed dimension=2 values=[5,0]
-result = class=NumericalPoint name=Unnamed dimension=2 values=[5,0]
+pt = class=Point name=Unnamed dimension=2 values=[5,0]
+result = class=Point name=Unnamed dimension=2 values=[5,0]
 determinant = 1
 ev = [1,1]
 isSPD = true

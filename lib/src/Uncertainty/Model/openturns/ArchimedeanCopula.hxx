@@ -57,20 +57,20 @@ public:
 
   /** Get the PDF of the archimedean copula */
   using CopulaImplementation::computePDF;
-  NumericalScalar computePDF(const NumericalPoint & point) const;
+  NumericalScalar computePDF(const Point & point) const;
 
   /** Get the CDF of the archimedean copula */
   using CopulaImplementation::computeCDF;
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
+  NumericalScalar computeCDF(const Point & point) const;
   using CopulaImplementation::computeComplementaryCDF;
-  NumericalScalar computeComplementaryCDF(const NumericalPoint & point) const;
+  NumericalScalar computeComplementaryCDF(const Point & point) const;
 
   /** Get the probability content of an interval */
   NumericalScalar computeProbability(const Interval & interval) const;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   NumericalScalar computeConditionalPDF(const NumericalScalar x,
-                                        const NumericalPoint & y) const;
+                                        const Point & y) const;
 
   /** Compute the archimedean generator of the archimedean copula, i.e.
    *  the function phi such that the CDF of the copula can

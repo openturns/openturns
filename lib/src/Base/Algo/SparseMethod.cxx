@@ -78,7 +78,7 @@ void SparseMethod::update(const Indices & addedIndices,
 
 
 /* Solve least-squares problem */
-NumericalPoint SparseMethod::solve(const NumericalPoint & rhs)
+Point SparseMethod::solve(const Point & rhs)
 {
   // save state
   const Indices currentIndices(method_.getCurrentIndices());
@@ -131,13 +131,13 @@ NumericalPoint SparseMethod::solve(const NumericalPoint & rhs)
   // solve in the optimal basis
   method_.update(Indices(), optimalBasisIndices, Indices());
 
-  const NumericalPoint optimalBasisCoefficients(method_.solve(rhs));
+  const Point optimalBasisCoefficients(method_.solve(rhs));
 
   // restore state
   method_.update(Indices(), currentIndices, Indices());
 
   // compute the coefficients in the master basis from the ones in the optimal sub-basis
-  NumericalPoint optimalCoefficients( currentIndices_.getSize() );
+  Point optimalCoefficients( currentIndices_.getSize() );
   for (UnsignedInteger i = 0; i < optimalBasisIndices.getSize(); ++ i)
   {
     for (UnsignedInteger j = 0; j < currentIndices_.getSize(); ++ j)
@@ -168,7 +168,7 @@ Sample SparseMethod::getInputSample() const
   return method_.getInputSample();
 }
 
-NumericalPoint SparseMethod::getWeight() const
+Point SparseMethod::getWeight() const
 {
   return method_.getWeight();
 }

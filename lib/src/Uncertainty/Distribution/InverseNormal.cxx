@@ -94,7 +94,7 @@ InverseNormal * InverseNormal::clone() const
 }
 
 /* Get one realization of the distribution */
-NumericalPoint InverseNormal::getRealization() const
+Point InverseNormal::getRealization() const
 {
   const NumericalScalar nu = DistFunc::rNormal();
   const NumericalScalar y = nu * nu;
@@ -102,13 +102,13 @@ NumericalPoint InverseNormal::getRealization() const
   // Lower bound computed by Maple to insure double precision
   const NumericalScalar x = w < 5.015e5 ? mu_ * (1.0 + 0.5 * w * (1.0 - std::sqrt(1.0 + 4.0 / w))) : mu_ * ((5.0 / w - 2.0) / w + 1.0) / w;
   const NumericalScalar z = RandomGenerator::Generate();
-  if (z * (mu_ + x) <= mu_) return NumericalPoint(1, x);
-  return NumericalPoint(1, mu_ * mu_ / x);
+  if (z * (mu_ + x) <= mu_) return Point(1, x);
+  return Point(1, mu_ * mu_ / x);
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar InverseNormal::computePDF(const NumericalPoint & point) const
+NumericalScalar InverseNormal::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -117,7 +117,7 @@ NumericalScalar InverseNormal::computePDF(const NumericalPoint & point) const
   return std::sqrt(lambda_ / (2.0 * M_PI * x * x * x)) * std::exp(- lambda_ * (x - mu_) * (x - mu_) / (2.0 * x * mu_ * mu_));
 }
 
-NumericalScalar InverseNormal::computeLogPDF(const NumericalPoint & point) const
+NumericalScalar InverseNormal::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -127,7 +127,7 @@ NumericalScalar InverseNormal::computeLogPDF(const NumericalPoint & point) const
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar InverseNormal::computeCDF(const NumericalPoint & point) const
+NumericalScalar InverseNormal::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -171,9 +171,9 @@ NumericalComplex InverseNormal::computeLogCharacteristicFunction(const Numerical
 /* Compute the numerical range of the distribution given the parameters values */
 void InverseNormal::computeRange()
 {
-  const NumericalPoint lowerBound(1, 0.0);
+  const Point lowerBound(1, 0.0);
   const NumericalScalar q = DistFunc::qNormal(cdfEpsilon_, true);
-  const NumericalPoint upperBound(1, 2.0 * lambda_ * mu_ / (2.0 * lambda_ + mu_ * q * q - q * std::sqrt(mu_ * (q * q * mu_ + 4.0 * lambda_))));
+  const Point upperBound(1, 2.0 * lambda_ * mu_ / (2.0 * lambda_ + mu_ * q * q - q * std::sqrt(mu_ * (q * q * mu_ + 4.0 * lambda_))));
   const Interval::BoolCollection finiteLowerBound(1, true);
   const Interval::BoolCollection finiteUpperBound(1, false);
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
@@ -182,7 +182,7 @@ void InverseNormal::computeRange()
 /* Compute the mean of the distribution */
 void InverseNormal::computeMean() const
 {
-  mean_ = NumericalPoint(1, mu_);
+  mean_ = Point(1, mu_);
   isAlreadyComputedMean_ = true;
 }
 
@@ -195,27 +195,27 @@ void InverseNormal::computeCovariance() const
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint InverseNormal::getStandardDeviation() const
+Point InverseNormal::getStandardDeviation() const
 {
-  return NumericalPoint(1, std::sqrt(getCovariance()(0, 0)));
+  return Point(1, std::sqrt(getCovariance()(0, 0)));
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint InverseNormal::getSkewness() const
+Point InverseNormal::getSkewness() const
 {
-  return NumericalPoint(1, 3.0 * std::sqrt(mu_ / lambda_));
+  return Point(1, 3.0 * std::sqrt(mu_ / lambda_));
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint InverseNormal::getKurtosis() const
+Point InverseNormal::getKurtosis() const
 {
-  return NumericalPoint(1, 3.0 + 15.0 * mu_ / lambda_);
+  return Point(1, 3.0 + 15.0 * mu_ / lambda_);
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint InverseNormal::getStandardMoment(const UnsignedInteger n) const
+Point InverseNormal::getStandardMoment(const UnsignedInteger n) const
 {
-  if (n == 0) return NumericalPoint(1, 1.0);
+  if (n == 0) return Point(1, 1.0);
   NumericalScalar moment = 1.0;
   NumericalScalar rho = 0.5 * mu_ / lambda_;
   NumericalScalar product = 1.0;
@@ -224,7 +224,7 @@ NumericalPoint InverseNormal::getStandardMoment(const UnsignedInteger n) const
     product *= (n - k) * (n + k - 1) * rho / k;
     moment += product;
   }
-  return NumericalPoint(1, std::pow(mu_, static_cast<int>(n)) * moment);
+  return Point(1, std::pow(mu_, static_cast<int>(n)) * moment);
 }
 
 /* Interface specific to InverseNormal */
@@ -257,15 +257,15 @@ NumericalScalar InverseNormal::getMu() const
 }
 
 /* Parameters value accessor */
-NumericalPoint InverseNormal::getParameter() const
+Point InverseNormal::getParameter() const
 {
-  NumericalPoint point(2);
+  Point point(2);
   point[0] = lambda_;
   point[1] = mu_;
   return point;
 }
 
-void InverseNormal::setParameter(const NumericalPoint & parameter)
+void InverseNormal::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();

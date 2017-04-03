@@ -81,14 +81,14 @@ Bool GradientImplementation::isActualImplementation() const
 /* Here is the interface that all derived class must implement */
 
 /* Gradient method */
-Matrix GradientImplementation::gradient(const NumericalPoint & inP) const
+Matrix GradientImplementation::gradient(const Point & inP) const
 {
-  throw NotYetImplementedException(HERE) << "In GradientImplementation::gradient(const NumericalPoint & inP) const";
+  throw NotYetImplementedException(HERE) << "In GradientImplementation::gradient(const Point & inP) const";
 }
 
 /* Gradient method */
-Matrix GradientImplementation::gradient (const NumericalPoint & inP,
-    const NumericalPoint & parameter)
+Matrix GradientImplementation::gradient (const Point & inP,
+    const Point & parameter)
 {
   setParameter(parameter);
   return gradient(inP);
@@ -113,12 +113,12 @@ UnsignedInteger GradientImplementation::getCallsNumber() const
 }
 
 /* Parameters value and description accessor */
-NumericalPoint GradientImplementation::getParameter() const
+Point GradientImplementation::getParameter() const
 {
   return parameter_;
 }
 
-void GradientImplementation::setParameter(const NumericalPoint & parameter)
+void GradientImplementation::setParameter(const Point & parameter)
 {
   parameter_ = parameter;
 }
@@ -152,9 +152,9 @@ GradientImplementation::Implementation GradientImplementation::getMarginal(const
   const Description formulas(outputDimension, "0.0");
   const SymbolicEvaluation right(input, output, formulas);
 #else
-  NumericalPoint center(inputDimension);
+  Point center(inputDimension);
   Matrix linear(inputDimension, outputDimension);
-  NumericalPoint constant(outputDimension);
+  Point constant(outputDimension);
   const LinearEvaluation right(center, constant, linear);
 #endif
   // A

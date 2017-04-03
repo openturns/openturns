@@ -23,7 +23,7 @@
 
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Description.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Collection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -138,15 +138,15 @@ public:
   MatrixImplementation genPower(const UnsignedInteger n) const;
   MatrixImplementation symPower(const UnsignedInteger n) const;
 
-  /** Multiplications with a NumericalPoint (must have consistent dimensions) */
-  NumericalPoint genVectProd (const NumericalPoint & pt,
+  /** Multiplications with a Point (must have consistent dimensions) */
+  Point genVectProd (const Point & pt,
                               const Bool transpose = false) const;
-  NumericalPoint symVectProd (const NumericalPoint & pt) const;
+  Point symVectProd (const Point & pt) const;
 
   /** Using triangular matrix */
   NumericalScalarCollection triangularVectProd (const NumericalScalarCollection & pt,
       const char side = 'L') const;
-  NumericalScalarCollection triangularVectProd (const NumericalPoint & pt,
+  NumericalScalarCollection triangularVectProd (const Point & pt,
       const char side = 'L') const;
 
   /** Multiplication with a NumericalScalar */
@@ -168,19 +168,19 @@ public:
   void triangularize(const Bool isLowerTriangular) const;
 
   /** Resolution of a linear system in case of a rectangular matrix */
-  NumericalPoint solveLinearSystemRect(const NumericalPoint & b,
+  Point solveLinearSystemRect(const Point & b,
                                        const Bool keepIntact = true);
   MatrixImplementation solveLinearSystemRect(const MatrixImplementation & b,
       const Bool keepIntact = true);
 
   /** Resolution of a linear system in case of a square matrix */
-  NumericalPoint solveLinearSystemSquare(const NumericalPoint & b,
+  Point solveLinearSystemSquare(const Point & b,
                                          const Bool keepIntact = true);
   MatrixImplementation solveLinearSystemSquare(const MatrixImplementation & b,
       const Bool keepIntact = true);
 
   /** Resolution of a linear system in case of a triangular matrix */
-  NumericalPoint solveLinearSystemTri(const NumericalPoint & b,
+  Point solveLinearSystemTri(const Point & b,
                                       const Bool keepIntact = true,
                                       const Bool lower = true,
                                       const Bool transpose = false);
@@ -191,13 +191,13 @@ public:
       const Bool transpose = false);
 
   /** Resolution of a linear system in case of a symmetric matrix */
-  NumericalPoint solveLinearSystemSym(const NumericalPoint & b,
+  Point solveLinearSystemSym(const Point & b,
                                       const Bool keepIntact = true);
   MatrixImplementation solveLinearSystemSym(const MatrixImplementation & b,
       const Bool keepIntact = true);
 
   /** Resolution of a linear system in case of a covariance matrix */
-  NumericalPoint solveLinearSystemCov(const NumericalPoint & b,
+  Point solveLinearSystemCov(const Point & b,
                                       const Bool keepIntact = true);
   MatrixImplementation solveLinearSystemCov(const MatrixImplementation & b,
       const Bool keepIntact = true);
@@ -222,15 +222,15 @@ public:
   NumericalComplexCollection computeEigenValuesSquare(const Bool keepIntact = true);
   NumericalComplexCollection computeEVSquare(ComplexMatrixImplementation & v,
       const Bool keepIntact = true);
-  NumericalPoint computeEigenValuesSym(const Bool keepIntact = true);
-  NumericalPoint computeEVSym(MatrixImplementation & v,
+  Point computeEigenValuesSym(const Bool keepIntact = true);
+  Point computeEVSym(MatrixImplementation & v,
                               const Bool keepIntact = true);
 
   /** Compute singular values */
-  NumericalPoint computeSingularValues(const Bool keepIntact = true);
+  Point computeSingularValues(const Bool keepIntact = true);
 
   /** Build the singular value decomposition */
-  NumericalPoint computeSVD(MatrixImplementation & u,
+  Point computeSVD(MatrixImplementation & u,
                             MatrixImplementation & vT,
                             const Bool fullSVD = false,
                             const Bool keepIntact = true);
@@ -254,11 +254,11 @@ public:
 
   /** Update in-place the Cholesky factor L of an SPD matrix M given a rank-one update vv^T, ie L becomes Lnew such that LnewLnew^t = Mnew with Mnew = M + vv^t */
   static void CholeskyUpdate(MatrixImplementation & cholesky,
-                             const NumericalPoint & vector);
+                             const Point & vector);
 
   /** Downdate in-place the Cholesky factor L of an SPD matrix M given a rank-one downdate vv^T, ie L becomes Lnew such that LnewLnew^t = Mnew with Mnew = M - vv^t */
   static void CholeskyDowndate(MatrixImplementation & cholesky,
-                               const NumericalPoint & vector);
+                               const Point & vector);
 
   /** Build the QR factorization of the matrix */
   virtual MatrixImplementation computeQR(MatrixImplementation & R,

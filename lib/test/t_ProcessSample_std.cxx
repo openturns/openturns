@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
     //    TimeSeriesCollection collection;
     //    collection.add(timeSerie);
 
-    //    sample.scale( NumericalPoint( 1, 0.1 ) );
+    //    sample.scale( Point( 1, 0.1 ) );
     //    TimeSeries newtimeSeries(timeGrid, sample);
     //    collection.add( newtimeSeries );
 

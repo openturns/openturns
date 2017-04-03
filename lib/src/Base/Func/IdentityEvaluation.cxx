@@ -73,7 +73,7 @@ String IdentityEvaluation::__str__(const String & offset) const
 /* Here is the interface that all derived class must implement */
 
 /* Operator () */
-NumericalPoint IdentityEvaluation::operator() (const NumericalPoint & inP) const
+Point IdentityEvaluation::operator() (const Point & inP) const
 {
   if (inP.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   ++callsNumber_;

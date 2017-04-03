@@ -47,7 +47,7 @@ OT_Sampler_getDimension_doc
 
 Returns
 -------
-realization : :class:`~openturns.NumericalPoint`
+realization : :class:`~openturns.Point`
     A new realization."
 %enddef
 %feature("docstring") OT::SamplerImplementation::getRealization

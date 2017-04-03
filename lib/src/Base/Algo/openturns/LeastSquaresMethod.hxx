@@ -48,7 +48,7 @@ public:
 
   /** Parameters constructor */
   LeastSquaresMethod (const DesignProxy & proxy,
-                      const NumericalPoint & weight,
+                      const Point & weight,
                       const Indices & indices);
 
   /** Parameters constructor */
@@ -69,7 +69,7 @@ public:
   Sample getInputSample() const;
 
   /** Weight accessor */
-  NumericalPoint getWeight() const;
+  Point getWeight() const;
 
   /** Basis accessor */
   Basis getBasis() const;
@@ -84,16 +84,16 @@ public:
   Basis buildCurrentBasis() const;
 
   /** Solve least-squares problem, ie x=\argmin |Mx-b|^2 */
-  NumericalPoint solve(const NumericalPoint & rhs);
+  Point solve(const Point & rhs);
 
   /** Solve normal equation M^T*M*x=M^T*b */
-  NumericalPoint solveNormal(const NumericalPoint & rhs);
+  Point solveNormal(const Point & rhs);
 
   /** Get the diagonal of H */
-  NumericalPoint getHDiag() const;
+  Point getHDiag() const;
 
   /** Get the diagonal of the Gram inverse */
-  NumericalPoint getGramInverseDiag() const;
+  Point getGramInverseDiag() const;
 
   /** Get the trace of the Gram inverse */
   NumericalScalar getGramInverseTrace() const;
@@ -110,7 +110,7 @@ public:
   /** Build a method instance from its name */
   static LeastSquaresMethod Build(const String name,
                                   const DesignProxy & proxy,
-                                  const NumericalPoint & weight,
+                                  const Point & weight,
                                   const Indices & indices);
 
   static LeastSquaresMethod Build(const String name,

@@ -58,7 +58,7 @@ struct NegativeBinomialFactoryParameterConstraint
     // Nothing to do
   };
 
-  NumericalPoint computeConstraint(const NumericalPoint & parameter) const
+  Point computeConstraint(const Point & parameter) const
   {
     const NumericalScalar r = parameter[0];
     if (!(r > 0.0)) throw InvalidArgumentException(HERE) << "Error: the r parameter must be positive.";
@@ -67,7 +67,7 @@ struct NegativeBinomialFactoryParameterConstraint
     NumericalScalar sumPsi = 0.0;
     for (UnsignedInteger i = 0; i < size; ++i) sumPsi += SpecFunc::Psi(sample_[i][0] + r);
     const NumericalScalar value = sumPsi + size * (std::log(r / (r + mean_)) - SpecFunc::Psi(r));
-    return NumericalPoint(1, value);
+    return Point(1, value);
   }
 
   // The data
@@ -81,7 +81,7 @@ NegativeBinomialFactory::Implementation NegativeBinomialFactory::build(const Sam
   return buildAsNegativeBinomial(sample).clone();
 }
 
-NegativeBinomialFactory::Implementation NegativeBinomialFactory::build(const NumericalPoint & parameters) const
+NegativeBinomialFactory::Implementation NegativeBinomialFactory::build(const Point & parameters) const
 {
   return buildAsNegativeBinomial(parameters).clone();
 }
@@ -110,7 +110,7 @@ NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const Sample &
   }
   // Build the constraint
   NegativeBinomialFactoryParameterConstraint constraint(sample, mean);
-  const Function f(bindMethod<NegativeBinomialFactoryParameterConstraint, NumericalPoint, NumericalPoint>(constraint, &NegativeBinomialFactoryParameterConstraint::computeConstraint, 1, 1));
+  const Function f(bindMethod<NegativeBinomialFactoryParameterConstraint, Point, Point>(constraint, &NegativeBinomialFactoryParameterConstraint::computeConstraint, 1, 1));
   // Find a bracketing interval using the moment estimate
   NumericalScalar a = 1.0;
   NumericalScalar b = 2.0;
@@ -121,16 +121,16 @@ NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const Sample &
     a = 0.5 * rMoment;
     b = 2.0 * rMoment;
   }
-  NumericalScalar fA = f(NumericalPoint(1, a))[0];
-  NumericalScalar fB = f(NumericalPoint(1, b))[0];
+  NumericalScalar fA = f(Point(1, a))[0];
+  NumericalScalar fB = f(Point(1, b))[0];
   // While f has the same sign at the two bounds, update the interval
   while ((fA * fB > 0.0))
   {
     a = 0.5 * a;
-    fA = f(NumericalPoint(1, a))[0];
+    fA = f(Point(1, a))[0];
     if (fA * fB <= 0.0) break;
     b = 2.0 * b;
-    fB = f(NumericalPoint(1, b))[0];
+    fB = f(Point(1, b))[0];
   }
   // Solve the constraint equation
   Brent solver(ResourceMap::GetAsNumericalScalar("NegativeBinomialFactory-AbsolutePrecision"), ResourceMap::GetAsNumericalScalar("NegativeBinomialFactory-RelativePrecision"), ResourceMap::GetAsNumericalScalar("NegativeBinomialFactory-ResidualPrecision"), ResourceMap::GetAsUnsignedInteger("NegativeBinomialFactory-MaximumIteration"));
@@ -143,7 +143,7 @@ NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const Sample &
   return result;
 }
 
-NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const NumericalPoint & parameters) const
+NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const Point & parameters) const
 {
   try
   {

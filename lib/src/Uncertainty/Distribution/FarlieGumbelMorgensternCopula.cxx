@@ -84,9 +84,9 @@ FarlieGumbelMorgensternCopula * FarlieGumbelMorgensternCopula::clone() const
 }
 
 /* Get one realization of the distribution */
-NumericalPoint FarlieGumbelMorgensternCopula::getRealization() const
+Point FarlieGumbelMorgensternCopula::getRealization() const
 {
-  NumericalPoint realization(2);
+  Point realization(2);
   // We use the algorithm described in Nelsen, "An Introduction to Copulas 2nd Edition", Exercise 3.23 to speed-up generation.
   const NumericalScalar u = RandomGenerator::Generate();
   const NumericalScalar t = RandomGenerator::Generate();
@@ -98,14 +98,14 @@ NumericalPoint FarlieGumbelMorgensternCopula::getRealization() const
 }
 
 /* Get the DDF of the distribution */
-NumericalPoint FarlieGumbelMorgensternCopula::computeDDF(const NumericalPoint & point) const
+Point FarlieGumbelMorgensternCopula::computeDDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   const NumericalScalar u = point[0];
   const NumericalScalar v = point[1];
-  NumericalPoint result(2, 0.0);
+  Point result(2, 0.0);
   // A copula has a null PDF outside of ]0, 1[^2
   if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0))
   {
@@ -117,7 +117,7 @@ NumericalPoint FarlieGumbelMorgensternCopula::computeDDF(const NumericalPoint & 
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar FarlieGumbelMorgensternCopula::computePDF(const NumericalPoint & point) const
+NumericalScalar FarlieGumbelMorgensternCopula::computePDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -133,7 +133,7 @@ NumericalScalar FarlieGumbelMorgensternCopula::computePDF(const NumericalPoint &
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar FarlieGumbelMorgensternCopula::computeCDF(const NumericalPoint & point) const
+NumericalScalar FarlieGumbelMorgensternCopula::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -171,7 +171,7 @@ CorrelationMatrix FarlieGumbelMorgensternCopula::getKendallTau() const
 }
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint FarlieGumbelMorgensternCopula::computePDFGradient(const NumericalPoint & point) const
+Point FarlieGumbelMorgensternCopula::computePDFGradient(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -181,13 +181,13 @@ NumericalPoint FarlieGumbelMorgensternCopula::computePDFGradient(const Numerical
   // A copula has a null PDF outside of ]0, 1[^2
   if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0))
   {
-    return NumericalPoint(1, 0.0);
+    return Point(1, 0.0);
   }
-  return NumericalPoint(1, (2.0 * u - 1.0) * (2.0 * v - 1.0));
+  return Point(1, (2.0 * u - 1.0) * (2.0 * v - 1.0));
 }
 
 /* Get the CDFGradient of the distribution */
-NumericalPoint FarlieGumbelMorgensternCopula::computeCDFGradient(const NumericalPoint & point) const
+Point FarlieGumbelMorgensternCopula::computeCDFGradient(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -196,14 +196,14 @@ NumericalPoint FarlieGumbelMorgensternCopula::computeCDFGradient(const Numerical
   const NumericalScalar v = point[1];
   if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0))
   {
-    return NumericalPoint(1, 0.0);
+    return Point(1, 0.0);
   }
-  return NumericalPoint(1, u * v * (1.0 - u) * (1.0 - v));
+  return Point(1, u * v * (1.0 - u) * (1.0 - v));
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 NumericalScalar FarlieGumbelMorgensternCopula::computeConditionalCDF(const NumericalScalar x,
-    const NumericalPoint & y) const
+    const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -217,7 +217,7 @@ NumericalScalar FarlieGumbelMorgensternCopula::computeConditionalCDF(const Numer
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
 NumericalScalar FarlieGumbelMorgensternCopula::computeConditionalQuantile(const NumericalScalar q,
-    const NumericalPoint & y) const
+    const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -245,12 +245,12 @@ Bool FarlieGumbelMorgensternCopula::hasIndependentCopula() const
 }
 
 /* Parameters value accessor */
-NumericalPoint FarlieGumbelMorgensternCopula::getParameter() const
+Point FarlieGumbelMorgensternCopula::getParameter() const
 {
-  return NumericalPoint(1, theta_);
+  return Point(1, theta_);
 }
 
-void FarlieGumbelMorgensternCopula::setParameter(const NumericalPoint & parameter)
+void FarlieGumbelMorgensternCopula::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize();
   const NumericalScalar w = getWeight();

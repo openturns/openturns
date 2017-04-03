@@ -145,7 +145,7 @@ NumericalScalar Secant::solve(const Function & function,
     // If all the evaluation budget has been spent, return the approximation
     if (usedFunctionEvaluation == maximumFunctionEvaluation) break;
     // New evaluation
-    fB = function(NumericalPoint(1, b))[0] - value;
+    fB = function(Point(1, b))[0] - value;
     ++usedFunctionEvaluation;
     if (fG * fB < 0.0)
     {

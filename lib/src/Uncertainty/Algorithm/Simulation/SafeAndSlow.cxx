@@ -20,7 +20,7 @@
  */
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SafeAndSlow.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Log.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -77,7 +77,7 @@ SafeAndSlow::NumericalScalarCollection SafeAndSlow::solve(const Function & funct
   // If it has not yet been computed, compute it and store it
   catch (NotDefinedException &)
   {
-    infValue = function(NumericalPoint(1, infPoint))[0];
+    infValue = function(Point(1, infPoint))[0];
     setOriginValue(infValue);
   }
   // If the origin is in the failure domain add it to the roots
@@ -88,7 +88,7 @@ SafeAndSlow::NumericalScalarCollection SafeAndSlow::solve(const Function & funct
   while(infPoint < maximumDistance)
   {
     const NumericalScalar supPoint = std::min(infPoint + stepSize, maximumDistance);
-    const NumericalScalar supValue = function(NumericalPoint(1, supPoint))[0];
+    const NumericalScalar supValue = function(Point(1, supPoint))[0];
     if ((infValue - value) * (supValue - value) < 0.0)
     {
       result.add(solver.solve(function, value, infPoint, supPoint, infValue, supValue));

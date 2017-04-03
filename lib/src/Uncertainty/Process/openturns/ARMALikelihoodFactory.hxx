@@ -137,7 +137,7 @@ private :
   SquareMatrix computeW0Matrix() const;
 
   /** Likelihood function ==> Compute the reduced form of the likelihood */
-  NumericalScalar computeLogLikelihood(const NumericalPoint & beta) const;
+  NumericalScalar computeLogLikelihood(const Point & beta) const;
 
   /** Run the default initilization of coefficients / covariance for the optimization */
   void defaultInitialize() const;
@@ -158,7 +158,7 @@ private :
   Matrix computeEta() const;
 
   /** Compute h vectors */
-  NumericalPoint computeVectorh(const Matrix & rxi, const Matrix & eta, const Matrix & matV1_Omega_V1TCholesky) const;
+  Point computeVectorh(const Matrix & rxi, const Matrix & eta, const Matrix & matV1_Omega_V1TCholesky) const;
 
   /** Compute H^{T} H matrix */
   SymmetricMatrix computeHTH(const Matrix & rxi) const;
@@ -173,7 +173,7 @@ private :
   Function getLogLikelihoodInequalityConstraint() const;
 
   /** likelihood estimate */
-  NumericalPoint computeLogLikelihoodInequalityConstraint( const NumericalPoint & beta ) const;
+  Point computeLogLikelihoodInequalityConstraint( const Point & beta ) const;
 
   /** only used to pass data to be used in computeLogLikelihood and computeLogLikelihoodInequalityConstraint  */
   mutable UnsignedInteger inputDimension_;

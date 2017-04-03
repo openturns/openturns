@@ -41,16 +41,16 @@ class OT_API Pie : public DrawableImplementation
 public:
 
   /** Default constructor */
-  explicit Pie(const NumericalPoint & data);
+  explicit Pie(const Point & data);
 
   /** Constructor with parameters */
-  Pie(const NumericalPoint & data,
+  Pie(const Point & data,
       const Description & labels);
 
   /** Constructor with parameters */
-  Pie(const NumericalPoint & data,
+  Pie(const Point & data,
       const Description & labels,
-      const NumericalPoint & center,
+      const Point & center,
       const NumericalScalar & radius,
       const Description & palette);
 
@@ -58,8 +58,8 @@ public:
   String __repr__() const;
 
   /** Accessor for center */
-  NumericalPoint getCenter() const;
-  void setCenter(const NumericalPoint & center);
+  Point getCenter() const;
+  void setCenter(const Point & center);
 
   /** Accessor for radius */
   NumericalScalar getRadius() const;
@@ -99,7 +99,7 @@ public:
 
 protected:
   /** Check for data validity */
-  virtual void checkData(const NumericalPoint & data) const;
+  virtual void checkData(const Point & data) const;
 
 private:
 
@@ -113,7 +113,7 @@ private:
   NumericalScalar radius_;
 
   /** Centre of the Pie */
-  NumericalPoint center_;
+  Point center_;
 
   /** Labels of the pie sectors */
   Description labels_;

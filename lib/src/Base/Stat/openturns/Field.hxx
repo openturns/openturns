@@ -73,13 +73,13 @@ public:
 #endif
 
   /** Accessor to values */
-  NumericalPoint getValueAtIndex(const UnsignedInteger index) const;
+  Point getValueAtIndex(const UnsignedInteger index) const;
   void setValueAtIndex(const UnsignedInteger index,
-                       const NumericalPoint & val);
+                       const Point & val);
 
-  NumericalPoint getValueAtNearestPosition(const NumericalPoint & position) const;
-  void setValueAtNearestPosition(const NumericalPoint & position,
-                                 const NumericalPoint & val);
+  Point getValueAtNearestPosition(const Point & position) const;
+  void setValueAtNearestPosition(const Point & position,
+                                 const Point & val);
 
   /** Get the i-th marginal sample */
   Field getMarginal(const UnsignedInteger index) const;
@@ -124,10 +124,10 @@ public:
   Mesh asDeformedMesh() const;
 
   /** Compute the spatial mean of the field */
-  NumericalPoint getSpatialMean() const;
+  Point getSpatialMean() const;
 
   /** Compute the temporal mean of the field */
-  NumericalPoint getTemporalMean() const;
+  Point getTemporalMean() const;
 
   /** Draw a marginal of the field */
   Graph drawMarginal(const UnsignedInteger index = 0,

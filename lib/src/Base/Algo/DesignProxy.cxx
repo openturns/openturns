@@ -100,7 +100,7 @@ MatrixImplementation DesignProxy::computeDesign(const Indices & indices) const
     // If the index is too large for the cache, compute the column and copy it directly in the design matrix
     if (phiIndex >= cacheSize)
     {
-      const NumericalPoint column(basis_[phiIndex](x_).getImplementation()->getData());
+      const Point column(basis_[phiIndex](x_).getImplementation()->getData());
       std::copy(column.begin(), column.end(), startDesign);
     } // Exceeds cache capacity
     else
@@ -116,7 +116,7 @@ MatrixImplementation DesignProxy::computeDesign(const Indices & indices) const
         // The value is not in the cache
       {
         // Compute the values
-        NumericalPoint column(basis_[phiIndex](x_).getImplementation()->getData());
+        Point column(basis_[phiIndex](x_).getImplementation()->getData());
         // Copy the values in the cache
         alreadyComputed_[phiIndex] = 1;
         std::copy(column.begin(), column.end(), startCache);// copyOnWrite not called
@@ -198,13 +198,13 @@ UnsignedInteger DesignProxy::getSampleSize() const
 
 
 /* Weight accessor */
-void DesignProxy::setWeight(const NumericalPoint & weight)
+void DesignProxy::setWeight(const Point & weight)
 {
   if (weight.getDimension() > 0 && !(weight.getDimension() == x_.getSize())) throw InvalidArgumentException(HERE) << "Error: the weight dimension=" << weight.getDimension() << " is different from the sample size=" << x_.getSize();
   weight_ = weight;
 }
 
-NumericalPoint DesignProxy::getWeight() const
+Point DesignProxy::getWeight() const
 {
   return weight_;
 }

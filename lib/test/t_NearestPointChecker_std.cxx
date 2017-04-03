@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     NumericalScalar random = 0.1;
     for(UnsignedInteger index = 0; index < sampleSize; index++)
     {
-      NumericalPoint point(levelFunction.getInputDimension());
+      Point point(levelFunction.getInputDimension());
       NumericalScalar norm = 0.0;
       for(UnsignedInteger coordinate = 0; coordinate < levelFunction.getInputDimension(); coordinate++)
       {

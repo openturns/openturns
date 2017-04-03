@@ -53,7 +53,7 @@ Dirac::Dirac(const NumericalScalar p)
 }
 
 /* Parameters constructor */
-Dirac::Dirac(const NumericalPoint & point)
+Dirac::Dirac(const Point & point)
   : DiscreteDistribution()
   , point_(point)
 {
@@ -101,7 +101,7 @@ Dirac * Dirac::clone() const
 }
 
 /* Get one realization of the distribution */
-NumericalPoint Dirac::getRealization() const
+Point Dirac::getRealization() const
 {
   return point_;
 }
@@ -113,7 +113,7 @@ Sample Dirac::getSample(const UnsignedInteger size) const
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar Dirac::computePDF(const NumericalPoint & point) const
+NumericalScalar Dirac::computePDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -124,7 +124,7 @@ NumericalScalar Dirac::computePDF(const NumericalPoint & point) const
 
 
 /* Get the CDF of the distribution */
-NumericalScalar Dirac::computeCDF(const NumericalPoint & point) const
+NumericalScalar Dirac::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -135,29 +135,29 @@ NumericalScalar Dirac::computeCDF(const NumericalPoint & point) const
 }
 
 /* Compute the multivariate quantile of the distribution */
-NumericalPoint Dirac::computeQuantile(const NumericalScalar prob,
+Point Dirac::computeQuantile(const NumericalScalar prob,
                                       const Bool tail) const
 {
   return point_;
 }
 
 /* Get the PDF gradient of the distribution */
-NumericalPoint Dirac::computePDFGradient(const NumericalPoint & point) const
+Point Dirac::computePDFGradient(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  throw NotYetImplementedException(HERE) << "In Dirac::computePDFGradient(const NumericalPoint & point) const";
+  throw NotYetImplementedException(HERE) << "In Dirac::computePDFGradient(const Point & point) const";
 }
 
 
 /* Get the CDF gradient of the distribution */
-NumericalPoint Dirac::computeCDFGradient(const NumericalPoint & point) const
+Point Dirac::computeCDFGradient(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  throw NotYetImplementedException(HERE) << "In Dirac::computeCDFGradient(const NumericalPoint & point) const";
+  throw NotYetImplementedException(HERE) << "In Dirac::computeCDFGradient(const Point & point) const";
 }
 
 /* Get the quantile of the distribution */
@@ -200,28 +200,28 @@ void Dirac::computeMean() const
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint Dirac::getStandardDeviation() const
+Point Dirac::getStandardDeviation() const
 {
-  return NumericalPoint(getDimension(), 0.0);
+  return Point(getDimension(), 0.0);
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint Dirac::getSkewness() const
+Point Dirac::getSkewness() const
 {
-  return NumericalPoint(getDimension(), 0.0);
+  return Point(getDimension(), 0.0);
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint Dirac::getKurtosis() const
+Point Dirac::getKurtosis() const
 {
-  return NumericalPoint(getDimension(), 0.0);
+  return Point(getDimension(), 0.0);
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Dirac::getStandardMoment(const UnsignedInteger n) const
+Point Dirac::getStandardMoment(const UnsignedInteger n) const
 {
   const UnsignedInteger dimension = getDimension();
-  NumericalPoint result(dimension);
+  Point result(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i) result[i] = std::pow(point_[i], static_cast<int>(n));
   return result;
 }
@@ -242,13 +242,13 @@ Sample Dirac::getSupport(const Interval & interval) const
 }
 
 /* Parameters value and description accessor */
-Dirac::NumericalPointWithDescriptionCollection Dirac::getParametersCollection() const
+Dirac::PointWithDescriptionCollection Dirac::getParametersCollection() const
 {
   const UnsignedInteger dimension = getDimension();
-  NumericalPointWithDescriptionCollection parameters(dimension);
+  PointWithDescriptionCollection parameters(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    NumericalPointWithDescription point(1);
+    PointWithDescription point(1);
     Description description(point.getDimension());
     point[0] = point_[i];
     description[0] = String(OSS() << "point_" << i);
@@ -259,11 +259,11 @@ Dirac::NumericalPointWithDescriptionCollection Dirac::getParametersCollection() 
   return parameters;
 }
 
-void Dirac::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void Dirac::setParametersCollection(const PointCollection & parametersCollection)
 {
   const NumericalScalar w = getWeight();
   const UnsignedInteger dimension = parametersCollection.getSize();
-  NumericalPoint point(dimension);
+  Point point(dimension);
   // The ith component of the point is supposed to be the first component of the point
   // at position i in the parameters collection
   for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -272,12 +272,12 @@ void Dirac::setParametersCollection(const NumericalPointCollection & parametersC
   setWeight(w);
 }
 
-NumericalPoint Dirac::getParameter() const
+Point Dirac::getParameter() const
 {
   return point_;
 }
 
-void Dirac::setParameter(const NumericalPoint & parameter)
+void Dirac::setParameter(const Point & parameter)
 {
   const NumericalScalar w = getWeight();
   *this = Dirac(parameter);
@@ -296,7 +296,7 @@ Description Dirac::getParameterDescription() const
 }
 
 /* Point accessor */
-void Dirac::setPoint(const NumericalPoint & point)
+void Dirac::setPoint(const Point & point)
 {
   point_ = point;
   isAlreadyComputedMean_ = false;
@@ -305,7 +305,7 @@ void Dirac::setPoint(const NumericalPoint & point)
 }
 
 /* Point accessor */
-NumericalPoint Dirac::getPoint() const
+Point Dirac::getPoint() const
 {
   return point_;
 }
@@ -333,7 +333,7 @@ Dirac::Implementation Dirac::getMarginal(const Indices & indices) const
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";
   if (dimension == 1) return clone();
   const UnsignedInteger outputDimension = indices.getSize();
-  NumericalPoint pointMarginal(outputDimension);
+  Point pointMarginal(outputDimension);
   for (UnsignedInteger i = 0; i < outputDimension; ++i) pointMarginal[i] = point_[indices[i]];
   return new Dirac(pointMarginal);
 } // getMarginal(Indices)

@@ -61,9 +61,9 @@ int main(int argc, char *argv[])
     const UnsignedInteger dimension = 2;
 
     /* Amplitude values */
-    NumericalPoint amplitude(dimension);
+    Point amplitude(dimension);
     /* Scale values */
-    NumericalPoint scale(dimension);
+    Point scale(dimension);
     /* Spatial correclation */
     CorrelationMatrix spatialCorrelation(dimension);
     for (UnsignedInteger index = 0 ; index < dimension; ++index)

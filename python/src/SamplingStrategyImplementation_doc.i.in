@@ -77,7 +77,7 @@ dimension : int
 
 Returns
 -------
-sample : :class:`~openturns.NumericalPoint`
+sample : :class:`~openturns.Point`
     The realization of a vector on the sphere unity, according to the uniform
     distribution."
 %enddef

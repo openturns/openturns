@@ -59,7 +59,7 @@ public:
   virtual Sample getInputSample() const;
 
   /** Weight accessor */
-  virtual NumericalPoint getWeight() const;
+  virtual Point getWeight() const;
 
   /** Basis accessor */
   virtual Basis getBasis() const;
@@ -71,7 +71,7 @@ public:
   virtual Indices getInitialIndices() const;
 
   /** Solve least-squares problem, ie x=\argmin |D(Mx-b)|^2 */
-  NumericalPoint solve(const NumericalPoint & rhs);
+  Point solve(const Point & rhs);
 
   virtual CovarianceMatrix getGramInverse() const;
 

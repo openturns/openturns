@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
       fullprint << "Continuous = " << (distribution.isContinuous() ? "true" : "false") << std::endl;
 
       // Test for realization of distribution
-      NumericalPoint oneRealization = distribution.getRealization();
+      Point oneRealization = distribution.getRealization();
       fullprint << "oneRealization=" << oneRealization << std::endl;
 
       // Test for sampling
@@ -89,17 +89,17 @@ int main(int argc, char *argv[])
       }
 
       // Define a point
-      NumericalPoint point(distribution.getDimension(), 0.5);
+      Point point(distribution.getDimension(), 0.5);
       fullprint << "Point= " << point << std::endl;
 
       // Show PDF and CDF of point
       NumericalScalar eps = 1e-5;
-      NumericalPoint DDF = distribution.computeDDF(point);
+      Point DDF = distribution.computeDDF(point);
       fullprint << "ddf      =" << DDF << std::endl;
       fullprint << "ddf (ref)=" << distributionReference.computeDDF(point) << std::endl;
       NumericalScalar PDF = distribution.computePDF(point);
       fullprint << "pdf      =" << PDF << std::endl;
-      fullprint << "pdf  (FD)=" << (distribution.computeCDF( point + NumericalPoint(1, eps) ) - distribution.computeCDF( point  + NumericalPoint(1, -eps) )) / (2.0 * eps) << std::endl;
+      fullprint << "pdf  (FD)=" << (distribution.computeCDF( point + Point(1, eps) ) - distribution.computeCDF( point  + Point(1, -eps) )) / (2.0 * eps) << std::endl;
       fullprint << "pdf (ref)=" << distributionReference.computePDF(point) << std::endl;
       NumericalScalar CDF = distribution.computeCDF( point );
       fullprint << "cdf      =" << CDF << std::endl;
@@ -108,26 +108,26 @@ int main(int argc, char *argv[])
       fullprint << "characteristic function=" << CF << std::endl;
       NumericalComplex LCF = distribution.computeLogCharacteristicFunction( point[0] );
       fullprint << "log characteristic function=" << LCF << std::endl;
-      NumericalPoint quantile = distribution.computeQuantile( 0.95 );
+      Point quantile = distribution.computeQuantile( 0.95 );
       fullprint << "quantile      =" << quantile << std::endl;
       fullprint << "quantile (ref)=" << distributionReference.computeQuantile(0.95) << std::endl;
       fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
-      NumericalPoint mean = distribution.getMean();
+      Point mean = distribution.getMean();
       fullprint << "mean      =" << mean << std::endl;
       fullprint << "mean (ref)=" << distributionReference.getMean() << std::endl;
-      NumericalPoint standardDeviation = distribution.getStandardDeviation();
+      Point standardDeviation = distribution.getStandardDeviation();
       fullprint << "standard deviation      =" << standardDeviation << std::endl;
       fullprint << "standard deviation (ref)=" << distributionReference.getStandardDeviation() << std::endl;
-      NumericalPoint skewness = distribution.getSkewness();
+      Point skewness = distribution.getSkewness();
       fullprint << "skewness      =" << skewness << std::endl;
       fullprint << "skewness (ref)=" << distributionReference.getSkewness() << std::endl;
-      NumericalPoint kurtosis = distribution.getKurtosis();
+      Point kurtosis = distribution.getKurtosis();
       fullprint << "kurtosis      =" << kurtosis << std::endl;
       fullprint << "kurtosis (ref)=" << distributionReference.getKurtosis() << std::endl;
       CovarianceMatrix covariance = distribution.getCovariance();
       fullprint << "covariance      =" << covariance << std::endl;
       fullprint << "covariance (ref)=" << distributionReference.getCovariance() << std::endl;
-      RandomMixture::NumericalPointWithDescriptionCollection parameters = distribution.getParametersCollection();
+      RandomMixture::PointWithDescriptionCollection parameters = distribution.getParametersCollection();
       fullprint << "parameters=" << parameters << std::endl;
       /*    distribution.setIntegrationNodesNumber(6);
             for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;*/
@@ -139,7 +139,7 @@ int main(int argc, char *argv[])
       fullprint << "beta=" << distribution.getBeta() << std::endl;
     }
     // Tests of the simplification mechanism
-    NumericalPoint weights(0);
+    Point weights(0);
     Collection< Distribution > coll(0);
     //      coll.add(Dirac(0.5));
     //      weights.add(1.0);
@@ -180,7 +180,7 @@ int main(int argc, char *argv[])
     collFactories.add(ExponentialFactory());
     collFactories.add(GammaFactory());
 //     collFactories.add(TrapezoidalFactory());
-    NumericalPoint norms;
+    Point norms;
     Collection< Distribution > result(distribution.project(collFactories, norms));
     fullprint << "projections=" << result << std::endl;
     fullprint << "norms=" << norms << std::endl;
@@ -217,18 +217,18 @@ int main(int argc, char *argv[])
     // Number of points of discretization
     const UnsignedInteger nx = 4;
     const UnsignedInteger ny = 4;
-    NumericalPoint boxParameters(2);
+    Point boxParameters(2);
     boxParameters[0] = nx;
     boxParameters[1] = ny;
     Box boxGrid(boxParameters);
     Sample grid(boxGrid.generate());
     // scaling box grid
-    NumericalPoint scaleFactor(2);
+    Point scaleFactor(2);
     scaleFactor[0] = 0.25 * (xMax - xMin);
     scaleFactor[1] = 0.25 * (yMax - yMin);
     grid *= scaleFactor;
     //translating
-    NumericalPoint translateFactor(2);
+    Point translateFactor(2);
     translateFactor[0] = distribution2D.getMean()[0];
     translateFactor[1] = distribution2D.getMean()[1];
     grid += translateFactor;
@@ -237,7 +237,7 @@ int main(int argc, char *argv[])
     const NumericalScalar factor = sqrt(2.0) / (20 * M_PI);
     for (UnsignedInteger index = 0; index < grid.getSize(); ++ index)
     {
-      const NumericalPoint point(grid[index]);
+      const Point point(grid[index]);
       const NumericalScalar PDF = distribution2D.computePDF(point);
       // Very small values are not very accurate on x86, skip them
       if (PDF < 1.e-12) continue;
@@ -272,7 +272,7 @@ int main(int argc, char *argv[])
     // Compute PDF
     for (UnsignedInteger index = 0; index < newGrid.getSize(); ++ index)
     {
-      const NumericalPoint point(newGrid[index]);
+      const Point point(newGrid[index]);
       const NumericalScalar PDF = dist_2D.computePDF(point);
       fullprint << "pdf      =" << PDF << std::endl;
     }
@@ -318,7 +318,7 @@ int main(int argc, char *argv[])
     // Test is CPU consuming
     // Number of points of discretization
     const UnsignedInteger N = 2;
-    NumericalPoint box3DParameters(3, N);
+    Point box3DParameters(3, N);
     Box box3D(box3DParameters);
     // Grid ==> (mu, mu+sigma)
     Sample grid3D(box3D.generate());
@@ -328,7 +328,7 @@ int main(int argc, char *argv[])
     grid3D += dist_3D.getMean();
     for (UnsignedInteger index = 0; index < grid3D.getSize(); ++ index)
     {
-      const NumericalPoint point(grid3D[index]);
+      const Point point(grid3D[index]);
       const NumericalScalar PDF = dist_3D.computePDF(point);
       fullprint << "pdf      =" << PDF << std::endl;
     }

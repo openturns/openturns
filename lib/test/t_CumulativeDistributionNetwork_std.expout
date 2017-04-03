@@ -7,47 +7,47 @@ streamObject(const T & anObject)
 class=CumulativeDistributionNetwork name=CumulativeDistributionNetwork dimension=1 distributionCollection=[class=Uniform name=Uniform dimension=1 a=-1 b=1] graph=[[0]]
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-Distribution class=CumulativeDistributionNetwork name=CumulativeDistributionNetwork dimension=2 distributionCollection=[class=Normal name=Normal dimension=2 mean=class=NumericalPoint name=Unnamed dimension=2 values=[0,0] sigma=class=NumericalPoint name=Unnamed dimension=2 values=[1,1] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1],class=Normal name=Normal dimension=2 mean=class=NumericalPoint name=Unnamed dimension=2 values=[0,0] sigma=class=NumericalPoint name=Unnamed dimension=2 values=[1,1] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1]] graph=[[0,1],[0,1]]
+Distribution class=CumulativeDistributionNetwork name=CumulativeDistributionNetwork dimension=2 distributionCollection=[class=Normal name=Normal dimension=2 mean=class=Point name=Unnamed dimension=2 values=[0,0] sigma=class=Point name=Unnamed dimension=2 values=[1,1] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1],class=Normal name=Normal dimension=2 mean=class=Point name=Unnamed dimension=2 values=[0,0] sigma=class=Point name=Unnamed dimension=2 values=[1,1] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1]] graph=[[0,1],[0,1]]
 Distribution CumulativeDistributionNetwork([Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
  [ 0 1 ]])), Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
  [ 0 1 ]]))][[0,1],[0,1]])
 Elliptical = false
 Continuous = true
-oneRealization=class=NumericalPoint name=Unnamed dimension=2 values=[0.819143,1.55123]
-oneSample first=class=NumericalPoint name=Unnamed dimension=2 values=[-0.337688,0.500922] last=class=NumericalPoint name=Unnamed dimension=2 values=[-0.31133,-0.29406]
-mean=class=NumericalPoint name=Unnamed dimension=2 values=[0.57312,0.562745]
+oneRealization=class=Point name=Unnamed dimension=2 values=[0.819143,1.55123]
+oneSample first=class=Point name=Unnamed dimension=2 values=[-0.337688,0.500922] last=class=Point name=Unnamed dimension=2 values=[-0.31133,-0.29406]
+mean=class=Point name=Unnamed dimension=2 values=[0.57312,0.562745]
 covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.693077,-0.0044764,-0.0044764,0.685993]
-Point= class=NumericalPoint name=Unnamed dimension=2 values=[1,1]
+Point= class=Point name=Unnamed dimension=2 values=[1,1]
 log pdf=-1.7971
 pdf     =0.16578
 pdf (FD)=0.16578
 cdf=0.50107
 ccdf=0.49893
 survival=0.085345
-Inverse survival=class=NumericalPoint name=Unnamed dimension=2 values=[-0.99806,-0.99806]
+Inverse survival=class=Point name=Unnamed dimension=2 values=[-0.99806,-0.99806]
 Survival(inverse survival)=0.95
-quantile=class=NumericalPoint name=Unnamed dimension=2 values=[2.234,2.234]
+quantile=class=Point name=Unnamed dimension=2 values=[2.234,2.234]
 cdf(quantile)=0.95
-Minimum volume interval=class=Interval name=Unnamed dimension=2 lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[-7.6506,-7.6506] upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[7.6506,7.6506] finite lower bound=[1,1] finite upper bound=[1,1]
+Minimum volume interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-7.6506,-7.6506] upper bound=class=Point name=Unnamed dimension=2 values=[7.6506,7.6506] finite lower bound=[1,1] finite upper bound=[1,1]
 threshold=1
 Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x0,x1,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(CumulativeDistributionNetwork([Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
  [ 0 1 ]])), Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
  [ 0 1 ]]))][[0,1],[0,1]])) gradientImplementation=MinimumVolumeLevelSetGradient(CumulativeDistributionNetwork([Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
  [ 0 1 ]])), Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
- [ 0 1 ]]))][[0,1],[0,1]])) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=NumericalPoint name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(CumulativeDistributionNetwork([Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
+ [ 0 1 ]]))][[0,1],[0,1]])) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(CumulativeDistributionNetwork([Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
  [ 0 1 ]])), Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
  [ 0 1 ]]))][[0,1],[0,1]])) level=4.473
 beta=0.011413
-Bilateral confidence interval=class=Interval name=Unnamed dimension=2 lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[-7.6506,-7.6506] upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[7.6506,7.6506] finite lower bound=[1,1] finite upper bound=[1,1]
+Bilateral confidence interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-7.6506,-7.6506] upper bound=class=Point name=Unnamed dimension=2 values=[7.6506,7.6506] finite lower bound=[1,1] finite upper bound=[1,1]
 beta=1
-Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=2 lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[-7.6506,-7.6506] upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[2.234,2.234] finite lower bound=[1,1] finite upper bound=[1,1]
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-7.6506,-7.6506] upper bound=class=Point name=Unnamed dimension=2 values=[2.234,2.234] finite lower bound=[1,1] finite upper bound=[1,1]
 beta=0.97468
-Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=2 lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[-0.99806,-0.99806] upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[7.6506,7.6506] finite lower bound=[1,1] finite upper bound=[1,1]
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-0.99806,-0.99806] upper bound=class=Point name=Unnamed dimension=2 values=[7.6506,7.6506] finite lower bound=[1,1] finite upper bound=[1,1]
 beta=0.97468
-mean=class=NumericalPoint name=Unnamed dimension=2 values=[0.56419,0.56419]
-standard deviation=class=NumericalPoint name=Unnamed dimension=2 values=[0.82565,0.82565]
-skewness=class=NumericalPoint name=Unnamed dimension=2 values=[0.13695,0.13695]
-kurtosis=class=NumericalPoint name=Unnamed dimension=2 values=[3.0617,3.0617]
+mean=class=Point name=Unnamed dimension=2 values=[0.56419,0.56419]
+standard deviation=class=Point name=Unnamed dimension=2 values=[0.82565,0.82565]
+skewness=class=Point name=Unnamed dimension=2 values=[0.13695,0.13695]
+kurtosis=class=Point name=Unnamed dimension=2 values=[3.0617,3.0617]
 covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.68169,0,0,0.68169]
 correlation=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1]
 spearman=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1]

@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief NumericalPoint implements the classical mathematical point
+ *  @brief Point implements the classical mathematical point
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_NUMERICALPOINT_HXX
-#define OPENTURNS_NUMERICALPOINT_HXX
+#ifndef OPENTURNS_POINT_HXX
+#define OPENTURNS_POINT_HXX
 
 #include <vector>
 #include "openturns/PersistentCollection.hxx"
@@ -29,12 +29,12 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class NumericalPoint
+ * @class Point
  *
- * NumericalPoint implements the classical mathematical point
+ * Point implements the classical mathematical point
  */
 
-class OT_API NumericalPoint
+class OT_API Point
   : public PersistentCollection<NumericalScalar>
 {
   CLASSNAME;
@@ -43,20 +43,20 @@ public:
 
   typedef PersistentCollection<NumericalScalar> InternalType;
   typedef Collection<NumericalScalar>           NumericalScalarCollection;
-  typedef NumericalPoint                        ImplementationType;
+  typedef Point                        ImplementationType;
 
   /** Default constructor */
-  NumericalPoint();
+  Point();
 
   /** Constructor with size */
-  explicit NumericalPoint(const UnsignedInteger size,
+  explicit Point(const UnsignedInteger size,
                           const NumericalScalar value = 0.0);
 
   /** Constructor from a collection */
-  NumericalPoint(const Collection<NumericalScalar> & coll);
+  Point(const Collection<NumericalScalar> & coll);
 
   /** Virtual constructor */
-  virtual NumericalPoint * clone() const;
+  virtual Point * clone() const;
 
   /** Description Accessor */
   virtual void setDescription(const Description & description);
@@ -67,7 +67,7 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Set small elements to zero */
-  NumericalPoint clean(const NumericalScalar threshold) const;
+  Point clean(const NumericalScalar threshold) const;
 
   /** Dimension accessor */
   inline UnsignedInteger getDimension() const
@@ -96,17 +96,17 @@ public:
   iterator erase(UnsignedInteger position);
 
   /** In-place addition operator */
-  NumericalPoint & operator +=(const NumericalPoint & other);
+  Point & operator +=(const Point & other);
 
   /** In-place substraction operator */
-  NumericalPoint & operator -=(const NumericalPoint & other);
+  Point & operator -=(const Point & other);
 #endif
 
   /**  In-place product operator */
-  NumericalPoint & operator *=(const NumericalScalar scalar);
+  Point & operator *=(const NumericalScalar scalar);
 
   /**  In-place division operator */
-  NumericalPoint & operator /=(const NumericalScalar scalar);
+  Point & operator /=(const NumericalScalar scalar);
 
   /**  Norm */
   NumericalScalar norm() const;
@@ -121,10 +121,10 @@ public:
   NumericalScalar normSquare() const;
 
   /** Normalize the vector */
-  NumericalPoint normalize() const;
+  Point normalize() const;
 
   /** Square normalize the vector */
-  NumericalPoint normalizeSquare() const;
+  Point normalizeSquare() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -137,46 +137,46 @@ private:
   //      /** The description of all components */
   //      Description:: p_description_;
 
-}; /* class NumericalPoint */
+}; /* class Point */
 
 
 #ifndef SWIG
 /** Comparison operator */
-OT_API Bool operator == (const NumericalPoint & lhs,
-                         const NumericalPoint & rhs);
+OT_API Bool operator == (const Point & lhs,
+                         const Point & rhs);
 
 /** Ordering operator */
-OT_API Bool operator < (const NumericalPoint & lhs,
-                        const NumericalPoint & rhs);
+OT_API Bool operator < (const Point & lhs,
+                        const Point & rhs);
 
 /** Product operator */
-OT_API NumericalPoint operator * (const NumericalScalar scalar,
-                                  const NumericalPoint & point);
+OT_API Point operator * (const NumericalScalar scalar,
+                                  const Point & point);
 
 /** Product operator */
-OT_API NumericalPoint operator * (const NumericalPoint & point,
+OT_API Point operator * (const Point & point,
                                   const NumericalScalar scalar);
 
 /** Division operator */
-OT_API NumericalPoint operator / (const NumericalPoint & point,
+OT_API Point operator / (const Point & point,
                                   const NumericalScalar scalar);
 
 /** Addition operator */
-OT_API NumericalPoint operator + (const NumericalPoint & lhs,
-                                  const NumericalPoint & rhs);
+OT_API Point operator + (const Point & lhs,
+                                  const Point & rhs);
 
 /** Substraction operator */
-OT_API NumericalPoint operator - (const NumericalPoint & lhs,
-                                  const NumericalPoint & rhs);
+OT_API Point operator - (const Point & lhs,
+                                  const Point & rhs);
 
 #endif
 
 /** Dot product operator */
-OT_API NumericalScalar dot(const NumericalPoint & lhs,
-                           const NumericalPoint & rhs);
+OT_API NumericalScalar dot(const Point & lhs,
+                           const Point & rhs);
 
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_NUMERICALPOINT_HXX */
+#endif /* OPENTURNS_POINT_HXX */

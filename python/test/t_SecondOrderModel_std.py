@@ -13,10 +13,10 @@ try:
     spatialDimension = 1
 
     # Amplitude values
-    amplitude = NumericalPoint(dimension, 1.0)
+    amplitude = Point(dimension, 1.0)
 
     # Scale values
-    scale = NumericalPoint(dimension, 1.0)
+    scale = Point(dimension, 1.0)
 
     # Covariance model
     myCovarianceModel = ExponentialModel(scale, amplitude)

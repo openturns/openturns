@@ -24,7 +24,7 @@
 
 #include "openturns/OTconfig.hxx"
 #include "openturns/OTprivate.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/CovarianceMatrix.hxx"
 #include "openturns/CovarianceModel.hxx"
@@ -142,7 +142,7 @@ public:
   void scale(NumericalScalar alpha);
 
   /** Compute y <- alpha op(this) * x + beta * y */
-  void gemv(char trans, NumericalScalar alpha, const NumericalPoint& x, NumericalScalar beta, NumericalPoint& y) const;
+  void gemv(char trans, NumericalScalar alpha, const Point& x, NumericalScalar beta, Point& y) const;
 
   /** Compute this <- alpha op(A) * p(B) + beta * this */
   void gemm(char transA, char transB, NumericalScalar alpha, const HMatrixImplementation& a, const HMatrixImplementation& b, NumericalScalar beta);
@@ -154,16 +154,16 @@ public:
   NumericalScalar norm() const;
 
   /** Get the diagonal */
-  NumericalPoint getDiagonal() const;
+  Point getDiagonal() const;
 
   /** Solve system op(A)*X = b */
-  NumericalPoint solve(const NumericalPoint& b, Bool trans) const;
+  Point solve(const Point& b, Bool trans) const;
 
   /** Solve system op(A)*X = m */
   Matrix solve(const Matrix& m, Bool trans) const;
 
   /** Solve system op(L)*X = b */
-  NumericalPoint solveLower(const NumericalPoint& b, Bool trans) const;
+  Point solveLower(const Point& b, Bool trans) const;
 
   /** Solve system op(L)*X = m */
   Matrix solveLower(const Matrix& m, Bool trans) const;

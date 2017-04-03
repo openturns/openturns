@@ -62,7 +62,7 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Operator () */
-  virtual NumericalPoint operator() (const NumericalPoint & inP) const;
+  virtual Point operator() (const Point & inP) const;
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;

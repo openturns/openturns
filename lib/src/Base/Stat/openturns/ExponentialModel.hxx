@@ -24,7 +24,7 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/StationaryCovarianceModel.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/CorrelationMatrix.hxx"
 #include "openturns/Mesh.hxx"
 
@@ -50,16 +50,16 @@ public:
 
 
   /** Standard constructor with scale and amplitude parameters parameters */
-  ExponentialModel(const NumericalPoint & scale,
-                   const NumericalPoint & amplitude);
+  ExponentialModel(const Point & scale,
+                   const Point & amplitude);
 
   /** Standard constructor with scale, amplitude and spatial correlation parameters */
-  ExponentialModel(const NumericalPoint & scale,
-                   const NumericalPoint & amplitude,
+  ExponentialModel(const Point & scale,
+                   const Point & amplitude,
                    const CorrelationMatrix & spatialCorrelation);
 
   /** Standard constructor with scale and spatial covariance parameters */
-  ExponentialModel(const NumericalPoint & scale,
+  ExponentialModel(const Point & scale,
                    const CovarianceMatrix & spatialCovariance);
 
   /** Virtual copy constructor */
@@ -67,11 +67,11 @@ public:
 
   /** Computation of the covariance function, stationary interface */
   using StationaryCovarianceModel::computeStandardRepresentative;
-  NumericalScalar computeStandardRepresentative(const NumericalPoint & tau) const;
+  NumericalScalar computeStandardRepresentative(const Point & tau) const;
 
   /** Gradient */
   using StationaryCovarianceModel::partialGradient;
-  Matrix partialGradient(const NumericalPoint & s, const NumericalPoint & t) const;
+  Matrix partialGradient(const Point & s, const Point & t) const;
 
   /** Discretize the covariance function on a given TimeGrid */
   using StationaryCovarianceModel::discretize;

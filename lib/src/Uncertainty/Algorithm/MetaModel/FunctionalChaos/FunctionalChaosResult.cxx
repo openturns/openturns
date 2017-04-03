@@ -59,8 +59,8 @@ FunctionalChaosResult::FunctionalChaosResult(const Function & model,
     const Indices & I,
     const Sample & alpha_k,
     const FunctionCollection & Psi_k,
-    const NumericalPoint & residuals,
-    const NumericalPoint & relativeErrors)
+    const Point & residuals,
+    const Point & relativeErrors)
   : MetaModelResult(model, Function(), residuals, relativeErrors)
   , distribution_(distribution)
   , transformation_(transformation)

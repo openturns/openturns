@@ -48,8 +48,8 @@ public:
 
   /** Constructor with parameters */
   TNC(const OptimizationProblem & problem,
-      const NumericalPoint & scale,
-      const NumericalPoint & offset,
+      const Point & scale,
+      const Point & offset,
       const UnsignedInteger maxCGit,
       const NumericalScalar eta,
       const NumericalScalar stepmx,
@@ -64,12 +64,12 @@ public:
   void run();
 
   /** Scale accessor */
-  NumericalPoint getScale() const;
-  void setScale(const NumericalPoint & scale);
+  Point getScale() const;
+  void setScale(const Point & scale);
 
   /** Offset accessor */
-  NumericalPoint getOffset() const;
-  void setOffset(const NumericalPoint & offset);
+  Point getOffset() const;
+  void setOffset(const Point & offset);
 
   /** MaxCGit accessor */
   UnsignedInteger getMaxCGit() const;
@@ -114,8 +114,8 @@ private:
   static int ComputeObjectiveAndGradient(double *x, double *f, double *g, void *state);
 
   /** Specific parameters */
-  NumericalPoint scale_;
-  NumericalPoint offset_;
+  Point scale_;
+  Point offset_;
   UnsignedInteger maxCGit_;
   NumericalScalar eta_;
   NumericalScalar stepmx_;

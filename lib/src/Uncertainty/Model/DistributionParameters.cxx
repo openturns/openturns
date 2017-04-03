@@ -63,7 +63,7 @@ Distribution DistributionParameters::getDistribution() const
 
 
 /* Compute jacobian / native parameters */
-NumericalPoint DistributionParameters::evaluate() const
+Point DistributionParameters::evaluate() const
 {
   return getImplementation()->evaluate();
 }
@@ -77,27 +77,27 @@ Matrix DistributionParameters::gradient() const
 
 
 /* Conversion operator */
-NumericalPoint DistributionParameters::operator () (const NumericalPoint & inP) const
+Point DistributionParameters::operator () (const Point & inP) const
 {
   return getImplementation()->operator ()(inP);
 }
 
 
 /* Conversion from native parameters */
-NumericalPoint DistributionParameters::inverse(const NumericalPoint & inP) const
+Point DistributionParameters::inverse(const Point & inP) const
 {
   return getImplementation()->inverse(inP);
 }
 
 
 /* Parameters value and description accessor */
-void DistributionParameters::setValues(const NumericalPoint & values)
+void DistributionParameters::setValues(const Point & values)
 {
   copyOnWrite();
   getImplementation()->setValues(values);
 }
 
-NumericalPoint DistributionParameters::getValues() const
+Point DistributionParameters::getValues() const
 {
   return getImplementation()->getValues();
 }

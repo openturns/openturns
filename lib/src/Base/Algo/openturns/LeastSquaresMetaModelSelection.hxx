@@ -52,7 +52,7 @@ public:
   /** Default constructor */
   LeastSquaresMetaModelSelection(const Sample & x,
                                  const Sample & y,
-                                 const NumericalPoint & weight,
+                                 const Point & weight,
                                  const Basis & psi,
                                  const Indices & indices,
                                  const BasisSequenceFactory & basisSequenceFactory = LARS(),

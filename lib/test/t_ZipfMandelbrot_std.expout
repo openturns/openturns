@@ -11,12 +11,12 @@ Distribution class=ZipfMandelbrot name=ZipfMandelbrot dimension=1 n=15 q=1.2 s=2
 Distribution ZipfMandelbrot(n = 15, q = 1.2, s = 2)
 Elliptical = false
 Continuous = false
-oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[1]
-getRange=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[1] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[15] finite lower bound=[1] finite upper bound=[1]
-oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[1] last=class=NumericalPoint name=Unnamed dimension=1 values=[1]
-mean=class=NumericalPoint name=Unnamed dimension=1 values=[3.256]
+oneRealization=class=Point name=Unnamed dimension=1 values=[1]
+getRange=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1] upper bound=class=Point name=Unnamed dimension=1 values=[15] finite lower bound=[1] finite upper bound=[1]
+oneSample first=class=Point name=Unnamed dimension=1 values=[1] last=class=Point name=Unnamed dimension=1 values=[1]
+mean=class=Point name=Unnamed dimension=1 values=[3.256]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[10.2227]
-Point= class=NumericalPoint name=Unnamed dimension=1 values=[5]
+Point= class=Point name=Unnamed dimension=1 values=[5]
 log pdf=-2.98176
 pdf     =0.0507037
 pdf (FD)=0.0507037
@@ -27,21 +27,21 @@ characteristic function=(-0.0642737,-0.384155)
 log characteristic function=(-0.942905,-1.73657)
 generating function=(0.394858,0.153137)
 log generating function=(-0.859168,0.36997)
-quantile=class=NumericalPoint name=Unnamed dimension=1 values=[10]
+quantile=class=Point name=Unnamed dimension=1 values=[10]
 cdf(quantile)=0.95019
-mean=class=NumericalPoint name=Unnamed dimension=1 values=[3.22681]
-standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[3.10469]
-skewness=class=NumericalPoint name=Unnamed dimension=1 values=[1.81133]
-kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[5.84423]
+mean=class=Point name=Unnamed dimension=1 values=[3.22681]
+standard deviation=class=Point name=Unnamed dimension=1 values=[3.10469]
+skewness=class=Point name=Unnamed dimension=1 values=[1.81133]
+kurtosis=class=Point name=Unnamed dimension=1 values=[5.84423]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.63912]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 parameters=[[n : 15, q : 1.2, s : 2]]
-standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
-standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[3.22681]
-standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[20.0514]
-standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[181.116]
-standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[1953.27]
-standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[23117.7]
+standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[3.22681]
+standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[20.0514]
+standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[181.116]
+standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[1953.27]
+standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[23117.7]
 Standard representative=ZipfMandelbrot(n = 15, q = 1.2, s = 2)

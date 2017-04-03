@@ -41,10 +41,10 @@ int main(int argc, char *argv[])
     set[0] = 3;
     set[1] = 1;
     Bool parametersSet = true;
-    NumericalPoint x(set.getSize());
+    Point x(set.getSize());
     x[0] = 1.0;
     x[1] = 2.0;
-    NumericalPoint referencePoint(2, 0.85);
+    Point referencePoint(2, 0.85);
     ParametricFunction g2(f, set, referencePoint, parametersSet);
     g2.enableHistory();
     fullprint << "g2=" << g2 << std::endl;
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 
     // marginal extraction
     Function g2_0(g2.getMarginal(0));
-    NumericalPoint theta(2, 0.2);
+    Point theta(2, 0.2);
     theta[1] = 50.0;
     fullprint << "g2_0(x, theta)=" << g2_0(x, theta) << std::endl;
 
@@ -66,8 +66,8 @@ int main(int argc, char *argv[])
     // single point, several parameters
     Sample thetas(3, 2);
     thetas[0] = theta;
-    thetas[1] = NumericalPoint(2, 0.3);
-    thetas[1] = NumericalPoint(2, 0.4);
+    thetas[1] = Point(2, 0.3);
+    thetas[1] = Point(2, 0.4);
     fullprint << "g2_0(x, thetas)=" << g2_0(x, thetas) << std::endl;
   }
   catch (TestFailed & ex)

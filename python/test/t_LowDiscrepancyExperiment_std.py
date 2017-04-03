@@ -7,7 +7,7 @@ TESTPREAMBLE()
 
 try:
     distribution = Normal(4)
-    distribution.setMean(NumericalPoint(4, 5.0))
+    distribution.setMean(Point(4, 5.0))
     size = 10
     myPlane = LowDiscrepancyExperiment(HaltonSequence(), distribution, size)
     print("myPlane = ", myPlane)

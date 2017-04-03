@@ -39,7 +39,7 @@ public:
 
 
   /** Standard constructor */
-  FORMResult(const NumericalPoint & standardSpaceDesignPoint,
+  FORMResult(const Point & standardSpaceDesignPoint,
              const Event & limitStateVariable,
              const Bool isStandardPointOriginInFailureSpace);
 

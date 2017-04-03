@@ -71,8 +71,8 @@ public:
   UnsignedInteger getSampleSize() const;
 
   /** Weight accessor */
-  void setWeight(const NumericalPoint & weight);
-  NumericalPoint getWeight() const;
+  void setWeight(const Point & weight);
+  Point getWeight() const;
 
   /** Weight flag accessor */
   Bool hasWeight() const;
@@ -96,7 +96,7 @@ protected:
   Indices rowFilter_;
 
   /** Weight on each basis function */
-  NumericalPoint weight_;
+  Point weight_;
 
 }; /* class DesignProxy */
 

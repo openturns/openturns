@@ -48,12 +48,12 @@ public:
   Implementation build(const Sample & sample) const;
   Implementation build(const Sample & sample,
                        const UnsignedInteger method) const;
-  Implementation build(const NumericalPoint & parameters) const;
+  Implementation build(const Point & parameters) const;
   Implementation build() const;
   LogNormal buildAsLogNormal(const Sample & sample) const;
   LogNormal buildAsLogNormal(const Sample & sample,
                              const UnsignedInteger method) const;
-  LogNormal buildAsLogNormal(const NumericalPoint & parameters) const;
+  LogNormal buildAsLogNormal(const Point & parameters) const;
   LogNormal buildAsLogNormal() const;
 
   /** Algorithm associated with the method of moments */

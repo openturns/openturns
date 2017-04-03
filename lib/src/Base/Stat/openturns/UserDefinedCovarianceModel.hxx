@@ -57,8 +57,8 @@ public:
 
   /** Computation of the covariance function */
   using CovarianceModelImplementation::operator();
-  CovarianceMatrix operator() (const NumericalPoint & s,
-                               const NumericalPoint & t) const;
+  CovarianceMatrix operator() (const Point & s,
+                               const Point & t) const;
 private:
   CovarianceMatrix operator() (const UnsignedInteger i,
                                const UnsignedInteger j) const;

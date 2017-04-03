@@ -44,10 +44,10 @@ GeneralLinearModelResult::GeneralLinearModelResult()
 GeneralLinearModelResult::GeneralLinearModelResult(const Sample & inputSample,
     const Sample & outputSample,
     const Function & metaModel,
-    const NumericalPoint & residuals,
-    const NumericalPoint & relativeErrors,
+    const Point & residuals,
+    const Point & relativeErrors,
     const BasisCollection & basis,
-    const NumericalPointCollection & trendCoefficients,
+    const PointCollection & trendCoefficients,
     const CovarianceModel & covarianceModel,
     const NumericalScalar optimalLogLikelihood)
   : MetaModelResult(DatabaseFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
@@ -73,10 +73,10 @@ GeneralLinearModelResult::GeneralLinearModelResult(const Sample & inputSample,
 GeneralLinearModelResult::GeneralLinearModelResult(const Sample & inputSample,
     const Sample & outputSample,
     const Function & metaModel,
-    const NumericalPoint & residuals,
-    const NumericalPoint & relativeErrors,
+    const Point & residuals,
+    const Point & relativeErrors,
     const BasisCollection & basis,
-    const NumericalPointCollection & trendCoefficients,
+    const PointCollection & trendCoefficients,
     const CovarianceModel & covarianceModel,
     const NumericalScalar optimalLogLikelihood,
     const TriangularMatrix & covarianceCholeskyFactor,
@@ -143,7 +143,7 @@ GeneralLinearModelResult::BasisCollection GeneralLinearModelResult::getBasisColl
 }
 
 /* Trend coefficients accessor */
-GeneralLinearModelResult::NumericalPointCollection GeneralLinearModelResult::getTrendCoefficients() const
+GeneralLinearModelResult::PointCollection GeneralLinearModelResult::getTrendCoefficients() const
 {
   return beta_;
 }
@@ -183,9 +183,9 @@ Process GeneralLinearModelResult::getNoise() const
   {
     // Here it is assumed that the covariance model parameters are the
     // marginal amplitude.
-    const NumericalPoint sigma(covarianceModel_.getParameter());
+    const Point sigma(covarianceModel_.getParameter());
     const CorrelationMatrix R(covarianceModel_.getSpatialCorrelation());
-    const Normal dist(NumericalPoint(sigma.getSize(), 0.0), sigma, R);
+    const Normal dist(Point(sigma.getSize(), 0.0), sigma, R);
     WhiteNoise noise(dist);
     return noise;
   }

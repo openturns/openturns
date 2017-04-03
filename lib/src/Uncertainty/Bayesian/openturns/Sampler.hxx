@@ -58,7 +58,7 @@ public:
   UnsignedInteger getDimension() const;
 
   /** Returns a realization */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Returns a realization */
   Sample getSample(const UnsignedInteger size) const;

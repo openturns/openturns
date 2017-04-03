@@ -79,7 +79,7 @@ void SymbolicParser::initialize() const
 {
   const UnsignedInteger inputDimension = inputVariablesNames_.getSize();
   const UnsignedInteger outputDimension = formulas_.getSize();
-  inputStack_ = NumericalPoint(inputDimension);
+  inputStack_ = Point(inputDimension);
   if (parsers_.getSize() == outputDimension) return;
   parsers_ = Collection<Pointer<MuParser> >(outputDimension);
   try
@@ -103,7 +103,7 @@ void SymbolicParser::initialize() const
 }
 
 
-NumericalPoint SymbolicParser::operator() (const NumericalPoint & inP) const
+Point SymbolicParser::operator() (const Point & inP) const
 {
   const UnsignedInteger inputDimension = inputVariablesNames_.getSize();
   const UnsignedInteger outputDimension = formulas_.getSize();
@@ -111,7 +111,7 @@ NumericalPoint SymbolicParser::operator() (const NumericalPoint & inP) const
     throw InvalidArgumentException(HERE) << "Error: invalid input dimension (" << inP.getDimension() << ") expected " << inputDimension;
   initialize();
   std::copy(inP.begin(), inP.end(), inputStack_.begin());
-  NumericalPoint result(outputDimension);
+  Point result(outputDimension);
   try
   {
     for (UnsignedInteger outputIndex = 0; outputIndex < result.getDimension(); ++ outputIndex)

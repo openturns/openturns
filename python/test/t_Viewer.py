@@ -53,16 +53,16 @@ try:
     R = ot.CorrelationMatrix(dimension)
     R[0, 1] = 0.8
     distribution = ot.Normal(
-        ot.NumericalPoint(dimension, 3.0), ot.NumericalPoint(dimension, 2.0), R)
+        ot.Point(dimension, 3.0), ot.Point(dimension, 2.0), R)
     size = 100
     sample2D = distribution.getSample(size)
     firstSample = ot.Sample(size, 1)
     secondSample = ot.Sample(size, 1)
     for i in range(size):
-        firstSample[i] = ot.NumericalPoint(1, sample2D[i, 0])
-        secondSample[i] = ot.NumericalPoint(1, sample2D[i, 1])
+        firstSample[i] = ot.Point(1, sample2D[i, 0])
+        secondSample[i] = ot.Point(1, sample2D[i, 1])
     graph = ot.VisualTest.DrawClouds(
-        sample2D, ot.Normal(ot.NumericalPoint(dimension, 2.0), ot.NumericalPoint(dimension, 3.0), R).getSample(size // 2))
+        sample2D, ot.Normal(ot.Point(dimension, 2.0), ot.Point(dimension, 3.0), R).getSample(size // 2))
     # graph.draw('curve5.png')
     view = View(graph)
     # view.save('curve5.png')
@@ -140,8 +140,8 @@ try:
 
     # Pairs
     dim = 5
-    meanPoint = ot.NumericalPoint(dim, 0.0)
-    sigma = ot.NumericalPoint(dim, 1.0)
+    meanPoint = ot.Point(dim, 0.0)
+    sigma = ot.Point(dim, 1.0)
     R = ot.CorrelationMatrix(dim)
     for i in range(dim):
         meanPoint[i] = (i + 1) * dim

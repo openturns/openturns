@@ -61,13 +61,13 @@ String DomainImplementation::__str__(const String & offset) const
 }
 
 /* Check if the given point is inside of the domain */
-Bool DomainImplementation::contains(const NumericalPoint & point) const
+Bool DomainImplementation::contains(const Point & point) const
 {
-  throw NotYetImplementedException(HERE) << "In DomainImplementation::contains(const NumericalPoint & point) const";
+  throw NotYetImplementedException(HERE) << "In DomainImplementation::contains(const Point & point) const";
 }
 
 /* Check if the given point is inside of the discretization of the domain */
-Bool DomainImplementation::numericallyContains(const NumericalPoint & point) const
+Bool DomainImplementation::numericallyContains(const Point & point) const
 {
   return contains(point);
 }
@@ -104,13 +104,13 @@ void DomainImplementation::computeVolume() const
 }
 
 /* Lower bound of the bounding box */
-NumericalPoint DomainImplementation::getLowerBound() const
+Point DomainImplementation::getLowerBound() const
 {
   throw NotYetImplementedException(HERE) << "In DomainImplementation::getLowerBound()";
 }
 
 /* Upper bound of the bounding box */
-NumericalPoint DomainImplementation::getUpperBound() const
+Point DomainImplementation::getUpperBound() const
 {
   throw NotYetImplementedException(HERE) << "In DomainImplementation::getUpperBound()";
 }

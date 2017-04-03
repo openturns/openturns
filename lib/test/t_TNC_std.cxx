@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-inline String printNumericalPoint(const NumericalPoint & point, const UnsignedInteger digits)
+inline String printPoint(const Point & point, const UnsignedInteger digits)
 {
   OSS oss;
   oss << "[";
@@ -51,8 +51,8 @@ int main(int argc, char *argv[])
     input[2] = "x3";
     input[3] = "x4";
     Function levelFunction(input, Description(1, "y1"), Description(1, "x1+2*x2-3*x3+4*x4"));
-    NumericalPoint startingPoint(4, 0.0);
-    Interval bounds(NumericalPoint(4, -3.0), NumericalPoint(4, 5.0));
+    Point startingPoint(4, 0.0);
+    Interval bounds(Point(4, -3.0), Point(4, 5.0));
 
     // Define Optimization Solver :
     OptimizationAlgorithm solver(new TNC());
@@ -65,16 +65,16 @@ int main(int argc, char *argv[])
     solver.setProblem(problem);
     solver.run();
 
-    fullprint << "minimizer = " << printNumericalPoint(solver.getResult().getOptimalPoint(), 4) << " value=" << solver.getResult().getOptimalValue()[0] << std::endl;
-    fullprint << "multipliers = " << printNumericalPoint(solver.getResult().getLagrangeMultipliers(), 4) << std::endl;
+    fullprint << "minimizer = " << printPoint(solver.getResult().getOptimalPoint(), 4) << " value=" << solver.getResult().getOptimalValue()[0] << std::endl;
+    fullprint << "multipliers = " << printPoint(solver.getResult().getLagrangeMultipliers(), 4) << std::endl;
 
     // Define Optimization Problem : maximization
     problem.setMinimization(false);
     solver.setProblem(problem);
     solver.run();
 
-    fullprint << "maximizer = " << printNumericalPoint(solver.getResult().getOptimalPoint(), 4) << " value=" << solver.getResult().getOptimalValue()[0] << std::endl;
-    fullprint << "multipliers = " << printNumericalPoint(solver.getResult().getLagrangeMultipliers(), 4) << std::endl;
+    fullprint << "maximizer = " << printPoint(solver.getResult().getOptimalPoint(), 4) << " value=" << solver.getResult().getOptimalValue()[0] << std::endl;
+    fullprint << "multipliers = " << printPoint(solver.getResult().getLagrangeMultipliers(), 4) << std::endl;
 
   }
   catch (TestFailed & ex)
@@ -93,17 +93,17 @@ int main(int argc, char *argv[])
     input[2] = "x3";
     input[3] = "x4";
     Function levelFunction(input, Description(1, "y1"), Description(1, "x1*cos(x1)+2*x2*x3-3*x3+4*x3*x4"));
-    NumericalPoint startingPointNearMinimizationCorner(4);
+    Point startingPointNearMinimizationCorner(4);
     startingPointNearMinimizationCorner[0] = 3.0;
     startingPointNearMinimizationCorner[0] = -2.5;
     startingPointNearMinimizationCorner[0] = 4.5;
     startingPointNearMinimizationCorner[0] = -2.5;
-    NumericalPoint startingPointNearMaximizationCorner(4);
+    Point startingPointNearMaximizationCorner(4);
     startingPointNearMaximizationCorner[0] = -2.5;
     startingPointNearMaximizationCorner[1] = 4.5;
     startingPointNearMaximizationCorner[2] = 4.5;
     startingPointNearMaximizationCorner[3] = 4.5;
-    Interval bounds(NumericalPoint(4, -3.0), NumericalPoint(4, 5.0));
+    Interval bounds(Point(4, -3.0), Point(4, 5.0));
 
     // Define Optimization Solver :
     OptimizationAlgorithm solver(new TNC());
@@ -117,8 +117,8 @@ int main(int argc, char *argv[])
       solver.setProblem(problem);
       solver.setStartingPoint(startingPointNearMinimizationCorner);
       solver.run();
-      fullprint << "minimizer = " << printNumericalPoint(solver.getResult().getOptimalPoint(), 4) << " value=" << solver.getResult().getOptimalValue()[0] << std::endl;
-      fullprint << "multipliers = " << printNumericalPoint(solver.getResult().getLagrangeMultipliers(), 4) << std::endl;
+      fullprint << "minimizer = " << printPoint(solver.getResult().getOptimalPoint(), 4) << " value=" << solver.getResult().getOptimalValue()[0] << std::endl;
+      fullprint << "multipliers = " << printPoint(solver.getResult().getLagrangeMultipliers(), 4) << std::endl;
     }
     {
       // Define Optimization Problem : maximization
@@ -126,8 +126,8 @@ int main(int argc, char *argv[])
       solver.setProblem(problem);
       solver.setStartingPoint(startingPointNearMaximizationCorner);
       solver.run();
-      fullprint << "maximizer = " << printNumericalPoint(solver.getResult().getOptimalPoint(), 4) << " value=" << solver.getResult().getOptimalValue()[0] << std::endl;
-      fullprint << "multipliers = " << printNumericalPoint(solver.getResult().getLagrangeMultipliers(), 4) << std::endl;
+      fullprint << "maximizer = " << printPoint(solver.getResult().getOptimalPoint(), 4) << " value=" << solver.getResult().getOptimalValue()[0] << std::endl;
+      fullprint << "multipliers = " << printPoint(solver.getResult().getLagrangeMultipliers(), 4) << std::endl;
     }
   }
   catch (TestFailed & ex)

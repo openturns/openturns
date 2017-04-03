@@ -137,7 +137,7 @@ String TimeSeries::__str__(const String & offset) const
 
 
 /* Appends an element to the collection */
-TimeSeries & TimeSeries::add(const NumericalPoint & point)
+TimeSeries & TimeSeries::add(const Point & point)
 {
   return add(Sample(1, point));
 }
@@ -152,7 +152,7 @@ TimeSeries & TimeSeries::add(const Sample & sample)
   if (size == 0) return *this;
   // Update the vertices
   Sample vertices(mesh_.getVertices());
-  for (UnsignedInteger i = 0; i < size; ++i) vertices.add(NumericalPoint(1, start_ + timeStep_ * (n_ + i)));
+  for (UnsignedInteger i = 0; i < size; ++i) vertices.add(Point(1, start_ + timeStep_ * (n_ + i)));
   // Update the values
   values_.add(sample);
   // Update the simplices

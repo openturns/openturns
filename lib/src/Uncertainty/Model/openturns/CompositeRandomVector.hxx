@@ -73,13 +73,13 @@ public:
   UnsignedInteger getDimension() const;
 
   /** Realization accessor */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Numerical sample accessor */
   Sample getSample(const UnsignedInteger size) const;
 
   /** Mean accessor */
-  NumericalPoint getMean() const;
+  Point getMean() const;
 
   /** Covariance accessor */
   CovarianceMatrix getCovariance() const;

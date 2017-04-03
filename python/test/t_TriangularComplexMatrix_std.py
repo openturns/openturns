@@ -96,7 +96,7 @@ try:
     print("test : multiplication with a numerical point method")
 
     # Create the numerical point
-    pt = NumericalPoint()
+    pt = Point()
     pt.add(1.)
     pt.add(2.)
     print("pt = ", repr(pt))

@@ -45,10 +45,10 @@ public:
   using DistributionFactoryImplementation::build;
 
   Implementation build(const Sample & sample) const;
-  Implementation build(const NumericalPoint & parameters) const;
+  Implementation build(const Point & parameters) const;
   Implementation build() const;
   Rayleigh buildAsRayleigh(const Sample & sample) const;
-  Rayleigh buildAsRayleigh(const NumericalPoint & parameters) const;
+  Rayleigh buildAsRayleigh(const Point & parameters) const;
   Rayleigh buildAsRayleigh() const;
 
 }; /* class RayleighFactory */

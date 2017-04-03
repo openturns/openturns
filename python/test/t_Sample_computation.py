@@ -9,10 +9,10 @@ RandomGenerator.SetSeed(0)
 
 try:
     sample = Sample(4, 3)
-    sample[0] = NumericalPoint((1, 0, 9))
-    sample[1] = NumericalPoint((2, 3, 5))
-    sample[2] = NumericalPoint((5, 1, 8))
-    sample[3] = NumericalPoint((6, 7, 2))
+    sample[0] = Point((1, 0, 9))
+    sample[1] = Point((2, 3, 5))
+    sample[2] = Point((5, 1, 8))
+    sample[3] = Point((6, 7, 2))
 
     print("sample=", repr(sample))
     print("min=", repr(sample.getMin()))
@@ -45,7 +45,7 @@ try:
     prob = 0.25
     print("Quantile per component(", prob, ")=", repr(
         sample.computeQuantilePerComponent(prob)))
-    pointCDF = NumericalPoint(sample.getDimension(), 0.25)
+    pointCDF = Point(sample.getDimension(), 0.25)
     print(
         "Empirical CDF(", repr(pointCDF), "=", sample.computeEmpiricalCDF(pointCDF))
     dim = 3
@@ -58,10 +58,10 @@ try:
             Rtmp[i, j] = 6.0 * asin(R[i, j] / 2.0) / pi
     print("Pearson correlation (exact)=", repr(R))
     print("Spearman correlation (exact)=", repr(Rtmp))
-    sample[0] = NumericalPoint((1, 0, 9))
-    sample[1] = NumericalPoint((2, 3, 9))
-    sample[2] = NumericalPoint((5, 1, 9))
-    sample[3] = NumericalPoint((2, 2, 9))
+    sample[0] = Point((1, 0, 9))
+    sample[1] = Point((2, 3, 9))
+    sample[2] = Point((5, 1, 9))
+    sample[3] = Point((2, 2, 9))
     print("Rank=", repr(sample.rank()))
     print("Rank component 0=", repr(sample.rank(0)))
     print("Sort=", repr(sample.sort()))
@@ -70,7 +70,7 @@ try:
     print("Spearman correlation=", repr(sample.computeSpearmanCorrelation()))
     print("Kendall tau=", repr(sample.computeKendallTau()))
     size = 10000
-    normal = Normal(NumericalPoint(dim, 0.0), NumericalPoint(dim, 1.0), R)
+    normal = Normal(Point(dim, 0.0), Point(dim, 1.0), R)
     print("Normal=", repr(normal))
     print("covariance=", repr(normal.getCovariance()))
     normalSample = normal.getSample(size)
@@ -80,7 +80,7 @@ try:
     RSpearman = normalSample.computeSpearmanCorrelation()
     print("Spearman correlation=", repr(RSpearman))
     print("Unique=", repr(sample.sortUnique()))
-    sample[2] = NumericalPoint((1, 0, 9))
+    sample[2] = Point((1, 0, 9))
     print("Unique=", repr(sample.sortUnique()))
 # except TestFailed, ex :
 except:

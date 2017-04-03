@@ -57,10 +57,10 @@ public:
 
   /** Build a (possibly truncated) kernel mixture based on the given sample and bandwidth */
   virtual Implementation build(const Sample & sample,
-                               const NumericalPoint & bandwidth) const;
+                               const Point & bandwidth) const;
 
   /** Bandwidth accessor */
-  NumericalPoint getBandwidth() const;
+  Point getBandwidth() const;
 
   /** Kernel accessor */
   Distribution getKernel() const;
@@ -68,13 +68,13 @@ public:
   void setBoundaryCorrection(const Bool boundaryCorrection);
 
   /** Compute the bandwidth according to Silverman's rule */
-  NumericalPoint computeSilvermanBandwidth(const Sample & sample) const;
+  Point computeSilvermanBandwidth(const Sample & sample) const;
 
   /** Compute the bandwidth according to the plugin rule. Warning!
    * it can take a lot of time for large samples, as the cost is
    * quadratic with the sample size
    */
-  NumericalPoint computePluginBandwidth(const Sample & sample) const;
+  Point computePluginBandwidth(const Sample & sample) const;
 
   /** Compute the bandwidth according to a mixed rule:
    * simply use the plugin rule for small sample, and
@@ -83,7 +83,7 @@ public:
    * scale the Silverman bandwidth computed on the full
    * sample with this ratio
    */
-  NumericalPoint computeMixedBandwidth(const Sample & sample) const;
+  Point computeMixedBandwidth(const Sample & sample) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -93,10 +93,10 @@ public:
 
 private:
 
-  void setBandwidth(const NumericalPoint & bandwidth) const;
+  void setBandwidth(const Point & bandwidth) const;
 
   // Bandwith of the smoothing
-  mutable NumericalPoint bandwidth_;
+  mutable Point bandwidth_;
 
   // 1D kernel for kernel product
   Distribution kernel_;

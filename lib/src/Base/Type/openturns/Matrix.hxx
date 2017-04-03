@@ -132,8 +132,8 @@ public:
   Matrix operator * (const SymmetricMatrix & m) const;
   Matrix operator * (const IdentityMatrix & m) const;
 
-  /** Multiplication with a NumericalPoint (must have consistent dimensions) */
-  NumericalPoint operator * (const NumericalPoint & pt) const;
+  /** Multiplication with a Point (must have consistent dimensions) */
+  Point operator * (const Point & pt) const;
 
   /** Multiplication with a NumericalScalar */
   Matrix operator * (const NumericalScalar s) const;
@@ -142,15 +142,15 @@ public:
   Matrix operator / (const NumericalScalar s) const;
 
   /** Resolution of a linear system */
-  NumericalPoint solveLinearSystem(const NumericalPoint & b,
+  Point solveLinearSystem(const Point & b,
                                    const Bool keepIntact = true);
   Matrix solveLinearSystem(const Matrix & b,
                            const Bool keepIntact = true);
 
   /** Compute singular values */
-  NumericalPoint computeSingularValues(const Bool keepIntact = true);
+  Point computeSingularValues(const Bool keepIntact = true);
 
-  NumericalPoint computeSVD(Matrix & u,
+  Point computeSVD(Matrix & u,
                             Matrix & vT,
                             const Bool fullSVD = false,
                             const Bool keepIntact = true);

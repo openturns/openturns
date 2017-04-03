@@ -28,8 +28,8 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(LinearFunction);
 
 /* Default constructor */
-LinearFunction::LinearFunction(const NumericalPoint & center,
-    const NumericalPoint & constant,
+LinearFunction::LinearFunction(const Point & center,
+    const Point & constant,
     const Matrix & linear)
   : Function(new LinearEvaluation(center, constant, linear.transpose()),
                           new ConstantGradient(linear.transpose()),

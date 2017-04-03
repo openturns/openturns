@@ -75,7 +75,7 @@ public:
 #endif
 
   /** Resolution of a linear system */
-  NumericalPoint solveLinearSystem(const NumericalPoint & b,
+  Point solveLinearSystem(const Point & b,
                                    const Bool keepIntact = true);
 
   Matrix solveLinearSystem(const Matrix & b,
@@ -87,8 +87,8 @@ public:
   NumericalScalar computeDeterminant(const Bool keepIntact = true);
 
   /** Compute eigenvalues */
-  NumericalPoint computeEigenValues(const Bool keepIntact = true);
-  NumericalPoint computeEV(SquareMatrix & v,
+  Point computeEigenValues(const Bool keepIntact = true);
+  Point computeEV(SquareMatrix & v,
                            const Bool keepIntact = true);
 
   /** Check if the matrix is SPD */
@@ -98,9 +98,9 @@ public:
   TriangularMatrix computeCholesky(const Bool keepIntact = true);
 
   /** Compute singular values */
-  NumericalPoint computeSingularValues(const Bool keepIntact = true);
+  Point computeSingularValues(const Bool keepIntact = true);
 
-  NumericalPoint computeSVD(Matrix & u,
+  Point computeSVD(Matrix & u,
                             Matrix & vT,
                             const Bool fullSVD = false,
                             const Bool keepIntact = true);

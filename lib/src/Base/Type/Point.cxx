@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief NumericalPoint implements the classical mathematical point
+ *  @brief Point implements the classical mathematical point
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -19,7 +19,7 @@
  *
  */
 #include <cmath>
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/StorageManager.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -28,14 +28,14 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(NumericalPoint);
+CLASSNAMEINIT(Point);
 
 static const Factory<PersistentCollection<NumericalScalar> > Factory_PersistentCollection_NumericalScalar;
 
-static const Factory<NumericalPoint> Factory_NumericalPoint;
+static const Factory<Point> Factory_Point;
 
 /* Default constructor */
-NumericalPoint::NumericalPoint()
+Point::Point()
   : PersistentCollection<NumericalScalar>() //,
   // p_description_()
 {
@@ -43,7 +43,7 @@ NumericalPoint::NumericalPoint()
 }
 
 /* Constructor with size */
-NumericalPoint::NumericalPoint(const UnsignedInteger size,
+Point::Point(const UnsignedInteger size,
                                const NumericalScalar value)
   : PersistentCollection<NumericalScalar>(size, value)
 {
@@ -52,7 +52,7 @@ NumericalPoint::NumericalPoint(const UnsignedInteger size,
 
 
 /* Constructor from a collection */
-NumericalPoint::NumericalPoint(const Collection<NumericalScalar> & coll)
+Point::Point(const Collection<NumericalScalar> & coll)
   : PersistentCollection<NumericalScalar>(coll)
 {
   // Nothing to do
@@ -60,28 +60,28 @@ NumericalPoint::NumericalPoint(const Collection<NumericalScalar> & coll)
 
 
 /* Virtual constructor */
-NumericalPoint * NumericalPoint::clone() const
+Point * Point::clone() const
 {
-  return new NumericalPoint(*this);
+  return new Point(*this);
 }
 
-void NumericalPoint::setDescription(const Description & description)
+void Point::setDescription(const Description & description)
 {
   // Nothing to do
 }
 
-Description NumericalPoint::getDescription() const
+Description Point::getDescription() const
 {
   return Description( getDimension() );
 }
 
 /* Set small elements to zero */
-NumericalPoint NumericalPoint::clean(const NumericalScalar threshold) const
+Point Point::clean(const NumericalScalar threshold) const
 {
   // Nothing to do for nonpositive threshold
   if (threshold <= 0.0) return *this;
   const UnsignedInteger size = getSize();
-  NumericalPoint result(size, 0.0);
+  Point result(size, 0.0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalScalar value = (*this)[i];
@@ -94,33 +94,33 @@ NumericalPoint NumericalPoint::clean(const NumericalScalar threshold) const
 
 
 /* String converter */
-String NumericalPoint::__repr__() const
+String Point::__repr__() const
 {
-  return OSS(true) << "class=" << NumericalPoint::GetClassName()
+  return OSS(true) << "class=" << Point::GetClassName()
          << " name=" << getName()
          << " dimension=" << getDimension()
          << " values=" << PersistentCollection<NumericalScalar>::__repr__();
 }
 
-String NumericalPoint::__str__(const String & offset) const
+String Point::__str__(const String & offset) const
 {
   return PersistentCollection<NumericalScalar>::__str__(offset);
 }
 
 /* Erase the elements between first and last */
-NumericalPoint::iterator NumericalPoint::erase(const iterator first, const iterator last)
+Point::iterator Point::erase(const iterator first, const iterator last)
 {
   return PersistentCollection<NumericalScalar>::erase(first, last);
 }
 
 /* Erase the element pointed by position */
-NumericalPoint::iterator NumericalPoint::erase(iterator position)
+Point::iterator Point::erase(iterator position)
 {
   return PersistentCollection<NumericalScalar>::erase(position);
 }
 
 /* Erase the element pointed by position */
-NumericalPoint::iterator NumericalPoint::erase(UnsignedInteger position)
+Point::iterator Point::erase(UnsignedInteger position)
 {
   return PersistentCollection<NumericalScalar>::erase(begin() + position);
 }
@@ -128,19 +128,19 @@ NumericalPoint::iterator NumericalPoint::erase(UnsignedInteger position)
 
 
 /* Addition operator */
-NumericalPoint operator + (const NumericalPoint & lhs,
-                           const NumericalPoint & rhs)
+Point operator + (const Point & lhs,
+                           const Point & rhs)
 {
   int n = lhs.getDimension();
   if (n != (int)rhs.getDimension())
     throw InvalidArgumentException(HERE)
-        << "NumericalPoints of different dimensions cannot be added (LHS dimension = "
+        << "Points of different dimensions cannot be added (LHS dimension = "
         << n
         << "; RHS dimension = "
         << rhs.getDimension();
 
-  // We create a NumericalPoint of the same dimension as both points for holding the result
-  NumericalPoint result(lhs);
+  // We create a Point of the same dimension as both points for holding the result
+  Point result(lhs);
   double alpha = 1.0;
   int one = 1;
   daxpy_(&n, &alpha, const_cast<double*>(&rhs[0]), &one, &result[0], &one);
@@ -150,12 +150,12 @@ NumericalPoint operator + (const NumericalPoint & lhs,
 
 
 /* In-place addition operator */
-NumericalPoint & NumericalPoint::operator +=(const NumericalPoint & other)
+Point & Point::operator +=(const Point & other)
 {
   int n = getDimension();
   if (n != (int)other.getDimension())
     throw InvalidArgumentException(HERE)
-        << "NumericalPoints of different dimensions cannot be added (LHS dimension = "
+        << "Points of different dimensions cannot be added (LHS dimension = "
         << n
         << "; RHS dimension = "
         << other.getDimension();
@@ -169,18 +169,18 @@ NumericalPoint & NumericalPoint::operator +=(const NumericalPoint & other)
 
 
 /* Substraction operator */
-NumericalPoint operator - (const NumericalPoint & lhs, const NumericalPoint & rhs)
+Point operator - (const Point & lhs, const Point & rhs)
 {
   int n = lhs.getDimension();
   if (n != (int)rhs.getDimension())
     throw InvalidArgumentException(HERE)
-        << "NumericalPoints of different dimensions cannot be substracted (LHS dimension = "
+        << "Points of different dimensions cannot be substracted (LHS dimension = "
         << n
         << "; RHS dimension = "
         << rhs.getDimension();
 
-  // We create a NumericalPoint of the same dimension as both points for holding the result
-  NumericalPoint result(lhs);
+  // We create a Point of the same dimension as both points for holding the result
+  Point result(lhs);
   double alpha = -1.0;
   int one = 1;
   daxpy_(&n, &alpha, const_cast<double*>(&rhs[0]), &one, &result[0], &one);
@@ -190,12 +190,12 @@ NumericalPoint operator - (const NumericalPoint & lhs, const NumericalPoint & rh
 
 
 /* In-place substraction operator */
-NumericalPoint & NumericalPoint::operator -=(const NumericalPoint & other)
+Point & Point::operator -=(const Point & other)
 {
   int n = getDimension();
   if (n != (int)other.getDimension())
     throw InvalidArgumentException(HERE)
-        << "NumericalPoints of different dimensions cannot be substracted (LHS dimension = "
+        << "Points of different dimensions cannot be substracted (LHS dimension = "
         << n
         << "; RHS dimension = " <<
         other.getDimension();
@@ -210,30 +210,30 @@ NumericalPoint & NumericalPoint::operator -=(const NumericalPoint & other)
 
 
 /* Product operator */
-NumericalPoint operator *(const NumericalPoint & point,
+Point operator *(const Point & point,
                           const NumericalScalar scalar)
 {
   int n = point.getDimension();
   double alpha = scalar;
-  NumericalPoint result(point);
+  Point result(point);
   int one = 1;
   dscal_(&n, &alpha, &result[0], &one);
   return result;
 }
 
-NumericalPoint operator *(const NumericalScalar scalar,
-                          const NumericalPoint & point)
+Point operator *(const NumericalScalar scalar,
+                          const Point & point)
 {
   int n = point.getDimension();
   double alpha = scalar;
-  NumericalPoint result(point);
+  Point result(point);
   int one = 1;
   dscal_(&n, &alpha, &result[0], &one);
   return result;
 }
 
 /*  In-place product operator */
-NumericalPoint & NumericalPoint::operator *=(const NumericalScalar scalar)
+Point & Point::operator *=(const NumericalScalar scalar)
 {
   int n = getDimension();
   double alpha = scalar;
@@ -243,20 +243,20 @@ NumericalPoint & NumericalPoint::operator *=(const NumericalScalar scalar)
 }
 
 /* Division operator */
-NumericalPoint operator /(const NumericalPoint & point,
+Point operator /(const Point & point,
                           const NumericalScalar scalar)
 {
   if (scalar == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot divide by 0.";
   int n = point.getDimension();
   double alpha = 1.0 / scalar;
-  NumericalPoint result(point);
+  Point result(point);
   int one = 1;
   dscal_(&n, &alpha, &result[0], &one);
   return result;
 }
 
 /*  In-place division operator */
-NumericalPoint & NumericalPoint::operator /=(const NumericalScalar scalar)
+Point & Point::operator /=(const NumericalScalar scalar)
 {
   if (scalar == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot divide by 0.";
   int n = getDimension();
@@ -268,13 +268,13 @@ NumericalPoint & NumericalPoint::operator /=(const NumericalScalar scalar)
 
 
 /* Dot product operator */
-NumericalScalar dot(const NumericalPoint & lhs,
-                    const NumericalPoint & rhs)
+NumericalScalar dot(const Point & lhs,
+                    const Point & rhs)
 {
   int n = lhs.getDimension();
   if (n != (int)rhs.getDimension())
     throw InvalidArgumentException(HERE)
-        << "NumericalPoints of different dimensions cannot be added (LHS dimension = "
+        << "Points of different dimensions cannot be added (LHS dimension = "
         << n
         << "; RHS dimension = "
         << rhs.getDimension();
@@ -285,8 +285,8 @@ NumericalScalar dot(const NumericalPoint & lhs,
 
 
 /* Comparison operator */
-Bool operator ==(const NumericalPoint & lhs,
-                 const NumericalPoint & rhs)
+Bool operator ==(const Point & lhs,
+                 const Point & rhs)
 {
   return static_cast<const PersistentCollection<NumericalScalar> >(lhs) == static_cast<const PersistentCollection<NumericalScalar> >(rhs);
 }
@@ -294,8 +294,8 @@ Bool operator ==(const NumericalPoint & lhs,
 
 
 /* Ordering operator */
-Bool operator <(const NumericalPoint & lhs,
-                const NumericalPoint & rhs)
+Bool operator <(const Point & lhs,
+                const Point & rhs)
 {
   return static_cast<const PersistentCollection<NumericalScalar> >(lhs) < static_cast<const PersistentCollection<NumericalScalar> >(rhs);
 }
@@ -303,7 +303,7 @@ Bool operator <(const NumericalPoint & lhs,
 
 
 /*  Norm */
-NumericalScalar NumericalPoint::norm() const
+NumericalScalar Point::norm() const
 {
   int n(getDimension());
   int one(1);
@@ -311,7 +311,7 @@ NumericalScalar NumericalPoint::norm() const
 }
 
 /* l1-norm */
-NumericalScalar NumericalPoint::norm1() const
+NumericalScalar Point::norm1() const
 {
   int n(getDimension());
   int one(1);
@@ -319,7 +319,7 @@ NumericalScalar NumericalPoint::norm1() const
 }
 
 /* linf-norm */
-NumericalScalar NumericalPoint::normInf() const
+NumericalScalar Point::normInf() const
 {
   const UnsignedInteger dimension = getDimension();
   if (dimension == 0) return 0.0;
@@ -329,14 +329,14 @@ NumericalScalar NumericalPoint::normInf() const
 }
 
 /*  Norm^2 */
-NumericalScalar NumericalPoint::normSquare() const
+NumericalScalar Point::normSquare() const
 {
   return dot(*this, *this);
 }
 
 
 /*  Normalize */
-NumericalPoint NumericalPoint::normalize() const
+Point Point::normalize() const
 {
   const NumericalScalar theNorm = norm();
   if (theNorm == 0.0) throw InternalException(HERE) << "Error: cannot normalize a null vector";
@@ -344,24 +344,24 @@ NumericalPoint NumericalPoint::normalize() const
 }
 
 /*  Square normalize */
-NumericalPoint NumericalPoint::normalizeSquare() const
+Point Point::normalizeSquare() const
 {
   const NumericalScalar theNormSquare = normSquare();
   if (theNormSquare == 0.0) throw InternalException(HERE) << "Error: cannot square normalize a null vector";
-  NumericalPoint result(getDimension());
+  Point result(getDimension());
   for (UnsignedInteger i = 0; i < getDimension(); ++i) result[i] = pow((*this)[i], 2) / theNormSquare;
   return result;
 }
 
 /* Method save() stores the object through the StorageManager */
-void NumericalPoint::save(Advocate & adv) const
+void Point::save(Advocate & adv) const
 {
   PersistentCollection<NumericalScalar>::save(adv);
 }
 
 
 /* Method load() reloads the object from the StorageManager */
-void NumericalPoint::load(Advocate & adv)
+void Point::load(Advocate & adv)
 {
   PersistentCollection<NumericalScalar>::load(adv);
 }

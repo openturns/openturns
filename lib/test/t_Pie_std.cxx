@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
   try
   {
 
-    NumericalPoint data(0);
+    Point data(0);
     Description palette;
     Description labels;
 
@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
 #ifdef WIN32
     OT:: // mingw defined a Pie(...) function
 #endif
-    Pie myPie1(data, labels, NumericalPoint(2), 1, palette);
+    Pie myPie1(data, labels, Point(2), 1, palette);
 
     // Then, draw it
     myGraph.add(myPie1);

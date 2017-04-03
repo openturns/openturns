@@ -65,7 +65,7 @@ StrongMaximumTest::StrongMaximumTest()
 
 /* Standard constructor */
 StrongMaximumTest::StrongMaximumTest(const StandardEvent & event,
-                                     const NumericalPoint & standardSpaceDesignPoint,
+                                     const Point & standardSpaceDesignPoint,
                                      const NumericalScalar importanceLevel,
                                      const NumericalScalar accuracyLevel,
                                      const NumericalScalar confidenceLevel)
@@ -89,7 +89,7 @@ StrongMaximumTest::StrongMaximumTest(const StandardEvent & event,
 
 /* Standard constructor */
 StrongMaximumTest::StrongMaximumTest(const StandardEvent & event,
-                                     const NumericalPoint & standardSpaceDesignPoint,
+                                     const Point & standardSpaceDesignPoint,
                                      const NumericalScalar importanceLevel,
                                      const NumericalScalar accuracyLevel,
                                      const UnsignedInteger pointNumber)
@@ -119,14 +119,14 @@ StrongMaximumTest * StrongMaximumTest::clone() const
 }
 
 /* standardSpaceDesignPoint accessor */
-void StrongMaximumTest::setStandardSpaceDesignPoint(const NumericalPoint & standardSpaceDesignPoint)
+void StrongMaximumTest::setStandardSpaceDesignPoint(const Point & standardSpaceDesignPoint)
 {
   if(standardSpaceDesignPoint.norm() <= 0.0) throw InvalidRangeException(HERE) << "DesignPoint with norm <= 0.0";
   standardSpaceDesignPoint_ = standardSpaceDesignPoint;
 }
 
 /* standardSpaceDesignPoint accessor */
-NumericalPoint StrongMaximumTest::getStandardSpaceDesignPoint() const
+Point StrongMaximumTest::getStandardSpaceDesignPoint() const
 {
   return standardSpaceDesignPoint_;
 }
@@ -436,7 +436,7 @@ NumericalScalar StrongMaximumTest::computeDeltaEpsilon()
 }
 
 /* the function that evaluate if a point is in the vicinity of the design point */
-Bool StrongMaximumTest::isInTheVicinityOfTheDesignPoint(const NumericalPoint & numericalPoint)
+Bool StrongMaximumTest::isInTheVicinityOfTheDesignPoint(const Point & numericalPoint)
 {
   return (dot(numericalPoint, standardSpaceDesignPoint_) > numericalPoint.norm() * standardSpaceDesignPoint_.norm() * designPointVicinity_);
 }
@@ -497,8 +497,8 @@ void StrongMaximumTest::run()
       else
       {
         /* we put at the end of the sample  all the points (and the corresponding values) not in the vicinity of the design point */
-        const NumericalPoint point(nearDesignPointVerifyingEventPoints_[leftCounter]);
-        const NumericalPoint value(nearDesignPointVerifyingEventValues_[leftCounter]);
+        const Point point(nearDesignPointVerifyingEventPoints_[leftCounter]);
+        const Point value(nearDesignPointVerifyingEventValues_[leftCounter]);
         nearDesignPointVerifyingEventPoints_[leftCounter] = nearDesignPointVerifyingEventPoints_[rightCounter];
         nearDesignPointVerifyingEventValues_[leftCounter] = nearDesignPointVerifyingEventValues_[rightCounter];
         nearDesignPointVerifyingEventPoints_[rightCounter] = point;
@@ -536,8 +536,8 @@ void StrongMaximumTest::run()
       if (isInTheVicinityOfTheDesignPoint(farDesignPointViolatingEventPoints_[leftCounter]))
       {
         /* we put at the end of the sample  all the points (and the corresponding values) not in the vicinity of the design point */
-        NumericalPoint point(farDesignPointViolatingEventPoints_[leftCounter]);
-        NumericalPoint value(farDesignPointViolatingEventValues_[leftCounter]);
+        Point point(farDesignPointViolatingEventPoints_[leftCounter]);
+        Point value(farDesignPointViolatingEventValues_[leftCounter]);
         farDesignPointViolatingEventPoints_[leftCounter] = farDesignPointViolatingEventPoints_[rightCounter];
         farDesignPointViolatingEventValues_[leftCounter] = farDesignPointViolatingEventValues_[rightCounter];
         farDesignPointViolatingEventPoints_[rightCounter] = point;
@@ -576,12 +576,12 @@ Sample StrongMaximumTest::sampleSphere(const NumericalScalar radius,
   // Then, normalize the points to have length radius
   for (UnsignedInteger i = 0; i < pointNumber; ++i)
   {
-    NumericalScalar norm = static_cast<NumericalPoint>(sample[i]).norm();
+    NumericalScalar norm = static_cast<Point>(sample[i]).norm();
     // If the point is the origin, we reject it
     while (norm == 0.0)
     {
       sample[i] = standardNormal.getRealization();
-      norm = NumericalPoint(sample[i]).norm();
+      norm = Point(sample[i]).norm();
     }
     sample[i] *= (radius / norm);
   }

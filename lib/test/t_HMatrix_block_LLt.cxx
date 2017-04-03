@@ -66,14 +66,14 @@ int main(int argc, char *argv[])
     indices.add(n);
     indices.add(n);
     const IntervalMesher intervalMesher(indices);
-    const NumericalPoint lowerBound(2, 0.0);
-    const NumericalPoint upperBound(2, 1.0);
+    const Point lowerBound(2, 0.0);
+    const Point upperBound(2, 1.0);
     const Mesh mesh2D(intervalMesher.build(Interval(lowerBound, upperBound)));
     const Sample vertices(mesh2D.getVertices());
-    NumericalPoint xMin(vertices.getMin());
-    NumericalPoint xMax(vertices.getMax());
-    NumericalPoint scale(2, 0.1);
-    CovarianceModel covarianceModel(ExponentialModel(scale, NumericalPoint(2, 1.0)));
+    Point xMin(vertices.getMin());
+    Point xMax(vertices.getMax());
+    Point scale(2, 0.1);
+    CovarianceModel covarianceModel(ExponentialModel(scale, Point(2, 1.0)));
 
     TestHMatrixTensorRealAssemblyFunction blockAssembly(covarianceModel, vertices);
     // Non-symmetric HMatrix

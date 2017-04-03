@@ -50,14 +50,14 @@ MarginalTransformationGradient * MarginalTransformationGradient::clone() const
 }
 
 /* Gradient */
-Matrix MarginalTransformationGradient::gradient(const NumericalPoint & inP) const
+Matrix MarginalTransformationGradient::gradient(const Point & inP) const
 {
   const UnsignedInteger dimension = getOutputDimension();
   Matrix result(dimension, dimension);
   // (G^{-1} o F)' = F' . G^{-1}' o F = F' / (G' o G^{-1} o F)
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    if (evaluation_.getSimplifications()[i] && evaluation_.getExpressions()[i].getGradient()->getClassName() == "SymbolicGradient") result(i, i) = evaluation_.getExpressions()[i].gradient(NumericalPoint(1, inP[i]))(0, 0);
+    if (evaluation_.getSimplifications()[i] && evaluation_.getExpressions()[i].getGradient()->getClassName() == "SymbolicGradient") result(i, i) = evaluation_.getExpressions()[i].gradient(Point(1, inP[i]))(0, 0);
     else
     {
       const NumericalScalar inputPDF = evaluation_.inputDistributionCollection_[i].computePDF(inP[i]);
@@ -70,7 +70,7 @@ Matrix MarginalTransformationGradient::gradient(const NumericalPoint & inP) cons
         if (upperTail) inputCDF = evaluation_.inputDistributionCollection_[i].computeComplementaryCDF(inP[i]);
         // The upper tail CDF is defined by CDF(x, upper) = P(X>x)
         // The upper tail quantile is defined by Quantile(CDF(x, upper), upper) = x
-        const NumericalPoint  outputQuantile(evaluation_.outputDistributionCollection_[i].computeQuantile(inputCDF, upperTail));
+        const Point  outputQuantile(evaluation_.outputDistributionCollection_[i].computeQuantile(inputCDF, upperTail));
         const NumericalScalar outputPDF = evaluation_.outputDistributionCollection_[i].computePDF(outputQuantile);
         // The output PDF should never be zero here, be it can occure due to some strange rounding error
         if (outputPDF > 0.0) result(i, i) = inputPDF / outputPDF;

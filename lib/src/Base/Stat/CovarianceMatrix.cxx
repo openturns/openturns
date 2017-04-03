@@ -105,7 +105,7 @@ TriangularMatrix CovarianceMatrix::computeCholesky(const Bool keepIntact)
 
 
 /* Resolution of a linear system */
-NumericalPoint CovarianceMatrix::solveLinearSystem(const NumericalPoint & b,
+Point CovarianceMatrix::solveLinearSystem(const Point & b,
     const Bool keepIntact)
 {
   return getImplementation()->solveLinearSystemCov(b, keepIntact);

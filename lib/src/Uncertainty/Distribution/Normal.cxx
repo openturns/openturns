@@ -45,8 +45,8 @@ static const Factory<Normal> Factory_Normal;
 
 /* Constructor for multiD standard normal distribution */
 Normal::Normal(const UnsignedInteger dimension)
-  : EllipticalDistribution(NumericalPoint(dimension, 0.0)
-                           , NumericalPoint(dimension, 1.0)
+  : EllipticalDistribution(Point(dimension, 0.0)
+                           , Point(dimension, 1.0)
                            , CorrelationMatrix(dimension),
                            1.0)
   , normalizationFactor_(1.0 / std::sqrt(std::pow(2.0 * M_PI, static_cast<int>(dimension))))
@@ -60,8 +60,8 @@ Normal::Normal(const UnsignedInteger dimension)
 /* Constructor for 1D normal distribution */
 Normal::Normal(const NumericalScalar mu,
                const NumericalScalar sd)
-  : EllipticalDistribution(NumericalPoint(1, mu)
-                           , NumericalPoint(1, sd)
+  : EllipticalDistribution(Point(1, mu)
+                           , Point(1, sd)
                            , CorrelationMatrix(1)
                            , 1.0)
   , normalizationFactor_(1.0 / std::sqrt(2 * M_PI))
@@ -73,8 +73,8 @@ Normal::Normal(const NumericalScalar mu,
 }
 
 /* Constructor for multiD normal distribution */
-Normal::Normal(const NumericalPoint & mean,
-               const NumericalPoint & sigma,
+Normal::Normal(const Point & mean,
+               const Point & sigma,
                const CorrelationMatrix & R)
   : EllipticalDistribution(mean
                            , sigma
@@ -89,10 +89,10 @@ Normal::Normal(const NumericalPoint & mean,
   checkIndependentCopula();
 }
 
-Normal::Normal(const NumericalPoint & mean,
+Normal::Normal(const Point & mean,
                const CovarianceMatrix & C)
   : EllipticalDistribution(mean
-                           , NumericalPoint(mean.getDimension(), 1.0)
+                           , Point(mean.getDimension(), 1.0)
                            , IdentityMatrix(mean.getDimension())
                            , 1.0)
   , normalizationFactor_(1.0 / std::sqrt(std::pow(2.0 * M_PI, static_cast<int>(mean.getDimension()))))
@@ -102,7 +102,7 @@ Normal::Normal(const NumericalPoint & mean,
   UnsignedInteger dimension = mean.getDimension();
   if (C.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the mean vector and the covariance matrix have incompatible dimensions";
   if (!const_cast<CovarianceMatrix*>(&C)->isPositiveDefinite()) throw InvalidArgumentException(HERE) << "Error: the covariance matrix is not positive definite";
-  NumericalPoint sigma(dimension);
+  Point sigma(dimension);
   CorrelationMatrix R(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
@@ -151,11 +151,11 @@ Normal * Normal::clone() const
 }
 
 /* Get one realization of the distribution */
-NumericalPoint Normal::getRealization() const
+Point Normal::getRealization() const
 {
   const UnsignedInteger dimension = getDimension();
-  if (dimension == 1) return NumericalPoint(1, mean_[0] + sigma_[0] * DistFunc::rNormal());
-  NumericalPoint value(dimension);
+  if (dimension == 1) return Point(1, mean_[0] + sigma_[0] * DistFunc::rNormal());
+  Point value(dimension);
   // First, a realization of independant standard coordinates
   for (UnsignedInteger i = 0; i < dimension; i++) value[i] = DistFunc::rNormal();
   // Then, transform the independant standard coordinates into the needed ones */
@@ -207,14 +207,14 @@ NumericalScalar Normal::computeDensityGeneratorSecondDerivative(const NumericalS
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar Normal::computeCDF(const NumericalPoint & point) const
+NumericalScalar Normal::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has a dimension incompatible with the distribution.";
   // Special case for dimension 1
   if (dimension == 1) return DistFunc::pNormal((point[0] - mean_[0]) / sigma_[0]);
   // Normalize the point to use the standard form of the multivariate normal distribution
-  NumericalPoint u(normalize(point));
+  Point u(normalize(point));
   /* Special treatment for independent components */
   if (hasIndependentCopula_)
   {
@@ -223,11 +223,11 @@ NumericalScalar Normal::computeCDF(const NumericalPoint & point) const
     return value;
   }
   // General multivariate case
-  const NumericalPoint lowerBounds(getRange().getLowerBound());
-  const NumericalPoint upperBounds(getRange().getUpperBound());
+  const Point lowerBounds(getRange().getLowerBound());
+  const Point upperBounds(getRange().getUpperBound());
   // Indices of the components to take into account in the computation
   Indices toKeep(0);
-  NumericalPoint reducedPoint(0);
+  Point reducedPoint(0);
   for (UnsignedInteger k = 0; k < dimension; ++ k)
   {
     const NumericalScalar xK = point[k];
@@ -272,10 +272,10 @@ NumericalScalar Normal::computeCDF(const NumericalPoint & point) const
         rule = GaussKronrodRule::G7K15;
         break;
     }
-    NumericalPoint kronrodWeights(1, rule.getZeroKronrodWeight());
+    Point kronrodWeights(1, rule.getZeroKronrodWeight());
     kronrodWeights.add(rule.getOtherKronrodWeights());
     kronrodWeights.add(rule.getOtherKronrodWeights());
-    NumericalPoint kronrodNodes(1, 0.0);
+    Point kronrodNodes(1, 0.0);
     kronrodNodes.add(rule.getOtherKronrodNodes());
     kronrodNodes.add(rule.getOtherKronrodNodes() * (-1.0));
     // Perform the integration
@@ -283,10 +283,10 @@ NumericalScalar Normal::computeCDF(const NumericalPoint & point) const
     const UnsignedInteger size = static_cast< UnsignedInteger >(round(std::pow(1.0 * marginalNodesNumber, static_cast<int>(dimension))));
     Indices indices(dimension, 0);
     Sample allNodes(size, dimension);
-    NumericalPoint allWeights(size);
+    Point allWeights(size);
     for (UnsignedInteger linearIndex = 0; linearIndex < size; ++linearIndex)
     {
-      NumericalPoint node(dimension);
+      Point node(dimension);
       NumericalScalar weight = 1.0;
       for (UnsignedInteger j = 0; j < dimension; ++j)
       {
@@ -326,7 +326,7 @@ NumericalScalar Normal::computeCDF(const NumericalPoint & point) const
     for (UnsignedInteger indexSample = 0; indexSample < ResourceMap::GetAsUnsignedInteger( "Normal-MinimumNumberOfPoints" ); ++indexSample)
     {
       Bool inside = true;
-      NumericalPoint realization(getRealization());
+      Point realization(getRealization());
       // Check if the realization is in the integration domain
       for (UnsignedInteger i = 0; i < dimension; ++i)
       {
@@ -360,7 +360,7 @@ NumericalComplex Normal::computeCharacteristicFunction(const NumericalScalar x) 
   return std::exp(computeLogCharacteristicFunction(x));
 }
 
-NumericalComplex Normal::computeCharacteristicFunction(const NumericalPoint & x) const
+NumericalComplex Normal::computeCharacteristicFunction(const Point & x) const
 {
   return std::exp(computeLogCharacteristicFunction(x));
 }
@@ -370,7 +370,7 @@ NumericalComplex Normal::computeLogCharacteristicFunction(const NumericalScalar 
   return NumericalComplex(-0.5 * sigma_[0] * sigma_[0] * x * x, mean_[0] * x);
 }
 
-NumericalComplex Normal::computeLogCharacteristicFunction(const NumericalPoint & x) const
+NumericalComplex Normal::computeLogCharacteristicFunction(const Point & x) const
 {
   if (x.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << x.getDimension();
   return NumericalComplex(-0.5 * dot(x, getCovariance() * x), dot(x, mean_));
@@ -384,8 +384,8 @@ NumericalScalar Normal::computeProbability(const Interval & interval) const
   // The generic implementation provided by the DistributionImplementation upper class is more accurate than the generic implementation provided by the ContinuousDistribution upper class for dimension = 1
   if (dimension == 1) return DistributionImplementation::computeProbability(interval);
   // Decompose and normalize the interval
-  NumericalPoint lower(normalize(interval.getLowerBound()));
-  NumericalPoint upper(normalize(interval.getUpperBound()));
+  Point lower(normalize(interval.getLowerBound()));
+  Point upper(normalize(interval.getUpperBound()));
   Interval::BoolCollection finiteLower(interval.getFiniteLowerBound());
   Interval::BoolCollection finiteUpper(interval.getFiniteUpperBound());
   /* Special treatment for independent components */
@@ -450,10 +450,10 @@ NumericalScalar Normal::computeProbability(const Interval & interval) const
 }
 
 /* Get the CDF gradient of the distribution */
-NumericalPoint Normal::computeCDFGradient(const NumericalPoint & point) const
+Point Normal::computeCDFGradient(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
-  NumericalPoint gradientCDF(2 * dimension);
+  Point gradientCDF(2 * dimension);
   if (dimension == 1)
   {
     NumericalScalar pdf = computePDF(point);
@@ -481,7 +481,7 @@ NumericalScalar Normal::computeScalarQuantile(const NumericalScalar prob,
    See [Lebrun, Dutfoy, "Rosenblatt and Nataf transformation"]
 */
 NumericalScalar Normal::computeConditionalPDF(const NumericalScalar x,
-    const NumericalPoint & y) const
+    const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -500,7 +500,7 @@ NumericalScalar Normal::computeConditionalPDF(const NumericalScalar x,
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 NumericalScalar Normal::computeConditionalCDF(const NumericalScalar x,
-    const NumericalPoint & y) const
+    const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -519,7 +519,7 @@ NumericalScalar Normal::computeConditionalCDF(const NumericalScalar x,
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
 NumericalScalar Normal::computeConditionalQuantile(const NumericalScalar q,
-    const NumericalPoint & y) const
+    const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -548,8 +548,8 @@ Normal::Implementation Normal::getMarginal(const UnsignedInteger i) const
   if (dimension == 1) return clone();
   // General case
   CorrelationMatrix R(1);
-  NumericalPoint sigma(1, sigma_[i]);
-  NumericalPoint mean(1, mean_[i]);
+  Point sigma(1, sigma_[i]);
+  Point mean(1, mean_[i]);
   return new Normal(mean, sigma, R);
 }
 
@@ -563,8 +563,8 @@ Normal::Implementation Normal::getMarginal(const Indices & indices) const
   // General case
   const UnsignedInteger outputDimension = indices.getSize();
   CorrelationMatrix R(outputDimension);
-  NumericalPoint sigma(outputDimension);
-  NumericalPoint mean(outputDimension);
+  Point sigma(outputDimension);
+  Point mean(outputDimension);
   // Extract the correlation matrix, the marginal standard deviations and means
   for (UnsignedInteger i = 0; i < outputDimension; ++i)
   {
@@ -580,19 +580,19 @@ Normal::Implementation Normal::getMarginal(const Indices & indices) const
 } // getMarginal(Indices)
 
 /* Get the skewness of the distribution */
-NumericalPoint Normal::getSkewness() const
+Point Normal::getSkewness() const
 {
-  return NumericalPoint(getDimension(), 0.0);
+  return Point(getDimension(), 0.0);
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Normal::getStandardMoment(const UnsignedInteger n) const
+Point Normal::getStandardMoment(const UnsignedInteger n) const
 {
-  if (n % 2 == 1) return NumericalPoint(1, 0.0);
+  if (n % 2 == 1) return Point(1, 0.0);
   NumericalScalar moment = 1.0;
   for (UnsignedInteger i = 1; i < n / 2; ++i)
     moment *= 2.0 * i + 1.0;
-  return NumericalPoint(1, moment);
+  return Point(1, moment);
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
@@ -609,9 +609,9 @@ NumericalScalar Normal::getRoughness() const
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint Normal::getKurtosis() const
+Point Normal::getKurtosis() const
 {
-  return NumericalPoint(getDimension(), 3.0);
+  return Point(getDimension(), 3.0);
 }
 
 /* Get the copula of the distribution */

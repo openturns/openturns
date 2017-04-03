@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 
     // values with varying q
     size = 25;
-    NumericalPoint qValues;
+    Point qValues;
     qValues.add(0.75);
     qValues.add(0.5);
     qValues.add(0.25);

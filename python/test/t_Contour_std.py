@@ -18,7 +18,7 @@ try:
     f = Function(inputVar, outputVar, formula)
 
     # Generate the data for the curves to be drawn
-    discretization = NumericalPoint(2)
+    discretization = Point(2)
     nX = 75
     nY = 75
     discretization[0] = nX
@@ -28,7 +28,7 @@ try:
     inputData += [-5.0] * 2
     data = f(inputData)
     size = 7
-    levels = NumericalPoint(size)
+    levels = Point(size)
     for i in range(size):
         levels[i] = (0.5 + i) / size
     # Create an empty graph

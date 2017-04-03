@@ -77,7 +77,7 @@ InverseBoxCoxEvaluation InverseBoxCoxHessian::getEvaluation() const
 }
 
 /* Hessian evaluation method */
-SymmetricTensor InverseBoxCoxHessian::hessian(const NumericalPoint & inP) const
+SymmetricTensor InverseBoxCoxHessian::hessian(const Point & inP) const
 {
   const UnsignedInteger dimension = getInputDimension();
   if (inP.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << dimension << ", got " << inP.getDimension();
@@ -112,13 +112,13 @@ UnsignedInteger InverseBoxCoxHessian::getOutputDimension() const
 }
 
 /* Accessor for the lambda */
-NumericalPoint InverseBoxCoxHessian::getLambda() const
+Point InverseBoxCoxHessian::getLambda() const
 {
   return evaluation_.getLambda();
 }
 
 /* Accessor for the shift */
-NumericalPoint InverseBoxCoxHessian::getShift() const
+Point InverseBoxCoxHessian::getShift() const
 {
   return evaluation_.getShift();
 }

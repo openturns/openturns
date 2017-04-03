@@ -22,7 +22,7 @@
 #define OPENTURNS_STRATIFIEDEXPERIMENT_HXX
 
 #include "openturns/ExperimentImplementation.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -44,23 +44,23 @@ public:
   StratifiedExperiment();
 
   /** Constructor with parameters */
-  StratifiedExperiment(const NumericalPoint & center,
-                       const NumericalPoint & levels);
+  StratifiedExperiment(const Point & center,
+                       const Point & levels);
 
   /** String converter */
   virtual String __repr__() const;
 
   /** Center accessor */
-  virtual void setCenter(const NumericalPoint & center);
+  virtual void setCenter(const Point & center);
 
   /** Center accessor */
-  virtual NumericalPoint getCenter() const;
+  virtual Point getCenter() const;
 
   /** Levels accessor */
-  virtual void setLevels(const NumericalPoint & levels);
+  virtual void setLevels(const Point & levels);
 
   /** Levels accessor */
-  virtual NumericalPoint getLevels() const;
+  virtual Point getLevels() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -69,8 +69,8 @@ public:
   virtual void load(Advocate & adv);
 protected:
 
-  NumericalPoint center_;
-  NumericalPoint levels_;
+  Point center_;
+  Point levels_;
 
 }; /* class StratifiedExperiment */
 

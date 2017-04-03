@@ -24,7 +24,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -108,16 +108,16 @@ private:
   NumericalScalar currentSigma_;
 
   /** SQP current point */
-  NumericalPoint currentPoint_;
+  Point currentPoint_;
 
   /** SQP current direction */
-  NumericalPoint currentDirection_;
+  Point currentDirection_;
 
   /** SQP current level value */
   NumericalScalar currentLevelValue_;
 
   /** SQP current gradient as a column vector */
-  NumericalPoint currentGradient_;
+  Point currentGradient_;
 
   /** SQP current hessian as a symmetric tensor */
   SymmetricMatrix currentHessian_;
@@ -126,7 +126,7 @@ private:
   SymmetricMatrix currentSystemMatrix_;
 
   /** SQP current system second member as a column vector */
-  NumericalPoint currentSecondMember_;
+  Point currentSecondMember_;
 
   /** SQP current Lagrange multiplier */
   NumericalScalar currentLambda_;

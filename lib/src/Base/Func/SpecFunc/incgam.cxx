@@ -272,7 +272,7 @@ NumericalScalar dompart(const NumericalScalar a,
 } // dompart
 
 NumericalScalar chepolsum(const NumericalScalar x,
-                          const NumericalPoint & a)
+                          const Point & a)
 {
   //{a[0]/2+a[1]T1(x)+...a[n]Tn(x); series of Chebychev polynomials}
   const UnsignedInteger n = a.getDimension() - 1;
@@ -294,7 +294,7 @@ NumericalScalar auxgam(const NumericalScalar x)
 {
   // function g in 1/gamma(x+1) = 1+x*(x-1)*g(x), -1 <= x <= 1
   if (x < 0.0) return -(1.0 + (1.0 + x) * (1.0 + x) * auxgam(1.0 + x)) / (1.0 - x);
-  NumericalPoint dr(18);
+  Point dr(18);
   dr[0] =  -1.013609258009865776949;
   dr[1] =  0.784903531024782283535e-1;
   dr[2] =  0.67588668743258315530e-2;
@@ -326,8 +326,8 @@ NumericalScalar gamstar(const NumericalScalar x)
 } // gamstar
 
 NumericalScalar fractio(const NumericalScalar x,
-                        const NumericalPoint & r,
-                        const NumericalPoint & s)
+                        const Point & r,
+                        const Point & s)
 {
   const UnsignedInteger n = r.getSize() - 1;
   NumericalScalar a = r[n];
@@ -365,7 +365,7 @@ NumericalScalar pqasymp(const NumericalScalar a,
 NumericalScalar saeta(const NumericalScalar a,
                       const NumericalScalar eta)
 {
-  NumericalPoint fm(27);
+  Point fm(27);
   fm[0] = 1.0;
   fm[1] = -1.0 / 3.0;
   fm[2] = 1.0 / 12.0;
@@ -393,7 +393,7 @@ NumericalScalar saeta(const NumericalScalar a,
   fm[24] = -5.13911183424257258e-16;
   fm[25] = -1.97522882943494428e-15;
   fm[26] =  8.09952115670456133e-16;
-  NumericalPoint bm(27);
+  Point bm(27);
   bm[25] = fm[26];
   bm[24] = fm[25];
   for (UnsignedInteger m = 24; m > 0; --m) bm[m - 1] = fm[m] + (m + 1) * bm[m + 1] / a;
@@ -485,13 +485,13 @@ NumericalScalar eps1(const NumericalScalar eta)
 {
   if (std::abs(eta) < 1.0)
   {
-    NumericalPoint ak(5);
+    Point ak(5);
     ak[0] = -3.333333333438e-1;
     ak[1] = -2.070740359969e-1;
     ak[2] = -5.041806657154e-2;
     ak[3] = -4.923635739372e-3;
     ak[4] = -4.293658292782e-5;
-    NumericalPoint bk(5);
+    Point bk(5);
     bk[0] =  1.000000000000e+0;
     bk[1] =  7.045554412463e-1;
     bk[2] =  2.118190062224e-1;
@@ -512,13 +512,13 @@ NumericalScalar eps2(const NumericalScalar eta)
   }
   if (eta < -2.0)
   {
-    NumericalPoint ak(5);
+    Point ak(5);
     ak[0] = -1.72847633523e-2;
     ak[1] = -1.59372646475e-2;
     ak[2] = -4.64910887221e-3;
     ak[3] = -6.06834887760e-4;
     ak[4] = -6.14830384279e-6;
-    NumericalPoint bk(5);
+    Point bk(5);
     bk[0] = 1.00000000000e+0;
     bk[1] = 7.64050615669e-1;
     bk[2] = 2.97143406325e-1;
@@ -528,13 +528,13 @@ NumericalScalar eps2(const NumericalScalar eta)
   }
   if (eta  <  2.0)
   {
-    NumericalPoint ak(5);
+    Point ak(5);
     ak[0] = -1.72839517431e-2;
     ak[1] = -1.46362417966e-2;
     ak[2] = -3.57406772616e-3;
     ak[3] = -3.91032032692e-4;
     ak[4] = 2.49634036069e-6;
-    NumericalPoint bk(5);
+    Point bk(5);
     bk[0] = 1.00000000000e+0;
     bk[1] = 6.90560400696e-1;
     bk[2] = 2.49962384741e-1;
@@ -544,13 +544,13 @@ NumericalScalar eps2(const NumericalScalar eta)
   }
   if (eta  <  1000.0)
   {
-    NumericalPoint ak(5);
+    Point ak(5);
     ak[0] = 9.99944669480e-1;
     ak[1] = 1.04649839762e+2;
     ak[2] = 8.57204033806e+2;
     ak[3] = 7.31901559577e+2;
     ak[4] = 4.55174411671e+1;
-    NumericalPoint bk(5);
+    Point bk(5);
     bk[0] = 1.00000000000e+0;
     bk[1] = 1.04526456943e+2;
     bk[2] = 8.23313447808e+2;
@@ -571,13 +571,13 @@ NumericalScalar eps3(const NumericalScalar eta)
   }
   if (eta < -4.0)
   {
-    NumericalPoint ak(5);
+    Point ak(5);
     ak[0] = 4.95346498136e-2;
     ak[1] = 2.99521337141e-2;
     ak[2] = 6.88296911516e-3;
     ak[3] = 5.12634846317e-4;
     ak[4] = -2.01411722031e-5;
-    NumericalPoint bk(5);
+    Point bk(5);
     bk[0] = 1.00000000000e+0;
     bk[1] = 7.59803615283e-1;
     bk[2] = 2.61547111595e-1;
@@ -587,13 +587,13 @@ NumericalScalar eps3(const NumericalScalar eta)
   }
   if (eta < -2.0)
   {
-    NumericalPoint ak(5);
+    Point ak(5);
     ak[0] = 4.52313583942e-3;
     ak[1] = 1.20744920113e-3;
     ak[2] = -7.89724156582e-5;
     ak[3] = -5.04476066942e-5;
     ak[4] = -5.35770949796e-6;
-    NumericalPoint bk(5);
+    Point bk(5);
     bk[0] =  1.00000000000e+0;
     bk[1] =  9.12203410349e-1;
     bk[2] =  4.05368773071e-1;
@@ -603,13 +603,13 @@ NumericalScalar eps3(const NumericalScalar eta)
   }
   if (eta < 2.0)
   {
-    NumericalPoint ak(5);
+    Point ak(5);
     ak[0] = 4.39937562904e-3;
     ak[1] = 4.87225670639e-4;
     ak[2] = -1.28470657374e-4;
     ak[3] = 5.29110969589e-6;
     ak[4] = 1.57166771750e-7;
-    NumericalPoint bk(5);
+    Point bk(5);
     bk[0] = 1.00000000000e+0;
     bk[1] = 7.94435257415e-1;
     bk[2] = 3.33094721709e-1;
@@ -619,13 +619,13 @@ NumericalScalar eps3(const NumericalScalar eta)
   }
   if (eta < 10.0)
   {
-    NumericalPoint ak(5);
+    Point ak(5);
     ak[0] = -1.14811912320e-3;
     ak[1] = -1.12850923276e-1;
     ak[2] = 1.51623048511e+0;
     ak[3] = -2.18472031183e-1;
     ak[4] = 7.30002451555e-2;
-    NumericalPoint bk(5);
+    Point bk(5);
     bk[0] = 1.00000000000e+0;
     bk[1] = 1.42482206905e+1;
     bk[2] = 6.97360396285e+1;
@@ -635,13 +635,13 @@ NumericalScalar eps3(const NumericalScalar eta)
   }
   if (eta < 100.0)
   {
-    NumericalPoint ak(5);
+    Point ak(5);
     ak[0] = -1.45727889667e-4;
     ak[1] = -2.90806748131e-1;
     ak[2] = -1.33085045450e+1;
     ak[3] = 1.99722374056e+2;
     ak[4] = -1.14311378756e+1;
-    NumericalPoint bk(5);
+    Point bk(5);
     bk[0] = 1.00000000000e+0;
     bk[1] = 1.39612587808e+2;
     bk[2] = 2.18901116348e+3;
@@ -687,8 +687,8 @@ NumericalScalar inverfc(const NumericalScalar x)
 } // inverfc
 
 NumericalScalar ratfun(const NumericalScalar x,
-                       const NumericalPoint & ak,
-                       const NumericalPoint & bk)
+                       const Point & ak,
+                       const Point & bk)
 {
   return (ak[0] + x * (ak[1] + x * (ak[2] + x * (ak[3] + x * ak[4])))) / (bk[0] + x * (bk[1] + x * (bk[2] + x * (bk[3] + x * bk[4]))));
 } // ratfun

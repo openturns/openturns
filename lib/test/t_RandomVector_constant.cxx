@@ -33,8 +33,8 @@ int main(int argc, char *argv[])
   {
 
     /* We create a numerical point of dimension 4 */
-    NumericalPoint point(4);
-    const NumericalPoint & ref_point(point);
+    Point point(4);
+    const Point & ref_point(point);
 
     point[0] = 101.0;
     point[1] = 102.0;
@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
 
     fullprint << "point = " << ref_point << std::endl;
 
-    /* We create a 'constant' RandomVector from the NumericalPoint */
+    /* We create a 'constant' RandomVector from the Point */
     RandomVector vect = ConstantRandomVector(point);
     fullprint << "vect=" << vect << std::endl;
 
@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     fullprint << "vect sample =" << vect.getSample(5) << std::endl;
 
     /* We create a numerical point of dimension 4 */
-    NumericalPointWithDescription pointWithDescription(4);
+    PointWithDescription pointWithDescription(4);
     pointWithDescription[0] = 101.0;
     pointWithDescription[1] = 102.0;
     pointWithDescription[2] = 103.0;
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
 
     fullprint << "point with description= " << pointWithDescription << std::endl;
 
-    /* We create a 'constant' RandomVector from the NumericalPoint */
+    /* We create a 'constant' RandomVector from the Point */
     RandomVector vect2 = ConstantRandomVector(pointWithDescription);
     fullprint << "vect2=" << vect2 << std::endl;
   }

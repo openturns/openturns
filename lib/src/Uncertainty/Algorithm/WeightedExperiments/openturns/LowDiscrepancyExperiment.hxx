@@ -80,7 +80,7 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Sample generation */
-  Sample generateWithWeights(NumericalPoint & weights) const;
+  Sample generateWithWeights(Point & weights) const;
 
 protected:
 

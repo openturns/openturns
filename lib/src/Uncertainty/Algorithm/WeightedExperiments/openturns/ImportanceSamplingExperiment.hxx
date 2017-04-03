@@ -63,7 +63,7 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Sample generation */
-  Sample generateWithWeights(NumericalPoint & weights) const;
+  Sample generateWithWeights(Point & weights) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

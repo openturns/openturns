@@ -51,7 +51,7 @@ OrdinalSumCopula::OrdinalSumCopula()
 
 /* Default constructor */
 OrdinalSumCopula::OrdinalSumCopula(const CopulaCollection & coll,
-                                   const NumericalPoint & bounds)
+                                   const Point & bounds)
   : CopulaImplementation()
   , copulaCollection_(0)
   , bounds_(0)
@@ -143,7 +143,7 @@ const OrdinalSumCopula::CopulaCollection & OrdinalSumCopula::getCopulaCollection
 }
 
 /* Bounds accessor */
-void OrdinalSumCopula::setBounds(const NumericalPoint & bounds)
+void OrdinalSumCopula::setBounds(const Point & bounds)
 {
   const UnsignedInteger size = bounds.getSize();
   if (size != copulaCollection_.getSize() - 1) throw InvalidArgumentException(HERE) << "Error: expected " << copulaCollection_.getSize() - 1 << " bounds, got " << size;
@@ -154,9 +154,9 @@ void OrdinalSumCopula::setBounds(const NumericalPoint & bounds)
   // + the block lengths
   // + the block distribution
   // Here are the parameters of the block distribution
-  bounds_ = NumericalPoint(0);
+  bounds_ = Point(0);
   Sample support(0, 1);
-  blockLengths_ = NumericalPoint(0);
+  blockLengths_ = Point(0);
   NumericalScalar lastBound = 0.0;
   CopulaCollection coll(0);
   for (UnsignedInteger i = 0; i < size; ++i)
@@ -167,7 +167,7 @@ void OrdinalSumCopula::setBounds(const NumericalPoint & bounds)
     const NumericalScalar length = currentBound - lastBound;
     if (length > 0.0)
     {
-      support.add(NumericalPoint(1, blockLengths_.getSize()));
+      support.add(Point(1, blockLengths_.getSize()));
       blockLengths_.add(length);
       coll.add(copulaCollection_[i]);
       bounds_.add(currentBound);
@@ -177,7 +177,7 @@ void OrdinalSumCopula::setBounds(const NumericalPoint & bounds)
   }
   if (lastBound < 1.0)
   {
-    support.add(NumericalPoint(1, blockLengths_.getSize()));
+    support.add(Point(1, blockLengths_.getSize()));
     blockLengths_.add(1.0 - lastBound);
     coll.add(copulaCollection_[size]);
   }
@@ -187,19 +187,19 @@ void OrdinalSumCopula::setBounds(const NumericalPoint & bounds)
     copulaCollection_ = coll;
 }
 
-const NumericalPoint & OrdinalSumCopula::getBounds() const
+const Point & OrdinalSumCopula::getBounds() const
 {
   return bounds_;
 }
 
 /* Get one realization of the OrdinalSumCopula */
-NumericalPoint OrdinalSumCopula::getRealization() const
+Point OrdinalSumCopula::getRealization() const
 {
   // If there is only one copula
   if (copulaCollection_.getSize() == 1) return copulaCollection_[0].getRealization();
   const UnsignedInteger index = static_cast<UnsignedInteger>(round(blockDistribution_.getRealization()[0]));
-  NumericalPoint result(copulaCollection_[index].getRealization() * blockLengths_[index]);
-  if (index > 0) result += NumericalPoint(getDimension(), bounds_[index - 1]);
+  Point result(copulaCollection_[index].getRealization() * blockLengths_[index]);
+  if (index > 0) result += Point(getDimension(), bounds_[index - 1]);
   return result;
 }
 
@@ -228,18 +228,18 @@ SignedInteger OrdinalSumCopula::findBlock(const NumericalScalar x) const
 }
 
 /* Check if the given point is in the given block */
-Bool OrdinalSumCopula::isInBlock(const NumericalPoint & point,
+Bool OrdinalSumCopula::isInBlock(const Point & point,
                                  const UnsignedInteger index) const
 {
   const UnsignedInteger dimension = getDimension();
-  if (index == 0) return Interval(NumericalPoint(dimension, 0.0), NumericalPoint(dimension, bounds_[index])).contains(point);
-  if (index < bounds_.getSize()) return Interval(NumericalPoint(dimension, bounds_[index - 1]), NumericalPoint(dimension, bounds_[index])).contains(point);
-  return Interval(NumericalPoint(dimension, bounds_[index - 1]), NumericalPoint(dimension, 1.0)).contains(point);
+  if (index == 0) return Interval(Point(dimension, 0.0), Point(dimension, bounds_[index])).contains(point);
+  if (index < bounds_.getSize()) return Interval(Point(dimension, bounds_[index - 1]), Point(dimension, bounds_[index])).contains(point);
+  return Interval(Point(dimension, bounds_[index - 1]), Point(dimension, 1.0)).contains(point);
 }
 
 
 /* Get the DDF of the OrdinalSumCopula */
-NumericalPoint OrdinalSumCopula::computeDDF(const NumericalPoint & point) const
+Point OrdinalSumCopula::computeDDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -248,15 +248,15 @@ NumericalPoint OrdinalSumCopula::computeDDF(const NumericalPoint & point) const
   // Compute the candidate block index based on the first coordinate
   const SignedInteger index = findBlock(point[0]);
   // There is no candidate
-  if (index < 0) return NumericalPoint(dimension, 0.0);
+  if (index < 0) return Point(dimension, 0.0);
   // The point is in the candidate
   if (isInBlock(point, index)) return copulaCollection_[index].computeDDF(point);
   // The point is not in the candidate
-  return NumericalPoint(dimension, 0.0);
+  return Point(dimension, 0.0);
 }
 
 /* Get the PDF of the OrdinalSumCopula */
-NumericalScalar OrdinalSumCopula::computePDF(const NumericalPoint & point) const
+NumericalScalar OrdinalSumCopula::computePDF(const Point & point) const
 {
   LOGDEBUG(OSS() << "In OrdinalSumCopula::computePDF, point=" << point);
   // If there is only one copula
@@ -286,13 +286,13 @@ NumericalScalar OrdinalSumCopula::computePDF(const NumericalPoint & point) const
     LOGDEBUG(OSS() << "In block " << index << ", pdf=" << pdf);
     return pdf;
   }
-  pdf = std::pow(blockLengths_[index], 1.0 - dimension) * copulaCollection_[index].computePDF((point - NumericalPoint(dimension, bounds_[index - 1])) / blockLengths_[index]);
+  pdf = std::pow(blockLengths_[index], 1.0 - dimension) * copulaCollection_[index].computePDF((point - Point(dimension, bounds_[index - 1])) / blockLengths_[index]);
   LOGDEBUG(OSS() << "In block " << index << ", pdf=" << pdf);
   return pdf;
 }
 
 /* Get the CDF of the OrdinalSumCopula */
-NumericalScalar OrdinalSumCopula::computeCDF(const NumericalPoint & point) const
+NumericalScalar OrdinalSumCopula::computeCDF(const Point & point) const
 {
   // If there is only one copula
   if (copulaCollection_.getSize() == 1) return copulaCollection_[0].computeCDF(point);
@@ -312,7 +312,7 @@ NumericalScalar OrdinalSumCopula::computeCDF(const NumericalPoint & point) const
   if (!isInBlock(point, index)) return std::max(0.0, std::min(1.0, *std::min_element(point.begin(), point.end())));
   // The point is in the candidate, compute the value of the corresponding copula
   if (index == 0) return blockLengths_[0] * copulaCollection_[0].computeCDF(point / blockLengths_[0]);
-  return bounds_[index - 1] + blockLengths_[index] * copulaCollection_[index].computeCDF((point - NumericalPoint(dimension, bounds_[index - 1])) / blockLengths_[index]);
+  return bounds_[index - 1] + blockLengths_[index] * copulaCollection_[index].computeCDF((point - Point(dimension, bounds_[index - 1])) / blockLengths_[index]);
 }
 
 /* Compute the probability content of an interval */
@@ -322,20 +322,20 @@ NumericalScalar OrdinalSumCopula::computeProbability(const Interval & interval) 
   if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension=" << dimension << ", here dimension=" << interval.getDimension();
 
   // Compute the contribution of the first block
-  NumericalPoint xMin(dimension, 0.0);
-  NumericalPoint xMax(dimension, bounds_[0]);
+  Point xMin(dimension, 0.0);
+  Point xMax(dimension, bounds_[0]);
   NumericalScalar probability = copulaCollection_[0].computeProbability(interval.intersect(Interval(xMin, xMax)) * (1.0 / blockLengths_[0]));
   // Sum the contribution of all the intermediate blocks
   xMin = xMax;
   const UnsignedInteger size = bounds_.getSize();
   for (UnsignedInteger i = 1; i < size; ++i)
   {
-    xMax = NumericalPoint(dimension, bounds_[i]);
+    xMax = Point(dimension, bounds_[i]);
     probability += copulaCollection_[i].computeProbability(interval.intersect(Interval(xMin, xMax) - Interval(xMin, xMin)) * (1.0 / blockLengths_[i]));
     xMin = xMax;
   }
   // And the contribution of the last block
-  xMax = NumericalPoint(dimension, 1.0);
+  xMax = Point(dimension, 1.0);
   probability += copulaCollection_[size].computeProbability(interval.intersect(Interval(xMin, xMax) - Interval(xMin, xMin)) * (1.0 / blockLengths_[size]));
 
   return probability;
@@ -353,7 +353,7 @@ void OrdinalSumCopula::computeCovariance() const
     return;
   }
   const UnsignedInteger dimension = getDimension();
-  const NumericalPoint data(dimension * dimension, 0.25);
+  const Point data(dimension * dimension, 0.25);
   const MatrixImplementation mask(dimension, dimension, data.begin(), data.end());
   NumericalScalar lastAi = bounds_[0];
   for (UnsignedInteger i = 1; i < size - 1; ++i)
@@ -376,7 +376,7 @@ CorrelationMatrix OrdinalSumCopula::getKendallTau() const
   const UnsignedInteger size = copulaCollection_.getSize();
   if (size == 1) return tauKendall;
   const UnsignedInteger dimension = getDimension();
-  const NumericalPoint data(dimension * dimension, 1.0);
+  const Point data(dimension * dimension, 1.0);
   const MatrixImplementation mask(dimension, dimension, data.begin(), data.end());
   NumericalScalar lastAi = bounds_[0];
   for (UnsignedInteger i = 1; i < size - 1; ++i)
@@ -392,39 +392,39 @@ CorrelationMatrix OrdinalSumCopula::getKendallTau() const
 }
 
 /* Get the PDF gradient of the distribution */
-NumericalPoint OrdinalSumCopula::computePDFGradient(const NumericalPoint & point) const
+Point OrdinalSumCopula::computePDFGradient(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  throw NotYetImplementedException(HERE) << "In OrdinalSumCopula::computePDFGradient(const NumericalPoint & point) const";
+  throw NotYetImplementedException(HERE) << "In OrdinalSumCopula::computePDFGradient(const Point & point) const";
 }
 
 /* Get the CDF gradient of the distribution */
-NumericalPoint OrdinalSumCopula::computeCDFGradient(const NumericalPoint & point) const
+Point OrdinalSumCopula::computeCDFGradient(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  throw NotYetImplementedException(HERE) << "In OrdinalSumCopula::computeCDFGradient(const NumericalPoint & point) const";
+  throw NotYetImplementedException(HERE) << "In OrdinalSumCopula::computeCDFGradient(const Point & point) const";
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar OrdinalSumCopula::computeConditionalPDF(const NumericalScalar x, const NumericalPoint & y) const
+NumericalScalar OrdinalSumCopula::computeConditionalPDF(const NumericalScalar x, const Point & y) const
 {
-  throw NotYetImplementedException(HERE) << "In OrdinalSumCopula::computeConditionalPDF(const NumericalScalar x, const NumericalPoint & y) const";
+  throw NotYetImplementedException(HERE) << "In OrdinalSumCopula::computeConditionalPDF(const NumericalScalar x, const Point & y) const";
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar OrdinalSumCopula::computeConditionalCDF(const NumericalScalar x, const NumericalPoint & y) const
+NumericalScalar OrdinalSumCopula::computeConditionalCDF(const NumericalScalar x, const Point & y) const
 {
-  throw NotYetImplementedException(HERE) << "In OrdinalSumCopula::computeConditionalCDF(const NumericalScalar x, const NumericalPoint & y) const";
+  throw NotYetImplementedException(HERE) << "In OrdinalSumCopula::computeConditionalCDF(const NumericalScalar x, const Point & y) const";
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar OrdinalSumCopula::computeConditionalQuantile(const NumericalScalar q, const NumericalPoint & y) const
+NumericalScalar OrdinalSumCopula::computeConditionalQuantile(const NumericalScalar q, const Point & y) const
 {
-  throw NotYetImplementedException(HERE) << "In OrdinalSumCopula::computeConditionalQuantile(const NumericalScalar q, const NumericalPoint & y) const";
+  throw NotYetImplementedException(HERE) << "In OrdinalSumCopula::computeConditionalQuantile(const NumericalScalar q, const Point & y) const";
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
@@ -439,19 +439,19 @@ OrdinalSumCopula::Implementation OrdinalSumCopula::getMarginal(const Indices & i
 }
 
 /* Parameters value and description accessor */
-OrdinalSumCopula::NumericalPointWithDescriptionCollection OrdinalSumCopula::getParametersCollection() const
+OrdinalSumCopula::PointWithDescriptionCollection OrdinalSumCopula::getParametersCollection() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
+  PointWithDescriptionCollection parameters(1);
   // No marginal parameter
   // Put the dependence parameters
-  NumericalPointWithDescription point(0);
+  PointWithDescription point(0);
   Description description(0);
   const UnsignedInteger size = copulaCollection_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    // All distributions, including copulas, must output a collection of NumericalPoint of size at least 1,
-    // even if the NumericalPoint are empty
-    const NumericalPointWithDescription copulaParameters(copulaCollection_[i].getParametersCollection()[0]);
+    // All distributions, including copulas, must output a collection of Point of size at least 1,
+    // even if the Point are empty
+    const PointWithDescription copulaParameters(copulaCollection_[i].getParametersCollection()[0]);
     const Description parametersDescription(copulaParameters.getDescription());
     const String copulaName(copulaCollection_[i].getName());
     const UnsignedInteger parameterDimension = copulaParameters.getDimension();
@@ -467,37 +467,37 @@ OrdinalSumCopula::NumericalPointWithDescriptionCollection OrdinalSumCopula::getP
   return parameters;
 } // getParametersCollection
 
-void OrdinalSumCopula::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void OrdinalSumCopula::setParametersCollection(const PointCollection & parametersCollection)
 {
   // Check if the given parameters are ok
   if (parametersCollection.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: the given collection has a size=" << parametersCollection.getSize() << " but should be of size=1";
   // Dependence parameters
-  const NumericalPoint parameters(parametersCollection[0]);
+  const Point parameters(parametersCollection[0]);
   const UnsignedInteger parametersDimension = parameters.getDimension();
   // Index within the given parametersCollection
   UnsignedInteger globalIndex = 0;
   const UnsignedInteger size = copulaCollection_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    // All distributions, including copulas, must output a collection of NumericalPoint of size at least 1,
-    // even if the NumericalPoint are empty
+    // All distributions, including copulas, must output a collection of Point of size at least 1,
+    // even if the Point are empty
     const UnsignedInteger atomParametersDimension = copulaCollection_[i].getParametersCollection()[0].getDimension();
     // ith copula parameters
-    NumericalPoint point(atomParametersDimension);
+    Point point(atomParametersDimension);
     for (UnsignedInteger j = 0; j < atomParametersDimension; ++j)
     {
       if (globalIndex >= parametersDimension) throw InvalidArgumentException(HERE) << "Error: there are too few dependence parameters";
       point[j] = parameters[globalIndex];
       ++globalIndex;
     } // atom parameters
-    copulaCollection_[i].setParametersCollection(NumericalPointCollection(1, point));
+    copulaCollection_[i].setParametersCollection(PointCollection(1, point));
   } // atoms
   if (globalIndex != parametersDimension) throw InvalidArgumentException(HERE) << "Error: there are too many dependence parameters, expected " << globalIndex << " parameters and got " << parametersDimension;
 }
 
-NumericalPoint OrdinalSumCopula::getParameter() const
+Point OrdinalSumCopula::getParameter() const
 {
-  NumericalPoint point;
+  Point point;
   const UnsignedInteger size = copulaCollection_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -506,18 +506,18 @@ NumericalPoint OrdinalSumCopula::getParameter() const
   return point;
 }
 
-void OrdinalSumCopula::setParameter(const NumericalPoint & parameter)
+void OrdinalSumCopula::setParameter(const Point & parameter)
 {
   UnsignedInteger globalIndex = 0;
   const UnsignedInteger size = copulaCollection_.getSize();
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    // All distributions, including copulas, must output a collection of NumericalPoint of size at least 1,
-    // even if the NumericalPoint are empty
+    // All distributions, including copulas, must output a collection of Point of size at least 1,
+    // even if the Point are empty
     const UnsignedInteger atomParametersDimension = copulaCollection_[i].getParameterDimension();
     if (globalIndex + atomParametersDimension > parameter.getSize()) throw InvalidArgumentException(HERE) << "Error: there are too few dependence parameters";
     // ith copula parameters
-    NumericalPoint newParameter(atomParametersDimension);
+    Point newParameter(atomParametersDimension);
     std::copy(parameter.begin() + globalIndex, parameter.begin() + globalIndex + atomParametersDimension, newParameter.begin());
     copulaCollection_[i].setParameter(newParameter);
   } // atoms

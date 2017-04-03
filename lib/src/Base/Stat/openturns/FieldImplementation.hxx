@@ -54,18 +54,18 @@ public:
                       const Sample & values);
 
   /** Accessor to values */
-  NumericalPoint getValueAtIndex(const UnsignedInteger index) const;
+  Point getValueAtIndex(const UnsignedInteger index) const;
   void setValueAtIndex(const UnsignedInteger index,
-                       const NumericalPoint & val);
+                       const Point & val);
 
-  NumericalPoint getValueAtNearestPosition(const NumericalPoint & position) const;
-  void setValueAtNearestPosition(const NumericalPoint & position,
-                                 const NumericalPoint & val);
+  Point getValueAtNearestPosition(const Point & position) const;
+  void setValueAtNearestPosition(const Point & position,
+                                 const Point & val);
 
   /** Accessor to values */
-  NumericalPoint getValueAtNearestTime(const NumericalScalar timestamp) const;
+  Point getValueAtNearestTime(const NumericalScalar timestamp) const;
   void setValueAtNearestTime(const NumericalScalar timestamp,
-                             const NumericalPoint & val);
+                             const Point & val);
 
   /** Virtual constructor */
   virtual FieldImplementation * clone() const;
@@ -131,11 +131,11 @@ public:
   Mesh asDeformedMesh() const;
 
   /** Compute the spatial mean of the field */
-  NumericalPoint getSpatialMean() const;
+  Point getSpatialMean() const;
 
   /** Compute the temporal mean of the field, ie its spatial mean when the mesh
       is regular and of dimension 1 */
-  NumericalPoint getTemporalMean() const;
+  Point getTemporalMean() const;
 
   /** Draw a marginal of the timeSerie */
   Graph drawMarginal(const UnsignedInteger index = 0,
@@ -167,7 +167,7 @@ protected:
   Description description_;
 
   /** The spatial mean */
-  mutable NumericalPoint spatialMean_;
+  mutable Point spatialMean_;
 
   /** Flag to tell if the spatial mean has already been computed */
   mutable Bool isAlreadyComputedSpatialMean_;

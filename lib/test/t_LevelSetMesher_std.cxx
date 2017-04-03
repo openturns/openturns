@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     Mesh mesh1D(mesher1D.build(levelSet1D));
     fullprint << "mesh1D=" << mesh1D << std::endl;
     // Manual bounding box
-    mesh1D = mesher1D.build(levelSet1D, Interval(NumericalPoint(1, -10.0), NumericalPoint(1, 10.0)));
+    mesh1D = mesher1D.build(levelSet1D, Interval(Point(1, -10.0), Point(1, 10.0)));
     fullprint << "mesh1D=" << mesh1D << std::endl;
 
     // The 2D mesher
@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
     Mesh mesh2D(mesher2D.build(levelSet2D));
     fullprint << "mesh2D=" << mesh2D << std::endl;
     // Manual bounding box
-    mesh2D = mesher2D.build(levelSet2D, Interval(NumericalPoint(2, -10.0), NumericalPoint(2, 10.0)));
+    mesh2D = mesher2D.build(levelSet2D, Interval(Point(2, -10.0), Point(2, 10.0)));
     fullprint << "mesh2D=" << mesh2D << std::endl;
 
     // The 3D mesher
@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
     Mesh mesh3D(mesher3D.build(levelSet3D));
     fullprint << "mesh3D=" << mesh3D << std::endl;
     // Manual bounding box
-    mesh3D = mesher3D.build(levelSet3D, Interval(NumericalPoint(3, -10.0), NumericalPoint(3, 10.0)));
+    mesh3D = mesher3D.build(levelSet3D, Interval(Point(3, -10.0), Point(3, 10.0)));
     fullprint << "mesh3D=" << mesh3D << std::endl;
   }
   catch (TestFailed & ex)

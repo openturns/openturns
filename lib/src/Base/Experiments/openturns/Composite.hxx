@@ -43,12 +43,12 @@ public:
   Composite();
 
   /** Constructor with parameters */
-  Composite(const NumericalPoint & center,
-            const NumericalPoint & levels);
+  Composite(const Point & center,
+            const Point & levels);
 
   /** Constructor with parameters */
   Composite(const UnsignedInteger dimension,
-            const NumericalPoint & levels);
+            const Point & levels);
 
   /** Virtual constructor */
   virtual Composite * clone() const;

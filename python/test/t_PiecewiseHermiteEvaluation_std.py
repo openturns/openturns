@@ -5,9 +5,9 @@ from openturns import *
 
 ref = SymbolicFunction("x", "sin(x)")
 size = 12
-locations = NumericalPoint(size)
-values = NumericalPoint(size)
-derivatives = NumericalPoint(size)
+locations = Point(size)
+values = Point(size)
+derivatives = Point(size)
 # Build locations/values/derivatives with non-increasing locations
 for i in range(size):
     locations[i] = 10.0 * i * i / (size - 1.0) / (size - 1.0)

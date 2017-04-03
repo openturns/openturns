@@ -104,7 +104,7 @@ NumericalScalar SimulationResult::getStandardDeviation() const
 }
 
 /* Mean point conditioned to the event realization accessor */
-NumericalPoint SimulationResult::getMeanPointInEventDomain() const
+Point SimulationResult::getMeanPointInEventDomain() const
 {
   return getImplementation()->getMeanPointInEventDomain();
 }
@@ -146,7 +146,7 @@ void SimulationResult::setBlockSize(const UnsignedInteger blockSize)
 }
 
 /* Importance factors accessor */
-NumericalPointWithDescription SimulationResult::getImportanceFactors() const
+PointWithDescription SimulationResult::getImportanceFactors() const
 {
   return getImplementation()->getImportanceFactors();
 }

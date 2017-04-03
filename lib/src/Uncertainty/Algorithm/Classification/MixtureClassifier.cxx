@@ -58,7 +58,7 @@ String MixtureClassifier::__repr__() const
 }
 
 /* Associate a set of points to a class */
-UnsignedInteger MixtureClassifier::classify(const NumericalPoint& inP) const
+UnsignedInteger MixtureClassifier::classify(const Point& inP) const
 {
   if (inP.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the point to classify has dimension=" << inP.getDimension() << " but the classifier expects dimension=" << mixture_.getDimension();
   const UnsignedInteger size = mixture_.getDistributionCollection().getSize();
@@ -82,7 +82,7 @@ Indices MixtureClassifier::classifySequential(const Sample & inS) const
 {
   const UnsignedInteger mixtureSize = mixture_.getDistributionCollection().getSize();
   const UnsignedInteger size = inS.getSize();
-  NumericalPoint logWeights(mixtureSize);
+  Point logWeights(mixtureSize);
   Sample atomsLogPDF(mixtureSize, size);
   // The expansive part: the computation of the log-PDF, here we benefit
   // from possible parallelism in computeLogPDF() for each atom
@@ -95,7 +95,7 @@ Indices MixtureClassifier::classifySequential(const Sample & inS) const
   // Now grade the points
   // The outer loop is on the classes and the inner loop on the point to
   // benefit from data locality
-  NumericalPoint bestGrades(size, -SpecFunc::MaxNumericalScalar);
+  Point bestGrades(size, -SpecFunc::MaxNumericalScalar);
   Indices bestClasses(size);
   for (UnsignedInteger classIndex = 0; classIndex < mixtureSize; ++classIndex)
     {
@@ -112,7 +112,7 @@ Indices MixtureClassifier::classifySequential(const Sample & inS) const
   return bestClasses;
 }
 
-NumericalScalar MixtureClassifier::grade(const NumericalPoint& inP,
+NumericalScalar MixtureClassifier::grade(const Point& inP,
     const UnsignedInteger outC) const
 {
   const UnsignedInteger size = mixture_.getDistributionCollection().getSize();

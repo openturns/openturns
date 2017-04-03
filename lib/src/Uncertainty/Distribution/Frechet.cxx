@@ -90,8 +90,8 @@ Frechet * Frechet::clone() const
 /* Compute the numerical range of the distribution given the parameters values */
 void Frechet::computeRange()
 {
-  const NumericalPoint lowerBound(1, gamma_);
-  const NumericalPoint upperBound(computeUpperBound());
+  const Point lowerBound(1, gamma_);
+  const Point upperBound(computeUpperBound());
   const Interval::BoolCollection finiteLowerBound(1, true);
   const Interval::BoolCollection finiteUpperBound(1, false);
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
@@ -105,24 +105,24 @@ NumericalScalar Frechet::computeScalarQuantile(const NumericalScalar prob,
 }
 
 /* Get one realization of the distribution */
-NumericalPoint Frechet::getRealization() const
+Point Frechet::getRealization() const
 {
-  return NumericalPoint(1, computeScalarQuantile(RandomGenerator::Generate()));
+  return Point(1, computeScalarQuantile(RandomGenerator::Generate()));
 }
 
-NumericalPoint Frechet::computeDDF(const NumericalPoint & point) const
+Point Frechet::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0] - gamma_;
-  if (x <= 0.0) return NumericalPoint(1, 0.0);
+  if (x <= 0.0) return Point(1, 0.0);
   const NumericalScalar y = x / beta_;
   const NumericalScalar minusAlphalogY = -alpha_ * std::log(y);
-  return NumericalPoint(1, -alpha_ * (-alpha_ * expm1(minusAlphalogY) + 1.0) * std::exp(-std::exp(minusAlphalogY) + minusAlphalogY) / (x * x));
+  return Point(1, -alpha_ * (-alpha_ * expm1(minusAlphalogY) + 1.0) * std::exp(-std::exp(minusAlphalogY) + minusAlphalogY) / (x * x));
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar Frechet::computeCDF(const NumericalPoint & point) const
+NumericalScalar Frechet::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -132,14 +132,14 @@ NumericalScalar Frechet::computeCDF(const NumericalPoint & point) const
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar Frechet::computePDF(const NumericalPoint & point) const
+NumericalScalar Frechet::computePDF(const Point & point) const
 {
   const NumericalScalar x = point[0] - gamma_;
   if (x <= 0.0) return 0.0;
   return std::exp(computeLogPDF(point));
 }
 
-NumericalScalar Frechet::computeLogPDF(const NumericalPoint & point) const
+NumericalScalar Frechet::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -160,16 +160,16 @@ LevelSet Frechet::computeMinimumVolumeLevelSetWithThreshold(const NumericalScala
 }
 
 /* Parameters value and description accessor */
-NumericalPoint Frechet::getParameter() const
+Point Frechet::getParameter() const
 {
-  NumericalPoint point(3);
+  Point point(3);
   point[0] = alpha_;
   point[1] = beta_;
   point[2] = gamma_;
   return point;
 }
 
-void Frechet::setParameter(const NumericalPoint & parameter)
+void Frechet::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();
@@ -188,12 +188,12 @@ Description Frechet::getParameterDescription() const
 }
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint Frechet::computePDFGradient(const NumericalPoint & point) const
+Point Frechet::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0];
-  NumericalPoint pdfGradient(3);
+  Point pdfGradient(3);
   if (x <= gamma_) return pdfGradient;
   const NumericalScalar logCdf = -std::pow((x - gamma_) / beta_, -alpha_);
   const NumericalScalar logCdfm1 = std::pow((x - gamma_) / beta_, -alpha_ - 1.0);
@@ -205,12 +205,12 @@ NumericalPoint Frechet::computePDFGradient(const NumericalPoint & point) const
 }
 
 /* Get the CDFGradient of the distribution */
-NumericalPoint Frechet::computeCDFGradient(const NumericalPoint & point) const
+Point Frechet::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0];
-  NumericalPoint cdfGradient(3);
+  Point cdfGradient(3);
   if (x <= gamma_) return cdfGradient;
   const NumericalScalar logCdf = -std::pow((x - gamma_) / beta_, -alpha_);
   const NumericalScalar cdf = std::exp(logCdf);
@@ -225,14 +225,14 @@ void Frechet::computeMean() const
 {
   if (!(alpha_ > 1.0)) throw InvalidArgumentException(HERE) << "mean is not defined for alpha <= 1";
 
-  mean_ = NumericalPoint(1, gamma_ + beta_ * SpecFunc::Gamma(1.0 - 1.0 / alpha_));
+  mean_ = Point(1, gamma_ + beta_ * SpecFunc::Gamma(1.0 - 1.0 / alpha_));
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint Frechet::getStandardDeviation() const
+Point Frechet::getStandardDeviation() const
 {
-  return NumericalPoint(1, std::sqrt(getCovariance()(0, 0)));
+  return Point(1, std::sqrt(getCovariance()(0, 0)));
 }
 
 /* Compute the covariance of the distribution */
@@ -248,7 +248,7 @@ void Frechet::computeCovariance() const
 
 
 /* Get the skewness of the distribution */
-NumericalPoint Frechet::getSkewness() const
+Point Frechet::getSkewness() const
 {
   if (!(alpha_ > 3.0)) throw InvalidArgumentException(HERE) << "skewness is not defined for alpha <= 3";
 
@@ -257,11 +257,11 @@ NumericalPoint Frechet::getSkewness() const
   const NumericalScalar gamma3InvAlpha = SpecFunc::Gamma(1.0 - 3.0 / alpha_);
   const NumericalScalar gammaInvAlpha2 = gammaInvAlpha * gammaInvAlpha;
   const NumericalScalar skewness = (gamma3InvAlpha + gammaInvAlpha * (2.0 * gammaInvAlpha2 - 3.0 * gamma2InvAlpha)) / std::pow(gamma2InvAlpha - gammaInvAlpha2, 1.5);
-  return NumericalPoint(1, skewness);
+  return Point(1, skewness);
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint Frechet::getKurtosis() const
+Point Frechet::getKurtosis() const
 {
   if (!(alpha_ > 4.0)) throw InvalidArgumentException(HERE) << "kurtosis is not defined for alpha <= 4";
 
@@ -271,14 +271,14 @@ NumericalPoint Frechet::getKurtosis() const
   const NumericalScalar gamma4InvAlpha = SpecFunc::Gamma(1.0 - 4.0 / alpha_);
   const NumericalScalar gammaInvAlpha2 = gammaInvAlpha * gammaInvAlpha;
   const NumericalScalar kurtosis((gamma4InvAlpha + gammaInvAlpha * (-4.0 * gamma3InvAlpha + 3.0 * gammaInvAlpha * (2.0 * gamma2InvAlpha - gammaInvAlpha2))) / std::pow(gamma2InvAlpha - gammaInvAlpha2, 2.0));
-  return NumericalPoint(1, kurtosis);
+  return Point(1, kurtosis);
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Frechet::getStandardMoment(const UnsignedInteger n) const
+Point Frechet::getStandardMoment(const UnsignedInteger n) const
 {
   if (n >= alpha_) throw NotDefinedException(HERE) << "Error: cannot compute a standard moment of order greater or equal to alpha=" << alpha_;
-  return NumericalPoint(1, SpecFunc::Gamma(1.0 - n / alpha_));
+  return Point(1, SpecFunc::Gamma(1.0 - n / alpha_));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */

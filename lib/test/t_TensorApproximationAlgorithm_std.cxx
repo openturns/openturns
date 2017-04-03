@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
     TensorApproximationResult result(algo.getResult());
     fullprint << "residuals=" << result.getResiduals() << std::endl;
     Function metamodel = result.getMetaModel();
-    NumericalPoint x(dim, 0.4);
+    Point x(dim, 0.4);
     fullprint << "x=" << x << " f(x)=" << model(x).__str__() << " f^(x)=" << metamodel(x).__str__() << std::endl;
     fullprint << "rank="<<result.getTensor(0).getRank() << std::endl;
 

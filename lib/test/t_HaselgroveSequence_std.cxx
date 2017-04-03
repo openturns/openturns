@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     UnsignedInteger sampleSize = 1000;
     for(UnsignedInteger i = 0; i < sampleSize; ++i)
     {
-      NumericalPoint haselgrovePoint(sequence.generate());
+      Point haselgrovePoint(sequence.generate());
       fullprint << haselgrovePoint << std::endl;
       if(haselgrovePoint.norm() < 1.0)
         ++ pointInsideCircle;

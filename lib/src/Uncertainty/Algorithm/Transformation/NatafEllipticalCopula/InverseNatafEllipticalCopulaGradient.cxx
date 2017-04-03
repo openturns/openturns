@@ -80,17 +80,17 @@ String InverseNatafEllipticalCopulaGradient::__repr__() const
  *               = F'(Zi)Lij
  * thus, (DS)ij = Jji = LjiF'(Zj)
  */
-Matrix InverseNatafEllipticalCopulaGradient::gradient(const NumericalPoint & inP) const
+Matrix InverseNatafEllipticalCopulaGradient::gradient(const Point & inP) const
 {
   UnsignedInteger dimension = getInputDimension();
   // First, correlate the components
-  NumericalPoint point(cholesky_ * inP);
+  Point point(cholesky_ * inP);
   Matrix result(dimension, dimension);
   const Distribution standardMarginal(standardDistribution_.getMarginal(0));
   // Second, apply the commmon marginal distribution
   for (UnsignedInteger j = 0; j < dimension; ++j)
   {
-    NumericalScalar marginalPDF = standardMarginal.computePDF(NumericalPoint(1, point[j]));
+    NumericalScalar marginalPDF = standardMarginal.computePDF(Point(1, point[j]));
     for (UnsignedInteger i = 0; i <= j; ++i)
     {
       result(i, j) = marginalPDF * cholesky_(j, i);

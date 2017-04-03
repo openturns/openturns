@@ -6,7 +6,7 @@ from openturns import *
 TESTPREAMBLE()
 
 try:
-    data = NumericalPoint()
+    data = Point()
 
     # DEBUG ; ici attente de la TUI
     palette = Description()
@@ -61,7 +61,7 @@ try:
         "Presidentielle 2002 - 1er tour", "x1", "x2", True, "topright")
 
     # Create the first cloud
-    myPie1 = Pie(data, labels, NumericalPoint(2), 1, palette)
+    myPie1 = Pie(data, labels, Point(2), 1, palette)
 
     # Then, draw it
     myGraph.add(myPie1)

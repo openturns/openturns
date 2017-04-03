@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
     Sample inputSample(randomVector.getSample(sampleSize));
     Sample outputSample(analytical(inputSample));
 
-    NumericalPoint src(CorrelationAnalysis::SRC(inputSample, outputSample));
+    Point src(CorrelationAnalysis::SRC(inputSample, outputSample));
     fullprint << "src=" << src << std::endl;
 
   }

@@ -34,15 +34,15 @@ int main(int argc, char *argv[])
   try
   {
     UnsignedInteger dim = 1;
-    Interval domain(NumericalPoint(dim, -1.0), NumericalPoint(dim, 1.0));
+    Interval domain(Point(dim, -1.0), Point(dim, 1.0));
     OrthogonalProductPolynomialFactory basis(Collection<OrthogonalUniVariatePolynomialFamily>(dim, LegendreFactory()));
     UnsignedInteger basisSize = 10;
     LHSExperiment experiment(basis.getMeasure(), 1000);
     Bool mustScale = false;
     NumericalScalar threshold = 0.01;
     KarhunenLoeveQuadratureFactory factory(domain, experiment, basis, basisSize, mustScale, threshold);
-    AbsoluteExponential model(NumericalPoint(dim, 1.0));
-    NumericalPoint lambda;
+    AbsoluteExponential model(Point(dim, 1.0));
+    Point lambda;
     Basis KLModes(factory.build(model, lambda));
     fullprint << "KL modes=" << KLModes << std::endl;
     fullprint << "KL eigenvalues=" << lambda << std::endl;

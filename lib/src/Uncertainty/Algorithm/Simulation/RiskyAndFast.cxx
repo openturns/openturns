@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/RiskyAndFast.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
@@ -76,11 +76,11 @@ RiskyAndFast::NumericalScalarCollection RiskyAndFast::solve(const Function & fun
   // If it has not yet been computed, compute it and store it
   catch (NotDefinedException &)
   {
-    infValue = function(NumericalPoint(1, infPoint))[0];
+    infValue = function(Point(1, infPoint))[0];
     setOriginValue(infValue);
   }
   const NumericalScalar supPoint = getMaximumDistance();
-  const NumericalScalar supValue = function(NumericalPoint(1, supPoint))[0];
+  const NumericalScalar supValue = function(Point(1, supPoint))[0];
   Solver solver(getSolver());
   // If the origin is in the failure domain we don't look for additional roots
   if (infValue == value)

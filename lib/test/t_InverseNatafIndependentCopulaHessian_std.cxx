@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
     UnsignedInteger dim = 2;
     InverseNatafIndependentCopulaHessian transformation(dim);
     fullprint << "transformation=" << transformation << std::endl;
-    NumericalPoint point(dim, 0.75);
+    Point point(dim, 0.75);
     fullprint << "transformation(" << point << ")=" << transformation.hessian(point) << std::endl;
     fullprint << "input dimension=" << transformation.getInputDimension() << std::endl;
     fullprint << "output dimension=" << transformation.getOutputDimension() << std::endl;

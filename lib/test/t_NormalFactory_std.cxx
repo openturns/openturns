@@ -33,8 +33,8 @@ int main(int argc, char *argv[])
   try
   {
     UnsignedInteger dim = 3;
-    NumericalPoint mean(dim);
-    NumericalPoint sigma(dim);
+    Point mean(dim);
+    Point sigma(dim);
     CorrelationMatrix R(dim);
     for (UnsignedInteger i = 0; i < dim; i++)
     {

@@ -22,15 +22,15 @@ try:
     sampleX = ot.Sample(size, dim - 1)
     sampleY = ot.Sample(size, 1)
     for i in range(size):
-        sampleY[i] = ot.NumericalPoint(1, sample[i, 0])
-        p = ot.NumericalPoint(dim - 1)
+        sampleY[i] = ot.Point(1, sample[i, 0])
+        p = ot.Point(dim - 1)
         for j in range(dim - 1):
             p[j] = sample[i, j + 1]
         sampleX[i] = p
 
     sampleZ = ot.Sample(size, 1)
     for i in range(size):
-        sampleZ[i] = ot.NumericalPoint(1, sampleY[i, 0] * sampleY[i, 0])
+        sampleZ[i] = ot.Point(1, sampleY[i, 0] * sampleY[i, 0])
     print("LinearModelAdjustedRSquared=",
           ot.LinearModelTest.LinearModelAdjustedRSquared(sampleY, sampleZ))
     print("LinearModelFisher=",

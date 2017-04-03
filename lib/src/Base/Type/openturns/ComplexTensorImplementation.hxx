@@ -22,7 +22,7 @@
 #define OPENTURNS_COMPLEXTENSORIMPLEMENTATION_HXX
 
 #include "openturns/PersistentCollection.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/ComplexMatrix.hxx"
 #include "openturns/HermitianMatrix.hxx"
 

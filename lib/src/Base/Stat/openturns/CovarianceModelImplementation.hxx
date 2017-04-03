@@ -51,16 +51,16 @@ public:
 
 
   /** Standard constructor with scale and amplitude parameter parameter */
-  CovarianceModelImplementation(const NumericalPoint & scale,
-                                const NumericalPoint & amplitude);
+  CovarianceModelImplementation(const Point & scale,
+                                const Point & amplitude);
 
   /** Standard constructor with scale, amplitude and spatial correlation parameter parameter */
-  CovarianceModelImplementation(const NumericalPoint & scale,
-                                const NumericalPoint & amplitude,
+  CovarianceModelImplementation(const Point & scale,
+                                const Point & amplitude,
                                 const CorrelationMatrix & spatialCorrelation);
 
   /** Standard constructor with scale and spatial covariance parameter parameter */
-  CovarianceModelImplementation(const NumericalPoint & scale,
+  CovarianceModelImplementation(const Point & scale,
                                 const CovarianceMatrix & spatialCovariance);
 
   /** Virtual copy constructor */
@@ -75,17 +75,17 @@ public:
   /** Compute the covariance function */
   virtual CovarianceMatrix operator() (const NumericalScalar s,
                                        const NumericalScalar t) const;
-  virtual CovarianceMatrix operator() (const NumericalPoint & s,
-                                       const NumericalPoint & t) const;
+  virtual CovarianceMatrix operator() (const Point & s,
+                                       const Point & t) const;
 
   // compute standard representative computes the term \rho(s, t)
-  virtual NumericalScalar computeStandardRepresentative(const NumericalPoint & s,
-      const NumericalPoint & t) const;
+  virtual NumericalScalar computeStandardRepresentative(const Point & s,
+      const Point & t) const;
 
   virtual NumericalScalar computeStandardRepresentative(const NumericalScalar & s,
       const NumericalScalar & t) const;
 
-  virtual NumericalScalar computeStandardRepresentative(const NumericalPoint & tau) const;
+  virtual NumericalScalar computeStandardRepresentative(const Point & tau) const;
 
   virtual NumericalScalar computeStandardRepresentative(const NumericalScalar & tau) const;
 
@@ -93,23 +93,23 @@ public:
   virtual NumericalScalar computeAsScalar (const NumericalScalar s,
       const NumericalScalar t) const;
 
-  virtual NumericalScalar computeAsScalar (const NumericalPoint & s,
-      const NumericalPoint & t) const;
+  virtual NumericalScalar computeAsScalar (const Point & s,
+      const Point & t) const;
 
   virtual CovarianceMatrix operator() (const NumericalScalar tau) const;
-  virtual CovarianceMatrix operator() (const NumericalPoint & tau) const;
+  virtual CovarianceMatrix operator() (const Point & tau) const;
 
   // Special case for 1D model
   virtual NumericalScalar computeAsScalar (const NumericalScalar tau) const;
-  virtual NumericalScalar computeAsScalar (const NumericalPoint & tau) const;
+  virtual NumericalScalar computeAsScalar (const Point & tau) const;
 
   /** Gradient */
-  virtual Matrix partialGradient(const NumericalPoint & s,
-                                 const NumericalPoint & t) const;
+  virtual Matrix partialGradient(const Point & s,
+                                 const Point & t) const;
 
   /** Gradient wrt parameters */
-  virtual Matrix parameterGradient (const NumericalPoint & s,
-                                    const NumericalPoint & t) const;
+  virtual Matrix parameterGradient (const Point & s,
+                                    const Point & t) const;
 
   /** Discretize the covariance function on a given TimeGrid/Mesh */
   virtual CovarianceMatrix discretize(const RegularGrid & timeGrid) const;
@@ -153,12 +153,12 @@ public:
   virtual Bool isDiagonal() const;
 
   /** Amplitude accessors */
-  virtual NumericalPoint getAmplitude() const;
-  virtual void setAmplitude(const NumericalPoint & amplitude);
+  virtual Point getAmplitude() const;
+  virtual void setAmplitude(const Point & amplitude);
 
   /** Scale accessors */
-  virtual NumericalPoint getScale() const;
-  virtual void setScale(const NumericalPoint & scale);
+  virtual Point getScale() const;
+  virtual void setScale(const Point & scale);
 
   /** Spatial correlation accessors */
   virtual CorrelationMatrix getSpatialCorrelation() const;
@@ -169,8 +169,8 @@ public:
   virtual NumericalScalar getNuggetFactor() const;
 
   /** Parameters accessor */
-  virtual void setParameter(const NumericalPoint & parameter);
-  virtual NumericalPoint getParameter() const;
+  virtual void setParameter(const Point & parameter);
+  virtual Point getParameter() const;
   virtual Description getParameterDescription() const;
 
   /** Indices of the active parameters */
@@ -202,21 +202,21 @@ public:
   virtual void load(Advocate & adv);
 
 protected:
-  virtual void setFullParameter(const NumericalPoint & parameter);
-  virtual NumericalPoint getFullParameter() const;
+  virtual void setFullParameter(const Point & parameter);
+  virtual Point getFullParameter() const;
   virtual Description getFullParameterDescription() const;
   
   // set the covariance structure
   void updateSpatialCovariance();
 
   /** Container for scale values  */
-  NumericalPoint scale_;
+  Point scale_;
 
   /** Input dimension */
   UnsignedInteger spatialDimension_;
 
   /** Amplitude values  */
-  NumericalPoint amplitude_;
+  Point amplitude_;
 
   /** Output dimension */
   UnsignedInteger dimension_;

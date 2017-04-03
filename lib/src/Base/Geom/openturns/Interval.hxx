@@ -24,7 +24,7 @@
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/DomainImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -52,12 +52,12 @@ public:
            const NumericalScalar upperBound);
 
   /** Parameters constructor */
-  Interval(const NumericalPoint & lowerBound,
-           const NumericalPoint & upperBound);
+  Interval(const Point & lowerBound,
+           const Point & upperBound);
 
   /** Parameters constructor */
-  Interval(const NumericalPoint & lowerBound,
-           const NumericalPoint & upperBound,
+  Interval(const Point & lowerBound,
+           const Point & upperBound,
            const BoolCollection & finiteLowerBound,
            const BoolCollection & finiteUpperBound);
 
@@ -68,10 +68,10 @@ public:
   Bool isEmpty() const;
 
   /** Check if the given point is inside of the closed interval */
-  Bool contains(const NumericalPoint & point) const;
+  Bool contains(const Point & point) const;
 
   /** Check if the given point is numerically inside of the closed interval, i.e. using only the bounds part of the interval */
-  Bool numericallyContains(const NumericalPoint & point) const;
+  Bool numericallyContains(const Point & point) const;
 
   /** Returns the interval equals to the intersection between the interval and another one */
   Interval intersect(const Interval & other) const;
@@ -104,12 +104,12 @@ public:
   using DomainImplementation::operator !=;
 
   /** Lower bound accessor */
-  NumericalPoint getLowerBound() const;
-  void setLowerBound(const NumericalPoint & lowerBound);
+  Point getLowerBound() const;
+  void setLowerBound(const Point & lowerBound);
 
   /** Upper bound accessor */
-  NumericalPoint getUpperBound() const;
-  void setUpperBound(const NumericalPoint & upperBound);
+  Point getUpperBound() const;
+  void setUpperBound(const Point & upperBound);
 
   /** Lower bound flag accessor */
   BoolCollection getFiniteLowerBound() const;
@@ -135,8 +135,8 @@ private:
   void computeVolume() const;
 
   // An n-D intervall is defined as the cartesian product of n 1D intervalls ]low_1, up_1]x...x]low_n,up_n]
-  NumericalPoint lowerBound_;
-  NumericalPoint upperBound_;
+  Point lowerBound_;
+  Point upperBound_;
 
   // Flags that tell if the bounds are finite or not.
   // The bound is finite if the flag is true, else it is equal to -inf if the associated value is < 0, +inf else

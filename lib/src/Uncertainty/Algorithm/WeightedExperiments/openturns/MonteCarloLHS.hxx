@@ -50,7 +50,7 @@ public:
   MonteCarloLHS * clone() const;
 
   /** Compute next design method **/
-  Sample generateWithWeights(NumericalPoint & weights) const;
+  Sample generateWithWeights(Point & weights) const;
 
   /** String converter */
   String __repr__() const;

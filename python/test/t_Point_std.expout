@@ -1,0 +1,30 @@
+size of point1 =  2
+point1 =  class=Point name=Unnamed dimension=2 values=[0,1]
+point1[0] = 0.000000
+point1[1] = 1.000000
+point2[0] = 10.000000
+point2[1] = 11.000000
+point3[0] = 0.000000
+point3[1] = 1.000000
+point= [0,1,2,3,4]
+point4[0] = 1000.000000
+point4[1] = 1001.000000
+point5 =  class=Point name=Unnamed dimension=2 values=[10,12]
+point6 =  class=Point name=Unnamed dimension=2 values=[-10,-10]
+point7 =  class=Point name=Unnamed dimension=2 values=[20,24]
+point8 =  class=Point name=Unnamed dimension=2 values=[0,0]
+point9 =  [2.5,2.5]
+point10 =  [2.5,2.5]
+i =  class=Point name=Unnamed dimension=2 values=[1,0]
+j =  class=Point name=Unnamed dimension=2 values=[0,1]
+I =  class=Point name=Unnamed dimension=2 values=[2,0]
+J =  class=Point name=Unnamed dimension=2 values=[0,3]
+dotProduct = 0.000000
+point8[2] =  3.0
+point8[1:3] =  [2,3]
+point8[:] =  [1,2,3,4,5]
+point8 =  [1,88,99,4,5]
+Equality ?  True
+pt =  [-3,-5,6]
+pt[-1]= 6.0
+pt[-1]= 8.0

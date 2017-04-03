@@ -38,7 +38,7 @@ FiniteDifferenceStepImplementation::FiniteDifferenceStepImplementation()
 }
 
 /* Parameters constructor */
-FiniteDifferenceStepImplementation::FiniteDifferenceStepImplementation(const NumericalPoint & epsilon)
+FiniteDifferenceStepImplementation::FiniteDifferenceStepImplementation(const Point & epsilon)
   : PersistentObject()
   , epsilon_(epsilon)
 {
@@ -52,7 +52,7 @@ FiniteDifferenceStepImplementation * FiniteDifferenceStepImplementation::clone()
 }
 
 /* Epsilon accessor */
-void FiniteDifferenceStepImplementation::setEpsilon(const NumericalPoint & epsilon)
+void FiniteDifferenceStepImplementation::setEpsilon(const Point & epsilon)
 {
   const UnsignedInteger dimension = epsilon.getDimension();
   for (UnsignedInteger i = 0; i < dimension; ++ i)
@@ -62,15 +62,15 @@ void FiniteDifferenceStepImplementation::setEpsilon(const NumericalPoint & epsil
   epsilon_ = epsilon;
 }
 
-NumericalPoint FiniteDifferenceStepImplementation::getEpsilon() const
+Point FiniteDifferenceStepImplementation::getEpsilon() const
 {
   return epsilon_;
 }
 
 /* Evaluation operator */
-NumericalPoint FiniteDifferenceStepImplementation::operator()(const NumericalPoint & inP) const
+Point FiniteDifferenceStepImplementation::operator()(const Point & inP) const
 {
-  throw NotYetImplementedException(HERE) << "In FiniteDifferenceStepImplementation::operator()(const NumericalPoint & inP) const";
+  throw NotYetImplementedException(HERE) << "In FiniteDifferenceStepImplementation::operator()(const Point & inP) const";
 }
 
 /* String converter */

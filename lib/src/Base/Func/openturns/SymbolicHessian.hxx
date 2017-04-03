@@ -49,7 +49,7 @@ public:
 
   /** Operator () */
   using HessianImplementation::hessian;
-  SymmetricTensor hessian(const NumericalPoint & inP) const;
+  SymmetricTensor hessian(const Point & inP) const;
 
   /** Accessor to a specific formula */
   String getFormula(const UnsignedInteger i,

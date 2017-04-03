@@ -11,7 +11,7 @@ try:
     dimension = 3
 
     # Lambda
-    lambdaVector = NumericalPoint(dimension)
+    lambdaVector = Point(dimension)
     lambdaVector[0] = 0.
     lambdaVector[1] = 0.5
     lambdaVector[2] = 1
@@ -20,9 +20,9 @@ try:
     myFunction = BoxCoxEvaluation(lambdaVector)
     myFunction.setName("myBoxCoxFunction")
 
-    # We check that for a NumericalPoint with same values, the function is
+    # We check that for a Point with same values, the function is
     # done by component
-    inPoint = NumericalPoint(dimension, 30.0)
+    inPoint = Point(dimension, 30.0)
 
     # result point of the function
     outPoint = myFunction(inPoint)
@@ -33,7 +33,7 @@ try:
     size = 10
     inSample = Sample(size, dimension)
     for index in range(size):
-        inSample[index] = NumericalPoint(dimension, index + 1)
+        inSample[index] = Point(dimension, index + 1)
 
     # result of the function
     outSample = myFunction(inSample)

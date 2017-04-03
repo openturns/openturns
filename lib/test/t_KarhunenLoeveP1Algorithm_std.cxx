@@ -35,11 +35,11 @@ int main(int argc, char *argv[])
   {
     Mesh mesh(IntervalMesher(Indices(1, 9)).build(Interval(-1.0, 1.0)));
     {
-      AbsoluteExponential cov1D(NumericalPoint(1, 1.0));
+      AbsoluteExponential cov1D(Point(1, 1.0));
       KarhunenLoeveP1Algorithm algo(mesh, cov1D, 0.0);
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
-      NumericalPoint lambda(result.getEigenValues());
+      Point lambda(result.getEigenValues());
       ProcessSample KLModes(result.getModesAsProcessSample());
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
@@ -54,15 +54,15 @@ int main(int argc, char *argv[])
     {
       CorrelationMatrix R(2);
       R(0, 1) = 0.5;
-      NumericalPoint scale(1, 1.0);
-      NumericalPoint amplitude(2);
+      Point scale(1, 1.0);
+      Point amplitude(2);
       amplitude[0] = 1.0;
       amplitude[1] = 2.0;
       ExponentialModel cov2D(scale, amplitude, R);
       KarhunenLoeveP1Algorithm algo(mesh, cov2D, 0.0);
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
-      NumericalPoint lambda(result.getEigenValues());
+      Point lambda(result.getEigenValues());
       ProcessSample KLModes(result.getModesAsProcessSample());
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;

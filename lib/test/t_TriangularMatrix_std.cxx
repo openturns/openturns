@@ -124,7 +124,7 @@ int main(int argc, char *argv[])
     fullprint << "test 9 : multiplication with a numerical point method" << std::endl;
 
     /* Create the numerical point */
-    NumericalPoint pt ;
+    Point pt ;
     pt.add(1.) ;
     pt.add(2.) ;
     fullprint << "pt = " << pt << std::endl;

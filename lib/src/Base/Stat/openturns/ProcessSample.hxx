@@ -22,7 +22,7 @@
 #define OPENTURNS_PROCESSSAMPLE_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 //#include "TimeGrid.hxx"
 #include "openturns/Field.hxx"
 #include "openturns/Sample.hxx"

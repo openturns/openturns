@@ -48,7 +48,7 @@ MonteCarloLHS * MonteCarloLHS::clone() const
 }
 
 /* Generate a Sample. */
-Sample MonteCarloLHS::generateWithWeights(NumericalPoint & weights) const
+Sample MonteCarloLHS::generateWithWeights(Point & weights) const
 {
   LHSResult result(spaceFilling_);
   Sample history(N_, 1);
@@ -78,7 +78,7 @@ Sample MonteCarloLHS::generateWithWeights(NumericalPoint & weights) const
   Sample optimalDesignU(rankTransform(optimalDesign));
   result.add(optimalDesign, optimalValue, SpaceFillingC2().evaluate(optimalDesignU), SpaceFillingPhiP().evaluate(optimalDesignU), SpaceFillingMinDist().evaluate(optimalDesignU), history);
   result_ = result;
-  weights = NumericalPoint(size_, 1.0 / size_);
+  weights = Point(size_, 1.0 / size_);
   return result.getOptimalDesign();
 }
 

@@ -25,7 +25,7 @@
 #include "openturns/CholeskyMethod.hxx"
 #include "openturns/TriangularMatrix.hxx"
 #include "openturns/BasisSequenceFactoryImplementation.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -44,7 +44,7 @@ CholeskyMethod::CholeskyMethod()
 
 /* Parameters constructor */
 CholeskyMethod::CholeskyMethod(const DesignProxy & proxy,
-                               const NumericalPoint & weight,
+                               const Point & weight,
                                const Indices & indices)
   : LeastSquaresMethodImplementation(proxy, weight, indices)
   , l_(0)
@@ -122,7 +122,7 @@ void CholeskyMethod::update(const Indices & addedIndices,
     const UnsignedInteger nbRows = mPsiAk.getNbRows();
     const UnsignedInteger nbColumns = mPsiAk.getNbColumns();
     proxy_.setRowFilter(previousRowFilter);
-    NumericalPoint vector(nbColumns);
+    Point vector(nbColumns);
     // Start by the added vectors, as it increases the positiveness of
     // the Gram matrix
     for (UnsignedInteger i = 0; i < addedSize; ++i)
@@ -183,12 +183,12 @@ void CholeskyMethod::update(const Indices & addedIndices,
         const UnsignedInteger basisSize = currentIndices_.getSize();
 
         // update the cholesky decomposition of the Gram matrix
-        const NumericalPoint xk(computeWeightedDesign(addedIndices));
+        const Point xk(computeWeightedDesign(addedIndices));
         const NumericalScalar diagk = xk.normSquare();
 
         // solve lower triangular system L*rk=xk'*A to get the extra line panel
-        const NumericalPoint colk(mPsiAk.genVectProd(xk, true));
-        const NumericalPoint rk(l_.solveLinearSystem(colk));
+        const Point colk(mPsiAk.genVectProd(xk, true));
+        const Point rk(l_.solveLinearSystem(colk));
         const NumericalScalar rk2 = rk.normSquare();
 
         // Check if the pivot is positive
@@ -232,19 +232,19 @@ void CholeskyMethod::update(const Indices & addedIndices,
   } // Update on column modification
 }
 
-NumericalPoint CholeskyMethod::solve(const NumericalPoint & rhs)
+Point CholeskyMethod::solve(const Point & rhs)
 {
   // This call insures that the decomposition has already been computed.
   // No cost if it is up to date.
   update(Indices(0), currentIndices_, Indices(0));
-  NumericalPoint b(rhs);
+  Point b(rhs);
   if (!hasUniformWeight_)
   {
     const UnsignedInteger size = rhs.getSize();
     for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weightSqrt_[i];
   }
   const MatrixImplementation psiAk(computeWeightedDesign());
-  const NumericalPoint c(psiAk.genVectProd(b, true));
+  const Point c(psiAk.genVectProd(b, true));
   // We first solve Ly=b then L^Tx=y. The flags given to solveLinearSystemTri() are:
   // 1) To keep the matrix intact
   // 2) To say that the matrix L is lower triangular
@@ -253,7 +253,7 @@ NumericalPoint CholeskyMethod::solve(const NumericalPoint & rhs)
 }
 
 
-NumericalPoint CholeskyMethod::solveNormal(const NumericalPoint & rhs)
+Point CholeskyMethod::solveNormal(const Point & rhs)
 {
   const UnsignedInteger basisSize = currentIndices_.getSize();
 
@@ -263,7 +263,7 @@ NumericalPoint CholeskyMethod::solveNormal(const NumericalPoint & rhs)
   // No cost if it is up to date.
   update(Indices(0), currentIndices_, Indices(0));
 
-  NumericalPoint b(rhs);
+  Point b(rhs);
   if (!hasUniformWeight_)
   {
     const UnsignedInteger size = rhs.getSize();
@@ -294,7 +294,7 @@ SymmetricMatrix CholeskyMethod::getH() const
 }
 
 
-NumericalPoint CholeskyMethod::getHDiag() const
+Point CholeskyMethod::getHDiag() const
 {
   const UnsignedInteger basisSize = currentIndices_.getSize();
   const MatrixImplementation invL(*l_.solveLinearSystem(IdentityMatrix(basisSize)).getImplementation());
@@ -302,7 +302,7 @@ NumericalPoint CholeskyMethod::getHDiag() const
   const MatrixImplementation invLPsiAk(invL.genProd(psiAk, false, true));
 
   const UnsignedInteger dimension = psiAk.getNbRows();
-  NumericalPoint diag(dimension);
+  Point diag(dimension);
   MatrixImplementation::const_iterator invLPsiAk_iterator(invLPsiAk.begin());
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
@@ -318,11 +318,11 @@ NumericalPoint CholeskyMethod::getHDiag() const
   return diag;
 }
 
-NumericalPoint CholeskyMethod::getGramInverseDiag() const
+Point CholeskyMethod::getGramInverseDiag() const
 {
   const UnsignedInteger basisSize = currentIndices_.getSize();
   const MatrixImplementation invL(*l_.solveLinearSystem(IdentityMatrix(basisSize)).getImplementation());
-  NumericalPoint diag(basisSize);
+  Point diag(basisSize);
   MatrixImplementation::const_iterator invL_iterator(invL.begin());
   for (UnsignedInteger i = 0; i < basisSize; ++ i)
   {

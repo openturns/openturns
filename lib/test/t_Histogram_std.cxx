@@ -34,12 +34,12 @@ int main(int argc, char *argv[])
   {
     // Instanciate one distribution object
     UnsignedInteger collectionSize = 4;
-    NumericalPoint l(collectionSize);
+    Point l(collectionSize);
     l[0] = 1.0;
     l[1] = 0.7;
     l[2] = 1.2;
     l[3] = 0.9;
-    NumericalPoint h(collectionSize);
+    Point h(collectionSize);
     h[0] = 0.5;
     h[1] = 1.5;
     h[2] = 3.5;
@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
     fullprint << "Continuous = " << (distribution.isContinuous() ? "true" : "false") << std::endl;
 
     // Test for realization of distribution
-    NumericalPoint oneRealization = distribution.getRealization();
+    Point oneRealization = distribution.getRealization();
     fullprint << "oneRealization=" << oneRealization << std::endl;
 
     // Test for sampling
@@ -74,31 +74,31 @@ int main(int argc, char *argv[])
     }
 
     // Define a point
-    NumericalPoint point( distribution.getDimension(), 1.0 );
+    Point point( distribution.getDimension(), 1.0 );
     fullprint << "Point= " << point << std::endl;
 
     // Show PDF and CDF of point
     NumericalScalar eps = 1e-5;
-    NumericalPoint DDF = distribution.computeDDF( point );
+    Point DDF = distribution.computeDDF( point );
     fullprint << "ddf     =" << DDF << std::endl;
     fullprint << "ddf (FD)=" << distribution.ContinuousDistribution::computeDDF(point) << std::endl;
     NumericalScalar LPDF = distribution.computeLogPDF( point );
     fullprint << "log pdf=" << LPDF << std::endl;
     NumericalScalar PDF = distribution.computePDF( point );
     fullprint << "pdf     =" << PDF << std::endl;
-    fullprint << "pdf (FD)=" << (distribution.computeCDF( point + NumericalPoint(1, eps) ) - distribution.computeCDF( point  + NumericalPoint(1, -eps) )) / (2.0 * eps) << std::endl;
+    fullprint << "pdf (FD)=" << (distribution.computeCDF( point + Point(1, eps) ) - distribution.computeCDF( point  + Point(1, -eps) )) / (2.0 * eps) << std::endl;
     NumericalScalar CDF = distribution.computeCDF( point );
     fullprint << "cdf=" << CDF << std::endl;
     NumericalScalar CCDF = distribution.computeComplementaryCDF( point );
     fullprint << "ccdf=" << CCDF << std::endl;
     NumericalScalar Survival = distribution.computeSurvivalFunction( point );
     fullprint << "survival=" << Survival << std::endl;
-    NumericalPoint InverseSurvival = distribution.computeInverseSurvivalFunction(0.95);
+    Point InverseSurvival = distribution.computeInverseSurvivalFunction(0.95);
     fullprint << "Inverse survival=" << InverseSurvival << std::endl;
     fullprint << "Survival(inverse survival)=" << distribution.computeSurvivalFunction(InverseSurvival) << std::endl;
-    //    NumericalPoint PDFgr = distribution.computePDFGradient( point );
+    //    Point PDFgr = distribution.computePDFGradient( point );
     //    fullprint << "pdf gradient     =" << PDFgr << std::endl;
-    //    NumericalPoint PDFgrFD(1 + 2 * collectionSize);
+    //    Point PDFgrFD(1 + 2 * collectionSize);
     //    PDFgrFD[0] = (Histogram(distribution.getFirst() + eps, distribution.getPairCollection()).computePDF(point) -
     //                  Histogram(distribution.getFirst() - eps, distribution.getPairCollection()).computePDF(point)) / (2.0 * eps);
     //    for (UnsignedInteger i = 0; i < collectionSize; i++)
@@ -117,9 +117,9 @@ int main(int argc, char *argv[])
     //                        Histogram(distribution.getFirst(), collectionRight).computePDF(point)) / (2.0 * eps);
     //      }
     //    fullprint << "pdf gradient (FD)=" << PDFgrFD << std::endl;
-    //    NumericalPoint CDFgr = distribution.computeCDFGradient( point );
+    //    Point CDFgr = distribution.computeCDFGradient( point );
     //    fullprint << "cdf gradient     =" << CDFgr << std::endl;
-    //    NumericalPoint CDFgrFD(1 + 2 * collectionSize);
+    //    Point CDFgrFD(1 + 2 * collectionSize);
     //    CDFgrFD[0] = (Histogram(distribution.getFirst() + eps, distribution.getPairCollection()).computeCDF(point) -
     //                  Histogram(distribution.getFirst() - eps, distribution.getPairCollection()).computeCDF(point)) / (2.0 * eps);
     //    for (UnsignedInteger i = 0; i < collectionSize; i++)
@@ -138,7 +138,7 @@ int main(int argc, char *argv[])
     //                        Histogram(distribution.getFirst(), collectionRight).computeCDF(point)) / (2.0 * eps);
     //      }
     //    fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
-    NumericalPoint quantile = distribution.computeQuantile( 0.95 );
+    Point quantile = distribution.computeQuantile( 0.95 );
     fullprint << "quantile=" << quantile << std::endl;
     fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
     // Confidence regions
@@ -155,7 +155,7 @@ int main(int argc, char *argv[])
     fullprint << "beta=" << beta << std::endl;
     fullprint << "Unilateral confidence interval (upper tail)=" << distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, true, beta) << std::endl;
     fullprint << "beta=" << beta << std::endl;
-    NumericalPoint mean = distribution.getMean();
+    Point mean = distribution.getMean();
     fullprint << "mean=" << mean << std::endl;
     CovarianceMatrix covariance = distribution.getCovariance();
     fullprint << "covariance=" << covariance << std::endl;
@@ -165,7 +165,7 @@ int main(int argc, char *argv[])
     fullprint << "spearman=" << spearman << std::endl;
     CovarianceMatrix kendall = distribution.getKendallTau();
     fullprint << "kendall=" << kendall << std::endl;
-    Histogram::NumericalPointWithDescriptionCollection parameters = distribution.getParametersCollection();
+    Histogram::PointWithDescriptionCollection parameters = distribution.getParametersCollection();
     fullprint << "parameters=" << parameters << std::endl;
     for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
     fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
@@ -182,10 +182,10 @@ int main(int argc, char *argv[])
 
     // non-regression for #599
     {
-      NumericalPoint l(2);
+      Point l(2);
       l[0] = 1.0;
       l[1] = 2.0;
-      NumericalPoint h(2);
+      Point h(2);
       h[0] = 0.6;
       h[1] = 0.3;
       Histogram distribution(2.0, l, h);

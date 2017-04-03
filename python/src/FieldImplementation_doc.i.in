@@ -214,7 +214,7 @@ OT_Field_getSpatialDimension_doc
 
 Returns
 -------
-spatialMean : :class:`~openturns.NumericalPoint`
+spatialMean : :class:`~openturns.Point`
     Weighted mean of the  values of the field, weighted by the volume of each
     simplex.
 
@@ -240,7 +240,7 @@ OT_Field_getSpatialMean_doc
 
 Returns
 -------
-temporalMean : :class:`~openturns.NumericalPoint`
+temporalMean : :class:`~openturns.Point`
     Mean of the values of the field.
 
 Notes
@@ -285,7 +285,7 @@ index : int
 
 Returns
 -------
-value : :class:`~openturns.NumericalPoint`
+value : :class:`~openturns.Point`
     The value of the field associated to the selected vertex, in :math:`\Rset^d`."
 %enddef
 %feature("docstring") OT::FieldImplementation::getValueAtIndex
@@ -301,7 +301,7 @@ point : sequence of float in :math:`\Rset^n`.
 
 Returns
 -------
-value : :class:`~openturns.NumericalPoint` in :math:`\Rset^d`.
+value : :class:`~openturns.Point` in :math:`\Rset^d`.
     The value of the field associated to vertex the nearest of *point* with
     respect to the Euclidean norm."
 %enddef
@@ -343,7 +343,7 @@ Parameters
 ----------
 index : int
     Index that characterizes one vertex of the mesh.
-value : :class:`~openturns.NumericalPoint` in :math:`\Rset^d`.
+value : :class:`~openturns.Point` in :math:`\Rset^d`.
     New value assigned to the selected vertex."
 %enddef
 %feature("docstring") OT::FieldImplementation::setValueAtIndex

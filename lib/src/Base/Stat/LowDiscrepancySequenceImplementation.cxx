@@ -65,7 +65,7 @@ UnsignedInteger LowDiscrepancySequenceImplementation::getDimension() const
 
 
 /* Generate a low discrepancy vector of numbers uniformly distributed over [0, 1) */
-NumericalPoint LowDiscrepancySequenceImplementation::generate() const
+Point LowDiscrepancySequenceImplementation::generate() const
 {
   throw NotYetImplementedException(HERE) << "In LowDiscrepancySequenceImplementation::generate()";
 }
@@ -87,7 +87,7 @@ NumericalScalar LowDiscrepancySequenceImplementation::ComputeStarDiscrepancy(con
   const UnsignedInteger size = sample.getSize();
 
   // discrepancy is the maximum of the local discrepancy
-  const NumericalPoint lowerPoint(sample.getDimension());
+  const Point lowerPoint(sample.getDimension());
   NumericalScalar discrepancy = 0.0;
   for(UnsignedInteger i = 0; i < size; ++i)
   {

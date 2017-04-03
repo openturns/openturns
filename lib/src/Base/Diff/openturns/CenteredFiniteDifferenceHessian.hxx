@@ -27,7 +27,7 @@
 #include "openturns/FiniteDifferenceHessian.hxx"
 #include "openturns/HessianImplementation.hxx"
 #include "openturns/EvaluationImplementation.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/SymmetricTensor.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -54,7 +54,7 @@ public:
   /** Default constructor */
   CenteredFiniteDifferenceHessian();
   /** Parameter constructor */
-  CenteredFiniteDifferenceHessian(const NumericalPoint & epsilon,
+  CenteredFiniteDifferenceHessian(const Point & epsilon,
                                   const EvaluationPointer & p_evaluation);
 
   /** Second parameter constructor */
@@ -83,7 +83,7 @@ public:
    * @param in The point where the hessian is computed
    * @result A tensor
    */
-  virtual SymmetricTensor hessian(const NumericalPoint & inP) const;
+  virtual SymmetricTensor hessian(const Point & inP) const;
 
 protected:
 

@@ -22,7 +22,7 @@
 #define OPENTURNS_INVERSEBOXCOXTRANSFORM_HXX
 
 #include "openturns/Function.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Collection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -46,10 +46,10 @@ public:
   InverseBoxCoxTransform();
 
   /** Standard parameter constructor */
-  InverseBoxCoxTransform(const NumericalPoint & lambda);
+  InverseBoxCoxTransform(const Point & lambda);
 
-  InverseBoxCoxTransform(const NumericalPoint & lambda,
-                         const NumericalPoint & shift);
+  InverseBoxCoxTransform(const Point & lambda,
+                         const Point & shift);
 
   /** 1D NumericalScalar parameter constructor */
   InverseBoxCoxTransform(const NumericalScalar & lambda);
@@ -61,10 +61,10 @@ public:
   InverseBoxCoxTransform * clone() const;
 
   /** Lambda accessor */
-  NumericalPoint getLambda () const;
+  Point getLambda () const;
 
   /** Shift accessor */
-  NumericalPoint getShift () const;
+  Point getShift () const;
 
   /** Inverse accessor */
   BoxCoxTransform getInverse() const;

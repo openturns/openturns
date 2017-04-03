@@ -55,9 +55,9 @@ ConstantBasisFactory* ConstantBasisFactory::clone() const
 Basis ConstantBasisFactory::build() const
 {
   Basis basis;
-  NumericalPoint constant(1);
+  Point constant(1);
   constant[0] = 1.;
-  basis.add(LinearFunction (NumericalPoint(inputDimension_, 0.0),
+  basis.add(LinearFunction (Point(inputDimension_, 0.0),
                                          constant,
                                          Matrix(1, inputDimension_)));
   return basis;

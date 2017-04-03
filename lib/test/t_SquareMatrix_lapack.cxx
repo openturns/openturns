@@ -40,12 +40,12 @@ int main(int argc, char *argv[])
     matrix1(1, 1) = 12.0;
     fullprint << "matrix1 = " << matrix1 << std::endl;
 
-    NumericalPoint pt ;
+    Point pt ;
     pt.add(5.0) ;
     pt.add(0.0) ;
     fullprint << "pt = " << pt << std::endl;
 
-    NumericalPoint result ;
+    Point result ;
     result = matrix1.solveLinearSystem(pt);
     fullprint << "result = " << result << std::endl;
 

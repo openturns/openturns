@@ -46,7 +46,7 @@ FixedExperiment::FixedExperiment(const Sample & sample)
 
 /* Constructor with parameters */
 FixedExperiment::FixedExperiment(const Sample & sample,
-                                 const NumericalPoint & weights)
+                                 const Point & weights)
   : WeightedExperimentImplementation(UserDefined(sample, weights), sample.getSize())
   , sample_(sample)
   , weights_(weights)
@@ -77,7 +77,7 @@ void FixedExperiment::setDistribution(const Distribution & distribution)
 }
 
 /* Sample generation */
-Sample FixedExperiment::generateWithWeights(NumericalPoint & weights) const
+Sample FixedExperiment::generateWithWeights(Point & weights) const
 {
   weights = weights_;
   return sample_;

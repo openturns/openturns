@@ -46,7 +46,7 @@ try:
         proposalColl.append(Uniform(-1., 1.))
 
     # prior distribution
-    sigma0 = NumericalPoint(chainDim, 10.)  # sigma0= (10.,10.,10.)
+    sigma0 = Point(chainDim, 10.)  # sigma0= (10.,10.,10.)
     Q0 = CorrelationMatrix(chainDim)  # precision matrix
     Q0_inv = CorrelationMatrix(chainDim)  # variance matrix
     for i in range(chainDim):
@@ -54,7 +54,7 @@ try:
         Q0[i, i] = 1.0 / Q0_inv[i, i]
     print('Q0=', Q0)
 
-    mu0 = NumericalPoint(chainDim, 0.0)  # mu0 = (0.,0.,0.)
+    mu0 = Point(chainDim, 0.0)  # mu0 = (0.,0.,0.)
     prior = Normal(mu0, Q0_inv)  # x0 ~ N(mu0, sigma0)
     print('x~', prior)
 
@@ -96,16 +96,16 @@ try:
     Qn = P.transpose() * P + Q0
     Qn_inv = SquareMatrix(chainDim)
     for j in range(chainDim):
-        I_j = NumericalPoint(chainDim)
+        I_j = Point(chainDim)
         I_j[j] = 1.0
         Qn_inv_j = Qn.solveLinearSystem(I_j)
         for i in range(chainDim):
             Qn_inv[i, j] = Qn_inv_j[i]
 
-    sigma_exp = NumericalPoint(chainDim)
+    sigma_exp = Point(chainDim)
     for i in range(chainDim):
         sigma_exp[i] = m.sqrt(Qn_inv[i, i])
-    y_vec = NumericalPoint(obsSize)
+    y_vec = Point(obsSize)
     for i in range(obsSize):
         y_vec[i] = y_obs[i, 0]
 

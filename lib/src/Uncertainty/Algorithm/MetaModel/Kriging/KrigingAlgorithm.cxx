@@ -207,7 +207,7 @@ void KrigingAlgorithm::run()
   const BasisCollection basis(glmResult.getBasisCollection());
   const Sample normalizedInputSample(glmResult.getInputTransformedSample());
   const CovarianceModel conditionalCovarianceModel(glmResult.getCovarianceModel());
-  const Collection<NumericalPoint> trendCoefficients(glmResult.getTrendCoefficients());
+  const Collection<Point> trendCoefficients(glmResult.getTrendCoefficients());
   const UnsignedInteger outputDimension = outputSample_.getDimension();
   Sample covarianceCoefficients(inputSample_.getSize(), outputDimension);
   covarianceCoefficients.getImplementation()->setData(gamma_);
@@ -219,13 +219,13 @@ void KrigingAlgorithm::run()
   // Then add the transformation if needed
   if (normalize_) metaModel = ComposedFunction(metaModel, glmResult.getTransformation());
   // compute residual, relative error
-  const NumericalPoint outputVariance(outputSample_.computeVariance());
+  const Point outputVariance(outputSample_.computeVariance());
   const Sample mY(metaModel(inputSample_));
-  const NumericalPoint squaredResiduals((outputSample_ - mY).computeRawMoment(2));
+  const Point squaredResiduals((outputSample_ - mY).computeRawMoment(2));
 
   const UnsignedInteger size = inputSample_.getSize();
-  NumericalPoint residuals(outputDimension);
-  NumericalPoint relativeErrors(outputDimension);
+  Point residuals(outputDimension);
+  Point relativeErrors(outputDimension);
   for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
   {
     residuals[outputIndex] = sqrt(squaredResiduals[outputIndex] / size);
@@ -318,12 +318,12 @@ void KrigingAlgorithm::setOptimizeParameters(const Bool optimizeParameters)
 }
 
 /* Observation noise accessor */
-void KrigingAlgorithm::setNoise(const NumericalPoint & noise)
+void KrigingAlgorithm::setNoise(const Point & noise)
 {
   glmAlgo_.setNoise(noise);
 }
 
-NumericalPoint KrigingAlgorithm::getNoise() const
+Point KrigingAlgorithm::getNoise() const
 {
   return glmAlgo_.getNoise();
 }

@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     formula[2] = "(x2+1)*exp(x1-2*x2)";
     SymbolicFunction myFunc(input, formula);
     Sample data(9, myFunc.getInputDimension());
-    NumericalPoint point(myFunc.getInputDimension());
+    Point point(myFunc.getInputDimension());
     point[0] = 0.5;
     point[1] = 0.5;
     data[0] = point;
@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
       Function responseSurface(myLeastSquares.getResponseSurface());
       fullprint << "myLeastSquares=" << myLeastSquares << std::endl;
       fullprint << "responseSurface=" << responseSurface << std::endl;
-      NumericalPoint in(myFunc.getInputDimension(), 0.2);
+      Point in(myFunc.getInputDimension(), 0.2);
       fullprint << "myFunc(" << in << ")=" << myFunc(in) << std::endl;
       fullprint << "responseSurface(" << in << ")=" << responseSurface(in) << std::endl;
     }
@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
       Function responseSurface(myLeastSquares.getResponseSurface());
       fullprint << "myLeastSquares=" << myLeastSquares << std::endl;
       fullprint << "responseSurface=" << responseSurface << std::endl;
-      NumericalPoint in(myFunc.getInputDimension(), 0.2);
+      Point in(myFunc.getInputDimension(), 0.2);
       fullprint << "myFunc(" << in << ")=" << myFunc(in) << std::endl;
       fullprint << "responseSurface(" << in << ")=" << responseSurface(in) << std::endl;
     }

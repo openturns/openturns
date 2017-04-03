@@ -37,8 +37,8 @@ int main(int argc, char *argv[])
     UnsignedInteger size = 64;
     UnsignedInteger dimension = 1;
     RegularGrid timeGrid(0.0, 0.1, size);
-    NumericalPoint amplitude(dimension, 2.0);
-    NumericalPoint scale(dimension, 1.0);
+    Point amplitude(dimension, 2.0);
+    Point scale(dimension, 1.0);
     ExponentialCauchy model(scale, amplitude);
     SpectralGaussianProcess myProcess(model, timeGrid);
 

@@ -23,7 +23,7 @@
 
 #include <iostream>              // for std::ostream
 #include "openturns/TypedInterfaceObject.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Description.hxx"
 #include "openturns/Pointer.hxx"
 #include "openturns/SampleImplementation.hxx"
@@ -74,9 +74,9 @@ public:
   Sample(const UnsignedInteger size,
                   const UnsignedInteger dim);
 
-  /** Constructor from a NumericalPoint (all elements are equal to the NumericalPoint) */
+  /** Constructor from a Point (all elements are equal to the Point) */
   Sample(const UnsignedInteger size,
-                  const NumericalPoint & point);
+                  const Point & point);
 
   /** Partial copy constructor */
   Sample(const Sample other,
@@ -84,8 +84,8 @@ public:
                   const UnsignedInteger last);
 
 #ifndef SWIG
-  /** Constructor from a collection of NumericalPoint */
-  Sample(const Collection<NumericalPoint> & coll);
+  /** Constructor from a collection of Point */
+  Sample(const Collection<Point> & coll);
 
   /** Constructor from a collection of Indices */
   Sample(const Collection<Indices> & coll);
@@ -130,7 +130,7 @@ public:
   UnsignedInteger __elementsize__ () const;
 
   /** Whether the list contains the value val */
-  Bool contains(const NumericalPoint & val) const;
+  Bool contains(const Point & val) const;
 
   void erase(const UnsignedInteger first,
              const UnsignedInteger last);
@@ -160,13 +160,13 @@ public:
   UnsignedInteger getSize() const;
 
   /** Maximum accessor */
-  NumericalPoint getMax() const;
+  Point getMax() const;
 
   /** Minimum accessor */
-  NumericalPoint getMin() const;
+  Point getMin() const;
 
   /** Method add() appends an element to the collection */
-  void add(const NumericalPoint & point);
+  void add(const Point & point);
 
   /** Method add() appends another sample to the collection */
   void add(const Sample & sample);
@@ -185,7 +185,7 @@ public:
    * Method computeMean() gives the mean of the sample, based on the formula
    * mean = sum of the elements in the sample / size of the sample
    */
-  NumericalPoint computeMean() const;
+  Point computeMean() const;
 
   /**
    * Method computeCovariance() gives the covariance of the sample
@@ -200,12 +200,12 @@ public:
   /**
    * Method computeVariance() gives the variance of the sample (by component)
    */
-  NumericalPoint computeVariance() const;
+  Point computeVariance() const;
 
   /**
    * Method computeStandardDeviationPerComponent() gives the standard deviation of each component of the sample
    */
-  NumericalPoint computeStandardDeviationPerComponent() const;
+  Point computeStandardDeviationPerComponent() const;
 
   /**
    * Method computePearsonCorrelation() gives the Pearson correlation matrix of the sample
@@ -226,87 +226,87 @@ public:
   /**
    * Method computeRange gives the range of the sample (by component)
    */
-  NumericalPoint computeRange() const;
+  Point computeRange() const;
 
   /**
    * Method computeMedian() gives the median of the sample (by component)
    */
-  NumericalPoint computeMedian() const;
+  Point computeMedian() const;
 
   /**
    * Method computeSkewness() gives the skewness of the sample (by component)
    */
-  NumericalPoint computeSkewness() const;
+  Point computeSkewness() const;
 
   /**
    * Method computeKurtosis() gives the kurtosis of the sample (by component)
    */
-  NumericalPoint computeKurtosis() const;
+  Point computeKurtosis() const;
 
   /**
    * Gives the centered moment of order k of the sample (by component)
    */
-  NumericalPoint computeCenteredMoment(const UnsignedInteger k) const;
+  Point computeCenteredMoment(const UnsignedInteger k) const;
 
   /**
    * Gives the raw moment of order k of the sample (by component)
    */
-  NumericalPoint computeRawMoment(const UnsignedInteger k) const;
+  Point computeRawMoment(const UnsignedInteger k) const;
 
   /**
    * Method computeQuantilePerComponent() gives the quantile per component of the sample
    */
-  NumericalPoint computeQuantilePerComponent(const NumericalScalar prob) const;
+  Point computeQuantilePerComponent(const NumericalScalar prob) const;
 
   /**
    * Method computeQuantile() gives the N-dimension quantile of the sample
    */
-  NumericalPoint computeQuantile(const NumericalScalar prob) const;
+  Point computeQuantile(const NumericalScalar prob) const;
 
   /**
    * Get the empirical CDF of the sample
    */
-  NumericalScalar computeEmpiricalCDF(const NumericalPoint & point,
+  NumericalScalar computeEmpiricalCDF(const Point & point,
                                       const Bool tail = false) const;
 
   /**
    * Get the position of a point in the sample.
    * Returns size if the point does not belong to the sample.
    */
-  UnsignedInteger find(const NumericalPoint & point) const;
+  UnsignedInteger find(const Point & point) const;
 
   /**
    * Translate realizations in-place
    */
   Sample & operator += (const NumericalScalar translation);
-  Sample & operator += (const NumericalPoint & translation);
+  Sample & operator += (const Point & translation);
   Sample & operator += (const Sample & translation);
   Sample & operator -= (const NumericalScalar translation);
-  Sample & operator -= (const NumericalPoint & translation);
+  Sample & operator -= (const Point & translation);
   Sample & operator -= (const Sample & translation);
 
   /** Translate/scale realizations */
   Sample operator + (const NumericalScalar translation) const;
-  Sample operator + (const NumericalPoint & translation) const;
+  Sample operator + (const Point & translation) const;
   Sample operator + (const Sample & translation) const;
   Sample operator - (const NumericalScalar translation) const;
-  Sample operator - (const NumericalPoint & translation) const;
+  Sample operator - (const Point & translation) const;
   Sample operator - (const Sample & translation) const;
   Sample operator * (const NumericalScalar scaling) const;
-  Sample operator * (const NumericalPoint & scaling) const;
+  Sample operator * (const Point & scaling) const;
   Sample operator * (const SquareMatrix & scaling) const;
   Sample operator / (const NumericalScalar scaling) const;
-  Sample operator / (const NumericalPoint & scaling) const;
+  Sample operator / (const Point & scaling) const;
   Sample operator / (const SquareMatrix & scaling) const;
 
   /**
    * Scale realizations componentwise in-place
    */
   Sample & operator *= (const NumericalScalar scaling);
-  Sample & operator *= (const NumericalPoint & scaling);
+  Sample & operator *= (const Point & scaling);
   Sample & operator *= (const SquareMatrix & scaling);
   Sample & operator /= (const NumericalScalar scaling);
-  Sample & operator /= (const NumericalPoint & scaling);
+  Sample & operator /= (const Point & scaling);
   Sample & operator /= (const SquareMatrix & scaling);
 
   /** Ranked sample */

@@ -22,7 +22,7 @@
 #define OPENTURNS_SAMPLINGSTRATEGYIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/PersistentObject.hxx"
 
@@ -50,10 +50,10 @@ public:
   virtual Sample generate() const;
 
   /** Generate a uniform random unit vector */
-  NumericalPoint getUniformUnitVectorRealization(const UnsignedInteger dimension) const;
+  Point getUniformUnitVectorRealization(const UnsignedInteger dimension) const;
 
   /** Generate a uniform random unit vector */
-  NumericalPoint getUniformUnitVectorRealization() const;
+  Point getUniformUnitVectorRealization() const;
 
   /** Dimension accessor */
   void setDimension(const UnsignedInteger dimension);

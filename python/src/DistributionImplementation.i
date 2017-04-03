@@ -7,24 +7,24 @@ OT::Sample OT::DistributionImplementation::computePDF(const OT::NumericalScalar 
                            const OT::NumericalScalar xMax,
                            const OT::UnsignedInteger pointNumber,
                            OT::Sample & grid) const;
-OT::Sample OT::DistributionImplementation::computePDF(const OT::NumericalPoint & xMin,
-                           const OT::NumericalPoint & xMax,
+OT::Sample OT::DistributionImplementation::computePDF(const OT::Point & xMin,
+                           const OT::Point & xMax,
                            const OT::Indices & pointNumber,
                            OT::Sample & grid) const;
 
-%typemap(in, numinputs=0) OT::NumericalPoint & weights ($*ltype temp) %{ temp = OT::NumericalPoint(); $1 = &temp; %}
-%typemap(argout) OT::NumericalPoint & weights %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::NumericalPoint(*$1), SWIG_TypeQuery("OT::NumericalPoint *"), SWIG_POINTER_OWN |  0 )); %}
-OT::NumericalPoint OT::DistributionImplementation::getGaussNodesAndWeights(OT::NumericalPoint & weights) const;
+%typemap(in, numinputs=0) OT::Point & weights ($*ltype temp) %{ temp = OT::Point(); $1 = &temp; %}
+%typemap(argout) OT::Point & weights %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::Point(*$1), SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_OWN |  0 )); %}
+OT::Point OT::DistributionImplementation::getGaussNodesAndWeights(OT::Point & weights) const;
 
-%typemap(in, numinputs=0) OT::NumericalPoint & marginalProb ($*ltype temp) %{ temp = OT::NumericalPoint(); $1 = &temp; %}
-%typemap(argout) OT::NumericalPoint & marginalProb %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::NumericalPoint(*$1), SWIG_TypeQuery("OT::NumericalPoint *"), SWIG_POINTER_OWN |  0 )); %}
-OT::Interval OT::DistributionImplementation::computeMinimumVolumeInterval(const OT::NumericalScalar prob, OT::NumericalPoint & marginalProb) const;
-OT::Interval OT::DistributionImplementation::computeBilateralConfidenceInterval(const OT::NumericalScalar prob, OT::NumericalPoint & marginalProb) const;
-OT::Interval OT::DistributionImplementation::computeUnilateralConfidenceInterval(const OT::NumericalScalar prob, const OT::Bool tail, OT::NumericalPoint & marginalProb) const;
+%typemap(in, numinputs=0) OT::Point & marginalProb ($*ltype temp) %{ temp = OT::Point(); $1 = &temp; %}
+%typemap(argout) OT::Point & marginalProb %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::Point(*$1), SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_OWN |  0 )); %}
+OT::Interval OT::DistributionImplementation::computeMinimumVolumeInterval(const OT::NumericalScalar prob, OT::Point & marginalProb) const;
+OT::Interval OT::DistributionImplementation::computeBilateralConfidenceInterval(const OT::NumericalScalar prob, OT::Point & marginalProb) const;
+OT::Interval OT::DistributionImplementation::computeUnilateralConfidenceInterval(const OT::NumericalScalar prob, const OT::Bool tail, OT::Point & marginalProb) const;
 
-%typemap(in, numinputs=0) OT::NumericalPoint & threshold ($*ltype temp) %{ temp = OT::NumericalPoint(); $1 = &temp; %}
-%typemap(argout) OT::NumericalPoint & threshold %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::NumericalPoint(*$1), SWIG_TypeQuery("OT::NumericalPoint *"), SWIG_POINTER_OWN |  0 )); %}
-OT::LevelSet OT::DistributionImplementation::computeMinimumVolumeLevelSet(const OT::NumericalScalar prob, OT::NumericalPoint & threshold) const;
+%typemap(in, numinputs=0) OT::Point & threshold ($*ltype temp) %{ temp = OT::Point(); $1 = &temp; %}
+%typemap(argout) OT::Point & threshold %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::Point(*$1), SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_OWN |  0 )); %}
+OT::LevelSet OT::DistributionImplementation::computeMinimumVolumeLevelSet(const OT::NumericalScalar prob, OT::Point & threshold) const;
 
 
 %typemap(in, numinputs=0) OT::NumericalScalar & marginalProb ($*ltype temp) %{ temp = -1.0; $1 = &temp; %}
@@ -101,5 +101,5 @@ Pointer<DistributionImplementation> __rmul__(NumericalScalar s)
 
 } }
 
-%clear OT::NumericalPoint & weights;
+%clear OT::Point & weights;
 

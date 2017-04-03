@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     /* Distribution choice */
     Distribution dist = Uniform();
     fullprint << "dist = " << dist << std::endl;
-    NumericalPoint origin(dist.getDimension());
+    Point origin(dist.getDimension());
 
     Process process = RandomWalk(origin, dist);
 

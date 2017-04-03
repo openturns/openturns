@@ -16,7 +16,7 @@
 #define OPENTURNS_BOXCOXEVALUATION_HXX
 
 #include "openturns/EvaluationImplementation.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/SpecFunc.hxx"
 
@@ -41,10 +41,10 @@ public:
   BoxCoxEvaluation();
 
   /** Parameter constructor */
-  BoxCoxEvaluation(const NumericalPoint & lamda);
+  BoxCoxEvaluation(const Point & lamda);
 
-  BoxCoxEvaluation(const NumericalPoint & lamda,
-                                 const NumericalPoint & shift);
+  BoxCoxEvaluation(const Point & lamda,
+                                 const Point & shift);
 
   /** Virtual constructor */
   virtual BoxCoxEvaluation * clone() const;
@@ -58,7 +58,7 @@ public:
 
   /** Operator () */
   using EvaluationImplementation::operator();
-  NumericalPoint operator() (const NumericalPoint & inP) const;
+  Point operator() (const Point & inP) const;
   Sample operator() (const Sample & inS) const;
 
   /** Accessor for input point dimension */
@@ -68,10 +68,10 @@ public:
   UnsignedInteger getOutputDimension() const;
 
   /** Accessor for the lambda point */
-  NumericalPoint getLambda() const;
+  Point getLambda() const;
 
   /** Accessor for the shift */
-  NumericalPoint getShift() const;
+  Point getShift() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -81,10 +81,10 @@ public:
 
 protected:
   /** Lambda vector of the box cox transform */
-  NumericalPoint lambda_;
+  Point lambda_;
 
   /** Shift vector of the box cox transform */
-  NumericalPoint shift_;
+  Point shift_;
 
 
 }; /* class BoxCoxEvaluation */

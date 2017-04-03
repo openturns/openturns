@@ -83,7 +83,7 @@ void AdaptiveDirectionalSampling::run()
   const UnsignedInteger L = gamma_.getDimension();
 
   // initial uniform allocation
-  NumericalPoint w(m, 1.0 / m);
+  Point w(m, 1.0 / m);
 
   // maximum directions budget
   const UnsignedInteger n0 = getMaximumOuterSampling();
@@ -95,11 +95,11 @@ void AdaptiveDirectionalSampling::run()
   // for each step
   for (UnsignedInteger l = 0; l < L; ++ l)
   {
-    const NumericalPoint w0(m, 1.0 / m);
+    const Point w0(m, 1.0 / m);
 
     NumericalScalar probabilityEstimate = 0.0;
     NumericalScalar w0SigmaSum = 0.0;
-    NumericalPoint sigma(m, 0.0);
+    Point sigma(m, 0.0);
 
     Sample T0(d, m);
     Sample T1(d, m);
@@ -153,7 +153,7 @@ void AdaptiveDirectionalSampling::run()
 
     if ((l == 0) && partialStratification_)
     {
-      T_ = NumericalPoint(dimension);
+      T_ = Point(dimension);
       for (UnsignedInteger k = 0; k < dimension; ++ k)
       {
         for (UnsignedInteger i = 0; i < m; ++ i)
@@ -190,7 +190,7 @@ void AdaptiveDirectionalSampling::run()
       const UnsignedInteger m2 = 1 << d2;
 
       // compute new weights using existing simulations
-      NumericalPoint w2(m2, 0.0);
+      Point w2(m2, 0.0);
       for (UnsignedInteger i2 = 0; i2 < m2; ++ i2)
       {
         for (UnsignedInteger i = 0; i < m; ++ i)
@@ -243,7 +243,7 @@ SamplingStrategy AdaptiveDirectionalSampling::getSamplingStrategy() const
   return samplingStrategy_;
 }
 
-void AdaptiveDirectionalSampling::setGamma(const NumericalPoint& gamma)
+void AdaptiveDirectionalSampling::setGamma(const Point& gamma)
 {
   const UnsignedInteger dimension = gamma.getDimension();
   if (dimension > 2) throw InvalidDimensionException(HERE) << "gamma dimension is " << dimension;
@@ -257,13 +257,13 @@ void AdaptiveDirectionalSampling::setGamma(const NumericalPoint& gamma)
   gamma_ = gamma;
 }
 
-NumericalPoint AdaptiveDirectionalSampling::getGamma() const
+Point AdaptiveDirectionalSampling::getGamma() const
 {
   return gamma_;
 }
 
 
-void AdaptiveDirectionalSampling::setQuadrantOrientation(const OT::NumericalPoint& quadrantOrientation)
+void AdaptiveDirectionalSampling::setQuadrantOrientation(const OT::Point& quadrantOrientation)
 {
   const UnsignedInteger dimension = getEvent().getImplementation()->getAntecedent()->getDimension();
   if ((quadrantOrientation.getDimension() > 0) && (quadrantOrientation.getDimension() != dimension))
@@ -271,7 +271,7 @@ void AdaptiveDirectionalSampling::setQuadrantOrientation(const OT::NumericalPoin
   quadrantOrientation_ = quadrantOrientation;
 }
 
-OT::NumericalPoint AdaptiveDirectionalSampling::getQuadrantOrientation() const
+OT::Point AdaptiveDirectionalSampling::getQuadrantOrientation() const
 {
   return quadrantOrientation_;
 }
@@ -314,7 +314,7 @@ OT::UnsignedInteger AdaptiveDirectionalSampling::getMaximumStratificationDimensi
 }
 
 
-OT::NumericalPoint AdaptiveDirectionalSampling::getTStatistic() const
+OT::Point AdaptiveDirectionalSampling::getTStatistic() const
 {
   return T_;
 }

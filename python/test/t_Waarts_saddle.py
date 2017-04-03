@@ -37,14 +37,14 @@ try:
     # Probabilistic model
     #
 
-    mean = NumericalPoint(dim, 0.0)
+    mean = Point(dim, 0.0)
 
-    sigma = NumericalPoint(dim, 1.0)
+    sigma = Point(dim, 1.0)
 
     R = CorrelationMatrix(dim)
     myDistribution = Normal(mean, sigma, R)
 
-    start = NumericalPoint(dim, 1.0)
+    start = Point(dim, 1.0)
 
     #
     # Limit state

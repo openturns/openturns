@@ -25,7 +25,7 @@
 #include "openturns/GradientImplementation.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/SquareMatrix.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/StorageManager.hxx"
 
@@ -55,7 +55,7 @@ public:
   virtual NatafEllipticalCopulaGradient * clone() const;
 
   /** Gradient */
-  Matrix gradient(const NumericalPoint & inP) const;
+  Matrix gradient(const Point & inP) const;
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;

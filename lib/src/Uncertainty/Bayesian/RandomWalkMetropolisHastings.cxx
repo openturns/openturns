@@ -52,7 +52,7 @@ RandomWalkMetropolisHastings::RandomWalkMetropolisHastings()
 RandomWalkMetropolisHastings::RandomWalkMetropolisHastings( const Distribution & prior,
     const Distribution & conditional,
     const Sample & observations,
-    const NumericalPoint & initialState,
+    const Point & initialState,
     const DistributionCollection & proposal)
   : MCMC(prior, conditional, observations, initialState)
   , calibrationStrategy_(proposal.getSize())
@@ -70,7 +70,7 @@ RandomWalkMetropolisHastings::RandomWalkMetropolisHastings( const Distribution &
     const Function & model,
     const Sample & parameters,
     const Sample & observations,
-    const NumericalPoint & initialState,
+    const Point & initialState,
     const DistributionCollection & proposal)
   : MCMC(prior, conditional, model, parameters, observations, initialState)
   , calibrationStrategy_(proposal.getSize())
@@ -100,12 +100,12 @@ RandomWalkMetropolisHastings* RandomWalkMetropolisHastings::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-NumericalPoint RandomWalkMetropolisHastings::getRealization() const
+Point RandomWalkMetropolisHastings::getRealization() const
 {
   const UnsignedInteger dimension = initialState_.getDimension();
 
   // update factor
-  NumericalPoint delta(dimension, 1.0);
+  Point delta(dimension, 1.0);
 
   // number of samples accepted until calibration step
   Indices accepted(dimension);
@@ -125,7 +125,7 @@ NumericalPoint RandomWalkMetropolisHastings::getRealization() const
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     // accumulates the updates over each components
-    NumericalPoint newState(currentState_);
+    Point newState(currentState_);
 
     history_.store(currentState_);
 
@@ -135,7 +135,7 @@ NumericalPoint RandomWalkMetropolisHastings::getRealization() const
     for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
       // new candidate for the j-th component
-      NumericalPoint nextState(newState);
+      Point nextState(newState);
 
       Bool nonRejectedComponent = nonRejectedComponents_.contains(j);
       if (!nonRejectedComponent)
@@ -215,10 +215,10 @@ NumericalPoint RandomWalkMetropolisHastings::getRealization() const
 }
 
 
-NumericalPoint RandomWalkMetropolisHastings::getAcceptanceRate() const
+Point RandomWalkMetropolisHastings::getAcceptanceRate() const
 {
   const UnsignedInteger dimension = initialState_.getDimension();
-  NumericalPoint acceptanceRate(dimension);
+  Point acceptanceRate(dimension);
   for (UnsignedInteger j = 0; j < dimension; ++ j)
   {
     acceptanceRate[j] = static_cast<NumericalScalar>(acceptedNumber_[j]) / samplesNumber_;

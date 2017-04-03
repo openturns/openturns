@@ -53,7 +53,7 @@ public:
   HistoryStrategy(Implementation & p_implementation);
 
   /** Store the point according to the strategy */
-  void store(const NumericalPoint & point);
+  void store(const Point & point);
   void store(const Sample & sample);
 
   /** Clear the history storage */

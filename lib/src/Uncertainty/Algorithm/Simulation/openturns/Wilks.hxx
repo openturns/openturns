@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_WILKS_HXX
 #define OPENTURNS_WILKS_HXX
 
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/RandomVector.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -48,7 +48,7 @@ public:
       const UnsignedInteger marginIndex = 0);
 
   /* Estimate an upper bound of the quantile of the random vector for the given quantile level and confidence level, using the marginIndex upper statistics */
-  NumericalPoint computeQuantileBound(const NumericalScalar quantileLevel,
+  Point computeQuantileBound(const NumericalScalar quantileLevel,
                                       const NumericalScalar confidenceLevel,
                                       const UnsignedInteger marginIndex = 0) const;
 

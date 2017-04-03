@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 from openturns.viewer import View
 
 # Create a Box Cox transformation
-myLambda = ot.NumericalPoint([0.0, 0.1, 1.0, 1.5])
+myLambda = ot.Point([0.0, 0.1, 1.0, 1.5])
 
 graph = ot.Graph()
 for i in range(myLambda.getDimension()):

@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
     fullprint << "Continuous = " << (distribution.isContinuous() ? "true" : "false") << std::endl;
 
     // Test for realization of distribution
-    NumericalPoint oneRealization = distribution.getRealization();
+    Point oneRealization = distribution.getRealization();
     fullprint << "oneRealization=" << oneRealization << std::endl;
 
     // Test for sampling
@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
     fullprint << "covariance=" << oneSample.computeCovariance() << std::endl;
 
     // Define a point
-    NumericalPoint point( distribution.getDimension(), 1.0 );
+    Point point( distribution.getDimension(), 1.0 );
     fullprint << "Point= " << point << std::endl;
     UnsignedInteger oldPrecision = PlatformInfo::GetNumericalPrecision();
     PlatformInfo::SetNumericalPrecision(5);
@@ -90,10 +90,10 @@ int main(int argc, char *argv[])
     fullprint << std::setprecision(5) << "ccdf=" << CCDF << std::endl;
     NumericalScalar Survival = distribution.computeSurvivalFunction( point );
     fullprint << std::setprecision(5) << "survival=" << Survival << std::endl;
-    NumericalPoint InverseSurvival = distribution.computeInverseSurvivalFunction(0.95);
+    Point InverseSurvival = distribution.computeInverseSurvivalFunction(0.95);
     fullprint << "Inverse survival=" << InverseSurvival << std::endl;
     fullprint << "Survival(inverse survival)=" << distribution.computeSurvivalFunction(InverseSurvival) << std::endl;
-    NumericalPoint quantile = distribution.computeQuantile( 0.95 );
+    Point quantile = distribution.computeQuantile( 0.95 );
     fullprint << "quantile=" << quantile << std::endl;
     fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
     // Confidence regions
@@ -114,13 +114,13 @@ int main(int argc, char *argv[])
       fullprint << "Unilateral confidence interval (upper tail)=" << distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, true, beta) << std::endl;
       fullprint << "beta=" << beta << std::endl;
     }
-    NumericalPoint mean = distribution.getMean();
+    Point mean = distribution.getMean();
     fullprint << "mean=" << mean << std::endl;
-    NumericalPoint standardDeviation = distribution.getStandardDeviation();
+    Point standardDeviation = distribution.getStandardDeviation();
     fullprint << "standard deviation=" << standardDeviation << std::endl;
-    NumericalPoint skewness = distribution.getSkewness();
+    Point skewness = distribution.getSkewness();
     fullprint << "skewness=" << skewness << std::endl;
-    NumericalPoint kurtosis = distribution.getKurtosis();
+    Point kurtosis = distribution.getKurtosis();
     fullprint << "kurtosis=" << kurtosis << std::endl;
     CovarianceMatrix covariance = distribution.getCovariance();
     fullprint << "covariance=" << covariance << std::endl;

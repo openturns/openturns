@@ -48,7 +48,7 @@ public:
 
   /** Constructor from a sample and associated weights */
   UserDefined(const Sample & points,
-              const NumericalPoint & weights);
+              const Point & weights);
 
 
   /** Comparison operator */
@@ -69,23 +69,23 @@ public:
   virtual UserDefined * clone() const;
 
   /** Get one realization of the distribution */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Get the PDF of the distribution */
   using DiscreteDistribution::computePDF;
-  NumericalScalar computePDF(const NumericalPoint & point) const;
+  NumericalScalar computePDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using DiscreteDistribution::computeCDF;
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
+  NumericalScalar computeCDF(const Point & point) const;
 
   /** Get the PDFGradient of the distribution */
   using DiscreteDistribution::computePDFGradient;
-  NumericalPoint computePDFGradient(const NumericalPoint & point) const;
+  Point computePDFGradient(const Point & point) const;
 
   /** Get the CDFGradient of the distribution */
   using DiscreteDistribution::computeCDFGradient;
-  NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
+  Point computeCDFGradient(const Point & point) const;
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange();
@@ -98,10 +98,10 @@ public:
   Bool isIntegral() const;
 
   /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
+  PointWithDescriptionCollection getParametersCollection() const;
 
   /** Parameters value accessors */
-  NumericalPoint getParameter() const;
+  Point getParameter() const;
 
   /** Parameters description accessor */
   Description getParameterDescription() const;
@@ -110,9 +110,9 @@ public:
 
   /** Data accessors */
   void setData(const Sample & points,
-               const NumericalPoint & weights);
+               const Point & weights);
   Sample getX() const;
-  NumericalPoint getP() const;
+  Point getP() const;
 
   /** Get the i-th marginal distribution */
   Implementation getMarginal(const UnsignedInteger i) const;
@@ -151,10 +151,10 @@ private:
 
   /** The collection of couple (xi, pi) */
   Sample points_;
-  NumericalPoint probabilities_;
+  Point probabilities_;
 
   /** The cumulative probabilities si = sum(pk, k=0..i) */
-  NumericalPoint cumulativeProbabilities_;
+  Point cumulativeProbabilities_;
 
   /** Flag to accelerate computations in case of uniform weights */
   Bool hasUniformWeights_;

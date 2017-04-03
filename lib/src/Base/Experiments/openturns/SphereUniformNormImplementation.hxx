@@ -23,7 +23,7 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/SphereUniformNormImplementation.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -39,7 +39,7 @@ public:
   typedef Pointer<SphereUniformNormImplementation> Implementation;
 
   /** Default constructor */
-  SphereUniformNormImplementation(const NumericalPoint & step, const Bool symmetric);
+  SphereUniformNormImplementation(const Point & step, const Bool symmetric);
 
   /** Virtual constructor */
   virtual SphereUniformNormImplementation * clone() const;
@@ -58,7 +58,7 @@ public:
 
 #ifndef SWIG
   /** Constructor from grid steps */
-  static Implementation GetFromGridSteps(const NumericalPoint & step, const Bool symmetric);
+  static Implementation GetFromGridSteps(const Point & step, const Bool symmetric);
 #endif
 
   /** String converter */
@@ -78,7 +78,7 @@ private:
 private:
 
   /** Grid steps */
-  NumericalPoint step_;
+  Point step_;
 
   /** Symmetric grid? */
   Bool symmetric_;

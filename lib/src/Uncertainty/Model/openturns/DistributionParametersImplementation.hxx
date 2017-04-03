@@ -37,8 +37,8 @@ class OT_API DistributionParametersImplementation
 {
   CLASSNAME;
 public:
-  typedef Collection<NumericalPoint>                NumericalPointCollection;
-  typedef Collection<NumericalPointWithDescription> NumericalPointWithDescriptionCollection;
+  typedef Collection<Point>                PointCollection;
+  typedef Collection<PointWithDescription> PointWithDescriptionCollection;
 
   /** Default constructor */
   DistributionParametersImplementation();
@@ -54,20 +54,20 @@ public:
   virtual Distribution getDistribution() const;
 
   /** Evaluate native parameters */
-  virtual NumericalPoint evaluate() const;
+  virtual Point evaluate() const;
 
   /** Compute jacobian / native parameters */
   virtual Matrix gradient() const;
 
   /** Conversion operator */
-  virtual NumericalPoint operator () (const NumericalPoint & inP) const;
+  virtual Point operator () (const Point & inP) const;
 
   /** Conversion from native parameters */
-  virtual NumericalPoint inverse(const NumericalPoint & inP) const;
+  virtual Point inverse(const Point & inP) const;
 
   /** Parameters value and description accessor */
-  virtual void setValues(const NumericalPoint & values);
-  virtual NumericalPoint getValues() const;
+  virtual void setValues(const Point & values);
+  virtual Point getValues() const;
   virtual Description getDescription() const;
 
   /** Method save() stores the object through the StorageManager */

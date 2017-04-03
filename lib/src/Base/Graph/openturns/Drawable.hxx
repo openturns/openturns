@@ -51,7 +51,7 @@ public:
   /* Here is the interface */
 
   /** Accessor for bounding box of the drawable */
-  NumericalPoint getBoundingBox() const;
+  Point getBoundingBox() const;
 
   /** Legend accessor */
   virtual String getLegend() const;
@@ -84,8 +84,8 @@ public:
   void setPattern(const String style);
 
   /** Accessor for center */
-  NumericalPoint getCenter() const;
-  void setCenter(const NumericalPoint & center);
+  Point getCenter() const;
+  void setCenter(const Point & center);
 
   /** Accessor for radius */
   NumericalScalar getRadius() const;
@@ -112,8 +112,8 @@ public:
   void setY(const Sample & y);
 
   /** Accessor for levels */
-  NumericalPoint getLevels() const;
-  void setLevels(const NumericalPoint & levels);
+  Point getLevels() const;
+  void setLevels(const Point & levels);
 
   /** Accessor for drawLabels */
   Bool getDrawLabels() const;
@@ -183,7 +183,7 @@ public:
                                 const NumericalScalar alpha);
 
   /** Convert an HSV triplet into an RGB triplet */
-  static NumericalPoint ConvertFromHSVIntoRGB(const NumericalScalar hue,
+  static Point ConvertFromHSVIntoRGB(const NumericalScalar hue,
       const NumericalScalar saturation,
       const NumericalScalar value);
 

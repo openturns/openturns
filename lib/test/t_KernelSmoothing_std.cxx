@@ -32,10 +32,10 @@ int main(int argc, char *argv[])
   try
   {
     UnsignedInteger dim = 2;
-    NumericalPoint meanPoint(dim, 1.0);
+    Point meanPoint(dim, 1.0);
     meanPoint[0] = 0.5;
     meanPoint[1] = -0.5;
-    NumericalPoint sigma(dim, 1.0);
+    Point sigma(dim, 1.0);
     sigma[0] = 2.0;
     sigma[1] = 3.0;
     CorrelationMatrix R(dim);
@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
       fullprint << "mean(smoothed)=[" << smoothed.getMean()[0] << ", " << smoothed.getMean()[1] << "] mean(exact)=[" << distribution.getMean()[0] << ", " << distribution.getMean()[1] << "]" << std::endl;
       fullprint << "covariance(smoothed)=" << smoothed.getCovariance() << " covariance(exact)=" << distribution.getCovariance() << std::endl;
       // Define a point
-      NumericalPoint point( smoothed.getDimension(), 0.0 );
+      Point point( smoothed.getDimension(), 0.0 );
 
       // Show PDF and CDF of point point
       NumericalScalar pointPDF = smoothed.computePDF( point );
@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
           Distribution smoothed(smoother.build(sampleCollection[j]));
           fullprint << "Bounded underlying distribution? " << (j == 0 ? "False" : "True") << " bounded reconstruction? " << (k == 0 ? "False" : "True") << std::endl;
           // Define a point
-          NumericalPoint point( smoothed.getDimension(), -0.9 );
+          Point point( smoothed.getDimension(), -0.9 );
 
           // Show PDF and CDF of point point
           NumericalScalar pointPDF = smoothed.computePDF( point );
@@ -115,7 +115,7 @@ int main(int argc, char *argv[])
       Distribution ks1(KernelSmoothing(Normal(), true, 64).build(sample));
       Distribution ks2(KernelSmoothing(Normal(), true, 1024).build(sample));
       Distribution ks3(KernelSmoothing(Normal(), false).build(sample));
-      NumericalPoint point(1, 0.3);
+      Point point(1, 0.3);
       fullprint << "with low  bin count, pdf=" << ks1.computePDF(point) << std::endl;
       fullprint << "with high bin count, pdf=" << ks2.computePDF(point) << std::endl;
       fullprint << "without   binning,   pdf=" << ks3.computePDF(point) << std::endl;

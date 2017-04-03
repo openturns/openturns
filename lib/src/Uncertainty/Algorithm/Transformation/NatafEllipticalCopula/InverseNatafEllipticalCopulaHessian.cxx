@@ -86,17 +86,17 @@ String InverseNatafEllipticalCopulaHessian::__repr__() const
  *                    = (F''(Zi)LijLik
  * Thus, (D2T)ijk = Hkji = LkjLkiF''(Zk)
  */
-SymmetricTensor InverseNatafEllipticalCopulaHessian::hessian(const NumericalPoint & inP) const
+SymmetricTensor InverseNatafEllipticalCopulaHessian::hessian(const Point & inP) const
 {
   UnsignedInteger dimension = getInputDimension();
   // First, correlate the components
-  NumericalPoint point(cholesky_ * inP);
+  Point point(cholesky_ * inP);
   SymmetricTensor result(dimension, dimension);
   const Distribution standardMarginal(standardDistribution_.getMarginal(0));
   // Then, apply standard marginal transformation
   for (UnsignedInteger k = 0; k < dimension; ++k)
   {
-    NumericalScalar ddf = standardMarginal.computeDDF(NumericalPoint(1, point[k]))[0];
+    NumericalScalar ddf = standardMarginal.computeDDF(Point(1, point[k]))[0];
     for (UnsignedInteger i = 0; i <= k; ++i)
     {
       NumericalScalar factor = ddf * cholesky_(k, i);

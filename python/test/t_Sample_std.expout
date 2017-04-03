@@ -1,5 +1,5 @@
 sample1= class=Sample name=Sample1 implementation=class=SampleImplementation name=Sample1 size=3 dimension=2 description=[a0,a1] data=[[10,20],[11,21],[12,22]]
-second element= class=NumericalPoint name=Unnamed dimension=2 values=[11,21]
+second element= class=Point name=Unnamed dimension=2 values=[11,21]
 sample1= class=Sample name=Sample1 implementation=class=SampleImplementation name=Sample1 size=3 dimension=2 description=[a0,a1] data=[[10,20],[11,21],[1000,2000]]
 sample2= class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=10 dimension=2 data=[[10,20],[10,20],[10,20],[10,20],[10,20],[10,20],[10,20],[10,20],[10,20],[10,20]]
 sample2= class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=10 dimension=2 data=[[10,20],[10,20],[10,20],[10,20],[10,20],[11,21],[10,20],[10,20],[10,20],[10,20]]

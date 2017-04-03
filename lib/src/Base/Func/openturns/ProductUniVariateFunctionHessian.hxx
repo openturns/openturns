@@ -51,7 +51,7 @@ public:
   virtual String __repr__() const;
 
   /** Compute the hessian of a product of univariate polynomials */
-  virtual SymmetricTensor hessian(const NumericalPoint & inP) const;
+  virtual SymmetricTensor hessian(const Point & inP) const;
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;

@@ -76,8 +76,8 @@ CovarianceMatrix SecondOrderModelImplementation::computeCovariance(const Numeric
 }
 
 /* Computation of the covariance function */
-CovarianceMatrix SecondOrderModelImplementation::computeCovariance(const NumericalPoint & s,
-    const NumericalPoint & t) const
+CovarianceMatrix SecondOrderModelImplementation::computeCovariance(const Point & s,
+    const Point & t) const
 {
   return covarianceModel_(s, t);
 }
@@ -87,7 +87,7 @@ CovarianceMatrix SecondOrderModelImplementation::computeCovariance(const Numeric
   return covarianceModel_(tau);
 }
 
-CovarianceMatrix SecondOrderModelImplementation::computeCovariance(const NumericalPoint & tau) const
+CovarianceMatrix SecondOrderModelImplementation::computeCovariance(const Point & tau) const
 {
   return covarianceModel_(tau);
 }

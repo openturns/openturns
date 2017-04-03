@@ -50,8 +50,8 @@ public:
 
 
   /** Standard constructor */
-  OptimizationResult(const NumericalPoint & optimalPoint,
-                     const NumericalPoint & optimalValue,
+  OptimizationResult(const Point & optimalPoint,
+                     const Point & optimalValue,
                      const UnsignedInteger iterationNumber,
                      const NumericalScalar absoluteError,
                      const NumericalScalar relativeError,
@@ -63,12 +63,12 @@ public:
   virtual OptimizationResult * clone() const;
 
   /** OptimalPoint accessors */
-  void setOptimalPoint(const NumericalPoint & optimalPoint);
-  NumericalPoint getOptimalPoint() const;
+  void setOptimalPoint(const Point & optimalPoint);
+  Point getOptimalPoint() const;
 
   /** Optimal value accessor */
-  void setOptimalValue(const NumericalPoint & optimalValue);
-  NumericalPoint getOptimalValue() const;
+  void setOptimalValue(const Point & optimalValue);
+  Point getOptimalValue() const;
 
   /** Iteration number accessor */
   void setIterationNumber(const UnsignedInteger iterationNumber);
@@ -99,8 +99,8 @@ public:
   OptimizationProblem getProblem() const;
 
   /** Lagrange multipliers accessor */
-  void setLagrangeMultipliers(const NumericalPoint & lagrangeMultipliers);
-  NumericalPoint getLagrangeMultipliers() const;
+  void setLagrangeMultipliers(const Point & lagrangeMultipliers);
+  Point getLagrangeMultipliers() const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -112,8 +112,8 @@ public:
   void load(Advocate & adv);
 
   /** Incremental history storage */
-  void store(const NumericalPoint & inP,
-             const NumericalPoint & outP,
+  void store(const Point & inP,
+             const Point & outP,
              const NumericalScalar absoluteError,
              const NumericalScalar relativeError,
              const NumericalScalar residualError,
@@ -144,14 +144,14 @@ protected:
 
 private:
 
-  NumericalPoint  optimalPoint_;
-  NumericalPoint  optimalValue_;
+  Point  optimalPoint_;
+  Point  optimalValue_;
   UnsignedInteger    iterationNumber_;       /**< Number of outermost iterations (in case of nested iterations) */
   NumericalScalar absoluteError_;   /**< Value of ||x_n - x_{n-1}|| */
   NumericalScalar relativeError_;   /**< Value of ||x_n - x_{n-1}|| / ||x_n|| */
   NumericalScalar residualError_;   /**< Value of ||objectiveFunction(x_n) - objectiveFunction(x_{n-1})|| */
   NumericalScalar constraintError_; /**< Value of ||constraints(x_n)|| for the active constraints */
-  NumericalPoint lagrangeMultipliers_;
+  Point lagrangeMultipliers_;
   Compact absoluteErrorHistory_;
   Compact relativeErrorHistory_;
   Compact residualErrorHistory_;

@@ -41,7 +41,7 @@ public:
   /** Default constructor */
   explicit QuadrantSampling(const SamplingStrategy & samplingStrategy = RandomDirection(),
                             const UnsignedInteger quadrantIndex = 0,
-                            const NumericalPoint & quadrantOrientation = NumericalPoint());
+                            const Point & quadrantOrientation = Point());
 
   /** Virtual constructor */
   virtual QuadrantSampling * clone() const;
@@ -54,8 +54,8 @@ public:
   UnsignedInteger getQuadrantIndex() const;
 
   /** Quadrant orientation accessor */
-  void setQuadrantOrientation(const NumericalPoint & quadrantOrientation);
-  NumericalPoint getQuadrantOrientation() const;
+  void setQuadrantOrientation(const Point & quadrantOrientation);
+  Point getQuadrantOrientation() const;
 
   /** Strata indices accessor */
   void setStrataIndices(const Indices & strataIndices);
@@ -75,7 +75,7 @@ protected:
   UnsignedInteger quadrantIndex_;
 
   // first quadrant bisector
-  NumericalPoint quadrantOrientation_;
+  Point quadrantOrientation_;
 
   // rotation matrix
   SquareMatrix R_;

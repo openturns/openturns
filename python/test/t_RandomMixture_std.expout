@@ -1,6 +1,6 @@
-testCases= [[class=Uniform name=Uniform dimension=1 a=-1 b=3,class=Uniform name=Uniform dimension=1 a=-1 b=3], [class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[0] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[1] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[-2] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]], [class=Exponential name=Exponential dimension=1 lambda=1 gamma=0,class=Exponential name=Exponential dimension=1 lambda=1 gamma=0,class=Exponential name=Exponential dimension=1 lambda=1 gamma=0]]
+testCases= [[class=Uniform name=Uniform dimension=1 a=-1 b=3,class=Uniform name=Uniform dimension=1 a=-1 b=3], [class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[-2] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]], [class=Exponential name=Exponential dimension=1 lambda=1 gamma=0,class=Exponential name=Exponential dimension=1 lambda=1 gamma=0,class=Exponential name=Exponential dimension=1 lambda=1 gamma=0]]
 references= [Triangular(a = -2, m = 2, b = 6),Normal(mu = -1, sigma = 3),Gamma(k = 3, lambda = 1, gamma = 0)]
-Distribution  class=RandomMixture name=RandomMixture distribution collection=[class=Triangular name=Triangular dimension=1 a=-2 m=2 b=6] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] constant=class=NumericalPoint name=Unnamed dimension=1 values=[0]
+Distribution  class=RandomMixture name=RandomMixture distribution collection=[class=Triangular name=Triangular dimension=1 a=-2 m=2 b=6] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] constant=class=Point name=Unnamed dimension=1 values=[0]
 Distribution  RandomMixture(Triangular(a = -2, m = 2, b = 6))
 Elliptical =  True
 Continuous =  True
@@ -21,7 +21,7 @@ log characteristic function=-0.345207 + 1.000000i
 quantile      = [4.73509]
 quantile (ref)= [4.73509]
 cdf(quantile)=0.950000
-InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[4.73509]
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[4.73509]
 Survival(inverseSurvival)=0.050000
 dimension= 1 test case= 0
 Minimum volume interval= [-1.10557, -1.10557]
@@ -52,7 +52,7 @@ blockMax= 20
 maxSize= 4000000
 alpha= 5.0
 beta= 8.5
-Distribution  class=RandomMixture name=RandomMixture distribution collection=[class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[-1] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] constant=class=NumericalPoint name=Unnamed dimension=1 values=[0]
+Distribution  class=RandomMixture name=RandomMixture distribution collection=[class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[-1] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] constant=class=Point name=Unnamed dimension=1 values=[0]
 Distribution  RandomMixture(Normal(mu = -1, sigma = 3))
 Elliptical =  True
 Continuous =  True
@@ -73,7 +73,7 @@ log characteristic function=-1.125000 + -0.500000i
 quantile      = [3.93456]
 quantile (ref)= [3.93456]
 cdf(quantile)=0.950000
-InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[3.93456]
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[3.93456]
 Survival(inverseSurvival)=0.050000
 dimension= 1 test case= 1
 Minimum volume interval= [-6.87989, -6.87989]
@@ -104,7 +104,7 @@ blockMax= 20
 maxSize= 4000000
 alpha= 5.0
 beta= 8.5
-Distribution  class=RandomMixture name=RandomMixture distribution collection=[class=Exponential name=Exponential dimension=1 lambda=1 gamma=0,class=Exponential name=Exponential dimension=1 lambda=1 gamma=0,class=Exponential name=Exponential dimension=1 lambda=1 gamma=0] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=3 values=[1,1,1] constant=class=NumericalPoint name=Unnamed dimension=1 values=[0]
+Distribution  class=RandomMixture name=RandomMixture distribution collection=[class=Exponential name=Exponential dimension=1 lambda=1 gamma=0,class=Exponential name=Exponential dimension=1 lambda=1 gamma=0,class=Exponential name=Exponential dimension=1 lambda=1 gamma=0] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=3 values=[1,1,1] constant=class=Point name=Unnamed dimension=1 values=[0]
 Distribution  RandomMixture(Exponential(lambda = 1, gamma = 0) + Exponential(lambda = 1, gamma = 0) + Exponential(lambda = 1, gamma = 0))
 Elliptical =  False
 Continuous =  True
@@ -125,7 +125,7 @@ log characteristic function=-0.334715 + 1.390943i
 quantile      = [6.2957]
 quantile (ref)= [6.29579]
 cdf(quantile)=0.950000
-InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[0.817691]
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[0.817691]
 Survival(inverseSurvival)=0.950000
 mean      = [3]
 mean (ref)= [3]
@@ -144,7 +144,7 @@ blockMax= 20
 maxSize= 4000000
 alpha= 5.0
 beta= 8.5
-distribution= class=RandomMixture name=RandomMixture distribution collection=[class=Triangular name=Triangular dimension=1 a=2 m=6 b=10,class=Exponential name=Exponential dimension=1 lambda=2 gamma=-3,class=Triangular name=Triangular dimension=1 a=2 m=6 b=10,class=Exponential name=Exponential dimension=1 lambda=2 gamma=-3,class=Gamma name=Gamma dimension=1 k=3 lambda=4 gamma=-2,class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[5.25] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[13.4629] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=6 values=[1,1.5,-2.5,-3.75,2.5,1] constant=class=NumericalPoint name=Unnamed dimension=1 values=[0]
+distribution= class=RandomMixture name=RandomMixture distribution collection=[class=Triangular name=Triangular dimension=1 a=2 m=6 b=10,class=Exponential name=Exponential dimension=1 lambda=2 gamma=-3,class=Triangular name=Triangular dimension=1 a=2 m=6 b=10,class=Exponential name=Exponential dimension=1 lambda=2 gamma=-3,class=Gamma name=Gamma dimension=1 k=3 lambda=4 gamma=-2,class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[5.25] sigma=class=Point name=Unnamed dimension=1 values=[13.4629] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=6 values=[1,1.5,-2.5,-3.75,2.5,1] constant=class=Point name=Unnamed dimension=1 values=[0]
 distribution= RandomMixture(Triangular(a = 2, m = 6, b = 10) + 1.5 * Exponential(lambda = 2, gamma = -3) - 2.5 * Triangular(a = 2, m = 6, b = 10) - 3.75 * Exponential(lambda = 2, gamma = -3) + 2.5 * Gamma(k = 3, lambda = 4, gamma = -2) + Normal(mu = 5.25, sigma = 13.4629))
 pdf( -44.290678 )=0.000311
 pdf( -34.726083 )=0.001834

@@ -23,7 +23,7 @@
 
 #include "openturns/TypedInterfaceObject.hxx"
 #include "openturns/SphereUniformNormImplementation.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -42,7 +42,7 @@ public:
   SphereUniformNorm();
 
   /** Default constructor */
-  SphereUniformNorm(const NumericalPoint step, const Bool symmetric);
+  SphereUniformNorm(const Point step, const Bool symmetric);
 
   /** Copy constructor */
   SphereUniformNorm(const SphereUniformNormImplementation & implementation);
@@ -65,7 +65,7 @@ public:
   virtual UnsignedInteger getOffsetLevel(const UnsignedInteger distance) const;
 
   /** Constructor from grid steps */
-  static SphereUniformNorm GetFromGridSteps(const NumericalPoint & step, const Bool symmetric);
+  static SphereUniformNorm GetFromGridSteps(const Point & step, const Bool symmetric);
 
   /** String converter */
   String __repr__() const;

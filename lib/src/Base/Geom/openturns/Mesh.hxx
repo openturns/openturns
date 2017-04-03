@@ -24,7 +24,7 @@
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/SquareMatrix.hxx"
 #include "openturns/IdentityMatrix.hxx"
@@ -63,7 +63,7 @@ public:
   virtual Mesh * clone() const;
 
   /** Check if the given point is inside of the closed mesh */
-  Bool contains(const NumericalPoint & point) const;
+  Bool contains(const Point & point) const;
 
   /** Get the description of the vertices */
   Description getDescription() const;
@@ -75,14 +75,14 @@ public:
   UnsignedInteger getSimplicesNumber() const;
 
   /** Get the index of the nearest vertex */
-  UnsignedInteger getNearestVertexIndex(const NumericalPoint & point) const;
+  UnsignedInteger getNearestVertexIndex(const Point & point) const;
 
   /** Get the index of the nearest vertex and the index of the containing simplex if any */
-  Indices getNearestVertexAndSimplexIndicesWithCoordinates(const NumericalPoint & point,
-      NumericalPoint & coordinates) const;
+  Indices getNearestVertexAndSimplexIndicesWithCoordinates(const Point & point,
+      Point & coordinates) const;
 
   /** Get the nearest vertex */
-  NumericalPoint getNearestVertex(const NumericalPoint & point) const;
+  Point getNearestVertex(const Point & point) const;
 
   /** Get the index of the nearest vertex for a set of points */
   Indices getNearestVertexIndex(const Sample & points) const;
@@ -96,7 +96,7 @@ public:
   /** Compute weights such that an integral of a function over the mesh
    * is a weighted sum of its values at the vertices
    */
-  NumericalPoint computeWeights() const;
+  Point computeWeights() const;
   
   /** Comparison operator */
   Bool operator == (const Mesh & rhs) const;
@@ -109,22 +109,22 @@ public:
   Bool isValid() const;
 
   /** Check if the given point is in the given simplex */
-  Bool checkPointInSimplex(const NumericalPoint & point,
+  Bool checkPointInSimplex(const Point & point,
                            const UnsignedInteger index) const;
 
   /** Check if the given point is in the given simplex and returns its barycentric coordinates */
-  Bool checkPointInSimplexWithCoordinates(const NumericalPoint & point,
+  Bool checkPointInSimplexWithCoordinates(const Point & point,
                                           const UnsignedInteger index,
-                                          NumericalPoint & coordinates) const;
+                                          Point & coordinates) const;
 
   /** Vertices accessor */
   Sample getVertices() const;
   void setVertices(const Sample & vertices);
 
   /** Vertex accessor */
-  NumericalPoint getVertex(const UnsignedInteger index) const;
+  Point getVertex(const UnsignedInteger index) const;
   void setVertex(const UnsignedInteger index,
-                 const NumericalPoint & vertex);
+                 const Point & vertex);
 
   /** Simplices accessor */
   IndicesCollection getSimplices() const;
@@ -143,10 +143,10 @@ public:
   Bool isRegular() const;
 
   /** Lower bound of the bounding box */
-  NumericalPoint getLowerBound() const;
+  Point getLowerBound() const;
 
   /** Upper bound of the bounding box */
-  NumericalPoint getUpperBound() const;
+  Point getUpperBound() const;
 
   /** Drawing method */
   Graph draw() const;

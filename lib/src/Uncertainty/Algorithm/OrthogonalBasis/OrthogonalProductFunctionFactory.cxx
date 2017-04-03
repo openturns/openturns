@@ -41,7 +41,7 @@ CLASSNAMEINIT(OrthogonalProductFunctionFactory);
 
 static const Factory<OrthogonalProductFunctionFactory> Factory_OrthogonalProductFunctionFactory;
 
-typedef Collection<NumericalPoint> NumericalPointCollection;
+typedef Collection<Point> PointCollection;
 typedef ProductUniVariateFunctionEvaluation::UniVariateFunctionCollection UniVariateFunctionCollection;
 
 /* Default constructor */

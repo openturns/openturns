@@ -48,8 +48,8 @@ class OT_API GeneralLinearModelResult
 public:
 
   // friend class Factory<GeneralLinearModelResult>;
-  typedef Collection<NumericalPoint> NumericalPointCollection;
-  typedef PersistentCollection<NumericalPoint> NumericalPointPersistentCollection;
+  typedef Collection<Point> PointCollection;
+  typedef PersistentCollection<Point> PointPersistentCollection;
   typedef Collection<Basis> BasisCollection;
   typedef PersistentCollection<Basis> BasisPersistentCollection;
 
@@ -60,10 +60,10 @@ public:
   GeneralLinearModelResult(const Sample & inputData,
                                const Sample & outputData,
                                const Function & metaModel,
-                               const NumericalPoint & residuals,
-                               const NumericalPoint & relativeErrors,
+                               const Point & residuals,
+                               const Point & relativeErrors,
                                const BasisCollection & basis,
-                               const NumericalPointCollection & trendCoefficients,
+                               const PointCollection & trendCoefficients,
                                const CovarianceModel & covarianceModel,
 			       const NumericalScalar optimalLogLikelihood);
 
@@ -71,10 +71,10 @@ public:
   GeneralLinearModelResult(const Sample & inputData,
                                const Sample & outputData,
                                const Function & metaModel,
-                               const NumericalPoint & residuals,
-                               const NumericalPoint & relativeErrors,
+                               const Point & residuals,
+                               const Point & relativeErrors,
                                const BasisCollection & basis,
-                               const NumericalPointCollection & trendCoefficients,
+                               const PointCollection & trendCoefficients,
                                const CovarianceModel & covarianceModel,
 			       const NumericalScalar optimalLogLikelihood,
                                const TriangularMatrix & covarianceCholeskyFactor,
@@ -91,7 +91,7 @@ public:
   BasisCollection getBasisCollection() const;
 
   /** Trend coefficients accessor */
-  NumericalPointCollection getTrendCoefficients() const;
+  PointCollection getTrendCoefficients() const;
 
   /** Conditional covariance models accessor */
   CovarianceModel getCovarianceModel() const;
@@ -144,7 +144,7 @@ private:
   BasisPersistentCollection basis_;
 
   /** The trend coefficients */
-  NumericalPointPersistentCollection beta_;
+  PointPersistentCollection beta_;
 
   /** The covariance model */
   CovarianceModel covarianceModel_;

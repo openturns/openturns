@@ -156,7 +156,7 @@ hessian : :class:`~openturns.SymmetricTensor`
 
 Returns
 -------
-factors : :class:`~openturns.NumericalPoint`
+factors : :class:`~openturns.Point`
     Importance factors of the inputs : only when randVect is of dimension 1."
 
 // ---------------------------------------------------------------------
@@ -176,7 +176,7 @@ limitStateVariable : :class:`~openturns.RandomVector`
 
 Returns
 -------
-mean : :class:`~openturns.NumericalPoint`
+mean : :class:`~openturns.Point`
     Approximation at the first order of the mean of the random vector."
 
 // ---------------------------------------------------------------------
@@ -186,7 +186,7 @@ mean : :class:`~openturns.NumericalPoint`
 
 Returns
 -------
-mean : :class:`~openturns.NumericalPoint`
+mean : :class:`~openturns.Point`
     Approximation at the second order of the mean of the random vector
     (it requires that the hessian of the Function has been defined)."
 
@@ -197,7 +197,7 @@ mean : :class:`~openturns.NumericalPoint`
 
 Returns
 -------
-value : :class:`~openturns.NumericalPoint`
+value : :class:`~openturns.Point`
     Value of the Function which defines the random vector at
     the mean point of the input random vector."
 

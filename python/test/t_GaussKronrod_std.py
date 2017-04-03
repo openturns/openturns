@@ -20,20 +20,20 @@ try:
         algo.setRule(rules[i])
         print("Algo=", algo)
         # High-level interface
-        error = NumericalPoint()
+        error = Point()
         value = algo.integrate(f, Interval(a, b), error)[0]
         ref = math.cos(a) - math.cos(b)
         print("value=%.6f" % value, ", ref=%.6f" % ref, ", true error below bound? ", abs(ref - value)
               < algo.getMaximumError(), ", estimated error below bound? ", error[0] < algo.getMaximumError())
         # Low-level interface
-        #ai = NumericalPoint()
-        #bi = NumericalPoint()
+        #ai = Point()
+        #bi = Point()
         #fi = Sample()
-        #ei = NumericalPoint()
+        #ei = Point()
         #value2 = algo.integrate(f, a, b, error, ai, bi, fi, ei)[0]
         # ai.add(b)
         #g = f.draw(a, b, 512)
-        #lower = Cloud(ai, NumericalPoint(ai.getDimension()))
+        #lower = Cloud(ai, Point(ai.getDimension()))
         # lower.setColor("magenta")
         # g.add(lower)
         #g.draw("Smooth_function_adaptation_" + str(i))
@@ -48,16 +48,16 @@ try:
     for i in range(len(rules)):
         algo.setRule(rules[i])
         print("Algo=", algo)
-        error = NumericalPoint()
+        error = Point()
         value = algo.integrate(f, Interval(a, b), error)[0]
         ref = 4.0 + math.cos(b) - math.cos(a)
         print("value=%.6f" % value, ", ref=%.6f" % ref, ", true error below bound? ", abs(ref - value)
               < algo.getMaximumError(), ", estimated error below bound? ", error[0] < algo.getMaximumError())
         # Low-level interface
-        ## ai = NumericalPoint()
-        ## bi = NumericalPoint()
+        ## ai = Point()
+        ## bi = Point()
         ## fi = Sample()
-        ## ei = NumericalPoint()
+        ## ei = Point()
         ## value2 = algo.integrate(f, a, b, error, ai, bi, fi, ei)[0]
         # print "ai=", ai
         # print "bi=", bi
@@ -65,7 +65,7 @@ try:
         # print "ei=", ei
         # ai.add(b)
         ## g = f.draw(a, b, 512)
-        ## lower = Cloud(ai, NumericalPoint(ai.getDimension()))
+        ## lower = Cloud(ai, Point(ai.getDimension()))
         # lower.setColor("magenta")
         # g.add(lower)
         ## g.draw("Nonsmooth_function_adaptation_" + str(i))

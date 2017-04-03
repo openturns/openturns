@@ -213,8 +213,8 @@ SymmetricMatrix SymmetricMatrix::operator * (const IdentityMatrix & m) const
 }
 
 
-/* Multiplication with a NumericalPoint (must have consistent dimensions) */
-NumericalPoint SymmetricMatrix::operator * (const NumericalPoint & pt) const
+/* Multiplication with a Point (must have consistent dimensions) */
+Point SymmetricMatrix::operator * (const Point & pt) const
 {
   return getImplementation()->symVectProd(pt) ;
 }
@@ -239,7 +239,7 @@ SymmetricMatrix SymmetricMatrix::power(const UnsignedInteger n) const
 }
 
 /* Resolution of a linear system */
-NumericalPoint SymmetricMatrix::solveLinearSystem(const NumericalPoint & b,
+Point SymmetricMatrix::solveLinearSystem(const Point & b,
     const Bool keepIntact)
 {
   return getImplementation()->solveLinearSystemSym(b, keepIntact);
@@ -264,11 +264,11 @@ NumericalScalar SymmetricMatrix::computeDeterminant(const Bool keepIntact)
 }
 
 /* Compute eigenvalues */
-NumericalPoint SymmetricMatrix::computeEigenValues(const Bool keepIntact)
+Point SymmetricMatrix::computeEigenValues(const Bool keepIntact)
 {
   return getImplementation()->computeEigenValuesSym(keepIntact);
 }
-NumericalPoint SymmetricMatrix::computeEV(SquareMatrix & v,
+Point SymmetricMatrix::computeEV(SquareMatrix & v,
     const Bool keepIntact)
 {
   return getImplementation()->computeEVSym(*(v.getImplementation()), keepIntact);

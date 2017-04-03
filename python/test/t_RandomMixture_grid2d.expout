@@ -1,4 +1,4 @@
-distribution =  class=RandomMixture name=RandomMixture distribution collection=[class=Uniform name=Uniform dimension=1 a=0 b=1,class=Uniform name=Uniform dimension=1 a=0 b=1,class=Uniform name=Uniform dimension=1 a=0 b=1] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=3 values=[1,1,-2,1,1,-3] constant=class=NumericalPoint name=Unnamed dimension=2 values=[0,0]
+distribution =  class=RandomMixture name=RandomMixture distribution collection=[class=Uniform name=Uniform dimension=1 a=0 b=1,class=Uniform name=Uniform dimension=1 a=0 b=1,class=Uniform name=Uniform dimension=1 a=0 b=1] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=3 values=[1,1,-2,1,1,-3] constant=class=Point name=Unnamed dimension=2 values=[0,0]
 range =  [-2, 2]
 [-3, 2]
 mean =  [0,-0.5]
@@ -263,7 +263,7 @@ xMax =  [2.05061,2.27654]
 1.45841;2.19276;0.000146538
 1.72357;2.19276;0
 1.98874;2.19276;0
-distribution =  class=RandomMixture name=RandomMixture distribution collection=[class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[2] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[1] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[4] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4,2,1,1.4] constant=class=NumericalPoint name=Unnamed dimension=2 values=[0,0]
+distribution =  class=RandomMixture name=RandomMixture distribution collection=[class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[4] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4,2,1,1.4] constant=class=Point name=Unnamed dimension=2 values=[0,0]
 range =  [-98.5174, 116.517]
 [-64.3622, 75.1622]
 mean =  [9,5.4]

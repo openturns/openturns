@@ -22,7 +22,7 @@
 #define OPENTURNS_APPROXIMATIONALGORITHMIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/DesignProxy.hxx"
 
@@ -53,7 +53,7 @@ public:
   /** Default constructor */
   ApproximationAlgorithmImplementation(const Sample & x,
                                        const Sample & y,
-                                       const NumericalPoint & weight,
+                                       const Point & weight,
                                        const Basis & psi,
                                        const Indices & indices);
 
@@ -66,9 +66,9 @@ public:
 
   /** Weigths accessor */
 protected:
-  void setWeight(const NumericalPoint & weight);
+  void setWeight(const Point & weight);
 public:
-  NumericalPoint getWeight() const;
+  Point getWeight() const;
 
   /** Basis accessor */
   Basis getPsi() const;
@@ -84,7 +84,7 @@ public:
 #endif
 
   /** Accessor to the coefficients of the selected metamodel on the provided basis */
-  NumericalPoint getCoefficients();
+  Point getCoefficients();
 
   /** Accessor to the residual of the selected metamodel on the provided basis */
   NumericalScalar getResidual();
@@ -103,7 +103,7 @@ public:
 
 protected:
 
-  void setCoefficients(const NumericalPoint & coefficients);
+  void setCoefficients(const Point & coefficients);
 
   void setResidual(const NumericalScalar residual);
 
@@ -116,7 +116,7 @@ protected:
   Sample y_;
 
   /** Weights */
-  NumericalPoint weight_;
+  Point weight_;
 
   /** Flag to tell if the weights are uniform */
   Bool hasUniformWeight_;
@@ -129,7 +129,7 @@ protected:
 
 private:
   /** Regression coefficients */
-  NumericalPoint coefficients_;
+  Point coefficients_;
 
   /** Residual */
   NumericalScalar residual_;

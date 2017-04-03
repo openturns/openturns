@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief NumericalPointWithDescription extends the classical mathematical point with a description of the coordinates
+ *  @brief PointWithDescription extends the classical mathematical point with a description of the coordinates
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,46 +18,46 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_NUMERICALPOINTWITHDESCRIPTION_HXX
-#define OPENTURNS_NUMERICALPOINTWITHDESCRIPTION_HXX
+#ifndef OPENTURNS_POINTWITHDESCRIPTION_HXX
+#define OPENTURNS_POINTWITHDESCRIPTION_HXX
 
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Description.hxx"
 #include "openturns/Pointer.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class NumericalPointWithDescription
+ * @class PointWithDescription
  *
- * NumericalPointWithDescription extends the classical mathematical point with a description of the coordinates
+ * PointWithDescription extends the classical mathematical point with a description of the coordinates
  */
 
-class OT_API NumericalPointWithDescription
-  : public NumericalPoint
+class OT_API PointWithDescription
+  : public Point
 {
   CLASSNAME;
 
 public:
 
   /** Default constructor */
-  NumericalPointWithDescription();
+  PointWithDescription();
 
   /** Constructor with size */
-  explicit NumericalPointWithDescription(const UnsignedInteger size,
+  explicit PointWithDescription(const UnsignedInteger size,
                                          const NumericalScalar value = 0.0);
 
   /** Constructor from a collection */
-  NumericalPointWithDescription(const Collection<NumericalScalar> & coll);
+  PointWithDescription(const Collection<NumericalScalar> & coll);
 
   /** Constructor from a base class */
-  NumericalPointWithDescription(const Pointer<NumericalPoint> & p_base);
+  PointWithDescription(const Pointer<Point> & p_base);
 
   /** Virtual constructor */
-  virtual NumericalPointWithDescription * clone() const;
+  virtual PointWithDescription * clone() const;
 
   /** Destructor */
-  virtual ~NumericalPointWithDescription() throw();
+  virtual ~PointWithDescription() throw();
 
   /** Description Accessor */
   void setDescription(const Description & description);
@@ -79,10 +79,10 @@ private:
   /** The description of all components */
   Description description_;
 
-}; /* class NumericalPointWithDescription */
+}; /* class PointWithDescription */
 
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_NUMERICALPOINTWITHDESCRIPTION_HXX */
+#endif /* OPENTURNS_POINTWITHDESCRIPTION_HXX */

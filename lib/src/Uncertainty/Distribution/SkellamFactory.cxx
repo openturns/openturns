@@ -49,7 +49,7 @@ SkellamFactory::Implementation SkellamFactory::build(const Sample & sample) cons
   return buildAsSkellam(sample).clone();
 }
 
-SkellamFactory::Implementation SkellamFactory::build(const NumericalPoint & parameters) const
+SkellamFactory::Implementation SkellamFactory::build(const Point & parameters) const
 {
   return buildAsSkellam(parameters).clone();
 }
@@ -85,7 +85,7 @@ Skellam SkellamFactory::buildAsSkellam(const Sample & sample) const
   return result;
 }
 
-Skellam SkellamFactory::buildAsSkellam(const NumericalPoint & parameters) const
+Skellam SkellamFactory::buildAsSkellam(const Point & parameters) const
 {
   try
   {

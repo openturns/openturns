@@ -166,10 +166,10 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
       linear(i, i) = 1.0;
       linear(i, dimension + i) = 1.0;
     }
-    LinearFunction shiftFunctionBase(NumericalPoint(2 * dimension), NumericalPoint(dimension), linear);
+    LinearFunction shiftFunctionBase(Point(2 * dimension), Point(dimension), linear);
     Indices parameters(dimension);
     parameters.fill();
-    shiftFunction = ParametricFunction(shiftFunctionBase, parameters, NumericalPoint(dimension));
+    shiftFunction = ParametricFunction(shiftFunctionBase, parameters, Point(dimension));
     problem.setLevelValue(level);
   } // project
   for (UnsignedInteger i = 0; i < numSimplices; ++i)
@@ -194,14 +194,14 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
       if (numGood <= dimension)
       {
         Sample localVertices(dimension + 1, dimension);
-        NumericalPoint localValues(dimension + 1, dimension);
+        Point localValues(dimension + 1, dimension);
         for (UnsignedInteger j = 0; j <= dimension; ++j)
         {
           const UnsignedInteger index = currentSimplex[j];
           localVertices[j] = boundingVertices[index];
           localValues[j] = values[index][0];
         }
-        NumericalPoint center(dimension);
+        Point center(dimension);
         NumericalScalar centerValue = 0.0;
         // First pass: compute the center of the good points
         for (UnsignedInteger j = 0; j <= dimension; ++j)
@@ -223,8 +223,8 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
             // C(v*) [inside], M(level) [on], B(v) [outside]
             // (M-C)/(B-C) = (level-v*)/(v-v*) = a
             // M-B=(v-level)/(v-v*)(C-B)
-            const NumericalPoint currentVertex(boundingVertices[globalVertexIndex]);
-            const NumericalPoint delta((center - currentVertex) * (localValues[j] - centerValue) / (localValues[j] - centerValue));
+            const Point currentVertex(boundingVertices[globalVertexIndex]);
+            const Point delta((center - currentVertex) * (localValues[j] - centerValue) / (localValues[j] - centerValue));
             // If no projection, just add the linear correction
             flagMovedVertices.add(globalVertexIndex);
             if (!project) movedVertices.add(currentVertex + delta);
@@ -248,7 +248,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
 		LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with solver=" << solver_ << ", using finite differences for gradient");
                 // Here we may have to fix the gradient eg in the case of analytical functions, when Ev3 does not handle the expression.
                 const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("CenteredFiniteDifferenceGradient-DefaultEpsilon");
-                levelFunction.setGradient(CenteredFiniteDifferenceGradient((localVertices.getMin() - localVertices.getMax()) * epsilon + NumericalPoint(dimension, epsilon), levelFunction.getEvaluation()).clone());
+                levelFunction.setGradient(CenteredFiniteDifferenceGradient((localVertices.getMin() - localVertices.getMax()) * epsilon + Point(dimension, epsilon), levelFunction.getEvaluation()).clone());
                 problem.setLevelFunction(levelFunction);
                 solver_.setProblem(problem);
 		// Try with the new gradients

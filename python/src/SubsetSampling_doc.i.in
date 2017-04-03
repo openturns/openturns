@@ -72,7 +72,7 @@ Simulation"
 
 Returns
 -------
-coef : `~openturns.NumericalPoint`
+coef : `~openturns.Point`
     Coefficient of variation at each subset step."
 
 // ---------------------------------------------------------------------------
@@ -136,7 +136,7 @@ outputSample : `~openturns.Sample`
 
 Returns
 -------
-threshold : `~openturns.NumericalPoint`
+threshold : `~openturns.Point`
     Threshold values."
 
 // ---------------------------------------------------------------------------
@@ -146,7 +146,7 @@ threshold : `~openturns.NumericalPoint`
 
 Returns
 -------
-prob : `~openturns.NumericalPoint`
+prob : `~openturns.Point`
     Autocorrelation values."
 
 // ---------------------------------------------------------------------------
@@ -156,7 +156,7 @@ prob : `~openturns.NumericalPoint`
 
 Returns
 -------
-prob : `~openturns.NumericalPoint`
+prob : `~openturns.Point`
     Probability estimate values."
 
 // ---------------------------------------------------------------------------

@@ -56,8 +56,8 @@ public:
         const String & legend = "");
 
   /** Contructor from 2 data sets */
-  Cloud(const NumericalPoint & dataX,
-        const NumericalPoint & dataY,
+  Cloud(const Point & dataX,
+        const Point & dataY,
         const String & legend = "");
 
   /** Constructor with parameters */

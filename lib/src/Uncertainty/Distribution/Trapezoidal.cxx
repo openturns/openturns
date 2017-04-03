@@ -106,26 +106,26 @@ void Trapezoidal::computeRange()
 
 
 /* Get one realization of the distribution */
-NumericalPoint Trapezoidal::getRealization() const
+Point Trapezoidal::getRealization() const
 {
-  return NumericalPoint(1, computeScalarQuantile(RandomGenerator::Generate()));
+  return Point(1, computeScalarQuantile(RandomGenerator::Generate()));
 }
 
 
 /* Get the DDF of the distribution */
-NumericalPoint Trapezoidal::computeDDF(const NumericalPoint & point) const
+Point Trapezoidal::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0];
 
-  if ((a_ < x) && (x < b_)) return NumericalPoint(1, h_ / (b_ - a_));
-  return NumericalPoint(1, -h_ / (d_ - c_));
+  if ((a_ < x) && (x < b_)) return Point(1, h_ / (b_ - a_));
+  return Point(1, -h_ / (d_ - c_));
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Trapezoidal::computePDF(const NumericalPoint & point) const
+NumericalScalar Trapezoidal::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -141,7 +141,7 @@ NumericalScalar Trapezoidal::computePDF(const NumericalPoint & point) const
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar Trapezoidal::computeCDF(const NumericalPoint & point) const
+NumericalScalar Trapezoidal::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -188,12 +188,12 @@ NumericalComplex Trapezoidal::computeCharacteristicFunction(const NumericalScala
 }
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint Trapezoidal::computePDFGradient(const NumericalPoint & point) const
+Point Trapezoidal::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0];
-  NumericalPoint pdfGradient(4, 0.0);
+  Point pdfGradient(4, 0.0);
   if ((a_ < x) && (x < b_))
   {
     pdfGradient[0] = -(d_ * b_ - d_ * x - a_ * a_ + 2.0 * a_ * x - b_ * b_ + b_ * c_ - c_ * x) * h_ * h_ / (2.0 * (a_ - b_) * (a_ - b_));
@@ -219,12 +219,12 @@ NumericalPoint Trapezoidal::computePDFGradient(const NumericalPoint & point) con
 }
 
 /* Get the logPDFGradient of the distribution */
-NumericalPoint Trapezoidal::computeLogPDFGradient(const NumericalPoint & point) const
+Point Trapezoidal::computeLogPDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0];
-  NumericalPoint logPdfGradient(4, 0.0);
+  Point logPdfGradient(4, 0.0);
   if ((a_ < x) && (x < b_))
   {
     logPdfGradient[0] = h_ / 2.0 - 1.0 / (x - a_) + 1.0 / (b_ - a_);
@@ -251,12 +251,12 @@ NumericalPoint Trapezoidal::computeLogPDFGradient(const NumericalPoint & point) 
 
 
 /* Get the CDFGradient of the distribution */
-NumericalPoint Trapezoidal::computeCDFGradient(const NumericalPoint & point) const
+Point Trapezoidal::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0];
-  NumericalPoint cdfGradient(4, 0.0);
+  Point cdfGradient(4, 0.0);
   if ((a_ < x) && (x < b_))
   {
     cdfGradient[0] =  0.25 * (x - a_) * (c_ * a_ - 2.0 * c_ * b_ + c_ * x - 2.0 * a_ * x + a_ * d_ + 2.0 * b_ * b_ - 2.0 * b_ * d_ + x * d_) * h_ * h_ / ((a_ - b_) * (a_ - b_));
@@ -305,18 +305,18 @@ NumericalScalar Trapezoidal::getRoughness() const
 /* Compute the mean of the distribution */
 void Trapezoidal::computeMean() const
 {
-  mean_ = NumericalPoint(1, (-b_ * b_ - b_ * a_ - a_ * a_ + c_ * c_ + c_ * d_ + d_ * d_) * h_ / 6.0);
+  mean_ = Point(1, (-b_ * b_ - b_ * a_ - a_ * a_ + c_ * c_ + c_ * d_ + d_ * d_) * h_ / 6.0);
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint Trapezoidal::getStandardDeviation() const /*throw(NotDefinedException)*/
+Point Trapezoidal::getStandardDeviation() const /*throw(NotDefinedException)*/
 {
-  return NumericalPoint(1, getSigma());
+  return Point(1, getSigma());
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint Trapezoidal::getSkewness() const /*throw(NotDefinedException)*/
+Point Trapezoidal::getSkewness() const /*throw(NotDefinedException)*/
 {
   const NumericalScalar a2 = a_ * a_;
   const NumericalScalar a3 = a2 * a_;
@@ -340,11 +340,11 @@ NumericalPoint Trapezoidal::getSkewness() const /*throw(NotDefinedException)*/
   NumericalScalar standardDeviation3 = getSigma();
   standardDeviation3 = standardDeviation3 * standardDeviation3 * standardDeviation3;
 
-  return NumericalPoint(1, thirdMoment / standardDeviation3);
+  return Point(1, thirdMoment / standardDeviation3);
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint Trapezoidal::getKurtosis() const /*throw(NotDefinedException)*/
+Point Trapezoidal::getKurtosis() const /*throw(NotDefinedException)*/
 {
   const NumericalScalar a2 = a_ * a_;
   const NumericalScalar a3 = a2 * a_;
@@ -371,13 +371,13 @@ NumericalPoint Trapezoidal::getKurtosis() const /*throw(NotDefinedException)*/
   standardDeviation4 *= standardDeviation4;
   standardDeviation4 *= standardDeviation4;
 
-  return NumericalPoint(1, fourthMoment / standardDeviation4);
+  return Point(1, fourthMoment / standardDeviation4);
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Trapezoidal::getStandardMoment(const UnsignedInteger n) const
+Point Trapezoidal::getStandardMoment(const UnsignedInteger n) const
 {
-  if (n == 0) return NumericalPoint(1, 1.0);
+  if (n == 0) return Point(1, 1.0);
   const NumericalScalar beta = 1.0 - 2.0 * (d_ - b_) / (d_ - a_);
   const NumericalScalar gamma = 1.0 - 2.0 * (d_ - c_) / (d_ - a_);
   const NumericalScalar eta = 2.0 / (2.0 - beta + gamma);
@@ -390,7 +390,7 @@ NumericalPoint Trapezoidal::getStandardMoment(const UnsignedInteger n) const
     else value += (eta / (beta + 1.0)) * ((beta * betaPow + 1.0) / (n + 2) + (betaPow - 1.0) / (n + 1));
   }
   if (gamma <  1.0) value -= (eta / (1.0 - gamma)) * ((1.0 - gamma * gammaPow) / (n + 2) - (1.0 - gammaPow) / (n + 1));
-  return NumericalPoint(1, value);
+  return Point(1, value);
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
@@ -409,9 +409,9 @@ void Trapezoidal::computeCovariance() const
 }
 
 /* Parameters value accessor */
-NumericalPoint Trapezoidal::getParameter() const
+Point Trapezoidal::getParameter() const
 {
-  NumericalPoint point(4);
+  Point point(4);
   point[0] = a_;
   point[1] = b_;
   point[2] = c_;
@@ -419,7 +419,7 @@ NumericalPoint Trapezoidal::getParameter() const
   return point;
 }
 
-void Trapezoidal::setParameter(const NumericalPoint & parameter)
+void Trapezoidal::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 4) throw InvalidArgumentException(HERE) << "Error: expected 4 values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();
@@ -544,9 +544,9 @@ void Trapezoidal::update()
 }
 
 /* Get the PDF singularities inside of the range - 1D only */
-NumericalPoint Trapezoidal::getSingularities() const
+Point Trapezoidal::getSingularities() const
 {
-  NumericalPoint singularities(0);
+  Point singularities(0);
   if (a_ < b_ && b_ < d_) singularities.add(b_);
   if (b_ < c_ && c_ < d_) singularities.add(c_);
   return singularities;

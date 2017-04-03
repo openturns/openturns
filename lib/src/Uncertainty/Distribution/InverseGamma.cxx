@@ -147,8 +147,8 @@ InverseGamma * InverseGamma::clone() const
 /* Compute the numerical range of the distribution given the parameters values */
 void InverseGamma::computeRange()
 {
-  const NumericalPoint lowerBound(1, 0.0);
-  const NumericalPoint upperBound(computeUpperBound());
+  const Point lowerBound(1, 0.0);
+  const Point upperBound(computeUpperBound());
   const Interval::BoolCollection finiteLowerBound(1, true);
   const Interval::BoolCollection finiteUpperBound(1, false);
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
@@ -178,25 +178,25 @@ void InverseGamma::update()
 
 
 /* Get one realization of the distribution */
-NumericalPoint InverseGamma::getRealization() const
+Point InverseGamma::getRealization() const
 {
-  return NumericalPoint(1, 1.0 / (lambda_ * DistFunc::rGamma(k_)));
+  return Point(1, 1.0 / (lambda_ * DistFunc::rGamma(k_)));
 }
 
 
 /* Get the DDF of the distribution */
-NumericalPoint InverseGamma::computeDDF(const NumericalPoint & point) const
+Point InverseGamma::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0];
-  if (x <= 0.0) return NumericalPoint(1, 0.0);
-  return NumericalPoint(1, (1.0 / (lambda_ * x) - (k_ + 1.0)) * computePDF(point) / x);
+  if (x <= 0.0) return Point(1, 0.0);
+  return Point(1, (1.0 / (lambda_ * x) - (k_ + 1.0)) * computePDF(point) / x);
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar InverseGamma::computePDF(const NumericalPoint & point) const
+NumericalScalar InverseGamma::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -204,7 +204,7 @@ NumericalScalar InverseGamma::computePDF(const NumericalPoint & point) const
   return std::exp(computeLogPDF(point));
 }
 
-NumericalScalar InverseGamma::computeLogPDF(const NumericalPoint & point) const
+NumericalScalar InverseGamma::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -218,7 +218,7 @@ NumericalScalar InverseGamma::computeLogPDF(const NumericalPoint & point) const
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar InverseGamma::computeCDF(const NumericalPoint & point) const
+NumericalScalar InverseGamma::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -228,7 +228,7 @@ NumericalScalar InverseGamma::computeCDF(const NumericalPoint & point) const
   return DistFunc::pGamma(k_, 1.0 / (lambda_ * x), true);
 }
 
-NumericalScalar InverseGamma::computeComplementaryCDF(const NumericalPoint & point) const
+NumericalScalar InverseGamma::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -250,11 +250,11 @@ NumericalComplex InverseGamma::computeLogCharacteristicFunction(const NumericalS
 }
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint InverseGamma::computePDFGradient(const NumericalPoint & point) const
+Point InverseGamma::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  NumericalPoint pdfGradient(2);
+  Point pdfGradient(2);
   const NumericalScalar x = point[0];
   if (x <= 0.0) return pdfGradient;
   const NumericalScalar pdf = computePDF(point);
@@ -264,11 +264,11 @@ NumericalPoint InverseGamma::computePDFGradient(const NumericalPoint & point) co
 }
 
 /* Get the CDFGradient of the distribution */
-NumericalPoint InverseGamma::computeCDFGradient(const NumericalPoint & point) const
+Point InverseGamma::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  NumericalPoint cdfGradient(2, 0.0);
+  Point cdfGradient(2, 0.0);
   const NumericalScalar x = point[0];
   if (x <= 0.0) return cdfGradient;
   const NumericalScalar lambdaXInverse = 1.0 / (lambda_ * x);
@@ -290,36 +290,36 @@ NumericalScalar InverseGamma::computeScalarQuantile(const NumericalScalar prob,
 void InverseGamma::computeMean() const
 {
   if (!(k_ > 1.0)) throw NotDefinedException(HERE) << "InverseGamma mean is defined only for k > 1, here k=" << k_;
-  mean_ = NumericalPoint(1, 1.0 / (lambda_ * (k_ - 1.0)));
+  mean_ = Point(1, 1.0 / (lambda_ * (k_ - 1.0)));
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint InverseGamma::getStandardDeviation() const
+Point InverseGamma::getStandardDeviation() const
 {
   if (!(k_ > 2.0)) throw NotDefinedException(HERE) << "InverseGamma standard deviation is defined only for k > 2, here k=" << k_;
-  return NumericalPoint(1, std::sqrt(getCovariance()(0, 0)));
+  return Point(1, std::sqrt(getCovariance()(0, 0)));
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint InverseGamma::getSkewness() const
+Point InverseGamma::getSkewness() const
 {
   if (!(k_ > 3.0)) throw NotDefinedException(HERE) << "InverseGamma skewness is defined only for k > 3, here k=" << k_;
-  return NumericalPoint(1, 4.0 * std::sqrt(k_ - 2.0) / (k_ - 3.0));
+  return Point(1, 4.0 * std::sqrt(k_ - 2.0) / (k_ - 3.0));
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint InverseGamma::getKurtosis() const
+Point InverseGamma::getKurtosis() const
 {
   if (!(k_ > 4.0)) throw NotDefinedException(HERE) << "InverseGamma kurtosis is defined only for k > 4, here k=" << k_;
-  return NumericalPoint(1, 3.0 * (k_ * (k_ + 3.0) - 10.0) / ((k_ - 3.0) * (k_ - 4.0)));
+  return Point(1, 3.0 * (k_ * (k_ + 3.0) - 10.0) / ((k_ - 3.0) * (k_ - 4.0)));
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint InverseGamma::getStandardMoment(const UnsignedInteger n) const
+Point InverseGamma::getStandardMoment(const UnsignedInteger n) const
 {
   if (k_ <= n) throw NotDefinedException(HERE) << "InverseGamma standard moment of order " << n << " is defined only for k > " << n << ", here k=" << k_;
-  return NumericalPoint(1, std::exp(SpecFunc::LogGamma(k_ - n) - SpecFunc::LogGamma(k_)));
+  return Point(1, std::exp(SpecFunc::LogGamma(k_ - n) - SpecFunc::LogGamma(k_)));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
@@ -338,15 +338,15 @@ void InverseGamma::computeCovariance() const
 }
 
 /* Parameters value and description accessor */
-NumericalPoint InverseGamma::getParameter() const
+Point InverseGamma::getParameter() const
 {
-  NumericalPoint point(2);
+  Point point(2);
   point[0] = k_;
   point[1] = lambda_;
   return point;
 }
 
-void InverseGamma::setParameter(const NumericalPoint & parameter)
+void InverseGamma::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameter.getSize();
   const NumericalScalar w = getWeight();

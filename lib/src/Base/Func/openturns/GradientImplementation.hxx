@@ -22,8 +22,8 @@
 #define OPENTURNS_GRADIENTIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalPointWithDescription.hxx"
+#include "openturns/Point.hxx"
+#include "openturns/PointWithDescription.hxx"
 #include "openturns/Description.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Matrix.hxx"
@@ -78,9 +78,9 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Gradient method */
-  virtual Matrix gradient(const NumericalPoint & inP) const;
-  virtual Matrix gradient(const NumericalPoint & inP,
-                          const NumericalPoint & parameters);
+  virtual Matrix gradient(const Point & inP) const;
+  virtual Matrix gradient(const Point & inP,
+                          const Point & parameters);
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;
@@ -89,8 +89,8 @@ public:
   virtual UnsignedInteger getOutputDimension() const;
 
   /** Parameters value accessor */
-  virtual NumericalPoint getParameter() const;
-  virtual void setParameter(const NumericalPoint & parameter);
+  virtual Point getParameter() const;
+  virtual void setParameter(const Point & parameter);
 
   /** Get the number of calls to operator() */
   UnsignedInteger getCallsNumber() const;
@@ -109,7 +109,7 @@ protected:
 private:
 
   /** The value of the parameters */
-  NumericalPoint parameter_;
+  Point parameter_;
 
 }; /* class GradientImplementation */
 

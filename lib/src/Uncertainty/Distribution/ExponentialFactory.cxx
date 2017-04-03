@@ -48,7 +48,7 @@ ExponentialFactory::Implementation ExponentialFactory::build(const Sample & samp
   return buildAsExponential(sample).clone();
 }
 
-ExponentialFactory::Implementation ExponentialFactory::build(const NumericalPoint & parameters) const
+ExponentialFactory::Implementation ExponentialFactory::build(const Point & parameters) const
 {
   return buildAsExponential(parameters).clone();
 }
@@ -80,7 +80,7 @@ Exponential ExponentialFactory::buildAsExponential(const Sample & sample) const
   return result;
 }
 
-Exponential ExponentialFactory::buildAsExponential(const NumericalPoint & parameters) const
+Exponential ExponentialFactory::buildAsExponential(const Point & parameters) const
 {
   try
   {

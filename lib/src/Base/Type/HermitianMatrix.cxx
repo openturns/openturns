@@ -239,8 +239,8 @@ HermitianMatrix::NumericalComplexCollection HermitianMatrix::operator * (const N
   return getImplementation()->hermVectProd(pt) ;
 }
 
-/* Multiplication with a NumericalPoint (must have consistent dimensions) */
-HermitianMatrix::NumericalComplexCollection HermitianMatrix::operator * (const NumericalPoint & pt) const
+/* Multiplication with a Point (must have consistent dimensions) */
+HermitianMatrix::NumericalComplexCollection HermitianMatrix::operator * (const Point & pt) const
 {
   return getImplementation()->hermVectProd(pt) ;
 }

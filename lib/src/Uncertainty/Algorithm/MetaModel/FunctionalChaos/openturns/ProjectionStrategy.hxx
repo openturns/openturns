@@ -60,7 +60,7 @@ public:
   virtual Sample getOutputSample() const;
 
   /** Weights accessor */
-  virtual NumericalPoint getWeights() const;
+  virtual Point getWeights() const;
 
   /** Residual accessor */
   virtual NumericalScalar getResidual() const;
@@ -69,7 +69,7 @@ public:
   virtual NumericalScalar getRelativeError() const;
 
   /** Relative error accessor */
-  virtual NumericalPoint getCoefficients() const;
+  virtual Point getCoefficients() const;
 
   /** Experiment accessors */
   virtual void setExperiment(const WeightedExperiment & weightedExperiment);

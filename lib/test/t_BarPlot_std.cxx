@@ -35,9 +35,9 @@ int main(int argc, char *argv[])
 
     // Instanciate one distribution object
     UnsignedInteger dim = 1;
-    NumericalPoint meanPoint(dim, 1.0);
+    Point meanPoint(dim, 1.0);
     meanPoint[0] = 0.5;
-    NumericalPoint sigma(dim, 1.0);
+    Point sigma(dim, 1.0);
     sigma[0] = 2.0;
     CorrelationMatrix R = IdentityMatrix(dim);
     Normal distribution1(meanPoint, sigma, R);
@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
     NumericalScalar max1 = sample1.getMax()[0] + epsilon;
     NumericalScalar min2 = sample2.getMin()[0];
     NumericalScalar max2 = sample2.getMax()[0] + epsilon;
-    NumericalPoint tmp(2);
+    Point tmp(2);
     tmp[0] = (max1 - min1) / nBars;
     tmp[1] = 0;
     Sample data1(nBars, tmp);

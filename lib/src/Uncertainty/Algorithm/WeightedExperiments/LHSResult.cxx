@@ -76,7 +76,7 @@ void LHSResult::add(const Sample & optimalDesign, NumericalScalar criterion,
     optimalIndex_ = criteria_.getSize();
     optimalCriterion_ = criterion;
   }
-  NumericalPoint criteria(4);
+  Point criteria(4);
   criteria[0] = criterion;
   criteria[1] = C2;
   criteria[2] = PhiP;

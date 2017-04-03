@@ -77,18 +77,18 @@ Epanechnikov * Epanechnikov::clone() const
 }
 
 /* Get the DDF of the distribution */
-NumericalPoint Epanechnikov::computeDDF(const NumericalPoint & point) const
+Point Epanechnikov::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0];
-  if ((x <= -1.0) || (x > 1.0)) return NumericalPoint(1, 0.0);
-  return NumericalPoint(1, -1.5 * x);
+  if ((x <= -1.0) || (x > 1.0)) return Point(1, 0.0);
+  return Point(1, -1.5 * x);
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Epanechnikov::computePDF(const NumericalPoint & point) const
+NumericalScalar Epanechnikov::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -99,7 +99,7 @@ NumericalScalar Epanechnikov::computePDF(const NumericalPoint & point) const
 
 
 /* Get the CDF of the distribution */
-NumericalScalar Epanechnikov::computeCDF(const NumericalPoint & point) const
+NumericalScalar Epanechnikov::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -109,7 +109,7 @@ NumericalScalar Epanechnikov::computeCDF(const NumericalPoint & point) const
   return 0.5 + x * (0.75 - 0.25 * x * x);
 }
 
-NumericalScalar Epanechnikov::computeComplementaryCDF(const NumericalPoint & point) const
+NumericalScalar Epanechnikov::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -120,19 +120,19 @@ NumericalScalar Epanechnikov::computeComplementaryCDF(const NumericalPoint & poi
 }
 
 /** Get the PDFGradient of the distribution */
-NumericalPoint Epanechnikov::computePDFGradient(const NumericalPoint & point) const
+Point Epanechnikov::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  return NumericalPoint(0);
+  return Point(0);
 }
 
 /** Get the CDFGradient of the distribution */
-NumericalPoint Epanechnikov::computeCDFGradient(const NumericalPoint & point) const
+Point Epanechnikov::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  return NumericalPoint(0);
+  return Point(0);
 }
 
 /* Get the quantile of the distribution */
@@ -153,35 +153,35 @@ NumericalScalar Epanechnikov::getRoughness() const
 /* Compute the mean of the distribution */
 void Epanechnikov::computeMean() const
 {
-  mean_ = NumericalPoint(1, 0.0);
+  mean_ = Point(1, 0.0);
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint Epanechnikov::getStandardDeviation() const
+Point Epanechnikov::getStandardDeviation() const
 {
   // 0.4472135954999579392818348 = 1 / sqrt(5)
-  return NumericalPoint(1, 0.4472135954999579392818348);
+  return Point(1, 0.4472135954999579392818348);
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint Epanechnikov::getSkewness() const
+Point Epanechnikov::getSkewness() const
 {
-  return NumericalPoint(1, 0.0);
+  return Point(1, 0.0);
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint Epanechnikov::getKurtosis() const
+Point Epanechnikov::getKurtosis() const
 {
   // 2.142857142857142857142857 = 15 / 7
-  return NumericalPoint(1, 2.142857142857142857142857);
+  return Point(1, 2.142857142857142857142857);
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Epanechnikov::getStandardMoment(const UnsignedInteger n) const
+Point Epanechnikov::getStandardMoment(const UnsignedInteger n) const
 {
-  if (n % 2 == 1) return NumericalPoint(1, 0.0);
-  return NumericalPoint(1, 3.0 / (3.0 + n * (4.0 + n)));
+  if (n % 2 == 1) return Point(1, 0.0);
+  return Point(1, 3.0 / (3.0 + n * (4.0 + n)));
 }
 
 /* Compute the covariance of the distribution */

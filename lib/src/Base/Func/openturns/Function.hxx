@@ -120,7 +120,7 @@ public:
   /** Linear combination function constructor
     * @deprecated */
   Function(const FunctionCollection & functionCollection,
-                        const NumericalPoint & coefficients);
+                        const Point & coefficients);
 
   /** Dual linear combination function constructor */
   Function(const FunctionCollection & functionCollection,
@@ -154,7 +154,7 @@ public:
    * @deprecated */
   Function(const Function & function,
                         const Indices & set,
-                        const NumericalPoint & referencePoint,
+                        const Point & referencePoint,
                         const Bool parametersSet = true);
 
   /** Comparison operator */
@@ -282,10 +282,10 @@ public:
   virtual Function operator - (const Function & right) const;
 
   /** Operator () */
-  NumericalPoint operator() (const NumericalPoint & inP) const;
-  NumericalPoint operator() (const NumericalPoint & inP,
-                             const NumericalPoint & parameter);
-  Sample operator() (const NumericalPoint & point,
+  Point operator() (const Point & inP) const;
+  Point operator() (const Point & inP,
+                             const Point & parameter);
+  Sample operator() (const Point & point,
                               const Sample & parameters);
 
   Sample operator() (const Sample & inS) const;
@@ -294,23 +294,23 @@ public:
 
 
   /** Method gradient() returns the Jacobian transposed matrix of the function at point */
-  Matrix gradient(const NumericalPoint & inP) const;
-  Matrix gradient(const NumericalPoint & inP,
-                  const NumericalPoint & parameters);
+  Matrix gradient(const Point & inP) const;
+  Matrix gradient(const Point & inP,
+                  const Point & parameters);
 
   /** Method hessian() returns the symmetric tensor of the function at point */
-  SymmetricTensor hessian(const NumericalPoint & inP) const;
-  SymmetricTensor hessian(const NumericalPoint & inP,
-                          const NumericalPoint & parameters);
+  SymmetricTensor hessian(const Point & inP) const;
+  SymmetricTensor hessian(const Point & inP,
+                          const Point & parameters);
 
   /** Gradient according to the marginal parameters */
-  virtual Matrix parameterGradient(const NumericalPoint & inP) const;
-  virtual Matrix parameterGradient(const NumericalPoint & inP,
-                                   const NumericalPoint & parameters);
+  virtual Matrix parameterGradient(const Point & inP) const;
+  virtual Matrix parameterGradient(const Point & inP,
+                                   const Point & parameters);
 
   /** Parameters value accessor */
-  virtual NumericalPoint getParameter() const;
-  virtual void setParameter(const NumericalPoint & parameter);
+  virtual Point getParameter() const;
+  virtual void setParameter(const Point & parameter);
 
   /** Parameters description accessor */
   virtual Description getParameterDescription() const;
@@ -354,7 +354,7 @@ public:
   /** Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
   virtual Graph draw(const UnsignedInteger inputMarginal,
                      const UnsignedInteger outputMarginal,
-                     const NumericalPoint & centralPoint,
+                     const Point & centralPoint,
                      const NumericalScalar xMin,
                      const NumericalScalar xMax,
                      const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("NumericalMathEvaluation-DefaultPointNumber"),
@@ -364,9 +364,9 @@ public:
   virtual Graph draw(const UnsignedInteger firstInputMarginal,
                      const UnsignedInteger secondInputMarginal,
                      const UnsignedInteger outputMarginal,
-                     const NumericalPoint & centralPoint,
-                     const NumericalPoint & xMin,
-                     const NumericalPoint & xMax,
+                     const Point & centralPoint,
+                     const Point & xMin,
+                     const Point & xMax,
                      const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedInteger("NumericalMathEvaluation-DefaultPointNumber")),
                      const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
 
@@ -377,8 +377,8 @@ public:
                      const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
 
   /** Draw the output of the function with respect to its input when the input dimension is 2 and the output dimension is 1 */
-  virtual Graph draw(const NumericalPoint & xMin,
-                     const NumericalPoint & xMax,
+  virtual Graph draw(const Point & xMin,
+                     const Point & xMax,
                      const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedInteger("NumericalMathEvaluation-DefaultPointNumber")),
                      const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
 

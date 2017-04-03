@@ -167,7 +167,7 @@ Function ProcessImplementation::getContinuousRealization() const
   const Sample values(field.getValues());
   if (getSpatialDimension() == 1)
   {
-    const NumericalPoint locations(mesh_.getVertices().getImplementation()->getData());
+    const Point locations(mesh_.getVertices().getImplementation()->getData());
     return PiecewiseLinearEvaluation(locations, values);
   }
   return P1LagrangeEvaluation(field);

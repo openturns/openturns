@@ -42,8 +42,8 @@ SphericalModel::SphericalModel(const UnsignedInteger spatialDimension)
 }
 
 /* Constructor with parameters */
-SphericalModel::SphericalModel(const NumericalPoint & scale,
-                               const NumericalPoint & amplitude,
+SphericalModel::SphericalModel(const Point & scale,
+                               const Point & amplitude,
                                const NumericalScalar radius)
   : StationaryCovarianceModel(scale, amplitude)
   , radius_(-1.0)
@@ -58,14 +58,14 @@ SphericalModel * SphericalModel::clone() const
   return new SphericalModel(*this);
 }
 
-CovarianceMatrix SphericalModel::operator() (const NumericalPoint & tau) const
+CovarianceMatrix SphericalModel::operator() (const Point & tau) const
 {
   CovarianceMatrix covarianceMatrix(dimension_);
   covarianceMatrix(0, 0) = computeAsScalar(tau);
   return covarianceMatrix;
 }
 
-NumericalScalar SphericalModel::computeAsScalar(const NumericalPoint & tau) const
+NumericalScalar SphericalModel::computeAsScalar(const Point & tau) const
 {
   return amplitude_[0] * computeStandardRepresentative(tau);
 }
@@ -73,11 +73,11 @@ NumericalScalar SphericalModel::computeAsScalar(const NumericalPoint & tau) cons
 /* Computation of the representative function:
  * rho(tau) = amplitude_ * (1 - 0.5|tau/scale| (3 - (|tau/scale| / radius)^2)) for 0<=|tau/scale|<=radius, 0 otherwise
  */
-NumericalScalar SphericalModel::computeStandardRepresentative(const NumericalPoint & tau) const
+NumericalScalar SphericalModel::computeStandardRepresentative(const Point & tau) const
 {
   if (tau.getDimension() != spatialDimension_)
     throw InvalidArgumentException(HERE) << "In SphericalModel::computeStandardRepresentative: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();
-  NumericalPoint tauOverTheta(spatialDimension_);
+  Point tauOverTheta(spatialDimension_);
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
   const NumericalScalar normTauOverScaleA = tauOverTheta.norm() / radius_;
   if (normTauOverScaleA <= SpecFunc::NumericalScalarEpsilon) return 1.0 + nuggetFactor_;
@@ -96,7 +96,7 @@ CovarianceMatrix SphericalModel::discretize(const RegularGrid & timeGrid) const
 
   for (UnsignedInteger diag = 0; diag < size; ++diag)
   {
-    const NumericalScalar covTau = computeAsScalar(NumericalPoint(1, diag * timeStep));
+    const NumericalScalar covTau = computeAsScalar(Point(1, diag * timeStep));
     for (UnsignedInteger i = 0; i < size - diag; ++i)
       cov(i, i + diag) = covTau;
   }
@@ -110,16 +110,16 @@ Bool SphericalModel::isStationary() const
   return true;
 }
 
-void SphericalModel::setFullParameter(const NumericalPoint & parameter)
+void SphericalModel::setFullParameter(const Point & parameter)
 {
   CovarianceModelImplementation::setFullParameter(parameter);
   setRadius(parameter[parameter.getSize() - 1]);
 }
 
-NumericalPoint SphericalModel::getFullParameter() const
+Point SphericalModel::getFullParameter() const
 {
   // Get the generic parameter
-  NumericalPoint parameter(CovarianceModelImplementation::getFullParameter());
+  Point parameter(CovarianceModelImplementation::getFullParameter());
   // Add the specific one
   parameter.add(radius_);
   return parameter;

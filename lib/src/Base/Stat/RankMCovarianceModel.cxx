@@ -42,7 +42,7 @@ RankMCovarianceModel::RankMCovarianceModel(const UnsignedInteger spatialDimensio
 }
 
 /* Parameters constructor */
-RankMCovarianceModel::RankMCovarianceModel(const NumericalPoint & variance,
+RankMCovarianceModel::RankMCovarianceModel(const Point & variance,
     const Basis & basis)
   : CovarianceModelImplementation()
   , variance_(variance)
@@ -67,7 +67,7 @@ RankMCovarianceModel::RankMCovarianceModel(const CovarianceMatrix & covariance,
   // Check if the covariance is diagonal
   if (covariance.isDiagonal())
   {
-    variance_ = NumericalPoint(covariance.getDimension());
+    variance_ = Point(covariance.getDimension());
     for (UnsignedInteger i = 0; i < variance_.getDimension(); ++i)
       variance_[i] = covariance(i, i);
   }
@@ -89,8 +89,8 @@ RankMCovarianceModel * RankMCovarianceModel::clone() const
  * and when the components of (\xi_1,\dots,\xi_M) are decorrelated with unit variance, it reduces to:
  * C(s,t)=\sum_{i=1}^M\alpha_i^2\phi_i(s)\phi_i(t)^t
  */
-CovarianceMatrix RankMCovarianceModel::operator() (const NumericalPoint & s,
-    const NumericalPoint & t) const
+CovarianceMatrix RankMCovarianceModel::operator() (const Point & s,
+    const Point & t) const
 {
   if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
   if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
@@ -121,8 +121,8 @@ CovarianceMatrix RankMCovarianceModel::operator() (const NumericalPoint & s,
 }
 
 /* Gradient */
-Matrix RankMCovarianceModel::partialGradient(const NumericalPoint & s,
-    const NumericalPoint & t) const
+Matrix RankMCovarianceModel::partialGradient(const Point & s,
+    const Point & t) const
 {
   if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
   if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
@@ -144,7 +144,7 @@ CovarianceMatrix RankMCovarianceModel::discretize(const Sample & vertices) const
     {
       for (UnsignedInteger i = 0; i < basisSize; ++i)
 	{
-	  const NumericalPoint data(functions_[i](vertices).getImplementation()->getData() * std::sqrt(variance_[i]));
+	  const Point data(functions_[i](vertices).getImplementation()->getData() * std::sqrt(variance_[i]));
 	  std::copy(data.begin(), data.end(), start);
 	  start += fullSize;
 	}
@@ -154,7 +154,7 @@ CovarianceMatrix RankMCovarianceModel::discretize(const Sample & vertices) const
   // Here covariance_ is left untouched by computeCholesky(), but the method in not const
   for (UnsignedInteger i = 0; i < basisSize; ++i)
     {
-      const NumericalPoint data(functions_[i](vertices).getImplementation()->getData());
+      const Point data(functions_[i](vertices).getImplementation()->getData());
       std::copy(data.begin(), data.end(), start);
       start += fullSize;
     }
@@ -173,7 +173,7 @@ CovarianceMatrix RankMCovarianceModel::getCovariance() const
   return covariance_;
 }
 
-NumericalPoint RankMCovarianceModel::getVariance() const
+Point RankMCovarianceModel::getVariance() const
 {
   return variance_;
 }
@@ -197,8 +197,8 @@ void RankMCovarianceModel::setBasis(const Basis & basis)
   functions_ = Basis::FunctionCollection(size);
   for (UnsignedInteger i = 0; i < size; ++i)
     functions_[i] = basis.build(i);
-  scale_ = NumericalPoint(functions_[0].getInputDimension(), 1.0);
-  amplitude_ = NumericalPoint(functions_[0].getOutputDimension(), 1.0);
+  scale_ = Point(functions_[0].getInputDimension(), 1.0);
+  amplitude_ = Point(functions_[0].getOutputDimension(), 1.0);
   basis_ = basis;
 }
 

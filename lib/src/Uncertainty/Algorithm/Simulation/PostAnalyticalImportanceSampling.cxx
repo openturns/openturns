@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/PostAnalyticalImportanceSampling.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/ComparisonOperatorImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
@@ -59,7 +59,7 @@ PostAnalyticalImportanceSampling * PostAnalyticalImportanceSampling::clone() con
 Sample PostAnalyticalImportanceSampling::computeBlockSample()
 {
   const UnsignedInteger blockSize = getBlockSize();
-  const NumericalPoint standardSpaceDesignPoint(analyticalResult_.getStandardSpaceDesignPoint());
+  const Point standardSpaceDesignPoint(analyticalResult_.getStandardSpaceDesignPoint());
   // Get the threshold and the reliability index
   const NumericalScalar threshold = event_.getThreshold();
   // First, compute a sample of the importance distribution. It is simply

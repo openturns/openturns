@@ -33,9 +33,9 @@ hmatrix__str__(const HMatrix & hmat)
   Sample res(hmat.getNbRows(), hmat.getNbColumns());
   for ( UnsignedInteger i = 0; i < hmat.getNbRows(); ++i)
   {
-    NumericalPoint x(hmat.getNbColumns());
+    Point x(hmat.getNbColumns());
     x[i] = 1.0;
-    NumericalPoint y(hmat.getNbRows());
+    Point y(hmat.getNbRows());
     hmat.gemv('N', 1.0, x, 0.0, y);
     res[i] = y;
   }
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
     DiracCovarianceModel myDefautModel;
     fullprint << "myDefautModel = " << myDefautModel << std::endl;
     // Amplitude of dimension 2
-    NumericalPoint amplitude(dimension);
+    Point amplitude(dimension);
     for (UnsignedInteger k = 0; k < dimension; ++k) amplitude[k] = 1.5 + 2.0 * k;
     // Model of dimension 2
     DiracCovarianceModel myModel1(spatialDimension, amplitude);

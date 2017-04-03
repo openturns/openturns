@@ -23,7 +23,7 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/CovarianceModel.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Basis.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/ProcessSample.hxx"
@@ -51,7 +51,7 @@ public:
   /** Default constructor */
   explicit KarhunenLoeveResultImplementation(const CovarianceModel & covariance,
 					     const NumericalScalar threshold,
-					     const NumericalPoint & eigenvalues,
+					     const Point & eigenvalues,
 					     const Basis & modes,
 					     const ProcessSample & modesAsProcessSample,
 					     const Matrix & projection);
@@ -66,7 +66,7 @@ public:
   CovarianceModel getCovarianceModel() const;
 
   /** Eigenvalues accessor */
-  NumericalPoint getEigenValues() const;
+  Point getEigenValues() const;
 
   /** Modes accessors */
   Basis getModes() const;
@@ -80,14 +80,14 @@ public:
   Matrix getProjectionMatrix() const;
 
   /** Projection method */
-  NumericalPoint project(const Function & function) const;
-  NumericalPoint project(const Field & field) const;
+  Point project(const Function & function) const;
+  Point project(const Field & field) const;
   Sample project(const Basis & basis) const;
   Sample project(const ProcessSample & sample) const;
 
   /** Lift method */
-  Function lift(const NumericalPoint & coefficients) const;
-  Field liftAsField(const NumericalPoint & coefficients) const;
+  Function lift(const Point & coefficients) const;
+  Field liftAsField(const Point & coefficients) const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -107,7 +107,7 @@ protected:
   NumericalScalar threshold_;
 
   /** Eigenvalues */
-  NumericalPoint eigenvalues_;
+  Point eigenvalues_;
 
   /** Modes */
   Basis modes_;

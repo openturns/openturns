@@ -57,7 +57,7 @@ GeneralizedParetoFactory::Implementation GeneralizedParetoFactory::build(const S
   return buildAsGeneralizedPareto(sample).clone();
 }
 
-GeneralizedParetoFactory::Implementation GeneralizedParetoFactory::build(const NumericalPoint & parameters) const
+GeneralizedParetoFactory::Implementation GeneralizedParetoFactory::build(const Point & parameters) const
 {
   return buildAsGeneralizedPareto(parameters).clone();
 }
@@ -90,7 +90,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto(const Sampl
   return buildMethodOfExponentialRegression(sample);
 }
 
-GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto(const NumericalPoint & parameters) const
+GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto(const Point & parameters) const
 {
   try
   {
@@ -142,7 +142,7 @@ struct GeneralizedParetoFactoryParameterConstraint
     }
   };
 
-  NumericalPoint computeConstraint(const NumericalPoint & parameter) const
+  Point computeConstraint(const Point & parameter) const
   {
     const NumericalScalar gamma = parameter[0];
     // Separate the small gamma case for stability purpose
@@ -156,7 +156,7 @@ struct GeneralizedParetoFactoryParameterConstraint
         const NumericalScalar yLogAlphaJ = sampleY_[j][0] * logAlphaJ;
         exponentialRegressionLogLikelihood += std::log(-logAlphaJ) + yLogAlphaJ + 0.5 * gammaLogAlphaJ * (1.0 + yLogAlphaJ + gammaLogAlphaJ * (1.0 / 12.0 + yLogAlphaJ / 3.0 + gammaLogAlphaJ * yLogAlphaJ / 12.0));
       }
-      return NumericalPoint(1, -exponentialRegressionLogLikelihood);
+      return Point(1, -exponentialRegressionLogLikelihood);
     }
     // Large gamma case
     NumericalScalar exponentialRegressionLogLikelihood = 0.0;
@@ -165,7 +165,7 @@ struct GeneralizedParetoFactoryParameterConstraint
       const NumericalScalar alphaJ = (1.0 - std::pow((j + 1.0) / size_, gamma)) / gamma;
       exponentialRegressionLogLikelihood += std::log(alphaJ) - alphaJ * sampleY_[j][0];
     }
-    return NumericalPoint(1, -exponentialRegressionLogLikelihood);
+    return Point(1, -exponentialRegressionLogLikelihood);
   }
 
   Sample sampleY_;
@@ -176,7 +176,7 @@ struct GeneralizedParetoFactoryParameterConstraint
 GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(const Sample & sample) const
 {
   GeneralizedParetoFactoryParameterConstraint constraint(sample);
-  Function f(bindMethod<GeneralizedParetoFactoryParameterConstraint, NumericalPoint, NumericalPoint>(constraint, &GeneralizedParetoFactoryParameterConstraint::computeConstraint, 1, 1));
+  Function f(bindMethod<GeneralizedParetoFactoryParameterConstraint, Point, Point>(constraint, &GeneralizedParetoFactoryParameterConstraint::computeConstraint, 1, 1));
   CenteredFiniteDifferenceGradient gradient(1.0e-5, f.getEvaluation());
   f.setGradient(gradient);
 
@@ -185,12 +185,12 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(c
   problem.setObjective(f);
 
   const UnsignedInteger dimension = problem.getObjective().getInputDimension();
-  NumericalPoint parametersLowerBound(dimension, -1.0);
-  NumericalPoint parametersUpperBound(dimension,  1.0);
+  Point parametersLowerBound(dimension, -1.0);
+  Point parametersUpperBound(dimension,  1.0);
   problem.setBounds(Interval(parametersLowerBound, parametersUpperBound, Interval::BoolCollection(dimension, 0), Interval::BoolCollection(dimension, 0)));
 
   solver_.setProblem(problem);
-  solver_.setStartingPoint(NumericalPoint(dimension, 0.0));
+  solver_.setStartingPoint(Point(dimension, 0.0));
 
   // run Optimization problem
   solver_.run();

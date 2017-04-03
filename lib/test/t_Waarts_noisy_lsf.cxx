@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
     //   # Probabilistic model;
     //   #########################################################################################################;
 
-    NumericalPoint mean(dim, 0.0);
+    Point mean(dim, 0.0);
     mean[0] = 120.0;
     mean[1] = 120.0;
     mean[2] = 120.0;
@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
     mean[4] = 50.0;
     mean[5] = 40.0;
 
-    NumericalPoint sigma(dim, 0.0);
+    Point sigma(dim, 0.0);
     sigma[0] = 12.0;
     sigma[1] = 12.0;
     sigma[2] = 12.0;
@@ -148,7 +148,7 @@ int main(int argc, char *argv[])
     ComposedDistribution myDistribution(aCollection, Copula(aCopula));
     myDistribution.setName("myDist");
 
-    NumericalPoint start(myDistribution.getMean());
+    Point start(myDistribution.getMean());
     CovarianceMatrix Covariance = myDistribution.getCovariance();
 
     //   #########################################################################################################;
@@ -236,10 +236,10 @@ int main(int argc, char *argv[])
 
     /*  ##########################################################################################################
         ##Importance Sampling avec Standard Event*/
-    NumericalPoint meanSE(dim, 0.0);
+    Point meanSE(dim, 0.0);
     for (UnsignedInteger i = 0; i < resultAR.getStandardSpaceDesignPoint().getDimension(); ++i)
       meanSE[i] = resultAR.getStandardSpaceDesignPoint()[i];
-    NumericalPoint sigmaSE(dim, 1.0);
+    Point sigmaSE(dim, 1.0);
     IdentityMatrix CorrSE(dim);
     Normal myImportanceSE(meanSE, sigmaSE, CorrSE);
 
@@ -252,11 +252,11 @@ int main(int argc, char *argv[])
     myISS.run();
 
     //   # Importance Sampling avec Event
-    NumericalPoint meanE(dim, 0.0);
+    Point meanE(dim, 0.0);
     for (UnsignedInteger i = 0; i < resultC.getPhysicalSpaceDesignPoint().getDimension(); ++i)
       meanE[i] = resultAR.getPhysicalSpaceDesignPoint()[i];
 
-    NumericalPoint sigmaE(dim, 0.0);
+    Point sigmaE(dim, 0.0);
     for (UnsignedInteger i = 0; i < resultC.getPhysicalSpaceDesignPoint().getDimension(); ++i)
       sigmaE[i] = std::sqrt(Covariance(i, i));
 
@@ -281,11 +281,11 @@ int main(int argc, char *argv[])
       # FORM/SORM Cobyla*/
     NumericalScalar PfC = resultC.getEventProbability();
     NumericalScalar Beta_generalizedC = resultC.getGeneralisedReliabilityIndex();
-    NumericalPoint u_starC = resultC.getStandardSpaceDesignPoint();
-    NumericalPoint x_starC = resultC.getPhysicalSpaceDesignPoint();
+    Point u_starC = resultC.getStandardSpaceDesignPoint();
+    Point x_starC = resultC.getPhysicalSpaceDesignPoint();
     Bool PtC = resultC.getIsStandardPointOriginInFailureSpace();
-    NumericalPoint gammaC = resultC.getImportanceFactors();
-    NumericalPoint gammaCC = resultC.getImportanceFactors(true);
+    Point gammaC = resultC.getImportanceFactors();
+    Point gammaCC = resultC.getImportanceFactors(true);
     NumericalScalar beta_hasoferC = resultC.getHasoferReliabilityIndex();
     Analytical::Sensitivity SensitivityC = resultC.getEventProbabilitySensitivity();
 
@@ -293,11 +293,11 @@ int main(int argc, char *argv[])
     // //   # FORM/SORM Abdo Rackwitz;
     NumericalScalar PfAR = resultAR.getEventProbability();
     NumericalScalar Beta_generalizedAR = resultAR.getGeneralisedReliabilityIndex();
-    NumericalPoint u_starAR = resultAR.getStandardSpaceDesignPoint();
-    NumericalPoint x_starAR = resultAR.getPhysicalSpaceDesignPoint();
+    Point u_starAR = resultAR.getStandardSpaceDesignPoint();
+    Point x_starAR = resultAR.getPhysicalSpaceDesignPoint();
     Bool PtAR = resultAR.getIsStandardPointOriginInFailureSpace();
-    NumericalPoint gammaAR = resultAR.getImportanceFactors();
-    NumericalPoint gammaCAR = resultAR.getImportanceFactors(true);
+    Point gammaAR = resultAR.getImportanceFactors();
+    Point gammaCAR = resultAR.getImportanceFactors(true);
     NumericalScalar beta_hasoferAR = resultAR.getHasoferReliabilityIndex();
     Analytical::Sensitivity SensitivityAR = resultAR.getEventProbabilitySensitivity();
 

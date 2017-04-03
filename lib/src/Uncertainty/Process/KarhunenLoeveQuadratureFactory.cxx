@@ -79,11 +79,11 @@ KarhunenLoeveQuadratureFactory::KarhunenLoeveQuadratureFactory(const Domain & do
   const Distribution distribution(experiment.getDistribution());
   if (dimension != distribution.getDimension()) throw InvalidArgumentException(HERE) << "Error: the domain dimension=" << dimension << " does not match the distribution dimension=" << distribution.getDimension() << " of the weighted experiment";
   // First thing to do: build a linear transformation that maps the range of the distribution associated with the weighted experiment to the bounding box of the domain
-  const NumericalPoint domainLowerBound(domain.getLowerBound());
-  const NumericalPoint domainUpperBound(domain.getUpperBound());
+  const Point domainLowerBound(domain.getLowerBound());
+  const Point domainUpperBound(domain.getUpperBound());
   if (Interval(domainLowerBound, domainUpperBound).isNumericallyEmpty()) throw InvalidArgumentException(HERE) << "Error: the given domain is numerically empty.";
-  const NumericalPoint distributionLowerBound(distribution.getRange().getLowerBound());
-  const NumericalPoint distributionUpperBound(distribution.getRange().getUpperBound());
+  const Point distributionLowerBound(distribution.getRange().getLowerBound());
+  const Point distributionUpperBound(distribution.getRange().getUpperBound());
   const Bool hasSameBounds = (domainLowerBound == distributionLowerBound) && (domainUpperBound == distributionUpperBound);
   // The function scaling maps points in the range of the distribution into the domain
   Function scaling;
@@ -94,8 +94,8 @@ KarhunenLoeveQuadratureFactory::KarhunenLoeveQuadratureFactory(const Domain & do
   {
     TriangularMatrix T(dimension);
     TriangularMatrix inverseT(dimension);
-    NumericalPoint center((distributionUpperBound + distributionLowerBound) * 0.5);
-    NumericalPoint constant((domainUpperBound + domainLowerBound) * 0.5);
+    Point center((distributionUpperBound + distributionLowerBound) * 0.5);
+    Point constant((domainUpperBound + domainLowerBound) * 0.5);
     for (UnsignedInteger i = 0; i < dimension; ++i)
     {
       T(i, i) = (domainUpperBound[i] - domainLowerBound[i]) / (distributionUpperBound[i] - distributionLowerBound[i]);
@@ -110,7 +110,7 @@ KarhunenLoeveQuadratureFactory::KarhunenLoeveQuadratureFactory(const Domain & do
     if (!hasSameBounds && mustScale) coll_[i] = ComposedFunction(basis.build(i), inverseScaling);
     else coll_[i] = basis.build(i);
   // Compute the integration nodes and weights
-  NumericalPoint rawWeights;
+  Point rawWeights;
   WeightedExperiment experimentCopy(experiment);
   LOGINFO("Generate the weighted experiment");
   Sample rawNodes(experimentCopy.generateWithWeights(rawWeights));
@@ -139,7 +139,7 @@ KarhunenLoeveQuadratureFactory::KarhunenLoeveQuadratureFactory(const Domain & do
   theta_ = Matrix(nodesNumber, basisSize);
   for (UnsignedInteger j = 0; j < basisSize; ++j)
   {
-    const NumericalPoint thetaj(coll_[j](nodes_).getImplementation()->getData());
+    const Point thetaj(coll_[j](nodes_).getImplementation()->getData());
     for (UnsignedInteger i = 0; i < nodesNumber; ++i)
       theta_(i, j) = weights_[i] * thetaj[i];
   }
@@ -181,7 +181,7 @@ KarhunenLoeveQuadratureFactory * KarhunenLoeveQuadratureFactory::clone() const
    with I the dxd identity matrix
 */
 Basis KarhunenLoeveQuadratureFactory::build(const CovarianceModel & covarianceModel,
-    NumericalPoint & selectedEV) const
+    Point & selectedEV) const
 {
   const UnsignedInteger nodesNumber = nodes_.getSize();
   const UnsignedInteger dimension = covarianceModel.getDimension();
@@ -263,7 +263,7 @@ Basis KarhunenLoeveQuadratureFactory::build(const CovarianceModel & covarianceMo
   SquareMatrix eigenVectors;
   // Last time we need C, so we can overwrite it by eigenVectors
   LOGINFO("Solve the standard eigenvalue problem");
-  NumericalPoint eigenValues(C.computeEV(eigenVectors, false));
+  Point eigenValues(C.computeEV(eigenVectors, false));
   const UnsignedInteger eigenDimension = eigenVectors.getDimension();
   // Transform the eigenvectors to the generalizd ones
   // Last time we need cholesky, so we can overwrite it by eigenVectors
@@ -282,14 +282,14 @@ Basis KarhunenLoeveQuadratureFactory::build(const CovarianceModel & covarianceMo
     for (UnsignedInteger j = 0; j < eigenDimension; ++j) eigenVectors(i, j) = eigenPairs[j][i];
     eigenValues[i] = -eigenPairs[i][eigenDimension];
   }
-  selectedEV = NumericalPoint(0);
+  selectedEV = Point(0);
   UnsignedInteger j = 0;
   FunctionCollection resultBasis(0);
   LOGINFO("Keep only the relevant eigen pairs");
   while ((j < eigenDimension) && (eigenValues[j] > threshold_ * std::abs(eigenValues[0])))
   {
     selectedEV.add(eigenValues[j]);
-    const NumericalPoint a(*eigenVectors.getColumn(j).getImplementation());
+    const Point a(*eigenVectors.getColumn(j).getImplementation());
     const NumericalScalar norm = (omega * a).norm();
     if (dimension == 1)
       resultBasis.add(LinearCombinationFunction(coll_, a / norm));

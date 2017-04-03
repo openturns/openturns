@@ -133,10 +133,10 @@ Function::Function(const FunctionCollection & functionCollection)
 
 /* Linear combination function constructor */
 Function::Function(const FunctionCollection & functionCollection,
-    const NumericalPoint & coefficients)
+    const Point & coefficients)
   : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation())
 {
-  Log::Warn(OSS() << "Function(FunctionCollection, NumericalPoint) is deprecated: use LinearCombinationFunction");
+  Log::Warn(OSS() << "Function(FunctionCollection, Point) is deprecated: use LinearCombinationFunction");
   const LinearCombinationEvaluation evaluation(functionCollection, coefficients);
   setEvaluation(evaluation.clone());
   setGradient(new LinearCombinationGradient(evaluation));
@@ -200,11 +200,11 @@ Function::Function(const Field & field)
 /* Constructor by splitting the input of a function between variables and parameters */
 Function::Function(const Function & function,
     const Indices & set,
-    const NumericalPoint & referencePoint,
+    const Point & referencePoint,
     const Bool parametersSet)
   : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation())
 {
-  Log::Warn(OSS() << "Function(Function, Indices, NumericalPoint, Bool) is deprecated: use ParametricFunction");
+  Log::Warn(OSS() << "Function(Function, Indices, Point, Bool) is deprecated: use ParametricFunction");
   const Pointer<ParametricEvaluation> p_evaluation = new ParametricEvaluation(function, set, referencePoint, parametersSet);
   setEvaluation(p_evaluation);
   setGradient(new ParametricGradient(p_evaluation));
@@ -348,7 +348,7 @@ ProductFunction Function::operator * (const Function & right) const
 /* Addition operator between two functions with the same input dimension and output dimension */
 Function Function::operator + (const Function & right) const
 {
-  const NumericalPoint coefficients(2, 1.0);
+  const Point coefficients(2, 1.0);
   FunctionCollection collection(2);
   collection[0] = *this;
   collection[1] = right;
@@ -359,7 +359,7 @@ Function Function::operator + (const Function & right) const
 /* Soustraction operator between two functions with the same input dimension and output dimension */
 Function Function::operator - (const Function & right) const
 {
-  NumericalPoint coefficients(2, 1.0);
+  Point coefficients(2, 1.0);
   coefficients[1] = -1.0;
   FunctionCollection collection(2);
   collection[0] = *this;
@@ -442,25 +442,25 @@ void Function::setUseDefaultHessianImplementation(const Bool hessianFlag)
 
 
 /* Gradient according to the marginal parameters */
-Matrix Function::parameterGradient(const NumericalPoint & inP) const
+Matrix Function::parameterGradient(const Point & inP) const
 {
   return getImplementation()->parameterGradient(inP);
 }
 
-Matrix Function::parameterGradient(const NumericalPoint & inP,
-    const NumericalPoint & parameter)
+Matrix Function::parameterGradient(const Point & inP,
+    const Point & parameter)
 {
   copyOnWrite();
   return getImplementation()->parameterGradient(inP, parameter);
 }
 
 /* Parameters value accessor */
-NumericalPoint Function::getParameter() const
+Point Function::getParameter() const
 {
   return getImplementation()->getParameter();
 }
 
-void Function::setParameter(const NumericalPoint & parameter)
+void Function::setParameter(const Point & parameter)
 {
   copyOnWrite();
   getImplementation()->setParameter(parameter);
@@ -479,19 +479,19 @@ void Function::setParameterDescription(const Description & description)
 }
 
 /* Operator () */
-NumericalPoint Function::operator() (const NumericalPoint & inP) const
+Point Function::operator() (const Point & inP) const
 {
   return getImplementation()->operator()(inP);
 }
 
-NumericalPoint Function::operator() (const NumericalPoint & inP,
-    const NumericalPoint & parameter)
+Point Function::operator() (const Point & inP,
+    const Point & parameter)
 {
   copyOnWrite();
   return getImplementation()->operator()(inP, parameter);
 }
 
-Sample Function::operator() (const NumericalPoint & inP,
+Sample Function::operator() (const Point & inP,
     const Sample & parameters)
 {
   copyOnWrite();
@@ -511,26 +511,26 @@ Field Function::operator() (const Field & inField) const
 }
 
 /* Method gradient() returns the Jacobian transposed matrix of the function at point */
-Matrix Function::gradient(const NumericalPoint & inP) const
+Matrix Function::gradient(const Point & inP) const
 {
   return getImplementation()->gradient(inP);
 }
 
-Matrix Function::gradient(const NumericalPoint & inP,
-                                       const NumericalPoint & parameters)
+Matrix Function::gradient(const Point & inP,
+                                       const Point & parameters)
 {
   copyOnWrite();
   return getImplementation()->gradient(inP, parameters);
 }
 
 /* Method hessian() returns the symmetric tensor of the function at point */
-SymmetricTensor Function::hessian(const NumericalPoint & inP) const
+SymmetricTensor Function::hessian(const Point & inP) const
 {
   return getImplementation()->hessian(inP);
 }
 
-SymmetricTensor Function::hessian(const NumericalPoint & inP,
-    const NumericalPoint & parameters)
+SymmetricTensor Function::hessian(const Point & inP,
+    const Point & parameters)
 {
   copyOnWrite();
   return getImplementation()->hessian(inP, parameters);
@@ -594,7 +594,7 @@ UnsignedInteger Function::getHessianCallsNumber() const
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
 Graph Function::draw(const UnsignedInteger inputMarginal,
                                   const UnsignedInteger outputMarginal,
-                                  const NumericalPoint & centralPoint,
+                                  const Point & centralPoint,
                                   const NumericalScalar xMin,
                                   const NumericalScalar xMax,
                                   const UnsignedInteger pointNumber,
@@ -607,9 +607,9 @@ Graph Function::draw(const UnsignedInteger inputMarginal,
 Graph Function::draw(const UnsignedInteger firstInputMarginal,
                                   const UnsignedInteger secondInputMarginal,
                                   const UnsignedInteger outputMarginal,
-                                  const NumericalPoint & centralPoint,
-                                  const NumericalPoint & xMin,
-                                  const NumericalPoint & xMax,
+                                  const Point & centralPoint,
+                                  const Point & xMin,
+                                  const Point & xMax,
                                   const Indices & pointNumber,
                                   const GraphImplementation::LogScale scale) const
 {
@@ -626,8 +626,8 @@ Graph Function::draw(const NumericalScalar xMin,
 }
 
 /* Draw the output of the function with respect to its input when the input dimension is 2 and the output dimension is 1 */
-Graph Function::draw(const NumericalPoint & xMin,
-                                  const NumericalPoint & xMax,
+Graph Function::draw(const Point & xMin,
+                                  const Point & xMax,
                                   const Indices & pointNumber,
                                   const GraphImplementation::LogScale scale) const
 {

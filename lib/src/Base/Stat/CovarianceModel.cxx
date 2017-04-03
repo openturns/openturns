@@ -78,14 +78,14 @@ CovarianceMatrix CovarianceModel::operator() (const NumericalScalar s,
   return getImplementation()->operator() (s, t);
 }
 
-CovarianceMatrix CovarianceModel::operator() (const NumericalPoint & s,
-    const NumericalPoint & t) const
+CovarianceMatrix CovarianceModel::operator() (const Point & s,
+    const Point & t) const
 {
   return getImplementation()->operator() (s, t);
 }
 
-NumericalScalar CovarianceModel::computeStandardRepresentative(const NumericalPoint & s,
-    const NumericalPoint & t) const
+NumericalScalar CovarianceModel::computeStandardRepresentative(const Point & s,
+    const Point & t) const
 {
   return getImplementation()->computeStandardRepresentative(s, t);
 }
@@ -96,7 +96,7 @@ NumericalScalar CovarianceModel::computeStandardRepresentative(const NumericalSc
   return getImplementation()->computeStandardRepresentative(s, t);
 }
 
-NumericalScalar CovarianceModel::computeStandardRepresentative(const NumericalPoint & tau) const
+NumericalScalar CovarianceModel::computeStandardRepresentative(const Point & tau) const
 {
   return getImplementation()->computeStandardRepresentative(tau);
 }
@@ -107,8 +107,8 @@ NumericalScalar CovarianceModel::computeStandardRepresentative(const NumericalSc
   return getImplementation()->computeStandardRepresentative(tau);
 }
 
-NumericalScalar CovarianceModel::computeAsScalar (const NumericalPoint & s,
-    const NumericalPoint & t) const
+NumericalScalar CovarianceModel::computeAsScalar (const Point & s,
+    const Point & t) const
 {
   return getImplementation()->computeAsScalar(s, t);
 }
@@ -118,26 +118,26 @@ CovarianceMatrix CovarianceModel::operator() (const NumericalScalar tau) const
   return getImplementation()->operator() (tau);
 }
 
-CovarianceMatrix CovarianceModel::operator() (const NumericalPoint & tau) const
+CovarianceMatrix CovarianceModel::operator() (const Point & tau) const
 {
   return getImplementation()->operator() (tau);
 }
 
-NumericalScalar CovarianceModel::computeAsScalar (const NumericalPoint & tau) const
+NumericalScalar CovarianceModel::computeAsScalar (const Point & tau) const
 {
   return getImplementation()->computeAsScalar(tau);
 }
 
 /* Gradient */
-Matrix CovarianceModel::partialGradient(const NumericalPoint & s,
-                                        const NumericalPoint & t) const
+Matrix CovarianceModel::partialGradient(const Point & s,
+                                        const Point & t) const
 {
   return getImplementation()->partialGradient(s, t);
 }
 
 /* Gradient wrt parameters */
-Matrix CovarianceModel::parameterGradient(const NumericalPoint & s,
-                                          const NumericalPoint & t) const
+Matrix CovarianceModel::parameterGradient(const Point & s,
+                                          const Point & t) const
 {
   return getImplementation()->parameterGradient(s, t);
 }
@@ -226,24 +226,24 @@ HMatrix CovarianceModel::discretizeAndFactorizeHMatrix(const Sample & vertices,
 }
 
 /* Amplitude accessor */
-NumericalPoint CovarianceModel::getAmplitude() const
+Point CovarianceModel::getAmplitude() const
 {
   return getImplementation()->getAmplitude();
 }
 
-void CovarianceModel::setAmplitude(const NumericalPoint & amplitude)
+void CovarianceModel::setAmplitude(const Point & amplitude)
 {
   copyOnWrite();
   getImplementation()->setAmplitude(amplitude);
 }
 
 /* Scale accessor */
-NumericalPoint CovarianceModel::getScale() const
+Point CovarianceModel::getScale() const
 {
   return getImplementation()->getScale();
 }
 
-void CovarianceModel::setScale(const NumericalPoint & scale)
+void CovarianceModel::setScale(const Point & scale)
 {
   copyOnWrite();
   getImplementation()->setScale(scale);
@@ -274,13 +274,13 @@ void CovarianceModel::setNuggetFactor(const NumericalScalar nuggetFactor)
 }
 
 /* Parameters accessor */
-void CovarianceModel::setParameter(const NumericalPoint& parameter)
+void CovarianceModel::setParameter(const Point& parameter)
 {
   copyOnWrite();
   getImplementation()->setParameter(parameter);
 }
 
-NumericalPoint CovarianceModel::getParameter() const
+Point CovarianceModel::getParameter() const
 {
   return getImplementation()->getParameter();
 }

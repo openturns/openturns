@@ -40,7 +40,7 @@ try:
     print("anotherSample covariance=", anotherSample.computeCovariance())
 
     # Define a point
-    point = NumericalPoint(dim, 0.2)
+    point = Point(dim, 0.2)
 
     # Show PDF and CDF of zero point
     zeroPDF = copula.computePDF(point)
@@ -52,15 +52,15 @@ try:
     print("Quantile=", quantile)
     print("CDF(quantile)=", copula.computeCDF(quantile))
     # Get 95% survival function
-    inverseSurvival = NumericalPoint(copula.computeInverseSurvivalFunction(0.95))
+    inverseSurvival = Point(copula.computeInverseSurvivalFunction(0.95))
     print("InverseSurvival=", repr(inverseSurvival))
     print("Survival(inverseSurvival)=%.6f" % copula.computeSurvivalFunction(inverseSurvival))
     # Extract the marginals
     for i in range(dim):
         margin = copula.getMarginal(i)
         print("margin=", margin)
-        print("margin PDF=", margin.computePDF(NumericalPoint(1, 0.25)))
-        print("margin CDF=", margin.computeCDF(NumericalPoint(1, 0.25)))
+        print("margin PDF=", margin.computePDF(Point(1, 0.25)))
+        print("margin CDF=", margin.computeCDF(Point(1, 0.25)))
         print("margin quantile=", margin.computeQuantile(0.95))
         print("margin realization=", margin.getRealization())
 
@@ -71,8 +71,8 @@ try:
     print("indices=", indices)
     margins = copula.getMarginal(indices)
     print("margins=", margins)
-    print("margins PDF=", margins.computePDF(NumericalPoint(2, 0.25)))
-    print("margins CDF=", margins.computeCDF(NumericalPoint(2, 0.25)))
+    print("margins PDF=", margins.computePDF(Point(2, 0.25)))
+    print("margins CDF=", margins.computeCDF(Point(2, 0.25)))
     quantile = margins.computeQuantile(0.95)
     print("margins quantile=", quantile)
     print("margins CDF(quantile)=", margins.computeCDF(quantile))

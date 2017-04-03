@@ -95,13 +95,13 @@ String ProductHessian::__repr__() const
  * H(f) \in T_{1, n, n}, H(g) \in T_{p, n, n}, H(h) \in T_{p, n, n}
  * hessian(h)_{i,j,k} = d^2(fg)_k / (dx_i . dx_j) = f . d^2g_k / (dx_i . dx_j) + df / dx_j . dg_k / dx_i + d^2f / (dx_i . dx_j) + df / dx_i . dg_k / dx_j
  */
-SymmetricTensor ProductHessian::hessian(const NumericalPoint & inP) const
+SymmetricTensor ProductHessian::hessian(const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   ++callsNumber_;
-  const NumericalPoint leftValue(p_leftEvaluation_->operator()(inP));
-  const NumericalPoint rightValue(p_rightEvaluation_->operator()(inP));
+  const Point leftValue(p_leftEvaluation_->operator()(inP));
+  const Point rightValue(p_rightEvaluation_->operator()(inP));
   const Matrix leftGradient(p_leftGradient_->gradient(inP));
   const Matrix rightGradient(p_rightGradient_->gradient(inP));
   const SymmetricTensor leftHessian(p_leftHessian_->hessian(inP));

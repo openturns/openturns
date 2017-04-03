@@ -37,16 +37,16 @@ int main(int argc, char *argv[])
     Mixture::DistributionCollection aCollection;
     CorrelationMatrix R(2);
     R(0, 1) = -0.99;
-    NumericalPoint mean(2);
+    Point mean(2);
     mean[0] = -1.0;
     mean[1] = 1.0;
-    aCollection.add( Normal(mean, NumericalPoint(2, 1.0), R) );
+    aCollection.add( Normal(mean, Point(2, 1.0), R) );
     R(0, 1) = 0.99;
     mean[0] = 1.0;
-    aCollection.add( Normal(mean, NumericalPoint(2, 1.0), R) );
+    aCollection.add( Normal(mean, Point(2, 1.0), R) );
 
     // Instanciate one distribution object
-    Mixture distribution(aCollection, NumericalPoint(aCollection.getSize(), 1.0));
+    Mixture distribution(aCollection, Point(aCollection.getSize(), 1.0));
 
     // Create a mixture classifier
     MixtureClassifier classifier(distribution);
@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
     // Evaluate the mixture of experts on some points
     for (UnsignedInteger i = 0; i < 5; ++i)
     {
-      NumericalPoint p(1, -0.3 + 0.8 * i / 4.0);
+      Point p(1, -0.3 + 0.8 * i / 4.0);
       fullprint << "moe(" << p[0] << ")=" << moe(p) << std::endl;
     }
 

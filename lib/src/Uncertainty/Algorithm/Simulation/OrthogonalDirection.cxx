@@ -86,7 +86,7 @@ Matrix OrthogonalDirection::getUniformOrientationRealization() const
   for (UnsignedInteger indexDimension = 1; indexDimension < dimension_; indexDimension++)
   {
     Q(indexDimension, indexDimension) = 1.0;
-    NumericalPoint v(getUniformUnitVectorRealization(indexDimension + 1));
+    Point v(getUniformUnitVectorRealization(indexDimension + 1));
     for (UnsignedInteger index = 0; index <= indexDimension; ++index) column(index, 0) = v[index];
     Q = Q - ((2.0 * column) * (column.transpose() * Q));
   }
@@ -107,7 +107,7 @@ void OrthogonalDirection::computePartialSample(const Indices & indices,
   // For each combination
   for (UnsignedInteger indexLinearCombination = 0; indexLinearCombination < indexLinearCombinationMax; ++indexLinearCombination)
   {
-    NumericalPoint direction(dimension_);
+    Point direction(dimension_);
     // The combination index is used as a mask to select the coefficients equal to 1.0 or to -1.0
     UnsignedInteger mask = indexLinearCombination;
     for (UnsignedInteger index = 0; index < size_; ++index)

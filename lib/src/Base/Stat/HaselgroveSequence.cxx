@@ -37,7 +37,7 @@ HaselgroveSequence::HaselgroveSequence(const UnsignedInteger dimension) :
 }
 
 /* Constructor with parameters */
-HaselgroveSequence::HaselgroveSequence(const NumericalPoint & base) :
+HaselgroveSequence::HaselgroveSequence(const Point & base) :
   LowDiscrepancySequenceImplementation(base.getDimension())
 {
   dimension_ = base.getDimension();
@@ -57,15 +57,15 @@ void HaselgroveSequence::initialize(const UnsignedInteger dimension)
   if (dimension == 0) throw InvalidArgumentException(HERE) << "Dimension must be > 0.";
   dimension_ = dimension;
   const Unsigned64BitsIntegerCollection directions(ComputeFirstPrimeNumbers(dimension));
-  base_ = NumericalPoint(dimension);
+  base_ = Point(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i) base_[i] = sqrt(1.0 * directions[i]);
   seed_ = ResourceMap::GetAsUnsignedInteger( "HaselgroveSequence-InitialSeed" );
 }
 
 /* Generate a pseudo-random vector of independant numbers uniformly distributed over [0, 1[ */
-NumericalPoint HaselgroveSequence::generate() const
+Point HaselgroveSequence::generate() const
 {
-  NumericalPoint realization(dimension_);
+  Point realization(dimension_);
   // Loop over the components
   NumericalScalar scratch = 0.0;
   for (UnsignedInteger i = 0; i < dimension_; ++i) realization[i] = modf(seed_ * base_[i], &scratch);

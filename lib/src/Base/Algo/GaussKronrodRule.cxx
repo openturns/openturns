@@ -325,13 +325,13 @@ NumericalScalar GaussKronrodRule::getZeroGaussWeight() const
 }
 
 /* Other Gauss weight accessor */
-NumericalPoint GaussKronrodRule::getOtherGaussWeights() const
+Point GaussKronrodRule::getOtherGaussWeights() const
 {
   return otherGaussWeights_;
 }
 
 /* Other Kronrod nodes accessor */
-NumericalPoint GaussKronrodRule::getOtherKronrodNodes() const
+Point GaussKronrodRule::getOtherKronrodNodes() const
 {
   return otherKronrodNodes_;
 }
@@ -343,7 +343,7 @@ NumericalScalar GaussKronrodRule::getZeroKronrodWeight() const
 }
 
 /* Other Kronrod weight accessor */
-NumericalPoint GaussKronrodRule::getOtherKronrodWeights() const
+Point GaussKronrodRule::getOtherKronrodWeights() const
 {
   return otherKronrodWeights_;
 }

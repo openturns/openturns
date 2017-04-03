@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
 
   // Reference analytical values
   NumericalScalar covTh = 1.0;
-  NumericalPoint a(dimension);
+  Point a(dimension);
   a[0] = 1.0;
   a[1] = 2.0;
   a[2] = 5.0;

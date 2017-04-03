@@ -54,7 +54,7 @@ FrankCopulaFactory::Implementation FrankCopulaFactory::build(const Sample & samp
   return buildAsFrankCopula(sample).clone();
 }
 
-FrankCopulaFactory::Implementation FrankCopulaFactory::build(const NumericalPoint & parameters) const
+FrankCopulaFactory::Implementation FrankCopulaFactory::build(const Point & parameters) const
 {
   return buildAsFrankCopula(parameters).clone();
 }
@@ -76,12 +76,12 @@ FrankCopula FrankCopulaFactory::buildAsFrankCopula(const Sample & sample) const
   tau = std::abs(tau);
   NumericalScalar theta = 1.0;
   NumericalScalar step = 0.5;
-  NumericalScalar tauTheta = KendallTauFromParameter(NumericalPoint(1, theta))[0];
+  NumericalScalar tauTheta = KendallTauFromParameter(Point(1, theta))[0];
   // Find a lower bound
   while (tauTheta > tau)
   {
     theta -= step;
-    tauTheta = KendallTauFromParameter(NumericalPoint(1, theta))[0];
+    tauTheta = KendallTauFromParameter(Point(1, theta))[0];
     step *= 0.5;
   }
   // Here, tauTheta <= tau, hence theta is a lower bound of the parameter
@@ -91,12 +91,12 @@ FrankCopula FrankCopulaFactory::buildAsFrankCopula(const Sample & sample) const
   while (tauTheta <= tau)
   {
     theta += step;
-    tauTheta = KendallTauFromParameter(NumericalPoint(1, theta))[0];
+    tauTheta = KendallTauFromParameter(Point(1, theta))[0];
     step *= 2.0;
   }
   const NumericalScalar maxTheta = theta;
   const NumericalScalar maxTau = tauTheta;
-  const Function f(bindMethod<FrankCopulaFactory, NumericalPoint, NumericalPoint>(*this, &FrankCopulaFactory::KendallTauFromParameter, 1, 1));
+  const Function f(bindMethod<FrankCopulaFactory, Point, Point>(*this, &FrankCopulaFactory::KendallTauFromParameter, 1, 1));
   // Solve the constraint equation
   Brent solver(ResourceMap::GetAsNumericalScalar( "FrankCopulaFactory-AbsolutePrecision" ), ResourceMap::GetAsNumericalScalar( "FrankCopulaFactory-RelativePrecision" ), ResourceMap::GetAsNumericalScalar( "FrankCopulaFactory-ResidualPrecision" ), ResourceMap::GetAsUnsignedInteger( "FrankCopulaFactory-MaximumIteration" ));
   theta = solver.solve(f, tau, minTheta, maxTheta, minTau, maxTau);
@@ -105,7 +105,7 @@ FrankCopula FrankCopulaFactory::buildAsFrankCopula(const Sample & sample) const
   return result;
 }
 
-FrankCopula FrankCopulaFactory::buildAsFrankCopula(const NumericalPoint & parameters) const
+FrankCopula FrankCopulaFactory::buildAsFrankCopula(const Point & parameters) const
 {
   try
   {
@@ -125,9 +125,9 @@ FrankCopula FrankCopulaFactory::buildAsFrankCopula() const
 }
 
 // Compute Kendall's tau from Frank copula's parameter. It is an increasing function
-NumericalPoint FrankCopulaFactory::KendallTauFromParameter(const NumericalPoint & theta) const
+Point FrankCopulaFactory::KendallTauFromParameter(const Point & theta) const
 {
-  return NumericalPoint(1, FrankCopula(theta[0]).getKendallTau()(0, 1));
+  return Point(1, FrankCopula(theta[0]).getKendallTau()(0, 1));
 }
 
 END_NAMESPACE_OPENTURNS

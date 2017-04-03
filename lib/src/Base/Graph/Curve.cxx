@@ -80,8 +80,8 @@ Curve::Curve(const Sample & dataX,
 }
 
 /* Contructor from 2 data sets */
-Curve::Curve(const NumericalPoint & dataX,
-             const NumericalPoint & dataY,
+Curve::Curve(const Point & dataX,
+             const Point & dataY,
              const String & legend)
   : DrawableImplementation(Sample(0, 2), legend)
 {

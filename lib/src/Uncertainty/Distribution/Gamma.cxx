@@ -168,8 +168,8 @@ Gamma * Gamma::clone() const
 /* Compute the numerical range of the distribution given the parameters values */
 void Gamma::computeRange()
 {
-  const NumericalPoint lowerBound(1, gamma_);
-  const NumericalPoint upperBound(computeUpperBound());
+  const Point lowerBound(1, gamma_);
+  const Point upperBound(computeUpperBound());
   const Interval::BoolCollection finiteLowerBound(1, true);
   const Interval::BoolCollection finiteUpperBound(1, false);
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
@@ -197,25 +197,25 @@ void Gamma::update()
 
 
 /* Get one realization of the distribution */
-NumericalPoint Gamma::getRealization() const
+Point Gamma::getRealization() const
 {
-  return NumericalPoint(1, gamma_ + DistFunc::rGamma(k_) / lambda_);
+  return Point(1, gamma_ + DistFunc::rGamma(k_) / lambda_);
 }
 
 
 /* Get the DDF of the distribution */
-NumericalPoint Gamma::computeDDF(const NumericalPoint & point) const
+Point Gamma::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0] - gamma_;
-  if (x <= 0.0) return NumericalPoint(1, 0.0);
-  return NumericalPoint(1, ((k_ - 1.0) / x - lambda_) * computePDF(point));
+  if (x <= 0.0) return Point(1, 0.0);
+  return Point(1, ((k_ - 1.0) / x - lambda_) * computePDF(point));
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Gamma::computePDF(const NumericalPoint & point) const
+NumericalScalar Gamma::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -224,7 +224,7 @@ NumericalScalar Gamma::computePDF(const NumericalPoint & point) const
   return std::exp(computeLogPDF(point));
 }
 
-NumericalScalar Gamma::computeLogPDF(const NumericalPoint & point) const
+NumericalScalar Gamma::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -238,7 +238,7 @@ NumericalScalar Gamma::computeLogPDF(const NumericalPoint & point) const
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar Gamma::computeCDF(const NumericalPoint & point) const
+NumericalScalar Gamma::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -248,7 +248,7 @@ NumericalScalar Gamma::computeCDF(const NumericalPoint & point) const
   return DistFunc::pGamma(k_, lambda_ * x);
 }
 
-NumericalScalar Gamma::computeComplementaryCDF(const NumericalPoint & point) const
+NumericalScalar Gamma::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -270,11 +270,11 @@ NumericalComplex Gamma::computeLogCharacteristicFunction(const NumericalScalar x
 }
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint Gamma::computePDFGradient(const NumericalPoint & point) const
+Point Gamma::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  NumericalPoint pdfGradient(3, 0.0);
+  Point pdfGradient(3, 0.0);
   const NumericalScalar x = point[0] - gamma_;
   if (x <= 0.0) return pdfGradient;
   const NumericalScalar pdf = computePDF(point);
@@ -285,11 +285,11 @@ NumericalPoint Gamma::computePDFGradient(const NumericalPoint & point) const
 }
 
 /* Get the CDFGradient of the distribution */
-NumericalPoint Gamma::computeCDFGradient(const NumericalPoint & point) const
+Point Gamma::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  NumericalPoint cdfGradient(3, 0.0);
+  Point cdfGradient(3, 0.0);
   const NumericalScalar x = point[0] - gamma_;
   if (x <= 0.0) return cdfGradient;
   const NumericalScalar lambdaX = lambda_ * x;
@@ -311,32 +311,32 @@ NumericalScalar Gamma::computeScalarQuantile(const NumericalScalar prob,
 /* Compute the mean of the distribution */
 void Gamma::computeMean() const
 {
-  mean_ = NumericalPoint(1, gamma_ + k_ / lambda_);
+  mean_ = Point(1, gamma_ + k_ / lambda_);
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint Gamma::getStandardDeviation() const
+Point Gamma::getStandardDeviation() const
 {
-  return NumericalPoint(1, std::sqrt(k_) / lambda_);
+  return Point(1, std::sqrt(k_) / lambda_);
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint Gamma::getSkewness() const
+Point Gamma::getSkewness() const
 {
-  return NumericalPoint(1, 2.0 / std::sqrt(k_));
+  return Point(1, 2.0 / std::sqrt(k_));
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint Gamma::getKurtosis() const
+Point Gamma::getKurtosis() const
 {
-  return NumericalPoint(1, 3.0 * (k_ + 2.0) / k_);
+  return Point(1, 3.0 * (k_ + 2.0) / k_);
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Gamma::getStandardMoment(const UnsignedInteger n) const
+Point Gamma::getStandardMoment(const UnsignedInteger n) const
 {
-  return NumericalPoint(1, std::exp(SpecFunc::LogGamma(n + k_) - SpecFunc::LogGamma(k_)));
+  return Point(1, std::exp(SpecFunc::LogGamma(n + k_) - SpecFunc::LogGamma(k_)));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
@@ -354,16 +354,16 @@ void Gamma::computeCovariance() const
 }
 
 /* Parameters value accessor */
-NumericalPoint Gamma::getParameter() const
+Point Gamma::getParameter() const
 {
-  NumericalPoint point(3);
+  Point point(3);
   point[0] = k_;
   point[1] = lambda_;
   point[2] = gamma_;
   return point;
 }
 
-void Gamma::setParameter(const NumericalPoint & parameter)
+void Gamma::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();

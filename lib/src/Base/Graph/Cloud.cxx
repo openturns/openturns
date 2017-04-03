@@ -72,8 +72,8 @@ Cloud::Cloud(const Sample & dataX,
   setData(dataFull);
 }
 
-Cloud::Cloud(const NumericalPoint & dataX,
-             const NumericalPoint & dataY,
+Cloud::Cloud(const Point & dataX,
+             const Point & dataY,
              const String & legend):
   DrawableImplementation(Sample(0, 2), legend)
 {

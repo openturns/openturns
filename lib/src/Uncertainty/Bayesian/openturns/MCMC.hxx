@@ -41,9 +41,9 @@ class OT_API MCMC
 {
   CLASSNAME;
 public:
-  typedef Collection<NumericalPoint> NumericalPointCollection;
-  typedef PersistentCollection<NumericalPoint> NumericalPointPersistentCollection;
-  typedef Collection<NumericalPointWithDescription> NumericalPointWithDescriptionCollection;
+  typedef Collection<Point> PointCollection;
+  typedef PersistentCollection<Point> PointPersistentCollection;
+  typedef Collection<PointWithDescription> PointWithDescriptionCollection;
 
   /** Default constructor */
   MCMC();
@@ -52,7 +52,7 @@ public:
   MCMC(const Distribution & prior,
        const Distribution & conditional,
        const Sample & observations,
-       const NumericalPoint & initialState);
+       const Point & initialState);
 
   /** Constructor with parameters*/
   MCMC(const Distribution & prior,
@@ -60,13 +60,13 @@ public:
        const Function & model,
        const Sample & parameters,
        const Sample & observations,
-       const NumericalPoint & initialState);
+       const Point & initialState);
 
   /** String converter */
   virtual String __repr__() const;
 
   /** Compute the likelihood w.r.t. observartions */
-  NumericalScalar computeLogLikelihood(const NumericalPoint & currentState) const;
+  NumericalScalar computeLogLikelihood(const Point & currentState) const;
 
   /** Prior accessor */
   void setPrior(const Distribution & prior);
@@ -115,8 +115,8 @@ public:
   virtual void load(Advocate & adv);
 
 protected:
-  NumericalPoint initialState_;
-  mutable NumericalPoint currentState_;
+  Point initialState_;
+  mutable Point currentState_;
   mutable HistoryStrategy history_;
   Indices nonRejectedComponents_; // components that are always accepted
 

@@ -69,7 +69,7 @@ String CopulaImplementation::__repr__() const
   return oss;
 }
 
-NumericalScalar CopulaImplementation::computeSurvivalFunction(const NumericalPoint & point) const
+NumericalScalar CopulaImplementation::computeSurvivalFunction(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (dimension == 1) return computeComplementaryCDF(point);
@@ -89,7 +89,7 @@ NumericalScalar CopulaImplementation::computeSurvivalFunction(const NumericalPoi
   {
     NumericalScalar contribution = 0.0;
     Combinations::IndicesCollection indices(Combinations(i, dimension).generate());
-    NumericalPoint subPoint(i);
+    Point subPoint(i);
     for (UnsignedInteger j = 0; j < indices.getSize(); ++j)
     {
       for (UnsignedInteger k = 0; k < i; ++k) subPoint[k] = point[indices[j][k]];
@@ -102,44 +102,44 @@ NumericalScalar CopulaImplementation::computeSurvivalFunction(const NumericalPoi
 }
 
 /* Generic implementation of the quantile computation for copulas */
-NumericalPoint CopulaImplementation::computeQuantile(const NumericalScalar prob,
+Point CopulaImplementation::computeQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
   const UnsignedInteger dimension = getDimension();
   // Special case for bording values
   const NumericalScalar q = tail ? 1.0 - prob : prob;
-  if (q <= 0.0) return NumericalPoint(dimension, 0.0);
-  if (q >= 1.0) return NumericalPoint(dimension, 1.0);
+  if (q <= 0.0) return Point(dimension, 0.0);
+  if (q >= 1.0) return Point(dimension, 1.0);
   // Special case for dimension 1
-  if (dimension == 1) return NumericalPoint(1, q);
+  if (dimension == 1) return Point(1, q);
   QuantileWrapper wrapper(this);
-  const Function f(bindMethod<QuantileWrapper, NumericalPoint, NumericalPoint>(wrapper, &QuantileWrapper::computeDiagonal, 1, 1));
+  const Function f(bindMethod<QuantileWrapper, Point, Point>(wrapper, &QuantileWrapper::computeDiagonal, 1, 1));
   NumericalScalar leftTau = q;
-  const NumericalPoint leftPoint(1, leftTau);
-  const NumericalPoint leftValue(f(leftPoint));
+  const Point leftPoint(1, leftTau);
+  const Point leftValue(f(leftPoint));
   NumericalScalar leftCDF = leftValue[0];
   // Upper bound of the bracketing interval
   NumericalScalar rightTau = 1.0 - (1.0 - q) / dimension;
-  NumericalPoint rightPoint(1, rightTau);
-  const NumericalPoint rightValue(f(rightPoint));
+  Point rightPoint(1, rightTau);
+  const Point rightValue(f(rightPoint));
   NumericalScalar rightCDF = rightValue[0];
   // Use Brent's method to compute the quantile efficiently
   Brent solver(cdfEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_);
-  return NumericalPoint(dimension, solver.solve(f, q, leftTau, rightTau, leftCDF, rightCDF));
+  return Point(dimension, solver.solve(f, q, leftTau, rightTau, leftCDF, rightCDF));
 }
 
 
 /* Get the mean of the copula */
-NumericalPoint CopulaImplementation::getMean() const
+Point CopulaImplementation::getMean() const
 {
-  return NumericalPoint(getDimension(), 0.5);
+  return Point(getDimension(), 0.5);
 }
 
 /* Get the standard deviation of the copula */
-NumericalPoint CopulaImplementation::getStandardDeviation() const
+Point CopulaImplementation::getStandardDeviation() const
 {
   // 0.2886751345948128822545744 = 1 / sqrt(12)
-  return NumericalPoint(getDimension(), 0.2886751345948128822545744);
+  return Point(getDimension(), 0.2886751345948128822545744);
 }
 
 /* Get the Spearman correlation of the copula */
@@ -156,9 +156,9 @@ struct CopulaImplementationKendallTauWrapper
     // Nothing to do
   }
 
-  NumericalPoint kernel(const NumericalPoint & point) const
+  Point kernel(const Point & point) const
   {
-    return NumericalPoint(1, p_distribution_->computeCDF(point) * p_distribution_->computePDF(point));
+    return Point(1, p_distribution_->computeCDF(point) * p_distribution_->computePDF(point));
   }
 
   const DistributionImplementation::Implementation & p_distribution_;
@@ -180,7 +180,7 @@ CorrelationMatrix CopulaImplementation::getKendallTau() const
     return tau;
   }
   const IteratedQuadrature integrator = IteratedQuadrature(GaussKronrod());
-  const Interval square(NumericalPoint(2, 0.0), NumericalPoint(2, 1.0));
+  const Interval square(Point(2, 0.0), Point(2, 1.0));
   // Performs the integration in the strictly lower triangle of the tau matrix
   Indices indices(2);
   for(UnsignedInteger rowIndex = 0; rowIndex < dimension_; ++rowIndex)
@@ -194,7 +194,7 @@ CorrelationMatrix CopulaImplementation::getKendallTau() const
       {
         // Build the integrand
         const CopulaImplementationKendallTauWrapper functionWrapper(marginalDistribution);
-        const Function function(bindMethod<CopulaImplementationKendallTauWrapper, NumericalPoint, NumericalPoint>(functionWrapper, &CopulaImplementationKendallTauWrapper::kernel, 2, 1));
+        const Function function(bindMethod<CopulaImplementationKendallTauWrapper, Point, Point>(functionWrapper, &CopulaImplementationKendallTauWrapper::kernel, 2, 1));
         tau(rowIndex, columnIndex) = integrator.integrate(function, square)[0];
       }
     } // loop over column indices
@@ -203,16 +203,16 @@ CorrelationMatrix CopulaImplementation::getKendallTau() const
 }
 
 /* Get the skewness of the copula */
-NumericalPoint CopulaImplementation::getSkewness() const
+Point CopulaImplementation::getSkewness() const
 {
-  return NumericalPoint(getDimension(), 0.0);
+  return Point(getDimension(), 0.0);
 }
 
 /* Get the kurtosis of the copula */
-NumericalPoint CopulaImplementation::getKurtosis() const
+Point CopulaImplementation::getKurtosis() const
 {
   // 1.8 = 9/5
-  return NumericalPoint(getDimension(), 1.8);
+  return Point(getDimension(), 1.8);
 }
 
 struct CopulaImplementationCovarianceWrapper
@@ -223,9 +223,9 @@ struct CopulaImplementationCovarianceWrapper
     // Nothing to do
   }
 
-  NumericalPoint kernel(const NumericalPoint & point) const
+  Point kernel(const Point & point) const
   {
-    return NumericalPoint(1, distribution_.computeCDF(point) - point[0] * point[1]);
+    return Point(1, distribution_.computeCDF(point) - point[0] * point[1]);
   }
 
   const Distribution & distribution_;
@@ -250,7 +250,7 @@ void CopulaImplementation::computeCovariance() const
   if (!hasIndependentCopula())
   {
     const IteratedQuadrature integrator;
-    const Interval unitSquare(NumericalPoint(2, 0.0), NumericalPoint(2, 1.0));
+    const Interval unitSquare(Point(2, 0.0), Point(2, 1.0));
     // Performs the integration for each covariance in the strictly lower triangle of the covariance matrix
     // We start with the loop over the coefficients because the most expensive task is to get the 2D marginal copulas
     Indices indices(2);
@@ -267,7 +267,7 @@ void CopulaImplementation::computeCovariance() const
         {
           // Build the integrand
           CopulaImplementationCovarianceWrapper functionWrapper(marginalDistribution);
-          Function function(bindMethod<CopulaImplementationCovarianceWrapper, NumericalPoint, NumericalPoint>(functionWrapper, &CopulaImplementationCovarianceWrapper::kernel, 2, 1));
+          Function function(bindMethod<CopulaImplementationCovarianceWrapper, Point, Point>(functionWrapper, &CopulaImplementationCovarianceWrapper::kernel, 2, 1));
           // Compute the covariance element
           covariance_(rowIndex, columnIndex) = integrator.integrate(function, unitSquare)[0];
         }

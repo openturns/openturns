@@ -59,7 +59,7 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** Evaluation operator */
-  NumericalPoint operator () (const NumericalPoint & inP) const;
+  Point operator () (const Point & inP) const;
   Sample operator () (const Sample & inS) const;
 
   /** Functions accessor */
@@ -79,11 +79,11 @@ public:
   UnsignedInteger getOutputDimension() const;
 
   /** Gradient according to the marginal parameters */
-  Matrix parameterGradient(const NumericalPoint & inP) const;
+  Matrix parameterGradient(const Point & inP) const;
 
   /** Parameters value accessor */
-  void setParameter(const NumericalPoint & parameter);
-  NumericalPoint getParameter() const;
+  void setParameter(const Point & parameter);
+  Point getParameter() const;
 
   /** Parameters description accessor */
   virtual Description getParameterDescription() const;

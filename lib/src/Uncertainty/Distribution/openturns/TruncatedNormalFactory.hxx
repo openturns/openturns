@@ -47,10 +47,10 @@ public:
   using DistributionFactoryImplementation::build;
 
   Implementation build(const Sample & sample) const;
-  Implementation build(const NumericalPoint & parameters) const;
+  Implementation build(const Point & parameters) const;
   Implementation build() const;
   TruncatedNormal buildAsTruncatedNormal(const Sample & sample) const;
-  TruncatedNormal buildAsTruncatedNormal(const NumericalPoint & parameters) const;
+  TruncatedNormal buildAsTruncatedNormal(const Point & parameters) const;
   TruncatedNormal buildAsTruncatedNormal() const;
 
   /** Optimization solver accessor */

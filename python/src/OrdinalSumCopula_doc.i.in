@@ -63,7 +63,7 @@ copColl : list of :class:`~openturns.Copula` with the same dimension
 
 Returns
 -------
-bounds : :class:`~openturns.NumericalPoint`
+bounds : :class:`~openturns.Point`
     Bounds defining the intervals on which the copulas of the collection are
     squeezed."
 

@@ -45,11 +45,11 @@ public:
   Normal(const NumericalScalar mu, const NumericalScalar sd);
 
   /** Constructor for multiD normal distribution */
-  Normal(const NumericalPoint & mean,
-         const NumericalPoint & sigma,
+  Normal(const Point & mean,
+         const Point & sigma,
          const CorrelationMatrix & R);
 
-  Normal(const NumericalPoint & mean,
+  Normal(const Point & mean,
          const CovarianceMatrix & C);
 
 
@@ -78,25 +78,25 @@ public:
   NumericalScalar computeDensityGeneratorSecondDerivative(const NumericalScalar betaSquare) const;
 
   /** Get one realization of the Normal distribution */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
   Sample getSample(const UnsignedInteger size) const;
 
   /** Get the CDF of the Normal distribution */
   using EllipticalDistribution::computeCDF;
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
+  NumericalScalar computeCDF(const Point & point) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
-  NumericalComplex computeCharacteristicFunction(const NumericalPoint & x) const;
+  NumericalComplex computeCharacteristicFunction(const Point & x) const;
   NumericalComplex computeLogCharacteristicFunction(const NumericalScalar x) const;
-  NumericalComplex computeLogCharacteristicFunction(const NumericalPoint & x) const;
+  NumericalComplex computeLogCharacteristicFunction(const Point & x) const;
 
   /** Get the probability content of an interval */
   NumericalScalar computeProbability(const Interval & interval) const;
 
   /** Get the CDF gradient of the distribution */
   using EllipticalDistribution::computeCDFGradient;
-  NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
+  Point computeCDFGradient(const Point & point) const;
 
   /** Compute the radial distribution CDF */
   NumericalScalar computeRadialDistributionCDF(const NumericalScalar radius,
@@ -104,15 +104,15 @@ public:
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalPDF;
-  NumericalScalar computeConditionalPDF(const NumericalScalar x, const NumericalPoint & y) const;
+  NumericalScalar computeConditionalPDF(const NumericalScalar x, const Point & y) const;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalCDF;
-  NumericalScalar computeConditionalCDF(const NumericalScalar x, const NumericalPoint & y) const;
+  NumericalScalar computeConditionalCDF(const NumericalScalar x, const Point & y) const;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalQuantile;
-  NumericalScalar computeConditionalQuantile(const NumericalScalar q, const NumericalPoint & y) const;
+  NumericalScalar computeConditionalQuantile(const NumericalScalar q, const Point & y) const;
 
   /** Get the i-th marginal distribution */
   Implementation getMarginal(const UnsignedInteger i) const;
@@ -124,13 +124,13 @@ public:
   NumericalScalar getRoughness() const;
 
   /** Get the skewness of the distribution */
-  NumericalPoint getSkewness() const;
+  Point getSkewness() const;
 
   /** Get the kurtosis of the distribution */
-  NumericalPoint getKurtosis() const;
+  Point getKurtosis() const;
 
   /** Get the raw moments of the standardized distribution */
-  NumericalPoint getStandardMoment(const UnsignedInteger n) const;
+  Point getStandardMoment(const UnsignedInteger n) const;
 
   /** Get the standard representative in the parametric family, associated with the standard moments */
   Implementation getStandardRepresentative() const;

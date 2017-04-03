@@ -37,7 +37,7 @@ try:
     # Probabilistic model
     #
 
-    mean = NumericalPoint(dim, 0.0)
+    mean = Point(dim, 0.0)
     mean[0] = 120.0
     mean[1] = 120.0
     mean[2] = 120.0
@@ -45,7 +45,7 @@ try:
     mean[4] = 50.0
     mean[5] = 40.0
 
-    sigma = NumericalPoint(dim, 0.0)
+    sigma = Point(dim, 0.0)
     sigma[0] = 12.0
     sigma[1] = 12.0
     sigma[2] = 12.0
@@ -205,10 +205,10 @@ try:
 
     #
     # Importance Sampling avec Standard Event
-    meanSE = NumericalPoint(dim, 0.0)
+    meanSE = Point(dim, 0.0)
     for i in range(resultAR.getStandardSpaceDesignPoint().getDimension()):
         meanSE[i] = resultAR.getStandardSpaceDesignPoint()[i]
-    sigmaSE = NumericalPoint(dim, 1.0)
+    sigmaSE = Point(dim, 1.0)
     CorrSE = IdentityMatrix(dim)
     myImportanceSE = Normal(meanSE, sigmaSE, CorrSE)
 
@@ -221,11 +221,11 @@ try:
     myISS.run()
 
     # Importance Sampling avec Event
-    meanE = NumericalPoint(dim, 0.0)
+    meanE = Point(dim, 0.0)
     for i in range(resultC.getPhysicalSpaceDesignPoint().getDimension()):
         meanE[i] = resultC.getPhysicalSpaceDesignPoint()[i]
 
-    sigmaE = NumericalPoint(dim, 0.0)
+    sigmaE = Point(dim, 0.0)
     for i in range(resultC.getPhysicalSpaceDesignPoint().getDimension()):
         sigmaE[i] = sqrt(Covariance[i, i])
 

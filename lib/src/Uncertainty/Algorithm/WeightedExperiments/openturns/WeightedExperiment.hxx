@@ -67,7 +67,7 @@ public:
   virtual Sample generate() const;
 
   /** Sample generation with weights*/
-  virtual Sample generateWithWeights(NumericalPoint & weights) const;
+  virtual Sample generateWithWeights(Point & weights) const;
 
 } ; /* class WeightedExperiment */
 

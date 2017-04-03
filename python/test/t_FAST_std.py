@@ -55,7 +55,7 @@ try:
     # Test with G-Sobol function
     formulaGSobol = ["1.0"]
     covTh = 1.0
-    a = NumericalPoint(inputDimension)
+    a = Point(inputDimension)
     for i in range(inputDimension):
         a[i] = 0.5 * i
         covTh = covTh * (1.0 + 1.0 / (3.0 * (1.0 + a[i]) ** 2))
@@ -74,8 +74,8 @@ try:
     firstOrderIndices = sensitivityAnalysis.getFirstOrderIndices()
     totalOrderIndices = sensitivityAnalysis.getTotalOrderIndices()
     # First-order indices
-    V_i = NumericalPoint(inputDimension)
-    Vtot_i = NumericalPoint(inputDimension)
+    V_i = Point(inputDimension)
+    Vtot_i = Point(inputDimension)
     prod_V_i = 1.0
     for i in range(inputDimension):
         V_i[i] = 1.0 / (3.0 * (1.0 + a[i]) ** 2.0)

@@ -65,7 +65,7 @@ String ArchimedeanCopula::__repr__() const
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar ArchimedeanCopula::computePDF(const NumericalPoint & point) const
+NumericalScalar ArchimedeanCopula::computePDF(const Point & point) const
 {
   if ((point[0] <= 0.0) || (point[1] <= 0.0) || (point[0] >= 1.0) || point[1] >= 1.0) return 0.0;
   NumericalScalar sum = computeArchimedeanGenerator(point[0]) + computeArchimedeanGenerator(point[1]);
@@ -75,7 +75,7 @@ NumericalScalar ArchimedeanCopula::computePDF(const NumericalPoint & point) cons
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar ArchimedeanCopula::computeCDF(const NumericalPoint & point) const
+NumericalScalar ArchimedeanCopula::computeCDF(const Point & point) const
 {
   if ((point[0] <= 0.0) || (point[1] <= 0.0)) return 0.0;
   if ((point[0] >= 1.0) && (point[1] >= 1.0)) return 1.0;
@@ -84,9 +84,9 @@ NumericalScalar ArchimedeanCopula::computeCDF(const NumericalPoint & point) cons
   return computeInverseArchimedeanGenerator(computeArchimedeanGenerator(point[0]) + computeArchimedeanGenerator(point[1]));
 }
 
-NumericalScalar ArchimedeanCopula::computeComplementaryCDF(const NumericalPoint & point) const
+NumericalScalar ArchimedeanCopula::computeComplementaryCDF(const Point & point) const
 {
-  throw NotYetImplementedException(HERE) << "In ArchimedeanCopula::computeComplementaryCDF(const NumericalPoint & point) const";
+  throw NotYetImplementedException(HERE) << "In ArchimedeanCopula::computeComplementaryCDF(const Point & point) const";
 }
 
 /* Compute the probability content of an interval */
@@ -95,15 +95,15 @@ NumericalScalar ArchimedeanCopula::computeProbability(const Interval & interval)
   Interval intersect(interval.intersect(Interval(2)));
   // Empty interval
   if (intersect.isNumericallyEmpty()) return 0.0;
-  NumericalPoint lowerBound(intersect.getLowerBound());
-  NumericalPoint upperBound(intersect.getUpperBound());
+  Point lowerBound(intersect.getLowerBound());
+  Point upperBound(intersect.getUpperBound());
   NumericalScalar uuCDF = computeCDF(upperBound);
   NumericalScalar llCDF = computeCDF(lowerBound);
-  NumericalPoint ul(2);
+  Point ul(2);
   ul[0] = upperBound[0];
   ul[1] = lowerBound[1];
   NumericalScalar ulCDF = computeCDF(ul);
-  NumericalPoint lu(2);
+  Point lu(2);
   lu[0] = lowerBound[0];
   lu[1] = upperBound[1];
   NumericalScalar luCDF = computeCDF(lu);
@@ -112,7 +112,7 @@ NumericalScalar ArchimedeanCopula::computeProbability(const Interval & interval)
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 NumericalScalar ArchimedeanCopula::computeConditionalPDF(const NumericalScalar x,
-    const NumericalPoint & y) const
+    const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -123,7 +123,7 @@ NumericalScalar ArchimedeanCopula::computeConditionalPDF(const NumericalScalar x
   const NumericalScalar z = y[0];
   // If the conditioning variable is outside of the range of the marginal distribution
   if ((z <= 0.0) || (z >= 1.0)) return 0.0;
-  NumericalPoint point(2);
+  Point point(2);
   point[0] = z;
   point[1] = x;
   return computePDF(point);

@@ -122,7 +122,7 @@ Parameters
 ----------
 sample : 2-d sequence of float, of dimension 1
     The sample from which the distribution parameters are estimated.
-param : Collection of :class:`~openturns.NumericalPointWithDescription`
+param : Collection of :class:`~openturns.PointWithDescription`
     A vector of parameters of the distribution.
 covMat : :class:`~openturns.CovarianceMatrix`
     A covariance matrix.
@@ -164,7 +164,7 @@ method : integer
     - 0 : Local likelihood maximum estimators
     - 1 : Modified moment estimators
     - 2 : method of moment estimators.
-param : Collection of :class:`~openturns.NumericalPointWithDescription`
+param : Collection of :class:`~openturns.PointWithDescription`
     A vector of parameters of the distribution.
 "
 

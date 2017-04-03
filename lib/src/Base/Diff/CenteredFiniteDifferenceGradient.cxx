@@ -39,7 +39,7 @@ CenteredFiniteDifferenceGradient::CenteredFiniteDifferenceGradient() :
 }
 
 /* Parameter constructor */
-CenteredFiniteDifferenceGradient::CenteredFiniteDifferenceGradient(const NumericalPoint & epsilon,
+CenteredFiniteDifferenceGradient::CenteredFiniteDifferenceGradient(const Point & epsilon,
     const EvaluationPointer & p_evaluation)
   : FiniteDifferenceGradient(epsilon, p_evaluation)
 
@@ -88,10 +88,10 @@ String CenteredFiniteDifferenceGradient::__str__(const String & offset) const
 /* Here is the interface that all derived class must implement */
 
 /* Gradient () */
-Matrix CenteredFiniteDifferenceGradient::gradient(const NumericalPoint & inP) const
+Matrix CenteredFiniteDifferenceGradient::gradient(const Point & inP) const
 {
   const UnsignedInteger inputDimension = inP.getDimension();
-  NumericalPoint step(finiteDifferenceStep_.operator()(inP));
+  Point step(finiteDifferenceStep_.operator()(inP));
   if (inputDimension != step.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   /* At which points do we have to compute the evaluation for the centered finite difference. We need 2*dim points. */
   Sample gridPoints(2 * inputDimension, inP);

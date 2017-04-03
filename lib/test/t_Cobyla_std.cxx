@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-inline String printNumericalPoint(const NumericalPoint & point, const UnsignedInteger digits)
+inline String printPoint(const Point & point, const UnsignedInteger digits)
 {
   OSS oss;
   oss << "[";
@@ -52,13 +52,13 @@ int main(int argc, char *argv[])
     input[2] = "x3";
     input[3] = "x4";
     Function levelFunction(input, Description(1, "y1"), Description(1, "x1+2*x2-3*x3+4*x4"));
-    NumericalPoint startingPoint(4, 0.0);
+    Point startingPoint(4, 0.0);
     Cobyla myAlgorithm(OptimizationProblem(levelFunction, 3.0));
     myAlgorithm.setStartingPoint(startingPoint);
     fullprint << "myAlgorithm = " << myAlgorithm << std::endl;
     myAlgorithm.run();
-    fullprint << "result = " << printNumericalPoint(myAlgorithm.getResult().getOptimalPoint(), 4) << std::endl;
-    fullprint << "multipliers = " << printNumericalPoint(myAlgorithm.getResult().getLagrangeMultipliers(), 4) << std::endl;
+    fullprint << "result = " << printPoint(myAlgorithm.getResult().getOptimalPoint(), 4) << std::endl;
+    fullprint << "multipliers = " << printPoint(myAlgorithm.getResult().getLagrangeMultipliers(), 4) << std::endl;
   }
   catch (TestFailed & ex)
   {
@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
     input[2] = "x3";
     input[3] = "x4";
     Function levelFunction(input, Description(1, "y1"), Description(1, "x1*cos(x1)+2*x2*x3-3*x3+4*x3*x4"));
-    NumericalPoint startingPoint(4, 0.0);
+    Point startingPoint(4, 0.0);
     Cobyla myAlgorithm(OptimizationProblem(levelFunction, 3.0));
     myAlgorithm.setStartingPoint(startingPoint);
     myAlgorithm.setMaximumIterationNumber(400);
@@ -85,8 +85,8 @@ int main(int argc, char *argv[])
     fullprint << "myAlgorithm = " << myAlgorithm << std::endl;
     myAlgorithm.run();
     OptimizationResult result(myAlgorithm.getResult());
-    fullprint << "result = " << printNumericalPoint(result.getOptimalPoint(), 4) << std::endl;
-    fullprint << "multipliers = " << printNumericalPoint(result.getLagrangeMultipliers(), 4) << std::endl;
+    fullprint << "result = " << printPoint(result.getOptimalPoint(), 4) << std::endl;
+    fullprint << "multipliers = " << printPoint(result.getLagrangeMultipliers(), 4) << std::endl;
     Graph convergence(result.drawErrorHistory());
     //FIXME:fullprint << "evaluation calls number=" << levelFunction.getEvaluationCallsNumber() << std::endl;
     fullprint << "gradient   calls number=" << levelFunction.getGradientCallsNumber() << std::endl;

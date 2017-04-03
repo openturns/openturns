@@ -7,8 +7,8 @@ TESTPREAMBLE()
 
 try:
     dim = 5
-    meanPoint = NumericalPoint(dim, 0.0)
-    sigma = NumericalPoint(dim, 5.0)
+    meanPoint = Point(dim, 0.0)
+    sigma = Point(dim, 5.0)
     R = CorrelationMatrix(dim)
 
     distribution = Normal(meanPoint, sigma, R)

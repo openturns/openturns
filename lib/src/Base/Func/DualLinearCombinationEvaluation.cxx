@@ -79,7 +79,7 @@ DualLinearCombinationEvaluation::Implementation DualLinearCombinationEvaluation:
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
   // We use a LinearCombinationEvaluation instead of a DualLinearCombinationEvaluation as it is more efficient and more easy to read
   const UnsignedInteger size = coefficients_.getSize();
-  NumericalPoint marginalCoefficients(size);
+  Point marginalCoefficients(size);
   for (UnsignedInteger marginalIndex = 0; marginalIndex < size; ++marginalIndex) marginalCoefficients[marginalIndex] = coefficients_[marginalIndex][i];
   return new LinearCombinationEvaluation(functionsCollection_, marginalCoefficients);
 }
@@ -156,22 +156,22 @@ String DualLinearCombinationEvaluation::__str__(const String & offset) const
 // Helper for the parallel version of the point-based evaluation operator
 struct DualLinearCombinationEvaluationPointFunctor
 {
-  const NumericalPoint & input_;
+  const Point & input_;
   const DualLinearCombinationEvaluation & evaluation_;
-  NumericalPoint accumulator_;
+  Point accumulator_;
 
-  DualLinearCombinationEvaluationPointFunctor(const NumericalPoint & input,
+  DualLinearCombinationEvaluationPointFunctor(const Point & input,
       const DualLinearCombinationEvaluation & evaluation)
     : input_(input)
     , evaluation_(evaluation)
-    , accumulator_(NumericalPoint(evaluation.getOutputDimension()))
+    , accumulator_(Point(evaluation.getOutputDimension()))
   {}
 
   DualLinearCombinationEvaluationPointFunctor(const DualLinearCombinationEvaluationPointFunctor & other,
       TBB::Split)
     : input_(other.input_)
     , evaluation_(other.evaluation_)
-    , accumulator_(NumericalPoint(other.accumulator_.getDimension()))
+    , accumulator_(Point(other.accumulator_.getDimension()))
   {}
 
   inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r )
@@ -187,14 +187,14 @@ struct DualLinearCombinationEvaluationPointFunctor
 }; // struct DualLinearCombinationEvaluationPointFunctor
 
 /* Evaluation operator */
-NumericalPoint DualLinearCombinationEvaluation::operator () (const NumericalPoint & inP) const
+Point DualLinearCombinationEvaluation::operator () (const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   const UnsignedInteger size = functionsCollection_.getSize();
   DualLinearCombinationEvaluationPointFunctor functor( inP, *this );
   TBB::ParallelReduce( 0, size, functor );
-  const NumericalPoint result(functor.accumulator_);
+  const Point result(functor.accumulator_);
   ++callsNumber_;
   if (isHistoryEnabled_)
   {
@@ -261,11 +261,11 @@ void DualLinearCombinationEvaluation::setFunctionsCollectionAndCoefficients(cons
   functionsCollection_ = FunctionCollection(0);
   // First pass, extract the maximum absolute coefficient
   NumericalScalar maximumAbsoluteCoefficient = 0.0;
-  NumericalPoint absoluteCoefficients(size);
+  Point absoluteCoefficients(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    // Must cast the NSI_const_point into a NumericalPoint to use the norm() method.
-    absoluteCoefficients[i] = NumericalPoint(coefficients[i]).norm();
+    // Must cast the NSI_const_point into a Point to use the norm() method.
+    absoluteCoefficients[i] = Point(coefficients[i]).norm();
     if (absoluteCoefficients[i] > maximumAbsoluteCoefficient) maximumAbsoluteCoefficient = absoluteCoefficients[i];
   }
   if (maximumAbsoluteCoefficient == 0.0) throw InvalidArgumentException(HERE) << "Error: all the coefficients are zero.";
@@ -312,7 +312,7 @@ UnsignedInteger DualLinearCombinationEvaluation::getOutputDimension() const
 
 
 /* Gradient according to the marginal parameters */
-Matrix DualLinearCombinationEvaluation::parameterGradient(const NumericalPoint & inP) const
+Matrix DualLinearCombinationEvaluation::parameterGradient(const Point & inP) const
 {
   Matrix result(getParameter().getDimension(), getOutputDimension());
   // const UnsignedInteger size(functionsCollection_.getSize());
@@ -339,9 +339,9 @@ Matrix DualLinearCombinationEvaluation::parameterGradient(const NumericalPoint &
 }
 
 /* Parameters value accessor */
-NumericalPoint DualLinearCombinationEvaluation::getParameter() const
+Point DualLinearCombinationEvaluation::getParameter() const
 {
-  NumericalPoint parameter(0);
+  Point parameter(0);
   const UnsignedInteger size = functionsCollection_.getSize();
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
@@ -350,13 +350,13 @@ NumericalPoint DualLinearCombinationEvaluation::getParameter() const
   return parameter;
 }
 
-void DualLinearCombinationEvaluation::setParameter(const NumericalPoint & parameter)
+void DualLinearCombinationEvaluation::setParameter(const Point & parameter)
 {
   const UnsignedInteger size = functionsCollection_.getSize();
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    NumericalPoint marginalParameter(functionsCollection_[i].getParameter());
+    Point marginalParameter(functionsCollection_[i].getParameter());
     const UnsignedInteger marginalDimension = marginalParameter.getDimension();
     for (UnsignedInteger j = 0; j < marginalDimension; ++ j)
     {

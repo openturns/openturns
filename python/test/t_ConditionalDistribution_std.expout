@@ -24,7 +24,7 @@ anotherSample covariance= [[  0.0847776   -0.000929088 ]
 Zero point=  [0,0]  pdf= 0.0  cdf= 0.0
 Quantile= [1.97468,3.60341]
 CDF(quantile)= 0.95
-InverseSurvival= class=NumericalPoint name=Unnamed dimension=2 values=[1.02532,0.293386]
+InverseSurvival= class=Point name=Unnamed dimension=2 values=[1.02532,0.293386]
 Survival(inverseSurvival)=0.950000
 Unilateral confidence interval (lower tail)= [-1, 1.97468]
 [-1, 3.60341]
@@ -57,7 +57,7 @@ anotherSample covariance= [[ 2.41134 ]]
 Zero point=  [0]  pdf=0.253748  cdf=0.367604
 Quantile= [3.05046]
 CDF(quantile)= 0.95
-InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[-2.05046]
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[-2.05046]
 Survival(inverseSurvival)=0.950000
 conditioning distribution= ComposedDistribution(Binomial(n = 3, p = 0.5), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
 Distribution  ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=[y0,y1]->[y0,y1], Y~ComposedDistribution(Binomial(n = 3, p = 0.5), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2)))
@@ -84,7 +84,7 @@ anotherSample covariance= [[ 3.16541 ]]
 Zero point=  [0]  pdf=0.156744  cdf=0.192205
 Quantile= [4.38019]
 CDF(quantile)= 0.95
-InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[-1.38019]
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[-1.38019]
 Survival(inverseSurvival)=0.950000
 conditioning distribution= ComposedDistribution(Dirac(point = [0.5]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
 Distribution  ConditionalDistribution(X with X|Theta~Normal(Theta), Theta=f(Y), f=[y0,y1]->[y0,y1], Y~ComposedDistribution(Dirac(point = [0.5]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2)))
@@ -111,5 +111,5 @@ anotherSample covariance= [[ 2.34096 ]]
 Zero point=  [0]  pdf=0.258535  cdf=0.364782
 Quantile= [3.00635]
 CDF(quantile)= 0.95
-InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[-2.00635]
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[-2.00635]
 Survival(inverseSurvival)=0.950000

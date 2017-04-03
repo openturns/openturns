@@ -47,10 +47,10 @@ public:
   using DistributionFactoryImplementation::build;
 
   Implementation build(const Sample & sample) const;
-  Implementation build(const NumericalPoint & parameters) const;
+  Implementation build(const Point & parameters) const;
   Implementation build() const;
   GeneralizedPareto buildAsGeneralizedPareto(const Sample & sample) const;
-  GeneralizedPareto buildAsGeneralizedPareto(const NumericalPoint & parameters) const;
+  GeneralizedPareto buildAsGeneralizedPareto(const Point & parameters) const;
   GeneralizedPareto buildAsGeneralizedPareto() const;
 
   /** Optimization solver accessor */

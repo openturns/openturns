@@ -40,8 +40,8 @@ int main(int argc, char *argv[])
     const UnsignedInteger q = 2;
 
     /* ARMACoefficients intializing */
-    NumericalPoint arCoefficients(p, 0.80);
-    NumericalPoint maCoefficients(q, 0.50);
+    Point arCoefficients(p, 0.80);
+    Point maCoefficients(q, 0.50);
 
     /* ARMA creation */
     ARMA myARMA(ARMACoefficients(arCoefficients), ARMACoefficients(maCoefficients), WhiteNoise(Normal(0.0, 0.05)));
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
       WhittleFactory factory(p, q);
       // factory.setVerbose(true);
       fullprint << "factory=" << factory << std::endl;
-      NumericalPoint informationCriteria;
+      Point informationCriteria;
       Process result(factory.build(timeSeries, informationCriteria));
       // Commented due to a bug in the cobyla algorithm
       //fullprint << "Estimated ARMA=" << result.__str__() << std::endl;
@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
     WhittleFactory factory(pIndices, qIndices);
     // factory.setVerbose(true);
     fullprint << "factory=" << factory << std::endl;
-    NumericalPoint informationCriteria;
+    Point informationCriteria;
     Process result(factory.build(timeSeries, informationCriteria));
     // Commented due to a bug in the cobyla algorithm
     //fullprint << "Estimated ARMA=" << result.__str__() << std::endl;

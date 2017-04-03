@@ -53,10 +53,10 @@ struct OrderStatisticsMarginalCheckerWrapper
     // Nothing to do
   }
 
-  NumericalPoint computeDelta(const NumericalPoint & point) const
+  Point computeDelta(const Point & point) const
   {
     const NumericalScalar delta = distributionI_.computeCDF(point) - distributionIp1_.computeCDF(point);
-    return NumericalPoint(1, delta);
+    return Point(1, delta);
   }
 
   const Distribution & distributionI_;
@@ -102,11 +102,11 @@ void OrderStatisticsMarginalChecker::check() const
   // Initilalyse Optimization problem
   OptimizationProblem problem;
 
-  const FiniteDifferenceStep step(BlendedStep(NumericalPoint(1, std::pow(SpecFunc::NumericalScalarEpsilon, 1.0 / 3.0)), std::sqrt(SpecFunc::NumericalScalarEpsilon)));
+  const FiniteDifferenceStep step(BlendedStep(Point(1, std::pow(SpecFunc::NumericalScalarEpsilon, 1.0 / 3.0)), std::sqrt(SpecFunc::NumericalScalarEpsilon)));
   for (UnsignedInteger i = 1; i < size; ++ i)
   {
     const OrderStatisticsMarginalCheckerWrapper wrapper(collection_[i - 1], collection_[i]);
-    Function f(bindMethod<OrderStatisticsMarginalCheckerWrapper, NumericalPoint, NumericalPoint>(wrapper, &OrderStatisticsMarginalCheckerWrapper::computeDelta, 1, 1));
+    Function f(bindMethod<OrderStatisticsMarginalCheckerWrapper, Point, Point>(wrapper, &OrderStatisticsMarginalCheckerWrapper::computeDelta, 1, 1));
     f.setGradient(CenteredFiniteDifferenceGradient(step, f.getEvaluation()->clone()));
 
     for (UnsignedInteger k = 0; k < quantileIteration; ++ k)
@@ -118,10 +118,10 @@ void OrderStatisticsMarginalChecker::check() const
       // Define Optimization problem
       problem.setObjective(f);
       problem.setBounds(Interval(xMin, xMax));
-      solver_.setStartingPoint(NumericalPoint(1, xMiddle));
+      solver_.setStartingPoint(Point(1, xMiddle));
       solver_.setProblem(problem);
       solver_.run();
-      const NumericalPoint minimizer(solver_.getResult().getOptimalPoint());
+      const Point minimizer(solver_.getResult().getOptimalPoint());
       const NumericalScalar minValue = solver_.getResult().getOptimalValue()[0];
 
       LOGDEBUG(OSS() << "Optimisation on [" << xMin << ", " << xMax << "] gives " << solver_.getResult());

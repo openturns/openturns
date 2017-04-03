@@ -21,7 +21,7 @@
 #include "openturns/LHSExperiment.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/Collection.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
@@ -106,14 +106,14 @@ String LHSExperiment::__str__(const String & offset) const
 }
 
 /* Sample generation */
-Sample LHSExperiment::generateWithWeights(NumericalPoint & weights) const
+Sample LHSExperiment::generateWithWeights(Point & weights) const
 {
   const UnsignedInteger dimension = distribution_.getDimension();
   // To insure that the shuffle has been initialized
   (void) getShuffle();
   Sample sample(size_, dimension);
   sample.setDescription(distribution_.getDescription());
-  NumericalPoint u(dimension, 0.5);
+  Point u(dimension, 0.5);
   for(UnsignedInteger index = 0; index < size_; ++index)
   {
     if (randomShift_) u = RandomGenerator::Generate(dimension);
@@ -123,7 +123,7 @@ Sample LHSExperiment::generateWithWeights(NumericalPoint & weights) const
       sample[index][component] = marginals_[component].computeQuantile(xi)[0];
     }
   }
-  weights = NumericalPoint(size_, 1.0 / size_);
+  weights = Point(size_, 1.0 / size_);
   return sample;
 }
 

@@ -24,9 +24,9 @@ try:
     spatialDimension = 1
 
     # Amplitude values
-    amplitude = NumericalPoint(dimension)
+    amplitude = Point(dimension)
     # Scale values
-    scale = NumericalPoint(spatialDimension, 1.0)
+    scale = Point(spatialDimension, 1.0)
     # Spatial correlation
     spatialCorrelation = CorrelationMatrix(dimension)
     for index in range(dimension):

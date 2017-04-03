@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * This class offers an interface for an real numerical mathematical gradient
  * implementations into the platform. It realizes the computation of the image matrix
- * of a vector (aka NumericalPoint) through the gradient. The
+ * of a vector (aka Point) through the gradient. The
  * gradient may be loaded in an external way through a wrapper.
  */
 class OT_API ConstantGradient
@@ -63,7 +63,7 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Gradient method */
-  virtual Matrix gradient(const NumericalPoint & inP) const;
+  virtual Matrix gradient(const Point & inP) const;
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;

@@ -23,7 +23,7 @@
 
 #include "openturns/ExperimentImplementation.hxx"
 #include "openturns/Distribution.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Indices.hxx"
 //#include "OrthogonalBasis.hxx"
 
@@ -72,7 +72,7 @@ public:
   virtual Sample generate() const;
 
   /** Sample generation with weights*/
-  virtual Sample generateWithWeights(NumericalPoint & weights) const;
+  virtual Sample generateWithWeights(Point & weights) const;
 
 protected:
 

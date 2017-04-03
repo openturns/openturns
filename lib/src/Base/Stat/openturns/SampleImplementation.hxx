@@ -23,7 +23,7 @@
 
 #include <stdint.h> // for uint64_t
 
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Description.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/PersistentCollection.hxx"
@@ -74,7 +74,7 @@ public:
 
 
   // NSI_point & operator = (const NSI_const_point & rhs);
-  // NSI_point & operator = (const NumericalPoint & rhs);
+  // NSI_point & operator = (const Point & rhs);
 
   NumericalScalar & operator [] (const UnsignedInteger i);
   const NumericalScalar & operator [] (const UnsignedInteger i) const;
@@ -86,7 +86,7 @@ public:
     if (dimension_ == 0) return Collection<NumericalScalar>(0);
     return Collection<NumericalScalar>( begin(), end() );
   }
-  inline operator NumericalPoint () const
+  inline operator Point () const
   {
     return getCollection();
   }
@@ -115,8 +115,8 @@ public:
 
   NSI_point & operator += (const NSI_point & other);
   NSI_point & operator -= (const NSI_point & other);
-  NSI_point & operator += (const NumericalPoint & other);
-  NSI_point & operator -= (const NumericalPoint & other);
+  NSI_point & operator += (const Point & other);
+  NSI_point & operator -= (const Point & other);
   NSI_point & operator *= (const NumericalScalar val);
   NSI_point & operator /= (const NumericalScalar val);
 };
@@ -156,7 +156,7 @@ public:
     if (dimension_ == 0) return Collection<NumericalScalar>(0);
     return Collection<NumericalScalar>( begin(), end() );
   }
-  inline operator NumericalPoint () const
+  inline operator Point () const
   {
     return getCollection();
   }
@@ -188,32 +188,32 @@ OT_API OStream & operator << (OStream & OS, const NSI_const_point & point);
 
 
 inline
-NumericalPoint operator * (const NSI_point & point,
+Point operator * (const NSI_point & point,
                            const NumericalScalar val)
 {
-  NumericalPoint res(point.getDimension(), 0.);
+  Point res(point.getDimension(), 0.);
   for(UnsignedInteger i = 0; i < point.getDimension(); ++i) res[i] = point[i] * val;
   return res;
 }
 
 inline
-NumericalPoint operator * (const NumericalScalar val,
+Point operator * (const NumericalScalar val,
                            const NSI_point & point)
 {
   return point * val;
 }
 
 inline
-NumericalPoint operator * (const NSI_const_point & point,
+Point operator * (const NSI_const_point & point,
                            const NumericalScalar val)
 {
-  NumericalPoint res(point.getDimension(), 0.);
+  Point res(point.getDimension(), 0.);
   for(UnsignedInteger i = 0; i < point.getDimension(); ++i) res[i] = point[i] * val;
   return res;
 }
 
 inline
-NumericalPoint operator * (const NumericalScalar val,
+Point operator * (const NumericalScalar val,
                            const NSI_const_point & point)
 {
   return point * val;
@@ -503,13 +503,13 @@ public:
   SampleImplementation(const UnsignedInteger size,
                                 const UnsignedInteger dim);
 
-  /** Constructor from a NumericalPoint */
+  /** Constructor from a Point */
   SampleImplementation(const UnsignedInteger size,
-                                const NumericalPoint & point);
+                                const Point & point);
 
 #ifndef SWIG
-  /** Constructor from a collection of NumericalPoint */
-  SampleImplementation(const Collection<NumericalPoint> & coll);
+  /** Constructor from a collection of Point */
+  SampleImplementation(const Collection<Point> & coll);
 
   /** Constructor from a collection of Indices */
   SampleImplementation(const Collection<Indices> & coll);
@@ -558,7 +558,7 @@ public:
   void clear();
 
   /** Raw internal format accessor */
-  NumericalPoint getData() const;
+  Point getData() const;
   void setData(const Collection<NumericalScalar> & data);
 
   inline NSI_point operator [] (const UnsignedInteger index)
@@ -606,7 +606,7 @@ public:
   }
 
   /** Whether the list contains the value val */
-  Bool contains(const NumericalPoint & val) const;
+  Bool contains(const Point & val) const;
 
   /** Size accessor */
   inline UnsignedInteger getSize() const
@@ -621,7 +621,7 @@ public:
   }
 
   /** Appends an element to the collection */
-  SampleImplementation & add(const NumericalPoint & point);
+  SampleImplementation & add(const Point & point);
 
   /** Appends another sample to the collection */
   SampleImplementation & add(const SampleImplementation & sample);
@@ -633,7 +633,7 @@ public:
    * Gives the mean of the sample, based on the formula
    * mean = sum of the elements in the sample / size of the sample
    */
-  virtual NumericalPoint computeMean() const;
+  virtual Point computeMean() const;
 
   /**
    * Gives the covariance matrix of the sample, normalization by 1 / (size - 1) if size > 1
@@ -648,7 +648,7 @@ public:
   /**
    * Gives the standard deviation of each component of the sample
    */
-  virtual NumericalPoint computeStandardDeviationPerComponent() const;
+  virtual Point computeStandardDeviationPerComponent() const;
 
   /**
    * Gives the Pearson correlation matrix of the sample
@@ -669,59 +669,59 @@ public:
   /**
    * Gives the range of the sample (by component)
    */
-  NumericalPoint computeRange() const;
+  Point computeRange() const;
 
   /**
    * Gives the median of the sample (by component)
    */
-  NumericalPoint computeMedian() const;
+  Point computeMedian() const;
 
   /**
    * Gives the variance of the sample (by component)
    */
-  virtual NumericalPoint computeVariance() const;
+  virtual Point computeVariance() const;
 
   /**
    * Gives the skewness of the sample (by component)
    */
-  virtual NumericalPoint computeSkewness() const;
+  virtual Point computeSkewness() const;
 
   /**
    * Gives the kurtosis of the sample (by component)
    */
-  virtual NumericalPoint computeKurtosis() const;
+  virtual Point computeKurtosis() const;
 
   /**
    * Gives the centered moment of order k of the sample (by component)
    */
-  NumericalPoint computeCenteredMoment(const UnsignedInteger k) const;
+  Point computeCenteredMoment(const UnsignedInteger k) const;
 
   /**
    * Gives the raw moment of order k of the sample (by component)
    */
-  NumericalPoint computeRawMoment(const UnsignedInteger k) const;
+  Point computeRawMoment(const UnsignedInteger k) const;
 
   /**
    * Gives the quantile per component of the sample
    */
-  virtual NumericalPoint computeQuantilePerComponent(const NumericalScalar prob) const;
+  virtual Point computeQuantilePerComponent(const NumericalScalar prob) const;
 
   /**
    * Gives the N-dimension quantile of the sample
    */
-  NumericalPoint computeQuantile(const NumericalScalar prob) const;
+  Point computeQuantile(const NumericalScalar prob) const;
 
   /**
    * Get the empirical CDF of the sample
    */
-  NumericalScalar computeEmpiricalCDF(const NumericalPoint & point,
+  NumericalScalar computeEmpiricalCDF(const Point & point,
                                       const Bool tail = false) const;
 
   /** Maximum accessor */
-  virtual NumericalPoint getMax() const;
+  virtual Point getMax() const;
 
   /** Minimum accessor */
-  virtual NumericalPoint getMin() const;
+  virtual Point getMin() const;
 
   /** Ranked sample */
   SampleImplementation rank() const;
@@ -751,25 +751,25 @@ public:
    * Translate realizations in-place
    */
   SampleImplementation & operator += (const NumericalScalar translation);
-  SampleImplementation & operator += (const NumericalPoint & translation);
+  SampleImplementation & operator += (const Point & translation);
   SampleImplementation & operator += (const SampleImplementation & translation);
   SampleImplementation & operator -= (const NumericalScalar translation);
-  SampleImplementation & operator -= (const NumericalPoint & translation);
+  SampleImplementation & operator -= (const Point & translation);
   SampleImplementation & operator -= (const SampleImplementation & translation);
 
   /** Translate realizations */
   SampleImplementation operator + (const NumericalScalar translation) const;
-  SampleImplementation operator + (const NumericalPoint & translation) const;
+  SampleImplementation operator + (const Point & translation) const;
   SampleImplementation operator + (const SampleImplementation & translation) const;
   SampleImplementation operator - (const NumericalScalar translation) const;
-  SampleImplementation operator - (const NumericalPoint & translation) const;
+  SampleImplementation operator - (const Point & translation) const;
   SampleImplementation operator - (const SampleImplementation & translation) const;
 
   SampleImplementation operator * (const NumericalScalar scaling) const;
-  SampleImplementation operator * (const NumericalPoint & scaling) const;
+  SampleImplementation operator * (const Point & scaling) const;
   SampleImplementation operator * (const SquareMatrix & scaling) const;
   SampleImplementation operator / (const NumericalScalar scaling) const;
-  SampleImplementation operator / (const NumericalPoint & scaling) const;
+  SampleImplementation operator / (const Point & scaling) const;
   SampleImplementation operator / (const SquareMatrix & scaling) const;
 
   /**
@@ -777,10 +777,10 @@ public:
    */
 
   SampleImplementation & operator *= (const NumericalScalar scaling);
-  SampleImplementation & operator *= (const NumericalPoint & scaling);
+  SampleImplementation & operator *= (const Point & scaling);
   SampleImplementation & operator *= (const SquareMatrix & scaling);
   SampleImplementation & operator /= (const NumericalScalar scaling);
-  SampleImplementation & operator /= (const NumericalPoint & scaling);
+  SampleImplementation & operator /= (const Point & scaling);
   SampleImplementation & operator /= (const SquareMatrix & scaling);
 
   /** Save to CSV file */
@@ -795,8 +795,8 @@ public:
 
 
 private:
-  void translate(const NumericalPoint & translation);
-  void scale(const NumericalPoint & scaling);
+  void translate(const Point & translation);
+  void scale(const Point & scaling);
   void scale(const SquareMatrix & scaling);
 
   /** The size of the sample */

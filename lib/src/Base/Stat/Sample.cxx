@@ -92,9 +92,9 @@ Sample::Sample(const Implementation & implementation)
   // Nothing to do
 }
 
-/* Constructor from a NumericalPoint (all elements are equal to the NumericalPoint) */
+/* Constructor from a Point (all elements are equal to the Point) */
 Sample::Sample(const UnsignedInteger size,
-                                 const NumericalPoint & point)
+                                 const Point & point)
   : TypedInterfaceObject<SampleImplementation>(new SampleImplementation(size, point))
 {
   // Nothing to do
@@ -109,8 +109,8 @@ Sample::Sample(const Sample other,
   // Nothing to do
 }
 
-/* Constructor from a collection of NumericalPoint */
-Sample::Sample(const Collection<NumericalPoint> & coll)
+/* Constructor from a collection of Point */
+Sample::Sample(const Collection<Point> & coll)
   : TypedInterfaceObject<SampleImplementation>(new SampleImplementation(coll))
 {
   // Nothing to do
@@ -221,7 +221,7 @@ UnsignedInteger Sample::__elementsize__ () const
 }
 
 /* Whether the list contains the value val */
-Bool Sample::contains(const NumericalPoint & val) const
+Bool Sample::contains(const Point & val) const
 {
   return getImplementation()->contains(val);
 }
@@ -272,20 +272,20 @@ UnsignedInteger Sample::getSize() const
 }
 
 /* Maximum accessor */
-NumericalPoint Sample::getMax() const
+Point Sample::getMax() const
 {
   return getImplementation()->getMax();
 }
 
 /* Minimum accessor */
-NumericalPoint Sample::getMin() const
+Point Sample::getMin() const
 {
   return getImplementation()->getMin();
 }
 
 
 /* Method add() appends an element to the collection */
-void Sample::add(const NumericalPoint & point)
+void Sample::add(const Point & point)
 {
   if ( (getSize() > 0) && (getDimension() != point.getDimension()) )
     throw InvalidArgumentException(HERE)
@@ -401,7 +401,7 @@ Sample Sample::split(const UnsignedInteger index)
  * Method computeMean() gives the mean of the sample, based on the formula
  * mean = sum of the elements in the sample / size of the sample
  */
-NumericalPoint Sample::computeMean() const
+Point Sample::computeMean() const
 {
   return getImplementation()->computeMean();
 }
@@ -425,7 +425,7 @@ TriangularMatrix Sample::computeStandardDeviation() const
 /*
  * Method computeStandardDeviationPerComponent() gives the standard deviation of each component of the sample
  */
-NumericalPoint Sample::computeStandardDeviationPerComponent() const
+Point Sample::computeStandardDeviationPerComponent() const
 {
   return getImplementation()->computeStandardDeviationPerComponent();
 }
@@ -462,7 +462,7 @@ CorrelationMatrix Sample::computeKendallTau() const
 /*
  * Method computeRange gives the range of the sample (by component)
  */
-NumericalPoint Sample::computeRange() const
+Point Sample::computeRange() const
 {
   return getImplementation()->computeRange();
 }
@@ -470,7 +470,7 @@ NumericalPoint Sample::computeRange() const
 /*
  * Method computeMedian() gives the median of the sample (by component)
  */
-NumericalPoint Sample::computeMedian() const
+Point Sample::computeMedian() const
 {
   return getImplementation()->computeMedian();
 }
@@ -478,7 +478,7 @@ NumericalPoint Sample::computeMedian() const
 /*
  * Method computeVariance() gives the variance of the sample (by component)
  */
-NumericalPoint Sample::computeVariance() const
+Point Sample::computeVariance() const
 {
   return getImplementation()->computeVariance();
 }
@@ -486,7 +486,7 @@ NumericalPoint Sample::computeVariance() const
 /*
  * Method computeSkewness() gives the skewness of the sample (by component)
  */
-NumericalPoint Sample::computeSkewness() const
+Point Sample::computeSkewness() const
 {
   return getImplementation()->computeSkewness();
 }
@@ -494,7 +494,7 @@ NumericalPoint Sample::computeSkewness() const
 /*
  * Method computeKurtosis() gives the kurtosis of the sample (by component)
  */
-NumericalPoint Sample::computeKurtosis() const
+Point Sample::computeKurtosis() const
 {
   return getImplementation()->computeKurtosis();
 }
@@ -502,7 +502,7 @@ NumericalPoint Sample::computeKurtosis() const
 /*
  * Gives the centered moment of order k of the sample (by component)
  */
-NumericalPoint Sample::computeCenteredMoment(const UnsignedInteger k) const
+Point Sample::computeCenteredMoment(const UnsignedInteger k) const
 {
   return getImplementation()->computeCenteredMoment(k);
 }
@@ -510,7 +510,7 @@ NumericalPoint Sample::computeCenteredMoment(const UnsignedInteger k) const
 /*
  * Gives the raw moment of order k of the sample (by component)
  */
-NumericalPoint Sample::computeRawMoment(const UnsignedInteger k) const
+Point Sample::computeRawMoment(const UnsignedInteger k) const
 {
   return getImplementation()->computeRawMoment(k);
 }
@@ -518,7 +518,7 @@ NumericalPoint Sample::computeRawMoment(const UnsignedInteger k) const
 /*
  * Method computeQuantilePerComponent() gives the quantile per component of the sample
  */
-NumericalPoint Sample::computeQuantilePerComponent(const NumericalScalar prob) const
+Point Sample::computeQuantilePerComponent(const NumericalScalar prob) const
 {
   return getImplementation()->computeQuantilePerComponent(prob);
 }
@@ -526,7 +526,7 @@ NumericalPoint Sample::computeQuantilePerComponent(const NumericalScalar prob) c
 /*
  * Method computeQuantile() gives the N-dimension quantile of the sample
  */
-NumericalPoint Sample::computeQuantile(const NumericalScalar prob) const
+Point Sample::computeQuantile(const NumericalScalar prob) const
 {
   return getImplementation()->computeQuantile(prob);
 }
@@ -534,7 +534,7 @@ NumericalPoint Sample::computeQuantile(const NumericalScalar prob) const
 /*
  * Get the empirical CDF of the sample
  */
-NumericalScalar Sample::computeEmpiricalCDF(const NumericalPoint & point,
+NumericalScalar Sample::computeEmpiricalCDF(const Point & point,
     const Bool tail) const
 {
   return getImplementation()->computeEmpiricalCDF(point, tail);
@@ -544,7 +544,7 @@ NumericalScalar Sample::computeEmpiricalCDF(const NumericalPoint & point,
  * Get the position of a point in the sample.
  * Returns size if the point does not belong to the sample.
  */
-UnsignedInteger Sample::find(const NumericalPoint & point) const
+UnsignedInteger Sample::find(const Point & point) const
 {
   return std::find(getImplementation()->begin(),  getImplementation()->end(), point) - getImplementation()->begin();
 }
@@ -555,11 +555,11 @@ UnsignedInteger Sample::find(const NumericalPoint & point) const
 Sample & Sample::operator += (const NumericalScalar translation)
 {
   copyOnWrite();
-  if (translation != 0.0) getImplementation()->operator +=(NumericalPoint(getDimension(), translation));
+  if (translation != 0.0) getImplementation()->operator +=(Point(getDimension(), translation));
   return *this;
 }
 
-Sample & Sample::operator += (const NumericalPoint & translation)
+Sample & Sample::operator += (const Point & translation)
 {
   copyOnWrite();
   getImplementation()->operator +=(translation);
@@ -576,11 +576,11 @@ Sample & Sample::operator += (const Sample & translation)
 Sample & Sample::operator -= (const NumericalScalar translation)
 {
   copyOnWrite();
-  if (translation != 0.0) getImplementation()->operator -=(NumericalPoint(getDimension(), translation));
+  if (translation != 0.0) getImplementation()->operator -=(Point(getDimension(), translation));
   return *this;
 }
 
-Sample & Sample::operator -= (const NumericalPoint & translation)
+Sample & Sample::operator -= (const Point & translation)
 {
   copyOnWrite();
   getImplementation()->operator -=(translation);
@@ -600,7 +600,7 @@ Sample Sample::operator + (const NumericalScalar translation) const
   return sample;
 }
 
-Sample Sample::operator + (const NumericalPoint & translation) const
+Sample Sample::operator + (const Point & translation) const
 {
   const Sample sample(getImplementation()->operator + (translation));
   return sample;
@@ -618,7 +618,7 @@ Sample Sample::operator - (const NumericalScalar translation) const
   return sample;
 }
 
-Sample Sample::operator - (const NumericalPoint & translation) const
+Sample Sample::operator - (const Point & translation) const
 {
   const Sample sample(getImplementation()->operator - (translation));
   return sample;
@@ -640,7 +640,7 @@ Sample & Sample::operator *= (const NumericalScalar scaling)
   return *this;
 }
 
-Sample & Sample::operator *= (const NumericalPoint & scaling)
+Sample & Sample::operator *= (const Point & scaling)
 {
   copyOnWrite();
   getImplementation()->operator *=(scaling);
@@ -661,7 +661,7 @@ Sample & Sample::operator /= (const NumericalScalar scaling)
   return *this;
 }
 
-Sample & Sample::operator /= (const NumericalPoint & scaling)
+Sample & Sample::operator /= (const Point & scaling)
 {
   copyOnWrite();
   getImplementation()->operator /=(scaling);
@@ -681,7 +681,7 @@ Sample Sample::operator * (const NumericalScalar scaling) const
   return sample;
 }
 
-Sample Sample::operator * (const NumericalPoint & scaling) const
+Sample Sample::operator * (const Point & scaling) const
 {
   const Sample sample(getImplementation()->operator * (scaling));
   return sample;
@@ -699,7 +699,7 @@ Sample Sample::operator / (const NumericalScalar scaling) const
   return sample;
 }
 
-Sample Sample::operator / (const NumericalPoint & scaling) const
+Sample Sample::operator / (const Point & scaling) const
 {
   const Sample sample(getImplementation()->operator / (scaling));
   return sample;

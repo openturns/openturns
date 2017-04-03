@@ -84,9 +84,9 @@ Domain EventDomain::getDomain() const
 
 
 /* Realization accessor */
-NumericalPoint EventDomain::getRealization() const
+Point EventDomain::getRealization() const
 {
-  return NumericalPoint(1, domain_.contains(CompositeRandomVector::getRealization()));
+  return Point(1, domain_.contains(CompositeRandomVector::getRealization()));
 }
 
 /* Numerical sample accessor */

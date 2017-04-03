@@ -10,7 +10,7 @@ try:
     distribution = Normal(4)
     size = 10
     weightingDistribution = Normal(distribution)
-    weightingDistribution.setMean(NumericalPoint(4, 1.0))
+    weightingDistribution.setMean(Point(4, 1.0))
     myPlane = ImportanceSamplingExperiment(
         distribution, weightingDistribution, size)
     print("myPlane = ", myPlane)

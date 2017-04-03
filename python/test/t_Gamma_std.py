@@ -37,21 +37,21 @@ for distribution in [Gamma(1.5, 2.5, -0.5), Gamma(15.0, 2.5)]:
         size *= 10
 
     # Define a point
-    point = NumericalPoint(distribution.getDimension(), 1.0)
+    point = Point(distribution.getDimension(), 1.0)
     print("Point= ", point)
 
     # Show PDF and CDF of point
     eps = 1e-5
     DDF = distribution.computeDDF(point)
     print("ddf     =", DDF)
-    print("ddf (FD)= %.6g" % ((distribution.computePDF(point + NumericalPoint(1, eps)) -
-                               distribution.computePDF(point + NumericalPoint(1, -eps))) / (2.0 * eps)))
+    print("ddf (FD)= %.6g" % ((distribution.computePDF(point + Point(1, eps)) -
+                               distribution.computePDF(point + Point(1, -eps))) / (2.0 * eps)))
     LPDF = distribution.computeLogPDF(point)
     print("log pdf= %.6g" % LPDF)
     PDF = distribution.computePDF(point)
     print("pdf     =%.6g" % PDF)
-    print("pdf (FD)=%.6g" % ((distribution.computeCDF(point + NumericalPoint(1, eps)) -
-                              distribution.computeCDF(point + NumericalPoint(1, -eps))) / (2.0 * eps)))
+    print("pdf (FD)=%.6g" % ((distribution.computeCDF(point + Point(1, eps)) -
+                              distribution.computeCDF(point + Point(1, -eps))) / (2.0 * eps)))
     CDF = distribution.computeCDF(point)
     print("cdf= %.6g" % CDF)
     CCDF = distribution.computeComplementaryCDF(point)
@@ -64,7 +64,7 @@ for distribution in [Gamma(1.5, 2.5, -0.5), Gamma(15.0, 2.5)]:
     print("log characteristic function=(%.6g, %.6g)" % (LCF.real, LCF.imag))
     PDFgr = distribution.computePDFGradient(point)
     print("pdf gradient     =", PDFgr)
-    PDFgrFD = NumericalPoint(3)
+    PDFgrFD = Point(3)
     PDFgrFD[0] = (Gamma(distribution.getK() + eps, distribution.getLambda(), distribution.getGamma()).computePDF(point) -
                   Gamma(distribution.getK() - eps, distribution.getLambda(), distribution.getGamma()).computePDF(point)) / (2.0 * eps)
     PDFgrFD[1] = (Gamma(distribution.getK(), distribution.getLambda() + eps, distribution.getGamma()).computePDF(point) -
@@ -74,7 +74,7 @@ for distribution in [Gamma(1.5, 2.5, -0.5), Gamma(15.0, 2.5)]:
     print("pdf gradient (FD)=", PDFgrFD)
     CDFgr = distribution.computeCDFGradient(point)
     print("cdf gradient     =", CDFgr)
-    CDFgrFD = NumericalPoint(3)
+    CDFgrFD = Point(3)
     CDFgrFD[0] = (Gamma(distribution.getK() + eps, distribution.getLambda(), distribution.getGamma()).computeCDF(point) -
                   Gamma(distribution.getK() - eps, distribution.getLambda(), distribution.getGamma()).computeCDF(point)) / (2.0 * eps)
     CDFgrFD[1] = (Gamma(distribution.getK(), distribution.getLambda() + eps, distribution.getGamma()).computeCDF(point) -
@@ -86,26 +86,26 @@ for distribution in [Gamma(1.5, 2.5, -0.5), Gamma(15.0, 2.5)]:
     print("quantile=", quantile)
     print("cdf(quantile)=", distribution.computeCDF(quantile))
     # Get 95% survival function
-    inverseSurvival = NumericalPoint(distribution.computeInverseSurvivalFunction(0.95))
+    inverseSurvival = Point(distribution.computeInverseSurvivalFunction(0.95))
     print("InverseSurvival=", repr(inverseSurvival))
     print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
 
     # Confidence regions
     interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
     print("Minimum volume interval=", interval)
-    print("threshold=", NumericalPoint(1, threshold))
+    print("threshold=", Point(1, threshold))
     levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
     print("Minimum volume level set=", levelSet)
-    print("beta=", NumericalPoint(1, beta))
+    print("beta=", Point(1, beta))
     interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
     print("Bilateral confidence interval=", interval)
-    print("beta=", NumericalPoint(1, beta))
+    print("beta=", Point(1, beta))
     interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
     print("Unilateral confidence interval (lower tail)=", interval)
-    print("beta=", NumericalPoint(1, beta))
+    print("beta=", Point(1, beta))
     interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
     print("Unilateral confidence interval (upper tail)=", interval)
-    print("beta=", NumericalPoint(1, beta))
+    print("beta=", Point(1, beta))
 
     mean = distribution.getMean()
     print("mean=", mean)

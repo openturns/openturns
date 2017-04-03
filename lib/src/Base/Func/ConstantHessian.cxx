@@ -94,7 +94,7 @@ SymmetricTensor ConstantHessian::getConstant() const
 /* Here is the interface that all derived class must implement */
 
 /* Hessian () */
-SymmetricTensor ConstantHessian::hessian(const NumericalPoint & inP) const
+SymmetricTensor ConstantHessian::hessian(const Point & inP) const
 {
   if (inP.getDimension() != constant_.getNbRows()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   ++callsNumber_;

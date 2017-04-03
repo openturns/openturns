@@ -15,7 +15,7 @@ R[0, 1] = 0.99
 aCollection.add(Normal([1.0, 1.0], [1.0, 1.0], R))
 
 # Instanciate one distribution object
-distribution = Mixture(aCollection, NumericalPoint(aCollection.getSize(), 1.0))
+distribution = Mixture(aCollection, Point(aCollection.getSize(), 1.0))
 
 # Create a mixture classifier
 classifier = MixtureClassifier(distribution)
@@ -33,6 +33,6 @@ print("Mixture of experts=", moe)
 
 # Evaluate the mixture of experts on some points
 for i in range(2):
-    p = NumericalPoint(1, -0.3 + 0.8 * i / 4.0)
+    p = Point(1, -0.3 + 0.8 * i / 4.0)
     print("moe   ( %.6g )=" % p[0], moe(p))
     print("moeNMF( %.6g )=" % p[0], moeNMF(p))

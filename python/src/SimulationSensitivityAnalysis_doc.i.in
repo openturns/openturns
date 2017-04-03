@@ -42,7 +42,7 @@ The simulation sensitivity analysis is based on:
 
 Returns
 -------
-impFactors : :class:`~openturns.NumericalPoint`
+impFactors : :class:`~openturns.Point`
     The importance factors.
 
 Notes
@@ -79,7 +79,7 @@ Be careful: this notion is only valid for :class:`~openturns.MonteCarlo` or
 
 Returns
 -------
-mean : :class:`~openturns.NumericalPoint`
+mean : :class:`~openturns.Point`
     The mean point in the failure domain.
 
 Notes

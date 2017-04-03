@@ -43,7 +43,7 @@ Parameters
 ----------
 C : :class:`~openturns.CovarianceModel`, :math:`\mat{C}: \cD\times\cD \mapsto \cS^+_d(\Rset)`
     The covariance model.
-ev : :class:`~openturns.NumericalPoint`
+ev : :class:`~openturns.Point`
     The eigenvalues :math:`\lambda_n` in descending order such that :math:`\lambda_n/\lambda_0\geq\mathrm{threshold}`
 
 Returns
@@ -58,7 +58,7 @@ Examples
 >>> threshold = 0.01
 >>> factory = ot.KarhunenLoeveP1Factory(mesh, threshold)
 >>> model = ot.AbsoluteExponential([1.0]*2)
->>> ev = ot.NumericalPoint()
+>>> ev = ot.Point()
 >>> functions = factory.build(model, ev)"
 
 // ---------------------------------------------------------------------
@@ -69,7 +69,7 @@ Parameters
 ----------
 C : :class:`~openturns.CovarianceModel`, :math:`\mat{C}: \cD\times\cD \mapsto \cS^+_d(\Rset)`
     The covariance model.
-ev : :class:`~openturns.NumericalPoint`
+ev : :class:`~openturns.Point`
     The eigenvalues :math:`\lambda_n` in descending order such that :math:`\lambda_n\geq\mathrm{threshold}\,\lambda_0`
 
 Returns
@@ -84,5 +84,5 @@ Examples
 >>> threshold = 0.01
 >>> factory = ot.KarhunenLoeveP1Factory(mesh, threshold)
 >>> model = ot.AbsoluteExponential([1.0]*2)
->>> ev = ot.NumericalPoint()
+>>> ev = ot.Point()
 >>> modes = factory.buildAsProcessSample(model, ev)"

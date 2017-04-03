@@ -58,7 +58,7 @@ String FunctionalChaosRandomVector::__repr__() const
 
 
 /* Mean accessor */
-NumericalPoint FunctionalChaosRandomVector::getMean() const
+Point FunctionalChaosRandomVector::getMean() const
 {
   return functionalChaosResult_.getCoefficients()[0];
 }

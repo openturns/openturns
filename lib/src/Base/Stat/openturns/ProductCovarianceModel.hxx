@@ -52,12 +52,12 @@ public:
 
   /** Computation of the covariance function */
   using CovarianceModelImplementation::computeStandardRepresentative;
-  NumericalScalar computeStandardRepresentative(const NumericalPoint & s,
-      const NumericalPoint & t) const;
+  NumericalScalar computeStandardRepresentative(const Point & s,
+      const Point & t) const;
 
   /** Gradient */
-  virtual Matrix partialGradient(const NumericalPoint & s,
-                                 const NumericalPoint & t) const;
+  virtual Matrix partialGradient(const Point & s,
+                                 const Point & t) const;
 
   /** Collection accessor */
   const CovarianceModelCollection & getCollection() const;
@@ -66,7 +66,7 @@ public:
   virtual Implementation getMarginal(const UnsignedInteger index) const;
 
   /** Scale accessor */
-  void setScale(const NumericalPoint & scale);
+  void setScale(const Point & scale);
 
   /** Is it a stationary covariance model ? */
   virtual Bool isStationary() const;
@@ -87,8 +87,8 @@ protected:
   void setCollection(const CovarianceModelCollection & collection);
 
   /** Parameter accessor */
-  virtual void setFullParameter(const NumericalPoint & parameter);
-  virtual NumericalPoint getFullParameter() const;
+  virtual void setFullParameter(const Point & parameter);
+  virtual Point getFullParameter() const;
   virtual Description getFullParameterDescription() const;
 
 private:

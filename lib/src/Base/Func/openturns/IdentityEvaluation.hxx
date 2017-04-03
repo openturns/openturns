@@ -23,7 +23,7 @@
 #define OPENTURNS_IDENTITYEVALUATION_HXX
 
 #include "openturns/EvaluationImplementation.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -53,7 +53,7 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Operator () */
-  virtual NumericalPoint operator() (const NumericalPoint & inP) const;
+  virtual Point operator() (const Point & inP) const;
 
   /** Operator () */
   virtual Sample operator() (const Sample & inS) const;

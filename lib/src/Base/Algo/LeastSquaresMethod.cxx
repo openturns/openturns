@@ -40,7 +40,7 @@ LeastSquaresMethod::LeastSquaresMethod()
 
 /* Parameters constructor */
 LeastSquaresMethod::LeastSquaresMethod (const DesignProxy & proxy,
-                                        const NumericalPoint & weight,
+                                        const Point & weight,
                                         const Indices & indices)
   : TypedInterfaceObject<LeastSquaresMethodImplementation>(new SVDMethod(proxy, weight, indices))
 {
@@ -80,22 +80,22 @@ String LeastSquaresMethod::__str__(const String & offset) const
   return getImplementation()->__str__(offset);
 }
 
-NumericalPoint LeastSquaresMethod::solve(const NumericalPoint & rhs)
+Point LeastSquaresMethod::solve(const Point & rhs)
 {
   return getImplementation()->solve(rhs);
 }
 
-NumericalPoint LeastSquaresMethod::solveNormal(const NumericalPoint & rhs)
+Point LeastSquaresMethod::solveNormal(const Point & rhs)
 {
   return getImplementation()->solveNormal(rhs);
 }
 
-NumericalPoint LeastSquaresMethod::getHDiag() const
+Point LeastSquaresMethod::getHDiag() const
 {
   return getImplementation()->getHDiag();
 }
 
-NumericalPoint LeastSquaresMethod::getGramInverseDiag() const
+Point LeastSquaresMethod::getGramInverseDiag() const
 {
   return getImplementation()->getGramInverseDiag();
 }
@@ -138,7 +138,7 @@ Sample LeastSquaresMethod::getInputSample() const
   return getImplementation()->getInputSample();
 }
 
-NumericalPoint LeastSquaresMethod::getWeight() const
+Point LeastSquaresMethod::getWeight() const
 {
   return getImplementation()->getWeight();
 }
@@ -150,7 +150,7 @@ Matrix LeastSquaresMethod::computeWeightedDesign(bool whole) const
 
 LeastSquaresMethod LeastSquaresMethod::Build(const String name,
                                              const DesignProxy & proxy,
-                                             const NumericalPoint & weight,
+                                             const Point & weight,
                                              const Indices & indices)
 {
   if      (name == "SVD")      return SVDMethod(proxy, weight, indices);

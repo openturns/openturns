@@ -37,9 +37,9 @@ int main(int argc, char *argv[])
     // The default interface
     Interval defaultInterval(2);
     fullprint << "defaultInterval=" << defaultInterval << std::endl;
-    // Construction from 2 NumericalPoint
-    NumericalPoint p1(2, -1.0);
-    NumericalPoint p2(2, 2.0);
+    // Construction from 2 Point
+    Point p1(2, -1.0);
+    Point p2(2, 2.0);
     fullprint << "interval from 2 points=" << Interval(p1, p2) << std::endl;
     // Construction from 2 points and 2 flags
     Interval::BoolCollection flag1(2, false);
@@ -56,18 +56,18 @@ int main(int argc, char *argv[])
     fullprint << "interval [p2, p1] empty? " << (Interval(p2, p1).isEmpty() ? "true" : "false") << std::endl;
     // Intersection
     Interval interval1(p1, p2);
-    NumericalPoint p3(2);
+    Point p3(2);
     p3[0] = 0.5;
     p3[1] = -1.5;
-    NumericalPoint p4(2);
+    Point p4(2);
     p4[0] = 1.5;
     p4[1] = 2.5;
     Interval interval2(p3, p4);
     fullprint << "intersection of " << interval1 << " and " << interval2 << " equals " << interval1.intersect(interval2) << std::endl;
     // Inside
-    NumericalPoint p5((p1 + p2) * 0.5);
+    Point p5((p1 + p2) * 0.5);
     fullprint << "is point " << p5 << " inside " << interval1 << "? " << (interval1.contains(p5) ? "yes" : "no") << std::endl;
-    NumericalPoint p6(2.0 * p2);
+    Point p6(2.0 * p2);
     fullprint << "is point " << p6 << " inside " << interval1 << "? " << (interval1.contains(p6) ? "yes" : "no") << std::endl;
   }
   catch (TestFailed & ex)

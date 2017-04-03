@@ -99,7 +99,7 @@ x : sequence of float
 
 Returns
 -------
-neighbour : :class:`~openturns.NumericalPoint`
+neighbour : :class:`~openturns.Point`
     Nearest neighbour."
 
 // ---------------------------------------------------------------------

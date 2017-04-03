@@ -11,52 +11,52 @@ Distribution class=Gumbel name=Gumbel dimension=1 alpha=2 beta=-0.5
 Distribution Gumbel(alpha = 2, beta = -0.5)
 Elliptical = false
 Continuous = true
-oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[-0.114155]
-oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[0.54112] last=class=NumericalPoint name=Unnamed dimension=1 values=[-0.422444]
-mean=class=NumericalPoint name=Unnamed dimension=1 values=[-0.20325]
+oneRealization=class=Point name=Unnamed dimension=1 values=[-0.114155]
+oneSample first=class=Point name=Unnamed dimension=1 values=[0.54112] last=class=Point name=Unnamed dimension=1 values=[-0.422444]
+mean=class=Point name=Unnamed dimension=1 values=[-0.20325]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.416712]
-Point= class=NumericalPoint name=Unnamed dimension=1 values=[1]
-ddf     =class=NumericalPoint name=Unnamed dimension=1 values=[-0.180043]
-ddf (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[-0.180043]
+Point= class=Point name=Unnamed dimension=1 values=[1]
+ddf     =class=Point name=Unnamed dimension=1 values=[-0.180043]
+ddf (FD)=class=Point name=Unnamed dimension=1 values=[-0.180043]
 log pdf=-2.35664
 pdf     =0.094738
 pdf (FD)=0.094738
 cdf=0.951432
 ccdf=0.048568
 survival=0.048568
-Inverse survival=class=NumericalPoint name=Unnamed dimension=1 values=[-1.04859]
+Inverse survival=class=Point name=Unnamed dimension=1 values=[-1.04859]
 Survival(inverse survival)=0.95
-pdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[-0.0876629,0.180043]
-pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[-0.0876629,0.180043]
-cdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[0.0710535,-0.094738]
-cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[0.0710535,-0.094738]
+pdf gradient     =class=Point name=Unnamed dimension=2 values=[-0.0876629,0.180043]
+pdf gradient (FD)=class=Point name=Unnamed dimension=2 values=[-0.0876629,0.180043]
+cdf gradient     =class=Point name=Unnamed dimension=2 values=[0.0710535,-0.094738]
+cdf gradient (FD)=class=Point name=Unnamed dimension=2 values=[0.0710535,-0.094738]
 characteristic function=(0.799265,-0.209152)
 log characteristic function=(-0.190945,-0.255942)
-quantile=class=NumericalPoint name=Unnamed dimension=1 values=[0.985098]
+quantile=class=Point name=Unnamed dimension=1 values=[0.985098]
 cdf(quantile)=0.95
-Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-1.28067] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[1.08074] finite lower bound=[1] finite upper bound=[1]
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-1.28067] upper bound=class=Point name=Unnamed dimension=1 values=[1.08074] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
-Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Gumbel(alpha = 2, beta = -0.5)) gradientImplementation=MinimumVolumeLevelSetGradient(Gumbel(alpha = 2, beta = -0.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=NumericalPoint name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Gumbel(alpha = 2, beta = -0.5)) level=2.51069
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Gumbel(alpha = 2, beta = -0.5)) gradientImplementation=MinimumVolumeLevelSetGradient(Gumbel(alpha = 2, beta = -0.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Gumbel(alpha = 2, beta = -0.5)) level=2.51069
 beta=0.0812123
-Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-1.15266] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[1.33812] finite lower bound=[1] finite upper bound=[1]
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-1.15266] upper bound=class=Point name=Unnamed dimension=1 values=[1.33812] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-2.23654] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.985098] finite lower bound=[1] finite upper bound=[1]
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-2.23654] upper bound=class=Point name=Unnamed dimension=1 values=[0.985098] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-1.04859] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[15.6181] finite lower bound=[1] finite upper bound=[1]
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-1.04859] upper bound=class=Point name=Unnamed dimension=1 values=[15.6181] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-mean=class=NumericalPoint name=Unnamed dimension=1 values=[-0.211392]
-standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[0.641275]
-skewness=class=NumericalPoint name=Unnamed dimension=1 values=[1.13955]
-kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[5.4]
+mean=class=Point name=Unnamed dimension=1 values=[-0.211392]
+standard deviation=class=Point name=Unnamed dimension=1 values=[0.641275]
+skewness=class=Point name=Unnamed dimension=1 values=[1.13955]
+kurtosis=class=Point name=Unnamed dimension=1 values=[5.4]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.411234]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 parameters=[[alpha : 2, beta : -0.5]]
-standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
-standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.577216]
-standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[1.97811]
-standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[5.44487]
-standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[23.5615]
-standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[117.839]
+standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[0.577216]
+standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[1.97811]
+standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[5.44487]
+standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[23.5615]
+standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[117.839]
 Standard representative=Gumbel(alpha = 1, beta = 0)

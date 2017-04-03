@@ -70,8 +70,8 @@ Polygon::Polygon(const Sample & dataX,
 }
 
 /* Contructor from 2 data sets */
-Polygon::Polygon(const NumericalPoint & dataX,
-                 const NumericalPoint & dataY,
+Polygon::Polygon(const Point & dataX,
+                 const Point & dataY,
                  const String & legend)
   : DrawableImplementation(Sample(0, 2), legend)
   , edgeColor_("")

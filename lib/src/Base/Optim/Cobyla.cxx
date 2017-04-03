@@ -75,7 +75,7 @@ void Cobyla::run()
   int n(dimension);
   int m(getProblem().getInequalityConstraint().getOutputDimension() + 2 * getProblem().getEqualityConstraint().getOutputDimension());
 
-  NumericalPoint x(getStartingPoint());
+  Point x(getStartingPoint());
   if (x.getDimension() != dimension)
     throw InvalidArgumentException(HERE) << "Invalid starting point dimension (" << x.getDimension() << "), expected " << dimension;
 
@@ -131,24 +131,24 @@ void Cobyla::run()
 
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    const NumericalPoint inP(evaluationInputHistory_[i]);
-    const NumericalPoint outP(evaluationOutputHistory_[i]);
+    const Point inP(evaluationInputHistory_[i]);
+    const Point outP(evaluationOutputHistory_[i]);
     if (i > 0)
     {
-      const NumericalPoint inPM(evaluationInputHistory_[i - 1]);
-      const NumericalPoint outPM(evaluationOutputHistory_[i - 1]);
+      const Point inPM(evaluationInputHistory_[i - 1]);
+      const Point outPM(evaluationOutputHistory_[i - 1]);
       absoluteError = (inP - inPM).normInf();
       relativeError = absoluteError / inP.normInf();
       residualError = std::abs(outP[0] - outPM[0]);
       constraintError = outP[1];
     }
-    result_.store(inP, NumericalPoint(1, outP[0]), absoluteError, relativeError, residualError, constraintError);
+    result_.store(inP, Point(1, outP[0]), absoluteError, relativeError, residualError, constraintError);
   }
 
   result_.setOptimalPoint(x);
   const UnsignedInteger index = evaluationInputHistory_.find(x);
   NumericalScalar bestValue = evaluationOutputHistory_[index][0];
-  result_.setOptimalValue(NumericalPoint(1, bestValue));
+  result_.setOptimalValue(Point(1, bestValue));
   result_.setIterationNumber(maxFun);
   result_.setLagrangeMultipliers(computeLagrangeMultipliers(x));
 
@@ -214,11 +214,11 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   Cobyla *algorithm = static_cast<Cobyla *>(state);
 
   /* Convert the input vector in OpenTURNS format */
-  NumericalPoint inPoint(n);
+  Point inPoint(n);
   memcpy(&inPoint[0], &x[0], n * sizeof(NumericalScalar));
 
   const OptimizationProblem problem(algorithm->getProblem());
-  NumericalPoint outPoint(2);
+  Point outPoint(2);
 
   NumericalScalar result = problem.getObjective().operator()(inPoint)[0];
   // cobyla freezes when dealing with MaxNumericalScalar
@@ -231,12 +231,12 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   UnsignedInteger shift = 0;
   UnsignedInteger nbIneqConst = problem.getInequalityConstraint().getOutputDimension();
   UnsignedInteger nbEqConst = problem.getEqualityConstraint().getOutputDimension();
-  NumericalPoint constraintValue(nbIneqConst + 2 * nbEqConst);
+  Point constraintValue(nbIneqConst + 2 * nbEqConst);
 
   /* Compute the inequality constraints at inPoint */
   if (problem.hasInequalityConstraint())
   {
-    const NumericalPoint constraintInequalityValue(problem.getInequalityConstraint().operator()(inPoint));
+    const Point constraintInequalityValue(problem.getInequalityConstraint().operator()(inPoint));
     for(UnsignedInteger index = 0; index < nbIneqConst; ++index) constraintValue[index + shift] = constraintInequalityValue[index];
     shift += nbIneqConst;
   }
@@ -244,7 +244,7 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   /* Compute the equality constraints at inPoint */
   if (problem.hasEqualityConstraint())
   {
-    const NumericalPoint constraintEqualityValue = problem.getEqualityConstraint().operator()(inPoint);
+    const Point constraintEqualityValue = problem.getEqualityConstraint().operator()(inPoint);
     for(UnsignedInteger index = 0; index < nbEqConst; ++index) constraintValue[index + shift] = constraintEqualityValue[index] + algorithm->getMaximumConstraintError();
     shift += nbEqConst;
     for(UnsignedInteger index = 0; index < nbEqConst; ++index) constraintValue[index + shift] = -constraintEqualityValue[index] + algorithm->getMaximumConstraintError();

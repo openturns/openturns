@@ -9,8 +9,8 @@ R = CorrelationMatrix(dim)
 for i in range(dim):
     for j in range(i):
         R[i, j] = (i + j + 1.0) / (2.0 * dim)
-mean = NumericalPoint(dim, 2.0)
-sigma = NumericalPoint(dim, 3.0)
+mean = Point(dim, 2.0)
+sigma = Point(dim, 3.0)
 distribution = Normal(mean, sigma, R)
 
 size = 100

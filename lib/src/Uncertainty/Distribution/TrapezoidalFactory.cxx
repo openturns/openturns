@@ -49,9 +49,9 @@ TrapezoidalFactory * TrapezoidalFactory::clone() const
 }
 
 /* Compute the log-likelihood constraint */
-NumericalPoint TrapezoidalFactory::computeLogLikelihoodInequalityConstraint(const NumericalPoint & x) const
+Point TrapezoidalFactory::computeLogLikelihoodInequalityConstraint(const Point & x) const
 {
-  NumericalPoint result(3, 0.0);
+  Point result(3, 0.0);
   result[0] = x[1] - x[0] ;                                // x[0] <= x[1]
   result[1] = x[2] - x[1] - SpecFunc::NumericalScalarEpsilon;  // x[1] <  x[2]
   result[2] = x[3] - x[2] ;                                // x[2] <= x[3]
@@ -61,7 +61,7 @@ NumericalPoint TrapezoidalFactory::computeLogLikelihoodInequalityConstraint(cons
 /* Compute the log-likelihood constraint accessor */
 Function TrapezoidalFactory::getLogLikelihoodInequalityConstraint() const
 {
-  return bindMethod <TrapezoidalFactory, NumericalPoint, NumericalPoint> (*this, &TrapezoidalFactory::computeLogLikelihoodInequalityConstraint, 4, 3);
+  return bindMethod <TrapezoidalFactory, Point, Point> (*this, &TrapezoidalFactory::computeLogLikelihoodInequalityConstraint, 4, 3);
 }
 
 /* Optimization solver accessor */
@@ -95,7 +95,7 @@ TrapezoidalFactory::Implementation TrapezoidalFactory::build(const Sample & samp
   return buildAsTrapezoidal(sample).clone();
 }
 
-TrapezoidalFactory::Implementation TrapezoidalFactory::build(const NumericalPoint & parameters) const
+TrapezoidalFactory::Implementation TrapezoidalFactory::build(const Point & parameters) const
 {
   return buildAsTrapezoidal(parameters).clone();
 }
@@ -116,7 +116,7 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Sample & sample) const
   const UnsignedInteger dimension = build()->getParameterDimension();
 
   // starting point
-  NumericalPoint startingPoint(dimension);
+  Point startingPoint(dimension);
   const NumericalScalar min = sample.getMin()[0];
   const NumericalScalar max = sample.getMax()[0];
   if (!SpecFunc::IsNormal(min) || !SpecFunc::IsNormal(max)) throw InvalidArgumentException(HERE) << "Error: cannot build a Trapezoidal distribution if data contains NaN or Inf";
@@ -151,7 +151,7 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Sample & sample) const
   return result;
 }
 
-Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const NumericalPoint & parameters) const
+Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Point & parameters) const
 {
   try
   {

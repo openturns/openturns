@@ -118,8 +118,8 @@ ot_add_python_module(typ typ_module.i
                       Collection.i Collection_doc.i.in
                       PersistentCollection.i
                       Description.i Description_doc.i.in
-                      NumericalPoint.i NumericalPoint_doc.i.in
-                      NumericalPointWithDescription.i NumericalPointWithDescription_doc.i.in
+                      Point.i Point_doc.i.in
+                      PointWithDescription.i PointWithDescription_doc.i.in
                       DomainImplementation.i DomainImplementation_doc.i.in
                       Interval.i Interval_doc.i.in
                       Indices.i Indices_doc.i.in

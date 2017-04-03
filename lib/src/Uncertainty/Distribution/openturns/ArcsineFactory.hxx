@@ -46,14 +46,14 @@ public:
   using DistributionFactoryImplementation::build;
 
   Implementation build(const Sample & sample) const;
-  Implementation build(const NumericalPoint & parameters) const;
+  Implementation build(const Point & parameters) const;
   Implementation build() const;
 
   using DistributionFactoryImplementation::buildEstimator;
   DistributionFactoryResult buildEstimator(const Sample & sample) const;
 
   Arcsine buildAsArcsine(const Sample & sample) const;
-  Arcsine buildAsArcsine(const NumericalPoint & parameters) const;
+  Arcsine buildAsArcsine(const Point & parameters) const;
   Arcsine buildAsArcsine() const;
 
 }; /* class ArcsineFactory */

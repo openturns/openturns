@@ -151,7 +151,7 @@ OT_HMatrix_dump_doc
 
 Returns
 -------
-diag : :class:`~openturns.NumericalPoint`
+diag : :class:`~openturns.Point`
     Diagonal values."
 %enddef
 %feature("docstring") OT::HMatrixImplementation::getDiagonal
@@ -172,7 +172,7 @@ trans : bool
 
 Returns
 -------
-x : :class:`~openturns.NumericalPoint` or :class:`~openturns.Matrix`
+x : :class:`~openturns.Point` or :class:`~openturns.Matrix`
     Equation solution, vector or matrix."
 %enddef
 %feature("docstring") OT::HMatrixImplementation::solve
@@ -193,7 +193,7 @@ trans : bool
 
 Returns
 -------
-x : :class:`~openturns.NumericalPoint` or :class:`~openturns.Matrix`
+x : :class:`~openturns.Point` or :class:`~openturns.Matrix`
     Equation solution, vector or matrix."
 %enddef
 %feature("docstring") OT::HMatrixImplementation::solveLower
@@ -253,7 +253,7 @@ x : sequence of float
     Vector to multiply.
 beta : float
     Coefficient.
-y : :class:`~openturns.NumericalPoint`
+y : :class:`~openturns.Point`
     Vector multiplied in-place."
 %enddef
 %feature("docstring") OT::HMatrixImplementation::gemv

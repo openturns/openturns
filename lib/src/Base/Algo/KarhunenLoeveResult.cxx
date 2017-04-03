@@ -62,7 +62,7 @@ CovarianceModel KarhunenLoeveResult::getCovarianceModel() const
 }
 
 /* Eigenvalues accessor */
-NumericalPoint KarhunenLoeveResult::getEigenValues() const
+Point KarhunenLoeveResult::getEigenValues() const
 {
   return getImplementation()->getEigenValues();
 }
@@ -96,12 +96,12 @@ Matrix KarhunenLoeveResult::getProjectionMatrix() const
 }
 
 /* Projection method */
-NumericalPoint KarhunenLoeveResult::project(const Function & function) const
+Point KarhunenLoeveResult::project(const Function & function) const
 {
   return getImplementation()->project(function);
 }
 
-NumericalPoint KarhunenLoeveResult::project(const Field & field) const
+Point KarhunenLoeveResult::project(const Field & field) const
 {
   return getImplementation()->project(field);
 }
@@ -117,12 +117,12 @@ Sample KarhunenLoeveResult::project(const ProcessSample & sample) const
 }
 
 /* Lift method */
-Function KarhunenLoeveResult::lift(const NumericalPoint & coefficients) const
+Function KarhunenLoeveResult::lift(const Point & coefficients) const
 {
   return getImplementation()->lift(coefficients);
 }
 
-Field KarhunenLoeveResult::liftAsField(const NumericalPoint & coefficients) const
+Field KarhunenLoeveResult::liftAsField(const Point & coefficients) const
 {
   return getImplementation()->liftAsField(coefficients);
 }

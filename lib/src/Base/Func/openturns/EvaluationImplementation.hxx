@@ -23,8 +23,8 @@
 #define OPENTURNS_EVALUATIONIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalPointWithDescription.hxx"
+#include "openturns/Point.hxx"
+#include "openturns/PointWithDescription.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Field.hxx"
 #include "openturns/HistoryStrategy.hxx"
@@ -146,10 +146,10 @@ public:
   virtual Bool isActualImplementation() const;
 
   /** Operator () */
-  virtual NumericalPoint operator() (const NumericalPoint & inP) const;
-  virtual NumericalPoint operator() (const NumericalPoint & inP,
-                                     const NumericalPoint & parameters);
-  virtual Sample operator() (const NumericalPoint & point,
+  virtual Point operator() (const Point & inP) const;
+  virtual Point operator() (const Point & inP,
+                                     const Point & parameters);
+  virtual Sample operator() (const Point & point,
                                       const Sample & parameters);
 
   /** Operator () on a sample, not pure virtual because a generic implementation is given */
@@ -174,11 +174,11 @@ public:
   virtual Implementation getMarginal(const Indices & indices) const;
 
   /** Gradient according to the marginal parameters */
-  virtual Matrix parameterGradient(const NumericalPoint & inP) const;
+  virtual Matrix parameterGradient(const Point & inP) const;
 
   /** Parameters value accessor */
-  virtual NumericalPoint getParameter() const;
-  virtual void setParameter(const NumericalPoint & parameters);
+  virtual Point getParameter() const;
+  virtual void setParameter(const Point & parameters);
 
   /** Parameters description accessor */
   virtual Description getParameterDescription() const;
@@ -190,7 +190,7 @@ public:
   /** Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
   virtual Graph draw(const UnsignedInteger inputMarginal,
                      const UnsignedInteger outputMarginal,
-                     const NumericalPoint & centralPoint,
+                     const Point & centralPoint,
                      const NumericalScalar xMin,
                      const NumericalScalar xMax,
                      const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("NumericalMathEvaluation-DefaultPointNumber"),
@@ -200,9 +200,9 @@ public:
   virtual Graph draw(const UnsignedInteger firstInputMarginal,
                      const UnsignedInteger secondInputMarginal,
                      const UnsignedInteger outputMarginal,
-                     const NumericalPoint & centralPoint,
-                     const NumericalPoint & xMin,
-                     const NumericalPoint & xMax,
+                     const Point & centralPoint,
+                     const Point & xMin,
+                     const Point & xMax,
                      const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedInteger("NumericalMathEvaluation-DefaultPointNumber")),
                      const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
 
@@ -213,8 +213,8 @@ public:
                      const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
 
   /** Draw the output of the function with respect to its input when the input dimension is 2 and the output dimension is 1 */
-  virtual Graph draw(const NumericalPoint & xMin,
-                     const NumericalPoint & xMax,
+  virtual Graph draw(const Point & xMin,
+                     const Point & xMax,
                      const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedInteger("NumericalMathEvaluation-DefaultPointNumber")),
                      const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
 
@@ -242,7 +242,7 @@ protected:
   mutable Bool isHistoryEnabled_;
 
   /** The value of the parameters */
-  NumericalPoint parameter_;
+  Point parameter_;
 
   /** The description of the parameters */
   Description parameterDescription_;

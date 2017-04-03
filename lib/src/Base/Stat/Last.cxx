@@ -63,7 +63,7 @@ Last * Last::clone() const
 }
 
 /*Store the point according to the strategy */
-void Last::store(const NumericalPoint & point)
+void Last::store(const Point & point)
 {
   if (!isInitialized_)
   {

@@ -15,9 +15,9 @@ dimension = 1
 spatialDimension = 1
 
 # Amplitude values
-amplitude = NumericalPoint(dimension)
+amplitude = Point(dimension)
 # Scale values
-scale = NumericalPoint(dimension)
+scale = Point(dimension)
 # Spatial correlation
 spatialCorrelation = CorrelationMatrix(dimension)
 for index in range(dimension):

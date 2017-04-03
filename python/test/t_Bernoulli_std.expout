@@ -2,22 +2,22 @@ Distribution  class=Bernoulli name=Bernoulli dimension=1 p=0.7
 Distribution  Bernoulli(p = 0.7)
 Elliptical =  False
 Continuous =  False
-oneRealization= class=NumericalPoint name=Unnamed dimension=1 values=[1]
-oneSample first= class=NumericalPoint name=Unnamed dimension=1 values=[0]  last= class=NumericalPoint name=Unnamed dimension=1 values=[1]
-mean= class=NumericalPoint name=Unnamed dimension=1 values=[0.6916]
+oneRealization= class=Point name=Unnamed dimension=1 values=[1]
+oneSample first= class=Point name=Unnamed dimension=1 values=[0]  last= class=Point name=Unnamed dimension=1 values=[1]
+mean= class=Point name=Unnamed dimension=1 values=[0.6916]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.213311]
-Point=  class=NumericalPoint name=Unnamed dimension=1 values=[0]
+Point=  class=Point name=Unnamed dimension=1 values=[0]
 pdf     =0.300000
 pdf (FD)=0.300000
 cdf=0.300000
-quantile= class=NumericalPoint name=Unnamed dimension=1 values=[1]
+quantile= class=Point name=Unnamed dimension=1 values=[1]
 cdf(quantile)=1.000000
-mean= class=NumericalPoint name=Unnamed dimension=1 values=[0.7]
-standard deviation= class=NumericalPoint name=Unnamed dimension=1 values=[0.458258]
-skewness= class=NumericalPoint name=Unnamed dimension=1 values=[-0.872872]
-kurtosis= class=NumericalPoint name=Unnamed dimension=1 values=[13.7619]
+mean= class=Point name=Unnamed dimension=1 values=[0.7]
+standard deviation= class=Point name=Unnamed dimension=1 values=[0.458258]
+skewness= class=Point name=Unnamed dimension=1 values=[-0.872872]
+kurtosis= class=Point name=Unnamed dimension=1 values=[13.7619]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.21]
-parameters= [class=NumericalPointWithDescription name=X0 dimension=1 description=[p] values=[0.7]]
+parameters= [class=PointWithDescription name=X0 dimension=1 description=[p] values=[0.7]]
 standard moment n= 0  value= [0]
 standard moment n= 1  value= [0.7]
 standard moment n= 2  value= [0.7]

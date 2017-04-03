@@ -56,8 +56,8 @@ public:
           const String & legend = "");
 
   /** Contructor from 2 data sets */
-  Polygon(const NumericalPoint & dataX,
-          const NumericalPoint & dataY,
+  Polygon(const Point & dataX,
+          const Point & dataY,
           const String & legend = "");
 
   /** Constructor with parameters */

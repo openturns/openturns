@@ -33,7 +33,7 @@ for i in range(2):
     size *= 10
 
 # Define a point
-point = ot.NumericalPoint(distribution.getDimension(), 1.0)
+point = ot.Point(distribution.getDimension(), 1.0)
 print("Point= ", point)
 
 # Show PDF and CDF of point
@@ -58,7 +58,7 @@ LCF = distribution.computeLogCharacteristicFunction(point[0])
 print("log characteristic function=(%.6g, %.6g)" % (LCF.real, LCF.imag))
 PDFgr = distribution.computePDFGradient(point)
 print("pdf gradient     =", PDFgr)
-PDFgrFD = ot.NumericalPoint(3)
+PDFgrFD = ot.Point(3)
 PDFgrFD[0] = (ot.Frechet(distribution.getAlpha() + eps, distribution.getBeta(), distribution.getGamma()).computePDF(point) -
               ot.Frechet(distribution.getAlpha() - eps, distribution.getBeta(), distribution.getGamma()).computePDF(point)) / (2.0 * eps)
 PDFgrFD[1] = (ot.Frechet(distribution.getAlpha(), distribution.getBeta() + eps, distribution.getGamma()).computePDF(point) -
@@ -68,7 +68,7 @@ PDFgrFD[2] = (ot.Frechet(distribution.getAlpha(), distribution.getBeta(), distri
 print("pdf gradient (FD)=", PDFgrFD)
 CDFgr = distribution.computeCDFGradient(point)
 print("cdf gradient     =", CDFgr)
-CDFgrFD = ot.NumericalPoint(3)
+CDFgrFD = ot.Point(3)
 CDFgrFD[0] = (ot.Frechet(distribution.getAlpha() + eps, distribution.getBeta(), distribution.getGamma()).computeCDF(point) -
               ot.Frechet(distribution.getAlpha() - eps, distribution.getBeta(), distribution.getGamma()).computeCDF(point)) / (2.0 * eps)
 CDFgrFD[1] = (ot.Frechet(distribution.getAlpha(), distribution.getBeta() + eps, distribution.getGamma()).computeCDF(point) -
@@ -80,25 +80,25 @@ quantile = distribution.computeQuantile(0.95)
 print("quantile=", quantile)
 print("cdf(quantile)= %.12g" % distribution.computeCDF(quantile))
 # Get 95% survival function
-inverseSurvival = ot.NumericalPoint(distribution.computeInverseSurvivalFunction(0.95))
+inverseSurvival = ot.Point(distribution.computeInverseSurvivalFunction(0.95))
 print("InverseSurvival=", repr(inverseSurvival))
 print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
 # Confidence regions
 interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
 print("Minimum volume interval=", interval)
-print("threshold=", ot.NumericalPoint(1, threshold))
+print("threshold=", ot.Point(1, threshold))
 levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
 print("Minimum volume level set=", levelSet)
-print("beta=", ot.NumericalPoint(1, beta))
+print("beta=", ot.Point(1, beta))
 interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
 print("Bilateral confidence interval=", interval)
-print("beta=", ot.NumericalPoint(1, beta))
+print("beta=", ot.Point(1, beta))
 interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
 print("Unilateral confidence interval (lower tail)=", interval)
-print("beta=", ot.NumericalPoint(1, beta))
+print("beta=", ot.Point(1, beta))
 interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
 print("Unilateral confidence interval (upper tail)=", interval)
-print("beta=", ot.NumericalPoint(1, beta))
+print("beta=", ot.Point(1, beta))
 
 mean = distribution.getMean()
 print("mean=", mean)

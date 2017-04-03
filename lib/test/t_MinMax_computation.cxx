@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
     formula[0] = "-F*L^3/(3*E*I)";
     Function model(inputVariables, outputVariables, formula);
     UnsignedInteger inputDimension = model.getInputDimension();
-    NumericalPoint levels(inputDimension);
+    Point levels(inputDimension);
     levels[0] = 5.;
     levels[1] = 5.;
     levels[2] = 5.;
@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     Box myPlane(levels);
     Sample sample(myPlane.generate());
     // Then, scale and move the cube to sample around the point of interrest
-    NumericalPoint point(inputDimension);
+    Point point(inputDimension);
     point[0] = 2.1e11;
     point[1] = 1e3;
     point[2] = 1.5;

@@ -45,9 +45,9 @@ assert_almost_equal(result.getRelativeErrors(), [5.20873e-21])
 var = result.getConditionalCovariance(X)
 
 # assert_almost_equal could not be applied to matrices
-# application to NumericalPoint
-covariancePoint = NumericalPoint(var.getImplementation())
-theoricalVariance = NumericalPoint(sampleSize * sampleSize)
+# application to Point
+covariancePoint = Point(var.getImplementation())
+theoricalVariance = Point(sampleSize * sampleSize)
 assert_almost_equal(covariancePoint, theoricalVariance, 8.95e-7, 8.95e-7)
 
 # Test 2
@@ -100,9 +100,9 @@ assert_almost_equal(outputSample,  metaModel(inputSample), 3.0e-5, 3.0e-5)
 var = result.getConditionalCovariance(inputSample)
 
 # assert_almost_equal could not be applied to matrices
-# application to NumericalPoint
-covariancePoint = NumericalPoint(var.getImplementation())
-theoricalVariance = NumericalPoint(covariancePoint.getSize(), 0.0)
+# application to Point
+covariancePoint = Point(var.getImplementation())
+theoricalVariance = Point(covariancePoint.getSize(), 0.0)
 assert_almost_equal(covariancePoint, theoricalVariance, 7e-7, 7e-7)
 
 # Estimation

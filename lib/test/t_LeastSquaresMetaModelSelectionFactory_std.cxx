@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 
   Sample x(1, 1);
   Sample y(1, 1);
-  NumericalPoint weight(1, 1.0);
+  Point weight(1, 1.0);
   Collection<Function> coll;
   coll.add(SymbolicFunction("x", "x"));
   Basis psi(coll);

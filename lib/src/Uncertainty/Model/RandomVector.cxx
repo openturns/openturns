@@ -69,7 +69,7 @@ RandomVector::RandomVector(RandomVectorImplementation * p_implementation)
 }
 
 /* Constructor for constant vector */
-RandomVector::RandomVector(const NumericalPoint & point)
+RandomVector::RandomVector(const Point & point)
   : TypedInterfaceObject<RandomVectorImplementation>(new ConstantRandomVector(point))
 {
   // Nothing to do
@@ -132,8 +132,8 @@ RandomVector::RandomVector(const RandomVector & antecedent,
   UnsignedInteger inputDimension = antecedent.getFunction().getInputDimension();
   Interval::BoolCollection finiteLowerBound(interval.getFiniteLowerBound());
   Interval::BoolCollection finiteUpperBound(interval.getFiniteUpperBound());
-  NumericalPoint lowerBound(interval.getLowerBound());
-  NumericalPoint upperBound(interval.getUpperBound());
+  Point lowerBound(interval.getLowerBound());
+  Point upperBound(interval.getUpperBound());
   SymbolicFunction testFunction(Description::BuildDefault(inputDimension, "x"), Description(1, "0.0"));
 
   // easy case: 1d interval
@@ -257,7 +257,7 @@ UnsignedInteger RandomVector::getDimension() const
 }
 
 /* Realization accessor */
-NumericalPoint RandomVector::getRealization() const
+Point RandomVector::getRealization() const
 {
   return getImplementation()->getRealization();
 }
@@ -269,7 +269,7 @@ Sample RandomVector::getSample(UnsignedInteger size) const
 }
 
 /* Mean accessor */
-NumericalPoint RandomVector::getMean() const
+Point RandomVector::getMean() const
 {
   return getImplementation()->getMean();
 }

@@ -56,7 +56,7 @@ try:
         print("covariance=", oneSample.computeCovariance())
 
         # Define a point
-        point = NumericalPoint(distribution.getDimension(), 0.5)
+        point = Point(distribution.getDimension(), 0.5)
         print("Point= ", point)
 
         # Show PDF and CDF of point
@@ -66,8 +66,8 @@ try:
         print("ddf (ref)=", distributionReference.computeDDF(point))
         PDF = distribution.computePDF(point)
         print("pdf      =%.6f" % PDF)
-        print("pdf  (FD)=%.6f" % ((distribution.computeCDF(point + NumericalPoint(1, eps)) -
-                                   distribution.computeCDF(point + NumericalPoint(1, -eps))) / (2.0 * eps)))
+        print("pdf  (FD)=%.6f" % ((distribution.computeCDF(point + Point(1, eps)) -
+                                   distribution.computeCDF(point + Point(1, -eps))) / (2.0 * eps)))
         print("pdf (ref)=%.6f" % distributionReference.computePDF(point))
         CDF = distribution.computeCDF(point)
         print("cdf      =%.6f" % CDF)
@@ -82,7 +82,7 @@ try:
         print("quantile (ref)=", distributionReference.computeQuantile(0.95))
         print("cdf(quantile)=%.6f" % distribution.computeCDF(quantile))
         # Get 95% survival function
-        inverseSurvival = NumericalPoint(distribution.computeInverseSurvivalFunction(0.95))
+        inverseSurvival = Point(distribution.computeInverseSurvivalFunction(0.95))
         print("InverseSurvival=", repr(inverseSurvival))
         print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
 
@@ -91,19 +91,19 @@ try:
             print("dimension=", distribution.getDimension(), "test case=", testIndex)
             interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
             print("Minimum volume interval=", interval)
-            print("threshold=", NumericalPoint(1, threshold))
+            print("threshold=", Point(1, threshold))
             levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
             print("Minimum volume level set=", levelSet)
-            print("beta=", NumericalPoint(1, beta))
+            print("beta=", Point(1, beta))
             interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
             print("Bilateral confidence interval=", interval)
-            print("beta=", NumericalPoint(1, beta))
+            print("beta=", Point(1, beta))
             interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
             print("Unilateral confidence interval (lower tail)=", interval)
-            print("beta=", NumericalPoint(1, beta))
+            print("beta=", Point(1, beta))
             interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
             print("Unilateral confidence interval (upper tail)=", interval)
-            print("beta=", NumericalPoint(1, beta))
+            print("beta=", Point(1, beta))
 
         mean = distribution.getMean()
         print("mean      =", mean)
@@ -131,7 +131,7 @@ try:
         print("alpha=", distribution.getAlpha())
         print("beta=", distribution.getBeta())
     # Tests of the simplification mechanism
-    weights = NumericalPoint(0)
+    weights = Point(0)
     coll = DistributionCollection(0)
     coll.add(Dirac(0.5))
     weights.add(1.0)
@@ -199,18 +199,18 @@ try:
     # Number of points of discretization
     nx = 4
     ny = 4
-    boxParameters = NumericalPoint(2)
+    boxParameters = Point(2)
     boxParameters[0] = nx
     boxParameters[1] = ny
     boxGrid = Box(boxParameters)
     grid = boxGrid.generate()
     # scaling box grid
-    scaleFactor = NumericalPoint(2)
+    scaleFactor = Point(2)
     scaleFactor[0] = 0.25 * (xMax - xMin)
     scaleFactor[1] = 0.25 * (yMax - yMin)
     grid *= scaleFactor
     # translating
-    translateFactor = NumericalPoint(2)
+    translateFactor = Point(2)
     translateFactor[0] = distribution2D.getMean()[0]
     translateFactor[1] = distribution2D.getMean()[1]
     grid += translateFactor

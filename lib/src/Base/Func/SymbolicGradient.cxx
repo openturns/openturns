@@ -167,7 +167,7 @@ void SymbolicGradient::initialize() const
 }
 
 /* Gradient */
-Matrix SymbolicGradient::gradient(const NumericalPoint & inP) const
+Matrix SymbolicGradient::gradient(const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a Function with an argument of invalid dimension";
@@ -175,7 +175,7 @@ Matrix SymbolicGradient::gradient(const NumericalPoint & inP) const
   if (!isAnalytical_) throw InternalException(HERE) << "The gradient does not have an analytical expression.";
   const UnsignedInteger outputDimension = getOutputDimension();
   Matrix out(inputDimension, outputDimension);
-  NumericalPoint outP(parser_(inP));
+  Point outP(parser_(inP));
   ++ callsNumber_;
   UnsignedInteger parserIndex = 0;
   for (UnsignedInteger columnIndex = 0; columnIndex < outputDimension; ++ columnIndex)

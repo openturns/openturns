@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
     fullprint << "Independent = " << (copula.hasIndependentCopula() ? "true" : "false") << std::endl;
 
     // Test for realization of copula
-    NumericalPoint oneRealization = copula.getRealization();
+    Point oneRealization = copula.getRealization();
     fullprint << "oneRealization=" << oneRealization << std::endl;
 
     // Test for sampling
@@ -71,14 +71,14 @@ int main(int argc, char *argv[])
     PlatformInfo::SetNumericalPrecision(precision);
 
     // Define a point
-    NumericalPoint point( copula.getDimension(), 0.6 );
+    Point point( copula.getDimension(), 0.6 );
     fullprint << "Point= " << point << std::endl;
 
     // Show PDF and CDF of point
     //NumericalScalar eps(1e-5);
-    NumericalPoint DDF = copula.computeDDF( point );
+    Point DDF = copula.computeDDF( point );
     fullprint << "ddf     =" << DDF << std::endl;
-    NumericalPoint ddfFD(copula.getDimension());
+    Point ddfFD(copula.getDimension());
     fullprint << "ddf (FD)=" << copula.ContinuousDistribution::computeDDF(point) << std::endl;
     NumericalScalar PDF = copula.computePDF( point );
     fullprint << "pdf     =" << PDF << std::endl;
@@ -87,11 +87,11 @@ int main(int argc, char *argv[])
     NumericalScalar Survival = copula.computeSurvivalFunction(point);
     fullprint << "Survival      =" << Survival << std::endl;
     fullprint << "Survival (ref)=" << copula.computeSurvivalFunction(point) << std::endl;
-    NumericalPoint InverseSurvival = copula.computeInverseSurvivalFunction(0.95);
+    Point InverseSurvival = copula.computeInverseSurvivalFunction(0.95);
     fullprint << "Inverse survival=" << InverseSurvival << std::endl;
     fullprint << "Survival(inverse survival)=" << copula.computeSurvivalFunction(InverseSurvival) << std::endl;
     // Get 50% quantile
-    NumericalPoint quantile = copula.computeQuantile( 0.5 );
+    Point quantile = copula.computeQuantile( 0.5 );
     fullprint << "Quantile=" << quantile << std::endl;
     fullprint << "CDF(quantile)=" << copula.computeCDF(quantile) << std::endl;
 
@@ -113,9 +113,9 @@ int main(int argc, char *argv[])
       fullprint << "beta=" << beta << std::endl;
     }
 
-    NumericalPoint mean = copula.getMean();
+    Point mean = copula.getMean();
     fullprint << "mean=" << mean << std::endl;
-    ComposedCopula::NumericalPointWithDescriptionCollection parameters = copula.getParametersCollection();
+    ComposedCopula::PointWithDescriptionCollection parameters = copula.getParametersCollection();
     fullprint << "parameters=" << parameters << std::endl;
     // Covariance and correlation
     PlatformInfo::SetNumericalPrecision(4);
@@ -133,7 +133,7 @@ int main(int argc, char *argv[])
 
     // Extract a 5-D marginal
     UnsignedInteger dim = 5;
-    point = NumericalPoint(dim, 0.25);
+    point = Point(dim, 0.25);
     Indices indices(dim, 0);
     indices[0] = 1;
     indices[1] = 2;
@@ -153,7 +153,7 @@ int main(int argc, char *argv[])
     // General case with normal standard distribution
     fullprint << "isoprobabilistic transformation (general normal)=" << copula.getIsoProbabilisticTransformation() << std::endl;
     // General case with non-normal standard distribution
-    collection[0] = SklarCopula(Student(3.0, NumericalPoint(2, 1.0), NumericalPoint(2, 3.0), CorrelationMatrix(2)));
+    collection[0] = SklarCopula(Student(3.0, Point(2, 1.0), Point(2, 3.0), CorrelationMatrix(2)));
     copula = ComposedCopula(collection);
     fullprint << "isoprobabilistic transformation (general non-normal)=" << copula.getIsoProbabilisticTransformation() << std::endl;
     // Special case, independent copula
@@ -164,7 +164,7 @@ int main(int argc, char *argv[])
     fullprint << "isoprobabilistic transformation (independent)=" << copula.getIsoProbabilisticTransformation() << std::endl;
     // Special case, single contributor
     collection = Collection<Copula>(1);
-    collection[0] = SklarCopula(Student(3.0, NumericalPoint(2, 1.0), NumericalPoint(2, 3.0), CorrelationMatrix(2)));
+    collection[0] = SklarCopula(Student(3.0, Point(2, 1.0), Point(2, 3.0), CorrelationMatrix(2)));
     copula = ComposedCopula(collection);
     fullprint << "isoprobabilistic transformation (single contributor)=" << copula.getIsoProbabilisticTransformation() << std::endl;
   }

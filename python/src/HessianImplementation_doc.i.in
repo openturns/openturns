@@ -91,7 +91,7 @@ is_impl : bool
 
 Returns
 -------
-parameter : :class:`~openturns.NumericalPoint`
+parameter : :class:`~openturns.Point`
     The parameter values."
 
 // ---------------------------------------------------------------------

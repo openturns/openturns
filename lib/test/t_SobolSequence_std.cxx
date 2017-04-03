@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     UnsignedInteger sampleSize = 1000;
     for(UnsignedInteger i = 0; i < sampleSize; ++i)
     {
-      NumericalPoint sobolPoint(sequence.generate());
+      Point sobolPoint(sequence.generate());
       fullprint << sobolPoint << std::endl;
       if(sobolPoint.norm() < 1.0)
         ++ pointInsideCircle;

@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
   PlatformInfo::SetNumericalPrecision(4);
   try
   {
-    NumericalPoint xi(3);
+    Point xi(3);
     xi[0] = -0.75;
     xi[1] = 0.0;
     xi[2] = 0.75;

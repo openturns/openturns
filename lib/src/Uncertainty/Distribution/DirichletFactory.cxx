@@ -50,7 +50,7 @@ DirichletFactory::Implementation DirichletFactory::build(const Sample & sample) 
   return buildAsDirichlet(sample).clone();
 }
 
-DirichletFactory::Implementation DirichletFactory::build(const NumericalPoint & parameters) const
+DirichletFactory::Implementation DirichletFactory::build(const Point & parameters) const
 {
   return buildAsDirichlet(parameters).clone();
 }
@@ -67,9 +67,9 @@ Dirichlet DirichletFactory::buildAsDirichlet(const Sample & sample) const
   const UnsignedInteger dimension = sample.getDimension();
   // Check that the points lie in the simplex x_1+...+x_d < 1, x_k > 0
   // and precompute the sufficient statistics
-  NumericalPoint meanLog(dimension + 1);
-  NumericalPoint sumX(dimension, 0.0);
-  NumericalPoint sumX2(dimension, 0.0);
+  Point meanLog(dimension + 1);
+  Point sumX(dimension, 0.0);
+  Point sumX2(dimension, 0.0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     NumericalScalar sum = 0.0;
@@ -89,7 +89,7 @@ Dirichlet DirichletFactory::buildAsDirichlet(const Sample & sample) const
   meanLog = meanLog * (1.0 / size);
   // Find the maximum likelihood estimate using a fixed-point strategy
   // First, compute a reasonable initial guess using moments
-  NumericalPoint theta(dimension + 1, 0.0);
+  Point theta(dimension + 1, 0.0);
   NumericalScalar sumTheta = 0.0;
   // Estimate the sum of parameters
   for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -123,8 +123,8 @@ Dirichlet DirichletFactory::buildAsDirichlet(const Sample & sample) const
     for (UnsignedInteger i = 0; i <= dimension; ++i) sumTheta += theta[i];
     const NumericalScalar diGammaSumTheta = SpecFunc::DiGamma(sumTheta);
     const NumericalScalar triGammaSumTheta = SpecFunc::TriGamma(sumTheta);
-    NumericalPoint g(dimension + 1);
-    NumericalPoint q(dimension + 1);
+    Point g(dimension + 1);
+    Point q(dimension + 1);
     NumericalScalar numerator = 0.0;
     NumericalScalar denominator = 0.0;
     for (UnsignedInteger i = 0; i <= dimension; ++i)
@@ -135,7 +135,7 @@ Dirichlet DirichletFactory::buildAsDirichlet(const Sample & sample) const
       denominator += 1.0 / q[i];
     }
     const NumericalScalar b = numerator / (1.0 / triGammaSumTheta + denominator);
-    NumericalPoint delta(dimension + 1);
+    Point delta(dimension + 1);
     for (UnsignedInteger i = 0; i <= dimension; ++i) delta[i] = (g[i] - b) / q[i];
     // Newton update
     theta = theta - delta;
@@ -163,7 +163,7 @@ Dirichlet DirichletFactory::buildAsDirichlet(const Sample & sample) const
   return result;
 }
 
-Dirichlet DirichletFactory::buildAsDirichlet(const NumericalPoint & parameters) const
+Dirichlet DirichletFactory::buildAsDirichlet(const Point & parameters) const
 {
   try
   {

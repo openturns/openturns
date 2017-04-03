@@ -147,7 +147,7 @@ class OpenTURNSPythonFunction(object):
     def __call__(self, X):
         Y = None
         try:
-            pt = openturns.typ.NumericalPoint(X)
+            pt = openturns.typ.Point(X)
         except TypeError:
             try:
                 ns = openturns.typ.Sample(X)

@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
     const UnsignedInteger dimension = 3;
 
     // Lambda
-    NumericalPoint lambda(dimension);
+    Point lambda(dimension);
     lambda[0] = 0.0;
     lambda[1] = 0.5;
     lambda[2] = 1.0;
@@ -44,10 +44,10 @@ int main(int argc, char *argv[])
     {
       BoxCoxEvaluation myFunction(lambda);
       myFunction.setName("boxCoxFunction");
-      // In this test, we check that for a NumericalPoint with same values, the function is done by component
-      NumericalPoint inPoint(dimension, 3.0);
+      // In this test, we check that for a Point with same values, the function is done by component
+      Point inPoint(dimension, 3.0);
       // result of the function
-      NumericalPoint outPoint = myFunction( inPoint );
+      Point outPoint = myFunction( inPoint );
       fullprint << "myFunction=" << myFunction << std::endl;
       fullprint << myFunction.getName() << "( " << inPoint << " ) = " << outPoint << std::endl;
 
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
       Sample inSample(size, dimension);
       for (UnsignedInteger index = 0 ; index < size; ++index)
       {
-        inSample[index] = NumericalPoint(dimension, index + 1);
+        inSample[index] = Point(dimension, index + 1);
       }
 
       // result of the function
@@ -66,16 +66,16 @@ int main(int argc, char *argv[])
     // With non-zero shift
     {
       // Shift
-      NumericalPoint shift(dimension);
+      Point shift(dimension);
       shift[0] = 0.8;
       shift[1] = 1.5;
       shift[2] = 2.1;
       BoxCoxEvaluation myFunction(lambda, shift);
       myFunction.setName("boxCoxFunction");
-      // In this test, we check that for a NumericalPoint with same values, the function is done by component
-      NumericalPoint inPoint(dimension, 3.0);
+      // In this test, we check that for a Point with same values, the function is done by component
+      Point inPoint(dimension, 3.0);
       // result of the function
-      NumericalPoint outPoint = myFunction( inPoint );
+      Point outPoint = myFunction( inPoint );
       fullprint << "myFunction=" << myFunction << std::endl;
       fullprint << myFunction.getName() << "( " << inPoint << " ) = " << outPoint << std::endl;
 
@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
       Sample inSample(size, dimension);
       for (UnsignedInteger index = 0 ; index < size; ++index)
       {
-        inSample[index] = NumericalPoint(dimension, index + 1);
+        inSample[index] = Point(dimension, index + 1);
       }
 
       // result of the function

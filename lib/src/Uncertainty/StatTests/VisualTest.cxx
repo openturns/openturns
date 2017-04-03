@@ -23,7 +23,7 @@
 #include "openturns/Curve.hxx"
 #include "openturns/Cloud.hxx"
 #include "openturns/Staircase.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Interval.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Description.hxx"
@@ -98,7 +98,7 @@ Graph VisualTest::DrawQQplot(const Sample & sample1,
   Graph graphQQplot("Two sample QQ-plot", sample1.getDescription()[0], sample2.getDescription()[0], true, "topleft");
   // First, the bisectrice
   Sample diagonal(2, 2);
-  NumericalPoint point(2);
+  Point point(2);
   diagonal[0][0] = data[0][0];
   diagonal[0][1] = data[0][0];
   diagonal[1][0] = data[pointNumber - 1][0];
@@ -110,7 +110,7 @@ Graph VisualTest::DrawQQplot(const Sample & sample1,
   // Then the QQ plot
   graphQQplot.add(cloudQQplot);
   // Adapt the margins
-  NumericalPoint boundingBox(graphQQplot.getBoundingBox());
+  Point boundingBox(graphQQplot.getBoundingBox());
   NumericalScalar width = boundingBox[1] - boundingBox[0];
   NumericalScalar height = boundingBox[3] - boundingBox[2];
   boundingBox[0] -= 0.1 * width;
@@ -143,7 +143,7 @@ Graph VisualTest::DrawQQplot(const Sample & sample,
   Graph graphQQplot("Sample versus model QQ-plot", sample.getDescription()[0], dist.__str__(), true, "topleft");
   // First, the bisectrice
   Sample diagonal(2, 2);
-  NumericalPoint point(2);
+  Point point(2);
   diagonal[0][0] = data[0][0];
   diagonal[0][1] = data[0][0];
   diagonal[1][0] = data[size - 1][0];
@@ -155,7 +155,7 @@ Graph VisualTest::DrawQQplot(const Sample & sample,
   // Then the QQ plot
   graphQQplot.add(cloudQQplot);
   // Adapt the margins
-  NumericalPoint boundingBox(graphQQplot.getBoundingBox());
+  Point boundingBox(graphQQplot.getBoundingBox());
   NumericalScalar width = boundingBox[1] - boundingBox[0];
   NumericalScalar height = boundingBox[3] - boundingBox[2];
   boundingBox[0] -= 0.1 * width;
@@ -267,7 +267,7 @@ Graph VisualTest::DrawLinearModel(const Sample & sample1,
   Sample sample2D(size, 2);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    NumericalPoint point(2);
+    Point point(2);
     point[0] = sample1[i][0];
     point[1] = y[i][0];
     sample2D[i] = point;
@@ -330,8 +330,8 @@ Graph VisualTest::DrawCobWeb(const Sample & inputSample,
   UnsignedInteger maxRank = 0;
   if (!quantileScale)
   {
-    const NumericalScalar minCDF = outputSample.computeEmpiricalCDF(NumericalPoint(1, minValue));
-    const NumericalScalar maxCDF = outputSample.computeEmpiricalCDF(NumericalPoint(1, maxValue));
+    const NumericalScalar minCDF = outputSample.computeEmpiricalCDF(Point(1, minValue));
+    const NumericalScalar maxCDF = outputSample.computeEmpiricalCDF(Point(1, maxValue));
     minRank = static_cast<UnsignedInteger>(round(size * minCDF));
     maxRank = static_cast<UnsignedInteger>(round(size * maxCDF));
   }
@@ -379,7 +379,7 @@ Graph VisualTest::DrawCobWeb(const Sample & inputSample,
   for (UnsignedInteger i = 0; i < inputDimension + 1; ++i)
   {
     Sample data(2, 2);
-    NumericalPoint point(2);
+    Point point(2);
     data[0][0] = i;
     data[1][0] = i;
     data[1][1] = size;
@@ -397,10 +397,10 @@ Graph VisualTest::DrawCobWeb(const Sample & inputSample,
     bar.setLineWidth(3);
     cobWeb.add(bar);
   }
-  NumericalPoint minPoint(2);
+  Point minPoint(2);
   minPoint[0] = 0.0;
   minPoint[1] = 0.0;
-  NumericalPoint maxPoint(2);
+  Point maxPoint(2);
   maxPoint[0] = 1.1 * inputDimension;
   maxPoint[1] = size;
   cobWeb.setBoundingBox(Interval(minPoint, maxPoint));
@@ -421,8 +421,8 @@ Graph VisualTest::DrawKendallPlot(const Sample & data,
   Graph graph("Kendall Plot", copula.getName(), data.getName(), true, "topleft");
   // Draw the first diagonal
   Sample dataDiagonal(0, 2);
-  dataDiagonal.add(NumericalPoint(2, 0.0));
-  dataDiagonal.add(NumericalPoint(2, 1.0));
+  dataDiagonal.add(Point(2, 0.0));
+  dataDiagonal.add(Point(2, 1.0));
   Curve diagonal(dataDiagonal);
   diagonal.setColor("red");
   diagonal.setLineStyle("dashed");
@@ -445,8 +445,8 @@ Graph VisualTest::DrawKendallPlot(const Sample & firstSample,
   Graph graph("Kendall Plot", firstSample.getName(), secondSample.getName(), true, "topleft");
   // Draw the first diagonal
   Sample data(0, 2);
-  data.add(NumericalPoint(2, 0.0));
-  data.add(NumericalPoint(2, 1.0));
+  data.add(Point(2, 0.0));
+  data.add(Point(2, 1.0));
   Curve diagonal(data);
   diagonal.setColor("red");
   diagonal.setLineStyle("dashed");
@@ -463,21 +463,21 @@ Sample VisualTest::ComputeKendallPlotEmpiricalStatistics(const Sample & sample)
   Sample result(size, 1);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalPoint pointI(sample[i]);
+    const Point pointI(sample[i]);
     const NumericalScalar uI = pointI[0];
     const NumericalScalar vI = pointI[1];
     UnsignedInteger cardinal = 0;
     for (UnsignedInteger j = 0; j < i; ++j)
     {
-      const NumericalPoint pointJ(sample[j]);
+      const Point pointJ(sample[j]);
       cardinal += (pointJ[0] <= uI) && (pointJ[1] <= vI);
     }
     for (UnsignedInteger j = i + 1; j < size; ++j)
     {
-      const NumericalPoint pointJ(sample[j]);
+      const Point pointJ(sample[j]);
       cardinal += (pointJ[0] <= uI) && (pointJ[1] <= vI);
     }
-    result[i] = NumericalPoint(1, cardinal / static_cast<NumericalScalar>(size - 1));
+    result[i] = Point(1, cardinal / static_cast<NumericalScalar>(size - 1));
   }
   return result.sort(0);
 }

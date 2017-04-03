@@ -41,8 +41,8 @@ class OT_API KrigingEvaluation
 
 public:
 
-  typedef Collection<NumericalPoint> NumericalPointCollection;
-  typedef PersistentCollection<NumericalPoint> NumericalPointPersistentCollection;
+  typedef Collection<Point> PointCollection;
+  typedef PersistentCollection<Point> PointPersistentCollection;
   typedef Collection<Basis> BasisCollection;
   typedef PersistentCollection<Basis> BasisPersistentCollection;
 
@@ -53,7 +53,7 @@ public:
   KrigingEvaluation(const BasisCollection & basis,
                     const Sample & inputSample,
                     const CovarianceModel & correlationModel,
-                    const NumericalPointCollection & beta,
+                    const PointCollection & beta,
                     const Sample & gamma);
 
   /** Virtual constructor */
@@ -70,7 +70,7 @@ public:
   virtual Bool isActualImplementation() const;
 
   /** Operator () */
-  virtual NumericalPoint operator()(const NumericalPoint & inP) const;
+  virtual Point operator()(const Point & inP) const;
   virtual Sample operator()(const Sample & inS) const;
 
   /** Accessor for input point dimension */
@@ -97,7 +97,7 @@ protected:
   CovarianceModel covarianceModel_;
 
   /// Regression weights
-  NumericalPointPersistentCollection beta_;
+  PointPersistentCollection beta_;
   Sample gamma_;
 
 private:

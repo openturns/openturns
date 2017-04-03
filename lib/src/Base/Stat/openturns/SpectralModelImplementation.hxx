@@ -46,16 +46,16 @@ public:
   SpectralModelImplementation();
 
   /** Standard constructor with scale and amplitude parameters parameters */
-  SpectralModelImplementation(const NumericalPoint & scale,
-                              const NumericalPoint & amplitude);
+  SpectralModelImplementation(const Point & scale,
+                              const Point & amplitude);
 
   /** Standard constructor with scale, amplitude and spatial correlation parameters parameters */
-  SpectralModelImplementation(const NumericalPoint & scale,
-                              const NumericalPoint & amplitude,
+  SpectralModelImplementation(const Point & scale,
+                              const Point & amplitude,
                               const CorrelationMatrix & spatialCorrelation);
 
   /** Standard constructor with scale and spatial covariance parameters parameters */
-  SpectralModelImplementation(const NumericalPoint & scale,
+  SpectralModelImplementation(const Point & scale,
                               const CovarianceMatrix & spatialCovariance);
 
 
@@ -73,14 +73,14 @@ public:
   virtual NumericalComplex computeStandardRepresentative(const NumericalScalar frequency) const;
 
   /** Amplitude accessor */
-  virtual NumericalPoint getAmplitude() const;
+  virtual Point getAmplitude() const;
 
-  virtual void setAmplitude(const NumericalPoint & amplitude);
+  virtual void setAmplitude(const Point & amplitude);
 
   /** Scale accessor */
-  virtual NumericalPoint getScale() const;
+  virtual Point getScale() const;
 
-  virtual void setScale(const NumericalPoint & scale);
+  virtual void setScale(const Point & scale);
 
   /** Spatial correlation accessor */
   virtual CorrelationMatrix getSpatialCorrelation() const;
@@ -116,10 +116,10 @@ protected:
   UnsignedInteger dimension_;
 
   /** Container for scale values  */
-  NumericalPoint scale_;
+  Point scale_;
 
   /** Container for amplitude values  */
-  NumericalPoint amplitude_;
+  Point amplitude_;
 
   /** Spatial dimension parameter */
   UnsignedInteger spatialDimension_;

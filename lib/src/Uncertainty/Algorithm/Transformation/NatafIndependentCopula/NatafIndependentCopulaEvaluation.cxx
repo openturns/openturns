@@ -84,9 +84,9 @@ String NatafIndependentCopulaEvaluation::__str__(const String & offset) const
  * The Nataf transform T reads:
  * Ti(xi) = Q(xi), where Q = Phi^{-1} and Phi is the CDF of the standard normal distribution
  */
-NumericalPoint NatafIndependentCopulaEvaluation::operator () (const NumericalPoint & inP) const
+Point NatafIndependentCopulaEvaluation::operator () (const Point & inP) const
 {
-  NumericalPoint result(dimension_);
+  Point result(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     const NumericalScalar x = inP[i];
@@ -104,7 +104,7 @@ NumericalPoint NatafIndependentCopulaEvaluation::operator () (const NumericalPoi
 
 /* Gradient according to the marginal parameters. Currently, the dependence parameters are not taken into account. */
 
-Matrix NatafIndependentCopulaEvaluation::parameterGradient(const NumericalPoint & inP) const
+Matrix NatafIndependentCopulaEvaluation::parameterGradient(const Point & inP) const
 {
   return Matrix(0, dimension_);
 }

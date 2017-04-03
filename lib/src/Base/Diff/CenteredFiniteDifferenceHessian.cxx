@@ -39,7 +39,7 @@ CenteredFiniteDifferenceHessian::CenteredFiniteDifferenceHessian()
 }
 
 /* Parameter constructor */
-CenteredFiniteDifferenceHessian::CenteredFiniteDifferenceHessian(const NumericalPoint & epsilon,
+CenteredFiniteDifferenceHessian::CenteredFiniteDifferenceHessian(const Point & epsilon,
     const EvaluationPointer & p_evaluation)
   : FiniteDifferenceHessian(epsilon, p_evaluation)
 {
@@ -94,10 +94,10 @@ String CenteredFiniteDifferenceHessian::__str__(const String & offset) const
 /* Here is the interface that all derived class must implement */
 
 /* Hessian () */
-SymmetricTensor CenteredFiniteDifferenceHessian::hessian(const NumericalPoint & inP) const
+SymmetricTensor CenteredFiniteDifferenceHessian::hessian(const Point & inP) const
 {
   const UnsignedInteger inputDimension = inP.getDimension();
-  NumericalPoint step(finiteDifferenceStep_.operator()(inP));
+  Point step(finiteDifferenceStep_.operator()(inP));
   if (inputDimension != step.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   /* At which points do we have to compute the evaluation for the centered finite difference. We need 2*dim^2+1 points. */
   Sample gridPoints(2 * inputDimension * inputDimension + 1, inP);
@@ -130,7 +130,7 @@ SymmetricTensor CenteredFiniteDifferenceHessian::hessian(const NumericalPoint & 
   /* Evaluate the evaluation */
   Sample gridValues(p_evaluation_->operator()(gridPoints));
   /* Get the center value */
-  NumericalPoint center(gridValues[gridValues.getSize() - 1]);
+  Point center(gridValues[gridValues.getSize() - 1]);
   /* Compute the hessian */
   UnsignedInteger outputDimension = p_evaluation_->getOutputDimension();
   SymmetricTensor result(inputDimension, outputDimension);

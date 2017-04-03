@@ -25,5 +25,5 @@ Examples
 >>> polyCol.add(P3)
 >>> productPoly = ot.ProductPolynomialEvaluation(polyCol)
 >>> productPoly([2, 1, 3])
-class=NumericalPoint name=Unnamed dimension=1 values=[8330]
+class=Point name=Unnamed dimension=1 values=[8330]
 "

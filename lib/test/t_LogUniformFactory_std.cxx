@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
     estimatedLogUniform = factory.buildAsLogUniform(distribution.getParameter());
     fullprint << "LogUniform from parameters=" << estimatedLogUniform << std::endl;
     // Test for constant sample
-    sample = Sample(size, NumericalPoint(1, 1.0));
+    sample = Sample(size, Point(1, 1.0));
     estimatedDistribution = factory.build(sample);
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
   }

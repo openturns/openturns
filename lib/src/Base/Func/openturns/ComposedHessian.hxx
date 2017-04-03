@@ -64,7 +64,7 @@ public:
   virtual String __repr__() const;
 
   /** Method hessian() returns the symmetric tensor of the function at point */
-  SymmetricTensor hessian(const NumericalPoint & inP) const;
+  SymmetricTensor hessian(const Point & inP) const;
 
   /** Accessor for input point dimension */
   UnsignedInteger getInputDimension() const;

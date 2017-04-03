@@ -404,8 +404,8 @@ Examples
 >>> firstSample = ot.Sample(size, 1)
 >>> secondSample = ot.Sample(size, 1)
 >>> for i in range(size):
-...     firstSample[i] = ot.NumericalPoint(1, sample2D[i, 0])
-...     secondSample[i] = ot.NumericalPoint(1, sample2D[i, 1])
+...     firstSample[i] = ot.Point(1, sample2D[i, 0])
+...     secondSample[i] = ot.Point(1, sample2D[i, 1])
 >>> lmtest = ot.LinearModelFactory().build(firstSample, secondSample)
 >>> drawLinearModelVTest = ot.VisualTest.DrawLinearModel(firstSample, secondSample, lmtest)
 >>> View(drawLinearModelVTest).show()"
@@ -441,8 +441,8 @@ Examples
 >>> firstSample = ot.Sample(size, 1)
 >>> secondSample = ot.Sample(size, 1)
 >>> for i in range(size):
-...     firstSample[i] = ot.NumericalPoint(1, sample2D[i, 0])
-...     secondSample[i] = ot.NumericalPoint(1, sample2D[i, 1])
+...     firstSample[i] = ot.Point(1, sample2D[i, 0])
+...     secondSample[i] = ot.Point(1, sample2D[i, 1])
 >>> lmtest = ot.LinearModelFactory().build(firstSample, secondSample)
 >>> drawLinearModelVTest = ot.VisualTest.DrawLinearModelResidual(firstSample, secondSample, lmtest)
 >>> View(drawLinearModelVTest).show()"

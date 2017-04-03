@@ -131,7 +131,7 @@ void SubsetSampling::run()
       inputSample = Sample(0, dimension_);
       for (UnsignedInteger j = 0; j < blockSize; ++ j)
       {
-        NumericalPoint direction(normal.getRealization());
+        Point direction(normal.getRealization());
         NumericalScalar norm = direction.norm();
         NumericalScalar radius = truncatedChiSquare.getRealization()[0];
         if (norm != 0.0)
@@ -303,7 +303,7 @@ NumericalScalar SubsetSampling::computeProbability(NumericalScalar probabilityEs
     probabilityEstimate = (meanBlock + (size - 1.0) * probabilityEstimate) / size;
 
     // store convergence at each block
-    NumericalPoint convergencePoint(2);
+    Point convergencePoint(2);
     convergencePoint[0] = probabilityEstimate * probabilityEstimateFactor;
     convergencePoint[1] = varianceEstimate * probabilityEstimateFactor * probabilityEstimateFactor / size;
     convergenceStrategy_.store(convergencePoint);
@@ -346,7 +346,7 @@ NumericalScalar SubsetSampling::computeVarianceGamma(NumericalScalar currentFail
   const UnsignedInteger N = currentPointSample_.getSize();
   const UnsignedInteger Nc = seedNumber_;
   Matrix IndicatorMatrice(Nc, N / Nc);
-  NumericalPoint correlationSequence(N / Nc - 1);
+  Point correlationSequence(N / Nc - 1);
   NumericalScalar currentFailureProbability2 = pow(currentFailureProbability, 2.);
   for (UnsignedInteger i = 0; i < N / Nc; ++ i)
   {
@@ -368,7 +368,7 @@ NumericalScalar SubsetSampling::computeVarianceGamma(NumericalScalar currentFail
     correlationSequence[k] -= currentFailureProbability2;
   }
   const NumericalScalar R0 = currentFailureProbability * (1.0 - currentFailureProbability);
-  const NumericalPoint rho = ((1.0 / R0) * correlationSequence);
+  const Point rho = ((1.0 / R0) * correlationSequence);
   NumericalScalar gamma = 0.0;
   for (UnsignedInteger k = 0; k < N / Nc - 1; ++ k)
   {
@@ -399,11 +399,11 @@ void SubsetSampling::generatePoints(NumericalScalar threshold)
       }
 
       // generate a new point
-      NumericalPoint oldPoint(currentPointSample_[i * blockSize + j]);
-      NumericalPoint newPoint(oldPoint + randomWalk.getRealization());
+      Point oldPoint(currentPointSample_[i * blockSize + j]);
+      Point newPoint(oldPoint + randomWalk.getRealization());
 
       // 1. accept / reject new components
-      NumericalPoint uniform(RandomGenerator::Generate(dimension_));
+      Point uniform(RandomGenerator::Generate(dimension_));
       for (UnsignedInteger k = 0; k < dimension_; ++ k)
       {
         // compute ratio
@@ -467,25 +467,25 @@ UnsignedInteger SubsetSampling::getNumberOfSteps()
 }
 
 
-NumericalPoint SubsetSampling::getGammaPerStep() const
+Point SubsetSampling::getGammaPerStep() const
 {
   return gammaPerStep_;
 }
 
 
-NumericalPoint SubsetSampling::getCoefficientOfVariationPerStep() const
+Point SubsetSampling::getCoefficientOfVariationPerStep() const
 {
   return coefficientOfVariationPerStep_;
 }
 
 
-NumericalPoint SubsetSampling::getProbabilityEstimatePerStep() const
+Point SubsetSampling::getProbabilityEstimatePerStep() const
 {
   return probabilityEstimatePerStep_;
 }
 
 
-NumericalPoint SubsetSampling::getThresholdPerStep() const
+Point SubsetSampling::getThresholdPerStep() const
 {
   return thresholdPerStep_;
 }

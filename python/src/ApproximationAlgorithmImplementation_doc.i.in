@@ -52,7 +52,7 @@ OT_ApproximationAlgorithm_setVerbose_doc
 
 Returns
 -------
-coefficients : :class:`~openturns.NumericalPoint`
+coefficients : :class:`~openturns.Point`
     The coefficients"
 %enddef
 %feature("docstring") OT::ApproximationAlgorithmImplementation::getCoefficients
@@ -104,7 +104,7 @@ OT_ApproximationAlgorithm_getResidual_doc
 
 Returns
 -------
-weight : :class:`~openturns.NumericalPoint`
+weight : :class:`~openturns.Point`
     Output weights"
 %enddef
 %feature("docstring") OT::ApproximationAlgorithmImplementation::getWeight

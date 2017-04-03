@@ -37,7 +37,7 @@ LinearTaylor::LinearTaylor()
 }
 
 /* Constructor with parameters */
-LinearTaylor::LinearTaylor(const NumericalPoint & center,
+LinearTaylor::LinearTaylor(const Point & center,
                            const Function & inputFunction)
   : PersistentObject(),
     center_(center),
@@ -80,13 +80,13 @@ void LinearTaylor::run()
 }
 
 /* Center accessor */
-NumericalPoint LinearTaylor::getCenter() const
+Point LinearTaylor::getCenter() const
 {
   return center_;
 }
 
 /* Constant accessor */
-NumericalPoint LinearTaylor::getConstant() const
+Point LinearTaylor::getConstant() const
 {
   return constant_;
 }

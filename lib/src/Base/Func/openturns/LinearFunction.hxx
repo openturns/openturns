@@ -22,7 +22,7 @@
 #define OPENTURNS_LINEARFUNCTION_HXX
 
 #include "openturns/Function.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Matrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -48,8 +48,8 @@ public:
   /* Some typedefs for easy reading */
 
   /** Default constructor */
-  LinearFunction(const NumericalPoint & center,
-                              const NumericalPoint & constant,
+  LinearFunction(const Point & center,
+                              const Point & constant,
                               const Matrix & linear);
 
 

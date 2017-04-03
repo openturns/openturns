@@ -25,7 +25,7 @@ using namespace OT;
 using namespace OT::Test;
 
 NumericalScalar sobol(const Indices & indices,
-                      const NumericalPoint & a)
+                      const Point & a)
 {
   NumericalScalar value = 1.0;
   for (UnsignedInteger i = 0; i < indices.getSize(); ++i)
@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     // Reference analytical values
     NumericalScalar meanTh = 1.0;
     NumericalScalar covTh = 1.0;
-    NumericalPoint a(dimension);
+    Point a(dimension);
     // Create the gSobol function
     Description inputVariables(dimension);
     Description outputVariables(1);
@@ -136,9 +136,9 @@ int main(int argc, char *argv[])
         fullprint << "//////////////////////////////////////////////////////////////////////" << std::endl;
         fullprint << algo.getAdaptiveStrategy() << std::endl;
         fullprint << algo.getProjectionStrategy() << std::endl;
-        NumericalPoint residuals(result.getResiduals());
+        Point residuals(result.getResiduals());
         fullprint << "residuals=" << std::fixed << std::setprecision(5) << residuals << std::endl;
-        NumericalPoint relativeErrors(result.getRelativeErrors());
+        Point relativeErrors(result.getRelativeErrors());
         fullprint << "relative errors=" << std::fixed << std::setprecision(5) << relativeErrors << std::endl;
 
         // Post-process the results

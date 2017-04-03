@@ -107,7 +107,7 @@ ZipfMandelbrot * ZipfMandelbrot::clone() const
 }
 
 /* Get one realization of the distribution */
-NumericalPoint ZipfMandelbrot::getRealization() const
+Point ZipfMandelbrot::getRealization() const
 {
   const NumericalScalar uniformRealization = 1.0 - RandomGenerator::Generate();
 
@@ -115,12 +115,12 @@ NumericalPoint ZipfMandelbrot::getRealization() const
       harmonicNumbers_.end(),
       uniformRealization * getHarmonicNumbers(n_))
                                               );
-  return NumericalPoint(1, it - harmonicNumbers_.begin() + 1);
+  return Point(1, it - harmonicNumbers_.begin() + 1);
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar ZipfMandelbrot::computePDF(const NumericalPoint & point) const
+NumericalScalar ZipfMandelbrot::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -132,7 +132,7 @@ NumericalScalar ZipfMandelbrot::computePDF(const NumericalPoint & point) const
 
 
 /* Get the CDF of the distribution */
-NumericalScalar ZipfMandelbrot::computeCDF(const NumericalPoint & point) const
+NumericalScalar ZipfMandelbrot::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   const NumericalScalar k = point[0];
@@ -149,34 +149,34 @@ void ZipfMandelbrot::computeMean() const
 {
   NumericalScalar value = 0.0;
   for (UnsignedInteger i = 1; i <= n_; ++i) value += i * std::pow(i + q_, -s_);
-  mean_ = NumericalPoint(1, value / getHarmonicNumbers(n_));
+  mean_ = Point(1, value / getHarmonicNumbers(n_));
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint ZipfMandelbrot::getStandardDeviation() const
+Point ZipfMandelbrot::getStandardDeviation() const
 {
-  return NumericalPoint(1, std::sqrt(getCovariance()(0, 0)));
+  return Point(1, std::sqrt(getCovariance()(0, 0)));
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint ZipfMandelbrot::getSkewness() const
+Point ZipfMandelbrot::getSkewness() const
 {
   NumericalScalar mean = getMean()[0];
   NumericalScalar std = getStandardDeviation()[0];
   NumericalScalar value = 0.0;
   for (UnsignedInteger i = 1; i <= n_; ++i) value += std::pow((i - mean) / std, 3) * std::pow(i + q_, -s_);
-  return NumericalPoint(1, value / getHarmonicNumbers(n_));
+  return Point(1, value / getHarmonicNumbers(n_));
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint ZipfMandelbrot::getKurtosis() const
+Point ZipfMandelbrot::getKurtosis() const
 {
   NumericalScalar mean = getMean()[0];
   NumericalScalar std = getStandardDeviation()[0];
   NumericalScalar value = 0.0;
   for (UnsignedInteger i = 1; i <= n_; ++i) value += std::pow((i - mean) / std, 4) * std::pow(i + q_, -s_);
-  return NumericalPoint(1, value / getHarmonicNumbers(n_));
+  return Point(1, value / getHarmonicNumbers(n_));
 }
 
 /* Compute the covariance of the distribution */
@@ -262,8 +262,8 @@ void ZipfMandelbrot::setN(const UnsignedInteger n)
 /* Compute the numerical range of the distribution given the parameters values */
 void ZipfMandelbrot::computeRange()
 {
-  const NumericalPoint lowerBound(1, 1.0);
-  const NumericalPoint upperBound(1, n_);
+  const Point lowerBound(1, 1.0);
+  const Point upperBound(1, n_);
   const Interval::BoolCollection finiteLowerBound(1, true);
   const Interval::BoolCollection finiteUpperBound(1, true);
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
@@ -276,21 +276,21 @@ Sample ZipfMandelbrot::getSupport(const Interval & interval) const
   const UnsignedInteger kMin = static_cast< UnsignedInteger > (std::max(ceil(interval.getLowerBound()[0]), 1.0));
   const UnsignedInteger kMax = static_cast< UnsignedInteger > (std::min(floor(interval.getUpperBound()[0]), NumericalScalar(n_)));
   Sample result(0, 1);
-  for (UnsignedInteger k = kMin; k <= kMax; ++k) result.add(NumericalPoint(1, k));
+  for (UnsignedInteger k = kMin; k <= kMax; ++k) result.add(Point(1, k));
   return result;
 }
 
 /* Parameters value accessor */
-NumericalPoint ZipfMandelbrot::getParameter() const
+Point ZipfMandelbrot::getParameter() const
 {
-  NumericalPoint point(3);
+  Point point(3);
   point[0] = n_;
   point[1] = q_;
   point[2] = s_;
   return point;
 }
 
-void ZipfMandelbrot::setParameter(const NumericalPoint & parameter)
+void ZipfMandelbrot::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();

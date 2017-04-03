@@ -84,9 +84,9 @@ String MethodOfMomentsFactory::__str__(const String & offset) const
 class MethodOfMomentsEvaluation : public EvaluationImplementation
 {
 public:
-  MethodOfMomentsEvaluation(const NumericalPoint & refMoments,
+  MethodOfMomentsEvaluation(const Point & refMoments,
                                         const Distribution & distribution,
-                                        const NumericalPoint & knownParameterValues,
+                                        const Point & knownParameterValues,
                                         const Indices & knownParameterIndices)
     : EvaluationImplementation()
     , refMoments_(refMoments)
@@ -141,10 +141,10 @@ public:
     return description;
   }
 
-  NumericalPoint operator() (const NumericalPoint & parameter) const
+  Point operator() (const Point & parameter) const
   {
     UnsignedInteger parameterDimension = distribution_.getParameterDimension();
-    NumericalPoint effectiveParameter(parameterDimension);
+    Point effectiveParameter(parameterDimension);
     // set unknown values
     UnsignedInteger unknownParameterSize = unknownParameterIndices_.getSize();
     for (UnsignedInteger j = 0; j < unknownParameterSize; ++ j)
@@ -164,11 +164,11 @@ public:
     }
     catch (Exception &)
     {
-      return NumericalPoint(1, SpecFunc::MaxNumericalScalar);
+      return Point(1, SpecFunc::MaxNumericalScalar);
     }
 
     // compute moments of conditioned distribution
-    NumericalPoint moments(parameterDimension);
+    Point moments(parameterDimension);
     moments[0] = distribution.getMean()[0];
     for (UnsignedInteger j = 1; j < parameterDimension; ++ j)
     {
@@ -184,19 +184,19 @@ public:
       result += slack * slack;
     }
     const NumericalScalar sigma2 = distribution.getCovariance()(0, 0);
-    return NumericalPoint(1, result / sigma2);
+    return Point(1, result / sigma2);
   }
 
 private:
-  NumericalPoint refMoments_;
-  NumericalPoint refSign_;
+  Point refMoments_;
+  Point refSign_;
   Distribution distribution_;
-  NumericalPoint knownParameterValues_;
+  Point knownParameterValues_;
   Indices knownParameterIndices_;
   Indices unknownParameterIndices_;
 };
 
-NumericalPoint MethodOfMomentsFactory::buildParameter(const Sample & sample) const
+Point MethodOfMomentsFactory::buildParameter(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
@@ -208,7 +208,7 @@ NumericalPoint MethodOfMomentsFactory::buildParameter(const Sample & sample) con
   if (knownParameterValues_.getSize() != knownParameterIndices_.getSize())
     throw InvalidArgumentException(HERE) << "Error: known values size must match indices";
 
-  NumericalPoint refMoments(effectiveParameterSize);
+  Point refMoments(effectiveParameterSize);
   refMoments[0] =  sample.computeMean()[0];
   for (UnsignedInteger j = 1; j < effectiveParameterSize; ++ j)
   {
@@ -225,11 +225,11 @@ NumericalPoint MethodOfMomentsFactory::buildParameter(const Sample & sample) con
   OptimizationAlgorithm solver(solver_);
   if (solver.getStartingPoint().getDimension() != momentsObjective.getInputDimension())
   {
-    NumericalPoint effectiveParameter(distribution_.getParameter());
+    Point effectiveParameter(distribution_.getParameter());
     LOGINFO(OSS() << "Warning! The given starting point=" << solver.getStartingPoint() << " has a dimension=" << solver.getStartingPoint().getDimension() << " which is different from the expected parameter dimension=" << momentsObjective.getInputDimension() << ". Switching to the default parameter value=" << effectiveParameter);
 
     // extract unknown values
-    NumericalPoint parameter;
+    Point parameter;
     for (UnsignedInteger j = 0; j < effectiveParameterSize; ++ j)
     {
       if (!knownParameterIndices_.contains(j))
@@ -239,9 +239,9 @@ NumericalPoint MethodOfMomentsFactory::buildParameter(const Sample & sample) con
   }
   solver.setProblem(problem);
   solver.run();
-  NumericalPoint effectiveParameter(effectiveParameterSize);
+  Point effectiveParameter(effectiveParameterSize);
   // set unknown values
-  NumericalPoint parameter(solver.getResult().getOptimalPoint());
+  Point parameter(solver.getResult().getOptimalPoint());
   UnsignedInteger index = 0;
   for (UnsignedInteger j = 0; j < effectiveParameterSize; ++ j)
   {
@@ -303,7 +303,7 @@ OptimizationAlgorithm MethodOfMomentsFactory::getOptimizationSolver() const
   return getOptimizationAlgorithm();
 }
 
-void MethodOfMomentsFactory::setKnownParameter(const NumericalPoint & values,
+void MethodOfMomentsFactory::setKnownParameter(const Point & values,
     const Indices & indices)
 {
   if (knownParameterValues_.getSize() != knownParameterIndices_.getSize()) throw InvalidArgumentException(HERE);
@@ -316,7 +316,7 @@ Indices MethodOfMomentsFactory::getKnownParameterIndices() const
   return knownParameterIndices_;
 }
 
-NumericalPoint MethodOfMomentsFactory::getKnownParameterValues() const
+Point MethodOfMomentsFactory::getKnownParameterValues() const
 {
   return knownParameterValues_;
 }

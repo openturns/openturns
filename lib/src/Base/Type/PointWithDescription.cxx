@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief NumericalPointWithDescription extends the classical mathematical point with a description of the coordinates
+ *  @brief PointWithDescription extends the classical mathematical point with a description of the coordinates
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,29 +18,29 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "openturns/NumericalPointWithDescription.hxx"
+#include "openturns/PointWithDescription.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(NumericalPointWithDescription);
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<NumericalPointWithDescription>);
+CLASSNAMEINIT(PointWithDescription);
+TEMPLATE_CLASSNAMEINIT(PersistentCollection<PointWithDescription>);
 
-static const Factory<NumericalPointWithDescription> Factory_NumericalPointWithDescription;
-static const Factory<PersistentCollection<NumericalPointWithDescription> > Factory_PersistentCollection_NumericalPointWithDescription;
+static const Factory<PointWithDescription> Factory_PointWithDescription;
+static const Factory<PersistentCollection<PointWithDescription> > Factory_PersistentCollection_PointWithDescription;
 
 /* Default constructor */
-NumericalPointWithDescription::NumericalPointWithDescription()
-  : NumericalPoint()
+PointWithDescription::PointWithDescription()
+  : Point()
   , description_()
 {
   // Nothing to do
 }
 
 /* Constructor with size */
-NumericalPointWithDescription::NumericalPointWithDescription(const UnsignedInteger size,
+PointWithDescription::PointWithDescription(const UnsignedInteger size,
     const NumericalScalar value)
-  : NumericalPoint(size, value)
+  : Point(size, value)
   , description_(size)
 {
   // Nothing to do
@@ -49,16 +49,16 @@ NumericalPointWithDescription::NumericalPointWithDescription(const UnsignedInteg
 
 
 /* Constructor from a collection */
-NumericalPointWithDescription::NumericalPointWithDescription(const Collection<NumericalScalar> & coll)
-  : NumericalPoint(coll)
+PointWithDescription::PointWithDescription(const Collection<NumericalScalar> & coll)
+  : Point(coll)
   , description_(coll.getSize())
 {
   // Nothing to do
 }
 
 /* Constructor from a base class */
-NumericalPointWithDescription::NumericalPointWithDescription(const Pointer<NumericalPoint> & p_base)
-  : NumericalPoint(*p_base)
+PointWithDescription::PointWithDescription(const Pointer<Point> & p_base)
+  : Point(*p_base)
   , description_(p_base->getSize())
 {
   // Nothing to do
@@ -67,23 +67,23 @@ NumericalPointWithDescription::NumericalPointWithDescription(const Pointer<Numer
 
 
 /* Virtual constructor */
-NumericalPointWithDescription * NumericalPointWithDescription::clone() const
+PointWithDescription * PointWithDescription::clone() const
 {
-  return new NumericalPointWithDescription(*this);
+  return new PointWithDescription(*this);
 }
 
 
 /* Destructor */
-NumericalPointWithDescription::~NumericalPointWithDescription() throw()
+PointWithDescription::~PointWithDescription() throw()
 {
   // Nothing to do
 }
 
 
 /* String converter */
-String NumericalPointWithDescription::__repr__() const
+String PointWithDescription::__repr__() const
 {
-  return OSS() << "class=" << NumericalPointWithDescription::GetClassName()
+  return OSS() << "class=" << PointWithDescription::GetClassName()
          << " name=" << getName()
          << " dimension=" << getDimension()
          << " description=" << getDescription()
@@ -106,7 +106,7 @@ public:
   }
 };
 
-String NumericalPointWithDescription::__str__(const String & offset) const
+String PointWithDescription::__str__(const String & offset) const
 {
   const UnsignedInteger size = getSize();
   const Description desc = getDescription();
@@ -124,7 +124,7 @@ String NumericalPointWithDescription::__str__(const String & offset) const
 
 
 /* Description Accessor */
-void NumericalPointWithDescription::setDescription(const Description & description)
+void PointWithDescription::setDescription(const Description & description)
 {
   if (description.getSize() != getDimension())
     throw InvalidArgumentException(HERE) << "Description has incorrect dimension (" << description.getSize()
@@ -134,7 +134,7 @@ void NumericalPointWithDescription::setDescription(const Description & descripti
 
 
 /* Description Accessor */
-Description NumericalPointWithDescription::getDescription() const
+Description PointWithDescription::getDescription() const
 {
   return description_;
 }
@@ -143,17 +143,17 @@ Description NumericalPointWithDescription::getDescription() const
 
 
 /* Method save() stores the object through the StorageManager */
-void NumericalPointWithDescription::save(Advocate & adv) const
+void PointWithDescription::save(Advocate & adv) const
 {
-  NumericalPoint::save(adv);
+  Point::save(adv);
   adv.saveAttribute( "description_", description_ );
 }
 
 
 /* Method load() reloads the object from the StorageManager */
-void NumericalPointWithDescription::load(Advocate & adv)
+void PointWithDescription::load(Advocate & adv)
 {
-  NumericalPoint::load(adv);
+  Point::load(adv);
   adv.loadAttribute( "description_", description_ );
 }
 

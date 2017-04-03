@@ -52,15 +52,15 @@ ParametricHessian * ParametricHessian::clone() const
 }
 
 /* Hessian operator */
-SymmetricTensor ParametricHessian::hessian(const NumericalPoint & point,
-    const NumericalPoint & parameters) const
+SymmetricTensor ParametricHessian::hessian(const Point & point,
+    const Point & parameters) const
 {
   const UnsignedInteger parametersDimension = parameters.getDimension();
   if (parametersDimension != p_evaluation_->getParametersPositions().getSize()) throw InvalidArgumentException(HERE) << "Error: expected a parameters of dimension=" << p_evaluation_->getParametersPositions().getSize() << ", got dimension=" << parametersDimension;
   const UnsignedInteger inputDimension = p_evaluation_->function_.getInputDimension();
   const UnsignedInteger pointDimension = point.getDimension();
   if (pointDimension + parametersDimension != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << inputDimension - parametersDimension << ", got dimension=" << pointDimension;
-  NumericalPoint x(inputDimension);
+  Point x(inputDimension);
   for (UnsignedInteger i = 0; i < parametersDimension; ++i) x[p_evaluation_->parametersPositions_[i]] = parameters[i];
   for (UnsignedInteger i = 0; i < pointDimension; ++i) x[p_evaluation_->inputPositions_[i]] = point[i];
   const UnsignedInteger outputDimension = getOutputDimension();
@@ -83,7 +83,7 @@ SymmetricTensor ParametricHessian::hessian(const NumericalPoint & point,
 }
 
 /* Hessian operator */
-SymmetricTensor ParametricHessian::hessian(const OT::NumericalPoint & point) const
+SymmetricTensor ParametricHessian::hessian(const OT::Point & point) const
 {
   // Use the current parameters value
   return hessian(point, p_evaluation_->getParameter());

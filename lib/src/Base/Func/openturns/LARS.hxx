@@ -72,8 +72,8 @@ public:
 private:
   NumericalScalar relativeConvergence_;
 
-  NumericalPoint coefficients_;
-  NumericalPoint mu_;
+  Point coefficients_;
+  Point mu_;
   NumericalScalar oldCoefficientsL1Norm_;
   NumericalScalar coefficientsL1Norm_;
 

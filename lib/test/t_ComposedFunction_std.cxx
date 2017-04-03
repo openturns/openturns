@@ -61,9 +61,9 @@ int main(int argc, char *argv[])
     fullprint << "composed=" << composed << std::endl;
 
     /** Does it worked? */
-    NumericalPoint x(right.getInputDimension(), 1.0);
-    NumericalPoint y(right(x));
-    NumericalPoint z(left(y));
+    Point x(right.getInputDimension(), 1.0);
+    Point y(right(x));
+    Point z(left(y));
     Matrix Dy(right.gradient(x));
     Matrix Dz(left.gradient(y));
 

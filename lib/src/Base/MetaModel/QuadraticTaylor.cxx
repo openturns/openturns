@@ -35,7 +35,7 @@ QuadraticTaylor::QuadraticTaylor()
 }
 
 /* Constructor with parameters */
-QuadraticTaylor::QuadraticTaylor(const NumericalPoint & center,
+QuadraticTaylor::QuadraticTaylor(const Point & center,
                                  const Function & inputFunction)
   : PersistentObject(),
     center_(center),
@@ -78,13 +78,13 @@ void QuadraticTaylor::run()
 }
 
 /* Center accessor */
-NumericalPoint QuadraticTaylor::getCenter() const
+Point QuadraticTaylor::getCenter() const
 {
   return center_;
 }
 
 /* Constant accessor */
-NumericalPoint QuadraticTaylor::getConstant() const
+Point QuadraticTaylor::getConstant() const
 {
   return constant_;
 }

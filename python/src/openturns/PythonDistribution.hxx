@@ -63,36 +63,36 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Get one realization of the distribution */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Get a numerical sample whose elements follow the distributionImplementation */
   Sample getSample(const UnsignedInteger size) const;
 
   /** Get the DDF of the distribution */
-  NumericalPoint computeDDF(const NumericalPoint & point) const;
+  Point computeDDF(const Point & point) const;
 
   /** Get the PDF of the distribution */
-  NumericalScalar computePDF(const NumericalPoint & point) const;
-  NumericalScalar computeLogPDF(const NumericalPoint & point) const;
+  NumericalScalar computePDF(const Point & point) const;
+  NumericalScalar computeLogPDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
+  NumericalScalar computeCDF(const Point & point) const;
 
   /** Get the complementary CDF of the distribution */
-  NumericalScalar computeComplementaryCDF(const NumericalPoint & point) const;
+  NumericalScalar computeComplementaryCDF(const Point & point) const;
 
   /** Get the quantile of the distributionImplementation */
-  virtual NumericalPoint computeQuantile(const NumericalScalar prob,
+  virtual Point computeQuantile(const NumericalScalar prob,
                                          const Bool tail = false) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
 
   /** Get the PDFGradient of the distribution */
-  NumericalPoint computePDFGradient(const NumericalPoint & point) const;
+  Point computePDFGradient(const Point & point) const;
 
   /** Get the CDFGradient of the distribution */
-  NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
+  Point computeCDFGradient(const Point & point) const;
 
   /** Get the quantile of the distribution */
   NumericalScalar computeScalarQuantile(const NumericalScalar prob,
@@ -102,29 +102,29 @@ public:
   NumericalScalar getRoughness() const;
 
   /** Get the mean of the distribution */
-  NumericalPoint getMean() const;
+  Point getMean() const;
 
   /** Get the standard deviation of the distribution */
-  NumericalPoint getStandardDeviation() const;
+  Point getStandardDeviation() const;
 
   /** Get the skewness of the distribution */
-  NumericalPoint getSkewness() const;
+  Point getSkewness() const;
 
   /** Get the kurtosis of the distribution */
-  NumericalPoint getKurtosis() const;
+  Point getKurtosis() const;
 
   /** Get the raw moments of the standardized distribution */
-  NumericalPoint getStandardMoment(const UnsignedInteger n) const;
+  Point getStandardMoment(const UnsignedInteger n) const;
 
   /** Get the raw moments of the distribution */
-  NumericalPoint getMoment(const UnsignedInteger n) const;
+  Point getMoment(const UnsignedInteger n) const;
 
   /** Get the centered moments of the distribution */
-  NumericalPoint getCenteredMoment(const UnsignedInteger n) const;
+  Point getCenteredMoment(const UnsignedInteger n) const;
 
   /** Parameters value and description accessor */
-  //   NumericalPointWithDescriptionCollection getParametersCollection() const;
-  //   void setParametersCollection(const NumericalPointCollection & parametersCollection);
+  //   PointWithDescriptionCollection getParametersCollection() const;
+  //   void setParametersCollection(const PointCollection & parametersCollection);
   //
 
   /** Check if the distribution is a copula */

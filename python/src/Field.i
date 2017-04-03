@@ -18,7 +18,7 @@ Field(const Field & other)
   return new OT::Field(other);
 }
 
-NumericalPoint __getitem__ (SignedInteger index) const
+Point __getitem__ (SignedInteger index) const
 {
   if (index < 0) {
     index += self->getSize();
@@ -27,7 +27,7 @@ NumericalPoint __getitem__ (SignedInteger index) const
 }
 
 void __setitem__ (SignedInteger index,
-                  const NumericalPoint & val)
+                  const Point & val)
 {
   self->copyOnWrite();
   if (index < 0) {

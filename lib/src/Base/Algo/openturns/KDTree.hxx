@@ -58,22 +58,22 @@ public:
   virtual Bool isEmpty() const;
 
   /** Insert a point */
-  virtual void insert(const NumericalPoint & point);
+  virtual void insert(const Point & point);
 
   /** Get the indices of the k nearest neighbours of the given point */
-  virtual Indices getNearestNeighboursIndices(const NumericalPoint & x,
+  virtual Indices getNearestNeighboursIndices(const Point & x,
       const UnsignedInteger k,
       const bool sorted  = false) const;
 
   /** Get the k nearest neighbours of the given point */
-  virtual Sample getNearestNeighbours(const NumericalPoint & x,
+  virtual Sample getNearestNeighbours(const Point & x,
       const UnsignedInteger k) const;
 
   /** Get the index of the nearest neighbour of the given point */
-  virtual UnsignedInteger getNearestNeighbourIndex(const NumericalPoint & x) const;
+  virtual UnsignedInteger getNearestNeighbourIndex(const Point & x) const;
 
   /** Get the nearest neighbour of the given point */
-  virtual NumericalPoint getNearestNeighbour(const NumericalPoint & x) const;
+  virtual Point getNearestNeighbour(const Point & x) const;
 
   /** Points accessor */
   Sample getPoints() const;
@@ -129,7 +129,7 @@ protected:
 
   /** Get the index of the nearest neighbour of the given point */
   virtual UnsignedInteger getNearestNeighbourIndex(const KDNode::KDNodePointer & p_node,
-      const NumericalPoint & x,
+      const Point & x,
       NumericalScalar & bestSquaredDistance,
       const UnsignedInteger activeDimension) const;
 

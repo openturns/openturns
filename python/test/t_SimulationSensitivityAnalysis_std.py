@@ -9,7 +9,7 @@ RandomGenerator.SetSeed(0)
 try:
     # Uncertain parameters
     distribution = Normal(
-        NumericalPoint(3, 1.0), NumericalPoint(3, 2.0), CorrelationMatrix(3))
+        Point(3, 1.0), Point(3, 2.0), CorrelationMatrix(3))
     distribution.setName("Unnamed")
     # Model
     inputVar = Description(["x", "y", "z"])

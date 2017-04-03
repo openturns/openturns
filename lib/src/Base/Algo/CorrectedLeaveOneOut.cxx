@@ -52,7 +52,7 @@ String CorrectedLeaveOneOut::__repr__() const
 /* Perform cross-validation */
 NumericalScalar CorrectedLeaveOneOut::run(const Sample & x,
     const Sample & y,
-    const NumericalPoint & weight,
+    const Point & weight,
     const Basis & basis,
     const Indices & indices) const
 {
@@ -61,7 +61,7 @@ NumericalScalar CorrectedLeaveOneOut::run(const Sample & x,
 
 
 NumericalScalar CorrectedLeaveOneOut::run(const Sample & y,
-    const NumericalPoint & weight,
+    const Point & weight,
     const Indices & indices,
     const DesignProxy & proxy) const
 {
@@ -91,15 +91,15 @@ NumericalScalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method,
   // Solve the least squares problem argmin ||psiAk * coefficients - b||^2 using this decomposition
   LOGINFO("Solve the least squares problem");
 
-  // Use the equivalence between SampleImplementation::data_ and NumericalPoint
-  const NumericalPoint coefficients(method.solve(y.getImplementation()->getData()));
+  // Use the equivalence between SampleImplementation::data_ and Point
+  const Point coefficients(method.solve(y.getImplementation()->getData()));
 
   // Compute the empirical error
   LOGINFO("Compute the empirical error");
 
-  const NumericalPoint yHat(psiAk * coefficients);
+  const Point yHat(psiAk * coefficients);
 
-  const NumericalPoint h(method.getHDiag());
+  const Point h(method.getHDiag());
   NumericalScalar empiricalError = 0.0;
   for (UnsignedInteger i = 0; i < sampleSize; ++ i)
   {

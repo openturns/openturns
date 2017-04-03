@@ -35,7 +35,7 @@ BoxCoxTransform::BoxCoxTransform()
 }
 
 /* Standard parameter constructor */
-BoxCoxTransform::BoxCoxTransform(const NumericalPoint & lambda)
+BoxCoxTransform::BoxCoxTransform(const Point & lambda)
   : Function()
 {
   const BoxCoxEvaluation evaluation(lambda);
@@ -45,8 +45,8 @@ BoxCoxTransform::BoxCoxTransform(const NumericalPoint & lambda)
 }
 
 /* NumericalScalarCollection parameter constructor */
-BoxCoxTransform::BoxCoxTransform(const NumericalPoint & lambda,
-                                 const NumericalPoint & shift)
+BoxCoxTransform::BoxCoxTransform(const Point & lambda,
+                                 const Point & shift)
   : Function()
 {
   const BoxCoxEvaluation evaluation(lambda, shift);
@@ -59,7 +59,7 @@ BoxCoxTransform::BoxCoxTransform(const NumericalPoint & lambda,
 BoxCoxTransform::BoxCoxTransform(const NumericalScalar & lambda)
   : Function()
 {
-  const BoxCoxEvaluation evaluation(NumericalPoint(1, lambda));
+  const BoxCoxEvaluation evaluation(Point(1, lambda));
   setEvaluation(evaluation.clone());
   setGradient(BoxCoxGradient(evaluation).clone());
   setHessian(BoxCoxHessian(evaluation).clone());
@@ -69,7 +69,7 @@ BoxCoxTransform::BoxCoxTransform(const NumericalScalar & lambda,
                                  const NumericalScalar & shift)
   : Function()
 {
-  const BoxCoxEvaluation evaluation(NumericalPoint(1, lambda), NumericalPoint(1, shift));
+  const BoxCoxEvaluation evaluation(Point(1, lambda), Point(1, shift));
   setEvaluation(evaluation.clone());
   setGradient(BoxCoxGradient(evaluation).clone());
   setHessian(BoxCoxHessian(evaluation).clone());
@@ -82,13 +82,13 @@ BoxCoxTransform * BoxCoxTransform::clone() const
 }
 
 /* Lambda accessor */
-NumericalPoint BoxCoxTransform::getLambda() const
+Point BoxCoxTransform::getLambda() const
 {
   return dynamic_cast< BoxCoxEvaluation* >(getEvaluation().get())->getLambda();
 }
 
 /* Shift accessor */
-NumericalPoint BoxCoxTransform::getShift() const
+Point BoxCoxTransform::getShift() const
 {
   return dynamic_cast< BoxCoxEvaluation* >(getEvaluation().get())->getShift();
 }

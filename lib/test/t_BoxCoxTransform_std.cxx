@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     const TimeSeries myRealization(myTimeGrid, mySample);
 
     // Create the lambda parameter
-    NumericalPoint lambda(dimension);
+    Point lambda(dimension);
     for (UnsignedInteger index = 0 ; index < dimension; ++index)
     {
       lambda[index] = (index + 2) * 0.1;

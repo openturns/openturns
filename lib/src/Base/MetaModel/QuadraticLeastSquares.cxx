@@ -36,7 +36,7 @@ QuadraticLeastSquares::QuadraticLeastSquares(const Sample & dataIn,
     dataIn_(dataIn),
     dataOut_(Sample(0, inputFunction.getOutputDimension())),
     inputFunction_(inputFunction),
-    constant_(NumericalPoint(inputFunction_.getOutputDimension())),
+    constant_(Point(inputFunction_.getOutputDimension())),
     linear_(Matrix(inputFunction_.getInputDimension(), inputFunction_.getOutputDimension())),
     quadratic_(SymmetricTensor(inputFunction_.getInputDimension(), inputFunction_.getOutputDimension()))
 {
@@ -51,7 +51,7 @@ QuadraticLeastSquares::QuadraticLeastSquares(const Sample & dataIn,
     dataIn_(dataIn),
     dataOut_(Sample(0, dataOut.getDimension())),
     inputFunction_(Function()),
-    constant_(NumericalPoint(dataOut.getDimension())),
+    constant_(Point(dataOut.getDimension())),
     linear_(Matrix(dataIn.getDimension(), dataOut.getDimension())),
     quadratic_(SymmetricTensor(dataIn.getDimension(), dataOut.getDimension()))
 {
@@ -101,7 +101,7 @@ void QuadraticLeastSquares::run()
   {
     /* build the componentMatrix */
     /* get the current sample x */
-    const NumericalPoint currentSample(dataIn_[sampleIndex]);
+    const Point currentSample(dataIn_[sampleIndex]);
     UnsignedInteger rowIndex = 0;
     /* First the constant term */
     componentMatrix(sampleIndex, rowIndex) = 1.0;
@@ -158,7 +158,7 @@ void QuadraticLeastSquares::run()
       } // Off-diagonal terms
     } // quadratic term
   } // output components
-  const NumericalPoint center(inputDimension, 0.0);
+  const Point center(inputDimension, 0.0);
   responseSurface_ = QuadraticFunction(center, constant_, linear_, quadratic_);
 }
 
@@ -184,7 +184,7 @@ void QuadraticLeastSquares::setDataOut(const Sample & dataOut)
 }
 
 /* Constant accessor */
-NumericalPoint QuadraticLeastSquares::getConstant() const
+Point QuadraticLeastSquares::getConstant() const
 {
   return constant_;
 }

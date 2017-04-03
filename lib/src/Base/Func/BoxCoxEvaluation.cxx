@@ -30,7 +30,7 @@ BoxCoxEvaluation::BoxCoxEvaluation()
 }
 
 /* Parameter constructor */
-BoxCoxEvaluation::BoxCoxEvaluation(const NumericalPoint & lambda)
+BoxCoxEvaluation::BoxCoxEvaluation(const Point & lambda)
   : EvaluationImplementation()
   , lambda_(lambda)
   , shift_(lambda.getDimension())
@@ -39,8 +39,8 @@ BoxCoxEvaluation::BoxCoxEvaluation(const NumericalPoint & lambda)
   setOutputDescription(Description::BuildDefault(lambda_.getSize(), "y"));
 }
 
-BoxCoxEvaluation::BoxCoxEvaluation(const NumericalPoint & lambda,
-    const NumericalPoint & shift)
+BoxCoxEvaluation::BoxCoxEvaluation(const Point & lambda,
+    const Point & shift)
   : EvaluationImplementation()
   , lambda_(lambda)
   , shift_(shift)
@@ -86,13 +86,13 @@ String BoxCoxEvaluation::__str__(const String & offset) const
 }
 
 /* Accessor for the lambda */
-NumericalPoint BoxCoxEvaluation::getLambda() const
+Point BoxCoxEvaluation::getLambda() const
 {
   return lambda_;
 }
 
 /* Accessor for the shift */
-NumericalPoint BoxCoxEvaluation::getShift() const
+Point BoxCoxEvaluation::getShift() const
 {
   return shift_;
 }
@@ -149,11 +149,11 @@ Sample BoxCoxEvaluation::operator() (const Sample & inS) const
 }
 
 /* Operator () */
-NumericalPoint BoxCoxEvaluation::operator() (const NumericalPoint & inP) const
+Point BoxCoxEvaluation::operator() (const Point & inP) const
 {
   const UnsignedInteger dimension = getInputDimension();
   if (inP.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << dimension << ", got " << inP.getDimension();
-  NumericalPoint result(lambda_.getDimension());
+  Point result(lambda_.getDimension());
 
   // There is no check of positive variables
   // This last one must be done by user or, as the evaluation is used in a stochastic context, in the BoxCoxTransform class

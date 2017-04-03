@@ -62,36 +62,36 @@ public:
   virtual CovarianceMatrix operator() (const NumericalScalar s,
                                        const NumericalScalar t) const;
 
-  virtual CovarianceMatrix operator() (const NumericalPoint & s,
-                                       const NumericalPoint & t) const;
+  virtual CovarianceMatrix operator() (const Point & s,
+                                       const Point & t) const;
 
   // compute standard representative computes the term \rho(s, t)
-  virtual NumericalScalar computeStandardRepresentative(const NumericalPoint & s,
-      const NumericalPoint & t) const;
+  virtual NumericalScalar computeStandardRepresentative(const Point & s,
+      const Point & t) const;
 
   virtual NumericalScalar computeStandardRepresentative(const NumericalScalar & s,
       const NumericalScalar & t) const;
 
-  virtual NumericalScalar computeStandardRepresentative(const NumericalPoint & tau) const;
+  virtual NumericalScalar computeStandardRepresentative(const Point & tau) const;
 
   virtual NumericalScalar computeStandardRepresentative(const NumericalScalar & tau) const;
 
-  virtual NumericalScalar computeAsScalar (const NumericalPoint & s,
-      const NumericalPoint & t) const;
+  virtual NumericalScalar computeAsScalar (const Point & s,
+      const Point & t) const;
 
   virtual CovarianceMatrix operator() (const NumericalScalar tau) const;
 
-  virtual CovarianceMatrix operator() (const NumericalPoint & tau) const;
+  virtual CovarianceMatrix operator() (const Point & tau) const;
 
-  virtual NumericalScalar computeAsScalar (const NumericalPoint & tau) const;
+  virtual NumericalScalar computeAsScalar (const Point & tau) const;
 
   /** Gradient */
-  virtual Matrix partialGradient(const NumericalPoint & s,
-                                 const NumericalPoint & t) const;
+  virtual Matrix partialGradient(const Point & s,
+                                 const Point & t) const;
 
   /** Gradient wrt parameters */
-  virtual Matrix parameterGradient (const NumericalPoint & s,
-                                    const NumericalPoint & t) const;
+  virtual Matrix parameterGradient (const Point & s,
+                                    const Point & t) const;
 
   /** Discretize the covariance function on a given TimeGrid/Mesh */
   virtual CovarianceMatrix discretize(const RegularGrid & timeGrid) const;
@@ -129,12 +129,12 @@ public:
 
 
   /** Amplitude accessors */
-  NumericalPoint getAmplitude() const;
-  void setAmplitude(const NumericalPoint & amplitude);
+  Point getAmplitude() const;
+  void setAmplitude(const Point & amplitude);
 
   /** Scale accessors */
-  NumericalPoint getScale() const;
-  void setScale(const NumericalPoint & scale);
+  Point getScale() const;
+  void setScale(const Point & scale);
 
   /** Spatial correlation accessors */
   CorrelationMatrix getSpatialCorrelation() const;
@@ -145,8 +145,8 @@ public:
   NumericalScalar getNuggetFactor() const;
 
   /** Parameters accessor */
-  void setParameter(const NumericalPoint & parameter);
-  NumericalPoint getParameter() const;
+  void setParameter(const Point & parameter);
+  Point getParameter() const;
   Description getParameterDescription() const;
 
   /** Indices of the active parameters */

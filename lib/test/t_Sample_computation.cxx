@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
     NumericalScalar prob = 0.25;
     fullprint << "Quantile per component(" << prob << ")=" << sample.computeQuantilePerComponent(prob) << std::endl;
     //    fullprint << "Quantile(" << prob << ")=" << sample.computeQuantile(prob) << std::endl;
-    NumericalPoint pointCDF(sample.getDimension(), 0.25);
+    Point pointCDF(sample.getDimension(), 0.25);
     fullprint << "Empirical CDF(" << pointCDF << "=" << sample.computeEmpiricalCDF(pointCDF) << std::endl;
     UnsignedInteger dim = 3;
     CorrelationMatrix R(dim);
@@ -113,8 +113,8 @@ int main(int argc, char *argv[])
     fullprint << "Spearman correlation=" << sample.computeSpearmanCorrelation() << std::endl;
     fullprint << "Kendall tau=" << sample.computeKendallTau() << std::endl;
     UnsignedInteger size = 10000;
-    NumericalPoint p1(dim, 0.0);
-    NumericalPoint p2(dim, 1.0);
+    Point p1(dim, 0.0);
+    Point p2(dim, 1.0);
     Normal normal(Normal(p1, p2, R));
     fullprint << "Normal=" << normal << std::endl;
     fullprint << "covariance=" << normal.getCovariance() << std::endl;

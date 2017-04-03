@@ -52,9 +52,9 @@ public:
 
   /** Hessian operator */
   using HessianImplementation::hessian;
-  SymmetricTensor hessian(const NumericalPoint & point) const;
-  SymmetricTensor hessian(const NumericalPoint & point,
-                          const NumericalPoint & parameters) const;
+  SymmetricTensor hessian(const Point & point) const;
+  SymmetricTensor hessian(const Point & point,
+                          const Point & parameters) const;
 
   /** Evaluation accessor */
   ParametricEvaluation getEvaluation() const;

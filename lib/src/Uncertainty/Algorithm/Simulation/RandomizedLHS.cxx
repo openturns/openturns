@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/RandomizedLHS.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/RandomVector.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/ComparisonOperatorImplementation.hxx"
@@ -66,10 +66,10 @@ Sample RandomizedLHS::computeBlockSample()
   // Compute a shuffle of given dimension and blocksize
   const Matrix shuffle(LHSExperiment::ComputeShuffle(dimension_, blockSize));
   // First, compute the input sub-sample based on the shuffling
-  Sample inputSample(blockSize, NumericalPoint(dimension_));
+  Sample inputSample(blockSize, Point(dimension_));
   for(UnsignedInteger index = 0; index < blockSize; ++index)
   {
-    const NumericalPoint u(RandomGenerator::Generate(dimension_));
+    const Point u(RandomGenerator::Generate(dimension_));
     for(UnsignedInteger component = 0; component < dimension_; ++component)
     {
       NumericalScalar xi = (shuffle(component, index) + u[component]) / blockSize;

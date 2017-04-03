@@ -24,7 +24,7 @@
 #include "openturns/FunctionalChaosAlgorithm.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/FunctionImplementation.hxx"
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/DatabaseFunction.hxx"
@@ -99,14 +99,14 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
   // Overwrite the content of the projection strategy with the given data
   projectionStrategy_.getImplementation()->inputSample_ = inputSample;
   projectionStrategy_.getImplementation()->measure_ = UserDefined(inputSample);
-  projectionStrategy_.getImplementation()->weights_ = NumericalPoint(inputSample.getSize(), 1.0 / inputSample.getSize());
+  projectionStrategy_.getImplementation()->weights_ = Point(inputSample.getSize(), 1.0 / inputSample.getSize());
   projectionStrategy_.getImplementation()->weightedExperiment_ = FixedExperiment(inputSample);
   projectionStrategy_.getImplementation()->outputSample_ = outputSample;
 }
 
 /* Constructor */
 FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
-    const NumericalPoint & weights,
+    const Point & weights,
     const Sample & outputSample,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy,
@@ -213,7 +213,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
 
 /* Constructor */
 FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
-    const NumericalPoint & weights,
+    const Point & weights,
     const Sample & outputSample,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy)
@@ -308,14 +308,14 @@ void FunctionalChaosAlgorithm::run()
   // polynomials with vector coefficients
   // We build the coefficients of the combination. As some indices may be
   // missing, we have to take care of the different sparsity patterns
-  NumericalPoint residuals(outputDimension);
-  NumericalPoint relativeErrors(outputDimension);
-  std::map<UnsignedInteger, NumericalPoint> coefficientsMap;
+  Point residuals(outputDimension);
+  Point relativeErrors(outputDimension);
+  std::map<UnsignedInteger, Point> coefficientsMap;
   for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++outputIndex)
   {
     LOGINFO(OSS() << "Work on output marginal " << outputIndex << " over " << outputDimension - 1);
     Indices marginalIndices;
-    NumericalPoint marginalAlpha_k;
+    Point marginalAlpha_k;
     NumericalScalar marginalResidual = -1.0;
     NumericalScalar marginalRelativeError = -1.0;
     // Compute the indices, the coefficients, the residual and the relative error of the current marginal output
@@ -332,14 +332,14 @@ void FunctionalChaosAlgorithm::run()
         // Current index in the decomposition of the current marginal output
         const UnsignedInteger index = marginalIndices[j];
         // If the current index is not in the map, create it
-        if (coefficientsMap.find(index) == coefficientsMap.end()) coefficientsMap[index] = NumericalPoint(outputDimension, 0.0);
+        if (coefficientsMap.find(index) == coefficientsMap.end()) coefficientsMap[index] = Point(outputDimension, 0.0);
         // Add the current scalar coefficient to the corresponding component of the vectorial coefficient
         coefficientsMap[index][outputIndex] = marginalAlpha_kj;
       }
     } // Loop over the marginal indices
   } // Loop over the output dimension
   // At this point, the map contains all the associations (index, vector coefficient). It remains to present these data into the proper form and to build the associated partial basis
-  std::map<UnsignedInteger, NumericalPoint>::iterator iter;
+  std::map<UnsignedInteger, Point>::iterator iter;
   // Full set of indices
   Indices I_k(0);
   // Full set of vectorial coefficients
@@ -349,7 +349,7 @@ void FunctionalChaosAlgorithm::run()
   for (iter = coefficientsMap.begin(); iter != coefficientsMap.end(); ++iter)
   {
     const UnsignedInteger i = iter->first;
-    const NumericalPoint currentCoefficient(iter->second);
+    const Point currentCoefficient(iter->second);
     I_k.add(i);
     alpha_k.add(currentCoefficient);
     // We could reuse the function
@@ -367,7 +367,7 @@ void FunctionalChaosAlgorithm::run()
 /* Marginal computation */
 void FunctionalChaosAlgorithm::runMarginal(const UnsignedInteger marginalIndex,
     Indices & indices,
-    NumericalPoint & coefficients,
+    Point & coefficients,
     NumericalScalar & residual,
     NumericalScalar & relativeError)
 {

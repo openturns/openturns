@@ -125,7 +125,7 @@ void KarhunenLoeveP1Algorithm::run()
   }
   eigenPairs = eigenPairs.sortAccordingToAComponent(augmentedDimension);
   SquareMatrix eigenVectors(augmentedDimension);
-  NumericalPoint eigenValues(augmentedDimension);
+  Point eigenValues(augmentedDimension);
   for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
   {
     for (UnsignedInteger j = 0; j < augmentedDimension; ++j) eigenVectors(i, j) = eigenPairs[j][i];
@@ -143,7 +143,7 @@ void KarhunenLoeveP1Algorithm::run()
     }
   // Reduce and rescale the eigenvectors
   MatrixImplementation transposedProjection(augmentedDimension, K);
-  NumericalPoint selectedEV(K);
+  Point selectedEV(K);
   Basis modes(0);
   ProcessSample modesAsProcessSample(mesh_, 0, dimension);
   const UnsignedInteger meshDimension = mesh_.getDimension();

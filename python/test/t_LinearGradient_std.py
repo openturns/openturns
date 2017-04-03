@@ -9,7 +9,7 @@ try:
     inputDimension = 3
     outputDimension = 2
     # Center
-    center = NumericalPoint(inputDimension)
+    center = Point(inputDimension)
     center[0] = -1
     center[1] = 0.5
     center[2] = 1
@@ -46,7 +46,7 @@ try:
     myGradient = LinearGradient(
         center, constant, linear)
     myGradient.setName("linearGradient")
-    inPoint = NumericalPoint(inputDimension)
+    inPoint = Point(inputDimension)
     inPoint[0] = 7.0
     inPoint[1] = 8.0
     inPoint[2] = 9.0

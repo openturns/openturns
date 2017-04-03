@@ -78,15 +78,15 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
       const String yName(getOutputDescription()[i]);
       const String inputClass(inputDistribution.getImplementation()->getClassName());
       const String outputClass(outputDistribution.getImplementation()->getClassName());
-      const NumericalPoint inputParameters(inputDistribution.getParametersCollection()[0]);
-      const NumericalPoint outputParameters(outputDistribution.getParametersCollection()[0]);
+      const Point inputParameters(inputDistribution.getParametersCollection()[0]);
+      const Point outputParameters(outputDistribution.getParametersCollection()[0]);
       // The first obvious simplification: the distributions share the same standard representative.
       if (inputClass == outputClass)
       {
         const Distribution inputStandardDistribution(inputDistribution.getStandardRepresentative());
-        const NumericalPoint inputStandardRepresentativeParameters(inputStandardDistribution.getParametersCollection()[0]);
+        const Point inputStandardRepresentativeParameters(inputStandardDistribution.getParametersCollection()[0]);
         const Distribution outputStandardDistribution(outputDistribution.getStandardRepresentative());
-        const NumericalPoint outputStandardRepresentativeParameters(outputStandardDistribution.getParametersCollection()[0]);
+        const Point outputStandardRepresentativeParameters(outputStandardDistribution.getParametersCollection()[0]);
         const NumericalScalar difference = (inputStandardRepresentativeParameters - outputStandardRepresentativeParameters).norm();
         const Bool sameParameters = difference < ResourceMap::GetAsNumericalScalar("MarginalTransformationEvaluation-ParametersEpsilon");
         if (sameParameters)
@@ -270,7 +270,7 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
   // Get all the parameters
   // The notion of parameters is used only for transformation from or to a standard space, so we have to extract the parameters of either the input distributions or the output distribution depending on the direction
   const UnsignedInteger size = distributionCollection.getSize();
-  NumericalPoint parameter(0);
+  Point parameter(0);
   Description parameterDescription(0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -288,15 +288,15 @@ MarginalTransformationEvaluation * MarginalTransformationEvaluation::clone() con
 }
 
 /* Evaluation */
-NumericalPoint MarginalTransformationEvaluation::operator () (const NumericalPoint & inP) const
+Point MarginalTransformationEvaluation::operator () (const Point & inP) const
 {
   const UnsignedInteger dimension = getOutputDimension();
-  NumericalPoint result(dimension);
+  Point result(dimension);
   // The marginal transformation apply G^{-1} o F to each component of the input, where F is the ith input CDF and G the ith output CDf
   const NumericalScalar tailThreshold = ResourceMap::GetAsNumericalScalar( "MarginalTransformationEvaluation-DefaultTailThreshold" );
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    if (simplifications_[i]) result[i] = expressions_[i](NumericalPoint(1, inP[i]))[0];
+    if (simplifications_[i]) result[i] = expressions_[i](Point(1, inP[i]))[0];
     else
     {
       NumericalScalar inputCDF = inputDistributionCollection_[i].computeCDF(inP[i]);
@@ -354,9 +354,9 @@ NumericalPoint MarginalTransformationEvaluation::operator () (const NumericalPoi
  * the needed gradient is [(dH/dp)(x,p)]^t
  *
  */
-Matrix MarginalTransformationEvaluation::parameterGradient(const NumericalPoint & inP) const
+Matrix MarginalTransformationEvaluation::parameterGradient(const Point & inP) const
 {
-  const NumericalPoint parameters(getParameter());
+  const Point parameters(getParameter());
   const UnsignedInteger parametersDimension = parameters.getDimension();
   const UnsignedInteger inputDimension = getInputDimension();
   Matrix result(parametersDimension, inputDimension);
@@ -370,7 +370,7 @@ Matrix MarginalTransformationEvaluation::parameterGradient(const NumericalPoint 
        */
       for (UnsignedInteger j = 0; j < inputDimension; ++j)
       {
-        const NumericalPoint x(1, inP[j]);
+        const Point x(1, inP[j]);
         const Distribution inputMarginal(inputDistributionCollection_[j]);
         const Distribution outputMarginal(outputDistributionCollection_[j]);
         const NumericalScalar denominator = outputMarginal.computePDF(outputMarginal.computeQuantile(inputMarginal.computeCDF(x)));
@@ -378,7 +378,7 @@ Matrix MarginalTransformationEvaluation::parameterGradient(const NumericalPoint 
         {
           try
           {
-            const NumericalPoint normalizedCDFGradient(inputMarginal.computeCDFGradient(x) * (1.0 / denominator));
+            const Point normalizedCDFGradient(inputMarginal.computeCDFGradient(x) * (1.0 / denominator));
             const UnsignedInteger marginalParametersDimension = normalizedCDFGradient.getDimension();
             for (UnsignedInteger i = 0; i < marginalParametersDimension; ++i)
             {
@@ -400,16 +400,16 @@ Matrix MarginalTransformationEvaluation::parameterGradient(const NumericalPoint 
        */
       for (UnsignedInteger j = 0; j < inputDimension; ++j)
       {
-        const NumericalPoint x(1, inP[j]);
+        const Point x(1, inP[j]);
         const Distribution inputMarginal(inputDistributionCollection_[j]);
         const Distribution outputMarginal(outputDistributionCollection_[j]);
-        const NumericalPoint q(outputMarginal.computeQuantile(inputMarginal.computeCDF(x)));
+        const Point q(outputMarginal.computeQuantile(inputMarginal.computeCDF(x)));
         const NumericalScalar denominator = outputMarginal.computePDF(q);
         if (denominator > 0.0)
         {
           try
           {
-            const NumericalPoint normalizedCDFGradient(outputMarginal.computeCDFGradient(q) * (-1.0 / denominator));
+            const Point normalizedCDFGradient(outputMarginal.computeCDFGradient(q) * (-1.0 / denominator));
             const UnsignedInteger marginalParametersDimension = normalizedCDFGradient.getDimension();
             for (UnsignedInteger i = 0; i < marginalParametersDimension; ++i)
             {
@@ -426,7 +426,7 @@ Matrix MarginalTransformationEvaluation::parameterGradient(const NumericalPoint 
       return result;
     default:
       // Should never go there
-      throw NotYetImplementedException(HERE) << "In MarginalTransformationEvaluation::parameterGradient(const NumericalPoint & inP) const";
+      throw NotYetImplementedException(HERE) << "In MarginalTransformationEvaluation::parameterGradient(const Point & inP) const";
   }
 }
 

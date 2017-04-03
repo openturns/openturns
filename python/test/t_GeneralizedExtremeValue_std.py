@@ -61,7 +61,7 @@ try:
         print("Survival(inverse survival)=", distribution.computeSurvivalFunction(InverseSurvival))
         PDFgr = distribution.computePDFGradient( point )
         print("pdf gradient     =", PDFgr)
-        PDFgrFD = NumericalPoint(3)
+        PDFgrFD = Point(3)
         PDFgrFD[0] = (GeneralizedExtremeValue(distribution.getMu() + eps, distribution.getSigma(), distribution.getXi()).computePDF(point) -
                       GeneralizedExtremeValue(distribution.getMu() - eps, distribution.getSigma(), distribution.getXi()).computePDF(point)) / (2.0 * eps)
         PDFgrFD[1] = (GeneralizedExtremeValue(distribution.getMu(), distribution.getSigma() + eps, distribution.getXi()).computePDF(point) -
@@ -71,7 +71,7 @@ try:
         print("pdf gradient (FD)=", PDFgrFD)
         CDFgr = distribution.computeCDFGradient( point )
         print("cdf gradient     =", CDFgr)
-        CDFgrFD = NumericalPoint(3)
+        CDFgrFD = Point(3)
         CDFgrFD[0] = (GeneralizedExtremeValue(distribution.getMu() + eps, distribution.getSigma(), distribution.getXi()).computeCDF(point) -
                       GeneralizedExtremeValue(distribution.getMu() - eps, distribution.getSigma(), distribution.getXi()).computeCDF(point)) / (2.0 * eps)
         CDFgrFD[1] = (GeneralizedExtremeValue(distribution.getMu(), distribution.getSigma() + eps, distribution.getXi()).computeCDF(point) -

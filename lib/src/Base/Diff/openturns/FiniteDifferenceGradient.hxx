@@ -50,7 +50,7 @@ public:
   FiniteDifferenceGradient();
 
   /** First Parameter constructor  */
-  FiniteDifferenceGradient(const NumericalPoint & epsilon,
+  FiniteDifferenceGradient(const Point & epsilon,
                            const EvaluationPointer & p_evaluation);
 
   /** SecondParameter constructor */
@@ -78,7 +78,7 @@ public:
   virtual UnsignedInteger getOutputDimension() const;
 
   /** Accessor for the epsilon */
-  virtual NumericalPoint getEpsilon() const;
+  virtual Point getEpsilon() const;
 
   /** Accessor for the evaluation */
   virtual EvaluationPointer getEvaluation() const;
@@ -102,7 +102,7 @@ public:
    * @param in The point where the gradient is computed
    * @result A matrix constructed with the dF_i/dx_j values (Jacobian transposed)
    */
-  virtual Matrix gradient(const NumericalPoint & inP) const;
+  virtual Matrix gradient(const Point & inP) const;
 
 protected:
   EvaluationPointer p_evaluation_;

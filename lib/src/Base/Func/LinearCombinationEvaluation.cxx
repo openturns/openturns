@@ -48,7 +48,7 @@ LinearCombinationEvaluation::LinearCombinationEvaluation()
 
 /* Parameters constructor */
 LinearCombinationEvaluation::LinearCombinationEvaluation(const FunctionCollection & functionsCollection,
-    const NumericalPoint & coefficients)
+    const Point & coefficients)
   : EvaluationImplementation()
   , functionsCollection_(0)
   , coefficients_(0)
@@ -96,22 +96,22 @@ String LinearCombinationEvaluation::__str__(const String & offset) const
 // Helper for the parallel version of the point-based evaluation operator
 struct LinearCombinationEvaluationPointFunctor
 {
-  const NumericalPoint & input_;
+  const Point & input_;
   const LinearCombinationEvaluation & evaluation_;
-  NumericalPoint accumulator_;
+  Point accumulator_;
 
-  LinearCombinationEvaluationPointFunctor(const NumericalPoint & input,
+  LinearCombinationEvaluationPointFunctor(const Point & input,
                                           const LinearCombinationEvaluation & evaluation)
     : input_(input)
     , evaluation_(evaluation)
-    , accumulator_(NumericalPoint(evaluation.getOutputDimension()))
+    , accumulator_(Point(evaluation.getOutputDimension()))
   {}
 
   LinearCombinationEvaluationPointFunctor(const LinearCombinationEvaluationPointFunctor & other,
                                           TBB::Split)
     : input_(other.input_)
     , evaluation_(other.evaluation_)
-    , accumulator_(NumericalPoint(other.accumulator_.getDimension()))
+    , accumulator_(Point(other.accumulator_.getDimension()))
   {}
 
   inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r )
@@ -127,15 +127,15 @@ struct LinearCombinationEvaluationPointFunctor
 }; // struct LinearCombinationEvaluationPointFunctor
 
 /* Evaluation operator */
-NumericalPoint LinearCombinationEvaluation::operator () (const NumericalPoint & inP) const
+Point LinearCombinationEvaluation::operator () (const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
-  if (isZero_) return NumericalPoint(getOutputDimension());
+  if (isZero_) return Point(getOutputDimension());
   const UnsignedInteger size = functionsCollection_.getSize();
   LinearCombinationEvaluationPointFunctor functor( inP, *this );
   TBB::ParallelReduce( 0, size, functor );
-  const NumericalPoint result(functor.accumulator_);
+  const Point result(functor.accumulator_);
   ++callsNumber_;
   if (isHistoryEnabled_)
   {
@@ -171,7 +171,7 @@ Sample LinearCombinationEvaluation::operator () (const Sample & inS) const
 }
 
 /* Coefficients accessor */
-NumericalPoint LinearCombinationEvaluation::getCoefficients() const
+Point LinearCombinationEvaluation::getCoefficients() const
 {
   return coefficients_;
 }
@@ -183,7 +183,7 @@ LinearCombinationEvaluation::FunctionCollection LinearCombinationEvaluation::get
 }
 
 void LinearCombinationEvaluation::setFunctionsCollectionAndCoefficients(const FunctionCollection & functionsCollection,
-    const NumericalPoint & coefficients)
+    const Point & coefficients)
 {
   const UnsignedInteger size = functionsCollection.getSize();
   // Check for empty functions collection
@@ -200,7 +200,7 @@ void LinearCombinationEvaluation::setFunctionsCollectionAndCoefficients(const Fu
   }
   // Keep only the non zero coefficients
   isZero_ = false;
-  coefficients_ = NumericalPoint(0);
+  coefficients_ = Point(0);
   functionsCollection_ = FunctionCollection(0);
   const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("LinearCombinationEvaluation-SmallCoefficient");
   for (UnsignedInteger i = 0; i < size; ++i)
@@ -236,7 +236,7 @@ UnsignedInteger LinearCombinationEvaluation::getOutputDimension() const
 
 
 /* Gradient according to the marginal parameters */
-Matrix LinearCombinationEvaluation::parameterGradient(const NumericalPoint & inP) const
+Matrix LinearCombinationEvaluation::parameterGradient(const Point & inP) const
 {
   Matrix result(getParameter().getDimension(), getOutputDimension());
   const UnsignedInteger size = functionsCollection_.getSize();
@@ -264,9 +264,9 @@ Matrix LinearCombinationEvaluation::parameterGradient(const NumericalPoint & inP
 
 
 /* Parameters value accessor */
-NumericalPoint LinearCombinationEvaluation::getParameter() const
+Point LinearCombinationEvaluation::getParameter() const
 {
-  NumericalPoint parameter(0);
+  Point parameter(0);
   const UnsignedInteger size = functionsCollection_.getSize();
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
@@ -276,13 +276,13 @@ NumericalPoint LinearCombinationEvaluation::getParameter() const
 }
 
 
-void LinearCombinationEvaluation::setParameter(const NumericalPoint & parameter)
+void LinearCombinationEvaluation::setParameter(const Point & parameter)
 {
   const UnsignedInteger size = functionsCollection_.getSize();
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    NumericalPoint marginalParameter(functionsCollection_[i].getParameter());
+    Point marginalParameter(functionsCollection_[i].getParameter());
     const UnsignedInteger marginalDimension = marginalParameter.getDimension();
     for (UnsignedInteger j = 0; j < marginalDimension; ++ j)
     {

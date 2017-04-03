@@ -65,8 +65,8 @@ public:
        const String & legend = "");
 
   /** Contructor from 2 data sets */
-  Text(const NumericalPoint & dataX,
-       const NumericalPoint & dataY,
+  Text(const Point & dataX,
+       const Point & dataY,
        const Description & texts,
        const String & textPosition = "top",
        const String & legend = "");

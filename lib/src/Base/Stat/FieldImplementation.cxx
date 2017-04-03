@@ -191,40 +191,40 @@ const NumericalScalar & FieldImplementation::at (const UnsignedInteger i,
 }
 
 /* Data accessors */
-NumericalPoint FieldImplementation::getValueAtIndex(const UnsignedInteger index) const
+Point FieldImplementation::getValueAtIndex(const UnsignedInteger index) const
 {
   return values_[index];
 }
 
 void FieldImplementation::setValueAtIndex(const UnsignedInteger index,
-    const NumericalPoint & val)
+    const Point & val)
 {
   isAlreadyComputedSpatialMean_ = false;
   values_[index] = val;
 }
 
-NumericalPoint FieldImplementation::getValueAtNearestPosition(const NumericalPoint & position) const
+Point FieldImplementation::getValueAtNearestPosition(const Point & position) const
 {
   return values_[mesh_.getNearestVertexIndex(position)];
 }
 
-void FieldImplementation::setValueAtNearestPosition(const NumericalPoint & position,
-    const NumericalPoint & val)
+void FieldImplementation::setValueAtNearestPosition(const Point & position,
+    const Point & val)
 {
   isAlreadyComputedSpatialMean_ = false;
   values_[mesh_.getNearestVertexIndex(position)] = val;
 }
 
 
-NumericalPoint FieldImplementation::getValueAtNearestTime(const NumericalScalar timestamp) const
+Point FieldImplementation::getValueAtNearestTime(const NumericalScalar timestamp) const
 {
-  return getValueAtNearestPosition(NumericalPoint(1, timestamp));
+  return getValueAtNearestPosition(Point(1, timestamp));
 }
 
-void FieldImplementation::setValueAtNearestTime(const NumericalScalar timestamp, const NumericalPoint & val)
+void FieldImplementation::setValueAtNearestTime(const NumericalScalar timestamp, const Point & val)
 {
   isAlreadyComputedSpatialMean_ = false;
-  setValueAtNearestPosition(NumericalPoint(1, timestamp), val);
+  setValueAtNearestPosition(Point(1, timestamp), val);
 }
 
 
@@ -284,7 +284,7 @@ struct FieldSpatialMeanFunctor
 {
   const FieldImplementation & field_;
   NumericalScalar volumeAccumulator_;
-  NumericalPoint accumulator_;
+  Point accumulator_;
 
   FieldSpatialMeanFunctor(const FieldImplementation & field)
     : field_(field), volumeAccumulator_(0.0), accumulator_(field.getDimension(), 0.0) {}
@@ -300,7 +300,7 @@ struct FieldSpatialMeanFunctor
     {
       const NumericalScalar volume = field_.mesh_.computeSimplexVolume(i);
       const Indices simplex(field_.mesh_.getSimplex(i));
-      NumericalPoint meanValue(dimension, 0.0);
+      Point meanValue(dimension, 0.0);
       for (UnsignedInteger j = 0; j <= meshDimension; ++j) meanValue += field_.values_[simplex[j]];
       volumeAccumulator_ += volume;
       accumulator_ += (volume / dimension) * meanValue;
@@ -327,14 +327,14 @@ void FieldImplementation::computeSpatialMean() const
 
 
 /* Compute the spatial mean of the field */
-NumericalPoint FieldImplementation::getSpatialMean() const
+Point FieldImplementation::getSpatialMean() const
 {
   if (!isAlreadyComputedSpatialMean_) computeSpatialMean();
   return spatialMean_;
 }
 
 /* Compute the spatial mean of the field */
-NumericalPoint FieldImplementation::getTemporalMean() const
+Point FieldImplementation::getTemporalMean() const
 {
   if (!mesh_.isRegular() || (mesh_.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: the temporal mean is defined only when the mesh is regular and of dimension 1.";
   return values_.computeMean();
@@ -395,14 +395,14 @@ Graph FieldImplementation::draw() const
     // It must be independent from the values as we want the same size for
     // all the arrows
     const Sample vertices(mesh_.getVertices());
-    const NumericalPoint xMin(vertices.getMin());
-    const NumericalPoint xMax(vertices.getMax());
+    const Point xMin(vertices.getMin());
+    const Point xMax(vertices.getMax());
     const NumericalScalar delta = std::min(xMax[0] - xMin[0], xMax[1] - xMin[1]) * ResourceMap::GetAsNumericalScalar("Field-ArrowRatio");
     const NumericalScalar rho = ResourceMap::GetAsNumericalScalar("Field-ArrowScaling");
     const UnsignedInteger size = values_.getSize();
     Sample normValues(size, 1);
     for (UnsignedInteger i = 0; i < size; ++i)
-      normValues[i][0] = NumericalPoint(values_[i]).norm();
+      normValues[i][0] = Point(values_[i]).norm();
     NumericalScalar normMin = normValues.getMin()[0];
     NumericalScalar normMax = normValues.getMax()[0];
     if (normMax == normMin) normMax = normMin + 1.0;
@@ -413,8 +413,8 @@ Graph FieldImplementation::draw() const
     
     for (UnsignedInteger i = 0; i < values_.getSize(); ++i)
       {
-	const NumericalPoint x(vertices[i]);
-	NumericalPoint v(values_[i]);
+	const Point x(vertices[i]);
+	Point v(values_[i]);
 	NumericalScalar arrowLength = v.norm();
 	const UnsignedInteger paletteIndex = static_cast<UnsignedInteger>((levelsNumber - 0.5) * (arrowLength - normMin) / (normMax - normMin));
 	const String color = palette[paletteIndex];
@@ -424,7 +424,7 @@ Graph FieldImplementation::draw() const
 	if (arrowLength > delta)
 	  {
 	    Sample data(6, 2);
-	    const NumericalPoint u(v / arrowLength);
+	    const Point u(v / arrowLength);
 	    data[0] = x;
 	    data[1] = x + v - u * delta;
 	    data[2][0] = data[1][0] + u[1] * (-0.5 * delta);
@@ -483,7 +483,7 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
     if (interpolate)
     {
       // Compute the iso-values
-      NumericalPoint levels(levelsNumber);
+      Point levels(levelsNumber);
       Description palette(levelsNumber);
       for (UnsignedInteger i = 0; i < levelsNumber; ++i)
       {
@@ -526,9 +526,9 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
           const NumericalScalar level = levels[j];
           if ((level >= v0) && (level <= v2))
           {
-            const NumericalPoint x0(mesh_.getVertex(i0));
-            const NumericalPoint x1(mesh_.getVertex(i1));
-            const NumericalPoint x2(mesh_.getVertex(i2));
+            const Point x0(mesh_.getVertex(i0));
+            const Point x1(mesh_.getVertex(i1));
+            const Point x2(mesh_.getVertex(i2));
             Sample data(2, 2);
             // The first point is on the [x0, x2] segment as v0 <= level <= v2 and v0 < v2
             data[0] = x0 + ((level - v0) / (v2 - v0)) * (x2 - x0);
@@ -551,7 +551,7 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
       // Simple colorbar
       const NumericalScalar minValue = marginalValues.getMin()[0];
       const NumericalScalar maxValue = marginalValues.getMax()[0];
-      const NumericalPoint xMin(mesh_.getVertices().getMin());
+      const Point xMin(mesh_.getVertices().getMin());
       for (SignedInteger i = levelsNumber - 1; i >= 0; --i)
       {
         Cloud point(Sample(1, xMin));
@@ -599,7 +599,7 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
         }
       } // No simplex
       // Simple colorbar
-      const NumericalPoint xMin(mesh_.getVertices().getMin());
+      const Point xMin(mesh_.getVertices().getMin());
       for (SignedInteger i = levelsNumber - 1; i >= 0; --i)
       {
         Cloud point(Sample(1, xMin));

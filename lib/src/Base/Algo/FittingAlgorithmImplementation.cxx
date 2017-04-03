@@ -44,7 +44,7 @@ FittingAlgorithmImplementation * FittingAlgorithmImplementation::clone() const
 /* Perform cross-validation */
 NumericalScalar FittingAlgorithmImplementation::run(const Sample & x,
     const Sample & y,
-    const NumericalPoint & weight,
+    const Point & weight,
     const Basis & basis,
     const Indices & indices) const
 {
@@ -63,7 +63,7 @@ NumericalScalar FittingAlgorithmImplementation::run(const Sample & x,
 
 /* Perform cross-validation */
 NumericalScalar FittingAlgorithmImplementation::run(const Sample & y,
-    const NumericalPoint & weight,
+    const Point & weight,
     const Indices & indices,
     const DesignProxy & proxy) const
 {

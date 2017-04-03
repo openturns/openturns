@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     CovarianceMatrix cov(dimension);
     cov(0, 0) = sigma;
     cov(1, 1) = 2.0 * sigma;
-    Normal whiteNoiseDistribution(NumericalPoint(dimension), cov);
+    Normal whiteNoiseDistribution(Point(dimension), cov);
 
     // Building a process from a White Noise
     WhiteNoise whiteNoise(whiteNoiseDistribution);

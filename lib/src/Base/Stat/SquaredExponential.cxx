@@ -31,21 +31,21 @@ static const Factory<SquaredExponential> Factory_SquaredExponential;
 
 /* Default constructor */
 SquaredExponential::SquaredExponential(const UnsignedInteger spatialDimension)
-  : StationaryCovarianceModel(NumericalPoint(spatialDimension, ResourceMap::GetAsNumericalScalar("SquaredExponential-DefaultTheta")), NumericalPoint(1, 1.0))
+  : StationaryCovarianceModel(Point(spatialDimension, ResourceMap::GetAsNumericalScalar("SquaredExponential-DefaultTheta")), Point(1, 1.0))
 {
   // Nothing to do
 }
 
 /** Parameters constructor */
-SquaredExponential::SquaredExponential(const NumericalPoint & scale)
-  : StationaryCovarianceModel(scale, NumericalPoint(1, 1.0))
+SquaredExponential::SquaredExponential(const Point & scale)
+  : StationaryCovarianceModel(scale, Point(1, 1.0))
 {
   // Nothing to do
 }
 
 /** Parameters constructor */
-SquaredExponential::SquaredExponential(const NumericalPoint & scale,
-                                       const NumericalPoint & amplitude)
+SquaredExponential::SquaredExponential(const Point & scale,
+                                       const Point & amplitude)
   : StationaryCovarianceModel(scale, amplitude)
 {
   if (getDimension() != 1)
@@ -60,23 +60,23 @@ SquaredExponential * SquaredExponential::clone() const
 }
 
 /* Computation of the covariance function */
-NumericalScalar SquaredExponential::computeStandardRepresentative(const NumericalPoint & tau) const
+NumericalScalar SquaredExponential::computeStandardRepresentative(const Point & tau) const
 {
   if (tau.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();
-  NumericalPoint tauOverTheta(spatialDimension_);
+  Point tauOverTheta(spatialDimension_);
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
   const NumericalScalar tauOverTheta2 = tauOverTheta.normSquare();
   return tauOverTheta2 <= SpecFunc::NumericalScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-0.5 * tauOverTheta2);
 }
 
 /* Gradient */
-Matrix SquaredExponential::partialGradient(const NumericalPoint & s,
-    const NumericalPoint & t) const
+Matrix SquaredExponential::partialGradient(const Point & s,
+    const Point & t) const
 {
   if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
   if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
-  const NumericalPoint tau = s - t;
-  NumericalPoint tauOverTheta(spatialDimension_);
+  const Point tau = s - t;
+  Point tauOverTheta(spatialDimension_);
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
   const NumericalScalar norm2 = tauOverTheta.normSquare();
   // For zero norm

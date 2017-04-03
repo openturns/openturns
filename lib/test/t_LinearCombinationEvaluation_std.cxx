@@ -43,11 +43,11 @@ int main(int argc, char *argv[])
     formula[0] = "exp(-x1 * x2 + x3) / cos(1.0 + x2 * x3 - x1)";
     functions[1] = SymbolicFunction(inVar, formula);
     // Second, build the weights
-    NumericalPoint coefficients(2);
+    Point coefficients(2);
     coefficients[0] = 0.3;
     coefficients[1] = 2.9;
     LinearCombinationEvaluation myEvaluation(functions, coefficients);
-    NumericalPoint inPoint(3);
+    Point inPoint(3);
     inPoint[0] = 1.2;
     inPoint[1] = 2.3;
     inPoint[2] = 3.4;

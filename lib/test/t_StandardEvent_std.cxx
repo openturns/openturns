@@ -43,8 +43,8 @@ int main(int argc, char *argv[])
 
     UnsignedInteger dim = myFunction.getInputDimension();
     /* We create a normal distribution point of dimension dim */
-    NumericalPoint mean(dim, 0.0);
-    NumericalPoint sigma(dim, 1.0);
+    Point mean(dim, 0.0);
+    Point sigma(dim, 1.0);
     Normal myDistribution(mean, sigma, IdentityMatrix(dim));
 
     /* We create a 'usual' RandomVector from the Distribution */
@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
     fullprint << "myStandardEvent antecedent realization (as a RandomVector)=" << myStandardEvent.RandomVector::getImplementation()->getAntecedent()->getRealization() << std::endl;
     fullprint << "myStandardEvent realization=" << myStandardEvent.getRealization() << std::endl;
     fullprint << "myStandardEvent antecedent realization=" << myStandardEvent.getImplementation()->getAntecedent()->getRealization() << std::endl;
-    fullprint << "myStandardEvent antecedent distribution cdf=" << myStandardEvent.getImplementation()->getAntecedent()->getDistribution().computeCDF(NumericalPoint(dim, 1.0)) << std::endl;
+    fullprint << "myStandardEvent antecedent distribution cdf=" << myStandardEvent.getImplementation()->getAntecedent()->getDistribution().computeCDF(Point(dim, 1.0)) << std::endl;
     /* We compute a sample of the event */
     fullprint << "myStandardEvent sample=" << myStandardEvent.getSample(10) << std::endl;
 
@@ -97,7 +97,7 @@ int main(int argc, char *argv[])
     fullprint << "Failure probability (StandardEvent)=" << stdEvent.getSample(size).computeMean() << std::endl;
 
     Sample x(3, dim);
-    NumericalPoint point(dim);
+    Point point(dim);
     point[0] = 1.0;
     point[1] = 0.5;
     point[2] = 1.0;
@@ -113,7 +113,7 @@ int main(int argc, char *argv[])
     point[2] = 3.0;
     point[3] = 1.5;
     x[2] = point;
-    NumericalPoint p(3);
+    Point p(3);
     p[0] = 0.0;
     p[1] = 0.3;
     p[2] = 0.325;

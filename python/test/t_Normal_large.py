@@ -13,8 +13,8 @@ try:
 
     # Instanciate one distribution object
     dim = 4
-    meanPoint = NumericalPoint(dim, 1.0)
-    sigma = NumericalPoint(dim, 1.0)
+    meanPoint = Point(dim, 1.0)
+    sigma = Point(dim, 1.0)
     R = CorrelationMatrix(dim)
     for i in range(1, dim):
         R[i, i - 1] = 0.5
@@ -37,7 +37,7 @@ try:
     print("covariance error=%.6f" % (errorCovariance / (dim * dim)))
 
     # Define a point
-    zero = NumericalPoint(dim, 0.0)
+    zero = Point(dim, 0.0)
 
     # Show PDF and CDF of zero point
     zeroPDF = distribution.computePDF(zero)
@@ -49,8 +49,8 @@ try:
     for i in range(dim):
         margin = distribution.getMarginal(i)
         print("margin=", repr(margin))
-        print("margin PDF=%.6f" % margin.computePDF(NumericalPoint(1)))
-        print("margin CDF=%.6f" % margin.computeCDF(NumericalPoint(1)))
+        print("margin PDF=%.6f" % margin.computePDF(Point(1)))
+        print("margin CDF=%.6f" % margin.computeCDF(Point(1)))
         print("margin quantile=", repr(margin.computeQuantile(0.5)))
         print("margin realization=", repr(margin.getRealization()))
 
@@ -61,17 +61,17 @@ try:
     print("indices=", repr(indices))
     margins = distribution.getMarginal(indices)
     print("margins=", repr(margins))
-    print("margins PDF=%.6f" % margins.computePDF(NumericalPoint(2)))
-    print("margins CDF=%.6f" % margins.computeCDF(NumericalPoint(2)))
-    quantile = NumericalPoint(margins.computeQuantile(0.5))
+    print("margins PDF=%.6f" % margins.computePDF(Point(2)))
+    print("margins CDF=%.6f" % margins.computeCDF(Point(2)))
+    quantile = Point(margins.computeQuantile(0.5))
     print("margins quantile=", repr(quantile))
     print("margins CDF(qantile)=%.6f" % margins.computeCDF(quantile))
     print("margins realization=", repr(margins.getRealization()))
 
     # Very big test case for independent components
     dim = 200
-    meanPoint = NumericalPoint(dim, 0.1)
-    sigma = NumericalPoint(dim, 1.0)
+    meanPoint = Point(dim, 0.1)
+    sigma = Point(dim, 1.0)
     distribution = Normal(meanPoint, sigma, IdentityMatrix(dim))
     print("Has independent copula? ", distribution.hasIndependentCopula())
 
@@ -93,7 +93,7 @@ try:
     print("covariance error=%.6f" % (errorCovariance / (dim * dim)))
 
     # Define a point
-    zero = NumericalPoint(dim, 0.0)
+    zero = Point(dim, 0.0)
 
     # Show PDF and CDF of zero point
     zeroPDF = distribution.computePDF(zero)

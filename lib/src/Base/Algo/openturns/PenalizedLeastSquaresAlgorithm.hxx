@@ -57,7 +57,7 @@ public:
   /** Parameters constructor, simple weighted least squares problem with default parameters, spherically penalized for general parameters */
   PenalizedLeastSquaresAlgorithm(const Sample & x,
                                  const Sample & y,
-                                 const NumericalPoint & weight,
+                                 const Point & weight,
                                  const Basis & psi,
                                  const Indices & indices,
                                  const NumericalScalar penalizationFactor = 0.0,
@@ -66,7 +66,7 @@ public:
   /** Parameters constructor, general penalized weighted least squares problem */
   PenalizedLeastSquaresAlgorithm(const Sample & x,
                                  const Sample & y,
-                                 const NumericalPoint & weight,
+                                 const Point & weight,
                                  const Basis & psi,
                                  const Indices & indices,
                                  const NumericalScalar penalizationFactor,

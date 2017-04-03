@@ -145,7 +145,7 @@ void TruncatedNormal::computeRange()
 
 
 /* Get one realization of the distribution */
-NumericalPoint TruncatedNormal::getRealization() const
+Point TruncatedNormal::getRealization() const
 {
   /* Find a better method, e.g.
      Algorithm from John Geweke, "Efficient Simulation from the Multivariate Normal and Student-t Distributions Subject to Linear Constraints and the Evaluation of Constraint Probabilities", communication at the meeting "Computer Science and Statistics: the Twenty-Third Symposium on the Interface", April 22-24, 1991. */
@@ -157,25 +157,25 @@ NumericalPoint TruncatedNormal::getRealization() const
     value = DistFunc::rNormal();
   }
   while ((value < aNorm_) || (value >= bNorm_));
-  return NumericalPoint(1, mu_ + sigma_ * value);
+  return Point(1, mu_ + sigma_ * value);
 }
 
 
 /* Get the DDF of the distribution */
-NumericalPoint TruncatedNormal::computeDDF(const NumericalPoint & point) const
+Point TruncatedNormal::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0];
-  if ((x <= a_) || (x > b_)) return NumericalPoint(1, 0.0);
+  if ((x <= a_) || (x > b_)) return Point(1, 0.0);
   const NumericalScalar iSigma = 1.0 / sigma_;
   const NumericalScalar xNorm = (x - mu_) * iSigma;
-  return NumericalPoint(1, -normalizationFactor_ * xNorm * SpecFunc::ISQRT2PI * std::exp(-0.5 * xNorm * xNorm) * iSigma * iSigma);
+  return Point(1, -normalizationFactor_ * xNorm * SpecFunc::ISQRT2PI * std::exp(-0.5 * xNorm * xNorm) * iSigma * iSigma);
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar TruncatedNormal::computePDF(const NumericalPoint & point) const
+NumericalScalar TruncatedNormal::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -188,7 +188,7 @@ NumericalScalar TruncatedNormal::computePDF(const NumericalPoint & point) const
 
 
 /* Get the logarithm of the PDF of the distribution */
-NumericalScalar TruncatedNormal::computeLogPDF(const NumericalPoint & point) const
+NumericalScalar TruncatedNormal::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -201,7 +201,7 @@ NumericalScalar TruncatedNormal::computeLogPDF(const NumericalPoint & point) con
 
 
 /* Get the CDF of the distribution */
-NumericalScalar TruncatedNormal::computeCDF(const NumericalPoint & point) const
+NumericalScalar TruncatedNormal::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -211,7 +211,7 @@ NumericalScalar TruncatedNormal::computeCDF(const NumericalPoint & point) const
   return normalizationFactor_ * (DistFunc::pNormal((x - mu_) / sigma_) - PhiANorm_);
 }
 
-NumericalScalar TruncatedNormal::computeComplementaryCDF(const NumericalPoint & point) const
+NumericalScalar TruncatedNormal::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -317,12 +317,12 @@ NumericalComplex TruncatedNormal::computeLogCharacteristicFunction(const Numeric
 }
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint TruncatedNormal::computePDFGradient(const NumericalPoint & point) const
+Point TruncatedNormal::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0];
-  NumericalPoint pdfGradient(4, 0.0);
+  Point pdfGradient(4, 0.0);
   if ((x <= a_) || (x > b_)) return pdfGradient;
   const NumericalScalar iSigma = 1.0 / sigma_;
   const NumericalScalar xNorm = (x - mu_) * iSigma;
@@ -337,13 +337,13 @@ NumericalPoint TruncatedNormal::computePDFGradient(const NumericalPoint & point)
 }
 
 /* Get the LogPDFGradient of the distribution */
-NumericalPoint TruncatedNormal::computeLogPDFGradient(const NumericalPoint & point) const
+Point TruncatedNormal::computeLogPDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1)
     throw InvalidArgumentException(HERE) << "In TruncatedNormal::computeLogPDFGradient, the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0];
-  NumericalPoint logPdfGradient(getParameterDimension());
+  Point logPdfGradient(getParameterDimension());
   if (!(x > a_) || !(x < b_)) return logPdfGradient;
   const NumericalScalar iSigma = 1.0 / sigma_;
   const NumericalScalar xNorm = (x - mu_) * iSigma;
@@ -358,12 +358,12 @@ NumericalPoint TruncatedNormal::computeLogPDFGradient(const NumericalPoint & poi
 }
 
 /* Get the CDFGradient of the distribution */
-NumericalPoint TruncatedNormal::computeCDFGradient(const NumericalPoint & point) const
+Point TruncatedNormal::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0];
-  NumericalPoint cdfGradient(4, 0.0);
+  Point cdfGradient(4, 0.0);
   if ((x <= a_) || (x > b_)) return cdfGradient;
   const NumericalScalar iSigma = 1.0 / sigma_;
   const NumericalScalar xNorm = (x - mu_) * iSigma;
@@ -388,36 +388,36 @@ NumericalScalar TruncatedNormal::computeScalarQuantile(const NumericalScalar pro
 /* Compute the mean of the distribution */
 void TruncatedNormal::computeMean() const
 {
-  mean_ = NumericalPoint(1, mu_ - sigma_ * (phiBNorm_ - phiANorm_) * normalizationFactor_);
+  mean_ = Point(1, mu_ - sigma_ * (phiBNorm_ - phiANorm_) * normalizationFactor_);
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint TruncatedNormal::getStandardDeviation() const
+Point TruncatedNormal::getStandardDeviation() const
 {
   const NumericalScalar ratio = (phiBNorm_ - phiANorm_) * normalizationFactor_;
-  return NumericalPoint(1, sigma_ * std::sqrt(1.0 - (bNorm_ * phiBNorm_ - aNorm_ * phiANorm_) * normalizationFactor_ - ratio * ratio));
+  return Point(1, sigma_ * std::sqrt(1.0 - (bNorm_ * phiBNorm_ - aNorm_ * phiANorm_) * normalizationFactor_ - ratio * ratio));
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint TruncatedNormal::getSkewness() const
+Point TruncatedNormal::getSkewness() const
 {
   const NumericalScalar ratio = (phiBNorm_ - phiANorm_) * normalizationFactor_;
   const NumericalScalar ratio2 = ratio * ratio;
   const NumericalScalar crossTerm1 = (bNorm_ * phiBNorm_ - aNorm_ * phiANorm_) * normalizationFactor_;
   const NumericalScalar crossTerm2 = (bNorm_ * bNorm_ * phiBNorm_ - aNorm_ * aNorm_ * phiANorm_) * normalizationFactor_;
-  return NumericalPoint(1, (-2.0 * ratio * ratio2 - 3.0 * ratio * crossTerm1 + ratio - crossTerm2) / std::pow(1.0 - crossTerm1 - ratio2, 1.5));
+  return Point(1, (-2.0 * ratio * ratio2 - 3.0 * ratio * crossTerm1 + ratio - crossTerm2) / std::pow(1.0 - crossTerm1 - ratio2, 1.5));
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint TruncatedNormal::getKurtosis() const
+Point TruncatedNormal::getKurtosis() const
 {
   const NumericalScalar ratio = (phiBNorm_ - phiANorm_) * normalizationFactor_;
   const NumericalScalar ratio2 = ratio * ratio;
   const NumericalScalar crossTerm1 = (bNorm_ * phiBNorm_ - aNorm_ * phiANorm_) * normalizationFactor_;
   const NumericalScalar crossTerm2 = (bNorm_ * bNorm_ * phiBNorm_ - aNorm_ * aNorm_ * phiANorm_) * normalizationFactor_;
   const NumericalScalar crossTerm3 = (bNorm_ * bNorm_ * bNorm_ * phiBNorm_ - aNorm_ * aNorm_ * aNorm_ * phiANorm_) * normalizationFactor_;
-  return NumericalPoint(1, (3.0 - 3.0 * ratio2 * ratio2 - 6.0 * ratio2 * crossTerm1 - 2.0 * ratio * (ratio + 2.0 * crossTerm2) - 3.0 * crossTerm1 - crossTerm3) / std::pow(1.0 - crossTerm1 - ratio2, 2.0));
+  return Point(1, (3.0 - 3.0 * ratio2 * ratio2 - 6.0 * ratio2 * crossTerm1 - 2.0 * ratio * (ratio + 2.0 * crossTerm2) - 3.0 * crossTerm1 - crossTerm3) / std::pow(1.0 - crossTerm1 - ratio2, 2.0));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
@@ -436,9 +436,9 @@ void TruncatedNormal::computeCovariance() const
 }
 
 /* Parameters value accessor */
-NumericalPoint TruncatedNormal::getParameter() const
+Point TruncatedNormal::getParameter() const
 {
-  NumericalPoint point(4);
+  Point point(4);
   point[0] = mu_;
   point[1] = sigma_;
   point[2] = a_;
@@ -446,7 +446,7 @@ NumericalPoint TruncatedNormal::getParameter() const
   return point;
 }
 
-void TruncatedNormal::setParameter(const NumericalPoint & parameter)
+void TruncatedNormal::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 4) throw InvalidArgumentException(HERE) << "Error: expected 4 values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();

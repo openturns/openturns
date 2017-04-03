@@ -138,7 +138,7 @@ protected:
   /** Trend function */
   TrendTransform trend_;
 
-  mutable NumericalPoint stationaryTrendValue_;
+  mutable Point stationaryTrendValue_;
 
   /** Sampling method */
   UnsignedInteger samplingMethod_;

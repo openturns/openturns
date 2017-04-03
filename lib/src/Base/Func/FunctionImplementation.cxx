@@ -350,26 +350,26 @@ void FunctionImplementation::setUseDefaultHessianImplementation(const Bool hessi
 
 
 /* Gradient according to the marginal parameters */
-Matrix FunctionImplementation::parameterGradient(const NumericalPoint & inP) const
+Matrix FunctionImplementation::parameterGradient(const Point & inP) const
 {
   return p_evaluationImplementation_->parameterGradient(inP);
 }
 
 /* Gradient according to the marginal parameters */
-Matrix FunctionImplementation::parameterGradient(const NumericalPoint & inP,
-    const NumericalPoint & parameter)
+Matrix FunctionImplementation::parameterGradient(const Point & inP,
+    const Point & parameter)
 {
   setParameter(parameter);
   return p_evaluationImplementation_->parameterGradient(inP);
 }
 
 /* Parameters value accessor */
-NumericalPoint FunctionImplementation::getParameter() const
+Point FunctionImplementation::getParameter() const
 {
   return p_evaluationImplementation_->getParameter();
 }
 
-void FunctionImplementation::setParameter(const NumericalPoint & parameter)
+void FunctionImplementation::setParameter(const Point & parameter)
 {
   p_evaluationImplementation_->setParameter(parameter);
   p_gradientImplementation_->setParameter(parameter);
@@ -388,19 +388,19 @@ void FunctionImplementation::setParameterDescription(const Description & descrip
 }
 
 /* Operator () */
-NumericalPoint FunctionImplementation::operator() (const NumericalPoint & inP) const
+Point FunctionImplementation::operator() (const Point & inP) const
 {
   return p_evaluationImplementation_->operator()(inP);
 }
 
-NumericalPoint FunctionImplementation::operator() (const NumericalPoint & inP,
-    const NumericalPoint & parameter)
+Point FunctionImplementation::operator() (const Point & inP,
+    const Point & parameter)
 {
   setParameter(parameter);
   return p_evaluationImplementation_->operator()(inP);
 }
 
-Sample FunctionImplementation::operator() (const NumericalPoint & inP,
+Sample FunctionImplementation::operator() (const Point & inP,
     const Sample & parameters)
 {
   return p_evaluationImplementation_->operator()(inP, parameters);
@@ -419,7 +419,7 @@ Field FunctionImplementation::operator() (const Field & inField) const
 }
 
 /* Method gradient() returns the Jacobian transposed matrix of the function at point */
-Matrix FunctionImplementation::gradient(const NumericalPoint & inP) const
+Matrix FunctionImplementation::gradient(const Point & inP) const
 {
   if (useDefaultGradientImplementation_) LOGWARN(OSS() << "You are using a default implementation for the gradient. Be careful, your computation can be severely wrong!");
   // Here we must catch the exceptions raised by functions with no gradient
@@ -443,8 +443,8 @@ Matrix FunctionImplementation::gradient(const NumericalPoint & inP) const
   } // Usual gradient failed
 }
 
-Matrix FunctionImplementation::gradient(const NumericalPoint & inP,
-    const NumericalPoint & parameters)
+Matrix FunctionImplementation::gradient(const Point & inP,
+    const Point & parameters)
 {
   if (useDefaultGradientImplementation_) LOGWARN(OSS() << "You are using a default implementation for the gradient. Be careful, your computation can be severely wrong!");
   setParameter(parameters);
@@ -452,7 +452,7 @@ Matrix FunctionImplementation::gradient(const NumericalPoint & inP,
 }
 
 /* Method hessian() returns the symetric tensor of the function at point */
-SymmetricTensor FunctionImplementation::hessian(const NumericalPoint & inP) const
+SymmetricTensor FunctionImplementation::hessian(const Point & inP) const
 {
   if (useDefaultHessianImplementation_) LOGWARN(OSS() << "You are using a default implementation for the hessian. Be careful, your computation can be severely wrong!");
   // Here we must catch the exceptions raised by functions with no gradient
@@ -476,8 +476,8 @@ SymmetricTensor FunctionImplementation::hessian(const NumericalPoint & inP) cons
   } // Usual gradient failed
 }
 
-SymmetricTensor FunctionImplementation::hessian(const NumericalPoint & inP,
-    const NumericalPoint & parameters)
+SymmetricTensor FunctionImplementation::hessian(const Point & inP,
+    const Point & parameters)
 {
   if (useDefaultHessianImplementation_) LOGWARN(OSS() << "You are using a default implementation for the hessian. Be careful, your computation can be severely wrong!");
   setParameter(parameters);
@@ -556,7 +556,7 @@ Description FunctionImplementation::GetValidOperators()
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
 Graph FunctionImplementation::draw(const UnsignedInteger inputMarginal,
     const UnsignedInteger outputMarginal,
-    const NumericalPoint & centralPoint,
+    const Point & centralPoint,
     const NumericalScalar xMin,
     const NumericalScalar xMax,
     const UnsignedInteger pointNumber,
@@ -569,9 +569,9 @@ Graph FunctionImplementation::draw(const UnsignedInteger inputMarginal,
 Graph FunctionImplementation::draw(const UnsignedInteger firstInputMarginal,
     const UnsignedInteger secondInputMarginal,
     const UnsignedInteger outputMarginal,
-    const NumericalPoint & centralPoint,
-    const NumericalPoint & xMin,
-    const NumericalPoint & xMax,
+    const Point & centralPoint,
+    const Point & xMin,
+    const Point & xMax,
     const Indices & pointNumber,
     const GraphImplementation::LogScale scale) const
 {
@@ -588,8 +588,8 @@ Graph FunctionImplementation::draw(const NumericalScalar xMin,
 }
 
 /* Draw the output of the function with respect to its input when the input dimension is 2 and the output dimension is 1 */
-Graph FunctionImplementation::draw(const NumericalPoint & xMin,
-    const NumericalPoint & xMax,
+Graph FunctionImplementation::draw(const Point & xMin,
+    const Point & xMax,
     const Indices & pointNumber,
     const GraphImplementation::LogScale scale) const
 {

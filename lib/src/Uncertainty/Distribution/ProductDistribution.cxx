@@ -110,13 +110,13 @@ void ProductDistribution::computeRange()
 }
 
 /* Get one realization of the distribution */
-NumericalPoint ProductDistribution::getRealization() const
+Point ProductDistribution::getRealization() const
 {
-  return NumericalPoint(1, left_.getRealization()[0] * right_.getRealization()[0]);
+  return Point(1, left_.getRealization()[0] * right_.getRealization()[0]);
 }
 
 /* Get the PDF of the distribution: PDF(x) = \int_R PDF_left(u) * PDF_right(x / u) * du / |u| */
-NumericalScalar ProductDistribution::computePDF(const NumericalPoint & point) const
+NumericalScalar ProductDistribution::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -220,7 +220,7 @@ NumericalScalar ProductDistribution::computePDFQ1(const NumericalScalar x,
   if ((x < ac) || (x >= bd)) return 0.0;
   GaussKronrod algo;
   const PDFKernelWrapper pdfKernelWrapper(left_, right_, x);
-  const Function pdfKernel(bindMethod<PDFKernelWrapper, NumericalPoint, NumericalPoint>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
+  const Function pdfKernel(bindMethod<PDFKernelWrapper, Point, Point>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
   if (c == 0.0)
   {
     LOGDEBUG("c == 0.0");
@@ -296,7 +296,7 @@ NumericalScalar ProductDistribution::computePDFQ2(const NumericalScalar x,
   if ((x < ad) || (x >= bc)) return 0.0;
   GaussKronrod algo;
   const PDFKernelWrapper pdfKernelWrapper(left_, right_, x);
-  const Function pdfKernel(bindMethod<PDFKernelWrapper, NumericalPoint, NumericalPoint>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
+  const Function pdfKernel(bindMethod<PDFKernelWrapper, Point, Point>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
   if (c == 0.0)
   {
     LOGDEBUG("c == 0.0");
@@ -372,7 +372,7 @@ NumericalScalar ProductDistribution::computePDFQ3(const NumericalScalar x,
   if ((x < bd) || (x >= ac)) return 0.0;
   GaussKronrod algo;
   const PDFKernelWrapper pdfKernelWrapper(left_, right_, x);
-  const Function pdfKernel(bindMethod<PDFKernelWrapper, NumericalPoint, NumericalPoint>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
+  const Function pdfKernel(bindMethod<PDFKernelWrapper, Point, Point>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
   if (d == 0.0)
   {
     LOGDEBUG("d == 0.0");
@@ -448,7 +448,7 @@ NumericalScalar ProductDistribution::computePDFQ4(const NumericalScalar x,
   if ((x < bc) || (x >= ad)) return 0.0;
   GaussKronrod algo;
   const PDFKernelWrapper pdfKernelWrapper(left_, right_, x);
-  const Function pdfKernel(bindMethod<PDFKernelWrapper, NumericalPoint, NumericalPoint>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
+  const Function pdfKernel(bindMethod<PDFKernelWrapper, Point, Point>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
   if (d == 0.0)
   {
     LOGDEBUG("d == 0.0");
@@ -509,7 +509,7 @@ NumericalScalar ProductDistribution::computePDFQ4(const NumericalScalar x,
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar ProductDistribution::computeCDF(const NumericalPoint & point) const
+NumericalScalar ProductDistribution::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -526,12 +526,12 @@ NumericalScalar ProductDistribution::computeCDF(const NumericalPoint & point) co
   const CDFKernelWrapper cdfKernelWrapper(left_, right_, x);
   if (aLeft < 0)
   {
-    const Function cdfKernel(bindMethod<CDFKernelWrapper, NumericalPoint, NumericalPoint>(cdfKernelWrapper, &CDFKernelWrapper::evalComplementary, 1, 1));
+    const Function cdfKernel(bindMethod<CDFKernelWrapper, Point, Point>(cdfKernelWrapper, &CDFKernelWrapper::evalComplementary, 1, 1));
     value += algo.integrate(cdfKernel, Interval(aLeft, std::min(bLeft, 0.0)), cdfEpsilon_)[0];
   }
   if (bLeft >= 0)
   {
-    const Function cdfKernel(bindMethod<CDFKernelWrapper, NumericalPoint, NumericalPoint>(cdfKernelWrapper, &CDFKernelWrapper::eval, 1, 1));
+    const Function cdfKernel(bindMethod<CDFKernelWrapper, Point, Point>(cdfKernelWrapper, &CDFKernelWrapper::eval, 1, 1));
     value += algo.integrate(cdfKernel, Interval(std::max(0.0, aLeft), bLeft), cdfEpsilon_)[0];
   }
   return value;
@@ -552,7 +552,7 @@ NumericalScalar ProductDistribution::computeCDFQ1(const NumericalScalar x,
   LOGDEBUG(OSS() << "ac=" << ac << ", ad=" << ad << ", bc=" << bc << ", bd=" << bd);
   GaussKronrod algo;
   const CDFKernelWrapper cdfKernelWrapper(left_, right_, x);
-  const Function cdfKernel(bindMethod<CDFKernelWrapper, NumericalPoint, NumericalPoint>(cdfKernelWrapper, &CDFKernelWrapper::eval, 1, 1));
+  const Function cdfKernel(bindMethod<CDFKernelWrapper, Point, Point>(cdfKernelWrapper, &CDFKernelWrapper::eval, 1, 1));
   if (c == 0.0)
   {
     LOGDEBUG("c == 0.0");
@@ -641,7 +641,7 @@ NumericalScalar ProductDistribution::computeCDFQ2(const NumericalScalar x,
   LOGDEBUG(OSS() << "ac=" << ac << ", ad=" << ad << ", bc=" << bc << ", bd=" << bd);
   GaussKronrod algo;
   const CDFKernelWrapper cdfKernelWrapper(left_, right_, x);
-  const Function cdfKernel(bindMethod<CDFKernelWrapper, NumericalPoint, NumericalPoint>(cdfKernelWrapper, &CDFKernelWrapper::eval, 1, 1));
+  const Function cdfKernel(bindMethod<CDFKernelWrapper, Point, Point>(cdfKernelWrapper, &CDFKernelWrapper::eval, 1, 1));
   if (c == 0.0)
   {
     LOGDEBUG("c == 0.0");
@@ -730,7 +730,7 @@ NumericalScalar ProductDistribution::computeCDFQ3(const NumericalScalar x,
   LOGDEBUG(OSS() << "ac=" << ac << ", ad=" << ad << ", bc=" << bc << ", bd=" << bd);
   GaussKronrod algo;
   const CDFKernelWrapper cdfKernelWrapper(left_, right_, x);
-  const Function cdfKernel(bindMethod<CDFKernelWrapper, NumericalPoint, NumericalPoint>(cdfKernelWrapper, &CDFKernelWrapper::eval, 1, 1));
+  const Function cdfKernel(bindMethod<CDFKernelWrapper, Point, Point>(cdfKernelWrapper, &CDFKernelWrapper::eval, 1, 1));
   if (d == 0.0)
   {
     LOGDEBUG("d == 0.0");
@@ -819,7 +819,7 @@ NumericalScalar ProductDistribution::computeCDFQ4(const NumericalScalar x,
   LOGDEBUG(OSS() << "ac=" << ac << ", ad=" << ad << ", bc=" << bc << ", bd=" << bd);
   GaussKronrod algo;
   const CDFKernelWrapper cdfKernelWrapper(left_, right_, x);
-  const Function cdfKernel(bindMethod<CDFKernelWrapper, NumericalPoint, NumericalPoint>(cdfKernelWrapper, &CDFKernelWrapper::eval, 1, 1));
+  const Function cdfKernel(bindMethod<CDFKernelWrapper, Point, Point>(cdfKernelWrapper, &CDFKernelWrapper::eval, 1, 1));
   if (d == 0.0)
   {
     LOGDEBUG("d == 0.0");
@@ -913,11 +913,11 @@ NumericalComplex ProductDistribution::computeCharacteristicFunction(const Numeri
   const NumericalScalar bLeft = left_.getRange().getUpperBound()[0];
   GaussKronrod algo;
   const CFKernelWrapper cfKernelWrapper(left_, right_, x);
-  const Function cfKernel(bindMethod<CFKernelWrapper, NumericalPoint, NumericalPoint>(cfKernelWrapper, &CFKernelWrapper::eval, 1, 2));
+  const Function cfKernel(bindMethod<CFKernelWrapper, Point, Point>(cfKernelWrapper, &CFKernelWrapper::eval, 1, 2));
   NumericalScalar negativeError = 0.0;
-  const NumericalPoint negativePart(algo.integrate(cfKernel, Interval(aLeft, muLeft), negativeError));
+  const Point negativePart(algo.integrate(cfKernel, Interval(aLeft, muLeft), negativeError));
   NumericalScalar positiveError = 0.0;
-  const NumericalPoint positivePart(algo.integrate(cfKernel, Interval(muLeft, bLeft), positiveError));
+  const Point positivePart(algo.integrate(cfKernel, Interval(muLeft, bLeft), positiveError));
   NumericalComplex value(negativePart[0] + positivePart[0], negativePart[1] + positivePart[1]);
   return value;
 }
@@ -925,7 +925,7 @@ NumericalComplex ProductDistribution::computeCharacteristicFunction(const Numeri
 /* Compute the mean of the distribution */
 void ProductDistribution::computeMean() const
 {
-  mean_ = NumericalPoint(1, left_.getMean()[0] * right_.getMean()[0]);
+  mean_ = Point(1, left_.getMean()[0] * right_.getMean()[0]);
   isAlreadyComputedMean_ = true;
 }
 
@@ -943,21 +943,21 @@ void ProductDistribution::computeCovariance() const
 
 
 /* Parameters value accessor */
-NumericalPoint ProductDistribution::getParameter() const
+Point ProductDistribution::getParameter() const
 {
-  NumericalPoint point(left_.getParameter());
+  Point point(left_.getParameter());
   point.add(right_.getParameter());
   return point;
 }
 
-void ProductDistribution::setParameter(const NumericalPoint & parameter)
+void ProductDistribution::setParameter(const Point & parameter)
 {
   const UnsignedInteger leftSize = left_.getParameterDimension();
   const UnsignedInteger rightSize = right_.getParameterDimension();
   if (parameter.getSize() != leftSize + rightSize)
     throw InvalidArgumentException(HERE) << "Error: expected " << leftSize + rightSize << " values, got " << parameter.getSize();
-  NumericalPoint newLeftParameters(leftSize);
-  NumericalPoint newRightParameters(rightSize);
+  Point newLeftParameters(leftSize);
+  Point newRightParameters(rightSize);
   std::copy(parameter.begin(), parameter.begin() + leftSize, newLeftParameters.begin());
   std::copy(parameter.begin() + leftSize, parameter.end(), newRightParameters.begin());
   Distribution newLeft(left_);
@@ -1037,11 +1037,11 @@ Bool ProductDistribution::isIntegral() const
 }
 
 /* Get the PDF singularities inside of the range - 1D only */
-NumericalPoint ProductDistribution::getSingularities() const
+Point ProductDistribution::getSingularities() const
 {
-  if (getRange().getLowerBound()[0] >= 0.0) return NumericalPoint(0);
-  if (getRange().getUpperBound()[0] <= 0.0) return NumericalPoint(0);
-  return NumericalPoint(1);
+  if (getRange().getLowerBound()[0] >= 0.0) return Point(0);
+  if (getRange().getUpperBound()[0] <= 0.0) return Point(0);
+  return Point(1);
 }
 
 /* Method save() stores the object through the StorageManager */

@@ -49,7 +49,7 @@ InverseNormalFactory::Implementation InverseNormalFactory::build(const Sample & 
   return buildAsInverseNormal(sample).clone();
 }
 
-InverseNormalFactory::Implementation InverseNormalFactory::build(const NumericalPoint & parameters) const
+InverseNormalFactory::Implementation InverseNormalFactory::build(const Point & parameters) const
 {
   return buildAsInverseNormal(parameters).clone();
 }
@@ -85,7 +85,7 @@ InverseNormal InverseNormalFactory::buildAsInverseNormal(const Sample & sample) 
   return result;
 }
 
-InverseNormal InverseNormalFactory::buildAsInverseNormal(const NumericalPoint & parameters) const
+InverseNormal InverseNormalFactory::buildAsInverseNormal(const Point & parameters) const
 {
   try
   {

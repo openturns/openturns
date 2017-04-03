@@ -53,7 +53,7 @@ Distribution DistributionParametersImplementation::getDistribution() const
 
 
 /* Compute jacobian / native parameters */
-NumericalPoint DistributionParametersImplementation::evaluate() const
+Point DistributionParametersImplementation::evaluate() const
 {
   return operator()(getValues());
 }
@@ -67,27 +67,27 @@ Matrix DistributionParametersImplementation::gradient() const
 
 
 /* Conversion operator */
-NumericalPoint DistributionParametersImplementation::operator () (const NumericalPoint & inP) const
+Point DistributionParametersImplementation::operator () (const Point & inP) const
 {
   throw NotYetImplementedException(HERE) << "In DistributionParametersImplementation::operator() const";
 }
 
 
 /* Conversion from native parameters */
-NumericalPoint DistributionParametersImplementation::inverse(const NumericalPoint & inP) const
+Point DistributionParametersImplementation::inverse(const Point & inP) const
 {
   throw NotYetImplementedException(HERE) << "In DistributionParametersImplementation::inverse const";
 }
 
 
 /* Parameters value and description accessor */
-void DistributionParametersImplementation::setValues(const NumericalPoint & values)
+void DistributionParametersImplementation::setValues(const Point & values)
 {
   throw NotYetImplementedException(HERE) << "In DistributionParametersImplementation::setValues()";
 }
 
 
-NumericalPoint DistributionParametersImplementation::getValues() const
+Point DistributionParametersImplementation::getValues() const
 {
   throw NotYetImplementedException(HERE) << "In DistributionParametersImplementation::getValues() const";
 }

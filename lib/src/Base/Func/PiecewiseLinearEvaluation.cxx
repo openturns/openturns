@@ -44,8 +44,8 @@ PiecewiseLinearEvaluation::PiecewiseLinearEvaluation()
 
 
 /* Parameters constructor */
-PiecewiseLinearEvaluation::PiecewiseLinearEvaluation(const NumericalPoint & locations,
-    const NumericalPoint & values)
+PiecewiseLinearEvaluation::PiecewiseLinearEvaluation(const Point & locations,
+    const Point & values)
   : EvaluationImplementation()
   , locations_(0)
   , values_(0, 0)
@@ -59,7 +59,7 @@ PiecewiseLinearEvaluation::PiecewiseLinearEvaluation(const NumericalPoint & loca
 }
 
 /* Parameters constructor */
-PiecewiseLinearEvaluation::PiecewiseLinearEvaluation(const NumericalPoint & locations,
+PiecewiseLinearEvaluation::PiecewiseLinearEvaluation(const Point & locations,
     const Sample & values)
   : EvaluationImplementation()
   , locations_(0)
@@ -91,7 +91,7 @@ String PiecewiseLinearEvaluation::__str__(const String & offset) const
 
 
 /* Evaluation operator */
-NumericalPoint PiecewiseLinearEvaluation::operator () (const NumericalPoint & inP) const
+Point PiecewiseLinearEvaluation::operator () (const Point & inP) const
 {
   if (inP.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: expected an input point of dimension 1, got dimension=" << inP.getDimension();
   const NumericalScalar x = inP[0];
@@ -118,10 +118,10 @@ NumericalPoint PiecewiseLinearEvaluation::operator () (const NumericalPoint & in
   const NumericalScalar xLeft = locations_[iLeft];
   const NumericalScalar xRight = locations_[iRight];
   const NumericalScalar dx = xLeft - xRight;
-  const NumericalPoint vLeft(values_[iLeft]);
-  const NumericalPoint vRight(values_[iRight]);
+  const Point vLeft(values_[iLeft]);
+  const Point vRight(values_[iRight]);
   const UnsignedInteger dimension = getOutputDimension();
-  NumericalPoint value(dimension);
+  Point value(dimension);
   const NumericalScalar alpha = (x - xRight) / dx;
   const NumericalScalar beta = (xLeft - x) / dx;
   for (UnsignedInteger i = 0; i < dimension; ++i) value[i] = alpha * vLeft[i] + beta * vRight[i];
@@ -129,21 +129,21 @@ NumericalPoint PiecewiseLinearEvaluation::operator () (const NumericalPoint & in
 }
 
 /* Locations accessor */
-NumericalPoint PiecewiseLinearEvaluation::getLocations() const
+Point PiecewiseLinearEvaluation::getLocations() const
 {
   return locations_;
 }
 
-void PiecewiseLinearEvaluation::setLocations(const NumericalPoint & locations)
+void PiecewiseLinearEvaluation::setLocations(const Point & locations)
 {
   const UnsignedInteger size = locations.getSize();
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: there must be at least 2 points to build a piecewise linear interpolation function.";
   if (locations.getSize() != values_.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of locations=" << size << " must match the number of previously set values=" << values_.getSize();
-  Collection< std::pair<NumericalScalar, NumericalPoint> > locationsAndValues(size);
+  Collection< std::pair<NumericalScalar, Point> > locationsAndValues(size);
   for (UnsignedInteger i = 0; i < size; ++i)
-    locationsAndValues[i] = std::pair<NumericalScalar, NumericalPoint>(locations[i], values_[i]);
+    locationsAndValues[i] = std::pair<NumericalScalar, Point>(locations[i], values_[i]);
   std::stable_sort(locationsAndValues.begin(), locationsAndValues.end());
-  locations_ = NumericalPoint(size);
+  locations_ = Point(size);
   for (UnsignedInteger i = 0; i < size; ++i)
     {
       locations_[i] = locationsAndValues[i].first;
@@ -161,7 +161,7 @@ Sample PiecewiseLinearEvaluation::getValues() const
   return values_;
 }
 
-void PiecewiseLinearEvaluation::setValues(const NumericalPoint & values)
+void PiecewiseLinearEvaluation::setValues(const Point & values)
 {
   const UnsignedInteger size = values.getSize();
   if (size != locations_.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of values=" << size << " must match the number of previously set locations=" << locations_.getSize();
@@ -178,7 +178,7 @@ void PiecewiseLinearEvaluation::setValues(const Sample & values)
   values_ = values;
 }
 
-void PiecewiseLinearEvaluation::setLocationsAndValues(const NumericalPoint & locations,
+void PiecewiseLinearEvaluation::setLocationsAndValues(const Point & locations,
     const Sample & values)
 {
   const UnsignedInteger size = locations.getSize();
@@ -193,7 +193,7 @@ void PiecewiseLinearEvaluation::setLocationsAndValues(const NumericalPoint & loc
       data[i][j + 1] = values[i][j];
   }
   data = data.sortAccordingToAComponent(0);
-  locations_ = NumericalPoint(size);
+  locations_ = Point(size);
   values_ = Sample(size, dimension);
   const NumericalScalar step = data[1][0] - data[0][0];
   const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("PiecewiseLinearEvaluation-EpsilonRegular") * std::abs(step);

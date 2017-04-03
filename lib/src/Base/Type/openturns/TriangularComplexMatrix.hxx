@@ -140,8 +140,8 @@ public:
   /** Multiplication with a NumericaScalarCollection (must have consistent dimensions) */
   NumericalComplexCollection operator * (const NumericalScalarCollection & p) const;
 
-  /** Multiplication with a NumericalPoint (must have consistent dimensions) */
-  NumericalComplexCollection operator * (const NumericalPoint & p) const;
+  /** Multiplication with a Point (must have consistent dimensions) */
+  NumericalComplexCollection operator * (const Point & p) const;
 
   /** Division by a NumericalComplex*/
   TriangularComplexMatrix operator / (const NumericalComplex s) const;

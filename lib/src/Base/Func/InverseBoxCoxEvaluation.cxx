@@ -29,7 +29,7 @@ InverseBoxCoxEvaluation::InverseBoxCoxEvaluation()
 }
 
 /* Parameter constructor */
-InverseBoxCoxEvaluation::InverseBoxCoxEvaluation(const NumericalPoint & lambda)
+InverseBoxCoxEvaluation::InverseBoxCoxEvaluation(const Point & lambda)
   : EvaluationImplementation()
   , lambda_(lambda)
   , shift_(lambda.getDimension())
@@ -38,8 +38,8 @@ InverseBoxCoxEvaluation::InverseBoxCoxEvaluation(const NumericalPoint & lambda)
   setOutputDescription(Description::BuildDefault(lambda_.getSize(), "y"));
 }
 
-InverseBoxCoxEvaluation::InverseBoxCoxEvaluation(const NumericalPoint & lambda,
-    const NumericalPoint & shift)
+InverseBoxCoxEvaluation::InverseBoxCoxEvaluation(const Point & lambda,
+    const Point & shift)
   : EvaluationImplementation()
   , lambda_(lambda)
   , shift_(shift)
@@ -85,13 +85,13 @@ String InverseBoxCoxEvaluation::__str__(const String & offset) const
 }
 
 /* Accessor for the lambda */
-NumericalPoint InverseBoxCoxEvaluation::getLambda() const
+Point InverseBoxCoxEvaluation::getLambda() const
 {
   return lambda_;
 }
 
 /* Accessor for the shift */
-NumericalPoint InverseBoxCoxEvaluation::getShift() const
+Point InverseBoxCoxEvaluation::getShift() const
 {
   return shift_;
 }
@@ -145,11 +145,11 @@ Sample InverseBoxCoxEvaluation::operator() (const Sample & inS) const
 
 
 /* Operator () */
-NumericalPoint InverseBoxCoxEvaluation::operator() (const NumericalPoint & inP) const
+Point InverseBoxCoxEvaluation::operator() (const Point & inP) const
 {
   const UnsignedInteger dimension = getInputDimension();
   if (inP.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << dimension << ", got " << inP.getDimension();
-  NumericalPoint result(dimension);
+  Point result(dimension);
 
   // There is no check of positive variables
   // This last one must be done by user or, as the evaluation is used in a stochastic context, in the BoxCoxTransform class

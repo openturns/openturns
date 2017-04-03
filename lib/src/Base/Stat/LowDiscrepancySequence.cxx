@@ -73,7 +73,7 @@ UnsignedInteger LowDiscrepancySequence::getDimension() const
 
 
 /* Generate a sample of pseudo-random vectors of numbers uniformly distributed over [0, 1) */
-NumericalPoint LowDiscrepancySequence::generate() const
+Point LowDiscrepancySequence::generate() const
 {
   return getImplementation()->generate();
 }

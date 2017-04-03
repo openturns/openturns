@@ -3,58 +3,58 @@ Distribution Wishart(V =
 [[ 1 ]], nu = 3)
 Elliptical = false
 Continuous = true
-oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[3.90923]
-oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[1.18011] last=class=NumericalPoint name=Unnamed dimension=1 values=[0.622293]
-mean=class=NumericalPoint name=Unnamed dimension=1 values=[3.00811]
+oneRealization=class=Point name=Unnamed dimension=1 values=[3.90923]
+oneSample first=class=Point name=Unnamed dimension=1 values=[1.18011] last=class=Point name=Unnamed dimension=1 values=[0.622293]
+mean=class=Point name=Unnamed dimension=1 values=[3.00811]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[6.19866]
-skewness=class=NumericalPoint name=Unnamed dimension=1 values=[1.68374]
-kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[7.27045]
+skewness=class=Point name=Unnamed dimension=1 values=[1.68374]
+kurtosis=class=Point name=Unnamed dimension=1 values=[7.27045]
 Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
-Point= class=NumericalPoint name=Unnamed dimension=1 values=[9.1]
-ddf     =class=NumericalPoint name=Unnamed dimension=1 values=[-0.00565984]
-ddf (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[-0.00565984]
+Point= class=Point name=Unnamed dimension=1 values=[9.1]
+ddf     =class=Point name=Unnamed dimension=1 values=[-0.00565984]
+ddf (FD)=class=Point name=Unnamed dimension=1 values=[-0.00565984]
 log pdf=-4.3648
 pdf     =0.0127172
 pdf (FD)=0.0127172
 cdf=0.97201
 ccdf=0.0279905
 survival=0.0279905
-Inverse survival=class=NumericalPoint name=Unnamed dimension=1 values=[0.351846]
+Inverse survival=class=Point name=Unnamed dimension=1 values=[0.351846]
 Survival(inverse survival)=0.95
-quantile=class=NumericalPoint name=Unnamed dimension=1 values=[7.81473]
+quantile=class=Point name=Unnamed dimension=1 values=[7.81473]
 cdf(quantile)=0.95
-quantile (tail)=class=NumericalPoint name=Unnamed dimension=1 values=[0.351846]
+quantile (tail)=class=Point name=Unnamed dimension=1 values=[0.351846]
 cdf (tail)=0.95
-pdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[-0.00474156,-0.144349]
-cdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[-0.0581774,-1.33806]
-Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.00315933] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[7.81683] finite lower bound=[1] finite upper bound=[1]
+pdf gradient     =class=Point name=Unnamed dimension=2 values=[-0.00474156,-0.144349]
+cdf gradient     =class=Point name=Unnamed dimension=2 values=[-0.0581774,-1.33806]
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.00315933] upper bound=class=Point name=Unnamed dimension=1 values=[7.81683] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
 Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Wishart(V = 
 [[ 1 ]], nu = 3)) gradientImplementation=MinimumVolumeLevelSetGradient(Wishart(V = 
-[[ 1 ]], nu = 3)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=NumericalPoint name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Wishart(V = 
+[[ 1 ]], nu = 3)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Wishart(V = 
 [[ 1 ]], nu = 3)) level=3.79922
 beta=0.0223883
-Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.215795] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[9.3484] finite lower bound=[1] finite upper bound=[1]
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.215795] upper bound=class=Point name=Unnamed dimension=1 values=[9.3484] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[7.81473] finite lower bound=[1] finite upper bound=[1]
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0] upper bound=class=Point name=Unnamed dimension=1 values=[7.81473] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.351846] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[59.8961] finite lower bound=[1] finite upper bound=[1]
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.351846] upper bound=class=Point name=Unnamed dimension=1 values=[59.8961] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-mean=class=NumericalPoint name=Unnamed dimension=1 values=[3]
-standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[2.44949]
-skewness=class=NumericalPoint name=Unnamed dimension=1 values=[1.63299]
-kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[7]
+mean=class=Point name=Unnamed dimension=1 values=[3]
+standard deviation=class=Point name=Unnamed dimension=1 values=[2.44949]
+skewness=class=Point name=Unnamed dimension=1 values=[1.63299]
+kurtosis=class=Point name=Unnamed dimension=1 values=[7]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[6]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 parameters=[[],[]]
-standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
-standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[3]
-standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[15]
-standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[105]
-standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[945]
-standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[10395]
+standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[3]
+standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[15]
+standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[105]
+standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[945]
+standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[10395]
 Standard representative=Wishart(V = 
 [[ 1 ]], nu = 3)

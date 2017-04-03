@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
     formula[1] = "cos(x1+x2)";
     formula[2] = "(x2+1)*exp(x1-2*x2)";
     Function myFunc(input, output, formula);
-    NumericalPoint center(myFunc.getInputDimension());
+    Point center(myFunc.getInputDimension());
     for(UnsignedInteger i = 0; i < center.getDimension(); i++)
     {
       center[i] = 1.0 + i;
@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
     fullprint << "responseSurface=" << responseSurface << std::endl;
     fullprint << "myFunc(" << center << ")=" << myFunc(center) << std::endl;
     fullprint << "responseSurface(" << center << ")=" << responseSurface(center) << std::endl;
-    NumericalPoint in(center);
+    Point in(center);
     in[0] += eps;
     in[1] -= eps / 2;
     fullprint << "myFunc(" << in << ")=" << myFunc(in) << std::endl;

@@ -67,33 +67,33 @@ Bool ParametrizedDistribution::equals(const DistributionImplementation & other) 
 }
 
 /* Get the DDF of the distribution */
-NumericalPoint ParametrizedDistribution::computeDDF(const NumericalPoint & point) const
+Point ParametrizedDistribution::computeDDF(const Point & point) const
 {
   return distribution_.computeDDF(point);
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar ParametrizedDistribution::computePDF(const NumericalPoint & point) const
+NumericalScalar ParametrizedDistribution::computePDF(const Point & point) const
 {
   return distribution_.computePDF(point);
 }
 
 
-NumericalScalar ParametrizedDistribution::computeLogPDF(const NumericalPoint & point) const
+NumericalScalar ParametrizedDistribution::computeLogPDF(const Point & point) const
 {
   return distribution_.computeLogPDF(point);
 }
 
 
 /* Get the CDF of the distribution */
-NumericalScalar ParametrizedDistribution::computeCDF(const NumericalPoint & point) const
+NumericalScalar ParametrizedDistribution::computeCDF(const Point & point) const
 {
   return distribution_.computeCDF(point);
 }
 
 
-NumericalScalar ParametrizedDistribution::computeComplementaryCDF(const NumericalPoint & point) const
+NumericalScalar ParametrizedDistribution::computeComplementaryCDF(const Point & point) const
 {
   return distribution_.computeComplementaryCDF(point);
 }
@@ -112,7 +112,7 @@ NumericalComplex ParametrizedDistribution::computeLogCharacteristicFunction(cons
 
 
 /* Generic implementation of the quantile computation */
-NumericalPoint ParametrizedDistribution::computeQuantile(const NumericalScalar prob,
+Point ParametrizedDistribution::computeQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
   return distribution_.computeQuantile(prob, tail);
@@ -143,7 +143,7 @@ LevelSet ParametrizedDistribution::computeMinimumVolumeLevelSetWithThreshold(con
 }
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint ParametrizedDistribution::computePDFGradient(const NumericalPoint & point) const
+Point ParametrizedDistribution::computePDFGradient(const Point & point) const
 {
   Matrix gradient(distributionParameters_.gradient());
   return gradient * distribution_.computePDFGradient(point);
@@ -151,19 +151,19 @@ NumericalPoint ParametrizedDistribution::computePDFGradient(const NumericalPoint
 
 
 /* Get the CDFGradient of the distribution */
-NumericalPoint ParametrizedDistribution::computeCDFGradient(const NumericalPoint & point) const
+Point ParametrizedDistribution::computeCDFGradient(const Point & point) const
 {
   Matrix gradient(distributionParameters_.gradient());
   return gradient * distribution_.computeCDFGradient(point);
 }
 
 
-NumericalPoint ParametrizedDistribution::getParameter() const
+Point ParametrizedDistribution::getParameter() const
 {
   return distributionParameters_.inverse(distribution_.getParameter());
 }
 
-void ParametrizedDistribution::setParameter(const NumericalPoint & parameter)
+void ParametrizedDistribution::setParameter(const Point & parameter)
 {
   distribution_.setParameter(distributionParameters_(parameter));
 }
@@ -205,31 +205,31 @@ NumericalScalar ParametrizedDistribution::getRoughness() const
 }
 
 /* Get the mean of the distribution */
-NumericalPoint ParametrizedDistribution::getMean() const
+Point ParametrizedDistribution::getMean() const
 {
   return distribution_.getMean();
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint ParametrizedDistribution::getStandardDeviation() const
+Point ParametrizedDistribution::getStandardDeviation() const
 {
   return distribution_.getStandardDeviation();
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint ParametrizedDistribution::getSkewness() const
+Point ParametrizedDistribution::getSkewness() const
 {
   return distribution_.getSkewness();
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint ParametrizedDistribution::getKurtosis() const
+Point ParametrizedDistribution::getKurtosis() const
 {
   return distribution_.getKurtosis();
 }
 
 /* Get the raw moments of the standardized distribution */
-NumericalPoint ParametrizedDistribution::getStandardMoment(const UnsignedInteger n) const
+Point ParametrizedDistribution::getStandardMoment(const UnsignedInteger n) const
 {
   return distribution_.getStandardMoment(n);
 }

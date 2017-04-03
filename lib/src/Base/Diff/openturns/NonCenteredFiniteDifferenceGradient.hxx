@@ -52,7 +52,7 @@ public:
   NonCenteredFiniteDifferenceGradient();
 
   /** Parameter constructor */
-  NonCenteredFiniteDifferenceGradient(const NumericalPoint & epsilon,
+  NonCenteredFiniteDifferenceGradient(const Point & epsilon,
                                       const EvaluationPointer & p_evaluation);
 
   /** Second parameter constructor */
@@ -78,7 +78,7 @@ public:
    * @param in The point where the gradient is computed
    * @result A matrix constructed with the dF_i/dx_j values (Jacobian transposed)
    */
-  virtual Matrix gradient(const NumericalPoint & inP) const;
+  virtual Matrix gradient(const Point & inP) const;
 
 protected:
 

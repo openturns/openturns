@@ -30,7 +30,7 @@ inline NumericalScalar clean(NumericalScalar in)
   return in;
 }
 
-inline NumericalPoint clean(NumericalPoint in)
+inline Point clean(Point in)
 {
   UnsignedInteger dim = in.getDimension();
   for(UnsignedInteger i = 0; i < dim; i++)
@@ -50,8 +50,8 @@ int main(int argc, char *argv[])
     for (UnsignedInteger dim = 1; dim <= 4; dim++)
     {
       fullprint << "\n*** Case " << dim << " ***\n" << std::endl;
-      NumericalPoint meanPoint(dim, 0.0);
-      NumericalPoint sigma(dim);
+      Point meanPoint(dim, 0.0);
+      Point sigma(dim);
       for (UnsignedInteger i = 0; i < dim; i++)
       {
         sigma[i] = i + 1.0;
@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
       fullprint << "Continuous = " << (distribution.isContinuous() ? "true" : "false") << std::endl;
 
       // Test for realization of distribution
-      NumericalPoint oneRealization = distribution.getRealization();
+      Point oneRealization = distribution.getRealization();
       fullprint << "oneRealization=" << oneRealization << std::endl;
 
       // Test for sampling
@@ -105,14 +105,14 @@ int main(int argc, char *argv[])
       }
 
       // Define a point
-      NumericalPoint point( distribution.getDimension(), 0.5 );
+      Point point( distribution.getDimension(), 0.5 );
       fullprint << "Point= " << point << std::endl;
 
       // Show PDF and CDF of point
       NumericalScalar eps = 1e-4;
-      NumericalPoint DDF = distribution.computeDDF( point );
+      Point DDF = distribution.computeDDF( point );
       fullprint << "ddf     =" << clean(DDF) << std::endl;
-      NumericalPoint ddfFD(distribution.ContinuousDistribution::computeDDF(point));
+      Point ddfFD(distribution.ContinuousDistribution::computeDDF(point));
       fullprint << "ddf (FD)=" << clean(ddfFD) << std::endl;
       NumericalScalar LPDF = distribution.computeLogPDF( point );
       fullprint << "log pdf=" << LPDF << std::endl;
@@ -120,7 +120,7 @@ int main(int argc, char *argv[])
       fullprint << "pdf     =" << PDF << std::endl;
       if (dim == 1)
       {
-        fullprint << "pdf (FD)=" << clean((distribution.computeCDF( point + NumericalPoint(1, eps) ) - distribution.computeCDF( point  + NumericalPoint(1, -eps) )) / (2.0 * eps)) << std::endl;
+        fullprint << "pdf (FD)=" << clean((distribution.computeCDF( point + Point(1, eps) ) - distribution.computeCDF( point  + Point(1, -eps) )) / (2.0 * eps)) << std::endl;
       }
       NumericalScalar CDF = distribution.computeCDF( point );
       fullprint << "cdf=" << CDF << std::endl;
@@ -131,16 +131,16 @@ int main(int argc, char *argv[])
       }
       NumericalScalar Survival = distribution.computeSurvivalFunction( point );
       fullprint << "survival=" << Survival << std::endl;
-      NumericalPoint InverseSurvival = distribution.computeInverseSurvivalFunction(0.95);
+      Point InverseSurvival = distribution.computeInverseSurvivalFunction(0.95);
       fullprint << "Inverse survival=" << InverseSurvival << std::endl;
       fullprint << "Survival(inverse survival)=" << distribution.computeSurvivalFunction(InverseSurvival) << std::endl;
       NumericalComplex CF = distribution.computeCharacteristicFunction( point );
       fullprint << "characteristic function=" << CF << std::endl;
       NumericalComplex LCF = distribution.computeLogCharacteristicFunction( point );
       fullprint << "log characteristic function=" << LCF << std::endl;
-      NumericalPoint PDFgr = distribution.computePDFGradient( point );
+      Point PDFgr = distribution.computePDFGradient( point );
       fullprint << "pdf gradient     =" << clean(PDFgr) << std::endl;
-      NumericalPoint PDFgrFD(2 * dim);
+      Point PDFgrFD(2 * dim);
       for (UnsignedInteger i = 0; i < dim; i++)
       {
         meanPoint[i] += eps;
@@ -160,9 +160,9 @@ int main(int argc, char *argv[])
         sigma[i] += eps;
       }
       fullprint << "pdf gradient (FD)=" << clean(PDFgrFD) << std::endl;
-      NumericalPoint CDFgr = distribution.computeCDFGradient( point );
+      Point CDFgr = distribution.computeCDFGradient( point );
       fullprint << "cdf gradient     =" << CDFgr << std::endl;
-      NumericalPoint quantile = distribution.computeQuantile( 0.95 );
+      Point quantile = distribution.computeQuantile( 0.95 );
       int oldPrecision = PlatformInfo::GetNumericalPrecision();
       PlatformInfo::SetNumericalPrecision( 4 );
       fullprint << "quantile=" << quantile << std::endl;
@@ -185,13 +185,13 @@ int main(int argc, char *argv[])
         fullprint << "Unilateral confidence interval (upper tail)=" << distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, true, beta) << std::endl;
         fullprint << "beta=" << beta << std::endl;
       }
-      NumericalPoint mean = distribution.getMean();
+      Point mean = distribution.getMean();
       fullprint << "mean=" << mean << std::endl;
-      NumericalPoint standardDeviation = distribution.getStandardDeviation();
+      Point standardDeviation = distribution.getStandardDeviation();
       fullprint << "standard deviation=" << standardDeviation << std::endl;
-      NumericalPoint skewness = distribution.getSkewness();
+      Point skewness = distribution.getSkewness();
       fullprint << "skewness=" << skewness << std::endl;
-      NumericalPoint kurtosis = distribution.getKurtosis();
+      Point kurtosis = distribution.getKurtosis();
       fullprint << "kurtosis=" << kurtosis << std::endl;
       CovarianceMatrix covariance = distribution.getCovariance();
       fullprint << "covariance=" << covariance << std::endl;
@@ -201,7 +201,7 @@ int main(int argc, char *argv[])
       fullprint << "spearman=" << spearman << std::endl;
       CovarianceMatrix kendall = distribution.getKendallTau();
       fullprint << "kendall=" << kendall << std::endl;
-      Normal::NumericalPointWithDescriptionCollection parameters = distribution.getParametersCollection();
+      Normal::PointWithDescriptionCollection parameters = distribution.getParametersCollection();
       fullprint << "parameters=" << parameters << std::endl;
       for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
       fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
@@ -225,8 +225,8 @@ int main(int argc, char *argv[])
       {
         Distribution margin(distribution.getMarginal(i));
         fullprint << "margin=" << margin << std::endl;
-        fullprint << "margin PDF=" << margin.computePDF(NumericalPoint(1, 0.5)) << std::endl;
-        fullprint << "margin CDF=" << margin.computeCDF(NumericalPoint(1, 0.5)) << std::endl;
+        fullprint << "margin PDF=" << margin.computePDF(Point(1, 0.5)) << std::endl;
+        fullprint << "margin CDF=" << margin.computeCDF(Point(1, 0.5)) << std::endl;
         fullprint << "margin quantile=" << margin.computeQuantile(0.95) << std::endl;
         fullprint << "margin realization=" << margin.getRealization() << std::endl;
       }
@@ -239,8 +239,8 @@ int main(int argc, char *argv[])
         fullprint << "indices=" << indices << std::endl;
         Distribution margins(distribution.getMarginal(indices));
         fullprint << "margins=" << margins << std::endl;
-        fullprint << "margins PDF=" << margins.computePDF(NumericalPoint(2, 0.5)) << std::endl;
-        fullprint << "margins CDF=" << margins.computeCDF(NumericalPoint(2, 0.5)) << std::endl;
+        fullprint << "margins PDF=" << margins.computePDF(Point(2, 0.5)) << std::endl;
+        fullprint << "margins CDF=" << margins.computeCDF(Point(2, 0.5)) << std::endl;
         quantile = margins.computeQuantile(0.95);
         fullprint << "margins quantile=" << quantile << std::endl;
         fullprint << "margins CDF(quantile)=" << margins.computeCDF(quantile) << std::endl;

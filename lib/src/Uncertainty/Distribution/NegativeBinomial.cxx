@@ -98,14 +98,14 @@ NegativeBinomial * NegativeBinomial::clone() const
 }
 
 /* Get one realization of the distribution */
-NumericalPoint NegativeBinomial::getRealization() const
+Point NegativeBinomial::getRealization() const
 {
-  return NumericalPoint(1, DistFunc::rPoisson(DistFunc::rGamma(r_) * p_ / (1.0 - p_)));
+  return Point(1, DistFunc::rPoisson(DistFunc::rGamma(r_) * p_ / (1.0 - p_)));
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar NegativeBinomial::computePDF(const NumericalPoint & point) const
+NumericalScalar NegativeBinomial::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -116,7 +116,7 @@ NumericalScalar NegativeBinomial::computePDF(const NumericalPoint & point) const
 
 
 /* Get the CDF of the distribution */
-NumericalScalar NegativeBinomial::computeCDF(const NumericalPoint & point) const
+NumericalScalar NegativeBinomial::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -126,7 +126,7 @@ NumericalScalar NegativeBinomial::computeCDF(const NumericalPoint & point) const
   return DistFunc::pBeta(floor(k) + 1, r_, p_, true);
 }
 
-NumericalScalar NegativeBinomial::computeComplementaryCDF(const NumericalPoint & point) const
+NumericalScalar NegativeBinomial::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -138,50 +138,50 @@ NumericalScalar NegativeBinomial::computeComplementaryCDF(const NumericalPoint &
 }
 
 /* Get the PDF gradient of the distribution */
-NumericalPoint NegativeBinomial::computePDFGradient(const NumericalPoint & point) const
+Point NegativeBinomial::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar k = point[0];
-  NumericalPoint pdfGradient(1, 0.0);
+  Point pdfGradient(1, 0.0);
   if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return pdfGradient;
-  throw NotYetImplementedException(HERE) << "In NegativeBinomial::computePDFGradient(const NumericalPoint & point) const";
+  throw NotYetImplementedException(HERE) << "In NegativeBinomial::computePDFGradient(const Point & point) const";
 }
 
 
 /* Get the CDF gradient of the distribution */
-NumericalPoint NegativeBinomial::computeCDFGradient(const NumericalPoint & point) const
+Point NegativeBinomial::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar k = point[0];
-  if (k < -supportEpsilon_) return NumericalPoint(1, 0.0);
-  throw NotYetImplementedException(HERE) << "In NegativeBinomial::computeCDFGradient(const NumericalPoint & point) const";
+  if (k < -supportEpsilon_) return Point(1, 0.0);
+  throw NotYetImplementedException(HERE) << "In NegativeBinomial::computeCDFGradient(const Point & point) const";
 }
 
 /* Compute the mean of the distribution */
 void NegativeBinomial::computeMean() const
 {
-  mean_ = NumericalPoint(1, r_ * p_ / (1.0 - p_));
+  mean_ = Point(1, r_ * p_ / (1.0 - p_));
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint NegativeBinomial::getStandardDeviation() const
+Point NegativeBinomial::getStandardDeviation() const
 {
-  return NumericalPoint(1, std::sqrt(r_ * p_) / (1.0 - p_));
+  return Point(1, std::sqrt(r_ * p_) / (1.0 - p_));
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint NegativeBinomial::getSkewness() const
+Point NegativeBinomial::getSkewness() const
 {
-  return NumericalPoint(1, (1.0 + p_) / std::sqrt(p_ * r_));
+  return Point(1, (1.0 + p_) / std::sqrt(p_ * r_));
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint NegativeBinomial::getKurtosis() const
+Point NegativeBinomial::getKurtosis() const
 {
-  return NumericalPoint(1, 3.0 + 6.0 / r_ + std::pow(1.0 - p_, 2.0) / (p_ * r_));
+  return Point(1, 3.0 + 6.0 / r_ + std::pow(1.0 - p_, 2.0) / (p_ * r_));
 }
 
 /* Compute the covariance of the distribution */
@@ -199,20 +199,20 @@ Sample NegativeBinomial::getSupport(const Interval & interval) const
   const UnsignedInteger kMin = static_cast< UnsignedInteger > (std::max(ceil(interval.getLowerBound()[0]), 0.0));
   const UnsignedInteger kMax = static_cast< UnsignedInteger > (std::min(floor(interval.getUpperBound()[0]), getRange().getUpperBound()[0]));
   Sample result(0, 1);
-  for (UnsignedInteger k = kMin; k <= kMax; ++k) result.add(NumericalPoint(1, k));
+  for (UnsignedInteger k = kMin; k <= kMax; ++k) result.add(Point(1, k));
   return result;
 }
 
 /* Parameters value accessor */
-NumericalPoint NegativeBinomial::getParameter() const
+Point NegativeBinomial::getParameter() const
 {
-  NumericalPoint point(2);
+  Point point(2);
   point[0] = r_;
   point[1] = p_;
   return point;
 }
 
-void NegativeBinomial::setParameter(const NumericalPoint & parameter)
+void NegativeBinomial::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();
@@ -270,8 +270,8 @@ NumericalScalar NegativeBinomial::getR() const
 /* Compute the numerical range of the distribution given the parameters values */
 void NegativeBinomial::computeRange()
 {
-  const NumericalPoint lowerBound(1, 0.0);
-  const NumericalPoint upperBound(computeUpperBound());
+  const Point lowerBound(1, 0.0);
+  const Point upperBound(computeUpperBound());
   const Interval::BoolCollection finiteLowerBound(1, true);
   const Interval::BoolCollection finiteUpperBound(1, false);
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));

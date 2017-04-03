@@ -67,7 +67,7 @@ void SequentialStrategy::computeInitialBasis()
 }
 
 /* Update the basis for the next iteration of approximation */
-void SequentialStrategy::updateBasis(const NumericalPoint & alpha_k,
+void SequentialStrategy::updateBasis(const Point & alpha_k,
                                      const NumericalScalar residual,
                                      const NumericalScalar relativeError)
 {

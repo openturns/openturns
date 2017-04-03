@@ -41,7 +41,7 @@ LinearModel::LinearModel()
 }
 
 /* Standard constructor */
-LinearModel::LinearModel(const NumericalPoint & vectorR,
+LinearModel::LinearModel(const Point & vectorR,
                          const Interval & intervals,
                          const NumericalScalarCollection & pValuesOfR)
   : PersistentObject(),
@@ -52,8 +52,8 @@ LinearModel::LinearModel(const NumericalPoint & vectorR,
   // Nothing to do
 }
 
-/* Constructor from NumericalPoint */
-LinearModel::LinearModel(const NumericalPoint & vectorR)
+/* Constructor from Point */
+LinearModel::LinearModel(const Point & vectorR)
   : PersistentObject()
   , regression_(vectorR)
   , confidenceIntervals_(vectorR, vectorR)
@@ -88,7 +88,7 @@ String LinearModel::__str__(const String & offset) const
 }
 
 /* get vector, get intervals, get p-Values*/
-NumericalPoint LinearModel::getRegression() const
+Point LinearModel::getRegression() const
 {
   return regression_;
 }
@@ -110,7 +110,7 @@ Sample LinearModel::getPredicted(const Sample & predictor) const
   UnsignedInteger size = predictor.getSize();
   Sample predicted(size, 1);
   UnsignedInteger dimension = predictor.getDimension();
-  NumericalPoint linear(dimension);
+  Point linear(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i) linear[i] = regression_[i + 1];
   for (UnsignedInteger i = 0; i < size; ++i) predicted[i][0] = dot(linear, predictor[i]) + regression_[0];
   return predicted;
@@ -125,7 +125,7 @@ Sample LinearModel::getResidual(const Sample & predictor,
   if (measured.getSize() != size) throw InvalidArgumentException(HERE) << "Error: measured must have the same size as predictor";
   Sample residual(size, 1);
   UnsignedInteger dimension = predictor.getDimension();
-  NumericalPoint linear(dimension);
+  Point linear(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i) linear[i] = regression_[i + 1];
   for (UnsignedInteger i = 0; i < size; ++i) residual[i][0] = measured[i][0] - dot(linear, predictor[i]) - regression_[0];
   return residual;

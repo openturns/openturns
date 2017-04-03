@@ -55,8 +55,8 @@ int main(int argc, char *argv[])
       Function myFunction(inputVar, Description(1, "y"), Description(1, "0"));
 
       /* We create a normal distribution point of dimension 1 */
-      NumericalPoint mean(dim, 0.0);
-      NumericalPoint sigma(dim, 1.0);
+      Point mean(dim, 0.0);
+      Point sigma(dim, 1.0);
       IdentityMatrix R(dim);
       Normal myDistribution(mean, sigma, R);
 
@@ -69,24 +69,24 @@ int main(int argc, char *argv[])
       /* We create a StandardEvent from this RandomVector */
       StandardEvent myStandardEvent(output, Less(), 2.0);
 
-      Normal std(NumericalPoint(1, 0.0), NumericalPoint(1, 1.0), IdentityMatrix(1));
+      Normal std(Point(1, 0.0), Point(1, 1.0), IdentityMatrix(1));
 
-      NumericalPoint beta(3);
+      Point beta(3);
       beta[0] = round(-std.computeQuantile(1e-3)[0]);
       beta[1] = round(-std.computeQuantile(1e-5)[0]);
       beta[2] = round(-std.computeQuantile(1e-7)[0]);
 
-      NumericalPoint importanceLevel(3);
+      Point importanceLevel(3);
       importanceLevel[0] = 0.01;
       importanceLevel[1] = 0.05;
       importanceLevel[2] = 0.10;
 
-      NumericalPoint accuracyLevel(3);
+      Point accuracyLevel(3);
       accuracyLevel[0] = 1.5;
       accuracyLevel[1] = 2.0;
       accuracyLevel[2] = 4.0;
 
-      NumericalPoint confidenceLevel(3);
+      Point confidenceLevel(3);
       confidenceLevel[0] = 0.90;
       confidenceLevel[1] = 0.95;
       confidenceLevel[2] = 0.99;
@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
       {
 
         /* We create the design point */
-        NumericalPoint designPoint(dim, 0.0);
+        Point designPoint(dim, 0.0);
         designPoint[0] = beta[indexBeta];
 
         /* loop on the importance level epsilon */
@@ -161,7 +161,7 @@ int main(int argc, char *argv[])
       {
 
         /* We create the design point */
-        NumericalPoint designPoint(dim, 0.0);
+        Point designPoint(dim, 0.0);
         designPoint[0] = beta[indexBeta];
 
         /* loop on the importance level epsilon */

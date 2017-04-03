@@ -36,8 +36,8 @@ class OT_API DistributionFactoryImplementation
   CLASSNAME;
 public:
 
-  typedef Collection<NumericalPoint>                 NumericalPointCollection;
-  typedef Collection<NumericalPointWithDescription>  NumericalPointWithDescriptionCollection;
+  typedef Collection<Point>                 PointCollection;
+  typedef Collection<PointWithDescription>  PointWithDescriptionCollection;
   typedef DistributionImplementation::Implementation Implementation;
 
   /** Default constructor */
@@ -57,7 +57,7 @@ public:
   virtual Implementation build(const Sample & sample) const;
 
   /** Build a distribution based on a set of parameters */
-  virtual Implementation build(const NumericalPoint & parameters) const;
+  virtual Implementation build(const Point & parameters) const;
 
   /** Build a distribution using its default constructor */
   virtual Implementation build() const;

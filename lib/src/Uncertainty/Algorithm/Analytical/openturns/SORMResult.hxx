@@ -40,7 +40,7 @@ class OT_API SORMResult:
 public:
 
   /** Standard constructor */
-  SORMResult(const NumericalPoint & standardSpaceDesignPoint,
+  SORMResult(const Point & standardSpaceDesignPoint,
              const Event & limitStateVariable,
              const Bool isStandardPointOriginInFailureSpace);
 
@@ -69,7 +69,7 @@ public:
   NumericalScalar getGeneralisedReliabilityIndexTvedt() const;
 
   /** SortedCurvatures accessor */
-  NumericalPoint getSortedCurvatures() const;
+  Point getSortedCurvatures() const;
 
   /** String converter */
   String __repr__() const;
@@ -91,8 +91,8 @@ private:
   /** type of gradients and hessian attributes are due to the constraint : limitStateVariable is scalar only in Open Turns v std */
   /** It should be a SymmetricMatrix but there is a bug in linear algebra with these matrices */
   SquareMatrix hessianLimitStateFunction_;
-  NumericalPoint gradientLimitStateFunction_;
-  mutable NumericalPoint sortedCurvatures_;
+  Point gradientLimitStateFunction_;
+  mutable Point sortedCurvatures_;
   mutable Bool isAlreadyComputedSortedCurvatures_;
   mutable NumericalScalar eventProbabilityBreitung_;
   mutable NumericalScalar eventProbabilityHohenBichler_;

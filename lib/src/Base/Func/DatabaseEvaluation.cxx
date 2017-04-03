@@ -145,16 +145,16 @@ void DatabaseEvaluation::setSample(const Sample & inputSample,
 /* Here is the interface that all derived class must implement */
 
 /* Operator () */
-NumericalPoint DatabaseEvaluation::operator()( const NumericalPoint & inP ) const
+Point DatabaseEvaluation::operator()( const Point & inP ) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
-  NumericalPoint result;
+  Point result;
   CacheKeyType inKey(inP.getCollection());
 
   if ( isCacheEnabled() && p_cache_->hasKey(inKey) )
   {
-    result = NumericalPoint::ImplementationType( p_cache_->find(inKey) );
+    result = Point::ImplementationType( p_cache_->find(inKey) );
   }
   else
   {

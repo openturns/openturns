@@ -91,9 +91,9 @@ int main(int argc, char *argv[])
     fullprint << "transformed back sample first=" << transformedBackSample[0] << " last=" << transformedBackSample[size - 1] << std::endl;
     fullprint << "transformed back sample mean=" << transformedBackSample.computeMean() << std::endl;
     fullprint << "transformed back sample covariance=" << transformedBackSample.computeCovariance() << std::endl;
-    NumericalPoint point(dim, 0.75);
+    Point point(dim, 0.75);
     fullprint << "point=" << point << std::endl;
-    NumericalPoint transformedPoint(transform(point));
+    Point transformedPoint(transform(point));
     fullprint << "transform value at point        =" << transformedPoint << std::endl;
     fullprint << "transform gradient at point     =" << transform.gradient(point).clean(1.0e-6) << std::endl;
     fullprint << "transform gradient at point (FD)=" << CenteredFiniteDifferenceGradient(1.0e-5, transform.getEvaluation()).gradient(point).clean(1.0e-6) << std::endl;
@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
       NumericalScalar eps = 1.0e-5;
       NumericalScalar factor = 1.0 / (2.0 * eps);
       Matrix gradient(5, 2);
-      NumericalPoint dTdp;
+      Point dTdp;
       {
         // dT/dp0
         ComposedDistribution::DistributionCollection coll(aCollection);
@@ -177,7 +177,7 @@ int main(int argc, char *argv[])
       NumericalScalar eps = 1.0e-5;
       NumericalScalar factor = 1.0 / (2.0 * eps);
       Matrix gradient(5, 2);
-      NumericalPoint dTdp;
+      Point dTdp;
       {
         // dT/dp0
         ComposedDistribution::DistributionCollection coll(aCollection);

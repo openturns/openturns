@@ -92,9 +92,9 @@ AliMikhailHaqCopula * AliMikhailHaqCopula::clone() const
 }
 
 /* Get one realization of the distribution */
-NumericalPoint AliMikhailHaqCopula::getRealization() const
+Point AliMikhailHaqCopula::getRealization() const
 {
-  NumericalPoint realization(2);
+  Point realization(2);
   // We use the general algorithm based on conditional CDF inversion
   const NumericalScalar u = RandomGenerator::Generate();
   realization[0] = u;
@@ -109,7 +109,7 @@ NumericalPoint AliMikhailHaqCopula::getRealization() const
 }
 
 /* Get the DDF of the distribution */
-NumericalPoint AliMikhailHaqCopula::computeDDF(const NumericalPoint & point) const
+Point AliMikhailHaqCopula::computeDDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -119,9 +119,9 @@ NumericalPoint AliMikhailHaqCopula::computeDDF(const NumericalPoint & point) con
   // A copula has a null DDF outside of ]0, 1[^2
   if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0))
   {
-    return NumericalPoint(2, 0.0);
+    return Point(2, 0.0);
   }
-  NumericalPoint result(2);
+  Point result(2);
   const NumericalScalar t1 = theta_ * theta_;
   const NumericalScalar t2 = t1 * v;
   const NumericalScalar t3 = theta_ * v;
@@ -137,7 +137,7 @@ NumericalPoint AliMikhailHaqCopula::computeDDF(const NumericalPoint & point) con
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar AliMikhailHaqCopula::computePDF(const NumericalPoint & point) const
+NumericalScalar AliMikhailHaqCopula::computePDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -154,7 +154,7 @@ NumericalScalar AliMikhailHaqCopula::computePDF(const NumericalPoint & point) co
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar AliMikhailHaqCopula::computeCDF(const NumericalPoint & point) const
+NumericalScalar AliMikhailHaqCopula::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -192,32 +192,32 @@ CorrelationMatrix AliMikhailHaqCopula::getKendallTau() const
 }
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint AliMikhailHaqCopula::computePDFGradient(const NumericalPoint & point) const
+Point AliMikhailHaqCopula::computePDFGradient(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  throw NotYetImplementedException(HERE) << "In AliMikhailHaqCopula::computePDFGradient(const NumericalPoint & point) const";
+  throw NotYetImplementedException(HERE) << "In AliMikhailHaqCopula::computePDFGradient(const Point & point) const";
 }
 
 /* Get the CDFGradient of the distribution */
-NumericalPoint AliMikhailHaqCopula::computeCDFGradient(const NumericalPoint & point) const
+Point AliMikhailHaqCopula::computeCDFGradient(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  throw NotYetImplementedException(HERE) << "In AliMikhailHaqCopula::computeCDFGradient(const NumericalPoint & point) const";
+  throw NotYetImplementedException(HERE) << "In AliMikhailHaqCopula::computeCDFGradient(const Point & point) const";
 }
 
 /* Get the quantile of the distribution */
-NumericalPoint AliMikhailHaqCopula::computeQuantile(const NumericalScalar prob,
+Point AliMikhailHaqCopula::computeQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
-  return NumericalPoint(2, (prob * theta_ + std::sqrt(prob * (1.0 - theta_ + prob * theta_))) / (1.0 + prob * theta_));
+  return Point(2, (prob * theta_ + std::sqrt(prob * (1.0 - theta_ + prob * theta_))) / (1.0 + prob * theta_));
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar AliMikhailHaqCopula::computeConditionalCDF(const NumericalScalar x, const NumericalPoint & y) const
+NumericalScalar AliMikhailHaqCopula::computeConditionalCDF(const NumericalScalar x, const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -230,7 +230,7 @@ NumericalScalar AliMikhailHaqCopula::computeConditionalCDF(const NumericalScalar
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar AliMikhailHaqCopula::computeConditionalQuantile(const NumericalScalar q, const NumericalPoint & y) const
+NumericalScalar AliMikhailHaqCopula::computeConditionalQuantile(const NumericalScalar q, const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -285,12 +285,12 @@ NumericalScalar AliMikhailHaqCopula::computeArchimedeanGeneratorSecondDerivative
 }
 
 /* Parameters value accessor */
-NumericalPoint AliMikhailHaqCopula::getParameter() const
+Point AliMikhailHaqCopula::getParameter() const
 {
-  return NumericalPoint(1, theta_);
+  return Point(1, theta_);
 }
 
-void AliMikhailHaqCopula::setParameter(const NumericalPoint & parameter)
+void AliMikhailHaqCopula::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize();
   const NumericalScalar w = getWeight();

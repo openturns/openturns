@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/NearestPointChecker.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/ComparisonOperatorImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -119,8 +119,8 @@ void  NearestPointChecker::run()
   UnsignedInteger pointNumber = sample_.getSize();
   /* Compute the level function on the sample */
   Sample levelValuesSample(getLevelFunction()(sample_));
-  Sample notVerifyingPoints(0, NumericalPoint(sample_.getDimension()));
-  Sample notVerifyingValues(0, NumericalPoint(levelValuesSample.getDimension()));
+  Sample notVerifyingPoints(0, Point(sample_.getDimension()));
+  Sample notVerifyingValues(0, Point(levelValuesSample.getDimension()));
   /* If there is something to classify */
   if (pointNumber > 0)
   {
@@ -138,8 +138,8 @@ void  NearestPointChecker::run()
       else // the point violates the constraint
       {
         /* Exchange the point with the last point not already classified */
-        NumericalPoint point(sample_[toBeClassified]);
-        NumericalPoint value(levelValuesSample[toBeClassified]);
+        Point point(sample_[toBeClassified]);
+        Point value(levelValuesSample[toBeClassified]);
         sample_[toBeClassified] = sample_[notClassified];
         sample_[notClassified] = point;
         levelValuesSample[toBeClassified] = levelValuesSample[notClassified];

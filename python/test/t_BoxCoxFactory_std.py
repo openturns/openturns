@@ -33,7 +33,7 @@ try:
     print("myBoxCox (sample)     =", factory.build(sample))
 
     # Creation of the BoxCoxTransform using shift
-    shift = NumericalPoint(1, 1.0)
+    shift = Point(1, 1.0)
     myBoxCoxShift = factory.build(timeSeries, shift)
 
     print("myBoxCox with shift (time-series)=", myBoxCoxShift)

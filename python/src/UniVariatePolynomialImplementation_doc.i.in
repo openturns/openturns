@@ -62,7 +62,7 @@ OT_UniVariatePolynomial_derivate_doc
 
 Returns
 -------
-coefficients : :class:`~openturns.NumericalPoint`
+coefficients : :class:`~openturns.Point`
     Polynomial coefficients in increasing polynomial order.
 
 See Also

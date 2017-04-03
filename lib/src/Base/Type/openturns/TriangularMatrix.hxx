@@ -132,14 +132,14 @@ public:
   /** Multiplication with a NumericalScalarCollection (must have consistent dimensions) */
   NumericalScalarCollection operator * (const NumericalScalarCollection & p) const;
 
-  /** Multiplication with a NumericalPoint (must have consistent dimensions) */
-  NumericalScalarCollection operator * (const NumericalPoint & p) const;
+  /** Multiplication with a Point (must have consistent dimensions) */
+  NumericalScalarCollection operator * (const Point & p) const;
 
   /** Division by a NumericalScalar */
   TriangularMatrix operator / (const NumericalScalar s) const;
 
   /** Resolution of a linear system */
-  NumericalPoint solveLinearSystem(const NumericalPoint & b,
+  Point solveLinearSystem(const Point & b,
                                    const Bool keepIntact = true);
 
   Matrix solveLinearSystem(const Matrix & b,

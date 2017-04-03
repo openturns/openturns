@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
     /* Check the creation of the elementary functions */
     for (UnsignedInteger i = 0; i < elementaryFunctions.getSize(); ++i)
     {
-      NumericalPoint x(1, 0.4 / 3);
+      Point x(1, 0.4 / 3);
 
       // acosh only defined for 1 <= x <= pi
       if ( elementaryFunctions[i] == String("acosh") )
@@ -138,7 +138,7 @@ int main(int argc, char *argv[])
     ComposedDistribution distribution(marginals);
     Sample inputsSample(distribution.getSample(100));
 
-    NumericalPoint refResultValues(100, 0.);
+    Point refResultValues(100, 0.);
     for (UnsignedInteger i = 0; i < 100; ++ i)
     {
       refResultValues[i] = model(inputsSample[i])[0];

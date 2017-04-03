@@ -2,11 +2,11 @@ Distribution class=Skellam name=Skellam dimension=1 lambda1=10 lambda2=5
 Distribution Skellam(lambda1 = 10, lambda2 = 5)
 Elliptical = false
 Continuous = false
-oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[11]
-oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[11] last=class=NumericalPoint name=Unnamed dimension=1 values=[7]
-mean=class=NumericalPoint name=Unnamed dimension=1 values=[4.9883]
+oneRealization=class=Point name=Unnamed dimension=1 values=[11]
+oneSample first=class=Point name=Unnamed dimension=1 values=[11] last=class=Point name=Unnamed dimension=1 values=[7]
+mean=class=Point name=Unnamed dimension=1 values=[4.9883]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[15.3189]
-Point= class=NumericalPoint name=Unnamed dimension=1 values=[12]
+Point= class=Point name=Unnamed dimension=1 values=[12]
 log pdf=-3.91245
 pdf     =0.0199914
 pdf (FD)=0.0199914
@@ -17,21 +17,21 @@ characteristic function=(-0.08618,-0.0425613)
 log characteristic function=(-2.34219,-2.68286)
 generating function=(4.64245e-05,6.70957e-05)
 log generating function=(-9.41379,0.965517)
-quantile=class=NumericalPoint name=Unnamed dimension=1 values=[11]
+quantile=class=Point name=Unnamed dimension=1 values=[11]
 cdf(quantile)=0.951369
-mean=class=NumericalPoint name=Unnamed dimension=1 values=[5]
-standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[3.87298]
-skewness=class=NumericalPoint name=Unnamed dimension=1 values=[0.0860663]
-kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[3.06667]
+mean=class=Point name=Unnamed dimension=1 values=[5]
+standard deviation=class=Point name=Unnamed dimension=1 values=[3.87298]
+skewness=class=Point name=Unnamed dimension=1 values=[0.0860663]
+kurtosis=class=Point name=Unnamed dimension=1 values=[3.06667]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[15]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 parameters=[[lambda1 : 10, lambda2 : 5]]
-standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
-standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[5]
-standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[40]
-standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[355]
-standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[3665]
-standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[41130]
+standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[5]
+standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[40]
+standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[355]
+standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[3665]
+standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[41130]
 Standard representative=Skellam(lambda1 = 10, lambda2 = 5)

@@ -22,7 +22,7 @@
 
 #include "openturns/CovarianceModelImplementation.hxx"
 #include "openturns/Basis.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -42,7 +42,7 @@ public:
   explicit RankMCovarianceModel(const UnsignedInteger spatialDimension = 1);
 
   /** Parameters constructor */
-  RankMCovarianceModel(const NumericalPoint & variance,
+  RankMCovarianceModel(const Point & variance,
 		       const Basis & basis);
 
   /** Parameters constructor */
@@ -54,16 +54,16 @@ public:
 
   /** Computation of the covariance function */
   using CovarianceModelImplementation::operator();
-  CovarianceMatrix operator() (const NumericalPoint & s,
-      const NumericalPoint & t) const;
+  CovarianceMatrix operator() (const Point & s,
+      const Point & t) const;
 
   /** Gradient */
-  virtual Matrix partialGradient(const NumericalPoint & s,
-                                 const NumericalPoint & t) const;
+  virtual Matrix partialGradient(const Point & s,
+                                 const Point & t) const;
 
   /** Covariance accessor */
   CovarianceMatrix getCovariance() const;
-  NumericalPoint getVariance() const;
+  Point getVariance() const;
 
   /** Basis accessor */
   Basis getBasis() const;
@@ -93,7 +93,7 @@ protected:
 
 private:
   /** The variance of the rank m decomposition, of dimension>0 only if the covariance is diagonal */
-  NumericalPoint variance_;
+  Point variance_;
   
   /** The covariance matrix of the decomposition, of dimension>0 only if not diagonal */
   CovarianceMatrix covariance_;

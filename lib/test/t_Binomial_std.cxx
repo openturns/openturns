@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     fullprint << "Continuous = " << (distribution.isContinuous() ? "true" : "false") << std::endl;
 
     // Test for realization of distribution
-    NumericalPoint oneRealization = distribution.getRealization();
+    Point oneRealization = distribution.getRealization();
     fullprint << "oneRealization=" << oneRealization << std::endl;
 
     // Test for sampling
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
     }
 #endif
     // Define a point
-    NumericalPoint point( distribution.getDimension(), 5.0 );
+    Point point( distribution.getDimension(), 5.0 );
     fullprint << "Point= " << point << std::endl;
 
     // Show PDF and CDF of point
@@ -81,17 +81,17 @@ int main(int argc, char *argv[])
     fullprint << "log pdf=" << LPDF << std::endl;
     NumericalScalar PDF = distribution.computePDF( point );
     fullprint << "pdf     =" << PDF << std::endl;
-    fullprint << "pdf (FD)=" << (distribution.computeCDF( point + NumericalPoint(1, 0) ) - distribution.computeCDF( point  + NumericalPoint(1, -1) )) << std::endl;
+    fullprint << "pdf (FD)=" << (distribution.computeCDF( point + Point(1, 0) ) - distribution.computeCDF( point  + Point(1, -1) )) << std::endl;
     NumericalScalar CDF = distribution.computeCDF( point );
     fullprint << "cdf=" << CDF << std::endl;
     NumericalScalar CCDF = distribution.computeComplementaryCDF( point );
     fullprint << "ccdf=" << CCDF << std::endl;
     NumericalScalar Survival = distribution.computeSurvivalFunction( point );
     fullprint << "survival=" << Survival << std::endl;
-    NumericalPoint quantile = distribution.computeQuantile( 0.95 );
+    Point quantile = distribution.computeQuantile( 0.95 );
     fullprint << "quantile=" << quantile << std::endl;
     fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
-    NumericalPoint quantileTail = distribution.computeQuantile( 0.95, true );
+    Point quantileTail = distribution.computeQuantile( 0.95, true );
     fullprint << "quantile (tail)=" << quantileTail << std::endl;
     NumericalScalar CDFTail = distribution.computeComplementaryCDF( quantileTail );
     fullprint << "cdf (tail)=" << CDFTail << std::endl;
@@ -103,13 +103,13 @@ int main(int argc, char *argv[])
     fullprint << "generating function=" << GF << std::endl;
     NumericalComplex LGF = distribution.computeLogGeneratingFunction( NumericalComplex(0.3, 0.7) );
     fullprint << "log generating function=" << LGF << std::endl;
-    NumericalPoint mean = distribution.getMean();
+    Point mean = distribution.getMean();
     fullprint << "mean=" << mean << std::endl;
-    NumericalPoint standardDeviation = distribution.getStandardDeviation();
+    Point standardDeviation = distribution.getStandardDeviation();
     fullprint << "standard deviation=" << standardDeviation << std::endl;
-    NumericalPoint skewness = distribution.getSkewness();
+    Point skewness = distribution.getSkewness();
     fullprint << "skewness=" << skewness << std::endl;
-    NumericalPoint kurtosis = distribution.getKurtosis();
+    Point kurtosis = distribution.getKurtosis();
     fullprint << "kurtosis=" << kurtosis << std::endl;
     CovarianceMatrix covariance = distribution.getCovariance();
     fullprint << "covariance=" << covariance << std::endl;
@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
     fullprint << "spearman=" << spearman << std::endl;
     CovarianceMatrix kendall = distribution.getKendallTau();
     fullprint << "kendall=" << kendall << std::endl;
-    Binomial::NumericalPointWithDescriptionCollection parameters = distribution.getParametersCollection();
+    Binomial::PointWithDescriptionCollection parameters = distribution.getParametersCollection();
     fullprint << "parameters=" << parameters << std::endl;
     for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
     fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;

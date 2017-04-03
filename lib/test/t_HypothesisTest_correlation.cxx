@@ -40,8 +40,8 @@ int main(int argc, char *argv[])
       R(i, j) = (i + j + 1.0) / (2.0 * dim);
     }
   }
-  NumericalPoint mean(dim, 2.0);
-  NumericalPoint sigma(dim, 3.0);
+  Point mean(dim, 2.0);
+  Point sigma(dim, 3.0);
   Normal distribution(mean, sigma, R);
   Sample sample(distribution.getSample(size));
   Sample sampleX(size, dim - 1);

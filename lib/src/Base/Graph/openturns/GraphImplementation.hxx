@@ -43,7 +43,7 @@ class OT_API GraphImplementation :
 
 public:
 
-  typedef NumericalPoint                 BoundingBox;
+  typedef Point                 BoundingBox;
   typedef Collection<Drawable>           DrawableCollection;
   typedef PersistentCollection<Drawable> DrawablePersistentCollection;
 

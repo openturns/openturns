@@ -53,7 +53,7 @@ public:
   virtual LinearCombinationGradient * clone() const;
 
   /** Gradient method */
-  Matrix gradient(const NumericalPoint & inP) const;
+  Matrix gradient(const Point & inP) const;
 
   /** Accessor for input point dimension */
   UnsignedInteger getInputDimension() const;

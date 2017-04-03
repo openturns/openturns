@@ -24,7 +24,7 @@
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/DomainImplementation.hxx"
 #include "openturns/Function.hxx"
 
@@ -53,7 +53,7 @@ public:
   virtual LevelSet * clone() const;
 
   /** Check if the given point is inside of the closed levelSet */
-  Bool contains(const NumericalPoint & point) const;
+  Bool contains(const Point & point) const;
 
   /** Returns the levelSet equals to the intersection between the levelSet and another one */
   LevelSet intersect(const LevelSet & other) const;
@@ -73,12 +73,12 @@ public:
   void setLevel(const NumericalScalar level);
 
   /** Lower bound of the bounding box */
-  void setLowerBound(const NumericalPoint & bound);
-  NumericalPoint getLowerBound() const;
+  void setLowerBound(const Point & bound);
+  Point getLowerBound() const;
 
   /** Upper bound of the bounding box */
-  void setUpperBound(const NumericalPoint & bound);
-  NumericalPoint getUpperBound() const;
+  void setUpperBound(const Point & bound);
+  Point getUpperBound() const;
 
   /** String converter */
   String __repr__() const;
@@ -105,10 +105,10 @@ private:
   NumericalScalar level_;
 
   /** Lower bound of the bounding box */
-  mutable NumericalPoint lowerBound_;
+  mutable Point lowerBound_;
 
   /** Upper bound of the bounding box */
-  mutable NumericalPoint upperBound_;
+  mutable Point upperBound_;
 }; /* class LevelSet */
 
 END_NAMESPACE_OPENTURNS

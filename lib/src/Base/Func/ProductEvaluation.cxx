@@ -78,13 +78,13 @@ String ProductEvaluation::__str__(const String & offset) const
 }
 
 /* Operator () */
-NumericalPoint ProductEvaluation::operator() (const NumericalPoint & inP) const
+Point ProductEvaluation::operator() (const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
-  const NumericalPoint left(p_leftEvaluation_->operator()(inP));
-  const NumericalPoint right(p_rightEvaluation_->operator()(inP));
-  const NumericalPoint result(left[0] * right);
+  const Point left(p_leftEvaluation_->operator()(inP));
+  const Point right(p_rightEvaluation_->operator()(inP));
+  const Point result(left[0] * right);
   ++callsNumber_;
   if (isHistoryEnabled_)
   {
@@ -110,19 +110,19 @@ Sample ProductEvaluation::operator() (const Sample & inSample) const
 
 
 /* Parameters value accessor */
-NumericalPoint ProductEvaluation::getParameter() const
+Point ProductEvaluation::getParameter() const
 {
-  NumericalPoint parameter(p_rightEvaluation_->getParameter());
+  Point parameter(p_rightEvaluation_->getParameter());
   parameter.add(p_leftEvaluation_->getParameter());
   return parameter;
 }
 
 
-void ProductEvaluation::setParameter(const NumericalPoint & parameter)
+void ProductEvaluation::setParameter(const Point & parameter)
 {
-  NumericalPoint rightParameter(p_rightEvaluation_->getParameter());
+  Point rightParameter(p_rightEvaluation_->getParameter());
   const UnsignedInteger rightDimension = rightParameter.getDimension();
-  NumericalPointWithDescription leftParameter(p_leftEvaluation_->getParameter());
+  PointWithDescription leftParameter(p_leftEvaluation_->getParameter());
   const UnsignedInteger leftDimension = leftParameter.getDimension();
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < rightDimension; ++ i)

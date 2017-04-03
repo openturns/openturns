@@ -26,7 +26,7 @@
 #define OPENTURNS_LINEARNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
 
 #include "openturns/EvaluationImplementation.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Matrix.hxx"
 
@@ -46,8 +46,8 @@ public:
   LinearEvaluation();
 
   /** Parameter constructor */
-  LinearEvaluation(const NumericalPoint & center,
-      const NumericalPoint & constant,
+  LinearEvaluation(const Point & center,
+      const Point & constant,
       const Matrix & linear);
 
   /** Virtual constructor */
@@ -63,7 +63,7 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Operator () */
-  virtual NumericalPoint operator() (const NumericalPoint & inP) const;
+  virtual Point operator() (const Point & inP) const;
 
   /** Operator () */
   virtual Sample operator() (const Sample & inS) const;
@@ -75,10 +75,10 @@ public:
   virtual UnsignedInteger getOutputDimension() const;
 
   /** Accessor for the center */
-  NumericalPoint getCenter() const;
+  Point getCenter() const;
 
   /** Accessor for the constant term */
-  NumericalPoint getConstant() const;
+  Point getConstant() const;
 
   /** Accessor for the linear term */
   Matrix getLinear() const;
@@ -93,8 +93,8 @@ protected:
 
 
 private:
-  NumericalPoint center_;
-  NumericalPoint constant_;
+  Point center_;
+  Point constant_;
   Matrix linear_;
 }; /* class LinearEvaluation */
 

@@ -95,7 +95,7 @@ NumericalScalar Bisection::solve(const Function & function,
     // If all the evaluation budget has been spent, return the approximation
     if (usedFunctionEvaluation == maximumFunctionEvaluation) break;
     // New evaluation
-    fC = function(NumericalPoint(1, c))[0] - value;
+    fC = function(Point(1, c))[0] - value;
     ++usedFunctionEvaluation;
     // If the function takes a value at middle on the same side of value that at left
     if (fC * fA > 0.0)

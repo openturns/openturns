@@ -43,12 +43,12 @@ int main(int argc, char *argv[])
     myFunction.enableHistory();
     UnsignedInteger dim = myFunction.getInputDimension();
     /* We create a normal distribution point of dimension 1 */
-    NumericalPoint mean(dim, 0.0);
+    Point mean(dim, 0.0);
     mean[0] = 50.0; // E
     mean[1] =  1.0; // F
     mean[2] = 10.0; // L
     mean[3] =  5.0; // I
-    NumericalPoint sigma(dim, 1.0);
+    Point sigma(dim, 1.0);
     IdentityMatrix R(dim);
     Normal myDistribution(mean, sigma, R);
 

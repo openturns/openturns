@@ -132,7 +132,7 @@ residualErrorHistory : :class:`~openturns.Sample`
 
 Parameters
 ----------
-optimalPoint : :class:`~openturns.NumericalPoint`
+optimalPoint : :class:`~openturns.Point`
     Optimal point"
 
 // ---------------------------------------------------------------------
@@ -142,7 +142,7 @@ optimalPoint : :class:`~openturns.NumericalPoint`
 
 Returns
 -------
-optimalPoint : :class:`~openturns.NumericalPoint`
+optimalPoint : :class:`~openturns.Point`
     Optimal point"
 
 // ---------------------------------------------------------------------
@@ -152,7 +152,7 @@ optimalPoint : :class:`~openturns.NumericalPoint`
 
 Parameters
 ----------
-multipliers : :class:`~openturns.NumericalPoint`
+multipliers : :class:`~openturns.Point`
     Lagrange multipliers.
 
 Notes
@@ -167,7 +167,7 @@ See :class:`~openturns.OptimizationAlgorithm` for the details on how the multipl
 
 Returns
 -------
-multipliers : :class:`~openturns.NumericalPoint`
+multipliers : :class:`~openturns.Point`
     Lagrange multipliers.
 
 Notes
@@ -182,7 +182,7 @@ See :class:`~openturns.OptimizationAlgorithm` for the details on how the multipl
 
 Parameters
 ----------
-optimalValue : :class:`~openturns.NumericalPoint`
+optimalValue : :class:`~openturns.Point`
     Value at the optimal point"
 
 // ---------------------------------------------------------------------
@@ -192,7 +192,7 @@ optimalValue : :class:`~openturns.NumericalPoint`
 
 Returns
 -------
-optimalValue : :class:`~openturns.NumericalPoint`
+optimalValue : :class:`~openturns.Point`
     Value at the optimal point"
 
 // ---------------------------------------------------------------------

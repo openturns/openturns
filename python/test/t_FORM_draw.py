@@ -5,7 +5,7 @@ from openturns import *
 from math import *
 
 
-def printNumericalPoint(point, digits):
+def printPoint(point, digits):
     oss = "["
     eps = pow(0.1, digits)
     for i in range(point.getDimension()):
@@ -40,12 +40,12 @@ try:
 
     dim = myFunction.getInputDimension()
     # We create a normal distribution point of dimension 1
-    mean = NumericalPoint(dim, 0.0)
+    mean = Point(dim, 0.0)
     # x0
     mean[0] = 5.0
     # x1
     mean[1] = 2.1
-    sigma = NumericalPoint(dim, 0.0)
+    sigma = Point(dim, 0.0)
     # x0
     sigma[0] = 3.3
     # x1
@@ -94,7 +94,7 @@ try:
     # Stream out the result
     result = FORMResult(myAlgo.getResult())
     digits = 5
-    print("importance factors=", printNumericalPoint(
+    print("importance factors=", printPoint(
         result.getImportanceFactors(), digits))
 
     # Graph 1 : Importance Factors graph

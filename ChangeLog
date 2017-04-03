@@ -61,7 +61,8 @@
  * Deprecated NumericalMathFunction ctors
  * Deprecated NumericalMathFunction for Function
  * Deprecated NumericalSample for Sample
- 
+ * Deprecated NumericalPoint[WithDescription] for Point[WithDescription]
+
 === Python module ===
 
 === Miscellaneous ===

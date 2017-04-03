@@ -23,7 +23,7 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Description.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Interval.hxx"
 #include "openturns/PersistentCollection.hxx"
@@ -55,12 +55,12 @@ public:
   LinearModel();
 
   /** Standard constructor */
-  LinearModel(const NumericalPoint & vectorR,
+  LinearModel(const Point & vectorR,
               const Interval & intervals,
               const NumericalScalarCollection & pValuesOfR);
 
-  /** Constructor from NumericalPoint */
-  LinearModel(const NumericalPoint & vectorR);
+  /** Constructor from Point */
+  LinearModel(const Point & vectorR);
 
   /** Virtual constructor */
   virtual LinearModel * clone() const;
@@ -71,7 +71,7 @@ public:
   String __str__(const String & offset = "") const;
 
   /** get vector, get intervals*/
-  NumericalPoint getRegression() const;
+  Point getRegression() const;
   Interval getConfidenceIntervals() const;
   NumericalScalarCollection getPValues() const;
 
@@ -92,7 +92,7 @@ public:
 protected:
 
   /** The estimated vector */
-  NumericalPoint regression_;
+  Point regression_;
 
   /** The confidence intervals */
   Interval confidenceIntervals_;

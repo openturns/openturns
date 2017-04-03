@@ -65,13 +65,13 @@ Bool BetaMuSigma::operator ==(const BetaMuSigma & other) const
 /* Build a distribution based on a set of native parameters */
 Distribution BetaMuSigma::getDistribution() const
 {
-  NumericalPoint newParameters(4);
+  Point newParameters(4);
   newParameters[0] = mu_;
   newParameters[1] = sigma_;
   newParameters[2] = a_;
   newParameters[3] = b_;
 
-  NumericalPoint nativeParameters(operator()(newParameters));
+  Point nativeParameters(operator()(newParameters));
 
   return BetaFactory().build(nativeParameters);
 }
@@ -80,7 +80,7 @@ Distribution BetaMuSigma::getDistribution() const
 /* Compute jacobian / native parameters */
 Matrix BetaMuSigma::gradient() const
 {
-  NumericalPoint newParameters(4);
+  Point newParameters(4);
   newParameters[0] = mu_;
   newParameters[1] = sigma_;
   newParameters[2] = a_;
@@ -118,7 +118,7 @@ Matrix BetaMuSigma::gradient() const
 
 
 /* Conversion operator */
-NumericalPoint BetaMuSigma::operator () (const NumericalPoint & inP) const
+Point BetaMuSigma::operator () (const Point & inP) const
 {
   if (inP.getDimension() != 4) throw InvalidArgumentException(HERE) << "the given point must have dimension=4, here dimension=" << inP.getDimension();
   const NumericalScalar mu = inP[0];
@@ -129,7 +129,7 @@ NumericalPoint BetaMuSigma::operator () (const NumericalPoint & inP) const
   const NumericalScalar t = (b - mu) * (mu - a) / (sigma * sigma) - 1.0;
   const NumericalScalar r = t * (mu - a) / (b - a);
 
-  NumericalPoint nativeParameters(inP);
+  Point nativeParameters(inP);
   nativeParameters[0] = r;
   nativeParameters[1] = t;
 
@@ -137,7 +137,7 @@ NumericalPoint BetaMuSigma::operator () (const NumericalPoint & inP) const
 }
 
 
-NumericalPoint BetaMuSigma::inverse(const NumericalPoint & inP) const
+Point BetaMuSigma::inverse(const Point & inP) const
 {
   if (inP.getDimension() != 4) throw InvalidArgumentException(HERE) << "the given point must have dimension=4, here dimension=" << inP.getDimension();
   const NumericalScalar r = inP[0];
@@ -152,7 +152,7 @@ NumericalPoint BetaMuSigma::inverse(const NumericalPoint & inP) const
   const NumericalScalar mu = a + (b - a) * r / t;
   const NumericalScalar sigma = (b - a) / t * std::sqrt(r * (t - r) / (t + 1.0));
 
-  NumericalPoint muSigmaParameters(inP);
+  Point muSigmaParameters(inP);
   muSigmaParameters[0] = mu;
   muSigmaParameters[1] = sigma;
 
@@ -160,7 +160,7 @@ NumericalPoint BetaMuSigma::inverse(const NumericalPoint & inP) const
 }
 
 /* Parameters value and description accessor */
-void BetaMuSigma::setValues(const NumericalPoint & inP)
+void BetaMuSigma::setValues(const Point & inP)
 {
   if (inP.getDimension() != 4) throw InvalidArgumentException(HERE) << "the given point must have dimension=4, here dimension=" << inP.getDimension();
   mu_ = inP[0];
@@ -171,9 +171,9 @@ void BetaMuSigma::setValues(const NumericalPoint & inP)
 }
 
 
-NumericalPoint BetaMuSigma::getValues() const
+Point BetaMuSigma::getValues() const
 {
-  NumericalPoint point(4);
+  Point point(4);
   point[0] = mu_;
   point[1] = sigma_;
   point[2] = a_;

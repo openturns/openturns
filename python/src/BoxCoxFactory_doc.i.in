@@ -55,7 +55,7 @@ myTimeSeries : :class:`~openturns.TimeSeries`
     One realization of a  process.
 mySample : :class:`~openturns.Sample`
     A set of *iid* values.
-shift : :class:`~openturns.NumericalPoint`
+shift : :class:`~openturns.Point`
     It ensures that when shifted, the data are all positive. If not precised, OpenTURNS uses the opposite of the min vector of the data if some data are negative.
 likelihoodGraph : :class:`~openturns.Graph`
     An empty graph that is fulfilled later with the log-likelihood of the mapped variables with respect to the :math:`lambda` parameter for each component.

@@ -114,8 +114,8 @@ public:
   void setOptimizeParameters(const Bool optimizeParameters);
 
   /** Observation noise accessor */
-  void setNoise(const NumericalPoint & noise);
-  NumericalPoint getNoise() const;
+  void setNoise(const Point & noise);
+  Point getNoise() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -143,9 +143,9 @@ private:
   // Underlying algo used for the evaluation of parameters
   GeneralLinearModelAlgorithm glmAlgo_;
   // The coefficients of the current output deterministic trend
-  mutable NumericalPoint gamma_;
+  mutable Point gamma_;
   // Temporarly used to compute gamma
-  mutable NumericalPoint rho_;
+  mutable Point rho_;
 
   /** Result */
   KrigingResult result_;

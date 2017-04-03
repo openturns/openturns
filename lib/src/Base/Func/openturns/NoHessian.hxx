@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * This class offers an interface for an real numerical mathematical hessian
  * implementations into the platform. It realizes the computation of the image vector
- * of a vector (aka NumericalPoint) through the hessian. The
+ * of a vector (aka Point) through the hessian. The
  * hessian may be loaded in an external way through a wrapper.
  */
 class OT_API NoHessian
@@ -63,7 +63,7 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Hessian method */
-  virtual SymmetricTensor hessian(const NumericalPoint & inP) const;
+  virtual SymmetricTensor hessian(const Point & inP) const;
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;

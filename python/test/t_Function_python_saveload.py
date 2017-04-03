@@ -57,7 +57,7 @@ print('loaded f1=', f1)
 print('loaded f2=', f2)
 
 
-inPt = ot.NumericalPoint(2, 2.)
+inPt = ot.Point(2, 2.)
 outPt = f1(inPt)
 print(repr(outPt))
 
@@ -66,7 +66,7 @@ print(repr(outPt))
 
 inSample = ot.Sample(10, 2)
 for i in range(10):
-    inSample[i] = ot.NumericalPoint((i, i))
+    inSample[i] = ot.Point((i, i))
 print(repr(inSample))
 
 outSample = f1(inSample)

@@ -73,9 +73,9 @@ String InverseNatafIndependentCopulaEvaluation::__str__(const String & offset) c
  * The inverse Nataf transform S reads:
  * Si(u) = Phi(ui), where Phi is the CDF of the standard normal distribution
  */
-NumericalPoint InverseNatafIndependentCopulaEvaluation::operator () (const NumericalPoint & inP) const
+Point InverseNatafIndependentCopulaEvaluation::operator () (const Point & inP) const
 {
-  NumericalPoint result(dimension_);
+  Point result(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i) result[i] = DistFunc::pNormal(inP[i]);
   ++callsNumber_;
   if (isHistoryEnabled_)
@@ -88,7 +88,7 @@ NumericalPoint InverseNatafIndependentCopulaEvaluation::operator () (const Numer
 
 /* Gradient according to the marginal parameters. Currently, the dependence parameter are not taken into account. */
 
-Matrix InverseNatafIndependentCopulaEvaluation::parameterGradient(const NumericalPoint & inP) const
+Matrix InverseNatafIndependentCopulaEvaluation::parameterGradient(const Point & inP) const
 {
   return Matrix(0, dimension_);
 }

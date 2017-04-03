@@ -23,7 +23,7 @@
 
 #include "openturns/HessianImplementation.hxx"
 #include "openturns/SymmetricTensor.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/StorageManager.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -51,7 +51,7 @@ public:
   virtual NatafIndependentCopulaHessian * clone() const;
 
   /** Hessian */
-  SymmetricTensor hessian(const NumericalPoint & inP) const;
+  SymmetricTensor hessian(const Point & inP) const;
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;

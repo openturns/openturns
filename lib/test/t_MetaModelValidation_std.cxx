@@ -109,11 +109,11 @@ int main(int argc, char *argv[])
     // KrigingAlgorithm
     Basis basis(QuadraticBasisFactory(dimension).build());
     // model computed
-    NumericalPoint scale(3);
+    Point scale(3);
     scale[0] = 1.933;
     scale[1] = 1.18;
     scale[2] = 1.644;
-    NumericalPoint amplitude(1, 10.85);
+    Point amplitude(1, 10.85);
     CovarianceModel covarianceModel = GeneralizedExponential(scale, amplitude, 2.0);
 
 

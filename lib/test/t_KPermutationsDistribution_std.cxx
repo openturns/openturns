@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
     fullprint << "Continuous = " << (distribution.isContinuous() ? "true" : "false") << std::endl;
 
     // Test for realization of distribution
-    NumericalPoint oneRealization = distribution.getRealization();
+    Point oneRealization = distribution.getRealization();
     fullprint << "oneRealization=" << oneRealization << std::endl;
 
     // Test for sampling
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
     fullprint << "mean=" << oneSample.computeMean() << std::endl;
     fullprint << "covariance=" << oneSample.computeCovariance() << std::endl;
     // Define a point
-    NumericalPoint point( distribution.getDimension(), 1.0 );
+    Point point( distribution.getDimension(), 1.0 );
     fullprint << "Point= " << point << std::endl;
 
     // Show PDF and CDF of point
@@ -78,10 +78,10 @@ int main(int argc, char *argv[])
     fullprint << "ccdf=" << CCDF << std::endl;
     //    NumericalScalar Survival = distribution.computeSurvivalFunction( point );
     //    fullprint << "survival=" << Survival << std::endl;
-    NumericalPoint quantile = distribution.computeQuantile( 0.95 );
+    Point quantile = distribution.computeQuantile( 0.95 );
     fullprint << "quantile=" << quantile << std::endl;
     fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
-    NumericalPoint mean = distribution.getMean();
+    Point mean = distribution.getMean();
     fullprint << "mean=" << mean << std::endl;
     CovarianceMatrix covariance = distribution.getCovariance();
     fullprint << "covariance=" << covariance << std::endl;
@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
     //    fullprint << "spearman=" << spearman << std::endl;
     //    CovarianceMatrix kendall = distribution.getKendallTau();
     //    fullprint << "kendall=" << kendall << std::endl;
-    KPermutationsDistribution::NumericalPointWithDescriptionCollection parameters = distribution.getParametersCollection();
+    KPermutationsDistribution::PointWithDescriptionCollection parameters = distribution.getParametersCollection();
     fullprint << "parameters=" << parameters << std::endl;
   }
   catch (TestFailed & ex)

@@ -7,7 +7,7 @@ sample = distribution.getSample(200)
 
 # Construct empirical CDF for the sample
 data = ot.Sample(20, 2)
-cursor = ot.NumericalPoint(2)
+cursor = ot.Point(2)
 for i in range(20):
     cursor[0] = 13. * i / 20 - 6.5
     count = 0.

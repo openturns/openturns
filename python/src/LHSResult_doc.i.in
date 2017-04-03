@@ -71,7 +71,7 @@ OT_LHSResult_get_optimal_design_doc
 
 Returns
 -------
-history : :class:`~openturns.NumericalPoint`
+history : :class:`~openturns.Point`
     Some internal values computed during optimization algorithm.
     SimulatedAnnealingLHS stores criterion value, temperature
     and probability at each iteration.

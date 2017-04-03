@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_PENALIZEDLEASTSQUARESALGORITHMFACTORY_HXX
 #define OPENTURNS_PENALIZEDLEASTSQUARESALGORITHMFACTORY_HXX
 
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/PenalizedLeastSquaresAlgorithm.hxx"
 #include "openturns/ApproximationAlgorithmImplementationFactory.hxx"
 
@@ -49,7 +49,7 @@ public:
   /** Method to create new ApproximationAlgorithmImplementation objects */
   virtual PenalizedLeastSquaresAlgorithm * build (const Sample & x,
       const Sample & y,
-      const NumericalPoint & weight,
+      const Point & weight,
       const Basis & psi,
       const Indices & indices) const;
 

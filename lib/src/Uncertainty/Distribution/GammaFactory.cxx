@@ -49,7 +49,7 @@ GammaFactory::Implementation GammaFactory::build(const Sample & sample) const
   return buildAsGamma(sample).clone();
 }
 
-GammaFactory::Implementation GammaFactory::build(const NumericalPoint & parameters) const
+GammaFactory::Implementation GammaFactory::build(const Point & parameters) const
 {
   return buildAsGamma(parameters).clone();
 }
@@ -83,7 +83,7 @@ Gamma GammaFactory::buildAsGamma(const Sample & sample) const
   return result;
 }
 
-Gamma GammaFactory::buildAsGamma(const NumericalPoint & parameters) const
+Gamma GammaFactory::buildAsGamma(const Point & parameters) const
 {
   try
   {

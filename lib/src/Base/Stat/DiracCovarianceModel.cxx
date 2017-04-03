@@ -38,7 +38,7 @@ private:
 public:
   DiracAssemblyFunction(const DiracCovarianceModel & covarianceModel)
     : HMatrixTensorRealAssemblyFunction(covarianceModel.getDimension())
-    , covarianceMatrix_(covarianceModel(NumericalPoint(covarianceModel.getSpatialDimension())))
+    , covarianceMatrix_(covarianceModel(Point(covarianceModel.getSpatialDimension())))
   {
     // Nothing to do
   }
@@ -64,7 +64,7 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger spatialDimensio
 
 /* Parameters constructor */
 DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger spatialDimension,
-    const NumericalPoint & amplitude)
+    const Point & amplitude)
   : StationaryCovarianceModel(spatialDimension)
   , covarianceFactor_()
 {
@@ -78,9 +78,9 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger spatialDimensio
 
 /** Parameters constructor */
 DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger spatialDimension,
-    const NumericalPoint & amplitude,
+    const Point & amplitude,
     const CorrelationMatrix & correlation)
-  : StationaryCovarianceModel(NumericalPoint(spatialDimension, 1.0), NumericalPoint(amplitude.getDimension(), 1.0))
+  : StationaryCovarianceModel(Point(spatialDimension, 1.0), Point(amplitude.getDimension(), 1.0))
   , covarianceFactor_()
 {
   dimension_ = amplitude.getDimension();
@@ -100,7 +100,7 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger spatialDimensio
   : StationaryCovarianceModel(spatialDimension)
 {
   dimension_ = covariance.getDimension();
-  amplitude_ = NumericalPoint(dimension_);
+  amplitude_ = Point(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
     amplitude_[i] = sqrt(covariance(i, i));
   if (!covariance.isDiagonal())
@@ -141,7 +141,7 @@ DiracCovarianceModel * DiracCovarianceModel::clone() const
 }
 
 /* Computation of the covariance density function */
-CovarianceMatrix DiracCovarianceModel::operator() (const NumericalPoint & tau) const
+CovarianceMatrix DiracCovarianceModel::operator() (const Point & tau) const
 {
   if (tau.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::operator(), the point tau has dimension=" << tau.getDimension() << ", expected dimension=" << spatialDimension_;
   // If tau.norm1 is zero we compute the covariance matrix
@@ -294,8 +294,8 @@ HMatrix DiracCovarianceModel::discretizeHMatrix(const Sample & vertices,
 }
 
 /* Gradient */
-Matrix DiracCovarianceModel::partialGradient(const NumericalPoint & s,
-    const NumericalPoint & t) const
+Matrix DiracCovarianceModel::partialGradient(const Point & s,
+    const Point & t) const
 {
   if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
   if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
@@ -305,14 +305,14 @@ Matrix DiracCovarianceModel::partialGradient(const NumericalPoint & s,
 }
 
 /* Parameters accessor */
-void DiracCovarianceModel::setFullParameter(const NumericalPoint & parameters)
+void DiracCovarianceModel::setFullParameter(const Point & parameters)
 {
   if (parameters.getDimension() != dimension_)
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::setParameter, parameters should be of size " << dimension_ << ", here, parameters dimension = " << parameters.getDimension();
   setAmplitude(parameters);
 }
 
-NumericalPoint DiracCovarianceModel::getFullParameter() const
+Point DiracCovarianceModel::getFullParameter() const
 {
   return getAmplitude();
 }
@@ -325,7 +325,7 @@ Description DiracCovarianceModel::getFullParameterDescription() const
   return description;
 }
 
-void DiracCovarianceModel::setScale(const NumericalPoint & scale)
+void DiracCovarianceModel::setScale(const Point & scale)
 {
   // Scale factor has no effect
   // No check of size or dimension
@@ -334,7 +334,7 @@ void DiracCovarianceModel::setScale(const NumericalPoint & scale)
 }
 
 /** Amplitude accessor */
-void DiracCovarianceModel::setAmplitude(const NumericalPoint & amplitude)
+void DiracCovarianceModel::setAmplitude(const Point & amplitude)
 {
   if (amplitude.getDimension() != dimension_)
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::setAmplitude, amplitude vector should be of size " << dimension_
@@ -380,7 +380,7 @@ String DiracCovarianceModel::__str__(const String & offset) const
   OSS oss;
   oss << DiracCovarianceModel::GetClassName();
   oss << "(t)=" << spatialCovariance_.__str__()
-      << " * t==" << NumericalPoint(spatialDimension_, 0.0).__str__();
+      << " * t==" << Point(spatialDimension_, 0.0).__str__();
   return oss;
 }
 

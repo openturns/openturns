@@ -57,7 +57,7 @@ ott.assert_almost_equal(result.getResiduals(), [0.000466643, 0.0])
 
 metamodel = result.getMetaModel()
 x = distribution.getMean()
-print('x=', ot.NumericalPoint(x), 'f(x)=', model(x), 'f^(x)=', metamodel(x))
+print('x=', ot.Point(x), 'f(x)=', model(x), 'f^(x)=', metamodel(x))
 for i in range(model.getOutputDimension()):
     print('rank[',i,']=', result.getTensor(i).getRank())
 

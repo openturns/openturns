@@ -48,7 +48,7 @@ public:
   virtual ClassifierImplementation * clone() const;
 
   /** Associate a point with a class */
-  virtual UnsignedInteger classify(const NumericalPoint & inP) const;
+  virtual UnsignedInteger classify(const Point & inP) const;
   virtual Indices classify(const Sample & inS) const;
 
 protected:
@@ -57,15 +57,15 @@ protected:
 public:
 
   /** Grade a point as if it were associated to a class */
-  virtual NumericalScalar grade(const NumericalPoint & inP,
+  virtual NumericalScalar grade(const Point & inP,
                                 const UnsignedInteger outC) const;
-  virtual NumericalPoint grade(const Sample & inS,
+  virtual Point grade(const Sample & inS,
                                const Indices & outC) const;
 
 protected:
-  virtual NumericalPoint gradeParallel(const Sample & inS,
+  virtual Point gradeParallel(const Sample & inS,
                            const Indices & outC) const;
-  virtual NumericalPoint gradeSequential(const Sample & inS,
+  virtual Point gradeSequential(const Sample & inS,
                                   const Indices & outC) const;
 public:
 

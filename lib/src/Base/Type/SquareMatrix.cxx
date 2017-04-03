@@ -141,8 +141,8 @@ SquareMatrix SquareMatrix::operator * (const IdentityMatrix & m) const
   return *this;
 }
 
-/* Multiplication with a NumericalPoint (must have consistent dimensions) */
-NumericalPoint SquareMatrix::operator * (const NumericalPoint & pt) const
+/* Multiplication with a Point (must have consistent dimensions) */
+Point SquareMatrix::operator * (const Point & pt) const
 {
   return getImplementation()->genVectProd(pt) ;
 }
@@ -166,7 +166,7 @@ SquareMatrix SquareMatrix::power(const UnsignedInteger n) const
 }
 
 /* Resolution of a linear system */
-NumericalPoint SquareMatrix::solveLinearSystem(const NumericalPoint & b,
+Point SquareMatrix::solveLinearSystem(const Point & b,
     const Bool keepIntact)
 {
   return getImplementation()->solveLinearSystemSquare(b, keepIntact);

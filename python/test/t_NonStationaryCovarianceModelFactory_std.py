@@ -14,10 +14,10 @@ try:
     dimension = 1
 
     # Amplitude values
-    amplitude = NumericalPoint(dimension, 1.00)
+    amplitude = Point(dimension, 1.00)
 
     # Scale values
-    scale = NumericalPoint(dimension, 1.0)
+    scale = Point(dimension, 1.0)
 
     size = 10
     timeGrid = RegularGrid(0.0, 0.1, size)

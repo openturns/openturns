@@ -20,7 +20,7 @@ X : sequence of float, 2-d sequence of float
 
 Returns
 -------
-F : float, :class:`~openturns.NumericalPoint`
+F : float, :class:`~openturns.Point`
     CDF value(s) at input(s) `X`.
 
 Notes
@@ -47,7 +47,7 @@ X : sequence of float
 
 Returns
 -------
-dFdtheta : :class:`~openturns.NumericalPoint`
+dFdtheta : :class:`~openturns.Point`
     Partial derivatives of the CDF with respect to the distribution
     parameters at input `X`."
 %enddef
@@ -98,7 +98,7 @@ X : sequence of float, 2-d sequence of float
 
 Returns
 -------
-C : float, :class:`~openturns.NumericalPoint`
+C : float, :class:`~openturns.Point`
     Complementary CDF value(s) at input(s) `X`.
 
 Notes
@@ -241,7 +241,7 @@ X : sequence of float, 2-d sequence of float
 
 Returns
 -------
-d : :class:`~openturns.NumericalPoint`, :class:`~openturns.Sample`
+d : :class:`~openturns.Point`, :class:`~openturns.Sample`
     DDF value(s) at input(s) `X`.
 
 Notes
@@ -457,7 +457,7 @@ X : sequence of float, 2-d sequence of float
 
 Returns
 -------
-f : float, :class:`~openturns.NumericalPoint`
+f : float, :class:`~openturns.Point`
     Logarithm of the PDF value(s) at input(s) `X`."
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeLogPDF
@@ -475,7 +475,7 @@ X : sequence of float
 
 Returns
 -------
-dfdtheta : :class:`~openturns.NumericalPoint`
+dfdtheta : :class:`~openturns.Point`
     Partial derivatives of the logPDF with respect to the distribution
     parameters at input `X`."
 %enddef
@@ -494,7 +494,7 @@ X : sequence of float, 2-d sequence of float
 
 Returns
 -------
-f : float, :class:`~openturns.NumericalPoint`
+f : float, :class:`~openturns.Point`
     PDF value(s) at input(s) `X`.
 
 Notes
@@ -522,7 +522,7 @@ X : sequence of float
 
 Returns
 -------
-dfdtheta : :class:`~openturns.NumericalPoint`
+dfdtheta : :class:`~openturns.Point`
     Partial derivatives of the PDF with respect to the distribution
     parameters at input `X`."
 %enddef
@@ -576,7 +576,7 @@ p : float, :math:`0 < p < 1`
 
 Returns
 -------
-X : :class:`~openturns.NumericalPoint`
+X : :class:`~openturns.Point`
     Quantile at probability level `p`.
 
 Notes
@@ -665,7 +665,7 @@ x : sequence of float, 2-d sequence of float
 
 Returns
 -------
-S : float, :class:`~openturns.NumericalPoint`
+S : float, :class:`~openturns.Point`
     Survival function value(s) at input(s) `x`.
 
 Notes
@@ -702,7 +702,7 @@ p : float, :math:`p \in [0; 1]`
 
 Returns
 -------
-x : :class:`~openturns.NumericalPoint`
+x : :class:`~openturns.Point`
     Point :math:`\vect{x}` such that :math:`S_{\vect{X}}(\vect{x}) = p` with iso-quantile components.
 
 Notes
@@ -1651,7 +1651,7 @@ k : int
 
 Returns
 -------
-m : :class:`~openturns.NumericalPoint`
+m : :class:`~openturns.Point`
     Componentwise centered moment of order :math:`k`.
 
 Notes
@@ -1684,7 +1684,7 @@ shift : sequence of float
 
 Returns
 -------
-m : :class:`~openturns.NumericalPoint`
+m : :class:`~openturns.Point`
     Componentwise centered moment of order :math:`k`.
 
 Notes
@@ -1962,7 +1962,7 @@ OT_Distribution_getKendallTau_doc
 
 Returns
 -------
-k : :class:`~openturns.NumericalPoint`
+k : :class:`~openturns.Point`
     Componentwise kurtosis.
 
 Notes
@@ -2011,7 +2011,7 @@ OT_Distribution_getMarginal_doc
 
 Returns
 -------
-k : :class:`~openturns.NumericalPoint`
+k : :class:`~openturns.Point`
     Mean.
 
 Notes
@@ -2037,7 +2037,7 @@ k : int
 
 Returns
 -------
-m : :class:`~openturns.NumericalPoint`
+m : :class:`~openturns.Point`
     Componentwise moment of order `k`.
 
 Notes
@@ -2071,7 +2071,7 @@ OT_Distribution_getPDFEpsilon_doc
 
 Returns
 -------
-parameters : :class:`~openturns.NumericalPointWithDescription`
+parameters : :class:`~openturns.PointWithDescription`
     Dictionary-like object with parameters names and values."
 %enddef
 %feature("docstring") OT::DistributionImplementation::getParametersCollection
@@ -2097,7 +2097,7 @@ OT_Distribution_setParameter_doc
 
 Returns
 -------
-parameter : :class:`~openturns.NumericalPoint`
+parameter : :class:`~openturns.Point`
     Parameter values."
 %enddef
 %feature("docstring") OT::DistributionImplementation::getParameter
@@ -2199,7 +2199,7 @@ OT_Distribution_getRange_doc
 
 Returns
 -------
-point : :class:`~openturns.NumericalPoint`
+point : :class:`~openturns.Point`
     A pseudo-random realization of the distribution.
 
 See Also
@@ -2285,7 +2285,7 @@ OT_Distribution_getShapeMatrix_doc
 
 Returns
 -------
-d : :class:`~openturns.NumericalPoint`
+d : :class:`~openturns.Point`
     Componentwise skewness.
 
 Notes
@@ -2338,7 +2338,7 @@ The standard deviation is the square root of the variance.
 
 Returns
 -------
-sigma : :class:`~openturns.NumericalPoint`
+sigma : :class:`~openturns.Point`
     Componentwise standard deviation.
 
 See Also
@@ -2383,7 +2383,7 @@ k : int
 
 Returns
 -------
-m : :class:`~openturns.NumericalPoint`
+m : :class:`~openturns.Point`
     Componentwise standard moment of order `k`.
 
 Notes
@@ -2449,7 +2449,7 @@ OT_Distribution_getSupport_doc
 
 Returns
 -------
-probabilities : :class:`~openturns.NumericalPoint`
+probabilities : :class:`~openturns.Point`
     The probability levels of a discrete distribution."
 %enddef
 %feature("docstring") OT::DistributionImplementation::getProbabilities
@@ -2464,7 +2464,7 @@ It is defined for univariate distributions only, and gives all the singularities
 
 Returns
 -------
-singularities : :class:`~openturns.NumericalPoint`
+singularities : :class:`~openturns.Point`
     The singularities of the PDF of an univariate distribution."
 %enddef
 %feature("docstring") OT::DistributionImplementation::getSingularities
@@ -2604,7 +2604,7 @@ OT_Distribution_setDescription_doc
 
 Parameters
 ----------
-parameters : :class:`~openturns.NumericalPointWithDescription`
+parameters : :class:`~openturns.PointWithDescription`
     Dictionary-like object with parameters names and values."
 %enddef
 %feature("docstring") OT::DistributionImplementation::setParametersCollection
@@ -2903,9 +2903,9 @@ OT_Distribution_getIntegrationNodesNumber_doc
 
 Returns
 -------
-nodes : :class:`~openturns.NumericalPoint`
+nodes : :class:`~openturns.Point`
     Gauss nodes
-weights : :class:`~openturns.NumericalPoint`
+weights : :class:`~openturns.Point`
     Integration weights."
 %enddef
 %feature("docstring") OT::DistributionImplementation::getGaussNodesAndWeights

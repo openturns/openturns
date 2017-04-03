@@ -1,13 +1,13 @@
-// SWIG file NumericalPoint.i
+// SWIG file Point.i
 
-%ignore OT::NumericalPoint::at; // Use __getitem__ instead
-%ignore OT::NumericalPoint::getCollection;
+%ignore OT::Point::at; // Use __getitem__ instead
+%ignore OT::Point::getCollection;
 
 %{
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 %}
 
-%include NumericalPoint_doc.i
+%include Point_doc.i
 
 %template(NumericalScalarCollection)           OT::Collection<OT::NumericalScalar>;
 %template(NumericalScalarPersistentCollection) OT::PersistentCollection<OT::NumericalScalar>;
@@ -28,87 +28,87 @@
        OT::isAPythonSequenceOf<OT::_PyFloat_>( $input );
 }
 
-%template(NumericalPointCollection)            OT::Collection<OT::NumericalPoint>;
-%template(NumericalPointPersistentCollection)  OT::PersistentCollection<OT::NumericalPoint>;
+%template(PointCollection)            OT::Collection<OT::Point>;
+%template(PointPersistentCollection)  OT::PersistentCollection<OT::Point>;
 
 
 #define OT_TYPECHECK_NUMERICALPOINT 4
 
-%typemap(in) const NumericalPoint & ($1_basetype temp) {
+%typemap(in) const Point & ($1_basetype temp) {
   if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0)))
   {
     //Nothing to do for NP
   }
   else if (OT::isAPythonSequenceOf<OT::_PyFloat_>( $input ))
   {
-    temp = OT::convert<OT::_PySequence_,OT::NumericalPoint>( $input );
+    temp = OT::convert<OT::_PySequence_,OT::Point>( $input );
     $1 = &temp;
   }
   else
   {
-    SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a NumericalPoint");
+    SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a Point");
   }
 }
 
-%typemap(typecheck,precedence=OT_TYPECHECK_NUMERICALPOINT) const NumericalPoint & {
+%typemap(typecheck,precedence=OT_TYPECHECK_NUMERICALPOINT) const Point & {
   $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0)) || OT::isAPythonSequenceOf<OT::_PyFloat_>( $input );
 }
 
-%apply const NumericalPoint & { const OT::NumericalPoint & };
+%apply const Point & { const OT::Point & };
 
-%include openturns/NumericalPoint.hxx
-%copyctor NumericalPoint;
+%include openturns/Point.hxx
+%copyctor Point;
 
 namespace OT {
 
-%extend NumericalPoint {
+%extend Point {
 
-NumericalPoint(PyObject * pyObj)
+Point(PyObject * pyObj)
 {
-  return new OT::NumericalPoint(OT::convert<OT::_PySequence_,OT::NumericalPoint>(pyObj));
+  return new OT::Point(OT::convert<OT::_PySequence_,OT::Point>(pyObj));
 }
 
-OTCollectionOperatorsHelper(OT::NumericalPoint, OT::NumericalScalar)
+OTCollectionOperatorsHelper(OT::Point, OT::NumericalScalar)
 
-/* NumericalPoint __add__(const NumericalPoint & other) */
+/* Point __add__(const Point & other) */
 /* { */
 /*  return *self + other; */
 /* } */
 
-NumericalPoint operator +(const NumericalPoint & other)
+Point operator +(const Point & other)
 {
  return *self + other;
 }
 
-NumericalPoint __sub__(const NumericalPoint & other)
+Point __sub__(const Point & other)
 {
  return *self - other;
 }
 
-NumericalPoint __mul__(NumericalScalar s)
+Point __mul__(NumericalScalar s)
 {
  return (*self) * s;
 }
 
-NumericalPoint __rmul__(NumericalScalar s)
+Point __rmul__(NumericalScalar s)
 {
  return s * (*self);
 }
 
-NumericalPoint __div__(NumericalScalar s)
+Point __div__(NumericalScalar s)
 {
  return (*self) / s;
 }
 
-NumericalPoint __truediv__(NumericalScalar s) { return (*self) / s; }
+Point __truediv__(NumericalScalar s) { return (*self) / s; }
 
-NumericalPoint __iadd__(const NumericalPoint & other)
+Point __iadd__(const Point & other)
 {
  *self += other;
  return *self;
 }
 
-NumericalPoint __isub__(const NumericalPoint & other)
+Point __isub__(const Point & other)
 {
  *self -= other;
  return *self;
@@ -117,3 +117,11 @@ NumericalPoint __isub__(const NumericalPoint & other)
 } // %extend
 
 } // OT
+
+%pythoncode %{
+# deprecated
+class NumericalPoint(Point):
+    def __init__(self, *args):
+        super(NumericalPoint, self).__init__(*args)
+        openturns.common.Log.Warn('class NumericalPoint is deprecated in favor of Point')
+%}

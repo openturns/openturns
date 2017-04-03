@@ -15,8 +15,8 @@ def test_model(myModel, test_grad=True, x1=None, x2=None):
     print('parameterDescription=', myModel.getParameterDescription())
 
     if x1 is None and x2 is None:
-        x1 = ot.NumericalPoint(spatialDimension)
-        x2 = ot.NumericalPoint(spatialDimension)
+        x1 = ot.Point(spatialDimension)
+        x2 = ot.Point(spatialDimension)
         for j in range(spatialDimension):
             x1[j] = -1.0 - j
             x2[j] = 3.0 + 2.0 * j
@@ -28,9 +28,9 @@ def test_model(myModel, test_grad=True, x1=None, x2=None):
     print('dCov =', repr(grad))
 
     if (dimension == 1):
-        gradfd = ot.NumericalPoint(spatialDimension)
+        gradfd = ot.Point(spatialDimension)
         for j in range(spatialDimension):
-            x1_d = ot.NumericalPoint(x1)
+            x1_d = ot.Point(x1)
             x1_d[j] = x1_d[j] + eps
             gradfd[j] = (myModel(x1_d, x2)[0, 0] - myModel(x1, x2)[0, 0]) / eps
     else:
@@ -38,14 +38,14 @@ def test_model(myModel, test_grad=True, x1=None, x2=None):
         covarianceX1X2 = myModel(x1, x2)
         # Symmetrize matrix
         covarianceX1X2.getImplementation().symmetrize()
-        centralValue = ot.NumericalPoint(covarianceX1X2.getImplementation())
+        centralValue = ot.Point(covarianceX1X2.getImplementation())
         # Loop over the shifted points
         for i in range(spatialDimension):
-            currentPoint = ot.NumericalPoint(x1)
+            currentPoint = ot.Point(x1)
             currentPoint[i] += eps
             localCovariance = myModel(currentPoint, x2)
             localCovariance.getImplementation().symmetrize()
-            currentValue = ot.NumericalPoint(
+            currentValue = ot.Point(
                 localCovariance.getImplementation())
             for j in range(currentValue.getSize()):
                 gradfd[i, j] = (currentValue[j] - centralValue[j]) / eps

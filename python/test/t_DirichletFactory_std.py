@@ -7,7 +7,7 @@ TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    distribution = Dirichlet(NumericalPoint([0.2, 0.3, 0.4, 0.5]))
+    distribution = Dirichlet(Point([0.2, 0.3, 0.4, 0.5]))
     size = 10000
     sample = distribution.getSample(size)
     factory = DirichletFactory()

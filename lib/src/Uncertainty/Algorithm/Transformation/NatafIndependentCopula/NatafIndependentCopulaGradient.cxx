@@ -76,7 +76,7 @@ String NatafIndependentCopulaGradient::__repr__() const
  * Jij = dTi/dxj = Q'(xi) if i = j
  *               = 0 else
  */
-Matrix NatafIndependentCopulaGradient::gradient(const NumericalPoint & inP) const
+Matrix NatafIndependentCopulaGradient::gradient(const Point & inP) const
 {
   Matrix result(dimension_, dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)

@@ -42,7 +42,7 @@ ParametricEvaluation::ParametricEvaluation()
 /* Parameter constructor */
 ParametricEvaluation::ParametricEvaluation(const Function & function,
     const Indices & set,
-    const NumericalPoint & referencePoint,
+    const Point & referencePoint,
     const Bool parametersSet)
   : EvaluationImplementation()
   , function_(function)
@@ -97,7 +97,7 @@ ParametricEvaluation::ParametricEvaluation(const Function & function,
 /* Parameter constructor */
 ParametricEvaluation::ParametricEvaluation(const ParametricEvaluation & evaluation,
     const Indices & set,
-    const NumericalPoint & referencePoint)
+    const Point & referencePoint)
   : EvaluationImplementation()
   , function_()
   , parametersPositions_(0)
@@ -144,16 +144,16 @@ ParametricEvaluation * ParametricEvaluation::clone() const
 }
 
 /* Evaluation operator */
-NumericalPoint ParametricEvaluation::operator() (const NumericalPoint & point) const
+Point ParametricEvaluation::operator() (const Point & point) const
 {
   const UnsignedInteger inputDimension = function_.getInputDimension();
   const UnsignedInteger pointDimension = point.getDimension();
   const UnsignedInteger parametersDimension = getParameterDimension();
   if (pointDimension + parametersDimension != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << inputDimension - parametersDimension << ", got dimension=" << pointDimension;
-  NumericalPoint x(inputDimension);
+  Point x(inputDimension);
   for (UnsignedInteger i = 0; i < parametersDimension; ++i) x[parametersPositions_[i]] = parameter_[i];
   for (UnsignedInteger i = 0; i < pointDimension; ++i) x[inputPositions_[i]] = point[i];
-  const NumericalPoint value(function_(x));
+  const Point value(function_(x));
   if (isHistoryEnabled_)
   {
     inputStrategy_.store(x);
@@ -187,7 +187,7 @@ Sample ParametricEvaluation::operator() (const Sample & inSample) const
   return output;
 }
 
-Sample ParametricEvaluation::operator() (const NumericalPoint & point,
+Sample ParametricEvaluation::operator() (const Point & point,
     const Sample & parameters)
 {
   const UnsignedInteger size = parameters.getSize();
@@ -213,7 +213,7 @@ Sample ParametricEvaluation::operator() (const NumericalPoint & point,
 }
 
 /* Parameters accessor */
-void ParametricEvaluation::setParameter(const NumericalPoint & parameters)
+void ParametricEvaluation::setParameter(const Point & parameters)
 {
   const UnsignedInteger parametersDimension = parameters.getDimension();
   if (parametersDimension != parametersPositions_.getSize()) throw InvalidArgumentException(HERE) << "Error: expected a parameters of dimension=" << parametersPositions_.getSize() << ", got dimension=" << parametersDimension;
@@ -270,7 +270,7 @@ Sample ParametricEvaluation::getInputParameterHistory() const
 /* String converter */
 String ParametricEvaluation::__repr__() const
 {
-  NumericalPointWithDescription parameters(parameter_);
+  PointWithDescription parameters(parameter_);
   parameters.setDescription(parameterDescription_);
 
   OSS oss;
@@ -284,7 +284,7 @@ String ParametricEvaluation::__repr__() const
 
 String ParametricEvaluation::__str__(const String & offset) const
 {
-  NumericalPointWithDescription parameters(parameter_);
+  PointWithDescription parameters(parameter_);
   parameters.setDescription(parameterDescription_);
 
   OSS oss(false);

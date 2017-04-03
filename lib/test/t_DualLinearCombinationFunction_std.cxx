@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     functions[1] = SymbolicFunction(inVar, formula);
     // Second, build the weights
     Sample coefficients(0, 3);
-    NumericalPoint p(3);
+    Point p(3);
     p[0] = 1.5;
     p[1] = 2.5;
     p[2] = -0.5;
@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     coefficients.add(p);
     // Third, build the function
     DualLinearCombinationFunction myFunction(functions, coefficients);
-    NumericalPoint inPoint(3);
+    Point inPoint(3);
     inPoint[0] = 1.2;
     inPoint[1] = 2.3;
     inPoint[2] = 3.4;

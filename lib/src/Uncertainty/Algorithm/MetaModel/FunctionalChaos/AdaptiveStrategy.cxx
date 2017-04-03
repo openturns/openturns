@@ -82,7 +82,7 @@ void AdaptiveStrategy::computeInitialBasis()
 
 
 /* Update the basis for the next iteration of approximation */
-void AdaptiveStrategy::updateBasis(const NumericalPoint & alpha_k,
+void AdaptiveStrategy::updateBasis(const Point & alpha_k,
                                    const NumericalScalar residual,
                                    const NumericalScalar relativeError)
 

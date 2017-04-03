@@ -8,9 +8,9 @@ Available constructors:
 
 Parameters
 ----------
-lambdaVect : :class:`~openturns.NumericalPoint`
+lambdaVect : :class:`~openturns.Point`
     The  :math:`(\lambda_1, \dots, \lambda_d)` parameter.
-shiftVect : :class:`~openturns.NumericalPoint`
+shiftVect : :class:`~openturns.Point`
     The  :math:`(\alpha_1, \dots, \alpha_d)` parameter. 
 
     Default is :math:`(\alpha_1, \dots, \alpha_d)=(0, \dots, 0)`.
@@ -68,7 +68,7 @@ Create an inverse Box Cox tranformation:
 
 Returns
 -------
-myLambda : :class:`~openturns.NumericalPoint`
+myLambda : :class:`~openturns.Point`
     The :math:`\vect{\lambda}` parameter.
 
 "
@@ -78,7 +78,7 @@ myLambda : :class:`~openturns.NumericalPoint`
 
 Returns
 -------
-myLambda : :class:`~openturns.NumericalPoint`
+myLambda : :class:`~openturns.Point`
     The :math:`\vect{\Lambda}` parameter.
 
 "

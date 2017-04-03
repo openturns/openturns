@@ -22,7 +22,7 @@
 #define OPENTURNS_TENSORAPPROXIMATIONRESULT_HXX
 
 #include "openturns/MetaModelResult.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Collection.hxx"
@@ -61,8 +61,8 @@ public:
                             const Function & inverseTransformation,
                             const Function & composedModel,
                             const Collection<CanonicalTensorEvaluation> & tensorCollection,
-                            const NumericalPoint & residuals,
-                            const NumericalPoint & relativeErrors);
+                            const Point & residuals,
+                            const Point & relativeErrors);
 
   /** Virtual constructor */
   virtual TensorApproximationResult * clone() const;

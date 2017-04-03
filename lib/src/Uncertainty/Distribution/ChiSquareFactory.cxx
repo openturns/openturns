@@ -48,7 +48,7 @@ ChiSquareFactory::Implementation ChiSquareFactory::build(const Sample & sample) 
   return buildAsChiSquare(sample).clone();
 }
 
-ChiSquareFactory::Implementation ChiSquareFactory::build(const NumericalPoint & parameters) const
+ChiSquareFactory::Implementation ChiSquareFactory::build(const Point & parameters) const
 {
   return buildAsChiSquare(parameters).clone();
 }
@@ -73,7 +73,7 @@ ChiSquare ChiSquareFactory::buildAsChiSquare(const Sample & sample) const
   return result;
 }
 
-ChiSquare ChiSquareFactory::buildAsChiSquare(const NumericalPoint & parameters) const
+ChiSquare ChiSquareFactory::buildAsChiSquare(const Point & parameters) const
 {
   try
   {

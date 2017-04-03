@@ -154,8 +154,8 @@ public:
   /** Multiplication with a NumericaScalarCollection (must have consistent dimensions) */
   NumericalComplexCollection operator * (const NumericalScalarCollection & p) const;
 
-  /** Multiplication with a NumericalPoint (must have consistent dimensions) */
-  NumericalComplexCollection operator * (const NumericalPoint & p) const;
+  /** Multiplication with a Point (must have consistent dimensions) */
+  NumericalComplexCollection operator * (const Point & p) const;
 
 #ifndef _MSC_VER
   using SquareComplexMatrix::operator *;

@@ -72,9 +72,9 @@ DistributionFactoryImplementation::Implementation DistributionFactoryImplementat
 }
 
 /* Build a distribution based on a set of parameters */
-DistributionFactoryImplementation::Implementation DistributionFactoryImplementation::build(const NumericalPoint & parameters) const
+DistributionFactoryImplementation::Implementation DistributionFactoryImplementation::build(const Point & parameters) const
 {
-  throw NotYetImplementedException(HERE) << "In DistributionFactoryImplementation::build(const NumericalPointCollection & parameters) const";
+  throw NotYetImplementedException(HERE) << "In DistributionFactoryImplementation::build(const PointCollection & parameters) const";
 }
 
 /* Build a distribution using its default constructor */
@@ -100,7 +100,7 @@ DistributionFactoryResult DistributionFactoryImplementation::buildEstimator(cons
   DistributionFactoryResult nativeResult(buildEstimator(sample));
   Distribution nativeDistribution(nativeResult.getDistribution());
   DistributionParameters parameters2(parameters);
-  NumericalPoint newParameter(parameters.inverse(nativeDistribution.getParameter()));
+  Point newParameter(parameters.inverse(nativeDistribution.getParameter()));
   parameters2.setValues(newParameter);
   ParametrizedDistribution distribution(parameters2);
   Distribution parameterDistribution;
@@ -120,7 +120,7 @@ DistributionFactoryResult DistributionFactoryImplementation::buildEstimator(cons
     {
       Sample bootstrapSample(experiment.generate());
       Distribution estimatedDistribution(build(bootstrapSample));
-      NumericalPoint newEstimatedParameter(parameters.inverse(estimatedDistribution.getParameter()));
+      Point newEstimatedParameter(parameters.inverse(estimatedDistribution.getParameter()));
       parameterSample.add(newEstimatedParameter);
     }
     KernelSmoothing factory;

@@ -13,14 +13,14 @@ inputSample, outputSample : :class:`~openturns.Sample`
     The samples :math:`(\vect{x}_k)_{1 \leq k \leq N} \in \Rset^d` and :math:`(\vect{y}_k)_{1 \leq k \leq N}\in \Rset^p`.
 metaModel : :class:`~openturns.Function`
     The meta model: :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p`, defined in :eq:'metaModel'.
-residuals : :class:`~openturns.NumericalPoint`
+residuals : :class:`~openturns.Point`
     The residual errors.
-relativeErrors : :class:`~openturns.NumericalPoint`
+relativeErrors : :class:`~openturns.Point`
     The relative errors.
 basis : collection of :class:`~openturns.Basis`
     Collection of the  :math:`p` functional basis: :math:`(\varphi_j^l: \Rset^d \rightarrow \Rset)_{1 \leq j \leq n_l}` for each :math:`l \in [1, p]`.
     Its size should be equal to zero if the trend is not estimated.
-trendCoefficients : collection of :class:`~openturns.NumericalPoint`
+trendCoefficients : collection of :class:`~openturns.Point`
    The trend coefficients vectors :math:`(\vect{\alpha}^1, \dots, \vect{\alpha}^p)`.
 covarianceModel : :class:`~openturns.CovarianceModel`
     Covariance function of the normal process with its optimized parameters.
@@ -102,7 +102,7 @@ Get the meta model:
 
 Returns
 -------
-trendCoef : collection of :class:`~openturns.NumericalPoint`
+trendCoef : collection of :class:`~openturns.Point`
     The trend coefficients vectors :math:`(\vect{\alpha}^1, \dots, \vect{\alpha}^p)`
 "
 

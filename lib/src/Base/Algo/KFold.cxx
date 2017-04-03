@@ -56,7 +56,7 @@ String KFold::__repr__() const
 /* Perform cross-validation */
 NumericalScalar KFold::run(const Sample & x,
                            const Sample & y,
-                           const NumericalPoint & weight,
+                           const Point & weight,
                            const Basis & basis,
                            const Indices & indices) const
 {
@@ -64,7 +64,7 @@ NumericalScalar KFold::run(const Sample & x,
 }
 
 NumericalScalar KFold::run(const Sample & y,
-                           const NumericalPoint & weight,
+                           const Point & weight,
                            const Indices & indices,
                            const DesignProxy & proxy) const
 {
@@ -98,8 +98,8 @@ NumericalScalar KFold::run(LeastSquaresMethod & method,
   {
     LOGINFO(OSS() << "Sub-sample " << i << " over " << k_ - 1);
     // build training/test samples
-    NumericalPoint yTest(0);
-    NumericalPoint rhs(0);
+    Point yTest(0);
+    Point rhs(0);
     Indices addedIndices(0);
     Indices conservedIndices(0);
     Indices removedIndices(0);
@@ -131,11 +131,11 @@ NumericalScalar KFold::run(LeastSquaresMethod & method,
     LOGINFO("Solve current least-squares problem");
     method.getImplementation()->proxy_.setRowFilter(rowFilter);
     method.update(addedIndices, conservedIndices, removedIndices, true);
-    const NumericalPoint coefficients(method.solve(rhs));
+    const Point coefficients(method.solve(rhs));
     // evaluate on the test sample
     method.getImplementation()->proxy_.setRowFilter(inverseRowFilter);
     const Matrix psiAk(method.computeWeightedDesign());
-    const NumericalPoint yHatTest(psiAk * coefficients);
+    const Point yHatTest(psiAk * coefficients);
     LOGINFO("Compute the residual");
 
     // The empirical error is the normalized L2 error

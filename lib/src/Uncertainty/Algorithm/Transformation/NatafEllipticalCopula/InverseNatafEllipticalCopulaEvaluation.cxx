@@ -87,14 +87,14 @@ String InverseNatafEllipticalCopulaEvaluation::__str__(const String & offset) co
  * Z(u) = L.u, where L is the Cholesky factor of R: L.L^t = R, L is lower triangular
  * Si(u) = F(Zi), where F is the CDF of the standard elliptical distribution
  */
-NumericalPoint InverseNatafEllipticalCopulaEvaluation::operator () (const NumericalPoint & inP) const
+Point InverseNatafEllipticalCopulaEvaluation::operator () (const Point & inP) const
 {
   const UnsignedInteger dimension = getInputDimension();
   // First, correlate the components
-  NumericalPoint result(cholesky_ * inP);
+  Point result(cholesky_ * inP);
   const Distribution standardMarginal(standardDistribution_.getMarginal(0));
   // Second, apply the commmon marginal distribution
-  for (UnsignedInteger i = 0; i < dimension; ++i) result[i] = standardMarginal.computeCDF(NumericalPoint(1, result[i]));
+  for (UnsignedInteger i = 0; i < dimension; ++i) result[i] = standardMarginal.computeCDF(Point(1, result[i]));
   ++callsNumber_;
   if (isHistoryEnabled_)
   {
@@ -106,7 +106,7 @@ NumericalPoint InverseNatafEllipticalCopulaEvaluation::operator () (const Numeri
 
 /* Gradient according to the marginal parameters. Currently, the dependence parameter are not taken into account. */
 
-Matrix InverseNatafEllipticalCopulaEvaluation::parameterGradient(const NumericalPoint & inP) const
+Matrix InverseNatafEllipticalCopulaEvaluation::parameterGradient(const Point & inP) const
 {
   return Matrix(0, getInputDimension());
 }

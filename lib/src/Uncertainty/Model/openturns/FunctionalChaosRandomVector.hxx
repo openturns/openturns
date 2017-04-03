@@ -52,7 +52,7 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Mean accessor */
-  NumericalPoint getMean() const;
+  Point getMean() const;
 
   /** Covariance accessor */
   CovarianceMatrix getCovariance() const;

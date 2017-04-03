@@ -24,7 +24,7 @@
 
 #include "openturns/Simulation.hxx"
 #include "openturns/StorageManager.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/StandardEvent.hxx"
 #include "openturns/RootStrategy.hxx"
 #include "openturns/SamplingStrategy.hxx"
@@ -65,12 +65,12 @@ public:
   SamplingStrategy getSamplingStrategy() const;
 
   /** Gamma accessor */
-  void setGamma(const NumericalPoint & gamma);
-  NumericalPoint getGamma() const;
+  void setGamma(const Point & gamma);
+  Point getGamma() const;
 
   /** Quadrant orientation_ accessor */
-  void setQuadrantOrientation(const NumericalPoint & quadrantOrientation);
-  NumericalPoint getQuadrantOrientation() const;
+  void setQuadrantOrientation(const Point & quadrantOrientation);
+  Point getQuadrantOrientation() const;
 
   /** Use partial stratification */
   void setPartialStratification(Bool partialStratification);
@@ -81,7 +81,7 @@ public:
   UnsignedInteger getMaximumStratificationDimension() const;
 
   /** T statistic accessor */
-  NumericalPoint getTStatistic() const;
+  Point getTStatistic() const;
 
   /** Performs the actual computation. */
   virtual void run();
@@ -96,10 +96,10 @@ private:
   SamplingStrategy samplingStrategy_;
 
   // Repartition of points in learning/simulation steps
-  NumericalPoint gamma_;
+  Point gamma_;
 
   // Quadrant orientation
-  NumericalPoint quadrantOrientation_;
+  Point quadrantOrientation_;
 
   // Use partial stratification
   Bool partialStratification_;
@@ -108,7 +108,7 @@ private:
   UnsignedInteger maximumStratificationDimension_;
 
   // T statistic
-  NumericalPoint T_;
+  Point T_;
 
 }; /* class AdaptiveDirectionalSampling */
 

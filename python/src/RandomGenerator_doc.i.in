@@ -44,7 +44,7 @@ size : positive int
 
 Returns
 -------
-numbers : float, :class:`~openturns.NumericalPoint`
+numbers : float, :class:`~openturns.Point`
     Pseudo-random numbers uniformly distributed over :math:`[0, 1[`.
 
 Examples

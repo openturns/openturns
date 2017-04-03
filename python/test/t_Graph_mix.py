@@ -9,10 +9,10 @@ RandomGenerator.SetSeed(0)
 try:
     # Instanciate one distribution object
     dim = 2
-    meanPoint = NumericalPoint(dim, 1.0)
+    meanPoint = Point(dim, 1.0)
     meanPoint[0] = 12.0
     meanPoint[1] = 5.0
-    sigma = NumericalPoint(dim, 1.0)
+    sigma = Point(dim, 1.0)
     sigma[0] = 3.0
     sigma[1] = 1.0
     R = CorrelationMatrix(dim)
@@ -24,7 +24,7 @@ try:
     # Test for sampling
     size = 200
     sample = distribution.getSample(size)
-    tmp = Sample(2, NumericalPoint(2))
+    tmp = Sample(2, Point(2))
     tmp[0, 0] = sample.getMin()[0]
     tmp[0, 1] = meanPoint[1] - sigma[1] / sigma[0] * (meanPoint[0] - tmp[0, 0])
     tmp[1, 0] = sample.getMax()[0]
@@ -36,7 +36,7 @@ try:
     # Create the line
     myLine = Curve(tmp, "red", "solid", 2, "Line")
 
-    data = NumericalPoint(0)
+    data = Point(0)
 
     palette = Description()
     labels = Description()
@@ -85,7 +85,7 @@ try:
     labels.add("cumul candidates < 3.5% ")
     palette.add("purple")
 
-    centre = NumericalPoint(2)
+    centre = Point(2)
     centre[0] = 7.0
     centre[1] = 10.0
 

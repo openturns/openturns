@@ -34,9 +34,9 @@ public:
     : vertices_(vertices)
     , scaling_(scaling)
   {}
-  inline NumericalScalar operator() (NumericalPoint pt1, NumericalPoint pt2) const
+  inline NumericalScalar operator() (Point pt1, Point pt2) const
   {
-    NumericalPoint difference(pt1 - pt2);
+    Point difference(pt1 - pt2);
     return exp(-std::abs(difference.norm()) / scaling_);
   }
   NumericalScalar operator() (UnsignedInteger i, UnsignedInteger j) const
@@ -66,8 +66,8 @@ int main(int argc, char *argv[])
     indices.add(n);
     indices.add(n);
     const IntervalMesher intervalMesher(indices);
-    const NumericalPoint lowerBound(2, 0.0);
-    const NumericalPoint upperBound(2, 1.0);
+    const Point lowerBound(2, 0.0);
+    const Point upperBound(2, 1.0);
     const Mesh mesh2D(intervalMesher.build(Interval(lowerBound, upperBound)));
     const Sample vertices2D(mesh2D.getVertices());
     Sample vertices(vertices2D.getSize(), 3);

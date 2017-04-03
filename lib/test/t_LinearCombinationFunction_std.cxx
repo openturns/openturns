@@ -46,12 +46,12 @@ int main(int argc, char *argv[])
     formula[0] = "exp(-x1 * x1 + x2) / cos(1.0 + x1 * x2 - x2)";
     functions[1] = SymbolicFunction(inVar, formula);
     // Second, build the weights
-    NumericalPoint coefficients(2);
+    Point coefficients(2);
     coefficients[0] = 0.3;
     coefficients[1] = 2.9;
     // Third, build the function
     LinearCombinationFunction myFunction(functions, coefficients);
-    NumericalPoint inPoint(2);
+    Point inPoint(2);
     inPoint[0] = 1.2;
     inPoint[1] = 2.3;
     std::cout << "myFunction=" << myFunction << std::endl;

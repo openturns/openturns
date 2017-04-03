@@ -23,7 +23,7 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Function.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -46,8 +46,8 @@ public:
   /** Standard constructor */
   MetaModelResult(const Function & model,
                   const Function & metaModel,
-                  const NumericalPoint & residuals,
-                  const NumericalPoint & relativeErrors);
+                  const Point & residuals,
+                  const Point & relativeErrors);
 
   /** Virtual constructor */
   virtual MetaModelResult * clone() const;
@@ -61,12 +61,12 @@ public:
   virtual Function getMetaModel() const;
 
   /** Marginal residuals accessor */
-  virtual void setResiduals(const NumericalPoint & residuals);
-  virtual NumericalPoint getResiduals() const;
+  virtual void setResiduals(const Point & residuals);
+  virtual Point getResiduals() const;
 
   /** Marginal relative errors accessor */
-  virtual void setRelativeErrors(const NumericalPoint & relativeErrors);
-  virtual NumericalPoint getRelativeErrors() const;
+  virtual void setRelativeErrors(const Point & relativeErrors);
+  virtual Point getRelativeErrors() const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -86,10 +86,10 @@ protected:
   Function metaModel_;
 
   // The marginal residuals
-  NumericalPoint residuals_;
+  Point residuals_;
 
   // The marginal relative errors
-  NumericalPoint relativeErrors_;
+  Point relativeErrors_;
 
 }; // class MetaModelResult
 

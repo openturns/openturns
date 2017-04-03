@@ -75,7 +75,7 @@ String NatafIndependentCopulaHessian::__repr__() const
  * Hijk = d2Ti/dxjdxk = Q''(xi) if i = j = k
  *                    = 0 else
  */
-SymmetricTensor NatafIndependentCopulaHessian::hessian(const NumericalPoint & inP) const
+SymmetricTensor NatafIndependentCopulaHessian::hessian(const Point & inP) const
 {
   SymmetricTensor result(dimension_, dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)

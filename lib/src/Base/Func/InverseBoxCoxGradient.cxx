@@ -77,7 +77,7 @@ InverseBoxCoxEvaluation InverseBoxCoxGradient::getEvaluation() const
 }
 
 /* Gradient evaluation method */
-Matrix InverseBoxCoxGradient::gradient(const NumericalPoint & inP) const
+Matrix InverseBoxCoxGradient::gradient(const Point & inP) const
 {
   const UnsignedInteger dimension = getInputDimension();
   if (inP.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << dimension << ", got " << inP.getDimension();
@@ -112,13 +112,13 @@ UnsignedInteger InverseBoxCoxGradient::getOutputDimension() const
 }
 
 /* Accessor for the lambda */
-NumericalPoint InverseBoxCoxGradient::getLambda() const
+Point InverseBoxCoxGradient::getLambda() const
 {
   return evaluation_.getLambda();
 }
 
 /* Accessor for the shift */
-NumericalPoint InverseBoxCoxGradient::getShift() const
+Point InverseBoxCoxGradient::getShift() const
 {
   return evaluation_.getShift();
 }

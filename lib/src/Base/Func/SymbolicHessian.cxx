@@ -194,7 +194,7 @@ void SymbolicHessian::initialize() const
 }
 
 /* Hessian */
-SymmetricTensor SymbolicHessian::hessian(const NumericalPoint & inP) const
+SymmetricTensor SymbolicHessian::hessian(const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a Function with an argument of invalid dimension";
@@ -203,7 +203,7 @@ SymmetricTensor SymbolicHessian::hessian(const NumericalPoint & inP) const
   const UnsignedInteger outputDimension = getOutputDimension();
   SymmetricTensor out(inputDimension, outputDimension);
   ++ callsNumber_;
-  NumericalPoint outP(parser_(inP));
+  Point outP(parser_(inP));
   UnsignedInteger parserIndex = 0;
   for (UnsignedInteger sheetIndex = 0; sheetIndex < outputDimension; ++ sheetIndex)
   {

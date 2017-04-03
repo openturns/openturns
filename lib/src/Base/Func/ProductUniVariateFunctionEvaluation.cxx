@@ -76,13 +76,13 @@ String ProductUniVariateFunctionEvaluation::__str__(const String & offset) const
 
 
 /* Operator (): Evaluate a product of 1D polynomials for one sample */
-NumericalPoint ProductUniVariateFunctionEvaluation::operator() (const NumericalPoint & inP) const
+Point ProductUniVariateFunctionEvaluation::operator() (const Point & inP) const
 {
   const UnsignedInteger inDimension = inP.getDimension();
   if (inDimension != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a ProductPolynomialFunction with an argument of invalid dimension";
   NumericalScalar productEvaluation(1.0) ;
   for (UnsignedInteger i = 0; i < inDimension; ++ i) productEvaluation *= functions_[i](inP[i]);
-  const NumericalPoint result(1, productEvaluation);
+  const Point result(1, productEvaluation);
   if (isHistoryEnabled_)
   {
     inputStrategy_.store(inP);

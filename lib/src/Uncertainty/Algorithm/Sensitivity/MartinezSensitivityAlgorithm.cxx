@@ -87,14 +87,14 @@ Sample MartinezSensitivityAlgorithm::computeIndices(const Sample & sample,
   // Use reference samples
   // Reference sample yA
   Sample yA(sample, 0, size);
-  const NumericalPoint muA(yA.computeMean());
-  const NumericalPoint sigmaA(yA.computeStandardDeviationPerComponent());
+  const Point muA(yA.computeMean());
+  const Point sigmaA(yA.computeStandardDeviationPerComponent());
   // center sample yA
   yA -= muA;
   // Reference sample yB
   Sample yB(sample, size, 2 * size);
-  const NumericalPoint muB(yB.computeMean());
-  const NumericalPoint sigmaB(yB.computeStandardDeviationPerComponent());
+  const Point muB(yB.computeMean());
+  const Point sigmaB(yB.computeStandardDeviationPerComponent());
   // center-reduce sample yB
   yB -= muB;
   yB /= sigmaB;
@@ -102,15 +102,15 @@ Sample MartinezSensitivityAlgorithm::computeIndices(const Sample & sample,
   for (UnsignedInteger p = 0; p < inputDimension; ++p)
   {
     Sample yE(sample, (2 + p) * size, (3 + p) * size);
-    const NumericalPoint muE(yE.computeMean());
-    const NumericalPoint sigmaE(yE.computeStandardDeviationPerComponent());
+    const Point muE(yE.computeMean());
+    const Point sigmaE(yE.computeStandardDeviationPerComponent());
     // center-reduce sample yB
     yE -= muE;
     yE /= sigmaE;
     // Compute yE * yB
-    const NumericalPoint yEDotyB(computeSumDotSamples(yE, yB));
+    const Point yEDotyB(computeSumDotSamples(yE, yB));
     // Compute yE * yA
-    const NumericalPoint yEDotyA(computeSumDotSamples(yE, yA));
+    const Point yEDotyA(computeSumDotSamples(yE, yA));
     for (UnsignedInteger q = 0; q < outputDimension; ++q)
     {
       // Compute rho(yB, yE) with rho : Pearson correlation
@@ -142,8 +142,8 @@ void MartinezSensitivityAlgorithm::computeAsymptoticInterval() const
   // Compute Fisher transform
   // Build interval using sample variance
   // Mean reference is the Sensitivity values
-  const NumericalPoint aggregatedFirstOrder(getAggregatedFirstOrderIndices());
-  const NumericalPoint aggregatedTotalOrder(getAggregatedTotalOrderIndices());
+  const Point aggregatedFirstOrder(getAggregatedFirstOrderIndices());
+  const Point aggregatedTotalOrder(getAggregatedTotalOrderIndices());
   const NumericalScalar t = DistFunc::qNormal(1.0 - 0.5 * confidenceLevel_);
   const UnsignedInteger size = size_;
   if (size <= 3)
@@ -151,11 +151,11 @@ void MartinezSensitivityAlgorithm::computeAsymptoticInterval() const
                                          << ", sample's size should be at least 4";
   const UnsignedInteger inputDimension = inputDesign_.getDimension();
   // First order interval
-  NumericalPoint firstOrderLowerBound(inputDimension, 0.0);
-  NumericalPoint firstOrderUpperBound(inputDimension, 0.0);
+  Point firstOrderLowerBound(inputDimension, 0.0);
+  Point firstOrderUpperBound(inputDimension, 0.0);
   // Total order interval
-  NumericalPoint totalOrderLowerBound(inputDimension, 0.0);
-  NumericalPoint totalOrderUpperBound(inputDimension, 0.0);
+  Point totalOrderLowerBound(inputDimension, 0.0);
+  Point totalOrderUpperBound(inputDimension, 0.0);
   // Numerical scalar that will be used
   NumericalScalar z, rho;
   for (UnsignedInteger p = 0; p < inputDimension; ++p)

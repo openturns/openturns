@@ -47,7 +47,7 @@ Full * Full::clone() const
 }
 
 /* Store the point according to the strategy */
-void Full::store(const NumericalPoint & point)
+void Full::store(const Point & point)
 {
   if (!isInitialized_)
   {

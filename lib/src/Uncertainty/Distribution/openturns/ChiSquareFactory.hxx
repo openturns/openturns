@@ -45,14 +45,14 @@ public:
   using DistributionFactoryImplementation::build;
 
   Implementation build(const Sample & sample) const;
-  Implementation build(const NumericalPoint & parameters) const;
+  Implementation build(const Point & parameters) const;
   Implementation build() const;
 
   using DistributionFactoryImplementation::buildEstimator;
   DistributionFactoryResult buildEstimator(const Sample & sample) const;
 
   ChiSquare buildAsChiSquare(const Sample & sample) const;
-  ChiSquare buildAsChiSquare(const NumericalPoint & parameters) const;
+  ChiSquare buildAsChiSquare(const Point & parameters) const;
   ChiSquare buildAsChiSquare() const;
 
 }; /* class ChiSquareFactory */

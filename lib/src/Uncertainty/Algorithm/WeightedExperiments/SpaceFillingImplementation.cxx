@@ -69,8 +69,8 @@ NumericalScalar SpaceFillingImplementation::perturbLHS(Sample& oldDesign, Numeri
 Sample SpaceFillingImplementation::normalize(const Sample & sample) const
 {
   const UnsignedInteger dimension(sample.getDimension());
-  const NumericalPoint minPoint(sample.getMin());
-  const NumericalPoint maxPoint(sample.getMax());
+  const Point minPoint(sample.getMin());
+  const Point maxPoint(sample.getMax());
   Bool toNormalize(false);
   for (UnsignedInteger d = 0; d < dimension; ++d)
   {
@@ -83,7 +83,7 @@ Sample SpaceFillingImplementation::normalize(const Sample & sample) const
   if (!toNormalize) return sample;
 
   LOGWARN(OSS() << "Sample must be normalized");
-  const NumericalPoint delta(maxPoint - minPoint);
+  const Point delta(maxPoint - minPoint);
   Sample result(sample - minPoint);
   return result / delta;
 }

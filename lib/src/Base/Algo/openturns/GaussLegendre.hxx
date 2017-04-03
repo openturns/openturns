@@ -52,9 +52,9 @@ public:
   /** Compute an approximation of \int_a^b f(x_1,\dots,x_n)dx_1\dotsdx_n, where [a,b] is an nD interval.
    */
   using IntegrationAlgorithmImplementation::integrate;
-  NumericalPoint integrate(const Function & function,
+  Point integrate(const Function & function,
                            const Interval & interval) const;
-  NumericalPoint integrateWithNodes(const Function & function,
+  Point integrateWithNodes(const Function & function,
                                     const Interval & interval,
                                     Sample & adaptedNodes) const;
 
@@ -65,7 +65,7 @@ public:
   Sample getNodes() const;
 
   /** Weights accessor */
-  NumericalPoint getWeights() const;
+  Point getWeights() const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -85,7 +85,7 @@ private:
   Sample nodes_;
 
   /* Integration weights */
-  NumericalPoint weights_;
+  Point weights_;
 
 } ; /* class GaussLegendre */
 

@@ -219,7 +219,7 @@ orientation : sequence of float
 
 Returns
 -------
-orientation : :class:`~openturns.NumericalPoint`
+orientation : :class:`~openturns.Point`
     Quadrant orientation."
 
 // ---------------------------------------------------------------------
@@ -263,7 +263,7 @@ The computational budget per step :math:`\gamma_l`.
 
 Returns
 -------
-gamma : :class:`~openturns.NumericalPoint`
+gamma : :class:`~openturns.Point`
     Gamma value."
 
 // ---------------------------------------------------------------------
@@ -275,6 +275,6 @@ The statistic :math:`\tilde T_k` aggregates the sensitivity of expectation.
 
 Returns
 -------
-gamma : :class:`~openturns.NumericalPoint`
+gamma : :class:`~openturns.Point`
     T statistic value."
 

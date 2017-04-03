@@ -83,18 +83,18 @@ Sample MauntzKucherenkoSensitivityAlgorithm::computeIndices(const Sample & sampl
   // Use reference samples
   // Compute muA = mean(yA)
   const Sample yA(sample, 0, size);
-  const NumericalPoint muA(yA.computeMean());
+  const Point muA(yA.computeMean());
 
   // Compute crossMean
-  const NumericalPoint yADotyB(computeSumDotSamples(sample, size_, 0,  size_));
+  const Point yADotyB(computeSumDotSamples(sample, size_, 0,  size_));
   // main loop
   for (UnsignedInteger p = 0; p < inputDimension; ++p)
   {
     // yE correspond to the block that start at index (p + 2) * size_
     // For first order indices, compute yE * yB
-    const NumericalPoint yEDotyB(computeSumDotSamples(sample, size_, size_, (2 + p) * size_));
+    const Point yEDotyB(computeSumDotSamples(sample, size_, size_, (2 + p) * size_));
     // Compute yE * yA
-    const NumericalPoint yEDotyA(computeSumDotSamples(sample, size_, 0, (2 + p) * size_));
+    const Point yEDotyA(computeSumDotSamples(sample, size_, 0, (2 + p) * size_));
     for (UnsignedInteger k = 0; k < size; ++k)
     {
       for (UnsignedInteger q = 0; q < outputDimension; ++q)

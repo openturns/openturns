@@ -93,7 +93,7 @@ Returns
 sample : :class:`~openturns.Sample`
     The points which constitute the design of experiments. The sampling method
     is defined by the nature of the experiment.
-weights : :class:`~openturns.NumericalPoint` of size :math:`cardI`
+weights : :class:`~openturns.Point` of size :math:`cardI`
     Weights :math:`(\omega_i)_{i \in I}` associated with the points. By default,
     all the weights are equal to :math:`1/cardI`.
 

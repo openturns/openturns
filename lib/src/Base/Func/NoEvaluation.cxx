@@ -72,12 +72,12 @@ Bool NoEvaluation::isActualImplementation() const
 /* Here is the interface that all derived class must implement */
 
 /* Operator () */
-NumericalPoint NoEvaluation::operator() (const NumericalPoint & inP) const
+Point NoEvaluation::operator() (const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   ++callsNumber_;
-  const NumericalPoint result;
+  const Point result;
   if (isHistoryEnabled_)
   {
     inputStrategy_.store(inP);

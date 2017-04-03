@@ -22,8 +22,8 @@
 #define OPENTURNS_DISTRIBUTIONIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalPointWithDescription.hxx"
+#include "openturns/Point.hxx"
+#include "openturns/PointWithDescription.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Interval.hxx"
@@ -58,8 +58,8 @@ public:
   typedef Pointer<DistributionImplementation>       Implementation;
   typedef Function                     IsoProbabilisticTransformation;
   typedef IsoProbabilisticTransformation            InverseIsoProbabilisticTransformation;
-  typedef Collection<NumericalPoint>                NumericalPointCollection;
-  typedef Collection<NumericalPointWithDescription> NumericalPointWithDescriptionCollection;
+  typedef Collection<Point>                PointCollection;
+  typedef Collection<PointWithDescription> PointWithDescriptionCollection;
 
   /** Default constructor */
   DistributionImplementation();
@@ -141,9 +141,9 @@ public:
   virtual DistributionImplementation * clone() const;
 
   /** Get one realization of the distribution */
-  virtual NumericalPoint getRealization() const;
+  virtual Point getRealization() const;
 protected:
-  virtual NumericalPoint getRealizationByInversion() const;
+  virtual Point getRealizationByInversion() const;
 
 public:
   /** Get a numerical sample whose elements follow the distributionImplementation */
@@ -155,7 +155,7 @@ public:
 public:
   /** Get the DDF of the distribution */
   virtual NumericalScalar computeDDF(const NumericalScalar scalar) const;
-  virtual NumericalPoint  computeDDF(const NumericalPoint & point) const;
+  virtual Point  computeDDF(const Point & point) const;
   virtual Sample computeDDF(const Sample & sample) const;
 protected:
   virtual Sample computeDDFSequential(const Sample & sample) const;
@@ -164,7 +164,7 @@ public:
 
   /** Get the PDF of the distribution */
   virtual NumericalScalar computePDF(const NumericalScalar scalar) const;
-  virtual NumericalScalar computePDF(const NumericalPoint & point) const;
+  virtual NumericalScalar computePDF(const Point & point) const;
   virtual Sample computePDF(const Sample & sample) const;
 protected:
   virtual Sample computePDFSequential(const Sample & sample) const;
@@ -172,7 +172,7 @@ protected:
 public:
 
   virtual NumericalScalar computeLogPDF(const NumericalScalar scalar) const;
-  virtual NumericalScalar computeLogPDF(const NumericalPoint & point) const;
+  virtual NumericalScalar computeLogPDF(const Point & point) const;
   virtual Sample computeLogPDF(const Sample & sample) const;
 protected:
   virtual Sample computeLogPDFSequential(const Sample & sample) const;
@@ -186,8 +186,8 @@ public:
                                      Sample & grid) const;
 
   /** Compute the PDF of nD distributions over a regular grid */
-  virtual Sample computePDF(const NumericalPoint & xMin,
-                                     const NumericalPoint & xMax,
+  virtual Sample computePDF(const Point & xMin,
+                                     const Point & xMax,
                                      const Indices & pointNumber,
                                      Sample & grid) const;
 
@@ -198,8 +198,8 @@ public:
 					Sample & grid) const;
 
   /** Compute the log-PDF of nD distributions over a regular grid */
-  virtual Sample computeLogPDF(const NumericalPoint & xMin,
-					const NumericalPoint & xMax,
+  virtual Sample computeLogPDF(const Point & xMin,
+					const Point & xMax,
 					const Indices & pointNumber,
 					Sample & grid) const;
 
@@ -208,12 +208,12 @@ public:
   virtual NumericalScalar computeComplementaryCDF(const NumericalScalar scalar) const;
   virtual NumericalScalar computeSurvivalFunction(const NumericalScalar scalar) const;
 
-  virtual NumericalScalar computeCDF(const NumericalPoint & point) const;
-  virtual NumericalScalar computeComplementaryCDF(const NumericalPoint & point) const;
-  virtual NumericalScalar computeSurvivalFunction(const NumericalPoint & point) const;
-  virtual NumericalPoint computeInverseSurvivalFunction(const NumericalScalar point) const;
+  virtual NumericalScalar computeCDF(const Point & point) const;
+  virtual NumericalScalar computeComplementaryCDF(const Point & point) const;
+  virtual NumericalScalar computeSurvivalFunction(const Point & point) const;
+  virtual Point computeInverseSurvivalFunction(const NumericalScalar point) const;
 #ifndef SWIG
-  virtual NumericalPoint computeInverseSurvivalFunction(const NumericalScalar prob,
+  virtual Point computeInverseSurvivalFunction(const NumericalScalar prob,
       NumericalScalar & marginalProb) const;
 #endif
 protected:
@@ -239,8 +239,8 @@ public:
                                      Sample & grid) const;
 
   /** Compute the CDF of nD distributions over a regular grid */
-  virtual Sample computeCDF(const NumericalPoint & xMin,
-                                     const NumericalPoint & xMax,
+  virtual Sample computeCDF(const Point & xMin,
+                                     const Point & xMax,
                                      const Indices & pointNumber,
                                      Sample & grid) const;
 
@@ -262,9 +262,9 @@ public:
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   virtual NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
-  virtual NumericalComplex computeCharacteristicFunction(const NumericalPoint & x) const;
+  virtual NumericalComplex computeCharacteristicFunction(const Point & x) const;
   virtual NumericalComplex computeLogCharacteristicFunction(const NumericalScalar x) const;
-  virtual NumericalComplex computeLogCharacteristicFunction(const NumericalPoint & x) const;
+  virtual NumericalComplex computeLogCharacteristicFunction(const Point & x) const;
 
   /** Compute the generating function, i.e. psi(z) = E(z^X) */
   virtual NumericalScalar computeGeneratingFunction(const NumericalScalar z) const;
@@ -274,11 +274,11 @@ public:
   virtual NumericalComplex computeLogGeneratingFunction(const NumericalComplex & z) const;
 
   /** Get the PDF gradient of the distribution */
-  virtual NumericalPoint computePDFGradient(const NumericalPoint & point) const;
+  virtual Point computePDFGradient(const Point & point) const;
   virtual Sample computePDFGradient(const Sample & inSample) const;
 
   /** Get the logPDF gradient of the distribution */
-  virtual NumericalPoint computeLogPDFGradient(const NumericalPoint & point) const;
+  virtual Point computeLogPDFGradient(const Point & point) const;
   virtual Sample computeLogPDFGradient(const Sample & inSample) const;
 
 protected:
@@ -287,26 +287,26 @@ protected:
 
  public:
   /** Get the CDF gradient of the distribution */
-  virtual NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
+  virtual Point computeCDFGradient(const Point & point) const;
   virtual Sample computeCDFGradient(const Sample & inSample) const;
 public:
 
   /** Get the quantile of the distribution */
-  virtual NumericalPoint computeQuantile(const NumericalScalar prob,
+  virtual Point computeQuantile(const NumericalScalar prob,
                                          const Bool tail = false) const;
 #ifndef SWIG
-  virtual NumericalPoint computeQuantile(const NumericalScalar prob,
+  virtual Point computeQuantile(const NumericalScalar prob,
                                          const Bool tail,
                                          NumericalScalar & marginalProb) const;
 #endif
   /** Get the quantile over a provided grid */
 protected:
-  virtual Sample computeQuantileSequential(const NumericalPoint & prob,
+  virtual Sample computeQuantileSequential(const Point & prob,
       const Bool tail = false) const;
-  virtual Sample computeQuantileParallel(const NumericalPoint & prob,
+  virtual Sample computeQuantileParallel(const Point & prob,
       const Bool tail = false) const;
 public:
-  virtual Sample computeQuantile(const NumericalPoint & prob,
+  virtual Sample computeQuantile(const Point & prob,
                                           const Bool tail = false) const;
 
   /** Compute the quantile over a regular grid */
@@ -366,29 +366,29 @@ public:
   virtual NumericalScalar getRoughness() const;
 
   /** Get the mean of the distribution */
-  virtual NumericalPoint getMean() const;
+  virtual Point getMean() const;
 
   /** Get the standard deviation of the distribution */
-  virtual NumericalPoint getStandardDeviation() const;
+  virtual Point getStandardDeviation() const;
 
   /** Get the skewness of the distribution */
-  virtual NumericalPoint getSkewness() const;
+  virtual Point getSkewness() const;
 
   /** Get the kurtosis of the distribution */
-  virtual NumericalPoint getKurtosis() const;
+  virtual Point getKurtosis() const;
 
   /** Get the raw moments of the standardized distribution */
-  virtual NumericalPoint getStandardMoment(const UnsignedInteger n) const;
+  virtual Point getStandardMoment(const UnsignedInteger n) const;
 
   /** Get the raw moments of the distribution */
-  virtual NumericalPoint getMoment(const UnsignedInteger n) const;
+  virtual Point getMoment(const UnsignedInteger n) const;
 
   /** Get the centered moments of the distribution */
-  virtual NumericalPoint getCenteredMoment(const UnsignedInteger n) const;
+  virtual Point getCenteredMoment(const UnsignedInteger n) const;
 
   /** Get the shifted moments of the distribution */
-  virtual NumericalPoint getShiftedMoment(const UnsignedInteger n,
-                                          const NumericalPoint & shift) const;
+  virtual Point getShiftedMoment(const UnsignedInteger n,
+                                          const Point & shift) const;
 
   /** Get the covariance of the distribution */
   virtual CovarianceMatrix getCovariance() const;
@@ -444,10 +444,10 @@ public:
   virtual Sample getSupport() const;
 
   /** Get the discrete probability levels */
-  virtual NumericalPoint getProbabilities() const;
+  virtual Point getProbabilities() const;
 
   /** Get the PDF singularities inside of the range - 1D only */
-  virtual NumericalPoint getSingularities() const;
+  virtual Point getSingularities() const;
 
   /** Compute the density generator of the elliptical generator, i.e.
    *  the function phi such that the density of the distribution can
@@ -475,27 +475,27 @@ public:
 
   /** Compute the DDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   virtual NumericalScalar computeConditionalDDF(const NumericalScalar x,
-      const NumericalPoint & y) const;
+      const Point & y) const;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   virtual NumericalScalar computeConditionalPDF(const NumericalScalar x,
-      const NumericalPoint & y) const;
+      const Point & y) const;
 
-  virtual NumericalPoint computeConditionalPDF(const NumericalPoint & x,
+  virtual Point computeConditionalPDF(const Point & x,
       const Sample & y) const;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   virtual NumericalScalar computeConditionalCDF(const NumericalScalar x,
-      const NumericalPoint & y) const;
+      const Point & y) const;
 
-  virtual NumericalPoint computeConditionalCDF(const NumericalPoint & x,
+  virtual Point computeConditionalCDF(const Point & x,
       const Sample & y) const;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
   virtual NumericalScalar computeConditionalQuantile(const NumericalScalar q,
-      const NumericalPoint & y) const;
+      const Point & y) const;
 
-  virtual NumericalPoint computeConditionalQuantile(const NumericalPoint & q,
+  virtual Point computeConditionalQuantile(const Point & q,
       const Sample & y) const;
 
   /** Get the isoprobabilist transformation */
@@ -515,7 +515,7 @@ public:
   void setIntegrationNodesNumber(const UnsignedInteger integrationNodesNumber) const;
 
   /** Gauss nodes and weights accessor */
-  NumericalPoint getGaussNodesAndWeights(NumericalPoint & weights) const;
+  Point getGaussNodesAndWeights(Point & weights) const;
 
   /** Draw the PDF of the distribution when its dimension is 1 or 2 */
   virtual Graph drawPDF() const;
@@ -534,12 +534,12 @@ public:
                                   const UnsignedInteger pointNumber) const;
 
   /** Draw the PDF of the distribution when its dimension is 2 */
-  virtual Graph drawPDF(const NumericalPoint & xMin,
-                        const NumericalPoint & xMax,
+  virtual Graph drawPDF(const Point & xMin,
+                        const Point & xMax,
                         const Indices & pointNumber) const;
 
-  virtual Graph drawPDF(const NumericalPoint & xMin,
-                        const NumericalPoint & xMax) const;
+  virtual Graph drawPDF(const Point & xMin,
+                        const Point & xMax) const;
 
   virtual Graph drawPDF(const Indices & pointNumber) const;
 
@@ -547,8 +547,8 @@ public:
   /** Draw the PDF of a 2D marginal */
   virtual Graph drawMarginal2DPDF(const UnsignedInteger firstMarginal,
                                   const UnsignedInteger secondMarginal,
-                                  const NumericalPoint & xMin,
-                                  const NumericalPoint & xMax,
+                                  const Point & xMin,
+                                  const Point & xMax,
                                   const Indices & pointNumber) const;
 
   /** Draw the log-PDF of the distribution when its dimension is 1 or 2 */
@@ -568,12 +568,12 @@ public:
 				     const UnsignedInteger pointNumber) const;
 
   /** Draw the log-PDF of the distribution when its dimension is 2 */
-  virtual Graph drawLogPDF(const NumericalPoint & xMin,
-			   const NumericalPoint & xMax,
+  virtual Graph drawLogPDF(const Point & xMin,
+			   const Point & xMax,
 			   const Indices & pointNumber) const;
 
-  virtual Graph drawLogPDF(const NumericalPoint & xMin,
-			   const NumericalPoint & xMax) const;
+  virtual Graph drawLogPDF(const Point & xMin,
+			   const Point & xMax) const;
 
   virtual Graph drawLogPDF(const Indices & pointNumber) const;
 
@@ -581,8 +581,8 @@ public:
   /** Draw the PDF of a 2D marginal */
   virtual Graph drawMarginal2DLogPDF(const UnsignedInteger firstMarginal,
 				     const UnsignedInteger secondMarginal,
-				     const NumericalPoint & xMin,
-				     const NumericalPoint & xMax,
+				     const Point & xMin,
+				     const Point & xMax,
 				     const Indices & pointNumber) const;
 
   /** Draw the CDF of the distribution when its dimension is 1 or 2 */
@@ -597,12 +597,12 @@ public:
 
 
   /** Draw the CDF of the distribution when its dimension is 2 */
-  virtual Graph drawCDF(const NumericalPoint & xMin,
-                        const NumericalPoint & xMax,
+  virtual Graph drawCDF(const Point & xMin,
+                        const Point & xMax,
                         const Indices & pointNumber) const;
 
-  virtual Graph drawCDF(const NumericalPoint & xMin,
-                        const NumericalPoint & xMax) const;
+  virtual Graph drawCDF(const Point & xMin,
+                        const Point & xMax) const;
 
   virtual Graph drawCDF(const Indices & pointNumber) const;
 
@@ -616,8 +616,8 @@ public:
   /** Draw the CDF of a 2D marginal */
   virtual Graph drawMarginal2DCDF(const UnsignedInteger firstMarginal,
                                   const UnsignedInteger secondMarginal,
-                                  const NumericalPoint & xMin,
-                                  const NumericalPoint & xMax,
+                                  const Point & xMin,
+                                  const Point & xMax,
                                   const Indices & pointNumber) const;
 
   /** Draw the quantile of the distribution when its dimension is 1 or 2 */
@@ -637,13 +637,13 @@ protected:
 public:
 
   /** Parameters value and description accessor */
-  virtual NumericalPointWithDescriptionCollection getParametersCollection() const;
-  virtual void setParametersCollection(const NumericalPointWithDescriptionCollection & parametersCollection);
-  virtual void setParametersCollection(const NumericalPointCollection & parametersCollection);
+  virtual PointWithDescriptionCollection getParametersCollection() const;
+  virtual void setParametersCollection(const PointWithDescriptionCollection & parametersCollection);
+  virtual void setParametersCollection(const PointCollection & parametersCollection);
 
   /** Parameters value accessor */
-  virtual NumericalPoint getParameter() const;
-  virtual void setParameter(const NumericalPoint & parameters);
+  virtual Point getParameter() const;
+  virtual void setParameter(const Point & parameters);
 
   /** Parameters description accessor */
   virtual Description getParameterDescription() const;
@@ -700,9 +700,9 @@ protected:
   virtual NumericalComplex computeLogCharacteristicFunction(const UnsignedInteger index,
       const NumericalScalar step) const;
   virtual NumericalComplex computeCharacteristicFunction(const Indices & indices,
-      const NumericalPoint & step) const;
+      const Point & step) const;
   virtual NumericalComplex computeLogCharacteristicFunction(const Indices & indices,
-      const NumericalPoint & step) const;
+      const Point & step) const;
 
   /** Compute the mean of the distribution */
   virtual void computeMean() const;
@@ -714,12 +714,12 @@ protected:
   virtual void computeCovarianceGeneral() const;
 
   /** Compute the shifted moments of the distribution */
-  virtual NumericalPoint computeShiftedMomentContinuous(const UnsignedInteger n,
-      const NumericalPoint & shift) const;
-  virtual NumericalPoint computeShiftedMomentDiscrete(const UnsignedInteger n,
-      const NumericalPoint & shift) const;
-  virtual NumericalPoint computeShiftedMomentGeneral(const UnsignedInteger n,
-      const NumericalPoint & shift) const;
+  virtual Point computeShiftedMomentContinuous(const UnsignedInteger n,
+      const Point & shift) const;
+  virtual Point computeShiftedMomentDiscrete(const UnsignedInteger n,
+      const Point & shift) const;
+  virtual Point computeShiftedMomentGeneral(const UnsignedInteger n,
+      const Point & shift) const;
 
 
   /** Compute the nodes and weights of the 1D gauss integration rule over [-1, 1] */
@@ -734,8 +734,8 @@ protected:
 
   /** Compute the numerical range of the distribution given the parameters values */
   virtual void computeRange();
-  virtual NumericalPoint computeLowerBound() const;
-  virtual NumericalPoint computeUpperBound() const;
+  virtual Point computeLowerBound() const;
+  virtual Point computeUpperBound() const;
 
   /** Compute the standard distribution associated with the current distribution */
   virtual void computeStandardDistribution() const;
@@ -743,10 +743,10 @@ protected:
   /** Interpolate the PDF and CDF for smooth continuous distributions */
   virtual Collection<PiecewiseHermiteEvaluation> interpolatePDFCDF(const UnsignedInteger n);
 
-  mutable NumericalPoint mean_;
+  mutable Point mean_;
   mutable CovarianceMatrix covariance_;
-  mutable NumericalPoint gaussNodes_;
-  mutable NumericalPoint gaussWeights_;
+  mutable Point gaussNodes_;
+  mutable Point gaussWeights_;
 
   /** The integration nodes number for covariance computation */
   mutable UnsignedInteger integrationNodesNumber_;
@@ -788,9 +788,9 @@ protected:
       return new PDFWrapper(*this);
     }
 
-    NumericalPoint operator() (const NumericalPoint & point) const
+    Point operator() (const Point & point) const
     {
-      return NumericalPoint(1, p_distribution_->computePDF(point));
+      return Point(1, p_distribution_->computePDF(point));
     }
 
     Sample operator() (const Sample & sample) const
@@ -842,9 +842,9 @@ protected:
     CDFWrapper(const DistributionImplementation * p_distribution):
       p_distribution_(p_distribution) {};
 
-    NumericalPoint computeCDF(const NumericalPoint & point) const
+    Point computeCDF(const Point & point) const
     {
-      return NumericalPoint(1, p_distribution_->computeCDF(point));
+      return Point(1, p_distribution_->computeCDF(point));
     };
 
     const DistributionImplementation * p_distribution_;
@@ -862,16 +862,16 @@ protected:
       // Nothing to do
     }
 
-    NumericalPoint computeDiagonal(const NumericalPoint & u) const
+    Point computeDiagonal(const Point & u) const
     {
       const NumericalScalar cdf = p_distribution_->computeCDF(diagonalToSpace(u[0]));
       LOGDEBUG(OSS(false) << "in DistributionImplementation::QuantileWrapper::computeDiagonal, u=" << u << ", cdf=" << cdf);
-      return NumericalPoint(1, cdf);
+      return Point(1, cdf);
     }
 
-    NumericalPoint diagonalToSpace(const NumericalScalar tau) const
+    Point diagonalToSpace(const NumericalScalar tau) const
     {
-      NumericalPoint x(dimension_);
+      Point x(dimension_);
       for (UnsignedInteger i = 0; i < dimension_; ++i) x[i] = marginals_[i]->computeQuantile(tau)[0];
       LOGDEBUG(OSS(false) << "in DistributionImplementation::QuantileWrapper::diagonalToSpace, tau=" << tau << ", x=" << x);
       return x;
@@ -894,16 +894,16 @@ protected:
       // Nothing to do
     }
 
-    NumericalPoint computeDiagonal(const NumericalPoint & u) const
+    Point computeDiagonal(const Point & u) const
     {
       const NumericalScalar survival = p_distribution_->computeSurvivalFunction(diagonalToSpace(u[0]));
       LOGDEBUG(OSS(false) << "in DistributionImplementation::InverseSurvivalFunctionWrapper::computeDiagonal, u=" << u << ", survival=" << survival);
-      return NumericalPoint(1, survival);
+      return Point(1, survival);
     }
 
-    NumericalPoint diagonalToSpace(const NumericalScalar tau) const
+    Point diagonalToSpace(const NumericalScalar tau) const
     {
-      NumericalPoint x(dimension_);
+      Point x(dimension_);
       for (UnsignedInteger i = 0; i < dimension_; ++i) x[i] = marginals_[i]->computeQuantile(tau, true)[0];
       LOGDEBUG(OSS(false) << "in DistributionImplementation::InverseSurvivalFunctionWrapper::diagonalToSpace, tau=" << tau << ", x=" << x);
       return x;
@@ -933,10 +933,10 @@ protected:
 
     // The minimum volume level A(p) set is such that A(p)={x\in R^n | y(x) <= y_p}
     // where y(x)=-\log X and y_p is the p-quantile of Y=pdf(X)
-    NumericalPoint operator() (const NumericalPoint & point) const
+    Point operator() (const Point & point) const
     {
       const NumericalScalar value = -p_distribution_->computeLogPDF(point);
-      return NumericalPoint(1, value);
+      return Point(1, value);
     }
 
     Sample operator() (const Sample & sample) const
@@ -1006,11 +1006,11 @@ protected:
       return new MinimumVolumeLevelSetGradient(*this);
     }
 
-    Matrix gradient(const NumericalPoint & point) const
+    Matrix gradient(const Point & point) const
     {
       const NumericalScalar pdf = p_distribution_->computePDF(point);
       if (pdf == 0) return Matrix(getInputDimension(), getOutputDimension());
-      const NumericalPoint value = p_distribution_->computeDDF(point) * (-1.0 / pdf);
+      const Point value = p_distribution_->computeDDF(point) * (-1.0 / pdf);
       return MatrixImplementation(getInputDimension(), getOutputDimension(), value);
     }
 
@@ -1078,9 +1078,9 @@ protected:
       return new CovarianceWrapper(*this);
     }
 
-    NumericalPoint operator() (const NumericalPoint & point) const
+    Point operator() (const Point & point) const
     {
-      return NumericalPoint(1, (point[0] - muI_) * (point[1] - muJ_) * p_distribution_->computePDF(point));
+      return Point(1, (point[0] - muI_) * (point[1] - muJ_) * p_distribution_->computePDF(point));
     }
 
     Sample operator() (const Sample & sample) const
@@ -1151,11 +1151,11 @@ protected:
       return new ShiftedMomentWrapper(*this);
     }
 
-    NumericalPoint operator() (const NumericalPoint & point) const
+    Point operator() (const Point & point) const
     {
       const NumericalScalar power = std::pow(point[0] - shift_, n_);
       const NumericalScalar pdf = p_distribution_->computePDF(point);
-      return NumericalPoint(1, power * pdf);
+      return Point(1, power * pdf);
     };
 
     Sample operator() (const Sample & sample) const
@@ -1215,11 +1215,11 @@ protected:
       return new ConditionalPDFWrapper(*this);
     }
 
-    NumericalPoint operator() (const NumericalPoint & point) const
+    Point operator() (const Point & point) const
     {
-      NumericalPoint z(y_);
+      Point z(y_);
       z.add(point[0]);
-      return NumericalPoint(1, p_distribution_->computePDF(z));
+      return Point(1, p_distribution_->computePDF(z));
     };
 
     Sample operator() (const Sample & sample) const
@@ -1230,12 +1230,12 @@ protected:
       return p_distribution_->computePDF(z);
     };
 
-    void setParameter(const NumericalPoint & parameters)
+    void setParameter(const Point & parameters)
     {
       y_ = parameters;
     }
 
-    NumericalPoint getParameter() const
+    Point getParameter() const
     {
       return y_;
     }
@@ -1265,7 +1265,7 @@ protected:
     }
 
   private:
-    NumericalPoint y_;
+    Point y_;
     const DistributionImplementation::Implementation p_distribution_;
   }; // class ConditionalPDFWrapper
 
@@ -1286,17 +1286,17 @@ protected:
       return new ConditionalCDFWrapper(*this);
     }
 
-    NumericalPoint operator() (const NumericalPoint & point) const
+    Point operator() (const Point & point) const
     {
-      return NumericalPoint(1, p_distribution_->computeConditionalCDF(point[0], y_));
+      return Point(1, p_distribution_->computeConditionalCDF(point[0], y_));
     };
 
-    void setParameter(const NumericalPoint & parameters)
+    void setParameter(const Point & parameters)
     {
       y_ = parameters;
     }
 
-    NumericalPoint getParameter() const
+    Point getParameter() const
     {
       return y_;
     }
@@ -1326,7 +1326,7 @@ protected:
     }
 
   private:
-    NumericalPoint y_;
+    Point y_;
     const DistributionImplementation * p_distribution_;
   }; // class ConditionalCDFWrapper
 
@@ -1353,7 +1353,7 @@ protected:
   /** Data for characteristic function computation */
   mutable Bool isInitializedCF_;
 
-  mutable NumericalPoint pdfGrid_;
+  mutable Point pdfGrid_;
 
   /** Wrapper to compute conditional CDF */
   mutable Pointer<FunctionImplementation> p_conditionalPDFWrapper_;

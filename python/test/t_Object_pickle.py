@@ -5,7 +5,7 @@ import pickle
 from io import BytesIO
 
 obj_list = []
-obj_list.append(ot.NumericalPoint([1.6, -8.7]))
+obj_list.append(ot.Point([1.6, -8.7]))
 obj_list.append(ot.Sample([[4.6, -3.7], [8.4, 6.3]]))
 obj_list.append(ot.Description(['x', 'y', 'z']))
 obj_list.append(ot.Indices([1, 2, 4]))

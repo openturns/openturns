@@ -115,34 +115,34 @@ LogNormal * LogNormal::clone() const
 /* Compute the numerical range of the distribution given the parameters values */
 void LogNormal::computeRange()
 {
-  NumericalPoint lowerBound(1, gamma_);
-  const NumericalPoint upperBound(computeUpperBound());
+  Point lowerBound(1, gamma_);
+  const Point upperBound(computeUpperBound());
   const Interval::BoolCollection finiteLowerBound(1, true);
   const Interval::BoolCollection finiteUpperBound(1, false);
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
 }
 
 /* Get one realization of the distribution */
-NumericalPoint LogNormal::getRealization() const
+Point LogNormal::getRealization() const
 {
-  return NumericalPoint(1, gamma_ + std::exp(muLog_ + sigmaLog_ * DistFunc::rNormal()));
+  return Point(1, gamma_ + std::exp(muLog_ + sigmaLog_ * DistFunc::rNormal()));
 }
 
 /* Get the DDF of the distribution */
-NumericalPoint LogNormal::computeDDF(const NumericalPoint & point) const
+Point LogNormal::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0] - gamma_;
   // Here we keep the bound within the special case as the distribution is continuous
-  if (x <= 0.0) return NumericalPoint(1, 0.0);
+  if (x <= 0.0) return Point(1, 0.0);
   NumericalScalar v = sigmaLog_ * sigmaLog_;
-  return NumericalPoint(1, (muLog_ - std::log(x) - v) / (v * x) * computePDF(point));
+  return Point(1, (muLog_ - std::log(x) - v) / (v * x) * computePDF(point));
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar LogNormal::computePDF(const NumericalPoint & point) const
+NumericalScalar LogNormal::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -153,7 +153,7 @@ NumericalScalar LogNormal::computePDF(const NumericalPoint & point) const
   return normalizationFactor_ * std::exp(-0.5 * logX * logX) / x;
 }
 
-NumericalScalar LogNormal::computeLogPDF(const NumericalPoint & point) const
+NumericalScalar LogNormal::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -165,7 +165,7 @@ NumericalScalar LogNormal::computeLogPDF(const NumericalPoint & point) const
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar LogNormal::computeCDF(const NumericalPoint & point) const
+NumericalScalar LogNormal::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -176,7 +176,7 @@ NumericalScalar LogNormal::computeCDF(const NumericalPoint & point) const
   return DistFunc::pNormal(logX);
 }
 
-NumericalScalar LogNormal::computeComplementaryCDF(const NumericalPoint & point) const
+NumericalScalar LogNormal::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -259,12 +259,12 @@ NumericalComplex LogNormal::computeLogCharacteristicFunction(const NumericalScal
 }
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint LogNormal::computePDFGradient(const NumericalPoint & point) const
+Point LogNormal::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0] - gamma_;
-  NumericalPoint pdfGradient(3, 0.0);
+  Point pdfGradient(3, 0.0);
   // Here we keep the bound within the special case as the distribution is continuous
   if (x <= 0.0) return pdfGradient;
   NumericalScalar logX = (std::log(x) - muLog_) / sigmaLog_;
@@ -276,12 +276,12 @@ NumericalPoint LogNormal::computePDFGradient(const NumericalPoint & point) const
 }
 
 /* Get the CDFGradient of the distribution */
-NumericalPoint LogNormal::computeCDFGradient(const NumericalPoint & point) const
+Point LogNormal::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0] - gamma_;
-  NumericalPoint cdfGradient(3, 0.0);
+  Point cdfGradient(3, 0.0);
   // Here we keep the bound within the special case as the distribution is continuous
   if (x <= 0.0) return cdfGradient;
   NumericalScalar logX = (std::log(x) - muLog_) / sigmaLog_;
@@ -302,35 +302,35 @@ NumericalScalar LogNormal::computeScalarQuantile(const NumericalScalar prob,
 /* Compute the mean of the distribution */
 void LogNormal::computeMean() const
 {
-  mean_ = NumericalPoint(1, gamma_ + std::exp(muLog_ + 0.5 * sigmaLog_ * sigmaLog_));
+  mean_ = Point(1, gamma_ + std::exp(muLog_ + 0.5 * sigmaLog_ * sigmaLog_));
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint LogNormal::getStandardDeviation() const
+Point LogNormal::getStandardDeviation() const
 {
   NumericalScalar expSigmaLog2 = std::exp(sigmaLog_ * sigmaLog_);
-  return NumericalPoint(1, std::exp(muLog_) * std::sqrt(expSigmaLog2 * (expSigmaLog2 - 1.0)));
+  return Point(1, std::exp(muLog_) * std::sqrt(expSigmaLog2 * (expSigmaLog2 - 1.0)));
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint LogNormal::getSkewness() const
+Point LogNormal::getSkewness() const
 {
   NumericalScalar expSigmaLog2 = std::exp(sigmaLog_ * sigmaLog_);
-  return NumericalPoint(1, (expSigmaLog2 + 2.0) * std::sqrt(expSigmaLog2 - 1.0));
+  return Point(1, (expSigmaLog2 + 2.0) * std::sqrt(expSigmaLog2 - 1.0));
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint LogNormal::getKurtosis() const
+Point LogNormal::getKurtosis() const
 {
   NumericalScalar expSigmaLog2 = std::exp(sigmaLog_ * sigmaLog_);
-  return NumericalPoint(1, -3.0 + expSigmaLog2 * expSigmaLog2 * (3.0 + expSigmaLog2 * (2.0 + expSigmaLog2)));
+  return Point(1, -3.0 + expSigmaLog2 * expSigmaLog2 * (3.0 + expSigmaLog2 * (2.0 + expSigmaLog2)));
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint LogNormal::getStandardMoment(const UnsignedInteger n) const
+Point LogNormal::getStandardMoment(const UnsignedInteger n) const
 {
-  return NumericalPoint(1, std::exp(n * muLog_ + 0.5 * std::pow(n * sigmaLog_, 2)));
+  return Point(1, std::exp(n * muLog_ + 0.5 * std::pow(n * sigmaLog_, 2)));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
@@ -349,16 +349,16 @@ void LogNormal::computeCovariance() const
 }
 
 /* Parameters value accessor */
-NumericalPoint LogNormal::getParameter() const
+Point LogNormal::getParameter() const
 {
-  NumericalPoint point(3);
+  Point point(3);
   point[0] = muLog_;
   point[1] = sigmaLog_;
   point[2] = gamma_;
   return point;
 }
 
-void LogNormal::setParameter(const NumericalPoint & parameter)
+void LogNormal::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize();
   const NumericalScalar w = getWeight();

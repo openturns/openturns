@@ -54,9 +54,9 @@ void HaltonSequence::initialize(const UnsignedInteger dimension)
 }
 
 /* Generate a pseudo-random vector of independant numbers uniformly distributed over [0, 1[ */
-NumericalPoint HaltonSequence::generate() const
+Point HaltonSequence::generate() const
 {
-  NumericalPoint realization(dimension_);
+  Point realization(dimension_);
   // Loop over the components
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {

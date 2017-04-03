@@ -18,7 +18,7 @@ diff =  class=HermitianMatrix dimension=2 implementation=class=ComplexMatrixImpl
 test : matrix multiplication method
 prod =  class=SquareComplexMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(9,-6),(15,-3),(15,-3),(24,6)]
 test : multiplication with a numerical point method
-pt =  class=NumericalPoint name=Unnamed dimension=2 values=[1,2]
+pt =  class=Point name=Unnamed dimension=2 values=[1,2]
 ptResult =  [(7,-2),(11,1)]
 test : multiplication and division by a numerical scalar methods
 scalprod =  class=HermitianMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(3,2),(7,9),(0,0),(12,8)]

@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
 
     // We build the weights
     Sample coefficients(0, 2);
-    NumericalPoint p(2);
+    Point p(2);
     p[0] = 1.5;
     p[1] = 2.5;
     coefficients.add(p);
@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
     const UnsignedInteger dimension = 2;
 
     // Fix the realization as a Normal
-    Normal noiseDistribution(NumericalPoint(dimension, 0.), NumericalPoint(dimension, 1.), CorrelationMatrix(dimension));
+    Normal noiseDistribution(Point(dimension, 0.), Point(dimension, 1.), CorrelationMatrix(dimension));
 
     // TimeGrid parameters
     const UnsignedInteger N = 1000;

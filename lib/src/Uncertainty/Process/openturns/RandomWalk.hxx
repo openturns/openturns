@@ -25,7 +25,7 @@
 #include "openturns/Process.hxx"
 #include "openturns/Pointer.hxx"
 #include "openturns/Distribution.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -45,11 +45,11 @@ public:
   RandomWalk();
 
   /** Standard constructor */
-  RandomWalk(const NumericalPoint & origin,
+  RandomWalk(const Point & origin,
              const Distribution & distribution);
 
   /** Standard constructor */
-  RandomWalk(const NumericalPoint & origin,
+  RandomWalk(const Point & origin,
              const Distribution & distribution,
              const RegularGrid & timeGrid);
 
@@ -85,10 +85,10 @@ public:
   void setDistribution(const Distribution & distribution);
 
   /** Origin accessor */
-  NumericalPoint getOrigin() const;
+  Point getOrigin() const;
 
   /** Origin accessor */
-  void setOrigin(const NumericalPoint & origin);
+  void setOrigin(const Point & origin);
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -99,13 +99,13 @@ public:
 private:
 
   /** The origin of the walk */
-  NumericalPoint origin_;
+  Point origin_;
 
   /** The distribution of the walk steps */
   Distribution distribution_;
 
   /** The current position of the walk */
-  mutable NumericalPoint currentPosition_;
+  mutable Point currentPosition_;
 
 }; /* class RandomWalk */
 

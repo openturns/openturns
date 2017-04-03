@@ -55,12 +55,12 @@ Graph BipartiteGraph::draw() const
   Graph graph("Bipartite graph", "", "", true, "topright");
   for (UnsignedInteger i = 0; i < getSize(); ++i)
   {
-    NumericalPoint redPoint(2);
+    Point redPoint(2);
     redPoint[0] = i;
     redPoint[1] = 2.0;
     for (UnsignedInteger j = 0; j < (*this)[i].getSize(); ++j)
     {
-      NumericalPoint blackPoint(2);
+      Point blackPoint(2);
       blackPoint[0] = (*this)[i][j];
       blackPoint[1] = 1.0;
       // First, the link
@@ -80,7 +80,7 @@ Graph BipartiteGraph::draw() const
     cloud.setPointStyle("fcircle");
     graph.add(cloud);
   }
-  NumericalPoint bb(graph.getBoundingBox());
+  Point bb(graph.getBoundingBox());
   bb[0] -= 0.5;
   bb[1] += 0.5;
   bb[2] -= 0.5;

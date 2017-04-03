@@ -72,7 +72,7 @@ void FAST::run() const
   const UnsignedInteger lastBlockSize = modulo == 0 ? blockSize_ : modulo;
 
   // S-space discretization
-  NumericalPoint s(samplingSize_);
+  Point s(samplingSize_);
   for (UnsignedInteger i = 1; i < samplingSize_; ++ i) s[i] = 2. * M_PI * i / samplingSize_;
 
   // Set of frequencies definition
@@ -102,7 +102,7 @@ void FAST::run() const
   // For each input, compute first order and total order indices for each model's output
   for (UnsignedInteger inp = 0; inp < nbIn; ++ inp)
   {
-    NumericalPoint D(nbOut, 0.);
+    Point D(nbOut, 0.);
 
     // Frequencies assignment
     Indices w_i(w_i_0);
@@ -114,11 +114,11 @@ void FAST::run() const
     for (UnsignedInteger t = 0; t < resamplingSize_; ++ t)
     {
       // Random phase-shift
-      NumericalPoint phi_i(nbIn);
+      Point phi_i(nbIn);
       for (UnsignedInteger i = 0; i < nbIn; ++ i)
         phi_i[i] = 2. * M_PI * RandomGenerator::Generate();
 
-      NumericalPoint xi_s(nbIn);
+      Point xi_s(nbIn);
       Sample output(0, nbOut);
 
       // for each block ...
@@ -145,7 +145,7 @@ void FAST::run() const
       for (UnsignedInteger out = 0; out < nbOut; ++ out)
       {
         // Fourier transformation
-        NumericalPoint y(output.getMarginal(out).getImplementation()->getData());
+        Point y(output.getMarginal(out).getImplementation()->getData());
         NumericalComplexCollection coefficients(fftAlgorithm_.transform(y));
 
         // Total variance
@@ -172,7 +172,7 @@ void FAST::run() const
 }
 
 /* First order indices accessor */
-NumericalPoint FAST::getFirstOrderIndices(const UnsignedInteger marginalIndex) const
+Point FAST::getFirstOrderIndices(const UnsignedInteger marginalIndex) const
 {
   if (!alreadyComputedIndices_) run();
 
@@ -181,7 +181,7 @@ NumericalPoint FAST::getFirstOrderIndices(const UnsignedInteger marginalIndex) c
 }
 
 /* Total order indices accessor */
-NumericalPoint FAST::getTotalOrderIndices(const UnsignedInteger marginalIndex) const
+Point FAST::getTotalOrderIndices(const UnsignedInteger marginalIndex) const
 {
   if (!alreadyComputedIndices_) run();
   if (marginalIndex >= totalOrderIndice_.getSize()) throw InvalidArgumentException(HERE) << "Output dimension is " << totalOrderIndice_.getSize();

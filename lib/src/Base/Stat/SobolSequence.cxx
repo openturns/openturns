@@ -166,10 +166,10 @@ void SobolSequence::initialize(const UnsignedInteger dimension)
 
 
 /* Generate a pseudo-random vector of independant numbers uniformly distributed over [0, 1[ */
-NumericalPoint SobolSequence::generate() const
+Point SobolSequence::generate() const
 {
   // initialize a point with values 2^-MaximumBase2Logarithm
-  NumericalPoint sequencePoint(dimension_, Epsilon);
+  Point sequencePoint(dimension_, Epsilon);
 
   // compute the position of the lowest 0 bit in the binary representation of seed_
   const UnsignedInteger positionOfLowest0BitOfSeed = computePositionOfLowest0Bit(seed_);

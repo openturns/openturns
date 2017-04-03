@@ -60,7 +60,7 @@ keep_intact : bool, optional
 
 Returns
 -------
-eigenvalues : :class:`~openturns.NumericalPoint`
+eigenvalues : :class:`~openturns.Point`
     Eigen values.
 
 See Also
@@ -97,7 +97,7 @@ keep_intact : bool, optional
 
 Returns
 -------
-eigen_values : :class:`~openturns.NumericalPoint`
+eigen_values : :class:`~openturns.Point`
     The vector of eigen values with size :math:`n` that form the diagonal of
     the :math:`n \times n` matrix :math:`\mat{\Lambda}` of the EVD.
 Phi : :class:`~openturns.SquareComplexMatrix`

@@ -39,9 +39,9 @@ int main(int argc, char *argv[])
     const UnsignedInteger spatialDimension = 1;
 
     /* Amplitude values */
-    NumericalPoint amplitude(defaultDimension, 2.0);
+    Point amplitude(defaultDimension, 2.0);
     /* Scale values */
-    NumericalPoint scale(spatialDimension, 1.0);
+    Point scale(spatialDimension, 1.0);
 
 
     /* Default constructor */

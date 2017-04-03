@@ -8,12 +8,12 @@ TESTPREAMBLE()
 matrix1 = IdentityMatrix(2)
 print("matrix1 = ", repr(matrix1))
 
-pt = NumericalPoint()
+pt = Point()
 pt.add(5.)
 pt.add(0.)
 print("pt = ", repr(pt))
 
-result = NumericalPoint()
+result = Point()
 result = matrix1.solveLinearSystem(pt)
 print("result = ", repr(result))
 

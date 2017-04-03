@@ -40,11 +40,11 @@ public:
   explicit MaternModel(const UnsignedInteger spatialDimension = 1);
 
   /** Parameters constructor */
-  MaternModel(const NumericalPoint & scale,
+  MaternModel(const Point & scale,
               const NumericalScalar nu);
 
-  MaternModel(const NumericalPoint & scale,
-              const NumericalPoint & amplitude,
+  MaternModel(const Point & scale,
+              const Point & amplitude,
               const NumericalScalar nu);
 
   /** Virtual copy constructor */
@@ -52,15 +52,15 @@ public:
 
   /** Computation of the covariance function */
   using StationaryCovarianceModel::computeStandardRepresentative;
-  NumericalScalar computeStandardRepresentative(const NumericalPoint & tau) const;
+  NumericalScalar computeStandardRepresentative(const Point & tau) const;
 
   /** Gradient */
-  virtual Matrix partialGradient(const NumericalPoint & s,
-                                 const NumericalPoint & t) const;
+  virtual Matrix partialGradient(const Point & s,
+                                 const Point & t) const;
 
   // Reimplement the setScale method
   using StationaryCovarianceModel::setScale;
-  void setScale(const NumericalPoint & scale);
+  void setScale(const Point & scale);
 
   /** Nu accessor */
   NumericalScalar getNu() const;
@@ -81,8 +81,8 @@ public:
 protected:
 
   /** Parameter accessor */
-  virtual void setFullParameter(const NumericalPoint & parameter);
-  virtual NumericalPoint getFullParameter() const;
+  virtual void setFullParameter(const Point & parameter);
+  virtual Point getFullParameter() const;
   virtual Description getFullParameterDescription() const;
 
 private:
@@ -96,7 +96,7 @@ private:
   NumericalScalar logNormalizationFactor_;
 
   // Scaling factor
-  NumericalPoint sqrt2nuOverTheta_;
+  Point sqrt2nuOverTheta_;
 
 } ; /* class MaternModel */
 

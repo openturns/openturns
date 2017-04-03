@@ -39,7 +39,7 @@ ProductCovarianceModel::ProductCovarianceModel(const UnsignedInteger spatialDime
   , collection_(spatialDimension, AbsoluteExponential(1))
 {
   // Update the default values for the amplitude
-  setAmplitude(NumericalPoint(spatialDimension, collection_[0].getAmplitude()[0]));
+  setAmplitude(Point(spatialDimension, collection_[0].getAmplitude()[0]));
 
   activeParameter_ = Indices(getScale().getSize() + getAmplitude().getSize());
   activeParameter_.fill();
@@ -63,8 +63,8 @@ void ProductCovarianceModel::setCollection(const CovarianceModelCollection & col
   if (size == 0)
     throw InvalidArgumentException(HERE) << "Error: the collection must have a positive size, here size=0";
   // Scale & amplitude
-  NumericalPoint scale(0);
-  NumericalPoint amplitude(1, 1.0);
+  Point scale(0);
+  Point amplitude(1, 1.0);
   spatialDimension_ = 0;
   // Get dimension: should be the same for all elements
   dimension_ = 1;
@@ -89,7 +89,7 @@ void ProductCovarianceModel::setCollection(const CovarianceModelCollection & col
   scale_ = scale;
   setAmplitude(amplitude);
   // Fix all submodels as correlation models
-  for (UnsignedInteger i = 0; i < size; ++i) collection_[i].setAmplitude(NumericalPoint(1, 1.0));
+  for (UnsignedInteger i = 0; i < size; ++i) collection_[i].setAmplitude(Point(1, 1.0));
 }
 
 const ProductCovarianceModel::CovarianceModelCollection & ProductCovarianceModel::getCollection() const
@@ -104,8 +104,8 @@ ProductCovarianceModel * ProductCovarianceModel::clone() const
 }
 
 /* Computation of the covariance density function */
-NumericalScalar ProductCovarianceModel::computeStandardRepresentative(const NumericalPoint & s,
-    const NumericalPoint & t) const
+NumericalScalar ProductCovarianceModel::computeStandardRepresentative(const Point & s,
+    const Point & t) const
 {
   if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
   if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
@@ -116,9 +116,9 @@ NumericalScalar ProductCovarianceModel::computeStandardRepresentative(const Nume
   {
     const UnsignedInteger localSpatialDimension = collection_[i].getSpatialDimension();
     const UnsignedInteger stop = start + localSpatialDimension;
-    NumericalPoint localS(localSpatialDimension);
+    Point localS(localSpatialDimension);
     std::copy(s.begin() + start, s.begin() + stop, localS.begin());
-    NumericalPoint localT(localSpatialDimension);
+    Point localT(localSpatialDimension);
     std::copy(t.begin() + start, t.begin() + stop, localT.begin());
     rho *= collection_[i].computeStandardRepresentative(localS, localT);
     start = stop;
@@ -127,14 +127,14 @@ NumericalScalar ProductCovarianceModel::computeStandardRepresentative(const Nume
 }
 
 /* Gradient */
-Matrix ProductCovarianceModel::partialGradient(const NumericalPoint & s,
-    const NumericalPoint & t) const
+Matrix ProductCovarianceModel::partialGradient(const Point & s,
+    const Point & t) const
 {
   if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
   if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
 
   const UnsignedInteger size = collection_.getSize();
-  NumericalPoint localCovariances(size);
+  Point localCovariances(size);
   NumericalScalar leftValue = 1.0;
   NumericalScalar rightValue = 1.0;
   UnsignedInteger start = 0;
@@ -143,9 +143,9 @@ Matrix ProductCovarianceModel::partialGradient(const NumericalPoint & s,
   {
     const UnsignedInteger localSpatialDimension = collection_[i].getSpatialDimension();
     const UnsignedInteger stop = start + localSpatialDimension;
-    NumericalPoint localS(localSpatialDimension);
+    Point localS(localSpatialDimension);
     std::copy(s.begin() + start, s.begin() + stop, localS.begin());
-    NumericalPoint localT(localSpatialDimension);
+    Point localT(localSpatialDimension);
     std::copy(t.begin() + start, t.begin() + stop, localT.begin());
     Matrix localGradient(collection_[i].partialGradient(localS, localT));
     for (UnsignedInteger j = 0; j < localSpatialDimension; ++j) localGradient(j, 0) *= leftValue;
@@ -168,7 +168,7 @@ Matrix ProductCovarianceModel::partialGradient(const NumericalPoint & s,
 }
 
 /* Parameters accessor */
-void ProductCovarianceModel::setFullParameter(const NumericalPoint & parameter)
+void ProductCovarianceModel::setFullParameter(const Point & parameter)
 {
   const UnsignedInteger parameterDimension = getParameter().getDimension();
   if (parameter.getDimension() != parameterDimension)
@@ -176,22 +176,22 @@ void ProductCovarianceModel::setFullParameter(const NumericalPoint & parameter)
   // Convention is the following :
   // Scale parameters then amplitude parameter
   // As it is a 1 d model, scale size = parameterDimension - 1
-  NumericalPoint scale(parameterDimension - 1);
+  Point scale(parameterDimension - 1);
   for (UnsignedInteger i = 0; i < parameterDimension - 1; ++i)
   {
     scale[i] = parameter[i];
   }
   setScale(scale);
   // last value of corresponds to amplitude
-  setAmplitude(NumericalPoint(1, parameter[parameterDimension - 1]));
+  setAmplitude(Point(1, parameter[parameterDimension - 1]));
 }
 
-NumericalPoint ProductCovarianceModel::getFullParameter() const
+Point ProductCovarianceModel::getFullParameter() const
 {
   // Convention scale + amplitude
   // local amplitudes is 1
   // amplitude vector is of size 1
-  NumericalPoint result(0);
+  Point result(0);
   result.add(scale_);
   result.add(amplitude_);
   return result;
@@ -208,7 +208,7 @@ Description ProductCovarianceModel::getFullParameterDescription() const
   return description;
 }
 
-void ProductCovarianceModel::setScale(const NumericalPoint & scale)
+void ProductCovarianceModel::setScale(const Point & scale)
 {
   if (scale.getDimension() != spatialDimension_)
     throw InvalidArgumentException(HERE) << "Error: scale dimension should be " << spatialDimension_ << ". Here we got " << scale.getDimension();
@@ -218,7 +218,7 @@ void ProductCovarianceModel::setScale(const NumericalPoint & scale)
   {
     const UnsignedInteger atomScaleDimension = collection_[i].getScale().getDimension();
     const UnsignedInteger stop = start + atomScaleDimension;
-    NumericalPoint atomScale(atomScaleDimension);
+    Point atomScale(atomScaleDimension);
     std::copy(scale.begin() + start, scale.begin() + stop, atomScale.begin());
     start = stop;
     collection_[i].setScale(atomScale);

@@ -106,39 +106,39 @@ void GeneralizedExtremeValue::computeRange()
 }
 
 /* Get one realization of the distribution */
-NumericalPoint GeneralizedExtremeValue::getRealization() const
+Point GeneralizedExtremeValue::getRealization() const
 {
   return actualDistribution_.getRealization();
 }
 
 /* Get the DDF of the distribution */
-NumericalPoint GeneralizedExtremeValue::computeDDF(const NumericalPoint & point) const
+Point GeneralizedExtremeValue::computeDDF(const Point & point) const
 {
   return actualDistribution_.computeDDF(point);
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar GeneralizedExtremeValue::computePDF(const NumericalPoint & point) const
+NumericalScalar GeneralizedExtremeValue::computePDF(const Point & point) const
 {
   return actualDistribution_.computePDF(point);
 }
 
 
 /* Get the log-PDF of the distribution */
-NumericalScalar GeneralizedExtremeValue::computeLogPDF(const NumericalPoint & point) const
+NumericalScalar GeneralizedExtremeValue::computeLogPDF(const Point & point) const
 {
   return actualDistribution_.computeLogPDF(point);
 }
 
 
 /* Get the CDF of the distribution */
-NumericalScalar GeneralizedExtremeValue::computeCDF(const NumericalPoint & point) const
+NumericalScalar GeneralizedExtremeValue::computeCDF(const Point & point) const
 {
   return actualDistribution_.computeCDF(point);
 }
 
-NumericalScalar GeneralizedExtremeValue::computeComplementaryCDF(const NumericalPoint & point) const
+NumericalScalar GeneralizedExtremeValue::computeComplementaryCDF(const Point & point) const
 {
   return actualDistribution_.computeComplementaryCDF(point);
 }
@@ -155,13 +155,13 @@ NumericalComplex GeneralizedExtremeValue::computeLogCharacteristicFunction(const
 }
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint GeneralizedExtremeValue::computePDFGradient(const NumericalPoint & point) const
+Point GeneralizedExtremeValue::computePDFGradient(const Point & point) const
 {
   return actualDistribution_.computePDFGradient(point);
 }
 
 /* Get the CDFGradient of the distribution */
-NumericalPoint GeneralizedExtremeValue::computeCDFGradient(const NumericalPoint & point) const
+Point GeneralizedExtremeValue::computeCDFGradient(const Point & point) const
 {
   return actualDistribution_.computeCDFGradient(point);
 }
@@ -181,19 +181,19 @@ void GeneralizedExtremeValue::computeMean() const
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint GeneralizedExtremeValue::getStandardDeviation() const
+Point GeneralizedExtremeValue::getStandardDeviation() const
 {
   return actualDistribution_.getStandardDeviation();
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint GeneralizedExtremeValue::getSkewness() const
+Point GeneralizedExtremeValue::getSkewness() const
 {
   return actualDistribution_.getSkewness();
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint GeneralizedExtremeValue::getKurtosis() const
+Point GeneralizedExtremeValue::getKurtosis() const
 {
   return actualDistribution_.getKurtosis();
 }
@@ -212,16 +212,16 @@ void GeneralizedExtremeValue::computeCovariance() const
 }
 
 /* Parameters value accessor */
-NumericalPoint GeneralizedExtremeValue::getParameter() const
+Point GeneralizedExtremeValue::getParameter() const
 {
-  NumericalPoint point(3);
+  Point point(3);
   point[0] = mu_;
   point[1] = sigma_;
   point[2] = xi_;
   return point;
 }
 
-void GeneralizedExtremeValue::setParameter(const NumericalPoint & parameter)
+void GeneralizedExtremeValue::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize();
   setMuSigmaXi(parameter[0], parameter[1], parameter[2]);

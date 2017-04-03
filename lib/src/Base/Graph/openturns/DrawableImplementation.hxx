@@ -46,7 +46,7 @@ class OT_API DrawableImplementation :
 
 public:
 
-  typedef NumericalPoint BoundingBox;
+  typedef Point BoundingBox;
 
   /** Default Constructor with legend label */
   explicit DrawableImplementation(const Sample & data,
@@ -96,8 +96,8 @@ public:
   virtual void setPattern(const String style);
 
   /** Accessor for center */
-  virtual NumericalPoint getCenter() const;
-  virtual void setCenter(const NumericalPoint & center);
+  virtual Point getCenter() const;
+  virtual void setCenter(const Point & center);
 
   /** Accessor for radius */
   virtual NumericalScalar getRadius() const;
@@ -124,8 +124,8 @@ public:
   virtual void setY(const Sample & y);
 
   /** Accessor for levels */
-  virtual NumericalPoint getLevels() const;
-  virtual void setLevels(const NumericalPoint & levels);
+  virtual Point getLevels() const;
+  virtual void setLevels(const Point & levels);
 
   /** Accessor for drawLabels */
   virtual Bool getDrawLabels() const;
@@ -195,7 +195,7 @@ public:
                                 const NumericalScalar alpha);
 
   /** Convert an HSV triplet into an RGB triplet */
-  static NumericalPoint ConvertFromHSVIntoRGB(const NumericalScalar hue,
+  static Point ConvertFromHSVIntoRGB(const NumericalScalar hue,
       const NumericalScalar saturation,
       const NumericalScalar value);
 
@@ -271,11 +271,11 @@ protected:
 
   /** Data accessor */
   virtual void setData(const Sample & data);
-  virtual void setData(const NumericalPoint & data);
+  virtual void setData(const Point & data);
 
   /** Check data */
   virtual void checkData(const Sample & data) const;
-  virtual void checkData(const NumericalPoint & data) const;
+  virtual void checkData(const Point & data) const;
 
   /** The legend of the drawable, to be displayed in the legend of the graph */
   String legend_;

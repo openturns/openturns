@@ -97,9 +97,9 @@ GumbelCopula * GumbelCopula::clone() const
    Kjersti Aas, "Modelling the dependence structure of financial assets: a survey of four copulas",
    Norwegian Computing Center report nr. SAMBA/22/04, December 2004.
 */
-NumericalPoint GumbelCopula::getRealization() const
+Point GumbelCopula::getRealization() const
 {
-  NumericalPoint realization(2);
+  Point realization(2);
   const NumericalScalar u = (RandomGenerator::Generate() - 0.5) * M_PI;
   const NumericalScalar u2 = u + M_PI_2;
   const NumericalScalar e = -std::log(RandomGenerator::Generate());
@@ -112,7 +112,7 @@ NumericalPoint GumbelCopula::getRealization() const
 }
 
 /* Get the DDF of the distribution */
-NumericalPoint GumbelCopula::computeDDF(const NumericalPoint & point) const
+Point GumbelCopula::computeDDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -120,8 +120,8 @@ NumericalPoint GumbelCopula::computeDDF(const NumericalPoint & point) const
   const NumericalScalar u = point[0];
   const NumericalScalar v = point[1];
   // A copula has a null PDF outside of ]0, 1[^2
-  if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0)) return NumericalPoint(2, 0.0);
-  NumericalPoint result(2);
+  if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0)) return Point(2, 0.0);
+  Point result(2);
   const NumericalScalar t1 = std::log(u);
   const NumericalScalar t2 = std::pow(-t1, theta_);
   const NumericalScalar t3 = std::log(v);
@@ -172,7 +172,7 @@ NumericalPoint GumbelCopula::computeDDF(const NumericalPoint & point) const
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar GumbelCopula::computePDF(const NumericalPoint & point) const
+NumericalScalar GumbelCopula::computePDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -191,7 +191,7 @@ NumericalScalar GumbelCopula::computePDF(const NumericalPoint & point) const
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar GumbelCopula::computeCDF(const NumericalPoint & point) const
+NumericalScalar GumbelCopula::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -211,7 +211,7 @@ NumericalScalar GumbelCopula::computeCDF(const NumericalPoint & point) const
 }
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint GumbelCopula::computePDFGradient(const NumericalPoint & point) const
+Point GumbelCopula::computePDFGradient(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -219,13 +219,13 @@ NumericalPoint GumbelCopula::computePDFGradient(const NumericalPoint & point) co
   const NumericalScalar u = point[0];
   const NumericalScalar v = point[1];
   // A copula has a null PDF gradient outside of ]0, 1[^2
-  if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0)) return NumericalPoint(1, 0.0);
+  if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0)) return Point(1, 0.0);
   const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("DistFunc-Precision");
-  return NumericalPoint(1, (GumbelCopula(theta_ + epsilon).computePDF(point) - GumbelCopula(theta_ - epsilon).computePDF(point)) / (2.0 * epsilon));
+  return Point(1, (GumbelCopula(theta_ + epsilon).computePDF(point) - GumbelCopula(theta_ - epsilon).computePDF(point)) / (2.0 * epsilon));
 }
 
 /* Get the CDFGradient of the distribution */
-NumericalPoint GumbelCopula::computeCDFGradient(const NumericalPoint & point) const
+Point GumbelCopula::computeCDFGradient(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -233,7 +233,7 @@ NumericalPoint GumbelCopula::computeCDFGradient(const NumericalPoint & point) co
   const NumericalScalar u = point[0];
   const NumericalScalar v = point[1];
   // A copula has a null CDF gradient outside of ]0, 1[^2
-  if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0)) return NumericalPoint(1, 0.0);
+  if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0)) return Point(1, 0.0);
   // If we are in the support
   const NumericalScalar logU = std::log(u);
   const NumericalScalar logV = std::log(v);
@@ -242,21 +242,21 @@ NumericalPoint GumbelCopula::computeCDFGradient(const NumericalPoint & point) co
   const NumericalScalar sum1 = minusLogUPowerTheta + minusLogVPowerTheta;
   const NumericalScalar inverseTheta = 1.0 / theta_;
   const NumericalScalar pow1 = std::pow(sum1, inverseTheta);
-  return NumericalPoint(1, pow1 * std::exp(-pow1) * inverseTheta * (std::log(sum1) * inverseTheta - (minusLogUPowerTheta * std::log(-logU) + minusLogVPowerTheta * std::log(-logV)) / sum1));
+  return Point(1, pow1 * std::exp(-pow1) * inverseTheta * (std::log(sum1) * inverseTheta - (minusLogUPowerTheta * std::log(-logU) + minusLogVPowerTheta * std::log(-logV)) / sum1));
 }
 
 /* Get the quantile of the distribution */
-NumericalPoint GumbelCopula::computeQuantile(const NumericalScalar prob,
+Point GumbelCopula::computeQuantile(const NumericalScalar prob,
     const Bool tail) const
 {
   if ((prob < 0.0) || (prob > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
   if (prob == 0.0) return getRange().getLowerBound();
   if (prob == 1.0) return getRange().getUpperBound();
-  return NumericalPoint(2, std::exp(-std::exp(std::log(-std::log(prob)) - M_LN2 / theta_)));
+  return Point(2, std::exp(-std::exp(std::log(-std::log(prob)) - M_LN2 / theta_)));
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar GumbelCopula::computeConditionalCDF(const NumericalScalar x, const NumericalPoint & y) const
+NumericalScalar GumbelCopula::computeConditionalCDF(const NumericalScalar x, const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -273,7 +273,7 @@ NumericalScalar GumbelCopula::computeConditionalCDF(const NumericalScalar x, con
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar GumbelCopula::computeConditionalQuantile(const NumericalScalar q, const NumericalPoint & y) const
+NumericalScalar GumbelCopula::computeConditionalQuantile(const NumericalScalar q, const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -306,12 +306,12 @@ CorrelationMatrix GumbelCopula::getKendallTau() const
 }
 
 /* Parameters value accessor */
-NumericalPoint GumbelCopula::getParameter() const
+Point GumbelCopula::getParameter() const
 {
-  return NumericalPoint(1, theta_);
+  return Point(1, theta_);
 }
 
-void GumbelCopula::setParameter(const NumericalPoint & parameter)
+void GumbelCopula::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize();
   const NumericalScalar w = getWeight();

@@ -22,7 +22,7 @@
 #define OPENTURNS_FUNCTIONALCHAOSRESULT_HXX
 
 #include "openturns/MetaModelResult.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Collection.hxx"
@@ -67,8 +67,8 @@ public:
                         const Indices & I,
                         const Sample & alpha_k,
                         const FunctionCollection & Psi_k,
-                        const NumericalPoint & residuals,
-                        const NumericalPoint & relativeErrors);
+                        const Point & residuals,
+                        const Point & relativeErrors);
 
   /** Virtual constructor */
   virtual FunctionalChaosResult * clone() const;

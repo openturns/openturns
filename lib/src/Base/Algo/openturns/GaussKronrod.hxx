@@ -55,31 +55,31 @@ public:
    */
   using IntegrationAlgorithmImplementation::integrate;
 #ifndef SWIG
-  virtual NumericalPoint integrate(const Function & function,
+  virtual Point integrate(const Function & function,
                                    const Interval & interval,
                                    NumericalScalar & error) const;
 
   // This method allows to get the estimated integration error as a scalar
-  virtual NumericalPoint integrate(const Function & function,
+  virtual Point integrate(const Function & function,
                                    const NumericalScalar a,
                                    const NumericalScalar b,
                                    NumericalScalar & error,
-                                   NumericalPoint & ai,
-                                   NumericalPoint & bi,
+                                   Point & ai,
+                                   Point & bi,
                                    Sample & fi,
-                                   NumericalPoint & ei) const;
+                                   Point & ei) const;
 
 #endif
-  // This method allows to get the estimated integration error as a NumericalPoint,
+  // This method allows to get the estimated integration error as a Point,
   // needed by Python
-  virtual NumericalPoint integrate(const Function & function,
+  virtual Point integrate(const Function & function,
                                    const NumericalScalar a,
                                    const NumericalScalar b,
-                                   NumericalPoint & error,
-                                   NumericalPoint & ai,
-                                   NumericalPoint & bi,
+                                   Point & error,
+                                   Point & ai,
+                                   Point & bi,
                                    Sample & fi,
-                                   NumericalPoint & ei) const;
+                                   Point & ei) const;
 
   /** Maximum sub-intervals accessor */
   UnsignedInteger getMaximumSubIntervals() const;
@@ -102,7 +102,7 @@ public:
 private:
 
   /** Compute the local GaussKronrod rule over [a, b] */
-  NumericalPoint computeRule(const Function & function,
+  Point computeRule(const Function & function,
                              const NumericalScalar a,
                              const NumericalScalar b,
                              NumericalScalar & localError) const;

@@ -24,7 +24,7 @@
 #include "openturns/Sample.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/CovarianceMatrix.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -133,8 +133,8 @@ struct ComputeCovariancePolicy
     {
       const UnsignedInteger i = static_cast< UnsignedInteger >(sqrt(2 * index + 0.25) - 0.5);
       const UnsignedInteger j = index - (i * (i + 1)) / 2;
-      const NumericalPoint muI(mean_.getValueAtIndex(i));
-      const NumericalPoint muJ(mean_.getValueAtIndex(j));
+      const Point muI(mean_.getValueAtIndex(i));
+      const Point muJ(mean_.getValueAtIndex(j));
       CovarianceMatrix & matrix(output_[index]);
       for (UnsignedInteger k = 0; k < dimension_; ++k)
       {

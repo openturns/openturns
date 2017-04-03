@@ -62,6 +62,6 @@ i : int
 
 Returns
 -------
-q : :class:`~openturns.NumericalPoint`
+q : :class:`~openturns.Point`
     The estimate of the quantile upper bound for the given quantile level, at
     the given confidence level and using the given upper statistics."

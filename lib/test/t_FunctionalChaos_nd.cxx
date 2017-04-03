@@ -25,7 +25,7 @@ using namespace OT;
 using namespace OT::Test;
 
 inline NumericalScalar sobol(const Indices & indices,
-                             const NumericalPoint & a)
+                             const Point & a)
 {
   NumericalScalar value = 1.0;
   for (UnsignedInteger i = 0; i < indices.getSize(); ++i)
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     // Reference analytical values
     NumericalScalar meanTh_Sobol = 1.0;
     NumericalScalar covTh_Sobol = 1.0;
-    NumericalPoint kappa(inputDimension);
+    Point kappa(inputDimension);
     NumericalScalar a = 7.0;
     NumericalScalar b = 0.1;
     // Create the gSobol function
@@ -73,18 +73,18 @@ int main(int argc, char *argv[])
     // Reference analytical values
     NumericalScalar meanTh_Ishigami = a / 2;
     NumericalScalar covTh_Ishigami = (pow(b, 2.0) * pow(M_PI, 8.0)) / 18.0 + (b * pow(M_PI, 4.0)) / 5.0 + (pow(a, 2.0)) / 8.0 + 1.0 / 2.0;
-    NumericalPoint sob_1_Ishigami(3);
+    Point sob_1_Ishigami(3);
     sob_1_Ishigami[0] = (b * pow(M_PI, 4.0) / 5.0 + pow(b, 2.0) * pow(M_PI, 8.0) / 50.0 + 1.0 / 2.0) / covTh_Ishigami;
     sob_1_Ishigami[1] = (pow(a, 2.0) / 8.0) / covTh_Ishigami;
     sob_1_Ishigami[2] = 0.0;
-    NumericalPoint sob_2_Ishigami(3);
+    Point sob_2_Ishigami(3);
     sob_2_Ishigami[0] = 0.0;
     sob_2_Ishigami[1] = (pow(b, 2.0) * pow(M_PI, 8.0) / 18.0 - pow(b, 2.0) * pow(M_PI, 8.0) / 50.0) / covTh_Ishigami;
     sob_2_Ishigami[2] = 0.0;
-    NumericalPoint sob_3_Ishigami(1, 0.0);
+    Point sob_3_Ishigami(1, 0.0);
     // Multidimensional reference values
     // Mean
-    NumericalPoint meanTh(outputDimension);
+    Point meanTh(outputDimension);
     meanTh[0] = meanTh_Sobol;
     meanTh[1] = meanTh_Ishigami;
     // Covariance
@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
     covTh(0, 0) = covTh_Sobol;
     covTh(1, 1) = covTh_Ishigami;
     // 1rst order Sobol
-    NumericalPoint sob_1(inputDimension * outputDimension);
+    Point sob_1(inputDimension * outputDimension);
     {
       Indices indices(1);
       indices[0] = 0;
@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
       sob_1[5] = sob_1_Ishigami[2];
     }
     // 2nd order Sobol
-    NumericalPoint sob_2(inputDimension * outputDimension);
+    Point sob_2(inputDimension * outputDimension);
     {
       Indices indices(2);
       indices[0] = 0;
@@ -122,7 +122,7 @@ int main(int argc, char *argv[])
       sob_2[5] = sob_2_Ishigami[2];
     }
     // 3rd order Sobol
-    NumericalPoint sob_3(outputDimension);
+    Point sob_3(outputDimension);
     {
       Indices indices(3);
       indices[0] = 0;
@@ -132,14 +132,14 @@ int main(int argc, char *argv[])
       sob_3[1] = sob_3_Ishigami[0];
     }
     // 1rst order Total Sobol
-    NumericalPoint sob_T1(inputDimension * outputDimension);
+    Point sob_T1(inputDimension * outputDimension);
     sob_T1[0] = sob_1[0] + sob_2[0] + sob_2[1] + sob_3[0];
     sob_T1[1] = sob_1[1] + sob_2[0] + sob_2[2] + sob_3[0];
     sob_T1[2] = sob_1[2] + sob_2[1] + sob_2[2] + sob_3[0];
     sob_T1[3] = sob_1[3] + sob_2[3] + sob_2[4] + sob_3[1];
     sob_T1[4] = sob_1[4] + sob_2[3] + sob_2[5] + sob_3[1];
     sob_T1[5] = sob_1[5] + sob_2[4] + sob_2[5] + sob_3[1];
-    NumericalPoint sob_T2(inputDimension * outputDimension);
+    Point sob_T2(inputDimension * outputDimension);
     sob_T2[0] = sob_2[0] + sob_3[0];
     sob_T2[1] = sob_2[1] + sob_3[0];
     sob_T2[2] = sob_2[2] + sob_3[0];
@@ -147,7 +147,7 @@ int main(int argc, char *argv[])
     sob_T2[4] = sob_2[4] + sob_3[1];
     sob_T2[5] = sob_2[5] + sob_3[1];
     // 3rd order Total Sobol
-    NumericalPoint sob_T3(sob_3);
+    Point sob_T3(sob_3);
     Function model(inputVariables, outputVariables, formula);
 
     // Create the input distribution
@@ -201,9 +201,9 @@ int main(int argc, char *argv[])
         fullprint << "//////////////////////////////////////////////////////////////////////" << std::endl;
         fullprint << algo.getAdaptiveStrategy() << std::endl;
         fullprint << algo.getProjectionStrategy() << std::endl;
-        NumericalPoint residuals(result.getResiduals());
+        Point residuals(result.getResiduals());
         fullprint << "residuals=" << std::fixed << std::setprecision(5) << residuals << std::endl;
-        NumericalPoint relativeErrors(result.getRelativeErrors());
+        Point relativeErrors(result.getRelativeErrors());
         fullprint << "relative errors=" << std::fixed << std::setprecision(5) << relativeErrors << std::endl;
 
         // Post-process the results

@@ -41,7 +41,7 @@ public:
 
   /** Default constructors */
   KrigingRandomVector(const KrigingResult & krigingResult,
-                      const NumericalPoint & point);
+                      const Point & point);
 
   KrigingRandomVector(const KrigingResult & krigingResult,
                       const Sample & sample);
@@ -54,7 +54,7 @@ public:
 
   /** Get a realization of the process */
   using UsualRandomVector::getRealization;
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Get realizations of the process */
   using UsualRandomVector::getSample;

@@ -57,7 +57,7 @@ public:
   UnsignedInteger getDimension() const;
 
   /** Generate a quasi-random vector of numbers uniformly distributed over [0, 1) */
-  NumericalPoint generate() const;
+  Point generate() const;
 
   /** Generate a sample of pseudo-random vectors of numbers uniformly distributed over [0, 1) */
   Sample generate(const UnsignedInteger size) const;

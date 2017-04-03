@@ -45,9 +45,9 @@ int main(int argc, char *argv[])
     {
       fullprint << "jacobi(" << i << ")=" << jacobi.build(i).__str__() << std::endl;
     }
-    NumericalPoint roots(jacobi.getRoots(10));
+    Point roots(jacobi.getRoots(10));
     fullprint << "jacobi(10) roots=" << roots << std::endl;
-    NumericalPoint weights;
+    Point weights;
     roots = jacobi.getNodesAndWeights(10, weights);
     fullprint << "jacobi(10) roots=" << roots << " and weights=" << weights << std::endl;
   }

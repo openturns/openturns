@@ -9,9 +9,9 @@ RandomGenerator.SetSeed(0)
 try:
     # Instanciate one distribution object
     dim = 1
-    meanPoint = NumericalPoint(dim, 1.0)
+    meanPoint = Point(dim, 1.0)
     meanPoint[0] = 0.5
-    sigma = NumericalPoint(dim, 1.0)
+    sigma = Point(dim, 1.0)
     sigma[0] = 2.0
     R = CorrelationMatrix(dim)
     distribution1 = Normal(meanPoint, sigma, R)
@@ -30,8 +30,8 @@ try:
     # Construct empirical CDF for each sample
     data1 = Sample(nPoints, 2)
     data2 = Sample(nPoints, 2)
-    cursor1 = NumericalPoint(2)
-    cursor2 = NumericalPoint(2)
+    cursor1 = Point(2)
+    cursor2 = Point(2)
     for i in range(nPoints):
         cursor1[0] = 13. * i / nPoints - 6.5
         count1 = 0.

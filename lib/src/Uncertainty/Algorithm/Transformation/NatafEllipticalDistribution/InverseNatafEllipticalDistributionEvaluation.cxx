@@ -42,10 +42,10 @@ InverseNatafEllipticalDistributionEvaluation::InverseNatafEllipticalDistribution
 }
 
 /* Parameter constructor */
-InverseNatafEllipticalDistributionEvaluation::InverseNatafEllipticalDistributionEvaluation(const NumericalPoint & mean,
+InverseNatafEllipticalDistributionEvaluation::InverseNatafEllipticalDistributionEvaluation(const Point & mean,
     const TriangularMatrix & cholesky)
   : LinearEvaluation(
-    NumericalPoint(mean.getDimension(), 0.0),
+    Point(mean.getDimension(), 0.0),
     mean,
     cholesky.transpose()
   )
@@ -91,7 +91,7 @@ String InverseNatafEllipticalDistributionEvaluation::__repr__() const
  *
  */
 
-Matrix InverseNatafEllipticalDistributionEvaluation::parameterGradient(const NumericalPoint & inP) const
+Matrix InverseNatafEllipticalDistributionEvaluation::parameterGradient(const Point & inP) const
 {
   UnsignedInteger inputDimension = getInputDimension();
   Matrix result(2 * inputDimension, inputDimension);

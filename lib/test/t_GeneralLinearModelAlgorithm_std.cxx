@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     Sample Y = model(X);
 
     // Add a small noise to data
-    Y += GaussianProcess(AbsoluteExponential(NumericalPoint(1, 0.1), NumericalPoint(1, 0.2)), Mesh(X)).getRealization().getValues();
+    Y += GaussianProcess(AbsoluteExponential(Point(1, 0.1), Point(1, 0.2)), Mesh(X)).getRealization().getValues();
 
     Basis basis = LinearBasisFactory(spatialDimension).build();
     // Case of a misspecified covariance model

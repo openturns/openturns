@@ -33,12 +33,12 @@ int main(int argc, char *argv[])
   matrix1.setName("matrix1");
   fullprint << "matrix1 = " << matrix1 << std::endl;
 
-  NumericalPoint pt ;
+  Point pt ;
   pt.add(5.) ;
   pt.add(0.) ;
   fullprint << "pt = " << pt << std::endl;
 
-  NumericalPoint result ;
+  Point result ;
   result = matrix1.solveLinearSystem(pt);
   fullprint << "result = " << result << std::endl;
 

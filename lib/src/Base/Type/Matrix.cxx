@@ -187,8 +187,8 @@ Matrix Matrix::operator* (const IdentityMatrix & m) const
   return *this;
 }
 
-/* Multiplication with a NumericalPoint (must have consistent dimensions) */
-NumericalPoint Matrix::operator* (const NumericalPoint & pt) const
+/* Multiplication with a Point (must have consistent dimensions) */
+Point Matrix::operator* (const Point & pt) const
 {
   return getImplementation()->genVectProd(pt) ;
 }
@@ -206,7 +206,7 @@ Matrix Matrix::operator/ (const NumericalScalar s) const
 }
 
 /* Resolution of a linear system */
-NumericalPoint Matrix::solveLinearSystem(const NumericalPoint & b,
+Point Matrix::solveLinearSystem(const Point & b,
     const Bool keepIntact)
 {
   return getImplementation()->solveLinearSystemRect(b, keepIntact);
@@ -219,13 +219,13 @@ Matrix Matrix::solveLinearSystem(const Matrix & b,
 }
 
 /* Compute singular values */
-NumericalPoint Matrix::computeSingularValues(const Bool keepIntact)
+Point Matrix::computeSingularValues(const Bool keepIntact)
 {
   return getImplementation()->computeSingularValues(keepIntact);
 }
 
 /* Compute singular values */
-NumericalPoint Matrix::computeSVD(Matrix & u,
+Point Matrix::computeSVD(Matrix & u,
                                   Matrix & vT,
                                   const Bool fullSVD,
                                   const Bool keepIntact)

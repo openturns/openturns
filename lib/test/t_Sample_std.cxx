@@ -47,13 +47,13 @@ int main(int argc, char *argv[])
     sample1.setName("Sample1");
 
     // We populate the empty sample
-    NumericalPoint point1(2);
+    Point point1(2);
     point1[0] = 10.;
     point1[1] = 20.;
-    NumericalPoint point2(2);
+    Point point2(2);
     point2[0] = 11.;
     point2[1] = 21.;
-    NumericalPoint point3(2);
+    Point point3(2);
     point3[0] = 12.;
     point3[1] = 22.;
     sample1.add(point1);
@@ -62,21 +62,21 @@ int main(int argc, char *argv[])
     fullprint << "sample1=" << sample1 << std::endl;
 
     // We get the second element of the sample
-    NumericalPoint secondElement = sample1[1];
+    Point secondElement = sample1[1];
     fullprint << "second element=" << secondElement << std::endl;
 
     // We set the third element to a valid new element
-    NumericalPoint newPoint(2);
+    Point newPoint(2);
     newPoint[0] = 1000;
     newPoint[1] = 2000;
     sample1[2] = newPoint;
     fullprint << "sample1=" << sample1 << std::endl;
 
-    NumericalPoint translation(2, 5.0);
+    Point translation(2, 5.0);
     sample1 += translation;
     fullprint << "after a translation of vector=" << translation << " sample1=" << sample1 << std::endl;
 
-    NumericalPoint scaling(2, 2.0);
+    Point scaling(2, 2.0);
     sample1 *= scaling;
     fullprint << "after a scaling of vector=" << scaling << " sample1=" << sample1 << std::endl;
 
@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
     {
       // We get the tenth element of the sample
       // THIS SHOULD NORMALY FAIL
-      NumericalPoint tenthElement = sample1.at(9);
+      Point tenthElement = sample1.at(9);
 
       // Normally, we should never go here
       throw TestFailed("Exception has NOT been thrown or catched !");
@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
 
 
     // We try to create a sample with 5 times the same point
-    NumericalPoint samePoint(3);
+    Point samePoint(3);
     samePoint[0] = 1000.;
     samePoint[1] = 2000.;
     samePoint[2] = 3000.;
@@ -114,7 +114,7 @@ int main(int argc, char *argv[])
     fullprint << "sample3=" << sample3 << std::endl;
 
     // We append a new point to the sample...
-    NumericalPoint anotherNewPoint(3);
+    Point anotherNewPoint(3);
     anotherNewPoint[0] = -1000.;
     anotherNewPoint[1] = -2000.;
     anotherNewPoint[2] = -3000.;

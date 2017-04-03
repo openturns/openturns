@@ -61,11 +61,11 @@ public:
   virtual RatioDistribution * clone() const;
 
   /** Get one realization of the distribution */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const NumericalPoint & point) const;
+  NumericalScalar computePDF(const Point & point) const;
 private:
   NumericalScalar computePDFQ1(const NumericalScalar x,
                                const NumericalScalar a,
@@ -92,8 +92,8 @@ public:
   NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
 
   /** Parameters value accessors */
-  void setParameter(const NumericalPoint & parameter);
-  NumericalPoint getParameter() const;
+  void setParameter(const Point & parameter);
+  Point getParameter() const;
 
   /** Parameters description accessor */
   Description getParameterDescription() const;
@@ -137,22 +137,22 @@ private:
       left_(left), right_(right), x_(x), isZero_(std::abs(x) == 0.0), pdf0_(isZero_ ? right.computePDF(0.0) : 0.0) {};
 
     // Compute |u|p_left(u)p_right(ux) where x is the argument of the pdf of left*right
-    NumericalPoint eval(const NumericalPoint & point) const
+    Point eval(const Point & point) const
     {
       const NumericalScalar u = point[0];
       const NumericalScalar absU = std::abs(u);
       // First special case: |u|==0
-      if (absU == 0.0) return NumericalPoint(1, 0.0);
+      if (absU == 0.0) return Point(1, 0.0);
       // Secon special case: x==0
       if (isZero_)
       {
-        if (pdf0_ == 0.0) return NumericalPoint(1, 0.0);
-        return NumericalPoint(1, absU * pdf0_ * left_.computePDF(point));
+        if (pdf0_ == 0.0) return Point(1, 0.0);
+        return Point(1, absU * pdf0_ * left_.computePDF(point));
       }
       const NumericalScalar value = left_.computePDF(point);
       // If the given point is outside of the support of left
-      if (value == 0.0) return NumericalPoint(1, 0.0);
-      return NumericalPoint(1, absU * right_.computePDF(u * x_) * value);
+      if (value == 0.0) return Point(1, 0.0);
+      return Point(1, absU * right_.computePDF(u * x_) * value);
     };
 
     const Distribution left_;
@@ -170,9 +170,9 @@ private:
                     const NumericalScalar x):
       left_(left), right_(right), x_(x) {};
 
-    NumericalPoint eval(const NumericalPoint & point) const
+    Point eval(const Point & point) const
     {
-      NumericalPoint value(2);
+      Point value(2);
       const NumericalScalar u = point[0];
       const NumericalComplex phi(right_.computeCharacteristicFunction(u * x_));
       const NumericalScalar pdf = left_.computePDF(point);

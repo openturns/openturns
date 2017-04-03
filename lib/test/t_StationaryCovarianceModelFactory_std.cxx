@@ -40,8 +40,8 @@ int main(int argc, char *argv[])
     const UnsignedInteger size = 128;
     const UnsignedInteger dimension = 1;
     const RegularGrid timeGrid(0.0, 0.1, size);
-    const NumericalPoint amplitude(dimension, 1.0);
-    const NumericalPoint scale(dimension, 1.0);
+    const Point amplitude(dimension, 1.0);
+    const Point scale(dimension, 1.0);
     ExponentialCauchy model(scale, amplitude);
     SpectralGaussianProcess myProcess(model, timeGrid);
 

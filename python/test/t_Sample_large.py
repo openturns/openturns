@@ -29,7 +29,7 @@ try:
     print("sample=", repr(sample))
 
     # We access the element of the sample
-    p = NumericalPoint(sample[0])
+    p = Point(sample[0])
     print("p=", repr(p))
     try:
         # We try to access past the last element of the point

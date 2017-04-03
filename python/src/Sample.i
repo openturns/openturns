@@ -81,7 +81,7 @@ Sample._repr_html_ = Sample__repr_html_
 namespace OT {
 %extend Sample {
 
-NumericalPoint __getitem__(SignedInteger index) const {
+Point __getitem__(SignedInteger index) const {
   if (index < 0) {
     index += self->getSize();
   }
@@ -89,7 +89,7 @@ NumericalPoint __getitem__(SignedInteger index) const {
 }
 
 void __setitem__ (SignedInteger index,
-                  const NumericalPoint & val) {
+                  const Point & val) {
   self->copyOnWrite();
   if (index < 0) {
     index += self->getSize();
@@ -215,13 +215,13 @@ PyObject * __getitem__(PyObject * args) const {
   {
     if ( PySlice_Check( obj2 ) )
     {
-      // case #3: [index/slice] => NumericalPoint
-      OT::NumericalPoint result( slicelength2 );
+      // case #3: [index/slice] => Point
+      OT::Point result( slicelength2 );
       for ( Py_ssize_t j = 0; j < slicelength2; ++ j )
       {
         result.at(j) = self->at( arg2, start2 + j*step2 );
       }
-      return SWIG_NewPointerObj((new OT::NumericalPoint(static_cast< const OT::NumericalPoint& >(result))), SWIG_TypeQuery("OT::NumericalPoint *"), SWIG_POINTER_OWN |  0 );
+      return SWIG_NewPointerObj((new OT::Point(static_cast< const OT::Point& >(result))), SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_OWN |  0 );
     }
     else
     {
@@ -354,11 +354,11 @@ PyObject * __setitem__(PyObject * args, PyObject * valObj) {
   {
     if ( PySlice_Check( obj2 ) )
     {
-      // case #3: [index/slice] <= NumericalPoint
-      OT::NumericalPoint temp2 ;
-      OT::NumericalPoint *val2 = 0 ;
-      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val2, SWIG_TypeQuery("OT::NumericalPoint *"), 0))) {
-        temp2 = OT::convert<OT::_PySequence_,OT::NumericalPoint>( valObj );
+      // case #3: [index/slice] <= Point
+      OT::Point temp2 ;
+      OT::Point *val2 = 0 ;
+      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val2, SWIG_TypeQuery("OT::Point *"), 0))) {
+        temp2 = OT::convert<OT::_PySequence_,OT::Point>( valObj );
         val2 = &temp2;
       }
       for ( Py_ssize_t j = 0; j < slicelength2; ++ j )
@@ -395,7 +395,7 @@ Sample(PyObject * pyObj)
 
 Sample(PyObject * pyObj, UnsignedInteger dimension)
 {
-  OT::NumericalPoint point( OT::convert< OT::_PySequence_, OT::NumericalPoint >(pyObj) );
+  OT::Point point( OT::convert< OT::_PySequence_, OT::Point >(pyObj) );
   OT::UnsignedInteger pointSize = point.getDimension();
   OT::UnsignedInteger size = (pointSize + dimension - 1) / dimension;
   OT::Sample sample(size, dimension);
@@ -416,7 +416,7 @@ Bool __eq__(const Sample & other) { return (*self) == other; }
 #if SWIG_VERSION < 0x030011
 Sample __truediv__(const NumericalScalar & u) { return (*self) / u; }
 
-Sample __truediv__(const NumericalPoint & v) { return (*self) / v; }
+Sample __truediv__(const Point & v) { return (*self) / v; }
 
 Sample __truediv__(const SquareMatrix & m) { return (*self) / m; }
 #endif

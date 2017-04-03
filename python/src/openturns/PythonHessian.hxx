@@ -66,7 +66,7 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Gradient method */
-  virtual SymmetricTensor hessian(const NumericalPoint & inP) const;
+  virtual SymmetricTensor hessian(const Point & inP) const;
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;

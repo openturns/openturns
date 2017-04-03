@@ -61,7 +61,7 @@ LeastSquaresMetaModelSelection::LeastSquaresMetaModelSelection(const Sample & x,
 /* Default constructor */
 LeastSquaresMetaModelSelection::LeastSquaresMetaModelSelection(const Sample & x,
     const Sample & y,
-    const NumericalPoint & weight,
+    const Point & weight,
     const Basis & psi,
     const Indices & indices,
     const BasisSequenceFactory & basisSequenceFactory,
@@ -161,13 +161,13 @@ void LeastSquaresMetaModelSelection::run(const DesignProxy & proxy)
   // recompute the coefficients of the selected sparse metamodel by least-square regression
   PenalizedLeastSquaresAlgorithm penalizedLeastSquaresAlgorithm(x_, y_, weight_, method.getBasis(), optimalBasisIndices);
   penalizedLeastSquaresAlgorithm.run(proxy);
-  const NumericalPoint optimalBasisCoefficients(penalizedLeastSquaresAlgorithm.getCoefficients());
+  const Point optimalBasisCoefficients(penalizedLeastSquaresAlgorithm.getCoefficients());
   const NumericalScalar optimalResidual = penalizedLeastSquaresAlgorithm.getResidual();
   // New relative error based on cross-validation error
   const NumericalScalar optimalRelativeError = minimumError / y_.getSize();
 
   // compute the coefficients in the master basis from the ones in the optimal sub-basis
-  NumericalPoint optimalCoefficients( currentIndices_.getSize() );
+  Point optimalCoefficients( currentIndices_.getSize() );
   for (UnsignedInteger i = 0; i < optimalBasisIndices.getSize(); ++ i)
   {
     for (UnsignedInteger j = 0; j < currentIndices_.getSize(); ++ j)

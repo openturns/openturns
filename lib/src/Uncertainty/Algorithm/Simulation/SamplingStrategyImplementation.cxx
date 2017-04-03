@@ -54,9 +54,9 @@ Sample SamplingStrategyImplementation::generate() const
 }
 
 /* Generate a uniform random unit vector */
-NumericalPoint SamplingStrategyImplementation::getUniformUnitVectorRealization(const UnsignedInteger dimension) const
+Point SamplingStrategyImplementation::getUniformUnitVectorRealization(const UnsignedInteger dimension) const
 {
-  NumericalPoint direction(dimension);
+  Point direction(dimension);
   NumericalScalar norm = 0.0;
   do
   {
@@ -68,7 +68,7 @@ NumericalPoint SamplingStrategyImplementation::getUniformUnitVectorRealization(c
 }
 
 /* Generate a uniform random unit vector */
-NumericalPoint SamplingStrategyImplementation::getUniformUnitVectorRealization() const
+Point SamplingStrategyImplementation::getUniformUnitVectorRealization() const
 {
   return getUniformUnitVectorRealization(dimension_);
 }

@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     Function newFunc(myFunc);
 
     fullprint << "myFunc=" << myFunc << std::endl;
-    NumericalPoint point(myFunc.getInputDimension(), 1.2);
+    Point point(myFunc.getInputDimension(), 1.2);
     fullprint << "myFunc(point)=" << myFunc(point) << std::endl;
     fullprint << "myFunc input parameter(s)=";
     for (UnsignedInteger i = 0; i < myFunc.getInputDimension(); i++)

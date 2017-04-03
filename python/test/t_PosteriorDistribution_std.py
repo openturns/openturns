@@ -70,7 +70,7 @@ for conditioning in conditioningDistributionCollection:
     for i in range(dim):
         margin = distribution.getMarginal(i)
         print("margin=", margin)
-        #print("margin PDF=", ot.NumericalPoint(1, margin.computePDF([0.0])))
-        print("margin CDF=", ot.NumericalPoint(1, margin.computeCDF([0.0])))
+        #print("margin PDF=", ot.Point(1, margin.computePDF([0.0])))
+        print("margin CDF=", ot.Point(1, margin.computeCDF([0.0])))
         print("margin quantile=", margin.computeQuantile(0.95))
         print("margin realization=", margin.getRealization())

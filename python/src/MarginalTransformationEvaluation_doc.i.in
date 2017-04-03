@@ -27,7 +27,7 @@ This class contains a :class:`~openturns.Function` which can be
 evaluated in one point but which proposes no gradient nor hessian implementation.
 
 - In the two first usage, if :math:`direction = 0`, the created operator
-  transforms a :class:`~openturns.NumericalPoint` into its rank according to the
+  transforms a :class:`~openturns.Point` into its rank according to the
   marginal distributions described in *distCol*. Let
   :math:`(F_{X_1}, \ldots, F_{X_n})` be the CDF of the distributions contained
   in *distCol*, then the created operator works as follows:
@@ -45,7 +45,7 @@ evaluated in one point but which proposes no gradient nor hessian implementation
   In that case, it requires that all the values :math:`x_i` be in :math:`[0, 1]`.
 
 - In the third usage, the created operator transforms a
-  :class:`~openturns.NumericalPoint` into the following one, where *outputDistCol*
+  :class:`~openturns.Point` into the following one, where *outputDistCol*
   contains the :math:`(F_{Y_1}, \ldots, F_{Y_n})` distributions:
 
   .. math::

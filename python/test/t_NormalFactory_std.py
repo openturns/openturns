@@ -8,8 +8,8 @@ RandomGenerator.SetSeed(0)
 
 try:
     dim = 3
-    mean = NumericalPoint(dim)
-    sigma = NumericalPoint(dim)
+    mean = Point(dim)
+    sigma = Point(dim)
     R = CorrelationMatrix(dim)
     for i in range(dim):
         mean[i] = i + 0.5

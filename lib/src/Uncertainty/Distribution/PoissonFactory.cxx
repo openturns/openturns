@@ -49,7 +49,7 @@ PoissonFactory::Implementation PoissonFactory::build(const Sample & sample) cons
   return buildAsPoisson(sample).clone();
 }
 
-PoissonFactory::Implementation PoissonFactory::build(const NumericalPoint & parameters) const
+PoissonFactory::Implementation PoissonFactory::build(const Point & parameters) const
 {
   return buildAsPoisson(parameters).clone();
 }
@@ -78,7 +78,7 @@ Poisson PoissonFactory::buildAsPoisson(const Sample & sample) const
   return result;
 }
 
-Poisson PoissonFactory::buildAsPoisson(const NumericalPoint & parameters) const
+Poisson PoissonFactory::buildAsPoisson(const Point & parameters) const
 {
   try
   {

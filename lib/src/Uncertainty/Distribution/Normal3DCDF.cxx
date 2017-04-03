@@ -23,7 +23,7 @@
 
 #include "openturns/Normal3DCDF.hxx"
 #include "openturns/DistFunc.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -24,7 +24,7 @@ cdf gradient     = [-0.0875625,0.0770828,-0.128471]
 cdf gradient (FD)= [-0.0875625,0.0770828,-0.128471]
 quantile= [1.06295]
 cdf(quantile)= 0.95
-InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[-0.429631]
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[-0.429631]
 Survival(inverseSurvival)=0.950000
 Minimum volume interval= [-0.499368, 1.06337]
 threshold= [0.95]
@@ -79,7 +79,7 @@ cdf gradient     = [-1.26959e-07,3.50764e-07,-8.76911e-07]
 cdf gradient (FD)= [-1.26959e-07,3.50764e-07,-8.76911e-07]
 quantile= [8.75459]
 cdf(quantile)= 0.95
-InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[3.69853]
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[3.69853]
 Survival(inverseSurvival)=0.950000
 Minimum volume interval= [3.1431, 9.09027]
 threshold= [0.95]

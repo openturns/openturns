@@ -53,7 +53,7 @@ HistoryStrategy::HistoryStrategy(const HistoryStrategyImplementation & implement
 }
 
 /* Store the point according to the strategy */
-void HistoryStrategy::store(const NumericalPoint & point)
+void HistoryStrategy::store(const Point & point)
 {
   copyOnWrite();
   getImplementation()->store(point);

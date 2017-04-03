@@ -38,9 +38,9 @@ int main(int argc, char *argv[])
     const UnsignedInteger defaultDimension = 1;
 
     /* Amplitude values */
-    NumericalPoint amplitude(defaultDimension, 1.0);
+    Point amplitude(defaultDimension, 1.0);
     /* Scale values */
-    NumericalPoint scale(defaultDimension, 1.0);
+    Point scale(defaultDimension, 1.0);
 
     /* Second order model with parameters */
     ExponentialCauchy myModel(scale, amplitude);

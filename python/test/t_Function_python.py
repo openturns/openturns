@@ -37,7 +37,7 @@ newFunc = Function(myFunc)
 print(('myFunc input dimension= ' + str(myFunc.getInputDimension())))
 print(('myFunc output dimension= ' + str(myFunc.getOutputDimension())))
 
-inPt = NumericalPoint(2, 2.)
+inPt = Point(2, 2.)
 print((repr(inPt)))
 
 outPt = myFunc(inPt)
@@ -48,7 +48,7 @@ print((repr(outPt)))
 
 inSample = Sample(10, 2)
 for i in range(10):
-    inSample[i] = NumericalPoint((i, i))
+    inSample[i] = Point((i, i))
 print((repr(inSample)))
 
 outSample = myFunc(inSample)
@@ -181,7 +181,7 @@ def a_exec(X):
 for n in range(2):
     myFunc = PythonFunction(1, 1, a_exec)
     try:
-        X = NumericalPoint(1, n)
+        X = Point(1, n)
         myFunc(X)
     except Exception as exc:
         # print exc

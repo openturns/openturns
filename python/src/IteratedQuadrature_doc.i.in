@@ -107,6 +107,6 @@ lowerBoundFunctions, upperBoundFunctions : list of :class:`~openturns.Function`
 
 Returns
 -------
-value : :class:`~openturns.NumericalPoint`
+value : :class:`~openturns.Point`
     Approximation of the integral."
 

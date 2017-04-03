@@ -2,27 +2,27 @@ Distribution  class=NonCentralStudent name=NonCentralStudent dimension=1 nu=7.2 
 Distribution  NonCentralStudent(nu = 7.2, delta = 4.8, gamma = -3.7)
 Elliptical =  False
 Continuous =  True
-oneRealization= class=NumericalPoint name=Unnamed dimension=1 values=[4.76055]
-oneSample first= class=NumericalPoint name=Unnamed dimension=1 values=[3.3233]  last= class=NumericalPoint name=Unnamed dimension=1 values=[3.54549]
-mean= class=NumericalPoint name=Unnamed dimension=1 values=[1.6744]
+oneRealization= class=Point name=Unnamed dimension=1 values=[4.76055]
+oneSample first= class=Point name=Unnamed dimension=1 values=[3.3233]  last= class=Point name=Unnamed dimension=1 values=[3.54549]
+mean= class=Point name=Unnamed dimension=1 values=[1.6744]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[4.22198]
 Kolmogorov test for the generator, sample size= 100  is accepted
 Kolmogorov test for the generator, sample size= 1000  is accepted
-Point=  class=NumericalPoint name=Unnamed dimension=1 values=[1]
-ddf     = class=NumericalPoint name=Unnamed dimension=1 values=[-0.0278822]
-ddf (FD)= class=NumericalPoint name=Unnamed dimension=1 values=[-0.0278822]
+Point=  class=Point name=Unnamed dimension=1 values=[1]
+ddf     = class=Point name=Unnamed dimension=1 values=[-0.0278822]
+ddf (FD)= class=Point name=Unnamed dimension=1 values=[-0.0278822]
 log pdf=-1.409597
 pdf     =0.244242
 pdf (FD)=0.244242
 cdf=0.426086
 ccdf=0.573914
-pdf gradient     = class=NumericalPoint name=Unnamed dimension=3 values=[0.0110231,-0.00328889,0.0278822]
-pdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=3 values=[0.0110231,-0.00328889,0.0278822]
-cdf gradient     = class=NumericalPoint name=Unnamed dimension=3 values=[0.0041357,-0.246592,-0.244242]
-cdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=3 values=[0.0041357,-0.246592,-0.244242]
-quantile= class=NumericalPoint name=Unnamed dimension=1 values=[5.47724]
+pdf gradient     = class=Point name=Unnamed dimension=3 values=[0.0110231,-0.00328889,0.0278822]
+pdf gradient (FD)= class=Point name=Unnamed dimension=3 values=[0.0110231,-0.00328889,0.0278822]
+cdf gradient     = class=Point name=Unnamed dimension=3 values=[0.0041357,-0.246592,-0.244242]
+cdf gradient (FD)= class=Point name=Unnamed dimension=3 values=[0.0041357,-0.246592,-0.244242]
+quantile= class=Point name=Unnamed dimension=1 values=[5.47724]
 cdf(quantile)=0.950000
-InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[-0.864277]
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[-0.864277]
 Survival(inverseSurvival)=0.950000
 Minimum volume interval= [-1.61544, 5.7747]
 threshold= [0.95]
@@ -31,12 +31,12 @@ MinimumVolumeLevelSetEvaluation(NonCentralStudent(nu = 7.2, delta = 4.8, gamma =
 beta= [0.0233525]
 Bilateral confidence interval= [-1.17995, 6.75359]
 beta= [0.95]
-mean= class=NumericalPoint name=Unnamed dimension=1 values=[1.68455]
-standard deviation= class=NumericalPoint name=Unnamed dimension=1 values=[2.07189]
-skewness= class=NumericalPoint name=Unnamed dimension=1 values=[1.67602]
-kurtosis= class=NumericalPoint name=Unnamed dimension=1 values=[10.0582]
+mean= class=Point name=Unnamed dimension=1 values=[1.68455]
+standard deviation= class=Point name=Unnamed dimension=1 values=[2.07189]
+skewness= class=Point name=Unnamed dimension=1 values=[1.67602]
+kurtosis= class=Point name=Unnamed dimension=1 values=[10.0582]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[4.29272]
-parameters= [class=NumericalPointWithDescription name=X0 dimension=3 description=[nu,delta,gamma] values=[7.2,4.8,-3.7]]
+parameters= [class=PointWithDescription name=X0 dimension=3 description=[nu,delta,gamma] values=[7.2,4.8,-3.7]]
 standard moment n= 0  value= [1]
 standard moment n= 1  value= [5.38455]
 standard moment n= 2  value= [33.2862]

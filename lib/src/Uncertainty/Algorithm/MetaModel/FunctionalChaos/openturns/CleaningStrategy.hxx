@@ -59,7 +59,7 @@ public:
   void computeInitialBasis();
 
   /** Update the basis for the next iteration of approximation */
-  void updateBasis(const NumericalPoint & alpha_k,
+  void updateBasis(const Point & alpha_k,
                    const NumericalScalar residual,
                    const NumericalScalar relativeError);
 

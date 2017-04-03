@@ -47,10 +47,10 @@ public:
   using DistributionFactoryImplementation::build;
 
   Implementation build( const Sample & sample ) const;
-  Implementation build(const NumericalPoint & parameters) const;
+  Implementation build(const Point & parameters) const;
   Implementation build() const;
   Trapezoidal buildAsTrapezoidal( const Sample & sample ) const;
-  Trapezoidal buildAsTrapezoidal(const NumericalPoint & parameters) const;
+  Trapezoidal buildAsTrapezoidal(const Point & parameters) const;
   Trapezoidal buildAsTrapezoidal() const;
 
   /** Optimization solver accessor */
@@ -66,7 +66,7 @@ protected:
   Function getLogLikelihoodInequalityConstraint() const;
 
   /** likelihood estimate */
-  NumericalPoint computeLogLikelihoodInequalityConstraint( const NumericalPoint & x ) const;
+  Point computeLogLikelihoodInequalityConstraint( const Point & x ) const;
 
   /** only used to pass data to be used in computeLogLikeliHood */
   mutable Sample sample_;

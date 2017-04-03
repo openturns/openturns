@@ -59,8 +59,8 @@ public:
   void run();
 
   /** Starting point accessor */
-  NumericalPoint getStartingPoint() const;
-  void setStartingPoint(const NumericalPoint & startingPoint);
+  Point getStartingPoint() const;
+  void setStartingPoint(const Point & startingPoint);
 
   /** Problem accessor */
   OptimizationProblem getProblem() const;

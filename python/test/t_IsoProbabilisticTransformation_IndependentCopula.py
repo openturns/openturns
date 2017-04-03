@@ -23,8 +23,8 @@ def cleanSymmetricTensor(inSymmetricTensor):
 
 try:
 
-    meanPoint = NumericalPoint(1)
-    sigma = NumericalPoint(1)
+    meanPoint = Point(1)
+    sigma = Point(1)
     R = CorrelationMatrix(1)
 
     # Create a collection of distribution
@@ -63,7 +63,7 @@ try:
         transformedBackSample.computeMean()))
     print("transformed back sample covariance=", repr(
         transformedBackSample.computeCovariance()))
-    point = NumericalPoint(dim, 1.0)
+    point = Point(dim, 1.0)
     print("point=", repr(point))
     transformedPoint = transform(point)
     print("transform value at point        =", repr(transformedPoint))

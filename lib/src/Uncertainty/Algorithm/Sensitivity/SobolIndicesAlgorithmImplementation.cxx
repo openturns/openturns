@@ -77,7 +77,7 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const S
     throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation, output design is empty" ;
 
   // center Y
-  NumericalPoint muY(outputDesign_.computeMean());
+  Point muY(outputDesign_.computeMean());
   outputDesign_ -= muY;
 
   // Check if desing result is coherant
@@ -124,7 +124,7 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const D
   outputDesign_ = model(inputDesign_);
 
   // center Y
-  NumericalPoint muY(outputDesign_.computeMean());
+  Point muY(outputDesign_.computeMean());
   outputDesign_ -= muY;
 
   size_ = size;
@@ -161,7 +161,7 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const W
   outputDesign_ = model(inputDesign_);
 
   // center Y
-  NumericalPoint muY(outputDesign_.computeMean());
+  Point muY(outputDesign_.computeMean());
   outputDesign_ -= muY;
 
   size_ = experiment.getSize();
@@ -238,7 +238,7 @@ Sample SobolIndicesAlgorithmImplementation::Generate(const WeightedExperiment & 
 }
 
 /* First order indices accessor */
-NumericalPoint SobolIndicesAlgorithmImplementation::getFirstOrderIndices(const UnsignedInteger marginalIndex) const
+Point SobolIndicesAlgorithmImplementation::getFirstOrderIndices(const UnsignedInteger marginalIndex) const
 {
   if (0 == varianceI_.getSize())
   {
@@ -250,7 +250,7 @@ NumericalPoint SobolIndicesAlgorithmImplementation::getFirstOrderIndices(const U
   if (marginalIndex >= outputDimension)
     throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::getTotalOrderIndices, marginalIndex should be in [0," << outputDimension - 1;
   // return value
-  const NumericalPoint firstOrderSensitivity(varianceI_[marginalIndex] / referenceVariance_[marginalIndex]);
+  const Point firstOrderSensitivity(varianceI_[marginalIndex] / referenceVariance_[marginalIndex]);
   for (UnsignedInteger p = 0; p < inputDesign_.getDimension(); ++p)
   {
     if ((firstOrderSensitivity[p] > 1.0) || firstOrderSensitivity[p] < 0.0)
@@ -288,7 +288,7 @@ struct BootstrapPolicy
   {
     Indices slice(size_);
     Sample VTi;
-    NumericalPoint mergedTotal;
+    Point mergedTotal;
 
     for (UnsignedInteger k = r.begin(); k != r.end(); ++k)
     {
@@ -300,7 +300,7 @@ struct BootstrapPolicy
       // Pseudo-Reference variance
       Sample outReference(size_, sai_.outputDesign_.getDimension());
       for (UnsignedInteger i = 0; i < size_; ++i) outReference[i] = randomCollection[i];
-      const NumericalPoint variance(outReference.computeVariance());
+      const Point variance(outReference.computeVariance());
       // Compute indices using this collection
       const Sample Vi(sai_.computeIndices(randomCollection, VTi));
       // Compute aggregated indices
@@ -318,8 +318,8 @@ void SobolIndicesAlgorithmImplementation::computeIndicesInterval() const
 
   // Build interval using sample variance
   // Mean reference is the Sensitivity values
-  const NumericalPoint aggregatedFirstOrder(getAggregatedFirstOrderIndices());
-  const NumericalPoint aggregatedTotalOrder(getAggregatedTotalOrderIndices());
+  const Point aggregatedFirstOrder(getAggregatedFirstOrderIndices());
+  const Point aggregatedTotalOrder(getAggregatedTotalOrderIndices());
   // Compute confidence interval
   firstOrderIndiceInterval_ = Interval(aggregatedFirstOrder, aggregatedFirstOrder);
   totalOrderIndiceInterval_ = Interval(aggregatedTotalOrder, aggregatedTotalOrder);
@@ -361,20 +361,20 @@ void SobolIndicesAlgorithmImplementation::computeIndicesInterval() const
     const NumericalScalar upperQuantileLevel = 0.5 * (1.0 + confidenceLevel_);
     // Compute empirical quantiles
     // 1) First order indices
-    const NumericalPoint lowerQuantileFO(bsFO.computeQuantilePerComponent(lowerQuantileLevel));
-    const NumericalPoint upperQuantileFO(bsFO.computeQuantilePerComponent(upperQuantileLevel));
+    const Point lowerQuantileFO(bsFO.computeQuantilePerComponent(lowerQuantileLevel));
+    const Point upperQuantileFO(bsFO.computeQuantilePerComponent(upperQuantileLevel));
     LOGINFO(OSS() << "First Order from Bootstrap sample:  lowerQuantile=" << lowerQuantileFO << ", upperQuantile=" << upperQuantileFO );
     // 2) Total order indices
-    const NumericalPoint lowerQuantileTO(bsTO.computeQuantilePerComponent(lowerQuantileLevel));
-    const NumericalPoint upperQuantileTO(bsTO.computeQuantilePerComponent(upperQuantileLevel));
+    const Point lowerQuantileTO(bsTO.computeQuantilePerComponent(lowerQuantileLevel));
+    const Point upperQuantileTO(bsTO.computeQuantilePerComponent(upperQuantileLevel));
     LOGINFO(OSS() << "Total Order from Bootstrap sample:  lowerQuantile=" << lowerQuantileTO << ", upperQuantile=" << upperQuantileTO );
 
     // First order interval
-    const NumericalPoint firstOrderLowerBound(aggregatedFirstOrder * 2.0 - upperQuantileFO);
-    const NumericalPoint firstOrderUpperBound(aggregatedFirstOrder * 2.0 - lowerQuantileFO);
+    const Point firstOrderLowerBound(aggregatedFirstOrder * 2.0 - upperQuantileFO);
+    const Point firstOrderUpperBound(aggregatedFirstOrder * 2.0 - lowerQuantileFO);
     // Total order interval
-    const NumericalPoint totalOrderLowerBound(aggregatedTotalOrder * 2.0 - upperQuantileTO);
-    const NumericalPoint totalOrderUpperBound(aggregatedTotalOrder * 2.0 - lowerQuantileTO);
+    const Point totalOrderLowerBound(aggregatedTotalOrder * 2.0 - upperQuantileTO);
+    const Point totalOrderUpperBound(aggregatedTotalOrder * 2.0 - lowerQuantileTO);
 
     // Compute confidence interval
     firstOrderIndiceInterval_ = Interval(firstOrderLowerBound, firstOrderUpperBound);
@@ -405,7 +405,7 @@ SymmetricMatrix SobolIndicesAlgorithmImplementation::getSecondOrderIndices(const
     // Compute second order indices
     secondOrderIndices_ = SymmetricTensor(inputDimension, outputDimension);
     // Compute cross square mean between samples yA and yB, which are located respectively at index 0 and size_
-    NumericalPoint crossSquareMean(computeSumDotSamples(outputDesign_, size_, 0, size_) / size_);
+    Point crossSquareMean(computeSumDotSamples(outputDesign_, size_, 0, size_) / size_);
 
     // Main loop
     for (UnsignedInteger k1 = 0; k1 < inputDimension; ++k1)
@@ -413,12 +413,12 @@ SymmetricMatrix SobolIndicesAlgorithmImplementation::getSecondOrderIndices(const
       for (UnsignedInteger k2 = 0; k2 < k1; ++k2)
       {
         // Compute yEDotyC
-        //const NumericalPoint yEDotyC(computeSumDotSamples(yE, yC));
-        const NumericalPoint yEDotyC(computeSumDotSamples(outputDesign_, size_, (2 + k1) * size_, (2 + k2 + inputDimension) * size_));
+        //const Point yEDotyC(computeSumDotSamples(yE, yC));
+        const Point yEDotyC(computeSumDotSamples(outputDesign_, size_, (2 + k1) * size_, (2 + k2 + inputDimension) * size_));
         for (UnsignedInteger q = 0; q < outputDimension; ++q)
         {
           // Sij = (Vij - crossMean)/var - and S_{i}, S_{j}
-          const NumericalPoint firstOrderIndices(getFirstOrderIndices(q));
+          const Point firstOrderIndices(getFirstOrderIndices(q));
           secondOrderIndices_(k1, k2, q) = (yEDotyC[q] / (size_ - 1.0) - crossSquareMean[q]) / referenceVariance_[q] - firstOrderIndices[k1] - firstOrderIndices[k2] ;
           if ((secondOrderIndices_(k1, k2, q) < 0.0) || (secondOrderIndices_(k1, k2, q) > 1.0))
             LOGWARN(OSS() << "The estimated second order Sobol index (" << k1 << ", " << k2 << ") is not in the range [0, 1]. You may increase the sampling size.");
@@ -432,7 +432,7 @@ SymmetricMatrix SobolIndicesAlgorithmImplementation::getSecondOrderIndices(const
 }
 
 /* Total order indices accessor */
-NumericalPoint SobolIndicesAlgorithmImplementation::getTotalOrderIndices(const UnsignedInteger marginalIndex) const
+Point SobolIndicesAlgorithmImplementation::getTotalOrderIndices(const UnsignedInteger marginalIndex) const
 {
   if (0 == varianceI_.getSize())
   {
@@ -464,7 +464,7 @@ Interval SobolIndicesAlgorithmImplementation::getTotalOrderIndicesInterval() con
 }
 
 /* Aggregated first order indices accessor for multivariate samples */
-NumericalPoint SobolIndicesAlgorithmImplementation::getAggregatedFirstOrderIndices() const
+Point SobolIndicesAlgorithmImplementation::getAggregatedFirstOrderIndices() const
 {
   if (0 == varianceI_.getSize())
   {
@@ -481,7 +481,7 @@ NumericalPoint SobolIndicesAlgorithmImplementation::getAggregatedFirstOrderIndic
 }
 
 /* Aggregated total order indices accessor for multivariate samples */
-NumericalPoint SobolIndicesAlgorithmImplementation::getAggregatedTotalOrderIndices() const
+Point SobolIndicesAlgorithmImplementation::getAggregatedTotalOrderIndices() const
 {
   if (0 == varianceI_.getSize())
   {
@@ -540,7 +540,7 @@ String SobolIndicesAlgorithmImplementation::__repr__() const
 
 // Multiplication and sum of two Samples
 // TODO Write method in Sample ?
-NumericalPoint SobolIndicesAlgorithmImplementation::computeSumDotSamples(const Sample & x,
+Point SobolIndicesAlgorithmImplementation::computeSumDotSamples(const Sample & x,
     const Sample & y) const
 {
   // Internal method
@@ -552,7 +552,7 @@ NumericalPoint SobolIndicesAlgorithmImplementation::computeSumDotSamples(const S
   const NumericalScalar * yptr(&y[0][0]);
 
 
-  NumericalPoint value(dimension, 0.0);
+  Point value(dimension, 0.0);
   for (UnsignedInteger i = 0; i < size; ++i)
     for (UnsignedInteger j = 0; j < dimension; ++j, ++xptr, ++yptr)
       value[j] += (*xptr) * (*yptr);
@@ -560,7 +560,7 @@ NumericalPoint SobolIndicesAlgorithmImplementation::computeSumDotSamples(const S
 }
 
 // Multiplication and sum of two Samples, contained in the sampe sample
-NumericalPoint SobolIndicesAlgorithmImplementation::computeSumDotSamples(const Sample & sample,
+Point SobolIndicesAlgorithmImplementation::computeSumDotSamples(const Sample & sample,
     const UnsignedInteger size,
     const UnsignedInteger indexX,
     const UnsignedInteger indexY) const
@@ -573,7 +573,7 @@ NumericalPoint SobolIndicesAlgorithmImplementation::computeSumDotSamples(const S
   const NumericalScalar * yptr(&sample[indexY][0]);
 
 
-  NumericalPoint value(dimension, 0.0);
+  Point value(dimension, 0.0);
   for (UnsignedInteger i = 0; i < size; ++i)
     for (UnsignedInteger j = 0; j < dimension; ++j, ++xptr, ++yptr)
       value[j] += (*xptr) * (*yptr);
@@ -599,8 +599,8 @@ Graph SobolIndicesAlgorithmImplementation::draw() const
 {
   Graph graph(OSS() << " Aggregated sensitivity indices - " << getClassName(), "inputs", "Sensitivity indices ", true, "");
   // Define cloud for first order and total order indices
-  const NumericalPoint aggregatedFO(getAggregatedFirstOrderIndices());
-  const NumericalPoint aggregatedTO(getAggregatedTotalOrderIndices());
+  const Point aggregatedFO(getAggregatedFirstOrderIndices());
+  const Point aggregatedTO(getAggregatedTotalOrderIndices());
   Sample data(aggregatedFO.getDimension(), 2);
   for (UnsignedInteger k = 0; k < aggregatedFO.getDimension(); ++k)
   {
@@ -620,7 +620,7 @@ Graph SobolIndicesAlgorithmImplementation::draw() const
   Cloud totalOrderIndicesGraph(data, "blue", "square", "Aggregated TO");
   graph.add(totalOrderIndicesGraph);
   // Set bounding box
-  NumericalPoint boundingBox(4, -0.1);
+  Point boundingBox(4, -0.1);
   boundingBox[1] = aggregatedFO.getDimension() + 1;
   boundingBox[3] = 1.1 ;
   if (bootstrapSize_ > 0 && confidenceLevel_ > 0.0)
@@ -657,8 +657,8 @@ Graph SobolIndicesAlgorithmImplementation::draw(UnsignedInteger marginalIndex) c
 {
   Graph graph(OSS() << " Sensitivity indices - " << getClassName(), "inputs", "Sensitivity indices ", true, "");
   // Define cloud for first order and total order indices
-  const NumericalPoint foIndices(getFirstOrderIndices(marginalIndex));
-  const NumericalPoint toIndices(getTotalOrderIndices(marginalIndex));
+  const Point foIndices(getFirstOrderIndices(marginalIndex));
+  const Point toIndices(getTotalOrderIndices(marginalIndex));
   Sample data(foIndices.getDimension(), 2);
   for (UnsignedInteger k = 0; k < foIndices.getDimension(); ++k)
   {
@@ -678,7 +678,7 @@ Graph SobolIndicesAlgorithmImplementation::draw(UnsignedInteger marginalIndex) c
   Cloud totalOrderIndicesGraph(data, "blue", "square", "Aggregated TO");
   graph.add(totalOrderIndicesGraph);
   // Set bounding box
-  NumericalPoint boundingBox(4, -0.1);
+  Point boundingBox(4, -0.1);
   boundingBox[1] = foIndices.getDimension() + 1;
   boundingBox[3] = 1.1 ;
   graph.setBoundingBox(boundingBox);
@@ -708,18 +708,18 @@ Sample SobolIndicesAlgorithmImplementation::getBootstrapDesign(const Indices & i
 }
 
 /** Function that computes merged indices using Vi/VTi + variance  */
-NumericalPoint SobolIndicesAlgorithmImplementation::computeAggregatedIndices(const Sample & Vi,
+Point SobolIndicesAlgorithmImplementation::computeAggregatedIndices(const Sample & Vi,
     const Sample & VTi,
-    const NumericalPoint & variance,
-    NumericalPoint & mergedTotal) const
+    const Point & variance,
+    Point & mergedTotal) const
 {
   // Generic implementation
   const UnsignedInteger inputDimension = Vi.getDimension();
   const UnsignedInteger outputDimension = Vi.getSize();
   if (inputDimension == 1)
   {
-    mergedTotal = NumericalPoint(VTi[0]);
-    return NumericalPoint(Vi[0]);
+    mergedTotal = Point(VTi[0]);
+    return Point(Vi[0]);
   }
 
   // Compute sum of Var(Y^k)
@@ -727,18 +727,18 @@ NumericalPoint SobolIndicesAlgorithmImplementation::computeAggregatedIndices(con
 
   // Compute merged indices
   mergedTotal = VTi.computeMean() * (outputDimension / sumVariance);
-  return NumericalPoint(Vi.computeMean() * (outputDimension / sumVariance));
+  return Point(Vi.computeMean() * (outputDimension / sumVariance));
 }
 
 /* ImportanceFactors graph */
-Graph SobolIndicesAlgorithmImplementation::DrawImportanceFactors(const NumericalPointWithDescription & importanceFactors,
+Graph SobolIndicesAlgorithmImplementation::DrawImportanceFactors(const PointWithDescription & importanceFactors,
     const String & title)
 {
   return DrawImportanceFactors(importanceFactors, importanceFactors.getDescription(), title);
 }
 
 /* ImportanceFactors graph */
-Graph SobolIndicesAlgorithmImplementation::DrawImportanceFactors(const NumericalPoint & values,
+Graph SobolIndicesAlgorithmImplementation::DrawImportanceFactors(const Point & values,
     const Description & names,
     const String & title)
 {
@@ -749,7 +749,7 @@ Graph SobolIndicesAlgorithmImplementation::DrawImportanceFactors(const Numerical
   NumericalScalar l1Norm = 0.0;
   for (UnsignedInteger i = 0; i < dimension; ++i) l1Norm += std::abs(values[i]);
   if (l1Norm == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot draw an importance factors pie based on null data.";
-  NumericalPoint data(dimension);
+  Point data(dimension);
   /* Normalization */
   for (UnsignedInteger i = 0; i < dimension; ++i) data[i] = values[i] / l1Norm;
   /* we build the pie */

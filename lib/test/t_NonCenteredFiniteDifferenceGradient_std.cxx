@@ -41,8 +41,8 @@ int main(int argc, char *argv[])
     formula[1] = "cos(x1+x2)";
     formula[2] = "(x2+1)*exp(x1-2*x2)";
     SymbolicFunction myFunc(input, formula);
-    NumericalPoint epsilon(myFunc.getInputDimension(), eps);
-    NumericalPoint in(epsilon.getDimension(), 1.0);
+    Point epsilon(myFunc.getInputDimension(), eps);
+    Point in(epsilon.getDimension(), 1.0);
     NonCenteredFiniteDifferenceGradient myGradient(epsilon, myFunc.getEvaluation());
 
     fullprint << "myGradient=" << myGradient << std::endl;

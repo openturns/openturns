@@ -57,7 +57,7 @@ public:
 
   /** Parameter constructor */
   IntegrationStrategy(const Sample & inputSample,
-                      const NumericalPoint & weights,
+                      const Point & weights,
                       const Sample & outputSample);
 
   /** Parameter constructor */

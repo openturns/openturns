@@ -9,7 +9,7 @@ RandomGenerator.SetSeed(0)
 try:
     # Generate the data for the polygons to be drawn
     size = 50
-    cursor = NumericalPoint(2)
+    cursor = Point(2)
 
     data1 = Sample(size, 2)  # polygon y = 2x for x in [-25]
     data2 = Sample(size, 2)  # polygon y = x*x for x in [-11]

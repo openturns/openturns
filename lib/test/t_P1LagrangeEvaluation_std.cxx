@@ -33,13 +33,13 @@ int main(int argc, char *argv[])
   {
     RegularGrid mesh(0.0, 1.0, 4);
     Sample values(0, 1);
-    values.add(NumericalPoint(1, 0.5));
-    values.add(NumericalPoint(1, 1.5));
-    values.add(NumericalPoint(1, 1.0));
-    values.add(NumericalPoint(1, -0.5));
+    values.add(Point(1, 0.5));
+    values.add(Point(1, 1.5));
+    values.add(Point(1, 1.0));
+    values.add(Point(1, -0.5));
     P1LagrangeEvaluation evaluation(Field(mesh, values));
     fullprint << "Evaluation=" << evaluation << std::endl;
-    NumericalPoint inPoint(1, 2.3);
+    Point inPoint(1, 2.3);
     fullprint << "Value at " << inPoint << "=" << evaluation(inPoint) << std::endl;
   }
   catch (TestFailed & ex)

@@ -5,12 +5,12 @@ import openturns as ot
 import math as m
 
 
-def cleanNumericalPoint(inNumericalPoint):
-    dim = inNumericalPoint.getDimension()
+def cleanPoint(inPoint):
+    dim = inPoint.getDimension()
     for i in range(dim):
-        if (m.fabs(inNumericalPoint[i]) < 1.e-10):
-            inNumericalPoint[i] = 0.0
-    return inNumericalPoint
+        if (m.fabs(inPoint[i]) < 1.e-10):
+            inPoint[i] = 0.0
+    return inPoint
 
 
 # Instanciate one distribution object
@@ -47,7 +47,7 @@ for testCase in range(len(distribution)):
     print('covariance=', repr(oneSample.computeCovariance()))
 
     # Define a point
-    point = ot.NumericalPoint(distribution[testCase].getDimension(), 2.5)
+    point = ot.Point(distribution[testCase].getDimension(), 2.5)
     print('Point= ', repr(point))
 
     # Show PDF and CDF of point
@@ -70,14 +70,14 @@ for testCase in range(len(distribution)):
     print('cdf (ref)=%.6f' %
           referenceDistribution[testCase].computeCDF(point))
     PDFgr = distribution[testCase].computePDFGradient(point)
-    print('pdf gradient      =', repr(cleanNumericalPoint(PDFgr)))
+    print('pdf gradient      =', repr(cleanPoint(PDFgr)))
     print('pdf gradient (ref)=', repr(
-        cleanNumericalPoint(referenceDistribution[testCase].computePDFGradient(point))))
+        cleanPoint(referenceDistribution[testCase].computePDFGradient(point))))
 
     CDFgr = distribution[testCase].computeCDFGradient(point)
-    print('cdf gradient      =', repr(cleanNumericalPoint(CDFgr)))
+    print('cdf gradient      =', repr(cleanPoint(CDFgr)))
     print('cdf gradient (ref)=', repr(
-        cleanNumericalPoint(referenceDistribution[testCase].computeCDFGradient(point))))
+        cleanPoint(referenceDistribution[testCase].computeCDFGradient(point))))
 
     # quantile
     quantile = distribution[testCase].computeQuantile(0.95)
@@ -87,26 +87,26 @@ for testCase in range(len(distribution)):
     print('cdf(quantile)=%.6f' %
           distribution[testCase].computeCDF(quantile))
     # Get 95% survival function
-    inverseSurvival = ot.NumericalPoint(distribution[testCase].computeInverseSurvivalFunction(0.95))
+    inverseSurvival = ot.Point(distribution[testCase].computeInverseSurvivalFunction(0.95))
     print("InverseSurvival=", repr(inverseSurvival))
     print("Survival(inverseSurvival)=%.6f" % distribution[testCase].computeSurvivalFunction(inverseSurvival))
 
     # Confidence regions
     interval, threshold = distribution[testCase].computeMinimumVolumeIntervalWithMarginalProbability(0.95)
     print("Minimum volume interval=", interval)
-    print("threshold=", ot.NumericalPoint(1, threshold))
+    print("threshold=", ot.Point(1, threshold))
     levelSet, beta = distribution[testCase].computeMinimumVolumeLevelSetWithThreshold(0.95)
     print("Minimum volume level set=", levelSet)
-    print("beta=", ot.NumericalPoint(1, beta))
+    print("beta=", ot.Point(1, beta))
     interval, beta = distribution[testCase].computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
     print("Bilateral confidence interval=", interval)
-    print("beta=", ot.NumericalPoint(1, beta))
+    print("beta=", ot.Point(1, beta))
     interval, beta = distribution[testCase].computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
     print("Unilateral confidence interval (lower tail)=", interval)
-    print("beta=", ot.NumericalPoint(1, beta))
+    print("beta=", ot.Point(1, beta))
     interval, beta = distribution[testCase].computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
     print("Unilateral confidence interval (upper tail)=", interval)
-    print("beta=", ot.NumericalPoint(1, beta))
+    print("beta=", ot.Point(1, beta))
 
     mean = distribution[testCase].getMean()
     print('mean      =', repr(mean))

@@ -80,7 +80,7 @@ String CanonicalTensorGradient::__str__(const String & offset) const
 
 
 /* Gradient */
-Matrix CanonicalTensorGradient::gradient(const NumericalPoint & inP) const
+Matrix CanonicalTensorGradient::gradient(const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a Function with an argument of invalid dimension";
@@ -89,20 +89,20 @@ Matrix CanonicalTensorGradient::gradient(const NumericalPoint & inP) const
   ++ callsNumber_;
 
   const UnsignedInteger m = evaluation_.getRank();
-  NumericalPoint prodI(m, 1.0);
+  Point prodI(m, 1.0);
 
   Sample sumRI(m, inputDimension);
   Sample sumdRI(m, inputDimension);
 
   for (UnsignedInteger j = 0; j < inputDimension; ++ j)
   {
-    const NumericalPoint xj(1, inP[j]);
+    const Point xj(1, inP[j]);
     const Basis basisI(evaluation_.getBasis(j));
     const UnsignedInteger basisSize = evaluation_.getDegrees()[j];
 
     // compute phi_(i,j)(xj), phi_(i,j)'(xj)
-    NumericalPoint phiXj(basisSize);
-    NumericalPoint dphiXj(basisSize);
+    Point phiXj(basisSize);
+    Point dphiXj(basisSize);
     for (UnsignedInteger k = 0; k < basisSize; ++ k)
     {
       phiXj[k] = basisI[k](xj)[0];
@@ -111,7 +111,7 @@ Matrix CanonicalTensorGradient::gradient(const NumericalPoint & inP) const
 
     for (UnsignedInteger i = 0; i < m; ++ i)
     {
-      const NumericalPoint coeffI(evaluation_.getCoefficients(i, j));
+      const Point coeffI(evaluation_.getCoefficients(i, j));
       NumericalScalar sumI = 0.0;
       NumericalScalar sumdI = 0.0;
       for (UnsignedInteger k = 0; k < basisSize; ++ k)

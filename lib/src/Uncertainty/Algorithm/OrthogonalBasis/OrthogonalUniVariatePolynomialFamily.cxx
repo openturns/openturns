@@ -75,15 +75,15 @@ String OrthogonalUniVariatePolynomialFamily::__repr__() const
 }
 
 /* Roots of the polynomial of degree n */
-NumericalPoint OrthogonalUniVariatePolynomialFamily::getRoots(const UnsignedInteger n) const
+Point OrthogonalUniVariatePolynomialFamily::getRoots(const UnsignedInteger n) const
 {
   return getImplementation()->getRoots(n);
 }
 
 /* Nodes and weights of the polynomial of degree n as the eigenvalues of the associated Jacobi matrix and the square
    of the first component of the associated normalized eigenvectors */
-NumericalPoint OrthogonalUniVariatePolynomialFamily::getNodesAndWeights(const UnsignedInteger n,
-    NumericalPoint & weights) const
+Point OrthogonalUniVariatePolynomialFamily::getNodesAndWeights(const UnsignedInteger n,
+    Point & weights) const
 {
   return getImplementation()->getNodesAndWeights(n, weights);
 }

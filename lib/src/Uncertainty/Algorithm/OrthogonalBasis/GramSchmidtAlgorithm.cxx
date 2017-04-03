@@ -24,7 +24,7 @@
 #include "openturns/Exception.hxx"
 #include "openturns/SquareMatrix.hxx"
 #include "openturns/Log.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -174,8 +174,8 @@ NumericalScalar GramSchmidtAlgorithm::dotProduct(const UniVariatePolynomial & p1
   return value;
 #else
   measure_.getImplementation()->setIntegrationNodesNumber(std::max(measure_.getImplementation()->getIntegrationNodesNumber(), std::min(ai.getSize(), 50)));
-  NumericalPoint weights;
-  NumericalPoint nodes(measure_.getImplementation()->getGaussNodesAndWeights(weights));
+  Point weights;
+  Point nodes(measure_.getImplementation()->getGaussNodesAndWeights(weights));
   const NumericalScalar lowerBound = measure_.getRange().getLowerBound()[0];
   const NumericalScalar upperBound = measure_.getRange().getUpperBound()[0];
   const NumericalScalar halfLength = 0.5 * (upperBound - lowerBound);

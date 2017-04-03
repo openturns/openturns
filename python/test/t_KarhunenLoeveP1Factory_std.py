@@ -6,7 +6,7 @@ import openturns as ot
 try:
     mesh = ot.IntervalMesher(ot.Indices(1, 9)).build(ot.Interval(-1.0, 1.0))
     factory = ot.KarhunenLoeveP1Factory(mesh, 0.0)
-    eigenValues = ot.NumericalPoint()
+    eigenValues = ot.Point()
     KLModes = factory.buildAsProcessSample(
         ot.AbsoluteExponential([1.0]), eigenValues)
     print("KL modes=", KLModes)

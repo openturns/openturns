@@ -81,10 +81,10 @@ struct LogNormalFactoryLMLEParameterConstraint
     // Nothing to do
   };
 
-  NumericalPoint computeConstraint(const NumericalPoint & parameter) const
+  Point computeConstraint(const Point & parameter) const
   {
-    const NumericalPoint sums(computeMaximumLikelihoodSums(parameter[0]));
-    return NumericalPoint(1, sums[0] * (sums[2] - sums[1] * (1.0 + sums[1] / size_)) + size_ * sums[3]);
+    const Point sums(computeMaximumLikelihoodSums(parameter[0]));
+    return Point(1, sums[0] * (sums[2] - sums[1] * (1.0 + sums[1] / size_)) + size_ * sums[3]);
   }
 
   /*
@@ -93,9 +93,9 @@ struct LogNormalFactoryLMLEParameterConstraint
     S_2 = \sum_i \log^2(X_i - \gamma)
     S_3 = \sum_i \log(X_i - \gamma) / (X_i - \gamma)
   */
-  NumericalPoint computeMaximumLikelihoodSums(const NumericalScalar gamma) const
+  Point computeMaximumLikelihoodSums(const NumericalScalar gamma) const
   {
-    NumericalPoint sums(4, 0.0);
+    Point sums(4, 0.0);
     for (UnsignedInteger i = 0; i < size_; ++i)
     {
       const NumericalScalar delta = sample_[i][0] - gamma;
@@ -125,17 +125,17 @@ LogNormal LogNormalFactory::buildMethodOfLocalLikelihoodMaximization(const Sampl
   const NumericalScalar xMin = sample.getMin()[0];
   NumericalScalar right = xMin - quantileEpsilon;
   const LogNormalFactoryLMLEParameterConstraint constraint(sample);
-  const Function f(bindMethod<LogNormalFactoryLMLEParameterConstraint, NumericalPoint, NumericalPoint>(constraint, &LogNormalFactoryLMLEParameterConstraint::computeConstraint, 1, 1));
-  NumericalScalar constraintRight = f(NumericalPoint(1, right))[0];
+  const Function f(bindMethod<LogNormalFactoryLMLEParameterConstraint, Point, Point>(constraint, &LogNormalFactoryLMLEParameterConstraint::computeConstraint, 1, 1));
+  NumericalScalar constraintRight = f(Point(1, right))[0];
   NumericalScalar left = right - step;
-  NumericalScalar constraintLeft = f(NumericalPoint(1, left))[0];
+  NumericalScalar constraintLeft = f(Point(1, left))[0];
   // First, the bracketing interval. We should find a change of sign within [Xmin-sigma, Xmin], else use another estimator
   while ((constraintLeft < 0.0) == (constraintRight < 0.0) && (step < std::sqrt(SpecFunc::MaxNumericalScalar)))
   {
     right = left;
     constraintRight = constraintLeft;
     left -= step;
-    constraintLeft = f(NumericalPoint(1, left))[0];
+    constraintLeft = f(Point(1, left))[0];
     step *= 2.0;
   }
   // If we are unable to bracket the gamma parameter
@@ -147,7 +147,7 @@ LogNormal LogNormalFactory::buildMethodOfLocalLikelihoodMaximization(const Sampl
   const NumericalScalar gamma = solver.solve(f, 0.0, left, right, constraintLeft, constraintRight);
   // Third, the final estimates
   const UnsignedInteger size = sample.getSize();
-  const NumericalPoint sums(constraint.computeMaximumLikelihoodSums(gamma));
+  const Point sums(constraint.computeMaximumLikelihoodSums(gamma));
   const NumericalScalar mu = sums[1] / size;
   const NumericalScalar sigma2 = sums[2] / size - mu * mu;
   if (!(sigma2 > 0.0)) throw InvalidArgumentException(HERE) << "Error: the variance local maximum likelihood estimator should be positive, here sigma2=" << sigma2;
@@ -167,11 +167,11 @@ struct LogNormalFactoryMMEParameterConstraint
     // Nothing to do
   };
 
-  NumericalPoint computeConstraint(const NumericalPoint & parameter) const
+  Point computeConstraint(const Point & parameter) const
   {
     const NumericalScalar omega = parameter[0];
     if (!(omega > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot estimate a LogNormal distribution based on the given sample using the method of modified moments, probably because the sample is constant.";
-    return NumericalPoint(1, alpha_ * std::pow(std::sqrt(omega) - std::exp(eZ1_ * std::sqrt(std::log(omega))), 2) - omega * (omega - 1.0));
+    return Point(1, alpha_ * std::pow(std::sqrt(omega) - std::exp(eZ1_ * std::sqrt(std::log(omega))), 2) - omega * (omega - 1.0));
   }
 
   NumericalScalar getEZ1() const
@@ -192,25 +192,25 @@ LogNormal LogNormalFactory::buildMethodOfModifiedMoments(const Sample & sample) 
   const NumericalScalar mean = sample.computeMean()[0];
   const NumericalScalar xMin = sample.getMin()[0];
   const LogNormalFactoryMMEParameterConstraint constraint(sample.getSize(), xMin, mean, std);
-  const Function f(bindMethod<LogNormalFactoryMMEParameterConstraint, NumericalPoint, NumericalPoint>(constraint, &LogNormalFactoryMMEParameterConstraint::computeConstraint, 1, 1));
+  const Function f(bindMethod<LogNormalFactoryMMEParameterConstraint, Point, Point>(constraint, &LogNormalFactoryMMEParameterConstraint::computeConstraint, 1, 1));
   // First, the bracketing interval
   NumericalScalar ea = 1.0;
   NumericalScalar eb = 2.0;
   NumericalScalar a = 1.0 + ea;
   NumericalScalar b = 1.0 + eb;
-  NumericalScalar fA = f(NumericalPoint(1, a))[0];
-  NumericalScalar fB = f(NumericalPoint(1, b))[0];
+  NumericalScalar fA = f(Point(1, a))[0];
+  NumericalScalar fB = f(Point(1, b))[0];
   // While f has the same sign at the two bounds, update the interval
   const NumericalScalar quantileEpsilon = ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon");
   while ((fA * fB > 0.0) && (ea > quantileEpsilon))
   {
     ea = 0.5 * ea;
     a = 1.0 + ea;
-    fA = f(NumericalPoint(1, a))[0];
+    fA = f(Point(1, a))[0];
     if (fA * fB <= 0.0) break;
     eb = 2.0 * eb;
     b = 1.0 + eb;
-    fB = f(NumericalPoint(1, b))[0];
+    fB = f(Point(1, b))[0];
   }
   const NumericalScalar absolutePrecision = ResourceMap::GetAsNumericalScalar("LogNormalFactory-AbsolutePrecision");
   if (a <= quantileEpsilon) throw InvalidArgumentException(HERE) << "Error: the modified moment estimator is not defined";
@@ -248,7 +248,7 @@ LogNormalFactory::Implementation LogNormalFactory::build() const
   return buildAsLogNormal().clone();
 }
 
-LogNormalFactory::Implementation LogNormalFactory::build(const NumericalPoint & parameters) const
+LogNormalFactory::Implementation LogNormalFactory::build(const Point & parameters) const
 {
   return buildAsLogNormal(parameters).clone();
 }
@@ -298,7 +298,7 @@ LogNormal LogNormalFactory::buildAsLogNormal(const Sample & sample,
   }
 }
 
-LogNormal LogNormalFactory::buildAsLogNormal(const NumericalPoint & parameters) const
+LogNormal LogNormalFactory::buildAsLogNormal(const Point & parameters) const
 {
   try
   {

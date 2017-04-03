@@ -65,10 +65,10 @@ public:
 
   virtual CovarianceMatrix computeCovariance(const NumericalScalar tau) const;
 
-  virtual CovarianceMatrix computeCovariance(const NumericalPoint & s,
-      const NumericalPoint & t) const;
+  virtual CovarianceMatrix computeCovariance(const Point & s,
+      const Point & t) const;
 
-  virtual CovarianceMatrix computeCovariance(const NumericalPoint & tau) const;
+  virtual CovarianceMatrix computeCovariance(const Point & tau) const;
 
   /** SpectralModel and Covariance model accessor */
   SpectralModel getSpectralModel() const;

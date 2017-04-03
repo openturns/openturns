@@ -39,7 +39,7 @@ LinearGradient::LinearGradient()
 }
 
 /* Parameter constructor */
-LinearGradient::LinearGradient(const NumericalPoint & center,
+LinearGradient::LinearGradient(const Point & center,
     const Matrix & constant,
     const SymmetricTensor & linear)
   : GradientImplementation()
@@ -88,7 +88,7 @@ String LinearGradient::__str__(const String & offset) const
 }
 
 /* Accessor for the center */
-NumericalPoint LinearGradient::getCenter() const
+Point LinearGradient::getCenter() const
 {
   return center_;
 }
@@ -108,7 +108,7 @@ SymmetricTensor LinearGradient::getLinear() const
 /* Here is the interface that all derived class must implement */
 
 /* Gradient() */
-Matrix LinearGradient::gradient(const NumericalPoint & inP) const
+Matrix LinearGradient::gradient(const Point & inP) const
 {
   if (inP.getDimension() != constant_.getNbRows()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   Matrix value(constant_);

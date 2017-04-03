@@ -151,13 +151,13 @@ SquareComplexMatrix SquareComplexMatrix::operator* (const IdentityMatrix & m) co
 }
 
 
-/* Multiplication with a NumericalPoint (must have consistent dimensions) */
-SquareComplexMatrix::NumericalComplexCollection SquareComplexMatrix::operator * (const NumericalPoint & pt) const
+/* Multiplication with a Point (must have consistent dimensions) */
+SquareComplexMatrix::NumericalComplexCollection SquareComplexMatrix::operator * (const Point & pt) const
 {
   return getImplementation()->genVectProd(pt) ;
 }
 
-/* Multiplication with a NumericalPoint (must have consistent dimensions) */
+/* Multiplication with a Point (must have consistent dimensions) */
 SquareComplexMatrix::NumericalComplexCollection SquareComplexMatrix::operator * (const NumericalComplexCollection & pt) const
 {
   return getImplementation()->genVectProd(pt) ;

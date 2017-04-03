@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
     UnsignedInteger sampleSize = 1000;
     for(UnsignedInteger i = 0; i < sampleSize; ++i)
     {
-      NumericalPoint reverseHaltonPoint(sequence.generate());
+      Point reverseHaltonPoint(sequence.generate());
       fullprint << reverseHaltonPoint << std::endl;
       if(reverseHaltonPoint.norm() < 1.0)
         ++ pointInsideCircle;

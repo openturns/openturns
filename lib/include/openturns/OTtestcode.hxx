@@ -305,7 +305,7 @@ inline void assert_almost_equal(NumericalScalar a, NumericalScalar b, NumericalS
 }
 
 
-inline void assert_almost_equal(const NumericalPoint & a, const NumericalPoint & b, NumericalScalar rtol = 1.0e-5, NumericalScalar atol = 1.0e-8)
+inline void assert_almost_equal(const Point & a, const Point & b, NumericalScalar rtol = 1.0e-5, NumericalScalar atol = 1.0e-8)
 {
   const UnsignedInteger dimension = a.getDimension();
   for (UnsignedInteger j = 0; j < dimension; ++ j )

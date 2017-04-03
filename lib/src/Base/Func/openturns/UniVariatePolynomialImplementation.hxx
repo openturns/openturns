@@ -22,7 +22,7 @@
 #define OPENTURNS_UNIVARIATEPOLYNOMIALIMPLEMENTATION_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/Pointer.hxx"
 #include "openturns/UniVariateFunctionImplementation.hxx"
@@ -45,7 +45,7 @@ public:
 
   typedef Pointer<UniVariatePolynomialImplementation> Implementation;
   typedef Matrix::NumericalComplexCollection          NumericalComplexCollection;
-  typedef NumericalPoint                              Coefficients;
+  typedef Point                              Coefficients;
 
   /** Default constructor */
   UniVariatePolynomialImplementation();

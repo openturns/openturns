@@ -22,8 +22,8 @@
 #define OPENTURNS_ANALYTICAL_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalPointWithDescription.hxx"
+#include "openturns/Point.hxx"
+#include "openturns/PointWithDescription.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/Event.hxx"
@@ -51,22 +51,22 @@ class OT_API Analytical
   CLASSNAME;
 public:
 
-  typedef Collection<NumericalPointWithDescription> Sensitivity;
+  typedef Collection<PointWithDescription> Sensitivity;
 
   /** Constructor with parameters */
   Analytical(const OptimizationAlgorithm & solver,
              const Event & compositeEvent,
-             const NumericalPoint & physicalStartingPoint);
+             const Point & physicalStartingPoint);
 
 
   /** Virtual constructor */
   virtual Analytical * clone() const;
 
   /** Physical starting point accessor */
-  NumericalPoint getPhysicalStartingPoint() const;
+  Point getPhysicalStartingPoint() const;
 
   /** Physical starting point accessor */
-  void setPhysicalStartingPoint(const NumericalPoint & physicalStartingPoint);
+  void setPhysicalStartingPoint(const Point & physicalStartingPoint);
 
   /** Event accessor */
   Event getEvent() const;
@@ -106,7 +106,7 @@ private:
 
   OptimizationAlgorithm nearestPointAlgorithm_;
   Event event_;
-  NumericalPoint physicalStartingPoint_;
+  Point physicalStartingPoint_;
   AnalyticalResult result_;
 
 } ; /* class Analytical */

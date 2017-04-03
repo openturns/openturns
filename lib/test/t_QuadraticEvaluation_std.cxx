@@ -34,12 +34,12 @@ int main(int argc, char *argv[])
     UnsignedInteger inputDimension = 3;
     UnsignedInteger outputDimension = 2;
     // Center
-    NumericalPoint center(inputDimension);
+    Point center(inputDimension);
     center[0] = -1;
     center[1] = 0.5;
     center[2] = 1;
     // Constant term
-    NumericalPoint constant(outputDimension);
+    Point constant(outputDimension);
     constant[0] = -1.0;
     constant[1] =  2.0;
     // Linear term
@@ -67,11 +67,11 @@ int main(int argc, char *argv[])
 
     QuadraticEvaluation myFunction(center, constant, linear, quadratic);
     myFunction.setName("quadraticFunction");
-    NumericalPoint inPoint(inputDimension);
+    Point inPoint(inputDimension);
     inPoint[0] = 7.0;
     inPoint[1] = 8.0;
     inPoint[2] = 9.0;
-    NumericalPoint outPoint = myFunction( inPoint );
+    Point outPoint = myFunction( inPoint );
     fullprint << "myFunction=" << myFunction << std::endl;
     fullprint << myFunction.getName() << "( " << inPoint << " ) = " << outPoint << std::endl;
 

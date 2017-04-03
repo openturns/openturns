@@ -64,7 +64,7 @@ public:
 
 
   /** Gradient according to the marginal parameters */
-  virtual Matrix parameterGradient(const NumericalPoint & inP) const;
+  virtual Matrix parameterGradient(const Point & inP) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

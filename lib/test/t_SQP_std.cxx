@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-inline String printNumericalPoint(const NumericalPoint & point, const UnsignedInteger digits)
+inline String printPoint(const Point & point, const UnsignedInteger digits)
 {
   OSS oss;
   oss << "[";
@@ -56,13 +56,13 @@ int main(int argc, char *argv[])
     NonCenteredFiniteDifferenceGradient myGradient(1e-7, levelFunction.getEvaluation());
     /** Substitute the gradient */
     levelFunction.setGradient(new NonCenteredFiniteDifferenceGradient(myGradient));
-    NumericalPoint startingPoint(4, 0.0);
+    Point startingPoint(4, 0.0);
     SQP mySQPAlgorithm(OptimizationProblem(levelFunction, 3.0));
     mySQPAlgorithm.setStartingPoint(startingPoint);
     fullprint << "mySQPAlgorithm=" << mySQPAlgorithm << std::endl;
     mySQPAlgorithm.run();
-    fullprint << "result=" << printNumericalPoint(mySQPAlgorithm.getResult().getOptimalPoint(), 4) << std::endl;
-    fullprint << "multipliers=" << printNumericalPoint(mySQPAlgorithm.getResult().getLagrangeMultipliers(), 4) << std::endl;
+    fullprint << "result=" << printPoint(mySQPAlgorithm.getResult().getOptimalPoint(), 4) << std::endl;
+    fullprint << "multipliers=" << printPoint(mySQPAlgorithm.getResult().getLagrangeMultipliers(), 4) << std::endl;
   }
   catch (TestFailed & ex)
   {
@@ -89,14 +89,14 @@ int main(int argc, char *argv[])
     CenteredFiniteDifferenceHessian myHessian(1e-3, levelFunction.getEvaluation());
     /** Substitute the hessian */
     levelFunction.setHessian(new CenteredFiniteDifferenceHessian(myHessian));
-    NumericalPoint startingPoint(4, 0.0);
+    Point startingPoint(4, 0.0);
     SQP mySQPAlgorithm(OptimizationProblem(levelFunction, 3.0));
     mySQPAlgorithm.setStartingPoint(startingPoint);
     fullprint << "mySQPAlgorithm=" << mySQPAlgorithm << std::endl;
     mySQPAlgorithm.run();
     OptimizationResult result(mySQPAlgorithm.getResult());
-    fullprint << "result = " << printNumericalPoint(result.getOptimalPoint(), 4) << std::endl;
-    fullprint << "multipliers = " << printNumericalPoint(result.getLagrangeMultipliers(), 4) << std::endl;
+    fullprint << "result = " << printPoint(result.getOptimalPoint(), 4) << std::endl;
+    fullprint << "multipliers = " << printPoint(result.getLagrangeMultipliers(), 4) << std::endl;
     Graph convergence(result.drawErrorHistory());
     fullprint << "evaluation calls number=" << levelFunction.getEvaluationCallsNumber() << std::endl;
     fullprint << "gradient   calls number=" << levelFunction.getGradientCallsNumber() << std::endl;

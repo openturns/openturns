@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     UnsignedInteger sampleSize = 1000;
     for(UnsignedInteger i = 0; i < sampleSize; ++i)
     {
-      NumericalPoint faurePoint(sequence.generate());
+      Point faurePoint(sequence.generate());
       fullprint << faurePoint << std::endl;
       if(faurePoint.norm() < 1.0)
         ++ pointInsideCircle;

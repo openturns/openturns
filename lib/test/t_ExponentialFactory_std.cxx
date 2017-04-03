@@ -55,10 +55,10 @@ int main(int argc, char *argv[])
     estimatedExponential = factory.buildAsExponential(distribution.getParameter());
     fullprint << "Exponential from parameters=" << estimatedExponential << std::endl;
     // Test for constant sample
-    sample = Sample(size, NumericalPoint(1, 0.0));
+    sample = Sample(size, Point(1, 0.0));
     estimatedDistribution = factory.build(sample);
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
-    sample = Sample(size, NumericalPoint(1, 1.0));
+    sample = Sample(size, Point(1, 1.0));
     estimatedDistribution = factory.build(sample);
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
   }

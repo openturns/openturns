@@ -42,16 +42,16 @@ public:
   explicit StationaryCovarianceModel(const UnsignedInteger spatialDimension = 1);
 
   /** Standard constructor with scale and amplitude parameters parameters */
-  StationaryCovarianceModel(const NumericalPoint & scale,
-                            const NumericalPoint & amplitude);
+  StationaryCovarianceModel(const Point & scale,
+                            const Point & amplitude);
 
   /** Standard constructor with scale, amplitude and spatial correlation parameters parameters */
-  StationaryCovarianceModel(const NumericalPoint & scale,
-                            const NumericalPoint & amplitude,
+  StationaryCovarianceModel(const Point & scale,
+                            const Point & amplitude,
                             const CorrelationMatrix & spatialCorrelation);
 
   /** Standard constructor with scale and spatial covariance parameters parameters */
-  StationaryCovarianceModel(const NumericalPoint & scale,
+  StationaryCovarianceModel(const Point & scale,
                             const CovarianceMatrix & spatialCovariance);
 
   /** Virtual copy constructor */
@@ -59,20 +59,20 @@ public:
 
   /** Computation of the covariance matrix */
   using CovarianceModelImplementation::operator();
-  virtual CovarianceMatrix operator() (const NumericalPoint & s,
-                                       const NumericalPoint & t) const;
-  virtual CovarianceMatrix operator() (const NumericalPoint & tau) const;
+  virtual CovarianceMatrix operator() (const Point & s,
+                                       const Point & t) const;
+  virtual CovarianceMatrix operator() (const Point & tau) const;
   using CovarianceModelImplementation::computeAsScalar;
-  virtual NumericalScalar computeAsScalar (const NumericalPoint & s,
-      const NumericalPoint & t) const;
-  virtual NumericalScalar computeAsScalar (const NumericalPoint & tau) const;
+  virtual NumericalScalar computeAsScalar (const Point & s,
+      const Point & t) const;
+  virtual NumericalScalar computeAsScalar (const Point & tau) const;
 
   /** Computation of the covariance matrix */
   using CovarianceModelImplementation::computeStandardRepresentative;
-  virtual NumericalScalar computeStandardRepresentative(const NumericalPoint & s,
-      const NumericalPoint & t) const;
+  virtual NumericalScalar computeStandardRepresentative(const Point & s,
+      const Point & t) const;
 
-  virtual NumericalScalar computeStandardRepresentative(const NumericalPoint & tau) const;
+  virtual NumericalScalar computeStandardRepresentative(const Point & tau) const;
 
   /** Discretize the covariance function on a given TimeGrid */
   using CovarianceModelImplementation::discretize;

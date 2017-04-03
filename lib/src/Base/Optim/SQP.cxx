@@ -110,7 +110,7 @@ NumericalScalar SQP::computeLineSearch()
   /* Initialization of the line search */
   /* We start with step=1 */
   NumericalScalar step = 1.0;
-  NumericalPoint currentStepPoint(currentPoint_.getDimension());
+  Point currentStepPoint(currentPoint_.getDimension());
   NumericalScalar currentStepLevelValue = -1.0;
   NumericalScalar currentStepTheta = -1.0;
 
@@ -145,8 +145,8 @@ void SQP::run()
   currentPoint_ = getStartingPoint();
   const UnsignedInteger dimension = currentPoint_.getDimension();
   currentSystemMatrix_ = SymmetricMatrix(dimension + 1);
-  currentSecondMember_ = NumericalPoint(dimension + 1);
-  currentDirection_ = NumericalPoint(dimension);
+  currentSecondMember_ = Point(dimension + 1);
+  currentDirection_ = Point(dimension);
 
 
   /* Get a local copy of the level function */
@@ -171,7 +171,7 @@ void SQP::run()
   // reset result
   result_ = OptimizationResult();
   result_.setProblem(getProblem());
-  result_.store(currentPoint_, NumericalPoint(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
+  result_.store(currentPoint_, Point(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
 
   while ( (!convergence) && (iterationNumber <= getMaximumIterationNumber()) )
   {
@@ -179,7 +179,7 @@ void SQP::run()
     ++iterationNumber;
 
     /* Compute the level function gradient at the current point -> Grad(G) */
-    currentGradient_ = levelFunction.gradient(currentPoint_) * NumericalPoint(1, 1.0);
+    currentGradient_ = levelFunction.gradient(currentPoint_) * Point(1, 1.0);
     /* Compute the current Lagrange multiplier */
     const NumericalScalar normGradientSquared = currentGradient_.normSquare();
     /* In case of a null gradient, throw an internal exception */
@@ -213,7 +213,7 @@ void SQP::run()
     currentSecondMember_[dimension] = -currentLevelValue_ + levelValue;
 
     //solve the linear system
-    const NumericalPoint solution(currentSystemMatrix_.solveLinearSystem(currentSecondMember_));
+    const Point solution(currentSystemMatrix_.solveLinearSystem(currentSecondMember_));
 
     std::copy(solution.begin(), solution.end() - 1, currentDirection_.begin());
 
@@ -243,8 +243,8 @@ void SQP::run()
 
     // update result
     result_.setIterationNumber(iterationNumber);
-    result_.store(currentPoint_, NumericalPoint(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
-    result_.setLagrangeMultipliers(NumericalPoint(1, currentLambda_));
+    result_.store(currentPoint_, Point(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
+    result_.setLagrangeMultipliers(Point(1, currentLambda_));
 
     LOGINFO(getResult().__repr__());
 

@@ -126,7 +126,7 @@ Sample OptimalLHSExperiment::rankTransform(const Sample design) const
   {
     for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
-      result[i][j] = distribution.getMarginal(j).computeCDF(NumericalPoint(1, design[i][j]));
+      result[i][j] = distribution.getMarginal(j).computeCDF(Point(1, design[i][j]));
     }
   }
   return result;

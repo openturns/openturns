@@ -80,8 +80,8 @@ KarhunenLoeveQuadratureAlgorithm::KarhunenLoeveQuadratureAlgorithm(const Domain 
   const UnsignedInteger dimension = domain.getDimension();
   const Distribution distribution(experiment.getDistribution());
   if (dimension != distribution.getDimension()) throw InvalidArgumentException(HERE) << "Error: the domain dimension=" << dimension << " does not match the distribution dimension=" << distribution.getDimension() << " of the weighted experiment";
-  const NumericalPoint domainLowerBound(domain.getLowerBound());
-  const NumericalPoint domainUpperBound(domain.getUpperBound());
+  const Point domainLowerBound(domain.getLowerBound());
+  const Point domainUpperBound(domain.getUpperBound());
   if (Interval(domainLowerBound, domainUpperBound).isNumericallyEmpty()) throw InvalidArgumentException(HERE) << "Error: the given domain is numerically empty.";
 }
 
@@ -101,8 +101,8 @@ KarhunenLoeveQuadratureAlgorithm::KarhunenLoeveQuadratureAlgorithm(const Domain 
   const UnsignedInteger dimension = domain.getDimension();
   const Distribution distribution(experiment_.getDistribution());
   if (dimension != distribution.getDimension()) throw InvalidArgumentException(HERE) << "Error: the domain dimension=" << dimension << " does not match the distribution dimension=" << distribution.getDimension() << " of the weighted experiment";
-  const NumericalPoint domainLowerBound(domain.getLowerBound());
-  const NumericalPoint domainUpperBound(domain.getUpperBound());
+  const Point domainLowerBound(domain.getLowerBound());
+  const Point domainUpperBound(domain.getUpperBound());
   if (Interval(domainLowerBound, domainUpperBound).isNumericallyEmpty()) throw InvalidArgumentException(HERE) << "Error: the given domain is numerically empty.";
 }
 
@@ -139,10 +139,10 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   const UnsignedInteger domainDimension = domain_.getDimension();
   const Distribution distribution(experiment_.getDistribution());
   // First thing to do: build a linear transformation that maps the range of the distribution associated with the weighted experiment to the bounding box of the domain
-  const NumericalPoint domainLowerBound(domain_.getLowerBound());
-  const NumericalPoint domainUpperBound(domain_.getUpperBound());
-  const NumericalPoint distributionLowerBound(distribution.getRange().getLowerBound());
-  const NumericalPoint distributionUpperBound(distribution.getRange().getUpperBound());
+  const Point domainLowerBound(domain_.getLowerBound());
+  const Point domainUpperBound(domain_.getUpperBound());
+  const Point distributionLowerBound(distribution.getRange().getLowerBound());
+  const Point distributionUpperBound(distribution.getRange().getUpperBound());
   const Bool hasSameBounds = (domainLowerBound == distributionLowerBound) && (domainUpperBound == distributionUpperBound);
   // The function scaling maps points in the range of the distribution into the domain
   Function scaling;
@@ -153,8 +153,8 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   {
     TriangularMatrix T(domainDimension);
     TriangularMatrix inverseT(domainDimension);
-    NumericalPoint center((distributionUpperBound + distributionLowerBound) * 0.5);
-    NumericalPoint constant((domainUpperBound + domainLowerBound) * 0.5);
+    Point center((distributionUpperBound + distributionLowerBound) * 0.5);
+    Point constant((domainUpperBound + domainLowerBound) * 0.5);
     for (UnsignedInteger i = 0; i < domainDimension; ++i)
     {
       T(i, i) = (domainUpperBound[i] - domainLowerBound[i]) / (distributionUpperBound[i] - distributionLowerBound[i]);
@@ -170,7 +170,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
     if (!hasSameBounds && mustScale_) coll[i] = ComposedFunction(basis_.build(i), inverseScaling);
     else coll[i] = basis_.build(i);
   // Compute the integration nodes and weights
-  NumericalPoint rawWeights;
+  Point rawWeights;
   WeightedExperiment experimentCopy(experiment_);
   LOGINFO("Generate the weighted experiment");
   Sample rawNodes(experimentCopy.generateWithWeights(rawWeights));
@@ -181,7 +181,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   // Update the weights in order to match Lebesgue distribution on the domain
   // We keep only the nodes inside of the domain
   Sample nodes(0, domainDimension);
-  NumericalPoint weights(0);
+  Point weights(0);
   LOGINFO("Filter the integration nodes");
   for (UnsignedInteger i = 0; i < rawWeights.getDimension(); ++i)
   {
@@ -214,7 +214,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   // scaledTheta(i,j)=w_i\theta_j(\xi_i)
   for (UnsignedInteger j = 0; j < basisSize_; ++j)
   {
-    const NumericalPoint thetaj(coll[j](nodes).getImplementation()->getData());
+    const Point thetaj(coll[j](nodes).getImplementation()->getData());
     for (UnsignedInteger i = 0; i < nodesNumber; ++i)
     {
       scaledTheta[indexTheta] = thetaj[i] * weights[i];
@@ -307,7 +307,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   SquareMatrix eigenVectors;
   // Last time we need C, so we can overwrite it by eigenVectors
   LOGINFO("Solve the standard eigenvalues problem");
-  NumericalPoint eigenValues(C.computeEV(eigenVectors, false));
+  Point eigenValues(C.computeEV(eigenVectors, false));
   const UnsignedInteger augmentedDimension = eigenVectors.getDimension();
   // Transform the eigenvectors to the generalizd ones
   // Last time we need cholesky, so we can overwrite it by eigenVectors
@@ -336,7 +336,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
     }
   // Reduce and rescale the eigenvectors
   MatrixImplementation transposedProjection(nodesNumber, K);
-  NumericalPoint selectedEV(K);
+  Point selectedEV(K);
   Basis modes(0);
   ProcessSample modesAsProcessSample(Mesh(nodes), 0, dimension);
   SampleImplementation values(nodesNumber, dimension);
@@ -345,9 +345,9 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   {
     selectedEV[k] = eigenValues[k];
     const MatrixImplementation a(*eigenVectors.getColumn(k).getImplementation());
-    const NumericalScalar norm = (omega * NumericalPoint(a)).norm();
+    const NumericalScalar norm = (omega * Point(a)).norm();
     // Store the eigen modes in two forms
-    NumericalPoint modeValues(omega.getImplementation()->genProd(a));
+    Point modeValues(omega.getImplementation()->genProd(a));
     const NumericalScalar factor = modeValues[0] < 0.0 ? -1.0 / norm : 1.0 / norm;
     // Unscale the values
     for (UnsignedInteger i = 0; i < nodesNumber; ++i) modeValues[i] *= factor / weights[i];

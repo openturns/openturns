@@ -101,9 +101,9 @@ NumericalScalar EventRandomVector::getThreshold() const
 }
 
 /* Realization accessor */
-NumericalPoint EventRandomVector::getRealization() const
+Point EventRandomVector::getRealization() const
 {
-  return NumericalPoint(1, operator_(CompositeRandomVector::getRealization()[0], threshold_));
+  return Point(1, operator_(CompositeRandomVector::getRealization()[0], threshold_));
 }
 
 /* Numerical sample accessor */

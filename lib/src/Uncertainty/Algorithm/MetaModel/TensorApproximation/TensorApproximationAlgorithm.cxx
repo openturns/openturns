@@ -22,7 +22,7 @@
 #include "openturns/TensorApproximationAlgorithm.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/FunctionImplementation.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/ResourceMap.hxx"
@@ -128,8 +128,8 @@ void TensorApproximationAlgorithm::run()
   transformedInputSample_ = transformation_(inputSample_);
 
   FunctionCollection marginals(0);
-  NumericalPoint residuals(outputDimension);
-  NumericalPoint relativeErrors(outputDimension); 
+  Point residuals(outputDimension);
+  Point relativeErrors(outputDimension); 
   for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
   {
     runMarginal(outputIndex, residuals[outputIndex], relativeErrors[outputIndex]);
@@ -190,7 +190,7 @@ void TensorApproximationAlgorithm::greedyRankOne (const Sample & x,
     // initialize tensor coefficients on last rank
     for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
-      NumericalPoint coefficients(tensor.getCoefficients(i, j));
+      Point coefficients(tensor.getCoefficients(i, j));
       coefficients[0] = 1.0;// vj(xj) = 1.0
       tensor.setCoefficients(i, j, coefficients);
     }
@@ -218,8 +218,8 @@ void TensorApproximationAlgorithm::greedyRankOne (const Sample & x,
     const String methodName(ResourceMap::Get("TensorApproximationAlgorithm-DecompositionMethod"));
     LeastSquaresMethod internalMethod(LeastSquaresMethod::Build(methodName, proxy, full));
     SparseMethod method(internalMethod);
-    NumericalPoint yFlat(y.getImplementation()->getData());
-    NumericalPoint rk(method.solve(yFlat));
+    Point yFlat(y.getImplementation()->getData());
+    Point rk(method.solve(yFlat));
 
     for (UnsignedInteger i2 = 0; i2 <= i; ++ i2)
     {
@@ -252,11 +252,11 @@ void TensorApproximationAlgorithm::rankOne(const Sample & x,
   const UnsignedInteger size = x.getSize();
   if (size != y.getSize()) throw InvalidArgumentException(HERE) << " x != y";
 
-  NumericalPoint yFlat(y.getImplementation()->getData());
+  Point yFlat(y.getImplementation()->getData());
 
   NumericalScalar currentResidual = SpecFunc::MaxNumericalScalar;
 
-  Sample V(dimension, NumericalPoint(size, 1.0));
+  Sample V(dimension, Point(size, 1.0));
 
   UnsignedInteger iteration = 0;
 
@@ -270,7 +270,7 @@ void TensorApproximationAlgorithm::rankOne(const Sample & x,
       Indices full(basisSize);
       full.fill();
 
-      NumericalPoint w(size, 1.0);// w_l
+      Point w(size, 1.0);// w_l
       for (UnsignedInteger p = 0; p < size; ++ p)
       {
         for (UnsignedInteger j2 = 0; j2 < dimension; ++ j2)
@@ -284,7 +284,7 @@ void TensorApproximationAlgorithm::rankOne(const Sample & x,
         // compute non-filtered weights for reuse in proxy
         Indices rowFilter(proxy_[j].getRowFilter());
         const UnsignedInteger actualSize = proxy_[j].getInputSample().getSize();
-        NumericalPoint w_big(actualSize);
+        Point w_big(actualSize);
         for (UnsignedInteger p = 0; p < size; ++ p)
         {
           w_big[rowFilter[p]] = w[p];
@@ -297,7 +297,7 @@ void TensorApproximationAlgorithm::rankOne(const Sample & x,
       const String methodName(ResourceMap::Get("TensorApproximationAlgorithm-DecompositionMethod"));
       LeastSquaresMethod method(LeastSquaresMethod::Build(methodName, proxy_[j], full));
       tensor.setCoefficients(i, j, method.solve(yFlat));
-      proxy_[j].setWeight(NumericalPoint(0));
+      proxy_[j].setWeight(Point(0));
 
       // update current contribution
       V[j] = Matrix(proxy_[j].computeDesign(full)) * tensor.getCoefficients(i, j);
@@ -306,7 +306,7 @@ void TensorApproximationAlgorithm::rankOne(const Sample & x,
     } // j loop
 
     // update alpha
-    NumericalPoint f(size, 1.0);
+    Point f(size, 1.0);
     for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
       for (UnsignedInteger p = 0; p < size; ++ p)
@@ -317,7 +317,7 @@ void TensorApproximationAlgorithm::rankOne(const Sample & x,
     NumericalScalar currentRadius = dot(f, yFlat) / f.normSquare();
     for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
-      NumericalPoint coefficients(tensor.getCoefficients(i, j));
+      Point coefficients(tensor.getCoefficients(i, j));
       coefficients = tensor.getCoefficients(i, j);
       const NumericalScalar norm = coefficients.norm();
       currentRadius *= norm;
@@ -373,7 +373,7 @@ void TensorApproximationAlgorithm::rankM (const Sample & x,
   for (UnsignedInteger i = 0; i < m; ++ i)
     for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
-      NumericalPoint coefficients(tensor.getCoefficients(i, j));
+      Point coefficients(tensor.getCoefficients(i, j));
       coefficients[0] = 1.0;// vj(xj) = 1.0
       tensor.setCoefficients(i, j, coefficients);
     }
@@ -395,7 +395,7 @@ void TensorApproximationAlgorithm::rankM (const Sample & x,
       NumericalScalar radius_i = 1.0;
       for (UnsignedInteger j = 0; j < dimension; ++ j)
       {
-        NumericalPoint coefficients(tensor.getCoefficients(i, j));
+        Point coefficients(tensor.getCoefficients(i, j));
         const NumericalScalar norm = coefficients.norm();
         radius_i *= norm;
         coefficients /= norm;
@@ -419,13 +419,13 @@ void TensorApproximationAlgorithm::rankM (const Sample & x,
     const String methodName(ResourceMap::Get("TensorApproximationAlgorithm-DecompositionMethod"));
     LeastSquaresMethod internalMethod(LeastSquaresMethod::Build(methodName, proxy, full));
     SparseMethod method(internalMethod);
-    NumericalPoint yFlat(y.getImplementation()->getData());
-    NumericalPoint rk(method.solve(yFlat));
+    Point yFlat(y.getImplementation()->getData());
+    Point rk(method.solve(yFlat));
 
     // report radius on first component
     for (UnsignedInteger i = 0; i < m; ++ i)
     {
-      NumericalPoint coefficients0(tensor.getCoefficients(i, 0));
+      Point coefficients0(tensor.getCoefficients(i, 0));
       coefficients0 *= rk[i];
       tensor.setCoefficients(i, 0, coefficients0);
     }
@@ -460,7 +460,7 @@ void TensorApproximationAlgorithm::rankMComponent (const Sample & x,
   const UnsignedInteger nj = tensor.getDegrees()[j];
 
   const UnsignedInteger m = tensor.getRank();
-  Collection<Sample> V(m, Sample(dimension, NumericalPoint(size, 1.0)));
+  Collection<Sample> V(m, Sample(dimension, Point(size, 1.0)));
 
   // compute contributions
   for (UnsignedInteger i = 0; i < m; ++ i)
@@ -475,7 +475,7 @@ void TensorApproximationAlgorithm::rankMComponent (const Sample & x,
   }
 
   // compute weight
-  NumericalPoint w(size, 0.0);// w_p
+  Point w(size, 0.0);// w_p
   for (UnsignedInteger p = 0; p < size; ++ p)
   {
     for (UnsignedInteger i = 0; i < m; ++ i)
@@ -502,14 +502,14 @@ void TensorApproximationAlgorithm::rankMComponent (const Sample & x,
   proxy.setWeight(w);
   Indices full(nj * m);
   full.fill();
-  NumericalPoint yFlat(y.getImplementation()->getData());
+  Point yFlat(y.getImplementation()->getData());
   const String methodName(ResourceMap::Get("TensorApproximationAlgorithm-DecompositionMethod"));
   LeastSquaresMethod method(LeastSquaresMethod::Build(methodName, proxy, full));
-  NumericalPoint beta_ij(method.solve(yFlat));
+  Point beta_ij(method.solve(yFlat));
 
   for (UnsignedInteger i = 0; i < m; ++ i)
   {
-    NumericalPoint beta_j(nj);
+    Point beta_j(nj);
     std::copy(beta_ij.begin() + i * nj, beta_ij.begin() + (i + 1) * nj, beta_j.begin());
     tensor.setCoefficients(i, j, beta_j);
   }

@@ -111,7 +111,7 @@ try:
             continuousDistributionNumber + i] = discreteSampleCollection[i]
 
     # Test the normality of several samples using the Anderson Darling test
-    andersonDarlingResult = NumericalPoint(distributionNumber)
+    andersonDarlingResult = Point(distributionNumber)
     for i in range(distributionNumber):
         result = NormalityTest.AndersonDarlingNormal(sampleCollection[i])
         andersonDarlingResult[i] = result.getBinaryQualityMeasure()
@@ -120,7 +120,7 @@ try:
     print("andersonDarlingResult=", repr(andersonDarlingResult))
 
     # Test the normality of several samples using the Cramer Von Mises test
-    cramerVonMisesResult = NumericalPoint(distributionNumber)
+    cramerVonMisesResult = Point(distributionNumber)
     for i in range(distributionNumber):
         result = NormalityTest.CramerVonMisesNormal(sampleCollection[i])
         cramerVonMisesResult[i] = result.getBinaryQualityMeasure()

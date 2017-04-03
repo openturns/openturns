@@ -25,8 +25,8 @@
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Event.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalPointWithDescription.hxx"
+#include "openturns/Point.hxx"
+#include "openturns/PointWithDescription.hxx"
 #include "openturns/Graph.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -75,10 +75,10 @@ public:
   virtual NumericalScalar getStandardDeviation() const;
 
   /** Mean point conditioned to the event realization accessor */
-  NumericalPoint getMeanPointInEventDomain() const;
+  Point getMeanPointInEventDomain() const;
 
   /** Importance factors accessor */
-  NumericalPointWithDescription getImportanceFactors() const;
+  PointWithDescription getImportanceFactors() const;
 
   /** Draw the importance factors */
   Graph drawImportanceFactors() const;

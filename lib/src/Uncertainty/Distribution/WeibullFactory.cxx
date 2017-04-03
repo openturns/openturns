@@ -49,7 +49,7 @@ WeibullFactory::Implementation WeibullFactory::build(const Sample & sample) cons
   return buildAsWeibull(sample).clone();
 }
 
-WeibullFactory::Implementation WeibullFactory::build(const NumericalPoint & parameters) const
+WeibullFactory::Implementation WeibullFactory::build(const Point & parameters) const
 {
   return buildAsWeibull(parameters).clone();
 }
@@ -71,7 +71,7 @@ Weibull WeibullFactory::buildAsWeibull(const Sample & sample) const
   if (!SpecFunc::IsNormal(gamma)) throw InvalidArgumentException(HERE) << "Error: cannot build a Weibull distribution if data contains NaN or Inf";
   try
   {
-    NumericalPoint parameters(3);
+    Point parameters(3);
     parameters[0] = mean;
     parameters[1] = sigma;
     parameters[2] = gamma;
@@ -89,7 +89,7 @@ Weibull WeibullFactory::buildAsWeibull(const Sample & sample) const
   }
 }
 
-Weibull WeibullFactory::buildAsWeibull(const NumericalPoint & parameters) const
+Weibull WeibullFactory::buildAsWeibull(const Point & parameters) const
 {
   try
   {

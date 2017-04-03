@@ -37,7 +37,7 @@ LeastSquaresMethodImplementation::LeastSquaresMethodImplementation()
 
 /* Parameters constructor */
 LeastSquaresMethodImplementation::LeastSquaresMethodImplementation(const DesignProxy & proxy,
-    const NumericalPoint & weight,
+    const Point & weight,
     const Indices & indices)
   : PersistentObject()
   , proxy_(proxy)
@@ -72,7 +72,7 @@ LeastSquaresMethodImplementation::LeastSquaresMethodImplementation(const DesignP
 }
 
 /* Weight accessor */
-void LeastSquaresMethodImplementation::setWeight(const NumericalPoint & weight)
+void LeastSquaresMethodImplementation::setWeight(const Point & weight)
 {
   const UnsignedInteger size = weight.getSize();
   // First, check for uniformity
@@ -87,13 +87,13 @@ void LeastSquaresMethodImplementation::setWeight(const NumericalPoint & weight)
     }
   if (hasUniformWeight_)
   {
-    weight_ = NumericalPoint(1, w0);
-    weightSqrt_ = NumericalPoint(1, std::sqrt(w0));
+    weight_ = Point(1, w0);
+    weightSqrt_ = Point(1, std::sqrt(w0));
     return;
   }
   // Second, check for positiveness and compute the square roots
   weight_ = weight;
-  weightSqrt_ = NumericalPoint(size);
+  weightSqrt_ = Point(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     if (!(weight[i] > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected positive weights, here w[" << i << "]=" << weight[i];
@@ -101,7 +101,7 @@ void LeastSquaresMethodImplementation::setWeight(const NumericalPoint & weight)
   }
 }
 
-NumericalPoint LeastSquaresMethodImplementation::getWeight() const
+Point LeastSquaresMethodImplementation::getWeight() const
 {
   return weight_;
 }
@@ -112,12 +112,12 @@ LeastSquaresMethodImplementation * LeastSquaresMethodImplementation::clone() con
   return new LeastSquaresMethodImplementation(*this);
 }
 
-NumericalPoint LeastSquaresMethodImplementation::solve(const NumericalPoint & rhs)
+Point LeastSquaresMethodImplementation::solve(const Point & rhs)
 {
   throw NotYetImplementedException(HERE) << " in LeastSquaresMethodImplementation::solve";
 }
 
-NumericalPoint LeastSquaresMethodImplementation::solveNormal(const NumericalPoint & rhs)
+Point LeastSquaresMethodImplementation::solveNormal(const Point & rhs)
 {
   throw NotYetImplementedException(HERE) << " in LeastSquaresMethodImplementation::solveNormal";
 }
@@ -135,22 +135,22 @@ SymmetricMatrix LeastSquaresMethodImplementation::getH() const
 }
 
 
-NumericalPoint LeastSquaresMethodImplementation::getHDiag() const
+Point LeastSquaresMethodImplementation::getHDiag() const
 {
   const SymmetricMatrix H(getH());
   const UnsignedInteger dimension = H.getDimension();
-  NumericalPoint diag(dimension);
+  Point diag(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++ i) diag[i] = H(i, i);
 
   return diag;
 }
 
 
-NumericalPoint LeastSquaresMethodImplementation::getGramInverseDiag() const
+Point LeastSquaresMethodImplementation::getGramInverseDiag() const
 {
   const CovarianceMatrix G(getGramInverse());
   const UnsignedInteger dimension = G.getDimension();
-  NumericalPoint diag(dimension);
+  Point diag(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++ i) diag[i] = G(i, i);
 
   return diag;

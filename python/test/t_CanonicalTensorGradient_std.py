@@ -24,7 +24,7 @@ tensorGrad = ot.CanonicalTensorGradient(tensorEval)
 x = [1.0] * dim
 print(x)
 
-df = tensorGrad.gradient(x) * ot.NumericalPoint([1.0])
+df = tensorGrad.gradient(x) * ot.Point([1.0])
 print('df=', df)
 
 f = ot.Function(tensorEval)
@@ -34,7 +34,7 @@ eps = 1e-5
 
 dffd = [0.0] * dim
 for i in range(dim):
-    xp = ot.NumericalPoint(x)
+    xp = ot.Point(x)
     xp[i] += eps
     fp = f(xp)
     dffd[i] = (f(xp)[0] - fx) / eps

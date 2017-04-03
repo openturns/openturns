@@ -73,7 +73,7 @@ String ComposedGradient::__repr__() const
  * f goes from Rn to Rp and g from Rq to Rp, so h = f o g goes from Rq to Rn. Its
  * jacobian goes from Rq to L(Rq, Rn), thus its gradient goes from Rq to L(Rn, Rq):
  * it is an n by q matrix                                                            */
-Matrix ComposedGradient::gradient(const NumericalPoint & inP) const
+Matrix ComposedGradient::gradient(const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();

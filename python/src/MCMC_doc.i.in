@@ -177,7 +177,7 @@ observations : 2-d sequence of float
 
 Returns
 -------
-parameters : :class:`~openturns.NumericalPoint`
+parameters : :class:`~openturns.Point`
     Fixed parameters of the model :math:`g` required to define the likelihood."
 
 // ---------------------------------------------------------------------

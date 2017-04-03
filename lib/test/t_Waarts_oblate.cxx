@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
     //   # Probabilistic model;
     //   #########################################################################################################;
 
-    NumericalPoint mean(dim, 0.0);
+    Point mean(dim, 0.0);
     mean[0] = 0.0;
     mean[1] = 0.0;
     mean[2] = 0.0;
@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
     mean[8] = 0.0;
     mean[9] = 0.0;
 
-    NumericalPoint sigma(dim, 0.0);
+    Point sigma(dim, 0.0);
     sigma[0] = 1.0;
     sigma[1] = 1.0;
     sigma[2] = 1.0;
@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
     CorrelationMatrix CORR(dim);
     Normal myDistribution(mean, sigma, CORR);
 
-    NumericalPoint start(myDistribution.getSigma());
+    Point start(myDistribution.getSigma());
     CovarianceMatrix Covariance = myDistribution.getCovariance();
 
     //   #########################################################################################################;
@@ -168,11 +168,11 @@ int main(int argc, char *argv[])
         # FORM/SORM Cobyla*/;
     NumericalScalar PfC = resultC.getEventProbability();
     NumericalScalar Beta_generalizedC = resultC.getGeneralisedReliabilityIndex();
-    NumericalPoint u_starC = resultC.getStandardSpaceDesignPoint();
-    NumericalPoint x_starC = resultC.getPhysicalSpaceDesignPoint();
+    Point u_starC = resultC.getStandardSpaceDesignPoint();
+    Point x_starC = resultC.getPhysicalSpaceDesignPoint();
     Bool PtC = resultC.getIsStandardPointOriginInFailureSpace();
-    NumericalPoint gammaC = resultC.getImportanceFactors();
-    NumericalPoint gammaCC = resultC.getImportanceFactors(true);
+    Point gammaC = resultC.getImportanceFactors();
+    Point gammaCC = resultC.getImportanceFactors(true);
     NumericalScalar beta_hasoferC = resultC.getHasoferReliabilityIndex();
     Analytical::Sensitivity SensitivityC = resultC.getEventProbabilitySensitivity();
 
@@ -182,22 +182,22 @@ int main(int argc, char *argv[])
     //   NumericalScalar BetaHBC2=resultC2.getGeneralisedReliabilityIndexHohenBichler();
     //   NumericalScalar PFTvedtC2 = resultC2.getEventProbabilityTvedt();
     //   NumericalScalar BetaTvedtC2 = resultC2.getGeneralisedReliabilityIndexTvedt();
-    //   NumericalPoint CurvC2 = resultC2.getSortedCurvatures();
-    //   NumericalPoint u_starC2 = resultC2.getStandardSpaceDesignPoint();
-    //   NumericalPoint x_starC2 = resultC2.getPhysicalSpaceDesignPoint();
+    //   Point CurvC2 = resultC2.getSortedCurvatures();
+    //   Point u_starC2 = resultC2.getStandardSpaceDesignPoint();
+    //   Point x_starC2 = resultC2.getPhysicalSpaceDesignPoint();
     //   Bool PtC2 = resultC2.getIsStandardPointOriginInFailureSpace();
-    //   NumericalPoint gammaC2 = resultC2.getImportanceFactors();
+    //   Point gammaC2 = resultC2.getImportanceFactors();
     //   NumericalScalar beta_hasoferC2 = resultC2.getHasoferReliabilityIndex();
 
     //   #########################################################################################################;
     //   # FORM/SORM Abdo Rackwitz;
     NumericalScalar PfAR = resultAR.getEventProbability();
     NumericalScalar Beta_generalizedAR = resultAR.getGeneralisedReliabilityIndex();
-    NumericalPoint u_starAR = resultAR.getStandardSpaceDesignPoint();
-    NumericalPoint x_starAR = resultAR.getPhysicalSpaceDesignPoint();
+    Point u_starAR = resultAR.getStandardSpaceDesignPoint();
+    Point x_starAR = resultAR.getPhysicalSpaceDesignPoint();
     Bool PtAR = resultAR.getIsStandardPointOriginInFailureSpace();
-    NumericalPoint gammaAR = resultAR.getImportanceFactors();
-    NumericalPoint gammaCAR = resultAR.getImportanceFactors(true);
+    Point gammaAR = resultAR.getImportanceFactors();
+    Point gammaCAR = resultAR.getImportanceFactors(true);
     NumericalScalar beta_hasoferAR = resultAR.getHasoferReliabilityIndex();
     Analytical::Sensitivity SensitivityAR = resultAR.getEventProbabilitySensitivity();
 
@@ -207,11 +207,11 @@ int main(int argc, char *argv[])
     //   NumericalScalar BetaHBAR2=resultAR2.getGeneralisedReliabilityIndexHohenBichler();
     //   NumericalScalar PFTvedtAR2 = resultAR2.getEventProbabilityTvedt();
     //   NumericalScalar BetaTvedtAR2 = resultAR2.getGeneralisedReliabilityIndexTvedt();
-    //   NumericalPoint CurvAR2 = resultAR2.getSortedCurvatures();
-    //   NumericalPoint u_starAR2 = resultAR2.getStandardSpaceDesignPoint();
-    //   NumericalPoint x_starAR2 = resultAR2.getPhysicalSpaceDesignPoint();
+    //   Point CurvAR2 = resultAR2.getSortedCurvatures();
+    //   Point u_starAR2 = resultAR2.getStandardSpaceDesignPoint();
+    //   Point x_starAR2 = resultAR2.getPhysicalSpaceDesignPoint();
     //   Bool PtAR2 = resultAR2.getIsStandardPointOriginInFailureSpace() ;
-    //   NumericalPoint gammaAR2 = resultAR2.getImportanceFactors();
+    //   Point gammaAR2 = resultAR2.getImportanceFactors();
     //   NumericalScalar beta_hasoferAR2 = resultAR2.getHasoferReliabilityIndex();
 
     //   ######################################/*###################################################################;

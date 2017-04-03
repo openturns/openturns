@@ -70,45 +70,45 @@ TracyWidomGSE * TracyWidomGSE::clone() const
 }
 
 /* Get the DDF of the distribution */
-NumericalPoint TracyWidomGSE::computeDDF(const NumericalPoint & point) const
+Point TracyWidomGSE::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  throw NotYetImplementedException(HERE) << "In TracyWidomGSE::computeDDF(const NumericalPoint & point) const";
+  throw NotYetImplementedException(HERE) << "In TracyWidomGSE::computeDDF(const Point & point) const";
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar TracyWidomGSE::computePDF(const NumericalPoint & point) const
+NumericalScalar TracyWidomGSE::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  throw NotYetImplementedException(HERE) << "In TracyWidomGSE::computePDF(const NumericalPoint & point) const";
+  throw NotYetImplementedException(HERE) << "In TracyWidomGSE::computePDF(const Point & point) const";
 }
 
 
 /* Get the CDF of the distribution */
-NumericalScalar TracyWidomGSE::computeCDF(const NumericalPoint & point) const
+NumericalScalar TracyWidomGSE::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  throw NotYetImplementedException(HERE) << "In TracyWidomGSE::computeCDF(const NumericalPoint & point) const";
+  throw NotYetImplementedException(HERE) << "In TracyWidomGSE::computeCDF(const Point & point) const";
 }
 
 /** Get the PDFGradient of the distribution */
-NumericalPoint TracyWidomGSE::computePDFGradient(const NumericalPoint & point) const
+Point TracyWidomGSE::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  return NumericalPoint(0);
+  return Point(0);
 }
 
 /** Get the CDFGradient of the distribution */
-NumericalPoint TracyWidomGSE::computeCDFGradient(const NumericalPoint & point) const
+Point TracyWidomGSE::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  return NumericalPoint(0);
+  return Point(0);
 }
 
 /* Get the quantile of the distribution */
@@ -128,29 +128,29 @@ NumericalScalar TracyWidomGSE::getRoughness() const
 void TracyWidomGSE::computeMean() const
 {
   // RMT matlab toolbox computation
-  mean_ = NumericalPoint(1, -2.306884893241);
+  mean_ = Point(1, -2.306884893241);
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint TracyWidomGSE::getStandardDeviation() const
+Point TracyWidomGSE::getStandardDeviation() const
 {
   // RMT matlab toolbox computation
-  return NumericalPoint(1, 0.5177237207726);
+  return Point(1, 0.5177237207726);
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint TracyWidomGSE::getSkewness() const
+Point TracyWidomGSE::getSkewness() const
 {
   // RMT matlab toolbox computation
-  return NumericalPoint(1, 0.16550949435);
+  return Point(1, 0.16550949435);
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint TracyWidomGSE::getKurtosis() const
+Point TracyWidomGSE::getKurtosis() const
 {
   // RMT matlab toolbox computation
-  return NumericalPoint(1, 0.0491951565);
+  return Point(1, 0.0491951565);
 }
 
 /* Compute the covariance of the distribution */
@@ -163,10 +163,10 @@ void TracyWidomGSE::computeCovariance() const
 }
 
 /* Parameters value and description accessor */
-TracyWidomGSE::NumericalPointWithDescriptionCollection TracyWidomGSE::getParametersCollection() const
+TracyWidomGSE::PointWithDescriptionCollection TracyWidomGSE::getParametersCollection() const
 {
-  // No parameter, return a collection with an empty NumericalPointWithDescription
-  return NumericalPointWithDescriptionCollection(1, NumericalPointWithDescription(0));
+  // No parameter, return a collection with an empty PointWithDescription
+  return PointWithDescriptionCollection(1, PointWithDescription(0));
 }
 
 /* Method save() stores the object through the StorageManager */

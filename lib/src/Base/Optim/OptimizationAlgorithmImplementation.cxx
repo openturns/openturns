@@ -30,7 +30,7 @@ OptimizationAlgorithmImplementation::OptimizationAlgorithmImplementation()
   : PersistentObject()
   , progressCallback_(std::make_pair<ProgressCallback, void *>(0, 0))
   , stopCallback_(std::make_pair<StopCallback, void *>(0, 0))
-  , startingPoint_(NumericalPoint(0))
+  , startingPoint_(Point(0))
   , maximumIterationNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumIteration"))
   , maximumEvaluationNumber_(ResourceMap::GetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumEvaluationNumber"))
   , maximumAbsoluteError_(ResourceMap::GetAsNumericalScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError"))
@@ -62,13 +62,13 @@ OptimizationAlgorithmImplementation::OptimizationAlgorithmImplementation(const O
 }
 
 /* Starting point accessor */
-NumericalPoint OptimizationAlgorithmImplementation::getStartingPoint() const
+Point OptimizationAlgorithmImplementation::getStartingPoint() const
 {
   return startingPoint_;
 }
 
 /* Starting point accessor */
-void OptimizationAlgorithmImplementation::setStartingPoint(const NumericalPoint & startingPoint)
+void OptimizationAlgorithmImplementation::setStartingPoint(const Point & startingPoint)
 {
   startingPoint_ = startingPoint;
 }
@@ -207,19 +207,19 @@ void OptimizationAlgorithmImplementation::run()
 
    so if there is no constraint of any kind, the Lagrange multipliers are of dimension 0.
  */
-NumericalPoint OptimizationAlgorithmImplementation::computeLagrangeMultipliers(const NumericalPoint & x) const
+Point OptimizationAlgorithmImplementation::computeLagrangeMultipliers(const Point & x) const
 {
   const UnsignedInteger equalityDimension = problem_.getEqualityConstraint().getOutputDimension();
   const UnsignedInteger inequalityDimension = problem_.getInequalityConstraint().getOutputDimension();
   const UnsignedInteger boundDimension = problem_.getBounds().getDimension();
   // If no constraint
-  if (equalityDimension + inequalityDimension + boundDimension == 0) return NumericalPoint(0);
+  if (equalityDimension + inequalityDimension + boundDimension == 0) return Point(0);
   // Here we have to compute the Lagrange multipliers as the solution of a linear problem with rhs=[d/dx(C_eq) | d/dx(x-lb)^+ | d/dx(ub - x)^+ | d/dx(C_ineq^+)] and lhs=-d/dx(J)
   const UnsignedInteger inputDimension = x.getDimension();
-  // Get the lhs as a NumericalPoint
-  const NumericalPoint lhs(NumericalPoint(*problem_.getObjective().gradient(x).getImplementation()) * (-1.0));
-  // In order to ease the construction of the rhs matrix, we use its internal storage representation as a NumericalPoint in column-major storage.
-  NumericalPoint rhs(0);
+  // Get the lhs as a Point
+  const Point lhs(Point(*problem_.getObjective().gradient(x).getImplementation()) * (-1.0));
+  // In order to ease the construction of the rhs matrix, we use its internal storage representation as a Point in column-major storage.
+  Point rhs(0);
   // First, the equality constraints. Each scalar equality constraint gives a column in the rhs
   if (equalityDimension > 0)
     rhs.add(*problem_.getEqualityConstraint().gradient(x).getImplementation());
@@ -227,20 +227,20 @@ NumericalPoint OptimizationAlgorithmImplementation::computeLagrangeMultipliers(c
   if (boundDimension > 0)
   {
     // First the lower bounds
-    const NumericalPoint lowerBounds(problem_.getBounds().getLowerBound());
+    const Point lowerBounds(problem_.getBounds().getLowerBound());
     for (UnsignedInteger i = 0; i < boundDimension; ++i)
     {
-      NumericalPoint boundGradient(inputDimension);
+      Point boundGradient(inputDimension);
       // Check if the current lower bound is active up to the tolerance
       if (std::abs(x[i] - lowerBounds[i]) <= getMaximumConstraintError())
         boundGradient[i] = 1.0;
       rhs.add(boundGradient);
     } // Lower bounds
     // Second the upper bounds
-    const NumericalPoint upperBounds(problem_.getBounds().getUpperBound());
+    const Point upperBounds(problem_.getBounds().getUpperBound());
     for (UnsignedInteger i = 0; i < boundDimension; ++i)
     {
-      NumericalPoint boundGradient(inputDimension);
+      Point boundGradient(inputDimension);
       // Check if the current lower bound is active up to the tolerance
       if (std::abs(upperBounds[i] - x[i]) <= getMaximumConstraintError())
         boundGradient[i] = -1.0;
@@ -250,7 +250,7 @@ NumericalPoint OptimizationAlgorithmImplementation::computeLagrangeMultipliers(c
   // Third, the inequality constraints
   if (inequalityDimension > 0)
   {
-    NumericalPoint inequality(problem_.getInequalityConstraint()(x));
+    Point inequality(problem_.getInequalityConstraint()(x));
     Matrix gradientInequality(problem_.getInequalityConstraint().gradient(x));
     for (UnsignedInteger i = 0; i < inequalityDimension; ++i)
     {
@@ -258,7 +258,7 @@ NumericalPoint OptimizationAlgorithmImplementation::computeLagrangeMultipliers(c
       if (std::abs(inequality[i]) <= getMaximumConstraintError())
         rhs.add(*gradientInequality.getColumn(i).getImplementation());
       else
-        rhs.add(NumericalPoint(inputDimension));
+        rhs.add(Point(inputDimension));
     }
   } // Inequality constraints
   return Matrix(inputDimension, rhs.getDimension() / inputDimension, rhs).solveLinearSystem(lhs, false);

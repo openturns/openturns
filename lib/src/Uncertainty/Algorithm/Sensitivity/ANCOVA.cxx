@@ -101,7 +101,7 @@ void ANCOVA::run() const
 }
 
 /* Accessor to ANCOVA indices measuring uncorrelated effects */
-NumericalPoint ANCOVA::getUncorrelatedIndices(const UnsignedInteger marginalIndex) const
+Point ANCOVA::getUncorrelatedIndices(const UnsignedInteger marginalIndex) const
 {
   if (!alreadyComputedIndices_) run();
   UnsignedInteger outputDimension = functionalChaosResult_.getMetaModel().getOutputDimension();
@@ -111,7 +111,7 @@ NumericalPoint ANCOVA::getUncorrelatedIndices(const UnsignedInteger marginalInde
 }
 
 /* Compute ANCOVA indices: total parts of variance of the output due to each input */
-NumericalPoint ANCOVA::getIndices(const UnsignedInteger marginalIndex) const
+Point ANCOVA::getIndices(const UnsignedInteger marginalIndex) const
 {
   if (!alreadyComputedIndices_) run();
   UnsignedInteger outputDimension = functionalChaosResult_.getMetaModel().getOutputDimension();

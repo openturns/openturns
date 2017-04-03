@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
   x[0][0] = 1.0;
   x[1][0] = 2.0;
   x[2][0] = 3.0;
-  NumericalPoint p(3);
+  Point p(3);
   p[0] = 0.3;
   p[1] = 0.2;
   p[2] = 0.5;

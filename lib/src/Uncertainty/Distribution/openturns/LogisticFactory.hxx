@@ -46,14 +46,14 @@ public:
   using DistributionFactoryImplementation::build;
 
   Implementation build(const Sample & sample) const;
-  Implementation build(const NumericalPoint & parameters) const;
+  Implementation build(const Point & parameters) const;
   Implementation build() const;
 
   using DistributionFactoryImplementation::buildEstimator;
   DistributionFactoryResult buildEstimator(const Sample & sample) const;
 
   Logistic buildAsLogistic(const Sample & sample) const;
-  Logistic buildAsLogistic(const NumericalPoint & parameters) const;
+  Logistic buildAsLogistic(const Point & parameters) const;
   Logistic buildAsLogistic() const;
 
 }; /* class LogisticFactory */

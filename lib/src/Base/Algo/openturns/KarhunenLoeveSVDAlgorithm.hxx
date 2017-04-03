@@ -49,13 +49,13 @@ public:
 			    const Bool centeredSample = false);
 
   KarhunenLoeveSVDAlgorithm(const ProcessSample & sample,
-			    const NumericalPoint & verticesWeights,
+			    const Point & verticesWeights,
 			    const NumericalScalar threshold = 0.0,
 			    const Bool centeredSample = false);
 
   KarhunenLoeveSVDAlgorithm(const ProcessSample & sample,
-			    const NumericalPoint & verticesWeights,
-			    const NumericalPoint & sampleWeights,
+			    const Point & verticesWeights,
+			    const Point & sampleWeights,
 			    const NumericalScalar threshold = 0.0,
 			    const Bool centeredSample = false);
 
@@ -73,15 +73,15 @@ public:
   ProcessSample getSample() const;
 
   /** Vertices weights accessor */
-  NumericalPoint getVerticesWeights() const;
+  Point getVerticesWeights() const;
  private:
-  void setVerticesWeights(const NumericalPoint & verticesWeights);
+  void setVerticesWeights(const Point & verticesWeights);
  public:
   
   /** Sample weights accessor */
-  NumericalPoint getSampleWeights() const;
+  Point getSampleWeights() const;
  private:
-  void setSampleWeights(const NumericalPoint & sampleWeights);
+  void setSampleWeights(const Point & sampleWeights);
  public:
   
   /** Covariance model accessors */
@@ -111,13 +111,13 @@ private:
   Bool centeredSample_;
 
   /** Potential vertices weights */
-  NumericalPoint verticesWeights_;
+  Point verticesWeights_;
 
   /** Flag to tell if the weights are uniform */
   Bool uniformVerticesWeights_;
 
   /** Potential sample weights */
-  NumericalPoint sampleWeights_;
+  Point sampleWeights_;
 
   /** Flag to tell if the sample weights are uniform */
   Bool uniformSampleWeights_;

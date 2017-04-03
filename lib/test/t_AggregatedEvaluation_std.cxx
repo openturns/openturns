@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
     coll[1] = function2;
     AggregatedEvaluation evaluation(coll);
     fullprint << "evaluation=" << evaluation << std::endl;
-    NumericalPoint point(3);
+    Point point(3);
     point[0] = 4.0;
     point[1] = -4.0;
     point[2] = 1.0;

@@ -40,8 +40,8 @@ class OT_API KrigingGradient
 
 public:
 
-  typedef Collection<NumericalPoint> NumericalPointCollection;
-  typedef PersistentCollection<NumericalPoint> NumericalPointPersistentCollection;
+  typedef Collection<Point> PointCollection;
+  typedef PersistentCollection<Point> PointPersistentCollection;
   typedef Collection<Basis> BasisCollection;
   typedef PersistentCollection<Basis> BasisPersistentCollection;
 
@@ -52,7 +52,7 @@ public:
   KrigingGradient(const BasisCollection & basis,
                   const Sample & inputSample,
                   const CovarianceModel & correlationModel,
-                  const NumericalPointCollection & beta,
+                  const PointCollection & beta,
                   const Sample & gamma);
 
   /** Virtual constructor */
@@ -70,7 +70,7 @@ public:
 
   /** Operator () */
 //   using GradientImplementation::gradient;
-  Matrix gradient(const NumericalPoint & inP) const;
+  Matrix gradient(const Point & inP) const;
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;
@@ -95,7 +95,7 @@ protected:
   CovarianceModel covarianceModel_;
 
   /// Regression weights
-  NumericalPointPersistentCollection beta_;
+  PointPersistentCollection beta_;
   Sample gamma_;
 
 };

@@ -81,13 +81,13 @@ Bool HessianImplementation::isActualImplementation() const
 /* Here is the interface that all derived class must implement */
 
 /* Hessian method */
-SymmetricTensor HessianImplementation::hessian(const NumericalPoint & inP) const
+SymmetricTensor HessianImplementation::hessian(const Point & inP) const
 {
-  throw NotYetImplementedException(HERE) << "In HessianImplementation::hessian(const NumericalPoint & inP) const";
+  throw NotYetImplementedException(HERE) << "In HessianImplementation::hessian(const Point & inP) const";
 }
 
-SymmetricTensor HessianImplementation::hessian(const NumericalPoint & inP,
-    const NumericalPoint & parameters)
+SymmetricTensor HessianImplementation::hessian(const Point & inP,
+    const Point & parameters)
 {
   setParameter(parameters);
   return hessian(inP);
@@ -112,12 +112,12 @@ UnsignedInteger HessianImplementation::getCallsNumber() const
 }
 
 /* Parameters value and description accessor */
-NumericalPoint HessianImplementation::getParameter() const
+Point HessianImplementation::getParameter() const
 {
   return parameter_;
 }
 
-void HessianImplementation::setParameter(const NumericalPoint & parameter)
+void HessianImplementation::setParameter(const Point & parameter)
 {
   parameter_ = parameter;
 }
@@ -145,9 +145,9 @@ HessianImplementation::Implementation HessianImplementation::getMarginal(const I
 #ifdef OPENTURNS_HAVE_MUPARSER
   const SymbolicEvaluation right(Description::BuildDefault(inputDimension, "x"), Description::BuildDefault(outputDimension, "y"), Description(outputDimension, "0.0"));
 #else
-  NumericalPoint center(inputDimension);
+  Point center(inputDimension);
   Matrix linear(inputDimension, outputDimension);
-  NumericalPoint constant(outputDimension);
+  Point constant(outputDimension);
   const LinearEvaluation right(center, constant, linear);
 #endif
   // Fake DF

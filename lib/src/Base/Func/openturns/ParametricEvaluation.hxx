@@ -46,7 +46,7 @@ public:
   /** Parameters constructor */
   ParametricEvaluation(const Function & function,
                                      const Indices & set,
-                                     const NumericalPoint & referencePoint,
+                                     const Point & referencePoint,
                                      const Bool parametersSet = true);
 
   /** Virtual constructor method */
@@ -54,8 +54,8 @@ public:
 
   /** Evaluation operator */
   using EvaluationImplementation::operator();
-  NumericalPoint operator() (const NumericalPoint & point) const;
-  Sample operator() (const NumericalPoint & point,
+  Point operator() (const Point & point) const;
+  Sample operator() (const Point & point,
                               const Sample & parameters);
   Sample operator() (const Sample & inS) const;
 
@@ -74,7 +74,7 @@ public:
   UnsignedInteger getOutputDimension() const;
 
   /** Parameters accessor */
-  void setParameter(const NumericalPoint & parameters);
+  void setParameter(const Point & parameters);
 
   /** String converter */
   String __repr__() const;
@@ -93,7 +93,7 @@ public:
 protected:
   ParametricEvaluation(const ParametricEvaluation & evaluation,
                                      const Indices & set,
-                                     const NumericalPoint & referencePoint);
+                                     const Point & referencePoint);
 
 private:
 

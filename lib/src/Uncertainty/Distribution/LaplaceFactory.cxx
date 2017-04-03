@@ -47,7 +47,7 @@ LaplaceFactory::Implementation LaplaceFactory::build(const Sample & sample) cons
   return buildAsLaplace(sample).clone();
 }
 
-LaplaceFactory::Implementation LaplaceFactory::build(const NumericalPoint & parameters) const
+LaplaceFactory::Implementation LaplaceFactory::build(const Point & parameters) const
 {
   return buildAsLaplace(parameters).clone();
 }
@@ -71,7 +71,7 @@ Laplace LaplaceFactory::buildAsLaplace(const Sample & sample) const
   return result;
 }
 
-Laplace LaplaceFactory::buildAsLaplace(const NumericalPoint & parameters) const
+Laplace LaplaceFactory::buildAsLaplace(const Point & parameters) const
 {
   try
   {

@@ -71,7 +71,7 @@ LeastSquaresStrategy::LeastSquaresStrategy(const Distribution & measure,
 
 /* Parameter constructor */
 LeastSquaresStrategy::LeastSquaresStrategy(const Sample & inputSample,
-    const NumericalPoint & weights,
+    const Point & weights,
     const Sample & outputSample,
     const ApproximationAlgorithmImplementationFactory & factory)
   : ProjectionStrategyImplementation(inputSample, weights, outputSample)
@@ -84,7 +84,7 @@ LeastSquaresStrategy::LeastSquaresStrategy(const Sample & inputSample,
 LeastSquaresStrategy::LeastSquaresStrategy(const Sample & inputSample,
     const Sample & outputSample,
     const ApproximationAlgorithmImplementationFactory & factory)
-  : ProjectionStrategyImplementation(inputSample, NumericalPoint(inputSample.getSize(), 1.0 / inputSample.getSize()), outputSample)
+  : ProjectionStrategyImplementation(inputSample, Point(inputSample.getSize(), 1.0 / inputSample.getSize()), outputSample)
   , p_approximationAlgorithmImplementationFactory_( factory.clone() )
 {
   // Nothing to do

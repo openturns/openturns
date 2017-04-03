@@ -72,17 +72,17 @@ String AggregatedEvaluation::__str__(const String & offset) const
 
 
 /* Evaluation operator */
-NumericalPoint AggregatedEvaluation::operator () (const NumericalPoint & inP) const
+Point AggregatedEvaluation::operator () (const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   ++callsNumber_;
   const UnsignedInteger size = functionsCollection_.getSize();
-  NumericalPoint result(outputDimension_);
+  Point result(outputDimension_);
   UnsignedInteger outputIndex = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalPoint atomValue(functionsCollection_[i](inP));
+    const Point atomValue(functionsCollection_[i](inP));
     const UnsignedInteger atomDimension = atomValue.getDimension();
     for (UnsignedInteger j = 0; j < atomDimension; ++j)
     {
@@ -219,7 +219,7 @@ UnsignedInteger AggregatedEvaluation::getOutputDimension() const
 
 
 /* Gradient according to the marginal parameters */
-Matrix AggregatedEvaluation::parameterGradient(const NumericalPoint & inP) const
+Matrix AggregatedEvaluation::parameterGradient(const Point & inP) const
 {
   Matrix result(getParameter().getDimension(), getOutputDimension());
   const UnsignedInteger size = functionsCollection_.getSize();
@@ -240,9 +240,9 @@ Matrix AggregatedEvaluation::parameterGradient(const NumericalPoint & inP) const
 }
 
 /* Parameters value accessor */
-NumericalPoint AggregatedEvaluation::getParameter() const
+Point AggregatedEvaluation::getParameter() const
 {
-  NumericalPoint parameter;
+  Point parameter;
   const UnsignedInteger size = functionsCollection_.getSize();
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
@@ -251,13 +251,13 @@ NumericalPoint AggregatedEvaluation::getParameter() const
   return parameter;
 }
 
-void AggregatedEvaluation::setParameter(const NumericalPoint & parameter)
+void AggregatedEvaluation::setParameter(const Point & parameter)
 {
   const UnsignedInteger size = functionsCollection_.getSize();
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    NumericalPoint marginalParameter(functionsCollection_[i].getParameter());
+    Point marginalParameter(functionsCollection_[i].getParameter());
     const UnsignedInteger marginalDimension = marginalParameter.getDimension();
     for (UnsignedInteger j = 0; j < marginalDimension; ++ j)
     {

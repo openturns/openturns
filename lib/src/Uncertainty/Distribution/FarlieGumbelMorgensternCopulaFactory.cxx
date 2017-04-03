@@ -52,7 +52,7 @@ FarlieGumbelMorgensternCopulaFactory::Implementation FarlieGumbelMorgensternCopu
   return buildAsFarlieGumbelMorgensternCopula(sample).clone();
 }
 
-FarlieGumbelMorgensternCopulaFactory::Implementation FarlieGumbelMorgensternCopulaFactory::build(const NumericalPoint & parameters) const
+FarlieGumbelMorgensternCopulaFactory::Implementation FarlieGumbelMorgensternCopulaFactory::build(const Point & parameters) const
 {
   return buildAsFarlieGumbelMorgensternCopula(parameters).clone();
 }
@@ -79,7 +79,7 @@ FarlieGumbelMorgensternCopula FarlieGumbelMorgensternCopulaFactory::buildAsFarli
   return result;
 }
 
-FarlieGumbelMorgensternCopula FarlieGumbelMorgensternCopulaFactory::buildAsFarlieGumbelMorgensternCopula(const NumericalPoint & parameters) const
+FarlieGumbelMorgensternCopula FarlieGumbelMorgensternCopulaFactory::buildAsFarlieGumbelMorgensternCopula(const Point & parameters) const
 {
   try
   {

@@ -19,7 +19,7 @@ try:
     f2 = Function(inVar, outVar, formula)
     # Third, build the product function
     myFunction = f1 * f2
-    inPoint = NumericalPoint([1.2, 2.3, 3.4])
+    inPoint = Point([1.2, 2.3, 3.4])
     print("myFunction=", myFunction)
     value = myFunction(inPoint)
     print("Value at  %s =\n%s" % (inPoint, value))

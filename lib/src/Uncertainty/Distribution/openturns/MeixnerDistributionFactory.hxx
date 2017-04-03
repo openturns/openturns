@@ -46,10 +46,10 @@ public:
   using DistributionFactoryImplementation::build;
 
   Implementation build(const Sample & sample) const;
-  Implementation build(const NumericalPoint & parameters) const;
+  Implementation build(const Point & parameters) const;
   Implementation build() const;
   MeixnerDistribution buildAsMeixnerDistribution(const Sample & sample) const;
-  MeixnerDistribution buildAsMeixnerDistribution(const NumericalPoint & parameters) const;
+  MeixnerDistribution buildAsMeixnerDistribution(const Point & parameters) const;
   MeixnerDistribution buildAsMeixnerDistribution() const;
 
 }; /* class MeixnerDistributionFactory */

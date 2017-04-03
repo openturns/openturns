@@ -13,12 +13,12 @@ try:
     matrix1[1, 1] = 1.0
     print("matrix1 (initialized)=" + repr(matrix1))
 
-    pt = NumericalPoint()
+    pt = Point()
     pt.add(5.0)
     pt.add(0.0)
     print("pt=", repr(pt))
 
-    result = NumericalPoint()
+    result = Point()
     result = matrix1.solveLinearSystem(pt)
     print("result=" + repr(result))
 

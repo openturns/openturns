@@ -1,5 +1,5 @@
-distribution= class=Dirichlet name=Dirichlet dimension=3 theta=class=NumericalPoint name=Unnamed dimension=4 values=[0.2,0.3,0.4,0.5]
-Estimated distribution= class=Dirichlet name=Dirichlet dimension=3 theta=class=NumericalPoint name=Unnamed dimension=4 values=[0.197715,0.300208,0.398258,0.498906]
+distribution= class=Dirichlet name=Dirichlet dimension=3 theta=class=Point name=Unnamed dimension=4 values=[0.2,0.3,0.4,0.5]
+Estimated distribution= class=Dirichlet name=Dirichlet dimension=3 theta=class=Point name=Unnamed dimension=4 values=[0.197715,0.300208,0.398258,0.498906]
 Default distribution= Dirichlet(theta = [1,1])
 Dirichlet          = Dirichlet(theta = [0.2,0.3,0.4,0.5])
 Estimated dirichlet= Dirichlet(theta = [0.197715,0.300208,0.398258,0.498906])

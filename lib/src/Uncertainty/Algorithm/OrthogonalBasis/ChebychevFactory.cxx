@@ -64,9 +64,9 @@ ChebychevFactory::Coefficients ChebychevFactory::getRecurrenceCoefficients(const
 }
 
 /* Roots of the polynomial of degree n */
-NumericalPoint ChebychevFactory::getRoots(const UnsignedInteger n) const
+Point ChebychevFactory::getRoots(const UnsignedInteger n) const
 {
-  NumericalPoint roots(n);
+  Point roots(n);
   for (UnsignedInteger i = 0; i < n; ++i)
     roots[i] = std::cos((i + 0.5) * M_PI / n);
   return roots;
@@ -74,11 +74,11 @@ NumericalPoint ChebychevFactory::getRoots(const UnsignedInteger n) const
 
 /* Nodes and weights of the polynomial of degree n as the eigenvalues of the associated Jacobi matrix and the square
    of the first component of the associated normalized eigenvectors */
-NumericalPoint ChebychevFactory::getNodesAndWeights(const UnsignedInteger n,
-    NumericalPoint & weights) const
+Point ChebychevFactory::getNodesAndWeights(const UnsignedInteger n,
+    Point & weights) const
 {
   if (n == 0) throw InvalidArgumentException(HERE) << "Error: cannot compute the roots and weights of a constant polynomial.";
-  weights = NumericalPoint(n, 1.0 / n);
+  weights = Point(n, 1.0 / n);
   return getRoots(n);
 }
 

@@ -78,8 +78,8 @@ UserDefinedCovarianceModel * UserDefinedCovarianceModel::clone() const
 
 
 /* Computation of the covariance density function */
-CovarianceMatrix UserDefinedCovarianceModel::operator() (const NumericalPoint & s,
-    const NumericalPoint & t) const
+CovarianceMatrix UserDefinedCovarianceModel::operator() (const Point & s,
+    const Point & t) const
 {
   if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
   if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
@@ -191,7 +191,7 @@ Sample UserDefinedCovarianceModel::discretizeRow(const Sample & vertices,
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     nearestIndex[i] = p_mesh_->getNearestVertexIndex(vertices[i]);
-    LOGINFO(OSS() << "The vertex " << i << " over " << size - 1 << " in the given sample corresponds to the vertex " << nearestIndex[i] << " in the underlying mesh (" << NumericalPoint(vertices[i]).__str__() << "->" << p_mesh_->getVertex(nearestIndex[i]).__str__() << ")");
+    LOGINFO(OSS() << "The vertex " << i << " over " << size - 1 << " in the given sample corresponds to the vertex " << nearestIndex[i] << " in the underlying mesh (" << Point(vertices[i]).__str__() << "->" << p_mesh_->getVertex(nearestIndex[i]).__str__() << ")");
   }
   for (UnsignedInteger i = 0; i < size; ++i) result[i][0] = operator()(nearestIndex[p], nearestIndex[i])(0, 0);
   return result;

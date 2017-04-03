@@ -84,8 +84,8 @@ Vectors
     BoolCollection
     Description
     Indices
-    NumericalPoint
-    NumericalPointWithDescription
+    Point
+    PointWithDescription
     NumericalComplexCollection
     NumericalScalarCollection
 

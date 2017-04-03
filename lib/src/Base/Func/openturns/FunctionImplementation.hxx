@@ -22,8 +22,8 @@
 #define OPENTURNS_FUNCTIONIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalPointWithDescription.hxx"
+#include "openturns/Point.hxx"
+#include "openturns/PointWithDescription.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Field.hxx"
 #include "openturns/Indices.hxx"
@@ -200,11 +200,11 @@ public:
   void setUseDefaultHessianImplementation(const Bool hessianFlag);
 
   /** Operator () */
-  virtual NumericalPoint operator() (const NumericalPoint & inP) const;
+  virtual Point operator() (const Point & inP) const;
 
-  virtual NumericalPoint operator()(const NumericalPoint & inP,
-                                    const NumericalPoint & parameter);
-  virtual Sample operator() (const NumericalPoint & point,
+  virtual Point operator()(const Point & inP,
+                                    const Point & parameter);
+  virtual Sample operator() (const Point & point,
                                       const Sample & parameters);
 
   virtual Sample operator() (const Sample & inS) const;
@@ -213,23 +213,23 @@ public:
 
 
   /** Method gradient() returns the Jacobian transposed matrix of the function at point */
-  virtual Matrix gradient(const NumericalPoint & inP) const;
-  virtual Matrix gradient(const NumericalPoint & inP,
-                          const NumericalPoint & parameter);
+  virtual Matrix gradient(const Point & inP) const;
+  virtual Matrix gradient(const Point & inP,
+                          const Point & parameter);
 
   /** Method hessian() returns the symmetric tensor of the function at point */
-  virtual SymmetricTensor hessian(const NumericalPoint & inP) const;
-  virtual SymmetricTensor hessian(const NumericalPoint & inP,
-                                  const NumericalPoint & parameter);
+  virtual SymmetricTensor hessian(const Point & inP) const;
+  virtual SymmetricTensor hessian(const Point & inP,
+                                  const Point & parameter);
 
   /** Gradient according to the marginal parameters */
-  virtual Matrix parameterGradient(const NumericalPoint & inP) const;
-  virtual Matrix parameterGradient(const NumericalPoint & inP,
-                                   const NumericalPoint & parameter);
+  virtual Matrix parameterGradient(const Point & inP) const;
+  virtual Matrix parameterGradient(const Point & inP,
+                                   const Point & parameter);
 
   /** Parameters value accessor */
-  virtual NumericalPoint getParameter() const;
-  virtual void setParameter(const NumericalPoint & parameter);
+  virtual Point getParameter() const;
+  virtual void setParameter(const Point & parameter);
 
   /** Parameters description accessor */
   virtual Description getParameterDescription() const;
@@ -272,7 +272,7 @@ public:
   /** Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
   virtual Graph draw(const UnsignedInteger inputMarginal,
                      const UnsignedInteger outputMarginal,
-                     const NumericalPoint & centralPoint,
+                     const Point & centralPoint,
                      const NumericalScalar xMin,
                      const NumericalScalar xMax,
                      const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("NumericalMathEvaluation-DefaultPointNumber"),
@@ -282,9 +282,9 @@ public:
   virtual Graph draw(const UnsignedInteger firstInputMarginal,
                      const UnsignedInteger secondInputMarginal,
                      const UnsignedInteger outputMarginal,
-                     const NumericalPoint & centralPoint,
-                     const NumericalPoint & xMin,
-                     const NumericalPoint & xMax,
+                     const Point & centralPoint,
+                     const Point & xMin,
+                     const Point & xMax,
                      const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedInteger("NumericalMathEvaluation-DefaultPointNumber")),
                      const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
 
@@ -295,8 +295,8 @@ public:
                      const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
 
   /** Draw the output of the function with respect to its input when the input dimension is 2 and the output dimension is 1 */
-  virtual Graph draw(const NumericalPoint & xMin,
-                     const NumericalPoint & xMax,
+  virtual Graph draw(const Point & xMin,
+                     const Point & xMax,
                      const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedInteger("NumericalMathEvaluation-DefaultPointNumber")),
                      const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
 

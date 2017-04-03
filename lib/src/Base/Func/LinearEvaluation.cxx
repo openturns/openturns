@@ -41,8 +41,8 @@ LinearEvaluation::LinearEvaluation()
 }
 
 /* Parameter constructor */
-LinearEvaluation::LinearEvaluation(const NumericalPoint & center,
-    const NumericalPoint & constant,
+LinearEvaluation::LinearEvaluation(const Point & center,
+    const Point & constant,
     const Matrix & linear)
   : EvaluationImplementation()
   , center_(center)
@@ -93,13 +93,13 @@ String LinearEvaluation::__str__(const String & offset) const
 }
 
 /* Accessor for the center */
-NumericalPoint LinearEvaluation::getCenter() const
+Point LinearEvaluation::getCenter() const
 {
   return center_;
 }
 
 /* Accessor for the constant term */
-NumericalPoint LinearEvaluation::getConstant() const
+Point LinearEvaluation::getConstant() const
 {
   return constant_;
 }
@@ -113,10 +113,10 @@ Matrix LinearEvaluation::getLinear() const
 /* Here is the interface that all derived class must implement */
 
 /* Operator () */
-NumericalPoint LinearEvaluation::operator() (const NumericalPoint & inP) const
+Point LinearEvaluation::operator() (const Point & inP) const
 {
   if (inP.getDimension() != center_.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
-  const NumericalPoint result(constant_ + linear_ * (inP - center_));
+  const Point result(constant_ + linear_ * (inP - center_));
   ++callsNumber_;
   if (isHistoryEnabled_)
   {

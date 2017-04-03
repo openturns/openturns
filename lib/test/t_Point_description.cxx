@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class NumericalPoint for standard methods
+ *  @brief The test file of class Point for standard methods
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -30,12 +30,12 @@ int main(int argc, char *argv[])
   OStream fullprint(std::cout);
 
   /* Constructor with size */
-  NumericalPointWithDescription point1(2);
+  PointWithDescription point1(2);
   point1[0] = 100.;
   point1[1] = 101.;
 
   /* Copy constructor */
-  NumericalPointWithDescription point2(point1);
+  PointWithDescription point2(point1);
 
 
   {
@@ -69,10 +69,10 @@ int main(int argc, char *argv[])
   }
 
   // Creation
-  Collection<NumericalPointWithDescription> coll1(5, NumericalPointWithDescription(4));
-  Collection<NumericalPointWithDescription> coll2(5, NumericalPoint(4));
-  Collection<NumericalPoint> coll3(5, NumericalPointWithDescription(4));
-  Collection<NumericalPoint> coll4(5, NumericalPoint(4));
+  Collection<PointWithDescription> coll1(5, PointWithDescription(4));
+  Collection<PointWithDescription> coll2(5, Point(4));
+  Collection<Point> coll3(5, PointWithDescription(4));
+  Collection<Point> coll4(5, Point(4));
   // Conversion
   //coll1 = coll3;
   //coll4 = coll2;

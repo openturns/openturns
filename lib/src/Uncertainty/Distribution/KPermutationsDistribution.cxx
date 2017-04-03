@@ -104,17 +104,17 @@ KPermutationsDistribution * KPermutationsDistribution::clone() const
 /* Compute the numerical range of the distribution given the parameters values */
 void KPermutationsDistribution::computeRange()
 {
-  const NumericalPoint lowerBound(k_, 0.0);
-  const NumericalPoint upperBound(k_, n_ - 1.0);
+  const Point lowerBound(k_, 0.0);
+  const Point upperBound(k_, n_ - 1.0);
   const Interval::BoolCollection finiteLowerBound(k_, true);
   const Interval::BoolCollection finiteUpperBound(k_, true);
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
 }
 
 /* Get one realization of the distribution */
-NumericalPoint KPermutationsDistribution::getRealization() const
+Point KPermutationsDistribution::getRealization() const
 {
-  NumericalPoint realization(k_);
+  Point realization(k_);
   Indices buffer(n_);
   buffer.fill();
   for (UnsignedInteger i = 0; i < k_; ++i)
@@ -127,7 +127,7 @@ NumericalPoint KPermutationsDistribution::getRealization() const
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar KPermutationsDistribution::computeLogPDF(const NumericalPoint & point) const
+NumericalScalar KPermutationsDistribution::computeLogPDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -144,7 +144,7 @@ NumericalScalar KPermutationsDistribution::computeLogPDF(const NumericalPoint & 
   return logPDFValue_;
 }
 
-NumericalScalar KPermutationsDistribution::computePDF(const NumericalPoint & point) const
+NumericalScalar KPermutationsDistribution::computePDF(const Point & point) const
 {
   const NumericalScalar logPDF = computeLogPDF(point);
   if (logPDF == SpecFunc::LogMinNumericalScalar) return 0.0;
@@ -152,13 +152,13 @@ NumericalScalar KPermutationsDistribution::computePDF(const NumericalPoint & poi
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar KPermutationsDistribution::computeCDF(const NumericalPoint & point) const
+NumericalScalar KPermutationsDistribution::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   if (dimension == 1) return static_cast < NumericalScalar >(k_) / n_;
-  NumericalPoint sortedPoint(dimension);
+  Point sortedPoint(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const NumericalScalar x = point[i];
@@ -209,7 +209,7 @@ Sample KPermutationsDistribution::getSupport(const Interval & interval) const
 /* Compute the mean of the distribution */
 void KPermutationsDistribution::computeMean() const
 {
-  mean_ = NumericalPoint(k_, 0.5 * (n_ - 1.0));
+  mean_ = Point(k_, 0.5 * (n_ - 1.0));
   isAlreadyComputedMean_ = true;
 }
 
@@ -218,19 +218,19 @@ void KPermutationsDistribution::computeCovariance() const
 {
   const NumericalScalar var = (n_ * n_ - 1.0) / 12.0;
   const NumericalScalar cov = -(n_ + 1.0) / 12.0;
-  covariance_ = CovarianceMatrix(k_, NumericalPoint(k_ * k_, cov));
+  covariance_ = CovarianceMatrix(k_, Point(k_ * k_, cov));
   for (UnsignedInteger i = 0; i < k_; ++i) covariance_(i, i) = var;
   isAlreadyComputedCovariance_ = true;
 }
 
 /* Parameters value and description accessor */
-KPermutationsDistribution::NumericalPointWithDescriptionCollection KPermutationsDistribution::getParametersCollection() const
+KPermutationsDistribution::PointWithDescriptionCollection KPermutationsDistribution::getParametersCollection() const
 {
   const UnsignedInteger dimension = getDimension();
-  NumericalPointWithDescriptionCollection parameters((dimension == 1 ? 1 : dimension + 1));
+  PointWithDescriptionCollection parameters((dimension == 1 ? 1 : dimension + 1));
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    NumericalPointWithDescription point(1);
+    PointWithDescription point(1);
     point[0] = n_;
     Description description(1);
     description[0] = "n";
@@ -240,7 +240,7 @@ KPermutationsDistribution::NumericalPointWithDescriptionCollection KPermutations
   }
   if (dimension > 1)
   {
-    NumericalPointWithDescription point(2);
+    PointWithDescription point(2);
     Description description(2);
     point[0] = k_;
     description[0] = "k";

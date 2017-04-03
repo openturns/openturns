@@ -53,7 +53,7 @@ Sample ApproximationAlgorithm::getY() const
   return getImplementation()->getY();
 }
 
-NumericalPoint ApproximationAlgorithm::getWeight() const
+Point ApproximationAlgorithm::getWeight() const
 {
   return getImplementation()->getWeight();
 }
@@ -98,7 +98,7 @@ void ApproximationAlgorithm::run(const DesignProxy & proxy)
 }
 
 /* Acccessor to the coefficients of the selected metamodel on the provided basis */
-NumericalPoint ApproximationAlgorithm::getCoefficients()
+Point ApproximationAlgorithm::getCoefficients()
 {
   return getImplementation()->getCoefficients();
 }

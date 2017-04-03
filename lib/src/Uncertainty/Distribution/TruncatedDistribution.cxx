@@ -67,12 +67,12 @@ TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
   setThresholdRealization(thresholdRealization);
   setDimension(1);
   if (upperBound <= lowerBound) throw InvalidArgumentException(HERE) << "Error: the upper bound must be greater than the lower bound, here lowerBound=" << lowerBound << " and upperBound=" << upperBound;
-  cdfLowerBound_ = distribution.computeCDF(NumericalPoint(1, lowerBound));
-  cdfUpperBound_ = distribution.computeCDF(NumericalPoint(1, upperBound));
+  cdfLowerBound_ = distribution.computeCDF(Point(1, lowerBound));
+  cdfUpperBound_ = distribution.computeCDF(Point(1, upperBound));
   if (cdfLowerBound_ == cdfUpperBound_) throw InvalidArgumentException(HERE) << "Error: the interval [lowerBound, upperBound] must contain a non-empty part of the support of the distribution, here CDf(lowerBound)=" << cdfLowerBound_ << " and CDF(upperBound)=" << cdfUpperBound_;
   normalizationFactor_ = 1.0 / (cdfUpperBound_ - cdfLowerBound_);
-  pdfLowerBound_ = distribution.computePDF(NumericalPoint(1, lowerBound));
-  pdfUpperBound_ = distribution.computePDF(NumericalPoint(1, upperBound));
+  pdfLowerBound_ = distribution.computePDF(Point(1, lowerBound));
+  pdfUpperBound_ = distribution.computePDF(Point(1, upperBound));
   lowerBound_ = lowerBound;
   upperBound_ = upperBound;
   finiteLowerBound_ = true;
@@ -98,9 +98,9 @@ TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
     case LOWER:
       lowerBound_ = bound;
       finiteLowerBound_ = true;
-      cdfLowerBound_ = distribution.computeCDF(NumericalPoint(1, bound));
+      cdfLowerBound_ = distribution.computeCDF(Point(1, bound));
       if (cdfLowerBound_ == 1.0) throw InvalidArgumentException(HERE) << "Error: the interval [bound, +inf[ must contain a non-empty part of the support of the distribution, here CDF(bound)=" << cdfLowerBound_;
-      pdfLowerBound_ = distribution.computePDF(NumericalPoint(1, bound));
+      pdfLowerBound_ = distribution.computePDF(Point(1, bound));
       upperBound_ = distribution.getRange().getUpperBound()[0];
       cdfUpperBound_ = 1.0;
       pdfUpperBound_ = 0.0;
@@ -109,9 +109,9 @@ TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
     case UPPER:
       upperBound_ = bound;
       finiteUpperBound_ = true;
-      cdfUpperBound_ = distribution.computeCDF(NumericalPoint(1, bound));
+      cdfUpperBound_ = distribution.computeCDF(Point(1, bound));
       if (cdfUpperBound_ == 0.0) throw InvalidArgumentException(HERE) << "Error: the interval ]-inf, bound] must contain a non-empty part of the support of the distribution, here CDF(bound)=" << cdfUpperBound_;
-      pdfUpperBound_ = distribution.computePDF(NumericalPoint(1, bound));
+      pdfUpperBound_ = distribution.computePDF(Point(1, bound));
       lowerBound_ = distribution.getRange().getLowerBound()[0];
       cdfLowerBound_ = 0.0;
       pdfLowerBound_ = 0.0;
@@ -146,11 +146,11 @@ TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
   upperBound_ = truncationInterval.getUpperBound()[0];
   finiteLowerBound_ = truncationInterval.getFiniteLowerBound()[0] == 1;
   finiteUpperBound_ = truncationInterval.getFiniteUpperBound()[0] == 1;
-  cdfLowerBound_ = distribution.computeCDF(NumericalPoint(1, lowerBound_));
-  cdfUpperBound_ = distribution.computeCDF(NumericalPoint(1, upperBound_));
+  cdfLowerBound_ = distribution.computeCDF(Point(1, lowerBound_));
+  cdfUpperBound_ = distribution.computeCDF(Point(1, upperBound_));
   if (cdfLowerBound_ >= cdfUpperBound_) throw InvalidArgumentException(HERE) << "Error: the truncation interval does not contain a non-empty part of the support of the distribution";
-  pdfLowerBound_ = distribution.computePDF(NumericalPoint(1, lowerBound_));
-  pdfUpperBound_ = distribution.computePDF(NumericalPoint(1, upperBound_));
+  pdfLowerBound_ = distribution.computePDF(Point(1, lowerBound_));
+  pdfUpperBound_ = distribution.computePDF(Point(1, upperBound_));
   normalizationFactor_ = 1.0 / (cdfUpperBound_ - cdfLowerBound_);
   // Adjust the truncation interval and the distribution range
   computeRange();
@@ -211,39 +211,39 @@ TruncatedDistribution * TruncatedDistribution::clone() const
 /* Compute the numerical range of the distribution given the parameters values */
 void TruncatedDistribution::computeRange()
 {
-  const NumericalPoint lowerBound(1, lowerBound_);
-  const NumericalPoint upperBound(1, upperBound_);
+  const Point lowerBound(1, lowerBound_);
+  const Point upperBound(1, upperBound_);
   const Interval::BoolCollection finiteLowerBound(1, finiteLowerBound_);
   const Interval::BoolCollection finiteUpperBound(1, finiteUpperBound_);
   setRange(distribution_.getRange().intersect(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound)));
 }
 
 /* Get one realization of the distribution */
-NumericalPoint TruncatedDistribution::getRealization() const
+Point TruncatedDistribution::getRealization() const
 {
   // Do we use CDF inversion?
   if (isContinuous() && (cdfUpperBound_ - cdfLowerBound_) < thresholdRealization_) return computeQuantile(RandomGenerator::Generate());
   // Here we use simple rejection of the underlying distribution against the bounds
   for (;;)
   {
-    NumericalPoint realization(distribution_.getRealization());
+    Point realization(distribution_.getRealization());
     if ((!finiteLowerBound_ || realization[0] >= lowerBound_) && (!finiteUpperBound_ || realization[0] <= upperBound_)) return realization;
   }
 }
 
 /* Get the DDF of the distribution: DDF_trunc = 1[a, b] * DDF / (CDF(b) - CDF(a)) */
-NumericalPoint TruncatedDistribution::computeDDF(const NumericalPoint & point) const
+Point TruncatedDistribution::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0];
-  if ((x <= lowerBound_) || (x > upperBound_)) return NumericalPoint(1, 0.0);
+  if ((x <= lowerBound_) || (x > upperBound_)) return Point(1, 0.0);
   return normalizationFactor_ * distribution_.computeDDF(point);
 }
 
 
 /* Get the PDF of the distribution: PDF_trunc = 1[a, b] * PDF / (CDF(b) - CDF(a)) */
-NumericalScalar TruncatedDistribution::computePDF(const NumericalPoint & point) const
+NumericalScalar TruncatedDistribution::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -254,7 +254,7 @@ NumericalScalar TruncatedDistribution::computePDF(const NumericalPoint & point) 
 
 
 /* Get the CDF of the distribution: CDF_trunc = 1[a, b] * (CDF - CDF(a)) / (CDF(b) - CDF(a)) + 1]b, inf] */
-NumericalScalar TruncatedDistribution::computeCDF(const NumericalPoint & point) const
+NumericalScalar TruncatedDistribution::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -265,7 +265,7 @@ NumericalScalar TruncatedDistribution::computeCDF(const NumericalPoint & point) 
   return normalizationFactor_ * (distribution_.computeCDF(point) - cdfLowerBound_);
 }
 
-NumericalScalar TruncatedDistribution::computeComplementaryCDF(const NumericalPoint & point) const
+NumericalScalar TruncatedDistribution::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -277,17 +277,17 @@ NumericalScalar TruncatedDistribution::computeComplementaryCDF(const NumericalPo
 }
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint TruncatedDistribution::computePDFGradient(const NumericalPoint & point) const
+Point TruncatedDistribution::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0];
-  if ((x <= lowerBound_) || (x > upperBound_)) return NumericalPoint(distribution_.getParametersCollection()[0].getDimension() + finiteLowerBound_ + finiteUpperBound_);
-  const NumericalPoint pdfGradientX(distribution_.computePDFGradient(point));
-  const NumericalPoint cdfGradientLowerBound(finiteLowerBound_ ? distribution_.computeCDFGradient(NumericalPoint(1, lowerBound_)) : NumericalPoint(distribution_.getParametersCollection()[0].getDimension()));
-  const NumericalPoint cdfGradientUpperBound(finiteUpperBound_ ? distribution_.computeCDFGradient(NumericalPoint(1, upperBound_)) : NumericalPoint(distribution_.getParametersCollection()[0].getDimension()));
+  if ((x <= lowerBound_) || (x > upperBound_)) return Point(distribution_.getParametersCollection()[0].getDimension() + finiteLowerBound_ + finiteUpperBound_);
+  const Point pdfGradientX(distribution_.computePDFGradient(point));
+  const Point cdfGradientLowerBound(finiteLowerBound_ ? distribution_.computeCDFGradient(Point(1, lowerBound_)) : Point(distribution_.getParametersCollection()[0].getDimension()));
+  const Point cdfGradientUpperBound(finiteUpperBound_ ? distribution_.computeCDFGradient(Point(1, upperBound_)) : Point(distribution_.getParametersCollection()[0].getDimension()));
   const NumericalScalar pdfPoint = distribution_.computePDF(point);
-  NumericalPoint pdfGradient(normalizationFactor_ * pdfGradientX - pdfPoint * normalizationFactor_ * normalizationFactor_ * (cdfGradientUpperBound - cdfGradientLowerBound));
+  Point pdfGradient(normalizationFactor_ * pdfGradientX - pdfPoint * normalizationFactor_ * normalizationFactor_ * (cdfGradientUpperBound - cdfGradientLowerBound));
   // If the lower bound is finite, add a component to the gradient
   if (finiteLowerBound_)
   {
@@ -302,17 +302,17 @@ NumericalPoint TruncatedDistribution::computePDFGradient(const NumericalPoint & 
 }
 
 /* Get the CDFGradient of the distribution */
-NumericalPoint TruncatedDistribution::computeCDFGradient(const NumericalPoint & point) const
+Point TruncatedDistribution::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0];
-  if ((x <= lowerBound_) || (x > upperBound_)) return NumericalPoint(distribution_.getParametersCollection()[0].getDimension() + finiteLowerBound_ + finiteUpperBound_);
-  const NumericalPoint cdfGradientX(distribution_.computeCDFGradient(point));
-  const NumericalPoint cdfGradientLowerBound(finiteLowerBound_ ? distribution_.computeCDFGradient(NumericalPoint(1, lowerBound_)) : NumericalPoint(distribution_.getParametersCollection()[0].getDimension()));
-  const NumericalPoint cdfGradientUpperBound(finiteUpperBound_ ? distribution_.computeCDFGradient(NumericalPoint(1, upperBound_)) : NumericalPoint(distribution_.getParametersCollection()[0].getDimension()));
+  if ((x <= lowerBound_) || (x > upperBound_)) return Point(distribution_.getParametersCollection()[0].getDimension() + finiteLowerBound_ + finiteUpperBound_);
+  const Point cdfGradientX(distribution_.computeCDFGradient(point));
+  const Point cdfGradientLowerBound(finiteLowerBound_ ? distribution_.computeCDFGradient(Point(1, lowerBound_)) : Point(distribution_.getParametersCollection()[0].getDimension()));
+  const Point cdfGradientUpperBound(finiteUpperBound_ ? distribution_.computeCDFGradient(Point(1, upperBound_)) : Point(distribution_.getParametersCollection()[0].getDimension()));
   const NumericalScalar cdfPoint = distribution_.computeCDF(point);
-  NumericalPoint cdfGradient(normalizationFactor_ * (cdfGradientX - cdfGradientLowerBound) - (cdfPoint - cdfLowerBound_) * normalizationFactor_ * normalizationFactor_ * (cdfGradientUpperBound - cdfGradientLowerBound));
+  Point cdfGradient(normalizationFactor_ * (cdfGradientX - cdfGradientLowerBound) - (cdfPoint - cdfLowerBound_) * normalizationFactor_ * normalizationFactor_ * (cdfGradientUpperBound - cdfGradientLowerBound));
   // If the lower bound is finite, add a component to the gradient
   if (finiteLowerBound_)
   {
@@ -335,9 +335,9 @@ NumericalScalar TruncatedDistribution::computeScalarQuantile(const NumericalScal
 }
 
 /* Parameters value accessor */
-NumericalPoint TruncatedDistribution::getParameter() const
+Point TruncatedDistribution::getParameter() const
 {
-  NumericalPoint point(distribution_.getParameter());
+  Point point(distribution_.getParameter());
   point.add(finiteLowerBound_ ? 1.0 : 0.0);
   point.add(lowerBound_);
   point.add(finiteUpperBound_ ? 1.0 : 0.0);
@@ -345,11 +345,11 @@ NumericalPoint TruncatedDistribution::getParameter() const
   return point;
 }
 
-void TruncatedDistribution::setParameter(const NumericalPoint & parameter)
+void TruncatedDistribution::setParameter(const Point & parameter)
 {
   const UnsignedInteger parametersSize = distribution_.getParameterDimension();
   if (parameter.getSize() != parametersSize + 4) throw InvalidArgumentException(HERE) << "Error: expected " << parametersSize + 4 << " values, got " << parameter.getSize();
-  NumericalPoint newParameters(parametersSize);
+  Point newParameters(parametersSize);
   std::copy(parameter.begin(), parameter.begin() + parametersSize, newParameters.begin());
   Distribution newDistribution(distribution_);
   newDistribution.setParameter(newParameters);
@@ -415,9 +415,9 @@ NumericalScalar TruncatedDistribution::getThresholdRealization() const
 void TruncatedDistribution::setLowerBound(const NumericalScalar lowerBound)
 {
   if ((finiteUpperBound_) && (lowerBound > upperBound_)) throw InvalidArgumentException(HERE) << "Error: the lower bound must be strictly less than the upper bound, here lower bound=" << lowerBound << " and upper bound=" << upperBound_;
-  cdfLowerBound_ = distribution_.computeCDF(NumericalPoint(1, lowerBound));
+  cdfLowerBound_ = distribution_.computeCDF(Point(1, lowerBound));
   if (cdfLowerBound_ >= cdfUpperBound_) throw InvalidArgumentException(HERE) << "Error: the truncation interval does not contain a non-empty part of the support of the distribution";
-  pdfLowerBound_ = distribution_.computePDF(NumericalPoint(1, lowerBound));
+  pdfLowerBound_ = distribution_.computePDF(Point(1, lowerBound));
   lowerBound_ = lowerBound;
   finiteLowerBound_ = true;
   normalizationFactor_ = 1.0 / (cdfUpperBound_ - cdfLowerBound_);
@@ -434,9 +434,9 @@ NumericalScalar TruncatedDistribution::getLowerBound() const
 void TruncatedDistribution::setUpperBound(const NumericalScalar upperBound)
 {
   if ((finiteLowerBound_) && (upperBound < lowerBound_)) throw InvalidArgumentException(HERE) << "Error: the upper bound must be strictly greater than the lower bound, here upper bound=" << upperBound << " and lower bound=" << lowerBound_;
-  cdfUpperBound_ = distribution_.computeCDF(NumericalPoint(1, upperBound));
+  cdfUpperBound_ = distribution_.computeCDF(Point(1, upperBound));
   if (cdfUpperBound_ <= cdfLowerBound_) throw InvalidArgumentException(HERE) << "Error: the truncation interval does not contain a non-empty part of the support of the distribution";
-  pdfUpperBound_ = distribution_.computePDF(NumericalPoint(1, upperBound));
+  pdfUpperBound_ = distribution_.computePDF(Point(1, upperBound));
   upperBound_ = upperBound;
   finiteUpperBound_ = true;
   normalizationFactor_ = 1.0 / (cdfUpperBound_ - cdfLowerBound_);
@@ -526,10 +526,10 @@ Sample TruncatedDistribution::getSupport(const Interval & interval) const
 }
 
 /* Get the PDF singularities inside of the range - 1D only */
-NumericalPoint TruncatedDistribution::getSingularities() const
+Point TruncatedDistribution::getSingularities() const
 {
-  NumericalPoint singularities(0);
-  NumericalPoint nontruncatedSingularities(distribution_.getSingularities());
+  Point singularities(0);
+  Point nontruncatedSingularities(distribution_.getSingularities());
   const UnsignedInteger size = nontruncatedSingularities.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {

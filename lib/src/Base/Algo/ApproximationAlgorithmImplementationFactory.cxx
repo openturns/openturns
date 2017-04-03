@@ -52,16 +52,16 @@ ApproximationAlgorithmImplementation * ApproximationAlgorithmImplementationFacto
     const Indices & indices) const
 {
   const UnsignedInteger size = x.getSize();
-  return build( x, y, NumericalPoint( size, 1.0 ), psi, indices);
+  return build( x, y, Point( size, 1.0 ), psi, indices);
 }
 
 ApproximationAlgorithmImplementation * ApproximationAlgorithmImplementationFactory::build(const Sample & x,
     const Sample & y,
-    const NumericalPoint & weight,
+    const Point & weight,
     const Basis & psi,
     const Indices & indices) const
 {
-  throw NotYetImplementedException(HERE) << "In ApproximationAlgorithmImplementationFactory::build(const Sample & x, const Sample & y, const NumericalPoint & weight, const Basis & psi, const Indices & indices) const";
+  throw NotYetImplementedException(HERE) << "In ApproximationAlgorithmImplementationFactory::build(const Sample & x, const Sample & y, const Point & weight, const Basis & psi, const Indices & indices) const";
   // return new PenalizedLeastSquaresAlgorithm( x, y, weight, psi );
 }
 

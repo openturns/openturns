@@ -48,8 +48,8 @@ class OT_API KrigingResult
 public:
 
   // friend class Factory<KrigingResult>;
-  typedef Collection<NumericalPoint> NumericalPointCollection;
-  typedef PersistentCollection<NumericalPoint> NumericalPointPersistentCollection;
+  typedef Collection<Point> PointCollection;
+  typedef PersistentCollection<Point> PointPersistentCollection;
   typedef Collection<Basis> BasisCollection;
   typedef PersistentCollection<Basis> BasisPersistentCollection;
 
@@ -60,10 +60,10 @@ public:
   KrigingResult(const Sample & inputSample,
                 const Sample & outputSample,
                 const Function & metaModel,
-                const NumericalPoint & residuals,
-                const NumericalPoint & relativeErrors,
+                const Point & residuals,
+                const Point & relativeErrors,
                 const BasisCollection & basis,
-                const NumericalPointCollection & trendCoefficients,
+                const PointCollection & trendCoefficients,
                 const CovarianceModel & covarianceModel,
                 const Sample & covarianceCoefficients);
 
@@ -71,10 +71,10 @@ public:
   KrigingResult(const Sample & inputSample,
                 const Sample & outputSample,
                 const Function & metaModel,
-                const NumericalPoint & residuals,
-                const NumericalPoint & relativeErrors,
+                const Point & residuals,
+                const Point & relativeErrors,
                 const BasisCollection & basis,
-                const NumericalPointCollection & trendCoefficients,
+                const PointCollection & trendCoefficients,
                 const CovarianceModel & covarianceModel,
                 const Sample & covarianceCoefficients,
                 const TriangularMatrix & covarianceCholeskyFactor,
@@ -95,7 +95,7 @@ public:
   virtual BasisCollection getBasisCollection() const;
 
   /** Trend coefficients accessor */
-  virtual NumericalPointCollection getTrendCoefficients() const;
+  virtual PointCollection getTrendCoefficients() const;
 
   /** Conditional covariance models accessor */
   virtual CovarianceModel getCovarianceModel() const;
@@ -108,22 +108,22 @@ public:
   virtual void setTransformation(const Function & transformation);
 
   /** Compute mean of new points conditionnaly to observations */
-  virtual NumericalPoint getConditionalMean(const Sample & xi) const;
+  virtual Point getConditionalMean(const Sample & xi) const;
 
   /** Compute mean of new points conditionnaly to observations */
-  virtual NumericalPoint getConditionalMean(const NumericalPoint & xi) const;
+  virtual Point getConditionalMean(const Point & xi) const;
 
   /** Compute covariance matrix conditionnaly to observations*/
   virtual CovarianceMatrix getConditionalCovariance(const Sample & xi) const ;
 
   /** Compute covariance matrix conditionnaly to observations*/
-  virtual CovarianceMatrix getConditionalCovariance(const NumericalPoint & xi) const;
+  virtual CovarianceMatrix getConditionalCovariance(const Point & xi) const;
 
   /** Compute joint normal distribution conditionnaly to observations*/
   virtual Normal operator()(const Sample & xi) const;
 
   /** Compute joint normal distribution conditionnaly to observations*/
-  virtual Normal operator()(const NumericalPoint & xi) const;
+  virtual Normal operator()(const Point & xi) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -161,7 +161,7 @@ private:
   BasisPersistentCollection basis_;
 
   /** The trend coefficients */
-  NumericalPointPersistentCollection trendCoefficients_;
+  PointPersistentCollection trendCoefficients_;
 
   /** The covariance model */
   CovarianceModel covarianceModel_;

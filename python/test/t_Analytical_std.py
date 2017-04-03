@@ -13,12 +13,12 @@ try:
 
     dim = myFunction.getInputDimension()
     # We create a normal distribution point of dimension 1
-    mean = NumericalPoint(dim, 0.0)
+    mean = Point(dim, 0.0)
     mean[0] = 50.0  # E
     mean[1] = 1.0  # F
     mean[2] = 10.0  # L
     mean[3] = 5.0  # I
-    sigma = NumericalPoint(dim, 1.0)
+    sigma = Point(dim, 1.0)
     R = IdentityMatrix(dim)
     myDistribution = Normal(mean, sigma, R)
 

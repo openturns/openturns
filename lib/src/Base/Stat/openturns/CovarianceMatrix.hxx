@@ -77,7 +77,7 @@ public:
   virtual TriangularMatrix computeCholesky(const Bool keepIntact = true);
 
   /** Resolution of a linear system */
-  NumericalPoint solveLinearSystem(const NumericalPoint & b,
+  Point solveLinearSystem(const Point & b,
                                    const Bool keepIntact = true);
 
   Matrix solveLinearSystem(const Matrix & b,

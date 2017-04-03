@@ -21,7 +21,7 @@ print("left=", repr(left))
 print("composed=", repr(composed))
 
 # Does it work?
-x = ot.NumericalPoint(right.getInputDimension(), 1.0)
+x = ot.Point(right.getInputDimension(), 1.0)
 y = right(x)
 z = left(y)
 Dy = right.gradient(x)

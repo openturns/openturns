@@ -101,9 +101,9 @@ Sample JansenSensitivityAlgorithm::computeIndices(const Sample & sample,
     // Remove yA from yEMinusyA
     yEMinusyA -= yA;
     // Sum of squared elements
-    const NumericalPoint squaredSumyBMinusyE(computeSumDotSamples(yEMinusyB, yEMinusyB));
+    const Point squaredSumyBMinusyE(computeSumDotSamples(yEMinusyB, yEMinusyB));
     // Sum of squared elements
-    const NumericalPoint squaredSumyAMinusyE(computeSumDotSamples(yEMinusyA, yEMinusyA));
+    const Point squaredSumyAMinusyE(computeSumDotSamples(yEMinusyA, yEMinusyA));
 
     for (UnsignedInteger q = 0; q < outputDimension; ++q)
     {

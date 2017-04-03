@@ -41,12 +41,12 @@ int main(int argc, char **argv)
   Function function(input, Description(1, "d"), Description(1, "F*L^3/(3.*E*I)"));
 
   /* We create a normal distribution point of dimension 1 */
-  NumericalPoint mean(dim, 0.0);
+  Point mean(dim, 0.0);
   mean[0] = 50.0; // E
   mean[1] =  1.0; // F
   mean[2] = 10.0; // L
   mean[3] =  5.0; // I
-  const NumericalPoint sigma(dim, 1.0);
+  const Point sigma(dim, 1.0);
   IdentityMatrix R(dim);
   Normal myDistribution(mean, sigma, R);
 

@@ -33,8 +33,8 @@ Domain::Domain():
   // Nothing to do
 }
 
-Domain::Domain(const NumericalPoint & a,
-               const NumericalPoint & b):
+Domain::Domain(const Point & a,
+               const Point & b):
   TypedInterfaceObject<DomainImplementation>(new Interval(a, b))
 {
   // Nothing to do
@@ -54,13 +54,13 @@ UnsignedInteger Domain::getDimension() const
 }
 
 /* Check if the given point is inside of the domain */
-Bool Domain::contains(const NumericalPoint & point) const
+Bool Domain::contains(const Point & point) const
 {
   return getImplementation()->contains(point);
 }
 
 /* Check if the given point is inside of the closed interval */
-Bool Domain::numericallyContains(const NumericalPoint & point) const
+Bool Domain::numericallyContains(const Point & point) const
 {
   return getImplementation()->numericallyContains(point);
 }
@@ -90,13 +90,13 @@ NumericalScalar Domain::getNumericalVolume() const
 }
 
 /* Lower bound of the bounding box */
-NumericalPoint Domain::getLowerBound() const
+Point Domain::getLowerBound() const
 {
   return getImplementation()->getLowerBound();
 }
 
 /* Upper bound of the bounding box */
-NumericalPoint Domain::getUpperBound() const
+Point Domain::getUpperBound() const
 {
   return getImplementation()->getUpperBound();
 }

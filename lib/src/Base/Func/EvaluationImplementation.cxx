@@ -90,7 +90,7 @@ Bool EvaluationImplementation::operator ==(const EvaluationImplementation & othe
 /* String converter */
 String EvaluationImplementation::__repr__() const
 {
-  NumericalPointWithDescription parameters(parameter_);
+  PointWithDescription parameters(parameter_);
   parameters.setDescription(parameterDescription_);
 
   OSS oss(true);
@@ -296,9 +296,9 @@ Sample EvaluationImplementation::getInputParameterHistory() const
 
 
 /* Gradient according to the marginal parameters */
-Matrix EvaluationImplementation::parameterGradient(const NumericalPoint & inP) const
+Matrix EvaluationImplementation::parameterGradient(const Point & inP) const
 {
-  NumericalPoint parameter(getParameter());
+  Point parameter(getParameter());
   const UnsignedInteger parameterDimension = parameter.getDimension();
   const UnsignedInteger outputDimension = getOutputDimension();
 
@@ -325,12 +325,12 @@ Matrix EvaluationImplementation::parameterGradient(const NumericalPoint & inP) c
 }
 
 /* Parameters value accessor */
-NumericalPoint EvaluationImplementation::getParameter() const
+Point EvaluationImplementation::getParameter() const
 {
   return parameter_;
 }
 
-void EvaluationImplementation::setParameter(const NumericalPoint & parameter)
+void EvaluationImplementation::setParameter(const Point & parameter)
 {
   parameter_ = parameter;
 }
@@ -348,19 +348,19 @@ Description EvaluationImplementation::getParameterDescription() const
 
 
 /* Operator () */
-NumericalPoint EvaluationImplementation::operator() (const NumericalPoint & inP) const
+Point EvaluationImplementation::operator() (const Point & inP) const
 {
-  throw NotYetImplementedException(HERE) << "In EvaluationImplementation::operator() (const NumericalPoint & inP) const";
+  throw NotYetImplementedException(HERE) << "In EvaluationImplementation::operator() (const Point & inP) const";
 }
 
-NumericalPoint EvaluationImplementation::operator() (const NumericalPoint & inP,
-    const NumericalPoint & parameter)
+Point EvaluationImplementation::operator() (const Point & inP,
+    const Point & parameter)
 {
   setParameter(parameter);
   return (*this)(inP);
 }
 
-Sample EvaluationImplementation::operator() (const NumericalPoint & inP,
+Sample EvaluationImplementation::operator() (const Point & inP,
     const Sample & parameters)
 {
   const UnsignedInteger size = parameters.getSize();
@@ -423,11 +423,11 @@ EvaluationImplementation::Implementation EvaluationImplementation::getMarginal(c
   }
   const SymbolicEvaluation left(input, output, formulas);
 #else
-  NumericalPoint center(inputDimension);
+  Point center(inputDimension);
   Matrix linear(inputDimension, outputDimension);
   for ( UnsignedInteger index = 0; index < outputDimension; ++ index )
     linear(indices[index], index) = 1.0;
-  NumericalPoint constant(outputDimension);
+  Point constant(outputDimension);
   const LinearEvaluation left(center, constant, linear);
 #endif
   ComposedEvaluation marginal(left.clone(), clone());
@@ -448,7 +448,7 @@ UnsignedInteger EvaluationImplementation::getCallsNumber() const
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
 Graph EvaluationImplementation::draw(const UnsignedInteger inputMarginal,
     const UnsignedInteger outputMarginal,
-    const NumericalPoint & centralPoint,
+    const Point & centralPoint,
     const NumericalScalar xMin,
     const NumericalScalar xMax,
     const UnsignedInteger pointNumber,
@@ -497,9 +497,9 @@ Graph EvaluationImplementation::draw(const UnsignedInteger inputMarginal,
 Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
     const UnsignedInteger secondInputMarginal,
     const UnsignedInteger outputMarginal,
-    const NumericalPoint & centralPoint,
-    const NumericalPoint & xMin,
-    const NumericalPoint & xMax,
+    const Point & centralPoint,
+    const Point & xMin,
+    const Point & xMax,
     const Indices & pointNumber,
     const GraphImplementation::LogScale scale) const
 {
@@ -509,13 +509,13 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
   if ((scale != GraphImplementation::NONE) && (scale != GraphImplementation::LOGX) && (scale != GraphImplementation::LOGY) && (scale != GraphImplementation::LOGXY)) throw InvalidArgumentException(HERE) << "Error: expected scale=" << GraphImplementation::NONE << " or scale=" << GraphImplementation::LOGX << " or scale=" << GraphImplementation::LOGY << " or scale=" << GraphImplementation::LOGXY << ", got scale=" << scale;
   if (((scale == GraphImplementation::LOGX) || (scale == GraphImplementation::LOGXY)) && ((xMin[0] <= 0.0) || (xMax[0] <= 0.0))) throw InvalidArgumentException(HERE) << "Error: cannot use logarithmic scale on an interval containing nonpositive values for the first argument.";
   if (((scale == GraphImplementation::LOGY) || (scale == GraphImplementation::LOGXY)) && ((xMin[1] <= 0.0) || (xMax[1] <= 0.0))) throw InvalidArgumentException(HERE) << "Error: cannot use logarithmic scale on an interval containing nonpositive values for the second argument.";
-  NumericalPoint discretization(2);
-  NumericalPoint scaling(2);
-  NumericalPoint origin(2);
+  Point discretization(2);
+  Point scaling(2);
+  Point origin(2);
   const NumericalScalar nX = pointNumber[0] - 2;
   discretization[0] = nX;
   // Discretization of the first component
-  Sample x(Box(NumericalPoint(1, nX)).generate());
+  Sample x(Box(Point(1, nX)).generate());
   {
     NumericalScalar a = xMin[0];
     NumericalScalar b = xMax[0];
@@ -527,15 +527,15 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
     origin[0] = a;
     scaling[0] = b - a;
   }
-  x *= NumericalPoint(1, scaling[0]);
-  x += NumericalPoint(1, origin[0]);
+  x *= Point(1, scaling[0]);
+  x += Point(1, origin[0]);
   // Recover the original scale if the discretization has been done in the logarithmic scale
   if ((scale == GraphImplementation::LOGY) || (scale == GraphImplementation::LOGXY))
     for (UnsignedInteger i = 0; i < x.getDimension(); ++i) x[i][0] = std::exp(x[i][0]);
   const NumericalScalar nY = pointNumber[1] - 2;
   discretization[1] = nY;
   // Discretization of the second component
-  Sample y(Box(NumericalPoint(1, nY)).generate());
+  Sample y(Box(Point(1, nY)).generate());
   {
     NumericalScalar a = xMin[1];
     NumericalScalar b = xMax[1];
@@ -547,8 +547,8 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
     origin[1] = a;
     scaling[1] = b - a;
   }
-  y *= NumericalPoint(1, scaling[1]);
-  y += NumericalPoint(1, origin[1]);
+  y *= Point(1, scaling[1]);
+  y += Point(1, origin[1]);
   // Recover the original scale if the discretization has been done in the logarithmic scale
   if ((scale == GraphImplementation::LOGY) || (scale == GraphImplementation::LOGXY))
     for (UnsignedInteger i = 0; i < y.getDimension(); ++i) y[i][0] = std::exp(y[i][0]);
@@ -574,15 +574,15 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
   String title(OSS() << getOutputDescription()[outputMarginal] << " as a function of (" << xName << "," << yName << ")");
   if (centralPoint.getDimension() > 2) title = String(OSS(false) << title << " around " << centralPoint);
   Graph graph(title, xName, yName, true, "topright", 1.0, scale);
-  Contour isoValues(Contour(x, y, z, NumericalPoint(0), Description(0), true, title));
+  Contour isoValues(Contour(x, y, z, Point(0), Description(0), true, title));
   isoValues.buildDefaultLevels();
   isoValues.buildDefaultLabels();
-  const NumericalPoint levels(isoValues.getLevels());
+  const Point levels(isoValues.getLevels());
   const Description labels(isoValues.getLabels());
   for (UnsignedInteger i = 0; i < levels.getDimension(); ++i)
   {
     Contour current(isoValues);
-    current.setLevels(NumericalPoint(1, levels[i]));
+    current.setLevels(Point(1, levels[i]));
     current.setLabels(Description(1, labels[i]));
     current.setDrawLabels(false);
     current.setLegend(labels[i]);
@@ -600,19 +600,19 @@ Graph EvaluationImplementation::draw(const NumericalScalar xMin,
 {
   if (getInputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw a function with input dimension=" << getInputDimension() << " different from 1 using this method. See the other draw() methods.";
   if (getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw a function with output dimension=" << getOutputDimension() << " different from 1 using this method. See the other draw() methods.";
-  return draw(0, 0, NumericalPoint(1), xMin, xMax, pointNumber, scale);
+  return draw(0, 0, Point(1), xMin, xMax, pointNumber, scale);
 }
 
 /* Draw the output of the function with respect to its input when the input dimension is 2 and the output dimension is 1 */
-Graph EvaluationImplementation::draw(const NumericalPoint & xMin,
-    const NumericalPoint & xMax,
+Graph EvaluationImplementation::draw(const Point & xMin,
+    const Point & xMax,
     const Indices & pointNumber,
     const GraphImplementation::LogScale scale) const
 {
   if (getInputDimension() == 1) return draw(xMin[0], xMax[0], pointNumber[0], scale);
   if ((getInputDimension() == 0) || (getInputDimension() > 2)) throw InvalidArgumentException(HERE) << "Error: cannot draw a function with input dimension=" << getInputDimension() << " different from 1 or 2 using this method. See the other draw() methods.";
   if (getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw a function with output dimension=" << getOutputDimension() << " different from 1 using this method. See the other draw() methods.";
-  return draw(0, 1, 0, NumericalPoint(2), xMin, xMax, pointNumber, scale);
+  return draw(0, 1, 0, Point(2), xMin, xMax, pointNumber, scale);
 }
 
 

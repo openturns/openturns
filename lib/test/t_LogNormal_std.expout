@@ -11,55 +11,55 @@ Distribution class=LogNormal name=LogNormal dimension=1 muLog=-1 sigmaLog=1.5 ga
 Distribution LogNormal(muLog = -1, sigmaLog = 1.5, gamma = -0.5)
 Elliptical = false
 Continuous = true
-oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[0.416038]
-oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[-0.444936] last=class=NumericalPoint name=Unnamed dimension=1 values=[3.12047]
-mean=class=NumericalPoint name=Unnamed dimension=1 values=[0.609446]
+oneRealization=class=Point name=Unnamed dimension=1 values=[0.416038]
+oneSample first=class=Point name=Unnamed dimension=1 values=[-0.444936] last=class=Point name=Unnamed dimension=1 values=[3.12047]
+mean=class=Point name=Unnamed dimension=1 values=[0.609446]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[8.23002]
 Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
-Point= class=NumericalPoint name=Unnamed dimension=1 values=[1]
-ddf     =class=NumericalPoint name=Unnamed dimension=1 values=[-0.12381]
-ddf (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[-0.12381]
+Point= class=Point name=Unnamed dimension=1 values=[1]
+ddf     =class=Point name=Unnamed dimension=1 values=[-0.12381]
+ddf (FD)=class=Point name=Unnamed dimension=1 values=[-0.12381]
 log pdf=-2.16883
 pdf     =0.114311
 pdf (FD)=0.114311
 cdf=0.825615
 ccdf=0.174385
 survival=0.174385
-Inverse survival=class=NumericalPoint name=Unnamed dimension=1 values=[-0.468798]
+Inverse survival=class=Point name=Unnamed dimension=1 values=[-0.468798]
 Survival(inverse survival)=0.95
 characteristic function=(0.740877,-0.0157786)
 log characteristic function=(-0.299694,-0.021294)
-pdf gradient     =class=NumericalPoint name=Unnamed dimension=3 values=[0.0714046,-0.00930299,0.12381]
-pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=3 values=[0.0714046,-0.00930299,0.12381]
-cdf gradient     =class=NumericalPoint name=Unnamed dimension=3 values=[-0.171467,-0.16066,-0.114311]
-cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=3 values=[-0.171467,-0.16066,-0.114311]
-quantile=class=NumericalPoint name=Unnamed dimension=1 values=[3.83742]
+pdf gradient     =class=Point name=Unnamed dimension=3 values=[0.0714046,-0.00930299,0.12381]
+pdf gradient (FD)=class=Point name=Unnamed dimension=3 values=[0.0714046,-0.00930299,0.12381]
+cdf gradient     =class=Point name=Unnamed dimension=3 values=[-0.171467,-0.16066,-0.114311]
+cdf gradient (FD)=class=Point name=Unnamed dimension=3 values=[-0.171467,-0.16066,-0.114311]
+quantile=class=Point name=Unnamed dimension=1 values=[3.83742]
 cdf(quantile)=0.95
-Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-0.499653] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[3.83753] finite lower bound=[1] finite upper bound=[1]
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.499653] upper bound=class=Point name=Unnamed dimension=1 values=[3.83753] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
-Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(LogNormal(muLog = -1, sigmaLog = 1.5, gamma = -0.5)) gradientImplementation=MinimumVolumeLevelSetGradient(LogNormal(muLog = -1, sigmaLog = 1.5, gamma = -0.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=NumericalPoint name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(LogNormal(muLog = -1, sigmaLog = 1.5, gamma = -0.5)) level=4.14451
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(LogNormal(muLog = -1, sigmaLog = 1.5, gamma = -0.5)) gradientImplementation=MinimumVolumeLevelSetGradient(LogNormal(muLog = -1, sigmaLog = 1.5, gamma = -0.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(LogNormal(muLog = -1, sigmaLog = 1.5, gamma = -0.5)) level=4.14451
 beta=0.0158512
-Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-0.480551] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[6.45838] finite lower bound=[1] finite upper bound=[1]
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.480551] upper bound=class=Point name=Unnamed dimension=1 values=[6.45838] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-0.5] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[3.83742] finite lower bound=[1] finite upper bound=[1]
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.5] upper bound=class=Point name=Unnamed dimension=1 values=[3.83742] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-0.468798] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[35451.8] finite lower bound=[1] finite upper bound=[1]
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.468798] upper bound=class=Point name=Unnamed dimension=1 values=[35451.8] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-mean=class=NumericalPoint name=Unnamed dimension=1 values=[0.633148]
-standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[3.30128]
-skewness=class=NumericalPoint name=Unnamed dimension=1 values=[33.468]
-kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[10078.3]
+mean=class=Point name=Unnamed dimension=1 values=[0.633148]
+standard deviation=class=Point name=Unnamed dimension=1 values=[3.30128]
+skewness=class=Point name=Unnamed dimension=1 values=[33.468]
+kurtosis=class=Point name=Unnamed dimension=1 values=[10078.3]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[10.8985]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 parameters=[[muLog : -1, sigmaLog : 1.5, gamma : -0.5]]
 parameters=[[muLog : -1, sigmaLog : 1.5, gamma : -0.5]]
-standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
-standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[1.13315]
-standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[12.1825]
-standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[1242.65]
-standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[1.2026e+06]
-standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[1.10423e+10]
+standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[1.13315]
+standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[12.1825]
+standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[1242.65]
+standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[1.2026e+06]
+standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[1.10423e+10]
 Standard representative=LogNormal(muLog = -1, sigmaLog = 1.5, gamma = 0)

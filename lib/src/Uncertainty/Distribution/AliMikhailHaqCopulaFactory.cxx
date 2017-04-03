@@ -52,7 +52,7 @@ AliMikhailHaqCopulaFactory::Implementation AliMikhailHaqCopulaFactory::build(con
   return buildAsAliMikhailHaqCopula(sample).clone();
 }
 
-AliMikhailHaqCopulaFactory::Implementation AliMikhailHaqCopulaFactory::build(const NumericalPoint & parameters) const
+AliMikhailHaqCopulaFactory::Implementation AliMikhailHaqCopulaFactory::build(const Point & parameters) const
 {
   return buildAsAliMikhailHaqCopula(parameters).clone();
 }
@@ -112,7 +112,7 @@ AliMikhailHaqCopula AliMikhailHaqCopulaFactory::buildAsAliMikhailHaqCopula(const
   return result;
 }
 
-AliMikhailHaqCopula AliMikhailHaqCopulaFactory::buildAsAliMikhailHaqCopula(const NumericalPoint & parameters) const
+AliMikhailHaqCopula AliMikhailHaqCopulaFactory::buildAsAliMikhailHaqCopula(const Point & parameters) const
 {
   try
   {

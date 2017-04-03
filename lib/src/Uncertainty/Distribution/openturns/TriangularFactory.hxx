@@ -46,10 +46,10 @@ public:
   using DistributionFactoryImplementation::build;
 
   Implementation build(const Sample & sample) const;
-  Implementation build(const NumericalPoint & parameters) const;
+  Implementation build(const Point & parameters) const;
   Implementation build() const;
   Triangular buildAsTriangular(const Sample & sample) const;
-  Triangular buildAsTriangular(const NumericalPoint & parameters) const;
+  Triangular buildAsTriangular(const Point & parameters) const;
   Triangular buildAsTriangular() const;
 
 }; /* class TriangularFactory */

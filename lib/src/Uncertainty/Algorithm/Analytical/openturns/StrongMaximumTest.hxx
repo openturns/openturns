@@ -22,7 +22,7 @@
 #define OPENTURNS_STRONGMAXTEST_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/StandardEvent.hxx"
 #include "openturns/Sample.hxx"
 
@@ -46,14 +46,14 @@ public:
 
   /** Standard constructor */
   StrongMaximumTest(const StandardEvent & event,
-                    const NumericalPoint & standardSpaceDesignPoint,
+                    const Point & standardSpaceDesignPoint,
                     const NumericalScalar importanceLevel,
                     const NumericalScalar accuracyLevel,
                     const NumericalScalar confidenceLevel);
 
   /** Standard constructor */
   StrongMaximumTest(const StandardEvent & event,
-                    const NumericalPoint & standardSpaceDesignPoint,
+                    const Point & standardSpaceDesignPoint,
                     const NumericalScalar importanceLevel,
                     const NumericalScalar accuracyLevel,
                     const UnsignedInteger pointNumber);
@@ -63,7 +63,7 @@ public:
   virtual StrongMaximumTest * clone() const;
 
   /** standardSpaceDesignPoint accessor */
-  NumericalPoint getStandardSpaceDesignPoint() const;
+  Point getStandardSpaceDesignPoint() const;
 
   /** Event accessor */
   StandardEvent getEvent() const;
@@ -139,7 +139,7 @@ private:
   void setImportanceLevel(const NumericalScalar importanceLevel);
 
   /** standardSpaceDesignPoint accessor */
-  void setStandardSpaceDesignPoint(const NumericalPoint & standardSpaceDesignPoint );
+  void setStandardSpaceDesignPoint(const Point & standardSpaceDesignPoint );
 
   /** DesignPointVicinity accessor */
   void setDesignPointVicinity(const NumericalScalar designPointVicinity);
@@ -166,10 +166,10 @@ private:
   NumericalScalar computeDeltaEpsilon();
 
   /** the function that evaluates if a point is in the vicinity of the design point */
-  Bool isInTheVicinityOfTheDesignPoint(const NumericalPoint & numericalPoint);
+  Bool isInTheVicinityOfTheDesignPoint(const Point & numericalPoint);
 
   StandardEvent event_;
-  NumericalPoint standardSpaceDesignPoint_;
+  Point standardSpaceDesignPoint_;
   NumericalScalar importanceLevel_;
   NumericalScalar accuracyLevel_;
   NumericalScalar confidenceLevel_;

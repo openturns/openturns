@@ -37,8 +37,8 @@ prod = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation 
 prod = [[ 10 15 ]
  [ 15 25 ]]
 test number ten : multiplication with a numerical point method
-pt = class=NumericalPoint name=Unnamed dimension=2 values=[1,2]
-ptResult = class=NumericalPoint name=Unnamed dimension=2 values=[7,11]
+pt = class=Point name=Unnamed dimension=2 values=[1,2]
+ptResult = class=Point name=Unnamed dimension=2 values=[7,11]
 test number eleven : multiplication and division by a numerical scalar methods
 scalprod1 = class=SymmetricMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[3,9,9,12]
 scalprod1 = [[  3  9 ]

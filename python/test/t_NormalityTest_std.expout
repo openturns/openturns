@@ -12,7 +12,7 @@ sample  Weibull  result= 0.0
 sample  Geometric  result= 0.0
 sample  Poisson  result= 0.0
 sample  UserDefined  result= 0.0
-andersonDarlingResult= class=NumericalPoint name=Unnamed dimension=14 values=[0,0,0,0,0,1,0,0,0,0,0,0,0,0]
+andersonDarlingResult= class=Point name=Unnamed dimension=14 values=[0,0,0,0,0,1,0,0,0,0,0,0,0,0]
 sample  Beta  result= 0.0
 sample  Gamma  result= 0.0
 sample  Gumbel  result= 0.0
@@ -27,4 +27,4 @@ sample  Weibull  result= 0.0
 sample  Geometric  result= 0.0
 sample  Poisson  result= 0.0
 sample  UserDefined  result= 0.0
-cramerVonMisesResult= class=NumericalPoint name=Unnamed dimension=14 values=[0,0,0,0,0,1,0,0,0,0,0,0,0,0]
+cramerVonMisesResult= class=Point name=Unnamed dimension=14 values=[0,0,0,0,0,1,0,0,0,0,0,0,0,0]

@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
     fullprint << "myBoxCox (sample)     =" << factory.build(sample) << std::endl;
 
     // Creation of the BoxCoxTransform using shift
-    NumericalPoint shift(1, 1.0);
+    Point shift(1, 1.0);
     BoxCoxTransform myBoxCoxShift(factory.build(timeSeries, shift));
 
     fullprint << "myBoxCox with shift (time-series)=" << myBoxCoxShift << std::endl;

@@ -10,7 +10,7 @@ Parameters
 krigingResult : :class:`~openturns.KrigingResult`
     Structure that contains elements of computation of a kriging algorithm
 points : 1-d or 2-d sequence of float
-    Sequence of values defining a :class:`~openturns.NumericalPoint` or a :class:`~openturns.Sample`.
+    Sequence of values defining a :class:`~openturns.Point` or a :class:`~openturns.Sample`.
 
 Notes
 ------
@@ -51,7 +51,7 @@ The realization predicts the value on the given input *points*.
 
 Returns
 -------
-realization : :class:`~openturns.NumericalPoint`
+realization : :class:`~openturns.Point`
     Sequence of values of the Gaussian process.
 
 See also

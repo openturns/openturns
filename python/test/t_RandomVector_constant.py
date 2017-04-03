@@ -8,7 +8,7 @@ TESTPREAMBLE()
 try:
 
     # We create a numerical point of dimension 4
-    point = NumericalPoint(4)
+    point = Point(4)
     ref_point = point
 
     point[0] = 101.
@@ -18,7 +18,7 @@ try:
 
     print("point = ", repr(ref_point))
 
-    # We create a 'constant' RandomVector from the NumericalPoint
+    # We create a 'constant' RandomVector from the Point
     vect = RandomVector(ConstantRandomVector(point))
     print("vect=", vect)
 

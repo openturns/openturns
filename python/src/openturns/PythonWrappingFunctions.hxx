@@ -580,24 +580,24 @@ buildCollectionFromPySequence(PyObject * pyObj, int sz = 0)
 
 
 template <>
-struct traitsPythonType< NumericalPoint >
+struct traitsPythonType< Point >
 {
   typedef _PySequence_ Type;
 };
 
 template <>
 inline
-NumericalPoint
-convert< _PySequence_, NumericalPoint >(PyObject * pyObj)
+Point
+convert< _PySequence_, Point >(PyObject * pyObj)
 {
   Pointer<Collection<NumericalScalar> > ptr = buildCollectionFromPySequence<NumericalScalar>(pyObj);
-  return NumericalPoint( *ptr );
+  return Point( *ptr );
 }
 
 template <>
 inline
 PyObject *
-convert< NumericalPoint, _PySequence_ >(NumericalPoint inP)
+convert< Point, _PySequence_ >(Point inP)
 {
   UnsignedInteger dimension = inP.getDimension();
   PyObject * point = PyTuple_New( dimension );
@@ -650,7 +650,7 @@ inline
 Sample
 convert< _PySequence_, Sample >(PyObject * pyObj)
 {
-  Pointer<Collection<NumericalPoint> > ptr = buildCollectionFromPySequence<NumericalPoint>(pyObj);
+  Pointer<Collection<Point> > ptr = buildCollectionFromPySequence<Point>(pyObj);
   return Sample( *ptr );
 }
 
@@ -810,7 +810,7 @@ convert< _PySequence_, MatrixImplementation* >(PyObject * pyObj)
   else
   {
     // try to convert from a sequence of sequences
-    Pointer< Collection< NumericalPoint > > ptr = buildCollectionFromPySequence< NumericalPoint >(pyObj);
+    Pointer< Collection< Point > > ptr = buildCollectionFromPySequence< Point >(pyObj);
     Sample sample( *ptr );
     UnsignedInteger nbRows = sample.getSize();
     UnsignedInteger nbColumns = sample.getDimension();

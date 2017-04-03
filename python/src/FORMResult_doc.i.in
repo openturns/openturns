@@ -61,7 +61,7 @@ probability : positive float
 
 Returns
 -------
-sentivities : :class:`~openturns.NumericalPoint`
+sentivities : :class:`~openturns.Point`
     Sentivities of the FORM failure probability with regards to the parameters
     of the probabilistic input vector and to parameters of the dependence
     structure of the probabilistic input vector."

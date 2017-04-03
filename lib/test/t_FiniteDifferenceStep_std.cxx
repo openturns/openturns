@@ -33,14 +33,14 @@ int main(int argc, char *argv[])
   try
   {
     UnsignedInteger dimension = 2;
-    NumericalPoint epsilon( dimension, 1e-5 );
-    NumericalPoint eta( dimension, 1.0 );
+    Point epsilon( dimension, 1e-5 );
+    Point eta( dimension, 1.0 );
     Collection<FiniteDifferenceStep> coll;
     coll.add(ConstantStep(epsilon));
     coll.add(BlendedStep(epsilon, eta));
 
 
-    NumericalPoint x(dimension, -3.0);
+    Point x(dimension, -3.0);
 
     for (UnsignedInteger i = 0; i < coll.getSize(); ++ i)
     {

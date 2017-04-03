@@ -16,7 +16,7 @@ size : int, :math:`m > 0`, optional
 dimension : int, :math:`n > 0`, optional
     The real vectors dimension.
     Default creates an empty sample with dimension 1.
-point : :class:`~openturns.NumericalPoint` or flat (1d) array, list or tuple of floats, optional
+point : :class:`~openturns.Point` or flat (1d) array, list or tuple of floats, optional
     The point that will be repeated along the sample.
     Default creates a sample filled with zeros (null vectors).
 other : :class:`~openturns.Sample`
@@ -211,7 +211,7 @@ k : int
 
 Returns
 -------
-m : :class:`~openturns.NumericalPoint`
+m : :class:`~openturns.Point`
     Componentwise centered moment of order :math:`k` estimated from the sample.
 
 Notes
@@ -355,7 +355,7 @@ Examples
 
 Returns
 -------
-kurtosis : :class:`~openturns.NumericalPoint`
+kurtosis : :class:`~openturns.Point`
     Componentwise kurtosis estimated from the sample.
 
 Notes
@@ -397,7 +397,7 @@ Examples
 
 Returns
 -------
-mean : :class:`~openturns.NumericalPoint`
+mean : :class:`~openturns.Point`
     Mean vector estimated from the sample.
 
 Notes
@@ -425,7 +425,7 @@ Examples
 
 Returns
 -------
-median : :class:`~openturns.NumericalPoint`
+median : :class:`~openturns.Point`
     Median vector estimated from the sample.
 
 See Also
@@ -483,7 +483,7 @@ p : float, :math:`0 \leq p \leq 1`
 
 Returns
 -------
-quantile : :class:`~openturns.NumericalPoint`
+quantile : :class:`~openturns.Point`
     Quantile of the joint distribution at probability level :math:`p`,
     estimated from the sample.
 
@@ -515,7 +515,7 @@ p : float, :math:`0 \leq p \leq 1`
 
 Returns
 -------
-quantile : :class:`~openturns.NumericalPoint`
+quantile : :class:`~openturns.Point`
     Componentwise quantile at probability level :math:`p`, estimated from the
     sample.
 
@@ -545,7 +545,7 @@ Examples
 
 Returns
 -------
-range : :class:`~openturns.NumericalPoint`
+range : :class:`~openturns.Point`
     Componentwise ranges estimated from the sample.
 
 Notes
@@ -573,7 +573,7 @@ k : int, :math:`k \geq 0`
 
 Returns
 -------
-moments : :class:`~openturns.NumericalPoint`
+moments : :class:`~openturns.Point`
     Componentwise moments estimated from the sample.
 
 Notes
@@ -601,7 +601,7 @@ Examples
 
 Returns
 -------
-skewness : :class:`~openturns.NumericalPoint`
+skewness : :class:`~openturns.Point`
     Componentwise skewness estimated from the sample.
 
 Notes
@@ -693,7 +693,7 @@ Examples
 
 Returns
 -------
-standard_deviations : :class:`~openturns.NumericalPoint`
+standard_deviations : :class:`~openturns.Point`
     Componentwise standard deviation estimated from the sample.
 
 Notes
@@ -720,7 +720,7 @@ Examples
 
 Returns
 -------
-variances : :class:`~openturns.NumericalPoint`
+variances : :class:`~openturns.Point`
     Componentwise variances estimated from the sample.
 
 Notes
@@ -895,7 +895,7 @@ Examples
 
 Returns
 -------
-maximum_values : :class:`~openturns.NumericalPoint`
+maximum_values : :class:`~openturns.Point`
     Componentwise maximum values."
 
 // ---------------------------------------------------------------------
@@ -905,7 +905,7 @@ maximum_values : :class:`~openturns.NumericalPoint`
 
 Returns
 -------
-minimum_values : :class:`~openturns.NumericalPoint`
+minimum_values : :class:`~openturns.Point`
     Componentwise minimum values."
 
 // ---------------------------------------------------------------------

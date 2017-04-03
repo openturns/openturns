@@ -81,16 +81,16 @@ Function TrendEvaluation::getFunction() const
 }
 
 /* Operator () */
-NumericalPoint TrendEvaluation::operator() (const NumericalPoint & inP) const
+Point TrendEvaluation::operator() (const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   UnsignedInteger outputDimension = getOutputDimension();
-  NumericalPoint result(outputDimension);
+  Point result(outputDimension);
   const UnsignedInteger reducedInputDimension = function_.getInputDimension();
-  NumericalPoint t(reducedInputDimension);
+  Point t(reducedInputDimension);
   for (UnsignedInteger i = 0; i < reducedInputDimension; ++i) t[i] = inP[i];
-  const NumericalPoint z(function_(t));
+  const Point z(function_(t));
   for (UnsignedInteger i = 0; i < outputDimension; ++i) result[i] = inP[i + reducedInputDimension] + z[i];
   ++callsNumber_;
   if (isHistoryEnabled_)

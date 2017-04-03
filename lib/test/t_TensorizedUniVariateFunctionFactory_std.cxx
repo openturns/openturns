@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     polynomCollection[2] = MonomialFunctionFactory();
     TensorizedUniVariateFunctionFactory factory(polynomCollection);
     fullprint << "Factory=" << factory << std::endl;
-    NumericalPoint point(dim, 0.5);
+    Point point(dim, 0.5);
     for (UnsignedInteger i = 0; i < dim; ++i) point[i] *= (i + 1);
     fullprint << "point=" << point << std::endl;
     for (UnsignedInteger i = 0; i < 10; ++i)

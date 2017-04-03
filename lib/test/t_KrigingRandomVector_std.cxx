@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
     PlatformInfo::SetNumericalPrecision(2);
 
     // Learning data
-    NumericalPoint levels(2);
+    Point levels(2);
     levels[0] = 8;
     levels[1] = 5;
     // Define the Box
@@ -57,10 +57,10 @@ int main(int argc, char *argv[])
     const Sample  outputSample( model(inputSample) );
 
     // 2) Definition of exponential model
-    NumericalPoint scale(2);
+    Point scale(2);
     scale[0] = 1.988;
     scale[1] = 0.924;
-    NumericalPoint amplitude(1, 3.153);
+    Point amplitude(1, 3.153);
     SquaredExponential covarianceModel(scale, amplitude);
 
     // 3) Basis definition
@@ -84,16 +84,16 @@ int main(int argc, char *argv[])
     CovarianceMatrix var(result.getConditionalCovariance(inputSample));
 
     // assert_almost_equal could not be applied to matrices
-    NumericalPoint covariancePoint(*var.getImplementation());
-    assert_almost_equal(covariancePoint, NumericalPoint(covariancePoint.getSize()), 1e-6, 1e-6);
+    Point covariancePoint(*var.getImplementation());
+    assert_almost_equal(covariancePoint, Point(covariancePoint.getSize()), 1e-6, 1e-6);
 
     // Random vector evaluation
     Sample unifRealization(Uniform(0.0, 10.0).getSample(2));
-    NumericalPoint validationPoint(unifRealization.getImplementation()->getData());
+    Point validationPoint(unifRealization.getImplementation()->getData());
     KrigingRandomVector rvector(result, validationPoint);
 
     // Realization of the random vector
-    NumericalPoint realization (rvector.getRealization());
+    Point realization (rvector.getRealization());
     std::cout << "Realization of the KRV=" << realization << std::endl;
 
     // Get a sample of size 10

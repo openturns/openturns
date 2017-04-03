@@ -94,7 +94,7 @@ Matrix ConstantGradient::getConstant() const
 /* Here is the interface that all derived class must implement */
 
 /* Operator () */
-Matrix ConstantGradient::gradient(const NumericalPoint & inP) const
+Matrix ConstantGradient::gradient(const Point & inP) const
 {
   if (inP.getDimension() != constant_.getNbRows()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   ++callsNumber_;

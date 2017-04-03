@@ -107,7 +107,7 @@ Classifier ExpertMixture::getClassifier() const
 
 
 /* Operator () */
-NumericalPoint ExpertMixture::operator() (const NumericalPoint & inP) const
+Point ExpertMixture::operator() (const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << inputDimension << " and got a point of dimension=" << inP.getDimension();
@@ -115,15 +115,15 @@ NumericalPoint ExpertMixture::operator() (const NumericalPoint & inP) const
   const UnsignedInteger size = experts_.getSize();
   UnsignedInteger bestClass = 0;
   // Build the point (x, f(x)) for the first class and grade it according to the classifier
-  NumericalPoint mixedPoint(inP);
-  NumericalPoint bestValue(experts_[0](inP));
+  Point mixedPoint(inP);
+  Point bestValue(experts_[0](inP));
   mixedPoint.add(bestValue);
   NumericalScalar bestGrade = classifier_.grade(mixedPoint, bestClass);
   LOGDEBUG(OSS() << "Class index=" << 0 << ", grade=" << bestGrade << ", value=" << bestValue);
   for (UnsignedInteger classIndex = 1; classIndex < size; ++classIndex)
   {
     // Build the point (x, f(x)) for each other class and grade it according to the classifier
-    const NumericalPoint localValue(experts_[classIndex](inP));
+    const Point localValue(experts_[classIndex](inP));
     for (UnsignedInteger i = 0; i < outputDimension; ++i) mixedPoint[inputDimension + i] = localValue[i];
     const NumericalScalar grade = classifier_.grade(mixedPoint, classIndex);
     LOGDEBUG(OSS() << "Class index=" << classIndex << ", grade=" << grade << ", value=" << localValue);
@@ -147,7 +147,7 @@ Sample ExpertMixture::operator() (const Sample & inS) const
   const UnsignedInteger outputDimension = getOutputDimension();
   Sample bestValues(size, outputDimension);
   const UnsignedInteger expertSize = experts_.getSize();
-  NumericalPoint bestGrades(size, -SpecFunc::MaxNumericalScalar);
+  Point bestGrades(size, -SpecFunc::MaxNumericalScalar);
   for (UnsignedInteger classIndex = 0; classIndex < expertSize; ++classIndex)
   {
     // Build the point (x, f(x)) for each other class and grade it according to the classifier
@@ -156,7 +156,7 @@ Sample ExpertMixture::operator() (const Sample & inS) const
     // parallelism/vectorization
     const Sample localValues(experts_[classIndex](inS));
     mixedSample.stack(localValues);
-    const NumericalPoint grades = classifier_.grade(mixedSample, Indices(size, classIndex));
+    const Point grades = classifier_.grade(mixedSample, Indices(size, classIndex));
     for (UnsignedInteger i = 0; i < size; ++i)
       if (grades[i] > bestGrades[i])
 	{

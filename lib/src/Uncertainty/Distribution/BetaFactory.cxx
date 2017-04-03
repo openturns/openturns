@@ -49,7 +49,7 @@ BetaFactory::Implementation BetaFactory::build(const Sample & sample) const
   return buildAsBeta(sample).clone();
 }
 
-BetaFactory::Implementation BetaFactory::build(const NumericalPoint & parameters) const
+BetaFactory::Implementation BetaFactory::build(const Point & parameters) const
 {
   return buildAsBeta(parameters).clone();
 }
@@ -85,7 +85,7 @@ Beta BetaFactory::buildAsBeta(const Sample & sample) const
   return result;
 }
 
-Beta BetaFactory::buildAsBeta(const NumericalPoint & parameters) const
+Beta BetaFactory::buildAsBeta(const Point & parameters) const
 {
   try
   {

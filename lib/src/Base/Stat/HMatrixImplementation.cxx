@@ -331,11 +331,11 @@ void HMatrixImplementation::scale(NumericalScalar alpha)
 #endif
 }
 
-void HMatrixImplementation::gemv(char trans, NumericalScalar alpha, const NumericalPoint& x, NumericalScalar beta, NumericalPoint& y) const
+void HMatrixImplementation::gemv(char trans, NumericalScalar alpha, const Point& x, NumericalScalar beta, Point& y) const
 {
 #ifdef OPENTURNS_HAVE_HMAT
   // gemv() below reorders x indices, thus x is not constant.
-  NumericalPoint xcopy(x);
+  Point xcopy(x);
   static_cast<hmat_interface_t*>(hmatInterface_)->gemv(trans, &alpha, static_cast<hmat_matrix_t*>(hmat_), &xcopy[0], &beta, &y[0], 1);
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
@@ -369,10 +369,10 @@ NumericalScalar HMatrixImplementation::norm() const
 #endif
 }
 
-NumericalPoint HMatrixImplementation::getDiagonal() const
+Point HMatrixImplementation::getDiagonal() const
 {
 #ifdef OPENTURNS_HAVE_HMAT
-  NumericalPoint diag(hmatClusterTree_.get()->getSize());
+  Point diag(hmatClusterTree_.get()->getSize());
   static_cast<hmat_interface_t*>(hmatInterface_)->extract_diagonal(static_cast<hmat_matrix_t*>(hmat_), &diag[0], diag.getDimension());
   return diag;
 #else
@@ -380,11 +380,11 @@ NumericalPoint HMatrixImplementation::getDiagonal() const
 #endif
 }
 
-NumericalPoint HMatrixImplementation::solve(const NumericalPoint& b, Bool trans) const
+Point HMatrixImplementation::solve(const Point& b, Bool trans) const
 {
   if (trans) throw NotYetImplementedException(HERE) << "transposed not yet supported in HMatrixImplementation::solve";
 #ifdef OPENTURNS_HAVE_HMAT
-  NumericalPoint result(b);
+  Point result(b);
   static_cast<hmat_interface_t*>(hmatInterface_)->solve_systems(static_cast<hmat_matrix_t*>(hmat_), &result[0], 1);
   return result;
 #else
@@ -404,11 +404,11 @@ Matrix HMatrixImplementation::solve(const Matrix& m, Bool trans) const
 #endif
 }
 
-NumericalPoint HMatrixImplementation::solveLower(const NumericalPoint& b, Bool trans) const
+Point HMatrixImplementation::solveLower(const Point& b, Bool trans) const
 {
 #ifdef OPENTURNS_HAVE_HMAT
   int t = trans;
-  NumericalPoint result(b);
+  Point result(b);
   static_cast<hmat_interface_t*>(hmatInterface_)->solve_lower_triangular(static_cast<hmat_matrix_t*>(hmat_), t, &result[0], 1);
   return result;
 #else

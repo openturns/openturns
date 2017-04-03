@@ -11,16 +11,16 @@ algo = ot.GaussKronrod(
 
 value = algo.integrate(f, ot.Interval(a, b))[0]
 
-ai = ot.NumericalPoint()
-bi = ot.NumericalPoint()
+ai = ot.Point()
+bi = ot.Point()
 fi = ot.Sample()
-ei = ot.NumericalPoint()
-error = ot.NumericalPoint()
+ei = ot.Point()
+error = ot.Point()
 value2 = algo.integrate(f, a, b, error, ai, bi, fi, ei)[0]
 
 ai.add(b)
 g = f.draw(a, b, 512)
-lower = ot.Cloud(ai, ot.NumericalPoint(ai.getDimension()))
+lower = ot.Cloud(ai, ot.Point(ai.getDimension()))
 lower.setColor("magenta")
 lower.setPointStyle('circle')
 g.add(lower)

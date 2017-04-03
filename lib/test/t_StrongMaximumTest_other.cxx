@@ -33,7 +33,7 @@ void printSample(String name, Sample sample)
   {
     if (counter != 0)  fullprint << ";";
     fullprint << "[" ;
-    NumericalPoint point(sample[counter]);
+    Point point(sample[counter]);
     for (UnsignedInteger coordinate = 0; coordinate < point.getDimension(); coordinate++)
     {
       if (coordinate != 0)  fullprint << ",";
@@ -61,8 +61,8 @@ int main(int argc, char *argv[])
 
     UnsignedInteger dim = myFunction.getInputDimension();
     /* We create a normal distribution point of dimension 1 */
-    NumericalPoint mean(dim, 0.0);
-    NumericalPoint sigma(dim, 1.0);
+    Point mean(dim, 0.0);
+    Point sigma(dim, 1.0);
     IdentityMatrix R(dim);
     Normal myDistribution(mean, sigma, R);
 
@@ -77,12 +77,12 @@ int main(int argc, char *argv[])
     StandardEvent myStandardEvent(output, Greater(), seuil);
 
     /* We create the design point */
-    NumericalPoint designPoint(dim, 0.0);
+    Point designPoint(dim, 0.0);
     double C(0.6);
     designPoint[0] = - sqrt(seuil) + C;
 
     /* We create the "second" design point */
-    NumericalPoint pseudoDesignPoint(dim, 0.0);
+    Point pseudoDesignPoint(dim, 0.0);
     pseudoDesignPoint[0] = sqrt(seuil) + C;
 
     NumericalScalar importanceLevel = 0.01;

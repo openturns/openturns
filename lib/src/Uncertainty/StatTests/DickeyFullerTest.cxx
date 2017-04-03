@@ -23,7 +23,7 @@
 #include "openturns/DickeyFullerTest.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/Sample.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/IdentityMatrix.hxx"
 #include "openturns/FisherSnedecor.hxx"
@@ -201,13 +201,13 @@ void DickeyFullerTest::estimateDriftAndLinearTrendModel()
     matrix(2, 2) = sum_squared_yt_minus_one_;
 
 
-    NumericalPoint secondMember(3);
+    Point secondMember(3);
     secondMember[0] = sum_yt_;
     secondMember[1] = sum_t_yt_;
     secondMember[2] = sum_yt_yt_minus_one_;
 
     // Solving the linear system
-    NumericalPoint unknown(matrix.solveLinearSystem(secondMember));
+    Point unknown(matrix.solveLinearSystem(secondMember));
 
     drift_ = unknown[0];
     trend_ = unknown[1];
@@ -256,12 +256,12 @@ void DickeyFullerTest::estimateDriftModel()
     matrix(1, 1) = sum_squared_yt_minus_one_;
 
 
-    NumericalPoint secondMember(2);
+    Point secondMember(2);
     secondMember[0] = sum_yt_;
     secondMember[1] = sum_yt_yt_minus_one_;
 
     // Solving the linear system
-    NumericalPoint unknown(matrix.solveLinearSystem(secondMember));
+    Point unknown(matrix.solveLinearSystem(secondMember));
 
     drift_ = unknown[0];
     rho_ = unknown[1];

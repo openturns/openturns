@@ -61,11 +61,11 @@ Bool GumbelMuSigma::operator ==(const GumbelMuSigma & other) const
 /* Build a distribution based on a set of native parameters */
 Distribution GumbelMuSigma::getDistribution() const
 {
-  NumericalPoint newParameters(2);
+  Point newParameters(2);
   newParameters[0] = mu_;
   newParameters[1] = sigma_;
 
-  NumericalPoint nativeParameters(operator()(newParameters));
+  Point nativeParameters(operator()(newParameters));
 
   return GumbelFactory().build(nativeParameters);
 }
@@ -91,7 +91,7 @@ Matrix GumbelMuSigma::gradient() const
 
 
 /* Conversion operator */
-NumericalPoint GumbelMuSigma::operator () (const NumericalPoint & inP) const
+Point GumbelMuSigma::operator () (const Point & inP) const
 {
   if (inP.getDimension() != 2) throw InvalidArgumentException(HERE) << "the given point must have dimension=2, here dimension=" << inP.getDimension();
   const NumericalScalar mu = inP[0];
@@ -102,7 +102,7 @@ NumericalPoint GumbelMuSigma::operator () (const NumericalPoint & inP) const
   const NumericalScalar alpha = SpecFunc::PI_SQRT6 / sigma;
   const NumericalScalar beta = mu - SpecFunc::EULERSQRT6_PI * sigma;
 
-  NumericalPoint nativeParameters(2);
+  Point nativeParameters(2);
   nativeParameters[0] = alpha;
   nativeParameters[1] = beta;
 
@@ -110,7 +110,7 @@ NumericalPoint GumbelMuSigma::operator () (const NumericalPoint & inP) const
 }
 
 
-NumericalPoint GumbelMuSigma::inverse(const NumericalPoint & inP) const
+Point GumbelMuSigma::inverse(const Point & inP) const
 {
   if (inP.getDimension() != 2) throw InvalidArgumentException(HERE) << "the given point must have dimension=2, here dimension=" << inP.getDimension();
   const NumericalScalar alpha = inP[0];
@@ -121,7 +121,7 @@ NumericalPoint GumbelMuSigma::inverse(const NumericalPoint & inP) const
   const NumericalScalar mu = beta + SpecFunc::EulerConstant / alpha;
   const NumericalScalar sigma = SpecFunc::PI_SQRT6 / alpha;
 
-  NumericalPoint muSigmaParameters(inP);
+  Point muSigmaParameters(inP);
   muSigmaParameters[0] = mu;
   muSigmaParameters[1] = sigma;
 
@@ -130,16 +130,16 @@ NumericalPoint GumbelMuSigma::inverse(const NumericalPoint & inP) const
 
 
 /* Parameters value and description accessor */
-void GumbelMuSigma::setValues(const NumericalPoint & inP)
+void GumbelMuSigma::setValues(const Point & inP)
 {
   if (inP.getDimension() != 2) throw InvalidArgumentException(HERE) << "the given point must have dimension=2, here dimension=" << inP.getDimension();
   mu_ = inP[0];
   sigma_ = inP[1];
 }
 
-NumericalPoint GumbelMuSigma::getValues() const
+Point GumbelMuSigma::getValues() const
 {
-  NumericalPoint point(2);
+  Point point(2);
   point[0] = mu_;
   point[1] = sigma_;
   return point;

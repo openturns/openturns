@@ -57,7 +57,7 @@ public:
 
   /** Operator () */
   using EvaluationImplementation::operator();
-  NumericalPoint operator() (const NumericalPoint & inP) const;
+  Point operator() (const Point & inP) const;
 
   /** Accessor for the underlying evaluation */
   EvaluationPointer getEvaluation() const;

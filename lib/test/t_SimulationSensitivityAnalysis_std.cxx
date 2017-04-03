@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   try
   {
     /* Uncertain parameters*/
-    Normal distribution(NumericalPoint(3, 1.0), NumericalPoint(3, 2.0), CorrelationMatrix(3));
+    Normal distribution(Point(3, 1.0), Point(3, 2.0), CorrelationMatrix(3));
     distribution.setName("Unnamed");
     /* Model */
     Description input(3);

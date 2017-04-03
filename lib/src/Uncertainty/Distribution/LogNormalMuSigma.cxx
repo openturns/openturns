@@ -63,12 +63,12 @@ Bool LogNormalMuSigma::operator ==(const LogNormalMuSigma & other) const
 /* Build a distribution based on a set of native parameters */
 Distribution LogNormalMuSigma::getDistribution() const
 {
-  NumericalPoint newParameters(3);
+  Point newParameters(3);
   newParameters[0] = mu_;
   newParameters[1] = sigma_;
   newParameters[2] = gamma_;
 
-  NumericalPoint nativeParameters(operator()(newParameters));
+  Point nativeParameters(operator()(newParameters));
 
   return LogNormalFactory().build(nativeParameters);
 }
@@ -81,7 +81,7 @@ Matrix LogNormalMuSigma::gradient() const
   const NumericalScalar sigma = sigma_;
   const NumericalScalar gamma = gamma_;
 
-  NumericalPoint newParameters(3);
+  Point newParameters(3);
   newParameters[0] = mu;
   newParameters[1] = sigma;
   newParameters[2] = gamma;
@@ -108,7 +108,7 @@ Matrix LogNormalMuSigma::gradient() const
 
 
 /* Conversion operator */
-NumericalPoint LogNormalMuSigma::operator () (const NumericalPoint & inP) const
+Point LogNormalMuSigma::operator () (const Point & inP) const
 {
   if (inP.getDimension() != 3) throw InvalidArgumentException(HERE) << "the given point must have dimension=3, here dimension=" << inP.getDimension();
   const NumericalScalar mu = inP[0];
@@ -118,7 +118,7 @@ NumericalPoint LogNormalMuSigma::operator () (const NumericalPoint & inP) const
   if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
   if (mu <= gamma) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
 
-  NumericalPoint nativeParameters(inP);
+  Point nativeParameters(inP);
   NumericalScalar sigmalog = sqrt(log(1 + sigma * sigma / ((mu - gamma) * (mu - gamma))));
   NumericalScalar mulog = log(mu - gamma) - sigmalog * sigmalog / 2;
   nativeParameters[0] = mulog;
@@ -128,7 +128,7 @@ NumericalPoint LogNormalMuSigma::operator () (const NumericalPoint & inP) const
 }
 
 
-NumericalPoint LogNormalMuSigma::inverse(const NumericalPoint & inP) const
+Point LogNormalMuSigma::inverse(const Point & inP) const
 {
   if (inP.getDimension() != 3) throw InvalidArgumentException(HERE) << "the given point must have dimension=3, here dimension=" << inP.getDimension();
   const NumericalScalar muLog = inP[0];
@@ -141,7 +141,7 @@ NumericalPoint LogNormalMuSigma::inverse(const NumericalPoint & inP) const
   const NumericalScalar expSigmaLog2 = std::exp(sigmaLog * sigmaLog);
   const NumericalScalar sigma = std::exp(muLog) * std::sqrt(expSigmaLog2 * (expSigmaLog2 - 1.0));
 
-  NumericalPoint muSigmaParameters(inP);
+  Point muSigmaParameters(inP);
   muSigmaParameters[0] = mu;
   muSigmaParameters[1] = sigma;
 
@@ -150,7 +150,7 @@ NumericalPoint LogNormalMuSigma::inverse(const NumericalPoint & inP) const
 
 
 /* Parameters value and description accessor */
-void LogNormalMuSigma::setValues(const NumericalPoint & inP)
+void LogNormalMuSigma::setValues(const Point & inP)
 {
   if (inP.getDimension() != 3) throw InvalidArgumentException(HERE) << "the given point must have dimension=3, here dimension=" << inP.getDimension();
   mu_ = inP[0];
@@ -158,9 +158,9 @@ void LogNormalMuSigma::setValues(const NumericalPoint & inP)
   gamma_ = inP[2];
 }
 
-NumericalPoint LogNormalMuSigma::getValues() const
+Point LogNormalMuSigma::getValues() const
 {
-  NumericalPoint point(3);
+  Point point(3);
   point[0] = mu_;
   point[1] = sigma_;
   point[2] = gamma_;

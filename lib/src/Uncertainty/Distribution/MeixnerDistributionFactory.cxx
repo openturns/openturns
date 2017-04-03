@@ -49,7 +49,7 @@ MeixnerDistributionFactory::Implementation MeixnerDistributionFactory::build(con
   return buildAsMeixnerDistribution(sample).clone();
 }
 
-MeixnerDistributionFactory::Implementation MeixnerDistributionFactory::build(const NumericalPoint & parameters) const
+MeixnerDistributionFactory::Implementation MeixnerDistributionFactory::build(const Point & parameters) const
 {
   return buildAsMeixnerDistribution(parameters).clone();
 }
@@ -79,7 +79,7 @@ MeixnerDistribution MeixnerDistributionFactory::buildAsMeixnerDistribution(const
   return result;
 }
 
-MeixnerDistribution MeixnerDistributionFactory::buildAsMeixnerDistribution(const NumericalPoint & parameters) const
+MeixnerDistribution MeixnerDistributionFactory::buildAsMeixnerDistribution(const Point & parameters) const
 {
   try
   {

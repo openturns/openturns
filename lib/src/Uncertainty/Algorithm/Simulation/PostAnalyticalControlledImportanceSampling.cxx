@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/PostAnalyticalControlledImportanceSampling.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/ComparisonOperatorImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
@@ -59,7 +59,7 @@ PostAnalyticalControlledImportanceSampling * PostAnalyticalControlledImportanceS
 Sample PostAnalyticalControlledImportanceSampling::computeBlockSample()
 {
   const UnsignedInteger blockSize = getBlockSize();
-  const NumericalPoint standardSpaceDesignPoint(analyticalResult_.getStandardSpaceDesignPoint());
+  const Point standardSpaceDesignPoint(analyticalResult_.getStandardSpaceDesignPoint());
   const Bool originFailure = analyticalResult_.getIsStandardPointOriginInFailureSpace();
   // Get the threshold and the reliability index
   const NumericalScalar threshold = event_.getThreshold();
@@ -76,7 +76,7 @@ Sample PostAnalyticalControlledImportanceSampling::computeBlockSample()
   // Then, modify in place this sample to take into account the change in the input distribution
   for (UnsignedInteger i = 0; i < blockSize; ++i)
   {
-    const NumericalPoint realization(inputSample[i]);
+    const Point realization(inputSample[i]);
     Bool failureControl = dot(realization, standardSpaceDesignPoint) > betaSquare;
     // If the origin is not in the failure domain, the control is made using the linear event dot(u,u*) > beta^2,
     // else it is made using the linear event dot(u,u*) < beta^2.

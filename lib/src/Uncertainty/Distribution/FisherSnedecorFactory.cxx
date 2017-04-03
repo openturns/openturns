@@ -51,7 +51,7 @@ FisherSnedecorFactory::Implementation FisherSnedecorFactory::build(const Sample 
   return buildAsFisherSnedecor(sample).clone();
 }
 
-FisherSnedecorFactory::Implementation FisherSnedecorFactory::build(const NumericalPoint & parameters) const
+FisherSnedecorFactory::Implementation FisherSnedecorFactory::build(const Point & parameters) const
 {
   return buildAsFisherSnedecor(parameters).clone();
 }
@@ -73,20 +73,20 @@ FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor(const Sample & sampl
 
   // override starting point
   OptimizationAlgorithm solver(factory.getOptimizationAlgorithm());
-  solver.setStartingPoint(NumericalPoint(dimension, 0.0));
+  solver.setStartingPoint(Point(dimension, 0.0));
   factory.setOptimizationAlgorithm(solver);
 
   // override bounds
-  NumericalPoint parametersLowerBound;
+  Point parametersLowerBound;
   parametersLowerBound.add(ResourceMap::GetAsNumericalScalar("FisherSnedecorFactory-D1LowerBound"));
   parametersLowerBound.add(ResourceMap::GetAsNumericalScalar("FisherSnedecorFactory-D2LowerBound"));
-  Interval bounds(parametersLowerBound, NumericalPoint(dimension, SpecFunc::MaxNumericalScalar), Interval::BoolCollection(dimension, true), Interval::BoolCollection(dimension, false));
+  Interval bounds(parametersLowerBound, Point(dimension, SpecFunc::MaxNumericalScalar), Interval::BoolCollection(dimension, true), Interval::BoolCollection(dimension, false));
   factory.setOptimizationBounds(bounds);
 
   return buildAsFisherSnedecor(factory.buildParameter(sample));
 }
 
-FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor(const NumericalPoint & parameters) const
+FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor(const Point & parameters) const
 {
   try
   {

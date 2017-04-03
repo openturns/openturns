@@ -34,7 +34,7 @@ struct KernelWrapper
     , weight_(weight)
   {};
 
-  NumericalPoint operator()(const NumericalPoint & point) const
+  Point operator()(const Point & point) const
   {
     return left_(point) * (right_(point)[0] * weight_.computePDF(point));
   };
@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
     factories[0] = SoizeGhanemFactory(ComposedDistribution(marginals));
     factories[1] = SoizeGhanemFactory(ComposedDistribution(marginals, copula), false);
     factories[2] = SoizeGhanemFactory(ComposedDistribution(marginals, copula), true);
-    NumericalPoint x(2, 0.5);
+    Point x(2, 0.5);
     UnsignedInteger kMax = 5;
     ResourceMap::SetAsUnsignedInteger( "IteratedQuadrature-MaximumSubIntervals", 2048 );
     ResourceMap::SetAsNumericalScalar( "IteratedQuadrature-MaximumError",    1.0e-6 );
@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
         for (UnsignedInteger n = 0; n <= m; ++n)
         {
           KernelWrapper wrapper(functions[m], functions[n], distribution);
-          Function kernel(bindMethod<KernelWrapper, NumericalPoint, NumericalPoint>(wrapper, &KernelWrapper::operator(), distribution.getDimension(), 1));
+          Function kernel(bindMethod<KernelWrapper, Point, Point>(wrapper, &KernelWrapper::operator(), distribution.getDimension(), 1));
           NumericalScalar value = IteratedQuadrature().integrate(kernel, distribution.getRange())[0];
           M(m, n) = (std::abs(value) < 1e-6 ? 0.0 : value);
         }

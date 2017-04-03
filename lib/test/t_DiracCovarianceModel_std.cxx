@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     DiracCovarianceModel myDefautModel;
     fullprint << "myDefautModel = " << myDefautModel << std::endl;
     // Amplitude of dimension 2
-    NumericalPoint amplitude(dimension);
+    Point amplitude(dimension);
     for (UnsignedInteger k = 0; k < dimension; ++k) amplitude[k] = 1.5 + 2.0 * k;
     // Model of dimension 2
     DiracCovarianceModel myModel1(spatialDimension, amplitude);
@@ -66,8 +66,8 @@ int main(int argc, char *argv[])
     const Sample vertices = box.generate();
     // Two first points of vertices
     // First is 0, second one different from 0
-    const NumericalPoint tau1 = vertices[0];
-    const NumericalPoint tau2 = vertices[1];
+    const Point tau1 = vertices[0];
+    const Point tau2 = vertices[1];
     fullprint << "Evaluation of the models on the point"  << vertices[0] << std::endl;
     fullprint << "myModel1("  << tau1.__str__() << ") = " << myModel1.operator()(vertices[0]) << std::endl;
     fullprint << "myModel2("  << tau2.__str__() << ") = " << myModel2.operator()(vertices[0]) << std::endl;

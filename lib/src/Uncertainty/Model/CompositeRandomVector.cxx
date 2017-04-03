@@ -96,7 +96,7 @@ UnsignedInteger CompositeRandomVector::getDimension() const
 }
 
 /* Realization accessor */
-NumericalPoint CompositeRandomVector::getRealization() const
+Point CompositeRandomVector::getRealization() const
 {
   return function_(p_antecedent_->getRealization());
 }
@@ -115,7 +115,7 @@ Sample CompositeRandomVector::getSample(const UnsignedInteger size) const
 
 
 /* Mean accessor */
-NumericalPoint CompositeRandomVector::getMean() const
+Point CompositeRandomVector::getMean() const
 {
   /* To be implemented by a suitable algorithm, given by the user.
      It could be the e.g. quadratic cumul algorithm */

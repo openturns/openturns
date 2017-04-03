@@ -44,7 +44,7 @@ int main(int argc, char **argv)
     }
 
     // lets chose (-1,...,-1) for first quadrant bisector
-    NumericalPoint bisector(d, -1.);
+    Point bisector(d, -1.);
     for (UnsignedInteger q = 0; q < static_cast<UnsignedInteger>(1 << d); ++ q)
     {
 

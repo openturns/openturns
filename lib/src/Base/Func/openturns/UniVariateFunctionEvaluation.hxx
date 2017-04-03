@@ -24,7 +24,7 @@
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/UniVariateFunction.hxx"
 #include "openturns/PersistentCollection.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 
 
 
@@ -55,7 +55,7 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** Operator () */
-  virtual NumericalPoint operator() (const NumericalPoint & inP) const;
+  virtual Point operator() (const Point & inP) const;
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;

@@ -65,7 +65,7 @@ UserDefined UserDefinedFactory::buildAsUserDefined(const Sample & sample,
   const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a UserDefined distribution from an empty sample";
   const NumericalScalar p = 1.0 / NumericalScalar(size);
-  UserDefined result(sample, NumericalPoint(size, p));
+  UserDefined result(sample, Point(size, p));
   result.compactSupport(epsilon);
   result.setDescription(sample.getDescription());
   return result;

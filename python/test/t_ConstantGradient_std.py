@@ -20,7 +20,7 @@ try:
 
     myGradient = ConstantGradient(constant)
     myGradient.setName("constantGradient")
-    inPoint = NumericalPoint(inputDimension)
+    inPoint = Point(inputDimension)
     inPoint[0] = 7.0
     inPoint[1] = 8.0
     inPoint[2] = 9.0

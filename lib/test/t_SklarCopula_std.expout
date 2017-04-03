@@ -1,21 +1,21 @@
-Copula class=SklarCopula name=a normal copula dimension=3 distribution=class=Normal name=Normal dimension=3 mean=class=NumericalPoint name=Unnamed dimension=3 values=[1,2,3] sigma=class=NumericalPoint name=Unnamed dimension=3 values=[2,3,1] correlationMatrix=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.25,0,0.25,1,0.25,0,0.25,1]
-Copula class=SklarCopula name=a normal copula dimension=3 distribution=class=Normal name=Normal dimension=3 mean=class=NumericalPoint name=Unnamed dimension=3 values=[1,2,3] sigma=class=NumericalPoint name=Unnamed dimension=3 values=[2,3,1] correlationMatrix=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.25,0,0.25,1,0.25,0,0.25,1]
-Mean      =class=NumericalPoint name=Unnamed dimension=3 values=[0.5,0.5,0.5]
-Mean (ref)=class=NumericalPoint name=Unnamed dimension=3 values=[0.5,0.5,0.5]
+Copula class=SklarCopula name=a normal copula dimension=3 distribution=class=Normal name=Normal dimension=3 mean=class=Point name=Unnamed dimension=3 values=[1,2,3] sigma=class=Point name=Unnamed dimension=3 values=[2,3,1] correlationMatrix=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.25,0,0.25,1,0.25,0,0.25,1]
+Copula class=SklarCopula name=a normal copula dimension=3 distribution=class=Normal name=Normal dimension=3 mean=class=Point name=Unnamed dimension=3 values=[1,2,3] sigma=class=Point name=Unnamed dimension=3 values=[2,3,1] correlationMatrix=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.25,0,0.25,1,0.25,0,0.25,1]
+Mean      =class=Point name=Unnamed dimension=3 values=[0.5,0.5,0.5]
+Mean (ref)=class=Point name=Unnamed dimension=3 values=[0.5,0.5,0.5]
 Elliptical distribution= false
 Elliptical copula= true
 Independent copula= false
-oneRealization=class=NumericalPoint name=Unnamed dimension=3 values=[0.728473,0.14143,0.226528]
+oneRealization=class=Point name=Unnamed dimension=3 values=[0.728473,0.14143,0.226528]
 oneSample=class=Sample name=a normal copula implementation=class=SampleImplementation name=a normal copula size=10 dimension=3 description=[X0,X1,X2] data=[[0.885991,0.03509,0.410967],[0.361292,0.903689,0.875806],[0.786157,0.398475,0.551985],[0.0110089,0.0347878,0.0549614],[0.463832,0.82677,0.548704],[0.28767,0.614586,0.66531],[0.672124,0.18575,0.136607],[0.682113,0.49876,0.620616],[0.962655,0.696223,0.230639],[0.235291,0.339456,0.0367574]]
-anotherSample mean=class=NumericalPoint name=Unnamed dimension=3 values=[0.500491,0.497339,0.510215]
+anotherSample mean=class=Point name=Unnamed dimension=3 values=[0.500491,0.497339,0.510215]
 anotherSample covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.0807623,0.0187494,0.00159833,0.0187494,0.0838893,0.0218797,0.00159833,0.0218797,0.08306]
-point= class=NumericalPoint name=Unnamed dimension=3 values=[0.2,0.2,0.2] ddf=class=NumericalPoint name=Unnamed dimension=3 values=[-0.0827656,-0.165531,-0.165531] ddf (FD)=class=NumericalPoint name=Unnamed dimension=3 values=[-0.591263,-1.77379,-0.591263] pdf=1.37677 pdf (ref)=1.37677 cdf=0.0176157 cdf (ref)=0.0176157
+point= class=Point name=Unnamed dimension=3 values=[0.2,0.2,0.2] ddf=class=Point name=Unnamed dimension=3 values=[-0.0827656,-0.165531,-0.165531] ddf (FD)=class=Point name=Unnamed dimension=3 values=[-0.591263,-1.77379,-0.591263] pdf=1.37677 pdf (ref)=1.37677 cdf=0.0176157 cdf (ref)=0.0176157
 Survival      =0.545177
 Survival (ref)=0.545177
-Inverse survival=class=NumericalPoint name=Unnamed dimension=3 values=[0.0174781,0.0174781,0.0174781]
+Inverse survival=class=Point name=Unnamed dimension=3 values=[0.0174781,0.0174781,0.0174781]
 Survival(inverse survival)=0.95
-Quantile=class=NumericalPoint name=Unnamed dimension=3 values=[0.773909,0.773909,0.773909]
-QuantileRef=class=NumericalPoint name=Unnamed dimension=3 values=[0.773909,0.773909,0.773909]
+Quantile=class=Point name=Unnamed dimension=3 values=[0.773909,0.773909,0.773909]
+QuantileRef=class=Point name=Unnamed dimension=3 values=[0.773909,0.773909,0.773909]
 CDF(quantile)=0.5
 covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.0833333,0.0199415,0,0.0199415,0.0833333,0.0199415,0,0.0199415,0.0833333]
 correlation=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.239299,0,0.239299,1,0.239299,0,0.239299,1]
@@ -26,32 +26,32 @@ margin PDF      =1
 margin PDF (ref)=1
 margin CDF      =0.25
 margin CDF (ref)=0.25
-margin quantile      =class=NumericalPoint name=Unnamed dimension=1 values=[0.95]
-margin quantile (ref)=class=NumericalPoint name=Unnamed dimension=1 values=[0.95]
-margin realization=class=NumericalPoint name=Unnamed dimension=1 values=[0.274671]
+margin quantile      =class=Point name=Unnamed dimension=1 values=[0.95]
+margin quantile (ref)=class=Point name=Unnamed dimension=1 values=[0.95]
+margin realization=class=Point name=Unnamed dimension=1 values=[0.274671]
 margin=class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF      =1
 margin PDF (ref)=1
 margin CDF      =0.25
 margin CDF (ref)=0.25
-margin quantile      =class=NumericalPoint name=Unnamed dimension=1 values=[0.95]
-margin quantile (ref)=class=NumericalPoint name=Unnamed dimension=1 values=[0.95]
-margin realization=class=NumericalPoint name=Unnamed dimension=1 values=[0.418694]
+margin quantile      =class=Point name=Unnamed dimension=1 values=[0.95]
+margin quantile (ref)=class=Point name=Unnamed dimension=1 values=[0.95]
+margin realization=class=Point name=Unnamed dimension=1 values=[0.418694]
 margin=class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF      =1
 margin PDF (ref)=1
 margin CDF      =0.25
 margin CDF (ref)=0.25
-margin quantile      =class=NumericalPoint name=Unnamed dimension=1 values=[0.95]
-margin quantile (ref)=class=NumericalPoint name=Unnamed dimension=1 values=[0.95]
-margin realization=class=NumericalPoint name=Unnamed dimension=1 values=[0.865595]
+margin quantile      =class=Point name=Unnamed dimension=1 values=[0.95]
+margin quantile (ref)=class=Point name=Unnamed dimension=1 values=[0.95]
+margin realization=class=Point name=Unnamed dimension=1 values=[0.865595]
 indices=[1,0]
-margins=class=SklarCopula name=SklarCopula dimension=2 distribution=class=Normal name=Normal dimension=2 mean=class=NumericalPoint name=Unnamed dimension=2 values=[2,1] sigma=class=NumericalPoint name=Unnamed dimension=2 values=[3,2] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.25,0.25,1]
+margins=class=SklarCopula name=SklarCopula dimension=2 distribution=class=Normal name=Normal dimension=2 mean=class=Point name=Unnamed dimension=2 values=[2,1] sigma=class=Point name=Unnamed dimension=2 values=[3,2] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.25,0.25,1]
 margins PDF      =1.13117
 margins PDF (ref)=1.13117
 margins CDF      =0.0893097
 margins CDF (ref)=0.0893097
-margins quantile      =class=NumericalPoint name=Unnamed dimension=2 values=[0.97395,0.97395]
-margins quantile (ref)=class=NumericalPoint name=Unnamed dimension=2 values=[0.97395,0.97395]
+margins quantile      =class=Point name=Unnamed dimension=2 values=[0.97395,0.97395]
+margins quantile (ref)=class=Point name=Unnamed dimension=2 values=[0.97395,0.97395]
 margins CDF(quantile)=0.95
-margins realization=class=NumericalPoint name=Unnamed dimension=2 values=[0.0536055,0.320679]
+margins realization=class=Point name=Unnamed dimension=2 values=[0.0536055,0.320679]

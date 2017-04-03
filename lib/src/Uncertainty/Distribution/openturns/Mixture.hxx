@@ -53,7 +53,7 @@ public:
   /** Parameters constructor */
   explicit Mixture(const DistributionCollection & coll);
   Mixture(const DistributionCollection & coll,
-          const NumericalPoint & weights);
+          const Point & weights);
 
   /** Comparison operator */
   Bool operator ==(const Mixture & other) const;
@@ -71,8 +71,8 @@ public:
   const DistributionCollection & getDistributionCollection() const;
 
   /** get/set weights accessor */
-  NumericalPoint getWeights() const;
-  void setWeights(const NumericalPoint & weights);
+  Point getWeights() const;
+  void setWeights(const Point & weights);
 
   /* Here is the interface that all derived class must implement */
 
@@ -80,23 +80,23 @@ public:
   virtual Mixture * clone() const;
 
   /** Get one realization of the Mixture */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Get the DDF of the Mixture */
   using DistributionImplementation::computeDDF;
-  NumericalPoint computeDDF(const NumericalPoint & point) const;
+  Point computeDDF(const Point & point) const;
 
   /** Get the PDF of the Mixture */
   using DistributionImplementation::computePDF;
-  NumericalScalar computePDF(const NumericalPoint & point) const;
+  NumericalScalar computePDF(const Point & point) const;
 
   /** Get the CDF of the Mixture */
   using DistributionImplementation::computeCDF;
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
+  NumericalScalar computeCDF(const Point & point) const;
 
   /** Compute the survival function */
   using DistributionImplementation::computeSurvivalFunction;
-  NumericalScalar computeSurvivalFunction(const NumericalPoint & point) const;
+  NumericalScalar computeSurvivalFunction(const Point & point) const;
 
   /** Get the probability content of an interval */
   NumericalScalar computeProbability(const Interval & interval) const;
@@ -106,11 +106,11 @@ public:
 
   /** Get the PDF gradient of the distribution */
   using DistributionImplementation::computePDFGradient;
-  NumericalPoint computePDFGradient(const NumericalPoint & point) const;
+  Point computePDFGradient(const Point & point) const;
 
   /** Get the CDF gradient of the distribution */
   using DistributionImplementation::computeCDFGradient;
-  NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
+  Point computeCDFGradient(const Point & point) const;
 
   /** Get the i-th marginal distribution */
   Implementation getMarginal(const UnsignedInteger i) const;
@@ -119,7 +119,7 @@ public:
   Implementation getMarginal(const Indices & indices) const;
 
   /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
+  PointWithDescriptionCollection getParametersCollection() const;
 
   /** Check if the distribution is elliptical */
   Bool isElliptical() const;
@@ -144,7 +144,7 @@ public:
   Sample getSupport(const Interval & interval) const;
 
   /** Get the PDF singularities inside of the range - 1D only */
-  NumericalPoint getSingularities() const;
+  Point getSingularities() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -158,7 +158,7 @@ protected:
 private:
   /** Set distribution collection with weights given in a vector */
   void setDistributionCollectionWithWeights(const DistributionCollection & coll,
-      const NumericalPoint & weights);
+      const Point & weights);
 
   /** Compute the mean of a mixture */
   void computeMean() const;

@@ -51,7 +51,7 @@ public:
 public:
   /** Parameter constructor */
   LinearCombinationEvaluation(const FunctionCollection & functionsCollection,
-      const NumericalPoint & coefficients);
+      const Point & coefficients);
 
   /** Virtual constructor */
   virtual LinearCombinationEvaluation * clone() const;
@@ -61,16 +61,16 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Evaluation operator */
-  NumericalPoint operator () (const NumericalPoint & inP) const;
+  Point operator () (const Point & inP) const;
   Sample operator () (const Sample & inS) const;
 
   /** Coefficients accessor */
-  NumericalPoint getCoefficients() const;
+  Point getCoefficients() const;
 
   /** Functions accessor */
   FunctionCollection getFunctionsCollection() const;
   void setFunctionsCollectionAndCoefficients(const FunctionCollection & functionsCollection,
-      const NumericalPoint & coefficients);
+      const Point & coefficients);
 
   /** Input dimension accessor */
   UnsignedInteger getInputDimension() const;
@@ -79,11 +79,11 @@ public:
   UnsignedInteger getOutputDimension() const;
 
   /** Gradient according to the marginal parameters */
-  Matrix parameterGradient(const NumericalPoint & inP) const;
+  Matrix parameterGradient(const Point & inP) const;
 
   /** Parameters value accessor */
-  void setParameter(const NumericalPoint & parameter);
-  NumericalPoint getParameter() const;
+  void setParameter(const Point & parameter);
+  Point getParameter() const;
 
   /** Parameters description accessor */
   virtual Description getParameterDescription() const;
@@ -113,7 +113,7 @@ private:
   FunctionPersistentCollection functionsCollection_;
 
   // The coefficients of the combination
-  NumericalPoint coefficients_;
+  Point coefficients_;
 
   // The flag telling if the combination reduces to zero
   Bool isZero_;

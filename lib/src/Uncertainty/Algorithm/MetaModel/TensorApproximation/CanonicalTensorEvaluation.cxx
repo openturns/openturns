@@ -75,13 +75,13 @@ Indices CanonicalTensorEvaluation::getDegrees() const
 
 
 /* Coefficients accessor along i-th component */
-void CanonicalTensorEvaluation::setCoefficients(const UnsignedInteger i, const UnsignedInteger j, const NumericalPoint & coefficients)
+void CanonicalTensorEvaluation::setCoefficients(const UnsignedInteger i, const UnsignedInteger j, const Point & coefficients)
 {
   coefficients_[j][i] = coefficients;
 }
 
 
-NumericalPoint CanonicalTensorEvaluation::getCoefficients(const UnsignedInteger i, const UnsignedInteger j) const
+Point CanonicalTensorEvaluation::getCoefficients(const UnsignedInteger i, const UnsignedInteger j) const
 {
   return coefficients_[j][i];
 }
@@ -150,22 +150,22 @@ String CanonicalTensorEvaluation::__str__(const String & offset) const
 }
 
 /* Evaluation operator */
-NumericalPoint CanonicalTensorEvaluation::operator() (const NumericalPoint & inP) const
+Point CanonicalTensorEvaluation::operator() (const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << inputDimension << ", got dimension=" << inP.getDimension();
 
   const UnsignedInteger m = getRank();
-  NumericalPoint prodI(m, 1.0);
+  Point prodI(m, 1.0);
 
   for (UnsignedInteger j = 0; j < inputDimension; ++ j)
   {
-    const NumericalPoint xj(1, inP[j]);
+    const Point xj(1, inP[j]);
     const Basis basisI(getBasis(j));
     const UnsignedInteger basisSize = degrees_[j];
 
     // compute phi_(j,k)(xj)
-    NumericalPoint phiX(basisSize);
+    Point phiX(basisSize);
     for (UnsignedInteger k = 0; k < basisSize; ++ k)
     {
       phiX[k] = basisI[k](xj)[0];
@@ -173,7 +173,7 @@ NumericalPoint CanonicalTensorEvaluation::operator() (const NumericalPoint & inP
 
     for (UnsignedInteger i = 0; i < m; ++ i)
     {
-      const NumericalPoint coeffI(getCoefficients(i, j));
+      const Point coeffI(getCoefficients(i, j));
       NumericalScalar sumI = 0.0;
       for (UnsignedInteger k = 0; k < basisSize; ++ k)
       {
@@ -192,7 +192,7 @@ NumericalPoint CanonicalTensorEvaluation::operator() (const NumericalPoint & inP
     sumR += prodI[i];
   }
 
-  const NumericalPoint outP(1, sumR);
+  const Point outP(1, sumR);
   if (isHistoryEnabled_)
   {
     inputStrategy_.store(inP);

@@ -39,8 +39,8 @@ Box::Box()
 }
 
 /* Constructor with parameters */
-Box::Box(const NumericalPoint & levels)
-  : StratifiedExperiment(NumericalPoint(levels.getDimension(), 0.0), levels)
+Box::Box(const Point & levels)
+  : StratifiedExperiment(Point(levels.getDimension(), 0.0), levels)
   , bounds_(levels_.getDimension())
 {
   // Check if there is the same number of levels than the dimension of the experiment plane
@@ -50,7 +50,7 @@ Box::Box(const NumericalPoint & levels)
 
 /* Constructor with parameters */
 Box::Box(const Indices & levels)
-  : StratifiedExperiment(NumericalPoint(levels.getSize(), 0.0), NumericalPoint(levels.getSize(), 0.0))
+  : StratifiedExperiment(Point(levels.getSize(), 0.0), Point(levels.getSize(), 0.0))
   , bounds_(levels_.getDimension())
 {
   // Check if there is the same number of levels than the dimension of the experiment plane
@@ -61,7 +61,7 @@ Box::Box(const Indices & levels)
 
 Box::Box(const Indices & levels,
          const Interval & bounds)
-  : StratifiedExperiment(NumericalPoint(levels.getSize(), 0.0), NumericalPoint(levels.getSize(), 0.0))
+  : StratifiedExperiment(Point(levels.getSize(), 0.0), Point(levels.getSize(), 0.0))
   , bounds_(bounds)
 {
   // Check if there is the same number of levels than the dimension of the experiment plane
@@ -96,9 +96,9 @@ Sample Box::generate() const
   // scale sample
   if (bounds_ != Interval(dimension))
   {
-    const NumericalPoint lowerBound(bounds_.getLowerBound());
-    const NumericalPoint upperBound(bounds_.getUpperBound());
-    const NumericalPoint delta(upperBound - lowerBound);
+    const Point lowerBound(bounds_.getLowerBound());
+    const Point upperBound(bounds_.getUpperBound());
+    const Point delta(upperBound - lowerBound);
     boxPlane *= delta;
     boxPlane += lowerBound;
   }
@@ -118,7 +118,7 @@ String Box::__repr__() const
 }
 
 /** Specific levels accessor */
-void Box::setLevels(const NumericalPoint & levels)
+void Box::setLevels(const Point & levels)
 {
   UnsignedInteger dimension = center_.getDimension();
   UnsignedInteger size = levels.getDimension();

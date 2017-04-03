@@ -33,12 +33,12 @@ int main(int argc, char *argv[])
   /** TEST NUMBER ZERO : DEFAULT & COPY CONSTRUCTORs AND STRING CONVERTER */
   fullprint << "test number zero : default & copy constructors and string converter" << std::endl;
 
-  NumericalPoint vectR(1, 12.0);
+  Point vectR(1, 12.0);
   Sample testSample(1, 1);
 
   NumericalScalar begin = -1.0;
   NumericalScalar end = 36.92;
-  Interval testInterval(NumericalPoint(1, begin), NumericalPoint(1, end));
+  Interval testInterval(Point(1, begin), Point(1, end));
   testInterval.setName("testInterval");
 
   OT::Collection<NumericalScalar> valColl;
@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
   LinearModel LM(vectR, testInterval, valColl);
   LinearModel LMcopy(LM);
 
-  /* Constructor from NumericalPoint */
+  /* Constructor from Point */
   LinearModel emptyLM(vectR);
 
   /* String converter */
