@@ -71,7 +71,7 @@ NumericalScalar StudentCDF(const NumericalScalar nu,
     const NumericalScalar lastContribution = std::abs(c4 * inu * inu * inu * inu * x);
     NumericalScalar normalPDF = SpecFunc::ISQRT2PI * std::exp(-0.5 * x2);
     NumericalScalar normalCCDF = DistFunc::pNormal(std::abs(x), true);
-    if (normalCCDF > SpecFunc::NumericalScalarEpsilon * normalPDF * lastContribution)
+    if (normalCCDF > SpecFunc::ScalarEpsilon * normalPDF * lastContribution)
     {
       const NumericalScalar c1 = 0.25 * (1.0 + x2);
       const NumericalScalar c2 = (-3.0 + x2 * (-5.0 + x2 * (-7.0 + 3.0 * x2))) / 96.0;
@@ -446,7 +446,7 @@ NumericalScalar NonCentralStudentCDFAlt0(const NumericalScalar nu,
   NumericalScalar value = DistFunc::pNormal(-del) + pForward * betaPForward + qForward * betaQForward;
   NumericalScalar contributionForward = 0.0;
   NumericalScalar contributionBackward = 0.0;
-  NumericalScalar error = SpecFunc::MaxNumericalScalar;
+  NumericalScalar error = SpecFunc::MaxScalar;
   // At the beginning of the iteration, kForward and kBackward store the index of the last terms
   // that have already been accumulated. Each iteration must update the P and Q factors, as well
   // as the betaP and betaQ factors. For this last update, one must update the corresponding
@@ -584,7 +584,7 @@ NumericalScalar NonCentralStudentPDFAlt0(const NumericalScalar nu,
   NumericalScalar pBackwardEven = pForwardEven;
   NumericalScalar pBackwardOdd = pForwardOdd;
   NumericalScalar value = pForwardOdd + pForwardEven;
-  NumericalScalar error = SpecFunc::MaxNumericalScalar;
+  NumericalScalar error = SpecFunc::MaxScalar;
   UnsignedInteger kForward = k;
   UnsignedInteger kBackward = k;
 #define FORWARD_ITERATION                                               \

@@ -95,7 +95,7 @@ Indices MixtureClassifier::classifySequential(const Sample & inS) const
   // Now grade the points
   // The outer loop is on the classes and the inner loop on the point to
   // benefit from data locality
-  Point bestGrades(size, -SpecFunc::MaxNumericalScalar);
+  Point bestGrades(size, -SpecFunc::MaxScalar);
   Indices bestClasses(size);
   for (UnsignedInteger classIndex = 0; classIndex < mixtureSize; ++classIndex)
     {

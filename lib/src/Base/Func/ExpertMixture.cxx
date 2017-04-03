@@ -147,7 +147,7 @@ Sample ExpertMixture::operator() (const Sample & inS) const
   const UnsignedInteger outputDimension = getOutputDimension();
   Sample bestValues(size, outputDimension);
   const UnsignedInteger expertSize = experts_.getSize();
-  Point bestGrades(size, -SpecFunc::MaxNumericalScalar);
+  Point bestGrades(size, -SpecFunc::MaxScalar);
   for (UnsignedInteger classIndex = 0; classIndex < expertSize; ++classIndex)
   {
     // Build the point (x, f(x)) for each other class and grade it according to the classifier

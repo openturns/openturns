@@ -80,7 +80,7 @@ NumericalScalar SphericalModel::computeStandardRepresentative(const Point & tau)
   Point tauOverTheta(spatialDimension_);
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
   const NumericalScalar normTauOverScaleA = tauOverTheta.norm() / radius_;
-  if (normTauOverScaleA <= SpecFunc::NumericalScalarEpsilon) return 1.0 + nuggetFactor_;
+  if (normTauOverScaleA <= SpecFunc::ScalarEpsilon) return 1.0 + nuggetFactor_;
   if (normTauOverScaleA >= 1.0) return 0.0;
   return 1.0 - 0.5 * normTauOverScaleA * (3.0 - normTauOverScaleA * normTauOverScaleA);
 }

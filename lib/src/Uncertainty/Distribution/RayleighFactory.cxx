@@ -76,7 +76,7 @@ Rayleigh RayleighFactory::buildAsRayleigh(const Sample & sample) const
   if (!SpecFunc::IsNormal(sumSquares)) throw InvalidArgumentException(HERE) << "Error: cannot build a Rayleigh distribution if data contains NaN or Inf";
   if (sumSquares == 0.0)
   {
-    Rayleigh result(100.0 * (std::max(std::abs(gamma), SpecFunc::NumericalScalarEpsilon) * SpecFunc::NumericalScalarEpsilon), gamma);
+    Rayleigh result(100.0 * (std::max(std::abs(gamma), SpecFunc::ScalarEpsilon) * SpecFunc::ScalarEpsilon), gamma);
     result.setDescription(sample.getDescription());
     return result;
   }

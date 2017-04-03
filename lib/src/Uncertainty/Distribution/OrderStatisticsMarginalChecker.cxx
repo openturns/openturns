@@ -102,7 +102,7 @@ void OrderStatisticsMarginalChecker::check() const
   // Initilalyse Optimization problem
   OptimizationProblem problem;
 
-  const FiniteDifferenceStep step(BlendedStep(Point(1, std::pow(SpecFunc::NumericalScalarEpsilon, 1.0 / 3.0)), std::sqrt(SpecFunc::NumericalScalarEpsilon)));
+  const FiniteDifferenceStep step(BlendedStep(Point(1, std::pow(SpecFunc::ScalarEpsilon, 1.0 / 3.0)), std::sqrt(SpecFunc::ScalarEpsilon)));
   for (UnsignedInteger i = 1; i < size; ++ i)
   {
     const OrderStatisticsMarginalCheckerWrapper wrapper(collection_[i - 1], collection_[i]);

@@ -88,14 +88,14 @@ NumericalScalar RegularizedIncompleteBetaSlatec(const NumericalScalar a,
     y = 0.5 + (0.5 - x);
     isSwapped = true;
   }
-  if ((p + q) * y < SpecFunc::NumericalScalarEpsilon * (p + 1.0)) return (tail == isSwapped ? 1.0 : 0.0);
+  if ((p + q) * y < SpecFunc::ScalarEpsilon * (p + 1.0)) return (tail == isSwapped ? 1.0 : 0.0);
   const NumericalScalar qFrac = std::max(1.0, q - floor(q));
   NumericalScalar xBeta = p * log(y) - SpecFunc::LogBeta(qFrac, p) - log(p);
   NumericalScalar value = exp(xBeta);
   NumericalScalar term = p * value;
   if (qFrac < 1.0)
   {
-    const UnsignedInteger n = static_cast<UnsignedInteger>(std::max(4.0, round(log(SpecFunc::NumericalScalarEpsilon) / log(y))));
+    const UnsignedInteger n = static_cast<UnsignedInteger>(std::max(4.0, round(log(SpecFunc::ScalarEpsilon) / log(y))));
     for (UnsignedInteger i = 1; i <= n; ++i)
     {
       term *= (i - qFrac) * y / i;
@@ -104,20 +104,20 @@ NumericalScalar RegularizedIncompleteBetaSlatec(const NumericalScalar a,
   } // bFrac < 1.0
   if (q <= 1.0) return (tail == isSwapped ? value : 0.5 + (0.5 - value));
   xBeta = p * log(y) + q * log1p(-y) - SpecFunc::LogBeta(p, q) - log(q);
-  UnsignedInteger iBeta = static_cast<UnsignedInteger>(std::max(0.0, xBeta / SpecFunc::LogMinNumericalScalar));
-  term = exp(xBeta - iBeta * SpecFunc::LogMinNumericalScalar);
+  UnsignedInteger iBeta = static_cast<UnsignedInteger>(std::max(0.0, xBeta / SpecFunc::LogMinScalar));
+  term = exp(xBeta - iBeta * SpecFunc::LogMinScalar);
   const NumericalScalar c = 1.0 / (1.0 - y);
   const Bool smallCase = q * c <= (p + q - 1.0);
   NumericalScalar finiteSum = 0.0;
   const UnsignedInteger n = static_cast<UnsignedInteger>(ceil(q));
   for (UnsignedInteger i = 0; i < n; ++i)
   {
-    if (smallCase && (term <= SpecFunc::NumericalScalarEpsilon * finiteSum)) break;
+    if (smallCase && (term <= SpecFunc::ScalarEpsilon * finiteSum)) break;
     term *= (q - i) * c / (p + q - i - 1.0);
     if (term > 1.0)
     {
       --iBeta;
-      term *= SpecFunc::MinNumericalScalar;
+      term *= SpecFunc::MinScalar;
     } // term > 1.0
     if (iBeta == 0)
     {
@@ -228,7 +228,7 @@ NumericalScalar BRATIO(const NumericalScalar a,
   if (x <= 0.0) return (tail ? 1.0 : 0.0);
   if (x >= 1.0) return (tail ? 0.0 : 1.0);
   // For very small a, b
-  if (std::max(a, b) < SpecFunc::NumericalScalarEpsilon) return (tail ? a / (a + b) : b / (a + b));
+  if (std::max(a, b) < SpecFunc::ScalarEpsilon) return (tail ? a / (a + b) : b / (a + b));
   // Here we implement the decision tree as described in Section 3 of the reference
   NumericalScalar newA = a;
   NumericalScalar newB = b;
@@ -337,7 +337,7 @@ NumericalScalar BPSER(const NumericalScalar a,
     const NumericalScalar pMax = std::max(a, b);
     value = (pMax >= 8.0 ? pMin * exp(a * log(x) - SpecFunc::LogGamma1p(pMin) - ALGDIV(pMin, pMax)) / a : pow(x, a) * (b / (a + b)) * (1.0 + SpecFunc::IGamma1pm1(a)) * (1.0 + SpecFunc::IGamma1pm1(b)) / (1.0 + SpecFunc::IGamma1pm1(a + b)));
   } // pMin < 1.0
-  const NumericalScalar epsilon = SpecFunc::NumericalScalarEpsilon / a;
+  const NumericalScalar epsilon = SpecFunc::ScalarEpsilon / a;
   NumericalScalar sum = 0.0;
   NumericalScalar term = 1.0;
   for (UnsignedInteger j = 1; j < SpecFunc::MaximumIteration; ++n)

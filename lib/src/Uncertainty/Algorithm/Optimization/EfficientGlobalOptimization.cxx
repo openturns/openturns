@@ -89,7 +89,7 @@ public:
     const NumericalScalar fmMk = optimalValue_ - mx;
     const NumericalScalar sk2 = metaModelResult_.getConditionalCovariance(x)(0, 0);
     const NumericalScalar sk = sqrt(sk2);
-    if (!SpecFunc::IsNormal(sk)) return Point(1, -SpecFunc::MaxNumericalScalar);
+    if (!SpecFunc::IsNormal(sk)) return Point(1, -SpecFunc::MaxScalar);
     const NumericalScalar ratio = fmMk / sk;
     NumericalScalar ei = fmMk * normal_.computeCDF(ratio) + sk * normal_.computePDF(ratio);
     if (noiseModel_.getOutputDimension() == 1) // if provided
@@ -169,7 +169,7 @@ void EfficientGlobalOptimization::run()
 
   // select the best feasible point
   Point optimizer;
-  NumericalScalar optimalValue = problem.isMinimization() ? SpecFunc::MaxNumericalScalar : -SpecFunc::MaxNumericalScalar;
+  NumericalScalar optimalValue = problem.isMinimization() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
   Point optimizerPrev; // previous optimizer
   NumericalScalar optimalValuePrev = optimalValue;// previous optimal value
   for (UnsignedInteger index = 0; index < size; ++ index)
@@ -205,7 +205,7 @@ void EfficientGlobalOptimization::run()
   }
 
   // compute minimum distance
-  Point minimumDistance(dimension, SpecFunc::MaxNumericalScalar);
+  Point minimumDistance(dimension, SpecFunc::MaxScalar);
   if (!hasNoise)
   {
     for (UnsignedInteger i1 = 0; i1 < size; ++ i1)
@@ -248,7 +248,7 @@ void EfficientGlobalOptimization::run()
     {
       // compute mk(x_min) with x_min = argmin_xi ui
       // with ui = mk(xi) + c * sk(xi)
-      NumericalScalar optimalU = problem.isMinimization() ? SpecFunc::MaxNumericalScalar : -SpecFunc::MaxNumericalScalar;
+      NumericalScalar optimalU = problem.isMinimization() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
       for (UnsignedInteger i = 0; i < size; ++ i)
       {
         const Point x(inputSample[i]);

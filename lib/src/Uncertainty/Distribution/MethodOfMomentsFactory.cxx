@@ -164,7 +164,7 @@ public:
     }
     catch (Exception &)
     {
-      return Point(1, SpecFunc::MaxNumericalScalar);
+      return Point(1, SpecFunc::MaxScalar);
     }
 
     // compute moments of conditioned distribution

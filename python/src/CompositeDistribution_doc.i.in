@@ -61,7 +61,7 @@ Create a distribution:
 >>> aN = distX.getRange().getUpperBound()
 >>> a = [a0[0], 0.0, 0.0, aN[0]]
 >>> g = ot.SymbolicFunction(['x'], ['1.0/x'])
->>> v = [g(a0)[0], -ot.SpecFunc.MaxNumericalScalar, ot.SpecFunc.MaxNumericalScalar, g(aN)[0]]
+>>> v = [g(a0)[0], -ot.SpecFunc.MaxScalar, ot.SpecFunc.MaxScalar, g(aN)[0]]
 >>> distT = ot.CompositeDistribution(g, distX, a, v)
 
 

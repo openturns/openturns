@@ -72,7 +72,7 @@ NumericalScalar GeneralizedExponential::computeStandardRepresentative(const Poin
   Point tauOverTheta(spatialDimension_);
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
   const NumericalScalar tauOverThetaNorm = tauOverTheta.norm();
-  return tauOverThetaNorm <= SpecFunc::NumericalScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-pow(tauOverThetaNorm, p_));
+  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-pow(tauOverThetaNorm, p_));
 }
 
 /* Gradient wrt s */
@@ -89,7 +89,7 @@ Matrix GeneralizedExponential::partialGradient(const Point & s,
   if (norm2 == 0.0)
   {
     // Negative infinite gradient for p < 1
-    if (p_ < 1.0) return Matrix(spatialDimension_, 1, Point(spatialDimension_, -SpecFunc::MaxNumericalScalar));
+    if (p_ < 1.0) return Matrix(spatialDimension_, 1, Point(spatialDimension_, -SpecFunc::MaxScalar));
     // Non-zero gradient for p == 1
     if (p_ == 1.0)
     {

@@ -82,8 +82,8 @@ Weibull WeibullFactory::buildAsWeibull(const Sample & sample) const
   // Here we are in the case of a (nearly) Dirac distribution
   catch (InvalidArgumentException)
   {
-    if (gamma == 0.0) gamma = SpecFunc::NumericalScalarEpsilon;
-    Weibull result(100.0 * std::abs(gamma) * SpecFunc::NumericalScalarEpsilon, 1.0, gamma);
+    if (gamma == 0.0) gamma = SpecFunc::ScalarEpsilon;
+    Weibull result(100.0 * std::abs(gamma) * SpecFunc::ScalarEpsilon, 1.0, gamma);
     result.setDescription(sample.getDescription());
     return result;
   }

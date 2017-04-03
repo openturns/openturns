@@ -137,7 +137,7 @@ struct GeneralizedParetoFactoryParameterConstraint
     {
       const NumericalScalar xNm1mJ = sortedSample[size_ - 1 - j][0];
       const NumericalScalar xNm2mJ = sortedSample[size_ - 2 - j][0];
-      if ((xNm1mJ == xMin) || (xNm2mJ == xMin)) sampleY_[j][0] = (j + 1.0) * SpecFunc::LogMaxNumericalScalar;
+      if ((xNm1mJ == xMin) || (xNm2mJ == xMin)) sampleY_[j][0] = (j + 1.0) * SpecFunc::LogMaxScalar;
       else sampleY_[j][0] = (j + 1.0) * std::log((xNm1mJ - xMin) / (xNm2mJ - xMin));
     }
   };

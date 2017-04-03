@@ -81,7 +81,7 @@ NumericalScalar ExponentiallyDampedCosineModel::computeStandardRepresentative(co
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
 
   const NumericalScalar absTau = tauOverTheta.norm();
-  if (absTau <= SpecFunc::NumericalScalarEpsilon) return 1.0 + nuggetFactor_;
+  if (absTau <= SpecFunc::ScalarEpsilon) return 1.0 + nuggetFactor_;
   return exp(-absTau) * cos(2.0 * M_PI * absTau);
 }
 

@@ -50,7 +50,7 @@ public:
     , indices_(size)
   {
     // Initialize values_[0] to a valid value
-    values_[0] = SpecFunc::MaxNumericalScalar;
+    values_[0] = SpecFunc::MaxScalar;
   }
 
   /** Get the indices of the k nearest neighbours of the given point */
@@ -62,7 +62,7 @@ public:
       indices_.clear();
       values_.clear();
       size_ = 0;
-      values_[0] = SpecFunc::MaxNumericalScalar;
+      values_[0] = SpecFunc::MaxScalar;
     }
     collectNearestNeighbours(p_node, x, 0);
     if (sorted)
@@ -300,7 +300,7 @@ Sample KDTree::getNearestNeighbours(const Point & x,
 UnsignedInteger KDTree::getNearestNeighbourIndex(const Point & x) const
 {
   if (points_.getSize() == 1) return 0;
-  NumericalScalar smallestDistance = SpecFunc::MaxNumericalScalar;
+  NumericalScalar smallestDistance = SpecFunc::MaxScalar;
   return getNearestNeighbourIndex(p_root_, x, smallestDistance, 0);
 }
 

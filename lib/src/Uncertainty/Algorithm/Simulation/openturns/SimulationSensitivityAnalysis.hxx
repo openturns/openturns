@@ -79,8 +79,8 @@ public:
   /** Importance factors drawing */
   Graph drawImportanceFactors() const;
   Graph drawImportanceFactorsRange(const Bool probabilityScale = true,
-                                   const NumericalScalar lower = -SpecFunc::MaxNumericalScalar,
-                                   const NumericalScalar upper = SpecFunc::MaxNumericalScalar) const;
+                                   const NumericalScalar lower = -SpecFunc::MaxScalar,
+                                   const NumericalScalar upper = SpecFunc::MaxScalar) const;
 
   /** Input sample accessors */
   Sample getInputSample() const;

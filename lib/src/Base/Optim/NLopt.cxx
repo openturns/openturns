@@ -236,8 +236,8 @@ void NLopt::run()
     std::copy(upperBound.begin(), upperBound.end(), ub.begin());
     for (UnsignedInteger i = 0; i < dimension; ++ i)
     {
-      if (!finiteLowerBound[i]) lb[i] = -SpecFunc::MaxNumericalScalar;
-      if (!finiteUpperBound[i]) ub[i] =  SpecFunc::MaxNumericalScalar;
+      if (!finiteLowerBound[i]) lb[i] = -SpecFunc::MaxScalar;
+      if (!finiteUpperBound[i]) ub[i] =  SpecFunc::MaxScalar;
     }
     opt.set_lower_bounds(lb);
     opt.set_upper_bounds(ub);

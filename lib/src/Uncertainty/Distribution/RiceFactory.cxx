@@ -107,7 +107,7 @@ Rice RiceFactory::buildAsRice(const Sample & sample) const
   NumericalScalar b = 2.0;
   NumericalScalar fA = f(Point(1, a))[0];
   NumericalScalar fB = f(Point(1, b))[0];
-  const NumericalScalar largeValue = std::sqrt(SpecFunc::MaxNumericalScalar);
+  const NumericalScalar largeValue = std::sqrt(SpecFunc::MaxScalar);
   const UnsignedInteger maximumIteration = ResourceMap::GetAsUnsignedInteger( "RiceFactory-MaximumIteration" );
   UnsignedInteger iteration = 0;
   // While f has the same sign at the two bounds, update the interval

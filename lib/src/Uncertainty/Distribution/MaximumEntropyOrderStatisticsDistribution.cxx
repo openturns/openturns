@@ -213,7 +213,7 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeExponentialFac
   if (y < x)
   {
     const NumericalScalar value = computeExponentialFactor(k, y, x);
-    if (value == 0.0) return SpecFunc::LogMinNumericalScalar;
+    if (value == 0.0) return SpecFunc::LogMinScalar;
     return 1.0 / value;
   }
   // Generic part, no approximation here
@@ -270,7 +270,7 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeFactor(const U
   const NumericalScalar a = distributionCollection_[k].getRange().getLowerBound()[0];
   if (y <= a) return 0.0;
   const NumericalScalar b = distributionCollection_[k].getRange().getUpperBound()[0];
-  if (y >= b) return SpecFunc::LogMaxNumericalScalar;
+  if (y >= b) return SpecFunc::LogMaxScalar;
   const NumericalScalar beta = distributionCollection_[k - 1].getRange().getUpperBound()[0];
   if (x >= beta)
   {
@@ -280,7 +280,7 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeFactor(const U
   if (useApproximation_)
   {
     const NumericalScalar exponentialFactor = computeExponentialFactor(k, x, y);
-    if (exponentialFactor == 0.0) return SpecFunc::LogMaxNumericalScalar;
+    if (exponentialFactor == 0.0) return SpecFunc::LogMaxScalar;
     return -std::log(exponentialFactor);
   }
   const MaximumEntropyOrderStatisticsDistributionWrapper phiKWrapper(*this, k - 1, k, a);
@@ -463,8 +463,8 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeLogPDF(const P
 
   // Early exit if the point is not in the support
   for (UnsignedInteger k = 1; k < dimension; ++ k)
-    if (point[k - 1] > point[k]) return SpecFunc::LogMinNumericalScalar;
-  if (!getRange().numericallyContains(point)) return SpecFunc::LogMinNumericalScalar;
+    if (point[k - 1] > point[k]) return SpecFunc::LogMinScalar;
+  if (!getRange().numericallyContains(point)) return SpecFunc::LogMinScalar;
 
   // Early exit for the independent case
   if (hasIndependentCopula())

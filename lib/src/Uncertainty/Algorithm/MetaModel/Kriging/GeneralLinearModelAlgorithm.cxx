@@ -66,7 +66,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm()
   , hasRun_(false)
   , optimizeParameters_(true)
   , analyticalAmplitude_(false)
-  , lastReducedLogLikelihood_(SpecFunc::LogMinNumericalScalar)
+  , lastReducedLogLikelihood_(SpecFunc::LogMinScalar)
 {
   // Set the default covariance to adapt the active parameters of the covariance model
   setCovarianceModel(CovarianceModel());
@@ -101,7 +101,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , hasRun_(false)
   , optimizeParameters_(ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-OptimizeParameters"))
   , analyticalAmplitude_(false)
-  , lastReducedLogLikelihood_(SpecFunc::LogMinNumericalScalar)
+  , lastReducedLogLikelihood_(SpecFunc::LogMinScalar)
 {
   // set data & covariance model
   setData(inputSample, outputSample);
@@ -119,7 +119,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
     for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
       linear(j, j) = 1.0;
-      if (std::abs(stdev[j]) > SpecFunc::MinNumericalScalar) linear(j, j) /= stdev[j];
+      if (std::abs(stdev[j]) > SpecFunc::MinScalar) linear(j, j) /= stdev[j];
     }
     const Point zero(dimension);
     setInputTransformation(LinearFunction(mean, zero, linear));
@@ -156,7 +156,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , hasRun_(false)
   , optimizeParameters_(ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-OptimizeParameters"))
   , analyticalAmplitude_(false)
-  , lastReducedLogLikelihood_(SpecFunc::LogMinNumericalScalar)
+  , lastReducedLogLikelihood_(SpecFunc::LogMinScalar)
 {
   // set data & covariance model
   setData(inputSample, outputSample);
@@ -185,7 +185,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
     for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
       linear(j, j) = 1.0;
-      if (std::abs(stdev[j]) > SpecFunc::NumericalScalarEpsilon) linear(j, j) /= stdev[j];
+      if (std::abs(stdev[j]) > SpecFunc::ScalarEpsilon) linear(j, j) /= stdev[j];
     }
     const Point zero(dimension);
     setInputTransformation(LinearFunction(mean, zero, linear));
@@ -223,7 +223,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , hasRun_(false)
   , optimizeParameters_(ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-OptimizeParameters"))
   , analyticalAmplitude_(false)
-  , lastReducedLogLikelihood_(SpecFunc::LogMinNumericalScalar)
+  , lastReducedLogLikelihood_(SpecFunc::LogMinScalar)
 {
   // set data & covariance model
   setData(inputSample, outputSample);
@@ -278,7 +278,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , hasRun_(false)
   , optimizeParameters_(ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-OptimizeParameters"))
   , analyticalAmplitude_(false)
-  , lastReducedLogLikelihood_(SpecFunc::LogMinNumericalScalar)
+  , lastReducedLogLikelihood_(SpecFunc::LogMinScalar)
 {
   // set data & covariance model
   setData(inputSample, outputSample);
@@ -297,7 +297,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
     for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
       linear(j, j) = 1.0;
-      if (std::abs(stdev[j]) > SpecFunc::MinNumericalScalar) linear(j, j) /= stdev[j];
+      if (std::abs(stdev[j]) > SpecFunc::MinScalar) linear(j, j) /= stdev[j];
     }
     const Point zero(dimension);
     setInputTransformation(LinearFunction(mean, zero, linear));
@@ -335,7 +335,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , hasRun_(false)
   , optimizeParameters_(ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-OptimizeParameters"))
   , analyticalAmplitude_(false)
-  , lastReducedLogLikelihood_(SpecFunc::LogMinNumericalScalar)
+  , lastReducedLogLikelihood_(SpecFunc::LogMinScalar)
 {
   // set data & covariance model
   setData(inputSample, outputSample);
@@ -772,7 +772,7 @@ Point GeneralLinearModelAlgorithm::computeReducedLogLikelihood(const Point & par
   LOGDEBUG(OSS(false) << "log-determinant=" << logDeterminant << ", rho=" << rho_);
   const NumericalScalar epsilon = rho_.normSquare();
   LOGDEBUG(OSS(false) << "epsilon=||rho||^2=" << epsilon);
-  if (epsilon <= 0) lastReducedLogLikelihood_ = SpecFunc::LogMinNumericalScalar;
+  if (epsilon <= 0) lastReducedLogLikelihood_ = SpecFunc::LogMinScalar;
   // For the general multidimensional case, we have to compute the general log-likelihood (ie including marginal variances)
   else lastReducedLogLikelihood_ = -0.5 * (logDeterminant + epsilon);
   LOGINFO(OSS(false) << "Reduced log-likelihood=" << lastReducedLogLikelihood_);
@@ -849,7 +849,7 @@ NumericalScalar GeneralLinearModelAlgorithm::computeLapackLogDeterminantCholesky
   for (UnsignedInteger i = 0; i < covarianceCholeskyFactor_.getDimension(); ++i )
   {
     const NumericalScalar lii = covarianceCholeskyFactor_(i, i);
-    if (lii <= 0.0) return -SpecFunc::LogMaxNumericalScalar;
+    if (lii <= 0.0) return -SpecFunc::LogMaxScalar;
     logDetL += log(lii);
   }
   LOGDEBUG(OSS(false) << "logDetL=" << logDetL);
@@ -932,7 +932,7 @@ NumericalScalar GeneralLinearModelAlgorithm::computeHMatLogDeterminantCholesky()
   for (UnsignedInteger i = 0; i < rho_.getSize(); ++i )
   {
     const NumericalScalar lii = diagonal[i];
-    if (lii <= 0.0) return SpecFunc::MaxNumericalScalar;
+    if (lii <= 0.0) return SpecFunc::MaxScalar;
     logDetL += log(lii);
   }
   return 2.0 * logDetL;

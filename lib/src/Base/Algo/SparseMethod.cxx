@@ -84,7 +84,7 @@ Point SparseMethod::solve(const Point & rhs)
   const Indices currentIndices(method_.getCurrentIndices());
 
   // for each sub-basis ...
-  NumericalScalar minimumError = SpecFunc::MaxNumericalScalar;
+  NumericalScalar minimumError = SpecFunc::MaxScalar;
 
   Indices optimalBasisIndices;
   UnsignedInteger iterations = 0;

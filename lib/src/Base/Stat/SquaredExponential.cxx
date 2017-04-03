@@ -66,7 +66,7 @@ NumericalScalar SquaredExponential::computeStandardRepresentative(const Point & 
   Point tauOverTheta(spatialDimension_);
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
   const NumericalScalar tauOverTheta2 = tauOverTheta.normSquare();
-  return tauOverTheta2 <= SpecFunc::NumericalScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-0.5 * tauOverTheta2);
+  return tauOverTheta2 <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-0.5 * tauOverTheta2);
 }
 
 /* Gradient */

@@ -232,7 +232,7 @@ Matrix CovarianceModelImplementation::partialGradient (const Point & s,
   MatrixImplementation covarianceSTImplementation(*covarianceST.getImplementation());
   covarianceSTImplementation.symmetrize();
   const Point centralValue(covarianceSTImplementation);
-  const NumericalScalar epsilon = std::sqrt(SpecFunc::NumericalScalarEpsilon);
+  const NumericalScalar epsilon = std::sqrt(SpecFunc::ScalarEpsilon);
   // Loop over the shifted points
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i)
   {
@@ -254,7 +254,7 @@ Matrix CovarianceModelImplementation::parameterGradient(const Point & s,
 {
   const Point parameter(getParameter());
   const UnsignedInteger size = parameter.getSize();
-  const NumericalScalar epsilon = std::sqrt(SpecFunc::NumericalScalarEpsilon);
+  const NumericalScalar epsilon = std::sqrt(SpecFunc::ScalarEpsilon);
   Matrix gradient(size, (dimension_ * (dimension_ + 1)) / 2);
   CovarianceMatrix covRef = operator()(s, t);
   Pointer<CovarianceModelImplementation> p_implementation(clone());

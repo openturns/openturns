@@ -72,7 +72,7 @@ Triangular TriangularFactory::buildAsTriangular(const Sample & sample) const
   if (!SpecFunc::IsNormal(a) || !SpecFunc::IsNormal(b)) throw InvalidArgumentException(HERE) << "Error: cannot build a Triangular distribution if data contains NaN or Inf";
   if (xMin == xMax)
   {
-    const NumericalScalar delta = std::max(std::abs(xMin), 10.0) * SpecFunc::NumericalScalarEpsilon;
+    const NumericalScalar delta = std::max(std::abs(xMin), 10.0) * SpecFunc::ScalarEpsilon;
     Triangular result(xMin - delta, xMin, xMax + delta);
     result.setDescription(sample.getDescription());
     return result;

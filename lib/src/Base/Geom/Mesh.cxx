@@ -234,10 +234,10 @@ struct NearestFunctor
   UnsignedInteger minIndex_;
 
   NearestFunctor(const Mesh & mesh, const Point & point)
-    : mesh_(mesh), point_(point), minDistance_(SpecFunc::MaxNumericalScalar), minIndex_(0) {}
+    : mesh_(mesh), point_(point), minDistance_(SpecFunc::MaxScalar), minIndex_(0) {}
 
   NearestFunctor(const NearestFunctor & other, TBB::Split)
-    : mesh_(other.mesh_), point_(other.point_), minDistance_(SpecFunc::MaxNumericalScalar), minIndex_(0) {}
+    : mesh_(other.mesh_), point_(other.point_), minDistance_(SpecFunc::MaxScalar), minIndex_(0) {}
 
   void operator() (const TBB::BlockedRange<UnsignedInteger> & r)
   {

@@ -35,7 +35,7 @@ static const Factory<BasisSequenceFactoryImplementation> Factory_BasisSequenceFa
 BasisSequenceFactoryImplementation::BasisSequenceFactoryImplementation(const Bool verbose)
   : PersistentObject()
   , verbose_(verbose)
-  , maximumRelativeConvergence_(SpecFunc::MinNumericalScalar)
+  , maximumRelativeConvergence_(SpecFunc::MinScalar)
 {
   // Nothing to do
 }

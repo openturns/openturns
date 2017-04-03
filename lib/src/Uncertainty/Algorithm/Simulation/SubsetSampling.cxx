@@ -224,7 +224,7 @@ void SubsetSampling::run()
     coefficientOfVariationPerStep_.add(sqrt(coefficientOfVariationSquare));
 
     // stop if the number of subset steps is too high, else results are not numerically defined anymore
-    if (std::abs(pow(probabilityEstimate, 2.)) < SpecFunc::MinNumericalScalar)
+    if (std::abs(pow(probabilityEstimate, 2.)) < SpecFunc::MinScalar)
       throw NotDefinedException(HERE) << "Probability estimate too low: " << probabilityEstimate;
 
     // compute variance estimate

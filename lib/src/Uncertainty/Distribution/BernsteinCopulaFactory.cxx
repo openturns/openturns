@@ -137,7 +137,7 @@ Distribution BernsteinCopulaFactory::build(const Sample & sample,
   if (size == 0) throw InvalidDimensionException(HERE) << "Error: cannot build a copula using the Bernstein copula factory based on an empty sample";
   const UnsignedInteger dimension = sample.getDimension();
   LOGINFO("BernsteinCopulaFactory - Create the empirical copula sample");
-  const Sample empiricalCopulaSample(sample.rank() * Point(dimension, (1.0 - SpecFunc::NumericalScalarEpsilon) / size));
+  const Sample empiricalCopulaSample(sample.rank() * Point(dimension, (1.0 - SpecFunc::ScalarEpsilon) / size));
   if (isParallel_)
     return buildParallel(empiricalCopulaSample, binNumber);
   return buildSequential(empiricalCopulaSample, binNumber);

@@ -221,8 +221,8 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   Point outPoint(2);
 
   NumericalScalar result = problem.getObjective().operator()(inPoint)[0];
-  // cobyla freezes when dealing with MaxNumericalScalar
-  if (std::abs(result) == SpecFunc::MaxNumericalScalar) result /= 1.0e3;
+  // cobyla freezes when dealing with MaxScalar
+  if (std::abs(result) == SpecFunc::MaxScalar) result /= 1.0e3;
   outPoint[0] = result;
 
   const NumericalScalar sign = problem.isMinimization() ? 1.0 : -1.0;

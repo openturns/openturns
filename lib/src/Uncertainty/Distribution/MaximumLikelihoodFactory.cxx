@@ -163,13 +163,13 @@ public:
     }
     catch (Exception &)
     {
-      return Point(1, SpecFunc::LogMinNumericalScalar);
+      return Point(1, SpecFunc::LogMinScalar);
     }
     // Take into account the mean over sample
     // Parallelization (evaluation over a sample) is handeled by distribution_
     const Sample logPdfSample = distribution.computeLogPDF(sample_);
     const NumericalScalar logPdf = logPdfSample.computeMean()[0];
-    result = SpecFunc::IsNormal(logPdf) ? logPdf : SpecFunc::LogMinNumericalScalar;
+    result = SpecFunc::IsNormal(logPdf) ? logPdf : SpecFunc::LogMinScalar;
     return Point(1, result);
   }
 

@@ -527,7 +527,7 @@ NumericalScalar DistributionImplementation::computePDF(const Point & point) cons
 NumericalScalar DistributionImplementation::computeLogPDF(const Point & point) const
 {
   const NumericalScalar pdf = computePDF(point);
-  NumericalScalar logPdf = SpecFunc::LogMinNumericalScalar;
+  NumericalScalar logPdf = SpecFunc::LogMinScalar;
   if ( pdf > 0.0 ) logPdf = std::log(pdf);
   return logPdf;
 }
@@ -2131,7 +2131,7 @@ struct MinimumVolumeIntervalWrapper
                                const NumericalScalar prob)
     : p_distribution_(p_distribution)
     , marginals_(marginals)
-    , lastB_(-SpecFunc::MaxNumericalScalar)
+    , lastB_(-SpecFunc::MaxScalar)
     , prob_(prob)
   {
     // Nothing to do
@@ -2141,7 +2141,7 @@ struct MinimumVolumeIntervalWrapper
                                const NumericalScalar prob)
     : p_distribution_(p_distribution)
     , marginals_(0)
-    , lastB_(-SpecFunc::MaxNumericalScalar)
+    , lastB_(-SpecFunc::MaxScalar)
     , prob_(prob)
   {
     // Nothing to do
@@ -3797,7 +3797,7 @@ Graph DistributionImplementation::drawCDF() const
 /* Draw the quantile of the distribution when its dimension is 1 or 2 */
 Graph DistributionImplementation::drawQuantile(const UnsignedInteger pointNumber) const
 {
-  const NumericalScalar qMin = SpecFunc::NumericalScalarEpsilon;
+  const NumericalScalar qMin = SpecFunc::ScalarEpsilon;
   const NumericalScalar qMax = 1.0 - qMin;
   return drawQuantile(qMin, qMax, pointNumber);
 }
@@ -4345,16 +4345,16 @@ DistributionImplementation::Implementation DistributionImplementation::pow(const
     }
     // A singularity at 0 for negative exponent
     bounds.add(0.0);
-    values.add(-SpecFunc::MaxNumericalScalar);
+    values.add(-SpecFunc::MaxScalar);
     bounds.add(0.0);
-    values.add(SpecFunc::MaxNumericalScalar);
+    values.add(SpecFunc::MaxScalar);
     bounds.add(b);
     values.add(std::pow(b, 1.0 * exponent));
     return CompositeDistribution(SymbolicFunction("x", String(OSS() << "x^(" << exponent << ")")), clone(), bounds, values).clone();
   }
   // For even exponent, the behaviour changes at 0
   bounds.add(0.0);
-  values.add(exponent > 0 ? 0.0 : SpecFunc::MaxNumericalScalar);
+  values.add(exponent > 0 ? 0.0 : SpecFunc::MaxScalar);
   bounds.add(b);
   values.add(std::pow(b, 1.0 * exponent));
   return CompositeDistribution(toPower, clone(), bounds, values).clone();

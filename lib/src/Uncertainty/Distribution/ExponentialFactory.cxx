@@ -70,7 +70,7 @@ Exponential ExponentialFactory::buildAsExponential(const Sample & sample) const
   // If sample with constant null data, build an approximation of Dirac(0) by hand
   if (mean == gamma)
   {
-    Exponential result(SpecFunc::MaxNumericalScalar / SpecFunc::LogMaxNumericalScalar, 0.0);
+    Exponential result(SpecFunc::MaxScalar / SpecFunc::LogMaxScalar, 0.0);
     result.setDescription(sample.getDescription());
     return result;
   }

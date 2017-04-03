@@ -71,7 +71,7 @@ Gamma GammaFactory::buildAsGamma(const Sample & sample) const
   if (!SpecFunc::IsNormal(sigma)) throw InvalidArgumentException(HERE) << "Error: cannot build a Gamma distribution if data contains NaN or Inf";
   if (sigma == 0.0)
   {
-    Gamma result(SpecFunc::MaxNumericalScalar / SpecFunc::LogMaxNumericalScalar, 1.0, gamma);
+    Gamma result(SpecFunc::MaxScalar / SpecFunc::LogMaxScalar, 1.0, gamma);
     result.setDescription(sample.getDescription());
     return result;
   }

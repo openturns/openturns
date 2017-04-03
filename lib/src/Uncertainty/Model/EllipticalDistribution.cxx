@@ -150,7 +150,7 @@ NumericalScalar EllipticalDistribution::computeDensityGenerator(const NumericalS
 NumericalScalar EllipticalDistribution::computeLogDensityGenerator(const NumericalScalar betaSquare) const
 {
   const NumericalScalar densityGenerator = computeDensityGenerator(betaSquare);
-  if (densityGenerator == 0.0) return SpecFunc::LogMinNumericalScalar;
+  if (densityGenerator == 0.0) return SpecFunc::LogMinScalar;
   return std::log(densityGenerator);
 }
 

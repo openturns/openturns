@@ -53,7 +53,7 @@ Point TrapezoidalFactory::computeLogLikelihoodInequalityConstraint(const Point &
 {
   Point result(3, 0.0);
   result[0] = x[1] - x[0] ;                                // x[0] <= x[1]
-  result[1] = x[2] - x[1] - SpecFunc::NumericalScalarEpsilon;  // x[1] <  x[2]
+  result[1] = x[2] - x[1] - SpecFunc::ScalarEpsilon;  // x[1] <  x[2]
   result[2] = x[3] - x[2] ;                                // x[2] <= x[3]
   return result;
 }
@@ -120,10 +120,10 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Sample & sample) const
   const NumericalScalar min = sample.getMin()[0];
   const NumericalScalar max = sample.getMax()[0];
   if (!SpecFunc::IsNormal(min) || !SpecFunc::IsNormal(max)) throw InvalidArgumentException(HERE) << "Error: cannot build a Trapezoidal distribution if data contains NaN or Inf";
-  //  if (max <= min - std::sqrt(SpecFunc::NumericalScalarEpsilon))
+  //  if (max <= min - std::sqrt(SpecFunc::ScalarEpsilon))
   if (min == max)
   {
-    const NumericalScalar delta = std::max(std::abs(min), 10.0) * SpecFunc::NumericalScalarEpsilon;
+    const NumericalScalar delta = std::max(std::abs(min), 10.0) * SpecFunc::ScalarEpsilon;
     Trapezoidal result(min - delta, min, max, max + delta);
     result.setDescription(sample.getDescription());
     return result;

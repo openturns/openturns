@@ -226,7 +226,7 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
         if (mu2 != 0.0) oss << mu2 << " + ";
         if (sigma2 != 1.0) oss << sigma2 << " * ";
         if (muLog1 != 0.0) oss << "(";
-        oss << "log(max(" << SpecFunc::MinNumericalScalar << ", " << xName;
+        oss << "log(max(" << SpecFunc::MinScalar << ", " << xName;
         if (gamma1 != 0.0) oss << " - " << gamma1;
         oss << "))";
         if (muLog1 != 0.0) oss << " - " << muLog1 << ")";

@@ -459,7 +459,7 @@ void TruncatedDistribution::setFiniteLowerBound(const Bool finiteLowerBound)
   // If we switched from a finite value to an infinite one, update everything
   if (!finiteLowerBound)
   {
-    lowerBound_ = -SpecFunc::MaxNumericalScalar;
+    lowerBound_ = -SpecFunc::MaxScalar;
     pdfLowerBound_ = 0.0;
     cdfLowerBound_ = 0.0;
     finiteLowerBound_ = false;
@@ -484,7 +484,7 @@ void TruncatedDistribution::setFiniteUpperBound(const Bool finiteUpperBound)
   // If we switched from a finite value to an infinite one, update everything
   if (!finiteUpperBound)
   {
-    upperBound_ = SpecFunc::MaxNumericalScalar;
+    upperBound_ = SpecFunc::MaxScalar;
     pdfUpperBound_ = 0.0;
     cdfUpperBound_ = 1.0;
     finiteUpperBound_ = false;

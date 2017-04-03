@@ -93,7 +93,7 @@ Point SoizeGhanemFactorEvaluation::operator() (const Point & inP) const
     Point u(inputDimension);
     for (UnsignedInteger i = 0; i < inputDimension; ++i)
       u[i] = marginals_[i].computeCDF(inP[i]);
-    result[0] = 1.0 / std::sqrt(std::max(SpecFunc::MinNumericalScalar, copula_.computePDF(u)));
+    result[0] = 1.0 / std::sqrt(std::max(SpecFunc::MinScalar, copula_.computePDF(u)));
   }
   else
   {
@@ -126,7 +126,7 @@ Sample SoizeGhanemFactorEvaluation::operator() (const Sample & inS) const
       u.stack(marginals_[i].computeCDF(inS.getMarginal(i)));
     const Sample pdf(copula_.computePDF(u));
     for (UnsignedInteger i = 0; i < size; ++i)
-      result[i][0] = 1.0 / std::sqrt(std::max(SpecFunc::MinNumericalScalar, pdf[i][0]));
+      result[i][0] = 1.0 / std::sqrt(std::max(SpecFunc::MinScalar, pdf[i][0]));
   }
   else
   {

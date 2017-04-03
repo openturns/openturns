@@ -134,7 +134,7 @@ NumericalScalar Dirichlet::computePDF(const Point & point) const
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   const NumericalScalar logPDF = computeLogPDF(point);
-  if (logPDF == SpecFunc::LogMinNumericalScalar) return 0.0;
+  if (logPDF == SpecFunc::LogMinScalar) return 0.0;
   return std::exp(logPDF);
 }
 
@@ -147,10 +147,10 @@ NumericalScalar Dirichlet::computeLogPDF(const Point & point) const
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const NumericalScalar xI = point[i];
-    if (xI <= 0.0) return SpecFunc::LogMinNumericalScalar;
+    if (xI <= 0.0) return SpecFunc::LogMinScalar;
     sum += xI;
   }
-  if (sum >= 1.0) return SpecFunc::LogMinNumericalScalar;
+  if (sum >= 1.0) return SpecFunc::LogMinScalar;
   NumericalScalar logPDF = normalizationFactor_ + (theta_[dimension] - 1.0) * log1p(-sum);
   for (UnsignedInteger i = 0; i < dimension; ++i) logPDF += (theta_[i] - 1.0) * std::log(point[i]);
   return logPDF;

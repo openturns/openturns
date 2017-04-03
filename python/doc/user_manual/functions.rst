@@ -159,19 +159,19 @@ Numerical constants
 
     .. autodata:: SpecFunc.ISQRT2PI
 
-    .. autodata:: SpecFunc.LogMaxNumericalScalar
+    .. autodata:: SpecFunc.LogMaxScalar
 
-    .. autodata:: SpecFunc.LogMinNumericalScalar
+    .. autodata:: SpecFunc.LogMinScalar
 
     .. autodata:: SpecFunc.LOGSQRT2PI
 
-    .. autodata:: SpecFunc.MaxNumericalScalar
+    .. autodata:: SpecFunc.MaxScalar
 
     .. autodata:: SpecFunc.MaximumIteration
 
-    .. autodata:: SpecFunc.MinNumericalScalar
+    .. autodata:: SpecFunc.MinScalar
 
-    .. autodata:: SpecFunc.NumericalScalarEpsilon
+    .. autodata:: SpecFunc.ScalarEpsilon
 
     .. autodata:: SpecFunc.PI2_3
 

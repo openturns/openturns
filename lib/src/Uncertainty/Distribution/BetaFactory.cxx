@@ -71,7 +71,7 @@ Beta BetaFactory::buildAsBeta(const Sample & sample) const
   if (!SpecFunc::IsNormal(a) || !SpecFunc::IsNormal(b)) throw InvalidArgumentException(HERE) << "Error: cannot build a Beta distribution if data contains NaN or Inf";
   if (xMin == xMax)
   {
-    const NumericalScalar delta = std::max(std::abs(xMin), 100.0) * SpecFunc::NumericalScalarEpsilon;
+    const NumericalScalar delta = std::max(std::abs(xMin), 100.0) * SpecFunc::ScalarEpsilon;
     Beta result(1.0, 2.0, xMin - delta, xMax + delta);
     result.setDescription(sample.getDescription());
     return result;

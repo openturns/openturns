@@ -174,7 +174,7 @@ NumericalScalar InverseChiSquare::computeLogPDF(const Point & point) const
 
   // From textbook, we have log(PDF(x)) =  log(lambda)-log(Gamma(k))-(k+1)*log(lambda*x)-1/(lambda*x)
   const NumericalScalar u = 2.0 * point[0];
-  if (u <= 0.0) return SpecFunc::LogMinNumericalScalar;
+  if (u <= 0.0) return SpecFunc::LogMinScalar;
   // Use asymptotic expansion for large k
   // Here log(PDF(x)) = L - (k-1)*log(k)-(k+1)*log(2*x)-1/(2*x)
   const NumericalScalar k = 0.5 * nu_;

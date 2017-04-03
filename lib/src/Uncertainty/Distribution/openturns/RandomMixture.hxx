@@ -322,7 +322,7 @@ private:
       }
       catch(...)
       {
-        return Point(1, SpecFunc::MaxNumericalScalar);
+        return Point(1, SpecFunc::MaxScalar);
       }
     }
 

@@ -71,7 +71,7 @@ TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const Sample & sa
   if (!SpecFunc::IsNormal(xMin) || !SpecFunc::IsNormal(xMax)) throw InvalidArgumentException(HERE) << "Error: cannot build a TruncatedNormal distribution if data contains NaN or Inf";
   if (xMin == xMax)
   {
-    const NumericalScalar delta = std::max(std::abs(xMin), 10.0) * SpecFunc::NumericalScalarEpsilon;
+    const NumericalScalar delta = std::max(std::abs(xMin), 10.0) * SpecFunc::ScalarEpsilon;
     TruncatedNormal result(xMin, 1.0, xMin - delta, xMax + delta);
     result.setDescription(sample.getDescription());
     return result;
@@ -84,7 +84,7 @@ TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const Sample & sa
   normalizedSample *= Point(1, alpha);
 
   const UnsignedInteger dimension = 2;// optimize (mu, sigma)
-  Point parametersLowerBound(dimension, -SpecFunc::MaxNumericalScalar);
+  Point parametersLowerBound(dimension, -SpecFunc::MaxScalar);
   parametersLowerBound[1] = ResourceMap::GetAsScalar( "TruncatedNormalFactory-SigmaLowerBound");
   Interval::BoolCollection parametersLowerFlags(dimension, false);
   parametersLowerFlags[1] = true;
@@ -109,7 +109,7 @@ TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const Sample & sa
   factory.setOptimizationAlgorithm(solver);
 
   // override bounds
-  Interval bounds(parametersLowerBound, Point(dimension, SpecFunc::MaxNumericalScalar), parametersLowerFlags, Interval::BoolCollection(dimension, false));
+  Interval bounds(parametersLowerBound, Point(dimension, SpecFunc::MaxScalar), parametersLowerFlags, Interval::BoolCollection(dimension, false));
   factory.setOptimizationBounds(bounds);
 
   const Point parameters(factory.buildParameter(normalizedSample));

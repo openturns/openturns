@@ -48,11 +48,11 @@ inline NumericalScalar sign(const NumericalScalar x)
 NumericalComplex Ei(const NumericalComplex & z)
 {
   const NumericalScalar absZ = std::abs(z);
-  if (absZ >= SpecFunc::LogMaxNumericalScalar) return std::exp(z) / z + NumericalComplex(0.0, sign(std::imag(z)) * M_PI);
+  if (absZ >= SpecFunc::LogMaxScalar) return std::exp(z) / z + NumericalComplex(0.0, sign(std::imag(z)) * M_PI);
   if (absZ > 2.0 - 1.035 * std::log(SpecFunc::Precision)) return EiAsymptoticSeries(z);
   if ((absZ > 1.0) && ((std::real(z) < 0.0) || (std::abs(std::imag(z)) > 1.0))) return EiContinuedFractionForward(z);
   if (absZ > 0.0) return EiPowerSeries(z);
-  return SpecFunc::LogMinNumericalScalar;
+  return SpecFunc::LogMinScalar;
 }
 
 NumericalScalar Ei(const NumericalScalar z)

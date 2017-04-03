@@ -79,14 +79,21 @@ const NumericalScalar SpecFunc::PI_SQRT3              = 1.81379936423421785;
 // 1.81379936423421785 = pi / sqrt(3)
 const NumericalScalar SpecFunc::ZETA3                 = 1.20205690315959429;
 // NumericalScalar limits
-const NumericalScalar SpecFunc::MinNumericalScalar    = std::numeric_limits<NumericalScalar>::min();
-const NumericalScalar SpecFunc::LogMinNumericalScalar = log(MinNumericalScalar);
-const NumericalScalar SpecFunc::MaxNumericalScalar    = std::numeric_limits<NumericalScalar>::max();
-const NumericalScalar SpecFunc::LogMaxNumericalScalar = log(MaxNumericalScalar);
-const NumericalScalar SpecFunc::NumericalScalarEpsilon = std::numeric_limits<NumericalScalar>::epsilon();
+const NumericalScalar SpecFunc::MinScalar    = std::numeric_limits<NumericalScalar>::min();
+const NumericalScalar SpecFunc::LogMinScalar = log(MinScalar);
+const NumericalScalar SpecFunc::MaxScalar    = std::numeric_limits<NumericalScalar>::max();
+const NumericalScalar SpecFunc::LogMaxScalar = log(MaxScalar);
+const NumericalScalar SpecFunc::ScalarEpsilon = std::numeric_limits<NumericalScalar>::epsilon();
 // Maximum number of iterations for the algorithms
 const UnsignedInteger SpecFunc::MaximumIteration = ResourceMap::GetAsUnsignedInteger("SpecFunc-MaximumIteration");
 const NumericalScalar SpecFunc::Precision = ResourceMap::GetAsScalar("SpecFunc-Precision");
+
+// @deprecated
+const NumericalScalar SpecFunc::MinNumericalScalar    = MinScalar;
+const NumericalScalar SpecFunc::LogMinNumericalScalar = LogMinScalar;
+const NumericalScalar SpecFunc::MaxNumericalScalar    = MaxScalar;
+const NumericalScalar SpecFunc::LogMaxNumericalScalar = LogMaxScalar;
+const NumericalScalar SpecFunc::NumericalScalarEpsilon = ScalarEpsilon;
 
 // Some facilities for NaN and inf
 Bool SpecFunc::IsNaN(const NumericalScalar value)
@@ -220,7 +227,7 @@ NumericalScalar SpecFunc::BesselI1(const NumericalScalar x)
 
 NumericalScalar SpecFunc::LogBesselI1(const NumericalScalar x)
 {
-  if (x <= 0.0) return -MaxNumericalScalar;
+  if (x <= 0.0) return -MaxScalar;
   // Small argument
   if (std::abs(x) <= 22.0) return log(SmallCaseBesselI1(x));
   else return LargeCaseLogBesselI1(x);
@@ -263,7 +270,7 @@ NumericalScalar SpecFunc::LargeCaseDeltaLogBesselI10(const NumericalScalar x)
 
 NumericalScalar SpecFunc::DeltaLogBesselI10(const NumericalScalar x)
 {
-  if (x <= 0.0) return -MaxNumericalScalar;
+  if (x <= 0.0) return -MaxScalar;
   // Small argument
   if (std::abs(x) <= 22.0) return log(SmallCaseBesselI1(x) / SmallCaseBesselI0(x));
   else return LargeCaseDeltaLogBesselI10(x);
@@ -299,18 +306,18 @@ NumericalScalar SpecFunc::LogBesselK(const NumericalScalar nu,
   if (nu == 0.0)
   {
     integrand = Function("t", String(OSS() << "exp(-" << x << "*cosh(t))"));
-    upper = std::log(-2.0 * std::log(NumericalScalarEpsilon) / x);
+    upper = std::log(-2.0 * std::log(ScalarEpsilon) / x);
   }
   else
   {
     logFactor = nu * std::log(0.5 * x) - LogGamma(0.5 + nu) + 0.5 * std::log(M_PI);
     integrand = Function("t", String(OSS() << "exp(-" << x << "*cosh(t))*(sinh(t))^" << 2.0 * nu));
-    upper = std::log(NumericalScalarEpsilon) / (2.0 * nu) - LambertW(-0.25 * x * std::exp(0.5 * std::log(NumericalScalarEpsilon) / nu) / nu, false);
+    upper = std::log(ScalarEpsilon) / (2.0 * nu) - LambertW(-0.25 * x * std::exp(0.5 * std::log(ScalarEpsilon) / nu) / nu, false);
   }
   NumericalScalar epsilon = -1.0;
-  const NumericalScalar integral = GaussKronrod().integrate(integrand, Interval(NumericalScalarEpsilon, upper), epsilon)[0];
+  const NumericalScalar integral = GaussKronrod().integrate(integrand, Interval(ScalarEpsilon, upper), epsilon)[0];
   PlatformInfo::SetNumericalPrecision(precision);
-  if (!IsNormal(integral) || (integral == 0.0)) return -LogMaxNumericalScalar;
+  if (!IsNormal(integral) || (integral == 0.0)) return -LogMaxScalar;
   return logFactor + std::log(integral);
 #endif
 }
@@ -335,8 +342,8 @@ NumericalScalar SpecFunc::BesselK(const NumericalScalar nu,
   if (std::abs(x) < 1e-8) return 0.5 * exp(LogGamma(nu) - nu * std::log(0.5 * x));
   if ((std::abs(x) > 1e4) && (x > nu)) return std::sqrt(M_PI / (2.0 * x)) * exp(-x);
   const NumericalScalar logK = LogBesselK(nu, x);
-  if (logK <= -LogMaxNumericalScalar) return 0.0;
-  if (logK >= LogMaxNumericalScalar) return MaxNumericalScalar;
+  if (logK <= -LogMaxScalar) return 0.0;
+  if (logK >= LogMaxScalar) return MaxScalar;
   return std::exp(logK);
 #endif
 }
@@ -348,7 +355,7 @@ NumericalScalar SpecFunc::BesselKDerivative(const NumericalScalar nu,
 #if defined(OPENTURNS_HAVE_BOOST) && (BOOST_VERSION >= 105600)
   return boost::math::cyl_bessel_k_prime(nu, x);
 #else
-  if (x == 0.0) return -MaxNumericalScalar;
+  if (x == 0.0) return -MaxScalar;
   return -0.5 * (BesselK(nu - 1, x) + BesselK(nu + 1.0, x));
 #endif
 }

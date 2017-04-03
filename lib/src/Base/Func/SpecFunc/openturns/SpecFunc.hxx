@@ -97,12 +97,19 @@ public:
   // Maximum precision for algorithms
   static const NumericalScalar Precision;
   // Minimum positive real number
+  static const NumericalScalar MinScalar;
+  static const NumericalScalar LogMinScalar;
+  // Maximum positive real number
+  static const NumericalScalar MaxScalar;
+  static const NumericalScalar LogMaxScalar;
+  // Real number accuracy
+  static const NumericalScalar ScalarEpsilon;
+
+  // @deprecated
   static const NumericalScalar MinNumericalScalar;
   static const NumericalScalar LogMinNumericalScalar;
-  // Maximum positive real number
   static const NumericalScalar MaxNumericalScalar;
   static const NumericalScalar LogMaxNumericalScalar;
-  // Real number accuracy
   static const NumericalScalar NumericalScalarEpsilon;
 
   // Some facilities for NaN and inf

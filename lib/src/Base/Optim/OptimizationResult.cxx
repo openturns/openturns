@@ -320,7 +320,7 @@ Graph OptimizationResult::drawErrorHistory() const
   const UnsignedInteger size = getAbsoluteErrorHistory().getSize();
   {
     Sample data(getAbsoluteErrorHistory());
-    for (UnsignedInteger i = 0; i < size; ++i) if (data[i][0] <= 0.0) data[i][0] = SpecFunc::NumericalScalarEpsilon;
+    for (UnsignedInteger i = 0; i < size; ++i) if (data[i][0] <= 0.0) data[i][0] = SpecFunc::ScalarEpsilon;
     Curve absoluteErrorCurve( data, "absolute error" );
     absoluteErrorCurve.setLegend("absolute error");
     absoluteErrorCurve.setColor("red");
@@ -329,7 +329,7 @@ Graph OptimizationResult::drawErrorHistory() const
 // Relative error
   {
     Sample data(getRelativeErrorHistory());
-    for (UnsignedInteger i = 0; i < size; ++i) if (data[i][0] <= 0.0) data[i][0] = SpecFunc::NumericalScalarEpsilon;
+    for (UnsignedInteger i = 0; i < size; ++i) if (data[i][0] <= 0.0) data[i][0] = SpecFunc::ScalarEpsilon;
     Curve relativeErrorCurve( data, "relative error" );
     relativeErrorCurve.setLegend("relative error");
     relativeErrorCurve.setColor("blue");
@@ -338,7 +338,7 @@ Graph OptimizationResult::drawErrorHistory() const
 // Residual error
   {
     Sample data(getResidualErrorHistory());
-    for (UnsignedInteger i = 0; i < size; ++i) if (data[i][0] <= 0.0) data[i][0] = SpecFunc::NumericalScalarEpsilon;
+    for (UnsignedInteger i = 0; i < size; ++i) if (data[i][0] <= 0.0) data[i][0] = SpecFunc::ScalarEpsilon;
     Curve residualErrorCurve( data, "residual error" );
     residualErrorCurve.setLegend("residual error");
     residualErrorCurve.setColor("green");
@@ -347,7 +347,7 @@ Graph OptimizationResult::drawErrorHistory() const
 // Constraint error
   {
     Sample data(getConstraintErrorHistory());
-    for (UnsignedInteger i = 0; i < size; ++i) if (data[i][0] <= 0.0) data[i][0] = SpecFunc::NumericalScalarEpsilon;
+    for (UnsignedInteger i = 0; i < size; ++i) if (data[i][0] <= 0.0) data[i][0] = SpecFunc::ScalarEpsilon;
     Curve constraintErrorCurve( data, "constraint error" );
     constraintErrorCurve.setLegend("constraint error");
     constraintErrorCurve.setColor("magenta");

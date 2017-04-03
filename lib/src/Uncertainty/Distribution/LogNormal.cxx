@@ -159,7 +159,7 @@ NumericalScalar LogNormal::computeLogPDF(const Point & point) const
 
   const NumericalScalar x = point[0] - gamma_;
   // Here we keep the bound within the special case as the distribution is continuous
-  if (x <= 0.0) return SpecFunc::LogMinNumericalScalar;
+  if (x <= 0.0) return SpecFunc::LogMinScalar;
   NumericalScalar logX = (std::log(x) - muLog_) / sigmaLog_;
   return std::log(normalizationFactor_) - 0.5 * logX * logX - std::log(x);
 }
@@ -391,8 +391,8 @@ void LogNormal::setMuLogSigmaLog(const NumericalScalar muLog,
     static const Interval range(Normal().getRange());
     const NumericalScalar rMin = muLog_ + range.getUpperBound()[0] * sigmaLog_;
     const NumericalScalar rMax = muLog_ + range.getLowerBound()[0] * sigmaLog_;
-    if ((rMin >= SpecFunc::LogMaxNumericalScalar) ||
-        (rMax <= SpecFunc::LogMinNumericalScalar)) throw InvalidArgumentException(HERE) << "MuLog=" << muLog_ << " and SigmaLog=" << sigmaLog_ << " lead to a LogNormal distribution with a too much wide range";
+    if ((rMin >= SpecFunc::LogMaxScalar) ||
+        (rMax <= SpecFunc::LogMinScalar)) throw InvalidArgumentException(HERE) << "MuLog=" << muLog_ << " and SigmaLog=" << sigmaLog_ << " lead to a LogNormal distribution with a too much wide range";
     H_ = M_PI * M_PI / (8.0 * sigmaLog_ * sigmaLog_);
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
@@ -410,8 +410,8 @@ void LogNormal::setMuLog(const NumericalScalar muLog)
     static const Interval range(Normal().getRange());
     const NumericalScalar rMin = muLog_ + range.getUpperBound()[0] * sigmaLog_;
     const NumericalScalar rMax = muLog_ + range.getLowerBound()[0] * sigmaLog_;
-    if ((rMin >= SpecFunc::LogMaxNumericalScalar) ||
-        (rMax <= SpecFunc::LogMinNumericalScalar)) throw InvalidArgumentException(HERE) << "MuLog and SigmaLog lead to a LogNormal distribution with a too much wide range";
+    if ((rMin >= SpecFunc::LogMaxScalar) ||
+        (rMax <= SpecFunc::LogMinScalar)) throw InvalidArgumentException(HERE) << "MuLog and SigmaLog lead to a LogNormal distribution with a too much wide range";
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
     computeRange();
@@ -435,8 +435,8 @@ void LogNormal::setSigmaLog(const NumericalScalar sigmaLog)
     static const Interval range(Normal().getRange());
     const NumericalScalar rMin = muLog_ + range.getUpperBound()[0] * sigmaLog_;
     const NumericalScalar rMax = muLog_ + range.getLowerBound()[0] * sigmaLog_;
-    if ((rMin >= SpecFunc::LogMaxNumericalScalar) ||
-        (rMax <= SpecFunc::LogMinNumericalScalar)) throw InvalidArgumentException(HERE) << "MuLog and SigmaLog lead to a LogNormal distribution with a too much wide range";
+    if ((rMin >= SpecFunc::LogMaxScalar) ||
+        (rMax <= SpecFunc::LogMinScalar)) throw InvalidArgumentException(HERE) << "MuLog and SigmaLog lead to a LogNormal distribution with a too much wide range";
     H_ = std::pow(M_PI / (2.0 * sigmaLog_), 2.0) / 2.0 - 0.5 * std::log(2.0 * M_PI);
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;

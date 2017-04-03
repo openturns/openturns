@@ -138,7 +138,7 @@ NumericalScalar Rice::computeLogPDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0];
-  if (x <= 0.0) return SpecFunc::LogMinNumericalScalar;
+  if (x <= 0.0) return SpecFunc::LogMinScalar;
   const NumericalScalar xScaled = x / sigma_;
   const NumericalScalar nuScaled = nu_ / sigma_;
   return std::log(xScaled / sigma_) - 0.5 * (xScaled * xScaled + nuScaled * nuScaled) + SpecFunc::LogBesselI0(xScaled * nuScaled);

@@ -452,7 +452,7 @@ NumericalScalar DistFunc::qGamma(const NumericalScalar k,
                                  const NumericalScalar p,
                                  const Bool tail)
 {
-  if (!tail && (p >= 1.0 - SpecFunc::NumericalScalarEpsilon)) return SpecFunc::RegularizedIncompleteGammaInverse(k, 1.0 - SpecFunc::NumericalScalarEpsilon, tail);
+  if (!tail && (p >= 1.0 - SpecFunc::ScalarEpsilon)) return SpecFunc::RegularizedIncompleteGammaInverse(k, 1.0 - SpecFunc::ScalarEpsilon, tail);
   return SpecFunc::RegularizedIncompleteGammaInverse(k, p, tail);
 }
 /* Random number generation
@@ -561,7 +561,7 @@ NumericalScalar DistFunc::dNonCentralChiSquare(const NumericalScalar nu,
   NumericalScalar pForward = std::exp(-halfLambda - 0.5 * x + (halfNu + k - 1.0) * std::log(x) - SpecFunc::LogGamma(k + 1.0) - SpecFunc::LogGamma(halfNu + k) - (2.0 * k + halfNu) * M_LN2 + k * std::log(lambda));
   NumericalScalar pBackward = pForward;
   NumericalScalar value = pForward;
-  NumericalScalar error = SpecFunc::MaxNumericalScalar;
+  NumericalScalar error = SpecFunc::MaxScalar;
   UnsignedInteger kForward = k;
   UnsignedInteger kBackward = k;
 #define FORWARD_ITERATION                                               \
@@ -635,7 +635,7 @@ NumericalScalar DistFunc::pNonCentralChiSquare(const NumericalScalar nu,
   NumericalScalar gammaBackward = gammaForward;
   NumericalScalar pBackward = expBackward * gammaBackward;
   NumericalScalar value = pForward;
-  NumericalScalar error = SpecFunc::MaxNumericalScalar;
+  NumericalScalar error = SpecFunc::MaxScalar;
   UnsignedInteger kForward = k;
   UnsignedInteger kBackward = k;
 #define FORWARD_ITERATION                       \
@@ -941,8 +941,8 @@ NumericalScalar DistFunc::qPoisson(const NumericalScalar lambda,
                                    const Bool tail)
 {
   NumericalScalar r = tail ? 1.0 - p : p;
-  if (r <= SpecFunc::MinNumericalScalar) r = SpecFunc::MinNumericalScalar;
-  if (r >= 1.0 - SpecFunc::NumericalScalarEpsilon) r = 1.0 - SpecFunc::NumericalScalarEpsilon;
+  if (r <= SpecFunc::MinScalar) r = SpecFunc::MinScalar;
+  if (r >= 1.0 - SpecFunc::ScalarEpsilon) r = 1.0 - SpecFunc::ScalarEpsilon;
   // We use the scalar version
   return poissinv_scalar(r, lambda);
 }
@@ -1021,7 +1021,7 @@ NumericalScalar DistFunc::qStudent(const NumericalScalar nu,
                                    const NumericalScalar p,
                                    const Bool tail)
 {
-  if (!tail && (p > 1.0 - SpecFunc::NumericalScalarEpsilon)) return StudentFunctions::StudentQuantile(nu, 1.0 - SpecFunc::NumericalScalarEpsilon, tail);
+  if (!tail && (p > 1.0 - SpecFunc::ScalarEpsilon)) return StudentFunctions::StudentQuantile(nu, 1.0 - SpecFunc::ScalarEpsilon, tail);
   return StudentFunctions::StudentQuantile(nu, p, tail);
 }
 /* Random number generation

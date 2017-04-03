@@ -139,7 +139,7 @@ NumericalScalar Rayleigh::computeLogPDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0] - gamma_;
-  if (x <= 0.0) return SpecFunc::LogMinNumericalScalar;
+  if (x <= 0.0) return SpecFunc::LogMinScalar;
   const NumericalScalar y = x / (sigma_ * sigma_);
   return std::log(y) - 0.5 * x * y;
 }

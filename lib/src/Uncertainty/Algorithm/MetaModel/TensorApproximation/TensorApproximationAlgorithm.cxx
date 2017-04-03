@@ -254,7 +254,7 @@ void TensorApproximationAlgorithm::rankOne(const Sample & x,
 
   Point yFlat(y.getImplementation()->getData());
 
-  NumericalScalar currentResidual = SpecFunc::MaxNumericalScalar;
+  NumericalScalar currentResidual = SpecFunc::MaxScalar;
 
   Sample V(dimension, Point(size, 1.0));
 
@@ -380,7 +380,7 @@ void TensorApproximationAlgorithm::rankM (const Sample & x,
 
   UnsignedInteger iteration = 0;
 
-  NumericalScalar currentResidual = SpecFunc::MaxNumericalScalar;
+  NumericalScalar currentResidual = SpecFunc::MaxScalar;
 
   while (!convergence && (iteration < maximumAlternatingLeastSquaresIteration_))
   {

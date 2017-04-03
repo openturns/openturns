@@ -57,7 +57,7 @@ Sample MonteCarloLHS::generateWithWeights(Point & weights) const
   history.setDescription(historyDescription);
   // initialing algo
   Sample optimalDesign;
-  NumericalScalar optimalValue = spaceFilling_.isMinimizationProblem() ? SpecFunc::MaxNumericalScalar : -SpecFunc::MaxNumericalScalar;
+  NumericalScalar optimalValue = spaceFilling_.isMinimizationProblem() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
 
   for (UnsignedInteger i = 0; i < N_; ++i)
   {

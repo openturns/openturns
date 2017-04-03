@@ -151,9 +151,9 @@ NumericalScalar GeneralizedPareto::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   const NumericalScalar z = point[0] / sigma_;
-  if (z < 0.0) return SpecFunc::LogMinNumericalScalar;
+  if (z < 0.0) return SpecFunc::LogMinScalar;
   if (std::abs(std::sqrt(std::abs(xi_)) * z) < 1.0e-8) return -z + log1p(z * xi_ * (0.5 * z - 1.0)) - std::log(sigma_);
-  if ((xi_ < 0.0) && (z >= -1.0 / xi_)) return SpecFunc::LogMinNumericalScalar;
+  if ((xi_ < 0.0) && (z >= -1.0 / xi_)) return SpecFunc::LogMinScalar;
   return -(1.0 + 1.0 / xi_) * log1p(xi_ * z) - std::log(sigma_);
 }
 

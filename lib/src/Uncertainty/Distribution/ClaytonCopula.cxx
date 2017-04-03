@@ -162,7 +162,7 @@ Point ClaytonCopula::computeDDF(const Point & point) const
   // W case (Frechet lower bound)
   if (theta_ == -1.0)
   {
-    if (u == 1.0 - v) return Point(2, -SpecFunc::MaxNumericalScalar);
+    if (u == 1.0 - v) return Point(2, -SpecFunc::MaxScalar);
     return Point(2, 0.0);
   }
   Point ddf(2);
@@ -240,7 +240,7 @@ NumericalScalar ClaytonCopula::computePDF(const Point & point) const
   // W case (Frechet lower bound)
   if (theta_ == -1.0)
   {
-    if (u == 1.0 - v) return SpecFunc::MaxNumericalScalar;
+    if (u == 1.0 - v) return SpecFunc::MaxScalar;
     return 0.0;
   }
   // Independent case

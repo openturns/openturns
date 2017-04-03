@@ -906,7 +906,7 @@ NumericalComplex ProductDistribution::computeCharacteristicFunction(const Numeri
   const NumericalScalar muRight = right_.getMean()[0];
   const NumericalScalar varLeft = left_.getCovariance()(0, 0);
   const NumericalScalar varRight = right_.getCovariance()(0, 0);
-  if (x * x * (varLeft + muLeft * muLeft + varRight + muRight * muRight) < 2.0 * SpecFunc::NumericalScalarEpsilon) return NumericalComplex(1.0, -x * muLeft * muRight);
+  if (x * x * (varLeft + muLeft * muLeft + varRight + muRight * muRight) < 2.0 * SpecFunc::ScalarEpsilon) return NumericalComplex(1.0, -x * muLeft * muRight);
   if (std::abs(x) > ResourceMap::GetAsScalar("ProductDistribution-LargeCharacteristicFunctionArgument")) return ContinuousDistribution::computeCharacteristicFunction(x);
   NumericalComplex result(0.0);
   const NumericalScalar aLeft = left_.getRange().getLowerBound()[0];

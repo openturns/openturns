@@ -192,7 +192,7 @@ NumericalScalar KFactor(const NumericalScalar n,
   if (!((alpha >= 0.0) && (alpha <= 1.0))) throw InvalidArgumentException(HERE) << "Error: alpha must be in [0, 1], here alpha=" << alpha;
   const ConstraintFunction constraint(nu, p, n);
   const Brent solver(ResourceMap::GetAsScalar("KFactor-Precision"), ResourceMap::GetAsScalar("KFactor-Precision"), ResourceMap::GetAsScalar("KFactor-Precision"), ResourceMap::GetAsUnsignedInteger("KFactor-MaximumIteration"));
-  return solver.solve(constraint, 0.5 * (1.0 - alpha), SpecFunc::NumericalScalarEpsilon, KFactorFunctions_RMAX);
+  return solver.solve(constraint, 0.5 * (1.0 - alpha), SpecFunc::ScalarEpsilon, KFactorFunctions_RMAX);
 }
 
 } // KFactorFunctions

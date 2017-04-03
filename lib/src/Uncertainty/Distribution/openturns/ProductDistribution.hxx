@@ -187,7 +187,7 @@ private:
       if (isZero_)
       {
         if (pdf0_ == 0.0) return Point(1, 0.0);
-        if (absU == 0.0) return Point(1, SpecFunc::MaxNumericalScalar);
+        if (absU == 0.0) return Point(1, SpecFunc::MaxScalar);
         return Point(1, value * pdf0_ / absU);
       }
       // x_ != 0

@@ -74,8 +74,8 @@ LogUniform LogUniformFactory::buildAsLogUniform(const Sample & sample) const
   if (!SpecFunc::IsNormal(aLog) || !SpecFunc::IsNormal(bLog)) throw InvalidArgumentException(HERE) << "Error: cannot build a LogUniform distribution if data contains NaN or Inf";
   if (xMin == xMax)
   {
-    aLog *= 1.0 - SpecFunc::NumericalScalarEpsilon;
-    bLog *= 1.0 + SpecFunc::NumericalScalarEpsilon;
+    aLog *= 1.0 - SpecFunc::ScalarEpsilon;
+    bLog *= 1.0 + SpecFunc::ScalarEpsilon;
   }
   LogUniform result(aLog, bLog);
   result.setDescription(sample.getDescription());

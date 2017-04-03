@@ -55,9 +55,9 @@ SORMResult::SORMResult(const Point & standardSpaceDesignPoint,
   eventProbabilityBreitung_(-1.0),
   eventProbabilityHohenBichler_(-1.0),
   eventProbabilityTvedt_(-1.0),
-  generalisedReliabilityIndexBreitung_(SpecFunc::MaxNumericalScalar),
-  generalisedReliabilityIndexHohenBichler_(SpecFunc::MaxNumericalScalar),
-  generalisedReliabilityIndexTvedt_(SpecFunc::MaxNumericalScalar),
+  generalisedReliabilityIndexBreitung_(SpecFunc::MaxScalar),
+  generalisedReliabilityIndexHohenBichler_(SpecFunc::MaxScalar),
+  generalisedReliabilityIndexTvedt_(SpecFunc::MaxScalar),
   standardDistribution_(limitStateVariable.getImplementation()->getAntecedent().getImplementation()->getDistribution().getStandardDistribution()),
   standardMarginal_(standardDistribution_.getMarginal(0))
 {
@@ -86,9 +86,9 @@ SORMResult::SORMResult():
   eventProbabilityBreitung_(-1.0),
   eventProbabilityHohenBichler_(-1.0),
   eventProbabilityTvedt_(-1.0),
-  generalisedReliabilityIndexBreitung_(SpecFunc::MaxNumericalScalar),
-  generalisedReliabilityIndexHohenBichler_(SpecFunc::MaxNumericalScalar),
-  generalisedReliabilityIndexTvedt_(SpecFunc::MaxNumericalScalar),
+  generalisedReliabilityIndexBreitung_(SpecFunc::MaxScalar),
+  generalisedReliabilityIndexHohenBichler_(SpecFunc::MaxScalar),
+  generalisedReliabilityIndexTvedt_(SpecFunc::MaxScalar),
   standardDistribution_(Normal(1)),
   standardMarginal_(Normal(1))
 {

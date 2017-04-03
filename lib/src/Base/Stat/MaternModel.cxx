@@ -76,7 +76,7 @@ NumericalScalar MaternModel::computeStandardRepresentative(const Point & tau) co
   Point scaledTau(spatialDimension_);
   for(UnsignedInteger i = 0; i < spatialDimension_; ++i) scaledTau[i] = tau[i] * sqrt2nuOverTheta_[i];
   const NumericalScalar scaledPoint = scaledTau.norm();
-  if (scaledPoint <= SpecFunc::NumericalScalarEpsilon)
+  if (scaledPoint <= SpecFunc::ScalarEpsilon)
     return 1.0 + nuggetFactor_;
   else
     return exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
@@ -97,7 +97,7 @@ Matrix MaternModel::partialGradient(const Point & s,
   if (norm2 == 0.0)
   {
     // Infinite gradient for nu < 1/2
-    if (nu_ < 0.5) return Matrix(spatialDimension_, 1, Point(spatialDimension_, -SpecFunc::MaxNumericalScalar));
+    if (nu_ < 0.5) return Matrix(spatialDimension_, 1, Point(spatialDimension_, -SpecFunc::MaxScalar));
     // Non-zero gradient for nu = 1/2
     if (nu_ == 0.5)
     {

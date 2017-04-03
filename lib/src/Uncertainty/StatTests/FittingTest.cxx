@@ -48,7 +48,7 @@ Distribution FittingTest::BestModelBIC(const Sample & sample,
   if (size == 0) throw InternalException(HERE) << "Error: no model given";
   Bool builtAtLeastOne = false;
   Distribution bestDistribution;
-  NumericalScalar bestConcordanceMeasure = SpecFunc::MaxNumericalScalar;
+  NumericalScalar bestConcordanceMeasure = SpecFunc::MaxScalar;
   Bool continuousCase = true;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -74,7 +74,7 @@ Distribution FittingTest::BestModelBIC(const Sample & sample,
     }
   }
   if(!builtAtLeastOne) throw InvalidArgumentException(HERE) << "None of the factories could build a model.";
-  if (bestConcordanceMeasure == SpecFunc::MaxNumericalScalar) LOGWARN(OSS(false) << "Be careful, the best model has an infinite concordance measure. The output distribution must be severely wrong.");
+  if (bestConcordanceMeasure == SpecFunc::MaxScalar) LOGWARN(OSS(false) << "Be careful, the best model has an infinite concordance measure. The output distribution must be severely wrong.");
   return bestDistribution;
 }
 
@@ -85,7 +85,7 @@ Distribution FittingTest::BestModelBIC(const Sample  & sample,
   const UnsignedInteger size = distributionCollection.getSize();
   if (size == 0) throw InternalException(HERE) << "Error: no model given";
   Distribution bestDistribution;
-  NumericalScalar bestConcordanceMeasure = SpecFunc::MaxNumericalScalar;
+  NumericalScalar bestConcordanceMeasure = SpecFunc::MaxScalar;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Distribution distribution(distributionCollection[i]);
@@ -98,7 +98,7 @@ Distribution FittingTest::BestModelBIC(const Sample  & sample,
       bestDistribution = distribution;
     }
   }
-  if (bestConcordanceMeasure > SpecFunc::MaxNumericalScalar) LOGWARN(OSS(false) << "Be careful, the best model has an infinite concordance measure. The output distribution must be severely wrong.");
+  if (bestConcordanceMeasure > SpecFunc::MaxScalar) LOGWARN(OSS(false) << "Be careful, the best model has an infinite concordance measure. The output distribution must be severely wrong.");
   return bestDistribution;
 }
 
@@ -231,7 +231,7 @@ NumericalScalar FittingTest::BIC(const Sample & sample,
   const Sample logPDF(distribution.computeLogPDF(sample));
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    if (logPDF[i][0] == -SpecFunc::MaxNumericalScalar) return SpecFunc::MaxNumericalScalar;
+    if (logPDF[i][0] == -SpecFunc::MaxScalar) return SpecFunc::MaxScalar;
     logLikelihood += logPDF[i][0];
   }
   return (-2.0 * logLikelihood + estimatedParameters * log(1.0 * size)) / size;

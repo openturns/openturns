@@ -57,9 +57,9 @@ void incgam(const NumericalScalar a,
     q = 1.0 - p;
     return;
   } // a > alpha(x)
-  if (x < SpecFunc::MinNumericalScalar) lnx = SpecFunc::LogMinNumericalScalar;
+  if (x < SpecFunc::MinScalar) lnx = SpecFunc::LogMinScalar;
   else lnx = log(x);
-  if (a < -SpecFunc::MinNumericalScalar / lnx)
+  if (a < -SpecFunc::MinScalar / lnx)
   {
     q = 0.0;
     p = 1.0;
@@ -181,14 +181,14 @@ void invincgam(const NumericalScalar a,
   NumericalScalar t = 1.0;
   UnsignedInteger n = 1;
   // Implementation of the high order Newton-like method;
-  while ((t > SpecFunc::NumericalScalarEpsilon) && (n < 15))
+  while ((t > SpecFunc::ScalarEpsilon) && (n < 15))
   {
     NumericalScalar dx = 0.0;
     NumericalScalar r = 0.0;
     if (m0)
     {
       const NumericalScalar dlnr = (1.0 - a) * log(x) + x + SpecFunc::LogGamma(a);
-      if (dlnr > SpecFunc::LogMaxNumericalScalar)
+      if (dlnr > SpecFunc::LogMaxScalar)
       {
         n = 20;
         ierr = -1;
@@ -240,8 +240,8 @@ NumericalScalar lnec(const NumericalScalar x)
 NumericalScalar alpha(const NumericalScalar x)
 {
   if (x > 0.25) return x + 0.25;
-  if (x >= SpecFunc::MinNumericalScalar) return -0.6931 / log(x);
-  return -0.6931 / SpecFunc::LogMinNumericalScalar;
+  if (x >= SpecFunc::MinScalar) return -0.6931 / log(x);
+  return -0.6931 / SpecFunc::LogMinScalar;
 } // alpha
 
 NumericalScalar dompart(const NumericalScalar a,
@@ -267,7 +267,7 @@ NumericalScalar dompart(const NumericalScalar a,
   if ((a < 3.0) || (x < 0.2)) return exp(a * lnx - x) / SpecFunc::Gamma(a + 1.0);
   const NumericalScalar mu = (x - a) / a;
   const NumericalScalar c = lnec(mu);
-  if ((a * c) > SpecFunc::LogMaxNumericalScalar) return -100.0;
+  if ((a * c) > SpecFunc::LogMaxScalar) return -100.0;
   return exp(a * c) / (sqrt(a) * SpecFunc::SQRT2PI * gamstar(a));
 } // dompart
 
@@ -322,7 +322,7 @@ NumericalScalar gamstar(const NumericalScalar x)
   // gamma(x)/(exp(-x+(x-0.5)*ln(x))/sqrt(2pi)
   if (x >= 3.0) return exp(SpecFunc::GammaCorrection(x));
   if (x > 0.0) return SpecFunc::Gamma(x) / (exp(-x + (x - 0.5) * log(x)) * SpecFunc::SQRT2PI);
-  return SpecFunc::MaxNumericalScalar;
+  return SpecFunc::MaxScalar;
 } // gamstar
 
 NumericalScalar fractio(const NumericalScalar x,
@@ -402,7 +402,7 @@ NumericalScalar saeta(const NumericalScalar a,
   NumericalScalar y = eta;
   for (UnsignedInteger m = 1; m < 25; ++m)
   {
-    if (std::abs(t / s) <= SpecFunc::NumericalScalarEpsilon) break;
+    if (std::abs(t / s) <= SpecFunc::ScalarEpsilon) break;
     t = bm[m] * y;
     s += t;
     y *= eta;
@@ -422,7 +422,7 @@ NumericalScalar qfraction(const NumericalScalar a,
   NumericalScalar ro = 0.0;
   NumericalScalar t = 1.0;
   NumericalScalar g = 1.0;
-  while (std::abs(t / g) >= SpecFunc::NumericalScalarEpsilon)
+  while (std::abs(t / g) >= SpecFunc::ScalarEpsilon)
   {
     p += s;
     q += r;
@@ -452,7 +452,7 @@ NumericalScalar qtaylor(const NumericalScalar a,
   NumericalScalar v = 1.0;
   q = a + 1.0;
   r = a + 3.0;
-  while (std::abs(t / v) > SpecFunc::NumericalScalarEpsilon)
+  while (std::abs(t / v) > SpecFunc::ScalarEpsilon)
   {
     p += x;
     q += r;
@@ -472,7 +472,7 @@ NumericalScalar ptaylor(const NumericalScalar a,
   NumericalScalar p = 1.0;
   NumericalScalar c = 1.0;
   NumericalScalar r = a;
-  while (c > p * SpecFunc::NumericalScalarEpsilon)
+  while (c > p * SpecFunc::ScalarEpsilon)
   {
     r += 1.0;
     c *= x / r;

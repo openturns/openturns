@@ -128,7 +128,7 @@ UnsignedInteger MCMC::getDimension() const
 NumericalScalar MCMC::computeLogLikelihood(const Point & xi) const
 {
   NumericalScalar value = prior_.computeLogPDF(xi);
-  if (value == SpecFunc::LogMinNumericalScalar) return SpecFunc::LogMinNumericalScalar;
+  if (value == SpecFunc::LogMinScalar) return SpecFunc::LogMinScalar;
 
   const UnsignedInteger size = observations_.getSize();
   for (UnsignedInteger i = 0; i < size; ++ i)
@@ -139,7 +139,7 @@ NumericalScalar MCMC::computeLogLikelihood(const Point & xi) const
     Distribution pI(conditional_);
     pI.setParameter(zi);
     NumericalScalar logPdf = pI.computeLogPDF(observations_[i]);
-    if (logPdf == SpecFunc::LogMinNumericalScalar) return SpecFunc::LogMinNumericalScalar;
+    if (logPdf == SpecFunc::LogMinScalar) return SpecFunc::LogMinScalar;
     value += logPdf;
   }
   return value;

@@ -135,9 +135,9 @@ NumericalScalar KPermutationsDistribution::computeLogPDF(const Point & point) co
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const NumericalScalar k = point[i];
-    if ((k < -supportEpsilon_) || (k > n_ + supportEpsilon_)) return SpecFunc::LogMinNumericalScalar;
+    if ((k < -supportEpsilon_) || (k > n_ + supportEpsilon_)) return SpecFunc::LogMinScalar;
     const UnsignedInteger ik = static_cast< UnsignedInteger > (round(k));
-    if (std::abs(k - ik) > supportEpsilon_) return SpecFunc::LogMinNumericalScalar;
+    if (std::abs(k - ik) > supportEpsilon_) return SpecFunc::LogMinScalar;
     x[i] = ik;
   }
   if (!x.check(n_)) return 0.0;
@@ -147,7 +147,7 @@ NumericalScalar KPermutationsDistribution::computeLogPDF(const Point & point) co
 NumericalScalar KPermutationsDistribution::computePDF(const Point & point) const
 {
   const NumericalScalar logPDF = computeLogPDF(point);
-  if (logPDF == SpecFunc::LogMinNumericalScalar) return 0.0;
+  if (logPDF == SpecFunc::LogMinScalar) return 0.0;
   return std::exp(logPDF);
 }
 

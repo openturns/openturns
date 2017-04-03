@@ -1853,7 +1853,7 @@ NumericalScalar RandomMixture::computeProbability(const Interval & interval) con
   if ((dimension != 1) || (distributionCollection_.getSize() >= ResourceMap::GetAsUnsignedInteger( "RandomMixture-SmallSize" )))
   {
     const NumericalScalar oldPDFPrecision = pdfPrecision_;
-    pdfPrecision_ = std::pow(SpecFunc::NumericalScalarEpsilon, 2.0 / (3.0 * dimension_));
+    pdfPrecision_ = std::pow(SpecFunc::ScalarEpsilon, 2.0 / (3.0 * dimension_));
     const UnsignedInteger n1 = ResourceMap::GetAsUnsignedInteger("RandomMixture-MarginalIntegrationNodesNumber");
     const UnsignedInteger N = ResourceMap::GetAsUnsignedInteger("RandomMixture-MaximumIntegrationNodesNumber");
     const UnsignedInteger n2 = static_cast<UnsignedInteger>(round(std::pow(N, 1.0 / dimension_)));
@@ -2012,7 +2012,7 @@ NumericalComplex RandomMixture::computeLogCharacteristicFunction(const Numerical
   if (x == 0.0) return 0.0;
   NumericalComplex logCfValue(0.0, constant_[0] * x);
   const UnsignedInteger size = distributionCollection_.getSize();
-  const NumericalScalar smallScalar = 0.5 * std::log(SpecFunc::MinNumericalScalar);
+  const NumericalScalar smallScalar = 0.5 * std::log(SpecFunc::MinScalar);
   for(UnsignedInteger i = 0; i < size; ++i)
   {
     logCfValue += distributionCollection_[i].computeLogCharacteristicFunction(weights_(0, i) * x);
@@ -2028,7 +2028,7 @@ NumericalComplex RandomMixture::computeLogCharacteristicFunction(const Point & x
   // log(\phi(x)) = \sum_{j=1}^{d} ((i * y_j * constant_j) + \sum_{k=1}^{n} log(\phi_{X_k})((M^t x)_k))
   const UnsignedInteger dimension = getDimension();
   const UnsignedInteger size = distributionCollection_.getSize();
-  const NumericalScalar smallScalar = 0.5 * std::log(SpecFunc::MinNumericalScalar);
+  const NumericalScalar smallScalar = 0.5 * std::log(SpecFunc::MinScalar);
   // 1) compute the deterministic term
   NumericalComplex logCfValue;
   for (UnsignedInteger i = 0; i < dimension; ++i) logCfValue += NumericalComplex(0.0, x[i] * constant_[i]);

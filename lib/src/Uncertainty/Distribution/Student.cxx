@@ -377,8 +377,8 @@ NumericalScalar Student::computeConditionalQuantile(const NumericalScalar q,
   //const NumericalScalar sigmaRos(1.0 / inverseCholesky_(conditioningDimension, conditioningDimension));
   //for (UnsignedInteger i = 0; i < conditioningDimension; ++i) meanRos += inverseCholesky_(conditioningDimension, i) / std::sqrt(sigma_[i]) * (y[i] - mean_[i]);
   //meanRos = mean_[conditioningDimension] - sigmaRos * std::sqrt(sigma_[conditioningDimension]) * meanRos;
-  //if (q == 0.0) return meanRos - 0.5 * sigmaRos * std::sqrt(4.0 * (std::log(SpecFunc::ISQRT2PI / sigmaRos) - SpecFunc::LogMinNumericalScalar));
-  //if (q == 1.0) return meanRos + 0.5 * sigmaRos * std::sqrt(4.0 * (std::log(SpecFunc::ISQRT2PI / sigmaRos) - SpecFunc::LogMinNumericalScalar));
+  //if (q == 0.0) return meanRos - 0.5 * sigmaRos * std::sqrt(4.0 * (std::log(SpecFunc::ISQRT2PI / sigmaRos) - SpecFunc::LogMinScalar));
+  //if (q == 1.0) return meanRos + 0.5 * sigmaRos * std::sqrt(4.0 * (std::log(SpecFunc::ISQRT2PI / sigmaRos) - SpecFunc::LogMinScalar));
   //return meanRos + sigmaRos * DistFunc::qNormal(q);
 }
 

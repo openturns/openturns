@@ -138,7 +138,7 @@ NumericalScalar Burr::computeLogPDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const NumericalScalar x = point[0];
-  if (x <= 0.0) return SpecFunc::LogMinNumericalScalar;
+  if (x <= 0.0) return SpecFunc::LogMinScalar;
   const NumericalScalar logX = std::log(x);
   return std::log(c_ * k_) + (c_ - 1.0) * logX - (k_ + 1.0) * log1p(std::exp(c_ * logX));
 }
