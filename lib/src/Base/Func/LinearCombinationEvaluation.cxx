@@ -202,7 +202,7 @@ void LinearCombinationEvaluation::setFunctionsCollectionAndCoefficients(const Fu
   isZero_ = false;
   coefficients_ = Point(0);
   functionsCollection_ = FunctionCollection(0);
-  const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("LinearCombinationEvaluation-SmallCoefficient");
+  const NumericalScalar epsilon = ResourceMap::GetAsScalar("LinearCombinationEvaluation-SmallCoefficient");
   for (UnsignedInteger i = 0; i < size; ++i)
     if (std::abs(coefficients[i]) > epsilon)
     {

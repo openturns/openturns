@@ -53,10 +53,10 @@ MethodOfMomentsFactory::MethodOfMomentsFactory(const Distribution & distribution
 {
   // Initialize optimization solver parameter using the ResourceMap
   solver_.setMaximumIterationNumber(ResourceMap::GetAsUnsignedInteger("MethodOfMomentsFactory-MaximumEvaluationNumber"));
-  solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("MethodOfMomentsFactory-MaximumAbsoluteError"));
-  solver_.setMaximumRelativeError(ResourceMap::GetAsNumericalScalar("MethodOfMomentsFactory-MaximumRelativeError"));
-  solver_.setMaximumResidualError(ResourceMap::GetAsNumericalScalar("MethodOfMomentsFactory-MaximumObjectiveError"));
-  solver_.setMaximumConstraintError(ResourceMap::GetAsNumericalScalar("MethodOfMomentsFactory-MaximumConstraintError"));
+  solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("MethodOfMomentsFactory-MaximumAbsoluteError"));
+  solver_.setMaximumRelativeError(ResourceMap::GetAsScalar("MethodOfMomentsFactory-MaximumRelativeError"));
+  solver_.setMaximumResidualError(ResourceMap::GetAsScalar("MethodOfMomentsFactory-MaximumObjectiveError"));
+  solver_.setMaximumConstraintError(ResourceMap::GetAsScalar("MethodOfMomentsFactory-MaximumConstraintError"));
 }
 
 /* Virtual constructor */

@@ -153,7 +153,7 @@ int main(int argc, char *argv[])
       Matrix gradientKriging(metaModel.gradient(X[1]));
 
       // Set DF evaluation as gradient and validate
-      metaModel.setGradient(new CenteredFiniteDifferenceGradient(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), metaModel.getEvaluation()));
+      metaModel.setGradient(new CenteredFiniteDifferenceGradient(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), metaModel.getEvaluation()));
 
       // Get the gradient computed by metamodel using FD
       Matrix gradientKrigingFD(metaModel.gradient(X[1]));

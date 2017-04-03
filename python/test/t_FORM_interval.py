@@ -71,11 +71,11 @@ def buildEvent(vector, interval):
 ot.ResourceMap.SetAsUnsignedInteger('Simulation-DefaultBlockSize', 100)
 ot.ResourceMap.SetAsUnsignedInteger(
     'Simulation-DefaultMaximumOuterSampling', 100)
-ot.ResourceMap.SetAsNumericalScalar(
+ot.ResourceMap.SetAsScalar(
     'Simulation-DefaultMaximumCoefficientOfVariation', 0.0)
-ot.ResourceMap.SetAsNumericalScalar(
+ot.ResourceMap.SetAsScalar(
     'Simulation-DefaultMaximumStandardDeviation', 0.0)
-ot.ResourceMap.SetAsNumericalScalar(
+ot.ResourceMap.SetAsScalar(
     'RootStrategyImplementation-DefaultStepSize', 0.1)
 
 algorithms = ['MonteCarlo',

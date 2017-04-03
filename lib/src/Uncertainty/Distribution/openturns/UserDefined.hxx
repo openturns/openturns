@@ -121,7 +121,7 @@ public:
   Implementation getMarginal(const Indices & indices) const;
 
   /** Merge the identical points of the support */
-  void compactSupport(const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon"));
+  void compactSupport(const NumericalScalar epsilon = ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon"));
 
   /** Tell if the distribution has elliptical copula */
   Bool hasEllipticalCopula() const;

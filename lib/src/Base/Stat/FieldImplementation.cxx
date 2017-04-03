@@ -397,8 +397,8 @@ Graph FieldImplementation::draw() const
     const Sample vertices(mesh_.getVertices());
     const Point xMin(vertices.getMin());
     const Point xMax(vertices.getMax());
-    const NumericalScalar delta = std::min(xMax[0] - xMin[0], xMax[1] - xMin[1]) * ResourceMap::GetAsNumericalScalar("Field-ArrowRatio");
-    const NumericalScalar rho = ResourceMap::GetAsNumericalScalar("Field-ArrowScaling");
+    const NumericalScalar delta = std::min(xMax[0] - xMin[0], xMax[1] - xMin[1]) * ResourceMap::GetAsScalar("Field-ArrowRatio");
+    const NumericalScalar rho = ResourceMap::GetAsScalar("Field-ArrowScaling");
     const UnsignedInteger size = values_.getSize();
     Sample normValues(size, 1);
     for (UnsignedInteger i = 0; i < size; ++i)

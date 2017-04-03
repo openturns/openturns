@@ -59,7 +59,7 @@ SubsetSampling::SubsetSampling(const Event & event,
   , proposalRange_(proposalRange)
   , conditionalProbability_(conditionalProbability)
   , iSubset_(false)
-  , betaMin_(ResourceMap::GetAsNumericalScalar("SubsetSampling-DefaultBetaMin"))
+  , betaMin_(ResourceMap::GetAsScalar("SubsetSampling-DefaultBetaMin"))
   , keepEventSample_(false)
   , numberOfSteps_(0)
   , seedNumber_(0)
@@ -96,7 +96,7 @@ void SubsetSampling::run()
   const UnsignedInteger blockSize = getBlockSize();
   const UnsignedInteger N = maximumOuterSampling * blockSize;
 
-  if (getMaximumCoefficientOfVariation() != ResourceMap::GetAsNumericalScalar("Simulation-DefaultMaximumCoefficientOfVariation"))
+  if (getMaximumCoefficientOfVariation() != ResourceMap::GetAsScalar("Simulation-DefaultMaximumCoefficientOfVariation"))
     Log::Warn(OSS() << "The maximum coefficient of variation was set. It won't be used as termination criteria.");
 
   seedNumber_ = static_cast<UnsignedInteger>(conditionalProbability_ * N);
@@ -310,7 +310,7 @@ NumericalScalar SubsetSampling::computeProbability(NumericalScalar probabilityEs
   }
 
   // cannot determine next subset domain if no variance
-  const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("SpecFunc-Precision");
+  const NumericalScalar epsilon = ResourceMap::GetAsScalar("SpecFunc-Precision");
   if (std::abs(varianceEstimate) < epsilon)
     throw NotDefinedException(HERE) << "Null output variance";
 

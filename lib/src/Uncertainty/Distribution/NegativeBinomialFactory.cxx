@@ -98,7 +98,7 @@ NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const Sample &
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a NegativeBinomial distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   NumericalScalar mean = 0.0;
   NumericalScalar var = 0.0;
-  const NumericalScalar supportEpsilon = ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon");
+  const NumericalScalar supportEpsilon = ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon");
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalScalar x = sample[i][0];
@@ -133,7 +133,7 @@ NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const Sample &
     fB = f(Point(1, b))[0];
   }
   // Solve the constraint equation
-  Brent solver(ResourceMap::GetAsNumericalScalar("NegativeBinomialFactory-AbsolutePrecision"), ResourceMap::GetAsNumericalScalar("NegativeBinomialFactory-RelativePrecision"), ResourceMap::GetAsNumericalScalar("NegativeBinomialFactory-ResidualPrecision"), ResourceMap::GetAsUnsignedInteger("NegativeBinomialFactory-MaximumIteration"));
+  Brent solver(ResourceMap::GetAsScalar("NegativeBinomialFactory-AbsolutePrecision"), ResourceMap::GetAsScalar("NegativeBinomialFactory-RelativePrecision"), ResourceMap::GetAsScalar("NegativeBinomialFactory-ResidualPrecision"), ResourceMap::GetAsUnsignedInteger("NegativeBinomialFactory-MaximumIteration"));
   // R estimate
   const NumericalScalar r = solver.solve(f, 0.0, a, b, fA, fB);
   // Corresponding p estimate

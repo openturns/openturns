@@ -63,7 +63,7 @@ AdaptiveStieltjesAlgorithm::AdaptiveStieltjesAlgorithm(const Distribution & meas
   const NumericalScalar mu = measure.getMean()[0];
   monicRecurrenceCoefficients_[0][0] = 1.0;
   // To avoid -0.0 in print, we test for the mean of the distribution.
-  if (std::abs(mu) > ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon"))
+  if (std::abs(mu) > ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon"))
     monicRecurrenceCoefficients_[0][1] = -mu;
   // The value of \beta_0 is 1 as the weight distribution is a probability distribution
   monicRecurrenceCoefficients_[0][2] = 0.0;
@@ -158,7 +158,7 @@ Point AdaptiveStieltjesAlgorithm::computeDotProduct(const Function & kernel,
 {
   if (measure_.isContinuous())
     {
-      const GaussKronrod algo(ResourceMap::GetAsUnsignedInteger("AdaptiveStieltjesAlgorithm-MaximumSubIntervalsBetweenRoots") * (n + 1), ResourceMap::GetAsNumericalScalar("AdaptiveStieltjesAlgorithm-MaximumError"), GaussKronrodRule(GaussKronrodRule::G7K15));
+      const GaussKronrod algo(ResourceMap::GetAsUnsignedInteger("AdaptiveStieltjesAlgorithm-MaximumSubIntervalsBetweenRoots") * (n + 1), ResourceMap::GetAsScalar("AdaptiveStieltjesAlgorithm-MaximumError"), GaussKronrodRule(GaussKronrodRule::G7K15));
       Point bounds(1, measure_.getRange().getLowerBound()[0]);
       bounds.add(measure_.getSingularities());
       bounds.add(measure_.getRange().getUpperBound()[0]);

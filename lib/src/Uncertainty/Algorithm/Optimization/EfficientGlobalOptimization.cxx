@@ -41,9 +41,9 @@ EfficientGlobalOptimization::EfficientGlobalOptimization()
   , multiStartExperimentSize_(ResourceMap::GetAsUnsignedInteger("EfficientGlobalOptimization-DefaultMultiStartExperimentSize"))
   , multiStartNumber_(ResourceMap::GetAsUnsignedInteger("EfficientGlobalOptimization-DefaultMultiStartNumber"))
   , parameterEstimationPeriod_(ResourceMap::GetAsUnsignedInteger("EfficientGlobalOptimization-DefaultParameterEstimationPeriod"))
-  , improvementFactor_(ResourceMap::GetAsNumericalScalar("EfficientGlobalOptimization-DefaultImprovementFactor"))
-  , correlationLengthFactor_(ResourceMap::GetAsNumericalScalar("EfficientGlobalOptimization-DefaultCorrelationLengthFactor"))
-  , aeiTradeoff_(ResourceMap::GetAsNumericalScalar("EfficientGlobalOptimization-DefaultAEITradeoff"))
+  , improvementFactor_(ResourceMap::GetAsScalar("EfficientGlobalOptimization-DefaultImprovementFactor"))
+  , correlationLengthFactor_(ResourceMap::GetAsScalar("EfficientGlobalOptimization-DefaultCorrelationLengthFactor"))
+  , aeiTradeoff_(ResourceMap::GetAsScalar("EfficientGlobalOptimization-DefaultAEITradeoff"))
 {
 }
 
@@ -57,9 +57,9 @@ EfficientGlobalOptimization::EfficientGlobalOptimization(const OptimizationProbl
   , multiStartExperimentSize_(ResourceMap::GetAsUnsignedInteger("EfficientGlobalOptimization-DefaultMultiStartExperimentSize"))
   , multiStartNumber_(ResourceMap::GetAsUnsignedInteger("EfficientGlobalOptimization-DefaultMultiStartNumber"))
   , parameterEstimationPeriod_(ResourceMap::GetAsUnsignedInteger("EfficientGlobalOptimization-DefaultParameterEstimationPeriod"))
-  , improvementFactor_(ResourceMap::GetAsNumericalScalar("EfficientGlobalOptimization-DefaultImprovementFactor"))
-  , correlationLengthFactor_(ResourceMap::GetAsNumericalScalar("EfficientGlobalOptimization-DefaultCorrelationLengthFactor"))
-  , aeiTradeoff_(ResourceMap::GetAsNumericalScalar("EfficientGlobalOptimization-DefaultAEITradeoff"))
+  , improvementFactor_(ResourceMap::GetAsScalar("EfficientGlobalOptimization-DefaultImprovementFactor"))
+  , correlationLengthFactor_(ResourceMap::GetAsScalar("EfficientGlobalOptimization-DefaultCorrelationLengthFactor"))
+  , aeiTradeoff_(ResourceMap::GetAsScalar("EfficientGlobalOptimization-DefaultAEITradeoff"))
 {
   checkProblem(problem);
 }

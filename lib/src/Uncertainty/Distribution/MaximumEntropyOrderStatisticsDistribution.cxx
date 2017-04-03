@@ -45,7 +45,7 @@ MaximumEntropyOrderStatisticsDistribution::MaximumEntropyOrderStatisticsDistribu
   DistributionCollection coll(2);
   coll[0] = Uniform(-1.0, 0.5);
   coll[1] = Uniform(-0.5, 1.0);
-  integrator_ = GaussKronrod(ResourceMap::GetAsUnsignedInteger("MaximumEntropyOrderStatisticsDistribution-ExponentialFactorDiscretization"), ResourceMap::GetAsNumericalScalar("GaussKronrod-MaximumError"), GaussKronrodRule(GaussKronrodRule::G7K15));
+  integrator_ = GaussKronrod(ResourceMap::GetAsUnsignedInteger("MaximumEntropyOrderStatisticsDistribution-ExponentialFactorDiscretization"), ResourceMap::GetAsScalar("GaussKronrod-MaximumError"), GaussKronrodRule(GaussKronrodRule::G7K15));
   // This call set also the range. Use approximation but don't check marginals.
   setDistributionCollection(coll, true, false);
   setIntegrationNodesNumber(ResourceMap::GetAsUnsignedInteger("MaximumEntropyOrderStatisticsDistribution-CDFIntegrationNodesNumber"));
@@ -62,7 +62,7 @@ MaximumEntropyOrderStatisticsDistribution::MaximumEntropyOrderStatisticsDistribu
   , distributionCollection_(coll)
 {
   setName("MaximumEntropyOrderStatisticsDistribution");
-  integrator_ = GaussKronrod(ResourceMap::GetAsUnsignedInteger("MaximumEntropyOrderStatisticsDistribution-ExponentialFactorDiscretization"), ResourceMap::GetAsNumericalScalar("GaussKronrod-MaximumError"), GaussKronrodRule(GaussKronrodRule::G7K15));
+  integrator_ = GaussKronrod(ResourceMap::GetAsUnsignedInteger("MaximumEntropyOrderStatisticsDistribution-ExponentialFactorDiscretization"), ResourceMap::GetAsScalar("GaussKronrod-MaximumError"), GaussKronrodRule(GaussKronrodRule::G7K15));
   // This call set also the range.
   setDistributionCollection(coll, useApprox, checkMarginals);
   setIntegrationNodesNumber(ResourceMap::GetAsUnsignedInteger("MaximumEntropyOrderStatisticsDistribution-CDFIntegrationNodesNumber"));
@@ -82,7 +82,7 @@ MaximumEntropyOrderStatisticsDistribution::MaximumEntropyOrderStatisticsDistribu
   , partition_(partition)
   , useApproximation_(useApprox)
   , exponentialFactorApproximation_(exponentialFactorApproximation)
-  , integrator_(GaussKronrod(ResourceMap::GetAsUnsignedInteger("MaximumEntropyOrderStatisticsDistribution-ExponentialFactorDiscretization"), ResourceMap::GetAsNumericalScalar("GaussKronrod-MaximumError"), GaussKronrodRule(GaussKronrodRule::G7K15)))
+  , integrator_(GaussKronrod(ResourceMap::GetAsUnsignedInteger("MaximumEntropyOrderStatisticsDistribution-ExponentialFactorDiscretization"), ResourceMap::GetAsScalar("GaussKronrod-MaximumError"), GaussKronrodRule(GaussKronrodRule::G7K15)))
 {
   isParallel_ = false;
   // Initialize the distribution manually in order to avoid costly checks that are not needed here
@@ -349,7 +349,7 @@ PiecewiseHermiteEvaluation MaximumEntropyOrderStatisticsDistribution::interpolat
   Point localErrors;
   NumericalScalar error = -1.0;
   // We integrate the exponential factor in order to detect all the singularities using polynomial approximations of different order
-  const Point tmp(GaussKronrod(ResourceMap::GetAsUnsignedInteger("MaximumEntropyOrderStatisticsDistribution-ExponentialFactorDiscretization"), ResourceMap::GetAsNumericalScalar("GaussKronrod-MaximumError"), GaussKronrodRule(GaussKronrodRule::G1K3)).integrate(phi, xMin, xMax, error, lowerBounds, upperBounds, contributions, localErrors));
+  const Point tmp(GaussKronrod(ResourceMap::GetAsUnsignedInteger("MaximumEntropyOrderStatisticsDistribution-ExponentialFactorDiscretization"), ResourceMap::GetAsScalar("GaussKronrod-MaximumError"), GaussKronrodRule(GaussKronrodRule::G1K3)).integrate(phi, xMin, xMax, error, lowerBounds, upperBounds, contributions, localErrors));
   // Now, we have to sort the intervals in order to build the approximation
   std::sort(upperBounds.begin(), upperBounds.end());
   // Here we have to subdivide the intervals to take into account the poorer approximation given by Hermite polynomials
@@ -383,7 +383,7 @@ void MaximumEntropyOrderStatisticsDistribution::interpolateExponentialFactors()
   UnsignedInteger dimension = getDimension();
   exponentialFactorApproximation_ = Collection<PiecewiseHermiteEvaluation>(dimension - 1);
   const UnsignedInteger maximumSubdivision = ResourceMap::GetAsUnsignedInteger("MaximumEntropyOrderStatisticsDistribution-MaximumApproximationSubdivision");
-  const NumericalScalar shift = ResourceMap::GetAsNumericalScalar("MaximumEntropyOrderStatisticsDistribution-SupportShift");
+  const NumericalScalar shift = ResourceMap::GetAsScalar("MaximumEntropyOrderStatisticsDistribution-SupportShift");
   for(UnsignedInteger k = 1; k < dimension; ++k)
   {
     if (!partition_.contains(k - 1))

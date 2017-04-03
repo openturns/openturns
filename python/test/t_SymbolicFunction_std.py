@@ -57,7 +57,7 @@ for func in elementaryFunctions:
     except:
         pass
     else:
-        f.setGradient(ot.CenteredFiniteDifferenceGradient(ot.ResourceMap.GetAsNumericalScalar(
+        f.setGradient(ot.CenteredFiniteDifferenceGradient(ot.ResourceMap.GetAsScalar(
             'CenteredFiniteDifferenceGradient-DefaultEpsilon'), f.getEvaluation()))
         df2 = f.gradient(x)[0, 0]
         print('df(', x[0], ')=%.4e' % df, 'df (FD)=%.4e' % df2)
@@ -73,7 +73,7 @@ for func in elementaryFunctions:
     except:
         pass
     else:
-        f.setHessian(ot.CenteredFiniteDifferenceHessian(ot.ResourceMap.GetAsNumericalScalar(
+        f.setHessian(ot.CenteredFiniteDifferenceHessian(ot.ResourceMap.GetAsScalar(
             'CenteredFiniteDifferenceHessian-DefaultEpsilon'), f.getEvaluation()))
         d2f2 = f.hessian(x)[0, 0, 0]
         print('d2f(', x[0], ')=%.4e' % d2f, 'd2f (FD)=%.4e' % d2f2)

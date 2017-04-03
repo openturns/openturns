@@ -4,7 +4,7 @@ from __future__ import print_function
 import openturns as ot
 
 try:
-    ot.ResourceMap.SetAsNumericalScalar("LinearCombinationEvaluation-SmallCoefficient", 1.0e-10)
+    ot.ResourceMap.SetAsScalar("LinearCombinationEvaluation-SmallCoefficient", 1.0e-10)
     domain = ot.Interval(-1.0, 1.0)
     basis = ot.OrthogonalProductPolynomialFactory([ot.LegendreFactory()])
     basisSize = 5

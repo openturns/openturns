@@ -97,9 +97,9 @@ DistributionImplementation::DistributionImplementation()
   , isAlreadyComputedMean_(false)
   , isAlreadyComputedCovariance_(false)
   , isAlreadyComputedGaussNodesAndWeights_(false)
-  , pdfEpsilon_(ResourceMap::GetAsNumericalScalar("Distribution-DefaultPDFEpsilon"))
-  , cdfEpsilon_(ResourceMap::GetAsNumericalScalar("Distribution-DefaultCDFEpsilon"))
-  , quantileEpsilon_(ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon"))
+  , pdfEpsilon_(ResourceMap::GetAsScalar("Distribution-DefaultPDFEpsilon"))
+  , cdfEpsilon_(ResourceMap::GetAsScalar("Distribution-DefaultCDFEpsilon"))
+  , quantileEpsilon_(ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon"))
   , quantileIterations_(ResourceMap::GetAsUnsignedInteger("Distribution-DefaultQuantileIteration"))
   , isAlreadyComputedStandardDistribution_(false)
   , p_standardDistribution_()
@@ -1506,9 +1506,9 @@ Point DistributionImplementation::computePDFGradient(const Point & point) const
   // Clone the distribution
   Implementation cloneDistribution(clone());
   // Increment for centered differences
-  const NumericalScalar eps = std::pow(ResourceMap::GetAsNumericalScalar("DistFunc-Precision"), 1.0 / 3.0);
+  const NumericalScalar eps = std::pow(ResourceMap::GetAsScalar("DistFunc-Precision"), 1.0 / 3.0);
   // Increment for noncentered differences
-  const NumericalScalar eps2 = std::pow(ResourceMap::GetAsNumericalScalar("DistFunc-Precision"), 1.0 / 2.0);
+  const NumericalScalar eps2 = std::pow(ResourceMap::GetAsScalar("DistFunc-Precision"), 1.0 / 2.0);
   Point newParameters(initialParameters);
   for (UnsignedInteger i = 0; i < parametersDimension; ++i)
   {
@@ -1571,9 +1571,9 @@ Sample DistributionImplementation::computePDFGradient(const Sample & inSample) c
   // Clone the distribution
   Implementation cloneDistribution(clone());
   // Increment for centered differences
-  const NumericalScalar eps = std::pow(ResourceMap::GetAsNumericalScalar("DistFunc-Precision"), 1.0 / 3.0);
+  const NumericalScalar eps = std::pow(ResourceMap::GetAsScalar("DistFunc-Precision"), 1.0 / 3.0);
   // Increment for noncentered differences
-  const NumericalScalar eps2 = std::pow(ResourceMap::GetAsNumericalScalar("DistFunc-Precision"), 1.0 / 2.0);
+  const NumericalScalar eps2 = std::pow(ResourceMap::GetAsScalar("DistFunc-Precision"), 1.0 / 2.0);
   Point newParameters(initialParameters);
   for (UnsignedInteger i = 0; i < parametersDimension; ++i)
   {
@@ -1720,9 +1720,9 @@ Point DistributionImplementation::computeCDFGradient(const Point & point) const
   // Clone the distribution
   Implementation cloneDistribution(clone());
   // We will use centered differences
-  const NumericalScalar eps = std::pow(ResourceMap::GetAsNumericalScalar("DistFunc-Precision"), 1.0 / 3.0);
+  const NumericalScalar eps = std::pow(ResourceMap::GetAsScalar("DistFunc-Precision"), 1.0 / 3.0);
   // Increment for noncentered differences
-  const NumericalScalar eps2 = std::pow(ResourceMap::GetAsNumericalScalar("DistFunc-Precision"), 1.0 / 2.0);
+  const NumericalScalar eps2 = std::pow(ResourceMap::GetAsScalar("DistFunc-Precision"), 1.0 / 2.0);
   Point newParameters(initialParameters);
   for (UnsignedInteger i = 0; i < parametersDimension; ++i)
   {
@@ -3164,14 +3164,14 @@ Graph DistributionImplementation::drawDiscretePDF(const NumericalScalar xMin,
     const UnsignedInteger pointNumber) const
 {
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw the PDF of a multidimensional discrete distribution this way.";
-  if (xMax < xMin - ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon")) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax < xMin, here xmin=" << xMin << " and xmax=" << xMax;
+  if (xMax < xMin - ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon")) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax < xMin, here xmin=" << xMin << " and xmax=" << xMax;
   const String title(OSS() << getDescription()[0] << " PDF");
   const Sample support(getSupport(Interval(xMin, xMax)));
   // First the vertical bars
   const String xName(getDescription()[0]);
   Graph graphPDF(title, xName, "PDF", true, "topright");
   Point point(2);
-  point[0] = xMin - ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon");
+  point[0] = xMin - ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon");
   const Sample gridY(computePDF(support));
 
   Sample data(0, 2);
@@ -3185,7 +3185,7 @@ Graph DistributionImplementation::drawDiscretePDF(const NumericalScalar xMin,
     point[1] = 0.0;
     data.add(point);
   }
-  point[0] = xMax + ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon");
+  point[0] = xMax + ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon");
   point[1] = 0.0;
   data.add(point);
   graphPDF.add(Curve(data, "red", "solid", 2, title));
@@ -3233,9 +3233,9 @@ Graph DistributionImplementation::drawPDF(const UnsignedInteger pointNumber) con
 {
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: this method is available only for 1D distributions";
   // For discrete distributions, use the numerical range to define the drawing range
-  const NumericalScalar xMin = computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMin"))[0];
-  const NumericalScalar xMax = computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMax"))[0];
-  const NumericalScalar delta = 2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsNumericalScalar("Distribution-QMax" ) - ResourceMap::GetAsNumericalScalar("Distribution-QMin")));
+  const NumericalScalar xMin = computeQuantile(ResourceMap::GetAsScalar("Distribution-QMin"))[0];
+  const NumericalScalar xMax = computeQuantile(ResourceMap::GetAsScalar("Distribution-QMax"))[0];
+  const NumericalScalar delta = 2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsScalar("Distribution-QMax" ) - ResourceMap::GetAsScalar("Distribution-QMin")));
   if (isDiscrete())
   {
     NumericalScalar a = std::max(xMin - delta, range_.getLowerBound()[0] - 1.0);
@@ -3315,18 +3315,18 @@ Graph DistributionImplementation::drawPDF(const Indices & pointNumber) const
   if (isCopula()) xMin = Point(2, 0.0);
   else
   {
-    xMin[0] = getMarginal(0)->computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMin"))[0];
-    xMin[1] = getMarginal(1)->computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMin"))[0];
+    xMin[0] = getMarginal(0)->computeQuantile(ResourceMap::GetAsScalar("Distribution-QMin"))[0];
+    xMin[1] = getMarginal(1)->computeQuantile(ResourceMap::GetAsScalar("Distribution-QMin"))[0];
   }
   Point xMax(2);
   if (isCopula()) xMax = Point(2, 1.0);
   else
   {
-    xMax[0] = getMarginal(0)->computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMax"))[0];
-    xMax[1] = getMarginal(1)->computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMax"))[0];
+    xMax[0] = getMarginal(0)->computeQuantile(ResourceMap::GetAsScalar("Distribution-QMax"))[0];
+    xMax[1] = getMarginal(1)->computeQuantile(ResourceMap::GetAsScalar("Distribution-QMax"))[0];
   }
   Point delta(2, 0.0);
-  if (!isCopula()) delta = (2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsNumericalScalar("Distribution-QMax" ) - ResourceMap::GetAsNumericalScalar("Distribution-QMin"))));
+  if (!isCopula()) delta = (2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsScalar("Distribution-QMax" ) - ResourceMap::GetAsScalar("Distribution-QMin"))));
   const Interval intersection(getRange().intersect(Interval(xMin - delta, xMax + delta)));
   Graph graph(drawPDF(intersection.getLowerBound(), intersection.getUpperBound(), pointNumber));
   // Add a border for a copula
@@ -3377,14 +3377,14 @@ Graph DistributionImplementation::drawDiscreteLogPDF(const NumericalScalar xMin,
     const UnsignedInteger pointNumber) const
 {
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw the PDF of a multidimensional discrete distribution this way.";
-  if (xMax < xMin - ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon")) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax < xMin, here xmin=" << xMin << " and xmax=" << xMax;
+  if (xMax < xMin - ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon")) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax < xMin, here xmin=" << xMin << " and xmax=" << xMax;
   const String title(OSS() << getDescription()[0] << " PDF");
   const Sample support(getSupport(Interval(xMin, xMax)));
   // First the vertical bars
   const String xName(getDescription()[0]);
   Graph graphLogPDF(title, xName, "PDF", true, "topright");
   Point point(2);
-  point[0] = xMin - ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon");
+  point[0] = xMin - ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon");
   const Sample gridY(computeLogPDF(support));
 
   Sample data(0, 2);
@@ -3398,7 +3398,7 @@ Graph DistributionImplementation::drawDiscreteLogPDF(const NumericalScalar xMin,
     point[1] = 0.0;
     data.add(point);
   }
-  point[0] = xMax + ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon");
+  point[0] = xMax + ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon");
   point[1] = 0.0;
   data.add(point);
   graphLogPDF.add(Curve(data, "red", "solid", 2, title));
@@ -3446,9 +3446,9 @@ Graph DistributionImplementation::drawLogPDF(const UnsignedInteger pointNumber) 
 {
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: this method is available only for 1D distributions";
   // For discrete distributions, use the numerical range to define the drawing range
-  const NumericalScalar xMin = computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMin"))[0];
-  const NumericalScalar xMax = computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMax"))[0];
-  const NumericalScalar delta = 2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsNumericalScalar("Distribution-QMax" ) - ResourceMap::GetAsNumericalScalar("Distribution-QMin")));
+  const NumericalScalar xMin = computeQuantile(ResourceMap::GetAsScalar("Distribution-QMin"))[0];
+  const NumericalScalar xMax = computeQuantile(ResourceMap::GetAsScalar("Distribution-QMax"))[0];
+  const NumericalScalar delta = 2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsScalar("Distribution-QMax" ) - ResourceMap::GetAsScalar("Distribution-QMin")));
   if (isDiscrete())
   {
     NumericalScalar a = std::max(xMin - delta, range_.getLowerBound()[0] - 1.0);
@@ -3528,18 +3528,18 @@ Graph DistributionImplementation::drawLogPDF(const Indices & pointNumber) const
   if (isCopula()) xMin = Point(2, 0.0);
   else
   {
-    xMin[0] = getMarginal(0)->computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMin"))[0];
-    xMin[1] = getMarginal(1)->computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMin"))[0];
+    xMin[0] = getMarginal(0)->computeQuantile(ResourceMap::GetAsScalar("Distribution-QMin"))[0];
+    xMin[1] = getMarginal(1)->computeQuantile(ResourceMap::GetAsScalar("Distribution-QMin"))[0];
   }
   Point xMax(2);
   if (isCopula()) xMax = Point(2, 1.0);
   else
   {
-    xMax[0] = getMarginal(0)->computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMax"))[0];
-    xMax[1] = getMarginal(1)->computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMax"))[0];
+    xMax[0] = getMarginal(0)->computeQuantile(ResourceMap::GetAsScalar("Distribution-QMax"))[0];
+    xMax[1] = getMarginal(1)->computeQuantile(ResourceMap::GetAsScalar("Distribution-QMax"))[0];
   }
   Point delta(2, 0.0);
-  if (!isCopula()) delta = (2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsNumericalScalar("Distribution-QMax" ) - ResourceMap::GetAsNumericalScalar("Distribution-QMin"))));
+  if (!isCopula()) delta = (2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsScalar("Distribution-QMax" ) - ResourceMap::GetAsScalar("Distribution-QMin"))));
   const Interval intersection(getRange().intersect(Interval(xMin - delta, xMax + delta)));
   Graph graph(drawLogPDF(intersection.getLowerBound(), intersection.getUpperBound(), pointNumber));
   // Add a border for a copula
@@ -3666,9 +3666,9 @@ Graph DistributionImplementation::drawCDF(const UnsignedInteger pointNumber) con
 {
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: this method is available only for 1D distributions";
   // For discrete distributions, use the numerical range to define the drawing range
-  const NumericalScalar xMin = computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMin"))[0];
-  const NumericalScalar xMax = computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMax"))[0];
-  const NumericalScalar delta = 2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsNumericalScalar("Distribution-QMax" ) - ResourceMap::GetAsNumericalScalar("Distribution-QMin")));
+  const NumericalScalar xMin = computeQuantile(ResourceMap::GetAsScalar("Distribution-QMin"))[0];
+  const NumericalScalar xMax = computeQuantile(ResourceMap::GetAsScalar("Distribution-QMax"))[0];
+  const NumericalScalar delta = 2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsScalar("Distribution-QMax" ) - ResourceMap::GetAsScalar("Distribution-QMin")));
   if (isDiscrete())
   {
     NumericalScalar a = std::max(xMin - delta, range_.getLowerBound()[0] - 1.0);
@@ -3754,18 +3754,18 @@ Graph DistributionImplementation::drawCDF(const Indices & pointNumber) const
   if (isCopula()) xMin = Point(2, 0.0);
   else
   {
-    xMin[0] = getMarginal(0)->computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMin"))[0];
-    xMin[1] = getMarginal(1)->computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMin"))[0];
+    xMin[0] = getMarginal(0)->computeQuantile(ResourceMap::GetAsScalar("Distribution-QMin"))[0];
+    xMin[1] = getMarginal(1)->computeQuantile(ResourceMap::GetAsScalar("Distribution-QMin"))[0];
   }
   Point xMax(2);
   if (isCopula()) xMax = Point(2, 1.0);
   else
   {
-    xMax[0] = getMarginal(0)->computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMax"))[0];
-    xMax[1] = getMarginal(1)->computeQuantile(ResourceMap::GetAsNumericalScalar("Distribution-QMax"))[0];
+    xMax[0] = getMarginal(0)->computeQuantile(ResourceMap::GetAsScalar("Distribution-QMax"))[0];
+    xMax[1] = getMarginal(1)->computeQuantile(ResourceMap::GetAsScalar("Distribution-QMax"))[0];
   }
   Point delta(2, 0.0);
-  if (!isCopula()) delta = (2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsNumericalScalar("Distribution-QMax" ) - ResourceMap::GetAsNumericalScalar("Distribution-QMin"))));
+  if (!isCopula()) delta = (2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsScalar("Distribution-QMax" ) - ResourceMap::GetAsScalar("Distribution-QMin"))));
   return drawCDF(xMin - delta, xMax + delta, pointNumber);
 }
 

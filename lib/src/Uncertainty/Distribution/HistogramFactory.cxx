@@ -109,14 +109,14 @@ Histogram HistogramFactory::buildAsHistogram(const Sample & sample,
   if (!SpecFunc::IsNormal(min) || !SpecFunc::IsNormal(max)) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution if data contains NaN or Inf";
   if (max == min)
   {
-    const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("Distribution-DefaultCDFEpsilon");
+    const NumericalScalar epsilon = ResourceMap::GetAsScalar("Distribution-DefaultCDFEpsilon");
     const NumericalScalar delta = std::max(std::abs(min), 10.0) * epsilon;
     Histogram result(min - 0.5 * delta, Point(1, delta), Point(1, 1.0));
     result.setDescription(sample.getDescription());
     return result;
   }
   // Adjust the bin with in order to match the bin number. Add a small adjustment in order to have bins defined as [x_k, x_k+1[ intervals
-  const NumericalScalar delta = ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon") * (max - min);
+  const NumericalScalar delta = ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon") * (max - min);
   const NumericalScalar hOpt = ((max - min) + delta) / binNumber;
   Point heights(binNumber, 0.0);
   const NumericalScalar step = 1.0 / hOpt;
@@ -159,7 +159,7 @@ NumericalScalar HistogramFactory::computeSilvermanBandwidth(const Sample & sampl
       hOpt = sample.computeStandardDeviationPerComponent()[0] * std::pow(24.0 * std::sqrt(M_PI) / size, 1.0 / 3.0);
       // If we get zero it is due to a constant sample
       if (hOpt == 0.0) LOGWARN(OSS() << "All the values are equal in the given sample. We switch to a bandwidth equal to QuantileEpsilon.");
-      hOpt =  ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon");
+      hOpt =  ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
     }
   return hOpt;
 }

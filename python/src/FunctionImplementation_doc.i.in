@@ -657,7 +657,7 @@ Examples
 >>> f = ot.SymbolicFunction(['x1', 'x2'],
 ...                          ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
 >>> f.setGradient(ot.CenteredFiniteDifferenceGradient(
-...  ot.ResourceMap.GetAsNumericalScalar('CenteredFiniteDifferenceGradient-DefaultEpsilon'),
+...  ot.ResourceMap.GetAsScalar('CenteredFiniteDifferenceGradient-DefaultEpsilon'),
 ...  f.getEvaluation()))"
 %enddef
 %feature("docstring") OT::FunctionImplementation::setGradient
@@ -679,7 +679,7 @@ Examples
 >>> f = ot.SymbolicFunction(['x1', 'x2'],
 ...                         ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
 >>> f.setHessian(ot.CenteredFiniteDifferenceHessian(
-...  ot.ResourceMap.GetAsNumericalScalar('CenteredFiniteDifferenceHessian-DefaultEpsilon'),
+...  ot.ResourceMap.GetAsScalar('CenteredFiniteDifferenceHessian-DefaultEpsilon'),
 ...  f.getEvaluation()))"
 %enddef
 %feature("docstring") OT::FunctionImplementation::setHessian

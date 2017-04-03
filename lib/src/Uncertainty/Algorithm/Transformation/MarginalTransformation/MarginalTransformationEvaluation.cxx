@@ -88,7 +88,7 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
         const Distribution outputStandardDistribution(outputDistribution.getStandardRepresentative());
         const Point outputStandardRepresentativeParameters(outputStandardDistribution.getParametersCollection()[0]);
         const NumericalScalar difference = (inputStandardRepresentativeParameters - outputStandardRepresentativeParameters).norm();
-        const Bool sameParameters = difference < ResourceMap::GetAsNumericalScalar("MarginalTransformationEvaluation-ParametersEpsilon");
+        const Bool sameParameters = difference < ResourceMap::GetAsScalar("MarginalTransformationEvaluation-ParametersEpsilon");
         if (sameParameters)
         {
           // The transformation is the composition of two affine transformations: (input distribution->standard representative of input distribution) and (standard representative of output distribution->output distribution)
@@ -293,7 +293,7 @@ Point MarginalTransformationEvaluation::operator () (const Point & inP) const
   const UnsignedInteger dimension = getOutputDimension();
   Point result(dimension);
   // The marginal transformation apply G^{-1} o F to each component of the input, where F is the ith input CDF and G the ith output CDf
-  const NumericalScalar tailThreshold = ResourceMap::GetAsNumericalScalar( "MarginalTransformationEvaluation-DefaultTailThreshold" );
+  const NumericalScalar tailThreshold = ResourceMap::GetAsScalar( "MarginalTransformationEvaluation-DefaultTailThreshold" );
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     if (simplifications_[i]) result[i] = expressions_[i](Point(1, inP[i]))[0];

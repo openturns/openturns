@@ -430,8 +430,8 @@ void GeneralLinearModelAlgorithm::setCovarianceModel(const CovarianceModel & cov
   const UnsignedInteger optimizationDimension = reducedCovarianceModel_.getParameter().getSize();
   if (optimizationDimension > 0)
   {
-    const Point lowerBound(optimizationDimension, ResourceMap::GetAsNumericalScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound"));
-    const Point upperBound(optimizationDimension, ResourceMap::GetAsNumericalScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound"));
+    const Point lowerBound(optimizationDimension, ResourceMap::GetAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound"));
+    const Point upperBound(optimizationDimension, ResourceMap::GetAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound"));
     optimizationBounds_ = Interval(lowerBound, upperBound);
   }
   else optimizationBounds_ = Interval();
@@ -480,7 +480,7 @@ void GeneralLinearModelAlgorithm::setBasisCollection(const BasisCollection & bas
 
 void GeneralLinearModelAlgorithm::checkYCentered(const Sample & Y)
 {
-  const NumericalScalar meanEpsilon = ResourceMap::GetAsNumericalScalar("GeneralLinearModelAlgorithm-MeanEpsilon");
+  const NumericalScalar meanEpsilon = ResourceMap::GetAsScalar("GeneralLinearModelAlgorithm-MeanEpsilon");
   const Point meanY(Y.computeMean());
   for (UnsignedInteger k = 0; k < meanY.getDimension(); ++k)
   {
@@ -795,8 +795,8 @@ NumericalScalar GeneralLinearModelAlgorithm::computeLapackLogDeterminantCholesky
   LOGDEBUG(OSS(false) << "C=\n" << C);
   LOGINFO("Compute the Cholesky factor of the covariance matrix");
   Bool continuationCondition = true;
-  const NumericalScalar startingScaling = ResourceMap::GetAsNumericalScalar("GeneralLinearModelAlgorithm-StartingScaling");
-  const NumericalScalar maximalScaling = ResourceMap::GetAsNumericalScalar("GeneralLinearModelAlgorithm-MaximalScaling");
+  const NumericalScalar startingScaling = ResourceMap::GetAsScalar("GeneralLinearModelAlgorithm-StartingScaling");
+  const NumericalScalar maximalScaling = ResourceMap::GetAsScalar("GeneralLinearModelAlgorithm-MaximalScaling");
   NumericalScalar cumulatedScaling = 0.0;
   NumericalScalar scaling = startingScaling;
   while (continuationCondition && (cumulatedScaling < maximalScaling))
@@ -862,8 +862,8 @@ NumericalScalar GeneralLinearModelAlgorithm::computeHMatLogDeterminantCholesky()
   LOGINFO(OSS(false) << "Compute the HMAT log-determinant of the Cholesky factor for covariance=" << reducedCovarianceModel_);
 
   Bool continuationCondition = true;
-  const NumericalScalar startingScaling = ResourceMap::GetAsNumericalScalar("GeneralLinearModelAlgorithm-StartingScaling");
-  const NumericalScalar maximalScaling = ResourceMap::GetAsNumericalScalar("GeneralLinearModelAlgorithm-MaximalScaling");
+  const NumericalScalar startingScaling = ResourceMap::GetAsScalar("GeneralLinearModelAlgorithm-StartingScaling");
+  const NumericalScalar maximalScaling = ResourceMap::GetAsScalar("GeneralLinearModelAlgorithm-MaximalScaling");
   NumericalScalar cumulatedScaling = 0.0;
   NumericalScalar scaling = startingScaling;
   const UnsignedInteger covarianceDimension = reducedCovarianceModel_.getDimension();
@@ -1076,7 +1076,7 @@ Function GeneralLinearModelAlgorithm::getObjectiveFunction()
   computeF();
   Function logLikelihood(ReducedLogLikelihoodEvaluation(*this));
   // Here we change the finite difference gradient for a non centered one in order to reduce the computational cost
-  logLikelihood.setGradient(NonCenteredFiniteDifferenceGradient(ResourceMap::GetAsNumericalScalar( "NonCenteredFiniteDifferenceGradient-DefaultEpsilon" ), logLikelihood.getEvaluation()).clone());
+  logLikelihood.setGradient(NonCenteredFiniteDifferenceGradient(ResourceMap::GetAsScalar( "NonCenteredFiniteDifferenceGradient-DefaultEpsilon" ), logLikelihood.getEvaluation()).clone());
   logLikelihood.enableCache();
   return logLikelihood;
 }

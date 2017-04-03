@@ -137,8 +137,8 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Sample & sample) const
 
   // override starting point
   Cobyla solver;
-  solver.setRhoBeg(ResourceMap::GetAsNumericalScalar("TrapezoidalFactory-RhoBeg"));
-  solver.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("TrapezoidalFactory-RhoEnd"));
+  solver.setRhoBeg(ResourceMap::GetAsScalar("TrapezoidalFactory-RhoBeg"));
+  solver.setMaximumAbsoluteError(ResourceMap::GetAsScalar("TrapezoidalFactory-RhoEnd"));
   solver.setMaximumIterationNumber(ResourceMap::GetAsUnsignedInteger("TrapezoidalFactory-MaximumIteration"));
   solver.setStartingPoint(startingPoint);
   factory.setOptimizationAlgorithm(solver);

@@ -146,7 +146,7 @@ KarhunenLoeveQuadratureFactory::KarhunenLoeveQuadratureFactory(const Domain & do
   // Compute the Cholesky factor of \theta^t\theta
   LOGINFO("Compute the Cholesky factor of the Gram matrix");
   CovarianceMatrix gram(theta_.computeGram(true));
-  const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("KarhunenLoeveQuadratureFactory-RegularizationFactor");
+  const NumericalScalar epsilon = ResourceMap::GetAsScalar("KarhunenLoeveQuadratureFactory-RegularizationFactor");
   if (epsilon > 0.0)
     for (UnsignedInteger i = 0; i < gram.getDimension(); ++i) gram(i, i) += epsilon;
   cholesky_ = gram.computeCholesky(false);

@@ -36,9 +36,9 @@ try:
         0] = "min(0.1 * (u1 - u2)^2.0 - (u1 + u2) / sqrt(2.0) + 3.0, 0.1 * (u1 - u2)^2.0 + (u1 + u2) / sqrt(2.0) + 3.0, u1 - u2 + 3.5 * sqrt(2.0), -u1 + u2 + 3.5 * sqrt(2.0))"
 
     limitState = Function(inputFunction, outputFunction, formulas)
-    limitState.setGradient(CenteredFiniteDifferenceGradient(ResourceMap.GetAsNumericalScalar(
+    limitState.setGradient(CenteredFiniteDifferenceGradient(ResourceMap.GetAsScalar(
         "CenteredFiniteDifferenceGradient-DefaultEpsilon"), limitState.getEvaluation()))
-    limitState.setHessian(CenteredFiniteDifferenceHessian(ResourceMap.GetAsNumericalScalar(
+    limitState.setHessian(CenteredFiniteDifferenceHessian(ResourceMap.GetAsScalar(
         "CenteredFiniteDifferenceHessian-DefaultEpsilon"), limitState.getEvaluation()))
     dim = limitState.getInputDimension()
 

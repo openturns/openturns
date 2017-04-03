@@ -66,7 +66,7 @@ struct OrderStatisticsMarginalCheckerWrapper
 void OrderStatisticsMarginalChecker::check() const
 {
   UnsignedInteger quantileIteration = ResourceMap::GetAsUnsignedInteger("OrderStatisticsMarginalChecker-QuantileIteration");
-  NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("OrderStatisticsMarginalChecker-OptimizationEpsilon");
+  NumericalScalar epsilon = ResourceMap::GetAsScalar("OrderStatisticsMarginalChecker-OptimizationEpsilon");
   const UnsignedInteger size = collection_.getSize();
   // First test, check the ranges
   NumericalScalar aIm1 = collection_[0].getRange().getLowerBound()[0];

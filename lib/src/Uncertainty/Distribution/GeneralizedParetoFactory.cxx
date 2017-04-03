@@ -38,10 +38,10 @@ GeneralizedParetoFactory::GeneralizedParetoFactory()
 {
   // Create the optimization solver parameters using the parameters in the ResourceMap
   solver_.setMaximumIterationNumber(ResourceMap::GetAsUnsignedInteger("GeneralizedParetoFactory-MaximumEvaluationNumber"));
-  solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("GeneralizedParetoFactory-MaximumAbsoluteError"));
-  solver_.setMaximumRelativeError(ResourceMap::GetAsNumericalScalar("GeneralizedParetoFactory-MaximumRelativeError"));
-  solver_.setMaximumResidualError(ResourceMap::GetAsNumericalScalar("GeneralizedParetoFactory-MaximumObjectiveError"));
-  solver_.setMaximumConstraintError(ResourceMap::GetAsNumericalScalar("GeneralizedParetoFactory-MaximumConstraintError"));
+  solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("GeneralizedParetoFactory-MaximumAbsoluteError"));
+  solver_.setMaximumRelativeError(ResourceMap::GetAsScalar("GeneralizedParetoFactory-MaximumRelativeError"));
+  solver_.setMaximumResidualError(ResourceMap::GetAsScalar("GeneralizedParetoFactory-MaximumObjectiveError"));
+  solver_.setMaximumConstraintError(ResourceMap::GetAsScalar("GeneralizedParetoFactory-MaximumConstraintError"));
 }
 
 /* Virtual constructor */

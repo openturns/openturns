@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    ResourceMap::SetAsNumericalScalar("LinearCombinationEvaluation-SmallCoefficient", 1.0e-10);
+    ResourceMap::SetAsScalar("LinearCombinationEvaluation-SmallCoefficient", 1.0e-10);
     UnsignedInteger dim = 1;
     Interval domain(Point(dim, -1.0), Point(dim, 1.0));
     OrthogonalProductPolynomialFactory basis(Collection<OrthogonalUniVariatePolynomialFamily>(dim, LegendreFactory()));

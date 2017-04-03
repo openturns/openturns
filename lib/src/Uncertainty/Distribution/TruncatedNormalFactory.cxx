@@ -85,7 +85,7 @@ TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const Sample & sa
 
   const UnsignedInteger dimension = 2;// optimize (mu, sigma)
   Point parametersLowerBound(dimension, -SpecFunc::MaxNumericalScalar);
-  parametersLowerBound[1] = ResourceMap::GetAsNumericalScalar( "TruncatedNormalFactory-SigmaLowerBound");
+  parametersLowerBound[1] = ResourceMap::GetAsScalar( "TruncatedNormalFactory-SigmaLowerBound");
   Interval::BoolCollection parametersLowerFlags(dimension, false);
   parametersLowerFlags[1] = true;
   Point startingPoint(dimension);

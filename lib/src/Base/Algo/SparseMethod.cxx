@@ -96,8 +96,8 @@ Point SparseMethod::solve(const Point & rhs)
   basisSequenceFactory_.updateBasis(method_, rhsSample);
 
   // for each sub-basis ...
-  const NumericalScalar alpha = std::max(1.0, ResourceMap::GetAsNumericalScalar("SparseMethod-MaximumErrorFactor"));
-  const NumericalScalar errorThreshold = std::max(0.0, ResourceMap::GetAsNumericalScalar("SparseMethod-ErrorThreshold"));
+  const NumericalScalar alpha = std::max(1.0, ResourceMap::GetAsScalar("SparseMethod-MaximumErrorFactor"));
+  const NumericalScalar errorThreshold = std::max(0.0, ResourceMap::GetAsScalar("SparseMethod-ErrorThreshold"));
   while ((basisSequenceFactory_.getImplementation()->addedPsi_k_ranks_.getSize() > 0) || (basisSequenceFactory_.getImplementation()->removedPsi_k_ranks_.getSize() > 0))
   {
     // retrieve the i-th basis of the sequence

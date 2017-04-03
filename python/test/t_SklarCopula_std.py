@@ -20,10 +20,10 @@ try:
     print("Mean      =", repr(copula.getMean()))
     print("Mean (ref)=", repr(copulaRef.getMean()))
     ResourceMap.SetAsUnsignedInteger("GaussKronrod-MaximumSubIntervals", 20)
-    ResourceMap.SetAsNumericalScalar("GaussKronrod-MaximumError",  1.0e-4)
+    ResourceMap.SetAsScalar("GaussKronrod-MaximumError",  1.0e-4)
     print("Covariance      =", repr(copula.getCovariance()))
     ResourceMap.SetAsUnsignedInteger("GaussKronrod-MaximumSubIntervals", 100)
-    ResourceMap.SetAsNumericalScalar("GaussKronrod-MaximumError",  1.0e-12)
+    ResourceMap.SetAsScalar("GaussKronrod-MaximumError",  1.0e-12)
     print("Covariance (ref)=", repr(copulaRef.getCovariance()))
 
     # Is this copula an elliptical distribution?

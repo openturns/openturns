@@ -50,11 +50,11 @@ public:
 
   /** Parameter constructor */
   HyperbolicAnisotropicEnumerateFunction(const UnsignedInteger dimension,
-                                         const NumericalScalar q = ResourceMap::GetAsNumericalScalar("HyperbolicAnisotropicEnumerateFunction-DefaultQ"));
+                                         const NumericalScalar q = ResourceMap::GetAsScalar("HyperbolicAnisotropicEnumerateFunction-DefaultQ"));
 
   /** Parameter constructor */
   HyperbolicAnisotropicEnumerateFunction(const Point & weight,
-                                         const NumericalScalar q = ResourceMap::GetAsNumericalScalar("HyperbolicAnisotropicEnumerateFunction-DefaultQ"));
+                                         const NumericalScalar q = ResourceMap::GetAsScalar("HyperbolicAnisotropicEnumerateFunction-DefaultQ"));
 
   /** Virtual constrcutor */
   virtual HyperbolicAnisotropicEnumerateFunction * clone() const;

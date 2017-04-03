@@ -302,7 +302,7 @@ Histogram::Implementation Histogram::getStandardRepresentative() const
 {
   const UnsignedInteger size = width_.getSize();
   // No need to transform an histogram if its range is already [-1.0, 1.0]
-  if (first_ == -1.0 && std::abs(cumulatedWidth_[size - 1] - 2.0) <= ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon")) return clone();
+  if (first_ == -1.0 && std::abs(cumulatedWidth_[size - 1] - 2.0) <= ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon")) return clone();
   const NumericalScalar first = -1.0;
   const NumericalScalar factor = 2.0 / cumulatedWidth_[size - 1];
   return Histogram(first, factor * width_, height_ / factor).clone();
@@ -407,7 +407,7 @@ void Histogram::setData(const Point & l,
     cumulatedSurface_[i] = surface;
   }
   // Check if the surface is strictly positive
-  if (surface < ResourceMap::GetAsNumericalScalar("Distribution-DefaultCDFEpsilon")) throw InvalidArgumentException(HERE) << "Error: the surface of the histogram is zero.";
+  if (surface < ResourceMap::GetAsScalar("Distribution-DefaultCDFEpsilon")) throw InvalidArgumentException(HERE) << "Error: the surface of the histogram is zero.";
   // Normalization
   NumericalScalar normalizationFactor = 1.0 / surface;
   width_ = Point(size, 1.0);

@@ -53,8 +53,8 @@ TensorApproximationAlgorithm::TensorApproximationAlgorithm()
   : MetaModelAlgorithm()
   , maxRank_(1)
   , maximumAlternatingLeastSquaresIteration_(ResourceMap::GetAsUnsignedInteger("TensorApproximationAlgorithm-DefaultMaximumAlternatingLeastSquaresIteration"))
-  , maximumRadiusError_(ResourceMap::GetAsNumericalScalar("TensorApproximationAlgorithm-DefaultMaximumRadiusError"))
-  , maximumResidualError_(ResourceMap::GetAsNumericalScalar("TensorApproximationAlgorithm-DefaultMaximumResidualError"))
+  , maximumRadiusError_(ResourceMap::GetAsScalar("TensorApproximationAlgorithm-DefaultMaximumRadiusError"))
+  , maximumResidualError_(ResourceMap::GetAsScalar("TensorApproximationAlgorithm-DefaultMaximumResidualError"))
 {
   // Nothing to do
 }
@@ -72,8 +72,8 @@ TensorApproximationAlgorithm::TensorApproximationAlgorithm(const Sample & inputS
   , maxRank_(maxRank)
   , basisFactory_(basisFactory)
   , maximumAlternatingLeastSquaresIteration_(ResourceMap::GetAsUnsignedInteger("TensorApproximationAlgorithm-DefaultMaximumAlternatingLeastSquaresIteration"))
-  , maximumRadiusError_(ResourceMap::GetAsNumericalScalar("TensorApproximationAlgorithm-DefaultMaximumRadiusError"))
-  , maximumResidualError_(ResourceMap::GetAsNumericalScalar("TensorApproximationAlgorithm-DefaultMaximumResidualError"))
+  , maximumRadiusError_(ResourceMap::GetAsScalar("TensorApproximationAlgorithm-DefaultMaximumRadiusError"))
+  , maximumResidualError_(ResourceMap::GetAsScalar("TensorApproximationAlgorithm-DefaultMaximumResidualError"))
 {
   // Check sample size
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";

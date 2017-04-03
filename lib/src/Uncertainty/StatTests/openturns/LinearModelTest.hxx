@@ -41,84 +41,84 @@ public:
   static TestResult LinearModelAdjustedRSquared(const Sample & firstSample,
       const Sample & secondSample,
       const LinearModel & linearModel,
-      const NumericalScalar level = ResourceMap::GetAsNumericalScalar( "LinearModelTest-DefaultLevel" ));
+      const NumericalScalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
 
   /**  */
   static TestResult LinearModelAdjustedRSquared(const Sample & firstSample,
       const Sample & secondSample,
-      const NumericalScalar level = ResourceMap::GetAsNumericalScalar( "LinearModelTest-DefaultLevel" ));
+      const NumericalScalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
 
   /**  */
   static TestResult LinearModelFisher(const Sample & firstSample,
                                       const Sample & secondSample,
                                       const LinearModel & linearModel,
-                                      const NumericalScalar level = ResourceMap::GetAsNumericalScalar( "LinearModelTest-DefaultLevel" ));
+                                      const NumericalScalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
 
   /**  */
   static TestResult LinearModelFisher(const Sample & firstSample,
                                       const Sample & secondSample,
-                                      const NumericalScalar level = ResourceMap::GetAsNumericalScalar( "LinearModelTest-DefaultLevel" ));
+                                      const NumericalScalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
 
   /**  */
   static TestResult LinearModelResidualMean(const Sample & firstSample,
       const Sample & secondSample,
       const LinearModel & linearModel,
-      const NumericalScalar level = ResourceMap::GetAsNumericalScalar( "LinearModelTest-DefaultLevel" ));
+      const NumericalScalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
 
   /**  */
   static TestResult LinearModelResidualMean(const Sample & firstSample,
       const Sample & secondSample,
-      const NumericalScalar level = ResourceMap::GetAsNumericalScalar( "LinearModelTest-DefaultLevel" ));
+      const NumericalScalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
 
   /**  */
   static TestResult LinearModelRSquared(const Sample & firstSample,
                                         const Sample & secondSample,
                                         const LinearModel & linearModel,
-                                        const NumericalScalar level = ResourceMap::GetAsNumericalScalar( "LinearModelTest-DefaultLevel" ));
+                                        const NumericalScalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
 
   /**  */
   static TestResult LinearModelRSquared(const Sample & firstSample,
                                         const Sample & secondSample,
-                                        const NumericalScalar level = ResourceMap::GetAsNumericalScalar( "LinearModelTest-DefaultLevel" ));
+                                        const NumericalScalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
 
   /**  */
   static TestResult LinearModelHarrisonMcCabe(const Sample & firstSample,
       const Sample & secondSample,
       const LinearModel & linearModel,
-      const NumericalScalar level = ResourceMap::GetAsNumericalScalar( "LinearModelTest-DefaultLevel" ),
-      const NumericalScalar breakPoint = ResourceMap::GetAsNumericalScalar( "LinearModelTest-DefaultHarrisonMcCabeBreakpoint" ),
+      const NumericalScalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ),
+      const NumericalScalar breakPoint = ResourceMap::GetAsScalar( "LinearModelTest-DefaultHarrisonMcCabeBreakpoint" ),
       const NumericalScalar simulationSize = ResourceMap::GetAsUnsignedInteger( "LinearModelTest-DefaultHarrisonMcCabeSimulationSize" ));
 
   /**  */
   static TestResult LinearModelHarrisonMcCabe(const Sample & firstSample,
       const Sample & secondSample,
-      const NumericalScalar level = ResourceMap::GetAsNumericalScalar( "LinearModelTest-DefaultLevel" ),
-      const NumericalScalar breakPoint = ResourceMap::GetAsNumericalScalar( "LinearModelTest-DefaultHarrisonMcCabeBreakpoint" ),
+      const NumericalScalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ),
+      const NumericalScalar breakPoint = ResourceMap::GetAsScalar( "LinearModelTest-DefaultHarrisonMcCabeBreakpoint" ),
       const NumericalScalar simulationSize = ResourceMap::GetAsUnsignedInteger( "LinearModelTest-DefaultHarrisonMcCabeSimulationSize" ));
 
   /**  */
   static TestResult LinearModelBreuschPagan(const Sample & firstSample,
       const Sample & secondSample,
       const LinearModel & linearModel,
-      const NumericalScalar level = ResourceMap::GetAsNumericalScalar( "LinearModelTest-DefaultLevel" ));
+      const NumericalScalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
 
   /**  */
   static TestResult LinearModelBreuschPagan(const Sample & firstSample,
       const Sample & secondSample,
-      const NumericalScalar level = ResourceMap::GetAsNumericalScalar( "LinearModelTest-DefaultLevel" ));
+      const NumericalScalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
 
   /**  */
   static TestResult LinearModelDurbinWatson(const Sample & firstSample,
       const Sample & secondSample,
       const LinearModel & linearModel,
       const String hypothesis = ResourceMap::Get( "LinearModelTest-DefaultDurbinWatsonHypothesis" ),
-      const NumericalScalar level = ResourceMap::GetAsNumericalScalar( "LinearModelTest-DefaultLevel" ));
+      const NumericalScalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
 
   /**  */
   static TestResult LinearModelDurbinWatson(const Sample & firstSample,
       const Sample & secondSample,
       const String hypothesis = ResourceMap::Get( "LinearModelTest-DefaultDurbinWatsonHypothesis" ),
-      const NumericalScalar level = ResourceMap::GetAsNumericalScalar( "LinearModelTest-DefaultLevel" ));
+      const NumericalScalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
 
 protected:
   /** Generic invocation of a R script for testing a distribution against a sample */

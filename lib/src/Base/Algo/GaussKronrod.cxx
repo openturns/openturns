@@ -37,7 +37,7 @@ static const Factory<GaussKronrod> Factory_GaussKronrod;
 GaussKronrod::GaussKronrod()
   : IntegrationAlgorithmImplementation()
   , maximumSubIntervals_(ResourceMap::GetAsUnsignedInteger("GaussKronrod-MaximumSubIntervals"))
-  , maximumError_(ResourceMap::GetAsNumericalScalar("GaussKronrod-MaximumError"))
+  , maximumError_(ResourceMap::GetAsScalar("GaussKronrod-MaximumError"))
   , rule_()
 {
   // Check the maximum number of sub-intervals

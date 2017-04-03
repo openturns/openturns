@@ -214,7 +214,7 @@ void KrigingAlgorithm::run()
   // Meta model definition
   metaModel.setEvaluation(new KrigingEvaluation(basis, normalizedInputSample, conditionalCovarianceModel, trendCoefficients, covarianceCoefficients));
   metaModel.setGradient(new KrigingGradient(basis, normalizedInputSample, conditionalCovarianceModel, trendCoefficients, covarianceCoefficients));
-  metaModel.setHessian(new CenteredFiniteDifferenceHessian(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), metaModel.getEvaluation()));
+  metaModel.setHessian(new CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), metaModel.getEvaluation()));
   // First build the meta-model on the transformed data
   // Then add the transformation if needed
   if (normalize_) metaModel = ComposedFunction(metaModel, glmResult.getTransformation());

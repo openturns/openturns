@@ -42,7 +42,7 @@ TruncatedDistribution::TruncatedDistribution()
   , finiteLowerBound_(true)
   , upperBound_(1.0)
   , finiteUpperBound_(true)
-  , thresholdRealization_(ResourceMap::GetAsNumericalScalar("TruncatedDistribution-DefaultThresholdRealization"))
+  , thresholdRealization_(ResourceMap::GetAsScalar("TruncatedDistribution-DefaultThresholdRealization"))
   , pdfLowerBound_(1.0)
   , pdfUpperBound_(1.0)
   , cdfLowerBound_(0.0)
@@ -379,7 +379,7 @@ Description TruncatedDistribution::getParameterDescription() const
 /* Check if the distribution is elliptical */
 Bool TruncatedDistribution::isElliptical() const
 {
-  return distribution_.isElliptical() && finiteLowerBound_ && finiteUpperBound_ && (std::abs(distribution_.getRange().getLowerBound()[0] - lowerBound_ + distribution_.getRange().getUpperBound()[0] - upperBound_) < ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon"));
+  return distribution_.isElliptical() && finiteLowerBound_ && finiteUpperBound_ && (std::abs(distribution_.getRange().getLowerBound()[0] - lowerBound_ + distribution_.getRange().getUpperBound()[0] - upperBound_) < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon"));
 }
 
 /* distribution accessor */

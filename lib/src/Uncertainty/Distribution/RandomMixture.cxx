@@ -73,10 +73,10 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  ))
   , storedSize_(0)
   , characteristicValuesCache_(0)
-  , alpha_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultAlpha" ))
-  , beta_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultBeta" ))
-  , pdfPrecision_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultPDFEpsilon" ))
-  , cdfPrecision_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultCDFEpsilon" ))
+  , alpha_(ResourceMap::GetAsScalar( "RandomMixture-DefaultAlpha" ))
+  , beta_(ResourceMap::GetAsScalar( "RandomMixture-DefaultBeta" ))
+  , pdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultPDFEpsilon" ))
+  , cdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultCDFEpsilon" ))
   , equivalentNormal_()
 {
   setName("RandomMixture");
@@ -108,10 +108,10 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  ))
   , storedSize_(0)
   , characteristicValuesCache_(0)
-  , alpha_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultAlpha" ))
-  , beta_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultBeta" ))
-  , pdfPrecision_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultPDFEpsilon" ))
-  , cdfPrecision_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultCDFEpsilon" ))
+  , alpha_(ResourceMap::GetAsScalar( "RandomMixture-DefaultAlpha" ))
+  , beta_(ResourceMap::GetAsScalar( "RandomMixture-DefaultBeta" ))
+  , pdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultPDFEpsilon" ))
+  , cdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultCDFEpsilon" ))
   , equivalentNormal_()
 {
   setName("RandomMixture");
@@ -145,10 +145,10 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  ))
   , storedSize_(0)
   , characteristicValuesCache_(0)
-  , alpha_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultAlpha" ))
-  , beta_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultBeta" ))
-  , pdfPrecision_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultPDFEpsilon" ))
-  , cdfPrecision_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultCDFEpsilon" ))
+  , alpha_(ResourceMap::GetAsScalar( "RandomMixture-DefaultAlpha" ))
+  , beta_(ResourceMap::GetAsScalar( "RandomMixture-DefaultBeta" ))
+  , pdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultPDFEpsilon" ))
+  , cdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultCDFEpsilon" ))
   , equivalentNormal_()
 {
   setName("RandomMixture");
@@ -181,10 +181,10 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  ))
   , storedSize_(0)
   , characteristicValuesCache_(0)
-  , alpha_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultAlpha" ))
-  , beta_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultBeta" ))
-  , pdfPrecision_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultPDFEpsilon" ))
-  , cdfPrecision_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultCDFEpsilon" ))
+  , alpha_(ResourceMap::GetAsScalar( "RandomMixture-DefaultAlpha" ))
+  , beta_(ResourceMap::GetAsScalar( "RandomMixture-DefaultBeta" ))
+  , pdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultPDFEpsilon" ))
+  , cdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultCDFEpsilon" ))
   , equivalentNormal_()
 {
   setName("RandomMixture");
@@ -214,10 +214,10 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  ))
   , storedSize_(0)
   , characteristicValuesCache_(0)
-  , alpha_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultAlpha" ))
-  , beta_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultBeta" ))
-  , pdfPrecision_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultPDFEpsilon" ))
-  , cdfPrecision_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultCDFEpsilon" ))
+  , alpha_(ResourceMap::GetAsScalar( "RandomMixture-DefaultAlpha" ))
+  , beta_(ResourceMap::GetAsScalar( "RandomMixture-DefaultBeta" ))
+  , pdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultPDFEpsilon" ))
+  , cdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultCDFEpsilon" ))
   , equivalentNormal_()
 {
   setName("RandomMixture");
@@ -245,10 +245,10 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  ))
   , storedSize_(0)
   , characteristicValuesCache_(0)
-  , alpha_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultAlpha" ))
-  , beta_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultBeta" ))
-  , pdfPrecision_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultPDFEpsilon" ))
-  , cdfPrecision_(ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultCDFEpsilon" ))
+  , alpha_(ResourceMap::GetAsScalar( "RandomMixture-DefaultAlpha" ))
+  , beta_(ResourceMap::GetAsScalar( "RandomMixture-DefaultBeta" ))
+  , pdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultPDFEpsilon" ))
+  , cdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultCDFEpsilon" ))
   , equivalentNormal_()
 {
   setName("RandomMixture");
@@ -1882,7 +1882,7 @@ NumericalScalar RandomMixture::computeProbability(const Interval & interval) con
   // Special case for combination containing only one contributor
   if (isAnalytical_)
   {
-    cdfEpsilon_ = ResourceMap::GetAsNumericalScalar( "RandomMixture-DefaultCDFEpsilon" );
+    cdfEpsilon_ = ResourceMap::GetAsScalar( "RandomMixture-DefaultCDFEpsilon" );
     const NumericalScalar lower = interval.getLowerBound()[0];
     const NumericalScalar upper = interval.getUpperBound()[0];
     const NumericalScalar weight = getWeight();

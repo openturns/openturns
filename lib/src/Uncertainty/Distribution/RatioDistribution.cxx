@@ -297,7 +297,7 @@ NumericalComplex RatioDistribution::computeCharacteristicFunction(const Numerica
   const NumericalScalar varLeft = left_.getCovariance()(0, 0);
   const NumericalScalar varRight = right_.getCovariance()(0, 0);
   if (x * x * (varLeft + muLeft * muLeft + varRight + muRight * muRight) < 2.0 * SpecFunc::NumericalScalarEpsilon) return NumericalComplex(1.0, -x * muLeft * muRight);
-  if (std::abs(x) > ResourceMap::GetAsNumericalScalar("RatioDistribution-LargeCharacteristicFunctionArgument")) return ContinuousDistribution::computeCharacteristicFunction(x);
+  if (std::abs(x) > ResourceMap::GetAsScalar("RatioDistribution-LargeCharacteristicFunctionArgument")) return ContinuousDistribution::computeCharacteristicFunction(x);
   NumericalComplex result(0.0);
   const NumericalScalar aLeft = left_.getRange().getLowerBound()[0];
   const NumericalScalar bLeft = left_.getRange().getUpperBound()[0];

@@ -86,7 +86,7 @@ const NumericalScalar SpecFunc::LogMaxNumericalScalar = log(MaxNumericalScalar);
 const NumericalScalar SpecFunc::NumericalScalarEpsilon = std::numeric_limits<NumericalScalar>::epsilon();
 // Maximum number of iterations for the algorithms
 const UnsignedInteger SpecFunc::MaximumIteration = ResourceMap::GetAsUnsignedInteger("SpecFunc-MaximumIteration");
-const NumericalScalar SpecFunc::Precision = ResourceMap::GetAsNumericalScalar("SpecFunc-Precision");
+const NumericalScalar SpecFunc::Precision = ResourceMap::GetAsScalar("SpecFunc-Precision");
 
 // Some facilities for NaN and inf
 Bool SpecFunc::IsNaN(const NumericalScalar value)

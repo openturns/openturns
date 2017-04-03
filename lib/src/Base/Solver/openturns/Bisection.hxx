@@ -38,9 +38,9 @@ class OT_API Bisection :
 public:
 
   /** Parameter constructor */
-  explicit Bisection(const NumericalScalar absoluteError = ResourceMap::GetAsNumericalScalar("Solver-DefaultAbsoluteError"),
-                     const NumericalScalar relativeError = ResourceMap::GetAsNumericalScalar("Solver-DefaultRelativeError"),
-                     const NumericalScalar residualError = ResourceMap::GetAsNumericalScalar("Solver-DefaultResidualError"),
+  explicit Bisection(const NumericalScalar absoluteError = ResourceMap::GetAsScalar("Solver-DefaultAbsoluteError"),
+                     const NumericalScalar relativeError = ResourceMap::GetAsScalar("Solver-DefaultRelativeError"),
+                     const NumericalScalar residualError = ResourceMap::GetAsScalar("Solver-DefaultResidualError"),
                      const UnsignedInteger maximumFunctionEvaluation = ResourceMap::GetAsUnsignedInteger("Solver-DefaultMaximumFunctionEvaluation"));
 
 

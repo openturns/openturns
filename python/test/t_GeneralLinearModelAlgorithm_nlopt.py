@@ -15,9 +15,9 @@ try:
     print("Test using NLOpt")
     print("================")
     # Calibration of default optimizer
-    ot.ResourceMap.SetAsNumericalScalar(
+    ot.ResourceMap.SetAsScalar(
         'GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound', 1.0e-5)
-    ot.ResourceMap.SetAsNumericalScalar(
+    ot.ResourceMap.SetAsScalar(
         'GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound', 100)
     # Data & estimation
     spatialDimension = 1

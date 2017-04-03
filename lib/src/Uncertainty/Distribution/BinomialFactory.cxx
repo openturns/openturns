@@ -69,7 +69,7 @@ Binomial BinomialFactory::buildAsBinomial(const Sample & sample) const
   NumericalScalar var = 0.0;
   NumericalScalar sum = 0.0;
   UnsignedInteger upperBound = 0;
-  const NumericalScalar supportEpsilon = ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon");
+  const NumericalScalar supportEpsilon = ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon");
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const NumericalScalar x = sample[i][0];

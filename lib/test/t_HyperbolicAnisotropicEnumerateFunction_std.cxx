@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
   try
   {
 
-    fullprint << "Default q : " << ResourceMap::GetAsNumericalScalar("HyperbolicAnisotropicEnumerateFunction-DefaultQ") << std::endl << std::endl;
+    fullprint << "Default q : " << ResourceMap::GetAsScalar("HyperbolicAnisotropicEnumerateFunction-DefaultQ") << std::endl << std::endl;
 
     // first verify consistency with LinearEnumerateFunction
     UnsignedInteger size = 10;

@@ -46,8 +46,8 @@ Simulation::Simulation(const Bool verbose, const HistoryStrategy & convergenceSt
   , progressCallback_(std::make_pair<ProgressCallback, void *>(0, 0))
   , stopCallback_(std::make_pair<StopCallback, void *>(0, 0))
   , maximumOuterSampling_(ResourceMap::GetAsUnsignedInteger( "Simulation-DefaultMaximumOuterSampling" ))
-  , maximumCoefficientOfVariation_(ResourceMap::GetAsNumericalScalar( "Simulation-DefaultMaximumCoefficientOfVariation" ))
-  , maximumStandardDeviation_(ResourceMap::GetAsNumericalScalar( "Simulation-DefaultMaximumStandardDeviation" ))
+  , maximumCoefficientOfVariation_(ResourceMap::GetAsScalar( "Simulation-DefaultMaximumCoefficientOfVariation" ))
+  , maximumStandardDeviation_(ResourceMap::GetAsScalar( "Simulation-DefaultMaximumStandardDeviation" ))
   , verbose_(verbose)
 {
   // Nothing to do
@@ -65,8 +65,8 @@ Simulation::Simulation(const Event & event,
   , progressCallback_(std::make_pair<ProgressCallback, void *>(0, 0))
   , stopCallback_(std::make_pair<StopCallback, void *>(0, 0))
   , maximumOuterSampling_(ResourceMap::GetAsUnsignedInteger( "Simulation-DefaultMaximumOuterSampling" ))
-  , maximumCoefficientOfVariation_(ResourceMap::GetAsNumericalScalar( "Simulation-DefaultMaximumCoefficientOfVariation" ))
-  , maximumStandardDeviation_(ResourceMap::GetAsNumericalScalar( "Simulation-DefaultMaximumStandardDeviation" ))
+  , maximumCoefficientOfVariation_(ResourceMap::GetAsScalar( "Simulation-DefaultMaximumCoefficientOfVariation" ))
+  , maximumStandardDeviation_(ResourceMap::GetAsScalar( "Simulation-DefaultMaximumStandardDeviation" ))
   , verbose_(verbose)
 {
   // Nothing to do

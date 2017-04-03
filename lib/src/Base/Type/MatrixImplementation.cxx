@@ -577,7 +577,7 @@ Bool MatrixImplementation::operator == (const MatrixImplementation & rhs) const
 
 Bool MatrixImplementation::isSymmetric() const
 {
-  const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("Matrix-SymmetryThreshold");
+  const NumericalScalar epsilon = ResourceMap::GetAsScalar("Matrix-SymmetryThreshold");
   if ( nbRows_ == nbColumns_ )
   {
     for ( UnsignedInteger i = 1; i < nbRows_; ++ i )
@@ -681,7 +681,7 @@ MatrixImplementation MatrixImplementation::solveLinearSystemRect (const MatrixIm
   double lwork_d = -1.;
   int info = -1;
   std::vector<int> jpiv(n);
-  double rcond(ResourceMap::GetAsNumericalScalar("Matrix-DefaultSmallPivot"));
+  double rcond(ResourceMap::GetAsScalar("Matrix-DefaultSmallPivot"));
   int rank = -1;
 
   MatrixImplementation Q;

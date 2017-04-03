@@ -46,8 +46,8 @@ Multinomial::Multinomial()
   , n_(0)
   , p_(0)
   , sumP_(0.0)
-  , smallA_(ResourceMap::GetAsNumericalScalar("Multinomial-smallA"))
-  , eta_(ResourceMap::GetAsNumericalScalar("Multinomial-eta"))
+  , smallA_(ResourceMap::GetAsScalar("Multinomial-smallA"))
+  , eta_(ResourceMap::GetAsScalar("Multinomial-eta"))
 {
   setName("Multinomial");
   // This method compute the range also
@@ -62,8 +62,8 @@ Multinomial::Multinomial(const UnsignedInteger n,
   , n_(0)
   , p_(0)
   , sumP_(0.0)
-  , smallA_(ResourceMap::GetAsNumericalScalar("Multinomial-smallA"))
-  , eta_(ResourceMap::GetAsNumericalScalar("Multinomial-eta"))
+  , smallA_(ResourceMap::GetAsScalar("Multinomial-smallA"))
+  , eta_(ResourceMap::GetAsScalar("Multinomial-eta"))
 {
   setName("Multinomial");
   // This method compute the range also

@@ -30,7 +30,7 @@ CLASSNAMEINIT(DiscreteDistribution);
 /* Default constructor */
 DiscreteDistribution::DiscreteDistribution()
   : DistributionImplementation()
-  , supportEpsilon_(ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon"))
+  , supportEpsilon_(ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon"))
 {
   // Nothing to do
 }

@@ -123,7 +123,7 @@ Rice RiceFactory::buildAsRice(const Sample & sample) const
   }
   if ((std::abs(fA) > largeValue) || (std::abs(fB) > largeValue) || (std::abs(b) > largeValue) || (iteration == maximumIteration)) throw InvalidArgumentException(HERE) << "Error: cannot estimate parameters of a Rice distribution from the given sample";
   // Solve the constraint equation
-  Brent solver(ResourceMap::GetAsNumericalScalar( "RiceFactory-AbsolutePrecision" ), ResourceMap::GetAsNumericalScalar( "RiceFactory-RelativePrecision" ), ResourceMap::GetAsNumericalScalar( "RiceFactory-ResidualPrecision" ), maximumIteration);
+  Brent solver(ResourceMap::GetAsScalar( "RiceFactory-AbsolutePrecision" ), ResourceMap::GetAsScalar( "RiceFactory-RelativePrecision" ), ResourceMap::GetAsScalar( "RiceFactory-ResidualPrecision" ), maximumIteration);
   // u estimate
   const NumericalScalar u = solver.solve(f, 0.0, a, b, fA, fB);
   const NumericalScalar xiU = constraint.computeXi(u);

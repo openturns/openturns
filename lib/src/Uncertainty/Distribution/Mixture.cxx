@@ -217,7 +217,7 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
     if (w > maximumWeight) maximumWeight = w;
     weightSum += w;
   } /* end for */
-  const NumericalScalar smallWeight = ResourceMap::GetAsNumericalScalar("Mixture-SmallWeight");
+  const NumericalScalar smallWeight = ResourceMap::GetAsScalar("Mixture-SmallWeight");
   if (weightSum < smallWeight)
     // We throw an exception because the collection of distributions has only distributions with small weight: they cannot be renormalized
     throw InvalidArgumentException(HERE) << "Collection of distributions has atoms with too small total weight=" << weightSum << " for a threshold equal to Mixture-SmallWeight=" << smallWeight;

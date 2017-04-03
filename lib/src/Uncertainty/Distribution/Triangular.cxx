@@ -301,13 +301,13 @@ Point Triangular::getStandardMoment(const UnsignedInteger n) const
   if (n % 2 == 0)
   {
     // Vertical part?
-    if (1.0 - std::abs(mu) < ResourceMap::GetAsNumericalScalar("Distribution-DefaultPDFEpsilon")) return Point(1, 1.0 / (n + 1.0));
+    if (1.0 - std::abs(mu) < ResourceMap::GetAsScalar("Distribution-DefaultPDFEpsilon")) return Point(1, 1.0 / (n + 1.0));
     // Usual case
     return Point(1, 2.0 * (1.0 - std::pow(mu, n + 2.0)) / ((n + 1.0) * (n + 2.0) * (1.0 - mu) * (1.0 + mu)));
   }
   // Odd order
   // Vertical part?
-  if (1.0 - std::abs(mu) < ResourceMap::GetAsNumericalScalar("Distribution-DefaultPDFEpsilon")) return Point(1, 1.0 / (n + 2.0));
+  if (1.0 - std::abs(mu) < ResourceMap::GetAsScalar("Distribution-DefaultPDFEpsilon")) return Point(1, 1.0 / (n + 2.0));
   return Point(1, 2.0 * mu * (1.0 - std::pow(mu, n + 1.0)) / ((n + 1.0) * (n + 2.0) * (1.0 - mu) * (1.0 + mu)));
 }
 
@@ -349,7 +349,7 @@ Description Triangular::getParameterDescription() const
 /* Check if the distribution is elliptical */
 Bool Triangular::isElliptical() const
 {
-  return std::abs(m_ - 0.5 * (a_ + b_)) < ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon");
+  return std::abs(m_ - 0.5 * (a_ + b_)) < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
 }
 
 /* Interface specific to Triangular */

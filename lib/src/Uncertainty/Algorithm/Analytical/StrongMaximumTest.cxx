@@ -105,7 +105,7 @@ StrongMaximumTest::StrongMaximumTest(const StandardEvent & event,
     farDesignPointViolatingEventPoints_(0, standardSpaceDesignPoint.getDimension()),
     farDesignPointViolatingEventValues_(0, 1)
 {
-  if (standardSpaceDesignPoint.norm() < ResourceMap::GetAsNumericalScalar( "StrongMaximumTest-Epsilon" )) throw InvalidArgumentException(HERE) << "Error: the given standard space design point is too close to the origin for the strong maximum test to work, norm=" << standardSpaceDesignPoint.norm();
+  if (standardSpaceDesignPoint.norm() < ResourceMap::GetAsScalar( "StrongMaximumTest-Epsilon" )) throw InvalidArgumentException(HERE) << "Error: the given standard space design point is too close to the origin for the strong maximum test to work, norm=" << standardSpaceDesignPoint.norm();
   setImportanceLevel(importanceLevel);
   setAccuracyLevel(accuracyLevel);
   setPointNumber(pointNumber);
@@ -418,7 +418,7 @@ NumericalScalar StrongMaximumTest::computeDeltaEpsilon()
 
   /* we proceed to the dichotomie on [deltaMin deltaMax] */
   NumericalScalar deltaMiddle = 0.0;
-  const NumericalScalar deltaEpsilon = ResourceMap::GetAsNumericalScalar( "StrongMaximumTest-DefaultDeltaPrecision" );
+  const NumericalScalar deltaEpsilon = ResourceMap::GetAsScalar( "StrongMaximumTest-DefaultDeltaPrecision" );
   while ( (deltaMax - deltaMin) > deltaEpsilon )
   {
     /* we evaluate the middle of  [deltaMin deltaMax] */

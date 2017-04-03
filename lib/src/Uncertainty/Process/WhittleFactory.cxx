@@ -187,7 +187,7 @@ NumericalScalar WhittleFactory::computeLogLikelihood(const Point & theta) const
 /* Compute the log-likelihood constraint */
 Point WhittleFactory::computeLogLikelihoodInequalityConstraint(const Point & theta) const
 {
-  const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("WhittleFactory-RootEpsilon");
+  const NumericalScalar epsilon = ResourceMap::GetAsScalar("WhittleFactory-RootEpsilon");
 
   Point result(nbInequalityConstraint_, 0.0);
 
@@ -255,9 +255,9 @@ void WhittleFactory::initializeCobylaSolverParameter()
 {
   Cobyla* cobyla = dynamic_cast<Cobyla *>(solver_.getImplementation().get());
   if (cobyla == NULL) throw InternalException(HERE);
-  cobyla->setRhoBeg(ResourceMap::GetAsNumericalScalar("WhittleFactory-DefaultRhoBeg"));
+  cobyla->setRhoBeg(ResourceMap::GetAsScalar("WhittleFactory-DefaultRhoBeg"));
 
-  solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("WhittleFactory-DefaultRhoEnd"));
+  solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("WhittleFactory-DefaultRhoEnd"));
   solver_.setMaximumIterationNumber(ResourceMap::GetAsUnsignedInteger("WhittleFactory-DefaultMaxFun"));
 }
 
@@ -534,7 +534,7 @@ void WhittleFactory::initializeStartingPoints()
 {
   startingPoints_ = Collection< Point >(0);
   // Initialization of the starting point
-  const NumericalScalar theta0 = ResourceMap::GetAsNumericalScalar("WhittleFactory-DefaultStartingPointScale");
+  const NumericalScalar theta0 = ResourceMap::GetAsScalar("WhittleFactory-DefaultStartingPointScale");
   const UnsignedInteger sizeP = p_.getSize();
   const UnsignedInteger sizeQ = q_.getSize();
   for (UnsignedInteger pIndex = 0; pIndex < sizeP; ++pIndex)

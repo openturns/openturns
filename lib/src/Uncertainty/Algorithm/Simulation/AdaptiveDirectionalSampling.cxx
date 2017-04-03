@@ -32,7 +32,7 @@ CLASSNAMEINIT(AdaptiveDirectionalSampling);
 AdaptiveDirectionalSampling::AdaptiveDirectionalSampling()
   : Simulation()
   , partialStratification_(false)
-  , maximumStratificationDimension_(ResourceMap::GetAsNumericalScalar("AdaptiveDirectionalSampling-DefaultMaximumStratificationDimension"))
+  , maximumStratificationDimension_(ResourceMap::GetAsScalar("AdaptiveDirectionalSampling-DefaultMaximumStratificationDimension"))
 {
   // Nothing to do
 }
@@ -45,7 +45,7 @@ AdaptiveDirectionalSampling::AdaptiveDirectionalSampling(const Event & event,
   , standardEvent_(StandardEvent(event))
   , rootStrategy_(rootStrategy)
   , samplingStrategy_(samplingStrategy)
-  , gamma_(ResourceMap::GetAsUnsignedInteger("AdaptiveDirectionalSampling-DefaultNumberOfSteps"), ResourceMap::GetAsNumericalScalar("AdaptiveDirectionalSampling-DefaultGamma"))
+  , gamma_(ResourceMap::GetAsUnsignedInteger("AdaptiveDirectionalSampling-DefaultNumberOfSteps"), ResourceMap::GetAsScalar("AdaptiveDirectionalSampling-DefaultGamma"))
   , partialStratification_(false)
   , maximumStratificationDimension_(ResourceMap::GetAsUnsignedInteger("AdaptiveDirectionalSampling-DefaultMaximumStratificationDimension"))
 {

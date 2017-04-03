@@ -138,7 +138,7 @@ public:
   {
     const NumericalScalar x = point[0];
     kernel_.setX(x);
-    return GaussKronrod(ResourceMap::GetAsUnsignedInteger("KFactor-DefaultIntegrationNodesNumber"), ResourceMap::GetAsNumericalScalar("KFactor-Precision"), GaussKronrodRule(GaussKronrodRule::G7K15)).integrate(kernel_, Interval(0.0, KFactorFunctions_RMAX / std::sqrt(n_)));
+    return GaussKronrod(ResourceMap::GetAsUnsignedInteger("KFactor-DefaultIntegrationNodesNumber"), ResourceMap::GetAsScalar("KFactor-Precision"), GaussKronrodRule(GaussKronrodRule::G7K15)).integrate(kernel_, Interval(0.0, KFactorFunctions_RMAX / std::sqrt(n_)));
   }
 
   UnsignedInteger getInputDimension() const
@@ -191,7 +191,7 @@ NumericalScalar KFactor(const NumericalScalar n,
   if (!((p >= 0.0) && (p <= 1.0))) throw InvalidArgumentException(HERE) << "Error: p must be in [0, 1], here p=" << p;
   if (!((alpha >= 0.0) && (alpha <= 1.0))) throw InvalidArgumentException(HERE) << "Error: alpha must be in [0, 1], here alpha=" << alpha;
   const ConstraintFunction constraint(nu, p, n);
-  const Brent solver(ResourceMap::GetAsNumericalScalar("KFactor-Precision"), ResourceMap::GetAsNumericalScalar("KFactor-Precision"), ResourceMap::GetAsNumericalScalar("KFactor-Precision"), ResourceMap::GetAsUnsignedInteger("KFactor-MaximumIteration"));
+  const Brent solver(ResourceMap::GetAsScalar("KFactor-Precision"), ResourceMap::GetAsScalar("KFactor-Precision"), ResourceMap::GetAsScalar("KFactor-Precision"), ResourceMap::GetAsUnsignedInteger("KFactor-MaximumIteration"));
   return solver.solve(constraint, 0.5 * (1.0 - alpha), SpecFunc::NumericalScalarEpsilon, KFactorFunctions_RMAX);
 }
 

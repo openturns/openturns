@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
     }
     // Covariance and correlation
     ResourceMap::SetAsUnsignedInteger( "GaussKronrod-MaximumSubIntervals", 20 );
-    ResourceMap::SetAsNumericalScalar( "GaussKronrod-MaximumError",  1.0e-4 );
+    ResourceMap::SetAsScalar( "GaussKronrod-MaximumError",  1.0e-4 );
     CovarianceMatrix covariance = copula.getCovariance();
     fullprint << "covariance=" << covariance << std::endl;
     CorrelationMatrix correlation = copula.getCorrelation();
@@ -135,7 +135,7 @@ int main(int argc, char *argv[])
     CorrelationMatrix kendall = copula.getKendallTau();
     fullprint << "kendall=" << kendall << std::endl;
     ResourceMap::SetAsUnsignedInteger( "GaussKronrod-MaximumSubIntervals", 100 );
-    ResourceMap::SetAsNumericalScalar( "GaussKronrod-MaximumError",  1.0e-12 );
+    ResourceMap::SetAsScalar( "GaussKronrod-MaximumError",  1.0e-12 );
 
     // Extract the marginals
     for (UnsignedInteger i = 0; i < dim; i++)

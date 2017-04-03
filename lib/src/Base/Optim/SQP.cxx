@@ -39,18 +39,18 @@ static const Factory<SQP> Factory_SQP;
 /* Default constructor */
 SQP::SQP()
   : OptimizationAlgorithmImplementation()
-  , tau_(ResourceMap::GetAsNumericalScalar("SQP-DefaultTau"))
-  , omega_(ResourceMap::GetAsNumericalScalar("SQP-DefaultOmega"))
-  , smooth_(ResourceMap::GetAsNumericalScalar("SQP-DefaultSmooth"))
+  , tau_(ResourceMap::GetAsScalar("SQP-DefaultTau"))
+  , omega_(ResourceMap::GetAsScalar("SQP-DefaultOmega"))
+  , smooth_(ResourceMap::GetAsScalar("SQP-DefaultSmooth"))
 {
   initialize();
 }
 
 SQP::SQP(const OptimizationProblem & problem)
   : OptimizationAlgorithmImplementation(problem)
-  , tau_(ResourceMap::GetAsNumericalScalar("SQP-DefaultTau"))
-  , omega_(ResourceMap::GetAsNumericalScalar("SQP-DefaultOmega"))
-  , smooth_(ResourceMap::GetAsNumericalScalar("SQP-DefaultSmooth"))
+  , tau_(ResourceMap::GetAsScalar("SQP-DefaultTau"))
+  , omega_(ResourceMap::GetAsScalar("SQP-DefaultOmega"))
+  , smooth_(ResourceMap::GetAsScalar("SQP-DefaultSmooth"))
 {
   initialize();
   checkProblem(problem);

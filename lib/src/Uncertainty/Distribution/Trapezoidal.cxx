@@ -441,7 +441,7 @@ Description Trapezoidal::getParameterDescription() const
 /* Check if the distribution is elliptical */
 Bool Trapezoidal::isElliptical() const
 {
-  return std::abs(b_ - a_ - (d_ - c_)) < ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon");
+  return std::abs(b_ - a_ - (d_ - c_)) < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
 }
 
 /* Sigma accessor */

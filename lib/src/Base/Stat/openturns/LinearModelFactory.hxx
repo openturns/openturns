@@ -45,7 +45,7 @@ public:
   /** LinearModel creation */
   LinearModel build(const Sample & samplePred,
                     const Sample & sampleLab,
-                    const NumericalScalar levelValue = ResourceMap::GetAsNumericalScalar( "LinearModelFactory-DefaultLevelValue" )) const;
+                    const NumericalScalar levelValue = ResourceMap::GetAsScalar( "LinearModelFactory-DefaultLevelValue" )) const;
 
 }; /* class LinearModelFactory */
 

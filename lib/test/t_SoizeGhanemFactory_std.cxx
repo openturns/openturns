@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
     Point x(2, 0.5);
     UnsignedInteger kMax = 5;
     ResourceMap::SetAsUnsignedInteger( "IteratedQuadrature-MaximumSubIntervals", 2048 );
-    ResourceMap::SetAsNumericalScalar( "IteratedQuadrature-MaximumError",    1.0e-6 );
+    ResourceMap::SetAsScalar( "IteratedQuadrature-MaximumError",    1.0e-6 );
     for (UnsignedInteger i = 0; i < factories.getSize(); ++i)
     {
       SoizeGhanemFactory soize(factories[i]);

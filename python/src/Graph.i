@@ -21,7 +21,7 @@ namespace OT {
     String yTitle;
     Bool showAxes;
     String legendPosition;
-    NumericalScalar legendFontSize = ResourceMap::GetAsNumericalScalar("Graph-DefaultLegendFontSize");
+    NumericalScalar legendFontSize = ResourceMap::GetAsScalar("Graph-DefaultLegendFontSize");
 
     check<_PySequence_>( pyObj );
     ScopedPyObjectPointer newPyObj(PySequence_Fast( pyObj, "" ));

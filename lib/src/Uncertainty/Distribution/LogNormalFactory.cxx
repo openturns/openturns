@@ -120,7 +120,7 @@ LogNormal LogNormalFactory::buildMethodOfLocalLikelihoodMaximization(const Sampl
 {
   const NumericalScalar std = sample.computeStandardDeviationPerComponent()[0];
   if (std == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a LogNormal distribution based on a constant sample using the method of local maximum likelihood.";
-  const NumericalScalar quantileEpsilon = ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon");
+  const NumericalScalar quantileEpsilon = ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
   NumericalScalar step = std * std::sqrt(quantileEpsilon);
   const NumericalScalar xMin = sample.getMin()[0];
   NumericalScalar right = xMin - quantileEpsilon;
@@ -142,7 +142,7 @@ LogNormal LogNormalFactory::buildMethodOfLocalLikelihoodMaximization(const Sampl
   if ((constraintLeft < 0.0) == (constraintRight < 0.0)) throw InvalidArgumentException(HERE) << "Error: unable to bracket the gamma parameter. The local maximum likelihood estimator is not defined";
   // Second, the bisection
   // Solve the constraint equation
-  const Brent solver(ResourceMap::GetAsNumericalScalar("LogNormalFactory-AbsolutePrecision"), ResourceMap::GetAsNumericalScalar("LogNormalFactory-RelativePrecision"), ResourceMap::GetAsNumericalScalar("LogNormalFactory-ResidualPrecision"), ResourceMap::GetAsUnsignedInteger("LogNormalFactory-MaximumIteration"));
+  const Brent solver(ResourceMap::GetAsScalar("LogNormalFactory-AbsolutePrecision"), ResourceMap::GetAsScalar("LogNormalFactory-RelativePrecision"), ResourceMap::GetAsScalar("LogNormalFactory-ResidualPrecision"), ResourceMap::GetAsUnsignedInteger("LogNormalFactory-MaximumIteration"));
   // Gamma estimate
   const NumericalScalar gamma = solver.solve(f, 0.0, left, right, constraintLeft, constraintRight);
   // Third, the final estimates
@@ -201,7 +201,7 @@ LogNormal LogNormalFactory::buildMethodOfModifiedMoments(const Sample & sample) 
   NumericalScalar fA = f(Point(1, a))[0];
   NumericalScalar fB = f(Point(1, b))[0];
   // While f has the same sign at the two bounds, update the interval
-  const NumericalScalar quantileEpsilon = ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon");
+  const NumericalScalar quantileEpsilon = ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
   while ((fA * fB > 0.0) && (ea > quantileEpsilon))
   {
     ea = 0.5 * ea;
@@ -212,14 +212,14 @@ LogNormal LogNormalFactory::buildMethodOfModifiedMoments(const Sample & sample) 
     b = 1.0 + eb;
     fB = f(Point(1, b))[0];
   }
-  const NumericalScalar absolutePrecision = ResourceMap::GetAsNumericalScalar("LogNormalFactory-AbsolutePrecision");
+  const NumericalScalar absolutePrecision = ResourceMap::GetAsScalar("LogNormalFactory-AbsolutePrecision");
   if (a <= quantileEpsilon) throw InvalidArgumentException(HERE) << "Error: the modified moment estimator is not defined";
   NumericalScalar omega = 0.0;
   if (std::abs(fA) < absolutePrecision) omega = a;
   else if (std::abs(fB) < absolutePrecision) omega = b;
   else
   {
-    const Brent solver(absolutePrecision, ResourceMap::GetAsNumericalScalar("LogNormalFactory-RelativePrecision"), ResourceMap::GetAsNumericalScalar("LogNormalFactory-ResidualPrecision"), ResourceMap::GetAsUnsignedInteger("LogNormalFactory-MaximumIteration"));
+    const Brent solver(absolutePrecision, ResourceMap::GetAsScalar("LogNormalFactory-RelativePrecision"), ResourceMap::GetAsScalar("LogNormalFactory-ResidualPrecision"), ResourceMap::GetAsUnsignedInteger("LogNormalFactory-MaximumIteration"));
     // Omega estimate
     omega = solver.solve(f, 0.0, a, b, fA, fB);
   }

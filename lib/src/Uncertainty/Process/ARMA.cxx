@@ -356,7 +356,7 @@ void ARMA::setWhiteNoise(const WhiteNoise & whiteNoise)
   noiseDistribution_ = whiteNoise.getDistribution();
   // Check if the given distribution has a null mean
   const Point mean(noiseDistribution_.getMean());
-  if (mean.norm() > ResourceMap::GetAsNumericalScalar("ARMA-MeanEpsilon"))
+  if (mean.norm() > ResourceMap::GetAsScalar("ARMA-MeanEpsilon"))
     throw InvalidArgumentException(HERE) << "Error: the given distribution has a mean="
                                          << mean.__str__() << " which is not null.";
 }

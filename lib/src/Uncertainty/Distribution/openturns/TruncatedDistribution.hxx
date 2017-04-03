@@ -46,18 +46,18 @@ public:
   TruncatedDistribution(const Distribution & distribution,
                         const NumericalScalar lowerBound,
                         const NumericalScalar upperBound,
-                        const NumericalScalar thresholdRealization = ResourceMap::GetAsNumericalScalar("TruncatedDistribution-DefaultThresholdRealization"));
+                        const NumericalScalar thresholdRealization = ResourceMap::GetAsScalar("TruncatedDistribution-DefaultThresholdRealization"));
 
   /** Parameters constructor to use when one of the bounds is not finite */
   TruncatedDistribution(const Distribution & distribution,
                         const NumericalScalar bound,
                         const BoundSide side = LOWER,
-                        const NumericalScalar thresholdRealization = ResourceMap::GetAsNumericalScalar("TruncatedDistribution-DefaultThresholdRealization"));
+                        const NumericalScalar thresholdRealization = ResourceMap::GetAsScalar("TruncatedDistribution-DefaultThresholdRealization"));
 
   /** Parameters constructor to use when the two bounds are finite */
   TruncatedDistribution(const Distribution & distribution,
                         const Interval & truncationInterval,
-                        const NumericalScalar thresholdRealization = ResourceMap::GetAsNumericalScalar("TruncatedDistribution-DefaultThresholdRealization"));
+                        const NumericalScalar thresholdRealization = ResourceMap::GetAsScalar("TruncatedDistribution-DefaultThresholdRealization"));
 
   /** Comparison operator */
   using DistributionImplementation::operator ==;

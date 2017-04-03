@@ -169,8 +169,8 @@ void GaussianProcess::initialize() const
   Bool continuationCondition = true;
   // Scaling factor of the matrix : M-> M + \lambda I with \lambda very small
   // The regularization is needed for fast decreasing covariance models
-  const NumericalScalar startingScaling = ResourceMap::GetAsNumericalScalar("GaussianProcess-StartingScaling");
-  const NumericalScalar maximalScaling = ResourceMap::GetAsNumericalScalar("GaussianProcess-MaximalScaling");
+  const NumericalScalar startingScaling = ResourceMap::GetAsScalar("GaussianProcess-StartingScaling");
+  const NumericalScalar maximalScaling = ResourceMap::GetAsScalar("GaussianProcess-MaximalScaling");
   NumericalScalar cumulatedScaling = 0.0;
   NumericalScalar scaling = startingScaling;
   HMatrixFactory hmatFactory;

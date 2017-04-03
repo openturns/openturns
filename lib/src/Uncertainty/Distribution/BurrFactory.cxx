@@ -128,7 +128,7 @@ Burr BurrFactory::buildAsBurr(const Sample & sample) const
     fB = f(Point(1, b))[0];
   }
   // Solve the constraint equation
-  Brent solver(ResourceMap::GetAsNumericalScalar( "BurrFactory-AbsolutePrecision" ), ResourceMap::GetAsNumericalScalar( "BurrFactory-RelativePrecision" ), ResourceMap::GetAsNumericalScalar( "BurrFactory-ResidualPrecision" ), ResourceMap::GetAsUnsignedInteger( "BurrFactory-MaximumIteration" ));
+  Brent solver(ResourceMap::GetAsScalar( "BurrFactory-AbsolutePrecision" ), ResourceMap::GetAsScalar( "BurrFactory-RelativePrecision" ), ResourceMap::GetAsScalar( "BurrFactory-ResidualPrecision" ), ResourceMap::GetAsUnsignedInteger( "BurrFactory-MaximumIteration" ));
   // C estimate
   const NumericalScalar c = solver.solve(f, 0.0, a, b, fA, fB);
   // Corresponding k estimate

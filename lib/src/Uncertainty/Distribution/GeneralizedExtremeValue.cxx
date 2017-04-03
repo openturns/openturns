@@ -281,7 +281,7 @@ void GeneralizedExtremeValue::setMuSigmaXi(const NumericalScalar mu,
   sigma_ = sigma;
   xi_ = xi;
   // Now build the actual Frechet/Gumbel/Weibull distribution
-  const NumericalScalar xiEpsilon = ResourceMap::GetAsNumericalScalar("GeneralizedExtremeValue-XiThreshold");
+  const NumericalScalar xiEpsilon = ResourceMap::GetAsScalar("GeneralizedExtremeValue-XiThreshold");
   // Weibull case
   if (xi_ < -xiEpsilon)
     {

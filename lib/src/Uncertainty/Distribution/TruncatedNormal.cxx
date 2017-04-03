@@ -468,7 +468,7 @@ Description TruncatedNormal::getParameterDescription() const
 /* Check if the distribution is elliptical */
 Bool TruncatedNormal::isElliptical() const
 {
-  return std::abs(mu_ - 0.5 * (a_ + b_)) < ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon");
+  return std::abs(mu_ - 0.5 * (a_ + b_)) < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
 }
 
 /* Mu accessor */

@@ -46,7 +46,7 @@ CompositeDistribution::CompositeDistribution()
   , values_(0)
   , probabilities_(0)
   , increasing_(0)
-  , solver_(Brent(ResourceMap::GetAsNumericalScalar("CompositeDistribution-SolverEpsilon"), ResourceMap::GetAsNumericalScalar("CompositeDistribution-SolverEpsilon"), ResourceMap::GetAsNumericalScalar("CompositeDistribution-SolverEpsilon")))
+  , solver_(Brent(ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon"), ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon"), ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon")))
 {
   setParallel(false);
   setName("CompositeDistribution");
@@ -65,7 +65,7 @@ CompositeDistribution::CompositeDistribution(const Function & function,
   , values_(0)
   , probabilities_(0)
   , increasing_(0)
-  , solver_(Brent(ResourceMap::GetAsNumericalScalar("CompositeDistribution-SolverEpsilon"), ResourceMap::GetAsNumericalScalar("CompositeDistribution-SolverEpsilon"), ResourceMap::GetAsNumericalScalar("CompositeDistribution-SolverEpsilon")))
+  , solver_(Brent(ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon"), ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon"), ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon")))
 {
   setParallel(false);
   setName("CompositeDistribution");
@@ -85,7 +85,7 @@ CompositeDistribution::CompositeDistribution(const Function & function,
   , values_(values)
   , probabilities_(0)
   , increasing_(0)
-  , solver_(Brent(ResourceMap::GetAsNumericalScalar("CompositeDistribution-SolverEpsilon"), ResourceMap::GetAsNumericalScalar("CompositeDistribution-SolverEpsilon"), ResourceMap::GetAsNumericalScalar("CompositeDistribution-SolverEpsilon")))
+  , solver_(Brent(ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon"), ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon"), ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon")))
 {
   setParallel(false);
   setName("CompositeDistribution");
@@ -131,8 +131,8 @@ void CompositeDistribution::setFunctionAndAntecedent(const Function & function,
 void CompositeDistribution::update()
 {
   // First, compute the roots of the gradient
-  const NumericalScalar xMin = antecedent_.getRange().getLowerBound()[0] + ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon");
-  const NumericalScalar xMax = antecedent_.getRange().getUpperBound()[0] - ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon");
+  const NumericalScalar xMin = antecedent_.getRange().getLowerBound()[0] + ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
+  const NumericalScalar xMax = antecedent_.getRange().getUpperBound()[0] - ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
   bounds_ = Point(1, xMin);
   try
   {

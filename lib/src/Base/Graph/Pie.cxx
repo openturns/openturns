@@ -137,10 +137,10 @@ void Pie::setPalette(const Description & palette)
 Pie::BoundingBox Pie::getBoundingBox() const
 {
   BoundingBox boundingBox(BoundingBoxSize);
-  boundingBox[0] = center_[0] - (1.0 + ResourceMap::GetAsNumericalScalar("Pie-HorizontalMargin")) * radius_;
-  boundingBox[1] = center_[0] + (1.0 + ResourceMap::GetAsNumericalScalar("Pie-HorizontalMargin")) * radius_;
-  boundingBox[2] = center_[1] - (1.0 + ResourceMap::GetAsNumericalScalar("Pie-VerticalMargin")) * radius_;
-  boundingBox[3] = center_[1] + (1.0 + ResourceMap::GetAsNumericalScalar("Pie-VerticalMargin")) * radius_;
+  boundingBox[0] = center_[0] - (1.0 + ResourceMap::GetAsScalar("Pie-HorizontalMargin")) * radius_;
+  boundingBox[1] = center_[0] + (1.0 + ResourceMap::GetAsScalar("Pie-HorizontalMargin")) * radius_;
+  boundingBox[2] = center_[1] - (1.0 + ResourceMap::GetAsScalar("Pie-VerticalMargin")) * radius_;
+  boundingBox[3] = center_[1] + (1.0 + ResourceMap::GetAsScalar("Pie-VerticalMargin")) * radius_;
   return boundingBox;
 }
 
@@ -154,7 +154,7 @@ String Pie::draw() const
   oss << DrawableImplementation::draw() << "\n";
   // The specific R command for drawing
   // Labels are drawn only if the associated data shares a sufficient amount of the total
-  NumericalScalar labelThreshold = data_.getMax()[0] * ResourceMap::GetAsNumericalScalar("Pie-LabelThreshold");
+  NumericalScalar labelThreshold = data_.getMax()[0] * ResourceMap::GetAsScalar("Pie-LabelThreshold");
   oss << "pie(dataOT[,1],"
       << "center=c(" << center_[0] << "," << center_[1]
       << "),radius=" << radius_;

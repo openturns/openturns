@@ -422,7 +422,7 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
 Point ConditionalDistribution::computeExpectation(const Function & f,
     const Point & thetaStar) const
 {
-  const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon");
+  const NumericalScalar epsilon = ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon");
   const UnsignedInteger conditioningDimension = conditioningDistribution_.getDimension();
   if (f.getInputDimension() != conditioningDimension) throw InvalidArgumentException(HERE) << "Error: the given function must have an input dimension=" << f.getInputDimension() << " equal to the conditioning dimension=" << conditioningDimension;
   if (thetaStar.getDimension() != conditioningDimension) throw InvalidArgumentException(HERE) << "Error: the given upper bound must have a dimension=" << thetaStar.getDimension() << " equal to the conditioning dimension=" << conditioningDimension;

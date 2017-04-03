@@ -37,7 +37,7 @@ static const Factory<IteratedQuadrature> Factory_IteratedQuadrature;
 /* Constructor without parameters */
 IteratedQuadrature::IteratedQuadrature()
   : IntegrationAlgorithmImplementation()
-  , algorithm_(GaussKronrod(ResourceMap::GetAsUnsignedInteger("IteratedQuadrature-MaximumSubIntervals"), ResourceMap::GetAsNumericalScalar("IteratedQuadrature-MaximumError"), GaussKronrodRule(GaussKronrodRule::G3K7)))
+  , algorithm_(GaussKronrod(ResourceMap::GetAsUnsignedInteger("IteratedQuadrature-MaximumSubIntervals"), ResourceMap::GetAsScalar("IteratedQuadrature-MaximumError"), GaussKronrodRule(GaussKronrodRule::G3K7)))
 {
   // Nothing to do
 }

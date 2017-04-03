@@ -99,7 +99,7 @@ AliMikhailHaqCopula AliMikhailHaqCopulaFactory::buildAsAliMikhailHaqCopula(const
     maxTheta = theta;
   }
   // Bisection
-  const NumericalScalar thetaEpsilon = ResourceMap::GetAsNumericalScalar( "AliMikhailHaqCopulaFactory-ThetaEpsilon" );
+  const NumericalScalar thetaEpsilon = ResourceMap::GetAsScalar( "AliMikhailHaqCopulaFactory-ThetaEpsilon" );
   while (maxTheta - minTheta > thetaEpsilon)
   {
     theta = 0.5 * (maxTheta + minTheta);

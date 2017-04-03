@@ -343,9 +343,9 @@ NumericalScalar Normal::computeCDF(const Point & point) const
     variance = (varianceBlock + indexOuter * variance + (1.0 - norm) * (value - valueBlock) * (value - valueBlock)) * norm;
     value = (value * indexOuter + valueBlock) * norm;
     // Quick return for value = 1
-    if ((value >= 1.0 - ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon")) && (variance == 0.0)) return 1.0;
+    if ((value >= 1.0 - ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon")) && (variance == 0.0)) return 1.0;
     precision = a99 * std::sqrt(variance / (indexOuter + 1.0) / ResourceMap::GetAsUnsignedInteger( "Normal-MinimumNumberOfPoints" ));
-    if (precision < ResourceMap::GetAsNumericalScalar( "Normal-MinimumCDFEpsilon" ) * value) return value;
+    if (precision < ResourceMap::GetAsScalar( "Normal-MinimumCDFEpsilon" ) * value) return value;
     // 0.1 * ((1000 * indexOuter) / outerMax) is to print percents with one figure after the decimal point
     LOGINFO(OSS() << 0.1 * ((1000 * indexOuter) / outerMax) << "% value=" << value << " absolute precision(99%)=" << precision << " relative precision(99%)=" << ((value > 0.0) ? precision / value : -1.0));
   }
@@ -440,9 +440,9 @@ NumericalScalar Normal::computeProbability(const Interval & interval) const
     variance = (varianceBlock + indexOuter * variance + (1.0 - norm) * (value - valueBlock) * (value - valueBlock)) * norm;
     value = (value * indexOuter + valueBlock) * norm;
     // Quick return for value = 1
-    if ((value >= 1.0 - ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon")) && (variance == 0.0)) return 1.0;
+    if ((value >= 1.0 - ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon")) && (variance == 0.0)) return 1.0;
     precision = a99 * std::sqrt(variance / (indexOuter + 1.0) / ResourceMap::GetAsUnsignedInteger( "Normal-MinimumNumberOfPoints" ));
-    if (precision < ResourceMap::GetAsNumericalScalar( "Normal-MinimumCDFEpsilon" ) * value) return value;
+    if (precision < ResourceMap::GetAsScalar( "Normal-MinimumCDFEpsilon" ) * value) return value;
     // 0.1 * ((1000 * indexOuter) / outerMax) is to print percents with one figure after the decimal point
     LOGINFO(OSS() << 0.1 * ((1000 * indexOuter) / outerMax) << "% value=" << value << " absolute precision(99%)=" << precision << " relative precision(99%)=" << ((value > 0.0) ? precision / value : -1.0));
   }

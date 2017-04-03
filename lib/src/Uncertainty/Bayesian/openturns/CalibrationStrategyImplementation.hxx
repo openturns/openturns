@@ -46,10 +46,10 @@ class OT_API CalibrationStrategyImplementation
 public:
 
   /** Default constructor with parameters */
-  CalibrationStrategyImplementation(const Interval & range = Interval(ResourceMap::GetAsNumericalScalar("CalibrationStrategy-DefaultLowerBound"),
-                                    ResourceMap::GetAsNumericalScalar("CalibrationStrategy-DefaultUpperBound")),
-                                    const NumericalScalar expansionFactor = ResourceMap::GetAsNumericalScalar("CalibrationStrategy-DefaultExpansionFactor"),
-                                    const NumericalScalar shrinkFactor = ResourceMap::GetAsNumericalScalar("CalibrationStrategy-DefaultShrinkFactor"),
+  CalibrationStrategyImplementation(const Interval & range = Interval(ResourceMap::GetAsScalar("CalibrationStrategy-DefaultLowerBound"),
+                                    ResourceMap::GetAsScalar("CalibrationStrategy-DefaultUpperBound")),
+                                    const NumericalScalar expansionFactor = ResourceMap::GetAsScalar("CalibrationStrategy-DefaultExpansionFactor"),
+                                    const NumericalScalar shrinkFactor = ResourceMap::GetAsScalar("CalibrationStrategy-DefaultShrinkFactor"),
                                     const UnsignedInteger calibrationStep = ResourceMap::GetAsUnsignedInteger("CalibrationStrategy-DefaultCalibrationStep"));
 
   /** String converter */

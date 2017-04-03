@@ -446,7 +446,7 @@ Bool Mesh::isRegular() const
   const UnsignedInteger size = getSimplicesNumber();
   if (size <= 1) return true;
   Bool regular = true;
-  const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("Mesh-VertexEpsilon");
+  const NumericalScalar epsilon = ResourceMap::GetAsScalar("Mesh-VertexEpsilon");
   const NumericalScalar step = vertices_[simplices_[0][1]][0] - vertices_[simplices_[0][0]][0];
   for (UnsignedInteger i = 1; i < size; ++i)
   {

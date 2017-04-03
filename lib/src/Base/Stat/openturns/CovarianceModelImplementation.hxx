@@ -189,8 +189,8 @@ public:
   /** Drawing method */
   virtual Graph draw(const UnsignedInteger rowIndex = 0,
 		     const UnsignedInteger columnIndex = 0,
-		     const NumericalScalar tMin = ResourceMap::GetAsNumericalScalar("CovarianceModel-DefaultTMin"),
-		     const NumericalScalar tMax = ResourceMap::GetAsNumericalScalar("CovarianceModel-DefaultTMax"),
+		     const NumericalScalar tMin = ResourceMap::GetAsScalar("CovarianceModel-DefaultTMin"),
+		     const NumericalScalar tMax = ResourceMap::GetAsScalar("CovarianceModel-DefaultTMax"),
 		     const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("CovarianceModel-DefaultPointNumber"),
 		     const Bool asStationary = true,
 		     const Bool correlationFlag = false) const;

@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
       SymbolicFunction f("x", "2*" + elementaryFunctions[i] + "(3*x)");
       fullprint << "f=" << f.__str__() << std::endl;
       fullprint << "f(" << x[0] << ")=" << std::scientific << std::setprecision(4) << f(x)[0] << std::endl;
-      NumericalScalar df = CenteredFiniteDifferenceGradient(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), f.getEvaluation()).gradient(x)(0, 0);
+      NumericalScalar df = CenteredFiniteDifferenceGradient(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), f.getEvaluation()).gradient(x)(0, 0);
       NumericalScalar grad_f = 0.0;
       try
       {
@@ -87,13 +87,13 @@ int main(int argc, char *argv[])
       catch(...)
       {
         fullprint << "finite difference" << std::endl;
-        f.setGradient(new CenteredFiniteDifferenceGradient(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), f.getEvaluation()));
+        f.setGradient(new CenteredFiniteDifferenceGradient(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), f.getEvaluation()));
         grad_f = f.gradient(x)(0, 0);
       }
       fullprint << "df(" << x[0] << ")=" << std::scientific << std::setprecision(4) << grad_f << std::endl;
       NumericalScalar error = std::abs(grad_f) > 1.0e-5 ? std::abs(df / grad_f - 1.0) : std::abs(df - grad_f);
       if (error > 1e-5) std::cout << "GRADIENT ERROR! error=" << error << ", check " + elementaryFunctions[i] << std::endl;
-      NumericalScalar d2f = CenteredFiniteDifferenceHessian(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), f.getEvaluation()).hessian(x)(0, 0, 0);
+      NumericalScalar d2f = CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), f.getEvaluation()).hessian(x)(0, 0, 0);
       NumericalScalar hess_f = 0.0;
       try
       {
@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
       }
       catch(...)
       {
-        f.setHessian(new CenteredFiniteDifferenceHessian(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), f.getEvaluation()));
+        f.setHessian(new CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), f.getEvaluation()));
         hess_f = f.hessian(x)(0, 0, 0);
       }
       std::cout << "d2f(" << x[0] << ")=" << std::scientific << std::setprecision(4) << hess_f << std::endl;

@@ -33,9 +33,9 @@ static const Factory<AbdoRackwitz> Factory_AbdoRackwitz;
 /* Default constructor */
 AbdoRackwitz::AbdoRackwitz()
   : OptimizationAlgorithmImplementation()
-  , tau_(ResourceMap::GetAsNumericalScalar("AbdoRackwitz-DefaultTau"))
-  , omega_(ResourceMap::GetAsNumericalScalar("AbdoRackwitz-DefaultOmega"))
-  , smooth_(ResourceMap::GetAsNumericalScalar("AbdoRackwitz-DefaultSmooth"))
+  , tau_(ResourceMap::GetAsScalar("AbdoRackwitz-DefaultTau"))
+  , omega_(ResourceMap::GetAsScalar("AbdoRackwitz-DefaultOmega"))
+  , smooth_(ResourceMap::GetAsScalar("AbdoRackwitz-DefaultSmooth"))
 {
   initialize();
 }
@@ -56,9 +56,9 @@ AbdoRackwitz::AbdoRackwitz (const OptimizationProblem & problem,
 
 AbdoRackwitz::AbdoRackwitz(const OptimizationProblem & problem)
   : OptimizationAlgorithmImplementation(problem)
-  , tau_(ResourceMap::GetAsNumericalScalar("AbdoRackwitz-DefaultTau"))
-  , omega_(ResourceMap::GetAsNumericalScalar("AbdoRackwitz-DefaultOmega"))
-  , smooth_(ResourceMap::GetAsNumericalScalar("AbdoRackwitz-DefaultSmooth"))
+  , tau_(ResourceMap::GetAsScalar("AbdoRackwitz-DefaultTau"))
+  , omega_(ResourceMap::GetAsScalar("AbdoRackwitz-DefaultOmega"))
+  , smooth_(ResourceMap::GetAsScalar("AbdoRackwitz-DefaultSmooth"))
 {
   initialize();
   checkProblem(problem);

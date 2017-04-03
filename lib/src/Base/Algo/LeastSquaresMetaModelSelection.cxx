@@ -127,8 +127,8 @@ void LeastSquaresMetaModelSelection::run(const DesignProxy & proxy)
   basisSequenceFactory_.updateBasis(method, y_);
 
   // for each sub-basis ...
-  const NumericalScalar alpha = std::max(1.0, ResourceMap::GetAsNumericalScalar("LeastSquaresMetaModelSelection-MaximumErrorFactor"));
-  const NumericalScalar errorThreshold = std::max(0.0, ResourceMap::GetAsNumericalScalar("LeastSquaresMetaModelSelection-ErrorThreshold"));
+  const NumericalScalar alpha = std::max(1.0, ResourceMap::GetAsScalar("LeastSquaresMetaModelSelection-MaximumErrorFactor"));
+  const NumericalScalar errorThreshold = std::max(0.0, ResourceMap::GetAsScalar("LeastSquaresMetaModelSelection-ErrorThreshold"));
   while ((basisSequenceFactory_.getImplementation()->addedPsi_k_ranks_.getSize() > 0) || (basisSequenceFactory_.getImplementation()->removedPsi_k_ranks_.getSize() > 0))
   {
     // retrieve the i-th basis of the sequence

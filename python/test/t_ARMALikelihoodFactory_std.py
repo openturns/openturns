@@ -11,7 +11,7 @@ dimension = 2
 
 # ARMACoefficients intializing
 # Overwide bug 471
-ResourceMap.SetAsNumericalScalar('BoxCox-RootEpsilon', 1.0e-6)
+ResourceMap.SetAsScalar('BoxCox-RootEpsilon', 1.0e-6)
 
 # Make a realization of an ARMA model
 # Tmin , Tmax and N points for TimeGrid

@@ -10,13 +10,13 @@ try:
         "OptimizationAlgorithm-DefaultMaximumIteration", 1000)
     ot.ResourceMap.SetAsUnsignedInteger(
         "OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 100000)
-    ot.ResourceMap.SetAsNumericalScalar(
+    ot.ResourceMap.SetAsScalar(
         "OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1.0e-7)
-    ot.ResourceMap.SetAsNumericalScalar(
+    ot.ResourceMap.SetAsScalar(
         "OptimizationAlgorithm-DefaultMaximumRelativeError", 1.0e-7)
-    ot.ResourceMap.SetAsNumericalScalar(
+    ot.ResourceMap.SetAsScalar(
         "OptimizationAlgorithm-DefaultMaximumResidualError", 1.0e-7)
-    ot.ResourceMap.SetAsNumericalScalar(
+    ot.ResourceMap.SetAsScalar(
         "OptimizationAlgorithm-DefaultMaximumConstraintError", 1.0e-7)
     ot.PlatformInfo.SetNumericalPrecision(3)
 

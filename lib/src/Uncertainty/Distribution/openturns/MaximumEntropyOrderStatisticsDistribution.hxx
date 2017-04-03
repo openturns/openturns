@@ -165,7 +165,7 @@ private:
   PiecewiseHermiteEvaluation interpolateExponentialFactor(const UnsignedInteger lower,
       const UnsignedInteger upper,
       const UnsignedInteger maximumSubdivision = ResourceMap::GetAsUnsignedInteger("MaximumEntropyOrderStatisticsDistribution-MaximumApproximationSubdivision"),
-      const NumericalScalar shift = ResourceMap::GetAsNumericalScalar("MaximumEntropyOrderStatisticsDistribution-SupportShift")) const;
+      const NumericalScalar shift = ResourceMap::GetAsScalar("MaximumEntropyOrderStatisticsDistribution-SupportShift")) const;
 
   /** Build a C1 interpolation of the exponential factors in the PDF */
   void interpolateExponentialFactors();

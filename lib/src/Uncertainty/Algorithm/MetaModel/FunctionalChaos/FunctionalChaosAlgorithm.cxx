@@ -64,7 +64,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm()
   : MetaModelAlgorithm()
   , adaptiveStrategy_(FixedStrategy(OrthogonalProductPolynomialFactory(), 0))
   , projectionStrategy_(LeastSquaresStrategy())
-  , maximumResidual_(ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
+  , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
   // Nothing to do
 }
@@ -78,7 +78,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Function & model,
   : MetaModelAlgorithm( distribution, model )
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(projectionStrategy)
-  , maximumResidual_(ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
+  , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
   // Nothing to do
 }
@@ -92,7 +92,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
   : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample, false))
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(projectionStrategy)
-  , maximumResidual_(ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
+  , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
   // Check sample size
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
@@ -114,7 +114,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
   : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample, false))
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(projectionStrategy)
-  , maximumResidual_(ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
+  , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
   // Check sample size
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
@@ -133,7 +133,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Function & model,
   : MetaModelAlgorithm( distribution, model )
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(LeastSquaresStrategy())
-  , maximumResidual_(ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
+  , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
   // Nothing to do
 }
@@ -146,7 +146,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
   : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample, false))
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(LeastSquaresStrategy(inputSample, outputSample))
-  , maximumResidual_(ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
+  , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
   // Check sample size
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
@@ -158,7 +158,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
   : MetaModelAlgorithm(Distribution(), DatabaseFunction(inputSample, outputSample, false))
   , adaptiveStrategy_()
   , projectionStrategy_()
-  , maximumResidual_(ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
+  , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
   // Check sample size
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
@@ -179,7 +179,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     const Sample marginalSample(UserDefined(inputSample.getMarginal(i)).getSupport());
     const Distribution candidate(FittingTest::BestModelKolmogorov(marginalSample, factories, bestResult));
     // This threshold is somewhat arbitrary. It is here to avoid expensive kernel smoothing.
-    if (bestResult.getPValue() > ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-PValueThreshold")) marginals[i] = candidate;
+    if (bestResult.getPValue() > ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-PValueThreshold")) marginals[i] = candidate;
     else marginals[i] = ks.build(marginalSample.getMarginal(i));
     marginals[i].setDescription(Description(1, inputDescription[i]));
     LOGINFO(OSS() << "In FunctionalChaosAlgorithm constructor, selected distribution for marginal " << i << "=" << marginals[i]);
@@ -187,7 +187,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
   }
   // For the dependence structure, we test first the independent copula, then the normal copula, but not a non-parametric copula as the penalty on the meta-model evaluation speed is most of the time prohibitive
   setDistribution(ComposedDistribution(marginals, NormalCopulaFactory().build(inputSample)));
-  const HyperbolicAnisotropicEnumerateFunction enumerate(inputDimension, ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-QNorm" ));
+  const HyperbolicAnisotropicEnumerateFunction enumerate(inputDimension, ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-QNorm" ));
   OrthogonalProductPolynomialFactory basis(polynomials, enumerate);
   const UnsignedInteger maximumTotalDegree = ResourceMap::GetAsUnsignedInteger( "FunctionalChaosAlgorithm-MaximumTotalDegree" );
   // For small sample size, use sparse regression
@@ -220,7 +220,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
   : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample, false))
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(LeastSquaresStrategy(inputSample, weights, outputSample))
-  , maximumResidual_(ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
+  , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
   // Check sample size
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";

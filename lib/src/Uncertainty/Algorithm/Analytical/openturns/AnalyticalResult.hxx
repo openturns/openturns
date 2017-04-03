@@ -100,7 +100,7 @@ public:
   void setOptimizationResult(const OptimizationResult & optimizationResult);
 
   /** HasoferReliabilityIndexSensitivitygraph */
-  GraphCollection drawHasoferReliabilityIndexSensitivity(NumericalScalar width = ResourceMap::GetAsNumericalScalar( "AnalyticalResult-DefaultWidth" )) const;
+  GraphCollection drawHasoferReliabilityIndexSensitivity(NumericalScalar width = ResourceMap::GetAsScalar( "AnalyticalResult-DefaultWidth" )) const;
 
   /** String converter */
   String __repr__() const;

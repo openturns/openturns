@@ -301,7 +301,7 @@ NumericalScalar ARMALikelihoodFactory::computeLogLikelihood(const Point & beta) 
 
 Point ARMALikelihoodFactory::computeLogLikelihoodInequalityConstraint(const Point & beta) const
 {
-  const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("ARMALikelihoodFactory-RootEpsilon");
+  const NumericalScalar epsilon = ResourceMap::GetAsScalar("ARMALikelihoodFactory-RootEpsilon");
 
   Point result(nbInequalityConstraint_, 0.0);
 
@@ -416,9 +416,9 @@ void ARMALikelihoodFactory::initializeCobylaSolverParameter()
   Cobyla* cobyla = dynamic_cast<Cobyla *>(solver_.getImplementation().get());
   if (cobyla == NULL) throw InternalException(HERE);
 
-  cobyla->setRhoBeg(ResourceMap::GetAsNumericalScalar("ARMALikelihoodFactory-DefaultRhoBeg"));
+  cobyla->setRhoBeg(ResourceMap::GetAsScalar("ARMALikelihoodFactory-DefaultRhoBeg"));
 
-  solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("ARMALikelihoodFactory-DefaultRhoEnd"));
+  solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("ARMALikelihoodFactory-DefaultRhoEnd"));
   solver_.setMaximumIterationNumber(ResourceMap::GetAsUnsignedInteger("ARMALikelihoodFactory-DefaultMaxFun"));
 }
 

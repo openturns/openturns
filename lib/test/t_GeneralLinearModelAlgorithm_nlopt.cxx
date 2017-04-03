@@ -40,8 +40,8 @@ int main(int argc, char *argv[])
     std::cout << "Test using NLOpt" << std::endl;
     std::cout << "================" << std::endl;
     // Calibration of default optimizer
-    ResourceMap::SetAsNumericalScalar("GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound", 1.0e-5);
-    ResourceMap::SetAsNumericalScalar("GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound", 100);
+    ResourceMap::SetAsScalar("GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound", 1.0e-5);
+    ResourceMap::SetAsScalar("GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound", 100);
     // Data & estimation
     const UnsignedInteger spatialDimension = 1;
     Sample X = Normal(0, 1).getSample(100);

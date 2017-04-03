@@ -129,7 +129,7 @@ struct PluginConstraint
     // Quick return for odd order
     if (order_ % 2 == 1) return 0.0;
     NumericalScalar phi = N_ * hermitePolynomial_(0.0);
-    const NumericalScalar cutOffPlugin = ResourceMap::GetAsNumericalScalar( "KernelSmoothing-CutOffPlugin" );
+    const NumericalScalar cutOffPlugin = ResourceMap::GetAsScalar( "KernelSmoothing-CutOffPlugin" );
     for (UnsignedInteger i = 1; i < N_; ++i)
     {
       for (UnsignedInteger j = 0; j < i; ++j)
@@ -196,7 +196,7 @@ Point KernelSmoothing::computePluginBandwidth(const Sample & sample) const
     fB = f(Point(1, b))[0];
   }
   // Solve loosely the constraint equation
-  Brent solver(ResourceMap::GetAsNumericalScalar( "KernelSmoothing-AbsolutePrecision" ), ResourceMap::GetAsNumericalScalar( "KernelSmoothing-RelativePrecision" ), ResourceMap::GetAsNumericalScalar( "KernelSmoothing-ResidualPrecision" ), ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-MaximumIteration" ));
+  Brent solver(ResourceMap::GetAsScalar( "KernelSmoothing-AbsolutePrecision" ), ResourceMap::GetAsScalar( "KernelSmoothing-RelativePrecision" ), ResourceMap::GetAsScalar( "KernelSmoothing-ResidualPrecision" ), ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-MaximumIteration" ));
   return Point(1, solver.solve(f, 0.0, a, b) / kernel_.getStandardDeviation()[0]);
 }
 

@@ -93,7 +93,7 @@ public:
   void setBlockSize(const UnsignedInteger blockSize);
 
   /** Confidence length */
-  NumericalScalar getConfidenceLength(const NumericalScalar level = ResourceMap::GetAsNumericalScalar("SimulationResult-DefaultConfidenceLevel")) const;
+  NumericalScalar getConfidenceLength(const NumericalScalar level = ResourceMap::GetAsScalar("SimulationResult-DefaultConfidenceLevel")) const;
 
   /** String converter */
   String __repr__() const;

@@ -33,10 +33,10 @@ int main(int argc, char *argv[])
   {
     ResourceMap::SetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumIteration", 1000 );
     ResourceMap::SetAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 100000);
-    ResourceMap::SetAsNumericalScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1.0e-7 );
-    ResourceMap::SetAsNumericalScalar("OptimizationAlgorithm-DefaultMaximumRelativeError", 1.0e-7 );
-    ResourceMap::SetAsNumericalScalar("OptimizationAlgorithm-DefaultMaximumResidualError", 1.0e-7 );
-    ResourceMap::SetAsNumericalScalar("OptimizationAlgorithm-DefaultMaximumConstraintError", 1.0e-7 );
+    ResourceMap::SetAsScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1.0e-7 );
+    ResourceMap::SetAsScalar("OptimizationAlgorithm-DefaultMaximumRelativeError", 1.0e-7 );
+    ResourceMap::SetAsScalar("OptimizationAlgorithm-DefaultMaximumResidualError", 1.0e-7 );
+    ResourceMap::SetAsScalar("OptimizationAlgorithm-DefaultMaximumConstraintError", 1.0e-7 );
     PlatformInfo::SetNumericalPrecision(3);
 
     // The 1D mesher

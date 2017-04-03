@@ -121,7 +121,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::solveLinearSystemRect (
   Point rwork(2 * n);
   int info;
   std::vector<int> jpiv(n);
-  double rcond(ResourceMap::GetAsNumericalScalar("Matrix-DefaultSmallPivot"));
+  double rcond(ResourceMap::GetAsScalar("Matrix-DefaultSmallPivot"));
   int rank;
 
   ComplexMatrixImplementation Q;

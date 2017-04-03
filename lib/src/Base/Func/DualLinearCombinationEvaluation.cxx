@@ -270,7 +270,7 @@ void DualLinearCombinationEvaluation::setFunctionsCollectionAndCoefficients(cons
   }
   if (maximumAbsoluteCoefficient == 0.0) throw InvalidArgumentException(HERE) << "Error: all the coefficients are zero.";
   // Second pass, remove the small coefficients
-  const NumericalScalar epsilon = maximumAbsoluteCoefficient * ResourceMap::GetAsNumericalScalar("DualLinearCombinationEvaluation-SmallCoefficient");
+  const NumericalScalar epsilon = maximumAbsoluteCoefficient * ResourceMap::GetAsScalar("DualLinearCombinationEvaluation-SmallCoefficient");
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     if (absoluteCoefficients[i] > epsilon)

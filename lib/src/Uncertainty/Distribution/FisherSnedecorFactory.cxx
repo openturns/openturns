@@ -78,8 +78,8 @@ FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor(const Sample & sampl
 
   // override bounds
   Point parametersLowerBound;
-  parametersLowerBound.add(ResourceMap::GetAsNumericalScalar("FisherSnedecorFactory-D1LowerBound"));
-  parametersLowerBound.add(ResourceMap::GetAsNumericalScalar("FisherSnedecorFactory-D2LowerBound"));
+  parametersLowerBound.add(ResourceMap::GetAsScalar("FisherSnedecorFactory-D1LowerBound"));
+  parametersLowerBound.add(ResourceMap::GetAsScalar("FisherSnedecorFactory-D2LowerBound"));
   Interval bounds(parametersLowerBound, Point(dimension, SpecFunc::MaxNumericalScalar), Interval::BoolCollection(dimension, true), Interval::BoolCollection(dimension, false));
   factory.setOptimizationBounds(bounds);
 

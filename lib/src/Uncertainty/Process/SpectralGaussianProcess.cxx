@@ -161,8 +161,8 @@ TriangularComplexMatrix SpectralGaussianProcess::computeCholeskyFactor(const Uns
   Bool continuationCondition = true;
   // Scale control values
   NumericalScalar cumulatedScaling = 0.0;
-  const NumericalScalar startingScaling = ResourceMap::GetAsNumericalScalar("SpectralGaussianProcess-StartingScaling");
-  const NumericalScalar maximalScaling = ResourceMap::GetAsNumericalScalar("SpectralGaussianProcess-MaximalScaling");
+  const NumericalScalar startingScaling = ResourceMap::GetAsScalar("SpectralGaussianProcess-StartingScaling");
+  const NumericalScalar maximalScaling = ResourceMap::GetAsScalar("SpectralGaussianProcess-MaximalScaling");
   NumericalScalar scaling = startingScaling;
   TriangularComplexMatrix choleskyFactor;
   while (continuationCondition)

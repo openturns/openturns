@@ -107,12 +107,12 @@ Dirichlet DirichletFactory::buildAsDirichlet(const Sample & sample) const
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const NumericalScalar thetaI = (sumX[i] / size) * sumTheta;
-    // If the estimate is positive, use it, if not, use a default value of ResourceMap::GetAsNumericalScalar( "DirichletFactory-ParametersEpsilon" )
-    theta[i] = (thetaI > 0.0 ? thetaI : ResourceMap::GetAsNumericalScalar( "DirichletFactory-ParametersEpsilon" ));
+    // If the estimate is positive, use it, if not, use a default value of ResourceMap::GetAsScalar( "DirichletFactory-ParametersEpsilon" )
+    theta[i] = (thetaI > 0.0 ? thetaI : ResourceMap::GetAsScalar( "DirichletFactory-ParametersEpsilon" ));
     lastTheta -= theta[i];
   }
-  // If the estimate is positive, use it, if not, use a default value of ResourceMap::GetAsNumericalScalar( "DirichletFactory-ParametersEpsilon" )
-  theta[dimension] = (lastTheta > 0.0 ? lastTheta : ResourceMap::GetAsNumericalScalar( "DirichletFactory-ParametersEpsilon" ));
+  // If the estimate is positive, use it, if not, use a default value of ResourceMap::GetAsScalar( "DirichletFactory-ParametersEpsilon" )
+  theta[dimension] = (lastTheta > 0.0 ? lastTheta : ResourceMap::GetAsScalar( "DirichletFactory-ParametersEpsilon" ));
   Bool convergence = false;
   UnsignedInteger iteration = 0;
   while (!convergence && (iteration < ResourceMap::GetAsUnsignedInteger( "DirichletFactory-MaximumIteration" )))
@@ -139,7 +139,7 @@ Dirichlet DirichletFactory::buildAsDirichlet(const Sample & sample) const
     for (UnsignedInteger i = 0; i <= dimension; ++i) delta[i] = (g[i] - b) / q[i];
     // Newton update
     theta = theta - delta;
-    convergence = (delta.norm() < dimension * ResourceMap::GetAsNumericalScalar( "DirichletFactory-ParametersEpsilon" ));
+    convergence = (delta.norm() < dimension * ResourceMap::GetAsScalar( "DirichletFactory-ParametersEpsilon" ));
   }
   // Fixed point algorithm, works but is slow. Should never go there, as the Newton iteration should converge
   iteration = 0;
@@ -156,7 +156,7 @@ Dirichlet DirichletFactory::buildAsDirichlet(const Sample & sample) const
       delta += std::abs(theta[i] - thetaI);
       theta[i] = thetaI;
     }
-    convergence = (delta < dimension * ResourceMap::GetAsNumericalScalar( "DirichletFactory-ParametersEpsilon" ));
+    convergence = (delta < dimension * ResourceMap::GetAsScalar( "DirichletFactory-ParametersEpsilon" ));
   }
   Dirichlet result(theta);
   result.setDescription(sample.getDescription());

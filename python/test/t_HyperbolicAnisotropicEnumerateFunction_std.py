@@ -5,7 +5,7 @@ from openturns import *
 
 TESTPREAMBLE()
 
-print('Default q :', ResourceMap.GetAsNumericalScalar(
+print('Default q :', ResourceMap.GetAsScalar(
     'HyperbolicAnisotropicEnumerateFunction-DefaultQ'), '\n')
 
 # check weight constructor

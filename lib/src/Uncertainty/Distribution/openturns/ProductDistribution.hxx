@@ -175,7 +175,7 @@ private:
     PDFKernelWrapper(const Distribution & left,
                      const Distribution & right,
                      const NumericalScalar x):
-      left_(left), right_(right), x_(x), isZero_(std::abs(x) < ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon")), pdf0_(isZero_ ? right.computePDF(0.0) : 0.0) {};
+      left_(left), right_(right), x_(x), isZero_(std::abs(x) < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon")), pdf0_(isZero_ ? right.computePDF(0.0) : 0.0) {};
 
     Point eval(const Point & point) const
     {

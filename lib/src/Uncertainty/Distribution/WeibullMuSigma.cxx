@@ -166,7 +166,7 @@ Point WeibullMuSigma::operator () (const Point & inP) const
   {
     beta = 0.5 * (betaMin + betaMax);
     // Convergence
-    if (betaMax - betaMin <= ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon") * (1.0 + std::abs(betaMax + betaMin)))
+    if (betaMax - betaMin <= ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon") * (1.0 + std::abs(betaMax + betaMin)))
     {
       alpha = (mu - gamma) / SpecFunc::Gamma(1.0 + 1.0 / beta);
       break;

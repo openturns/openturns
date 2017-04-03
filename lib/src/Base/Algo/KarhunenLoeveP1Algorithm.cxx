@@ -87,7 +87,7 @@ void KarhunenLoeveP1Algorithm::run()
   CovarianceMatrix gram(mesh_.computeP1Gram());
   const UnsignedInteger numVertices = mesh_.getVerticesNumber();
   if (!(gram.getDimension() == numVertices)) throw InternalException(HERE) << "Error: the P1 Gram matrix of the mesh has a dimension=" << gram.getDimension() << " different from the number of vertices=" << numVertices;
-  const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("KarhunenLoeveP1Algorithm-RegularizationFactor");
+  const NumericalScalar epsilon = ResourceMap::GetAsScalar("KarhunenLoeveP1Algorithm-RegularizationFactor");
   if (epsilon > 0.0)
     for (UnsignedInteger i = 0; i < gram.getDimension(); ++i) gram(i, i) += epsilon;
   // Extend the Gram matrix of the mesh

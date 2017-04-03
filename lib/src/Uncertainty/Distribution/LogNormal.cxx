@@ -227,7 +227,7 @@ NumericalComplex LogNormal::computeLogCharacteristicFunction(const NumericalScal
     // Check if the integration nodes have to be recomputed
     if (integrationNodesNumber != hermiteNodes_.getSize()) hermiteNodes_ = HermiteFactory().getNodesAndWeights(integrationNodesNumber, hermiteWeights_);
     // Hermite integration of the Fourier transform for small sigma
-    if (sigmaLog_ <= ResourceMap::GetAsNumericalScalar("LogNormal-CharacteristicFunctionSmallSigmaThreshold"))
+    if (sigmaLog_ <= ResourceMap::GetAsScalar("LogNormal-CharacteristicFunctionSmallSigmaThreshold"))
     {
       // Adjust the integration nodes number
       // nu*exp(sigma*x_n) - nu * exp(sigma*x_{n-1}) < 2*\pi/8

@@ -95,7 +95,7 @@ The :math:`\varepsilon` has a default value stored in the ResourceMap: to
 change the default value the new value :math:`1.3e-3`, use the command:
 
 >>> import openturns as ot
->>> ot.ResourceMap.SetAsNumericalScalar('DiscreteDistribution-SupportEpsilon', 1e-3)
+>>> ot.ResourceMap.SetAsScalar('DiscreteDistribution-SupportEpsilon', 1e-3)
 
 The method is always used for any univariate distributions and for upper
 dimensions, it is only used when the number of points defining the support is

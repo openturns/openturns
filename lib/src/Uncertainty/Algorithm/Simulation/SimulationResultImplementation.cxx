@@ -148,7 +148,7 @@ void SimulationResultImplementation::setBlockSize(const UnsignedInteger blockSiz
 /* String converter */
 String SimulationResultImplementation::__repr__() const
 {
-  const NumericalScalar defaultConfidenceLevel = ResourceMap::GetAsNumericalScalar("SimulationResult-DefaultConfidenceLevel");
+  const NumericalScalar defaultConfidenceLevel = ResourceMap::GetAsScalar("SimulationResult-DefaultConfidenceLevel");
   OSS oss;
   oss.setPrecision(6);
   oss << std::scientific

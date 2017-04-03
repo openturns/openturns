@@ -158,7 +158,7 @@ NumericalScalar EllipticalDistribution::computeLogDensityGenerator(const Numeric
 NumericalScalar EllipticalDistribution::computeDensityGeneratorDerivative(const NumericalScalar betaSquare) const
 {
   // Use centered finite difference
-  const NumericalScalar epsilon = std::pow(ResourceMap::GetAsNumericalScalar("Distribution-DefaultPDFEpsilon"), 1.0 / 3.0);
+  const NumericalScalar epsilon = std::pow(ResourceMap::GetAsScalar("Distribution-DefaultPDFEpsilon"), 1.0 / 3.0);
   return (computeDensityGenerator(betaSquare + epsilon) - computeDensityGenerator(betaSquare - epsilon)) / epsilon;
 }
 
@@ -166,7 +166,7 @@ NumericalScalar EllipticalDistribution::computeDensityGeneratorDerivative(const 
 NumericalScalar EllipticalDistribution::computeDensityGeneratorSecondDerivative(const NumericalScalar betaSquare) const
 {
   // Use centered finite difference
-  const NumericalScalar epsilon = std::pow(ResourceMap::GetAsNumericalScalar("Distribution-DefaultPDFEpsilon"), 0.25);
+  const NumericalScalar epsilon = std::pow(ResourceMap::GetAsScalar("Distribution-DefaultPDFEpsilon"), 0.25);
   return (computeDensityGenerator(betaSquare + epsilon) - 2.0 * computeDensityGenerator(betaSquare) + computeDensityGenerator(betaSquare - epsilon)) / (epsilon * epsilon);
 }
 

@@ -61,7 +61,7 @@ public:
         const String & yTitle,
         const Bool showAxes,
         const String & legendPosition = "",
-        const NumericalScalar legendFontSize = ResourceMap::GetAsNumericalScalar("Graph-DefaultLegendFontSize"),
+        const NumericalScalar legendFontSize = ResourceMap::GetAsScalar("Graph-DefaultLegendFontSize"),
         const LogScale logScale = GraphImplementation::NONE);
 
 

@@ -31,9 +31,9 @@ static const Factory<MaternModel> Factory_MaternModel;
 
 /* Default constructor */
 MaternModel::MaternModel(const UnsignedInteger spatialDimension)
-  : StationaryCovarianceModel(Point(spatialDimension, ResourceMap::GetAsNumericalScalar("MaternModel-DefaultTheta")), Point(1, 1.0))
-  , nu_(ResourceMap::GetAsNumericalScalar("MaternModel-DefaultNu"))
-  , sqrt2nuOverTheta_(Point(spatialDimension, sqrt(2.0 * nu_) / ResourceMap::GetAsNumericalScalar("MaternModel-DefaultTheta") ))
+  : StationaryCovarianceModel(Point(spatialDimension, ResourceMap::GetAsScalar("MaternModel-DefaultTheta")), Point(1, 1.0))
+  , nu_(ResourceMap::GetAsScalar("MaternModel-DefaultNu"))
+  , sqrt2nuOverTheta_(Point(spatialDimension, sqrt(2.0 * nu_) / ResourceMap::GetAsScalar("MaternModel-DefaultTheta") ))
 {
   // Compute the normalization factor
   logNormalizationFactor_ = (1.0 - nu_) * std::log(2.0) - SpecFunc::LogGamma(nu_);

@@ -115,7 +115,7 @@ int main(int argc, char *argv[])
     Point kurtosis = distribution.getKurtosis();
     fullprint << "kurtosis=" << kurtosis << std::endl;
     ResourceMap::SetAsUnsignedInteger( "GaussKronrod-MaximumSubIntervals", 20 );
-    ResourceMap::SetAsNumericalScalar( "GaussKronrod-MaximumError",  1.0e-4 );
+    ResourceMap::SetAsScalar( "GaussKronrod-MaximumError",  1.0e-4 );
     CovarianceMatrix covariance = distribution.getCovariance();
     fullprint << "covariance=" << covariance << std::endl;
     CovarianceMatrix correlation = distribution.getCorrelation();
@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
     // CovarianceMatrix kendall = distribution.getKendallTau();
     // fullprint << "kendall=" << kendall << std::endl;
     ResourceMap::SetAsUnsignedInteger( "GaussKronrod-MaximumSubIntervals", 100 );
-    ResourceMap::SetAsNumericalScalar( "GaussKronrod-MaximumError",  1.0e-12 );
+    ResourceMap::SetAsScalar( "GaussKronrod-MaximumError",  1.0e-12 );
     MaximumEntropyOrderStatisticsCopula::PointWithDescriptionCollection parameters = distribution.getParametersCollection();
     fullprint << "parameters=" << parameters << std::endl;
 //     for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;

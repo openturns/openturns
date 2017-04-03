@@ -212,10 +212,10 @@ NumericalScalar Student::computeCDF(const Point & point) const
     variance = (varianceBlock + indexOuter * variance + (1.0 - norm) * (value - valueBlock) * (value - valueBlock)) * norm;
     value = (value * indexOuter + valueBlock) * norm;
     // Quick return for value = 1
-    const NumericalScalar quantileEpsilon = ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon");
+    const NumericalScalar quantileEpsilon = ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
     if ((value >= 1.0 - quantileEpsilon) && (variance == 0.0)) return 1.0;
     precision = a99 * std::sqrt(variance / (indexOuter + 1.0) / ResourceMap::GetAsUnsignedInteger( "Student-MinimumNumberOfPoints" ));
-    if (precision < ResourceMap::GetAsNumericalScalar( "Student-MinimumCDFEpsilon" ) * value) return value;
+    if (precision < ResourceMap::GetAsScalar( "Student-MinimumCDFEpsilon" ) * value) return value;
     // 0.1 * ((1000 * indexOuter) / outerMax) is to print percents with one figure after the decimal point
     LOGINFO(OSS() << 0.1 * ((1000 * indexOuter) / outerMax) << "% value=" << value << " absolute precision(99%)=" << precision << " relative precision(99%)=" << ((value > 0.0) ? precision / value : -1.0));
   }
@@ -273,10 +273,10 @@ NumericalScalar Student::computeProbability(const Interval & interval) const
     variance = (varianceBlock + indexOuter * variance + (1.0 - norm) * (value - valueBlock) * (value - valueBlock)) * norm;
     value = (value * indexOuter + valueBlock) * norm;
     // Quick return for value = 1
-    const NumericalScalar quantileEpsilon = ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon");
+    const NumericalScalar quantileEpsilon = ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
     if ((value >= 1.0 - quantileEpsilon) && (variance == 0.0)) return 1.0;
     precision = a99 * std::sqrt(variance / (indexOuter + 1.0) / ResourceMap::GetAsUnsignedInteger( "Student-MinimumNumberOfPoints" ));
-    if (precision < ResourceMap::GetAsNumericalScalar( "Student-MinimumCDFEpsilon" ) * value) return value;
+    if (precision < ResourceMap::GetAsScalar( "Student-MinimumCDFEpsilon" ) * value) return value;
     // 0.1 * ((1000 * indexOuter) / outerMax) is to print percents with one figure after the decimal point
     LOGINFO(OSS() << 0.1 * ((1000 * indexOuter) / outerMax) << "% value=" << value << " absolute precision(99%)=" << precision << " relative precision(99%)=" << ((value > 0.0) ? precision / value : -1.0));
   }
@@ -314,7 +314,7 @@ Point Student::computeCDFGradient(const Point & point) const
   {
     Point cdfGradient(3, 0.0);
     const NumericalScalar x = point[0] - mean_[0];
-    const NumericalScalar eps = std::pow(ResourceMap::GetAsNumericalScalar("DistFunc-Precision"), 1.0 / 3.0);
+    const NumericalScalar eps = std::pow(ResourceMap::GetAsScalar("DistFunc-Precision"), 1.0 / 3.0);
     const NumericalScalar i2Eps = 0.5 / eps;
     cdfGradient[0] = (DistFunc::pStudent(nu_ + eps, x / sigma_[0]) - DistFunc::pStudent(nu_ - eps, x / sigma_[0])) * i2Eps;
     // Opposite sign for eps because x - eps = point[0] - (mu + eps)

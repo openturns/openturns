@@ -150,7 +150,7 @@ void PiecewiseLinearEvaluation::setLocations(const Point & locations)
       values_[i] = locationsAndValues[i].second;      
     }
   const NumericalScalar step = locations_[1] - locations_[0];
-  const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("PiecewiseLinearEvaluation-EpsilonRegular") * std::abs(step);
+  const NumericalScalar epsilon = ResourceMap::GetAsScalar("PiecewiseLinearEvaluation-EpsilonRegular") * std::abs(step);
   isRegular_ = true;
   for (UnsignedInteger i = 0; i < size; ++i) isRegular_ = isRegular_ && (std::abs(locations_[i] - locations_[0] - i * step) < epsilon);
 }
@@ -196,7 +196,7 @@ void PiecewiseLinearEvaluation::setLocationsAndValues(const Point & locations,
   locations_ = Point(size);
   values_ = Sample(size, dimension);
   const NumericalScalar step = data[1][0] - data[0][0];
-  const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("PiecewiseLinearEvaluation-EpsilonRegular") * std::abs(step);
+  const NumericalScalar epsilon = ResourceMap::GetAsScalar("PiecewiseLinearEvaluation-EpsilonRegular") * std::abs(step);
   isRegular_ = true;
   for (UnsignedInteger i = 0; i < size; ++i)
   {

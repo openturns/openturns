@@ -31,9 +31,9 @@ static const Factory<HMatrixParameters> Factory_HMatrixParameters;
 
 HMatrixParameters::HMatrixParameters()
   : PersistentObject()
-  , assemblyEpsilon_(ResourceMap::GetAsNumericalScalar("HMatrix-AssemblyEpsilon"))
-  , recompressionEpsilon_(ResourceMap::GetAsNumericalScalar("HMatrix-RecompressionEpsilon"))
-  , admissibilityFactor_(ResourceMap::GetAsNumericalScalar("HMatrix-AdmissibilityFactor"))
+  , assemblyEpsilon_(ResourceMap::GetAsScalar("HMatrix-AssemblyEpsilon"))
+  , recompressionEpsilon_(ResourceMap::GetAsScalar("HMatrix-RecompressionEpsilon"))
+  , admissibilityFactor_(ResourceMap::GetAsScalar("HMatrix-AdmissibilityFactor"))
   , clusteringAlgorithm_(ResourceMap::Get("HMatrix-ClusteringAlgorithm"))
 {
   // Convert numerical value into a string

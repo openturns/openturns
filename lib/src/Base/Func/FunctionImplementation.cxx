@@ -82,7 +82,7 @@ FunctionImplementation::FunctionImplementation(const Description & inputVariable
   catch(...)
   {
     LOGWARN("Cannot compute an analytical gradient, using finite differences instead.");
-    p_gradientImplementation_ = new CenteredFiniteDifferenceGradient(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), p_evaluationImplementation_);
+    p_gradientImplementation_ = new CenteredFiniteDifferenceGradient(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), p_evaluationImplementation_);
   }
   try
   {
@@ -92,7 +92,7 @@ FunctionImplementation::FunctionImplementation(const Description & inputVariable
   catch(...)
   {
     LOGWARN("Cannot compute an analytical hessian, using finite differences instead.");
-    p_hessianImplementation_ = new CenteredFiniteDifferenceHessian(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), p_evaluationImplementation_);
+    p_hessianImplementation_ = new CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), p_evaluationImplementation_);
   }
 #else
   throw NotYetImplementedException(HERE) << "In FunctionImplementation::FunctionImplementation(const Description & inputVariablesNames, const Description & outputVariablesNames, const Description & formulas): Analytical function requires muParser";
@@ -117,8 +117,8 @@ FunctionImplementation::FunctionImplementation(const Sample & inputSample,
 FunctionImplementation::FunctionImplementation(const EvaluationPointer & evaluationImplementation)
   : PersistentObject()
   , p_evaluationImplementation_(evaluationImplementation)
-  , p_gradientImplementation_(new CenteredFiniteDifferenceGradient(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), p_evaluationImplementation_))
-  , p_hessianImplementation_(new CenteredFiniteDifferenceHessian(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), p_evaluationImplementation_))
+  , p_gradientImplementation_(new CenteredFiniteDifferenceGradient(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), p_evaluationImplementation_))
+  , p_hessianImplementation_(new CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), p_evaluationImplementation_))
   , useDefaultGradientImplementation_(true)
   , useDefaultHessianImplementation_(true)
 {
@@ -433,7 +433,7 @@ Matrix FunctionImplementation::gradient(const Point & inP) const
     try
     {
       LOGWARN(OSS() << "Switch to finite difference to compute the gradient at point=" << inP);
-      const CenteredFiniteDifferenceGradient gradientFD(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), p_evaluationImplementation_);
+      const CenteredFiniteDifferenceGradient gradientFD(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), p_evaluationImplementation_);
       return gradientFD.gradient(inP);
     }
     catch (...)
@@ -466,7 +466,7 @@ SymmetricTensor FunctionImplementation::hessian(const Point & inP) const
     try
     {
       LOGWARN(OSS() << "Switch to finite difference to compute the hessian at point=" << inP);
-      const CenteredFiniteDifferenceHessian hessianFD(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), p_evaluationImplementation_);
+      const CenteredFiniteDifferenceHessian hessianFD(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), p_evaluationImplementation_);
       return hessianFD.hessian(inP);
     }
     catch (...)

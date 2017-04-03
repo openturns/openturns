@@ -33,14 +33,14 @@ static const Factory<Cobyla> Factory_Cobyla;
 /* Default constructor */
 Cobyla::Cobyla()
   : OptimizationAlgorithmImplementation()
-  , rhoBeg_(ResourceMap::GetAsNumericalScalar("Cobyla-DefaultRhoBeg"))
+  , rhoBeg_(ResourceMap::GetAsScalar("Cobyla-DefaultRhoBeg"))
 {
   // Nothing to do
 }
 
 Cobyla::Cobyla(const OptimizationProblem & problem)
   : OptimizationAlgorithmImplementation(problem)
-  , rhoBeg_(ResourceMap::GetAsNumericalScalar("Cobyla-DefaultRhoBeg"))
+  , rhoBeg_(ResourceMap::GetAsScalar("Cobyla-DefaultRhoBeg"))
 {
   checkProblem(problem);
 }

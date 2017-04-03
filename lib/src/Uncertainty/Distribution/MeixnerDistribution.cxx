@@ -75,10 +75,10 @@ MeixnerDistribution::MeixnerDistribution(const NumericalScalar alpha,
 /* Initialize optimization solver parameter using the ResourceMap */
 void MeixnerDistribution::initializeOptimizationAlgorithmParameter()
 {
-  solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("MeixnerDistribution-MaximumAbsoluteError"));
-  solver_.setMaximumRelativeError(ResourceMap::GetAsNumericalScalar("MeixnerDistribution-MaximumRelativeError"));
-  solver_.setMaximumResidualError(ResourceMap::GetAsNumericalScalar("MeixnerDistribution-MaximumObjectiveError"));
-  solver_.setMaximumConstraintError(ResourceMap::GetAsNumericalScalar("MeixnerDistribution-MaximumConstraintError"));
+  solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("MeixnerDistribution-MaximumAbsoluteError"));
+  solver_.setMaximumRelativeError(ResourceMap::GetAsScalar("MeixnerDistribution-MaximumRelativeError"));
+  solver_.setMaximumResidualError(ResourceMap::GetAsScalar("MeixnerDistribution-MaximumObjectiveError"));
+  solver_.setMaximumConstraintError(ResourceMap::GetAsScalar("MeixnerDistribution-MaximumConstraintError"));
 }
 
 /* Comparison operator */

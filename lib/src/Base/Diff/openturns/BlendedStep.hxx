@@ -42,7 +42,7 @@ public:
 
   /** Parameters constructor */
   explicit BlendedStep(const Point & epsilon,
-                       const NumericalScalar eta = ResourceMap::GetAsNumericalScalar( "BlendedStep-DefaultEta" ));
+                       const NumericalScalar eta = ResourceMap::GetAsScalar( "BlendedStep-DefaultEta" ));
 
   /** Parameters constructor */
   BlendedStep(const Point & epsilon,

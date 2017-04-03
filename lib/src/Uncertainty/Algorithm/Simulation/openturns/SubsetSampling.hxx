@@ -37,8 +37,8 @@ public:
 
   /** Constructor with parameters */
   SubsetSampling(const Event & event,
-                 const NumericalScalar proposalRange = ResourceMap::GetAsNumericalScalar("SubsetSampling-DefaultProposalRange"),
-                 const NumericalScalar conditionalProbability = ResourceMap::GetAsNumericalScalar("SubsetSampling-DefaultConditionalProbability"));
+                 const NumericalScalar proposalRange = ResourceMap::GetAsScalar("SubsetSampling-DefaultProposalRange"),
+                 const NumericalScalar conditionalProbability = ResourceMap::GetAsScalar("SubsetSampling-DefaultConditionalProbability"));
 
   /** Virtual constructor */
   virtual SubsetSampling * clone() const;
