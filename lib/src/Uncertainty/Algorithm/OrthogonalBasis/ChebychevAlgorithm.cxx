@@ -72,8 +72,8 @@ ChebychevAlgorithm::ChebychevAlgorithm(const Distribution & measure)
   // Range = [a, +inf[    -> standardized measure has range [0, +inf[,    Laguerre factory
   // Range = ]-inf, b]    -> standardized measure has range ]-inf, 0],    no good factory, default to the Hermite factory
   // Range = ]-inf, +inf[ -> standardized measure has range ]-inf, +inf[, Hermite factory
-  const Bool finiteLowerBound = measure.getRange().getFiniteLowerBound()[0];
-  const Bool finiteUpperBound = measure.getRange().getFiniteUpperBound()[0];
+  const Bool finiteLowerBound = measure.getRange().getFiniteLowerBound()[0] == 1;
+  const Bool finiteUpperBound = measure.getRange().getFiniteUpperBound()[0] == 1;
   // Left-bounded measures
   if (finiteLowerBound)
   {

@@ -104,7 +104,7 @@ TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
       upperBound_ = distribution.getRange().getUpperBound()[0];
       cdfUpperBound_ = 1.0;
       pdfUpperBound_ = 0.0;
-      finiteUpperBound_ = distribution.getRange().getFiniteUpperBound()[0];
+      finiteUpperBound_ = distribution.getRange().getFiniteUpperBound()[0] == 1;
       break;
     case UPPER:
       upperBound_ = bound;
@@ -115,7 +115,7 @@ TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
       lowerBound_ = distribution.getRange().getLowerBound()[0];
       cdfLowerBound_ = 0.0;
       pdfLowerBound_ = 0.0;
-      finiteLowerBound_ = distribution.getRange().getFiniteLowerBound()[0];
+      finiteLowerBound_ = distribution.getRange().getFiniteLowerBound()[0] == 1;
       break;
     default:
       throw InvalidArgumentException(HERE) << "Error: invalid side argument for bounds, must be LOWER or UPPER, here side=" << side;
@@ -125,8 +125,8 @@ TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
   computeRange();
   lowerBound_ = getRange().getLowerBound()[0];
   upperBound_ = getRange().getUpperBound()[0];
-  finiteLowerBound_ = getRange().getFiniteLowerBound()[0];
-  finiteUpperBound_ = getRange().getFiniteUpperBound()[0];
+  finiteLowerBound_ = getRange().getFiniteLowerBound()[0] == 1;
+  finiteUpperBound_ = getRange().getFiniteUpperBound()[0] == 1;
 }
 
 
@@ -144,8 +144,8 @@ TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
   setDescription(distribution.getDescription());
   lowerBound_ = truncationInterval.getLowerBound()[0];
   upperBound_ = truncationInterval.getUpperBound()[0];
-  finiteLowerBound_ = truncationInterval.getFiniteLowerBound()[0];
-  finiteUpperBound_ = truncationInterval.getFiniteUpperBound()[0];
+  finiteLowerBound_ = truncationInterval.getFiniteLowerBound()[0] == 1;
+  finiteUpperBound_ = truncationInterval.getFiniteUpperBound()[0] == 1;
   cdfLowerBound_ = distribution.computeCDF(NumericalPoint(1, lowerBound_));
   cdfUpperBound_ = distribution.computeCDF(NumericalPoint(1, upperBound_));
   if (cdfLowerBound_ >= cdfUpperBound_) throw InvalidArgumentException(HERE) << "Error: the truncation interval does not contain a non-empty part of the support of the distribution";
@@ -156,8 +156,8 @@ TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
   computeRange();
   lowerBound_ = getRange().getLowerBound()[0];
   upperBound_ = getRange().getUpperBound()[0];
-  finiteLowerBound_ = getRange().getFiniteLowerBound()[0];
-  finiteUpperBound_ = getRange().getFiniteUpperBound()[0];
+  finiteLowerBound_ = getRange().getFiniteLowerBound()[0] == 1;
+  finiteUpperBound_ = getRange().getFiniteUpperBound()[0] == 1;
 }
 
 

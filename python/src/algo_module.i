@@ -59,6 +59,7 @@
 %include IntegrationAlgorithm.i
 %include GaussKronrodRule.i
 %include GaussKronrod.i
+%include GaussLegendre.i
 %include IteratedQuadrature.i
 %include ExpertMixture.i
 %include KarhunenLoeveP1Factory.i

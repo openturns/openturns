@@ -135,29 +135,30 @@ CovarianceMatrix RankMCovarianceModel::discretize(const NumericalSample & vertic
   if (vertices.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has a dimension=" << vertices.getDimension() << " different from the input dimension=" << spatialDimension_;
   const UnsignedInteger size = vertices.getSize();
   const UnsignedInteger fullSize = size * dimension_;
-  MatrixImplementation covarianceMatrix(fullSize, fullSize);
   // Precompute the discretizations of the functions over the vertices
   const UnsignedInteger basisSize = functions_.getSize();
-  Collection<MatrixImplementation> basisDiscretization(basisSize);
-  // If the covariance is diaonal
+  MatrixImplementation basisDiscretization(fullSize, basisSize);
+  MatrixImplementation::iterator start = basisDiscretization.begin();
+  // If the covariance is diagonal
   if (covariance_.getDimension() == 0)
     {
       for (UnsignedInteger i = 0; i < basisSize; ++i)
 	{
-	  const NumericalSample data(functions_[i](vertices));
-	  basisDiscretization[i] = MatrixImplementation(fullSize, 1, data.getImplementation()->getData()) * std::sqrt(variance_[i]);
+	  const NumericalPoint data(functions_[i](vertices).getImplementation()->getData() * std::sqrt(variance_[i]));
+	  std::copy(data.begin(), data.end(), start);
+	  start += fullSize;
 	}
-      for (UnsignedInteger i = 0; i < basisSize; ++i)
-	  covarianceMatrix += basisDiscretization[i].genProd(basisDiscretization[i], false, true);
-      return covarianceMatrix;
+      // C = M.M^t
+      return basisDiscretization.computeGram(false);
     }
-  const TriangularMatrix cholesky(const_cast<CovarianceMatrix&>(covariance_).computeCholesky());
+  // Here covariance_ is left untouched by computeCholesky(), but the method in not const
   for (UnsignedInteger i = 0; i < basisSize; ++i)
-    basisDiscretization[i] = MatrixImplementation(fullSize, 1, (functions_[i](vertices) * cholesky).getImplementation()->getData());
-  for (UnsignedInteger i = 0; i < basisSize; ++i)
-    for (UnsignedInteger j = 0; j < basisSize; ++j)
-      covarianceMatrix += basisDiscretization[i].genProd(basisDiscretization[j], false, true);
-  return covarianceMatrix;
+    {
+      const NumericalPoint data(functions_[i](vertices).getImplementation()->getData());
+      std::copy(data.begin(), data.end(), start);
+      start += fullSize;
+    }
+  return (covariance_.getImplementation()->symProd(basisDiscretization, 'R')).genProd(basisDiscretization, false, true);
 }
 
 /* Is it a stationary model ? */

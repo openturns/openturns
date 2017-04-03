@@ -406,6 +406,7 @@ ot_add_python_module(algo algo_module.i
                       IntegrationAlgorithm.i IntegrationAlgorithm_doc.i.in
                       GaussKronrodRule.i GaussKronrodRule_doc.i.in
                       GaussKronrod.i GaussKronrod_doc.i.in
+                      GaussLegendre.i GaussLegendre_doc.i.in
                       IteratedQuadrature.i IteratedQuadrature_doc.i.in
                       ExpertMixture.i ExpertMixture_doc.i.in
 		      KarhunenLoeveP1Factory.i KarhunenLoeveP1Factory_doc.i.in
