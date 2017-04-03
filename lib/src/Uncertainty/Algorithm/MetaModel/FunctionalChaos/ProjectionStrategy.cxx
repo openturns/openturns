@@ -114,7 +114,7 @@ NumericalPoint ProjectionStrategy::getCoefficients() const
 
 
 /* Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
-void ProjectionStrategy::computeCoefficients(const NumericalMathFunction & function,
+void ProjectionStrategy::computeCoefficients(const Function & function,
     const Basis & basis,
     const Indices & indices,
     const Indices & addedRanks,

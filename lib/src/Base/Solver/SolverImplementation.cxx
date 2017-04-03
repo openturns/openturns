@@ -147,7 +147,7 @@ UnsignedInteger SolverImplementation::getUsedFunctionEvaluation() const
 }
 
 /** Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] */
-NumericalScalar SolverImplementation::solve(const NumericalMathFunction & function,
+NumericalScalar SolverImplementation::solve(const Function & function,
     const NumericalScalar value,
     const NumericalScalar infPoint,
     const NumericalScalar supPoint) const
@@ -163,14 +163,14 @@ NumericalScalar SolverImplementation::solve(const NumericalMathFunction & functi
 }
 
 /** Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] given function(infPoint) and function(supPoint) */
-NumericalScalar SolverImplementation::solve(const NumericalMathFunction & function,
+NumericalScalar SolverImplementation::solve(const Function & function,
     const NumericalScalar value,
     const NumericalScalar infPoint,
     const NumericalScalar supPoint,
     const NumericalScalar infValue,
     const NumericalScalar supValue) const
 {
-  throw NotYetImplementedException(HERE) << "In SolverImplementation::solve(const NumericalMathFunction & function, const NumericalScalar value, const NumericalScalar infPoint, const NumericalScalar supPoint, const NumericalScalar infValue, const NumericalScalar supValue) const";
+  throw NotYetImplementedException(HERE) << "In SolverImplementation::solve(const Function & function, const NumericalScalar value, const NumericalScalar infPoint, const NumericalScalar supPoint, const NumericalScalar infValue, const NumericalScalar supValue) const";
 }
 
 END_NAMESPACE_OPENTURNS

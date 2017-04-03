@@ -311,20 +311,20 @@ NumericalSample PythonEvaluation::operator() (const NumericalSample & inS) const
             }
             else
             {
-              throw InvalidArgumentException(HERE) << "Python NumericalMathFunction returned an sequence object with incorrect dimension (at position "
+              throw InvalidArgumentException(HERE) << "Python Function returned an sequence object with incorrect dimension (at position "
                                                    << i << ")";
             }
           }
           else
           {
-            throw InvalidArgumentException(HERE) << "Python NumericalMathFunction returned an object which is NOT a sequence (at position "
+            throw InvalidArgumentException(HERE) << "Python Function returned an object which is NOT a sequence (at position "
                                                  << i << ")";
           }
         }
       }
       else
       {
-        throw InvalidArgumentException(HERE) << "Python NumericalMathFunction returned an sequence object with incorrect size (got "
+        throw InvalidArgumentException(HERE) << "Python Function returned an sequence object with incorrect size (got "
                                              << lengthResult << ", expected " << toDoSize << ")";
       }
     }

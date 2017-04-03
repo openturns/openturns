@@ -88,24 +88,24 @@ try:
     a1 = np.array(s0)
     print("NumericalSample", s0, "=> array", a1)
 
-    # Check tuple / NumericalMathFunction interoperability
-    F = NumericalMathFunction(
+    # Check tuple / Function interoperability
+    F = Function(
         ('E', 'F', 'L', 'I'), ('d',), ('-F*L^3/(3.*E*I)',))
 
     t0 = (1., 2., 3., 4.)
     print("NumericalPoint", F(t0), "= F( tuple", t0, ")")
 
-    # Check list / NumericalMathFunction interoperability
+    # Check list / Function interoperability
     l0 = [1., 2., 3., 4.]
     print("NumericalPoint", F(l0), "= F( list", l0, ")")
 
-    # Check array / NumericalMathFunction interoperability
+    # Check array / Function interoperability
     a0 = np.array((1., 2., 3., 4.))
     print("NumericalPoint", F(a0), "= F( array", a0, ")")
     a1 = np.array(((1., 2., 3., 4.), (5., 6., 7., 8.)))
     print("NumericalSample", F(a1), "= F( array", a1, ")")
 
-    # Check Python function / NumericalMathFunction interoperability
+    # Check Python function / Function interoperability
     def aFunc(x):
         return [x[0] + x[1] + x[2] + x[3]]
 
@@ -116,7 +116,7 @@ try:
     print("NumericalPoint", PYNMF(a0), "= PYNMF( array", a0, ")")
     print("NumericalSample", PYNMF(a1), "= PYNMF( array", a1, ")")
 
-    # Check 2-d array which nested dim is size=1 / NumericalMathFunction
+    # Check 2-d array which nested dim is size=1 / Function
     # interoperability
     def aFunc2(x):
         return [2.0 * x[0]]

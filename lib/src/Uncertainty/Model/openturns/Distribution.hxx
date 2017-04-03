@@ -41,7 +41,7 @@ class OT_API Distribution
   CLASSNAME;
 public:
 
-  typedef NumericalMathFunction                     IsoProbabilisticTransformation;
+  typedef Function                     IsoProbabilisticTransformation;
   typedef IsoProbabilisticTransformation            InverseIsoProbabilisticTransformation;
   typedef Collection<NumericalPoint>                NumericalPointCollection;
   typedef Collection<NumericalPointWithDescription> NumericalPointWithDescriptionCollection;

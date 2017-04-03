@@ -24,7 +24,7 @@
 #include "openturns/Distribution.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/NumericalSample.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/SymmetricTensor.hxx"
 #include "openturns/WeightedExperiment.hxx"
 
@@ -55,12 +55,12 @@ public:
   /** Constructor with distribution / model parameters */
   SobolIndicesAlgorithmImplementation(const Distribution & distribution,
                                       const UnsignedInteger size,
-                                      const NumericalMathFunction & model,
+                                      const Function & model,
                                       const Bool computeSecondOrder = true);
 
   /** Constructor with experiment / model parameters */
   SobolIndicesAlgorithmImplementation(const WeightedExperiment & experiment,
-                                      const NumericalMathFunction & model,
+                                      const Function & model,
                                       const Bool computeSecondOrder = true);
   /** Virtual constructor */
   virtual SobolIndicesAlgorithmImplementation * clone() const;

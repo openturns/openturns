@@ -23,7 +23,7 @@
 
 #include "openturns/DistributionImplementation.hxx"
 #include "openturns/Distribution.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/Solver.hxx"
 #include "openturns/GaussKronrod.hxx"
 
@@ -44,11 +44,11 @@ public:
   CompositeDistribution();
 
   /** Parameters constructor */
-  CompositeDistribution(const NumericalMathFunction & function,
+  CompositeDistribution(const Function & function,
                         const Distribution & antecedent);
 
   /** Parameters constructor */
-  CompositeDistribution(const NumericalMathFunction & function,
+  CompositeDistribution(const Function & function,
                         const Distribution & antecedent,
                         const NumericalPoint & bounds,
                         const NumericalPoint & values);
@@ -100,8 +100,8 @@ public:
   /* Interface specific to CompositeDistribution */
 
   /** Function accessor */
-  void setFunction(const NumericalMathFunction & function);
-  NumericalMathFunction getFunction() const;
+  void setFunction(const Function & function);
+  Function getFunction() const;
 
   /** Antecedent accessor */
   void setAntecedent(const Distribution & antecedent);
@@ -157,12 +157,12 @@ private:
     const CompositeDistribution * p_distribution_;
   }; // struct CompositeDistributionShiftedMomentWrapper
 
-  // Structure used to wrap the gradient of the function into a NumericalMathFunction
+  // Structure used to wrap the gradient of the function into a Function
   struct DerivativeWrapper
   {
-    const NumericalMathFunction & function_;
+    const Function & function_;
 
-    DerivativeWrapper(const NumericalMathFunction & function)
+    DerivativeWrapper(const Function & function)
       : function_(function)
     {}
 
@@ -178,11 +178,11 @@ private:
   void update();
 
   /** Set the function and antecedent with check */
-  void setFunctionAndAntecedent(const NumericalMathFunction & function,
+  void setFunctionAndAntecedent(const Function & function,
                                 const Distribution & antecedent);
 
   /** The main parameter set of the distribution */
-  NumericalMathFunction function_;
+  Function function_;
   Distribution antecedent_;
 
   /** Usefull quantities */

@@ -36,7 +36,7 @@ try:
     formulas = Description(outputFunc.getSize())
     formulas[0] = "-(6+x0^2-x1)"
     print("formulas=", formulas)
-    myFunction = NumericalMathFunction(inputFunc, outputFunc, formulas)
+    myFunction = Function(inputFunc, outputFunc, formulas)
 
     dim = myFunction.getInputDimension()
     # We create a normal distribution point of dimension 1

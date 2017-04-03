@@ -39,15 +39,15 @@ int main(int argc, char *argv[])
     outputNames1[0] = "y0";
     Description formulas1(1);
     formulas1[0] = "x0^2+2*x1+3*x2^3";
-    NumericalMathFunction function1(inputNames, outputNames1, formulas1);
+    Function function1(inputNames, outputNames1, formulas1);
     Description outputNames2(2);
     outputNames2[0] = "z0";
     outputNames2[1] = "z1";
     Description formulas2(2);
     formulas2[0] = "cos(x0*sin(x2+x1))";
     formulas2[1] = "exp(x1 - x0 * sin(x2))";
-    NumericalMathFunction function2(inputNames, outputNames2, formulas2);
-    Collection< NumericalMathFunction > coll(2);
+    Function function2(inputNames, outputNames2, formulas2);
+    Collection< Function > coll(2);
     coll[0] = function1;
     coll[1] = function2;
     AggregatedEvaluation evaluation(coll);

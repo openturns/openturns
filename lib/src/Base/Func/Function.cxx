@@ -18,7 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/AggregatedEvaluation.hxx"
 #include "openturns/AggregatedGradient.hxx"
@@ -41,90 +41,90 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(NumericalMathFunction);
+CLASSNAMEINIT(Function);
 
 
 /* Default constructor */
-NumericalMathFunction::NumericalMathFunction()
-  : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation())
+Function::Function()
+  : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation())
 {
   // Nothing to do
 }
 
-/* Constructor from NumericalMathFunctionImplementation */
-NumericalMathFunction::NumericalMathFunction(const NumericalMathFunctionImplementation & implementation)
-  : TypedInterfaceObject<NumericalMathFunctionImplementation>(implementation.clone())
+/* Constructor from FunctionImplementation */
+Function::Function(const FunctionImplementation & implementation)
+  : TypedInterfaceObject<FunctionImplementation>(implementation.clone())
 {
   // Nothing to do
 }
 
 /* Constructor from implementation */
-NumericalMathFunction::NumericalMathFunction(const Implementation & p_implementation)
-  : TypedInterfaceObject<NumericalMathFunctionImplementation>(p_implementation)
+Function::Function(const Implementation & p_implementation)
+  : TypedInterfaceObject<FunctionImplementation>(p_implementation)
 {
   // Nothing to do
 }
 
 /* Constructor from implementation pointer */
-NumericalMathFunction::NumericalMathFunction(NumericalMathFunctionImplementation * p_implementation)
-  : TypedInterfaceObject<NumericalMathFunctionImplementation>(p_implementation)
+Function::Function(FunctionImplementation * p_implementation)
+  : TypedInterfaceObject<FunctionImplementation>(p_implementation)
 {
   // Nothing to do
 }
 
 
 /* Constructor from implementation pointer */
-NumericalMathFunction::NumericalMathFunction(const EvaluationImplementation & evaluation)
-  : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation(evaluation.clone()))
+Function::Function(const EvaluationImplementation & evaluation)
+  : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation(evaluation.clone()))
 {
   // Nothing to do
 }
 
 
 /* Composition constructor */
-NumericalMathFunction::NumericalMathFunction(const NumericalMathFunction & left,
-    const NumericalMathFunction & right)
-  : TypedInterfaceObject<NumericalMathFunctionImplementation>(new ComposedFunction(left.getImplementation(), right.getImplementation()))
+Function::Function(const Function & left,
+    const Function & right)
+  : TypedInterfaceObject<FunctionImplementation>(new ComposedFunction(left.getImplementation(), right.getImplementation()))
 {
-  Log::Warn(OSS() << "NumericalMathFunction(NumericalMathFunctionCollection, NumericalSample) is deprecated: use ComposedFunction");
+  Log::Warn(OSS() << "Function(FunctionCollection, NumericalSample) is deprecated: use ComposedFunction");
 }
 
 /* Analytical formula constructor */
-NumericalMathFunction::NumericalMathFunction(const Description & inputVariablesNames,
+Function::Function(const Description & inputVariablesNames,
     const Description & outputVariablesNames,
     const Description & formulas)
-  : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation(inputVariablesNames, outputVariablesNames, formulas))
+  : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation(inputVariablesNames, outputVariablesNames, formulas))
 {
   // Nothing to do
 }
 
 /* Analytical formula constructor */
-NumericalMathFunction::NumericalMathFunction(const Description & inputVariablesNames,
+Function::Function(const Description & inputVariablesNames,
     const Description & formulas)
-  : TypedInterfaceObject<NumericalMathFunctionImplementation>()
+  : TypedInterfaceObject<FunctionImplementation>()
 {
-  Log::Warn(OSS() << "NumericalMathFunction(Description, Description) is deprecated: use SymbolicFunction");
+  Log::Warn(OSS() << "Function(Description, Description) is deprecated: use SymbolicFunction");
   const UnsignedInteger size = formulas.getSize();
   Description outputVariablesNames(size);
   for (UnsignedInteger i = 0; i < size; ++i)
     outputVariablesNames[i] = String(OSS() << "y" << i);
-  *this = NumericalMathFunction(inputVariablesNames, outputVariablesNames, formulas);
+  *this = Function(inputVariablesNames, outputVariablesNames, formulas);
 }
 
 /* Indicator function constructor */
-NumericalMathFunction::NumericalMathFunction(const NumericalMathFunction & function,
+Function::Function(const Function & function,
     const ComparisonOperator & comparisonOperator,
     const NumericalScalar threshold)
-  : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation(new IndicatorEvaluation(function.getEvaluation(), comparisonOperator, threshold), new NoGradient(), new NoHessian()))
+  : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation(new IndicatorEvaluation(function.getEvaluation(), comparisonOperator, threshold), new NoGradient(), new NoHessian()))
 {
-  Log::Warn(OSS() << "NumericalMathFunction(NumericalMathFunction, ComparisonOperator, NumericalScalar) is deprecated: use IndicatorFunction");
+  Log::Warn(OSS() << "Function(Function, ComparisonOperator, NumericalScalar) is deprecated: use IndicatorFunction");
 }
 
 /* Aggregated function constructor: the output is the aggregation of the several functions */
-NumericalMathFunction::NumericalMathFunction(const NumericalMathFunctionCollection & functionCollection)
-  : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation())
+Function::Function(const FunctionCollection & functionCollection)
+  : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation())
 {
-  Log::Warn(OSS() << "NumericalMathFunction(NumericalMathFunctionCollection) is deprecated: use AggregatedFunction");
+  Log::Warn(OSS() << "Function(FunctionCollection) is deprecated: use AggregatedFunction");
   const AggregatedEvaluation evaluation(functionCollection);
   setEvaluation(evaluation.clone());
   setGradient(new AggregatedGradient(evaluation));
@@ -132,11 +132,11 @@ NumericalMathFunction::NumericalMathFunction(const NumericalMathFunctionCollecti
 }
 
 /* Linear combination function constructor */
-NumericalMathFunction::NumericalMathFunction(const NumericalMathFunctionCollection & functionCollection,
+Function::Function(const FunctionCollection & functionCollection,
     const NumericalPoint & coefficients)
-  : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation())
+  : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation())
 {
-  Log::Warn(OSS() << "NumericalMathFunction(NumericalMathFunctionCollection, NumericalPoint) is deprecated: use LinearCombinationFunction");
+  Log::Warn(OSS() << "Function(FunctionCollection, NumericalPoint) is deprecated: use LinearCombinationFunction");
   const LinearCombinationEvaluation evaluation(functionCollection, coefficients);
   setEvaluation(evaluation.clone());
   setGradient(new LinearCombinationGradient(evaluation));
@@ -144,11 +144,11 @@ NumericalMathFunction::NumericalMathFunction(const NumericalMathFunctionCollecti
 }
 
 /* Dual linear combination function constructor */
-NumericalMathFunction::NumericalMathFunction(const NumericalMathFunctionCollection & functionCollection,
+Function::Function(const FunctionCollection & functionCollection,
     const NumericalSample & coefficients)
-  : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation())
+  : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation())
 {
-  Log::Warn(OSS() << "NumericalMathFunction(NumericalMathFunctionCollection, NumericalSample) is deprecated: use DualLinearCombinationFunction");
+  Log::Warn(OSS() << "Function(FunctionCollection, NumericalSample) is deprecated: use DualLinearCombinationFunction");
   const DualLinearCombinationEvaluation evaluation(functionCollection, coefficients);
   setEvaluation(evaluation.clone());
   setGradient(new DualLinearCombinationGradient(evaluation));
@@ -156,55 +156,55 @@ NumericalMathFunction::NumericalMathFunction(const NumericalMathFunctionCollecti
 }
 
 /* Simplified analytical formula constructor */
-NumericalMathFunction::NumericalMathFunction(const String & inputVariableName,
+Function::Function(const String & inputVariableName,
     const String & formula,
     const String & outputVariableName)
-  : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation(Description(1, inputVariableName), Description(1, outputVariableName), Description(1, formula)))
+  : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation(Description(1, inputVariableName), Description(1, outputVariableName), Description(1, formula)))
 {
-  Log::Warn(OSS() << "NumericalMathFunction(String, String, String) is deprecated: use SymbolicFunction");
+  Log::Warn(OSS() << "Function(String, String, String) is deprecated: use SymbolicFunction");
 }
 
 
 /* Constructor from evaluation */
-NumericalMathFunction::NumericalMathFunction(const EvaluationPointer & evaluationImplementation)
-  : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation(evaluationImplementation))
+Function::Function(const EvaluationPointer & evaluationImplementation)
+  : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation(evaluationImplementation))
 {
   // Nothing to do
 }
 
 
 /* Constructor from implementations */
-NumericalMathFunction::NumericalMathFunction(const EvaluationPointer & evaluationImplementation,
+Function::Function(const EvaluationPointer & evaluationImplementation,
     const GradientPointer & gradientImplementation,
     const HessianPointer  & hessianImplementation)
-  : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation(evaluationImplementation, gradientImplementation, hessianImplementation))
+  : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation(evaluationImplementation, gradientImplementation, hessianImplementation))
 {
   // Nothing to do
 }
 
 /* Constructor from samples */
-NumericalMathFunction::NumericalMathFunction(const NumericalSample & inputSample,
+Function::Function(const NumericalSample & inputSample,
     const NumericalSample & outputSample)
-  : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation( inputSample, outputSample ))
+  : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation( inputSample, outputSample ))
 {
-  Log::Warn(OSS() << "NumericalMathFunction(NumericalSample, NumericalSample) is deprecated: use DatabaseFunction");
+  Log::Warn(OSS() << "Function(NumericalSample, NumericalSample) is deprecated: use DatabaseFunction");
 }
 
 /* Constructor from field */
-NumericalMathFunction::NumericalMathFunction(const Field & field)
-  : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation(new P1LagrangeEvaluation( field )))
+Function::Function(const Field & field)
+  : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation(new P1LagrangeEvaluation( field )))
 {
   // Nothing to do
 }
 
 /* Constructor by splitting the input of a function between variables and parameters */
-NumericalMathFunction::NumericalMathFunction(const NumericalMathFunction & function,
+Function::Function(const Function & function,
     const Indices & set,
     const NumericalPoint & referencePoint,
     const Bool parametersSet)
-  : TypedInterfaceObject<NumericalMathFunctionImplementation>(new NumericalMathFunctionImplementation())
+  : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation())
 {
-  Log::Warn(OSS() << "NumericalMathFunction(NumericalMathFunction, Indices, NumericalPoint, Bool) is deprecated: use ParametricFunction");
+  Log::Warn(OSS() << "Function(Function, Indices, NumericalPoint, Bool) is deprecated: use ParametricFunction");
   const Pointer<ParametricEvaluation> p_evaluation = new ParametricEvaluation(function, set, referencePoint, parametersSet);
   setEvaluation(p_evaluation);
   setGradient(new ParametricGradient(p_evaluation));
@@ -212,229 +212,229 @@ NumericalMathFunction::NumericalMathFunction(const NumericalMathFunction & funct
 }
 
 /* Comparison operator */
-Bool NumericalMathFunction::operator ==(const NumericalMathFunction & other) const
+Bool Function::operator ==(const Function & other) const
 {
   if (this == &other) return true;
   return *getImplementation() == *other.getImplementation();
 }
 
 /* String converter */
-String NumericalMathFunction::__repr__() const
+String Function::__repr__() const
 {
-  return OSS(true) << "class=" << NumericalMathFunction::GetClassName()
+  return OSS(true) << "class=" << Function::GetClassName()
          << " name=" << getName()
          << " implementation=" << getImplementation()->__repr__();
 }
 
 /* String converter */
-String NumericalMathFunction::__str__(const String & offset) const
+String Function::__str__(const String & offset) const
 {
   return getImplementation()->__str__(offset);
 }
 
 /* Description Accessor */
-void NumericalMathFunction::setDescription(const Description & description)
+void Function::setDescription(const Description & description)
 {
   copyOnWrite();
   getImplementation()->setDescription(description);
 }
 
 /* Description Accessor */
-Description NumericalMathFunction::getDescription() const
+Description Function::getDescription() const
 {
   return getImplementation()->getDescription();
 }
 
 /* Input description Accessor */
-Description NumericalMathFunction::getInputDescription() const
+Description Function::getInputDescription() const
 {
   return getImplementation()->getInputDescription();
 }
 
 /* Output description Accessor */
-Description NumericalMathFunction::getOutputDescription() const
+Description Function::getOutputDescription() const
 {
   return getImplementation()->getOutputDescription();
 }
 
 /* Enable or disable the internal cache */
-void NumericalMathFunction::enableCache() const
+void Function::enableCache() const
 {
   getImplementation()->enableCache();
 }
 
-void NumericalMathFunction::disableCache() const
+void Function::disableCache() const
 {
   getImplementation()->disableCache();
 }
 
-Bool NumericalMathFunction::isCacheEnabled() const
+Bool Function::isCacheEnabled() const
 {
   return getImplementation()->isCacheEnabled();
 }
 
-UnsignedInteger NumericalMathFunction::getCacheHits() const
+UnsignedInteger Function::getCacheHits() const
 {
   return getImplementation()->getCacheHits();
 }
 
-void NumericalMathFunction::addCacheContent(const NumericalSample & inSample, const NumericalSample & outSample)
+void Function::addCacheContent(const NumericalSample & inSample, const NumericalSample & outSample)
 {
   getImplementation()->addCacheContent(inSample, outSample);
 }
 
-NumericalSample NumericalMathFunction::getCacheInput() const
+NumericalSample Function::getCacheInput() const
 {
   return getImplementation()->getCacheInput();
 }
 
-NumericalSample NumericalMathFunction::getCacheOutput() const
+NumericalSample Function::getCacheOutput() const
 {
   return getImplementation()->getCacheOutput();
 }
 
-void NumericalMathFunction::clearCache() const
+void Function::clearCache() const
 {
   return getImplementation()->clearCache();
 }
 
 /* Enable or disable the input/output history */
-void NumericalMathFunction::enableHistory() const
+void Function::enableHistory() const
 {
   return getImplementation()->enableHistory();
 }
 
-void NumericalMathFunction::disableHistory() const
+void Function::disableHistory() const
 {
   return getImplementation()->disableHistory();
 }
 
-Bool NumericalMathFunction::isHistoryEnabled() const
+Bool Function::isHistoryEnabled() const
 {
   return getImplementation()->isHistoryEnabled();
 }
 
-void NumericalMathFunction::clearHistory() const
+void Function::clearHistory() const
 {
   return getImplementation()->clearHistory();
 }
 
-HistoryStrategy NumericalMathFunction::getHistoryInput() const
+HistoryStrategy Function::getHistoryInput() const
 {
   return getImplementation()->getHistoryInput();
 }
 
-HistoryStrategy NumericalMathFunction::getHistoryOutput() const
+HistoryStrategy Function::getHistoryOutput() const
 {
   return getImplementation()->getHistoryOutput();
 }
 
-NumericalSample NumericalMathFunction::getInputPointHistory() const
+NumericalSample Function::getInputPointHistory() const
 {
   return getImplementation()->getInputPointHistory();
 }
 
-NumericalSample NumericalMathFunction::getInputParameterHistory() const
+NumericalSample Function::getInputParameterHistory() const
 {
   return getImplementation()->getInputParameterHistory();
 }
 
 /* Multiplication operator between two functions with the same input dimension and 1D output dimension */
-ProductFunction NumericalMathFunction::operator * (const NumericalMathFunction & right) const
+ProductFunction Function::operator * (const Function & right) const
 {
   return ProductFunction(getImplementation(), right.getImplementation());
 }
 
 /* Addition operator between two functions with the same input dimension and output dimension */
-NumericalMathFunction NumericalMathFunction::operator + (const NumericalMathFunction & right) const
+Function Function::operator + (const Function & right) const
 {
   const NumericalPoint coefficients(2, 1.0);
-  NumericalMathFunctionCollection collection(2);
+  FunctionCollection collection(2);
   collection[0] = *this;
   collection[1] = right;
   const LinearCombinationEvaluation evaluation(collection, coefficients);
-  return NumericalMathFunction(evaluation.clone(), LinearCombinationGradient(evaluation).clone(), LinearCombinationHessian(evaluation).clone());
+  return Function(evaluation.clone(), LinearCombinationGradient(evaluation).clone(), LinearCombinationHessian(evaluation).clone());
 }
 
 /* Soustraction operator between two functions with the same input dimension and output dimension */
-NumericalMathFunction NumericalMathFunction::operator - (const NumericalMathFunction & right) const
+Function Function::operator - (const Function & right) const
 {
   NumericalPoint coefficients(2, 1.0);
   coefficients[1] = -1.0;
-  NumericalMathFunctionCollection collection(2);
+  FunctionCollection collection(2);
   collection[0] = *this;
   collection[1] = right;
   const LinearCombinationEvaluation evaluation(collection, coefficients);
-  return NumericalMathFunction(evaluation.clone(), LinearCombinationGradient(evaluation).clone(), LinearCombinationHessian(evaluation).clone());
+  return Function(evaluation.clone(), LinearCombinationGradient(evaluation).clone(), LinearCombinationHessian(evaluation).clone());
 }
 
 /* Function implementation accessors */
-void NumericalMathFunction::setEvaluation(const EvaluationPointer & functionImplementation)
+void Function::setEvaluation(const EvaluationPointer & functionImplementation)
 {
   copyOnWrite();
   getImplementation()->setEvaluation(functionImplementation);
 }
 
-const NumericalMathFunction::EvaluationPointer & NumericalMathFunction::getEvaluation() const
+const Function::EvaluationPointer & Function::getEvaluation() const
 {
   return getImplementation()->getEvaluation();
 }
 
 /* Gradient implementation accessors */
-void NumericalMathFunction::setGradient(const GradientImplementation & gradientImplementation)
+void Function::setGradient(const GradientImplementation & gradientImplementation)
 {
   copyOnWrite();
   getImplementation()->setGradient(GradientPointer(gradientImplementation.clone()));
 }
 
-void NumericalMathFunction::setGradient(const GradientPointer & gradientImplementation)
+void Function::setGradient(const GradientPointer & gradientImplementation)
 {
   copyOnWrite();
   getImplementation()->setGradient(gradientImplementation);
 }
 
-const NumericalMathFunction::GradientPointer & NumericalMathFunction::getGradient() const
+const Function::GradientPointer & Function::getGradient() const
 {
   return getImplementation()->getGradient();
 }
 
 /* Hessian implementation accessors */
-void NumericalMathFunction::setHessian(const HessianImplementation & hessianImplementation)
+void Function::setHessian(const HessianImplementation & hessianImplementation)
 {
   copyOnWrite();
   getImplementation()->setHessian(HessianPointer(hessianImplementation.clone()));
 }
 
-void NumericalMathFunction::setHessian(const HessianPointer & hessianImplementation)
+void Function::setHessian(const HessianPointer & hessianImplementation)
 {
   copyOnWrite();
   getImplementation()->setHessian(hessianImplementation);
 }
 
-const NumericalMathFunction::HessianPointer & NumericalMathFunction::getHessian() const
+const Function::HessianPointer & Function::getHessian() const
 {
   return getImplementation()->getHessian();
 }
 
 /* Flag for default gradient accessors */
-Bool NumericalMathFunction::getUseDefaultGradientImplementation() const
+Bool Function::getUseDefaultGradientImplementation() const
 {
   return getImplementation()->getUseDefaultGradientImplementation();
 }
 
-void NumericalMathFunction::setUseDefaultGradientImplementation(const Bool gradientFlag)
+void Function::setUseDefaultGradientImplementation(const Bool gradientFlag)
 {
   copyOnWrite();
   getImplementation()->setUseDefaultGradientImplementation(gradientFlag);
 }
 
 /* Flag for default hessian accessors */
-Bool NumericalMathFunction::getUseDefaultHessianImplementation() const
+Bool Function::getUseDefaultHessianImplementation() const
 {
   return getImplementation()->getUseDefaultHessianImplementation();
 }
 
-void NumericalMathFunction::setUseDefaultHessianImplementation(const Bool hessianFlag)
+void Function::setUseDefaultHessianImplementation(const Bool hessianFlag)
 {
   copyOnWrite();
   getImplementation()->setUseDefaultHessianImplementation(hessianFlag);
@@ -442,12 +442,12 @@ void NumericalMathFunction::setUseDefaultHessianImplementation(const Bool hessia
 
 
 /* Gradient according to the marginal parameters */
-Matrix NumericalMathFunction::parameterGradient(const NumericalPoint & inP) const
+Matrix Function::parameterGradient(const NumericalPoint & inP) const
 {
   return getImplementation()->parameterGradient(inP);
 }
 
-Matrix NumericalMathFunction::parameterGradient(const NumericalPoint & inP,
+Matrix Function::parameterGradient(const NumericalPoint & inP,
     const NumericalPoint & parameter)
 {
   copyOnWrite();
@@ -455,43 +455,43 @@ Matrix NumericalMathFunction::parameterGradient(const NumericalPoint & inP,
 }
 
 /* Parameters value accessor */
-NumericalPoint NumericalMathFunction::getParameter() const
+NumericalPoint Function::getParameter() const
 {
   return getImplementation()->getParameter();
 }
 
-void NumericalMathFunction::setParameter(const NumericalPoint & parameter)
+void Function::setParameter(const NumericalPoint & parameter)
 {
   copyOnWrite();
   getImplementation()->setParameter(parameter);
 }
 
 /* Parameters description accessor */
-Description NumericalMathFunction::getParameterDescription() const
+Description Function::getParameterDescription() const
 {
   return getImplementation()->getParameterDescription();
 }
 
-void NumericalMathFunction::setParameterDescription(const Description & description)
+void Function::setParameterDescription(const Description & description)
 {
   copyOnWrite();
   getImplementation()->setParameterDescription(description);
 }
 
 /* Operator () */
-NumericalPoint NumericalMathFunction::operator() (const NumericalPoint & inP) const
+NumericalPoint Function::operator() (const NumericalPoint & inP) const
 {
   return getImplementation()->operator()(inP);
 }
 
-NumericalPoint NumericalMathFunction::operator() (const NumericalPoint & inP,
+NumericalPoint Function::operator() (const NumericalPoint & inP,
     const NumericalPoint & parameter)
 {
   copyOnWrite();
   return getImplementation()->operator()(inP, parameter);
 }
 
-NumericalSample NumericalMathFunction::operator() (const NumericalPoint & inP,
+NumericalSample Function::operator() (const NumericalPoint & inP,
     const NumericalSample & parameters)
 {
   copyOnWrite();
@@ -499,24 +499,24 @@ NumericalSample NumericalMathFunction::operator() (const NumericalPoint & inP,
 }
 
 /* Operator () */
-NumericalSample NumericalMathFunction::operator() (const NumericalSample & inSample) const
+NumericalSample Function::operator() (const NumericalSample & inSample) const
 {
   return getImplementation()->operator()(inSample);
 }
 
 /* Operator () */
-Field NumericalMathFunction::operator() (const Field & inField) const
+Field Function::operator() (const Field & inField) const
 {
   return getImplementation()->operator()(inField);
 }
 
 /* Method gradient() returns the Jacobian transposed matrix of the function at point */
-Matrix NumericalMathFunction::gradient(const NumericalPoint & inP) const
+Matrix Function::gradient(const NumericalPoint & inP) const
 {
   return getImplementation()->gradient(inP);
 }
 
-Matrix NumericalMathFunction::gradient(const NumericalPoint & inP,
+Matrix Function::gradient(const NumericalPoint & inP,
                                        const NumericalPoint & parameters)
 {
   copyOnWrite();
@@ -524,12 +524,12 @@ Matrix NumericalMathFunction::gradient(const NumericalPoint & inP,
 }
 
 /* Method hessian() returns the symmetric tensor of the function at point */
-SymmetricTensor NumericalMathFunction::hessian(const NumericalPoint & inP) const
+SymmetricTensor Function::hessian(const NumericalPoint & inP) const
 {
   return getImplementation()->hessian(inP);
 }
 
-SymmetricTensor NumericalMathFunction::hessian(const NumericalPoint & inP,
+SymmetricTensor Function::hessian(const NumericalPoint & inP,
     const NumericalPoint & parameters)
 {
   copyOnWrite();
@@ -538,61 +538,61 @@ SymmetricTensor NumericalMathFunction::hessian(const NumericalPoint & inP,
 
 
 /* Accessor for parameter dimension */
-UnsignedInteger NumericalMathFunction::getParameterDimension() const
+UnsignedInteger Function::getParameterDimension() const
 {
   return getImplementation()->getParameterDimension();
 }
 
 /* Accessor for input point dimension */
-UnsignedInteger NumericalMathFunction::getInputDimension() const
+UnsignedInteger Function::getInputDimension() const
 {
   return getImplementation()->getInputDimension();
 }
 
 /* Accessor for output point dimension */
-UnsignedInteger NumericalMathFunction::getOutputDimension() const
+UnsignedInteger Function::getOutputDimension() const
 {
   return getImplementation()->getOutputDimension();
 
 }
 
 /* Get the i-th marginal function */
-NumericalMathFunction NumericalMathFunction::getMarginal(const UnsignedInteger i) const
+Function Function::getMarginal(const UnsignedInteger i) const
 {
   return *(getImplementation()->getMarginal(i));
 }
 
 /* Get the function corresponding to indices components */
-NumericalMathFunction NumericalMathFunction::getMarginal(const Indices & indices) const
+Function Function::getMarginal(const Indices & indices) const
 {
   return *(getImplementation()->getMarginal(indices));
 }
 
 /* Number of calls to the evaluation */
-UnsignedInteger NumericalMathFunction::getCallsNumber() const
+UnsignedInteger Function::getCallsNumber() const
 {
   return getEvaluationCallsNumber();
 }
 
-UnsignedInteger NumericalMathFunction::getEvaluationCallsNumber() const
+UnsignedInteger Function::getEvaluationCallsNumber() const
 {
   return getImplementation()->getEvaluationCallsNumber();
 }
 
 /* Number of calls to the gradient */
-UnsignedInteger NumericalMathFunction::getGradientCallsNumber() const
+UnsignedInteger Function::getGradientCallsNumber() const
 {
   return getImplementation()->getGradientCallsNumber();
 }
 
 /* Number of calls to the hessian */
-UnsignedInteger NumericalMathFunction::getHessianCallsNumber() const
+UnsignedInteger Function::getHessianCallsNumber() const
 {
   return getImplementation()->getHessianCallsNumber();
 }
 
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
-Graph NumericalMathFunction::draw(const UnsignedInteger inputMarginal,
+Graph Function::draw(const UnsignedInteger inputMarginal,
                                   const UnsignedInteger outputMarginal,
                                   const NumericalPoint & centralPoint,
                                   const NumericalScalar xMin,
@@ -604,7 +604,7 @@ Graph NumericalMathFunction::draw(const UnsignedInteger inputMarginal,
 }
 
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
-Graph NumericalMathFunction::draw(const UnsignedInteger firstInputMarginal,
+Graph Function::draw(const UnsignedInteger firstInputMarginal,
                                   const UnsignedInteger secondInputMarginal,
                                   const UnsignedInteger outputMarginal,
                                   const NumericalPoint & centralPoint,
@@ -617,7 +617,7 @@ Graph NumericalMathFunction::draw(const UnsignedInteger firstInputMarginal,
 }
 
 /* Draw the output of the function with respect to its input when the input and output dimensions are 1 */
-Graph NumericalMathFunction::draw(const NumericalScalar xMin,
+Graph Function::draw(const NumericalScalar xMin,
                                   const NumericalScalar xMax,
                                   const UnsignedInteger pointNumber,
                                   const GraphImplementation::LogScale scale) const
@@ -626,7 +626,7 @@ Graph NumericalMathFunction::draw(const NumericalScalar xMin,
 }
 
 /* Draw the output of the function with respect to its input when the input dimension is 2 and the output dimension is 1 */
-Graph NumericalMathFunction::draw(const NumericalPoint & xMin,
+Graph Function::draw(const NumericalPoint & xMin,
                                   const NumericalPoint & xMax,
                                   const Indices & pointNumber,
                                   const GraphImplementation::LogScale scale) const
@@ -635,19 +635,19 @@ Graph NumericalMathFunction::draw(const NumericalPoint & xMin,
 }
 
 /* Static methods for documentation of analytical fnctions */
-Description NumericalMathFunction::GetValidConstants()
+Description Function::GetValidConstants()
 {
-  return NumericalMathFunctionImplementation::GetValidConstants();
+  return FunctionImplementation::GetValidConstants();
 }
 
-Description NumericalMathFunction::GetValidFunctions()
+Description Function::GetValidFunctions()
 {
-  return NumericalMathFunctionImplementation::GetValidFunctions();
+  return FunctionImplementation::GetValidFunctions();
 }
 
-Description NumericalMathFunction::GetValidOperators()
+Description Function::GetValidOperators()
 {
-  return NumericalMathFunctionImplementation::GetValidOperators();
+  return FunctionImplementation::GetValidOperators();
 }
 
 

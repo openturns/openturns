@@ -42,7 +42,7 @@ iterated points."
 
 Parameters
 ----------
-function : :class:`~openturns.NumericalMathFunction`
+function : :class:`~openturns.Function`
     The function of the equation :math:`function(x) = value` to be solved in the
     interval :math:`[infPoint, supPoint]`.
 value : float

@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     Description formulas(outputFunc.getSize());
     formulas[0] = "-(6+x0^2-x1)";
     fullprint << "formulas=" << formulas << std::endl;
-    NumericalMathFunction myFunction(inputFunc, outputFunc, formulas);
+    Function myFunction(inputFunc, outputFunc, formulas);
 
     UnsignedInteger dim = myFunction.getInputDimension();
     /* We create a normal distribution point of dimension 1 */

@@ -167,10 +167,10 @@ private :
   CovarianceMatrix computeI_MTHTHM(const SymmetricMatrix & matrix_HTH, const Matrix & matV1_Omega_V1TCholesky) const;
 
   /** Likelihood function accessor */
-  NumericalMathFunction getLogLikelihoodFunction() const;
+  Function getLogLikelihoodFunction() const;
 
   /** Likelihood constraint accessor */
-  NumericalMathFunction getLogLikelihoodInequalityConstraint() const;
+  Function getLogLikelihoodInequalityConstraint() const;
 
   /** likelihood estimate */
   NumericalPoint computeLogLikelihoodInequalityConstraint( const NumericalPoint & beta ) const;

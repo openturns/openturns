@@ -46,16 +46,16 @@ OptimizationProblem::OptimizationProblem(const Implementation & p_implementation
 }
 
 /* Constructor with constraints, bounds */
-OptimizationProblem::OptimizationProblem(const NumericalMathFunction & objective)
+OptimizationProblem::OptimizationProblem(const Function & objective)
 : TypedInterfaceObject<OptimizationProblemImplementation>(new OptimizationProblemImplementation(objective))
 {
   // Nothing to do
 }
 
 /* Constructor with constraints, bounds */
-OptimizationProblem::OptimizationProblem(const NumericalMathFunction & objective,
-    const NumericalMathFunction & equalityConstraint,
-    const NumericalMathFunction & inequalityConstraint,
+OptimizationProblem::OptimizationProblem(const Function & objective,
+    const Function & equalityConstraint,
+    const Function & inequalityConstraint,
     const Interval & bounds):
   TypedInterfaceObject<OptimizationProblemImplementation>(new OptimizationProblemImplementation(objective, equalityConstraint, inequalityConstraint, bounds))
 {
@@ -63,7 +63,7 @@ OptimizationProblem::OptimizationProblem(const NumericalMathFunction & objective
 }
 
 /* Constructor for nearest point problem */
-OptimizationProblem::OptimizationProblem(const NumericalMathFunction & levelFunction,
+OptimizationProblem::OptimizationProblem(const Function & levelFunction,
     NumericalScalar levelValue)
   : TypedInterfaceObject<OptimizationProblemImplementation>(new OptimizationProblemImplementation(levelFunction, levelValue))
 {
@@ -71,12 +71,12 @@ OptimizationProblem::OptimizationProblem(const NumericalMathFunction & levelFunc
 }
 
 /* Objective accessor */
-NumericalMathFunction OptimizationProblem::getObjective() const
+Function OptimizationProblem::getObjective() const
 {
   return getImplementation()->getObjective();
 }
 
-void OptimizationProblem::setObjective(const NumericalMathFunction & objective)
+void OptimizationProblem::setObjective(const Function & objective)
 {
   copyOnWrite();
   getImplementation()->setObjective(objective);
@@ -88,12 +88,12 @@ Bool OptimizationProblem::hasMultipleObjective() const
 }
 
 /* Equality constraint accessor */
-NumericalMathFunction OptimizationProblem::getEqualityConstraint() const
+Function OptimizationProblem::getEqualityConstraint() const
 {
   return getImplementation()->getEqualityConstraint();
 }
 
-void OptimizationProblem::setEqualityConstraint(const NumericalMathFunction & equalityConstraint)
+void OptimizationProblem::setEqualityConstraint(const Function & equalityConstraint)
 {
   copyOnWrite();
   getImplementation()->setEqualityConstraint(equalityConstraint);
@@ -105,12 +105,12 @@ Bool OptimizationProblem::hasEqualityConstraint() const
 }
 
 /* Inequality constraint accessor */
-NumericalMathFunction OptimizationProblem::getInequalityConstraint() const
+Function OptimizationProblem::getInequalityConstraint() const
 {
   return getImplementation()->getInequalityConstraint();
 }
 
-void OptimizationProblem::setInequalityConstraint(const NumericalMathFunction & inequalityConstraint)
+void OptimizationProblem::setInequalityConstraint(const Function & inequalityConstraint)
 {
   copyOnWrite();
   getImplementation()->setInequalityConstraint(inequalityConstraint);
@@ -139,12 +139,12 @@ Bool OptimizationProblem::hasBounds() const
 }
 
 /* Level function accessor */
-NumericalMathFunction OptimizationProblem::getLevelFunction() const
+Function OptimizationProblem::getLevelFunction() const
 {
   return getImplementation()->getLevelFunction();
 }
 
-void OptimizationProblem::setLevelFunction(const NumericalMathFunction & levelFunction)
+void OptimizationProblem::setLevelFunction(const Function & levelFunction)
 {
   copyOnWrite();
   getImplementation()->setLevelFunction(levelFunction);

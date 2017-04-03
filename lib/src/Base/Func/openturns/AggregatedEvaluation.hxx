@@ -24,7 +24,7 @@
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -40,8 +40,8 @@ class OT_API AggregatedEvaluation
   CLASSNAME;
 public:
 
-  typedef Collection<NumericalMathFunction>                              NumericalMathFunctionCollection;
-  typedef PersistentCollection<NumericalMathFunction>                    NumericalMathFunctionPersistentCollection;
+  typedef Collection<Function>                              FunctionCollection;
+  typedef PersistentCollection<Function>                    FunctionPersistentCollection;
 
   // friend class Factory<AggregatedEvaluation>;
 
@@ -49,7 +49,7 @@ public:
   AggregatedEvaluation();
 
   /** Parameter constructor */
-  AggregatedEvaluation(const NumericalMathFunctionCollection & functionsCollection);
+  AggregatedEvaluation(const FunctionCollection & functionsCollection);
 
   /** Virtual constructor */
   virtual AggregatedEvaluation * clone() const;
@@ -63,8 +63,8 @@ public:
   NumericalSample operator () (const NumericalSample & inS) const;
 
   /** Functions accessor */
-  NumericalMathFunctionCollection getFunctionsCollection() const;
-  void setFunctionsCollection(const NumericalMathFunctionCollection & functionsCollection);
+  FunctionCollection getFunctionsCollection() const;
+  void setFunctionsCollection(const FunctionCollection & functionsCollection);
 
   /** Get the i-th marginal function */
   Implementation getMarginal(const UnsignedInteger i) const;
@@ -102,7 +102,7 @@ private:
   friend class AggregatedHessian;
 
   // The functions to be aggregated
-  NumericalMathFunctionPersistentCollection functionsCollection_;
+  FunctionPersistentCollection functionsCollection_;
 
   // The output dimension
   UnsignedInteger outputDimension_;

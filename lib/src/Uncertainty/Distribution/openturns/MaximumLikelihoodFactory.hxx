@@ -72,7 +72,7 @@ public:
   Interval getOptimizationBounds() const;
 
   /** Accessor to inequality constraint */
-  void setOptimizationInequalityConstraint(const NumericalMathFunction & optimizationInequalityConstraint);
+  void setOptimizationInequalityConstraint(const Function & optimizationInequalityConstraint);
 
   /** Accessor to known parameter */
   void setKnownParameter(const NumericalPoint & values, const Indices & positions);
@@ -96,7 +96,7 @@ protected:
   Interval optimizationBounds_;
 
   // Inequality constraint used for parameter optimization
-  NumericalMathFunction optimizationInequalityConstraint_;
+  Function optimizationInequalityConstraint_;
 
   /* Known parameter */
   NumericalPoint knownParameterValues_;

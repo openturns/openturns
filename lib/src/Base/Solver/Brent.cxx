@@ -61,7 +61,7 @@ String Brent::__repr__() const
 }
 
 /* Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] given function(infPoint) and function(supPoint) with the Brent method */
-NumericalScalar Brent::solve(const NumericalMathFunction & function,
+NumericalScalar Brent::solve(const Function & function,
                              const NumericalScalar value,
                              const NumericalScalar infPoint,
                              const NumericalScalar supPoint,

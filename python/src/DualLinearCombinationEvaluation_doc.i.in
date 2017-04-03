@@ -7,7 +7,7 @@ Available constructors:
     
 Parameters
 ----------
-scalarFctColl : sequence of :class:`~openturns.NumericalMathFunction`
+scalarFctColl : sequence of :class:`~openturns.Function`
     A collection of functions :math:`(f_i)_{i = 1, \ldots, l}` of size :math:`l`,
     such that :math:`\forall i \in \{1, \ldots, l\}`, 
     :math:`f_i : \Rset^n \rightarrow \Rset`.
@@ -16,12 +16,12 @@ vectCoefColl : 2-d sequence of float
 
 See also
 --------
-NumericalMathFunction, AggregatedEvaluation, DatabaseEvaluation,
+Function, AggregatedEvaluation, DatabaseEvaluation,
 LinearFunction
 
 Notes
 -----
-It returns a :class:`~openturns.NumericalMathFunction` which is the function
+It returns a :class:`~openturns.Function` which is the function
 :math:`f: \Rset^n \rightarrow \Rset^p` defined as the linear combination of the functions :math:`f_i` with vector coefficients in :math:`\cC`:
 
 .. math::
@@ -46,7 +46,7 @@ coef : :class:`~openturns.NumericalSample`
 
 Returns
 -------
-fctColl : :class:`~openturns.NumericalMathFunctionCollection`
+fctColl : :class:`~openturns.FunctionCollection`
     The collection of scalar functions :math:`(f_i)_{i = 1, \ldots, l}` which
     defines the linear combination of :math:`f`."
 
@@ -58,7 +58,7 @@ fctColl : :class:`~openturns.NumericalMathFunctionCollection`
 
 Parameters
 ----------
-scalarFctColl : sequence of :class:`~openturns.NumericalMathFunction`
+scalarFctColl : sequence of :class:`~openturns.Function`
     The collection of functions :math:`(f_i)_{i = 1, \ldots, l}`.
 vectCoefColl : 2-d sequence of float
     The sample of coefficients :math:`\cC = \{\vect{c}_1, \ldots, \vect{c}_l \}`."

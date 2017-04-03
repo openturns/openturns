@@ -111,7 +111,7 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
 
 /* Constructor */
 KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
-                                   const NumericalMathFunction & inputTransformation,
+                                   const Function & inputTransformation,
                                    const NumericalSample & outputSample,
                                    const CovarianceModel & covarianceModel,
                                    const Basis & basis)
@@ -136,7 +136,7 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
 
 /* Constructor */
 KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
-                                   const NumericalMathFunction & inputTransformation,
+                                   const Function & inputTransformation,
                                    const NumericalSample & outputSample,
                                    const CovarianceModel & covarianceModel,
                                    const BasisCollection & basisCollection)
@@ -202,7 +202,7 @@ void KrigingAlgorithm::run()
   computeGamma();
   LOGINFO("Store the estimates");
   LOGINFO("Build the output meta-model");
-  NumericalMathFunction metaModel;
+  Function metaModel;
   // We use directly the collection of points
   const BasisCollection basis(glmResult.getBasisCollection());
   const NumericalSample normalizedInputSample(glmResult.getInputTransformedSample());
@@ -235,7 +235,7 @@ void KrigingAlgorithm::run()
   // If normalize, set input transformation
   if (normalize_)
   {
-    const NumericalMathFunction inputTransformation(glmResult.getTransformation());
+    const Function inputTransformation(glmResult.getTransformation());
     result_.setTransformation(inputTransformation);
   }
 }
@@ -301,7 +301,7 @@ Interval KrigingAlgorithm::getOptimizationBounds() const
 }
 
 /* Log-Likelihood function accessor */
-NumericalMathFunction KrigingAlgorithm::getReducedLogLikelihoodFunction()
+Function KrigingAlgorithm::getReducedLogLikelihoodFunction()
 {
   return glmAlgo_.getObjectiveFunction();
 }

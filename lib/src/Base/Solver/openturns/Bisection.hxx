@@ -52,7 +52,7 @@ public:
 
   /** Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] given function(infPoint) and function(supPoint) with the bisection method */
   using SolverImplementation::solve;
-  NumericalScalar solve(const NumericalMathFunction & function,
+  NumericalScalar solve(const Function & function,
                         const NumericalScalar value,
                         const NumericalScalar infPoint,
                         const NumericalScalar supPoint,

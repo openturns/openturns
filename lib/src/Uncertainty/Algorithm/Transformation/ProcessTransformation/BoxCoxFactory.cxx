@@ -103,7 +103,7 @@ public:
     for (UnsignedInteger k = 0; k < size; ++k) sumLog_ += std::log(sample_[k][0]);
   }
   /** Likelihood function accessor */
-  NumericalMathFunction getLogLikelihoodFunction() const
+  Function getLogLikelihoodFunction() const
   {
     return bindMethod <BoxCoxSampleOptimization, NumericalPoint, NumericalPoint> ( *this, &BoxCoxSampleOptimization::computeLogLikelihood, 1, 1);
   }
@@ -178,7 +178,7 @@ public:
   }
 
   /** Likelihood function accessor */
-  NumericalMathFunction getLogLikelihoodFunction() const
+  Function getLogLikelihoodFunction() const
   {
     return bindMethod <BoxCoxGLMOptimization, NumericalPoint, NumericalPoint> ( *this, &BoxCoxGLMOptimization::computeLogLikelihood, 1, 1);
   }
@@ -187,7 +187,7 @@ public:
   {
     // Define optimization problem
     OptimizationProblem problem;
-    NumericalMathFunction objectiveFunction(getLogLikelihoodFunction());
+    Function objectiveFunction(getLogLikelihoodFunction());
     objectiveFunction.enableCache();
     objectiveFunction.enableHistory();
     problem.setObjective(objectiveFunction);

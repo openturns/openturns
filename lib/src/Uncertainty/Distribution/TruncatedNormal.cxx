@@ -277,7 +277,7 @@ LevelSet TruncatedNormal::computeMinimumVolumeLevelSetWithThreshold(const Numeri
   const Interval interval(computeMinimumVolumeInterval(prob));
   const NumericalScalar lower = interval.getLowerBound()[0];
   const NumericalScalar upper = interval.getUpperBound()[0];
-  NumericalMathFunction minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
+  Function minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
   minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
   NumericalScalar minusLogPDFThreshold = -1.0;
   if (lower == a_)

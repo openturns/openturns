@@ -26,7 +26,7 @@
 #include "openturns/MarginalTransformationHessian.hxx"
 #include "openturns/RosenblattEvaluation.hxx"
 #include "openturns/InverseRosenblattEvaluation.hxx"
-#include "openturns/NumericalMathFunctionImplementation.hxx"
+#include "openturns/FunctionImplementation.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/Uniform.hxx"
 #include "openturns/IndependentCopula.hxx"
@@ -34,9 +34,9 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-typedef NumericalMathFunctionImplementation::EvaluationPointer EvaluationPointer;
-typedef NumericalMathFunctionImplementation::GradientPointer   GradientPointer;
-typedef NumericalMathFunctionImplementation::HessianPointer    HessianPointer;
+typedef FunctionImplementation::EvaluationPointer EvaluationPointer;
+typedef FunctionImplementation::GradientPointer   GradientPointer;
+typedef FunctionImplementation::HessianPointer    HessianPointer;
 
 
 CLASSNAMEINIT(SklarCopula);
@@ -334,7 +334,7 @@ SklarCopula::IsoProbabilisticTransformation SklarCopula::getIsoProbabilisticTran
     return transformation;
   }
   // Else simply use the Rosenblatt transformation
-  else return NumericalMathFunctionImplementation(new RosenblattEvaluation(*this));
+  else return FunctionImplementation(new RosenblattEvaluation(*this));
 }
 
 /* Get the inverse isoprobabilist transformation */
@@ -357,7 +357,7 @@ SklarCopula::InverseIsoProbabilisticTransformation SklarCopula::getInverseIsoPro
     return transformation;
   }
   // Else simply use the inverse  Rosenblatt transformation
-  else return NumericalMathFunctionImplementation(new InverseRosenblattEvaluation(clone()));
+  else return FunctionImplementation(new InverseRosenblattEvaluation(clone()));
 }
 
 /* Get the standard distribution */

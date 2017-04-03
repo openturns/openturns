@@ -52,7 +52,7 @@ void FixedStrategy::computeInitialBasis()
 {
   if (Psi_k_p_.getSize() == 0)
   {
-    Psi_k_p_ = NumericalMathFunctionCollection(maximumDimension_);
+    Psi_k_p_ = FunctionCollection(maximumDimension_);
     for (UnsignedInteger i = 0; i < maximumDimension_; ++i)
     {
       LOGINFO(OSS() << "Build function " << i << " over " << maximumDimension_ - 1);

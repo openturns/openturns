@@ -201,7 +201,7 @@ void Cobyla::load(Advocate & adv)
 }
 
 /*
- * Wrapper of the NumericalMathFunction operator() compatible with
+ * Wrapper of the Function operator() compatible with
  * cobyla signature
  */
 int Cobyla::ComputeObjectiveAndConstraint(int n,

@@ -57,11 +57,11 @@ OStream & operator << ( OStream & OS, const std::pair< K_, std::pair< V_, U_ > >
  * Cache holds the already computed points to speed up calculations
  * Like any cache system, this objet saves time by keeping some costly data
  * and provides access to them through a key.
- * Here the key is the input NumericalPoint of a NumericalMathFunction and the
+ * Here the key is the input NumericalPoint of a Function and the
  * value is the output NumericalPoint that was computed.
- * When used with ComputedNumericalMathFunctionImplementation objects the Cache
+ * When used with ComputedFunctionImplementation objects the Cache
  * may greatly speed up the computations of Analytical algorithms (like FORM
- * or SORM). Its advantage is more doubtful with other NumericalMathFunctionImplementations
+ * or SORM). Its advantage is more doubtful with other FunctionImplementations
  * or Simulation algorithms.
  *
  * The Cache may be set with a maximum size to avoid too much memory consumption especially

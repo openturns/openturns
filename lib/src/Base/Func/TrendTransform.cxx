@@ -39,7 +39,7 @@ TrendTransform::TrendTransform()
 }
 
 /* Parameter constructor */
-TrendTransform::TrendTransform(const NumericalMathFunction & function)
+TrendTransform::TrendTransform(const Function & function)
   : VertexValueFunction(function.getInputDimension())
 {
   p_evaluation_ = function.getEvaluation() ;

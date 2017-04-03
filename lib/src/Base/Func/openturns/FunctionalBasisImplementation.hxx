@@ -22,7 +22,7 @@
 #define OPENTURNS_FUNCTIONALBASISIMPLEMENTATION_HXX
 
 #include "openturns/BasisImplementation.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -39,7 +39,7 @@ class OT_API FunctionalBasisImplementation
 {
   CLASSNAME;
 public:
-  typedef Collection<NumericalMathFunction> NumericalMathFunctionCollection;
+  typedef Collection<Function> FunctionCollection;
 
   /** Default constructor */
   FunctionalBasisImplementation();

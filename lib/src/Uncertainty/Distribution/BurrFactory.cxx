@@ -112,7 +112,7 @@ Burr BurrFactory::buildAsBurr(const NumericalSample & sample) const
 
   if (!(sample.getMin()[0] > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot build a Burr distribution based on a sample with nonpositive values.";
   BurrFactoryParameterConstraint constraint(sample);
-  const NumericalMathFunction f(bindMethod<BurrFactoryParameterConstraint, NumericalPoint, NumericalPoint>(constraint, &BurrFactoryParameterConstraint::computeConstraint, 1, 1));
+  const Function f(bindMethod<BurrFactoryParameterConstraint, NumericalPoint, NumericalPoint>(constraint, &BurrFactoryParameterConstraint::computeConstraint, 1, 1));
   // Find a bracketing interval
   NumericalScalar a = 1.0;
   NumericalScalar b = 2.0;

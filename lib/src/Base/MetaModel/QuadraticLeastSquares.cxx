@@ -31,7 +31,7 @@ CLASSNAMEINIT(QuadraticLeastSquares);
 
 /* Constructor with parameters */
 QuadraticLeastSquares::QuadraticLeastSquares(const NumericalSample & dataIn,
-    const NumericalMathFunction & inputFunction)
+    const Function & inputFunction)
   : PersistentObject(),
     dataIn_(dataIn),
     dataOut_(NumericalSample(0, inputFunction.getOutputDimension())),
@@ -50,7 +50,7 @@ QuadraticLeastSquares::QuadraticLeastSquares(const NumericalSample & dataIn,
   : PersistentObject(),
     dataIn_(dataIn),
     dataOut_(NumericalSample(0, dataOut.getDimension())),
-    inputFunction_(NumericalMathFunction()),
+    inputFunction_(Function()),
     constant_(NumericalPoint(dataOut.getDimension())),
     linear_(Matrix(dataIn.getDimension(), dataOut.getDimension())),
     quadratic_(SymmetricTensor(dataIn.getDimension(), dataOut.getDimension()))
@@ -202,13 +202,13 @@ SymmetricTensor QuadraticLeastSquares::getQuadratic() const
 }
 
 /* Function accessor */
-NumericalMathFunction QuadraticLeastSquares::getInputFunction() const
+Function QuadraticLeastSquares::getInputFunction() const
 {
   return inputFunction_;
 }
 
 /* Response surface accessor */
-NumericalMathFunction QuadraticLeastSquares::getResponseSurface() const
+Function QuadraticLeastSquares::getResponseSurface() const
 {
   return responseSurface_;
 }

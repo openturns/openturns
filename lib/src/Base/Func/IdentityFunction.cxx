@@ -30,7 +30,7 @@ CLASSNAMEINIT(IdentityFunction);
 
 /* Default constructor */
 IdentityFunction::IdentityFunction(const UnsignedInteger dimension)
-  : NumericalMathFunction(new IdentityEvaluation(dimension),
+  : Function(new IdentityEvaluation(dimension),
                           new ConstantGradient(IdentityMatrix(dimension)),
                           new ConstantHessian(SymmetricTensor(dimension, dimension)))
 {

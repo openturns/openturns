@@ -41,7 +41,7 @@ public:
   typedef Collection<NumericalComplex> NumericalComplexCollection;
 
   /** Constructor with model */
-  FAST(const NumericalMathFunction & model,
+  FAST(const Function & model,
        const Distribution & inputsDistribution,
        const UnsignedInteger samplingSize,
        const UnsignedInteger resamplingSize = ResourceMap::GetAsUnsignedInteger("FAST-DefaultResamplingSize"),
@@ -66,7 +66,7 @@ private:
   void run() const;
 
   /** The model */
-  NumericalMathFunction model_;
+  Function model_;
 
   /** Inputs distribution */
   Distribution inputsDistribution_;

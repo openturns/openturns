@@ -25,7 +25,7 @@
 #include "openturns/MetaModelAlgorithm.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/AdaptiveStrategy.hxx"
 #include "openturns/ProjectionStrategy.hxx"
@@ -50,7 +50,7 @@ public:
 
 
   /** Constructor */
-  FunctionalChaosAlgorithm(const NumericalMathFunction & model,
+  FunctionalChaosAlgorithm(const Function & model,
                            const Distribution & distribution,
                            const AdaptiveStrategy & adaptiveStrategy,
                            const ProjectionStrategy & projectionStrategy);
@@ -71,7 +71,7 @@ public:
                            const ProjectionStrategy & projectionStrategy);
 
   /** Constructor */
-  FunctionalChaosAlgorithm(const NumericalMathFunction & model,
+  FunctionalChaosAlgorithm(const Function & model,
                            const Distribution & distribution,
                            const AdaptiveStrategy & adaptiveStrategy);
 
@@ -142,13 +142,13 @@ private:
                    NumericalScalar & relativeError);
 
   /** The isoprobabilistic transformation maps the distribution into the orthogonal measure */
-  NumericalMathFunction transformation_;
+  Function transformation_;
 
   /** The inverse isoprobabilistic transformation */
-  NumericalMathFunction inverseTransformation_;
+  Function inverseTransformation_;
 
   /** The composed model */
-  NumericalMathFunction composedModel_;
+  Function composedModel_;
 
   /** The adaptive strategy */
   AdaptiveStrategy adaptiveStrategy_;

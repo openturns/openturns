@@ -27,7 +27,7 @@ def printSample(name, sample):
 try:
 
     # We create a numerical math function
-    myFunction = NumericalMathFunction(
+    myFunction = Function(
         ["x1", "x2"], ["y1"], ["(x1-0.6)*(x1-0.6)-x2*x2"])
 
     dim = myFunction.getInputDimension()

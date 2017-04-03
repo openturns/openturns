@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
       foutput[0] = "f0";
       Description formulas(1);
       formulas[0] = "x0 * sin(x0)";
-      NumericalMathFunction model(input, foutput, formulas);
+      Function model(input, foutput, formulas);
 
       NumericalSample X(sampleSize, dimension);
       NumericalSample X2(sampleSize, dimension);
@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
       foutput[0] = "f0";
       Description formulas(1);
       formulas[0] = "5.-x1-0.5*(x0-0.1)^2";
-      NumericalMathFunction model(input, foutput, formulas);
+      Function model(input, foutput, formulas);
       NumericalSample X(sampleSize, dimension);
       X[0][0] = -4.61611719;
       X[0][1] = -6.00099547;
@@ -148,7 +148,7 @@ int main(int argc, char *argv[])
 
       std::cout << "df(X0)=" << model.gradient(X[1]) << std::endl;
 
-      NumericalMathFunction metaModel(result.getMetaModel());
+      Function metaModel(result.getMetaModel());
       // Get the gradient computed by metamodel
       Matrix gradientKriging(metaModel.gradient(X[1]));
 

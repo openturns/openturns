@@ -9,7 +9,7 @@ RandomGenerator.SetSeed(0)
 try:
 
     # We create a numerical math function
-    myFunction = NumericalMathFunction(
+    myFunction = Function(
         ('E', 'F', 'L', 'I'), ('y',), ('-F*L^3/(3.*E*I)',))
     myFunction.enableHistory()
     dim = myFunction.getInputDimension()

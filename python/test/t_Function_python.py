@@ -29,10 +29,10 @@ print((F(((10, 5), (6, 7)))))
 
 
 # Instance creation
-myFunc = NumericalMathFunction(F)
+myFunc = Function(F)
 
 # Copy constructor
-newFunc = NumericalMathFunction(myFunc)
+newFunc = Function(myFunc)
 
 print(('myFunc input dimension= ' + str(myFunc.getInputDimension())))
 print(('myFunc output dimension= ' + str(myFunc.getOutputDimension())))

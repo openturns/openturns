@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 
     Description formulas(1, "10+3*x0+x1");
 
-    NumericalMathFunction analytical(input, foutput, formulas);
+    Function analytical(input, foutput, formulas);
 
     // we create a collection of Normal centered distributions
     DistributionCollection aCollection;

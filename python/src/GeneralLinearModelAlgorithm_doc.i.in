@@ -14,7 +14,7 @@ Parameters
 ----------
 inputSample, outputSample : :class:`~openturns.NumericalSample` or 2d-array
     The samples :math:`(\vect{x}_k)_{1 \leq k \leq N} \in \Rset^n` and :math:`(\vect{y}_k)_{1 \leq k \leq N}\in \Rset^d`.
-inputTransformation : :class:`~openturns.NumericalMathFunction`
+inputTransformation : :class:`~openturns.Function`
     Function :math:`T` used to normalize the input sample.
 
     If used, the meta model is built on the transformed data.
@@ -211,7 +211,7 @@ Get the resulting meta model:
 
 Returns
 -------
-transformation : :class:`~openturns.NumericalMathFunction`
+transformation : :class:`~openturns.Function`
     Function *T* that normalizes the input."
 
 // ---------------------------------------------------------------------
@@ -221,7 +221,7 @@ transformation : :class:`~openturns.NumericalMathFunction`
 
 Parameters
 ----------
-transformation : :class:`~openturns.NumericalMathFunction`
+transformation : :class:`~openturns.Function`
     Function that normalizes the input.
     The input dimension should be the same as input's sample dimension, output dimension
     should be output sample's dimension"
@@ -265,7 +265,7 @@ outputSample : :class:`~openturns.NumericalSample`
 
 Returns
 -------
-logLikelihood : :class:`~openturns.NumericalMathFunction`
+logLikelihood : :class:`~openturns.Function`
     The log-likelihood function degined in :eq:`logLikelihood` as a function of :math:`(\vect{\theta}, \vect{\sigma})`.
 
 Notes

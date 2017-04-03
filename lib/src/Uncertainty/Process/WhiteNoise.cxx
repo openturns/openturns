@@ -109,7 +109,7 @@ Field WhiteNoise::getRealization() const
 }
 
 /* Continuous realization accessor */
-NumericalMathFunction WhiteNoise::getContinuousRealization() const
+Function WhiteNoise::getContinuousRealization() const
 {
   return DatabaseFunction(mesh_.getVertices(), distribution_.getSample(mesh_.getVerticesNumber()));
 }

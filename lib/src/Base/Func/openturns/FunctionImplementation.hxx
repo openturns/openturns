@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_NUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
-#define OPENTURNS_NUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
+#ifndef OPENTURNS_FUNCTIONIMPLEMENTATION_HXX
+#define OPENTURNS_FUNCTIONIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/NumericalPoint.hxx"
@@ -37,7 +37,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class NumericalMathFunctionImplementation
+ * @class FunctionImplementation
  *
  * The class that simulates a numerical math function,
  * its gradient and its hessian. This class is just an interface
@@ -45,14 +45,14 @@ BEGIN_NAMESPACE_OPENTURNS
  * during computation. Each implementation object refers to
  * the evaluation, the gradient or the hessian.
  */
-class OT_API NumericalMathFunctionImplementation
+class OT_API FunctionImplementation
   : public PersistentObject
 {
   CLASSNAME;
 public:
 
   /* Some typedefs for easy reading */
-  typedef Pointer<NumericalMathFunctionImplementation>           Implementation;
+  typedef Pointer<FunctionImplementation>           Implementation;
   typedef EvaluationImplementation::Implementation  EvaluationPointer;
   typedef GradientImplementation::Implementation    GradientPointer;
   typedef HessianImplementation::Implementation     HessianPointer;
@@ -69,36 +69,36 @@ public:
 public:
 
   /** Default constructor */
-  NumericalMathFunctionImplementation();
+  FunctionImplementation();
 
   /** Analytical formula constructor */
-  NumericalMathFunctionImplementation(const Description & inputVariablesNames,
+  FunctionImplementation(const Description & inputVariablesNames,
                                       const Description & outputVariablesNames,
                                       const Description & formulas);
 
   /** Database constructor */
-  NumericalMathFunctionImplementation(const NumericalSample & inputSample,
+  FunctionImplementation(const NumericalSample & inputSample,
                                       const NumericalSample & outputSample);
 
   /** Constructor from implementations */
-  NumericalMathFunctionImplementation(const EvaluationPointer & funcImpl,
+  FunctionImplementation(const EvaluationPointer & funcImpl,
                                       const GradientPointer & gradImpl,
                                       const HessianPointer  & hessImpl);
 
   /** Single function implementation constructor */
-  NumericalMathFunctionImplementation(const EvaluationPointer & evaluationImplementation);
+  FunctionImplementation(const EvaluationPointer & evaluationImplementation);
 
   /** Multiplication of two 1D output functions with the same input dimension */
-  virtual NumericalMathFunctionImplementation operator * (const NumericalMathFunctionImplementation & right) const;
+  virtual FunctionImplementation operator * (const FunctionImplementation & right) const;
 
   /** Multiplication of two 1D output functions with the same input dimension */
-  virtual NumericalMathFunctionImplementation operator * (const Implementation & p_right) const;
+  virtual FunctionImplementation operator * (const Implementation & p_right) const;
 
   /** Virtual constructor */
-  virtual NumericalMathFunctionImplementation * clone() const;
+  virtual FunctionImplementation * clone() const;
 
   /** Comparison operator */
-  Bool operator ==(const NumericalMathFunctionImplementation & other) const;
+  Bool operator ==(const FunctionImplementation & other) const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -106,7 +106,7 @@ public:
 
   /** @brief Enable the internal cache
    *
-   * The cache stores previously computed output values, so calling the cache before processing the %NumericalMathFunction
+   * The cache stores previously computed output values, so calling the cache before processing the %Function
    * can save much time and avoid useless computations. However, calling the cache can eat time if the computation is
    * very short. So cache is disabled by default, except when the underlying implementation uses a wrapper.
    *
@@ -324,9 +324,9 @@ protected:
   /** Flag to tell if the curren hessian is a default implementation */
   mutable Bool useDefaultHessianImplementation_;
 
-}; /* class NumericalMathFunctionImplementation */
+}; /* class FunctionImplementation */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_NUMERICALMATHFUNCTIONIMPLEMENTATION_HXX */
+#endif /* OPENTURNS_FUNCTIONIMPLEMENTATION_HXX */

@@ -64,7 +64,7 @@ try:
             str(a[i]) + "))"
 
     covTh = covTh - 1.0
-    modelGSobol = NumericalMathFunction(inputName, outputName, formulaGSobol)
+    modelGSobol = Function(inputName, outputName, formulaGSobol)
 
     distributions = ComposedDistribution([Uniform(0.0, 1.0)] * inputDimension)
 

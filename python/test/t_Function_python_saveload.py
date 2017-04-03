@@ -21,7 +21,7 @@ class FUNC(ot.OpenTURNSPythonFunction):
 F = FUNC()
 
 # Instance creation
-f1 = ot.NumericalMathFunction(F)
+f1 = ot.Function(F)
 
 
 def mul(X):
@@ -43,8 +43,8 @@ st.save()
 print('saved f1=', f1)
 print('saved f2=', f2)
 
-f1 = ot.NumericalMathFunction()
-f2 = ot.NumericalMathFunction()
+f1 = ot.Function()
+f2 = ot.Function()
 
 st = ot.Study()
 st.setStorageManager(ot.XMLStorageManager(fileName))

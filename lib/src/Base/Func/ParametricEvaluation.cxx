@@ -40,7 +40,7 @@ ParametricEvaluation::ParametricEvaluation()
 }
 
 /* Parameter constructor */
-ParametricEvaluation::ParametricEvaluation(const NumericalMathFunction & function,
+ParametricEvaluation::ParametricEvaluation(const Function & function,
     const Indices & set,
     const NumericalPoint & referencePoint,
     const Bool parametersSet)
@@ -233,7 +233,7 @@ Indices ParametricEvaluation::getInputPositions() const
 }
 
 /* Function accessor */
-NumericalMathFunction ParametricEvaluation::getFunction() const
+Function ParametricEvaluation::getFunction() const
 {
   return function_;
 }

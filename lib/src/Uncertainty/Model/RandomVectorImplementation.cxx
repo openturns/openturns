@@ -128,7 +128,7 @@ RandomVectorImplementation::Antecedent RandomVectorImplementation::getAntecedent
 }
 
 /* Fake method due to pbs with dynamic_cast and Pointer */
-NumericalMathFunction RandomVectorImplementation::getFunction() const
+Function RandomVectorImplementation::getFunction() const
 {
   throw NotYetImplementedException(HERE) << "In RandomVectorImplementation::getFunction() const";
 }

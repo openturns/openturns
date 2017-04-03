@@ -32,5 +32,5 @@ try:
 
 except:
     import sys
-    print("t_NumericalMathFunction_history.py",
+    print("t_Function_history.py",
           sys.exc_info()[0], sys.exc_info()[1])

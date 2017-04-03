@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_INVERSEBOXCOXTRANSFORM_HXX
 #define OPENTURNS_INVERSEBOXCOXTRANSFORM_HXX
 
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/Collection.hxx"
 
@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class BoxCoxTransform;
 
 class OT_API InverseBoxCoxTransform
-  : public NumericalMathFunction
+  : public Function
 
 {
   CLASSNAME;

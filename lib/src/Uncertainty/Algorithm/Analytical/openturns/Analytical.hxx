@@ -29,7 +29,7 @@
 #include "openturns/Event.hxx"
 #include "openturns/StandardEvent.hxx"
 #include "openturns/NumericalSample.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/Graph.hxx"
 #include "openturns/Description.hxx"
 #include "openturns/AnalyticalResult.hxx"

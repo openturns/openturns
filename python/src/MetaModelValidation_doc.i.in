@@ -9,7 +9,7 @@ Parameters
 inputValidationSample, outputValidationSample : 2-d sequence of float
     The input and output validation samples, not used during the learning step.
 
-metaModel : :class:`~openturns.NumericalMathFunction`
+metaModel : :class:`~openturns.Function`
     Metamodel to validate.
 
 Notes

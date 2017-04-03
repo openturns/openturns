@@ -39,7 +39,7 @@ static const Factory<FunctionalBasisProcess> Factory_FunctionalBasisProcess;
 FunctionalBasisProcess::FunctionalBasisProcess()
   : ProcessImplementation()
   , distribution_(Normal())
-  , basis_(Collection<NumericalMathFunction>(1, SymbolicFunction("t", "t")))
+  , basis_(Collection<Function>(1, SymbolicFunction("t", "t")))
   , state_(1, 0.0)
 {
   // Set the dimension of the process
@@ -94,7 +94,7 @@ String FunctionalBasisProcess::__repr__() const
 CovarianceModel FunctionalBasisProcess::getCovarianceModel() const
 {
   const UnsignedInteger dimension = distribution_.getDimension();
-  Collection<NumericalMathFunction> functions(dimension);
+  Collection<Function> functions(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
     functions[i] = basis_.build(i);
   if (distribution_.hasIndependentCopula())
@@ -146,7 +146,7 @@ Field FunctionalBasisProcess::getRealization() const
 
 
 /* Continuous realization accessor */
-NumericalMathFunction FunctionalBasisProcess::getContinuousRealization() const
+Function FunctionalBasisProcess::getContinuousRealization() const
 {
   state_ = distribution_.getRealization();
   return LinearCombinationFunction(basis_, state_);

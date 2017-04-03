@@ -95,13 +95,13 @@ Available usages:
 
 Parameters
 ----------
-f : :class:`~openturns.NumericalMathFunction`, :math:`f: \Rset^n \mapsto \Rset^p`
+f : :class:`~openturns.Function`, :math:`f: \Rset^n \mapsto \Rset^p`
     The integrand function.
 interval : :class:`~openturns.Interval`, :math:`interval \in \Rset^n` 
     The integration domain. 
 a,b : float 
     Bounds of the integration interval of the first scalar input :math:`x_0`
-lowerBoundFunctions, upperBoundFunctions : list of :class:`~openturns.NumericalMathFunction`
+lowerBoundFunctions, upperBoundFunctions : list of :class:`~openturns.Function`
     List of :math:`n` functions :math:`(l_0, \dots, l_{n-1})` and :math:`(u_0, \dots, u_{n-1})` where :math:`l_k, u_k: \Rset^k \mapsto \Rset` defining the integration domain as defined above.
     The bound functions can cross each other. 
 

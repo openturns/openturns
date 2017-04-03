@@ -6,7 +6,7 @@ Available constructors:
 
 See also
 --------
-NumericalMathFunction, AggregatedEvaluation,
+Function, AggregatedEvaluation,
 DatabaseEvaluation,
 DualLinearCombinationEvaluation, LinearFunction
 "
@@ -202,7 +202,7 @@ indices : int or list of ints
 
 Returns
 -------
-marginal : :class:`~openturns.NumericalMathFunction`
+marginal : :class:`~openturns.Function`
     Function corresponding to either :math:`f_i` or
     :math:`(f_i)_{i \in indices}`, with :math:`f:\Rset^n \rightarrow \Rset^p`
     and :math:`f=(f_0 , \dots, f_{p-1})`."

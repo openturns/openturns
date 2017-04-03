@@ -101,7 +101,7 @@ Rice RiceFactory::buildAsRice(const NumericalSample & sample) const
   const NumericalScalar std = sample.computeStandardDeviationPerComponent()[0];
   // Koay inversion method
   RiceFactoryParameterConstraint constraint(mu / std);
-  const NumericalMathFunction f(bindMethod<RiceFactoryParameterConstraint, NumericalPoint, NumericalPoint>(constraint, &RiceFactoryParameterConstraint::computeConstraint, 1, 1));
+  const Function f(bindMethod<RiceFactoryParameterConstraint, NumericalPoint, NumericalPoint>(constraint, &RiceFactoryParameterConstraint::computeConstraint, 1, 1));
   // Find a bracketing interval
   NumericalScalar a = 1.0;
   NumericalScalar b = 2.0;

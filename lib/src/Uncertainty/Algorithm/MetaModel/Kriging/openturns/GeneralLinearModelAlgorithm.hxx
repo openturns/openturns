@@ -66,7 +66,7 @@ public:
 
   /** Parameters constructor */
   GeneralLinearModelAlgorithm (const NumericalSample & inputSample,
-                                   const NumericalMathFunction & inputTransformation,
+                                   const Function & inputTransformation,
                                    const NumericalSample & outputSample,
                                    const CovarianceModel & covarianceModel,
                                    const Basis & basis,
@@ -82,7 +82,7 @@ public:
 
   /** Parameters constructor */
   GeneralLinearModelAlgorithm (const NumericalSample & inputSample,
-                                   const NumericalMathFunction & inputTransformation,
+                                   const Function & inputTransformation,
                                    const NumericalSample & outputSample,
                                    const CovarianceModel & covarianceModel,
                                    const BasisCollection & basisCollection,
@@ -98,8 +98,8 @@ public:
   void run();
 
   /** input transformation accessor */
-  void setInputTransformation(const NumericalMathFunction & inputTransformation);
-  NumericalMathFunction getInputTransformation() const;
+  void setInputTransformation(const Function & inputTransformation);
+  Function getInputTransformation() const;
 
   /** Sample accessors */
   NumericalSample getInputSample() const;
@@ -109,7 +109,7 @@ public:
   GeneralLinearModelResult getResult();
 
   /** Objective function (reduced log-Likelihood) accessor */
-  NumericalMathFunction getObjectiveFunction();
+  Function getObjectiveFunction();
 
   /** Optimization solver accessor */
   OptimizationAlgorithm getOptimizationAlgorithm() const;
@@ -257,7 +257,7 @@ private:
   NumericalSample normalizedInputSample_;
 
   // Standardization function
-  NumericalMathFunction inputTransformation_;
+  Function inputTransformation_;
   mutable Bool normalize_;
 
   // The associated output data

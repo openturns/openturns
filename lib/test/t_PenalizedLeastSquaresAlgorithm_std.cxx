@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     SymbolicFunction model(inVar, formula);
 
     // Basis upon which we will project the model
-    PenalizedLeastSquaresAlgorithm::NumericalMathFunctionCollection coll(4);
+    PenalizedLeastSquaresAlgorithm::FunctionCollection coll(4);
     formula[0] = "x1";
     coll[0] = SymbolicFunction(inVar, formula);
     formula[0] = "x2";

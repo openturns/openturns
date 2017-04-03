@@ -141,7 +141,7 @@ OT_RootStrategy_setStepSize_doc
 
 Parameters
 ----------
-function : :class:`~openturns.NumericalMathFunction`
+function : :class:`~openturns.Function`
     Function from :math:`\Rset` to :math:`\Rset` along the ray, a linear
     function along the direction.
 value : float

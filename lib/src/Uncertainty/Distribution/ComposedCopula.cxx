@@ -596,7 +596,7 @@ ComposedCopula::IsoProbabilisticTransformation ComposedCopula::getIsoProbabilist
   // General case: return the transformation as an aggregated function of pre/post processed isoprobabilistic transformations built using the elementary copulas. These transformations are the isoprobabilistic transformations of the elementary copulas if they lead to the standard Normal space, else a Rosenblatt transformation is substituted
   const Description allVariables(Description::BuildDefault(dimension, "x"));
   UnsignedInteger shift = 0;
-  Collection< NumericalMathFunction > atomTransformations(size);
+  Collection< Function > atomTransformations(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     // First, build the mapping between the full components and the components of the current copula
@@ -623,7 +623,7 @@ ComposedCopula::InverseIsoProbabilisticTransformation ComposedCopula::getInverse
   // General case: return the transformation as an aggregated function of pre/post processed isoprobabilistic transformations built using the elementary copulas. These transformations are the isoprobabilistic transformations of the elementary copulas if they lead to the standard Normal space, else a Rosenblatt transformation is substituted
   const Description allVariables(Description::BuildDefault(dimension, "x"));
   UnsignedInteger shift = 0;
-  Collection< NumericalMathFunction > atomTransformations(size);
+  Collection< Function > atomTransformations(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     // First, build the mapping between the full components and the components of the current copula

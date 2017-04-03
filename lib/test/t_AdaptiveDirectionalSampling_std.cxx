@@ -38,7 +38,7 @@ int main(int argc, char **argv)
   input[3] = "I";
 
   /* We create a numerical math function */
-  NumericalMathFunction function(input, Description(1, "d"), Description(1, "F*L^3/(3.*E*I)"));
+  Function function(input, Description(1, "d"), Description(1, "F*L^3/(3.*E*I)"));
 
   /* We create a normal distribution point of dimension 1 */
   NumericalPoint mean(dim, 0.0);

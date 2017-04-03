@@ -81,7 +81,7 @@ try:
     beta = ot.Beta(3.0, 5.0, -1.0, 4.0)
     myStudy.add('beta', beta)
 
-    # Create an analytical NumericalMathFunction
+    # Create an analytical Function
     input = ot.Description(3)
     input[0] = 'a'
     input[1] = 'b'
@@ -94,7 +94,7 @@ try:
     formulas[0] = 'a+b+c'
     formulas[1] = 'a-b*c'
     formulas[2] = '(a+2*b^2+3*c^3)/6'
-    analytical = ot.NumericalMathFunction(input, output, formulas)
+    analytical = ot.Function(input, output, formulas)
     analytical.setName('analytical')
     myStudy.add('analytical', analytical)
 
@@ -120,7 +120,7 @@ try:
     output2[0] = 'd'
     formula2 = ot.Description(1)
     formula2[0] = 'y^2-x'
-    model = ot.NumericalMathFunction(input2, output2, formula2)
+    model = ot.Function(input2, output2, formula2)
     model.setName('sum')
     input3 = ot.RandomVector(ot.Normal(2))
     input3.setName('input')
@@ -165,7 +165,7 @@ try:
 
     # TensorApproximationAlgorithm/Result
     dim = 1
-    model = ot.NumericalMathFunction(['x'], ['y'], ['x*sin(x)'])
+    model = ot.Function(['x'], ['y'], ['x*sin(x)'])
     distribution = ot.ComposedDistribution([ot.Uniform()]*dim)
     factoryCollection = [ot.FourierSeriesFactory()] * dim
     functionFactory = ot.OrthogonalProductFunctionFactory(factoryCollection)
@@ -237,9 +237,9 @@ try:
 
     print('randomGeneratorState = ', randomGeneratorState)
 
-    # Create an analytical NumericalMathFunction from the one stored in the
+    # Create an analytical Function from the one stored in the
     # Study
-    analytical = ot.NumericalMathFunction()
+    analytical = ot.Function()
     myStudy.fillObject('analytical', analytical)
 
     print('analytical = ', analytical)

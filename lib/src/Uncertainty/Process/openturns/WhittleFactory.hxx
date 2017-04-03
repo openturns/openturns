@@ -142,7 +142,7 @@ private :
   PersistentCollection< NumericalPoint > startingPoints_;
 
   /** Likelihood function accessor */
-  NumericalMathFunction getLogLikelihoodFunction() const;
+  Function getLogLikelihoodFunction() const;
 
   /** likelihood estimate */
   NumericalPoint computeLogLikelihoodInequalityConstraint( const NumericalPoint & theta ) const;
@@ -151,7 +151,7 @@ private :
   mutable UnsignedInteger nbInequalityConstraint_;
 
   /** Likelihood constraint accessor */
-  NumericalMathFunction getLogLikelihoodInequalityConstraint() const;
+  Function getLogLikelihoodInequalityConstraint() const;
 
   /** Optimization solver accessor */
   OptimizationAlgorithm getOptimizationAlgorithm() const;

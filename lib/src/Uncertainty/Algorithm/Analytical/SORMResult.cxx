@@ -22,7 +22,7 @@
 
 #include "openturns/SORM.hxx"
 #include "openturns/StandardEvent.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/SymmetricTensor.hxx"
 #include "openturns/IdentityMatrix.hxx"
 #include "openturns/Matrix.hxx"
@@ -62,7 +62,7 @@ SORMResult::SORMResult(const NumericalPoint & standardSpaceDesignPoint,
   standardMarginal_(standardDistribution_.getMarginal(0))
 {
   /* get the physical Limite State Function */
-  const NumericalMathFunction limitStateFunction(StandardEvent(limitStateVariable).getImplementation()->getFunction());
+  const Function limitStateFunction(StandardEvent(limitStateVariable).getImplementation()->getFunction());
   /* compute its gradient */
   const Matrix gradient(limitStateFunction.gradient(getStandardSpaceDesignPoint()));
   /* Get the first column */

@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
     NumericalPoint point(dim, 0.5);
     for (UnsignedInteger i = 0; i < 10; ++i)
     {
-      NumericalMathFunction f(basis.build(i));
+      Function f(basis.build(i));
       fullprint << "i=" << i << " f(point)=" << f(point) << std::endl;
     }
   }

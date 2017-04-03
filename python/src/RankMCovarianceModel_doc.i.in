@@ -94,7 +94,7 @@ basis : :class:`~openturns.Basis`
 
 Returns
 -------
-functions : :class:`~openturns.NumericalMathFunctionCollection`
+functions : :class:`~openturns.FunctionCollection`
     The collection of functions :math:`(\phi_i)_{i=1,\dots,M}` defining the covariance model.
 "
 

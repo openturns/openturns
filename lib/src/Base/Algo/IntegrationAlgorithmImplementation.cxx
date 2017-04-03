@@ -48,14 +48,14 @@ IntegrationAlgorithmImplementation * IntegrationAlgorithmImplementation::clone()
 /* Compute an approximation of \int_{[a,b]}f(x)dx, where [a,b]
  * is an n-D interval
  */
-NumericalPoint IntegrationAlgorithmImplementation::integrate(const NumericalMathFunction & function,
+NumericalPoint IntegrationAlgorithmImplementation::integrate(const Function & function,
     const Interval & interval) const
 {
   NumericalScalar error = 0.0;
   return integrate(function, interval, error);
 }
 
-NumericalPoint IntegrationAlgorithmImplementation::integrate(const NumericalMathFunction & function,
+NumericalPoint IntegrationAlgorithmImplementation::integrate(const Function & function,
     const Interval & interval,
     NumericalPoint & error) const
 {
@@ -63,11 +63,11 @@ NumericalPoint IntegrationAlgorithmImplementation::integrate(const NumericalMath
   return integrate(function, interval, error[0]);
 }
 
-NumericalPoint IntegrationAlgorithmImplementation::integrate(const NumericalMathFunction & function,
+NumericalPoint IntegrationAlgorithmImplementation::integrate(const Function & function,
     const Interval & interval,
     NumericalScalar & error) const
 {
-  throw NotYetImplementedException(HERE) << "In IntegrationAlgorithmImplementation::integrate(const NumericalMathFunction & function, const Interval & interval, NumericalScalar & error) const";
+  throw NotYetImplementedException(HERE) << "In IntegrationAlgorithmImplementation::integrate(const Function & function, const Interval & interval, NumericalScalar & error) const";
 }
 
 /* String converter */

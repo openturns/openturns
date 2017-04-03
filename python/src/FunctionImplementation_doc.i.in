@@ -1,44 +1,44 @@
-%define OT_NumericalMathFunction_doc
+%define OT_Function_doc
 "Function base class.
 
 Available constructors:
-    NumericalMathFunction(*inputs, outputs, formulas*)
+    Function(*inputs, outputs, formulas*)
 
-    NumericalMathFunction(*inputs, formulas*)
+    Function(*inputs, formulas*)
 
-    NumericalMathFunction(*inputString, formulaString, outputString = 'outputVariable'*)
+    Function(*inputString, formulaString, outputString = 'outputVariable'*)
 
-    NumericalMathFunction(*f, g*)
+    Function(*f, g*)
 
-    NumericalMathFunction(*functionCollection*)
+    Function(*functionCollection*)
 
-    NumericalMathFunction(*functionCollection, scalarCoefficientColl*)
+    Function(*functionCollection, scalarCoefficientColl*)
 
-    NumericalMathFunction(*scalarFunctionCollection, vectorCoefficientColl*)
+    Function(*scalarFunctionCollection, vectorCoefficientColl*)
 
-    NumericalMathFunction(*function, comparisonOperator, threshold*)
+    Function(*function, comparisonOperator, threshold*)
 
-    NumericalMathFunction(*function, indices, referencePoint, parametersSet=True*)
+    Function(*function, indices, referencePoint, parametersSet=True*)
 
-    NumericalMathFunction(*inputSample, outputSample*)
+    Function(*inputSample, outputSample*)
 
 Parameters
 ----------
 inputs : sequence of str
-    Ordered list of input variables names of the *NumericalMathFunction*.
+    Ordered list of input variables names of the *Function*.
 outputs : sequence of str
-    Ordered list of output variables names of the *NumericalMathFunction*.
+    Ordered list of output variables names of the *Function*.
     If it is not specified, default names are created for the output variables.
 formulas : sequence of str
     Ordered list of analytical formulas between the inputs and the outputs.
-    The *NumericalMathFunction* is defined by *ouputs = formulas(inputs)*.
+    The *Function* is defined by *ouputs = formulas(inputs)*.
 inputString : str
-    Description of the *NumericalMathFunction*'s input.
+    Description of the *Function*'s input.
 outputString : str
-    Description of the *NumericalMathFunction*'s output.
+    Description of the *Function*'s output.
 formulaString : str
-    Analytical formula of the *NumericalMathFunction*.
-    The *NumericalMathFunction* is defined by
+    Analytical formula of the *Function*.
+    The *Function* is defined by
     *ouputString = formulaString(inputString)*.
 
     Available functions:
@@ -104,17 +104,17 @@ formulaString : str
     - _e (Euler's constant)
     - _pi (Pi)
 
-f,g : two :class:`~openturns.NumericalMathFunction`
-    The *NumericalMathFunction* is the composition function :math:`f\circ g`.
-functionCollection : list of :class:`~openturns.NumericalMathFunction`
-    Collection of several *NumericalMathFunction*.
+f,g : two :class:`~openturns.Function`
+    The *Function* is the composition function :math:`f\circ g`.
+functionCollection : list of :class:`~openturns.Function`
+    Collection of several *Function*.
 scalarCoefficientColl : sequence of float
     Collection of scalar weights.
-scalarFunctionCollection : list of :class:`~openturns.NumericalMathFunction`
-    Collection of several scalar *NumericalMathFunction*.
+scalarFunctionCollection : list of :class:`~openturns.Function`
+    Collection of several scalar *Function*.
 vectorCoefficientColl : 2-d sequence of float
     Collection of vectorial weights.
-function : :class:`~openturns.NumericalMathFunction`
+function : :class:`~openturns.Function`
     Function from which another function is created.
 comparisonOperator : :class:`~openturns.ComparisonOperator`
     Comparison operator.
@@ -138,7 +138,7 @@ outputSample : 2-d sequence of float
 
 Examples
 --------
-Create a *NumericalMathFunction* from a list of analytical formulas and
+Create a *Function* from a list of analytical formulas and
 descriptions of the inputs and the outputs :
 
 >>> import openturns as ot
@@ -148,7 +148,7 @@ descriptions of the inputs and the outputs :
 [3,-1]
 
 
-Create a *NumericalMathFunction* from strings:
+Create a *Function* from strings:
 
 >>> import openturns as ot
 >>> f = ot.SymbolicFunction('x', '2.0*sqrt(x)')
@@ -158,7 +158,7 @@ Create a *NumericalMathFunction* from strings:
 1 : [ 4  ]
 
 
-Create a *NumericalMathFunction* from a Python function:
+Create a *Function* from a Python function:
 
 >>> def a_function(X):
 ...     return [X[0] + X[1]]
@@ -171,7 +171,7 @@ Create a *NumericalMathFunction* from a Python function:
 
 See :class:`~openturns.PythonFunction` for further details.
 
-Create a *NumericalMathFunction* from another *NumericalMathFunction*:
+Create a *Function* from another *Function*:
 
 >>> f = ot.SymbolicFunction(ot.Description.BuildDefault(4, 'x'),
 ...                         ['x0', 'x0 + x1', 'x0 + x2 + x3'])
@@ -193,7 +193,7 @@ Or by setting x0=6 and x2=5:
 [6,8,12]
 
 
-Create a *NumericalMathFunction* from another *NumericalMathFunction*
+Create a *Function* from another *Function*
 and by using a comparison operator:
 
 >>> analytical = ot.SymbolicFunction(['x0','x1'], ['x0 + x1'])
@@ -203,7 +203,7 @@ and by using a comparison operator:
 >>> print(indicator([2, -3]))
 [1]
 
-Create a *NumericalMathFunction* from a collection of functions:
+Create a *Function* from a collection of functions:
 
 >>> functions = list()
 >>> functions.append(ot.SymbolicFunction(['x1', 'x2', 'x3'],
@@ -214,7 +214,7 @@ Create a *NumericalMathFunction* from a collection of functions:
 >>> print(myFunction([1.0, 2.0, 3.0]))
 [3,6,8,0]
 
-Create a *NumericalMathFunction* which is the linear combination *linComb*
+Create a *Function* which is the linear combination *linComb*
 of the functions defined in  *functionCollection* with scalar weights
 defined in *scalarCoefficientColl*:
 
@@ -235,7 +235,7 @@ then the linear combination is:
 [38,12]
 
 
-Create a *NumericalMathFunction* which is the linear combination
+Create a *Function* which is the linear combination
 *vectLinComb* of the scalar functions defined in
 *scalarFunctionCollection* with vectorial weights defined in
 *vectorCoefficientColl*:
@@ -262,7 +262,7 @@ where :math:`\forall 1 \leq i \leq N, \,   \vect{c}_i \in \Rset^p`
 [25,35]
 
 
-Create a *NumericalMathFunction* from values of the inputs and the outputs:
+Create a *Function* from values of the inputs and the outputs:
 
 >>> inputSample = [[1.0, 1.0], [2.0, 2.0]]
 >>> outputSample = [[4.0], [5.0]]
@@ -272,7 +272,7 @@ Create a *NumericalMathFunction* from values of the inputs and the outputs:
 [5]
 
 
-Create a *NumericalMathFunction* which is the composition function
+Create a *Function* which is the composition function
 :math:`f\circ g`:
 
 >>> g = ot.SymbolicFunction(['x1', 'x2'],
@@ -282,36 +282,36 @@ Create a *NumericalMathFunction* which is the composition function
 >>> print(composed([3, 4]))
 [-22]"
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation
-OT_NumericalMathFunction_doc
+%feature("docstring") OT::FunctionImplementation
+OT_Function_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_enableCache_doc
+%define OT_Function_enableCache_doc
 "Enable the cache mechanism."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::enableCache
-OT_NumericalMathFunction_enableCache_doc
+%feature("docstring") OT::FunctionImplementation::enableCache
+OT_Function_enableCache_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_disableCache_doc
+%define OT_Function_disableCache_doc
 "Disable the cache mechanism."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::disableCache
-OT_NumericalMathFunction_disableCache_doc
+%feature("docstring") OT::FunctionImplementation::disableCache
+OT_Function_disableCache_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_clearCache_doc
+%define OT_Function_clearCache_doc
 "Empty the content of the cache."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::clearCache
-OT_NumericalMathFunction_clearCache_doc
+%feature("docstring") OT::FunctionImplementation::clearCache
+OT_Function_clearCache_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_isCacheEnabled_doc
+%define OT_Function_isCacheEnabled_doc
 "Test whether the cache mechanism is enabled or not.
 
 Returns
@@ -320,12 +320,12 @@ isCacheEnabled : bool
     Flag telling whether the cache mechanism is enabled.
     It is disabled by default."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::isCacheEnabled
-OT_NumericalMathFunction_isCacheEnabled_doc
+%feature("docstring") OT::FunctionImplementation::isCacheEnabled
+OT_Function_isCacheEnabled_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_getCacheHits_doc
+%define OT_Function_getCacheHits_doc
 "Accessor to the number of computations saved thanks to the cache mecanism.
 
 Returns
@@ -334,12 +334,12 @@ cacheHits : int
     Integer that counts the number of computations saved thanks to the cache
     mecanism."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::getCacheHits
-OT_NumericalMathFunction_getCacheHits_doc
+%feature("docstring") OT::FunctionImplementation::getCacheHits
+OT_Function_getCacheHits_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_getCacheInput_doc
+%define OT_Function_getCacheInput_doc
 "Accessor to all the input numerical points stored in the cache mecanism.
 
 Returns
@@ -347,12 +347,12 @@ Returns
 cacheInput : :class:`~openturns.NumericalSample`
     All the input numerical points stored in the cache mecanism."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::getCacheInput
-OT_NumericalMathFunction_getCacheInput_doc
+%feature("docstring") OT::FunctionImplementation::getCacheInput
+OT_Function_getCacheInput_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_getCacheOutput_doc
+%define OT_Function_getCacheOutput_doc
 "Accessor to all the output numerical points stored in the cache mecanism.
 
 Returns
@@ -360,12 +360,12 @@ Returns
 cacheInput : :class:`~openturns.NumericalSample`
     All the output numerical points stored in the cache mecanism."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::getCacheOutput
-OT_NumericalMathFunction_getCacheOutput_doc
+%feature("docstring") OT::FunctionImplementation::getCacheOutput
+OT_Function_getCacheOutput_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_addCacheContent_doc
+%define OT_Function_addCacheContent_doc
 "Add input numerical points and associated output to the cache.
 
 Parameters
@@ -376,36 +376,36 @@ output_sample : 2-d sequence of float
     Output numerical points associated with the input_sample to be added to the
     cache."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::addCacheContent
-OT_NumericalMathFunction_addCacheContent_doc
+%feature("docstring") OT::FunctionImplementation::addCacheContent
+OT_Function_addCacheContent_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_enableHistory_doc
+%define OT_Function_enableHistory_doc
 "Enable the history mechanism."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::enableHistory
-OT_NumericalMathFunction_enableHistory_doc
+%feature("docstring") OT::FunctionImplementation::enableHistory
+OT_Function_enableHistory_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_disableHistory_doc
+%define OT_Function_disableHistory_doc
 "Disable the history mechanism."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::disableHistory
-OT_NumericalMathFunction_disableHistory_doc
+%feature("docstring") OT::FunctionImplementation::disableHistory
+OT_Function_disableHistory_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_clearHistory_doc
+%define OT_Function_clearHistory_doc
 "Empty the content of the history."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::clearHistory
-OT_NumericalMathFunction_clearHistory_doc
+%feature("docstring") OT::FunctionImplementation::clearHistory
+OT_Function_clearHistory_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_isHistoryEnabled_doc
+%define OT_Function_isHistoryEnabled_doc
 "Test whether the history mechanism is enabled or not.
 
 Returns
@@ -414,12 +414,12 @@ isHistoryEnabled : bool
     Flag telling whether the history mechanism is enabled.
     It is disabled by default."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::isHistoryEnabled
-OT_NumericalMathFunction_isHistoryEnabled_doc
+%feature("docstring") OT::FunctionImplementation::isHistoryEnabled
+OT_Function_isHistoryEnabled_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_getHistoryInput_doc
+%define OT_Function_getHistoryInput_doc
 "Accessor to the history of the input values.
 
 Returns
@@ -427,12 +427,12 @@ Returns
 input_history : :class:`~openturns.NumericalSample`
     All the input numerical points stored in the history mecanism."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::getHistoryInput
-OT_NumericalMathFunction_getHistoryInput_doc
+%feature("docstring") OT::FunctionImplementation::getHistoryInput
+OT_Function_getHistoryInput_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_getHistoryOutput_doc
+%define OT_Function_getHistoryOutput_doc
 "Accessor to the history of the output values.
 
 Returns
@@ -440,12 +440,12 @@ Returns
 output_history : :class:`~openturns.NumericalSample`
     All the output numerical points stored in the history mecanism."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::getHistoryOutput
-OT_NumericalMathFunction_getHistoryOutput_doc
+%feature("docstring") OT::FunctionImplementation::getHistoryOutput
+OT_Function_getHistoryOutput_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_getInputPointHistory_doc
+%define OT_Function_getInputPointHistory_doc
 "Accessor to the history of the input point values.
 
 Returns
@@ -453,12 +453,12 @@ Returns
 history : :class:`~openturns.NumericalSample`
     All the input points stored in the history mecanism."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::getInputPointHistory
-OT_NumericalMathFunction_getInputPointHistory_doc
+%feature("docstring") OT::FunctionImplementation::getInputPointHistory
+OT_Function_getInputPointHistory_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_getInputParameterHistory_doc
+%define OT_Function_getInputParameterHistory_doc
 "Accessor to the history of the input parameter values.
 
 Returns
@@ -466,12 +466,12 @@ Returns
 history : :class:`~openturns.NumericalSample`
     All the input parameters stored in the history mecanism."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::getInputParameterHistory
-OT_NumericalMathFunction_getInputParameterHistory_doc
+%feature("docstring") OT::FunctionImplementation::getInputParameterHistory
+OT_Function_getInputParameterHistory_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_getCallsNumber_doc
+%define OT_Function_getCallsNumber_doc
 "Accessor to the number of times the function has been called.
 
 Returns
@@ -480,12 +480,12 @@ calls_number : int
     Integer that counts the number of times the function has been called
     since its creation."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::getCallsNumber
-OT_NumericalMathFunction_getCallsNumber_doc
+%feature("docstring") OT::FunctionImplementation::getCallsNumber
+OT_Function_getCallsNumber_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_getEvaluationCallsNumber_doc
+%define OT_Function_getEvaluationCallsNumber_doc
 "Accessor to the number of times the function has been called.
 
 Returns
@@ -494,45 +494,45 @@ evaluation_calls_number : int
     Integer that counts the number of times the function has been called
     since its creation."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::getEvaluationCallsNumber
-OT_NumericalMathFunction_getEvaluationCallsNumber_doc
+%feature("docstring") OT::FunctionImplementation::getEvaluationCallsNumber
+OT_Function_getEvaluationCallsNumber_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_getGradientCallsNumber_doc
+%define OT_Function_getGradientCallsNumber_doc
 "Accessor to the number of times the gradient of the function has been called.
 
 Returns
 -------
 gradient_calls_number : int
     Integer that counts the number of times the gradient of the
-    NumericalMathFunction has been called since its creation.
+    Function has been called since its creation.
     Note that if the gradient is implemented by a finite difference method,
     the gradient calls number is equal to 0 and the different calls are
     counted in the evaluation calls number."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::getGradientCallsNumber
-OT_NumericalMathFunction_getGradientCallsNumber_doc
+%feature("docstring") OT::FunctionImplementation::getGradientCallsNumber
+OT_Function_getGradientCallsNumber_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_getHessianCallsNumber_doc
+%define OT_Function_getHessianCallsNumber_doc
 "Accessor to the number of times the hessian of the function has been called.
 
 Returns
 -------
 hessian_calls_number : int
     Integer that counts the number of times the hessian of the
-    NumericalMathFunction has been called since its creation.
+    Function has been called since its creation.
     Note that if the hessian is implemented by a finite difference method,
     the hessian calls number is equal to 0 and the different calls are counted
     in the evaluation calls number."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::getHessianCallsNumber
-OT_NumericalMathFunction_getHessianCallsNumber_doc
+%feature("docstring") OT::FunctionImplementation::getHessianCallsNumber
+OT_Function_getHessianCallsNumber_doc
 
 // ---------------------------------------------------------------------
-%define OT_NumericalMathFunction_getMarginal_doc
+%define OT_Function_getMarginal_doc
 "Accessor to marginal.
 
 Parameters
@@ -542,22 +542,22 @@ indices : int or list of ints
 
 Returns
 -------
-marginal : :class:`~openturns.NumericalMathFunction`
+marginal : :class:`~openturns.Function`
     Function corresponding to either :math:`f_i` or
     :math:`(f_i)_{i \in indices}`, with :math:`f:\Rset^n \rightarrow \Rset^p`
     and :math:`f=(f_0 , \dots, f_{p-1})`."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::getMarginal
-OT_NumericalMathFunction_getMarginal_doc
+%feature("docstring") OT::FunctionImplementation::getMarginal
+OT_Function_getMarginal_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_getImplementation_doc
+%define OT_Function_getImplementation_doc
 "Accessor to the evaluation, gradient and hessian functions.
 
 Returns
 -------
-function : :class:`~openturns.NumericalMathFunctionImplementation`
+function : :class:`~openturns.FunctionImplementation`
     The evaluation, gradient and hessian function.
 
 Examples
@@ -578,12 +578,12 @@ hessian    :
 | d^2(y) / d(x2)d(x1) = (-4*(sin(x1))) 
 |    d^2(y) / d(x2)^2 = 0"
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::getImplementation
-OT_NumericalMathFunction_getImplementation_doc
+%feature("docstring") OT::FunctionImplementation::getImplementation
+OT_Function_getImplementation_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_getEvaluation_doc
+%define OT_Function_getEvaluation_doc
 "Accessor to the evaluation function.
 
 Returns
@@ -599,12 +599,12 @@ Examples
 >>> print(f.getEvaluation())
 [x1,x2]->[2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6]"
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::getEvaluation
-OT_NumericalMathFunction_getEvaluation_doc
+%feature("docstring") OT::FunctionImplementation::getEvaluation
+OT_Function_getEvaluation_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_getGradient_doc
+%define OT_Function_getGradient_doc
 "Accessor to the gradient function.
 
 Returns
@@ -612,12 +612,12 @@ Returns
 gradient : :class:`~openturns.GradientImplementation`
     The gradient function."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::getGradient
-OT_NumericalMathFunction_getGradient_doc
+%feature("docstring") OT::FunctionImplementation::getGradient
+OT_Function_getGradient_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_getHessian_doc
+%define OT_Function_getHessian_doc
 "Accessor to the hessian function.
 
 Returns
@@ -625,12 +625,12 @@ Returns
 hessian : :class:`~openturns.HessianImplementation`
     The hessian function."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::getHessian
-OT_NumericalMathFunction_getHessian_doc
+%feature("docstring") OT::FunctionImplementation::getHessian
+OT_Function_getHessian_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_setEvaluation_doc
+%define OT_Function_setEvaluation_doc
 "Accessor to the evaluation function.
 
 Parameters
@@ -638,12 +638,12 @@ Parameters
 function : :class:`~openturns.EvaluationImplementation`
     The evaluation function."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::setEvaluation
-OT_NumericalMathFunction_setEvaluation_doc
+%feature("docstring") OT::FunctionImplementation::setEvaluation
+OT_Function_setEvaluation_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_setGradient_doc
+%define OT_Function_setGradient_doc
 "Accessor to the gradient function.
 
 Parameters
@@ -660,12 +660,12 @@ Examples
 ...  ot.ResourceMap.GetAsNumericalScalar('CenteredFiniteDifferenceGradient-DefaultEpsilon'),
 ...  f.getEvaluation()))"
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::setGradient
-OT_NumericalMathFunction_setGradient_doc
+%feature("docstring") OT::FunctionImplementation::setGradient
+OT_Function_setGradient_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_setHessian_doc
+%define OT_Function_setHessian_doc
 "Accessor to the hessian function.
 
 Parameters
@@ -682,12 +682,12 @@ Examples
 ...  ot.ResourceMap.GetAsNumericalScalar('CenteredFiniteDifferenceHessian-DefaultEpsilon'),
 ...  f.getEvaluation()))"
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::setHessian
-OT_NumericalMathFunction_setHessian_doc
+%feature("docstring") OT::FunctionImplementation::setHessian
+OT_Function_setHessian_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_gradient_doc
+%define OT_Function_gradient_doc
 "Return the Jacobian transposed matrix of the function at a point.
 
 Parameters
@@ -709,12 +709,12 @@ Examples
 [[ 13.5345   1       ]
  [  4.00001  1       ]]"
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::gradient
-OT_NumericalMathFunction_gradient_doc
+%feature("docstring") OT::FunctionImplementation::gradient
+OT_Function_gradient_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_hessian_doc
+%define OT_Function_hessian_doc
 "Return the hessian of the function at a point.
 
 Parameters
@@ -740,12 +740,12 @@ sheet #1
 [[  0           0          ]
  [  0           0          ]]"
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::hessian
-OT_NumericalMathFunction_hessian_doc
+%feature("docstring") OT::FunctionImplementation::hessian
+OT_Function_hessian_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_getDescription_doc
+%define OT_Function_getDescription_doc
 "Accessor to the description of the inputs and outputs.
 
 Returns
@@ -761,12 +761,12 @@ Examples
 >>> print(f.getDescription())
 [x1,x2,y0]"
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::getDescription
-OT_NumericalMathFunction_getDescription_doc
+%feature("docstring") OT::FunctionImplementation::getDescription
+OT_Function_getDescription_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_setDescription_doc
+%define OT_Function_setDescription_doc
 "Accessor to the description of the inputs and outputs.
 
 Parameters
@@ -785,12 +785,12 @@ Examples
 >>> print(f.getDescription())
 [a,b,y]"
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::setDescription
-OT_NumericalMathFunction_setDescription_doc
+%feature("docstring") OT::FunctionImplementation::setDescription
+OT_Function_setDescription_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_getInputDescription_doc
+%define OT_Function_getInputDescription_doc
 "Accessor to the description of the inputs.
 
 Returns
@@ -806,12 +806,12 @@ Examples
 >>> print(f.getInputDescription())
 [x1,x2]"
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::getInputDescription
-OT_NumericalMathFunction_getInputDescription_doc
+%feature("docstring") OT::FunctionImplementation::getInputDescription
+OT_Function_getInputDescription_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_getOutputDescription_doc
+%define OT_Function_getOutputDescription_doc
 "Accessor to the description of the outputs.
 
 Returns
@@ -827,12 +827,12 @@ Examples
 >>> print(f.getOutputDescription())
 [y0]"
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::getOutputDescription
-OT_NumericalMathFunction_getOutputDescription_doc
+%feature("docstring") OT::FunctionImplementation::getOutputDescription
+OT_Function_getOutputDescription_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_getInputDimension_doc
+%define OT_Function_getInputDimension_doc
 "Accessor to the number of the inputs.
 
 Returns
@@ -848,12 +848,12 @@ Examples
 >>> print(f.getInputDimension())
 2"
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::getInputDimension
-OT_NumericalMathFunction_getInputDimension_doc
+%feature("docstring") OT::FunctionImplementation::getInputDimension
+OT_Function_getInputDimension_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_getOutputDimension_doc
+%define OT_Function_getOutputDimension_doc
 "Accessor to the number of the outputs.
 
 Returns
@@ -869,12 +869,12 @@ Examples
 >>> print(f.getOutputDimension())
 1"
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::getOutputDimension
-OT_NumericalMathFunction_getOutputDimension_doc
+%feature("docstring") OT::FunctionImplementation::getOutputDimension
+OT_Function_getOutputDimension_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_getParameterDimension_doc
+%define OT_Function_getParameterDimension_doc
 "Accessor to the dimension of the parameter.
 
 Returns
@@ -882,12 +882,12 @@ Returns
 parameterDimension : int
     Dimension of the parameter."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::getParameterDimension
-OT_NumericalMathFunction_getParameterDimension_doc
+%feature("docstring") OT::FunctionImplementation::getParameterDimension
+OT_Function_getParameterDimension_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_draw_doc
+%define OT_Function_draw_doc
 "Draw the output of function as a :class:`~openturns.Graph`.
 
 Available usages:
@@ -960,12 +960,12 @@ Examples
 >>> graph = f.draw(-1.2, 1.2, 100)
 >>> View(graph).show()"
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::draw
-OT_NumericalMathFunction_draw_doc
+%feature("docstring") OT::FunctionImplementation::draw
+OT_Function_draw_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_getParameter_doc
+%define OT_Function_getParameter_doc
 "Accessor to the parameter values.
 
 Returns
@@ -973,12 +973,12 @@ Returns
 parameter : :class:`~openturns.NumericalPoint`
     The parameter values."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::getParameter
-OT_NumericalMathFunction_getParameter_doc
+%feature("docstring") OT::FunctionImplementation::getParameter
+OT_Function_getParameter_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_setParameter_doc
+%define OT_Function_setParameter_doc
 "Accessor to the parameter values.
 
 Parameters
@@ -986,12 +986,12 @@ Parameters
 parameter : sequence of float
     The parameter values."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::setParameter
-OT_NumericalMathFunction_setParameter_doc
+%feature("docstring") OT::FunctionImplementation::setParameter
+OT_Function_setParameter_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_getParameterDescription_doc
+%define OT_Function_getParameterDescription_doc
 "Accessor to the parameter description.
 
 Returns
@@ -999,12 +999,12 @@ Returns
 parameter : :class:`~openturns.Description`
     The parameter description."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::getParameterDescription
-OT_NumericalMathFunction_getParameterDescription_doc
+%feature("docstring") OT::FunctionImplementation::getParameterDescription
+OT_Function_getParameterDescription_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_setParameterDescription_doc
+%define OT_Function_setParameterDescription_doc
 "Accessor to the parameter description.
 
 Parameters
@@ -1012,12 +1012,12 @@ Parameters
 parameter : :class:`~openturns.Description`
     The parameter description."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::setParameterDescription
-OT_NumericalMathFunction_setParameterDescription_doc
+%feature("docstring") OT::FunctionImplementation::setParameterDescription
+OT_Function_setParameterDescription_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_NumericalMathFunction_parameterGradient_doc
+%define OT_Function_parameterGradient_doc
 "Accessor to the gradient against the parameter.
 
 Returns
@@ -1025,5 +1025,5 @@ Returns
 gradient : :class:`~openturns.Matrix`
     The gradient."
 %enddef
-%feature("docstring") OT::NumericalMathFunctionImplementation::parameterGradient
-OT_NumericalMathFunction_parameterGradient_doc
+%feature("docstring") OT::FunctionImplementation::parameterGradient
+OT_Function_parameterGradient_doc

@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class NumericalMathFunction for analytical
+ *  @brief The test file of class Function for analytical
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -116,8 +116,8 @@ int main(int argc, char *argv[])
     form[1] = "x0-x1";
 
     SymbolicFunction nmf(inp, form);
-    NumericalMathFunction marginal0(nmf.getMarginal(0));
-    NumericalMathFunction marginal1(nmf.getMarginal(1));
+    Function marginal0(nmf.getMarginal(0));
+    Function marginal1(nmf.getMarginal(1));
     fullprint << "marginal 0=" << marginal0.__str__() << std::endl;
     fullprint << "marginal 1=" << marginal1.__str__() << std::endl;
 

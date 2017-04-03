@@ -29,16 +29,16 @@ CLASSNAMEINIT(IndicatorFunction);
 
 /* Default constructor */
 IndicatorFunction::IndicatorFunction ()
-  : NumericalMathFunction()
+  : Function()
 {
 }
 
 
 /* Parameter constructor */
-IndicatorFunction::IndicatorFunction (const NumericalMathFunction & function,
+IndicatorFunction::IndicatorFunction (const Function & function,
                                       const ComparisonOperator & comparisonOperator,
                                       const NumericalScalar threshold)
-  : NumericalMathFunction()
+  : Function()
 {
   const IndicatorEvaluation evaluation(function.getEvaluation(), comparisonOperator, threshold);
   setEvaluation(evaluation.clone());

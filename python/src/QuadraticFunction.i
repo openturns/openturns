@@ -11,8 +11,8 @@ namespace OT { %extend QuadraticFunction { QuadraticFunction(const QuadraticFunc
 
 %pythoncode %{
 # deprecated
-class QuadraticNumericalMathFunction(QuadraticFunction):
+class QuadraticFunction(QuadraticFunction):
     def __init__(self, *args):
-        super(QuadraticNumericalMathFunction, self).__init__(*args)
-        openturns.common.Log.Warn('class QuadraticNumericalMathFunction is deprecated in favor of QuadraticFunction')
+        super(QuadraticFunction, self).__init__(*args)
+        openturns.common.Log.Warn('class QuadraticFunction is deprecated in favor of QuadraticFunction')
 %}

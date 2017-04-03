@@ -25,7 +25,7 @@
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/Basis.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/ProcessSample.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/Field.hxx"
@@ -80,13 +80,13 @@ public:
   Matrix getProjectionMatrix() const;
 
   /** Projection method */
-  NumericalPoint project(const NumericalMathFunction & function) const;
+  NumericalPoint project(const Function & function) const;
   NumericalPoint project(const Field & field) const;
   NumericalSample project(const Basis & basis) const;
   NumericalSample project(const ProcessSample & sample) const;
 
   /** Lift method */
-  NumericalMathFunction lift(const NumericalPoint & coefficients) const;
+  Function lift(const NumericalPoint & coefficients) const;
   Field liftAsField(const NumericalPoint & coefficients) const;
 
   /** String converter */

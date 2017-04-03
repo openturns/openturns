@@ -96,7 +96,7 @@ Matrix KarhunenLoeveResult::getProjectionMatrix() const
 }
 
 /* Projection method */
-NumericalPoint KarhunenLoeveResult::project(const NumericalMathFunction & function) const
+NumericalPoint KarhunenLoeveResult::project(const Function & function) const
 {
   return getImplementation()->project(function);
 }
@@ -117,7 +117,7 @@ NumericalSample KarhunenLoeveResult::project(const ProcessSample & sample) const
 }
 
 /* Lift method */
-NumericalMathFunction KarhunenLoeveResult::lift(const NumericalPoint & coefficients) const
+Function KarhunenLoeveResult::lift(const NumericalPoint & coefficients) const
 {
   return getImplementation()->lift(coefficients);
 }

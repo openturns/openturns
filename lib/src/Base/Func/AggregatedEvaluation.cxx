@@ -42,7 +42,7 @@ AggregatedEvaluation::AggregatedEvaluation()
 
 
 /* Parameters constructor */
-AggregatedEvaluation::AggregatedEvaluation(const NumericalMathFunctionCollection & functionsCollection)
+AggregatedEvaluation::AggregatedEvaluation(const FunctionCollection & functionsCollection)
   : EvaluationImplementation()
   , functionsCollection_(0)
   , outputDimension_(0)
@@ -129,12 +129,12 @@ NumericalSample AggregatedEvaluation::operator () (const NumericalSample & inS) 
 
 
 /* Functions accessor */
-AggregatedEvaluation::NumericalMathFunctionCollection AggregatedEvaluation::getFunctionsCollection() const
+AggregatedEvaluation::FunctionCollection AggregatedEvaluation::getFunctionsCollection() const
 {
   return functionsCollection_;
 }
 
-void AggregatedEvaluation::setFunctionsCollection(const NumericalMathFunctionCollection & functionsCollection)
+void AggregatedEvaluation::setFunctionsCollection(const FunctionCollection & functionsCollection)
 {
   const UnsignedInteger size = functionsCollection.getSize();
   // Check for empty functions collection
@@ -169,7 +169,7 @@ AggregatedEvaluation::Implementation AggregatedEvaluation::getMarginal(const Ind
 {
   const UnsignedInteger dimension = getOutputDimension();
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal aggregated function must be in the range [0, dim-1] and must be different";
-  NumericalMathFunctionCollection marginalFunctions;
+  FunctionCollection marginalFunctions;
   const UnsignedInteger indicesSize = indices.getSize();
   const UnsignedInteger size = functionsCollection_.getSize();
   // For each copula, see if there is something to extract
@@ -181,7 +181,7 @@ AggregatedEvaluation::Implementation AggregatedEvaluation::getMarginal(const Ind
   UnsignedInteger upperIndex = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalMathFunction function(functionsCollection_[i]);
+    const Function function(functionsCollection_[i]);
     // Update index range for the current function
     lowerIndex = upperIndex;
     upperIndex += function.getOutputDimension();

@@ -148,7 +148,7 @@ int main(int argc, char *argv[])
     // Specific to this distribution
     Distribution antecedent(distribution.getAntecedent());
     fullprint << "antecedent=" << antecedent << std::endl;
-    NumericalMathFunction function(distribution.getFunction());
+    Function function(distribution.getFunction());
     fullprint << "function=" << function << std::endl;
     CompositeDistribution newDistribution(function, antecedent);
     fullprint << "newDistribution=" << newDistribution << std::endl;

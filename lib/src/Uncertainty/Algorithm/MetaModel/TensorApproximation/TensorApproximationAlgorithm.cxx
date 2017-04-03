@@ -23,7 +23,7 @@
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalMathFunctionImplementation.hxx"
+#include "openturns/FunctionImplementation.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/NormalCopulaFactory.hxx"
@@ -40,7 +40,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 typedef Collection<Distribution> DistributionCollection;
-typedef Collection<NumericalMathFunction> NumericalMathFunctionCollection;
+typedef Collection<Function> FunctionCollection;
 typedef Collection<OrthogonalUniVariateFunctionFamily> FunctionFamilyCollection;
 
 CLASSNAMEINIT(TensorApproximationAlgorithm);
@@ -66,7 +66,7 @@ TensorApproximationAlgorithm::TensorApproximationAlgorithm(const NumericalSample
     const OrthogonalProductFunctionFactory & basisFactory,
     const Indices & degrees,
     const UnsignedInteger maxRank)
-  : MetaModelAlgorithm(distribution, NumericalMathFunction(NumericalMathFunctionImplementation(DatabaseEvaluation(inputSample, outputSample, false).clone())))
+  : MetaModelAlgorithm(distribution, Function(FunctionImplementation(DatabaseEvaluation(inputSample, outputSample, false).clone())))
   , inputSample_(inputSample)
   , outputSample_(outputSample)
   , maxRank_(maxRank)
@@ -127,7 +127,7 @@ void TensorApproximationAlgorithm::run()
 
   transformedInputSample_ = transformation_(inputSample_);
 
-  NumericalMathFunctionCollection marginals(0);
+  FunctionCollection marginals(0);
   NumericalPoint residuals(outputDimension);
   NumericalPoint relativeErrors(outputDimension); 
   for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
@@ -203,10 +203,10 @@ void TensorApproximationAlgorithm::greedyRankOne (const NumericalSample & x,
             marginalRelativeError);
 
     // build basis
-    NumericalMathFunctionCollection prodColl(i + 1);
+    FunctionCollection prodColl(i + 1);
     for (UnsignedInteger i2 = 0; i2 <= i; ++ i2)
     {
-      prodColl[i2] = NumericalMathFunction(tensor.getMarginalRank(i2).clone());
+      prodColl[i2] = Function(tensor.getMarginalRank(i2).clone());
     }
 
     const Basis basis(prodColl);
@@ -228,7 +228,7 @@ void TensorApproximationAlgorithm::greedyRankOne (const NumericalSample & x,
     }
 
     // compute residual
-    NumericalMathFunction tensorFunction(tensor.clone());
+    Function tensorFunction(tensor.clone());
     yRes = y - tensorFunction(x);
 
     if (rk[i] == 0.0)
@@ -404,10 +404,10 @@ void TensorApproximationAlgorithm::rankM (const NumericalSample & x,
     }
 
     // build basis of rank one tensors
-    NumericalMathFunctionCollection prodColl(m);
+    FunctionCollection prodColl(m);
     for (UnsignedInteger i = 0; i < m; ++ i)
     {
-      prodColl[i] = NumericalMathFunction(tensor.getMarginalRank(i).clone());
+      prodColl[i] = Function(tensor.getMarginalRank(i).clone());
     }
 
     const Basis basis(prodColl);

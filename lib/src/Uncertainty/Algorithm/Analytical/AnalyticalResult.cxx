@@ -25,7 +25,7 @@
 #include "openturns/Distribution.hxx"
 #include "openturns/NumericalSample.hxx"
 #include "openturns/SobolIndicesAlgorithmImplementation.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/BarPlot.hxx"
 #include "openturns/Description.hxx"
 #include "openturns/CompositeRandomVector.hxx"
@@ -74,8 +74,8 @@ AnalyticalResult::AnalyticalResult():
   PersistentObject(),
   standardSpaceDesignPoint_(0),
   physicalSpaceDesignPoint_(0),
-  // Fake event based on a fake 1D composite random vector, which requires a fake 1D NumericalMathFunction
-  limitStateVariable_(RandomVector(CompositeRandomVector(NumericalMathFunction(Description(0), Description(1), Description(1)),
+  // Fake event based on a fake 1D composite random vector, which requires a fake 1D Function
+  limitStateVariable_(RandomVector(CompositeRandomVector(Function(Description(0), Description(1), Description(1)),
                                    ConstantRandomVector(NumericalPoint(0)))),
                       Less(), 0.0),
   isStandardPointOriginInFailureSpace_(false),
@@ -320,7 +320,7 @@ void AnalyticalResult::computeHasoferReliabilityIndexSensitivity() const
   const Distribution physicalDistribution(limitStateVariable_.getImplementation()->getAntecedent()->getDistribution());
   const NumericalPointWithDescriptionCollection set1(physicalDistribution.getParametersCollection());
   /* get Set2 : parameters of the physical model */
-  const NumericalMathFunction physicalModel(limitStateVariable_.getImplementation()->getFunction());
+  const Function physicalModel(limitStateVariable_.getImplementation()->getFunction());
   NumericalPointWithDescription set2(physicalModel.getParameter());
   set2.setDescription(physicalModel.getParameterDescription());
   const Bool isSet2Empty = set2.getDimension() == 0;

@@ -49,7 +49,7 @@ Available usages:
 
 Parameters
 ----------
-f : :class:`~openturns.NumericalMathFunction`, :math:`f: \Rset^d \mapsto \Rset^p`
+f : :class:`~openturns.Function`, :math:`f: \Rset^d \mapsto \Rset^p`
     The integrand function.
 interval : :class:`~openturns.Interval`, :math:`interval \in \Rset^d` 
     The integration domain. 

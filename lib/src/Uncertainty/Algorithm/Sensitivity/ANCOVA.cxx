@@ -46,8 +46,8 @@ void ANCOVA::run() const
   const UnsignedInteger nbMarginals = functionalChaosResult_.getMetaModel().getOutputDimension();
   const Indices coefficientIndices = functionalChaosResult_.getIndices();
   const EnumerateFunction enumerateFunction = functionalChaosResult_.getOrthogonalBasis().getEnumerateFunction();
-  const NumericalMathFunctionCollection B = functionalChaosResult_.getReducedBasis();
-  const NumericalMathFunction T = functionalChaosResult_.getTransformation();
+  const FunctionCollection B = functionalChaosResult_.getReducedBasis();
+  const Function T = functionalChaosResult_.getTransformation();
   const NumericalSample allCoefficients = functionalChaosResult_.getCoefficients();
   const UnsignedInteger coefSize = allCoefficients.getSize();
 

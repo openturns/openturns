@@ -23,7 +23,7 @@
 
 
 #include "openturns/VertexValueFunction.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -49,7 +49,7 @@ public:
   InverseTrendTransform();
 
   /** Parameter constructor */
-  InverseTrendTransform(const NumericalMathFunction & function);
+  InverseTrendTransform(const Function & function);
 
   /** Parameter constructor */
   InverseTrendTransform(const EvaluationPointer & p_evaluation);

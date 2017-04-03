@@ -3,7 +3,7 @@
 
 Parameters
 ----------
-myTrendFunc : :class:`~openturns.NumericalMathFunction`
+myTrendFunc : :class:`~openturns.Function`
     The trend function :math:`f_{trend}` of a process.
 
 Notes

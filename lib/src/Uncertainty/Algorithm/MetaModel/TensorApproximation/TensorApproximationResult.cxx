@@ -51,13 +51,13 @@ TensorApproximationResult::TensorApproximationResult()
 /* Default constructor */
 TensorApproximationResult::TensorApproximationResult(
     const Distribution & distribution,
-    const NumericalMathFunction & transformation,
-    const NumericalMathFunction & inverseTransformation,
-    const NumericalMathFunction & composedModel,
+    const Function & transformation,
+    const Function & inverseTransformation,
+    const Function & composedModel,
     const Collection<CanonicalTensorEvaluation> & tensorCollection,
     const NumericalPoint & residuals,
     const NumericalPoint & relativeErrors)
-  : MetaModelResult(NumericalMathFunction(), NumericalMathFunction(), residuals, relativeErrors)
+  : MetaModelResult(Function(), Function(), residuals, relativeErrors)
   , distribution_(distribution)
   , transformation_(transformation)
   , inverseTransformation_(inverseTransformation)
@@ -65,17 +65,17 @@ TensorApproximationResult::TensorApproximationResult(
   , tensorCollection_(tensorCollection)
   , composedMetaModel_()
 {
-  NumericalMathFunctionCollection marginals;
+  FunctionCollection marginals;
   const UnsignedInteger outputDimension = tensorCollection_.getSize();// for now
   for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
   {
-    NumericalMathFunction tensorFunction;
+    Function tensorFunction;
     tensorFunction.setEvaluation(tensorCollection_[outputIndex].clone());
     tensorFunction.setGradient(CanonicalTensorGradient(tensorCollection_[outputIndex]));
     marginals.add(tensorFunction);
   }
-  composedMetaModel_ = NumericalMathFunction(marginals);
-  metaModel_ = NumericalMathFunction(composedMetaModel_, transformation);
+  composedMetaModel_ = Function(marginals);
+  metaModel_ = Function(composedMetaModel_, transformation);
 }
 
 
@@ -115,25 +115,25 @@ Distribution TensorApproximationResult::getDistribution() const
 }
 
 /* IsoProbabilisticTransformation accessor */
-NumericalMathFunction TensorApproximationResult::getTransformation() const
+Function TensorApproximationResult::getTransformation() const
 {
   return transformation_;
 }
 
 /* InverseIsoProbabilisticTransformation accessor */
-NumericalMathFunction TensorApproximationResult::getInverseTransformation() const
+Function TensorApproximationResult::getInverseTransformation() const
 {
   return inverseTransformation_;
 }
 
 /* Composed model accessor */
-NumericalMathFunction TensorApproximationResult::getComposedModel() const
+Function TensorApproximationResult::getComposedModel() const
 {
   return composedModel_;
 }
 
 /* Composed meta model accessor */
-NumericalMathFunction TensorApproximationResult::getComposedMetaModel() const
+Function TensorApproximationResult::getComposedMetaModel() const
 {
   return composedMetaModel_;
 }

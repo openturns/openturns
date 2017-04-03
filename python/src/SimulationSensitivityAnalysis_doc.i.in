@@ -12,7 +12,7 @@ Parameters
 ----------
 inputSample, outputSample : 2-d sequence of float
     Input sample and output sample of a model evaluated apart.
-transformation : :class:`~openturns.NumericalMathFunction`
+transformation : :class:`~openturns.Function`
     An isoprobabilistic transformation function.
 comparisonOp : :class:`~openturns.ComparisonOperator`
     A comparison operator.
@@ -171,7 +171,7 @@ s : float
 
 Returns
 -------
-transformation : :class:`~openturns.NumericalMathFunction`
+transformation : :class:`~openturns.Function`
     The isoprobabilistic transformation function."
 
 // ---------------------------------------------------------------------

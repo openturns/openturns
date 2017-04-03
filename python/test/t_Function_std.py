@@ -8,11 +8,11 @@ TESTPREAMBLE()
 try:
 
     # Instance creation
-    myFunc = NumericalMathFunction(
+    myFunc = Function(
         ['x1', 'x2'], ['y1', 'y2', 'y3'], ['x1*sin(x2)', 'cos(x1+x2)', '(x2+1)*exp(x1-2*x2)'])
 
     # Copy constructor
-    newFunc = NumericalMathFunction(myFunc)
+    newFunc = Function(myFunc)
 
     print("myFunc=" + repr(myFunc))
     print("myFunc input parameter(s)=")
@@ -25,5 +25,5 @@ try:
 
 except:
     import sys
-    print("t_NumericalMathFunction_std.py",
+    print("t_Function_std.py",
           sys.exc_info()[0], sys.exc_info()[1])

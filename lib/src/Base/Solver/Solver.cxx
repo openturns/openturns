@@ -71,7 +71,7 @@ String Solver::__repr__() const
 }
 
 /* Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] */
-NumericalScalar Solver::solve(const NumericalMathFunction & function,
+NumericalScalar Solver::solve(const Function & function,
                               const NumericalScalar value,
                               const NumericalScalar infPoint,
                               const NumericalScalar supPoint) const
@@ -80,7 +80,7 @@ NumericalScalar Solver::solve(const NumericalMathFunction & function,
 }
 
 /* Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] given function(infPoint) and function(supPoint) */
-NumericalScalar Solver::solve(const NumericalMathFunction & function,
+NumericalScalar Solver::solve(const Function & function,
                               const NumericalScalar value,
                               const NumericalScalar infPoint,
                               const NumericalScalar supPoint,

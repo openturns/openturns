@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
     Description formulas(outputFunction.getSize());
     formulas[0] = "R-(S01^2.0)/1.0-(S02^2.0)/2.0-(S03^2.0)/3.0-(S04^2.0)/4.0-(S05^2.0)/5.0-(S06^2.0)/6.0-(S07^2.0)/7.0-(S08^2.0)/8.0-(S09^2.0)/9.0-(S10^2.0)/10.0-(S11^2.0)/11.0-(S12^2.0)/12.0-(S13^2.0)/13.0-(S14^2.0)/14.0-(S15^2.0)/15.0-(S16^2.0)/16.0-(S17^2.0)/17.0-(S18^2.0)/18.0-(S19^2.0)/19.0-(S20^2.0)/20.0-(S21^2.0)/21.0-(S22^2.0)/22.0-(S23^2.0)/23.0-(S24^2.0)/24.0-(S25^2.0)/25.0";
 
-    NumericalMathFunction EtatLimite(inputFunction, outputFunction, formulas);
+    Function EtatLimite(inputFunction, outputFunction, formulas);
 
     UnsignedInteger dim = EtatLimite.getInputDimension();
     fullprint << dim << std::endl;

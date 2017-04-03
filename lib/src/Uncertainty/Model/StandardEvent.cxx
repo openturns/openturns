@@ -67,7 +67,7 @@ StandardEvent::StandardEvent(const Event & event)
   const Distribution distribution(event.getImplementation()->getAntecedent()->getDistribution());
   const InverseIsoProbabilisticTransformation inverse(distribution.getInverseIsoProbabilisticTransformation());
   // Get the function
-  const NumericalMathFunction function(event.getImplementation()->getFunction());
+  const Function function(event.getImplementation()->getFunction());
   // Get the standard distribution from the antecedent distribution
   const Distribution standard(distribution.getStandardDistribution());
   // Build the antecedent

@@ -23,7 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/EvaluationImplementation.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/Collection.hxx"
@@ -94,7 +94,7 @@ public:
   Collection<UnsignedInteger> getSimplifications() const;
 
   /** Expressions accessor */
-  Collection<NumericalMathFunction> getExpressions() const;
+  Collection<Function> getExpressions() const;
 
   /** String converter */
   String __repr__() const;
@@ -127,7 +127,7 @@ private:
   Collection<UnsignedInteger> simplifications_;
 
   // Collection of simpler expressions
-  Collection<NumericalMathFunction> expressions_;
+  Collection<Function> expressions_;
 }; /* MarginalTransformationEvaluation */
 
 

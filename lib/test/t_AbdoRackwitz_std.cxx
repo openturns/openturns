@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     input[1] = "x2";
     input[2] = "x3";
     input[3] = "x4";
-    NumericalMathFunction levelFunction(input, Description(1, "y1"), Description(1, "x1+2*x2-3*x3+4*x4"));
+    Function levelFunction(input, Description(1, "y1"), Description(1, "x1+2*x2-3*x3+4*x4"));
     // Add a finite difference gradient to the function, as Abdo Rackwitz algorithm
     // needs it
     NonCenteredFiniteDifferenceGradient myGradient(1e-7, levelFunction.getEvaluation());
@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
     input[1] = "x2";
     input[2] = "x3";
     input[3] = "x4";
-    NumericalMathFunction levelFunction(input, Description(1, "y1"), Description(1, "x1*cos(x1)+2*x2*x3-3*x3+4*x3*x4"));
+    Function levelFunction(input, Description(1, "y1"), Description(1, "x1*cos(x1)+2*x2*x3-3*x3+4*x3*x4"));
     // Activate the cache as we will use an analytical method
     levelFunction.enableCache();
     // Add a finite difference gradient to the function, as Abdo Rackwitz algorithm

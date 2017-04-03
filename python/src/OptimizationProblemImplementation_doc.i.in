@@ -12,16 +12,16 @@ Available constructors:
 
 Parameters
 ----------
-objective : :class:`~openturns.NumericalMathFunction`
+objective : :class:`~openturns.Function`
     Objective function. Additional constraints and bounds must always be
     consistent with the objective input dimension.
-equality : :class:`~openturns.NumericalMathFunction`
+equality : :class:`~openturns.Function`
     Equality constraints.
-inequality : :class:`~openturns.NumericalMathFunction`
+inequality : :class:`~openturns.Function`
     Inequality constraints.
 bounds : :class:`~openturns.Interval`
     Bounds.
-level : :class:`~openturns.NumericalMathFunction`
+level : :class:`~openturns.Function`
     Level function.
 value : float
     Level value.
@@ -104,7 +104,7 @@ OT_OptimizationProblem_getDimension_doc
 
 Returns
 -------
-equality : :class:`~openturns.NumericalMathFunction`
+equality : :class:`~openturns.Function`
     Describe equality constraints."
 
 %enddef
@@ -119,7 +119,7 @@ OT_OptimizationProblem_getEqualityConstraint_doc
 
 Returns
 -------
-inequality : :class:`~openturns.NumericalMathFunction`
+inequality : :class:`~openturns.Function`
     Describe inequality constraints."
 
 %enddef
@@ -134,7 +134,7 @@ OT_OptimizationProblem_getInequalityConstraint_doc
 
 Returns
 -------
-level : :class:`~openturns.NumericalMathFunction`
+level : :class:`~openturns.Function`
     Level function."
 
 %enddef
@@ -164,7 +164,7 @@ OT_OptimizationProblem_getLevelValue_doc
 
 Returns
 -------
-objective : :class:`~openturns.NumericalMathFunction`
+objective : :class:`~openturns.Function`
     Objective function."
 
 %enddef
@@ -284,7 +284,7 @@ OT_OptimizationProblem_setBounds_doc
 
 Parameters
 ----------
-equalityConstraint : :class:`~openturns.NumericalMathFunction`
+equalityConstraint : :class:`~openturns.Function`
     Equality constraints."
 
 %enddef
@@ -299,7 +299,7 @@ OT_OptimizationProblem_setEqualityConstraint_doc
 
 Parameters
 ----------
-inequalityConstraint : :class:`~openturns.NumericalMathFunction`
+inequalityConstraint : :class:`~openturns.Function`
     Inequality constraints."
 
 %enddef
@@ -314,7 +314,7 @@ OT_OptimizationProblem_setInequalityConstraint_doc
 
 Parameters
 ----------
-levelFunction : :class:`~openturns.NumericalMathFunction`
+levelFunction : :class:`~openturns.Function`
     Level function."
 
 %enddef
@@ -357,7 +357,7 @@ OT_OptimizationProblem_setMinimization_doc
 
 Parameters
 ----------
-objectiveFunction : :class:`~openturns.NumericalMathFunction`
+objectiveFunction : :class:`~openturns.Function`
     Objective function.
 
 Notes

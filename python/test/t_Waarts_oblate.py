@@ -28,7 +28,7 @@ try:
         if (i > 0):
             formulas[0] = formulas[0] + " + "
 
-    limitState = NumericalMathFunction(inputFunction, outputFunction, formulas)
+    limitState = Function(inputFunction, outputFunction, formulas)
 
     dim = limitState.getInputDimension()
 

@@ -47,8 +47,8 @@ public:
   /** Constructor from implementation */
   OrthogonalBasis(const OrthogonalFunctionFactory & implementation);
 
-  /** Build the NumericalMathFunction of the given index */
-  NumericalMathFunction build(const UnsignedInteger index) const;
+  /** Build the Function of the given index */
+  Function build(const UnsignedInteger index) const;
 
   /** Return the measure upon which the basis is orthogonal */
   Distribution getMeasure() const;

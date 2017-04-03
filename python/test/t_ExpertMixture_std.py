@@ -27,7 +27,7 @@ experts.add(SymbolicFunction("x", "x"))
 
 # Create a mixture of experts
 moe = ExpertMixture(experts, classifier)
-moeNMF = NumericalMathFunction(moe)
+moeNMF = Function(moe)
 
 print("Mixture of experts=", moe)
 

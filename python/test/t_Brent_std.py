@@ -14,7 +14,7 @@ try:
     output[0] = "y"
     formulas = Description(output.getSize())
     formulas[0] = "x-cos(x)"
-    analytical = NumericalMathFunction(input, output, formulas)
+    analytical = Function(input, output, formulas)
     myAlgo = Brent()
     print("myAlgo=", myAlgo)
     value = 0.0

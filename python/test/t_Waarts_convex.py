@@ -23,7 +23,7 @@ try:
     formulas = Description(outputFunction.getSize())
     formulas[0] = "2.5 + 0.1*(X1-X2)^2.0 - (X1+X2)/sqrt(2.0)"
 
-    EtatLimite = NumericalMathFunction(inputFunction, outputFunction, formulas)
+    EtatLimite = Function(inputFunction, outputFunction, formulas)
 
     dim = EtatLimite.getInputDimension()
     print(dim)

@@ -39,12 +39,12 @@ int main(int argc, char *argv[])
     input.add(in);
     output[j].add(in);
   }
-  Collection<NumericalMathFunction> coll;
+  Collection<Function> coll;
   Indices cumulBasis;
   Indices partialBasis[dimension];
   for ( UnsignedInteger j = 0; j < dimension; ++ j )
   {
-    NumericalMathFunction ei(input, output[j], output[j]);
+    Function ei(input, output[j], output[j]);
     coll.add(ei);
     cumulBasis.add(j);
     partialBasis[j] = cumulBasis;

@@ -37,25 +37,25 @@ CompositeRandomVector::CompositeRandomVector()
 }
 
 /* Standard constructor */
-CompositeRandomVector::CompositeRandomVector(const NumericalMathFunction & function,
+CompositeRandomVector::CompositeRandomVector(const Function & function,
     const Antecedent & p_antecedent)
   : RandomVectorImplementation()
   , function_(function)
   , p_antecedent_(p_antecedent)
 {
-  if (function.getInputDimension() != p_antecedent->getDimension()) throw InvalidArgumentException(HERE) << "Error: trying to build a CompositeRandomVector from a RandomVector and a NumericalMathFunction with incompatible dimensions, here RandomVector dimension=" << p_antecedent->getDimension() << " and NumericalMathFunction input dimension=" << function.getInputDimension();
+  if (function.getInputDimension() != p_antecedent->getDimension()) throw InvalidArgumentException(HERE) << "Error: trying to build a CompositeRandomVector from a RandomVector and a Function with incompatible dimensions, here RandomVector dimension=" << p_antecedent->getDimension() << " and Function input dimension=" << function.getInputDimension();
   // Get the description from the underlying function
   setDescription(function.getOutputDescription());
 }
 
 /* Standard constructor */
-CompositeRandomVector::CompositeRandomVector(const NumericalMathFunction & function,
+CompositeRandomVector::CompositeRandomVector(const Function & function,
     const RandomVector & antecedent)
   : RandomVectorImplementation()
   , function_(function)
   , p_antecedent_(antecedent.getImplementation())
 {
-  if (function.getInputDimension() != p_antecedent_->getDimension()) throw InvalidArgumentException(HERE) << "Error: trying to build a CompositeRandomVector from a RandomVector and a NumericalMathFunction with incompatible dimensions, here RandomVector dimension=" << p_antecedent_->getDimension() << " and NumericalMathFunction input dimension=" << function.getInputDimension();
+  if (function.getInputDimension() != p_antecedent_->getDimension()) throw InvalidArgumentException(HERE) << "Error: trying to build a CompositeRandomVector from a RandomVector and a Function with incompatible dimensions, here RandomVector dimension=" << p_antecedent_->getDimension() << " and Function input dimension=" << function.getInputDimension();
   // Get the description from the underlying function
   setDescription(function.getOutputDescription());
 }
@@ -151,7 +151,7 @@ CompositeRandomVector::Antecedent CompositeRandomVector::getAntecedent() const
 }
 
 /* Function accessor */
-NumericalMathFunction CompositeRandomVector::getFunction() const
+Function CompositeRandomVector::getFunction() const
 {
   return function_;
 }

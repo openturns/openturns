@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     formula[0] = "x1*sin(x2)";
     formula[1] = "cos(x1+x2)";
     formula[2] = "(x2+1)*exp(x1-2*x2)";
-    NumericalMathFunction myFunc(input, output, formula);
+    Function myFunc(input, output, formula);
     NumericalPoint center(myFunc.getInputDimension());
     for(UnsignedInteger i = 0; i < center.getDimension(); i++)
     {
@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
     }
     QuadraticTaylor myTaylor(center, myFunc);
     myTaylor.run();
-    NumericalMathFunction responseSurface(myTaylor.getResponseSurface());
+    Function responseSurface(myTaylor.getResponseSurface());
     fullprint << "myTaylor=" << myTaylor << std::endl;
     fullprint << "responseSurface=" << responseSurface << std::endl;
     fullprint << "myFunc(" << center << ")=" << myFunc(center) << std::endl;

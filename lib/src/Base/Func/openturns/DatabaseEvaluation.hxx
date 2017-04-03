@@ -37,7 +37,7 @@ class OT_API DatabaseEvaluation
   : public EvaluationImplementation
 {
   CLASSNAME;
-  friend class NumericalMathFunctionImplementation;
+  friend class FunctionImplementation;
 
 public:
 

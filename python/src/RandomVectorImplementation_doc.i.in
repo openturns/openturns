@@ -25,7 +25,7 @@ antecedent : :class:`~openturns.RandomVector`
     RandomVector :math:`\vect{X}` of Usual type to define a
     :class:`~openturns.CompositeRandomVector` as the image through the function
     :math:`f` of :math:`\vect{X}`: :math:`\vect{Y}=f(\vect{X})`.
-function : :class:`~openturns.NumericalMathFunction`
+function : :class:`~openturns.Function`
     Function :math:`f` to define a :class:`~openturns.CompositeRandomVector` as
     the image through this function of the antecedent :math:`\vect{X}`:
     :math:`\vect{Y}=f(\vect{X})`.
@@ -89,11 +89,11 @@ OT_RandomVector_getAntecedent_doc
 // ---------------------------------------------------------------------
 
 %define OT_RandomVector_getFunction_doc
-"Accessor to the NumericalMathFunction in case of a composite RandomVector.
+"Accessor to the Function in case of a composite RandomVector.
 
 Returns
 -------
-function : :class:`~openturns.NumericalMathFunction`
+function : :class:`~openturns.Function`
     Function used to define a :class:`~openturns.CompositeRandomVector` as the
     image through this function of the antecedent :math:`\vect{X}`:
     :math:`\vect{Y}=f(\vect{X})`."

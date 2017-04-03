@@ -24,7 +24,7 @@
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -40,8 +40,8 @@ class OT_API LinearCombinationEvaluation
   CLASSNAME;
 public:
 
-  typedef Collection<NumericalMathFunction>                              NumericalMathFunctionCollection;
-  typedef PersistentCollection<NumericalMathFunction>                    NumericalMathFunctionPersistentCollection;
+  typedef Collection<Function>                              FunctionCollection;
+  typedef PersistentCollection<Function>                    FunctionPersistentCollection;
 
   // friend class Factory<LinearCombinationEvaluation>;
 
@@ -50,7 +50,7 @@ public:
 
 public:
   /** Parameter constructor */
-  LinearCombinationEvaluation(const NumericalMathFunctionCollection & functionsCollection,
+  LinearCombinationEvaluation(const FunctionCollection & functionsCollection,
       const NumericalPoint & coefficients);
 
   /** Virtual constructor */
@@ -68,8 +68,8 @@ public:
   NumericalPoint getCoefficients() const;
 
   /** Functions accessor */
-  NumericalMathFunctionCollection getFunctionsCollection() const;
-  void setFunctionsCollectionAndCoefficients(const NumericalMathFunctionCollection & functionsCollection,
+  FunctionCollection getFunctionsCollection() const;
+  void setFunctionsCollectionAndCoefficients(const FunctionCollection & functionsCollection,
       const NumericalPoint & coefficients);
 
   /** Input dimension accessor */
@@ -110,7 +110,7 @@ private:
   friend struct LinearCombinationEvaluationPointFunctor;
 
   // The functions of the combination
-  NumericalMathFunctionPersistentCollection functionsCollection_;
+  FunctionPersistentCollection functionsCollection_;
 
   // The coefficients of the combination
   NumericalPoint coefficients_;

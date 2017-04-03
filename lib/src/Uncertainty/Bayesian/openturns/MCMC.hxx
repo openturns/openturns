@@ -57,7 +57,7 @@ public:
   /** Constructor with parameters*/
   MCMC(const Distribution & prior,
        const Distribution & conditional,
-       const NumericalMathFunction & model,
+       const Function & model,
        const NumericalSample & parameters,
        const NumericalSample & observations,
        const NumericalPoint & initialState);
@@ -76,7 +76,7 @@ public:
   Distribution getConditional() const;
 
   /** Model accessor */
-  NumericalMathFunction getModel() const;
+  Function getModel() const;
 
   /** Obervations accessor */
   void setObservations(const NumericalSample & observations);
@@ -124,7 +124,7 @@ private:
   Distribution prior_;
   Distribution conditional_;
 
-  mutable NumericalMathFunction model_;
+  mutable Function model_;
   NumericalSample parameters_;
   NumericalSample observations_;
 

@@ -21,7 +21,7 @@
 #include <iomanip>
 #include "openturns/TaylorExpansionMoments.hxx"
 #include "openturns/CompositeRandomVector.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/Pointer.hxx"
 #include "openturns/NumericalSample.hxx"
 #include "openturns/PersistentObjectFactory.hxx"

@@ -25,7 +25,7 @@
 #include "openturns/OrthogonalProductPolynomialFactory.hxx"
 #include "openturns/StandardDistributionPolynomialFactory.hxx"
 #include "openturns/AdaptiveStieltjesAlgorithm.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/SoizeGhanemFactorEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -85,7 +85,7 @@ EnumerateFunction SoizeGhanemFactory::getEnumerateFunction() const
 }
 
 
-/* Build the NumericalMathFunction of the given index orthonormal
+/* Build the Function of the given index orthonormal
  * with respect to the following inner product:
  * <f_i, f_j> = \int_R^n f_i(x) f_j(x) c(F_1(x_1),\dots,F_n(x_n))\prod_{k=1}^n p_k(x_k)dx
  * See: Christian Soize, R. Ghanem.
@@ -93,9 +93,9 @@ EnumerateFunction SoizeGhanemFactory::getEnumerateFunction() const
  *  arbitrary probability measure". SIAM Journal on Scientific Computing,
  *  Society for Industrial and Applied Mathematics, 2004, 26 (2), pp.395-410.
  */
-NumericalMathFunction SoizeGhanemFactory::build(const UnsignedInteger index) const
+Function SoizeGhanemFactory::build(const UnsignedInteger index) const
 {
-  const NumericalMathFunction productPolynomial(productPolynomial_.build(index));
+  const Function productPolynomial(productPolynomial_.build(index));
   // If the distribution has an independent copula the SoizeGhanem basis
   // is exactly the product polynomial factory
   if (hasIndependentCopula_) return productPolynomial;
@@ -116,7 +116,7 @@ void SoizeGhanemFactory::buildProductPolynomialAndAdaptation(const Bool useCopul
   productPolynomial_ = OrthogonalProductPolynomialFactory(coll, phi_);
   // Build the adaptation factor only if needed
   if (!hasIndependentCopula_)
-    adaptationFactor_ = NumericalMathFunction(SoizeGhanemFactorEvaluation(measure_, marginals, useCopula));
+    adaptationFactor_ = Function(SoizeGhanemFactorEvaluation(measure_, marginals, useCopula));
 }
 
 /* String converter */

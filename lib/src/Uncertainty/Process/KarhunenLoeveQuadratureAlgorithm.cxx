@@ -145,8 +145,8 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   const NumericalPoint distributionUpperBound(distribution.getRange().getUpperBound());
   const Bool hasSameBounds = (domainLowerBound == distributionLowerBound) && (domainUpperBound == distributionUpperBound);
   // The function scaling maps points in the range of the distribution into the domain
-  NumericalMathFunction scaling;
-  NumericalMathFunction inverseScaling;
+  Function scaling;
+  Function inverseScaling;
   // Normalization factor takes into account the fact that we map the range of the distribution defining the weighted experiment with the bounding box of the domain
   NumericalScalar normalizationFactor = 1.0;
   if (!hasSameBounds)
@@ -165,7 +165,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
     inverseScaling = LinearFunction(constant, center, inverseT);
   }
   // Here we set the collection of functions
-  Collection<NumericalMathFunction> coll(basisSize_);
+  Collection<Function> coll(basisSize_);
   for (UnsignedInteger i = 0; i < basisSize_; ++i)
     if (!hasSameBounds && mustScale_) coll[i] = ComposedFunction(basis_.build(i), inverseScaling);
     else coll[i] = basis_.build(i);

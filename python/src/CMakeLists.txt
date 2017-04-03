@@ -270,9 +270,9 @@ ot_add_python_module(func func_module.i
                       ProductEvaluation.i
                       ProductGradient.i
                       ProductHessian.i
-                      NumericalMathFunctionImplementation.i NumericalMathFunctionImplementation_doc.i.in
+                      FunctionImplementation.i FunctionImplementation_doc.i.in
                       ProductFunction.i ProductFunction_doc.i.in
-                      NumericalMathFunction.i NumericalMathFunction_doc.i.in
+                      Function.i Function_doc.i.in
                       TensorizedUniVariateFunctionFactory.i TensorizedUniVariateFunctionFactory_doc.i.in
                       UniVariateFunctionFactory.i UniVariateFunctionFactory_doc.i.in
                       MonomialFunctionFactory.i MonomialFunctionFactory_doc.i.in

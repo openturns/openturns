@@ -66,7 +66,7 @@ GaussKronrod * GaussKronrod::clone() const
 /* Compute an approximation of \int_{[a,b]}f(x)dx, where [a,b]
  * is an 1D interval and f a scalar function
  */
-NumericalPoint GaussKronrod::integrate(const NumericalMathFunction & function,
+NumericalPoint GaussKronrod::integrate(const Function & function,
                                        const Interval & interval,
                                        NumericalScalar & error) const
 {
@@ -78,7 +78,7 @@ NumericalPoint GaussKronrod::integrate(const NumericalMathFunction & function,
   return integrate(function, interval.getLowerBound()[0], interval.getUpperBound()[0], error, ai, bi, fi, ei);
 }
 
-NumericalPoint GaussKronrod::integrate(const NumericalMathFunction & function,
+NumericalPoint GaussKronrod::integrate(const Function & function,
                                        const NumericalScalar a,
                                        const NumericalScalar b,
                                        NumericalScalar & error,
@@ -135,7 +135,7 @@ NumericalPoint GaussKronrod::integrate(const NumericalMathFunction & function,
   return result;
 }
 
-NumericalPoint GaussKronrod::integrate(const NumericalMathFunction & function,
+NumericalPoint GaussKronrod::integrate(const Function & function,
                                        const NumericalScalar a,
                                        const NumericalScalar b,
                                        NumericalPoint & error,
@@ -150,7 +150,7 @@ NumericalPoint GaussKronrod::integrate(const NumericalMathFunction & function,
 }
 
 /* Compute the local GaussKronrod rule over [a, b]. */
-NumericalPoint GaussKronrod::computeRule(const NumericalMathFunction & function,
+NumericalPoint GaussKronrod::computeRule(const Function & function,
     const NumericalScalar a,
     const NumericalScalar b,
     NumericalScalar & localError) const

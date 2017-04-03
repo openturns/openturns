@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     Description formulas(outputFunction.getSize());
     formulas[0] = "-0.5*(X1-X2)*(X1-X2) - (X1+X2)/(sqrt(2)) + 3";
 
-    NumericalMathFunction EtatLimite(inputFunction, outputFunction, formulas);
+    Function EtatLimite(inputFunction, outputFunction, formulas);
 
     UnsignedInteger dim = EtatLimite.getInputDimension();
     fullprint << dim << std::endl;

@@ -144,7 +144,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
   const Mesh::IndicesCollection boundingSimplices(boundingMesh.getSimplices());
   const UnsignedInteger numSimplices = boundingSimplices.getSize();
   // Second, keep only the simplices with a majority of vertices in the level set
-  const NumericalMathFunction function(levelSet.getFunction());
+  const Function function(levelSet.getFunction());
   NumericalSample values(function(boundingVertices));
   const NumericalScalar level = levelSet.getLevel();
   Mesh::IndicesCollection goodSimplices(0);
@@ -156,7 +156,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
   // Flag for the vertices that have moved
   Indices flagMovedVertices(0);
   // Prepare the optimization problem for the projection
-  NumericalMathFunction shiftFunction;
+  Function shiftFunction;
   OptimizationProblem problem;
   if (project)
   {

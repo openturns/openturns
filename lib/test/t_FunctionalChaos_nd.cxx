@@ -148,7 +148,7 @@ int main(int argc, char *argv[])
     sob_T2[5] = sob_2[5] + sob_3[1];
     // 3rd order Total Sobol
     NumericalPoint sob_T3(sob_3);
-    NumericalMathFunction model(inputVariables, outputVariables, formula);
+    Function model(inputVariables, outputVariables, formula);
 
     // Create the input distribution
     Collection<Distribution> marginals(inputDimension);

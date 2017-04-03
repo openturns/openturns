@@ -3,9 +3,9 @@
 from __future__ import print_function
 from openturns import *
 
-function1 = NumericalMathFunction(
+function1 = Function(
     ["x0", "x1", "x2"], ["y0"], ["x0^2+2*x1+3*x2^3"])
-function2 = NumericalMathFunction(["x0", "x1", "x2"], [
+function2 = Function(["x0", "x1", "x2"], [
                                   "z0", "z1"], ["cos(x0*sin(x2+x1))", "exp(x1 - x0 * sin(x2))"])
 evaluation = AggregatedEvaluation(
     [function1, function2])

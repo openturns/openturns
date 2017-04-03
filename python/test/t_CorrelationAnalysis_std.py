@@ -11,7 +11,7 @@ try:
     sampleSize = 1000
 
     # we create an analytical function
-    analytical = ot.NumericalMathFunction(['x0', 'x1'], ['f'], ['10+3*x0+x1'])
+    analytical = ot.Function(['x0', 'x1'], ['f'], ['10+3*x0+x1'])
 
     # we create a collection of centered and reduced gaussian distributions
     aCollection = [ot.Normal()] * dimension

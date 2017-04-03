@@ -14,7 +14,7 @@ try:
 
         # We create a numerical math function
         inputVar = list(['X' + str(i) for i in range(dim)])
-        myFunction = NumericalMathFunction(inputVar, ['y'], ['0'])
+        myFunction = Function(inputVar, ['y'], ['0'])
 
         # We create a normal distribution point of dimension 1
         mean = [0.] * dim

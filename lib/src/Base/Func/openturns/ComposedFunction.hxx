@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_COMPOSEDFUNCTION_HXX
 #define OPENTURNS_COMPOSEDFUNCTION_HXX
 
-#include "openturns/NumericalMathFunctionImplementation.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/FunctionImplementation.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API ComposedFunction
-  : public NumericalMathFunctionImplementation
+  : public FunctionImplementation
 {
   CLASSNAME;
 public:
@@ -49,8 +49,8 @@ public:
                                 const Implementation & p_right);
 
   /** Composition constructor */
-  ComposedFunction(const NumericalMathFunction & left,
-                                const NumericalMathFunction & right);
+  ComposedFunction(const Function & left,
+                                const Function & right);
 
   /** Virtual constructor */
   virtual ComposedFunction * clone() const;

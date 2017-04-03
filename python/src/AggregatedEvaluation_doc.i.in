@@ -6,19 +6,19 @@ Available constructors:
 
 Parameters
 ----------
-functionsCollection : sequence of :class:`~openturns.NumericalMathFunction`
+functionsCollection : sequence of :class:`~openturns.Function`
     A collection of functions :math:`(f_i)_{i = 1, \ldots, l}` of size :math:`l`,
     such that :math:`\forall i \in \{1, \ldots, l\}`, 
     :math:`f_i : \Rset^n \rightarrow \Rset^{p_i}`.
 
 See also
 --------
-NumericalMathFunction, DatabaseEvaluation, DualLinearCombinationEvaluation,
+Function, DatabaseEvaluation, DualLinearCombinationEvaluation,
 LinearFunction
 
 Notes
 -----
-It implements a :class:`~openturns.NumericalMathFunction`
+It implements a :class:`~openturns.Function`
 :math:`f : \Rset^n \rightarrow \Rset^{p_1 + \ldots + p_l}` defined by:
 
 .. math::
@@ -32,7 +32,7 @@ It implements a :class:`~openturns.NumericalMathFunction`
 
 Returns
 -------
-functionCol : :class:`~openturns.NumericalMathFunctionCollection`
+functionCol : :class:`~openturns.FunctionCollection`
     The collection of functions defining :math:`f`."
 
 // ---------------------------------------------------------------------
@@ -42,5 +42,5 @@ functionCol : :class:`~openturns.NumericalMathFunctionCollection`
 
 Parameters
 ----------
-functionsCollection : sequence of :class:`~openturns.NumericalMathFunction`
+functionsCollection : sequence of :class:`~openturns.Function`
     The collection of functions :math:`(f_i)_{i = 1, \ldots, l}` of size :math:`l`."

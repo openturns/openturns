@@ -53,7 +53,7 @@ RootStrategy::RootStrategy()
 }
 
 /* Solve gives all the roots found applying the root strategy */
-RootStrategy::NumericalScalarCollection RootStrategy::solve(const NumericalMathFunction & function,
+RootStrategy::NumericalScalarCollection RootStrategy::solve(const Function & function,
     const NumericalScalar value)
 {
   return getImplementation()->solve(function, value);

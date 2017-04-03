@@ -11,7 +11,7 @@ try:
     try:
         # Function
         sampleSize = 20
-        levelFunction = NumericalMathFunction(
+        levelFunction = Function(
             ["x1", "x2", "x3", "x4"], ["y1"], ["x1+2*x2-3*x3+4*x4"])
         myOperator = LessOrEqual()
         threshold = 2.0

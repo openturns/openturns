@@ -38,7 +38,7 @@ ValueFunction::ValueFunction(const UnsignedInteger meshDimension)
 }
 
 /* Parameter constructor */
-ValueFunction::ValueFunction(const NumericalMathFunction & function,
+ValueFunction::ValueFunction(const Function & function,
                                  const UnsignedInteger meshDimension)
   : FieldFunctionImplementation(meshDimension)
   , p_evaluation_(function.getEvaluation())

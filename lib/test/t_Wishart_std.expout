@@ -30,7 +30,7 @@ pdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[-0.00474
 cdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[-0.0581774,-1.33806]
 Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.00315933] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[7.81683] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
-Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Wishart(V = 
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Wishart(V = 
 [[ 1 ]], nu = 3)) gradientImplementation=MinimumVolumeLevelSetGradient(Wishart(V = 
 [[ 1 ]], nu = 3)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=NumericalPoint name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Wishart(V = 
 [[ 1 ]], nu = 3)) level=3.79922

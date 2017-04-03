@@ -28,7 +28,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /* Constructor with model */
-FAST::FAST(const NumericalMathFunction & model,
+FAST::FAST(const Function & model,
            const Distribution & inputsDistribution,
            const UnsignedInteger samplingSize,
            const UnsignedInteger resamplingSize,

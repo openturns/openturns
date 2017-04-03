@@ -43,7 +43,7 @@ GeneralLinearModelResult::GeneralLinearModelResult()
 /* Constructor with parameters & Cholesky factor */
 GeneralLinearModelResult::GeneralLinearModelResult(const NumericalSample & inputSample,
     const NumericalSample & outputSample,
-    const NumericalMathFunction & metaModel,
+    const Function & metaModel,
     const NumericalPoint & residuals,
     const NumericalPoint & relativeErrors,
     const BasisCollection & basis,
@@ -72,7 +72,7 @@ GeneralLinearModelResult::GeneralLinearModelResult(const NumericalSample & input
 /* Constructor with parameters & Cholesky factor */
 GeneralLinearModelResult::GeneralLinearModelResult(const NumericalSample & inputSample,
     const NumericalSample & outputSample,
-    const NumericalMathFunction & metaModel,
+    const Function & metaModel,
     const NumericalPoint & residuals,
     const NumericalPoint & relativeErrors,
     const BasisCollection & basis,
@@ -154,12 +154,12 @@ CovarianceModel GeneralLinearModelResult::getCovarianceModel() const
   return covarianceModel_;
 }
 
-NumericalMathFunction GeneralLinearModelResult::getTransformation() const
+Function GeneralLinearModelResult::getTransformation() const
 {
   return inputTransformation_;
 }
 
-void GeneralLinearModelResult::setTransformation(const NumericalMathFunction & transformation)
+void GeneralLinearModelResult::setTransformation(const Function & transformation)
 {
   if (transformation.getInputDimension() != inputData_.getDimension())
     throw InvalidArgumentException(HERE) << "In KrigingResult::setTransformation, incompatible function dimension. Function should have input dimension = " << inputData_.getDimension() << ". Here, function's input dimension = " << transformation.getInputDimension();

@@ -56,7 +56,7 @@ CanonicalTensorEvaluation::CanonicalTensorEvaluation(const FunctionFamilyCollect
     basis_[j] = Basis(nk[j]);
     for (UnsignedInteger k = 0; k < nk[j]; ++ k)
     {
-      basis_[j][k] = NumericalMathFunction(UniVariateFunctionEvaluation(functionFamilies[j].build(k)));
+      basis_[j][k] = Function(UniVariateFunctionEvaluation(functionFamilies[j].build(k)));
     }
   }
 }

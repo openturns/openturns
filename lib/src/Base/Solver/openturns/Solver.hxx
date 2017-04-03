@@ -64,13 +64,13 @@ public:
   virtual String __repr__() const;
 
   /** Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] */
-  virtual NumericalScalar solve(const NumericalMathFunction & function,
+  virtual NumericalScalar solve(const Function & function,
                                 const NumericalScalar value,
                                 const NumericalScalar infPoint,
                                 const NumericalScalar supPoint) const;
 
   /** Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] given function(infPoint) and function(supPoint) */
-  virtual NumericalScalar solve(const NumericalMathFunction & function,
+  virtual NumericalScalar solve(const Function & function,
                                 const NumericalScalar value,
                                 const NumericalScalar infPoint,
                                 const NumericalScalar supPoint,

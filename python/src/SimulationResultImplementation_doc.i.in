@@ -104,7 +104,7 @@ with :math:`T` the iso-probabilistic transformation and the mean point
 
 .. warning::
     This notion is only available if the history mecanism of the model is
-    activated (see :meth:`~openturns.NumericalMathFunction.enableHistory`).
+    activated (see :meth:`~openturns.Function.enableHistory`).
 
 See also
 --------
@@ -128,7 +128,7 @@ Notes
 -----
 .. warning::
     This notion is only available if the history mecanism of the model is
-    activated (see :meth:`~openturns.NumericalMathFunction.enableHistory`)."
+    activated (see :meth:`~openturns.Function.enableHistory`)."
 %enddef
 %feature("docstring") OT::SimulationResultImplementation::getMeanPointInEventDomain
 OT_SimulationResult_getMeanPointInEventDomain_doc
@@ -264,7 +264,7 @@ OT_SimulationResult_setProbabilityEstimate_doc
 
 .. warning::
     It is necessary to enable the history of the model to perform this analysis
-    (see :meth:`~openturns.NumericalMathFunction.enableHistory`).
+    (see :meth:`~openturns.Function.enableHistory`).
 
 See also
 --------

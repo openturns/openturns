@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  */
 class OT_API DistributionTransformation
-  : public NumericalMathFunction
+  : public Function
 {
   CLASSNAME;
 public:
@@ -53,7 +53,7 @@ public:
   virtual String __str__(const String & offset = "") const;
 
 private:
-  static NumericalMathFunction Build(const Distribution & left,
+  static Function Build(const Distribution & left,
                                      const Distribution & right);
 
   Distribution left_;

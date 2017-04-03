@@ -27,7 +27,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Brent.hxx"
 #include "openturns/MethodBoundEvaluation.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/HermiteFactory.hxx"
 #include "openturns/UniVariatePolynomial.hxx"
 #include "openturns/SpecFunc.hxx"
@@ -180,7 +180,7 @@ NumericalPoint KernelSmoothing::computePluginBandwidth(const NumericalSample & s
   const NumericalScalar phi6 = PluginConstraint(sample, 1.0, 6).computePhi(g2);
   const NumericalScalar K = std::pow(-6.0 * std::sqrt(2.0) * phi4 / phi6, 1.0 / 7.0);
   PluginConstraint constraint(sample, K, 4);
-  const NumericalMathFunction f(bindMethod<PluginConstraint, NumericalPoint, NumericalPoint>(constraint, &PluginConstraint::computeBandwidthConstraint, 1, 1));
+  const Function f(bindMethod<PluginConstraint, NumericalPoint, NumericalPoint>(constraint, &PluginConstraint::computeBandwidthConstraint, 1, 1));
   // Find a bracketing interval
   NumericalScalar a = g1;
   NumericalScalar b = g2;

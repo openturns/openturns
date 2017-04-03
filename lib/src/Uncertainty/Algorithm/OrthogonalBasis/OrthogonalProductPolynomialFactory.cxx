@@ -24,7 +24,7 @@
 #include "openturns/Exception.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/ComposedDistribution.hxx"
-#include "openturns/NumericalMathFunctionImplementation.hxx"
+#include "openturns/FunctionImplementation.hxx"
 #include "openturns/ProductPolynomialEvaluation.hxx"
 #include "openturns/ProductPolynomialGradient.hxx"
 #include "openturns/ProductPolynomialHessian.hxx"
@@ -97,8 +97,8 @@ OrthogonalProductPolynomialFactory::PolynomialFamilyCollection OrthogonalProduct
   return coll_;
 }
 
-/* Build the NumericalMathFunction of the given index */
-NumericalMathFunction OrthogonalProductPolynomialFactory::build(const UnsignedInteger index) const
+/* Build the Function of the given index */
+Function OrthogonalProductPolynomialFactory::build(const UnsignedInteger index) const
 {
   // Compute the multi-indices using the EnumerateFunction
   Indices indices(phi_(index));
@@ -109,7 +109,7 @@ NumericalMathFunction OrthogonalProductPolynomialFactory::build(const UnsignedIn
   {
     polynomials[i] = coll_[i].build(indices[i]);
   }
-  return NumericalMathFunctionImplementation(ProductPolynomialEvaluation(polynomials).clone(), ProductPolynomialGradient(polynomials).clone(), ProductPolynomialHessian(polynomials).clone());
+  return FunctionImplementation(ProductPolynomialEvaluation(polynomials).clone(), ProductPolynomialGradient(polynomials).clone(), ProductPolynomialHessian(polynomials).clone());
 }
 
 

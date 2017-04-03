@@ -284,7 +284,7 @@ NumericalPoint MaximumLikelihoodFactory::buildParameter(const NumericalSample & 
 
   // Define NumericalMathEvaluation using the LogLikelihoodEvaluation wrapper
   LogLikelihoodEvaluation logLikelihoodWrapper(sample, distribution_, knownParameterValues_, knownParameterIndices_);
-  NumericalMathFunction logLikelihood(logLikelihoodWrapper.clone());
+  Function logLikelihood(logLikelihoodWrapper.clone());
   // Define NumericalMathGradient using the LogLikelihoodEvaluation wrapper
   LogLikelihoodGradient logLikelihoodGradientWrapper(sample, distribution_, knownParameterValues_, knownParameterIndices_);
   logLikelihood.setGradient(logLikelihoodGradientWrapper.clone());
@@ -354,7 +354,7 @@ Interval MaximumLikelihoodFactory::getOptimizationBounds() const
   return optimizationBounds_;
 }
 
-void MaximumLikelihoodFactory::setOptimizationInequalityConstraint(const NumericalMathFunction & optimizationInequalityConstraint)
+void MaximumLikelihoodFactory::setOptimizationInequalityConstraint(const Function & optimizationInequalityConstraint)
 {
   optimizationInequalityConstraint_ = optimizationInequalityConstraint;
 }

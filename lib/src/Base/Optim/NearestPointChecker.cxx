@@ -33,7 +33,7 @@ CLASSNAMEINIT(NearestPointChecker);
  *         and a level value
  */
 /* Constructor with parameters */
-NearestPointChecker::NearestPointChecker(const NumericalMathFunction & levelFunction,
+NearestPointChecker::NearestPointChecker(const Function & levelFunction,
     const ComparisonOperator & comparisonOperator,
     const NumericalScalar threshold,
     const NumericalSample & sample):
@@ -53,13 +53,13 @@ NearestPointChecker * NearestPointChecker::clone() const
 }
 
 /* LevelFunction accessor */
-NumericalMathFunction NearestPointChecker::getLevelFunction() const
+Function NearestPointChecker::getLevelFunction() const
 {
   return levelFunction_;
 }
 
 /* LevelFunction accessor */
-void NearestPointChecker::setLevelFunction(const NumericalMathFunction & levelFunction)
+void NearestPointChecker::setLevelFunction(const Function & levelFunction)
 {
   levelFunction_ = levelFunction;
 }

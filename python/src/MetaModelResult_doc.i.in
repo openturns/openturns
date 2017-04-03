@@ -6,9 +6,9 @@ Available constructor:
 
 Parameters
 ----------
-model : :class:`~openturns.NumericalMathFunction`
+model : :class:`~openturns.Function`
     Physical model approximated by a metamodel.
-metaModel : :class:`~openturns.NumericalMathFunction`
+metaModel : :class:`~openturns.Function`
     Definition of the response surface(s) of the model's output(s).
 residuals : sequence of float
     The residual values defined as follows for each output of the model:
@@ -38,7 +38,7 @@ FunctionalChaosResult"
 
 Returns
 -------
-model : :class:`~openturns.NumericalMathFunction`
+model : :class:`~openturns.Function`
     Physical model approximated by a metamodel."
 
 // ---------------------------------------------------------------------
@@ -48,7 +48,7 @@ model : :class:`~openturns.NumericalMathFunction`
 
 Parameters
 ----------
-model : :class:`~openturns.NumericalMathFunction`
+model : :class:`~openturns.Function`
     Physical model approximated by a metamodel."
 
 // ---------------------------------------------------------------------
@@ -58,7 +58,7 @@ model : :class:`~openturns.NumericalMathFunction`
 
 Returns
 -------
-metaModel : :class:`~openturns.NumericalMathFunction`
+metaModel : :class:`~openturns.Function`
     Metamodel."
 
 // ---------------------------------------------------------------------
@@ -68,7 +68,7 @@ metaModel : :class:`~openturns.NumericalMathFunction`
 
 Parameters
 ----------
-metaModel : :class:`~openturns.NumericalMathFunction`
+metaModel : :class:`~openturns.Function`
     Metamodel."
 
 // ---------------------------------------------------------------------

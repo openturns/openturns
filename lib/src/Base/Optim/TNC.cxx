@@ -392,7 +392,7 @@ void TNC::load(Advocate & adv)
 }
 
 /*
- * Wrapper of the NumericalMathFunction operator() compatible with
+ * Wrapper of the Function operator() compatible with
  * TNC signature
  */
 int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *state)

@@ -185,13 +185,13 @@ ot_check_test (IndicatorFunction_std)
 ot_check_test (AggregatedFunction_std)
 ot_check_test (DualLinearCombinationFunction_std)
 ot_check_test (LinearCombinationFunction_std)
-ot_check_test (NumericalMathFunction_operations)
+ot_check_test (Function_operations)
 ot_check_test (ParametricFunction_std)
 ot_check_test (DatabaseFunction_std)
-ot_check_test (NumericalMathFunction_history)
+ot_check_test (Function_history)
 
 if (R_base_FOUND)
-ot_check_test (NumericalMathFunction_draw)
+ot_check_test (Function_draw)
 endif ()
 ot_check_test (MonomialFunction_std)
 ot_check_test (MonomialFunctionFactory_std)
@@ -641,7 +641,7 @@ ot_check_test (TaylorExpansionMoments_std)
 ot_check_test (Path_std IGNOREOUT)
 
 # Func
-ot_check_test (NumericalMathFunction_std)
+ot_check_test (Function_std)
 ot_check_test (ComposedFunction_std)
 
 # Stat

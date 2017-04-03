@@ -14,7 +14,7 @@ prior : :class:`~openturns.Distribution`
 conditional : :class:`~openturns.Distribution`
     Required distribution to define the likelihood of the underlying Bayesian
     statistical model.
-model : :class:`~openturns.NumericalMathFunction`
+model : :class:`~openturns.Function`
     Function required to define the likelihood.
 observations : 2-d sequence of float
     Observations required to define the likelihood.
@@ -138,7 +138,7 @@ conditional : :class:`~openturns.Distribution`
 
 Returns
 -------
-model : :class:`~openturns.NumericalMathFunction`
+model : :class:`~openturns.Function`
     Model take into account in the definition of the likelihood, which
     corresponds to :math:`g`, that is the functions :math:`g^i`
     (:math:`1\leq i \leq n`) in the equation of the

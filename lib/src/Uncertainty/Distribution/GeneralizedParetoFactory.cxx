@@ -176,7 +176,7 @@ struct GeneralizedParetoFactoryParameterConstraint
 GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(const NumericalSample & sample) const
 {
   GeneralizedParetoFactoryParameterConstraint constraint(sample);
-  NumericalMathFunction f(bindMethod<GeneralizedParetoFactoryParameterConstraint, NumericalPoint, NumericalPoint>(constraint, &GeneralizedParetoFactoryParameterConstraint::computeConstraint, 1, 1));
+  Function f(bindMethod<GeneralizedParetoFactoryParameterConstraint, NumericalPoint, NumericalPoint>(constraint, &GeneralizedParetoFactoryParameterConstraint::computeConstraint, 1, 1));
   CenteredFiniteDifferenceGradient gradient(1.0e-5, f.getEvaluation());
   f.setGradient(gradient);
 

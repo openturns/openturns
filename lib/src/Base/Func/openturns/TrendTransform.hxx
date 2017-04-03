@@ -22,7 +22,7 @@
 #define OPENTURNS_TRENDTRANSOFORM_HXX
 
 #include "openturns/VertexValueFunction.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -48,7 +48,7 @@ public:
   TrendTransform();
 
   /** Parameter constructor */
-  TrendTransform(const NumericalMathFunction & function);
+  TrendTransform(const Function & function);
 
   /** Parameter constructor */
   TrendTransform(const EvaluationPointer & p_evaluation);

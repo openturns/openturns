@@ -90,7 +90,7 @@ private:
   NumericalScalar computeTotalContribution(const NumericalSample & directionSample);
 
   StandardEvent standardEvent_;
-  NumericalMathFunction standardFunction_;
+  Function standardFunction_;
   Implementation inputDistribution_;
   RootStrategy rootStrategy_;
   SamplingStrategy samplingStrategy_;

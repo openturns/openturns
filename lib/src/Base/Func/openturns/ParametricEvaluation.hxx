@@ -25,7 +25,7 @@
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/StorageManager.hxx"
 #include "openturns/Indices.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -44,7 +44,7 @@ public:
   ParametricEvaluation();
 
   /** Parameters constructor */
-  ParametricEvaluation(const NumericalMathFunction & function,
+  ParametricEvaluation(const Function & function,
                                      const Indices & set,
                                      const NumericalPoint & referencePoint,
                                      const Bool parametersSet = true);
@@ -66,7 +66,7 @@ public:
   Indices getInputPositions() const;
 
   /** Function accessor */
-  NumericalMathFunction getFunction() const;
+  Function getFunction() const;
 
   /** Dimension accessor */
   UnsignedInteger getInputDimension() const;
@@ -101,7 +101,7 @@ private:
   friend class ParametricHessian;
 
   /** The underlying function */
-  NumericalMathFunction function_;
+  Function function_;
 
   /** The position of the parameters */
   Indices parametersPositions_;

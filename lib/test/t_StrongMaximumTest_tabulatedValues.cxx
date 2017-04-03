@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
         oss << "x" << i + 1;
         inputVar[i] = oss;
       }
-      NumericalMathFunction myFunction(inputVar, Description(1, "y"), Description(1, "0"));
+      Function myFunction(inputVar, Description(1, "y"), Description(1, "0"));
 
       /* We create a normal distribution point of dimension 1 */
       NumericalPoint mean(dim, 0.0);

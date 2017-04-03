@@ -6,7 +6,7 @@ of scalar functions with vectorial weights.
 
 Parameters
 ----------
-functionCollection : sequence of :class:`~openturns.NumericalMathFunction`
+functionCollection : sequence of :class:`~openturns.Function`
     Collection of functions.
 vectorCoefficientColl : 2-d sequence of float
     Collection of vectorial weights.

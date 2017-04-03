@@ -49,7 +49,7 @@ LevelSet::LevelSet(const UnsignedInteger dimension)
 }
 
 /* Parameters constructor, simplified interface for 1D case */
-LevelSet::LevelSet(const NumericalMathFunction & function,
+LevelSet::LevelSet(const Function & function,
                    const NumericalScalar level)
   : DomainImplementation(function.getInputDimension())
   , function_(function)
@@ -75,7 +75,7 @@ LevelSet LevelSet::intersect(const LevelSet & other) const
   if (other.dimension_ != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot intersect level sets of different dimensions";
   // The intersectFunction is negative or zero iff the given point is inside of the resulting level set, ie if both functions are less or equal to their respective level
   const SymbolicFunction intersectFunction(Description::BuildDefault(2, "x"), Description(1, (OSS() << "max(x0 - " << level_ << ", x1 - " << other.level_ << ")")));
-  NumericalMathFunction::NumericalMathFunctionCollection coll(2);
+  Function::FunctionCollection coll(2);
   coll[0] = function_;
   coll[1] = other.function_;
   LevelSet result(ComposedFunction(intersectFunction, AggregatedFunction(coll)), 0.0);
@@ -101,7 +101,7 @@ LevelSet LevelSet::join(const LevelSet & other) const
   if (other.dimension_ != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot intersect level sets of different dimensions";
   // The intersectFunction is negative or zero iff the given point is inside of the resulting level set, ie if at least on function is less or equal to its level
   const SymbolicFunction intersectFunction(Description::BuildDefault(2, "x"), Description(1, (OSS() << "min(x0 - " << level_ << ", x1 - " << other.level_ << ")")));
-  NumericalMathFunction::NumericalMathFunctionCollection coll(2);
+  Function::FunctionCollection coll(2);
   coll[0] = function_;
   coll[1] = other.function_;
   LevelSet result(ComposedFunction(intersectFunction, AggregatedFunction(coll)), 0.0);
@@ -135,12 +135,12 @@ Bool LevelSet::operator == (const LevelSet & other) const
 }
 
 /* Functio accessor */
-NumericalMathFunction LevelSet::getFunction() const
+Function LevelSet::getFunction() const
 {
   return function_;
 }
 
-void LevelSet::setFunction(const NumericalMathFunction & function)
+void LevelSet::setFunction(const Function & function)
 {
   if (function.getInputDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given function has an input dimension=" << function.getInputDimension() << " incompatible with the levelSet dimension=" << dimension_;
   function_ = function;
@@ -180,7 +180,7 @@ void LevelSet::computeLowerBound() const
     Matrix m(1, dimension_);
     m(0, i) = 1.0;
     LinearFunction coordinate(NumericalPoint(dimension_), NumericalPoint(1), m);
-    OptimizationProblem problem(coordinate, equality, NumericalMathFunction(), Interval());
+    OptimizationProblem problem(coordinate, equality, Function(), Interval());
     problem.setMinimization(true);
     Cobyla solver(problem);
     solver.setStartingPoint(NumericalPoint(dimension_));
@@ -212,7 +212,7 @@ void LevelSet::computeUpperBound() const
     Matrix m(1, dimension_);
     m(0, i) = 1.0;
     LinearFunction coordinate(NumericalPoint(dimension_), NumericalPoint(1), m);
-    OptimizationProblem problem(coordinate, equality, NumericalMathFunction(), Interval());
+    OptimizationProblem problem(coordinate, equality, Function(), Interval());
     problem.setMinimization(false);
     Cobyla solver(problem);
     solver.setStartingPoint(NumericalPoint(dimension_));

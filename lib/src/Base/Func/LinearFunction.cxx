@@ -31,7 +31,7 @@ CLASSNAMEINIT(LinearFunction);
 LinearFunction::LinearFunction(const NumericalPoint & center,
     const NumericalPoint & constant,
     const Matrix & linear)
-  : NumericalMathFunction(new LinearEvaluation(center, constant, linear.transpose()),
+  : Function(new LinearEvaluation(center, constant, linear.transpose()),
                           new ConstantGradient(linear.transpose()),
                           new ConstantHessian(SymmetricTensor(center.getDimension(), constant.getDimension())))
 {

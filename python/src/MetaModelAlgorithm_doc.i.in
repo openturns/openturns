@@ -8,7 +8,7 @@ Parameters
 ----------
 distribution : :class:`~openturns.Distribution`
     Joint probability density function of the physical input vector.
-model : :class:`~openturns.NumericalMathFunction`
+model : :class:`~openturns.Function`
     Physical model to be approximated by a metamodel.
 
 Notes

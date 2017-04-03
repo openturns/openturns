@@ -59,6 +59,7 @@
  * Added getSobolAggregatedIndices() to FunctionalChaosRandomVector
  * Added computeWeight() to Mesh
  * Deprecated NumericalMathFunction ctors
+ * Deprecated NumericalMathFunction for Function
 
 === Python module ===
 

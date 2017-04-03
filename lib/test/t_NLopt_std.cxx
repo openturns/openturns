@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     Description outVar(1, "y1");
     Description formula(1, "x1+2*x2-3*x3+4*x4");
 
-    NumericalMathFunction linear(inVars, outVar, formula);
+    Function linear(inVars, outVar, formula);
 
     UnsignedInteger dim = linear.getInputDimension();
     NumericalPoint startingPoint(dim);

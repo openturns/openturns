@@ -39,7 +39,7 @@ KrigingResult::KrigingResult()
 /* Constructor with parameters & Cholesky factor */
 KrigingResult::KrigingResult(const NumericalSample & inputSample,
                              const NumericalSample & outputSample,
-                             const NumericalMathFunction & metaModel,
+                             const Function & metaModel,
                              const NumericalPoint & residuals,
                              const NumericalPoint & relativeErrors,
                              const BasisCollection & basis,
@@ -71,7 +71,7 @@ KrigingResult::KrigingResult(const NumericalSample & inputSample,
 /* Constructor with parameters & Cholesky factor */
 KrigingResult::KrigingResult(const NumericalSample & inputSample,
                              const NumericalSample & outputSample,
-                             const NumericalMathFunction & metaModel,
+                             const Function & metaModel,
                              const NumericalPoint & residuals,
                              const NumericalPoint & relativeErrors,
                              const BasisCollection & basis,
@@ -177,12 +177,12 @@ NumericalSample KrigingResult::getCovarianceCoefficients() const
   return covarianceCoefficients_;
 }
 
-NumericalMathFunction KrigingResult::getTransformation() const
+Function KrigingResult::getTransformation() const
 {
   return inputTransformation_;
 }
 
-void KrigingResult::setTransformation(const NumericalMathFunction & transformation)
+void KrigingResult::setTransformation(const Function & transformation)
 {
   if (transformation.getInputDimension() != inputSample_.getDimension())
     throw InvalidArgumentException(HERE) << "In KrigingResult::setTransformation, incompatible function dimension. Function should have input dimension = " << inputSample_.getDimension() << ". Here, function's input dimension = " << transformation.getInputDimension();

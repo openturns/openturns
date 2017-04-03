@@ -48,7 +48,7 @@ JansenSensitivityAlgorithm::JansenSensitivityAlgorithm(const NumericalSample & i
 /** Constructor with distribution / model parameters */
 JansenSensitivityAlgorithm::JansenSensitivityAlgorithm(const Distribution & distribution,
     const UnsignedInteger size,
-    const NumericalMathFunction & model,
+    const Function & model,
     const Bool computeSecondOrder)
   : SobolIndicesAlgorithmImplementation(distribution, size, model, computeSecondOrder)
 {
@@ -58,7 +58,7 @@ JansenSensitivityAlgorithm::JansenSensitivityAlgorithm(const Distribution & dist
 
 /** Constructor with experiment / model parameters */
 JansenSensitivityAlgorithm::JansenSensitivityAlgorithm(const WeightedExperiment & experiment,
-    const NumericalMathFunction & model,
+    const Function & model,
     const Bool computeSecondOrder)
   : SobolIndicesAlgorithmImplementation(experiment, model, computeSecondOrder)
 {

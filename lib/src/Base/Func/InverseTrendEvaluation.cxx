@@ -30,7 +30,7 @@ InverseTrendEvaluation::InverseTrendEvaluation()
 }
 
 /* Parameter constructor */
-InverseTrendEvaluation::InverseTrendEvaluation(const NumericalMathFunction & function)
+InverseTrendEvaluation::InverseTrendEvaluation(const Function & function)
   : EvaluationImplementation()
   , function_(function)
 {
@@ -75,7 +75,7 @@ String InverseTrendEvaluation::__str__(const String & offset) const
 }
 
 /* Accessor for the function */
-NumericalMathFunction InverseTrendEvaluation::getFunction() const
+Function InverseTrendEvaluation::getFunction() const
 {
   return function_;
 }

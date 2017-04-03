@@ -41,7 +41,7 @@ public:
   SubSquareCopula();
 
   /** Default constructor */
-  explicit SubSquareCopula(const NumericalMathFunction & phi);
+  explicit SubSquareCopula(const Function & phi);
 
 
   /** Comparison operator */
@@ -89,8 +89,8 @@ public:
   Bool hasIndependentCopula() const;
 
   /** Phi accessors */
-  void setPhi(const NumericalMathFunction & phi);
-  NumericalMathFunction getPhi() const;
+  void setPhi(const Function & phi);
+  Function getPhi() const;
 
   /** Mass accessor */
   NumericalScalar getMass();
@@ -117,7 +117,7 @@ private:
   void computeMass() const;
 
   // SubSquare copula parameter
-  NumericalMathFunction phi_;
+  Function phi_;
 
   // Flag to tell if phi is zero
   Bool nullPhi_;

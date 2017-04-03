@@ -18,11 +18,11 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_NUMERICALMATHFUNCTION_HXX
-#define OPENTURNS_NUMERICALMATHFUNCTION_HXX
+#ifndef OPENTURNS_FUNCTION_HXX
+#define OPENTURNS_FUNCTION_HXX
 
 #include "openturns/TypedInterfaceObject.hxx"
-#include "openturns/NumericalMathFunctionImplementation.hxx"
+#include "openturns/FunctionImplementation.hxx"
 #include "openturns/ProductFunction.hxx"
 #include "openturns/ComparisonOperator.hxx"
 #include "openturns/Collection.hxx"
@@ -30,7 +30,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class NumericalMathFunction
+ * @class Function
  * @brief Simulates a numerical math function
  *
  * The class that simulates a numerical math function,
@@ -38,127 +38,127 @@ BEGIN_NAMESPACE_OPENTURNS
  * to actual implementation objects that can be hot-replaced
  * during computation. Each implementation object refers to
  * the function, the gradient or the hessian.
- * @see NumericalMathFunctionImplementation
+ * @see FunctionImplementation
  */
-class OT_API NumericalMathFunction
-  : public TypedInterfaceObject<NumericalMathFunctionImplementation>
+class OT_API Function
+  : public TypedInterfaceObject<FunctionImplementation>
 {
   CLASSNAME;
 public:
 
   /* Some typedefs for easy reading */
-  typedef Collection<NumericalMathFunction>                                  NumericalMathFunctionCollection;
-  typedef NumericalMathFunctionImplementation::EvaluationPointer      EvaluationPointer;
-  typedef NumericalMathFunctionImplementation::GradientPointer        GradientPointer;
-  typedef NumericalMathFunctionImplementation::HessianPointer         HessianPointer;
+  typedef Collection<Function>                                  FunctionCollection;
+  typedef FunctionImplementation::EvaluationPointer      EvaluationPointer;
+  typedef FunctionImplementation::GradientPointer        GradientPointer;
+  typedef FunctionImplementation::HessianPointer         HessianPointer;
 
   /** Default constructor */
-  NumericalMathFunction();
+  Function();
 
-  /** Constructor from NumericalMathFunctionImplementation */
-  NumericalMathFunction(const NumericalMathFunctionImplementation & implementation);
+  /** Constructor from FunctionImplementation */
+  Function(const FunctionImplementation & implementation);
 
 #ifndef SWIG
   /** Constructor from implementation */
-  NumericalMathFunction(const Implementation & p_implementation);
+  Function(const Implementation & p_implementation);
 
   /** Constructor from implementation pointer */
-  NumericalMathFunction(NumericalMathFunctionImplementation * p_implementation);
+  Function(FunctionImplementation * p_implementation);
 #endif
 
   /** Constructor from evaluation implementation */
-  NumericalMathFunction(const EvaluationImplementation & evaluation);
+  Function(const EvaluationImplementation & evaluation);
 
   /** @brief Composition constructor
    *
-   * Builds a new %NumericalMathFunction from two others as if they were mathematicaly composed,
+   * Builds a new %Function from two others as if they were mathematicaly composed,
    *
    * Example: h = f o g
-   * - f is the left %NumericalMathFunction
-   * - g is the right %NumericalMathFunction
-   * - h is the composed %NumericalMathFunction
+   * - f is the left %Function
+   * - g is the right %Function
+   * - h is the composed %Function
    * .
    * The condition for successful composition is that the dimension of the output of g is the dimension
-   * of the input of f. The composed %NumericalMathFunction has the input dimension of g and the output dimension
+   * of the input of f. The composed %Function has the input dimension of g and the output dimension
    * of f.
-   * @param left The left %NumericalMathFunction (aka f)
-   * @param right The right %NumericalMathFunction (aka g)
+   * @param left The left %Function (aka f)
+   * @param right The right %Function (aka g)
    */
-  NumericalMathFunction(const NumericalMathFunction & left,
-                        const NumericalMathFunction & right);
+  Function(const Function & left,
+                        const Function & right);
 
   /** @brief Analytical formula constructor
    *
-   * Builds a new %NumericalMathFunction by analytical expression parsing. The expression involving the input
+   * Builds a new %Function by analytical expression parsing. The expression involving the input
    * variables (stored in \e inputVariablesNames) to produce the output variables (stored in \e outputVariablesNames)
    * are described in \e formulas.
    *
-   * The input dimension of the new %NumericalMathFunction is the size of \e inputVariablesNames and
-   * the output dimension of the new %NumericalMathFunction is the size of \e outputVariablesName.
+   * The input dimension of the new %Function is the size of \e inputVariablesNames and
+   * the output dimension of the new %Function is the size of \e outputVariablesName.
    * @param inputVariablesNames The ordered collection of input variables names
    * @param outputVariablesNames The ordered collection of output variables names
    * @param formulas The ordered collection of analytical expressions to compute the output variables
    */
-  NumericalMathFunction(const Description & inputVariablesNames,
+  Function(const Description & inputVariablesNames,
                         const Description & outputVariablesNames,
                         const Description & formulas);
 
   /** Same as the previous one, but with default names for the output variables
    * @deprecated */
-  NumericalMathFunction(const Description & inputVariablesNames,
+  Function(const Description & inputVariablesNames,
                         const Description & formulas);
 
   /** Indicator function constructor
     * @deprecated */
-  NumericalMathFunction(const NumericalMathFunction & function,
+  Function(const Function & function,
                         const ComparisonOperator & comparisonOperator,
                         const NumericalScalar threshold);
 
   /** Aggregated function constructor: the output is the aggregation of the several functions */
-  NumericalMathFunction(const NumericalMathFunctionCollection & functionCollection);
+  Function(const FunctionCollection & functionCollection);
 
   /** Linear combination function constructor
     * @deprecated */
-  NumericalMathFunction(const NumericalMathFunctionCollection & functionCollection,
+  Function(const FunctionCollection & functionCollection,
                         const NumericalPoint & coefficients);
 
   /** Dual linear combination function constructor */
-  NumericalMathFunction(const NumericalMathFunctionCollection & functionCollection,
+  Function(const FunctionCollection & functionCollection,
                         const NumericalSample & coefficients);
 
   /** Simplified analytical formula constructor 
    * @deprecated */
-  NumericalMathFunction(const String & inputVariableName,
+  Function(const String & inputVariableName,
                         const String & formula,
                         const String & outputVariableName = "outputVariable");
 
 #ifndef SWIG
   /** Constructor from evaluation */
-  explicit NumericalMathFunction(const EvaluationPointer & evaluationImplementation);
+  explicit Function(const EvaluationPointer & evaluationImplementation);
 
   /** Constructor from implementations */
-  NumericalMathFunction(const EvaluationPointer & evaluationImplementation,
+  Function(const EvaluationPointer & evaluationImplementation,
                         const GradientPointer & gradientImplenmentation,
                         const HessianPointer  & hessianImplementation);
 #endif
 
   /** Constructor from samples
     * @deprecated */
-  NumericalMathFunction(const NumericalSample & inputSample,
+  Function(const NumericalSample & inputSample,
                         const NumericalSample & outputSample);
 
   /** Constructor from field using P1 Lagrange interpolation */
-  NumericalMathFunction(const Field & field);
+  Function(const Field & field);
 
   /** Constructor by splitting the input of a function between variables and parameters
    * @deprecated */
-  NumericalMathFunction(const NumericalMathFunction & function,
+  Function(const Function & function,
                         const Indices & set,
                         const NumericalPoint & referencePoint,
                         const Bool parametersSet = true);
 
   /** Comparison operator */
-  Bool operator ==(const NumericalMathFunction & other) const;
+  Bool operator ==(const Function & other) const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -170,7 +170,7 @@ public:
 
   /** @brief Enable the internal cache
    *
-   * The cache stores previously computed output values, so calling the cache before processing the %NumericalMathFunction
+   * The cache stores previously computed output values, so calling the cache before processing the %Function
    * can save much time and avoid useless computations. However, calling the cache can eat time if the computation is
    * very short. So cache is disabled by default, except when the underlying implementation uses a wrapper.
    *
@@ -273,13 +273,13 @@ public:
 
 
   /** Multiplication of two 1D output functions with the same input dimension */
-  virtual ProductFunction operator * (const NumericalMathFunction & right) const;
+  virtual ProductFunction operator * (const Function & right) const;
 
   /** Addition of two functions with the same input and output dimensions */
-  virtual NumericalMathFunction operator + (const NumericalMathFunction & right) const;
+  virtual Function operator + (const Function & right) const;
 
   /** Soustraction of two functions with the same input and output dimensions */
-  virtual NumericalMathFunction operator - (const NumericalMathFunction & right) const;
+  virtual Function operator - (const Function & right) const;
 
   /** Operator () */
   NumericalPoint operator() (const NumericalPoint & inP) const;
@@ -336,10 +336,10 @@ public:
   Description getOutputDescription() const;
 
   /** Get the i-th marginal function */
-  NumericalMathFunction getMarginal(const UnsignedInteger i) const;
+  Function getMarginal(const UnsignedInteger i) const;
 
   /** Get the function corresponding to indices components */
-  NumericalMathFunction getMarginal(const Indices & indices) const;
+  Function getMarginal(const Indices & indices) const;
 
   /** Number of calls to the evaluation */
   UnsignedInteger getCallsNumber() const;
@@ -389,9 +389,9 @@ public:
   static Description GetValidFunctions();
   static Description GetValidOperators();
 
-}; /* class NumericalMathFunction */
+}; /* class Function */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_NUMERICALMATHFUNCTION_HXX */
+#endif /* OPENTURNS_FUNCTION_HXX */

@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class PythonEvaluation
  *
- * This class binds a Python function to an OpenTURNS' NumericalMathFunction
+ * This class binds a Python function to an OpenTURNS' Function
  */
 class PythonEvaluation
   : public EvaluationImplementation

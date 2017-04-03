@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
     }
     --covTh;
 
-    NumericalMathFunction model(inputVariables, outputVariables, formula);
+    Function model(inputVariables, outputVariables, formula);
 
     // Create the input distribution
     Collection<Distribution> marginals(dimension);

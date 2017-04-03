@@ -26,7 +26,7 @@
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
 #include "openturns/OptimizationProblem.hxx"
 #include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

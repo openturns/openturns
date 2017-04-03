@@ -42,7 +42,7 @@ DualLinearCombinationEvaluation::DualLinearCombinationEvaluation()
 
 
 /* Parameters constructor */
-DualLinearCombinationEvaluation::DualLinearCombinationEvaluation(const NumericalMathFunctionCollection & functionsCollection,
+DualLinearCombinationEvaluation::DualLinearCombinationEvaluation(const FunctionCollection & functionsCollection,
     const NumericalSample & coefficients)
   : EvaluationImplementation()
   , functionsCollection_(0)
@@ -236,12 +236,12 @@ NumericalSample DualLinearCombinationEvaluation::getCoefficients() const
 }
 
 /* Functions accessor */
-DualLinearCombinationEvaluation::NumericalMathFunctionCollection DualLinearCombinationEvaluation::getFunctionsCollection() const
+DualLinearCombinationEvaluation::FunctionCollection DualLinearCombinationEvaluation::getFunctionsCollection() const
 {
   return functionsCollection_;
 }
 
-void DualLinearCombinationEvaluation::setFunctionsCollectionAndCoefficients(const NumericalMathFunctionCollection & functionsCollection,
+void DualLinearCombinationEvaluation::setFunctionsCollectionAndCoefficients(const FunctionCollection & functionsCollection,
     const NumericalSample & coefficients)
 {
   const UnsignedInteger size = functionsCollection.getSize();
@@ -258,7 +258,7 @@ void DualLinearCombinationEvaluation::setFunctionsCollectionAndCoefficients(cons
   }
   // Keep only the non zero coefficients
   coefficients_ = NumericalSample(0, coefficients.getDimension());
-  functionsCollection_ = NumericalMathFunctionCollection(0);
+  functionsCollection_ = FunctionCollection(0);
   // First pass, extract the maximum absolute coefficient
   NumericalScalar maximumAbsoluteCoefficient = 0.0;
   NumericalPoint absoluteCoefficients(size);

@@ -48,7 +48,7 @@ MetaModelValidation::MetaModelValidation()
 /* Constructor with parameters */
 MetaModelValidation::MetaModelValidation(const NumericalSample & inputSample,
     const NumericalSample & outputSample,
-    const NumericalMathFunction & metaModel)
+    const Function & metaModel)
   : PersistentObject()
   , inputSample_(inputSample)
   , outputSample_(outputSample)

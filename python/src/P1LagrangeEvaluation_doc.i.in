@@ -12,12 +12,12 @@ field : :class:`~openturns.Field`
 
 See also
 --------
-NumericalMathFunction, AggregatedEvaluation, DualLinearCombinationEvaluation,
+Function, AggregatedEvaluation, DualLinearCombinationEvaluation,
 LinearFunction
 
 Notes
 -----
-It returns a :class:`~openturns.NumericalMathFunction` that implements the P1 Lagrange interpolation function :math:`f : \cD_N \rightarrow \Rset^p` :
+It returns a :class:`~openturns.Function` that implements the P1 Lagrange interpolation function :math:`f : \cD_N \rightarrow \Rset^p` :
 
 .. math::
     \forall \vect{x} \in \Rset^n, f(\vect{x}) = \sum_{\vect{\xi}_i\in\cV(\vect{x})}\alpha_i f(\vect{\xi}_i)

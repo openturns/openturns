@@ -38,7 +38,7 @@ LinearTaylor::LinearTaylor()
 
 /* Constructor with parameters */
 LinearTaylor::LinearTaylor(const NumericalPoint & center,
-                           const NumericalMathFunction & inputFunction)
+                           const Function & inputFunction)
   : PersistentObject(),
     center_(center),
     inputFunction_(inputFunction)
@@ -98,13 +98,13 @@ Matrix LinearTaylor::getLinear() const
 }
 
 /* Function accessor */
-NumericalMathFunction LinearTaylor::getInputFunction() const
+Function LinearTaylor::getInputFunction() const
 {
   return inputFunction_;
 }
 
 /* Response surface accessor */
-NumericalMathFunction LinearTaylor::getResponseSurface() const
+Function LinearTaylor::getResponseSurface() const
 {
   return responseSurface_;
 }

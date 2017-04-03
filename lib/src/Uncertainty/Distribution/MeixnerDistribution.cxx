@@ -26,7 +26,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/TNC.hxx"
 #include "openturns/Brent.hxx"
-#include "openturns/NumericalMathFunctionImplementation.hxx"
+#include "openturns/FunctionImplementation.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -255,11 +255,11 @@ struct MeixnerBounds
   const MeixnerDistribution & distribution_;
 };
 
-class MeixnerBoundB: public NumericalMathFunctionImplementation
+class MeixnerBoundB: public FunctionImplementation
 {
 public:
   MeixnerBoundB(const DistributionImplementation::Implementation & p_distribution)
-    : NumericalMathFunctionImplementation()
+    : FunctionImplementation()
     , p_distribution_(p_distribution)
   {
     // Nothing to do
@@ -326,11 +326,11 @@ private:
   const DistributionImplementation::Implementation p_distribution_;
 }; // class MeixnerBoundB
 
-class MeixnerBoundCD: public NumericalMathFunctionImplementation
+class MeixnerBoundCD: public FunctionImplementation
 {
 public:
   MeixnerBoundCD(const DistributionImplementation::Implementation & p_distribution)
-    : NumericalMathFunctionImplementation()
+    : FunctionImplementation()
     , p_distribution_(p_distribution)
   {
     // Nothing to do

@@ -482,7 +482,7 @@ Collection<UnsignedInteger> MarginalTransformationEvaluation::getSimplifications
 }
 
 /* expressions accessor */
-Collection<NumericalMathFunction> MarginalTransformationEvaluation::getExpressions() const
+Collection<Function> MarginalTransformationEvaluation::getExpressions() const
 {
   return expressions_;
 }

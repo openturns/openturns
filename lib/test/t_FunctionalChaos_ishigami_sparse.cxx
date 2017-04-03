@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
   outputVariables[0] = "y";
   Description formula(1);
   formula[0] = (OSS() << "sin(xi1) + (" << a << ") * (sin(xi2)) ^ 2 + (" << b << ") * xi3^4 * sin(xi1)");
-  NumericalMathFunction model(inputVariables, outputVariables, formula);
+  Function model(inputVariables, outputVariables, formula);
 
   // Create the input distribution
   Collection<Distribution> marginalX(dimension);

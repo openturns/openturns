@@ -48,7 +48,7 @@ SaltelliSensitivityAlgorithm::SaltelliSensitivityAlgorithm(const NumericalSample
 /** Constructor with distribution / model parameters */
 SaltelliSensitivityAlgorithm::SaltelliSensitivityAlgorithm(const Distribution & distribution,
     const UnsignedInteger size,
-    const NumericalMathFunction & model,
+    const Function & model,
     const Bool computeSecondOrder)
   : SobolIndicesAlgorithmImplementation(distribution, size, model, computeSecondOrder)
 {
@@ -57,7 +57,7 @@ SaltelliSensitivityAlgorithm::SaltelliSensitivityAlgorithm(const Distribution & 
 
 /** Constructor with experiment / model parameters */
 SaltelliSensitivityAlgorithm::SaltelliSensitivityAlgorithm(const WeightedExperiment & experiment,
-    const NumericalMathFunction & model,
+    const Function & model,
     const Bool computeSecondOrder)
   : SobolIndicesAlgorithmImplementation(experiment, model, computeSecondOrder)
 {

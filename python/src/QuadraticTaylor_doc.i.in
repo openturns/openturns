@@ -9,7 +9,7 @@ Parameters
 center : sequence of float
     Point :math:`\vect{x}_0` where the Taylor expansion of the function
     :math:`h` is performed.
-function : :class:`~openturns.NumericalMathFunction`
+function : :class:`~openturns.Function`
     Function :math:`h` to be approximated.
 
 Notes
@@ -116,7 +116,7 @@ tensor : :class:`~openturns.SymmetricTensor`
 
 Returns
 -------
-function : :class:`~openturns.NumericalMathFunction`
+function : :class:`~openturns.Function`
     Function :math:`h` to be approximated."
 
 // ---------------------------------------------------------------------
@@ -126,7 +126,7 @@ function : :class:`~openturns.NumericalMathFunction`
 
 Returns
 -------
-approximation : :class:`~openturns.NumericalMathFunction`
+approximation : :class:`~openturns.Function`
     An approximation of the function :math:`h` by a Quadratic Taylor expansion
     at the point :math:`\vect{x}_0`."
 

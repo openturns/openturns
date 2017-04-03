@@ -26,7 +26,7 @@
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Collection.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -52,7 +52,7 @@ class OT_API AdaptiveStrategyImplementation
 
 public:
 
-  typedef Collection<NumericalMathFunction> NumericalMathFunctionCollection;
+  typedef Collection<Function> FunctionCollection;
   /** Default constructor */
   AdaptiveStrategyImplementation();
 
@@ -83,7 +83,7 @@ public:
   OrthogonalBasis getBasis() const;
 
   /** Psi accessor */
-  NumericalMathFunctionCollection getPsi() const;
+  FunctionCollection getPsi() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -114,7 +114,7 @@ protected:
   Indices removedPsi_k_ranks_;
 
   /** The collection of vectors upon which we project the (composed) model */
-  NumericalMathFunctionCollection Psi_k_p_;
+  FunctionCollection Psi_k_p_;
 
 private:
 

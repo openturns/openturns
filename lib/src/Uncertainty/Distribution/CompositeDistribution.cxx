@@ -56,7 +56,7 @@ CompositeDistribution::CompositeDistribution()
 }
 
 /* Parameters constructor */
-CompositeDistribution::CompositeDistribution(const NumericalMathFunction & function,
+CompositeDistribution::CompositeDistribution(const Function & function,
     const Distribution & antecedent)
   : DistributionImplementation()
   , function_(function)
@@ -74,7 +74,7 @@ CompositeDistribution::CompositeDistribution(const NumericalMathFunction & funct
 }
 
 /* Parameters constructor */
-CompositeDistribution::CompositeDistribution(const NumericalMathFunction & function,
+CompositeDistribution::CompositeDistribution(const Function & function,
     const Distribution & antecedent,
     const NumericalPoint & bounds,
     const NumericalPoint & values)
@@ -114,7 +114,7 @@ CompositeDistribution::CompositeDistribution(const NumericalMathFunction & funct
 }
 
 /* Set the function and antecedent with check */
-void CompositeDistribution::setFunctionAndAntecedent(const NumericalMathFunction & function,
+void CompositeDistribution::setFunctionAndAntecedent(const Function & function,
     const Distribution & antecedent)
 {
   if (function.getInputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the function must have an input dimension equal to 1, here input dimension=" << function.getInputDimension();
@@ -149,7 +149,7 @@ void CompositeDistribution::update()
   NumericalScalar fMax = values_[0];
   const UnsignedInteger n = ResourceMap::GetAsUnsignedInteger("CompositeDistribution-StepNumber");
   const DerivativeWrapper derivativeWrapper(function_);
-  const NumericalMathFunction derivative(bindMethod<DerivativeWrapper, NumericalPoint, NumericalPoint>(derivativeWrapper, &DerivativeWrapper::computeDerivative, 1, 1));
+  const Function derivative(bindMethod<DerivativeWrapper, NumericalPoint, NumericalPoint>(derivativeWrapper, &DerivativeWrapper::computeDerivative, 1, 1));
   NumericalScalar a = xMin;
   NumericalScalar fpA = -1.0;
   try
@@ -222,12 +222,12 @@ void CompositeDistribution::update()
 }
 
 /* Function accessors */
-void CompositeDistribution::setFunction(const NumericalMathFunction & function)
+void CompositeDistribution::setFunction(const Function & function)
 {
   if (!(function == function_)) setFunctionAndAntecedent(function, antecedent_);
 }
 
-NumericalMathFunction CompositeDistribution::getFunction() const
+Function CompositeDistribution::getFunction() const
 {
   return function_;
 }
@@ -414,7 +414,7 @@ Interval CompositeDistribution::computeMinimumVolumeIntervalWithMarginalProbabil
 /** Get the minimum volume level set containing a given probability of the distribution */
 LevelSet CompositeDistribution::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const
 {
-  NumericalMathFunction minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
+  Function minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
   minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
   // As we are in 1D and as the function defining the composite distribution can have complex variations,
   // we use an improved sampling method to compute the quantile of the -logPDF(X) distribution
@@ -480,7 +480,7 @@ NumericalPoint CompositeDistribution::computeShiftedMomentContinuous(const Unsig
   // For each component
   GaussKronrod algo;
   const CompositeDistributionShiftedMomentWrapper kernel(n, shift[0], this);
-  const NumericalMathFunction integrand(bindMethod<CompositeDistributionShiftedMomentWrapper, NumericalPoint, NumericalPoint>(kernel, &CompositeDistributionShiftedMomentWrapper::computeShiftedMomentKernel, 1, 1));
+  const Function integrand(bindMethod<CompositeDistributionShiftedMomentWrapper, NumericalPoint, NumericalPoint>(kernel, &CompositeDistributionShiftedMomentWrapper::computeShiftedMomentKernel, 1, 1));
   const NumericalScalar a = antecedent_.getRange().getLowerBound()[0];
   const NumericalScalar b = antecedent_.getRange().getUpperBound()[0];
   moment[0] = algo.integrate(integrand, Interval(a, b))[0];

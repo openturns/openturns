@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
 
     // perform an evaluation
     GeneralLinearModelResult result = algo.getResult();
-    const NumericalMathFunction metaModel = result.getMetaModel();
+    const Function metaModel = result.getMetaModel();
     CovarianceModel conditionalCovariance = result.getCovarianceModel();
     const NumericalSample residual = metaModel(X) - Y;
     assert_almost_equal(residual.computeCenteredMoment(2), NumericalPoint(1, 1.06e-05), 1e-5, 1e-5);

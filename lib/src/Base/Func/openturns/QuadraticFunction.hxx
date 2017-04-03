@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_QUADRATICNUMERICALMATHFUNCTION_HXX
 #define OPENTURNS_QUADRATICNUMERICALMATHFUNCTION_HXX
 
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/SymmetricTensor.hxx"
@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * the function, the gradient or the hessian.
  */
 class OT_API QuadraticFunction
-  : public NumericalMathFunction
+  : public Function
 {
   CLASSNAME;
 public:

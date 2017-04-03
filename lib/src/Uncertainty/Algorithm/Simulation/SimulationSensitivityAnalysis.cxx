@@ -94,7 +94,7 @@ SimulationSensitivityAnalysis::SimulationSensitivityAnalysis(const Event & event
   // Inspect the event to see if it is a composite random vector based event
   if (!event.isComposite()) throw InvalidArgumentException(HERE) << "Error: cannot perform a sensitivity analysis based on the given event. Check if it is based on a composite random vector.";
   // Get the input/output sample from the model
-  NumericalMathFunction model(event.getFunction());
+  Function model(event.getFunction());
   if (!model.isHistoryEnabled()) throw InvalidArgumentException(HERE) << "Error: cannot perform analysis if the history of the underlying model is disabled.";
   inputSample_  = model.getHistoryInput().getSample();
   // Check if the samples are not empty

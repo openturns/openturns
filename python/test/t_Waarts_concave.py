@@ -12,7 +12,7 @@ try:
     # Physical model
     #
 
-    EtatLimite = NumericalMathFunction(
+    EtatLimite = Function(
         ['X1', 'X2'], ['G'], ["-0.5*(X1-X2)*(X1-X2) - (X1+X2)/(sqrt(2)) + 3"])
 
     dim = EtatLimite.getInputDimension()

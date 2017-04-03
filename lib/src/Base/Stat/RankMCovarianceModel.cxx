@@ -184,7 +184,7 @@ Basis RankMCovarianceModel::getBasis() const
   return basis_;
 }
 
-Basis::NumericalMathFunctionCollection RankMCovarianceModel::getFunctions() const
+Basis::FunctionCollection RankMCovarianceModel::getFunctions() const
 {
   return functions_;
 }
@@ -194,7 +194,7 @@ void RankMCovarianceModel::setBasis(const Basis & basis)
 {
   const UnsignedInteger size = std::max(variance_.getSize(), covariance_.getDimension());
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: there must be at least one coefficient";
-  functions_ = Basis::NumericalMathFunctionCollection(size);
+  functions_ = Basis::FunctionCollection(size);
   for (UnsignedInteger i = 0; i < size; ++i)
     functions_[i] = basis.build(i);
   scale_ = NumericalPoint(functions_[0].getInputDimension(), 1.0);

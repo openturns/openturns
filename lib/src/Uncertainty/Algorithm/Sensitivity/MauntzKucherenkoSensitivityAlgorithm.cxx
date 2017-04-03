@@ -48,7 +48,7 @@ MauntzKucherenkoSensitivityAlgorithm::MauntzKucherenkoSensitivityAlgorithm(const
 /** Constructor with distribution / model parameters */
 MauntzKucherenkoSensitivityAlgorithm::MauntzKucherenkoSensitivityAlgorithm(const Distribution & distribution,
     const UnsignedInteger size,
-    const NumericalMathFunction & model,
+    const Function & model,
     const Bool computeSecondOrder)
   : SobolIndicesAlgorithmImplementation(distribution, size, model, computeSecondOrder)
 {
@@ -57,7 +57,7 @@ MauntzKucherenkoSensitivityAlgorithm::MauntzKucherenkoSensitivityAlgorithm(const
 
 /** Constructor with experiment / model parameters */
 MauntzKucherenkoSensitivityAlgorithm::MauntzKucherenkoSensitivityAlgorithm(const WeightedExperiment & experiment,
-    const NumericalMathFunction & model,
+    const Function & model,
     const Bool computeSecondOrder)
   : SobolIndicesAlgorithmImplementation(experiment, model, computeSecondOrder)
 {

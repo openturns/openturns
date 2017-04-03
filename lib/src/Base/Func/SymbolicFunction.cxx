@@ -39,7 +39,7 @@ Description SymbolicFunction::ValidOperators_;
 
 /* Default constructor */
 SymbolicFunction::SymbolicFunction ()
-  : NumericalMathFunction()
+  : Function()
 {
 }
 
@@ -47,7 +47,7 @@ SymbolicFunction::SymbolicFunction ()
 /* Parameter constructor */
 SymbolicFunction::SymbolicFunction (const String & inputVariablesName,
                                         const String & formula)
-  : NumericalMathFunction()
+  : Function()
 {
   *this = SymbolicFunction(Description(1, inputVariablesName), Description(1, formula));
 }
@@ -56,7 +56,7 @@ SymbolicFunction::SymbolicFunction (const String & inputVariablesName,
 /* Parameter constructor */
 SymbolicFunction::SymbolicFunction (const Description & inputVariablesNames,
                                         const Description & formulas)
-  : NumericalMathFunction()
+  : Function()
 {
 #ifdef OPENTURNS_HAVE_MUPARSER
   const Description outputVariablesNames(Description::BuildDefault(formulas.getSize(), "y"));

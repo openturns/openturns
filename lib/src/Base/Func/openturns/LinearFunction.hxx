@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_LINEARFUNCTION_HXX
 #define OPENTURNS_LINEARFUNCTION_HXX
 
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/Matrix.hxx"
 
@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * the function, the gradient or the hessian.
  */
 class OT_API LinearFunction
-  : public NumericalMathFunction
+  : public Function
 {
   CLASSNAME;
 public:

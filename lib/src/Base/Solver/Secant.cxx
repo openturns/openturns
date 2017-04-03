@@ -68,7 +68,7 @@ String Secant::__repr__() const
    C     DEC., 1984, P. 473.
    see http://www.netlib.org/toms/626
 */
-NumericalScalar Secant::solve(const NumericalMathFunction & function,
+NumericalScalar Secant::solve(const Function & function,
                               const NumericalScalar value,
                               const NumericalScalar infPoint,
                               const NumericalScalar supPoint,

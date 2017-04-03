@@ -101,7 +101,7 @@ void ConditionedNormalProcess::initialize()
   covarianceCholeskyFactor_ = covarianceMatrix.computeCholesky();
   // Build the trend function
   LOGINFO(OSS(false) << "Build of the trend function");
-  const NumericalMathFunction krigingEvaluation(krigingResult_.getMetaModel());
+  const Function krigingEvaluation(krigingResult_.getMetaModel());
   // Evaluation of the trend part (evaluation once)
   trendEvaluationMesh_ = krigingEvaluation(mesh_.getVertices());
   // Set the trend function

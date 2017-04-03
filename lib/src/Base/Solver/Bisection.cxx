@@ -60,7 +60,7 @@ String Bisection::__repr__() const
 }
 
 /* Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] given function(infPoint) and function(supPoint) with the bisection method */
-NumericalScalar Bisection::solve(const NumericalMathFunction & function,
+NumericalScalar Bisection::solve(const Function & function,
                                  const NumericalScalar value,
                                  const NumericalScalar infPoint,
                                  const NumericalScalar supPoint,

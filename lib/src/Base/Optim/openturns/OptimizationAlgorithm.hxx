@@ -23,7 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/TypedInterfaceObject.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

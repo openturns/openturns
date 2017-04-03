@@ -40,7 +40,7 @@ class OT_API ProjectionStrategy
   CLASSNAME;
 public:
 
-  typedef Collection<NumericalMathFunction> NumericalMathFunctionCollection;
+  typedef Collection<Function> FunctionCollection;
 
   /** Default constructor */
   ProjectionStrategy();
@@ -76,7 +76,7 @@ public:
   virtual WeightedExperiment getExperiment() const;
 
   /** Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
-  void computeCoefficients(const NumericalMathFunction & function,
+  void computeCoefficients(const Function & function,
                            const Basis & basis,
                            const Indices & indices,
                            const Indices & addedRanks,

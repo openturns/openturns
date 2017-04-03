@@ -9,7 +9,7 @@
 namespace OT {
 
   template <>
-  struct traitsPythonType< OT::NumericalMathFunction >
+  struct traitsPythonType< OT::Function >
   {
     typedef _PyObject_ Type;
   };
@@ -17,17 +17,17 @@ namespace OT {
   template <>
   inline
   bool
-  canConvert< _PyObject_, OT::NumericalMathFunction >(PyObject * pyObj)
+  canConvert< _PyObject_, OT::Function >(PyObject * pyObj)
   {
     void * ptr = 0;
-    if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__NumericalMathFunction, 0))) {
-      OT::NumericalMathFunction * p_nmf = reinterpret_cast< OT::NumericalMathFunction * >(ptr);
+    if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__Function, 0))) {
+      OT::Function * p_nmf = reinterpret_cast< OT::Function * >(ptr);
       return p_nmf != NULL;
-    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__NumericalMathFunctionImplementation, 0))) {
-      OT::NumericalMathFunctionImplementation * p_impl = reinterpret_cast< OT::NumericalMathFunctionImplementation * >(ptr);
+    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__FunctionImplementation, 0))) {
+      OT::FunctionImplementation * p_impl = reinterpret_cast< OT::FunctionImplementation * >(ptr);
       return p_impl != NULL;
-    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIG_TypeQuery("OT::Pointer<OT::NumericalMathFunctionImplementation> *"), 0))) {
-      OT::Pointer<OT::NumericalMathFunctionImplementation> * p_impl = reinterpret_cast< OT::Pointer<OT::NumericalMathFunctionImplementation> * >(ptr);
+    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIG_TypeQuery("OT::Pointer<OT::FunctionImplementation> *"), 0))) {
+      OT::Pointer<OT::FunctionImplementation> * p_impl = reinterpret_cast< OT::Pointer<OT::FunctionImplementation> * >(ptr);
       return p_impl != NULL && !p_impl->isNull();
     } else {
       return PyCallable_Check(pyObj);
@@ -37,23 +37,23 @@ namespace OT {
 
   template <>
   inline
-  OT::NumericalMathFunction
-  convert< _PyObject_, OT::NumericalMathFunction >(PyObject * pyObj)
+  OT::Function
+  convert< _PyObject_, OT::Function >(PyObject * pyObj)
   {
     void * ptr = 0;
-    if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__NumericalMathFunction, 0))) {
-      OT::NumericalMathFunction * p_nmf = reinterpret_cast< OT::NumericalMathFunction * >(ptr);
+    if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__Function, 0))) {
+      OT::Function * p_nmf = reinterpret_cast< OT::Function * >(ptr);
       return *p_nmf;
-    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__NumericalMathFunctionImplementation, 0))) {
-      OT::NumericalMathFunctionImplementation * p_impl = reinterpret_cast< OT::NumericalMathFunctionImplementation * >(ptr);
+    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__FunctionImplementation, 0))) {
+      OT::FunctionImplementation * p_impl = reinterpret_cast< OT::FunctionImplementation * >(ptr);
       return *p_impl;
-    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIG_TypeQuery("OT::Pointer<OT::NumericalMathFunctionImplementation> *"), 0))) {
-      OT::Pointer<OT::NumericalMathFunctionImplementation> * p_impl = reinterpret_cast< OT::Pointer<OT::NumericalMathFunctionImplementation> * >(ptr);
+    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIG_TypeQuery("OT::Pointer<OT::FunctionImplementation> *"), 0))) {
+      OT::Pointer<OT::FunctionImplementation> * p_impl = reinterpret_cast< OT::Pointer<OT::FunctionImplementation> * >(ptr);
       return **p_impl;
     } else if (!PyCallable_Check(pyObj)) {
-      throw OT::InvalidArgumentException(HERE) << "Argument is not a callable object (function or class) - can not be convertible to a NumericalMathFunction";
+      throw OT::InvalidArgumentException(HERE) << "Argument is not a callable object (function or class) - can not be convertible to a Function";
     }
-    OT::NumericalMathFunction pythonFunction(new OT::NumericalMathFunctionImplementation(new OT::PythonEvaluation(pyObj)));
+    OT::Function pythonFunction(new OT::FunctionImplementation(new OT::PythonEvaluation(pyObj)));
     if (PyObject_HasAttrString( pyObj, const_cast<char *>("_gradient")))
     {
       pythonFunction.setGradient(new OT::PythonGradient(pyObj));

@@ -25,7 +25,7 @@
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/NumericalSample.hxx"
 #include "openturns/Indices.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/CovarianceMatrix.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/ComparisonOperator.hxx"
@@ -93,7 +93,7 @@ public:
   virtual Antecedent getAntecedent() const;
 
   /** Fake method due to pbs with dynamic_cast and Pointer */
-  virtual NumericalMathFunction getFunction() const;
+  virtual Function getFunction() const;
 
   /** Fake method due to pbs with dynamic_cast and Pointer */
   virtual Distribution getDistribution() const;

@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
     {
       QuadraticLeastSquares myLeastSquares(data, myFunc);
       myLeastSquares.run();
-      NumericalMathFunction responseSurface(myLeastSquares.getResponseSurface());
+      Function responseSurface(myLeastSquares.getResponseSurface());
       fullprint << "myLeastSquares=" << myLeastSquares << std::endl;
       fullprint << "responseSurface=" << responseSurface << std::endl;
       NumericalPoint in(myFunc.getInputDimension(), 0.2);
@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
       NumericalSample dataOut(myFunc(data));
       QuadraticLeastSquares myLeastSquares(data, dataOut);
       myLeastSquares.run();
-      NumericalMathFunction responseSurface(myLeastSquares.getResponseSurface());
+      Function responseSurface(myLeastSquares.getResponseSurface());
       fullprint << "myLeastSquares=" << myLeastSquares << std::endl;
       fullprint << "responseSurface=" << responseSurface << std::endl;
       NumericalPoint in(myFunc.getInputDimension(), 0.2);

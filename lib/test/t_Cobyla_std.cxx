@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     input[1] = "x2";
     input[2] = "x3";
     input[3] = "x4";
-    NumericalMathFunction levelFunction(input, Description(1, "y1"), Description(1, "x1+2*x2-3*x3+4*x4"));
+    Function levelFunction(input, Description(1, "y1"), Description(1, "x1+2*x2-3*x3+4*x4"));
     NumericalPoint startingPoint(4, 0.0);
     Cobyla myAlgorithm(OptimizationProblem(levelFunction, 3.0));
     myAlgorithm.setStartingPoint(startingPoint);
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
     input[1] = "x2";
     input[2] = "x3";
     input[3] = "x4";
-    NumericalMathFunction levelFunction(input, Description(1, "y1"), Description(1, "x1*cos(x1)+2*x2*x3-3*x3+4*x3*x4"));
+    Function levelFunction(input, Description(1, "y1"), Description(1, "x1*cos(x1)+2*x2*x3-3*x3+4*x3*x4"));
     NumericalPoint startingPoint(4, 0.0);
     Cobyla myAlgorithm(OptimizationProblem(levelFunction, 3.0));
     myAlgorithm.setStartingPoint(startingPoint);

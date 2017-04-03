@@ -358,7 +358,7 @@ LevelSet EllipticalDistribution::computeMinimumVolumeLevelSetWithThreshold(const
   const NumericalScalar xMax = standard.getRange().getUpperBound().norm();
   Brent solver(quantileEpsilon_, pdfEpsilon_, pdfEpsilon_, quantileIterations_);
   point[0] = solver.solve(radialWrapper, prob, 0.0, xMax, 0.0, 1.0);
-  NumericalMathFunction minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
+  Function minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
   minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
   const NumericalScalar logThreshold = standard.computeLogPDF(point);
   threshold = std::exp(logThreshold);

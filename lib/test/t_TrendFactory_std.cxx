@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     outVar[0] = "y";
     Description formula(1);
 
-    Collection<NumericalMathFunction> functions(3);
+    Collection<Function> functions(3);
 
     formula[0] = "1";
     functions[0] = SymbolicFunction(inVar, formula);

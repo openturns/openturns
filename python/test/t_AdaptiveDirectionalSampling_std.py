@@ -5,7 +5,7 @@ import openturns as ot
 
 # create a function
 dim = 4
-function = ot.NumericalMathFunction(
+function = ot.Function(
     ['E', 'F', 'L', 'I'], ['d'], ['F*L^3/(3.*E*I)'])
 
 # create a distribution

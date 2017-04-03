@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     Description formulas(outputFunction.getSize());
     formulas[0] = "2.5 + 0.1*(X1-X2)^2.0 - (X1+X2)/sqrt(2.0)";
 
-    NumericalMathFunction EtatLimite(inputFunction, outputFunction, formulas);
+    Function EtatLimite(inputFunction, outputFunction, formulas);
 
     UnsignedInteger dim = EtatLimite.getInputDimension();
     fullprint << dim << std::endl;

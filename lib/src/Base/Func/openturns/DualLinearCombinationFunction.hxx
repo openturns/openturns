@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_DUALLINEARCOMBINATIONFUNCTION_HXX
 #define OPENTURNS_DUALLINEARCOMBINATIONFUNCTION_HXX
 
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/SymmetricTensor.hxx"
@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  */
 class OT_API DualLinearCombinationFunction
-  : public NumericalMathFunction
+  : public Function
 {
   CLASSNAME;
 public:
@@ -42,7 +42,7 @@ public:
   DualLinearCombinationFunction();
 
   /** Parameter constructor */
-  DualLinearCombinationFunction(const NumericalMathFunctionCollection & functionCollection,
+  DualLinearCombinationFunction(const FunctionCollection & functionCollection,
                                 const NumericalSample & coefficients);
 
   /** Comparison operator */

@@ -8,7 +8,7 @@ The function is the product function :math:`f\times g`.
 
 Parameters
 ----------
-f,g : two :class:`~openturns.NumericalMathFunctionImplementation`
+f,g : two :class:`~openturns.FunctionImplementation`
     The functions to multiply.
 
 Examples

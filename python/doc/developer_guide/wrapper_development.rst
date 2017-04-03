@@ -29,7 +29,7 @@ These two methods will be described in the following sections.
 PythonFunction
 ~~~~~~~~~~~~~~
 
-A PythonFunction is a NumericalMathFunction where the ``_exec`` or
+A PythonFunction is a Function where the ``_exec`` or
 ``_exec_sample`` function are launched in a Python interpreter. Here is
 an example of how to implement it:
 
@@ -436,7 +436,7 @@ Optimizations of any parts of this benchmark are welcome.
 
    ::
 
-        model = ot.NumericalMathFunction( ('x0','x1'), ('y',),
+        model = ot.Function( ('x0','x1'), ('y',),
         ('cos((x0+1) ^ 2) - sin(x1)',) )
 
 

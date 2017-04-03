@@ -26,7 +26,7 @@
 #include "openturns/NumericalSample.hxx"
 #include "openturns/NumericalPointWithDescription.hxx"
 #include "openturns/ComparisonOperator.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/Graph.hxx"
 #include "openturns/Event.hxx"
 #include "openturns/SpecFunc.hxx"
@@ -45,7 +45,7 @@ class OT_API SimulationSensitivityAnalysis
   CLASSNAME;
 public:
 
-  typedef NumericalMathFunction IsoProbabilisticTransformation;
+  typedef Function IsoProbabilisticTransformation;
 
   /** Default constructor */
   SimulationSensitivityAnalysis();

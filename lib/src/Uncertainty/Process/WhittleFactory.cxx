@@ -239,13 +239,13 @@ NumericalPoint WhittleFactory::computeLogLikelihoodInequalityConstraint(const Nu
 }
 
 /* Compute the log-likelihood function accessor */
-NumericalMathFunction WhittleFactory::getLogLikelihoodFunction() const
+Function WhittleFactory::getLogLikelihoodFunction() const
 {
   return bindMethod <WhittleFactory, NumericalScalar, NumericalPoint> ( *this, &WhittleFactory::computeLogLikelihood, currentP_ + currentQ_ , 1);
 }
 
 
-NumericalMathFunction WhittleFactory::getLogLikelihoodInequalityConstraint() const
+Function WhittleFactory::getLogLikelihoodInequalityConstraint() const
 {
   return bindMethod <WhittleFactory, NumericalPoint, NumericalPoint> ( *this, &WhittleFactory::computeLogLikelihoodInequalityConstraint, currentP_ + currentQ_, nbInequalityConstraint_);
 }

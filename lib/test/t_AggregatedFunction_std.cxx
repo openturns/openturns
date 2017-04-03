@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class NumericalMathFunction for aggregation
+ *  @brief The test file of class Function for aggregation
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     Description formula(2);
     formula[0] = "x1^3 * sin(x2 + 2.5 * x3) - (x1 + x2)^2 / (1.0 + x3^2)";
     formula[1] = "x1^1 * sin(x3 + 2.5 * x1) - (x2 + x3)^2 / (1.0 + x1^2)";
-    AggregatedEvaluation::NumericalMathFunctionCollection functions(2);
+    AggregatedEvaluation::FunctionCollection functions(2);
     functions[0] = SymbolicFunction(inVar, formula);
     formula[0] = "exp(-x1 * x2 + x3) / cos(1.0 + x2 * x3 - x1)";
     formula[0] = "exp(-x2 * x3 + x1) / cos(1.0 + x3 * x1 - x2)";

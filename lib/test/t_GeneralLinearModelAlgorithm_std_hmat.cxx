@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     foutput[0] = "f0";
     Description formulas(1);
     formulas[0] = "x0";
-    NumericalMathFunction model(input, foutput, formulas);
+    Function model(input, foutput, formulas);
 
     NumericalSample X(sampleSize, spatialDimension);
     NumericalSample X2(sampleSize, spatialDimension);
@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
 
     // perform an evaluation
     GeneralLinearModelResult result = algo.getResult();
-    NumericalMathFunction metaModel = result.getMetaModel();
+    Function metaModel = result.getMetaModel();
     CovarianceModel conditionalCovariance = result.getCovarianceModel();
     const NumericalSample residual = metaModel(X) - Y;
     assert_almost_equal(residual.computeCenteredMoment(2), NumericalPoint(1, 0.00013144), 1e-5, 1e-5);

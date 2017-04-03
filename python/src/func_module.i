@@ -59,9 +59,9 @@
 %include ProductEvaluation.i
 %include ProductGradient.i
 %include ProductHessian.i
-%include NumericalMathFunctionImplementation.i
+%include FunctionImplementation.i
 %include ProductFunction.i
-%include NumericalMathFunction.i
+%include Function.i
 %include AggregatedFunction.i
 %include SymbolicFunction.i
 %include LinearCombinationFunction.i

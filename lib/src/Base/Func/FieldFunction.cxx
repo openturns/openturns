@@ -32,8 +32,8 @@ FieldFunction::FieldFunction(const UnsignedInteger spatialDimension)
   // Nothing to do
 }
 
-/* Constructor from NumericalMathFunction */
-FieldFunction::FieldFunction(const NumericalMathFunction & function,
+/* Constructor from Function */
+FieldFunction::FieldFunction(const Function & function,
                                      const UnsignedInteger spatialDimension)
   : TypedInterfaceObject<FieldFunctionImplementation>(ValueFunction(function, spatialDimension).clone())
 {

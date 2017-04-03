@@ -110,7 +110,7 @@ NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const Numerica
   }
   // Build the constraint
   NegativeBinomialFactoryParameterConstraint constraint(sample, mean);
-  const NumericalMathFunction f(bindMethod<NegativeBinomialFactoryParameterConstraint, NumericalPoint, NumericalPoint>(constraint, &NegativeBinomialFactoryParameterConstraint::computeConstraint, 1, 1));
+  const Function f(bindMethod<NegativeBinomialFactoryParameterConstraint, NumericalPoint, NumericalPoint>(constraint, &NegativeBinomialFactoryParameterConstraint::computeConstraint, 1, 1));
   // Find a bracketing interval using the moment estimate
   NumericalScalar a = 1.0;
   NumericalScalar b = 2.0;

@@ -52,7 +52,7 @@ GaussianProcess::GaussianProcess()
 #ifdef OPENTURNS_HAVE_MUPARSER
   trend_ = TrendTransform(SymbolicFunction(Description::BuildDefault(covarianceModel_.getSpatialDimension(), "x"), Description(getDimension(), "0.0")));
 #else
-  trend_ = TrendTransform(NumericalMathFunction(NumericalSample(1, covarianceModel_.getSpatialDimension()), NumericalSample(1, getDimension())));
+  trend_ = TrendTransform(Function(NumericalSample(1, covarianceModel_.getSpatialDimension()), NumericalSample(1, getDimension())));
 #endif
   setDescription(trend_.getOutputDescription());
 }
@@ -120,7 +120,7 @@ GaussianProcess::GaussianProcess(const SecondOrderModel & model,
 #ifdef OPENTURNS_HAVE_MUPARSER
   trend_ = TrendTransform(SymbolicFunction(Description::BuildDefault(getSpatialDimension(), "x"), Description(getDimension(), "0.0")));
 #else
-  trend_ = TrendTransform(NumericalMathFunction(NumericalSample(1, getSpatialDimension()), NumericalSample(1, getDimension())));
+  trend_ = TrendTransform(Function(NumericalSample(1, getSpatialDimension()), NumericalSample(1, getDimension())));
 #endif
   setDescription(trend_.getOutputDescription());
 }
@@ -144,7 +144,7 @@ GaussianProcess::GaussianProcess(const CovarianceModel & covarianceModel,
 #ifdef OPENTURNS_HAVE_MUPARSER
   trend_ = TrendTransform(SymbolicFunction(Description::BuildDefault(getSpatialDimension(), "x"), Description(getDimension(), "0.0")));
 #else
-  trend_ = TrendTransform(NumericalMathFunction(NumericalSample(1, getSpatialDimension()), NumericalSample(1, getDimension())));
+  trend_ = TrendTransform(Function(NumericalSample(1, getSpatialDimension()), NumericalSample(1, getDimension())));
 #endif
   setDescription(trend_.getOutputDescription());
 }

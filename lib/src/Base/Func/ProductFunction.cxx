@@ -35,7 +35,7 @@ static const Factory<ProductFunction> Factory_ProductFunction;
 /* Composition constructor */
 ProductFunction::ProductFunction(const Implementation & p_left,
     const Implementation & p_right)
-  : NumericalMathFunctionImplementation(new ProductEvaluation(p_left->getEvaluation(), p_right->getEvaluation()),
+  : FunctionImplementation(new ProductEvaluation(p_left->getEvaluation(), p_right->getEvaluation()),
                                         new NoGradient(),
                                         new NoHessian()),
   p_leftFunction_(p_left),
@@ -135,7 +135,7 @@ Matrix ProductFunction::parameterGradient(const NumericalPoint & inP) const
 /* Method save() stores the object through the StorageManager */
 void ProductFunction::save(Advocate & adv) const
 {
-  NumericalMathFunctionImplementation::save(adv);
+  FunctionImplementation::save(adv);
   adv.saveAttribute( "leftFunction_", *p_leftFunction_ );
   adv.saveAttribute( "rightFunction_", *p_rightFunction_ );
 }
@@ -143,8 +143,8 @@ void ProductFunction::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void ProductFunction::load(Advocate & adv)
 {
-  TypedInterfaceObject<NumericalMathFunctionImplementation> functionValue;
-  NumericalMathFunctionImplementation::load(adv);
+  TypedInterfaceObject<FunctionImplementation> functionValue;
+  FunctionImplementation::load(adv);
   adv.loadAttribute( "leftFunction_", functionValue );
   p_leftFunction_ = functionValue.getImplementation();
   adv.loadAttribute( "rightFunction_", functionValue );

@@ -52,7 +52,7 @@ BayesDistribution::BayesDistribution()
 /* Parameters constructor */
 BayesDistribution::BayesDistribution(const Distribution & conditionedDistribution,
                                      const Distribution & conditioningDistribution,
-                                     const NumericalMathFunction & linkFunction)
+                                     const Function & linkFunction)
   : ContinuousDistribution()
   , conditionedDistribution_(conditionedDistribution)
   , conditioningDistribution_(conditioningDistribution)
@@ -192,12 +192,12 @@ Distribution BayesDistribution::getConditioningDistribution() const
 }
 
 /* Link function accessor */
-void BayesDistribution::setLinkFunction(const NumericalMathFunction & linkFunction)
+void BayesDistribution::setLinkFunction(const Function & linkFunction)
 {
   if (!(linkFunction == linkFunction_)) setConditionedAndConditioningDistributionsAndLinkFunction(conditionedDistribution_, conditioningDistribution_, linkFunction);
 }
 
-NumericalMathFunction BayesDistribution::getLinkFunction() const
+Function BayesDistribution::getLinkFunction() const
 {
   return linkFunction_;
 }
@@ -205,7 +205,7 @@ NumericalMathFunction BayesDistribution::getLinkFunction() const
 /* Method to set simultaneously the conditioning distribution, the conditioned distribution and the link function */
 void BayesDistribution::setConditionedAndConditioningDistributionsAndLinkFunction(const Distribution & conditionedDistribution,
     const Distribution & conditioningDistribution,
-    const NumericalMathFunction & linkFunction)
+    const Function & linkFunction)
 {
   const UnsignedInteger conditioningDimension = conditioningDistribution.getDimension();
   const UnsignedInteger conditionedParametersDimension = conditionedDistribution.getParameterDimension();

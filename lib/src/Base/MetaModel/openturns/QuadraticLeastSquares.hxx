@@ -25,7 +25,7 @@
 #include "openturns/PersistentObject.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/NumericalSample.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -45,7 +45,7 @@ public:
 
   /** Constructor with parameters */
   QuadraticLeastSquares(const NumericalSample & dataIn,
-                        const NumericalMathFunction & inputFunction);
+                        const Function & inputFunction);
 
   /** Constructor with parameters */
   QuadraticLeastSquares(const NumericalSample & dataIn,
@@ -71,10 +71,10 @@ public:
   SymmetricTensor getQuadratic() const;
 
   /** Input function accessor */
-  NumericalMathFunction getInputFunction() const;
+  Function getInputFunction() const;
 
   /** Response surface accessor */
-  NumericalMathFunction getResponseSurface() const;
+  Function getResponseSurface() const;
 
   /** DataIn accessor */
   NumericalSample getDataIn() const;
@@ -88,8 +88,8 @@ protected:
 private:
   NumericalSample dataIn_;
   NumericalSample dataOut_;
-  NumericalMathFunction inputFunction_;
-  NumericalMathFunction responseSurface_;
+  Function inputFunction_;
+  Function responseSurface_;
   NumericalPoint constant_;
   Matrix linear_;
   SymmetricTensor quadratic_;

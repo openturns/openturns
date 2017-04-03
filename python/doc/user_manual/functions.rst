@@ -11,7 +11,7 @@ General mathematical functions
     :toctree: _generated/
     :template: class.rst_t
 
-    NumericalMathFunction
+    Function
     SymbolicFunction
     LinearFunction
     QuadraticFunction

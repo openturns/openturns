@@ -170,7 +170,7 @@ NumericalScalar RatioDistribution::computePDFQ1(const NumericalScalar x,
   const NumericalScalar bd = b * d;
   GaussKronrod algo;
   const PDFKernelWrapper pdfKernelWrapper(left_, right_, x);
-  const NumericalMathFunction pdfKernel(bindMethod<PDFKernelWrapper, NumericalPoint, NumericalPoint>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
+  const Function pdfKernel(bindMethod<PDFKernelWrapper, NumericalPoint, NumericalPoint>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
   if (c == 0.0)
   {
     if ((x >= 0.0) && (x < ad)) return algo.integrate(pdfKernel, Interval(a, b), pdfEpsilon_)[0];
@@ -203,7 +203,7 @@ NumericalScalar RatioDistribution::computePDFQ2(const NumericalScalar x,
   const NumericalScalar bd = b * d;
   GaussKronrod algo;
   const PDFKernelWrapper pdfKernelWrapper(left_, right_, x);
-  const NumericalMathFunction pdfKernel(bindMethod<PDFKernelWrapper, NumericalPoint, NumericalPoint>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
+  const Function pdfKernel(bindMethod<PDFKernelWrapper, NumericalPoint, NumericalPoint>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
   if (c == 0.0)
   {
     if ((x >= ad) && (x < bd)) return algo.integrate(pdfKernel, Interval(a, x / d), pdfEpsilon_)[0];
@@ -236,7 +236,7 @@ NumericalScalar RatioDistribution::computePDFQ3(const NumericalScalar x,
   const NumericalScalar bd = b * d;
   GaussKronrod algo;
   const PDFKernelWrapper pdfKernelWrapper(left_, right_, x);
-  const NumericalMathFunction pdfKernel(bindMethod<PDFKernelWrapper, NumericalPoint, NumericalPoint>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
+  const Function pdfKernel(bindMethod<PDFKernelWrapper, NumericalPoint, NumericalPoint>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
   if (d == 0.0)
   {
     if ((x >= bc) && (x < ac)) return algo.integrate(pdfKernel, Interval(a, x / c), pdfEpsilon_)[0];
@@ -269,7 +269,7 @@ NumericalScalar RatioDistribution::computePDFQ4(const NumericalScalar x,
   const NumericalScalar bd = b * d;
   GaussKronrod algo;
   const PDFKernelWrapper pdfKernelWrapper(left_, right_, x);
-  const NumericalMathFunction pdfKernel(bindMethod<PDFKernelWrapper, NumericalPoint, NumericalPoint>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
+  const Function pdfKernel(bindMethod<PDFKernelWrapper, NumericalPoint, NumericalPoint>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
   if (d == 0.0)
   {
     if ((x >= ac) && (x <= 0.0)) return algo.integrate(pdfKernel, Interval(a, b), pdfEpsilon_)[0];
@@ -303,7 +303,7 @@ NumericalComplex RatioDistribution::computeCharacteristicFunction(const Numerica
   const NumericalScalar bLeft = left_.getRange().getUpperBound()[0];
   GaussKronrod algo;
   const CFKernelWrapper cfKernelWrapper(left_, right_, x);
-  const NumericalMathFunction cfKernel(bindMethod<CFKernelWrapper, NumericalPoint, NumericalPoint>(cfKernelWrapper, &CFKernelWrapper::eval, 1, 2));
+  const Function cfKernel(bindMethod<CFKernelWrapper, NumericalPoint, NumericalPoint>(cfKernelWrapper, &CFKernelWrapper::eval, 1, 2));
   NumericalScalar negativeError = 0.0;
   const NumericalPoint negativePart(algo.integrate(cfKernel, Interval(aLeft, muLeft), negativeError));
   NumericalScalar positiveError = 0.0;

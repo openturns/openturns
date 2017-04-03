@@ -14,16 +14,16 @@ outVar = Description(1)
 outVar[0] = "y"
 formula = Description(1)
 formula[0] = "x1^3+1.5*x2^3-x1*x2"
-model = NumericalMathFunction(inVar, outVar, formula)
+model = Function(inVar, outVar, formula)
 coll = []
 formula[0] = "x1"
-coll.append(NumericalMathFunction(inVar, outVar, formula))
+coll.append(Function(inVar, outVar, formula))
 formula[0] = "x2"
-coll.append(NumericalMathFunction(inVar, outVar, formula))
+coll.append(Function(inVar, outVar, formula))
 formula[0] = "x1^2"
-coll.append(NumericalMathFunction(inVar, outVar, formula))
+coll.append(Function(inVar, outVar, formula))
 formula[0] = "x2^2"
-coll.append(NumericalMathFunction(inVar, outVar, formula))
+coll.append(Function(inVar, outVar, formula))
 basis = Basis(coll)
 indices = list(range(len(coll)))
 size = 5

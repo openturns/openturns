@@ -59,7 +59,7 @@ NumericalPoint TrapezoidalFactory::computeLogLikelihoodInequalityConstraint(cons
 }
 
 /* Compute the log-likelihood constraint accessor */
-NumericalMathFunction TrapezoidalFactory::getLogLikelihoodInequalityConstraint() const
+Function TrapezoidalFactory::getLogLikelihoodInequalityConstraint() const
 {
   return bindMethod <TrapezoidalFactory, NumericalPoint, NumericalPoint> (*this, &TrapezoidalFactory::computeLogLikelihoodInequalityConstraint, 4, 3);
 }

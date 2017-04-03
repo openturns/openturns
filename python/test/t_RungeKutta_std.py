@@ -6,7 +6,7 @@ import math as m
 
 ot.TESTPREAMBLE()
 
-f = ot.NumericalMathFunction(['t', 'y0', 'y1'], ['dy0', 'dy1'], ['t - y0', 'y1 + t^2'])
+f = ot.Function(['t', 'y0', 'y1'], ['dy0', 'dy1'], ['t - y0', 'y1 + t^2'])
 phi = ot.VertexValueFunction(f)
 solver = ot.RungeKutta(phi)
 print('ODE solver=', solver)

@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
   NumericalSample x( xuniform.getSample(size) );
   Uniform yuniform(1.9, 2.1);
   NumericalSample y( yuniform.getSample(size) );
-  NumericalMathFunction f( Description(1, "x"), Description(1, "y"), Description(1, "2.0*x") );
+  Function f( Description(1, "x"), Description(1, "y"), Description(1, "2.0*x") );
   Basis basis;
   basis.add(f);
   Indices indices(basis.getSize());

@@ -55,12 +55,12 @@ public:
    */
   using IntegrationAlgorithmImplementation::integrate;
 #ifndef SWIG
-  virtual NumericalPoint integrate(const NumericalMathFunction & function,
+  virtual NumericalPoint integrate(const Function & function,
                                    const Interval & interval,
                                    NumericalScalar & error) const;
 
   // This method allows to get the estimated integration error as a scalar
-  virtual NumericalPoint integrate(const NumericalMathFunction & function,
+  virtual NumericalPoint integrate(const Function & function,
                                    const NumericalScalar a,
                                    const NumericalScalar b,
                                    NumericalScalar & error,
@@ -72,7 +72,7 @@ public:
 #endif
   // This method allows to get the estimated integration error as a NumericalPoint,
   // needed by Python
-  virtual NumericalPoint integrate(const NumericalMathFunction & function,
+  virtual NumericalPoint integrate(const Function & function,
                                    const NumericalScalar a,
                                    const NumericalScalar b,
                                    NumericalPoint & error,
@@ -102,7 +102,7 @@ public:
 private:
 
   /** Compute the local GaussKronrod rule over [a, b] */
-  NumericalPoint computeRule(const NumericalMathFunction & function,
+  NumericalPoint computeRule(const Function & function,
                              const NumericalScalar a,
                              const NumericalScalar b,
                              NumericalScalar & localError) const;

@@ -27,7 +27,7 @@
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Basis.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/Process.hxx"
 #include "openturns/HMatrix.hxx"
 #include "openturns/Basis.hxx"
@@ -59,7 +59,7 @@ public:
   /** Parameter constructor without any cholesky factor*/
   GeneralLinearModelResult(const NumericalSample & inputData,
                                const NumericalSample & outputData,
-                               const NumericalMathFunction & metaModel,
+                               const Function & metaModel,
                                const NumericalPoint & residuals,
                                const NumericalPoint & relativeErrors,
                                const BasisCollection & basis,
@@ -70,7 +70,7 @@ public:
   /** Parameter constructor with Cholesky factor (Lapack)*/
   GeneralLinearModelResult(const NumericalSample & inputData,
                                const NumericalSample & outputData,
-                               const NumericalMathFunction & metaModel,
+                               const Function & metaModel,
                                const NumericalPoint & residuals,
                                const NumericalPoint & relativeErrors,
                                const BasisCollection & basis,
@@ -97,8 +97,8 @@ public:
   CovarianceModel getCovarianceModel() const;
 
   /** Transformation accessor */
-  NumericalMathFunction getTransformation() const;
-  void setTransformation(const NumericalMathFunction & transformation);
+  Function getTransformation() const;
+  void setTransformation(const Function & transformation);
 
   /** process accessor */
   Process getNoise() const;
@@ -135,7 +135,7 @@ private:
   NumericalSample inputTransformedData_;
 
   /** inputTransformation ==> iso-probabilistic transformation */
-  NumericalMathFunction inputTransformation_;
+  Function inputTransformation_;
 
   /** Boolean transformation */
   Bool hasTransformation_;

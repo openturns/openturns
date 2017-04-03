@@ -5,7 +5,7 @@ This function compares the output of another function against a threshold.
 
 Parameters
 ----------
-function : :class:`~openturns.NumericalMathFunction`
+function : :class:`~openturns.Function`
     Function from which another function is created.
 comparisonOperator : :class:`~openturns.ComparisonOperator`
     Comparison operator.

@@ -42,7 +42,7 @@ SubSquareCopula::SubSquareCopula()
 }
 
 /* Default constructor */
-SubSquareCopula::SubSquareCopula(const NumericalMathFunction & phi)
+SubSquareCopula::SubSquareCopula(const Function & phi)
   : CopulaImplementation("SubSquareCopula")
   , phi_(phi)
   , nullPhi_(false)
@@ -93,7 +93,7 @@ SubSquareCopula * SubSquareCopula::clone() const
 }
 
 /* Phi accessors */
-void SubSquareCopula::setPhi(const NumericalMathFunction & phi)
+void SubSquareCopula::setPhi(const Function & phi)
 {
   if (phi.getInputDimenson() != 1) throw InvalidArgumentException(HERE) << "Error: phi must have an input dimension equal to 1, here input dimension=" << phi.getInputDimension();
   if (phi.getOutputDimenson() != 1) throw InvalidArgumentException(HERE) << "Error: phi must have an output dimension equal to 1, here output dimension=" << phi.getOutputDimension();

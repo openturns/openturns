@@ -38,7 +38,7 @@ try:
             str(a[i]) + ") / (1.0 + " + str(a[i]) + "))"
     covTh = covTh - 1.0
 
-    model = NumericalMathFunction(inputVariables, outputVariables, formula)
+    model = Function(inputVariables, outputVariables, formula)
 
     # Create the input distribution
     distribution = ComposedDistribution([Uniform(0.0, 1.0)] * dimension)

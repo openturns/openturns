@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_AGGREGATEDFUNCTION_HXX
 #define OPENTURNS_AGGREGATEDFUNCTION_HXX
 
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/SymmetricTensor.hxx"
@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  */
 class OT_API AggregatedFunction
-  : public NumericalMathFunction
+  : public Function
 {
   CLASSNAME;
 public:
@@ -42,7 +42,7 @@ public:
   AggregatedFunction();
 
   /** Parameter constructor */
-  AggregatedFunction(const NumericalMathFunctionCollection & functionCollection);
+  AggregatedFunction(const FunctionCollection & functionCollection);
 
   /** Comparison operator */
   Bool operator ==(const AggregatedFunction & other) const;
@@ -51,7 +51,7 @@ public:
   virtual String __repr__() const;
   virtual String __str__(const String & offset = "") const;
 
-}; /* class QuadraticNumericalMathFunction */
+}; /* class QuadraticFunction */
 
 
 END_NAMESPACE_OPENTURNS

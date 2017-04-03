@@ -80,10 +80,10 @@ RootStrategyImplementation * RootStrategyImplementation::clone() const
 }
 
 /* Solve gives all the roots found applying the root strategy */
-RootStrategyImplementation::NumericalScalarCollection RootStrategyImplementation::solve(const NumericalMathFunction & function,
+RootStrategyImplementation::NumericalScalarCollection RootStrategyImplementation::solve(const Function & function,
     const NumericalScalar value)
 {
-  throw NotYetImplementedException(HERE) << "In RootStrategyImplementation::solve(const NumericalMathFunction & function, const NumericalScalar value)";
+  throw NotYetImplementedException(HERE) << "In RootStrategyImplementation::solve(const Function & function, const NumericalScalar value)";
 }
 
 /* Solver accessor */

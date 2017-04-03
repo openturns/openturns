@@ -23,7 +23,7 @@
 
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/NumericalSample.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/MetaModelResult.hxx"
 
@@ -48,7 +48,7 @@ public:
 
   /** Constructor with parameters */
   MetaModelAlgorithm(const Distribution & distribution,
-                     const NumericalMathFunction & model);
+                     const Function & model);
 
   /** Virtual constructor */
   virtual MetaModelAlgorithm * clone() const;
@@ -79,7 +79,7 @@ protected:
   Distribution distribution_;
 
   /** The model */
-  NumericalMathFunction model_;
+  Function model_;
 
 
 private:

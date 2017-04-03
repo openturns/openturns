@@ -38,12 +38,12 @@ OTTypedInterfaceObjectHelper(Basis)
 
 %include openturns/Basis.hxx
 
-%extend OT::Collection<OT::NumericalMathFunction>
+%extend OT::Collection<OT::Function>
 {
 
-OT::Collection<OT::NumericalMathFunction> (PyObject * pyObj)
+OT::Collection<OT::Function> (PyObject * pyObj)
 {
-  return OT::buildCollectionFromPySequence<OT::NumericalMathFunction>( pyObj );
+  return OT::buildCollectionFromPySequence<OT::Function>( pyObj );
 }
 
 
@@ -72,7 +72,7 @@ Basis(PyObject * pyObj)
 {
   try
   {
-    OT::Pointer<OT::Collection<OT::NumericalMathFunction> > p_coll =  OT::buildCollectionFromPySequence<OT::NumericalMathFunction>( pyObj );
+    OT::Pointer<OT::Collection<OT::Function> > p_coll =  OT::buildCollectionFromPySequence<OT::Function>( pyObj );
   return new OT::Basis( *p_coll );
   }
   catch (OT::InvalidArgumentException &)

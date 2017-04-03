@@ -81,10 +81,10 @@ Field AggregatedProcess::getRealization() const
 }
 
 /* Continuous realization accessor */
-NumericalMathFunction AggregatedProcess::getContinuousRealization() const
+Function AggregatedProcess::getContinuousRealization() const
 {
   const UnsignedInteger size = processCollection_.getSize();
-  Collection<NumericalMathFunction> continuousRealizations(size);
+  Collection<Function> continuousRealizations(size);
   for (UnsignedInteger i = 0; i < size; ++i)
     continuousRealizations[i] = processCollection_[i].getContinuousRealization();
   return AggregatedFunction(continuousRealizations);

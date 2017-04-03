@@ -38,7 +38,7 @@ VertexValueFunction::VertexValueFunction(const UnsignedInteger meshDimension)
 }
 
 /* Parameter constructor */
-VertexValueFunction::VertexValueFunction(const NumericalMathFunction & function,
+VertexValueFunction::VertexValueFunction(const Function & function,
                                    const UnsignedInteger meshDimension)
   : FieldFunctionImplementation(meshDimension)
   , p_evaluation_(function.getEvaluation())

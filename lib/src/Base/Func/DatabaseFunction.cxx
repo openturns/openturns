@@ -27,7 +27,7 @@ CLASSNAMEINIT(DatabaseFunction);
 
 /* Default constructor */
 DatabaseFunction::DatabaseFunction ()
-  : NumericalMathFunction()
+  : Function()
 {
 }
 
@@ -36,7 +36,7 @@ DatabaseFunction::DatabaseFunction ()
 DatabaseFunction::DatabaseFunction (const NumericalSample & inputSample,
                                     const NumericalSample & outputSample,
                                     const Bool enableCache)
-  : NumericalMathFunction()
+  : Function()
 {
   setEvaluation(new DatabaseEvaluation(inputSample, outputSample, enableCache));
 }

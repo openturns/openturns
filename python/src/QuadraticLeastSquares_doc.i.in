@@ -10,7 +10,7 @@ Parameters
 ----------
 dataIn : 2-d sequence of float
     Input data.
-function : :class:`~openturns.NumericalMathFunction`
+function : :class:`~openturns.Function`
     Function :math:`h` to be approximated.
 dataOut : 2-d sequence of float
     Output data. If not specified, this sample is computed such as:
@@ -144,7 +144,7 @@ dataOut : 2-d sequence of float
 
 Returns
 -------
-function : :class:`~openturns.NumericalMathFunction`
+function : :class:`~openturns.Function`
     Function :math:`h` to be approximated."
 
 // ---------------------------------------------------------------------
@@ -174,7 +174,7 @@ tensor : :class:`~openturns.SymmetricTensor`
 
 Returns
 -------
-approximation : :class:`~openturns.NumericalMathFunction`
+approximation : :class:`~openturns.Function`
     An approximation of the function :math:`h` by Quadratic Least Squares."
 
 // ---------------------------------------------------------------------

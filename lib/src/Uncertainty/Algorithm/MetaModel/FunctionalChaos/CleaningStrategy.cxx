@@ -86,7 +86,7 @@ void CleaningStrategy::computeInitialBasis()
 {
   // Start with the first set of vectors
   const UnsignedInteger size = std::min(maximumSize_, maximumDimension_);
-  Psi_k_p_ = NumericalMathFunctionCollection(size);
+  Psi_k_p_ = FunctionCollection(size);
   I_p_ = Indices(size);
   I_p_.fill();
   for (UnsignedInteger i = 0; i < size; ++i) Psi_k_p_[i] = basis_.build(i);
@@ -212,7 +212,7 @@ void CleaningStrategy::updateBasis(const NumericalPoint & alpha_k,
   // If we have not generated all the vectors, go to the next one
   if (currentVectorIndex_ < maximumDimension_)
   {
-    const NumericalMathFunction newVector(basis_.build(currentVectorIndex_));
+    const Function newVector(basis_.build(currentVectorIndex_));
     Psi_k_p_.add(newVector);
     I_p_.add(currentVectorIndex_);
     addedPsi_k_ranks_ = Indices(1, I_p_.getSize() - 1);

@@ -125,7 +125,7 @@ LogNormal LogNormalFactory::buildMethodOfLocalLikelihoodMaximization(const Numer
   const NumericalScalar xMin = sample.getMin()[0];
   NumericalScalar right = xMin - quantileEpsilon;
   const LogNormalFactoryLMLEParameterConstraint constraint(sample);
-  const NumericalMathFunction f(bindMethod<LogNormalFactoryLMLEParameterConstraint, NumericalPoint, NumericalPoint>(constraint, &LogNormalFactoryLMLEParameterConstraint::computeConstraint, 1, 1));
+  const Function f(bindMethod<LogNormalFactoryLMLEParameterConstraint, NumericalPoint, NumericalPoint>(constraint, &LogNormalFactoryLMLEParameterConstraint::computeConstraint, 1, 1));
   NumericalScalar constraintRight = f(NumericalPoint(1, right))[0];
   NumericalScalar left = right - step;
   NumericalScalar constraintLeft = f(NumericalPoint(1, left))[0];
@@ -192,7 +192,7 @@ LogNormal LogNormalFactory::buildMethodOfModifiedMoments(const NumericalSample &
   const NumericalScalar mean = sample.computeMean()[0];
   const NumericalScalar xMin = sample.getMin()[0];
   const LogNormalFactoryMMEParameterConstraint constraint(sample.getSize(), xMin, mean, std);
-  const NumericalMathFunction f(bindMethod<LogNormalFactoryMMEParameterConstraint, NumericalPoint, NumericalPoint>(constraint, &LogNormalFactoryMMEParameterConstraint::computeConstraint, 1, 1));
+  const Function f(bindMethod<LogNormalFactoryMMEParameterConstraint, NumericalPoint, NumericalPoint>(constraint, &LogNormalFactoryMMEParameterConstraint::computeConstraint, 1, 1));
   // First, the bracketing interval
   NumericalScalar ea = 1.0;
   NumericalScalar eb = 2.0;

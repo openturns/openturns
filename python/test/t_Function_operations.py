@@ -11,12 +11,12 @@ try:
     inVar = ["x0", "x1", "x2"]
     outVar = ["y0"]
     formula = ["x0^2 + 2 * x1 * x2 + 3 * x2"]
-    f1 = NumericalMathFunction(inVar, outVar, formula)
+    f1 = Function(inVar, outVar, formula)
     # Second, build a function from R^3->R^2
     formula = ["x2 - x0 + x1"]
     formula.append("x0 + x1 * x0 + x2")
     outVar = ["y0", "y1"]
-    f2 = NumericalMathFunction(inVar, outVar, formula)
+    f2 = Function(inVar, outVar, formula)
     # Third, build the product function
     myFunction = f1 * f2
     inPoint = NumericalPoint([1.2, 2.3, 3.4])
@@ -33,9 +33,9 @@ try:
     inVar = ["x0", "x1", "x2"]
     outVar = ["y0", "y1"]
     formula = ["x0 + 2 * x1 * x2 + 3 * x2", "x2 - x0 + x1 * x0"]
-    f1 = NumericalMathFunction(inVar, outVar, formula)
+    f1 = Function(inVar, outVar, formula)
     formula = ["x0 + x1 + x2", "-2 * x0 + 3 * x2 * x1 - x1"]
-    f2 = NumericalMathFunction(inVar, outVar, formula)
+    f2 = Function(inVar, outVar, formula)
     # Second, build the function
     mySum = f1 + f2
     print("mySum=", mySum)
@@ -58,5 +58,5 @@ try:
 
 except:
     import sys
-    print("t_NumericalMathFunction_operations.py",
+    print("t_Function_operations.py",
           sys.exc_info()[0], sys.exc_info()[1])

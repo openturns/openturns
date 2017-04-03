@@ -24,7 +24,7 @@
 #include "openturns/Exception.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/ComposedDistribution.hxx"
-#include "openturns/NumericalMathFunctionImplementation.hxx"
+#include "openturns/FunctionImplementation.hxx"
 #include "openturns/ProductUniVariateFunctionEvaluation.hxx"
 #include "openturns/ProductUniVariateFunctionGradient.hxx"
 #include "openturns/ProductUniVariateFunctionHessian.hxx"
@@ -99,8 +99,8 @@ OrthogonalProductFunctionFactory::FunctionFamilyCollection OrthogonalProductFunc
 }
 
 
-/* Build the NumericalMathFunction of the given index */
-NumericalMathFunction OrthogonalProductFunctionFactory::build(const UnsignedInteger index) const
+/* Build the Function of the given index */
+Function OrthogonalProductFunctionFactory::build(const UnsignedInteger index) const
 {
   return tensorizedFunctionFactory_.build(index);
 }

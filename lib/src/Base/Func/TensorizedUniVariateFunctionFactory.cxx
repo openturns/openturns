@@ -23,7 +23,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/Indices.hxx"
-#include "openturns/NumericalMathFunctionImplementation.hxx"
+#include "openturns/FunctionImplementation.hxx"
 #include "openturns/ProductUniVariateFunctionEvaluation.hxx"
 #include "openturns/ProductUniVariateFunctionGradient.hxx"
 #include "openturns/ProductUniVariateFunctionHessian.hxx"
@@ -109,8 +109,8 @@ TensorizedUniVariateFunctionFactory::FunctionFamilyCollection TensorizedUniVaria
 }
 
 
-/* Build the NumericalMathFunction of the given index */
-NumericalMathFunction TensorizedUniVariateFunctionFactory::build(const UnsignedInteger index) const
+/* Build the Function of the given index */
+Function TensorizedUniVariateFunctionFactory::build(const UnsignedInteger index) const
 {
   // Compute the multi-indices using the EnumerateFunction
   const Indices indices(phi_(index));
@@ -122,7 +122,7 @@ NumericalMathFunction TensorizedUniVariateFunctionFactory::build(const UnsignedI
     functions[i] = coll_[i].build(indices[i]);
   }
   const Pointer<ProductUniVariateFunctionEvaluation> p_evaluation(ProductUniVariateFunctionEvaluation(functions).clone());
-  return NumericalMathFunctionImplementation(p_evaluation,
+  return FunctionImplementation(p_evaluation,
          ProductUniVariateFunctionGradient(p_evaluation).clone(),
          ProductUniVariateFunctionHessian(p_evaluation).clone());
 }

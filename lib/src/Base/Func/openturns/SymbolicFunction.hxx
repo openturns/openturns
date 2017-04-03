@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_SYMBOLICFUNCTION_HXX
 #define OPENTURNS_SYMBOLICFUNCTION_HXX
 
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/SymmetricTensor.hxx"
@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  */
 class OT_API SymbolicFunction
-  : public NumericalMathFunction
+  : public Function
 {
   CLASSNAME;
 public:
@@ -78,7 +78,7 @@ private:
   /** Method that initialize the fields related to the documentation of the analytical functions */
   static void InitializeDocumentation();
 
-}; /* class QuadraticNumericalMathFunction */
+}; /* class QuadraticFunction */
 
 
 END_NAMESPACE_OPENTURNS

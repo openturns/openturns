@@ -19,7 +19,7 @@
  *
  */
 
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/CorrectedLeaveOneOut.hxx"
 #include "openturns/SVDMethod.hxx"

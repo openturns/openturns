@@ -85,7 +85,7 @@ String ComposedEvaluation::__str__(const String & offset) const
 /* Operator () */
 NumericalPoint ComposedEvaluation::operator() (const NumericalPoint & inP) const
 {
-  if (inP.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a NumericalMathFunction with an argument of invalid dimension";
+  if (inP.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a Function with an argument of invalid dimension";
   ++callsNumber_;
   const NumericalPoint rightValue(p_rightFunction_->operator()(inP));
   const NumericalPoint leftValue(p_leftFunction_->operator()(rightValue));

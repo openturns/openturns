@@ -3,12 +3,12 @@
 
 See also
 --------
-NumericalMathFunction, HessianImplementation
+Function, HessianImplementation
 
 Notes
 -----
 This object is the result of the method *getGradient* of a 
-:class:`~openturns.NumericalMathFunction`."
+:class:`~openturns.Function`."
 
 // ---------------------------------------------------------------------
 

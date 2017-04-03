@@ -88,7 +88,7 @@ TrendTransform TrendFactory::build(const Field & field,
   // We need a sample to get coefficients result
   NumericalSample coefficients(N, dimension);
 
-  Collection<NumericalMathFunction> coll(N);
+  Collection<Function> coll(N);
   Indices indices(N);
   indices.fill();
   for (UnsignedInteger k = 0; k < N ; ++k) coll[k] = basis[k];

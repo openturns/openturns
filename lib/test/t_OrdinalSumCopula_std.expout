@@ -22,7 +22,7 @@ Quantile=class=NumericalPoint name=Unnamed dimension=2 values=[0.567157,0.567157
 CDF(quantile)=0.5
 Minimum volume interval=class=Interval name=Unnamed dimension=2 lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[0.160334,0.160334] upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[0.839666,0.839666] finite lower bound=[1,1] finite upper bound=[1,1]
 threshold=0.679332
-Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[x0,x1,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(OrdinalSumCopula([0, 0.2], FrankCopula(theta = 3), [0.2, 0.7], NormalCopula(R = [[ 1   0.5 ]
+Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x0,x1,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(OrdinalSumCopula([0, 0.2], FrankCopula(theta = 3), [0.2, 0.7], NormalCopula(R = [[ 1   0.5 ]
  [ 0.5 1   ]]), [0.7, 1], ClaytonCopula(theta = 2))) gradientImplementation=MinimumVolumeLevelSetGradient(OrdinalSumCopula([0, 0.2], FrankCopula(theta = 3), [0.2, 0.7], NormalCopula(R = [[ 1   0.5 ]
  [ 0.5 1   ]]), [0.7, 1], ClaytonCopula(theta = 2))) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=NumericalPoint name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(OrdinalSumCopula([0, 0.2], FrankCopula(theta = 3), [0.2, 0.7], NormalCopula(R = [[ 1   0.5 ]
  [ 0.5 1   ]]), [0.7, 1], ClaytonCopula(theta = 2))) level=-0.206042

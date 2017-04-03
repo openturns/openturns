@@ -86,8 +86,8 @@ KarhunenLoeveQuadratureFactory::KarhunenLoeveQuadratureFactory(const Domain & do
   const NumericalPoint distributionUpperBound(distribution.getRange().getUpperBound());
   const Bool hasSameBounds = (domainLowerBound == distributionLowerBound) && (domainUpperBound == distributionUpperBound);
   // The function scaling maps points in the range of the distribution into the domain
-  NumericalMathFunction scaling;
-  NumericalMathFunction inverseScaling;
+  Function scaling;
+  Function inverseScaling;
   // Normalization factor takes into account the fact that we map the range of the distribution defining the weighted experiment with the bounding box of the domain
   NumericalScalar normalizationFactor = 1.0;
   if (!hasSameBounds)
@@ -284,7 +284,7 @@ Basis KarhunenLoeveQuadratureFactory::build(const CovarianceModel & covarianceMo
   }
   selectedEV = NumericalPoint(0);
   UnsignedInteger j = 0;
-  NumericalMathFunctionCollection resultBasis(0);
+  FunctionCollection resultBasis(0);
   LOGINFO("Keep only the relevant eigen pairs");
   while ((j < eigenDimension) && (eigenValues[j] > threshold_ * std::abs(eigenValues[0])))
   {

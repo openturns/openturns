@@ -23,7 +23,7 @@
 
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/NumericalSample.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/Graph.hxx"
 
@@ -49,7 +49,7 @@ public:
   /** Constructor with parameters */
   MetaModelValidation(const NumericalSample & inputSample,
                       const NumericalSample & outputSample,
-                      const NumericalMathFunction & metaModel);
+                      const Function & metaModel);
 
   /** Virtual constructor */
   virtual MetaModelValidation * clone() const;
@@ -90,7 +90,7 @@ protected:
   NumericalSample outputSample_;
 
   /** The meta model */
-  NumericalMathFunction metaModel_;
+  Function metaModel_;
 
   /** Boolean argument */
   mutable Bool isInitialized_;

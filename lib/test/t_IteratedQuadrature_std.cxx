@@ -39,8 +39,8 @@ int main(int argc, char *argv[])
     NumericalScalar a = -1.0;
     NumericalScalar b = 1.0;
     String formula("1.0");
-    Collection< NumericalMathFunction > lower(0);
-    Collection< NumericalMathFunction > upper(0);
+    Collection< Function > lower(0);
+    Collection< Function > upper(0);
     IteratedQuadrature algo(GaussKronrod(20, 1.0e-6, GaussKronrodRule(GaussKronrodRule::G3K7)));
     for (UnsignedInteger n = 0; n < 3; ++n)
     {

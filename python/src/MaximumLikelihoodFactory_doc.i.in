@@ -71,7 +71,7 @@ problem : :class:`~openturns.Interval`
 
 Parameters
 ----------
-inequalityConstraint : :class:`~openturns.NumericalMathFunction`
+inequalityConstraint : :class:`~openturns.Function`
     The inequality constraint used for numerical optimization of the likelihood."
 
 // ---------------------------------------------------------------------

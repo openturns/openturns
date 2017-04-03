@@ -26,7 +26,7 @@
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/DomainImplementation.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -46,7 +46,7 @@ public:
   explicit LevelSet(const UnsignedInteger dimension = 1);
 
   /** Parameters constructor, simplified for 1D case */
-  explicit LevelSet(const NumericalMathFunction & function,
+  explicit LevelSet(const Function & function,
                     const NumericalScalar level = 0.0);
 
   /** Virtual constructor method */
@@ -65,8 +65,8 @@ public:
   Bool operator == (const LevelSet & other) const;
 
   /** Function accessor */
-  NumericalMathFunction getFunction() const;
-  void setFunction(const NumericalMathFunction & function);
+  Function getFunction() const;
+  void setFunction(const Function & function);
 
   /** Level accessor */
   NumericalScalar getLevel() const;
@@ -99,7 +99,7 @@ private:
   void computeUpperBound() const;
 
   /** Function defining the level set*/
-  NumericalMathFunction function_;
+  Function function_;
 
   /** Level defining the level set */
   NumericalScalar level_;

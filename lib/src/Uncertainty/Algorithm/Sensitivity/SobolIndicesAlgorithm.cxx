@@ -60,7 +60,7 @@ SobolIndicesAlgorithm::SobolIndicesAlgorithm(const NumericalSample & inputDesign
 /** Constructor with parameters */
 SobolIndicesAlgorithm::SobolIndicesAlgorithm(const Distribution & distribution,
     const UnsignedInteger size,
-    const NumericalMathFunction & model,
+    const Function & model,
     const Bool computeSecondOrder):
   TypedInterfaceObject<SobolIndicesAlgorithmImplementation>(new MartinezSensitivityAlgorithm(distribution, size, model, computeSecondOrder))
 {
@@ -69,7 +69,7 @@ SobolIndicesAlgorithm::SobolIndicesAlgorithm(const Distribution & distribution,
 
 /** Constructor with experiment / model parameters */
 SobolIndicesAlgorithm::SobolIndicesAlgorithm(const WeightedExperiment & experiment,
-    const NumericalMathFunction & model,
+    const Function & model,
     const Bool computeSecondOrder):
   TypedInterfaceObject<SobolIndicesAlgorithmImplementation>(new MartinezSensitivityAlgorithm(experiment, model, computeSecondOrder))
 {

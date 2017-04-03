@@ -1830,7 +1830,7 @@ OT_Distribution_getInverseCholesky_doc
 
 Returns
 -------
-Tinv : :class:`~openturns.NumericalMathFunction`
+Tinv : :class:`~openturns.Function`
     Inverse iso-probabilistic transformation.
 
 Notes
@@ -1858,7 +1858,7 @@ OT_Distribution_getInverseIsoProbabilisticTransformation_doc
 
 Returns
 -------
-T : :class:`~openturns.NumericalMathFunction`
+T : :class:`~openturns.Function`
     Iso-probabilistic transformation.
 
 Notes

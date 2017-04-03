@@ -193,7 +193,7 @@ Available constructors:
 
 Parameters
 ----------
-function : :class:`~openturns.NumericalMathFunction`
+function : :class:`~openturns.Function`
     A function.
 field :  :class:`~openturns.Field`
     A field.
@@ -255,7 +255,7 @@ coef : :class:`~openturns.NumericalPoint`
 
 Returns
 -------
-modes : :class:`~openturns.NumericalMathFunction`
+modes : :class:`~openturns.Function`
     The function :math:`f` defined in :eq:`lift`.
 
 Notes

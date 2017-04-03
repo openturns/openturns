@@ -37,8 +37,8 @@ MetaModelResult::MetaModelResult()
 }
 
 /* Standard constructor */
-MetaModelResult::MetaModelResult(const NumericalMathFunction & model,
-                                 const NumericalMathFunction & metaModel,
+MetaModelResult::MetaModelResult(const Function & model,
+                                 const Function & metaModel,
                                  const NumericalPoint & residuals,
                                  const NumericalPoint & relativeErrors)
   : PersistentObject()
@@ -57,23 +57,23 @@ MetaModelResult * MetaModelResult::clone() const
 }
 
 /* Model accessor */
-void MetaModelResult::setModel(const NumericalMathFunction & model)
+void MetaModelResult::setModel(const Function & model)
 {
   model_ = model;
 }
 
-NumericalMathFunction MetaModelResult::getModel() const
+Function MetaModelResult::getModel() const
 {
   return model_;
 }
 
 /* MetaModel accessor */
-void MetaModelResult::setMetaModel(const NumericalMathFunction & metaModel)
+void MetaModelResult::setMetaModel(const Function & metaModel)
 {
   metaModel_ = metaModel;
 }
 
-NumericalMathFunction MetaModelResult::getMetaModel() const
+Function MetaModelResult::getMetaModel() const
 {
   return metaModel_;
 }

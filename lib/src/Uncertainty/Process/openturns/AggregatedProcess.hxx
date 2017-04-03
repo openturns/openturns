@@ -62,7 +62,7 @@ public:
   Field getRealization() const;
 
   /** Continuous realization accessor */
-  NumericalMathFunction getContinuousRealization() const;
+  Function getContinuousRealization() const;
 
   /** Continuation of the last realization on a given number of steps */
   using ProcessImplementation::getFuture;

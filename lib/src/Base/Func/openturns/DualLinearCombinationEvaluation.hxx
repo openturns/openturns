@@ -24,7 +24,7 @@
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/NumericalSample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -43,8 +43,8 @@ class OT_API DualLinearCombinationEvaluation
   CLASSNAME;
 public:
 
-  typedef Collection<NumericalMathFunction>                              NumericalMathFunctionCollection;
-  typedef PersistentCollection<NumericalMathFunction>                    NumericalMathFunctionPersistentCollection;
+  typedef Collection<Function>                              FunctionCollection;
+  typedef PersistentCollection<Function>                    FunctionPersistentCollection;
 
   // friend class Factory<DualLinearCombinationEvaluation>;
 
@@ -53,7 +53,7 @@ public:
 
 public:
   /** Parameter constructor */
-  DualLinearCombinationEvaluation(const NumericalMathFunctionCollection & functionsCollection,
+  DualLinearCombinationEvaluation(const FunctionCollection & functionsCollection,
       const NumericalSample & coefficients);
 
   /** Virtual constructor */
@@ -74,8 +74,8 @@ public:
   NumericalSample getCoefficients() const;
 
   /** Functions accessor */
-  NumericalMathFunctionCollection getFunctionsCollection() const;
-  void setFunctionsCollectionAndCoefficients(const NumericalMathFunctionCollection & functionsCollection,
+  FunctionCollection getFunctionsCollection() const;
+  void setFunctionsCollectionAndCoefficients(const FunctionCollection & functionsCollection,
       const NumericalSample & coefficients);
 
   /** Input dimension accessor */
@@ -116,7 +116,7 @@ private:
   friend struct DualLinearCombinationEvaluationPointFunctor;
 
   // The functional coefficients of the combination
-  NumericalMathFunctionPersistentCollection functionsCollection_;
+  FunctionPersistentCollection functionsCollection_;
 
   // The vectors of the combination
   NumericalSample coefficients_;

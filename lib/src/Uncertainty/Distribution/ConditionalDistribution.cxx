@@ -92,7 +92,7 @@ ConditionalDistribution::ConditionalDistribution(const Distribution & conditione
 /* Parameters constructor */
 ConditionalDistribution::ConditionalDistribution(const Distribution & conditionedDistribution,
     const Distribution & conditioningDistribution,
-    const NumericalMathFunction & linkFunction)
+    const Function & linkFunction)
   : Mixture()
   , conditionedDistribution_()
   , conditioningDistribution_()
@@ -209,12 +209,12 @@ Distribution ConditionalDistribution::getConditioningDistribution() const
 }
 
 /* Link function accessor */
-void ConditionalDistribution::setLinkFunction(const NumericalMathFunction & linkFunction)
+void ConditionalDistribution::setLinkFunction(const Function & linkFunction)
 {
   if (!(linkFunction == linkFunction_)) setConditionedAndConditioningDistributionsAndLinkFunction(conditionedDistribution_, conditioningDistribution_, linkFunction);
 }
 
-NumericalMathFunction ConditionalDistribution::getLinkFunction() const
+Function ConditionalDistribution::getLinkFunction() const
 {
   return linkFunction_;
 }
@@ -222,7 +222,7 @@ NumericalMathFunction ConditionalDistribution::getLinkFunction() const
 
 void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkFunction(const Distribution & conditionedDistribution,
     const Distribution & conditioningDistribution,
-    const NumericalMathFunction & linkFunction)
+    const Function & linkFunction)
 {
   const UnsignedInteger conditioningDimension = conditioningDistribution.getDimension();
   const UnsignedInteger conditionedParametersDimension = conditionedDistribution.getParameterDimension();
@@ -419,7 +419,7 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
 }
 
 /* Compute the expectation of f(\theta)1_{\theta\leq \theta^*} with respect to the prior distribution of \theta */
-NumericalPoint ConditionalDistribution::computeExpectation(const NumericalMathFunction & f,
+NumericalPoint ConditionalDistribution::computeExpectation(const Function & f,
     const NumericalPoint & thetaStar) const
 {
   const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon");

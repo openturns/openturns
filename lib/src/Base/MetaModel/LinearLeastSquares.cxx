@@ -33,7 +33,7 @@ CLASSNAMEINIT(LinearLeastSquares);
 
 /* Constructor with parameters */
 LinearLeastSquares::LinearLeastSquares(const NumericalSample & dataIn,
-                                       const NumericalMathFunction & inputFunction)
+                                       const Function & inputFunction)
   : PersistentObject(),
     dataIn_(dataIn),
     dataOut_(0, inputFunction.getOutputDimension()),
@@ -174,13 +174,13 @@ Matrix LinearLeastSquares::getLinear() const
 }
 
 /* Function accessor */
-NumericalMathFunction LinearLeastSquares::getInputFunction() const
+Function LinearLeastSquares::getInputFunction() const
 {
   return inputFunction_;
 }
 
 /* Response surface accessor */
-NumericalMathFunction LinearLeastSquares::getResponseSurface() const
+Function LinearLeastSquares::getResponseSurface() const
 {
   return responseSurface_;
 }

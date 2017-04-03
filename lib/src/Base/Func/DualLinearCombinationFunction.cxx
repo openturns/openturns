@@ -29,15 +29,15 @@ CLASSNAMEINIT(DualLinearCombinationFunction);
 
 /* Default constructor */
 DualLinearCombinationFunction::DualLinearCombinationFunction ()
-  : NumericalMathFunction()
+  : Function()
 {
 }
 
 
 /* Parameter constructor */
-DualLinearCombinationFunction::DualLinearCombinationFunction (const NumericalMathFunctionCollection & functionCollection,
+DualLinearCombinationFunction::DualLinearCombinationFunction (const FunctionCollection & functionCollection,
                                                               const NumericalSample & coefficients)
-  : NumericalMathFunction()
+  : Function()
 {
   const DualLinearCombinationEvaluation evaluation(functionCollection, coefficients);
   setEvaluation(evaluation.clone());

@@ -91,7 +91,7 @@ RandomVector::RandomVector(const Distribution & distribution,
 }
 
 /* Constructor for composite vector */
-RandomVector::RandomVector(const NumericalMathFunction & function,
+RandomVector::RandomVector(const Function & function,
                            const RandomVector & antecedent)
   : TypedInterfaceObject<RandomVectorImplementation>(new CompositeRandomVector(function,
       antecedent.getImplementation()))
@@ -156,7 +156,7 @@ RandomVector::RandomVector(const RandomVector & antecedent,
     }
     if (!finiteLowerBound[0] && !finiteUpperBound[0])
     {
-      RandomVector newVector(NumericalMathFunction(testFunction), antecedent.getAntecedent());
+      RandomVector newVector(Function(testFunction), antecedent.getAntecedent());
       *this = RandomVector(newVector, Less(), 1.0);
     }
   }
@@ -175,7 +175,7 @@ RandomVector::RandomVector(const RandomVector & antecedent,
     // No constraint
     if (slacks.getSize() == 0)
     {
-      RandomVector newVector(NumericalMathFunction(testFunction), antecedent.getAntecedent());
+      RandomVector newVector(Function(testFunction), antecedent.getAntecedent());
       *this = RandomVector(newVector, Less(), 1.0);
     }
     else
@@ -298,8 +298,8 @@ RandomVector::Antecedent RandomVector::getAntecedent() const
   return getImplementation()->getAntecedent();
 }
 
-/* This method allows to access the NumericalMathFunction in case of a composite RandomVector */
-NumericalMathFunction RandomVector::getFunction() const
+/* This method allows to access the Function in case of a composite RandomVector */
+Function RandomVector::getFunction() const
 {
   return getImplementation()->getFunction();
 }

@@ -23,7 +23,7 @@ outputDistCol : :class:`~openturns.DistributionCollection`
 
 Notes
 -----
-This class contains a :class:`~openturns.NumericalMathFunction` which can be
+This class contains a :class:`~openturns.Function` which can be
 evaluated in one point but which proposes no gradient nor hessian implementation.
 
 - In the two first usage, if :math:`direction = 0`, the created operator
@@ -85,7 +85,7 @@ direction : integer
 
 Returns
 -------
-listFunction : :class:`~openturns.NumericalMathFunctionCollection`
+listFunction : :class:`~openturns.FunctionCollection`
     The collection of numerical math functions if the analytical expressions 
     exist."
 

@@ -217,7 +217,7 @@ NumericalPoint MethodOfMomentsFactory::buildParameter(const NumericalSample & sa
 
   // Define NumericalMathEvaluation using the MethodOfMomentsEvaluation wrapper
   MethodOfMomentsEvaluation methodOfMomentsWrapper(refMoments, distribution_, knownParameterValues_, knownParameterIndices_);
-  NumericalMathFunction momentsObjective(methodOfMomentsWrapper.clone());
+  Function momentsObjective(methodOfMomentsWrapper.clone());
 
   // Define optimisation problem
   OptimizationProblem problem(problem_);

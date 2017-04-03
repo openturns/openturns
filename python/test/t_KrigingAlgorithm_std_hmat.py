@@ -14,7 +14,7 @@ ResourceMap.Set("KrigingAlgorithm-LinearAlgebra", "HMAT")
 sampleSize = 6
 dimension = 1
 
-f = NumericalMathFunction(['x0'], ['y'], ['x0 * sin(x0)'])
+f = Function(['x0'], ['y'], ['x0 * sin(x0)'])
 
 X = NumericalSample(sampleSize, dimension)
 X2 = NumericalSample(sampleSize, dimension)
@@ -67,7 +67,7 @@ inputSample = box.generate()
 inputSample *= 10
 
 
-model = NumericalMathFunction(['x', 'y'], ['z'], ['cos(0.5*x) + sin(y)'])
+model = Function(['x', 'y'], ['z'], ['cos(0.5*x) + sin(y)'])
 outputSample = model(inputSample)
 
 # Validation

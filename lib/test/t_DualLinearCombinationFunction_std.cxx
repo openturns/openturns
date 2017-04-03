@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class NumericalMathFunction for dual_linear combinations
+ *  @brief The test file of class Function for dual_linear combinations
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     inVar[2] = "x3";
     Description formula(1);
     formula[0] = "x1^3 * sin(x2 + 2.5 * x3) - (x1 + x2)^2 / (1.0 + x3^2)";
-    DualLinearCombinationEvaluation::NumericalMathFunctionCollection functions(2);
+    DualLinearCombinationEvaluation::FunctionCollection functions(2);
     functions[0] = SymbolicFunction(inVar, formula);
     formula[0] = "exp(-x1 * x2 + x3) / cos(1.0 + x2 * x3 - x1)";
     functions[1] = SymbolicFunction(inVar, formula);

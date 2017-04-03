@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     outputVar[0] = "z";
     Description formula(1);
     formula[0] = "exp(-sin(cos(y)^2*x^2+sin(x)^2*y^2))";
-    NumericalMathFunction f(inputVar, outputVar, formula);
+    Function f(inputVar, outputVar, formula);
 
     // Generate the data for the curver to be drawn
     NumericalPoint discretization(2);

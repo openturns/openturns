@@ -64,14 +64,14 @@ GaussLegendre * GaussLegendre::clone() const
 
 /* Compute an approximation of \int_a^b f(x_1,\dots,x_n)dx_1\dotsdx_n, where [a,b] is an n-D interval.
  */
-NumericalPoint GaussLegendre::integrate(const NumericalMathFunction & function,
+NumericalPoint GaussLegendre::integrate(const Function & function,
                                         const Interval & interval) const
 {
   NumericalSample adaptedNodes;
   return integrateWithNodes(function, interval, adaptedNodes);
 }
 
-NumericalPoint GaussLegendre::integrateWithNodes(const NumericalMathFunction & function,
+NumericalPoint GaussLegendre::integrateWithNodes(const Function & function,
     const Interval & interval,
     NumericalSample & adaptedNodes) const
 {

@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   {
 
 
-    /* We create a NumericalMathFunction */
+    /* We create a Function */
     Description input_r(4);
     input_r[0] = "x1";
     input_r[1] = "x2";
@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
     Description formula_r(2);
     formula_r[0] = "(x1*x1+x2^3*x1)/(2*x3*x3+x4^4+1)";
     formula_r[1] = "cos(x2*x2+x4)/(x1*x1+1+x3^4)";
-    NumericalMathFunction myFunc(input_r, output_r, formula_r);
+    Function myFunc(input_r, output_r, formula_r);
 
     /* We create a distribution */
     UnsignedInteger dim = myFunc.getInputDimension();

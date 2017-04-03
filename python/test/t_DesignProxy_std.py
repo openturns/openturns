@@ -14,10 +14,10 @@ Y = ot.NumericalSample(sampleSize, 1)
 
 phis = []
 for j in range(basisSize):
-    phis.append(ot.NumericalMathFunction(['x'], ['y'], ['x^' + str(j + 1)]))
+    phis.append(ot.Function(['x'], ['y'], ['x^' + str(j + 1)]))
 basis = ot.Basis(phis)
 for i in range(basisSize):
-    print(ot.NumericalMathFunctionCollection(basis)[i](X))
+    print(ot.FunctionCollection(basis)[i](X))
 
 proxy = ot.DesignProxy(X, basis)
 full = range(basisSize)

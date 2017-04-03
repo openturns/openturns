@@ -52,9 +52,9 @@ public:
   /** Compute an approximation of \int_a^b f(x_1,\dots,x_n)dx_1\dotsdx_n, where [a,b] is an nD interval.
    */
   using IntegrationAlgorithmImplementation::integrate;
-  NumericalPoint integrate(const NumericalMathFunction & function,
+  NumericalPoint integrate(const Function & function,
                            const Interval & interval) const;
-  NumericalPoint integrateWithNodes(const NumericalMathFunction & function,
+  NumericalPoint integrateWithNodes(const Function & function,
                                     const Interval & interval,
                                     NumericalSample & adaptedNodes) const;
 

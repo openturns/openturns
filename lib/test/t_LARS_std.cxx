@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
   outputVariables[0] = "y";
   Description formula(1);
   formula[0] = (OSS() << "sin(xi1) + (" << a << ") * (sin(xi2)) ^ 2 + (" << b << ") * xi3^4 * sin(xi1)");
-  NumericalMathFunction model(inputVariables, outputVariables, formula);
+  Function model(inputVariables, outputVariables, formula);
 
   // Create the input distribution
   Collection<Distribution> marginalX(dimension);
@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
   MarginalTransformationEvaluation evaluationT(MarginalTransformationEvaluation(marginalX, marginalZ));
   MarginalTransformationGradient gradientT(evaluationT);
   MarginalTransformationHessian hessianT(evaluationT);
-  NumericalMathFunction xToU(evaluationT.clone(), gradientT.clone(), hessianT.clone());
+  Function xToU(evaluationT.clone(), gradientT.clone(), hessianT.clone());
 
   // generate samples
   NumericalSample x( experiment.generate() );
@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
   // build basis
   UnsignedInteger degree = 10;
   UnsignedInteger basisSize = enumerateFunction.getStrataCumulatedCardinal(degree);
-  Collection<NumericalMathFunction> coll;
+  Collection<Function> coll;
   for ( UnsignedInteger i = 0; i < basisSize; ++ i )
   {
     coll.add(productBasis.build(i));

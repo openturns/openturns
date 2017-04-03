@@ -40,7 +40,7 @@
  * as multidimensional points (\link OT::NumericalPoint NumericalPoint\endlink),
  * aka vectors, samples
  * (\link OT::NumericalSample NumericalSample\endlink)
- * or functions (\link OT::NumericalMathFunction NumericalMathFunction\endlink).
+ * or functions (\link OT::Function Function\endlink).
  * Every concept in OpenTURNS is multidimensional unless clearly expressed or documented.
  *
  * \section Uncertainty

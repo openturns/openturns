@@ -59,7 +59,7 @@ epsilon : :class:`~openturns.NumericalPoint`
 
 Returns
 -------
-evalImpl : :class:`~openturns.NumericalMathFunctionEvaluationImplementation`
+evalImpl : :class:`~openturns.EvaluationImplementation`
     Implementation of the evaluation of a function."
 
 // ---------------------------------------------------------------------

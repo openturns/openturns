@@ -15,11 +15,11 @@ linear : :class:`~openturns.Matrix`
 
 See also
 --------
-NumericalMathFunction
+Function
 
 Notes
 -----
-This implements a linear :class:`~openturns.NumericalMathFunction` :math:`f` 
+This implements a linear :class:`~openturns.Function` :math:`f` 
 defined as :
 
 .. math::

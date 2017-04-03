@@ -399,13 +399,13 @@ NumericalPoint ARMALikelihoodFactory::computeLogLikelihoodInequalityConstraint(c
 }
 
 /* Compute the log-likelihood function accessor */
-NumericalMathFunction ARMALikelihoodFactory::getLogLikelihoodFunction() const
+Function ARMALikelihoodFactory::getLogLikelihoodFunction() const
 {
   return bindMethod <ARMALikelihoodFactory, NumericalScalar, NumericalPoint> ( *this, &ARMALikelihoodFactory::computeLogLikelihood, inputDimension_, 1);
 }
 
 /* Compute the log-likelihood constraint accessor */
-NumericalMathFunction ARMALikelihoodFactory::getLogLikelihoodInequalityConstraint() const
+Function ARMALikelihoodFactory::getLogLikelihoodInequalityConstraint() const
 {
   return bindMethod <ARMALikelihoodFactory, NumericalPoint, NumericalPoint> ( *this, &ARMALikelihoodFactory::computeLogLikelihoodInequalityConstraint, inputDimension_ , nbInequalityConstraint_);
 }

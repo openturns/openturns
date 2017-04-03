@@ -133,7 +133,7 @@ struct IntegrationStrategyCoefficientsPolicy
    For the moment, there is no specific strategy for improving the approximation of
    the L2 integral by a finite sum: the same input sample is used for all the calls
    to this method */
-void IntegrationStrategy::computeCoefficients(const NumericalMathFunction & function,
+void IntegrationStrategy::computeCoefficients(const Function & function,
     const Basis & basis,
     const Indices & indices,
     const Indices & addedRanks,

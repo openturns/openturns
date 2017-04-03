@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
     Description formulaIshigami(1);
     formulaIshigami[0] = "sin(_pi*X1)+7*sin(_pi*X2)*sin(_pi*X2)+0.1*((_pi*X3)*(_pi*X3)*(_pi*X3)*(_pi*X3))*sin(_pi*X1)";
 
-    NumericalMathFunction modelIshigami(inputName, outputName, formulaIshigami);
+    Function modelIshigami(inputName, outputName, formulaIshigami);
 
     ComposedDistribution::DistributionCollection marginals(inputDimension);
     marginals[0] = Uniform(-1.0, 1.0);

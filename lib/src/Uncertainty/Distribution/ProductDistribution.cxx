@@ -220,7 +220,7 @@ NumericalScalar ProductDistribution::computePDFQ1(const NumericalScalar x,
   if ((x < ac) || (x >= bd)) return 0.0;
   GaussKronrod algo;
   const PDFKernelWrapper pdfKernelWrapper(left_, right_, x);
-  const NumericalMathFunction pdfKernel(bindMethod<PDFKernelWrapper, NumericalPoint, NumericalPoint>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
+  const Function pdfKernel(bindMethod<PDFKernelWrapper, NumericalPoint, NumericalPoint>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
   if (c == 0.0)
   {
     LOGDEBUG("c == 0.0");
@@ -296,7 +296,7 @@ NumericalScalar ProductDistribution::computePDFQ2(const NumericalScalar x,
   if ((x < ad) || (x >= bc)) return 0.0;
   GaussKronrod algo;
   const PDFKernelWrapper pdfKernelWrapper(left_, right_, x);
-  const NumericalMathFunction pdfKernel(bindMethod<PDFKernelWrapper, NumericalPoint, NumericalPoint>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
+  const Function pdfKernel(bindMethod<PDFKernelWrapper, NumericalPoint, NumericalPoint>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
   if (c == 0.0)
   {
     LOGDEBUG("c == 0.0");
@@ -372,7 +372,7 @@ NumericalScalar ProductDistribution::computePDFQ3(const NumericalScalar x,
   if ((x < bd) || (x >= ac)) return 0.0;
   GaussKronrod algo;
   const PDFKernelWrapper pdfKernelWrapper(left_, right_, x);
-  const NumericalMathFunction pdfKernel(bindMethod<PDFKernelWrapper, NumericalPoint, NumericalPoint>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
+  const Function pdfKernel(bindMethod<PDFKernelWrapper, NumericalPoint, NumericalPoint>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
   if (d == 0.0)
   {
     LOGDEBUG("d == 0.0");
@@ -448,7 +448,7 @@ NumericalScalar ProductDistribution::computePDFQ4(const NumericalScalar x,
   if ((x < bc) || (x >= ad)) return 0.0;
   GaussKronrod algo;
   const PDFKernelWrapper pdfKernelWrapper(left_, right_, x);
-  const NumericalMathFunction pdfKernel(bindMethod<PDFKernelWrapper, NumericalPoint, NumericalPoint>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
+  const Function pdfKernel(bindMethod<PDFKernelWrapper, NumericalPoint, NumericalPoint>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
   if (d == 0.0)
   {
     LOGDEBUG("d == 0.0");
@@ -526,12 +526,12 @@ NumericalScalar ProductDistribution::computeCDF(const NumericalPoint & point) co
   const CDFKernelWrapper cdfKernelWrapper(left_, right_, x);
   if (aLeft < 0)
   {
-    const NumericalMathFunction cdfKernel(bindMethod<CDFKernelWrapper, NumericalPoint, NumericalPoint>(cdfKernelWrapper, &CDFKernelWrapper::evalComplementary, 1, 1));
+    const Function cdfKernel(bindMethod<CDFKernelWrapper, NumericalPoint, NumericalPoint>(cdfKernelWrapper, &CDFKernelWrapper::evalComplementary, 1, 1));
     value += algo.integrate(cdfKernel, Interval(aLeft, std::min(bLeft, 0.0)), cdfEpsilon_)[0];
   }
   if (bLeft >= 0)
   {
-    const NumericalMathFunction cdfKernel(bindMethod<CDFKernelWrapper, NumericalPoint, NumericalPoint>(cdfKernelWrapper, &CDFKernelWrapper::eval, 1, 1));
+    const Function cdfKernel(bindMethod<CDFKernelWrapper, NumericalPoint, NumericalPoint>(cdfKernelWrapper, &CDFKernelWrapper::eval, 1, 1));
     value += algo.integrate(cdfKernel, Interval(std::max(0.0, aLeft), bLeft), cdfEpsilon_)[0];
   }
   return value;
@@ -552,7 +552,7 @@ NumericalScalar ProductDistribution::computeCDFQ1(const NumericalScalar x,
   LOGDEBUG(OSS() << "ac=" << ac << ", ad=" << ad << ", bc=" << bc << ", bd=" << bd);
   GaussKronrod algo;
   const CDFKernelWrapper cdfKernelWrapper(left_, right_, x);
-  const NumericalMathFunction cdfKernel(bindMethod<CDFKernelWrapper, NumericalPoint, NumericalPoint>(cdfKernelWrapper, &CDFKernelWrapper::eval, 1, 1));
+  const Function cdfKernel(bindMethod<CDFKernelWrapper, NumericalPoint, NumericalPoint>(cdfKernelWrapper, &CDFKernelWrapper::eval, 1, 1));
   if (c == 0.0)
   {
     LOGDEBUG("c == 0.0");
@@ -641,7 +641,7 @@ NumericalScalar ProductDistribution::computeCDFQ2(const NumericalScalar x,
   LOGDEBUG(OSS() << "ac=" << ac << ", ad=" << ad << ", bc=" << bc << ", bd=" << bd);
   GaussKronrod algo;
   const CDFKernelWrapper cdfKernelWrapper(left_, right_, x);
-  const NumericalMathFunction cdfKernel(bindMethod<CDFKernelWrapper, NumericalPoint, NumericalPoint>(cdfKernelWrapper, &CDFKernelWrapper::eval, 1, 1));
+  const Function cdfKernel(bindMethod<CDFKernelWrapper, NumericalPoint, NumericalPoint>(cdfKernelWrapper, &CDFKernelWrapper::eval, 1, 1));
   if (c == 0.0)
   {
     LOGDEBUG("c == 0.0");
@@ -730,7 +730,7 @@ NumericalScalar ProductDistribution::computeCDFQ3(const NumericalScalar x,
   LOGDEBUG(OSS() << "ac=" << ac << ", ad=" << ad << ", bc=" << bc << ", bd=" << bd);
   GaussKronrod algo;
   const CDFKernelWrapper cdfKernelWrapper(left_, right_, x);
-  const NumericalMathFunction cdfKernel(bindMethod<CDFKernelWrapper, NumericalPoint, NumericalPoint>(cdfKernelWrapper, &CDFKernelWrapper::eval, 1, 1));
+  const Function cdfKernel(bindMethod<CDFKernelWrapper, NumericalPoint, NumericalPoint>(cdfKernelWrapper, &CDFKernelWrapper::eval, 1, 1));
   if (d == 0.0)
   {
     LOGDEBUG("d == 0.0");
@@ -819,7 +819,7 @@ NumericalScalar ProductDistribution::computeCDFQ4(const NumericalScalar x,
   LOGDEBUG(OSS() << "ac=" << ac << ", ad=" << ad << ", bc=" << bc << ", bd=" << bd);
   GaussKronrod algo;
   const CDFKernelWrapper cdfKernelWrapper(left_, right_, x);
-  const NumericalMathFunction cdfKernel(bindMethod<CDFKernelWrapper, NumericalPoint, NumericalPoint>(cdfKernelWrapper, &CDFKernelWrapper::eval, 1, 1));
+  const Function cdfKernel(bindMethod<CDFKernelWrapper, NumericalPoint, NumericalPoint>(cdfKernelWrapper, &CDFKernelWrapper::eval, 1, 1));
   if (d == 0.0)
   {
     LOGDEBUG("d == 0.0");
@@ -913,7 +913,7 @@ NumericalComplex ProductDistribution::computeCharacteristicFunction(const Numeri
   const NumericalScalar bLeft = left_.getRange().getUpperBound()[0];
   GaussKronrod algo;
   const CFKernelWrapper cfKernelWrapper(left_, right_, x);
-  const NumericalMathFunction cfKernel(bindMethod<CFKernelWrapper, NumericalPoint, NumericalPoint>(cfKernelWrapper, &CFKernelWrapper::eval, 1, 2));
+  const Function cfKernel(bindMethod<CFKernelWrapper, NumericalPoint, NumericalPoint>(cfKernelWrapper, &CFKernelWrapper::eval, 1, 2));
   NumericalScalar negativeError = 0.0;
   const NumericalPoint negativePart(algo.integrate(cfKernel, Interval(aLeft, muLeft), negativeError));
   NumericalScalar positiveError = 0.0;

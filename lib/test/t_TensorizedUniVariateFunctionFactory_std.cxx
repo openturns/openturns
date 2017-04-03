@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     fullprint << "point=" << point << std::endl;
     for (UnsignedInteger i = 0; i < 10; ++i)
     {
-      NumericalMathFunction f(factory.build(i));
+      Function f(factory.build(i));
       fullprint << "i=" << i << " f(point)=" << f(point) << std::endl;
     }
   }

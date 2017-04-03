@@ -30,7 +30,7 @@
 #include "openturns/Basis.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/ProcessSample.hxx"
 #include "openturns/PersistentObject.hxx"
@@ -49,8 +49,8 @@ class OT_API KarhunenLoeveQuadratureFactory
   CLASSNAME;
 
 public:
-  typedef Collection<NumericalMathFunction>           NumericalMathFunctionCollection;
-  typedef PersistentCollection<NumericalMathFunction> NumericalMathFunctionPersistentCollection;
+  typedef Collection<Function>           FunctionCollection;
+  typedef PersistentCollection<Function> FunctionPersistentCollection;
 
   /** Default constructor without parameters */
   KarhunenLoeveQuadratureFactory();
@@ -92,7 +92,7 @@ private:
   Domain domain_;
 
   /** Functions used for the representation */
-  NumericalMathFunctionPersistentCollection coll_;
+  FunctionPersistentCollection coll_;
 
   /** Threshold for eigenvalues selection */
   NumericalScalar threshold_;

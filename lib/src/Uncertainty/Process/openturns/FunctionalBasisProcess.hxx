@@ -70,7 +70,7 @@ public:
   virtual Field getRealization() const;
 
   /** Continuous realization accessor */
-  virtual NumericalMathFunction getContinuousRealization() const;
+  virtual Function getContinuousRealization() const;
 
   /** Continuation of the last realization on a given number of steps */
   using ProcessImplementation::getFuture;

@@ -26,5 +26,5 @@ try:
 
 except:
     import sys
-    print("t_NumericalMathFunction_indicator.py",
+    print("t_Function_indicator.py",
           sys.exc_info()[0], sys.exc_info()[1])

@@ -21,7 +21,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ProcessImplementation.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/PiecewiseLinearEvaluation.hxx"
 #include "openturns/P1LagrangeEvaluation.hxx"
 #include "openturns/RegularGrid.hxx"
@@ -160,7 +160,7 @@ Field ProcessImplementation::getRealization() const
 }
 
 /* Continuous realization accessor */
-NumericalMathFunction ProcessImplementation::getContinuousRealization() const
+Function ProcessImplementation::getContinuousRealization() const
 {
   // The continuous realization is obtained by a piecewise linear interpolation
   const Field field(getRealization());

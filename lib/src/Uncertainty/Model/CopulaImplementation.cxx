@@ -113,7 +113,7 @@ NumericalPoint CopulaImplementation::computeQuantile(const NumericalScalar prob,
   // Special case for dimension 1
   if (dimension == 1) return NumericalPoint(1, q);
   QuantileWrapper wrapper(this);
-  const NumericalMathFunction f(bindMethod<QuantileWrapper, NumericalPoint, NumericalPoint>(wrapper, &QuantileWrapper::computeDiagonal, 1, 1));
+  const Function f(bindMethod<QuantileWrapper, NumericalPoint, NumericalPoint>(wrapper, &QuantileWrapper::computeDiagonal, 1, 1));
   NumericalScalar leftTau = q;
   const NumericalPoint leftPoint(1, leftTau);
   const NumericalPoint leftValue(f(leftPoint));
@@ -194,7 +194,7 @@ CorrelationMatrix CopulaImplementation::getKendallTau() const
       {
         // Build the integrand
         const CopulaImplementationKendallTauWrapper functionWrapper(marginalDistribution);
-        const NumericalMathFunction function(bindMethod<CopulaImplementationKendallTauWrapper, NumericalPoint, NumericalPoint>(functionWrapper, &CopulaImplementationKendallTauWrapper::kernel, 2, 1));
+        const Function function(bindMethod<CopulaImplementationKendallTauWrapper, NumericalPoint, NumericalPoint>(functionWrapper, &CopulaImplementationKendallTauWrapper::kernel, 2, 1));
         tau(rowIndex, columnIndex) = integrator.integrate(function, square)[0];
       }
     } // loop over column indices
@@ -267,7 +267,7 @@ void CopulaImplementation::computeCovariance() const
         {
           // Build the integrand
           CopulaImplementationCovarianceWrapper functionWrapper(marginalDistribution);
-          NumericalMathFunction function(bindMethod<CopulaImplementationCovarianceWrapper, NumericalPoint, NumericalPoint>(functionWrapper, &CopulaImplementationCovarianceWrapper::kernel, 2, 1));
+          Function function(bindMethod<CopulaImplementationCovarianceWrapper, NumericalPoint, NumericalPoint>(functionWrapper, &CopulaImplementationCovarianceWrapper::kernel, 2, 1));
           // Compute the covariance element
           covariance_(rowIndex, columnIndex) = integrator.integrate(function, unitSquare)[0];
         }

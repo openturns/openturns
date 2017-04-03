@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class NumericalMathFunction for standard methods
+ *  @brief The test file of class Function for standard methods
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     SymbolicFunction myFunc(input, formula);
 
     /** Copy constructor */
-    NumericalMathFunction newFunc(myFunc);
+    Function newFunc(myFunc);
 
     fullprint << "myFunc=" << myFunc << std::endl;
     NumericalPoint point(myFunc.getInputDimension(), 1.2);

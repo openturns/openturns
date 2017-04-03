@@ -63,7 +63,7 @@ public:
 
 protected:
   /** Likelihood constraint accessor */
-  NumericalMathFunction getLogLikelihoodInequalityConstraint() const;
+  Function getLogLikelihoodInequalityConstraint() const;
 
   /** likelihood estimate */
   NumericalPoint computeLogLikelihoodInequalityConstraint( const NumericalPoint & x ) const;

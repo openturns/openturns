@@ -68,7 +68,7 @@ public:
                const RandomVector & randomParameters);
 
   /** Constructor for composite vector */
-  RandomVector(const NumericalMathFunction & function,
+  RandomVector(const Function & function,
                const RandomVector & antecedent);
 
   /** Constructor for functional chaos vector */
@@ -112,8 +112,8 @@ public:
   /** This method allows to access the antecedent RandomVector in case of a composite RandomVector */
   Antecedent getAntecedent() const;
 
-  /** This method allows to access the NumericalMathFunction in case of a composite RandomVector */
-  NumericalMathFunction getFunction() const;
+  /** This method allows to access the Function in case of a composite RandomVector */
+  Function getFunction() const;
 
   /** This method allows to access the Distribution in case of a usual RandomVector */
   Distribution getDistribution() const;

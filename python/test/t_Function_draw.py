@@ -40,5 +40,5 @@ try:
 
 except:
     import sys
-    print("t_NumericalMathFunction_draw.py",
+    print("t_Function_draw.py",
           sys.exc_info()[0], sys.exc_info()[1])

@@ -34,7 +34,7 @@ quantile=class=NumericalPoint name=Unnamed dimension=1 values=[0.729299]
 cdf(quantile)=0.95
 Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-0.811401] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.811401] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
-Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Epanechnikov()) gradientImplementation=MinimumVolumeLevelSetGradient(Epanechnikov()) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=NumericalPoint name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Epanechnikov()) level=1.36172
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Epanechnikov()) gradientImplementation=MinimumVolumeLevelSetGradient(Epanechnikov()) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=NumericalPoint name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Epanechnikov()) level=1.36172
 beta=0.256221
 Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-0.811401] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.811401] finite lower bound=[1] finite upper bound=[1]
 beta=0.95

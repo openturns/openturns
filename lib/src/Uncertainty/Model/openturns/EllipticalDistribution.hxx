@@ -194,11 +194,11 @@ protected:
 
 private:
   // Class used to wrap the computeRadialCDF() method for interpolation purpose
-  class RadialCDFWrapper: public NumericalMathFunctionImplementation
+  class RadialCDFWrapper: public FunctionImplementation
   {
   public:
     RadialCDFWrapper(const EllipticalDistribution * p_distribution)
-      : NumericalMathFunctionImplementation()
+      : FunctionImplementation()
       , p_distribution_(p_distribution)
     {
       // Nothing to do

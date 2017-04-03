@@ -39,7 +39,7 @@ class OT_API PenalizedLeastSquaresAlgorithm
   CLASSNAME;
 public:
 
-  typedef Collection<NumericalMathFunction> NumericalMathFunctionCollection;
+  typedef Collection<Function> FunctionCollection;
 
   // friend class Factory<PenalizedLeastSquaresAlgorithm>;
 

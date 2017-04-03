@@ -11,7 +11,7 @@ OT_IntegrationAlgorithm_doc
 
 Parameters
 ----------
-function : :class:`~openturns.NumericalMathFunction`
+function : :class:`~openturns.Function`
     The function to integrate.
 interval : :class:`~openturns.Interval`
     The integration domain.

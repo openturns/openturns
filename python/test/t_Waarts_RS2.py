@@ -29,7 +29,7 @@ try:
     formulas = Description(outputFunction.getSize())
     formulas[0] = "r - s^2"
 
-    limitState = NumericalMathFunction(inputFunction, outputFunction, formulas)
+    limitState = Function(inputFunction, outputFunction, formulas)
 
     dim = limitState.getInputDimension()
 

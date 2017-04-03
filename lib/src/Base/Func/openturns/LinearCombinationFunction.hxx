@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_LINEARCOMBINATIONFUNCTION_HXX
 #define OPENTURNS_LINEARCOMBINATIONFUNCTION_HXX
 
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/SymmetricTensor.hxx"
@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  */
 class OT_API LinearCombinationFunction
-  : public NumericalMathFunction
+  : public Function
 {
   CLASSNAME;
 public:
@@ -42,7 +42,7 @@ public:
   LinearCombinationFunction();
 
   /** Parameter constructor */
-  LinearCombinationFunction(const NumericalMathFunctionCollection & functionCollection,
+  LinearCombinationFunction(const FunctionCollection & functionCollection,
                             const NumericalPoint & coefficients);
 
   /** Comparison operator */

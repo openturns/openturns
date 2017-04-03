@@ -29,14 +29,14 @@ CLASSNAMEINIT(AggregatedFunction);
 
 /* Default constructor */
 AggregatedFunction::AggregatedFunction ()
-  : NumericalMathFunction()
+  : Function()
 {
 }
 
 
 /* Parameter constructor */
-AggregatedFunction::AggregatedFunction (const NumericalMathFunctionCollection & functionCollection)
-  : NumericalMathFunction()
+AggregatedFunction::AggregatedFunction (const FunctionCollection & functionCollection)
+  : Function()
 {
   const AggregatedEvaluation evaluation(functionCollection);
   setEvaluation(evaluation.clone());

@@ -196,7 +196,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const NumericalSample &
 
 /* Parameters constructor */
 GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const NumericalSample & inputSample,
-    const NumericalMathFunction & inputTransformation,
+    const Function & inputTransformation,
     const NumericalSample & outputSample,
     const CovarianceModel & covarianceModel,
     const Basis & basis,
@@ -308,7 +308,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const NumericalSample &
 
 /* Parameters constructor */
 GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const NumericalSample & inputSample,
-    const NumericalMathFunction & inputTransformation,
+    const Function & inputTransformation,
     const NumericalSample & outputSample,
     const CovarianceModel & covarianceModel,
     const BasisCollection & basisCollection,
@@ -621,11 +621,11 @@ void GeneralLinearModelAlgorithm::run()
   LOGINFO("Build the output meta-model");
   // The meta model is of type DualLinearCombination function
   // We should write the coefficients into a NumericalSample and build the basis into a collection
-  Collection<NumericalMathFunction> allFunctionsCollection;
+  Collection<Function> allFunctionsCollection;
   for (UnsignedInteger k = 0; k < basisCollection_.getSize(); ++k)
     for (UnsignedInteger l = 0; l < basisCollection_[k].getSize(); ++l)
       allFunctionsCollection.add(basisCollection_[k].build(l));
-  NumericalMathFunction metaModel;
+  Function metaModel;
 
   if (basisCollection_.getSize() > 0)
   {
@@ -638,7 +638,7 @@ void GeneralLinearModelAlgorithm::run()
 #ifdef OPENTURNS_HAVE_MUPARSER
     metaModel = SymbolicFunction(Description::BuildDefault(covarianceModel_.getSpatialDimension(), "x"), Description(covarianceModel_.getDimension(), "0.0"));
 #else
-    metaModel = NumericalMathFunction(NumericalSample(1, reducedCovarianceModel_.getSpatialDimension()), NumericalSample(1, reducedCovarianceModel_.getDimension()));
+    metaModel = Function(NumericalSample(1, reducedCovarianceModel_.getSpatialDimension()), NumericalSample(1, reducedCovarianceModel_.getDimension()));
 #endif
   }
 
@@ -696,7 +696,7 @@ NumericalScalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
   NumericalPoint initialParameters(reducedCovarianceModel_.getParameter());
   Indices initialActiveParameters(reducedCovarianceModel_.getActiveParameter());
   // We use the functional form of the log-likelihood computation to benefit from the cache mechanism
-  NumericalMathFunction reducedLogLikelihoodFunction(getObjectiveFunction());
+  Function reducedLogLikelihoodFunction(getObjectiveFunction());
   const Bool noNumericalOptimization = initialParameters.getSize() == 0;
   // Early exit if the parameters are known
   if (noNumericalOptimization)
@@ -964,7 +964,7 @@ void GeneralLinearModelAlgorithm::setOptimizationSolver(const OptimizationAlgori
 
 
 
-void GeneralLinearModelAlgorithm::setInputTransformation(const NumericalMathFunction & inputTransformation)
+void GeneralLinearModelAlgorithm::setInputTransformation(const Function & inputTransformation)
 {
   if (inputTransformation.getInputDimension() != inputSample_.getDimension()) throw InvalidDimensionException(HERE)
         << "In GeneralLinearModelAlgorithm::setInputTransformation, input dimension of the transformation=" << inputTransformation.getInputDimension() << " should match input sample dimension=" << inputSample_.getDimension();
@@ -975,7 +975,7 @@ void GeneralLinearModelAlgorithm::setInputTransformation(const NumericalMathFunc
   normalize_ = true;
 }
 
-NumericalMathFunction GeneralLinearModelAlgorithm::getInputTransformation() const
+Function GeneralLinearModelAlgorithm::getInputTransformation() const
 {
   // If normlize is false, we return identity function
   if (!normalize_) return IdentityFunction(inputSample_.getDimension());
@@ -1068,13 +1068,13 @@ GeneralLinearModelResult GeneralLinearModelAlgorithm::getResult()
 }
 
 
-NumericalMathFunction GeneralLinearModelAlgorithm::getObjectiveFunction()
+Function GeneralLinearModelAlgorithm::getObjectiveFunction()
 {
   LOGINFO("Normalizing the data (if needed)...");
   normalizeInputSample();
   LOGINFO("Compute the design matrix");
   computeF();
-  NumericalMathFunction logLikelihood(ReducedLogLikelihoodEvaluation(*this));
+  Function logLikelihood(ReducedLogLikelihoodEvaluation(*this));
   // Here we change the finite difference gradient for a non centered one in order to reduce the computational cost
   logLikelihood.setGradient(NonCenteredFiniteDifferenceGradient(ResourceMap::GetAsNumericalScalar( "NonCenteredFiniteDifferenceGradient-DefaultEpsilon" ), logLikelihood.getEvaluation()).clone());
   logLikelihood.enableCache();

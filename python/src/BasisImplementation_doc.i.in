@@ -8,7 +8,7 @@ Available constructors:
 
 Parameters
 ----------
-functionsColl : list of :class:`~openturns.NumericalMathFunction`
+functionsColl : list of :class:`~openturns.Function`
     Functions constituting the Basis.
 size : int
     Size of the Basis.
@@ -33,7 +33,7 @@ OT_Basis_doc
 
 Parameters
 ----------
-function : :class:`~openturns.NumericalMathFunction`
+function : :class:`~openturns.Function`
     Function added in the Basis.
 
 Examples
@@ -62,7 +62,7 @@ index : int, :math:`index \geq 0`
 
 Returns
 -------
-function : :class:`~openturns.NumericalMathFunction`
+function : :class:`~openturns.Function`
     The function at the index *index* of the Basis.
 
 Examples
@@ -118,7 +118,7 @@ indices : list of int
 
 Returns
 -------
-subBasis : list of :class:`~openturns.NumericalMathFunction`
+subBasis : list of :class:`~openturns.Function`
     Functions defining a sub-basis.
 
 Examples

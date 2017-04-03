@@ -29,15 +29,15 @@ CLASSNAMEINIT(LinearCombinationFunction);
 
 /* Default constructor */
 LinearCombinationFunction::LinearCombinationFunction ()
-  : NumericalMathFunction()
+  : Function()
 {
 }
 
 
 /* Parameter constructor */
-LinearCombinationFunction::LinearCombinationFunction (const NumericalMathFunctionCollection & functionCollection,
+LinearCombinationFunction::LinearCombinationFunction (const FunctionCollection & functionCollection,
                                                       const NumericalPoint & coefficients)
-  : NumericalMathFunction()
+  : Function()
 {
   const LinearCombinationEvaluation evaluation(functionCollection, coefficients);
   setEvaluation(evaluation.clone());

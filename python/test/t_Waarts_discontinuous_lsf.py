@@ -28,7 +28,7 @@ try:
     formula = Description(outputFunction.getSize())
     formula[0] = "if( x2 <= x1,-0.5+sqrt(x1-x2),-0.5 )"
 
-    EtatLimite = NumericalMathFunction(inputFunction, outputFunction, formula)
+    EtatLimite = Function(inputFunction, outputFunction, formula)
 
     dim = EtatLimite.getInputDimension()
     print(dim)

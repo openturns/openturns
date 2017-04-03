@@ -26,7 +26,7 @@
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/SymmetricTensor.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -49,7 +49,7 @@ public:
 
   /** Constructor with parameters */
   QuadraticTaylor(const NumericalPoint & center,
-                  const NumericalMathFunction & inputFunction);
+                  const Function & inputFunction);
 
 
   /** Virtual constructor */
@@ -74,18 +74,18 @@ public:
   SymmetricTensor getQuadratic() const;
 
   /** Input function accessor */
-  NumericalMathFunction getInputFunction() const;
+  Function getInputFunction() const;
 
   /** Response surface accessor */
-  NumericalMathFunction getResponseSurface() const;
+  Function getResponseSurface() const;
 
 protected:
 
 private:
 
   NumericalPoint center_;
-  NumericalMathFunction inputFunction_;
-  NumericalMathFunction responseSurface_;
+  Function inputFunction_;
+  Function responseSurface_;
   NumericalPoint constant_;
   Matrix linear_;
   SymmetricTensor quadratic_;

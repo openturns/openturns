@@ -67,7 +67,7 @@ RandomWalkMetropolisHastings::RandomWalkMetropolisHastings( const Distribution &
 /* Parameters constructor */
 RandomWalkMetropolisHastings::RandomWalkMetropolisHastings( const Distribution & prior,
     const Distribution & conditional,
-    const NumericalMathFunction & model,
+    const Function & model,
     const NumericalSample & parameters,
     const NumericalSample & observations,
     const NumericalPoint & initialState,

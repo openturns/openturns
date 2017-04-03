@@ -50,18 +50,18 @@ FunctionalChaosResult::FunctionalChaosResult()
 
 
 /* Default constructor */
-FunctionalChaosResult::FunctionalChaosResult(const NumericalMathFunction & model,
+FunctionalChaosResult::FunctionalChaosResult(const Function & model,
     const Distribution & distribution,
-    const NumericalMathFunction & transformation,
-    const NumericalMathFunction & inverseTransformation,
-    const NumericalMathFunction & composedModel,
+    const Function & transformation,
+    const Function & inverseTransformation,
+    const Function & composedModel,
     const OrthogonalBasis & orthogonalBasis,
     const Indices & I,
     const NumericalSample & alpha_k,
-    const NumericalMathFunctionCollection & Psi_k,
+    const FunctionCollection & Psi_k,
     const NumericalPoint & residuals,
     const NumericalPoint & relativeErrors)
-  : MetaModelResult(model, NumericalMathFunction(), residuals, relativeErrors)
+  : MetaModelResult(model, Function(), residuals, relativeErrors)
   , distribution_(distribution)
   , transformation_(transformation)
   , inverseTransformation_(inverseTransformation)
@@ -122,19 +122,19 @@ Distribution FunctionalChaosResult::getDistribution() const
 }
 
 /* IsoProbabilisticTransformation accessor */
-NumericalMathFunction FunctionalChaosResult::getTransformation() const
+Function FunctionalChaosResult::getTransformation() const
 {
   return transformation_;
 }
 
 /* InverseIsoProbabilisticTransformation accessor */
-NumericalMathFunction FunctionalChaosResult::getInverseTransformation() const
+Function FunctionalChaosResult::getInverseTransformation() const
 {
   return inverseTransformation_;
 }
 
 /* Composed model accessor */
-NumericalMathFunction FunctionalChaosResult::getComposedModel() const
+Function FunctionalChaosResult::getComposedModel() const
 {
   return composedModel_;
 }
@@ -158,13 +158,13 @@ NumericalSample FunctionalChaosResult::getCoefficients() const
 }
 
 /* Reduced basis accessor */
-FunctionalChaosResult::NumericalMathFunctionCollection FunctionalChaosResult::getReducedBasis() const
+FunctionalChaosResult::FunctionCollection FunctionalChaosResult::getReducedBasis() const
 {
   return Psi_k_;
 }
 
 /* Composed meta model accessor */
-NumericalMathFunction FunctionalChaosResult::getComposedMetaModel() const
+Function FunctionalChaosResult::getComposedMetaModel() const
 {
   return composedMetaModel_;
 }

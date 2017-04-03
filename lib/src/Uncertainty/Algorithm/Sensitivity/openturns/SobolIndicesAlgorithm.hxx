@@ -60,12 +60,12 @@ public:
   /** Constructor with parameters */
   SobolIndicesAlgorithm(const Distribution & distribution,
                         const UnsignedInteger size,
-                        const NumericalMathFunction & model,
+                        const Function & model,
                         const Bool computeSecondOrder = true);
 
   /** Constructor with experiment / model parameters */
   SobolIndicesAlgorithm(const WeightedExperiment & experiment,
-                        const NumericalMathFunction & model,
+                        const Function & model,
                         const Bool computeSecondOrder = true);
 
   /** First order indices accessor */

@@ -99,7 +99,7 @@ SobolIndicesAlgorithmImplementation * SobolIndicesAlgorithmImplementation::clone
 /** Constructor with distribution / model parameters */
 SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const Distribution & distribution,
     const UnsignedInteger size,
-    const NumericalMathFunction & model,
+    const Function & model,
     const Bool computeSecondOrder)
   : PersistentObject()
   , inputDesign_()
@@ -136,7 +136,7 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const D
 
 /** Constructor with distribution / model parameters */
 SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const WeightedExperiment & experiment,
-    const NumericalMathFunction & model,
+    const Function & model,
     const Bool computeSecondOrder)
   : PersistentObject()
   , inputDesign_()

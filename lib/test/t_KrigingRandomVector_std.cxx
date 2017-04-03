@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
     KrigingResult result(algo.getResult());
 
     // Get meta model
-    NumericalMathFunction metaModel(result.getMetaModel());
+    Function metaModel(result.getMetaModel());
 
     // Interpolation error
     assert_almost_equal(outputSample,  metaModel(inputSample), 3.0e-5, 3.0e-5);

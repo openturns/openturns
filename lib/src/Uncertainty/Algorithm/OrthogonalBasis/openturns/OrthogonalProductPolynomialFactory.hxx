@@ -26,7 +26,7 @@
 #include "openturns/Indices.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/NumericalSample.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/OrthogonalUniVariatePolynomialFamily.hxx"
 
@@ -59,8 +59,8 @@ public:
   OrthogonalProductPolynomialFactory(const PolynomialFamilyCollection & coll,
                                      const EnumerateFunction & phi);
 
-  /** Build the NumericalMathFunction of the given index */
-  NumericalMathFunction build(const UnsignedInteger index) const;
+  /** Build the Function of the given index */
+  Function build(const UnsignedInteger index) const;
 
   /** Return the enumerate function that translate unidimensional indices into multidimensional indices */
   EnumerateFunction getEnumerateFunction() const;

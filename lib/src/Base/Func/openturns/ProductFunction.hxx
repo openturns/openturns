@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_PRODUCTFUNCTION_HXX
 #define OPENTURNS_PRODUCTFUNCTION_HXX
 
-#include "openturns/NumericalMathFunctionImplementation.hxx"
+#include "openturns/FunctionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API ProductFunction
-  : public NumericalMathFunctionImplementation
+  : public FunctionImplementation
 {
   CLASSNAME;
 public:

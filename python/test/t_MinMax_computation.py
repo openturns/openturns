@@ -16,7 +16,7 @@ try:
     outputVariables[0] = "d"
     formula = Description(1)
     formula[0] = "-F*L^3/(3*E*I)"
-    model = NumericalMathFunction(inputVariables, outputVariables, formula)
+    model = Function(inputVariables, outputVariables, formula)
     inputDimension = model.getInputDimension()
     # Define the reference domaine that will be sampled: an hypercube of side
     # length 2, discretized with 9+2=11 points in each dimension

@@ -85,8 +85,8 @@ public:
   NumericalScalar getAIETradeoff() const;
 
   /** Improvement noise function accessor */
-  void setNoiseModel(const NumericalMathFunction & noiseModel);
-  NumericalMathFunction getNoiseModel() const;
+  void setNoiseModel(const Function & noiseModel);
+  Function getNoiseModel() const;
 
   /** Expected improvement function */
   NumericalSample getExpectedImprovement() const;
@@ -131,7 +131,7 @@ private:
 
   // optional noise model for improvement optimization only
   // for the metamodel noise the 2nd marginal of the objective is used
-  NumericalMathFunction noiseModel_;
+  Function noiseModel_;
 
   mutable NumericalSample expectedImprovement_;
 

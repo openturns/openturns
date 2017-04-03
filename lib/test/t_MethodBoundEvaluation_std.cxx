@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
   try
   {
     Normal distribution(0, 1.0);
-    NumericalMathFunction function = bindMethod <Normal, NumericalPoint, NumericalPoint> ( distribution, &Normal::computeDDF, 1, 1 );
+    Function function = bindMethod <Normal, NumericalPoint, NumericalPoint> ( distribution, &Normal::computeDDF, 1, 1 );
     NumericalPoint p(1, 1.0);
     fullprint << "Normal DDF=" << distribution.computeDDF(p) << std::endl;
     fullprint << "bind DDF  =" << function(p)[0] << std::endl;

@@ -37,7 +37,7 @@ class OT_API ANCOVA
 public:
 
   /** Some typedefs to ease reading */
-  typedef Collection<NumericalMathFunction>     NumericalMathFunctionCollection;
+  typedef Collection<Function>     FunctionCollection;
 
   /** Constructor with model */
   ANCOVA(const FunctionalChaosResult & functionalChaosResult, const NumericalSample & correlatedInput);

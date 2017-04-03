@@ -56,7 +56,7 @@ class OT_API DistributionImplementation
 public:
 
   typedef Pointer<DistributionImplementation>       Implementation;
-  typedef NumericalMathFunction                     IsoProbabilisticTransformation;
+  typedef Function                     IsoProbabilisticTransformation;
   typedef IsoProbabilisticTransformation            InverseIsoProbabilisticTransformation;
   typedef Collection<NumericalPoint>                NumericalPointCollection;
   typedef Collection<NumericalPointWithDescription> NumericalPointWithDescriptionCollection;
@@ -773,11 +773,11 @@ protected:
 #ifndef SWIG
 
   // Class used to wrap the computePDF() method for interpolation purpose
-  class PDFWrapper: public NumericalMathFunctionImplementation
+  class PDFWrapper: public FunctionImplementation
   {
   public:
     PDFWrapper(const DistributionImplementation * p_distribution)
-      : NumericalMathFunctionImplementation()
+      : FunctionImplementation()
       , p_distribution_(p_distribution)
     {
       // Nothing to do
@@ -1059,13 +1059,13 @@ protected:
     const DistributionImplementation::Implementation p_distribution_;
   }; // class MinimumVolumeLevelSetGradient
 
-  class CovarianceWrapper: public NumericalMathFunctionImplementation
+  class CovarianceWrapper: public FunctionImplementation
   {
   public:
     CovarianceWrapper(const DistributionImplementation::Implementation & p_distribution,
                       const NumericalScalar muI,
                       const NumericalScalar muJ)
-      : NumericalMathFunctionImplementation()
+      : FunctionImplementation()
       , p_distribution_(p_distribution)
       , muI_(muI)
       , muJ_(muJ)
@@ -1132,13 +1132,13 @@ protected:
   };  // class CovarianceWrapper
 
   // Class used to wrap the computeConditionalPDF() method for the computation of the conditional CDF
-  class ShiftedMomentWrapper: public NumericalMathFunctionImplementation
+  class ShiftedMomentWrapper: public FunctionImplementation
   {
   public:
     ShiftedMomentWrapper(const UnsignedInteger n,
                          const NumericalScalar shift,
                          const DistributionImplementation::Implementation & p_distribution)
-      : NumericalMathFunctionImplementation()
+      : FunctionImplementation()
       , n_(1.0 * n)
       , shift_(shift)
       , p_distribution_(p_distribution)
@@ -1199,11 +1199,11 @@ protected:
   }; // class ShiftedMomentWrapper
 
   // Class used to wrap the computeConditionalPDF() method for the computation of the conditional CDF
-  class ConditionalPDFWrapper: public NumericalMathFunctionImplementation
+  class ConditionalPDFWrapper: public FunctionImplementation
   {
   public:
     ConditionalPDFWrapper(const DistributionImplementation::Implementation p_distribution)
-      : NumericalMathFunctionImplementation()
+      : FunctionImplementation()
       , y_(0.0)
       , p_distribution_(p_distribution)
     {
@@ -1270,11 +1270,11 @@ protected:
   }; // class ConditionalPDFWrapper
 
   // Class used to wrap the computeConditionalCDF() method for the computation of the conditional quantile
-  class ConditionalCDFWrapper: public NumericalMathFunctionImplementation
+  class ConditionalCDFWrapper: public FunctionImplementation
   {
   public:
     ConditionalCDFWrapper(const DistributionImplementation * p_distribution)
-      : NumericalMathFunctionImplementation()
+      : FunctionImplementation()
       , y_(0.0)
       , p_distribution_(p_distribution)
     {
@@ -1356,10 +1356,10 @@ protected:
   mutable NumericalPoint pdfGrid_;
 
   /** Wrapper to compute conditional CDF */
-  mutable Pointer<NumericalMathFunctionImplementation> p_conditionalPDFWrapper_;
+  mutable Pointer<FunctionImplementation> p_conditionalPDFWrapper_;
 
   /** Wrapper to compute conditional quantile */
-  mutable Pointer<NumericalMathFunctionImplementation> p_conditionalCDFWrapper_;
+  mutable Pointer<FunctionImplementation> p_conditionalCDFWrapper_;
 
 }; /* class DistributionImplementation */
 

@@ -29,7 +29,7 @@
 #include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/Interval.hxx"
 #include "openturns/Tuples.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/Triangular.hxx"
 #include "openturns/Trapezoidal.hxx"
@@ -773,7 +773,7 @@ NumericalScalar RandomMixture::computePDF(const NumericalPoint & point) const
     }
     GaussKronrod algo;
     const RandomMixture2AtomsWrapper convolutionKernelWrapper(alpha1, alpha2, distributionCollection_[0], distributionCollection_[1], z0);
-    const NumericalMathFunction convolutionKernel(bindMethod<RandomMixture2AtomsWrapper, NumericalPoint, NumericalPoint>(convolutionKernelWrapper, &RandomMixture2AtomsWrapper::convolutionPDFKernel, 1, 1));
+    const Function convolutionKernel(bindMethod<RandomMixture2AtomsWrapper, NumericalPoint, NumericalPoint>(convolutionKernelWrapper, &RandomMixture2AtomsWrapper::convolutionPDFKernel, 1, 1));
     return algo.integrate(convolutionKernel, Interval(lower, upper), pdfEpsilon_)[0] / std::abs(alpha2);
   }
 
@@ -1748,7 +1748,7 @@ NumericalScalar RandomMixture::computeCDF(const NumericalPoint & point) const
     GaussKronrod algo;
     if (alpha2 > 0)
     {
-      const NumericalMathFunction convolutionKernel(bindMethod<RandomMixture2AtomsWrapper, NumericalPoint, NumericalPoint>(convolutionKernelWrapper, &RandomMixture2AtomsWrapper::convolutionCDFKernel, 1, 1));
+      const Function convolutionKernel(bindMethod<RandomMixture2AtomsWrapper, NumericalPoint, NumericalPoint>(convolutionKernelWrapper, &RandomMixture2AtomsWrapper::convolutionCDFKernel, 1, 1));
       if (alpha1 > 0)
       {
         lower = std::max(a, ud);
@@ -1768,7 +1768,7 @@ NumericalScalar RandomMixture::computeCDF(const NumericalPoint & point) const
     } // alpha2 > 0
     else
     {
-      const NumericalMathFunction convolutionKernel(bindMethod<RandomMixture2AtomsWrapper, NumericalPoint, NumericalPoint>(convolutionKernelWrapper, &RandomMixture2AtomsWrapper::convolutionCCDFKernel, 1, 1));
+      const Function convolutionKernel(bindMethod<RandomMixture2AtomsWrapper, NumericalPoint, NumericalPoint>(convolutionKernelWrapper, &RandomMixture2AtomsWrapper::convolutionCCDFKernel, 1, 1));
       if (alpha1 > 0)
       {
         lower = std::max(a, uc);
@@ -1980,7 +1980,7 @@ NumericalScalar RandomMixture::computeScalarQuantile(const NumericalScalar prob,
 LevelSet RandomMixture::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob,
     NumericalScalar & threshold) const
 {
-  NumericalMathFunction minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
+  Function minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
   minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
   // As we are in 1D and as the function defining the composite distribution can have complex variations,
   // we use an improved sampling method to compute the quantile of the -logPDF(X) distribution

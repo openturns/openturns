@@ -41,7 +41,7 @@ class OT_API IteratedQuadrature
 
 public:
 
-  typedef Collection< NumericalMathFunction > NumericalMathFunctionCollection;
+  typedef Collection< Function > FunctionCollection;
 
   /** Default constructor without parameters */
   IteratedQuadrature();
@@ -55,15 +55,15 @@ public:
   /** Compute an approximation of \int_a^b\int_{L_1(x_1)}^{U_1(x_1)}\int_{L_1(x_1,x_2)}^{U_2(x_1,x_2)}\dots\int_{L_1(x_1,\dots,x_{n-1})}^{U_2(x_1,\dots,x_{n-1})} f(x_1,\dots,x_n)dx_1\dotsdx_n, where [a,b] is an 1D interval, L_k and U_k are functions from R^k into R.
    */
   using IntegrationAlgorithmImplementation::integrate;
-  NumericalPoint integrate(const NumericalMathFunction & function,
+  NumericalPoint integrate(const Function & function,
                            const Interval & interval) const;
 
   // This method allows to get the estimated integration error as a scalar
-  NumericalPoint integrate(const NumericalMathFunction & function,
+  NumericalPoint integrate(const Function & function,
                            const NumericalScalar a,
                            const NumericalScalar b,
-                           const NumericalMathFunctionCollection & lowerBounds,
-                           const NumericalMathFunctionCollection & upperBounds,
+                           const FunctionCollection & lowerBounds,
+                           const FunctionCollection & upperBounds,
                            const Bool check = true) const;
 
   /** String converter */
@@ -75,15 +75,15 @@ public:
 private:
 
   // Class to compute in a recursive way a multidimensional integral
-  class PartialFunctionWrapper: public NumericalMathFunctionImplementation
+  class PartialFunctionWrapper: public FunctionImplementation
   {
   public:
     /* Default constructor */
     PartialFunctionWrapper(const IteratedQuadrature & quadrature,
-                           const NumericalMathFunction & function,
-                           const IteratedQuadrature::NumericalMathFunctionCollection & lowerBounds,
-                           const IteratedQuadrature::NumericalMathFunctionCollection & upperBounds)
-      : NumericalMathFunctionImplementation()
+                           const Function & function,
+                           const IteratedQuadrature::FunctionCollection & lowerBounds,
+                           const IteratedQuadrature::FunctionCollection & upperBounds)
+      : FunctionImplementation()
       , quadrature_(quadrature)
       , function_(function)
       , lowerBounds_(lowerBounds)
@@ -100,8 +100,8 @@ private:
       const UnsignedInteger size = lowerBounds_.getSize() - 1;
       const NumericalScalar a = lowerBounds_[0](point)[0];
       const NumericalScalar b = upperBounds_[0](point)[0];
-      IteratedQuadrature::NumericalMathFunctionCollection lowerBounds(size);
-      IteratedQuadrature::NumericalMathFunctionCollection upperBounds(size);
+      IteratedQuadrature::FunctionCollection lowerBounds(size);
+      IteratedQuadrature::FunctionCollection upperBounds(size);
       for (UnsignedInteger i = 0; i < size; ++i)
       {
         lowerBounds[i] = ParametricFunction(lowerBounds_[i + 1], index, point);
@@ -118,8 +118,8 @@ private:
       const UnsignedInteger sampleSize = sample.getSize();
       const UnsignedInteger outputDimension = function_.getOutputDimension();
       const UnsignedInteger size = lowerBounds_.getSize() - 1;
-      IteratedQuadrature::NumericalMathFunctionCollection lowerBounds(size);
-      IteratedQuadrature::NumericalMathFunctionCollection upperBounds(size);
+      IteratedQuadrature::FunctionCollection lowerBounds(size);
+      IteratedQuadrature::FunctionCollection upperBounds(size);
       NumericalSample result(sampleSize, outputDimension);
       const Indices index(1, 0);
       const NumericalSample sampleA(lowerBounds_[0](sample));
@@ -170,9 +170,9 @@ private:
 
   private:
     const IteratedQuadrature & quadrature_;
-    const NumericalMathFunction & function_;
-    const IteratedQuadrature::NumericalMathFunctionCollection & lowerBounds_;
-    const IteratedQuadrature::NumericalMathFunctionCollection & upperBounds_;
+    const Function & function_;
+    const IteratedQuadrature::FunctionCollection & lowerBounds_;
+    const IteratedQuadrature::FunctionCollection & upperBounds_;
   }; // class PartialFunctionWrapper
 
   /* Underlying integration algorithm */

@@ -29,14 +29,14 @@ CLASSNAMEINIT(InverseBoxCoxTransform);
 
 /* Default constructor */
 InverseBoxCoxTransform::InverseBoxCoxTransform()
-  : NumericalMathFunction(InverseBoxCoxEvaluation())
+  : Function(InverseBoxCoxEvaluation())
 {
   // Nothing to do
 }
 
 /* Standard parameter constructor */
 InverseBoxCoxTransform::InverseBoxCoxTransform(const NumericalPoint & lambda)
-  : NumericalMathFunction()
+  : Function()
 {
   const InverseBoxCoxEvaluation evaluation(lambda);
   setEvaluation(evaluation.clone());
@@ -47,7 +47,7 @@ InverseBoxCoxTransform::InverseBoxCoxTransform(const NumericalPoint & lambda)
 /* NumericalScalarCollection parameter constructor */
 InverseBoxCoxTransform::InverseBoxCoxTransform(const NumericalPoint & lambda,
     const NumericalPoint & shift)
-  : NumericalMathFunction()
+  : Function()
 {
   const InverseBoxCoxEvaluation evaluation(lambda, shift);
   setEvaluation(evaluation.clone());
@@ -57,7 +57,7 @@ InverseBoxCoxTransform::InverseBoxCoxTransform(const NumericalPoint & lambda,
 
 /* 1D NumericalScalar parameter constructor */
 InverseBoxCoxTransform::InverseBoxCoxTransform(const NumericalScalar & lambda)
-  : NumericalMathFunction()
+  : Function()
 {
   const InverseBoxCoxEvaluation evaluation(NumericalPoint(1, lambda));
   setEvaluation(evaluation.clone());
@@ -67,7 +67,7 @@ InverseBoxCoxTransform::InverseBoxCoxTransform(const NumericalScalar & lambda)
 
 InverseBoxCoxTransform::InverseBoxCoxTransform(const NumericalScalar & lambda,
     const NumericalScalar & shift)
-  : NumericalMathFunction()
+  : Function()
 {
   const InverseBoxCoxEvaluation evaluation(NumericalPoint(1, lambda), NumericalPoint(1, shift));
   setEvaluation(evaluation.clone());

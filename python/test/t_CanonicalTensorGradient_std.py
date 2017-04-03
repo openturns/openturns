@@ -27,7 +27,7 @@ print(x)
 df = tensorGrad.gradient(x) * ot.NumericalPoint([1.0])
 print('df=', df)
 
-f = ot.NumericalMathFunction(tensorEval)
+f = ot.Function(tensorEval)
 fx = f(x)[0]
 
 eps = 1e-5

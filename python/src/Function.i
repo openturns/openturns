@@ -1,72 +1,72 @@
-// SWIG file NumericalMathFunction.i
+// SWIG file Function.i
 
 %{
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/PythonEvaluation.hxx"
 %}
 
 %include BaseFuncCollection.i
 
-OTTypedInterfaceObjectHelper(NumericalMathFunction)
-//OTTypedCollectionInterfaceObjectHelper(NumericalMathFunction)
+OTTypedInterfaceObjectHelper(Function)
+//OTTypedCollectionInterfaceObjectHelper(Function)
 
 
 
-%typemap(in) const NumericalMathFunctionCollection & {
+%typemap(in) const FunctionCollection & {
   void * ptr = 0;
   if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
     // From interface class, ok
   } else if (SWIG_IsOK(SWIG_ConvertPtr($input, &ptr, SWIG_TypeQuery("OT::Basis *"), 0))) {
     // From Implementation*
     OT::Basis * p_impl = reinterpret_cast< OT::Basis * >( ptr );
-    $1 = new OT::Collection<OT::NumericalMathFunction>(*p_impl);
+    $1 = new OT::Collection<OT::Function>(*p_impl);
   } else {
     try {
-      $1 = OT::buildCollectionFromPySequence< OT::NumericalMathFunction >( $input );
+      $1 = OT::buildCollectionFromPySequence< OT::Function >( $input );
     } catch (OT::InvalidArgumentException &) {
-      SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a collection of NumericalMathFunction");
+      SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a collection of Function");
     }
   }
 }
 
-%typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const NumericalMathFunctionCollection & {
+%typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const FunctionCollection & {
   $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0))
-    || OT::canConvertCollectionObjectFromPySequence< OT::NumericalMathFunction >( $input )
+    || OT::canConvertCollectionObjectFromPySequence< OT::Function >( $input )
     || SWIG_IsOK(SWIG_ConvertPtr($input, NULL, SWIG_TypeQuery("OT::Basis *"), 0));
 }
 
-%apply const NumericalMathFunctionCollection & { const OT::Collection<OT::NumericalMathFunction> & };
+%apply const FunctionCollection & { const OT::Collection<OT::Function> & };
 
-%template(NumericalMathFunctionCollection) OT::Collection<OT::NumericalMathFunction>;
-%template(NumericalMathFunctionPersistentCollection) OT::PersistentCollection<OT::NumericalMathFunction>;
+%template(FunctionCollection) OT::Collection<OT::Function>;
+%template(FunctionPersistentCollection) OT::PersistentCollection<OT::Function>;
 
 
-%include NumericalMathFunction_doc.i
+%include Function_doc.i
 
-%ignore OT::NumericalMathFunction::getUseDefaultGradientImplementation;
-%ignore OT::NumericalMathFunction::setUseDefaultGradientImplementation;
-%ignore OT::NumericalMathFunction::getUseDefaultHessianImplementation;
-%ignore OT::NumericalMathFunction::setUseDefaultHessianImplementation;
+%ignore OT::Function::getUseDefaultGradientImplementation;
+%ignore OT::Function::setUseDefaultGradientImplementation;
+%ignore OT::Function::getUseDefaultHessianImplementation;
+%ignore OT::Function::setUseDefaultHessianImplementation;
 
-%include openturns/NumericalMathFunction.hxx
+%include openturns/Function.hxx
 
 namespace OT {  
 
-%extend NumericalMathFunction {
+%extend Function {
 
-NumericalMathFunction(PyObject * pyObj)
+Function(PyObject * pyObj)
 {
   void * ptr = 0;
   if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIG_TypeQuery("OT::Object *"), 0)))
   {
     throw OT::InvalidArgumentException(HERE) << "Argument should be a pure python object";
   }
-  return new OT::NumericalMathFunction(OT::convert<OT::_PyObject_, OT::NumericalMathFunction>(pyObj));
+  return new OT::Function(OT::convert<OT::_PyObject_, OT::Function>(pyObj));
 }
 
-NumericalMathFunction(const NumericalMathFunction & other)
+Function(const Function & other)
 {
-  return new OT::NumericalMathFunction( other );
+  return new OT::Function( other );
 }
 
 }
@@ -79,7 +79,7 @@ import openturns.typ
 
 class OpenTURNSPythonFunction(object):
     """
-    Override NumericalMathFunction from Python.
+    Override Function from Python.
 
     Parameters
     ----------
@@ -198,9 +198,9 @@ def _exec_sample_multiprocessing(func, n_cpus):
         return rs.get()
     return _exec_sample
 
-class PythonFunction(NumericalMathFunction):
+class PythonFunction(Function):
     """
-    Override NumericalMathFunction from Python.
+    Override Function from Python.
 
     Parameters
     ----------
@@ -287,5 +287,11 @@ class PythonFunction(NumericalMathFunction):
             if not isinstance(hessian, collections.Callable):
                 raise RuntimeError('hessian argument is not callable.')
             instance._hessian = hessian 
-        return NumericalMathFunction(instance)
+        return Function(instance)
+
+# deprecated
+class NumericalMathFunction(Function):
+    def __init__(self, *args):
+        super(NumericalMathFunction, self).__init__(*args)
+        openturns.common.Log.Warn('class NumericalMathFunction is deprecated in favor of Function')
 %}

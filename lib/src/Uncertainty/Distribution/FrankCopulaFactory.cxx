@@ -96,7 +96,7 @@ FrankCopula FrankCopulaFactory::buildAsFrankCopula(const NumericalSample & sampl
   }
   const NumericalScalar maxTheta = theta;
   const NumericalScalar maxTau = tauTheta;
-  const NumericalMathFunction f(bindMethod<FrankCopulaFactory, NumericalPoint, NumericalPoint>(*this, &FrankCopulaFactory::KendallTauFromParameter, 1, 1));
+  const Function f(bindMethod<FrankCopulaFactory, NumericalPoint, NumericalPoint>(*this, &FrankCopulaFactory::KendallTauFromParameter, 1, 1));
   // Solve the constraint equation
   Brent solver(ResourceMap::GetAsNumericalScalar( "FrankCopulaFactory-AbsolutePrecision" ), ResourceMap::GetAsNumericalScalar( "FrankCopulaFactory-RelativePrecision" ), ResourceMap::GetAsNumericalScalar( "FrankCopulaFactory-ResidualPrecision" ), ResourceMap::GetAsUnsignedInteger( "FrankCopulaFactory-MaximumIteration" ));
   theta = solver.solve(f, tau, minTheta, maxTheta, minTau, maxTau);

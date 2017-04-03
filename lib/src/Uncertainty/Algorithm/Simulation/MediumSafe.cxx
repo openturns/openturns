@@ -63,7 +63,7 @@ MediumSafe * MediumSafe::clone() const
 }
 
 /* Solve gives all the roots found applying the root strategy */
-MediumSafe::NumericalScalarCollection MediumSafe::solve(const NumericalMathFunction & function,
+MediumSafe::NumericalScalarCollection MediumSafe::solve(const Function & function,
     const NumericalScalar value)
 {
   NumericalScalarCollection result(0);

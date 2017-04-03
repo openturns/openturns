@@ -13,3 +13,4 @@ Remove [gs]etOptimizationSolver methods
 Rename AnalyticalNumericalMath*Implementation to SymbolicEvaluation|Gradient|Hessian
 Remove deprecated KarhunenLoeveP1Factory, KarhunenLoeveQuadratureFactory
 Remove deprecated GramSchmidtAlgorithm, ChebychevAlgorithm
+Remove deprecated NumericalMathFunction in 1.11

@@ -25,9 +25,9 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<NumericalMathFunction>);
+TEMPLATE_CLASSNAMEINIT(PersistentCollection<Function>);
 
-static const Factory<PersistentCollection<NumericalMathFunction> > Factory_PersistentCollection_NumericalMathFunction;
+static const Factory<PersistentCollection<Function> > Factory_PersistentCollection_Function;
 
 
 CLASSNAMEINIT(LinearCombinationEvaluation);
@@ -47,7 +47,7 @@ LinearCombinationEvaluation::LinearCombinationEvaluation()
 
 
 /* Parameters constructor */
-LinearCombinationEvaluation::LinearCombinationEvaluation(const NumericalMathFunctionCollection & functionsCollection,
+LinearCombinationEvaluation::LinearCombinationEvaluation(const FunctionCollection & functionsCollection,
     const NumericalPoint & coefficients)
   : EvaluationImplementation()
   , functionsCollection_(0)
@@ -177,12 +177,12 @@ NumericalPoint LinearCombinationEvaluation::getCoefficients() const
 }
 
 /* Functions accessor */
-LinearCombinationEvaluation::NumericalMathFunctionCollection LinearCombinationEvaluation::getFunctionsCollection() const
+LinearCombinationEvaluation::FunctionCollection LinearCombinationEvaluation::getFunctionsCollection() const
 {
   return functionsCollection_;
 }
 
-void LinearCombinationEvaluation::setFunctionsCollectionAndCoefficients(const NumericalMathFunctionCollection & functionsCollection,
+void LinearCombinationEvaluation::setFunctionsCollectionAndCoefficients(const FunctionCollection & functionsCollection,
     const NumericalPoint & coefficients)
 {
   const UnsignedInteger size = functionsCollection.getSize();
@@ -201,7 +201,7 @@ void LinearCombinationEvaluation::setFunctionsCollectionAndCoefficients(const Nu
   // Keep only the non zero coefficients
   isZero_ = false;
   coefficients_ = NumericalPoint(0);
-  functionsCollection_ = NumericalMathFunctionCollection(0);
+  functionsCollection_ = FunctionCollection(0);
   const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("LinearCombinationEvaluation-SmallCoefficient");
   for (UnsignedInteger i = 0; i < size; ++i)
     if (std::abs(coefficients[i]) > epsilon)
@@ -312,7 +312,7 @@ LinearCombinationEvaluation::Implementation LinearCombinationEvaluation::getMarg
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
   const UnsignedInteger size = functionsCollection_.getSize();
-  NumericalMathFunctionCollection marginalFunctions(size);
+  FunctionCollection marginalFunctions(size);
   for (UnsignedInteger j = 0; j < size; ++j) marginalFunctions[j] = functionsCollection_[j].getMarginal(i);
   return new LinearCombinationEvaluation(marginalFunctions, coefficients_);
 }
@@ -322,7 +322,7 @@ LinearCombinationEvaluation::Implementation LinearCombinationEvaluation::getMarg
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal function must be in the range [0, dim-1] and must be different";
   const UnsignedInteger size = functionsCollection_.getSize();
-  NumericalMathFunctionCollection marginalFunctions(size);
+  FunctionCollection marginalFunctions(size);
   for (UnsignedInteger i = 0; i < size; ++i) marginalFunctions[i] = functionsCollection_[i].getMarginal(indices);
   return new LinearCombinationEvaluation(marginalFunctions, coefficients_);
 }

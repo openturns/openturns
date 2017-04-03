@@ -284,7 +284,7 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeFactor(const U
     return -std::log(exponentialFactor);
   }
   const MaximumEntropyOrderStatisticsDistributionWrapper phiKWrapper(*this, k - 1, k, a);
-  const NumericalMathFunction fPhiK(bindMethod<MaximumEntropyOrderStatisticsDistributionWrapper, NumericalPoint, NumericalPoint>(phiKWrapper, &MaximumEntropyOrderStatisticsDistributionWrapper::computePhi, 1, 1));
+  const Function fPhiK(bindMethod<MaximumEntropyOrderStatisticsDistributionWrapper, NumericalPoint, NumericalPoint>(phiKWrapper, &MaximumEntropyOrderStatisticsDistributionWrapper::computePhi, 1, 1));
   NumericalScalar error = -1.0;
   // Here we know that x < y, y > a, y < b, x < beta
   if (x <= a)
@@ -342,7 +342,7 @@ PiecewiseHermiteEvaluation MaximumEntropyOrderStatisticsDistribution::interpolat
   const NumericalScalar xMin = distributionCollection_[upper].getRange().getLowerBound()[0];
   const NumericalScalar xMax = distributionCollection_[lower].getRange().getUpperBound()[0];
   const MaximumEntropyOrderStatisticsDistributionWrapper phiWrapper(*this, lower, upper, xMin);
-  const NumericalMathFunction phi(bindMethod<MaximumEntropyOrderStatisticsDistributionWrapper, NumericalPoint, NumericalPoint>(phiWrapper, &MaximumEntropyOrderStatisticsDistributionWrapper::computePartialExponentialFactor, 1, 1));
+  const Function phi(bindMethod<MaximumEntropyOrderStatisticsDistributionWrapper, NumericalPoint, NumericalPoint>(phiWrapper, &MaximumEntropyOrderStatisticsDistributionWrapper::computePartialExponentialFactor, 1, 1));
   NumericalPoint lowerBounds;
   NumericalPoint upperBounds;
   NumericalSample contributions;
@@ -862,7 +862,7 @@ NumericalScalar MaximumEntropyOrderStatisticsDistribution::computeConditionalQua
   if (convergence) return x;
   // in some cases Newton iteration fails to converge
   const MaximumEntropyOrderStatisticsDistributionWrapper wrapper(*this, k - 1, k, xKm1);
-  const NumericalMathFunction f(bindMethod<MaximumEntropyOrderStatisticsDistributionWrapper, NumericalPoint, NumericalPoint>(wrapper, &MaximumEntropyOrderStatisticsDistributionWrapper::computePartialFactor, 1, 1));
+  const Function f(bindMethod<MaximumEntropyOrderStatisticsDistributionWrapper, NumericalPoint, NumericalPoint>(wrapper, &MaximumEntropyOrderStatisticsDistributionWrapper::computePartialFactor, 1, 1));
   Brent solver(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_);
   return solver.solve(f, -logU, a, b);
 }

@@ -23,7 +23,7 @@
 
 #include "openturns/FunctionalBasisImplementation.hxx"
 #include "openturns/EnumerateFunction.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/UniVariateFunctionFamily.hxx"
 
@@ -58,8 +58,8 @@ public:
   TensorizedUniVariateFunctionFactory(const FunctionFamilyCollection & coll,
                                       const EnumerateFunction & phi);
 
-  /** Build the NumericalMathFunction of the given index */
-  NumericalMathFunction build(const UnsignedInteger index) const;
+  /** Build the Function of the given index */
+  Function build(const UnsignedInteger index) const;
 
   /** Return the enumerate function that translate unidimensional indices into multidimensional indices */
   EnumerateFunction getEnumerateFunction() const;

@@ -37,7 +37,7 @@ MetaModelAlgorithm::MetaModelAlgorithm()
 
 /* Constructor with parameters */
 MetaModelAlgorithm::MetaModelAlgorithm(const Distribution & distribution,
-                                       const NumericalMathFunction & model)
+                                       const Function & model)
   : PersistentObject()
   , distribution_(distribution)
   , model_(model)

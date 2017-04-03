@@ -29,17 +29,17 @@ CLASSNAMEINIT(ParametricFunction);
 
 /* Default constructor */
 ParametricFunction::ParametricFunction ()
-  : NumericalMathFunction()
+  : Function()
 {
 }
 
 
 /* Parameter constructor */
-ParametricFunction::ParametricFunction (const NumericalMathFunction & function,
+ParametricFunction::ParametricFunction (const Function & function,
                                         const Indices & set,
                                         const NumericalPoint & referencePoint,
                                         const Bool parametersSet)
-  : NumericalMathFunction()
+  : Function()
 {
   const Pointer<ParametricEvaluation> p_evaluation = new ParametricEvaluation(function, set, referencePoint, parametersSet);
   setEvaluation(p_evaluation);

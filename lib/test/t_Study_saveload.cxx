@@ -291,7 +291,7 @@ int main(int argc, char *argv[])
     ComposedDistribution composedDistribution(collection, normalCopula);
     study.add("composedDistribution", composedDistribution);
 
-    // Create an analytical NumericalMathFunction
+    // Create an analytical Function
     Description input(3);
     input[0] = "a";
     input[1] = "b";
@@ -553,7 +553,7 @@ int main(int argc, char *argv[])
         input.add(in);
         output[j].add(in);
       }
-      Collection<NumericalMathFunction> coll;
+      Collection<Function> coll;
       Indices cumulBasis;
       Indices partialBasis[dimension];
       for ( UnsignedInteger j = 0; j < dimension; ++ j )
@@ -990,7 +990,7 @@ int main(int argc, char *argv[])
     compare<RandomGeneratorState>( randomGeneratorState, study2 );
 
     // Func
-    compare<NumericalMathFunction >( analytical, study2 , "analytical");
+    compare<Function >( analytical, study2 , "analytical");
 
     // Optim
     compare<AbdoRackwitz >( abdoRackwitz, study2 );

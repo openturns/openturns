@@ -11,7 +11,7 @@ Parameters
 ----------
 inputSample, outputSample : 2-d sequence of float
     The samples :math:`(\vect{x}_k)_{1 \leq k \leq N} \in \Rset^d` and :math:`(\vect{y}_k)_{1 \leq k \leq N}\in \Rset^p`.
-metaModel : :class:`~openturns.NumericalMathFunction`
+metaModel : :class:`~openturns.Function`
     The meta model: :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p`, defined in :eq:`metaModelKrigFinal`.
 residuals : :class:`~openturns.NumericalPoint`
     The residual errors.
@@ -227,7 +227,7 @@ where :math:`\Sigma_{ij} = \Cov{\vect{Y}(\omega, \vect{\xi}_i), \vect{Y}(\omega,
 
 Returns
 -------
-metaModel : :class:`~openturns.NumericalMathFunction`
+metaModel : :class:`~openturns.Function`
     The meta model :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p`, defined in :eq:`metaModelKrigFinal`.
 "
 
@@ -238,7 +238,7 @@ metaModel : :class:`~openturns.NumericalMathFunction`
 
 Parameters
 ----------
-transformation : :class:`~openturns.NumericalMathFunction`
+transformation : :class:`~openturns.Function`
     The transformation *T* that normalizes the input sample."
 
 // ---------------------------------------------------------------------
@@ -248,7 +248,7 @@ transformation : :class:`~openturns.NumericalMathFunction`
 
 Returns
 -------
-transformation : :class:`~openturns.NumericalMathFunction`
+transformation : :class:`~openturns.Function`
     The transformation *T* that normalizes the input sample."
 
 // ---------------------------------------------------------------------

@@ -57,7 +57,7 @@ public:
   virtual RootStrategyImplementation * clone() const;
 
   /** Solve gives all the roots found applying the root strategy */
-  virtual NumericalScalarCollection solve(const NumericalMathFunction & function,
+  virtual NumericalScalarCollection solve(const Function & function,
                                           const NumericalScalar value);
 
   /** Solver accessor */

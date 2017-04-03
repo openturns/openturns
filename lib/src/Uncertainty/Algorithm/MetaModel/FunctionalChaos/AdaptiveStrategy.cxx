@@ -92,7 +92,7 @@ void AdaptiveStrategy::updateBasis(const NumericalPoint & alpha_k,
 
 
 /* Psi accessor */
-AdaptiveStrategy::NumericalMathFunctionCollection AdaptiveStrategy::getPsi() const
+AdaptiveStrategy::FunctionCollection AdaptiveStrategy::getPsi() const
 {
   return getImplementation()->getPsi();
 }

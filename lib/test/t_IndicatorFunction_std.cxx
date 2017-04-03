@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class NumericalMathFunction for indicator
+ *  @brief The test file of class Function for indicator
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *

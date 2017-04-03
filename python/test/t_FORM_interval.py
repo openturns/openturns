@@ -28,7 +28,7 @@ def buildEvent(vector, interval):
             print('case 3')
             testFunction = ot.SymbolicFunction(
                 'x', 'min(x-(' + str(lowerBound[0]) + '), (' + str(upperBound[0]) + ') - x)')
-            newVector = ot.RandomVector(ot.NumericalMathFunction(
+            newVector = ot.RandomVector(ot.Function(
                 testFunction, vector.getFunction()), vector.getAntecedent())
             return ot.Event(newVector, Greater(), 0.0)
         # Here we build an event that is always true and much cheaper to
@@ -63,7 +63,7 @@ def buildEvent(vector, interval):
             formula += ',' + slacks[i]
         formula += ')'
         testFunction = ot.SymbolicFunction(inVars, [formula])
-    newVector = ot.RandomVector(ot.NumericalMathFunction(
+    newVector = ot.RandomVector(ot.Function(
         testFunction, vector.getFunction()), vector.getAntecedent())
     return ot.Event(newVector, Greater(), 0.0)
 

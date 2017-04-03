@@ -83,7 +83,7 @@ String CanonicalTensorGradient::__str__(const String & offset) const
 Matrix CanonicalTensorGradient::gradient(const NumericalPoint & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
-  if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a NumericalMathFunction with an argument of invalid dimension";
+  if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a Function with an argument of invalid dimension";
   const UnsignedInteger outputDimension = getOutputDimension();
 
   ++ callsNumber_;

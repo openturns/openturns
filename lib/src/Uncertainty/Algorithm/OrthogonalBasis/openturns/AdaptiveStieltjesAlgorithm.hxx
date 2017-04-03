@@ -71,7 +71,7 @@ public:
 private:
 
   /** Compute dot products taking into account the singularities of the weights */
-  NumericalPoint computeDotProduct(const NumericalMathFunction & kernel,
+  NumericalPoint computeDotProduct(const Function & kernel,
 				   const UnsignedInteger n) const;
 
   // Structure used to compute the two dot-products needed for the computation of three-terms relation coefficients

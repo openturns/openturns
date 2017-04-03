@@ -70,7 +70,7 @@ class ExpectedImprovementEvaluation : public EvaluationImplementation
 public:
   ExpectedImprovementEvaluation (const NumericalScalar optimalValue,
                                       const KrigingResult & metaModelResult,
-                                      const NumericalMathFunction & noiseModel)
+                                      const Function & noiseModel)
   : EvaluationImplementation()
   , optimalValue_(optimalValue)
   , metaModelResult_(metaModelResult)
@@ -134,7 +134,7 @@ protected:
   Normal normal_;
   NumericalScalar optimalValue_;
   KrigingResult metaModelResult_;
-  NumericalMathFunction noiseModel_;
+  Function noiseModel_;
 };
 
 
@@ -144,7 +144,7 @@ void EfficientGlobalOptimization::run()
 {
   const OptimizationProblem problem(getProblem());
   const UnsignedInteger dimension = problem.getDimension();
-  const NumericalMathFunction model(problem.getObjective());
+  const Function model(problem.getObjective());
   NumericalSample inputSample(krigingResult_.getInputSample());
   NumericalSample outputSample(model(inputSample));
   UnsignedInteger size = inputSample.getSize();
@@ -264,7 +264,7 @@ void EfficientGlobalOptimization::run()
       }
     }
 
-    NumericalMathFunction improvementObjective(new ExpectedImprovementEvaluation(optimalValueSubstitute, metaModelResult, noiseModel_));
+    Function improvementObjective(new ExpectedImprovementEvaluation(optimalValueSubstitute, metaModelResult, noiseModel_));
 
     if (useDefaultSolver_ && problem.hasBounds())
     {
@@ -496,7 +496,7 @@ NumericalScalar EfficientGlobalOptimization::getAIETradeoff() const
 }
 
 
-void EfficientGlobalOptimization::setNoiseModel(const NumericalMathFunction & noiseModel)
+void EfficientGlobalOptimization::setNoiseModel(const Function & noiseModel)
 {
   const UnsignedInteger dimension = getProblem().getDimension();
   if (noiseModel.getInputDimension() != dimension) throw InvalidArgumentException(HERE) << "Noise model must be of dimension " << dimension;
@@ -504,7 +504,7 @@ void EfficientGlobalOptimization::setNoiseModel(const NumericalMathFunction & no
   noiseModel_ = noiseModel;
 }
 
-NumericalMathFunction EfficientGlobalOptimization::getNoiseModel() const
+Function EfficientGlobalOptimization::getNoiseModel() const
 {
   return noiseModel_;
 }

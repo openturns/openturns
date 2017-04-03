@@ -18,12 +18,12 @@ activateCache : bool
 
 See also
 --------
-NumericalMathFunction, AggregatedEvaluation, DualLinearCombinationEvaluation,
+Function, AggregatedEvaluation, DualLinearCombinationEvaluation,
 LinearFunction
 
 Notes
 -----
-It returns a :class:`~openturns.NumericalMathFunction` that implements a 
+It returns a :class:`~openturns.Function` that implements a 
 nearest-neighbor function :math:`f : \Rset^n \rightarrow \Rset^p` based on the 
 input sample :math:`S^{in}` and taking values in the outputSample :math:`S^{out}`:
 

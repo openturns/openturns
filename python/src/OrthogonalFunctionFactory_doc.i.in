@@ -37,7 +37,7 @@ index : int
 
 Returns
 -------
-function : :class:`~openturns.NumericalMathFunction`
+function : :class:`~openturns.Function`
     The term of the basis collection at the index *index*.
 
 Examples

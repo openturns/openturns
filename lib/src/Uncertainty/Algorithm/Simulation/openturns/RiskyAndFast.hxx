@@ -54,7 +54,7 @@ public:
   virtual RiskyAndFast * clone() const;
 
   /** Solve gives all the roots found applying the root strategy */
-  NumericalScalarCollection solve(const NumericalMathFunction & function,
+  NumericalScalarCollection solve(const Function & function,
                                   const NumericalScalar value);
 
   /** String converter */

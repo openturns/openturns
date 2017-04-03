@@ -208,7 +208,7 @@ void PosteriorDistribution::computeMean() const
 {
   Description inputDescription(Description::BuildDefault(getDimension(), "x"));
   const SymbolicFunction meanFunction(inputDescription, inputDescription);
-  const NumericalMathFunction likelihood(bindMethod<PosteriorDistribution, NumericalPoint, NumericalPoint>(PosteriorDistribution(*this), &PosteriorDistribution::computeLikelihood, getDimension(), 1));
+  const Function likelihood(bindMethod<PosteriorDistribution, NumericalPoint, NumericalPoint>(PosteriorDistribution(*this), &PosteriorDistribution::computeLikelihood, getDimension(), 1));
   mean_ = conditionalDistribution_.computeExpectation(likelihood * meanFunction, getRange().getUpperBound()) / std::exp(logNormalizationFactor_);
   isAlreadyComputedMean_ = true;
 }
@@ -257,7 +257,7 @@ void PosteriorDistribution::computeCovariance() const
     }
   }
   const SymbolicFunction covarianceFunction(inputDescription, formulas);
-  const NumericalMathFunction likelihood(bindMethod<PosteriorDistribution, NumericalPoint, NumericalPoint>(PosteriorDistribution(*this), &PosteriorDistribution::computeLikelihood, getDimension(), 1));
+  const Function likelihood(bindMethod<PosteriorDistribution, NumericalPoint, NumericalPoint>(PosteriorDistribution(*this), &PosteriorDistribution::computeLikelihood, getDimension(), 1));
   const NumericalPoint result(conditionalDistribution_.computeExpectation(likelihood * covarianceFunction, getRange().getUpperBound()) / std::exp(logNormalizationFactor_));
   index = 0;
   for (UnsignedInteger i = 0; i < dimension; ++i)

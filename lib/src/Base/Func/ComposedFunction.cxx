@@ -34,7 +34,7 @@ static const Factory<ComposedFunction> Factory_ComposedFunction;
 
 /* Default constructor */
 ComposedFunction::ComposedFunction()
-  : NumericalMathFunctionImplementation()
+  : FunctionImplementation()
   , p_leftFunction_()
   , p_rightFunction_()
 {
@@ -44,7 +44,7 @@ ComposedFunction::ComposedFunction()
 /* Composition constructor */
 ComposedFunction::ComposedFunction(const Implementation & p_left,
     const Implementation & p_right)
-  : NumericalMathFunctionImplementation(new ComposedEvaluation(p_left->getEvaluation(), p_right->getEvaluation()),
+  : FunctionImplementation(new ComposedEvaluation(p_left->getEvaluation(), p_right->getEvaluation()),
                                         new NoGradient(),
                                         new NoHessian())
   , p_leftFunction_(p_left)
@@ -73,9 +73,9 @@ ComposedFunction::ComposedFunction(const Implementation & p_left,
 }
 
 /* Composition constructor */
-ComposedFunction::ComposedFunction(const NumericalMathFunction & left,
-    const NumericalMathFunction & right)
-  : NumericalMathFunctionImplementation(new ComposedEvaluation(left.getEvaluation(), right.getEvaluation()),
+ComposedFunction::ComposedFunction(const Function & left,
+    const Function & right)
+  : FunctionImplementation(new ComposedEvaluation(left.getEvaluation(), right.getEvaluation()),
                                         new NoGradient(),
                                         new NoHessian())
   , p_leftFunction_(left.getImplementation())
@@ -186,7 +186,7 @@ Matrix ComposedFunction::parameterGradient(const NumericalPoint & inP) const
 /* Method save() stores the object through the StorageManager */
 void ComposedFunction::save(Advocate & adv) const
 {
-  NumericalMathFunctionImplementation::save(adv);
+  FunctionImplementation::save(adv);
   adv.saveAttribute( "leftFunction_", *p_leftFunction_ );
   adv.saveAttribute( "rightFunction_", *p_rightFunction_ );
 }
@@ -194,8 +194,8 @@ void ComposedFunction::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void ComposedFunction::load(Advocate & adv)
 {
-  TypedInterfaceObject<NumericalMathFunctionImplementation> functionValue;
-  NumericalMathFunctionImplementation::load(adv);
+  TypedInterfaceObject<FunctionImplementation> functionValue;
+  FunctionImplementation::load(adv);
   adv.loadAttribute( "leftFunction_", functionValue );
   p_leftFunction_ = functionValue.getImplementation();
   adv.loadAttribute( "rightFunction_", functionValue );

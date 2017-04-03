@@ -35,7 +35,7 @@ Basis::Basis()
 }
 
 /* Constructor from a collection */
-Basis::Basis(const Collection<NumericalMathFunction> & coll)
+Basis::Basis(const Collection<Function> & coll)
   : TypedInterfaceObject<BasisImplementation>(new FiniteBasis(coll))
 {
   // Nothing to do
@@ -56,9 +56,9 @@ Basis::Basis(const BasisImplementation & implementation)
 }
 
 
-Basis::operator NumericalMathFunctionCollection() const
+Basis::operator FunctionCollection() const
 {
-  NumericalMathFunctionCollection coll;
+  FunctionCollection coll;
   for (UnsignedInteger i = 0; i < getSize(); ++ i)
   {
     coll.add(build(i));
@@ -86,29 +86,29 @@ String Basis::__str__(const String & offset) const
   return getImplementation()->__str__(offset);
 }
 
-NumericalMathFunction Basis::build(const UnsignedInteger index) const
+Function Basis::build(const UnsignedInteger index) const
 {
   return getImplementation()->build(index);
 }
 
 
-NumericalMathFunction Basis::operator[](const UnsignedInteger index) const
+Function Basis::operator[](const UnsignedInteger index) const
 {
   return getImplementation()->operator[](index);
 }
 
-NumericalMathFunction & Basis::operator[](const UnsignedInteger index)
+Function & Basis::operator[](const UnsignedInteger index)
 {
   copyOnWrite();
   return getImplementation()->operator[](index);
 }
 
-Basis::NumericalMathFunctionCollection Basis::getSubBasis(const Indices & indices) const
+Basis::FunctionCollection Basis::getSubBasis(const Indices & indices) const
 {
   return getImplementation()->getSubBasis(indices);
 }
 
-void Basis::add(const NumericalMathFunction & elt)
+void Basis::add(const Function & elt)
 {
   copyOnWrite();
   getImplementation()->add(elt);

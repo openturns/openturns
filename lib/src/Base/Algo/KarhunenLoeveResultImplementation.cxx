@@ -103,13 +103,13 @@ ProcessSample KarhunenLoeveResultImplementation::getModesAsProcessSample() const
 /* Scaled modes accessors */
 Basis KarhunenLoeveResultImplementation::getScaledModes() const
 {
-  Collection<NumericalMathFunction> scaledModes(modes_.getSize());
+  Collection<Function> scaledModes(modes_.getSize());
   const UnsignedInteger dimension = modes_.getDimension();
   const NumericalPoint zero(dimension);
   const IdentityMatrix id(dimension);
   for (UnsignedInteger i = 0; i < scaledModes.getSize(); ++i)
     {
-      const NumericalMathFunction modeI(modes_.build(i));
+      const Function modeI(modes_.build(i));
       LinearFunction scaling(zero, zero, id * std::sqrt(eigenvalues_[i]));
       scaledModes[i] = ComposedFunction(scaling, modeI);
     }
@@ -131,7 +131,7 @@ Matrix KarhunenLoeveResultImplementation::getProjectionMatrix() const
 }
 
 /* Projection method */
-NumericalPoint KarhunenLoeveResultImplementation::project(const NumericalMathFunction & function) const
+NumericalPoint KarhunenLoeveResultImplementation::project(const Function & function) const
 {
   // Evaluate the function over the vertices of the mesh and cast it into a NumericalPoint
   const NumericalPoint functionValues(function(modesAsProcessSample_.getMesh().getVertices()).getImplementation()->getData());
@@ -142,7 +142,7 @@ NumericalPoint KarhunenLoeveResultImplementation::project(const Field & field) c
 {
   if (field.getMesh() == modesAsProcessSample_.getMesh())
     return projection_ * field.getValues().getImplementation()->getData();
-  return project(NumericalMathFunction(P1LagrangeEvaluation(field).clone()));
+  return project(Function(P1LagrangeEvaluation(field).clone()));
 }
 
 struct ProjectBasisPolicy
@@ -207,11 +207,11 @@ NumericalSample KarhunenLoeveResultImplementation::project(const ProcessSample &
 }
 
 /* Lift method */
-NumericalMathFunction KarhunenLoeveResultImplementation::lift(const NumericalPoint & coefficients) const
+Function KarhunenLoeveResultImplementation::lift(const NumericalPoint & coefficients) const
 {
   const UnsignedInteger dimension = eigenvalues_.getDimension();
   NumericalPoint scaledCoefficients(dimension);
-  Collection<NumericalMathFunction> functions(dimension);
+  Collection<Function> functions(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
     {
       scaledCoefficients[i] = std::sqrt(eigenvalues_[i]) * coefficients[i];

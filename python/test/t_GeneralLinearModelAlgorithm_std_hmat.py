@@ -23,7 +23,7 @@ try:
     input_description = ["x0"]
     foutput = ["f0"]
     formulas = ["x0"]
-    model = ot.NumericalMathFunction(input_description, foutput, formulas)
+    model = ot.Function(input_description, foutput, formulas)
 
     X = ot.NumericalSample(sampleSize, spatialDimension)
     X2 = ot.NumericalSample(sampleSize, spatialDimension)

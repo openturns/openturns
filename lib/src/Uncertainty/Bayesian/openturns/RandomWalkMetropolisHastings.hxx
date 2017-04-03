@@ -59,7 +59,7 @@ public:
   /** Constructor with parameters*/
   RandomWalkMetropolisHastings(const Distribution & prior,
                                const Distribution & conditional,
-                               const NumericalMathFunction & model,
+                               const Function & model,
                                const NumericalSample & parameters,
                                const NumericalSample & observations,
                                const NumericalPoint & initialState,

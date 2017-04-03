@@ -132,7 +132,7 @@ AdaptiveStieltjesAlgorithm::Coefficients AdaptiveStieltjesAlgorithm::getRecurren
     }
     else
     {
-      const NumericalMathFunction dotProductKernel(bindMethod<DotProductWrapper, NumericalPoint, NumericalPoint>(dotProductWrapper, &DotProductWrapper::kernelSym, 1, 1));
+      const Function dotProductKernel(bindMethod<DotProductWrapper, NumericalPoint, NumericalPoint>(dotProductWrapper, &DotProductWrapper::kernelSym, 1, 1));
       monicSquaredNorms_.add(computeDotProduct(dotProductKernel, n)[0]);
       monicCoefficients[2] = -monicSquaredNorms_[n + 1] / monicSquaredNorms_[n];
     } // n != 1
@@ -141,7 +141,7 @@ AdaptiveStieltjesAlgorithm::Coefficients AdaptiveStieltjesAlgorithm::getRecurren
   {
     // \beta_n = Rn / Rn-1 with Rn-1 = \beta_{n-1}Rn-2 = \beta_{n-1}\beta_{n-2}Rn-3 = ... = \prod_{k=0}^{n-1}\beta_k
     // Compute Rn and <x.Qn, Qn>
-    const NumericalMathFunction dotProductKernel(bindMethod<DotProductWrapper, NumericalPoint, NumericalPoint>(dotProductWrapper, &DotProductWrapper::kernelGen, 1, 2));
+    const Function dotProductKernel(bindMethod<DotProductWrapper, NumericalPoint, NumericalPoint>(dotProductWrapper, &DotProductWrapper::kernelGen, 1, 2));
     const NumericalPoint dotProduct(computeDotProduct(dotProductKernel, n));
     monicSquaredNorms_.add(dotProduct[0]);
     monicCoefficients[1] = -dotProduct[1] / monicSquaredNorms_[n + 1];
@@ -153,7 +153,7 @@ AdaptiveStieltjesAlgorithm::Coefficients AdaptiveStieltjesAlgorithm::getRecurren
 }
 
 /* Compute dot products taking into account the singularities of the weights */
-NumericalPoint AdaptiveStieltjesAlgorithm::computeDotProduct(const NumericalMathFunction & kernel,
+NumericalPoint AdaptiveStieltjesAlgorithm::computeDotProduct(const Function & kernel,
 							     const UnsignedInteger n) const
 {
   if (measure_.isContinuous())

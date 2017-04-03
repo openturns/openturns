@@ -26,8 +26,8 @@ using namespace OT::Test;
 
 struct KernelWrapper
 {
-  KernelWrapper(const NumericalMathFunction & left,
-                const NumericalMathFunction & right,
+  KernelWrapper(const Function & left,
+                const Function & right,
                 const Distribution & weight)
     : left_(left)
     , right_(right)
@@ -39,8 +39,8 @@ struct KernelWrapper
     return left_(point) * (right_(point)[0] * weight_.computePDF(point));
   };
 
-  const NumericalMathFunction left_;
-  const NumericalMathFunction right_;
+  const Function left_;
+  const Function right_;
   const Distribution weight_;
 };
 
@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
       SoizeGhanemFactory soize(factories[i]);
       Distribution distribution(soize.getMeasure());
       fullprint << "SoizeGhanem=" << soize << std::endl;
-      Collection<NumericalMathFunction> functions(kMax);
+      Collection<Function> functions(kMax);
       for (UnsignedInteger k = 0; k < kMax; ++k)
       {
         functions[k] = soize.build(k);
@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
         for (UnsignedInteger n = 0; n <= m; ++n)
         {
           KernelWrapper wrapper(functions[m], functions[n], distribution);
-          NumericalMathFunction kernel(bindMethod<KernelWrapper, NumericalPoint, NumericalPoint>(wrapper, &KernelWrapper::operator(), distribution.getDimension(), 1));
+          Function kernel(bindMethod<KernelWrapper, NumericalPoint, NumericalPoint>(wrapper, &KernelWrapper::operator(), distribution.getDimension(), 1));
           NumericalScalar value = IteratedQuadrature().integrate(kernel, distribution.getRange())[0];
           M(m, n) = (std::abs(value) < 1e-6 ? 0.0 : value);
         }

@@ -22,7 +22,7 @@
 #define OPENTURNS_SOLVERIMPLEMENTATION_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/PersistentObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -61,13 +61,13 @@ public:
   void load(Advocate & adv);
 
   /** Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] */
-  virtual NumericalScalar solve(const NumericalMathFunction & function,
+  virtual NumericalScalar solve(const Function & function,
                                 const NumericalScalar value,
                                 const NumericalScalar infPoint,
                                 const NumericalScalar supPoint) const;
 
   /** Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] given function(infPoint) and function(supPoint) */
-  virtual NumericalScalar solve(const NumericalMathFunction & function,
+  virtual NumericalScalar solve(const Function & function,
                                 const NumericalScalar value,
                                 const NumericalScalar infPoint,
                                 const NumericalScalar supPoint,

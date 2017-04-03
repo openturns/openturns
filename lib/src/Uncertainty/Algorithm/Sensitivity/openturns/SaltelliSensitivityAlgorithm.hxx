@@ -50,12 +50,12 @@ public:
   /** Constructor with distribution / model parameters */
   SaltelliSensitivityAlgorithm(const Distribution & distribution,
                                const UnsignedInteger size,
-                               const NumericalMathFunction & model,
+                               const Function & model,
                                const Bool computeSecondOrder = true);
 
   /** Constructor with experiment / model parameters */
   SaltelliSensitivityAlgorithm(const WeightedExperiment & experiment,
-                               const NumericalMathFunction & model,
+                               const Function & model,
                                const Bool computeSecondOrder = true);
   /** Virtual constructor */
   virtual SaltelliSensitivityAlgorithm * clone() const;

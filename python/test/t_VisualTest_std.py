@@ -107,7 +107,7 @@ try:
     formula[0] = expression
     outputVar = Description(1)
     outputVar[0] = "y"
-    model = NumericalMathFunction(inputVar, outputVar, formula)
+    model = Function(inputVar, outputVar, formula)
     outputSample = model(inputSample)
     cobwebValue = VisualTest.DrawCobWeb(
         inputSample, outputSample, 2.5, 3.0, "red", False)

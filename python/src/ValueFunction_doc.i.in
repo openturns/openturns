@@ -8,7 +8,7 @@ Available constructors:
 
 Parameters
 ----------
-g : :class:`~openturns.NumericalMathFunction`
+g : :class:`~openturns.Function`
     Function :math:`g: \Rset^d \mapsto \Rset^q`.
 meshDimension : int, :math:`n \geq 0`
     Dimension of the vertices of the mesh :math:`\cM`. This data is required

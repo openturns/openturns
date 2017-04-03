@@ -59,7 +59,7 @@ public:
 
   /** Constructor */
   KrigingAlgorithm (const NumericalSample & inputSample,
-                    const NumericalMathFunction & inputTransformation,
+                    const Function & inputTransformation,
                     const NumericalSample & outputSample,
                     const CovarianceModel & covarianceModel,
                     const Basis & basis);
@@ -73,7 +73,7 @@ public:
 
   /** Constructor */
   KrigingAlgorithm (const NumericalSample & inputSample,
-                    const NumericalMathFunction & inputTransformation,
+                    const Function & inputTransformation,
                     const NumericalSample & outputSample,
                     const CovarianceModel & covarianceModel,
                     const BasisCollection & basisCollection);
@@ -107,7 +107,7 @@ public:
   Interval getOptimizationBounds() const;
 
   /** Log-Likelihood function accessor */
-  NumericalMathFunction getReducedLogLikelihoodFunction();
+  Function getReducedLogLikelihoodFunction();
 
   /** Optimization flag accessor */
   Bool getOptimizeParameters() const;

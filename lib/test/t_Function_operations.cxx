@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class NumericalMathFunction for linear combinations
+ *  @brief The test file of class Function for linear combinations
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -38,14 +38,14 @@ int main(int argc, char *argv[])
       Description outVar(Description::BuildDefault(1, "y"));
       Description formula(1);
       formula[0] = "x0^2 + 2 * x1 * x2 + 3 * x2";
-      NumericalMathFunction f1(inVar, outVar, formula);
+      Function f1(inVar, outVar, formula);
       // Second, build a function from R^3->R^2
       formula[0] = "x2 - x0 + x1";
       formula.add("x0 + x1 * x0 + x2");
       outVar = Description::BuildDefault(2, "y");
-      NumericalMathFunction f2(inVar, outVar, formula);
+      Function f2(inVar, outVar, formula);
       // Third, build the product function
-      NumericalMathFunction myFunction(f1 * f2);
+      Function myFunction(f1 * f2);
       NumericalPoint inPoint(3);
       inPoint[0] = 1.2;
       inPoint[1] = 2.3;
@@ -70,16 +70,16 @@ int main(int argc, char *argv[])
       Description formula(2);
       formula[0] = "x0 + 2 * x1 * x2 + 3 * x2";
       formula[1] = "x2 - x0 + x1 * x0";
-      NumericalMathFunction f1(inVar, outVar, formula);
+      Function f1(inVar, outVar, formula);
       formula[0] = "x0 + x1 + x2";
       formula[1] = "-2 * x0 + 3 * x2 * x1 - x1";
-      NumericalMathFunction f2(inVar, outVar, formula);
+      Function f2(inVar, outVar, formula);
       NumericalPoint inPoint(3);
       inPoint[0] = 1.2;
       inPoint[1] = 2.3;
       inPoint[2] = 3.4;
       // Second, build the function
-      NumericalMathFunction mySum(f1 + f2);
+      Function mySum(f1 + f2);
       {
         fullprint << "mySum=" << mySum << std::endl;
         fullprint << "mySum=" << mySum.__str__() << std::endl;
@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
         fullprint << "Hessian at " << inPoint << "=\n" << hessian << std::endl;
         fullprint << "Hessian at " << inPoint << "=\n" << hessian.__str__() << std::endl;
       }
-      NumericalMathFunction myDiff(f1 - f2);
+      Function myDiff(f1 - f2);
       {
         fullprint << "myDiff=" << myDiff << std::endl;
         fullprint << "myDiff=" << myDiff.__str__() << std::endl;

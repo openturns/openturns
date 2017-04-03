@@ -62,7 +62,7 @@ RiskyAndFast * RiskyAndFast::clone() const
 }
 
 /* Solve gives all the roots found applying the root strategy */
-RiskyAndFast::NumericalScalarCollection RiskyAndFast::solve(const NumericalMathFunction & function,
+RiskyAndFast::NumericalScalarCollection RiskyAndFast::solve(const Function & function,
     const NumericalScalar value)
 {
   NumericalScalarCollection result(0);

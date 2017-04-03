@@ -39,7 +39,7 @@ InverseTrendTransform::InverseTrendTransform()
 }
 
 /* Parameter constructor */
-InverseTrendTransform::InverseTrendTransform(const NumericalMathFunction & function)
+InverseTrendTransform::InverseTrendTransform(const Function & function)
   : VertexValueFunction(function.getInputDimension())
 {
   p_evaluation_ = function.getEvaluation() ;

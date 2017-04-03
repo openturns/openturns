@@ -76,7 +76,7 @@ MCMC::MCMC( const Distribution & prior,
 /* Parameters constructor */
 MCMC::MCMC( const Distribution & prior,
             const Distribution & conditional,
-            const NumericalMathFunction & model,
+            const Function & model,
             const NumericalSample & parameters,
             const NumericalSample & observations,
             const NumericalPoint & initialState)
@@ -164,7 +164,7 @@ Distribution MCMC::getConditional() const
 }
 
 
-NumericalMathFunction MCMC::getModel() const
+Function MCMC::getModel() const
 {
   return model_;
 }

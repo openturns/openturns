@@ -38,7 +38,7 @@ try:
     formula[0] = "sin(xi1) + (" + str(a) + \
         ") * (sin(xi2)) ^ 2 + (" + str(
             b) + ") * xi3^4 * sin(xi1)"
-    model = NumericalMathFunction(inputVariables, outputVariables, formula)
+    model = Function(inputVariables, outputVariables, formula)
 
     # Create the input distribution
     distribution = ComposedDistribution([Uniform(-pi, pi)] * dimension)

@@ -24,7 +24,7 @@
 #include "openturns/PersistentObject.hxx"
 #include "openturns/FieldFunctionImplementation.hxx"
 #include "openturns/EvaluationImplementation.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -47,7 +47,7 @@ public:
   explicit ValueFunction(const UnsignedInteger meshDimension = 1);
 
   /** Parameter constructor */
-  explicit ValueFunction(const NumericalMathFunction & function,
+  explicit ValueFunction(const Function & function,
                            const UnsignedInteger meshDimension = 1);
 
 #ifndef SWIG

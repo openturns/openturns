@@ -20,7 +20,7 @@ Parameters
 ----------
 inputSample, outputSample : 2-d sequence of float
     Sample of the input - output random vectors
-model : :class:`~openturns.NumericalMathFunction`
+model : :class:`~openturns.Function`
     Model :math:`g` such as :math:`\vect{Y} = g(\vect{X})`.
 distribution : :class:`~openturns.Distribution`
     Distribution of the random vector :math:`\vect{X}`

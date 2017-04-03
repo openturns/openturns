@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_DATABASEFUNCTION_HXX
 #define OPENTURNS_DATABASEFUNCTION_HXX
 
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/SymmetricTensor.hxx"
@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  */
 class OT_API DatabaseFunction
-  : public NumericalMathFunction
+  : public Function
 {
   CLASSNAME;
 public:

@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     Description formula(1);
     formula[0] = (OSS() << a << "* X1 + " << b << "* X2");
 
-    NumericalMathFunction model(inputVariables, outputVariables, formula);
+    Function model(inputVariables, outputVariables, formula);
 
     // Input distribution
     Collection<Distribution> marginals(dimension);

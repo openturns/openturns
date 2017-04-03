@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class NumericalMathFunction for parametric functions
+ *  @brief The test file of class Function for parametric functions
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     fullprint << "parameter history=" << g2.getInputParameterHistory() << std::endl;
 
     // marginal extraction
-    NumericalMathFunction g2_0(g2.getMarginal(0));
+    Function g2_0(g2.getMarginal(0));
     NumericalPoint theta(2, 0.2);
     theta[1] = 50.0;
     fullprint << "g2_0(x, theta)=" << g2_0(x, theta) << std::endl;

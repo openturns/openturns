@@ -67,7 +67,7 @@ public:
 
   /** Basis accessor */
   Basis getBasis() const;
-  Basis::NumericalMathFunctionCollection getFunctions() const;
+  Basis::FunctionCollection getFunctions() const;
 
   /** Is it a stationary covariance model ? */
   virtual Bool isStationary() const;
@@ -102,7 +102,7 @@ private:
   Basis basis_;
 
   /** The functions involved into the rank m decomposition */
-  Basis::NumericalMathFunctionPersistentCollection functions_;
+  Basis::FunctionPersistentCollection functions_;
 
 } ; /* class RankMCovarianceModel */
 

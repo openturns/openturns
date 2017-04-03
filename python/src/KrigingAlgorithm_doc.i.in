@@ -14,7 +14,7 @@ Parameters
 ----------
 inputSample, outputSample : 2-d sequence of float
     The samples :math:`(\vect{x}_k)_{1 \leq k \leq N} \in \Rset^d` and :math:`(\vect{y}_k)_{1 \leq k \leq N}\in \Rset^p` upon which the meta-model is built.
-inputTransformation : :class:`~openturns.NumericalMathFunction`
+inputTransformation : :class:`~openturns.Function`
     Function :math:`T` used to normalize the input sample.
 
     If used, the meta model is built on the transformed data.
@@ -207,7 +207,7 @@ outputSample : :class:`~openturns.NumericalSample`
 
 Returns
 -------
-reducedLogLikelihood : :class:`~openturns.NumericalMathFunction`
+reducedLogLikelihood : :class:`~openturns.Function`
     The reduced log-likelihood function as a function of :math:`(\vect{\theta}, \vect{\sigma})`.
 
 Notes

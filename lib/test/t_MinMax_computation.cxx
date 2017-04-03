@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     outputVariables[0] = "d";
     Description formula(1);
     formula[0] = "-F*L^3/(3*E*I)";
-    NumericalMathFunction model(inputVariables, outputVariables, formula);
+    Function model(inputVariables, outputVariables, formula);
     UnsignedInteger inputDimension = model.getInputDimension();
     NumericalPoint levels(inputDimension);
     levels[0] = 5.;

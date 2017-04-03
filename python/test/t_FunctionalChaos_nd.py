@@ -119,7 +119,7 @@ try:
     sob_T2[5] = sob_2[5] + sob_3[1]
     # 3rd order Total Sobol
     sob_T3 = NumericalPoint(sob_3)
-    model = NumericalMathFunction(inputVariables, outputVariables, formula)
+    model = Function(inputVariables, outputVariables, formula)
 
     # Create the input distribution
     distribution = ComposedDistribution([Uniform(0.0, 1.0)] * inputDimension)

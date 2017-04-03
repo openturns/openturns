@@ -29,14 +29,14 @@ CLASSNAMEINIT(BoxCoxTransform);
 
 /* Default constructor */
 BoxCoxTransform::BoxCoxTransform()
-  : NumericalMathFunction(BoxCoxEvaluation())
+  : Function(BoxCoxEvaluation())
 {
   // Nothing to do
 }
 
 /* Standard parameter constructor */
 BoxCoxTransform::BoxCoxTransform(const NumericalPoint & lambda)
-  : NumericalMathFunction()
+  : Function()
 {
   const BoxCoxEvaluation evaluation(lambda);
   setEvaluation(evaluation.clone());
@@ -47,7 +47,7 @@ BoxCoxTransform::BoxCoxTransform(const NumericalPoint & lambda)
 /* NumericalScalarCollection parameter constructor */
 BoxCoxTransform::BoxCoxTransform(const NumericalPoint & lambda,
                                  const NumericalPoint & shift)
-  : NumericalMathFunction()
+  : Function()
 {
   const BoxCoxEvaluation evaluation(lambda, shift);
   setEvaluation(evaluation.clone());
@@ -57,7 +57,7 @@ BoxCoxTransform::BoxCoxTransform(const NumericalPoint & lambda,
 
 /* 1D NumericalScalar parameter constructor */
 BoxCoxTransform::BoxCoxTransform(const NumericalScalar & lambda)
-  : NumericalMathFunction()
+  : Function()
 {
   const BoxCoxEvaluation evaluation(NumericalPoint(1, lambda));
   setEvaluation(evaluation.clone());
@@ -67,7 +67,7 @@ BoxCoxTransform::BoxCoxTransform(const NumericalScalar & lambda)
 
 BoxCoxTransform::BoxCoxTransform(const NumericalScalar & lambda,
                                  const NumericalScalar & shift)
-  : NumericalMathFunction()
+  : Function()
 {
   const BoxCoxEvaluation evaluation(NumericalPoint(1, lambda), NumericalPoint(1, shift));
   setEvaluation(evaluation.clone());

@@ -16,7 +16,7 @@
 #define OPENTURNS_TRENDEVALUATION_HXX
 
 #include "openturns/EvaluationImplementation.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/NumericalPoint.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -40,7 +40,7 @@ public:
   TrendEvaluation();
 
   /** Parameter constructor */
-  TrendEvaluation(const NumericalMathFunction & function);
+  TrendEvaluation(const Function & function);
 
   /** Virtual constructor */
   virtual TrendEvaluation * clone() const;
@@ -63,7 +63,7 @@ public:
   UnsignedInteger getOutputDimension() const;
 
   /** Accessor for the 1D function */
-  NumericalMathFunction getFunction() const;
+  Function getFunction() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -74,7 +74,7 @@ public:
 protected:
 
   /** The 1D function underlying the Trend transform */
-  NumericalMathFunction function_;
+  Function function_;
 
 
 }; /* class TrendEvaluation */

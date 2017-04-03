@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- * @brief This class gives a implementation for object's methods so they can be used in NumericalMathFunctions
+ * @brief This class gives a implementation for object's methods so they can be used in Functions
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -23,7 +23,7 @@
 #define OPENTURNS_METHODBOUNDEVALUATION_HXX
 
 #include "openturns/EvaluationImplementation.hxx"
-#include "openturns/NumericalMathFunctionImplementation.hxx"
+#include "openturns/FunctionImplementation.hxx"
 #include "openturns/NumericalPoint.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -99,7 +99,7 @@ struct MethodAdapter : public ReturnTypeAdapter<ReturnType_>, public ArgumentTyp
 /**
  * @class MethodBoundEvaluation
  *
- * This class gives a implementation for object's methods so they can be used in NumericalMathFunctions
+ * This class gives a implementation for object's methods so they can be used in Functions
  */
 template <typename EvaluableObject, typename ReturnType_, typename ArgumentType_>
 class MethodBoundEvaluation
@@ -225,13 +225,13 @@ private:
 
 
 template <typename EvaluableObject, typename ReturnType_, typename ArgumentType_>
-NumericalMathFunctionImplementation
+FunctionImplementation
 bindMethod (const EvaluableObject & obj,
             typename MethodBoundEvaluation<EvaluableObject, ReturnType_, ArgumentType_>::EvaluationMethod method,
             const UnsignedInteger inputDimension,
             const UnsignedInteger outputDimension )
 {
-  return NumericalMathFunctionImplementation( new MethodBoundEvaluation<EvaluableObject, ReturnType_, ArgumentType_>( obj, method, inputDimension, outputDimension ) );
+  return FunctionImplementation( new MethodBoundEvaluation<EvaluableObject, ReturnType_, ArgumentType_>( obj, method, inputDimension, outputDimension ) );
 }
 
 

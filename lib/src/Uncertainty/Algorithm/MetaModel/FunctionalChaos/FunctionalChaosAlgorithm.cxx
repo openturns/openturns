@@ -25,7 +25,7 @@
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalMathFunctionImplementation.hxx"
+#include "openturns/FunctionImplementation.hxx"
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/DatabaseFunction.hxx"
 #include "openturns/FixedStrategy.hxx"
@@ -52,7 +52,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-typedef Collection<NumericalMathFunction> NumericalMathFunctionCollection;
+typedef Collection<Function> FunctionCollection;
 
 CLASSNAMEINIT(FunctionalChaosAlgorithm);
 
@@ -71,7 +71,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm()
 
 
 /* Constructor */
-FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalMathFunction & model,
+FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Function & model,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy,
     const ProjectionStrategy & projectionStrategy)
@@ -127,7 +127,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
 }
 
 /* Constructor */
-FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalMathFunction & model,
+FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Function & model,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy)
   : MetaModelAlgorithm( distribution, model )
@@ -345,7 +345,7 @@ void FunctionalChaosAlgorithm::run()
   // Full set of vectorial coefficients
   NumericalSample alpha_k(0, outputDimension);
   // Full set of partial basis functions.
-  NumericalMathFunctionCollection Psi_k(0);
+  FunctionCollection Psi_k(0);
   for (iter = coefficientsMap.begin(); iter != coefficientsMap.end(); ++iter)
   {
     const UnsignedInteger i = iter->first;

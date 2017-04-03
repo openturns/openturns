@@ -51,7 +51,7 @@
 #include "openturns/MarginalTransformationHessian.hxx"
 #include "openturns/RosenblattEvaluation.hxx"
 #include "openturns/InverseRosenblattEvaluation.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/SklarCopula.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PlatformInfo.hxx"
@@ -79,9 +79,9 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(DistributionImplementation);
 
-typedef NumericalMathFunctionImplementation::EvaluationPointer EvaluationPointer;
-typedef NumericalMathFunctionImplementation::GradientPointer   GradientPointer;
-typedef NumericalMathFunctionImplementation::HessianPointer    HessianPointer;
+typedef FunctionImplementation::EvaluationPointer EvaluationPointer;
+typedef FunctionImplementation::GradientPointer   GradientPointer;
+typedef FunctionImplementation::HessianPointer    HessianPointer;
 typedef Collection<Distribution>                                      DistributionCollection;
 
 static const Factory<DistributionImplementation> Factory_DistributionImplementation;
@@ -646,7 +646,7 @@ NumericalPoint DistributionImplementation::computeInverseSurvivalFunction(const 
   // from which we deduce that q <= \tau and \tau <= 1 - (1 - q) / n
   // Lower bound of the bracketing interval
   const SurvivalFunctionWrapper wrapper(marginals, this);
-  const NumericalMathFunction f(bindMethod<SurvivalFunctionWrapper, NumericalPoint, NumericalPoint>(wrapper, &SurvivalFunctionWrapper::computeDiagonal, 1, 1));
+  const Function f(bindMethod<SurvivalFunctionWrapper, NumericalPoint, NumericalPoint>(wrapper, &SurvivalFunctionWrapper::computeDiagonal, 1, 1));
   NumericalScalar leftTau = prob;
   NumericalScalar leftSurvival = f(NumericalPoint(1, leftTau))[0];
   // Due to numerical precision issues, the theoretical bound can be slightly violated
@@ -2041,7 +2041,7 @@ NumericalScalar DistributionImplementation::computeScalarQuantile(const Numerica
   if (prob >= 1.0) return (tail ? lower : upper);
   const NumericalScalar q = tail ? 1.0 - prob : prob;
   const CDFWrapper wrapper(this);
-  const NumericalMathFunction f(bindMethod<CDFWrapper, NumericalPoint, NumericalPoint>(wrapper, &CDFWrapper::computeCDF, 1, 1));
+  const Function f(bindMethod<CDFWrapper, NumericalPoint, NumericalPoint>(wrapper, &CDFWrapper::computeCDF, 1, 1));
   const NumericalScalar leftTau = lower;
   const NumericalScalar leftCDF = 0.0;
   const NumericalScalar rightTau = upper;
@@ -2091,7 +2091,7 @@ NumericalPoint DistributionImplementation::computeQuantile(const NumericalScalar
   // from which we deduce that q <= \tau and \tau <= 1 - (1 - q) / n
   // Lower bound of the bracketing interval
   const QuantileWrapper wrapper(marginals, this);
-  const NumericalMathFunction f(bindMethod<QuantileWrapper, NumericalPoint, NumericalPoint>(wrapper, &QuantileWrapper::computeDiagonal, 1, 1));
+  const Function f(bindMethod<QuantileWrapper, NumericalPoint, NumericalPoint>(wrapper, &QuantileWrapper::computeDiagonal, 1, 1));
   NumericalScalar leftTau = q;
   NumericalScalar leftCDF = f(NumericalPoint(1, leftTau))[0];
   // Due to numerical precision issues, the theoretical bound can be slightly violated
@@ -2267,7 +2267,7 @@ Interval DistributionImplementation::computeMinimumVolumeIntervalWithMarginalPro
   Collection<Distribution> marginals(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i) marginals[i] = getMarginal(i);
   const MinimumVolumeIntervalWrapper minimumVolumeIntervalWrapper(this, marginals, prob);
-  const NumericalMathFunction function(bindMethod<MinimumVolumeIntervalWrapper, NumericalPoint, NumericalPoint>(minimumVolumeIntervalWrapper, &MinimumVolumeIntervalWrapper::computeMinimumVolumeProbability, 1, 1));
+  const Function function(bindMethod<MinimumVolumeIntervalWrapper, NumericalPoint, NumericalPoint>(minimumVolumeIntervalWrapper, &MinimumVolumeIntervalWrapper::computeMinimumVolumeProbability, 1, 1));
   Brent solver(quantileEpsilon_, pdfEpsilon_, pdfEpsilon_, quantileIterations_);
   // Here the equation we have to solve is P(X\in IC(\beta))=prob
   marginalProb = solver.solve(function, prob, 0.0, 1.0, 0.0, 1.0);
@@ -2282,7 +2282,7 @@ Interval DistributionImplementation::computeUnivariateMinimumVolumeIntervalByRoo
     NumericalScalar & marginalProb) const
 {
   const MinimumVolumeIntervalWrapper minimumVolumeIntervalWrapper(this, prob);
-  const NumericalMathFunction function(bindMethod<MinimumVolumeIntervalWrapper, NumericalPoint, NumericalPoint>(minimumVolumeIntervalWrapper, &MinimumVolumeIntervalWrapper::operator(), 1, 1));
+  const Function function(bindMethod<MinimumVolumeIntervalWrapper, NumericalPoint, NumericalPoint>(minimumVolumeIntervalWrapper, &MinimumVolumeIntervalWrapper::operator(), 1, 1));
   Brent solver(quantileEpsilon_, pdfEpsilon_, pdfEpsilon_, quantileIterations_);
   const NumericalScalar xMin = range_.getLowerBound()[0];
   const NumericalScalar xMax = computeScalarQuantile(prob, true);
@@ -2299,7 +2299,7 @@ Interval DistributionImplementation::computeUnivariateMinimumVolumeIntervalByOpt
     NumericalScalar & marginalProb) const
 {
   const MinimumVolumeIntervalWrapper minimumVolumeIntervalWrapper(this, prob);
-  const NumericalMathFunction objective(bindMethod<MinimumVolumeIntervalWrapper, NumericalPoint, NumericalPoint>(minimumVolumeIntervalWrapper, &MinimumVolumeIntervalWrapper::objective, 1, 1));
+  const Function objective(bindMethod<MinimumVolumeIntervalWrapper, NumericalPoint, NumericalPoint>(minimumVolumeIntervalWrapper, &MinimumVolumeIntervalWrapper::objective, 1, 1));
   OptimizationProblem problem;
   problem.setObjective(objective);
   problem.setBounds(getRange());
@@ -2343,7 +2343,7 @@ Interval DistributionImplementation::computeBilateralConfidenceIntervalWithMargi
   Collection<Distribution> marginals(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i) marginals[i] = getMarginal(i);
   const MinimumVolumeIntervalWrapper minimumVolumeIntervalWrapper(this, marginals, prob);
-  const NumericalMathFunction function(bindMethod<MinimumVolumeIntervalWrapper, NumericalPoint, NumericalPoint>(minimumVolumeIntervalWrapper, &MinimumVolumeIntervalWrapper::computeBilateralProbability, 1, 1));
+  const Function function(bindMethod<MinimumVolumeIntervalWrapper, NumericalPoint, NumericalPoint>(minimumVolumeIntervalWrapper, &MinimumVolumeIntervalWrapper::computeBilateralProbability, 1, 1));
   Brent solver(quantileEpsilon_, pdfEpsilon_, pdfEpsilon_, quantileIterations_);
   marginalProb = solver.solve(function, prob, 0.0, 1.0, 0.0, 1.0);
   const Interval IC(minimumVolumeIntervalWrapper.buildBilateralInterval(marginalProb));
@@ -2393,7 +2393,7 @@ LevelSet DistributionImplementation::computeMinimumVolumeLevelSetWithThreshold(c
     const LevelSet result(computeUnivariateMinimumVolumeLevelSetByQMC(prob, threshold));
     return result;
   }
-  NumericalMathFunction minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
+  Function minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
   minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
   // If dimension_ == 1 the threshold can be computed analyticaly
   NumericalScalar minusLogPDFThreshold;
@@ -2419,7 +2419,7 @@ LevelSet DistributionImplementation::computeMinimumVolumeLevelSetWithThreshold(c
 LevelSet DistributionImplementation::computeUnivariateMinimumVolumeLevelSetByQMC(const NumericalScalar prob,
     NumericalScalar & threshold) const
 {
-  NumericalMathFunction minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
+  Function minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
   minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
   // As we are in 1D and as the function defining the composite distribution can have complex variations,
   // we use an improved sampling method to compute the quantile of the -logPDF(X) distribution
@@ -3094,7 +3094,7 @@ DistributionImplementation::IsoProbabilisticTransformation DistributionImplement
     return inverseTransformation;
   }
   // General case, Rosenblatt transformation
-  return NumericalMathFunctionImplementation(new RosenblattEvaluation(clone()));
+  return FunctionImplementation(new RosenblattEvaluation(clone()));
 }
 
 /* Get the inverse isoprobabilist transformation */
@@ -3125,7 +3125,7 @@ DistributionImplementation::InverseIsoProbabilisticTransformation DistributionIm
     return inverseTransformation;
   }
   // General case, inverse Rosenblatt transformation
-  return NumericalMathFunctionImplementation(new InverseRosenblattEvaluation(clone()));
+  return FunctionImplementation(new InverseRosenblattEvaluation(clone()));
 }
 
 /* Get the standard distribution */

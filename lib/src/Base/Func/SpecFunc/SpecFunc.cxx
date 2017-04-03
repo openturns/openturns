@@ -31,7 +31,7 @@
 #include "openturns/GammaFunctions.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/GaussKronrod.hxx"
 #include "openturns/PlatformInfo.hxx"
 
@@ -49,7 +49,7 @@
 #else
 
 #include "openturns/GaussKronrod.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/Interval.hxx"
 
 #endif
@@ -292,19 +292,19 @@ NumericalScalar SpecFunc::LogBesselK(const NumericalScalar nu,
   return std::log(boost::math::cyl_bessel_k(nu, x));
 #else
   NumericalScalar logFactor = 0.0;
-  NumericalMathFunction integrand;
+  Function integrand;
   UnsignedInteger precision = PlatformInfo::GetNumericalPrecision();
   PlatformInfo::SetNumericalPrecision(16);
   NumericalScalar upper = -1.0;
   if (nu == 0.0)
   {
-    integrand = NumericalMathFunction("t", String(OSS() << "exp(-" << x << "*cosh(t))"));
+    integrand = Function("t", String(OSS() << "exp(-" << x << "*cosh(t))"));
     upper = std::log(-2.0 * std::log(NumericalScalarEpsilon) / x);
   }
   else
   {
     logFactor = nu * std::log(0.5 * x) - LogGamma(0.5 + nu) + 0.5 * std::log(M_PI);
-    integrand = NumericalMathFunction("t", String(OSS() << "exp(-" << x << "*cosh(t))*(sinh(t))^" << 2.0 * nu));
+    integrand = Function("t", String(OSS() << "exp(-" << x << "*cosh(t))*(sinh(t))^" << 2.0 * nu));
     upper = std::log(NumericalScalarEpsilon) / (2.0 * nu) - LambertW(-0.25 * x * std::exp(0.5 * std::log(NumericalScalarEpsilon) / nu) / nu, false);
   }
   NumericalScalar epsilon = -1.0;

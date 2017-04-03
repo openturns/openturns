@@ -32,7 +32,7 @@ QuadraticFunction::QuadraticFunction (const NumericalPoint & center,
     const NumericalPoint & constant,
     const Matrix & linear,
     const SymmetricTensor & quadratic)
-  : NumericalMathFunction(new QuadraticEvaluation(center, constant, linear, quadratic),
+  : Function(new QuadraticEvaluation(center, constant, linear, quadratic),
                           new LinearGradient(center, linear, quadratic),
                           new ConstantHessian(quadratic))
 {

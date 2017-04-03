@@ -22,7 +22,7 @@
 #define OPENTURNS_METAMODELRESULT_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/NumericalPoint.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -44,8 +44,8 @@ public:
   MetaModelResult();
 
   /** Standard constructor */
-  MetaModelResult(const NumericalMathFunction & model,
-                  const NumericalMathFunction & metaModel,
+  MetaModelResult(const Function & model,
+                  const Function & metaModel,
                   const NumericalPoint & residuals,
                   const NumericalPoint & relativeErrors);
 
@@ -53,12 +53,12 @@ public:
   virtual MetaModelResult * clone() const;
 
   /** Model accessor */
-  virtual void setModel(const NumericalMathFunction & model);
-  virtual NumericalMathFunction getModel() const;
+  virtual void setModel(const Function & model);
+  virtual Function getModel() const;
 
   /** MetaModel accessor */
-  virtual void setMetaModel(const NumericalMathFunction & metaModel);
-  virtual NumericalMathFunction getMetaModel() const;
+  virtual void setMetaModel(const Function & metaModel);
+  virtual Function getMetaModel() const;
 
   /** Marginal residuals accessor */
   virtual void setResiduals(const NumericalPoint & residuals);
@@ -80,10 +80,10 @@ public:
 protected:
 
   // The initial model
-  NumericalMathFunction model_;
+  Function model_;
 
   // The corresponding meta-model
-  NumericalMathFunction metaModel_;
+  Function metaModel_;
 
   // The marginal residuals
   NumericalPoint residuals_;

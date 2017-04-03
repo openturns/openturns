@@ -25,7 +25,7 @@
 #include "openturns/NumericalPoint.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/Collection.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/WeightedExperiment.hxx"
 #include "openturns/Pointer.hxx"
@@ -54,7 +54,7 @@ class OT_API ProjectionStrategyImplementation
 
 public:
 
-  typedef Collection<NumericalMathFunction> NumericalMathFunctionCollection;
+  typedef Collection<Function> FunctionCollection;
 
   // friend class Factory<ProjectionStrategyImplementation>;
 
@@ -107,7 +107,7 @@ public:
   virtual WeightedExperiment getExperiment() const;
 
   /** Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
-  virtual void computeCoefficients(const NumericalMathFunction & function,
+  virtual void computeCoefficients(const Function & function,
                                    const Basis & basis,
                                    const Indices & indices,
                                    const Indices & addedRanks,

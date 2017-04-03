@@ -33,7 +33,7 @@ try:
     for i in range(1, dim):
         formulas[0] = formulas[0] + \
             " - (" + inputFunction[i] + " ^ 2.0) / " + str(i)
-    limitState = NumericalMathFunction(inputFunction, outputFunction, formulas)
+    limitState = Function(inputFunction, outputFunction, formulas)
 
     #
     # Probabilistic model

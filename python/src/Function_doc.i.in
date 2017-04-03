@@ -1,0 +1,90 @@
+// Function docstrings are defined in FunctionImplementation_doc.i.in
+
+%feature("docstring") OT::Function
+OT_Function_doc
+%feature("docstring") OT::Function::enableCache
+OT_Function_enableCache_doc
+%feature("docstring") OT::Function::disableCache
+OT_Function_disableCache_doc
+%feature("docstring") OT::Function::clearCache
+OT_Function_clearCache_doc
+%feature("docstring") OT::Function::isCacheEnabled
+OT_Function_isCacheEnabled_doc
+%feature("docstring") OT::Function::getCacheHits
+OT_Function_getCacheHits_doc
+%feature("docstring") OT::Function::getCacheInput
+OT_Function_getCacheInput_doc
+%feature("docstring") OT::Function::getCacheOutput
+OT_Function_getCacheOutput_doc
+%feature("docstring") OT::Function::addCacheContent
+OT_Function_addCacheContent_doc
+%feature("docstring") OT::Function::enableHistory
+OT_Function_enableHistory_doc
+%feature("docstring") OT::Function::disableHistory
+OT_Function_disableHistory_doc
+%feature("docstring") OT::Function::clearHistory
+OT_Function_clearHistory_doc
+%feature("docstring") OT::Function::isHistoryEnabled
+OT_Function_isHistoryEnabled_doc
+%feature("docstring") OT::Function::getHistoryInput
+OT_Function_getHistoryInput_doc
+%feature("docstring") OT::Function::getHistoryOutput
+OT_Function_getHistoryOutput_doc
+%feature("docstring") OT::Function::getInputPointHistory
+OT_Function_getInputPointHistory_doc
+%feature("docstring") OT::Function::getInputParameterHistory
+OT_Function_getInputParameterHistory_doc
+%feature("docstring") OT::Function::getCallsNumber
+OT_Function_getCallsNumber_doc
+%feature("docstring") OT::Function::getEvaluationCallsNumber
+OT_Function_getEvaluationCallsNumber_doc
+%feature("docstring") OT::Function::getGradientCallsNumber
+OT_Function_getGradientCallsNumber_doc
+%feature("docstring") OT::Function::getHessianCallsNumber
+OT_Function_getHessianCallsNumber_doc
+%feature("docstring") OT::Function::getMarginal
+OT_Function_getMarginal_doc
+%feature("docstring") OT::Function::getImplementation
+OT_Function_getImplementation_doc
+%feature("docstring") OT::Function::getEvaluation
+OT_Function_getEvaluation_doc
+%feature("docstring") OT::Function::getGradient
+OT_Function_getGradient_doc
+%feature("docstring") OT::Function::getHessian
+OT_Function_getHessian_doc
+%feature("docstring") OT::Function::setEvaluation
+OT_Function_setEvaluation_doc
+%feature("docstring") OT::Function::setGradient
+OT_Function_setGradient_doc
+%feature("docstring") OT::Function::setHessian
+OT_Function_setHessian_doc
+%feature("docstring") OT::Function::gradient
+OT_Function_gradient_doc
+%feature("docstring") OT::Function::hessian
+OT_Function_hessian_doc
+%feature("docstring") OT::Function::getDescription
+OT_Function_getDescription_doc
+%feature("docstring") OT::Function::setDescription
+OT_Function_setDescription_doc
+%feature("docstring") OT::Function::getInputDescription
+OT_Function_getInputDescription_doc
+%feature("docstring") OT::Function::getOutputDescription
+OT_Function_getOutputDescription_doc
+%feature("docstring") OT::Function::getInputDimension
+OT_Function_getInputDimension_doc
+%feature("docstring") OT::Function::getOutputDimension
+OT_Function_getOutputDimension_doc
+%feature("docstring") OT::Function::getParameterDimension
+OT_Function_getParameterDimension_doc
+%feature("docstring") OT::Function::draw
+OT_Function_draw_doc
+%feature("docstring") OT::Function::getParameter
+OT_Function_getParameter_doc
+%feature("docstring") OT::Function::setParameter
+OT_Function_setParameter_doc
+%feature("docstring") OT::Function::getParameterDescription
+OT_Function_getParameterDescription_doc
+%feature("docstring") OT::Function::setParameterDescription
+OT_Function_setParameterDescription_doc
+%feature("docstring") OT::Function::parameterGradient
+OT_Function_parameterGradient_doc

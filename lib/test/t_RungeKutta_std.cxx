@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
     Description formulas(2);
     formulas[0] = "t - y0";
     formulas[1] = "y1 + t^2";
-    NumericalMathFunction f(inputVariables, outputVariables, formulas);
+    Function f(inputVariables, outputVariables, formulas);
     VertexValueFunction phi(f);
     RungeKutta solver(phi);
     fullprint << "ODE solver=" << solver << std::endl;

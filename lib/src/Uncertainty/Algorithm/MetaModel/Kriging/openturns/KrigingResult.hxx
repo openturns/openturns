@@ -27,7 +27,7 @@
 #include "openturns/Collection.hxx"
 #include "openturns/Basis.hxx"
 #include "openturns/PersistentCollection.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/HMatrix.hxx"
 #include "openturns/Basis.hxx"
@@ -59,7 +59,7 @@ public:
   /** Parameter constructor without any cholesky factor*/
   KrigingResult(const NumericalSample & inputSample,
                 const NumericalSample & outputSample,
-                const NumericalMathFunction & metaModel,
+                const Function & metaModel,
                 const NumericalPoint & residuals,
                 const NumericalPoint & relativeErrors,
                 const BasisCollection & basis,
@@ -70,7 +70,7 @@ public:
   /** Parameter constructor with Cholesky factor (Lapack)*/
   KrigingResult(const NumericalSample & inputSample,
                 const NumericalSample & outputSample,
-                const NumericalMathFunction & metaModel,
+                const Function & metaModel,
                 const NumericalPoint & residuals,
                 const NumericalPoint & relativeErrors,
                 const BasisCollection & basis,
@@ -104,8 +104,8 @@ public:
   virtual NumericalSample getCovarianceCoefficients() const;
 
   /** Transformation accessor */
-  virtual NumericalMathFunction getTransformation() const;
-  virtual void setTransformation(const NumericalMathFunction & transformation);
+  virtual Function getTransformation() const;
+  virtual void setTransformation(const Function & transformation);
 
   /** Compute mean of new points conditionnaly to observations */
   virtual NumericalPoint getConditionalMean(const NumericalSample & xi) const;
@@ -152,7 +152,7 @@ private:
   NumericalSample outputSample_;
 
   /** inputTransformation ==> iso-probabilistic transformation */
-  NumericalMathFunction inputTransformation_;
+  Function inputTransformation_;
 
   /** Boolean transformation */
   Bool hasTransformation_;

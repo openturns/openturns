@@ -15,7 +15,7 @@ try:
     outputVar[0] = "z"
     formula = Description(1)
     formula[0] = "exp(-sin(cos(y)^2*x^2+sin(x)^2*y^2))"
-    f = NumericalMathFunction(inputVar, outputVar, formula)
+    f = Function(inputVar, outputVar, formula)
 
     # Generate the data for the curves to be drawn
     discretization = NumericalPoint(2)

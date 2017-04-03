@@ -139,9 +139,9 @@ Here we assume a constant noise variance:
     dim = 2
     
     # model
-    branin = ot.NumericalMathFunction(['x1', 'x2'], ['f', 'sigma2'], ['((x2-(5.1/(4*_pi^2))*x1^2+5*x1/_pi-6)^2+10*(1-1/8*_pi)*cos(x1)+10-54.8104)/51.9496', '0.96'])
-    transfo = ot.NumericalMathFunction(['u1', 'u2'], ['x1', 'x2'], ['15*u1-5', '15*u2'])
-    model = ot.ComposedNumericalMathFunction(branin, transfo)
+    branin = ot.Function(['x1', 'x2'], ['f', 'sigma2'], ['((x2-(5.1/(4*_pi^2))*x1^2+5*x1/_pi-6)^2+10*(1-1/8*_pi)*cos(x1)+10-54.8104)/51.9496', '0.96'])
+    transfo = ot.Function(['u1', 'u2'], ['x1', 'x2'], ['15*u1-5', '15*u2'])
+    model = ot.ComposedFunction(branin, transfo)
     
     # problem
     problem = ot.OptimizationProblem()
@@ -166,7 +166,7 @@ Here we assume a constant noise variance:
     
     # algo
     algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
-    algo.setNoiseModel(ot.NumericalMathFunction(['x1', 'x2'], ['sigma2'], ['0.96'])) # assume constant noise var
+    algo.setNoiseModel(ot.Function(['x1', 'x2'], ['sigma2'], ['0.96'])) # assume constant noise var
     algo.setMaximumIterationNumber(20)
     algo.setImprovementFactor(0.05) # stop whe improvement is < a% the current optimum
     algo.setAIETradeoff(0.66744898)

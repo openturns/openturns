@@ -24,7 +24,7 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/Mixture.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -53,7 +53,7 @@ public:
 
   ConditionalDistribution(const Distribution & conditionedDistribution,
                           const Distribution & conditioningDistribution,
-                          const NumericalMathFunction & linkFunction);
+                          const Function & linkFunction);
 
   /** Comparison operator */
   Bool operator ==(const ConditionalDistribution & other) const;
@@ -95,8 +95,8 @@ public:
   Distribution getConditioningDistribution() const;
 
   /** Link function accessor */
-  void setLinkFunction(const NumericalMathFunction & linkFunction);
-  NumericalMathFunction getLinkFunction() const;
+  void setLinkFunction(const Function & linkFunction);
+  Function getLinkFunction() const;
 
   /** Get the i-th marginal distribution */
   Implementation getMarginal(const UnsignedInteger i) const;
@@ -119,10 +119,10 @@ private:
   /** set both parameters */
   void setConditionedAndConditioningDistributionsAndLinkFunction(const Distribution & conditionedDistribution,
       const Distribution & conditioningDistribution,
-      const NumericalMathFunction & linkFunction);
+      const Function & linkFunction);
 
   /** Compute the expectation of f(\theta)1_{\theta\leq \theta^*} with respect to the prior distribution of \theta */
-  NumericalPoint computeExpectation(const NumericalMathFunction & f,
+  NumericalPoint computeExpectation(const Function & f,
                                     const NumericalPoint & thetaStar) const;
 
   /** The conditioned distribution, i.e L(X|Theta) */
@@ -132,7 +132,7 @@ private:
   Distribution conditioningDistribution_;
 
   /** The link function */
-  NumericalMathFunction linkFunction_;
+  Function linkFunction_;
 
   /** Discrete marginals indices */
   Indices discreteMarginalsIndices_;

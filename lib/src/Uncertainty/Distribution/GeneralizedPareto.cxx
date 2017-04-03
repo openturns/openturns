@@ -189,7 +189,7 @@ Interval GeneralizedPareto::computeMinimumVolumeIntervalWithMarginalProbability(
 LevelSet GeneralizedPareto::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const
 {
   const Interval interval(computeMinimumVolumeInterval(prob));
-  NumericalMathFunction minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
+  Function minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
   minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
   NumericalScalar minusLogPDFThreshold = -computeLogPDF(interval.getUpperBound()[0]);
   threshold = std::exp(-minusLogPDFThreshold);

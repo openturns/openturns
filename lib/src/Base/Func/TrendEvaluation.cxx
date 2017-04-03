@@ -30,7 +30,7 @@ TrendEvaluation::TrendEvaluation()
 }
 
 /* Parameter constructor */
-TrendEvaluation::TrendEvaluation(const NumericalMathFunction & function)
+TrendEvaluation::TrendEvaluation(const Function & function)
   : EvaluationImplementation()
   , function_(function)
 {
@@ -75,7 +75,7 @@ String TrendEvaluation::__str__(const String & offset) const
 }
 
 /* Accessor for the function */
-NumericalMathFunction TrendEvaluation::getFunction() const
+Function TrendEvaluation::getFunction() const
 {
   return function_;
 }
