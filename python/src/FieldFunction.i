@@ -191,20 +191,4 @@ class PythonFieldFunction(FieldFunction):
         return FieldFunction(instance)
 
 
-# deprecated
-class DynamicalFunction(FieldFunction):
-    def __init__(self, *args):
-        super(DynamicalFunction, self).__init__(*args)
-        openturns.common.Log.Warn('class DynamicalFunction is deprecated in favor of FieldFunction')
-
-class OpenTURNSPythonDynamicalFunction(OpenTURNSPythonFieldFunction):
-    def __init__(self, *args):
-        super(OpenTURNSPythonDynamicalFunction, self).__init__(*args)
-        openturns.common.Log.Warn('class OpenTURNSPythonDynamicalFunction is deprecated in favor of OpenTURNSPythonFieldFunction')
-
-class PythonDynamicalFunction(PythonFieldFunction):
-    def __new__(self, *args):
-        common.Log.Warn('class PythonDynamicalFunction is deprecated in favor of PythonFieldFunction')
-        return FieldFunction(*args)
-
 %}

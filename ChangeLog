@@ -9,6 +9,11 @@
 ==== New classes ====
 
 ==== API changes ====
+ * Removed deprecated LAR class
+ * Remove deprecated Function::GetValidConstants|GetValidFunctions|GetValidOperators
+ * Removed deprecated TemporalNormalProcess, SpectralNormalProcess classes
+ * Removed deprecated GeneralizedLinearModelAlgorithm, GeneralizedLinearModelResult classes
+ * Removed deprecated DynamicalFunction, SpatialFunction, TemporalFunction classes
 
 === Python module ===
 

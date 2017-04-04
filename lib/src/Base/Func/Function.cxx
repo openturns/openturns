@@ -634,22 +634,5 @@ Graph Function::draw(const Point & xMin,
   return getImplementation()->draw(xMin, xMax, pointNumber, scale);
 }
 
-/* Static methods for documentation of analytical fnctions */
-Description Function::GetValidConstants()
-{
-  return FunctionImplementation::GetValidConstants();
-}
-
-Description Function::GetValidFunctions()
-{
-  return FunctionImplementation::GetValidFunctions();
-}
-
-Description Function::GetValidOperators()
-{
-  return FunctionImplementation::GetValidOperators();
-}
-
-
 
 END_NAMESPACE_OPENTURNS
