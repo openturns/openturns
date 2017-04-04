@@ -167,7 +167,7 @@ Scalar Weibull::computeComplementaryCDF(const Point & point) const
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Weibull::computeCharacteristicFunction(const Scalar x) const
+Complex Weibull::computeCharacteristicFunction(const Scalar x) const
 {
   /*
   X=mu+sigma*Y;
@@ -176,10 +176,10 @@ NumericalComplex Weibull::computeCharacteristicFunction(const Scalar x) const
   */
   if (x == 0.0) return 1.0;
   // Special case: beta == 1 -> exponential distribution
-  if (beta_ == 1.0) return 1.0 / NumericalComplex(1.0, -x / alpha_);
+  if (beta_ == 1.0) return 1.0 / Complex(1.0, -x / alpha_);
   // If beta < 1.0, the series based on the Gamma function is divergente so use the generic implementation
   if (beta_ < 1.0) return DistributionImplementation::computeCharacteristicFunction(x);
-  NumericalComplex value(1.0);
+  Complex value(1.0);
   const Scalar u = x * alpha_;
   const Scalar sign = x < 0.0 ? -1.0 : 1.0;
   const Scalar logAbsU = std::log(std::abs(u));
@@ -197,7 +197,7 @@ NumericalComplex Weibull::computeCharacteristicFunction(const Scalar x) const
     ++r;
     const Scalar term4 = std::exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_));
     ++r;
-    const NumericalComplex term((term4 - term2) / beta_, sign * (term1 - term3) / beta_);
+    const Complex term((term4 - term2) / beta_, sign * (term1 - term3) / beta_);
     oldNorm = norm;
     norm = std::abs(term);
     // If the term grows too much, the cancelation will be too large
@@ -205,7 +205,7 @@ NumericalComplex Weibull::computeCharacteristicFunction(const Scalar x) const
     value += term;
     increasing = norm > oldNorm;
   }
-  value *= std::exp(NumericalComplex(0.0, x * gamma_));
+  value *= std::exp(Complex(0.0, x * gamma_));
   return value;
 }
 

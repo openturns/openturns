@@ -48,18 +48,18 @@ public:
   KissFFT * clone() const;
 
   /** FFT transformation on complex */
-  NumericalComplexCollection transform(const NumericalComplexCollection & collection) const;
+  ComplexCollection transform(const ComplexCollection & collection) const;
 
   /** FFT transformation  with application on a block-part of the collection */
-  NumericalComplexCollection transform(const NumericalComplexCollection & collection,
+  ComplexCollection transform(const ComplexCollection & collection,
                                        const UnsignedInteger first,
                                        const UnsignedInteger size) const;
 
   /** FFT inverse transformation */
-  NumericalComplexCollection inverseTransform(const NumericalComplexCollection & collection) const;
+  ComplexCollection inverseTransform(const ComplexCollection & collection) const;
 
   /** FFT inverse transformation with application on a block-part of the collection */
-  NumericalComplexCollection inverseTransform(const NumericalComplexCollection & collection,
+  ComplexCollection inverseTransform(const ComplexCollection & collection,
       const UnsignedInteger first,
       const UnsignedInteger size) const;
 

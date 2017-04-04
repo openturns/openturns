@@ -165,14 +165,14 @@ Scalar Geometric::computeScalarQuantile(const Scalar prob,
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Geometric::computeCharacteristicFunction(const Scalar x) const
+Complex Geometric::computeCharacteristicFunction(const Scalar x) const
 {
-  const NumericalComplex value(p_ / (std::exp(NumericalComplex(0.0, -x)) - (1.0 - p_)));
+  const Complex value(p_ / (std::exp(Complex(0.0, -x)) - (1.0 - p_)));
   return value;
 }
 
 /* Get the generating function of the distribution, i.e. psi(z) = E(z^X) */
-NumericalComplex Geometric::computeGeneratingFunction(const NumericalComplex & z) const
+Complex Geometric::computeGeneratingFunction(const Complex & z) const
 {
   return p_ * z / (1.0 - (1.0 - p_) * z);
 }

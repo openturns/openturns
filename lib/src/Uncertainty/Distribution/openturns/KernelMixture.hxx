@@ -100,7 +100,7 @@ public:
   Scalar computeProbability(const Interval & interval) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
+  Complex computeCharacteristicFunction(const Scalar x) const;
 
   /** Get the PDF gradient of the distribution */
   using ContinuousDistribution::computePDFGradient;

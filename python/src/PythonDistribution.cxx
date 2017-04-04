@@ -330,7 +330,7 @@ Point PythonDistribution::computeQuantile(const Scalar prob, const Bool tail) co
 
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex PythonDistribution::computeCharacteristicFunction(const Scalar x) const
+Complex PythonDistribution::computeCharacteristicFunction(const Scalar x) const
 {
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("computeCharacteristicFunction")))
   {
@@ -344,7 +344,7 @@ NumericalComplex PythonDistribution::computeCharacteristicFunction(const Scalar 
     {
       handleException();
     }
-    NumericalComplex result = convert< _PyComplex_, NumericalComplex >(callResult.get());
+    Complex result = convert< _PyComplex_, Complex >(callResult.get());
     return result;
   }
   else

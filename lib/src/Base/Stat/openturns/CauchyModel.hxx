@@ -65,7 +65,7 @@ public:
 
   /** Computation of the spectral density function */
   using SpectralModelImplementation::computeStandardRepresentative;
-  NumericalComplex computeStandardRepresentative(const Scalar frequency) const;
+  Complex computeStandardRepresentative(const Scalar frequency) const;
 
   /** String converter */
   String __repr__() const;

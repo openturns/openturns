@@ -147,9 +147,9 @@ int main(int argc, char *argv[])
     fullprint << "Survival(inverse survival)=" << distribution.computeSurvivalFunction(InverseSurvival) << std::endl;
     if (dimension == 1)
     {
-      NumericalComplex CF = distribution.computeCharacteristicFunction( point[0] );
+      Complex CF = distribution.computeCharacteristicFunction( point[0] );
       fullprint << "characteristic function=" << CF << std::endl;
-      NumericalComplex LCF = distribution.computeLogCharacteristicFunction( point[0] );
+      Complex LCF = distribution.computeLogCharacteristicFunction( point[0] );
       fullprint << "log characteristic function=" << LCF << std::endl;
     }
     Point quantile = distribution.computeQuantile( 0.95 );

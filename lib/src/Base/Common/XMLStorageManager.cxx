@@ -443,8 +443,8 @@ void fromNodeConverter(XML::Node node, _Tp & value)
 
 template <>
 inline
-void fromNodeConverter<XML_STMGR::numericalcomplex_tag, NumericalComplex>(XML::Node node,
-    NumericalComplex & value)
+void fromNodeConverter<XML_STMGR::numericalcomplex_tag, Complex>(XML::Node node,
+    Complex & value)
 {
   XML::Node node_real = XML::FindElementByName( node, XML_STMGR::real_tag::Get() );
   XML::Node node_imag = XML::FindElementByName( node, XML_STMGR::imag_tag::Get() );
@@ -452,7 +452,7 @@ void fromNodeConverter<XML_STMGR::numericalcomplex_tag, NumericalComplex>(XML::N
   Scalar imag = -1.0;
   fromStringConverter( getValueToConvert<XML_STMGR::real_tag>( node_real ), real );
   fromStringConverter( getValueToConvert<XML_STMGR::imag_tag>( node_imag ), imag );
-  value = NumericalComplex( real, imag );
+  value = Complex( real, imag );
 }
 
 
@@ -481,9 +481,9 @@ void AttributeWriter(Pointer<StorageManager::InternalObject> & p_obj,
 
 template <>
 inline
-void AttributeWriter<NumericalComplex>(Pointer<StorageManager::InternalObject> & p_obj,
+void AttributeWriter<Complex>(Pointer<StorageManager::InternalObject> & p_obj,
                                        const String & name,
-                                       NumericalComplex value)
+                                       Complex value)
 {
   assert(p_obj);
   XMLInternalObject & obj = dynamic_cast<XMLInternalObject&>(*p_obj);
@@ -551,10 +551,10 @@ void IndexedValueWriter(TAG tag,
 
 template <>
 inline
-void IndexedValueWriter<XML_STMGR::numericalcomplex_tag, NumericalComplex>(XML_STMGR::numericalcomplex_tag tag,
+void IndexedValueWriter<XML_STMGR::numericalcomplex_tag, Complex>(XML_STMGR::numericalcomplex_tag tag,
     Pointer<StorageManager::InternalObject> & p_obj,
     UnsignedInteger index,
-    NumericalComplex value)
+    Complex value)
 {
   assert(p_obj);
   XMLInternalObject & obj = dynamic_cast<XMLInternalObject&>(*p_obj);
@@ -815,13 +815,13 @@ void XMLStorageManager::readIndexedValue(Pointer<InternalObject> & p_obj,
 
 
 
-/************ Type = NumericalComplex ************/
+/************ Type = Complex ************/
 
 
 /* Add an attribute to an internal object */
 void XMLStorageManager::addAttribute(Pointer<InternalObject> & p_obj,
                                      const String & name,
-                                     NumericalComplex value)
+                                     Complex value)
 {
   AttributeWriter( p_obj, name, value );
 }
@@ -829,7 +829,7 @@ void XMLStorageManager::addAttribute(Pointer<InternalObject> & p_obj,
 /* Read an attribute */
 void XMLStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
                                       const String & name,
-                                      NumericalComplex & value)
+                                      Complex & value)
 {
   AttributeReader( XML_STMGR::numericalcomplex_tag(), p_state_, name, value );
 }
@@ -837,7 +837,7 @@ void XMLStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
 /* Add an indexed value to an internal object */
 void XMLStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
                                         UnsignedInteger index,
-                                        NumericalComplex value)
+                                        Complex value)
 {
   IndexedValueWriter( XML_STMGR::numericalcomplex_tag(), p_obj, index, value );
 }
@@ -845,7 +845,7 @@ void XMLStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
 /* Read an indexed value */
 void XMLStorageManager::readIndexedValue(Pointer<InternalObject> & p_obj,
     UnsignedInteger index,
-    NumericalComplex & value)
+    Complex & value)
 {
   IndexedValueReader( XML_STMGR::numericalcomplex_tag(), p_obj, index, value );
 }

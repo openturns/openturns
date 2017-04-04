@@ -134,10 +134,10 @@ Scalar UniVariatePolynomialImplementation::operator() (const Scalar x) const
   return y;
 }
 
-NumericalComplex UniVariatePolynomialImplementation::operator() (const NumericalComplex z) const
+Complex UniVariatePolynomialImplementation::operator() (const Complex z) const
 {
   const UnsignedInteger size = coefficients_.getSize();
-  NumericalComplex y(coefficients_[size - 1]); /* y represents the value of P(x)*/
+  Complex y(coefficients_[size - 1]); /* y represents the value of P(x)*/
   // Evaluation using Horner scheme
   for (UnsignedInteger i = size - 1; i > 0; --i) y = y * z + coefficients_[i - 1];
 
@@ -212,8 +212,8 @@ UniVariatePolynomialImplementation UniVariatePolynomialImplementation::operator 
   {
     const FFT fft;
     const UnsignedInteger powerOfTwo = SpecFunc::NextPowerOfTwo(resultDimension);
-    NumericalComplexCollection leftCoefficients(powerOfTwo);
-    NumericalComplexCollection rightCoefficients(powerOfTwo);
+    ComplexCollection leftCoefficients(powerOfTwo);
+    ComplexCollection rightCoefficients(powerOfTwo);
     for (UnsignedInteger i = 0; i <= leftDegree; ++i) leftCoefficients[i] = coefficients_[i];
     for (UnsignedInteger i = 0; i <= rightDegree; ++i) rightCoefficients[i] = factorCoefficients[i];
     leftCoefficients = fft.transform(leftCoefficients);
@@ -284,7 +284,7 @@ UnsignedInteger UniVariatePolynomialImplementation::getDegree() const
 
 
 /* Root of the polynomial of degree n as the eigenvalues of the associated  matrix */
-UniVariatePolynomialImplementation::NumericalComplexCollection UniVariatePolynomialImplementation::getRoots() const
+UniVariatePolynomialImplementation::ComplexCollection UniVariatePolynomialImplementation::getRoots() const
 {
   const UnsignedInteger degree = getDegree();
   if (degree == 0) throw NotDefinedException(HERE) << "Error: cannot compute the roots of a constant polynomial.";

@@ -82,12 +82,12 @@ public:
   Point computeCDFGradient(const Point & point) const;
 
   /** Compute the characteristic function, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
-  NumericalComplex computeLogCharacteristicFunction(const Scalar x) const;
+  Complex computeCharacteristicFunction(const Scalar x) const;
+  Complex computeLogCharacteristicFunction(const Scalar x) const;
 
   /** Compute the generating function, i.e. psi(z) = E(z^X) */
-  NumericalComplex computeGeneratingFunction(const NumericalComplex & z) const;
-  NumericalComplex computeLogGeneratingFunction(const NumericalComplex & z) const;
+  Complex computeGeneratingFunction(const Complex & z) const;
+  Complex computeLogGeneratingFunction(const Complex & z) const;
 
   /** Get the support of a discrete distribution that intersect a given interval */
   using DistributionImplementation::getSupport;

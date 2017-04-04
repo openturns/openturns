@@ -7,7 +7,7 @@
 %include ComplexTensor_doc.i
 
 %template(ComplexTensorImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::ComplexTensorImplementation>;
-%apply const NumericalComplexCollection & { const OT::ComplexTensor::NumericalComplexCollection & };
+%apply const ComplexCollection & { const OT::ComplexTensor::ComplexCollection & };
 
 %include openturns/ComplexTensor.hxx
 
@@ -39,7 +39,7 @@ namespace OT {
 
   ComplexTensor(PyObject * pyObj) { return new OT::ComplexTensor( OT::convert<OT::_PySequence_,OT::ComplexTensor>(pyObj) ); }
 
-  OTTensorAccessors(ComplexTensor, NumericalComplex, _PyComplex_)
+  OTTensorAccessors(ComplexTensor, Complex, _PyComplex_)
 
 } // ComplexTensor
 } // OT

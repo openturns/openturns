@@ -46,26 +46,26 @@ FFTImplementation * FFTImplementation::clone() const
 }
 
 /* FFT transformation on real */
-FFTImplementation::NumericalComplexCollection FFTImplementation::transform(const ScalarCollection & collection) const
+FFTImplementation::ComplexCollection FFTImplementation::transform(const ScalarCollection & collection) const
 {
   const UnsignedInteger size = collection.getSize();
-  NumericalComplexCollection coll(size);
+  ComplexCollection coll(size);
   for (UnsignedInteger i = 0; i < size; ++i) coll[i] = collection[i];
   return transform(coll);
 }
 
 /** FFT transformation on real - The transformation is applied on a part of the collection*/
-FFTImplementation::NumericalComplexCollection FFTImplementation::transform(const ScalarCollection & collection,
+FFTImplementation::ComplexCollection FFTImplementation::transform(const ScalarCollection & collection,
     const UnsignedInteger first,
     const UnsignedInteger size) const
 {
-  NumericalComplexCollection coll(size);
+  ComplexCollection coll(size);
   for (UnsignedInteger i = 0; i < size; ++i) coll[i] = collection[first + i];
   return transform(coll);
 }
 
 /** FFT transformation on real with a regular sequence of the collection (between first and last, by step = step)*/
-FFTImplementation::NumericalComplexCollection FFTImplementation::transform(const ScalarCollection & collection,
+FFTImplementation::ComplexCollection FFTImplementation::transform(const ScalarCollection & collection,
     const UnsignedInteger first,
     const UnsignedInteger step,
     const UnsignedInteger last) const
@@ -74,46 +74,46 @@ FFTImplementation::NumericalComplexCollection FFTImplementation::transform(const
 }
 
 /* FFT transformation on complex */
-FFTImplementation::NumericalComplexCollection FFTImplementation::transform(const NumericalComplexCollection & collection) const
+FFTImplementation::ComplexCollection FFTImplementation::transform(const ComplexCollection & collection) const
 {
   return transform(collection, 0, collection.getSize());
 }
 
 /* FFT transformation on complex - For some FFT implementation, the transformation is applied on a part of the collection */
-FFTImplementation::NumericalComplexCollection FFTImplementation::transform(const NumericalComplexCollection & collection,
+FFTImplementation::ComplexCollection FFTImplementation::transform(const ComplexCollection & collection,
     const UnsignedInteger first,
     const UnsignedInteger size) const
 {
-  throw NotYetImplementedException(HERE) << "In FFTImplementation::transform(const NumericalComplexCollection & collection, const UnsignedInteger first, const UnsignedInteger size) const";
+  throw NotYetImplementedException(HERE) << "In FFTImplementation::transform(const ComplexCollection & collection, const UnsignedInteger first, const UnsignedInteger size) const";
 }
 
 /* FFT transformation on complex - For some FFT implementation, the need is to transform a regular sequence of the collection (between first and last, by step = step)*/
-FFTImplementation::NumericalComplexCollection FFTImplementation::transform(const NumericalComplexCollection & collection,
+FFTImplementation::ComplexCollection FFTImplementation::transform(const ComplexCollection & collection,
     const UnsignedInteger first,
     const UnsignedInteger step,
     const UnsignedInteger last) const
 {
-  throw NotYetImplementedException(HERE) << "In FFTImplementation::transform(const NumericalComplexCollection & collection, const UnsignedInteger first, const UnsignedInteger step, const UnsignedInteger last) const";
+  throw NotYetImplementedException(HERE) << "In FFTImplementation::transform(const ComplexCollection & collection, const UnsignedInteger first, const UnsignedInteger step, const UnsignedInteger last) const";
 }
 
 /** FFT inverse transformation */
-FFTImplementation::NumericalComplexCollection FFTImplementation::inverseTransform(const ScalarCollection & collection) const
+FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const ScalarCollection & collection) const
 {
   throw NotYetImplementedException(HERE);
 }
 
 /** FFT inverse transformation - The transformation is applied on a part of the collection */
-FFTImplementation::NumericalComplexCollection FFTImplementation::inverseTransform(const ScalarCollection & collection,
+FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const ScalarCollection & collection,
     const UnsignedInteger first,
     const UnsignedInteger size) const
 {
-  NumericalComplexCollection coll(size);
+  ComplexCollection coll(size);
   for (UnsignedInteger i = 0; i < size; ++i) coll[i] = collection[first + i];
   return inverseTransform(coll);
 }
 
 /** FFT inverse transformation on a regular sequence of the collection (between first and last, spearated  by step)*/
-FFTImplementation::NumericalComplexCollection FFTImplementation::inverseTransform(const ScalarCollection & collection,
+FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const ScalarCollection & collection,
     const UnsignedInteger first,
     const UnsignedInteger step,
     const UnsignedInteger last) const
@@ -122,26 +122,26 @@ FFTImplementation::NumericalComplexCollection FFTImplementation::inverseTransfor
 }
 
 /* FFT inverse transformation */
-FFTImplementation::NumericalComplexCollection FFTImplementation::inverseTransform(const NumericalComplexCollection & collection) const
+FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const ComplexCollection & collection) const
 {
-  throw NotYetImplementedException(HERE) << "In FFTImplementation::inverseTransform(const NumericalComplexCollection & collection) const";
+  throw NotYetImplementedException(HERE) << "In FFTImplementation::inverseTransform(const ComplexCollection & collection) const";
 }
 
 /* FFT inverse transformation - The transformation is applied on a part of the collection */
-FFTImplementation::NumericalComplexCollection FFTImplementation::inverseTransform(const NumericalComplexCollection & collection,
+FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const ComplexCollection & collection,
     const UnsignedInteger first,
     const UnsignedInteger size) const
 {
-  throw NotYetImplementedException(HERE) << "In FFTImplementation::inverseTransform(const NumericalComplexCollection & collection, const UnsignedInteger first, const UnsignedInteger size) const";
+  throw NotYetImplementedException(HERE) << "In FFTImplementation::inverseTransform(const ComplexCollection & collection, const UnsignedInteger first, const UnsignedInteger size) const";
 }
 
 /* FFT transformation on a regular sequence of the collection (between first and last, spearated  by step)*/
-FFTImplementation::NumericalComplexCollection FFTImplementation::inverseTransform(const NumericalComplexCollection & collection,
+FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const ComplexCollection & collection,
     const UnsignedInteger first,
     const UnsignedInteger step,
     const UnsignedInteger last) const
 {
-  throw NotYetImplementedException(HERE) << "In FFTImplementation::inverseTransform(const NumericalComplexCollection & collection, const UnsignedInteger first, const UnsignedInteger step, const UnsignedInteger last) const";
+  throw NotYetImplementedException(HERE) << "In FFTImplementation::inverseTransform(const ComplexCollection & collection, const UnsignedInteger first, const UnsignedInteger step, const UnsignedInteger last) const";
 }
 
 /** FFT 2D transformation on complex */

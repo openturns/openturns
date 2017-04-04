@@ -142,7 +142,7 @@ OrthogonalUniVariatePolynomial::CoefficientsCollection OrthogonalUniVariatePolyn
    0 sqrt(beta_2) alpha_2 sqrt(beta_3) 0 ...
    |
    0 ... 0 sqrt(beta_{n-1}) alpha_{n-1}] */
-OrthogonalUniVariatePolynomial::NumericalComplexCollection OrthogonalUniVariatePolynomial::getRoots() const
+OrthogonalUniVariatePolynomial::ComplexCollection OrthogonalUniVariatePolynomial::getRoots() const
 {
   const UnsignedInteger n = getDegree();
   if (n == 0) throw InvalidArgumentException(HERE) << "Error: cannot compute the roots of a constant polynomial.";
@@ -167,8 +167,8 @@ OrthogonalUniVariatePolynomial::NumericalComplexCollection OrthogonalUniVariateP
   int info;
   dstev_(&jobz, &ldz, &d[0], &e[0], &z(0, 0), &ldz, &work[0], &info, &ljobz);
   if (info != 0) throw InternalException(HERE) << "Lapack DSTEV: error code=" << info;
-  NumericalComplexCollection result(n);
-  for (UnsignedInteger i = 0; i < n; ++i) result[i] = NumericalComplex(d[i], 0.0);
+  ComplexCollection result(n);
+  for (UnsignedInteger i = 0; i < n; ++i) result[i] = Complex(d[i], 0.0);
   return result;
 }
 

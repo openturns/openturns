@@ -43,7 +43,7 @@ class OT_API Text : public DrawableImplementation
   CLASSNAME;
 public:
 
-  typedef Collection<NumericalComplex>               NumericalComplexCollection;
+  typedef Collection<Complex>               ComplexCollection;
 
   /** Default constructor */
   Text(const Sample & data,
@@ -52,7 +52,7 @@ public:
        const String & legend = "");
 
   /** Constructor from complex numbers */
-  Text(const NumericalComplexCollection & data,
+  Text(const ComplexCollection & data,
        const Description & texts,
        const String & textPosition = "top",
        const String & legend = "");

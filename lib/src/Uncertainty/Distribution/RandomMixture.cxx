@@ -50,7 +50,7 @@ static const Factory<PersistentCollection<Distribution> > Factory_PersistentColl
 
 typedef Collection<Distribution> DistributionCollection;
 typedef Collection<Point> PointCollection;
-typedef Collection<NumericalComplex> NumericalComplexCollection;
+typedef Collection<Complex> ComplexCollection;
 
 
 CLASSNAMEINIT(RandomMixture);
@@ -802,7 +802,7 @@ Scalar RandomMixture::computePDF(const Point & point) const
       {
         const Scalar sinMHX = std::sin(m * hX);
         const Scalar cosMHX = std::cos(m * hX);
-        const NumericalComplex deltaValue(computeDeltaCharacteristicFunction(m));
+        const Complex deltaValue(computeDeltaCharacteristicFunction(m));
         const Scalar contribution = (deltaValue.real() * cosMHX + deltaValue.imag() * sinMHX);
         LOGDEBUG(OSS() << "m=" << m << ", delta=" << deltaValue << ", contribution=" << contribution);
         sumContributions += contribution;
@@ -820,7 +820,7 @@ Scalar RandomMixture::computePDF(const Point & point) const
           // Level is now entirely on cache
           for (UnsignedInteger i = 0; i < skinPoints.getSize(); ++i)
           {
-            const NumericalComplex deltaValue(characteristicValuesCache_[fromIndex + i - 1]);
+            const Complex deltaValue(characteristicValuesCache_[fromIndex + i - 1]);
             hX = 0.0;
             for (UnsignedInteger j = 0; j < dimension_; ++j) hX += skinPoints[i][j] * point[j];
             const Scalar sinHX = std::sin(hX);
@@ -842,7 +842,7 @@ Scalar RandomMixture::computePDF(const Point & point) const
               pti[j] = skinPoints[i][j];
               hX += skinPoints[i][j] * point[j];
             }
-            const NumericalComplex deltaValue(computeDeltaCharacteristicFunction(pti));
+            const Complex deltaValue(computeDeltaCharacteristicFunction(pti));
             const Scalar sinHX = std::sin(hX);
             const Scalar cosHX = std::cos(hX);
             const Scalar contribution = deltaValue.real() * cosHX + deltaValue.imag() * sinHX;
@@ -1015,11 +1015,11 @@ struct AddPDFOn1DGridPolicy
 {
   const RandomMixture & mixture_;
   const Point & xPoints_;
-  Collection<NumericalComplex> & output_;
+  Collection<Complex> & output_;
 
   AddPDFOn1DGridPolicy(const RandomMixture & mixture,
                        const Point & xPoints,
-                       Collection<NumericalComplex> & output)
+                       Collection<Complex> & output)
     : mixture_(mixture)
     , xPoints_(xPoints)
     , output_(output)
@@ -1041,9 +1041,9 @@ void RandomMixture::addPDFOn1DGrid(const Indices & pointNumber, const Point & h,
   if (pointNumber.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: the given indices must have dimension=1, here dimension=" << pointNumber.getSize();
 
   const UnsignedInteger N = pointNumber[0];
-  Collection<NumericalComplex> fx(N);
-  Collection<NumericalComplex> z_exp(N);
-  const NumericalComplex cOne(0.0, 1.0);
+  Collection<Complex> fx(N);
+  Collection<Complex> z_exp(N);
+  const Complex cOne(0.0, 1.0);
   // Grid points
   Point xPlus(N);
   for (UnsignedInteger i = 0; i < N; ++i)
@@ -1054,24 +1054,24 @@ void RandomMixture::addPDFOn1DGrid(const Indices & pointNumber, const Point & h,
   }
 
   // FFT 1D
-  Collection<NumericalComplex> yk(N);
+  Collection<Complex> yk(N);
   // 1) compute \Sigma_+
   const  AddPDFOn1DGridPolicy policyGridPP(*this, xPlus, yk);
   TBB::ParallelFor( 0, N, policyGridPP);
   for (UnsignedInteger j = 0; j < N; ++j)
     yk[j] *= fx[j];
 
-  Collection<NumericalComplex> sigma_plus(fftAlgorithm_.transform(yk));
+  Collection<Complex> sigma_plus(fftAlgorithm_.transform(yk));
 
   for (UnsignedInteger j = 0; j < N; ++j)
     sigma_plus[j] *= z_exp[j];
 
   // 2) compute \Sigma_-
-  Collection<NumericalComplex> ykc(N);
+  Collection<Complex> ykc(N);
   for (UnsignedInteger j = 0; j < N; ++j)
     ykc[j] = std::conj(yk[N - 1 - j]);
 
-  Collection<NumericalComplex> sigma_minus(fftAlgorithm_.transform(ykc));
+  Collection<Complex> sigma_minus(fftAlgorithm_.transform(ykc));
 
   const Scalar scaling = h[0] / (2.0 * M_PI);
   for (UnsignedInteger j = 0; j < N; ++j)
@@ -1087,12 +1087,12 @@ struct AddPDFOn2DGridPolicy
   const Point & yPoints_;
   const UnsignedInteger nx_;
   const UnsignedInteger ny_;
-  Collection<NumericalComplex> & output_;
+  Collection<Complex> & output_;
 
   AddPDFOn2DGridPolicy(const RandomMixture & mixture,
                        const Point & xPoints,
                        const Point & yPoints,
-                       Collection<NumericalComplex> & output)
+                       Collection<Complex> & output)
     : mixture_(mixture)
     , xPoints_(xPoints)
     , yPoints_(yPoints)
@@ -1121,11 +1121,11 @@ void RandomMixture::addPDFOn2DGrid(const Indices & pointNumber, const Point & h,
 
   const UnsignedInteger Nx = pointNumber[0];
   const UnsignedInteger Ny = pointNumber[1];
-  Collection<NumericalComplex> fx(Nx);
-  Collection<NumericalComplex> fy(Ny);
-  Collection<NumericalComplex> z_exp_mx(Nx);
-  Collection<NumericalComplex> z_exp_my(Ny);
-  const NumericalComplex cOne(0.0, 1.0);
+  Collection<Complex> fx(Nx);
+  Collection<Complex> fy(Ny);
+  Collection<Complex> z_exp_mx(Nx);
+  Collection<Complex> z_exp_my(Ny);
+  const Complex cOne(0.0, 1.0);
   for (UnsignedInteger i = 0; i < Nx; ++i)
   {
     fx[i] = std::exp(- M_PI * cOne * (tau[0] - 1.0 + 1.0 / Nx) * (1.0 + i));
@@ -1193,7 +1193,7 @@ void RandomMixture::addPDFOn2DGrid(const Indices & pointNumber, const Point & h,
       sigma_minus_plus(i, j) *= z_exp_my[j];
 
   // 5) compute \Sigma_+0
-  NumericalComplexCollection yk0(Nx);
+  ComplexCollection yk0(Nx);
   Point x(2);
   x[1] = 0.0;
   for (UnsignedInteger i = 0; i < Nx; ++i)
@@ -1201,15 +1201,15 @@ void RandomMixture::addPDFOn2DGrid(const Indices & pointNumber, const Point & h,
     x[0] = (i + 1) * h[0];
     yk0[i] = computeDeltaCharacteristicFunction(x) * fx[i];
   }
-  NumericalComplexCollection sigma_plus_0(fftAlgorithm_.transform(yk0));
+  ComplexCollection sigma_plus_0(fftAlgorithm_.transform(yk0));
   for (UnsignedInteger i = 0; i < Nx; ++i)
     sigma_plus_0[i] *= z_exp_mx[i];
 
   // 6) compute \Sigma_-0
-  NumericalComplexCollection yk0c(Nx);
+  ComplexCollection yk0c(Nx);
   for (UnsignedInteger i = 0; i < Nx; ++i)
     yk0c[i] = std::conj(yk0[Nx - 1 - i]);
-  NumericalComplexCollection sigma_minus_0(fftAlgorithm_.transform(yk0c));
+  ComplexCollection sigma_minus_0(fftAlgorithm_.transform(yk0c));
 
   // 7) compute \Sigma_0+
   if (Nx != Ny)
@@ -1223,14 +1223,14 @@ void RandomMixture::addPDFOn2DGrid(const Indices & pointNumber, const Point & h,
     x[1] = (j + 1) * h[1];
     yk0[j] = computeDeltaCharacteristicFunction(x) * fy[j];
   }
-  NumericalComplexCollection sigma_0_plus(fftAlgorithm_.transform(yk0));
+  ComplexCollection sigma_0_plus(fftAlgorithm_.transform(yk0));
   for (UnsignedInteger j = 0; j < Ny; ++j)
     sigma_0_plus[j] *= z_exp_my[j];
 
   // 8) compute \Sigma_0-
   for (UnsignedInteger j = 0; j < Ny; ++j)
     yk0c[j] = std::conj(yk0[Ny - 1 - j]);
-  NumericalComplexCollection sigma_0_minus(fftAlgorithm_.transform(yk0c));
+  ComplexCollection sigma_0_minus(fftAlgorithm_.transform(yk0c));
 
   UnsignedInteger counter = 0;
   const Scalar scaling = (h[0] * h[1]) / (4.0 * M_PI * M_PI);
@@ -1257,13 +1257,13 @@ struct AddPDFOn3DGridPolicy
   const UnsignedInteger nx_;
   const UnsignedInteger ny_;
   const UnsignedInteger nz_;
-  Collection<NumericalComplex> & output_;
+  Collection<Complex> & output_;
 
   AddPDFOn3DGridPolicy(const RandomMixture & mixture,
                        const Point & xPoints,
                        const Point & yPoints,
                        const Point & zPoints,
-                       Collection<NumericalComplex> & output)
+                       Collection<Complex> & output)
     : mixture_(mixture)
     , xPoints_(xPoints)
     , yPoints_(yPoints)
@@ -1297,13 +1297,13 @@ void RandomMixture::addPDFOn3DGrid(const Indices & pointNumber, const Point & h,
   const UnsignedInteger Nx = pointNumber[0];
   const UnsignedInteger Ny = pointNumber[1];
   const UnsignedInteger Nz = pointNumber[2];
-  Collection<NumericalComplex> fx(Nx);
-  Collection<NumericalComplex> fy(Ny);
-  Collection<NumericalComplex> fz(Nz);
-  Collection<NumericalComplex> z_exp_mx(Nx);
-  Collection<NumericalComplex> z_exp_my(Ny);
-  Collection<NumericalComplex> z_exp_mz(Nz);
-  const NumericalComplex cOne(0.0, 1.0);
+  Collection<Complex> fx(Nx);
+  Collection<Complex> fy(Ny);
+  Collection<Complex> fz(Nz);
+  Collection<Complex> z_exp_mx(Nx);
+  Collection<Complex> z_exp_my(Ny);
+  Collection<Complex> z_exp_mz(Nz);
+  const Complex cOne(0.0, 1.0);
   for (UnsignedInteger i = 0; i < Nx; ++i)
   {
     fx[i] = std::exp(- M_PI * cOne * (tau[0] - 1.0 + 1.0 / Nx) * (1.0 + i));
@@ -1610,7 +1610,7 @@ void RandomMixture::addPDFOn3DGrid(const Indices & pointNumber, const Point & h,
       sigma_0_minus_plus(j, k) *= z_exp_mz[k];
 
   // 21) compute \Sigma_+00
-  Collection<NumericalComplex> yk00(Nx);
+  Collection<Complex> yk00(Nx);
   x[1] = 0.0;
   x[2] = 0.0;
   for (UnsignedInteger i = 0; i < Nx; ++i)
@@ -1618,15 +1618,15 @@ void RandomMixture::addPDFOn3DGrid(const Indices & pointNumber, const Point & h,
     x[0] = (i + 1) * h[0];
     yk00[i] = computeDeltaCharacteristicFunction(x) * fx[i];
   }
-  Collection<NumericalComplex> sigma_plus_0_0(fftAlgorithm_.transform(yk00));
+  Collection<Complex> sigma_plus_0_0(fftAlgorithm_.transform(yk00));
   for (UnsignedInteger i = 0; i < Nx; ++i)
     sigma_plus_0_0[i] *= z_exp_mx[i];
 
   // 22) compute \Sigma_-00
-  Collection<NumericalComplex> yk00c(Nx);
+  Collection<Complex> yk00c(Nx);
   for (UnsignedInteger i = 0; i < Nx; ++i)
     yk00c[i] = std::conj(yk00[Nx - 1 - i]);
-  Collection<NumericalComplex> sigma_minus_0_0(fftAlgorithm_.transform(yk00c));
+  Collection<Complex> sigma_minus_0_0(fftAlgorithm_.transform(yk00c));
 
   // 23) compute \Sigma_0+0
   if (Nx != Ny)
@@ -1641,14 +1641,14 @@ void RandomMixture::addPDFOn3DGrid(const Indices & pointNumber, const Point & h,
     x[1] = (j + 1) * h[1];
     yk00[j] = computeDeltaCharacteristicFunction(x) * fy[j];
   }
-  Collection<NumericalComplex> sigma_0_plus_0(fftAlgorithm_.transform(yk00));
+  Collection<Complex> sigma_0_plus_0(fftAlgorithm_.transform(yk00));
   for (UnsignedInteger j = 0; j < Ny; ++j)
     sigma_0_plus_0[j] *= z_exp_my[j];
 
   // 24) compute \Sigma_0-0
   for (UnsignedInteger j = 0; j < Ny; ++j)
     yk00c[j] = std::conj(yk00[Ny - 1 - j]);
-  Collection<NumericalComplex> sigma_0_minus_0(fftAlgorithm_.transform(yk00c));
+  Collection<Complex> sigma_0_minus_0(fftAlgorithm_.transform(yk00c));
 
   // 25) compute \Sigma_00+
   if (Ny != Nz)
@@ -1663,14 +1663,14 @@ void RandomMixture::addPDFOn3DGrid(const Indices & pointNumber, const Point & h,
     x[2] = (k + 1) * h[2];
     yk00[k] = computeDeltaCharacteristicFunction(x) * fz[k];
   }
-  Collection<NumericalComplex> sigma_0_0_plus(fftAlgorithm_.transform(yk00));
+  Collection<Complex> sigma_0_0_plus(fftAlgorithm_.transform(yk00));
   for (UnsignedInteger k = 0; k < Nz; ++k)
     sigma_0_0_plus[k] *= z_exp_mz[k];
 
   // 26) compute \Sigma_00-
   for (UnsignedInteger k = 0; k < Nz; ++k)
     yk00c[k] = std::conj(yk00[Nz - 1 - k]);
-  Collection<NumericalComplex> sigma_0_0_minus(fftAlgorithm_.transform(yk00c));
+  Collection<Complex> sigma_0_0_minus(fftAlgorithm_.transform(yk00c));
 
   UnsignedInteger counter = 0;
   const Scalar scaling = (h[0] * h[1] * h[2]) / (8.0 * M_PI * M_PI * M_PI);
@@ -1926,7 +1926,7 @@ Scalar RandomMixture::computeProbability(const Interval & interval) const
       Scalar cosMHLower = std::cos(m * a);
       Scalar sinMHUpper = std::sin(m * b);
       Scalar cosMHUpper = std::cos(m * b);
-      const NumericalComplex deltaValue(computeDeltaCharacteristicFunction(m));
+      const Complex deltaValue(computeDeltaCharacteristicFunction(m));
       const Scalar contribution = factor * (deltaValue.real() * (sinMHUpper - sinMHLower) + deltaValue.imag() * (cosMHLower - cosMHUpper)) / (m * referenceBandwidth_[0]);
       value += contribution;
       error += std::abs(contribution);
@@ -1993,13 +1993,13 @@ LevelSet RandomMixture::computeMinimumVolumeLevelSetWithThreshold(const Scalar p
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex RandomMixture::computeCharacteristicFunction(const Scalar x) const
+Complex RandomMixture::computeCharacteristicFunction(const Scalar x) const
 {
   if (x == 0.0) return 1.0;
   return std::exp(computeLogCharacteristicFunction(x));
 }
 
-NumericalComplex RandomMixture::computeCharacteristicFunction(const Point & x) const
+Complex RandomMixture::computeCharacteristicFunction(const Point & x) const
 {
   // The characteristic function is given by the following formula:
   // \phi(y) = \prod_{j=1}^{d} (exp(i * y_j * constant_j) * \prod_{k=1}^{n} \phi_{X_k}((M^t y)_k))
@@ -2007,10 +2007,10 @@ NumericalComplex RandomMixture::computeCharacteristicFunction(const Point & x) c
   return std::exp(computeLogCharacteristicFunction(x));
 }
 
-NumericalComplex RandomMixture::computeLogCharacteristicFunction(const Scalar x) const
+Complex RandomMixture::computeLogCharacteristicFunction(const Scalar x) const
 {
   if (x == 0.0) return 0.0;
-  NumericalComplex logCfValue(0.0, constant_[0] * x);
+  Complex logCfValue(0.0, constant_[0] * x);
   const UnsignedInteger size = distributionCollection_.getSize();
   const Scalar smallScalar = 0.5 * std::log(SpecFunc::MinScalar);
   for(UnsignedInteger i = 0; i < size; ++i)
@@ -2022,7 +2022,7 @@ NumericalComplex RandomMixture::computeLogCharacteristicFunction(const Scalar x)
   return logCfValue;
 }
 
-NumericalComplex RandomMixture::computeLogCharacteristicFunction(const Point & x) const
+Complex RandomMixture::computeLogCharacteristicFunction(const Point & x) const
 {
   // The log-characteristic function is given by:
   // log(\phi(x)) = \sum_{j=1}^{d} ((i * y_j * constant_j) + \sum_{k=1}^{n} log(\phi_{X_k})((M^t x)_k))
@@ -2030,8 +2030,8 @@ NumericalComplex RandomMixture::computeLogCharacteristicFunction(const Point & x
   const UnsignedInteger size = distributionCollection_.getSize();
   const Scalar smallScalar = 0.5 * std::log(SpecFunc::MinScalar);
   // 1) compute the deterministic term
-  NumericalComplex logCfValue;
-  for (UnsignedInteger i = 0; i < dimension; ++i) logCfValue += NumericalComplex(0.0, x[i] * constant_[i]);
+  Complex logCfValue;
+  for (UnsignedInteger i = 0; i < dimension; ++i) logCfValue += Complex(0.0, x[i] * constant_[i]);
   // 2) compute the random part
   // The variables are independent
   for (UnsignedInteger i = 0; i < size; ++i)
@@ -2046,7 +2046,7 @@ NumericalComplex RandomMixture::computeLogCharacteristicFunction(const Point & x
 }
 
 /* Compute a value of the characteristic function on a prescribed discretization. As the value associated with index == 0 is known, it is not stored so for index > 0, the corresponding value is at position index-1 */
-NumericalComplex RandomMixture::computeDeltaCharacteristicFunction(const UnsignedInteger index) const
+Complex RandomMixture::computeDeltaCharacteristicFunction(const UnsignedInteger index) const
 {
   LOGDEBUG(OSS() << "In RandomMixture::computeDeltaCharacteristicFunction, index=" << index << ", h=" << referenceBandwidth_.__str__());
   if (index == 0) return 0.0;
@@ -2058,10 +2058,10 @@ NumericalComplex RandomMixture::computeDeltaCharacteristicFunction(const Unsigne
   {
     LOGINFO(OSS() << "Cache exceeded in RandomMixture::computeDeltaCharacteristicFunction, consider increasing maxSize_ to " << index);
     const Scalar x = index * referenceBandwidth_[0];
-    const NumericalComplex logCF(computeLogCharacteristicFunction(x));
-    const NumericalComplex logNormalCF(equivalentNormal_.computeLogCharacteristicFunction(x));
-    const NumericalComplex deltaLog(logCF - logNormalCF);
-    NumericalComplex value;
+    const Complex logCF(computeLogCharacteristicFunction(x));
+    const Complex logNormalCF(equivalentNormal_.computeLogCharacteristicFunction(x));
+    const Complex deltaLog(logCF - logNormalCF);
+    Complex value;
     if (std::abs(deltaLog) < 1.0e-5) value = std::exp(logNormalCF) * (deltaLog * (1.0 + deltaLog * (0.5 + deltaLog / 6.0)));
     else value = std::exp(logCF) - std::exp(logNormalCF);
     LOGDEBUG(OSS() << "ih=" << x << ", logCF=" << logCF << ", CF=" << std::exp(logCF) << ", logNormalCF=" << logNormalCF << ", NormalCF=" << std::exp(logNormalCF) << ", value=" << value);
@@ -2073,10 +2073,10 @@ NumericalComplex RandomMixture::computeDeltaCharacteristicFunction(const Unsigne
     for (UnsignedInteger i = storedSize_ + 1; i <= index; ++i)
     {
       const Scalar x = i * referenceBandwidth_[0];
-      const NumericalComplex logCF(computeLogCharacteristicFunction(x));
-      const NumericalComplex logNormalCF(equivalentNormal_.computeLogCharacteristicFunction(x));
-      const NumericalComplex deltaLog(logCF - logNormalCF);
-      NumericalComplex value;
+      const Complex logCF(computeLogCharacteristicFunction(x));
+      const Complex logNormalCF(equivalentNormal_.computeLogCharacteristicFunction(x));
+      const Complex deltaLog(logCF - logNormalCF);
+      Complex value;
       if (std::abs(deltaLog) < 1.0e-5) value = std::exp(logNormalCF) * (deltaLog * (1.0 + deltaLog * (0.5 + deltaLog / 6.0)));
       else value = std::exp(logCF) - std::exp(logNormalCF);
       LOGDEBUG(OSS() << "ih=" << x << ", logCF=" << logCF << ", CF=" << std::exp(logCF) << ", logNormalCF=" << logNormalCF << ", NormalCF=" << std::exp(logNormalCF) << ", value=" << value);
@@ -2090,12 +2090,12 @@ NumericalComplex RandomMixture::computeDeltaCharacteristicFunction(const Unsigne
 }
 
 /* Compute the characteristic function of nD distributions by difference to a reference Normal distribution with the same mean and the same covariance */
-NumericalComplex RandomMixture::computeDeltaCharacteristicFunction(const Point & x) const
+Complex RandomMixture::computeDeltaCharacteristicFunction(const Point & x) const
 {
   // Direct application on a point ==> useful for computation on grid
-  const NumericalComplex logCF(computeLogCharacteristicFunction(x));
-  const NumericalComplex logNormalCF(equivalentNormal_.computeLogCharacteristicFunction(x));
-  const NumericalComplex deltaLog(logCF - logNormalCF);
+  const Complex logCF(computeLogCharacteristicFunction(x));
+  const Complex logNormalCF(equivalentNormal_.computeLogCharacteristicFunction(x));
+  const Complex deltaLog(logCF - logNormalCF);
   if (std::abs(deltaLog) < 1.0e-5) return std::exp(logNormalCF) * (deltaLog * (1.0 + deltaLog * (0.5 + deltaLog / 6.0)));
   else return std::exp(logCF) - std::exp(logNormalCF);
 }
@@ -2112,10 +2112,10 @@ void RandomMixture::updateCacheDeltaCharacteristicFunction(const Sample & points
     // We reduce CF - NormalCF to NormalCF * (CF/NormalCF -1), which rewrites
     // as exp(logNormalCF) * (exp(deltaLog) - 1), with deltaLog=logCF - logNormalCF
     // We use a 3rd order Taylor expansion of exp(deltaLog) - 1 if |deltaLog| <= 1e-5
-    const NumericalComplex logCF(computeLogCharacteristicFunction(x));
-    const NumericalComplex logNormalCF(equivalentNormal_.computeLogCharacteristicFunction(x));
-    const NumericalComplex deltaLog(logCF - logNormalCF);
-    NumericalComplex value;
+    const Complex logCF(computeLogCharacteristicFunction(x));
+    const Complex logNormalCF(equivalentNormal_.computeLogCharacteristicFunction(x));
+    const Complex deltaLog(logCF - logNormalCF);
+    Complex value;
     if (std::abs(deltaLog) < 1.0e-5) value = std::exp(logNormalCF) * (deltaLog * (1.0 + deltaLog * (0.5 + deltaLog / 6.0)));
     else value = std::exp(logCF) - std::exp(logNormalCF);
     LOGDEBUG(OSS() << "ih=" << x << ", logCF=" << logCF << ", CF=" << std::exp(logCF) << ", logNormalCF=" << logNormalCF << ", NormalCF=" << std::exp(logNormalCF) << ", value=" << value);
@@ -2373,7 +2373,7 @@ void RandomMixture::setReferenceBandwidth(const Point & bandwidth)
   referenceBandwidth_ = bandwidth;
   // Reset the cached values
   storedSize_ = 0;
-  characteristicValuesCache_ = NumericalComplexPersistentCollection(0);
+  characteristicValuesCache_ = ComplexPersistentCollection(0);
 }
 
 Point RandomMixture::getReferenceBandwidth() const
@@ -2417,7 +2417,7 @@ void RandomMixture::computeReferenceBandwidth()
 
   // Reset the cached values
   storedSize_ = 0;
-  characteristicValuesCache_ = NumericalComplexPersistentCollection(0);
+  characteristicValuesCache_ = ComplexPersistentCollection(0);
 }
 
 /* Compute the equivalent normal distribution, i.e. with the same mean and

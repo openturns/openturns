@@ -9,7 +9,7 @@
 %template(ComplexMatrixImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::ComplexMatrixImplementation>;
 
 %apply const ScalarCollection & { const OT::ComplexMatrix::ScalarCollection & };
-%apply const NumericalComplexCollection & { const OT::ComplexMatrix::NumericalComplexCollection & };
+%apply const ComplexCollection & { const OT::ComplexMatrix::ComplexCollection & };
 
 %include openturns/ComplexMatrix.hxx
 
@@ -35,8 +35,8 @@ ComplexMatrix.__getattribute__ = ComplexMatrix___getattribute__
 
 
 %define OTComplexMatrixGetAccessors()
-  OTMatrixGetAccessor(ComplexMatrix, NumericalComplex, _PyComplex_)
-  OTMatrixSetAccessor(ComplexMatrix, NumericalComplex, _PyComplex_)
+  OTMatrixGetAccessor(ComplexMatrix, Complex, _PyComplex_)
+  OTMatrixSetAccessor(ComplexMatrix, Complex, _PyComplex_)
 %enddef    
 
 namespace OT {
@@ -49,10 +49,10 @@ namespace OT {
 
   OTComplexMatrixGetAccessors()  
   
-  ComplexMatrix __rmul__(NumericalComplex s) { return s * (*self); }
+  ComplexMatrix __rmul__(Complex s) { return s * (*self); }
 
 #if SWIG_VERSION < 0x030011
-  ComplexMatrix __truediv__(NumericalComplex s) { return (*self) / s; }
+  ComplexMatrix __truediv__(Complex s) { return (*self) / s; }
 #endif
 
   ComplexMatrix __matmul__(const ComplexMatrix & other) { return *self * other; }

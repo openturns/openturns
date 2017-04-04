@@ -38,7 +38,7 @@ class OT_API FAST
 {
 public:
 
-  typedef Collection<NumericalComplex> NumericalComplexCollection;
+  typedef Collection<Complex> ComplexCollection;
 
   /** Constructor with model */
   FAST(const Function & model,

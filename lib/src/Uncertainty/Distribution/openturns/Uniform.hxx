@@ -83,7 +83,7 @@ public:
   Scalar computeComplementaryCDF(const Point & point) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
+  Complex computeCharacteristicFunction(const Scalar x) const;
 
   /** Get the product minimum volume interval containing a given probability of the distribution */
   Interval computeMinimumVolumeIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const;

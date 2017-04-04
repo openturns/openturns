@@ -139,7 +139,7 @@ OStream & operator << (OStream & OS, long double val)
 }
 
 
-OStream & operator << (OStream & OS, const NumericalComplex & c)
+OStream & operator << (OStream & OS, const Complex & c)
 {
   OS.getStream() << c;
   return OS;

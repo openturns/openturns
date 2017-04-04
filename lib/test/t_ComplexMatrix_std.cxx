@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-typedef Collection<NumericalComplex> NumericalComplexCollection;
+typedef Collection<Complex> ComplexCollection;
 
 int main(int argc, char *argv[])
 {
@@ -48,10 +48,10 @@ int main(int argc, char *argv[])
   ComplexMatrix matrix1(2, 2);
 
   /* Check operator() methods */
-  matrix1(0, 0) = NumericalComplex(1., 1) ;
-  matrix1(1, 0) = NumericalComplex(2., -1) ;
-  matrix1(0, 1) = NumericalComplex(4., 2) ;
-  matrix1(1, 1) = NumericalComplex(3., 2) ;
+  matrix1(0, 0) = Complex(1., 1) ;
+  matrix1(1, 0) = Complex(2., -1) ;
+  matrix1(0, 1) = Complex(4., 2) ;
+  matrix1(1, 1) = Complex(3., 2) ;
 
   /* String converter */
   fullprint << "matrix1 = " << matrix1 << std::endl;
@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
   fullprint << "test 4 : constructor with collection and array method" << std::endl;
 
   /* Create the collection of values */
-  Collection<NumericalComplex> elementsValues(6);
+  Collection<Complex> elementsValues(6);
   elementsValues[0] = 1.;
   elementsValues[1] = 2.;
   elementsValues[2] = 3.;
@@ -165,14 +165,14 @@ int main(int argc, char *argv[])
   fullprint << "pt = " << pt << std::endl;
 
   /* Check the product method */
-  NumericalComplexCollection ptResult = matrix1.operator * ( pt ) ;
+  ComplexCollection ptResult = matrix1.operator * ( pt ) ;
   fullprint << "ptResult = " << ptResult << std::endl;
 
   /** TEST THIRTEEN : MULTIPLICATION AND DIVISION BY A NUMERICAL SCALAR METHODS */
   fullprint << "test 13 : multiplication and division by a complex methods" << std::endl;
 
   /* Check the multiplication method */
-  NumericalComplex s(3., 1.0);
+  Complex s(3., 1.0);
   ComplexMatrix scalprod1 = matrix1.operator * (s) ;
   ComplexMatrix scalprod2 = s * matrix1 ;
   ComplexMatrix scalprod3 = matrix1 * s ;
@@ -221,7 +221,7 @@ int main(int argc, char *argv[])
   ComplexMatrix id = B.operator * (A);
 
   /* Check the product method */
-  NumericalComplexCollection ptResult2 = id.operator * ( pt_test ) ;
+  ComplexCollection ptResult2 = id.operator * ( pt_test ) ;
   fullprint << "A = " << A << std::endl;
   fullprint << "B = " << B << std::endl;
   fullprint << "id = " << id << std::endl;

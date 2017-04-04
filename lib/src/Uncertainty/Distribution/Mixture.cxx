@@ -369,9 +369,9 @@ Scalar Mixture::computeProbability(const Interval & interval) const
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Mixture::computeCharacteristicFunction(const Scalar x) const
+Complex Mixture::computeCharacteristicFunction(const Scalar x) const
 {
-  NumericalComplex cfValue(0.0);
+  Complex cfValue(0.0);
   UnsignedInteger size = distributionCollection_.getSize();
   for(UnsignedInteger i = 0; i < size; ++i) cfValue += distributionCollection_[i].getWeight() * distributionCollection_[i].computeCharacteristicFunction(x);
   return cfValue;

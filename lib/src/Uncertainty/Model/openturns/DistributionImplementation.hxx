@@ -261,17 +261,17 @@ protected:
 public:
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  virtual NumericalComplex computeCharacteristicFunction(const Scalar x) const;
-  virtual NumericalComplex computeCharacteristicFunction(const Point & x) const;
-  virtual NumericalComplex computeLogCharacteristicFunction(const Scalar x) const;
-  virtual NumericalComplex computeLogCharacteristicFunction(const Point & x) const;
+  virtual Complex computeCharacteristicFunction(const Scalar x) const;
+  virtual Complex computeCharacteristicFunction(const Point & x) const;
+  virtual Complex computeLogCharacteristicFunction(const Scalar x) const;
+  virtual Complex computeLogCharacteristicFunction(const Point & x) const;
 
   /** Compute the generating function, i.e. psi(z) = E(z^X) */
   virtual Scalar computeGeneratingFunction(const Scalar z) const;
   virtual Scalar computeLogGeneratingFunction(const Scalar z) const;
 
-  virtual NumericalComplex computeGeneratingFunction(const NumericalComplex & z) const;
-  virtual NumericalComplex computeLogGeneratingFunction(const NumericalComplex & z) const;
+  virtual Complex computeGeneratingFunction(const Complex & z) const;
+  virtual Complex computeLogGeneratingFunction(const Complex & z) const;
 
   /** Get the PDF gradient of the distribution */
   virtual Point computePDFGradient(const Point & point) const;
@@ -695,13 +695,13 @@ protected:
                         const UnsignedInteger pointNumber) const;
 
   /** Compute the characteristic function of 1D distributions in a regular pattern with cache */
-  virtual NumericalComplex computeCharacteristicFunction(const UnsignedInteger index,
+  virtual Complex computeCharacteristicFunction(const UnsignedInteger index,
       const Scalar step) const;
-  virtual NumericalComplex computeLogCharacteristicFunction(const UnsignedInteger index,
+  virtual Complex computeLogCharacteristicFunction(const UnsignedInteger index,
       const Scalar step) const;
-  virtual NumericalComplex computeCharacteristicFunction(const Indices & indices,
+  virtual Complex computeCharacteristicFunction(const Indices & indices,
       const Point & step) const;
-  virtual NumericalComplex computeLogCharacteristicFunction(const Indices & indices,
+  virtual Complex computeLogCharacteristicFunction(const Indices & indices,
       const Point & step) const;
 
   /** Compute the mean of the distribution */

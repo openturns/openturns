@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(StationaryCovarianceModelFactory);
 static const Factory<StationaryCovarianceModelFactory> Factory_StationaryCovarianceModelFactory;
 
-static const Factory<PersistentCollection<NumericalComplex> > Factory_PersistentCollection_NumericalComplex;
+static const Factory<PersistentCollection<Complex> > Factory_PersistentCollection_Complex;
 
 typedef Collection<CovarianceMatrix>  CovarianceMatrixCollection;
 
@@ -112,9 +112,9 @@ UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUs
       for (UnsignedInteger j = 0; j <= i; ++j)
       {
         const Scalar theta = (size - 1.0) * k * M_PI / size;
-        const NumericalComplex alpha(cos(theta), -sin(theta));
-        const NumericalComplex spectralValue(spectralDensity(i, j));
-        const NumericalComplex phi_k(spectralValue * alpha);
+        const Complex alpha(cos(theta), -sin(theta));
+        const Complex spectralValue(spectralDensity(i, j));
+        const Complex phi_k(spectralValue * alpha);
         matrix(k, columnIndex) = phi_k;
         columnIndex += 1;
       }
@@ -123,11 +123,11 @@ UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUs
   // At this level, we get elements to launch the fft
   // We first compute a temporal factor delta(m) = df * N * exp(-\pi * i * (2m + 1 - N) * (N-1) / 2N)
   // The formula of this last one may be found in the UseCaseGuide
-  Collection<NumericalComplex> delta(size);
+  Collection<Complex> delta(size);
   for (UnsignedInteger m = 0; m < size; ++m)
   {
     const Scalar theta = (size - 1.0) / size * 0.5 * M_PI * (2.0 * m + 1.0 - size);
-    const NumericalComplex alpha(cos(theta), -1.0 * sin(theta));
+    const Complex alpha(cos(theta), -1.0 * sin(theta));
     delta[m] = df * size * alpha;
   }
 
@@ -136,7 +136,7 @@ UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUs
   for (UnsignedInteger columnIndex = 0; columnIndex < numberOfFFT; ++columnIndex)
   {
     // FFT applications
-    const Collection<NumericalComplex> marginal(fftAlgorithm.inverseTransform(*matrix.getImplementation(), columnIndex * size, size));
+    const Collection<Complex> marginal(fftAlgorithm.inverseTransform(*matrix.getImplementation(), columnIndex * size, size));
     // We save result in the same matrix
     for (UnsignedInteger rowIndex = 0; rowIndex < size; ++rowIndex)
     {

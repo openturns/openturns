@@ -89,7 +89,7 @@ private:
                       const Scalar d) const;
 public:
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
+  Complex computeCharacteristicFunction(const Scalar x) const;
 
   /** Parameters value accessors */
   void setParameter(const Point & parameter);
@@ -174,7 +174,7 @@ private:
     {
       Point value(2);
       const Scalar u = point[0];
-      const NumericalComplex phi(right_.computeCharacteristicFunction(u * x_));
+      const Complex phi(right_.computeCharacteristicFunction(u * x_));
       const Scalar pdf = left_.computePDF(point);
       value[0] = pdf * phi.real();
       value[1] = pdf * phi.imag();

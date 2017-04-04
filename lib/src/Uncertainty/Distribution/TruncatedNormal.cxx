@@ -290,7 +290,7 @@ LevelSet TruncatedNormal::computeMinimumVolumeLevelSetWithThreshold(const Scalar
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex TruncatedNormal::computeCharacteristicFunction(const Scalar x) const
+Complex TruncatedNormal::computeCharacteristicFunction(const Scalar x) const
 {
   const Scalar iSigma2 = 1.0 / (sigma_ * std::sqrt(2.0));
   const Scalar alpha = (a_ - mu_) * iSigma2;
@@ -298,12 +298,12 @@ NumericalComplex TruncatedNormal::computeCharacteristicFunction(const Scalar x) 
   const Scalar erf1 = SpecFunc::Erf(alpha);
   const Scalar erf2 = SpecFunc::Erf(beta);
   const Scalar t = x * sigma_ / std::sqrt(2.0);
-  const NumericalComplex w1(SpecFunc::Faddeeva(NumericalComplex(-t, -alpha)));
-  const NumericalComplex w2(SpecFunc::Faddeeva(NumericalComplex(-t, -beta)));
-  return std::exp(NumericalComplex(0.0, x * mu_)) * (w2 * std::exp(NumericalComplex(-beta * beta, 2.0 * beta * t)) - w1 * std::exp(NumericalComplex(-alpha * alpha, 2.0 * alpha * t))) / (erf2 - erf1);
+  const Complex w1(SpecFunc::Faddeeva(Complex(-t, -alpha)));
+  const Complex w2(SpecFunc::Faddeeva(Complex(-t, -beta)));
+  return std::exp(Complex(0.0, x * mu_)) * (w2 * std::exp(Complex(-beta * beta, 2.0 * beta * t)) - w1 * std::exp(Complex(-alpha * alpha, 2.0 * alpha * t))) / (erf2 - erf1);
 }
 
-NumericalComplex TruncatedNormal::computeLogCharacteristicFunction(const Scalar x) const
+Complex TruncatedNormal::computeLogCharacteristicFunction(const Scalar x) const
 {
   const Scalar iSigma2 = 1.0 / (sigma_ * std::sqrt(2.0));
   const Scalar alpha = (a_ - mu_) * iSigma2;
@@ -311,9 +311,9 @@ NumericalComplex TruncatedNormal::computeLogCharacteristicFunction(const Scalar 
   const Scalar erf1 = SpecFunc::Erf(alpha);
   const Scalar erf2 = SpecFunc::Erf(beta);
   const Scalar t = x * sigma_ / std::sqrt(2.0);
-  const NumericalComplex w1(SpecFunc::Faddeeva(NumericalComplex(-t, -alpha)));
-  const NumericalComplex w2(SpecFunc::Faddeeva(NumericalComplex(-t, -beta)));
-  return NumericalComplex(0.0, x * mu_) + std::log(w2 * std::exp(NumericalComplex(-beta * beta, 2.0 * beta * t)) - w1 * std::exp(NumericalComplex(-alpha * alpha, 2.0 * alpha * t))) - std::log(erf2 - erf1);
+  const Complex w1(SpecFunc::Faddeeva(Complex(-t, -alpha)));
+  const Complex w2(SpecFunc::Faddeeva(Complex(-t, -beta)));
+  return Complex(0.0, x * mu_) + std::log(w2 * std::exp(Complex(-beta * beta, 2.0 * beta * t)) - w1 * std::exp(Complex(-alpha * alpha, 2.0 * alpha * t))) - std::log(erf2 - erf1);
 }
 
 /* Get the PDFGradient of the distribution */

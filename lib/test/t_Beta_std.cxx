@@ -103,9 +103,9 @@ int main(int argc, char *argv[])
     Scalar CDFTail = distribution.computeComplementaryCDF( quantileTail );
     fullprint << "cdf (tail)=" << CDFTail << std::endl;
 
-    NumericalComplex CF = distribution.computeCharacteristicFunction( point[0] );
+    Complex CF = distribution.computeCharacteristicFunction( point[0] );
     fullprint << "characteristic function=" << CF << std::endl;
-    NumericalComplex LCF = distribution.computeLogCharacteristicFunction( point[0] );
+    Complex LCF = distribution.computeLogCharacteristicFunction( point[0] );
     fullprint << "log characteristic function=" << LCF << std::endl;
     Point PDFgr = distribution.computePDFGradient( point );
     fullprint << "pdf gradient     =" << PDFgr << std::endl;

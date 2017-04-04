@@ -159,14 +159,14 @@ Scalar Gumbel::computeComplementaryCDF(const Point & point) const
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Gumbel::computeCharacteristicFunction(const Scalar x) const
+Complex Gumbel::computeCharacteristicFunction(const Scalar x) const
 {
-  return SpecFunc::Gamma(NumericalComplex(1.0, -x / alpha_)) * std::exp(NumericalComplex(0.0, beta_ * x));
+  return SpecFunc::Gamma(Complex(1.0, -x / alpha_)) * std::exp(Complex(0.0, beta_ * x));
 }
 
-NumericalComplex Gumbel::computeLogCharacteristicFunction(const Scalar x) const
+Complex Gumbel::computeLogCharacteristicFunction(const Scalar x) const
 {
-  return std::log(SpecFunc::Gamma(NumericalComplex(1.0, -x / alpha_))) + NumericalComplex(0.0, beta_ * x);
+  return std::log(SpecFunc::Gamma(Complex(1.0, -x / alpha_))) + Complex(0.0, beta_ * x);
 }
 
 /* Get the PDFGradient of the distribution */

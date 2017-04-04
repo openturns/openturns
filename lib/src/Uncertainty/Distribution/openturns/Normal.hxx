@@ -86,10 +86,10 @@ public:
   Scalar computeCDF(const Point & point) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
-  NumericalComplex computeCharacteristicFunction(const Point & x) const;
-  NumericalComplex computeLogCharacteristicFunction(const Scalar x) const;
-  NumericalComplex computeLogCharacteristicFunction(const Point & x) const;
+  Complex computeCharacteristicFunction(const Scalar x) const;
+  Complex computeCharacteristicFunction(const Point & x) const;
+  Complex computeLogCharacteristicFunction(const Scalar x) const;
+  Complex computeLogCharacteristicFunction(const Point & x) const;
 
   /** Get the probability content of an interval */
   Scalar computeProbability(const Interval & interval) const;

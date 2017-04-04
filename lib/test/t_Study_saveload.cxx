@@ -766,16 +766,16 @@ int main(int argc, char *argv[])
 
     // Create a SquareComplexMatrix
     SquareComplexMatrix squareComplexMatrix(2);
-    squareComplexMatrix(0, 0) = NumericalComplex(1.0, 1.0) ;
-    squareComplexMatrix(0, 1) = NumericalComplex(3.0, 1.0) ;
-    squareComplexMatrix(1, 0) = NumericalComplex(0.0, 1.0) ;
-    squareComplexMatrix(1, 1) = NumericalComplex(5.0, 1.0) ;
+    squareComplexMatrix(0, 0) = Complex(1.0, 1.0) ;
+    squareComplexMatrix(0, 1) = Complex(3.0, 1.0) ;
+    squareComplexMatrix(1, 0) = Complex(0.0, 1.0) ;
+    squareComplexMatrix(1, 1) = Complex(5.0, 1.0) ;
     study.add("squareComplexMatrix", squareComplexMatrix);
 
     // Create a TriangularComplexMatrix
     TriangularComplexMatrix triangularComplexMatrix(2);
     triangularComplexMatrix(0, 0) = 1. ;
-    triangularComplexMatrix(1, 0) = NumericalComplex(3., 1.0) ;
+    triangularComplexMatrix(1, 0) = Complex(3., 1.0) ;
     triangularComplexMatrix(1, 1) = 4. ;
     study.add("triangularComplexMatrix", triangularComplexMatrix);
 

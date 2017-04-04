@@ -189,10 +189,10 @@ Scalar LogNormal::computeComplementaryCDF(const Point & point) const
 
 
 /* Compute the integrand that is involved in the computation of the characteristic function */
-NumericalComplex LogNormal::characteristicIntegrand(const Scalar eta,
+Complex LogNormal::characteristicIntegrand(const Scalar eta,
     const Scalar sStar) const
 {
-  return std::exp(NumericalComplex(-sStar * (eta - std::exp(sigmaLog_ * eta) / sigmaLog_), -M_PI * eta / (2.0 * sigmaLog_)));
+  return std::exp(Complex(-sStar * (eta - std::exp(sigmaLog_ * eta) / sigmaLog_), -M_PI * eta / (2.0 * sigmaLog_)));
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X))
@@ -200,26 +200,26 @@ NumericalComplex LogNormal::characteristicIntegrand(const Scalar eta,
  * John A. Gubner, "A New Formula for Lognormal Characteristic Functions",
  * IEEE transactions on vehicular technology, vol. 55, no. 5, September 2006.
  */
-NumericalComplex LogNormal::computeCharacteristicFunction(const Scalar x) const
+Complex LogNormal::computeCharacteristicFunction(const Scalar x) const
 {
   // Quick return for null argument
   if (x == 0.0) return 1.0;
   return std::exp(computeLogCharacteristicFunction(x));
 }
 
-NumericalComplex LogNormal::computeLogCharacteristicFunction(const Scalar x) const
+Complex LogNormal::computeLogCharacteristicFunction(const Scalar x) const
 {
   // Quick return for null argument
   if (x == 0.0) return 0.0;
   // Compute the characteristic function for the positive arguments
   const Scalar nu = std::abs(x) * std::exp(muLog_);
   const Scalar sigma2 = sigmaLog_ * sigmaLog_;
-  NumericalComplex logCFValue(0.0);
+  Complex logCFValue(0.0);
   // Quick return for small argument
   if (nu < 0.001 * std::exp(-1.5 * sigma2))
   {
     const Scalar nu2 = nu * nu;
-    logCFValue = std::log(NumericalComplex(1.0 - 0.5 * nu2 * std::exp(2.0 * sigma2), nu * std::exp(0.5 * sigma2) * (1.0 - nu2 * std::exp(4.0 * sigma2) / 6.0)));
+    logCFValue = std::log(Complex(1.0 - 0.5 * nu2 * std::exp(2.0 * sigma2), nu * std::exp(0.5 * sigma2) * (1.0 - nu2 * std::exp(4.0 * sigma2) / 6.0)));
   }
   else
   {
@@ -238,8 +238,8 @@ NumericalComplex LogNormal::computeLogCharacteristicFunction(const Scalar x) con
       // const Scalar maxPulsation(exp(sigmaLog_ * nodes[integrationNodesNumber - 1]));
       // const UnsignedInteger minimumIntegrationNodesNumber(static_cast<UnsignedInteger>(8 * 2 * M_PI * nu));
       // integrationNodesNumber = std::max(integrationNodesNumber, static_cast<UnsignedInteger>(8 * 2 * M_PI * nu));
-      NumericalComplex value(0.0);
-      for (UnsignedInteger i = 0; i < integrationNodesNumber; ++i) value += hermiteWeights_[i] * std::exp(NumericalComplex(0.0, nu * std::exp(sigmaLog_ * hermiteNodes_[i])));
+      Complex value(0.0);
+      for (UnsignedInteger i = 0; i < integrationNodesNumber; ++i) value += hermiteWeights_[i] * std::exp(Complex(0.0, nu * std::exp(sigmaLog_ * hermiteNodes_[i])));
       logCFValue = std::log(value);
     } // Small sigma
     else
@@ -247,12 +247,12 @@ NumericalComplex LogNormal::computeLogCharacteristicFunction(const Scalar x) con
       // Hermite integration centered on the maximal amplitude
       // Compute the characteristic function for the positive arguments
       const Scalar sStar = -SpecFunc::LambertW(sigmaLog_ * sigmaLog_ * nu) / sigmaLog_;
-      NumericalComplex value(0.0);
+      Complex value(0.0);
       for (UnsignedInteger i = 0; i < integrationNodesNumber; ++i) value += hermiteWeights_[i] * characteristicIntegrand(hermiteNodes_[i], sStar);
-      logCFValue = std::log(value) + H_ - NumericalComplex(sStar * sStar / 2.0, M_PI * sStar / (2.0 * sigmaLog_));
+      logCFValue = std::log(value) + H_ - Complex(sStar * sStar / 2.0, M_PI * sStar / (2.0 * sigmaLog_));
     } // Large sigma
   } // Large argument
-  logCFValue += NumericalComplex(0.0, x * gamma_);
+  logCFValue += Complex(0.0, x * gamma_);
   // Use symmetry for negative arguments
   if (x < 0.0) logCFValue = conj(logCFValue);
   return logCFValue;

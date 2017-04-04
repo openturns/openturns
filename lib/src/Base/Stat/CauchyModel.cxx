@@ -71,10 +71,10 @@ CauchyModel * CauchyModel::clone() const
 }
 
 /* Computation of the spectral density function */
-NumericalComplex CauchyModel::computeStandardRepresentative(const Scalar frequency) const
+Complex CauchyModel::computeStandardRepresentative(const Scalar frequency) const
 
 {
-  NumericalComplex value = 1.0;
+  Complex value = 1.0;
   for (UnsignedInteger k = 0; k < spatialDimension_; ++k)
   {
     const Scalar scaledFrequency = 2.0 * M_PI * scale_[k] * std::abs(frequency);

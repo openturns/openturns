@@ -224,12 +224,12 @@ Scalar Beta::computeScalarQuantile(const Scalar prob,
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Beta::computeCharacteristicFunction(const Scalar x) const
+Complex Beta::computeCharacteristicFunction(const Scalar x) const
 {
   if (x == 0.0) return 1.0;
   const Scalar r1 = std::abs(x * r_ / t_);
   // We have numerical stability issues for large values of r1
-  if (r1 <= 1.0) return std::exp(NumericalComplex(0.0, a_)) * SpecFunc::HyperGeom_1_1(r_, t_, NumericalComplex(0.0, (b_ - a_) * x));
+  if (r1 <= 1.0) return std::exp(Complex(0.0, a_)) * SpecFunc::HyperGeom_1_1(r_, t_, Complex(0.0, (b_ - a_) * x));
   return DistributionImplementation::computeCharacteristicFunction(x);
 }
 

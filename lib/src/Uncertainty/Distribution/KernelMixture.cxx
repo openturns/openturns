@@ -458,14 +458,14 @@ Scalar KernelMixture::computeScalarQuantile(const Scalar prob,
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex KernelMixture::computeCharacteristicFunction(const Scalar x) const
+Complex KernelMixture::computeCharacteristicFunction(const Scalar x) const
 {
   if (x == 0.0) return 1.0;
-  NumericalComplex cfValue(0.0);
+  Complex cfValue(0.0);
   const UnsignedInteger size = sample_.getSize();
   for(UnsignedInteger i = 0; i < size; ++i)
   {
-    cfValue += kernel_.computeCharacteristicFunction(x * bandwidth_[0]) * std::exp(NumericalComplex(0.0, sample_[i][0] * x));
+    cfValue += kernel_.computeCharacteristicFunction(x * bandwidth_[0]) * std::exp(Complex(0.0, sample_[i][0] * x));
   } /* end for */
   return cfValue * (1.0 / size);
 }

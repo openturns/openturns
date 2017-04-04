@@ -144,12 +144,12 @@ Scalar GeneralizedExtremeValue::computeComplementaryCDF(const Point & point) con
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex GeneralizedExtremeValue::computeCharacteristicFunction(const Scalar x) const
+Complex GeneralizedExtremeValue::computeCharacteristicFunction(const Scalar x) const
 {
   return actualDistribution_.computeCharacteristicFunction(x);
 }
 
-NumericalComplex GeneralizedExtremeValue::computeLogCharacteristicFunction(const Scalar x) const
+Complex GeneralizedExtremeValue::computeLogCharacteristicFunction(const Scalar x) const
 {
   return actualDistribution_.computeLogCharacteristicFunction(x);
 }

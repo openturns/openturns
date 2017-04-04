@@ -64,7 +64,7 @@ public:
   virtual HermitianMatrix operator() (const Scalar frequency) const;
 
   /** Standard representative */
-  virtual NumericalComplex computeStandardRepresentative(const Scalar frequency) const;
+  virtual Complex computeStandardRepresentative(const Scalar frequency) const;
 
   /** Drawing method */
   virtual Graph draw(const UnsignedInteger rowIndex = 0,

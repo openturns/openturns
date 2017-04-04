@@ -70,7 +70,7 @@ public:
   virtual HermitianMatrix operator() (const Scalar frequency) const;
 
   /** Standard representative */
-  virtual NumericalComplex computeStandardRepresentative(const Scalar frequency) const;
+  virtual Complex computeStandardRepresentative(const Scalar frequency) const;
 
   /** Amplitude accessor */
   virtual Point getAmplitude() const;

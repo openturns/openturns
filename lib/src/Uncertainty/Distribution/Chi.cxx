@@ -193,12 +193,12 @@ Scalar Chi::computeComplementaryCDF(const Point & point) const
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X))
    Its value here is phi(u) = M(0.5 * \nu, 0.5, -0.5 * u ^ 2) + \sqrt(2) * \Gamma((\nu + 1) * 0.5) * M(1.5 * \nu, 1.5, -0.5 * u^2)/ \Gamma(\nu * 0.5) * \imath where
    M(a, b, c) is the hypergeometric function given by M(p1, q1, x)= sum_{n = 0}^{\infty} [prod_{k = 0} ^ {n - 1} (p1 + k) / (q1 + k)] * x^n / n! */
-NumericalComplex Chi::computeCharacteristicFunction(const Scalar x) const
+Complex Chi::computeCharacteristicFunction(const Scalar x) const
 {
   const Scalar t = -0.5 * x * x;
   const Scalar real = SpecFunc::HyperGeom_1_1(0.5 * nu_, 0.5, t );
   const Scalar imag = M_SQRT2 * x * std::exp(SpecFunc::LnGamma((nu_ + 1.0) * 0.5) - SpecFunc::LnGamma(0.5 * nu_)) * SpecFunc::HyperGeom_1_1((nu_ + 1.0) * 0.5, 1.5, t);
-  const NumericalComplex result(real, imag);
+  const Complex result(real, imag);
   return result;
 }
 

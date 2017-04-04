@@ -59,8 +59,11 @@ typedef double Scalar;
 typedef double NumericalScalar;
 
 /**
- * Type NumericalComplex is a complex floating point number representation
+ * Type Complex is a complex floating point number representation
  */
+typedef std::complex<Scalar> Complex;
+
+/** @deprecated */
 typedef std::complex<Scalar> NumericalComplex;
 
 /**

@@ -29,7 +29,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-typedef Collection< NumericalComplex >         NumericalComplexCollection;
+typedef Collection< Complex >         ComplexCollection;
 
 CLASSNAMEINIT(ARMA);
 
@@ -213,7 +213,7 @@ UnsignedInteger ARMA::computeNThermalization(const Scalar epsilon) const
   }
 
   // Computation of EigenValues without keeping intact (matrix not used after)
-  const NumericalComplexCollection eigenValues(matrix.computeEigenValues(false));
+  const ComplexCollection eigenValues(matrix.computeEigenValues(false));
 
   // Find the largest eigenvalue module
   Scalar s = std::abs(eigenValues[0]);

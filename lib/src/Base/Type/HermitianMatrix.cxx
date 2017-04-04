@@ -130,7 +130,7 @@ void HermitianMatrix::checkHermitian() const
 /* Operator () gives access to the elements of the matrix (to modify these elements) */
 /* The element of the matrix is designated by its row number i and its column number j */
 /* the first element of the matrix is m(0,0) */
-NumericalComplex & HermitianMatrix::operator () (const UnsignedInteger i,
+Complex & HermitianMatrix::operator () (const UnsignedInteger i,
     const UnsignedInteger j)
 {
   if (i < j) throw InvalidArgumentException(HERE) << "Error: only the lower triangle of an Hermitian matrix can be filled directly.";
@@ -142,7 +142,7 @@ NumericalComplex & HermitianMatrix::operator () (const UnsignedInteger i,
 
 /* Operator () gives access to the elements of the matrix (read only) */
 /* The element of the matrix is designated by its row number i and its column number j */
-const NumericalComplex HermitianMatrix::operator () (const UnsignedInteger i,
+const Complex HermitianMatrix::operator () (const UnsignedInteger i,
     const UnsignedInteger j)  const
 {
   return (i >= j) ? (*getImplementation())(i, j) : std::conj((*getImplementation())(j, i)) ;
@@ -227,32 +227,32 @@ HermitianMatrix HermitianMatrix::operator * (const IdentityMatrix & m) const
   return (*this);
 }
 
-/* Multiplication with a NumericalComplexCollection (must have consistent dimensions) */
-HermitianMatrix::NumericalComplexCollection HermitianMatrix::operator * (const NumericalComplexCollection & pt) const
+/* Multiplication with a ComplexCollection (must have consistent dimensions) */
+HermitianMatrix::ComplexCollection HermitianMatrix::operator * (const ComplexCollection & pt) const
 {
   return getImplementation()->hermVectProd(pt) ;
 }
 
 /* Multiplication with a ScalarCollection (must have consistent dimensions) */
-HermitianMatrix::NumericalComplexCollection HermitianMatrix::operator * (const ScalarCollection & pt) const
+HermitianMatrix::ComplexCollection HermitianMatrix::operator * (const ScalarCollection & pt) const
 {
   return getImplementation()->hermVectProd(pt) ;
 }
 
 /* Multiplication with a Point (must have consistent dimensions) */
-HermitianMatrix::NumericalComplexCollection HermitianMatrix::operator * (const Point & pt) const
+HermitianMatrix::ComplexCollection HermitianMatrix::operator * (const Point & pt) const
 {
   return getImplementation()->hermVectProd(pt) ;
 }
 
-/* Multiplication with a NumericalComplex */
-HermitianMatrix HermitianMatrix::operator * (const NumericalComplex s) const
+/* Multiplication with a Complex */
+HermitianMatrix HermitianMatrix::operator * (const Complex s) const
 {
   return Implementation((*getImplementation() * s ).clone());
 }
 
-/* Division by a NumericalComplex*/
-HermitianMatrix HermitianMatrix::operator / (const NumericalComplex s) const
+/* Division by a Complex*/
+HermitianMatrix HermitianMatrix::operator / (const Complex s) const
 {
   return Implementation((*getImplementation() / s ).clone());
 }

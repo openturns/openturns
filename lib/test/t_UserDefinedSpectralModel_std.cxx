@@ -40,7 +40,7 @@ HermitianMatrix clean(HermitianMatrix in)
     {
       Scalar realIJ = clean(real(in(i, j)));
       Scalar imagIJ = clean(imag(in(i, j)));
-      in(i, j) = NumericalComplex(realIJ, imagIJ);
+      in(i, j) = Complex(realIJ, imagIJ);
     }
   return in;
 }

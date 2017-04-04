@@ -186,14 +186,14 @@ Scalar ChiSquare::computeComplementaryCDF(const Point & point) const
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex ChiSquare::computeCharacteristicFunction(const Scalar x) const
+Complex ChiSquare::computeCharacteristicFunction(const Scalar x) const
 {
-  return std::pow(NumericalComplex(1.0, -2.0 * x), -0.5 * nu_);
+  return std::pow(Complex(1.0, -2.0 * x), -0.5 * nu_);
 }
 
-NumericalComplex ChiSquare::computeLogCharacteristicFunction(const Scalar x) const
+Complex ChiSquare::computeLogCharacteristicFunction(const Scalar x) const
 {
-  return -0.5 * nu_ * std::log(NumericalComplex(1.0, -2.0 * x));
+  return -0.5 * nu_ * std::log(Complex(1.0, -2.0 * x));
 }
 
 /* Get the PDFGradient of the distribution */

@@ -56,7 +56,7 @@ class OT_API MatrixImplementation
 public:
 
   typedef Collection<Scalar>       ScalarCollection;
-  typedef Collection<NumericalComplex>      NumericalComplexCollection;
+  typedef Collection<Complex>      ComplexCollection;
 
   /** Default constructor */
   MatrixImplementation();
@@ -219,8 +219,8 @@ public:
   Scalar computeTrace() const;
 
   /** Compute eigenvalues */
-  NumericalComplexCollection computeEigenValuesSquare(const Bool keepIntact = true);
-  NumericalComplexCollection computeEVSquare(ComplexMatrixImplementation & v,
+  ComplexCollection computeEigenValuesSquare(const Bool keepIntact = true);
+  ComplexCollection computeEVSquare(ComplexMatrixImplementation & v,
       const Bool keepIntact = true);
   Point computeEigenValuesSym(const Bool keepIntact = true);
   Point computeEVSym(MatrixImplementation & v,

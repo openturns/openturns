@@ -19,3 +19,4 @@ Remove deprecated NumericalPoint[WithDescription] in 1.11
 Remove deprecated ResourceMap::[SG]AsNumericalScalar
 Remove deprecated SpecFunc::*NumericalScalar*
 Remove deprecated NumericalScalar[Collection]
+Remove deprecated NumericalComplex[Collection]

@@ -143,23 +143,23 @@ Point Skellam::computeCDFGradient(const Point & point) const
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Skellam::computeCharacteristicFunction(const Scalar x) const
+Complex Skellam::computeCharacteristicFunction(const Scalar x) const
 {
   return std::exp(computeLogCharacteristicFunction(x));
 }
 
-NumericalComplex Skellam::computeLogCharacteristicFunction(const Scalar x) const
+Complex Skellam::computeLogCharacteristicFunction(const Scalar x) const
 {
-  return lambda1_ * std::exp(NumericalComplex(0.0, x)) + lambda2_ * std::exp(NumericalComplex(0.0, -x)) - (lambda1_ + lambda2_);
+  return lambda1_ * std::exp(Complex(0.0, x)) + lambda2_ * std::exp(Complex(0.0, -x)) - (lambda1_ + lambda2_);
 }
 
 /* Get the generating function of the distribution, i.e. psi(z) = E(z^X) */
-NumericalComplex Skellam::computeGeneratingFunction(const NumericalComplex & z) const
+Complex Skellam::computeGeneratingFunction(const Complex & z) const
 {
   return std::exp(computeLogGeneratingFunction(z));
 }
 
-NumericalComplex Skellam::computeLogGeneratingFunction(const NumericalComplex & z) const
+Complex Skellam::computeLogGeneratingFunction(const Complex & z) const
 {
   return lambda1_ * z + lambda2_ / z - (lambda1_ + lambda2_);
 }

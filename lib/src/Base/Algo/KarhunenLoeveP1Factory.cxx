@@ -124,7 +124,7 @@ ProcessSample KarhunenLoeveP1Factory::buildAsProcessSample(const CovarianceModel
   CovarianceMatrix C(covarianceModel.discretize(mesh_));
   SquareMatrix M((C * G).getImplementation());
   SquareComplexMatrix eigenVectorsComplex;
-  SquareMatrix::NumericalComplexCollection eigenValuesComplex(M.computeEV(eigenVectorsComplex, false));
+  SquareMatrix::ComplexCollection eigenValuesComplex(M.computeEV(eigenVectorsComplex, false));
   Sample eigenPairs(augmentedDimension, augmentedDimension + 1);
   for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
   {

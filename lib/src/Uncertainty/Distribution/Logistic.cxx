@@ -178,16 +178,16 @@ Scalar Logistic::computeComplementaryCDF(const Point & point) const
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Logistic::computeCharacteristicFunction(const Scalar x) const
+Complex Logistic::computeCharacteristicFunction(const Scalar x) const
 {
   const Scalar piBetaU = M_PI * beta_ * x;
-  return std::exp(NumericalComplex(0.0, x * alpha_)) * piBetaU / std::sinh(piBetaU);
+  return std::exp(Complex(0.0, x * alpha_)) * piBetaU / std::sinh(piBetaU);
 }
 
-NumericalComplex Logistic::computeLogCharacteristicFunction(const Scalar x) const
+Complex Logistic::computeLogCharacteristicFunction(const Scalar x) const
 {
   const Scalar piBetaU = M_PI * beta_ * x;
-  return NumericalComplex(0.0, x * alpha_) + std::log(piBetaU) - std::log(std::sinh(piBetaU));
+  return Complex(0.0, x * alpha_) + std::log(piBetaU) - std::log(std::sinh(piBetaU));
 }
 
 /* Get the PDFGradient of the distribution */

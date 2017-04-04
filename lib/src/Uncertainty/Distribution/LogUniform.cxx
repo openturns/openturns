@@ -157,13 +157,13 @@ Scalar LogUniform::computeComplementaryCDF(const Point & point) const
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex LogUniform::computeCharacteristicFunction(const Scalar x) const
+Complex LogUniform::computeCharacteristicFunction(const Scalar x) const
 {
-  NumericalComplex result;
-  if (std::abs(x) <= 1.0e-8 * (b_ - a_)) result = NumericalComplex((bLog_ - aLog_) / (bLog_ + aLog_), (b_ - a_) * x / (bLog_ - aLog_));
+  Complex result;
+  if (std::abs(x) <= 1.0e-8 * (b_ - a_)) result = Complex((bLog_ - aLog_) / (bLog_ + aLog_), (b_ - a_) * x / (bLog_ - aLog_));
   else
   {
-    result = (SpecFunc::Ei(NumericalComplex(0.0, x * b_)) - SpecFunc::Ei(NumericalComplex(0.0, x * a_))) / (bLog_ - aLog_);
+    result = (SpecFunc::Ei(Complex(0.0, x * b_)) - SpecFunc::Ei(Complex(0.0, x * a_))) / (bLog_ - aLog_);
   }
   return result;
 }

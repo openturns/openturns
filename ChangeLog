@@ -65,6 +65,7 @@
  * Deprecated ResourceMap::[SG]AsNumericalScalar for [SG]AsScalar
  * Deprecated SpecFunc::*NumericalScalar*
  * Deprecated NumericalScalar for Scalar
+ * Deprecated NumericalComplex for Complex
 
 === Python module ===
 

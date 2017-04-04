@@ -46,7 +46,7 @@ SquareComplexMatrix::SquareComplexMatrix(const UnsignedInteger dimension)
 /* do not match, either the collection is truncated */
 /* or the rest of the matrix is filled with zeros */
 SquareComplexMatrix::SquareComplexMatrix(const UnsignedInteger dimension,
-    const NumericalComplexCollection & elementsValues)
+    const ComplexCollection & elementsValues)
   : ComplexMatrix(dimension, dimension, elementsValues)
 {
   // Nothing to do
@@ -152,32 +152,32 @@ SquareComplexMatrix SquareComplexMatrix::operator* (const IdentityMatrix & m) co
 
 
 /* Multiplication with a Point (must have consistent dimensions) */
-SquareComplexMatrix::NumericalComplexCollection SquareComplexMatrix::operator * (const Point & pt) const
+SquareComplexMatrix::ComplexCollection SquareComplexMatrix::operator * (const Point & pt) const
 {
   return getImplementation()->genVectProd(pt) ;
 }
 
 /* Multiplication with a Point (must have consistent dimensions) */
-SquareComplexMatrix::NumericalComplexCollection SquareComplexMatrix::operator * (const NumericalComplexCollection & pt) const
+SquareComplexMatrix::ComplexCollection SquareComplexMatrix::operator * (const ComplexCollection & pt) const
 {
   return getImplementation()->genVectProd(pt) ;
 }
 
-SquareComplexMatrix::NumericalComplexCollection SquareComplexMatrix::operator * (const ScalarCollection & pt) const
+SquareComplexMatrix::ComplexCollection SquareComplexMatrix::operator * (const ScalarCollection & pt) const
 {
   return getImplementation()->genVectProd(pt) ;
 }
 
 
 
-/* Multiplication with a NumericalComplex */
-SquareComplexMatrix SquareComplexMatrix::operator * (const NumericalComplex s) const
+/* Multiplication with a Complex */
+SquareComplexMatrix SquareComplexMatrix::operator * (const Complex s) const
 {
   return Implementation((*getImplementation() * s ).clone());
 }
 
-/* Division by a NumericalComplex*/
-SquareComplexMatrix SquareComplexMatrix::operator / (const NumericalComplex s) const
+/* Division by a Complex*/
+SquareComplexMatrix SquareComplexMatrix::operator / (const Complex s) const
 {
   return Implementation((*getImplementation() / s ).clone());
 }

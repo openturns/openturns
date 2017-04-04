@@ -164,10 +164,10 @@ Scalar WhittleFactory::computeLogLikelihood(const Point & theta) const
     const Scalar frequency = normalizedFrequencies_[j];
     // Gj computation
     const UnsignedInteger n = std::max(currentP_, currentQ_);
-    NumericalComplex numerator(1.0, 0.0);
-    NumericalComplex denominator(1.0, 0.0);
-    NumericalComplex y(std::polar(1.0, -frequency));
-    NumericalComplex z(1.0, 0.0);
+    Complex numerator(1.0, 0.0);
+    Complex denominator(1.0, 0.0);
+    Complex y(std::polar(1.0, -frequency));
+    Complex z(1.0, 0.0);
     for (UnsignedInteger i = 0; i < n; ++i)
     {
       z *= y;
@@ -201,7 +201,7 @@ Point WhittleFactory::computeLogLikelihoodInequalityConstraint(const Point & the
     // Check the roots only if the polynom is not constant
     if (polynom.getDegree() > 0)
     {
-      Collection<NumericalComplex> roots(polynom.getRoots());
+      Collection<Complex> roots(polynom.getRoots());
       Scalar minRootModule = std::norm(roots[0]);
       for (UnsignedInteger i = 1; i < currentP_; ++i)
       {
@@ -223,7 +223,7 @@ Point WhittleFactory::computeLogLikelihoodInequalityConstraint(const Point & the
     // Check the roots only if the polynom is not constant
     if (polynom.getDegree() > 0)
     {
-      Collection<NumericalComplex> roots(polynom.getRoots());
+      Collection<Complex> roots(polynom.getRoots());
       Scalar minRootModule = std::norm(roots[0]);
       for (UnsignedInteger i = 1; i < currentQ_; ++i)
       {

@@ -49,7 +49,7 @@ ComplexTensor::ComplexTensor(const UnsignedInteger rowDim,
 ComplexTensor::ComplexTensor(const UnsignedInteger rowDim,
                              const UnsignedInteger colDim,
                              const UnsignedInteger sheetDim,
-                             const Collection<NumericalComplex> & elementsValues)
+                             const Collection<Complex> & elementsValues)
   : TypedInterfaceObject<ComplexTensorImplementation>(new ComplexTensorImplementation(rowDim, colDim, sheetDim, elementsValues))
 {
   // Nothing to do
@@ -126,7 +126,7 @@ String ComplexTensor::__str__(const String & offset) const
 
 /* Operator () gives access to the elements of the tensor (to modify these elements) */
 /* The element of the tensor is designated by its row number i, its column number j and its sheet number k */
-NumericalComplex & ComplexTensor::operator () (const UnsignedInteger i,
+Complex & ComplexTensor::operator () (const UnsignedInteger i,
     const UnsignedInteger j,
     const UnsignedInteger k)
 {
@@ -136,7 +136,7 @@ NumericalComplex & ComplexTensor::operator () (const UnsignedInteger i,
 
 /* Operator () gives access to the elements of the tensor (read only) */
 /* The element of the tensor is designated by its row number i, its column number j and its sheet number k */
-const NumericalComplex & ComplexTensor::operator () (const UnsignedInteger i,
+const Complex & ComplexTensor::operator () (const UnsignedInteger i,
     const UnsignedInteger j,
     const UnsignedInteger k) const
 {
@@ -189,7 +189,7 @@ Bool ComplexTensor::operator == (const ComplexTensor & rhs) const
   return (*(lhs.getImplementation()) == *(rhs.getImplementation()) );
 }
 
-const NumericalComplex* ComplexTensor::__baseaddress__() const
+const Complex* ComplexTensor::__baseaddress__() const
 {
   return getImplementation()->__baseaddress__();
 }

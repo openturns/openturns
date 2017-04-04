@@ -37,7 +37,7 @@ static const Factory<ComplexMatrixImplementation> Factory_ComplexMatrixImplement
 
 /* Default constructor */
 ComplexMatrixImplementation::ComplexMatrixImplementation()
-  : PersistentCollection<NumericalComplex>()
+  : PersistentCollection<Complex>()
   , nbRows_(0)
   , nbColumns_(0)
 {
@@ -49,7 +49,7 @@ ComplexMatrixImplementation::ComplexMatrixImplementation()
 /* The ComplexMatrixImplementation is viewed as a set of column vectors read one after another */
 ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim)
-  : PersistentCollection<NumericalComplex>(rowDim * colDim, NumericalComplex(0.0, 0.0))
+  : PersistentCollection<Complex>(rowDim * colDim, Complex(0.0, 0.0))
   , nbRows_(rowDim)
   , nbColumns_(colDim)
 {
@@ -59,8 +59,8 @@ ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger r
 /* Constructor from external collection */
 ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim,
-    const Collection<NumericalComplex> & elementsValues)
-  : PersistentCollection<NumericalComplex>(rowDim * colDim, NumericalComplex(0.0, 0.0))
+    const Collection<Complex> & elementsValues)
+  : PersistentCollection<Complex>(rowDim * colDim, Complex(0.0, 0.0))
   , nbRows_(rowDim)
   , nbColumns_(colDim)
 {
@@ -72,18 +72,18 @@ ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger r
 ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim,
     const Collection<Scalar> & elementsValues)
-  : PersistentCollection<NumericalComplex>(rowDim * colDim, NumericalComplex(0.0, 0.0))
+  : PersistentCollection<Complex>(rowDim * colDim, Complex(0.0, 0.0))
   , nbRows_(rowDim)
   , nbColumns_(colDim)
 {
   const UnsignedInteger matrixSize = std::min(rowDim * colDim, elementsValues.getSize());
-  //  Implicit cast from Scalar into NumericalComplex
+  //  Implicit cast from Scalar into Complex
   for(UnsignedInteger i = 0; i < matrixSize; ++i) operator[](i) = elementsValues[i];
 }
 
 
 ComplexMatrixImplementation::ComplexMatrixImplementation(const MatrixImplementation & matrix)
-  : PersistentCollection<NumericalComplex>(matrix.getNbRows() * matrix.getNbColumns(), 0.0)
+  : PersistentCollection<Complex>(matrix.getNbRows() * matrix.getNbColumns(), 0.0)
   , nbRows_(matrix.getNbRows())
   , nbColumns_(matrix.getNbColumns())
 {
@@ -117,7 +117,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::solveLinearSystemRect (
       B(i, j) = b(i, j);
   int nrhs(q);
   int lwork(-1);
-  NumericalComplexCollection work(1);
+  ComplexCollection work(1);
   Point rwork(2 * n);
   int info;
   std::vector<int> jpiv(n);
@@ -131,7 +131,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::solveLinearSystemRect (
   // (int *m, int *n, int *nrhs, std::complex<double> *A, int *lda, std::complex<double> *B, int *ldb, int *jpvt, double *rcond, int *rank, std::complex<double> *work, int *lwork, double *rwork, int *info)
   zgelsy_(&m, &n, &nrhs, &A[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &work[0], &lwork, &rwork[0], &info);
   lwork = static_cast<int>(std::real(work[0]));
-  work = NumericalComplexCollection(lwork);
+  work = ComplexCollection(lwork);
   zgelsy_(&m, &n, &nrhs, &A[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &work[0], &lwork, &rwork[0], &info);
 
   ComplexMatrixImplementation result(n, q);
@@ -144,14 +144,14 @@ ComplexMatrixImplementation ComplexMatrixImplementation::solveLinearSystemRect (
 /* Resolution of a linear system : rectangular matrix
  * Mx = b, M is an mxn matrix, b is an m-dimensional
  * vector and x is an n-dimensional vector */
-ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementation::solveLinearSystemRect (const NumericalComplexCollection & b,
+ComplexMatrixImplementation::ComplexCollection ComplexMatrixImplementation::solveLinearSystemRect (const ComplexCollection & b,
     const Bool keepIntact)
 {
   const UnsignedInteger m = b.getSize();
   if (nbRows_ != m) throw InvalidDimensionException(HERE) << "The right-hand side dimension is " << m << ", expected " << nbRows_;
   if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix";
   // Solve the matrix linear system
-  // A ComplexMatrixImplementation is also a collection of NumericalComplex, so it is automatically converted into a NumericalComplexCollection
+  // A ComplexMatrixImplementation is also a collection of Complex, so it is automatically converted into a ComplexCollection
   return solveLinearSystemRect(ComplexMatrixImplementation(m, 1, b), keepIntact);
 }
 
@@ -166,14 +166,14 @@ ComplexMatrixImplementation ComplexMatrixImplementation::clean(const Scalar thre
   for (UnsignedInteger j = 0; j < nbColumns_; ++j)
     for (UnsignedInteger i = 0; i < nbRows_; ++i)
     {
-      const NumericalComplex value((*this)[convertPosition(i, j)]);
+      const Complex value((*this)[convertPosition(i, j)]);
       Scalar realPart = std::real(value);
       Scalar imagPart = std::imag(value);
       if (std::abs(realPart) < 0.5 * threshold) realPart = 0.0;
       else realPart = threshold * round(realPart / threshold);
       if (std::abs(imagPart) < 0.5 * threshold) imagPart = 0.0;
       else imagPart = threshold * round(imagPart / threshold);
-      result(i, j) = NumericalComplex(realPart, imagPart);
+      result(i, j) = Complex(realPart, imagPart);
     }
   return result;
 }
@@ -192,7 +192,7 @@ String ComplexMatrixImplementation::__repr__() const
          << " name=" << getName()
          << " rows=" << nbRows_
          << " columns=" << nbColumns_
-         << " values=" << PersistentCollection<NumericalComplex>::__repr__();
+         << " values=" << PersistentCollection<Complex>::__repr__();
 }
 
 String ComplexMatrixImplementation::__str__(const String & offset) const
@@ -233,7 +233,7 @@ String ComplexMatrixImplementation::__str__(const String & offset) const
 /* Operator () gives access to the elements of theComplexMatrixImplementation (to modify these elements) */
 /* The element of theComplexMatrixImplementation is designated by its row number i and its column number j */
 /* the first element of theComplexMatrixImplementation is m(0,0) */
-NumericalComplex & ComplexMatrixImplementation::operator () (const UnsignedInteger i,
+Complex & ComplexMatrixImplementation::operator () (const UnsignedInteger i,
     const UnsignedInteger j)
 {
   if (i >= nbRows_) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than row dim (" << nbRows_ << ")";
@@ -243,7 +243,7 @@ NumericalComplex & ComplexMatrixImplementation::operator () (const UnsignedInteg
 
 /* Operator () gives access to the elements of theComplexMatrixImplementation (read only) */
 /* The element of theComplexMatrixImplementation is designated by its row number i and its column number j */
-const NumericalComplex & ComplexMatrixImplementation::operator () (const UnsignedInteger i,
+const Complex & ComplexMatrixImplementation::operator () (const UnsignedInteger i,
     const UnsignedInteger j)  const
 {
   if (i >= nbRows_) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than row dim (" << nbRows_ << ")";
@@ -329,7 +329,7 @@ void ComplexMatrixImplementation::hermitianize() const
   for (UnsignedInteger j = 0; j < nbColumns_; ++j)
     for (UnsignedInteger i = j + 1; i < nbRows_; ++i)
     {
-      const NumericalComplex value(operator[](convertPosition(i, j)));
+      const Complex value(operator[](convertPosition(i, j)));
       if (std::abs(value.imag()) == 0.0) refThis->operator[](convertPosition(j, i)) = value.real();
       else refThis->operator[](convertPosition(j, i)) = std::conj(value);
     }
@@ -378,7 +378,7 @@ MatrixImplementation ComplexMatrixImplementation::imagSym() const
 /* Empty returns true if there is no element in theComplexMatrixImplementation */
 Bool ComplexMatrixImplementation::isEmpty() const
 {
-  return ((nbRows_ == 0)  || (nbColumns_ == 0) || (PersistentCollection<NumericalComplex>::isEmpty()));
+  return ((nbRows_ == 0)  || (nbColumns_ == 0) || (PersistentCollection<Complex>::isEmpty()));
 }
 
 /* Returns true if triangular lower or upper */
@@ -403,7 +403,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::operator + (const Compl
   // Must copy as add will be overwritten by the operation
   ComplexMatrixImplementation result(matrix);
   int size(nbRows_ * nbColumns_);
-  NumericalComplex alpha(1.0, 0.0);
+  Complex alpha(1.0, 0.0);
   int one = 1;
   // Lapack routine
   zaxpy_(&size, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &one, &result[0], &one);
@@ -418,7 +418,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::operator + (const Matri
   // Must copy as add will be overwritten by the operation
   ComplexMatrixImplementation result(matrix);
   int size(nbRows_ * nbColumns_);
-  NumericalComplex alpha(1.0, 0.0);
+  Complex alpha(1.0, 0.0);
   int one = 1;
   // Lapack routine
   zaxpy_(&size, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &one, &result[0], &one);
@@ -433,7 +433,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::operator - (const Compl
   // Must copy as add will be overwritten by the operation
   ComplexMatrixImplementation result(*this);
   int size(nbRows_ * nbColumns_);
-  NumericalComplex alpha(-1.0, 0.0);
+  Complex alpha(-1.0, 0.0);
   int one = 1;
 
   zaxpy_(&size, &alpha, const_cast<std::complex<double>*>(&(matrix)[0]), &one, &result[0], &one);
@@ -447,8 +447,8 @@ ComplexMatrixImplementation ComplexMatrixImplementation::operator - (const Matri
   return operator - (ComplexMatrixImplementation(matrix));
 }
 
-/* Multiplication with a NumericalComplex */
-ComplexMatrixImplementation ComplexMatrixImplementation::operator * (const NumericalComplex s) const
+/* Multiplication with a Complex */
+ComplexMatrixImplementation ComplexMatrixImplementation::operator * (const Complex s) const
 {
   // Check if s is null
   if (std::abs(s) == 0.0 ) return ComplexMatrixImplementation(nbRows_, nbColumns_);
@@ -456,7 +456,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::operator * (const Numer
   ComplexMatrixImplementation scalprod(*this);
 
   //
-  NumericalComplex alpha(s);
+  Complex alpha(s);
   int one(1);
   int n_(nbRows_ * nbColumns_);
   // Lapack routine
@@ -466,7 +466,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::operator * (const Numer
 }
 
 /* Division by a Scalar*/
-ComplexMatrixImplementation ComplexMatrixImplementation::operator / (const NumericalComplex s) const
+ComplexMatrixImplementation ComplexMatrixImplementation::operator / (const Complex s) const
 {
   if (std::abs(s) == 0) throw InvalidArgumentException(HERE) ;
 
@@ -488,8 +488,8 @@ ComplexMatrixImplementation ComplexMatrixImplementation::genProd(const ComplexMa
   int m(nbRows_);
   int k(nbColumns_);
   int n(matrix.nbColumns_);
-  NumericalComplex alpha(1.0, 0.0);
-  NumericalComplex beta(0.0, 0.0);
+  Complex alpha(1.0, 0.0);
+  Complex beta(0.0, 0.0);
   int ltransa(1);
   int ltransb(1);
 
@@ -513,8 +513,8 @@ ComplexMatrixImplementation ComplexMatrixImplementation::symProd (const ComplexM
   int m(nbRows_);
   int k(nbColumns_);
   int n(matrix.nbColumns_);
-  NumericalComplex alpha(1.0);
-  NumericalComplex beta(0.0);
+  Complex alpha(1.0);
+  Complex beta(0.0);
   int lside(1);
   int luplo(1);
 
@@ -539,8 +539,8 @@ ComplexMatrixImplementation ComplexMatrixImplementation::hermProd(const ComplexM
   int m(nbRows_);
   int k(nbColumns_);
   int n(matrix.nbColumns_);
-  NumericalComplex alpha(1.0);
-  NumericalComplex beta(0.0);
+  Complex alpha(1.0);
+  Complex beta(0.0);
   int lside(1);
   int luplo(1);
 
@@ -577,7 +577,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::triangularProd(const Co
   int m(nbRows_);
   int n(matrix.nbColumns_);
 
-  NumericalComplex alpha(1.0);
+  Complex alpha(1.0);
 
   // Lapack routine
   ztrmm_(&side, &uplo, &trans, &diag, &m, &n, &alpha , const_cast<std::complex<double>*>(&((*this)[0])),  &m, const_cast<std::complex<double>*>(&(mult[0])), &m, &lside , &luplo, &ltrans,  &ldiag);
@@ -680,19 +680,19 @@ ComplexMatrixImplementation ComplexMatrixImplementation::hermPower(const Unsigne
   return y;
 }
 
-/* Multiplications with a NumericalComplexCollection */
-ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementation::genVectProd(const NumericalComplexCollection & pt) const
+/* Multiplications with a ComplexCollection */
+ComplexMatrixImplementation::ComplexCollection ComplexMatrixImplementation::genVectProd(const ComplexCollection & pt) const
 {
   if (nbColumns_ != pt.getSize() ) throw InvalidDimensionException(HERE) << "Invalid dimension in matrix/vector product";
 
-  NumericalComplexCollection prod(nbRows_);
+  ComplexCollection prod(nbRows_);
   if ((nbRows_ == 0) || (nbColumns_ == 0)) return prod;
   char trans('N');
   int m_(nbRows_);
   int n_(nbColumns_);
   int one(1);
-  NumericalComplex alpha(1.0, 0.0);
-  NumericalComplex beta(0.0, 0.0);
+  Complex alpha(1.0, 0.0);
+  Complex beta(0.0, 0.0);
   int ltrans(1);
 
   zgemv_(&trans, &m_, &n_, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &m_, const_cast<std::complex<double>*>(&(pt[0])), &one, &beta, &prod[0], &one, &ltrans);
@@ -701,20 +701,20 @@ ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementat
 }
 
 /* Multiplications with a ScalarCollection */
-ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementation::genVectProd(const ScalarCollection & pt) const
+ComplexMatrixImplementation::ComplexCollection ComplexMatrixImplementation::genVectProd(const ScalarCollection & pt) const
 {
   if (nbColumns_ != pt.getSize() ) throw InvalidDimensionException(HERE) << "Invalid dimension in matrix/vector product";
 
-  NumericalComplexCollection prod(nbRows_);
+  ComplexCollection prod(nbRows_);
   if ((nbRows_ == 0) || (nbColumns_ == 0)) return prod;
-  NumericalComplexCollection copyPoint(nbRows_);
+  ComplexCollection copyPoint(nbRows_);
   for (UnsignedInteger i = 0; i < pt.getSize(); ++i) copyPoint[i] = pt[i];
   char trans('N');
   int m_(nbRows_);
   int n_(nbColumns_);
   int one(1);
-  NumericalComplex alpha(1.0, 0.0);
-  NumericalComplex beta(0.0, 0.0);
+  Complex alpha(1.0, 0.0);
+  Complex beta(0.0, 0.0);
   int ltrans(1);
 
   zgemv_(&trans, &m_, &n_, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &m_, const_cast<std::complex<double>*>(&(copyPoint[0])), &one, &beta, &prod[0], &one, &ltrans);
@@ -723,20 +723,20 @@ ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementat
 }
 
 /* Multiplications with a Point */
-ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementation::genVectProd(const Point & pt) const
+ComplexMatrixImplementation::ComplexCollection ComplexMatrixImplementation::genVectProd(const Point & pt) const
 {
   if (nbColumns_ != pt.getSize() ) throw InvalidDimensionException(HERE) << "Invalid dimension in matrix/vector product";
 
-  NumericalComplexCollection prod(nbRows_);
+  ComplexCollection prod(nbRows_);
   if ((nbRows_ == 0) || (nbColumns_ == 0)) return prod;
-  NumericalComplexCollection copyPoint(nbRows_);
+  ComplexCollection copyPoint(nbRows_);
   for (UnsignedInteger i = 0; i < pt.getSize(); ++i) copyPoint[i] = pt[i];
   char trans('N');
   int m_(nbRows_);
   int n_(nbColumns_);
   int one(1);
-  NumericalComplex alpha(1.0, 0.0);
-  NumericalComplex beta(0.0, 0.0);
+  Complex alpha(1.0, 0.0);
+  Complex beta(0.0, 0.0);
   int ltrans(1);
 
   zgemv_(&trans, &m_, &n_, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &m_, const_cast<std::complex<double>*>(&(copyPoint[0])), &one, &beta, &prod[0], &one, &ltrans);
@@ -744,65 +744,65 @@ ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementat
   return prod;
 }
 
-ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementation::hermVectProd(const NumericalComplexCollection & pt) const
+ComplexMatrixImplementation::ComplexCollection ComplexMatrixImplementation::hermVectProd(const ComplexCollection & pt) const
 {
   if (nbColumns_ != pt.getSize() ) throw InvalidDimensionException(HERE) << "Invalid dimension in matrix/vector product";
 
-  NumericalComplexCollection prod(nbRows_);
+  ComplexCollection prod(nbRows_);
   // In this case, nbRows_ == nbColumns_
   if (nbRows_ == 0) return prod;
   char uplo('L');
   int n(nbRows_);
   int one(1);
-  NumericalComplex alpha(1.0, 0.0);
-  NumericalComplex beta(0.0, 0.0);
+  Complex alpha(1.0, 0.0);
+  Complex beta(0.0, 0.0);
   int luplo(1);
   zhemv_(&uplo, &n, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &n, const_cast<std::complex<double>*>(&(pt[0])), &one, &beta, &prod[0], &one, &luplo);
 
   return prod;
 }
 
-ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementation::hermVectProd(const ScalarCollection & pt) const
+ComplexMatrixImplementation::ComplexCollection ComplexMatrixImplementation::hermVectProd(const ScalarCollection & pt) const
 {
   if (nbColumns_ != pt.getSize() ) throw InvalidDimensionException(HERE) << "Invalid dimension in matrix/vector product";
 
-  NumericalComplexCollection prod(nbRows_);
+  ComplexCollection prod(nbRows_);
   // In this case, nbRows_ == nbColumns_
   if (nbRows_ == 0) return prod;
-  NumericalComplexCollection copyPoint(nbRows_);
+  ComplexCollection copyPoint(nbRows_);
   for (UnsignedInteger i = 0; i < pt.getSize(); ++i) copyPoint[i] = pt[i];
   char uplo('L');
   int n(nbRows_);
   int one(1);
-  NumericalComplex alpha(1.0, 0.0);
-  NumericalComplex beta(0.0, 0.0);
+  Complex alpha(1.0, 0.0);
+  Complex beta(0.0, 0.0);
   int luplo(1);
   zhemv_(&uplo, &n, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &n, const_cast<std::complex<double>*>(&(copyPoint[0])), &one, &beta, &prod[0], &one, &luplo);
 
   return prod;
 }
 
-ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementation::hermVectProd(const Point & pt) const
+ComplexMatrixImplementation::ComplexCollection ComplexMatrixImplementation::hermVectProd(const Point & pt) const
 {
   if (nbColumns_ != pt.getSize() ) throw InvalidDimensionException(HERE) << "Invalid dimension in matrix/vector product";
 
-  NumericalComplexCollection prod(nbRows_);
+  ComplexCollection prod(nbRows_);
   // In this case, nbRows_ == nbColumns_
   if (nbRows_ == 0) return prod;
-  NumericalComplexCollection copyPoint(nbRows_);
+  ComplexCollection copyPoint(nbRows_);
   for (UnsignedInteger i = 0; i < pt.getSize(); ++i) copyPoint[i] = pt[i];
   char uplo('L');
   int n(nbRows_);
   int one(1);
-  NumericalComplex alpha(1.0, 0.0);
-  NumericalComplex beta(0.0, 0.0);
+  Complex alpha(1.0, 0.0);
+  Complex beta(0.0, 0.0);
   int luplo(1);
   zhemv_(&uplo, &n, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &n, const_cast<std::complex<double>*>(&(copyPoint[0])), &one, &beta, &prod[0], &one, &luplo);
 
   return prod;
 }
 
-ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementation::triangularVectProd(const NumericalComplexCollection & pt,
+ComplexMatrixImplementation::ComplexCollection ComplexMatrixImplementation::triangularVectProd(const ComplexCollection & pt,
     const char side) const
 {
   // Product matrix vector using Blas
@@ -825,12 +825,12 @@ ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementat
   int lda(nbRows_);
   int one(1);
 
-  NumericalComplexCollection x(pt);
+  ComplexCollection x(pt);
   ztrmv_(&uplo, &trans, &diag, &n, const_cast<std::complex<double>*>(&((*this)[0])), &lda, const_cast<std::complex<double>*>(&(x[0])), &one, &luplo, &ltrans, &ldiag);
   return x;
 }
 
-ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementation::triangularVectProd(const ScalarCollection & pt,
+ComplexMatrixImplementation::ComplexCollection ComplexMatrixImplementation::triangularVectProd(const ScalarCollection & pt,
     const char side) const
 {
   char uplo(side);
@@ -851,14 +851,14 @@ ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementat
   int lda(nbRows_);
   int one(1);
 
-  NumericalComplexCollection x(nbRows_);
+  ComplexCollection x(nbRows_);
   for (UnsignedInteger i = 0; i < pt.getSize(); ++i) x[i] = pt[i];
 
   ztrmv_(&uplo, &trans, &diag, &n, const_cast<std::complex<double>*>(&((*this)[0])), &lda, const_cast<std::complex<double>*>(&(x[0])), &one, &luplo, &ltrans, &ldiag);
   return x;
 }
 
-ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementation::triangularVectProd(const Point & pt,
+ComplexMatrixImplementation::ComplexCollection ComplexMatrixImplementation::triangularVectProd(const Point & pt,
     const char side) const
 {
   char uplo(side);
@@ -879,7 +879,7 @@ ComplexMatrixImplementation::NumericalComplexCollection ComplexMatrixImplementat
   int lda(nbRows_);
   int one(1);
 
-  NumericalComplexCollection x(nbRows_);
+  ComplexCollection x(nbRows_);
   for (UnsignedInteger i = 0; i < pt.getSize(); ++i) x[i] = pt[i];
 
   ztrmv_(&uplo, &trans, &diag, &n, const_cast<std::complex<double>*>(&((*this)[0])), &lda, const_cast<std::complex<double>*>(&(x[0])), &one, &luplo, &ltrans, &ldiag);
@@ -943,7 +943,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::computeCholesky(const B
   if (info != 0) throw InternalException(HERE) << "Lapack ZPOTRF: error code=" << info;
   for (UnsignedInteger j = 0; j < (UnsignedInteger)(n); ++j)
     for (UnsignedInteger i = 0; i < (UnsignedInteger)(j); ++i)
-      A(i, j) = 0.0;//NumericalComplex(0.0, 0.0);
+      A(i, j) = 0.0;//Complex(0.0, 0.0);
   // Check return code from Lapack
   if(info != 0)
     throw InvalidArgumentException(HERE) << " Error - Matrix is not positive definite" ;
@@ -958,8 +958,8 @@ Bool ComplexMatrixImplementation::operator == (const ComplexMatrixImplementation
 
   if (&lhs != &rhs)   // Not the same object
   {
-    const Collection<NumericalComplex> & refLhs(static_cast<const Collection<NumericalComplex> >(lhs));
-    const Collection<NumericalComplex> & refRhs(static_cast<const Collection<NumericalComplex> >(rhs));
+    const Collection<Complex> & refLhs(static_cast<const Collection<Complex> >(lhs));
+    const Collection<Complex> & refRhs(static_cast<const Collection<Complex> >(rhs));
     equality = ( lhs.nbRows_ == rhs.nbRows_ && lhs.nbColumns_ == rhs.nbColumns_ && refLhs == refRhs);
   }
 
@@ -971,7 +971,7 @@ Bool ComplexMatrixImplementation::operator == (const ComplexMatrixImplementation
 /* Method save() stores the object through the StorageManager */
 void ComplexMatrixImplementation::save(Advocate & adv) const
 {
-  PersistentCollection<NumericalComplex>::save(adv);
+  PersistentCollection<Complex>::save(adv);
   adv.saveAttribute( "nbRows_",    nbRows_);
   adv.saveAttribute( "nbColumns_", nbColumns_);
 }
@@ -979,14 +979,14 @@ void ComplexMatrixImplementation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void ComplexMatrixImplementation::load(Advocate & adv)
 {
-  PersistentCollection<NumericalComplex>::load(adv);
+  PersistentCollection<Complex>::load(adv);
 
   adv.loadAttribute( "nbRows_",    nbRows_);
   adv.loadAttribute( "nbColumns_", nbColumns_);
 }
 
 
-const NumericalComplex* ComplexMatrixImplementation::__baseaddress__() const
+const Complex* ComplexMatrixImplementation::__baseaddress__() const
 {
   return &(*this)[0];
 }
@@ -994,7 +994,7 @@ const NumericalComplex* ComplexMatrixImplementation::__baseaddress__() const
 
 UnsignedInteger ComplexMatrixImplementation::__elementsize__() const
 {
-  return sizeof(NumericalComplex);
+  return sizeof(Complex);
 }
 
 

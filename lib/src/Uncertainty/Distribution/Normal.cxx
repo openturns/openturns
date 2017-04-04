@@ -355,25 +355,25 @@ Scalar Normal::computeCDF(const Point & point) const
 } // computeCDF
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Normal::computeCharacteristicFunction(const Scalar x) const
+Complex Normal::computeCharacteristicFunction(const Scalar x) const
 {
   return std::exp(computeLogCharacteristicFunction(x));
 }
 
-NumericalComplex Normal::computeCharacteristicFunction(const Point & x) const
+Complex Normal::computeCharacteristicFunction(const Point & x) const
 {
   return std::exp(computeLogCharacteristicFunction(x));
 }
 
-NumericalComplex Normal::computeLogCharacteristicFunction(const Scalar x) const
+Complex Normal::computeLogCharacteristicFunction(const Scalar x) const
 {
-  return NumericalComplex(-0.5 * sigma_[0] * sigma_[0] * x * x, mean_[0] * x);
+  return Complex(-0.5 * sigma_[0] * sigma_[0] * x * x, mean_[0] * x);
 }
 
-NumericalComplex Normal::computeLogCharacteristicFunction(const Point & x) const
+Complex Normal::computeLogCharacteristicFunction(const Point & x) const
 {
   if (x.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << x.getDimension();
-  return NumericalComplex(-0.5 * dot(x, getCovariance() * x), dot(x, mean_));
+  return Complex(-0.5 * dot(x, getCovariance() * x), dot(x, mean_));
 }
 
 /* Compute the probability content of an interval */

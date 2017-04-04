@@ -60,7 +60,7 @@ public:
   CoefficientsCollection getRecurrenceCoefficients() const;
 
   /** Roots of the polynomial of degree n as the eigenvalues of the associated Jacobi matrix */
-  NumericalComplexCollection getRoots() const;
+  ComplexCollection getRoots() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

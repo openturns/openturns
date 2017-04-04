@@ -164,10 +164,10 @@ Scalar Arcsine::computeComplementaryCDF(const Point & point) const
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Arcsine::computeCharacteristicFunction(const Scalar x) const
+Complex Arcsine::computeCharacteristicFunction(const Scalar x) const
 {
-  //  return std::exp(NumericalComplex(0.0, a_)) * SpecFunc::HyperGeom_1_1(0.5, 1.0, (b_ - a_) * x);
-  return std::exp(NumericalComplex(0.0, a_ + 0.5 * (b_ - a_) * x)) * j0(0.5 * (b_ - a_) * x);
+  //  return std::exp(Complex(0.0, a_)) * SpecFunc::HyperGeom_1_1(0.5, 1.0, (b_ - a_) * x);
+  return std::exp(Complex(0.0, a_ + 0.5 * (b_ - a_) * x)) * j0(0.5 * (b_ - a_) * x);
 }
 
 /* Get the PDFGradient of the distribution */

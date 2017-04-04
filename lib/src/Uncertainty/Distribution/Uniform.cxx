@@ -183,16 +183,16 @@ LevelSet Uniform::computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, S
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Uniform::computeCharacteristicFunction(const Scalar x) const
+Complex Uniform::computeCharacteristicFunction(const Scalar x) const
 {
-  NumericalComplex result;
+  Complex result;
   const Scalar ax = a_ * x;
   const Scalar bx = b_ * x;
-  if (std::abs(ax) + std::abs(bx) <= 1.0e-5) result = NumericalComplex(1.0 - (ax * ax + ax * bx + bx * bx) / 6.0, 0.5 * (ax + bx));
+  if (std::abs(ax) + std::abs(bx) <= 1.0e-5) result = Complex(1.0 - (ax * ax + ax * bx + bx * bx) / 6.0, 0.5 * (ax + bx));
   else
   {
     const Scalar idenom = 1.0 / (bx - ax);
-    result = NumericalComplex(idenom * (std::sin(bx) - std::sin(ax)), idenom * (std::cos(ax) - std::cos(bx)));
+    result = Complex(idenom * (std::sin(bx) - std::sin(ax)), idenom * (std::cos(ax) - std::cos(bx)));
   }
   return result;
 }

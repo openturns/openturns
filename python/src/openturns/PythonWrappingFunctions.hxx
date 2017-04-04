@@ -269,23 +269,23 @@ namePython<_PyComplex_>()
 }
 
 template <>
-struct traitsPythonType< NumericalComplex >
+struct traitsPythonType< Complex >
 {
   typedef _PyComplex_ Type;
 };
 
 template <>
 inline
-NumericalComplex
-convert< _PyComplex_, NumericalComplex >(PyObject * pyObj)
+Complex
+convert< _PyComplex_, Complex >(PyObject * pyObj)
 {
-  return NumericalComplex(PyComplex_RealAsDouble(pyObj), PyComplex_ImagAsDouble(pyObj));
+  return Complex(PyComplex_RealAsDouble(pyObj), PyComplex_ImagAsDouble(pyObj));
 }
 
 template <>
 inline
 PyObject *
-convert< NumericalComplex, _PyComplex_ >(NumericalComplex x)
+convert< Complex, _PyComplex_ >(Complex x)
 {
   return PyComplex_FromDoubles(x.real(), x.imag());
 }
@@ -623,7 +623,7 @@ convert< Description, _PySequence_ >(Description inP)
 }
 
 template <>
-struct traitsPythonType< Collection < NumericalComplex> >
+struct traitsPythonType< Collection < Complex> >
 {
   typedef _PySequence_ Type;
 };
@@ -631,11 +631,11 @@ struct traitsPythonType< Collection < NumericalComplex> >
 
 template <>
 inline
-Collection<NumericalComplex>
-convert<_PySequence_, Collection<NumericalComplex> >(PyObject * pyObj)
+Collection<Complex>
+convert<_PySequence_, Collection<Complex> >(PyObject * pyObj)
 {
-  Pointer<Collection<NumericalComplex> > ptr = buildCollectionFromPySequence<NumericalComplex>(pyObj);
-  return Collection<NumericalComplex>( *ptr );
+  Pointer<Collection<Complex> > ptr = buildCollectionFromPySequence<Complex>(pyObj);
+  return Collection<Complex>( *ptr );
 }
 
 
@@ -993,7 +993,7 @@ convert< _PySequence_, ComplexMatrixImplementation* >(PyObject * pyObj)
             {
               try
               {
-                p_implementation->operator()( i, j ) = checkAndConvert<_PyComplex_, NumericalComplex>(elt.get());
+                p_implementation->operator()( i, j ) = checkAndConvert<_PyComplex_, Complex>(elt.get());
               }
               catch (InvalidArgumentException &)
               {
@@ -1024,7 +1024,7 @@ convert< _PySequence_, ComplexMatrixImplementation* >(PyObject * pyObj)
     ScopedPyObjectPointer implObj(PyObject_CallMethod ( pyObj,
                                   const_cast<char *>( "getImplementation" ),
                                   const_cast<char *>( "()" ) ));
-    Pointer< Collection< NumericalComplex > > ptr = buildCollectionFromPySequence< NumericalComplex >( implObj.get() );
+    Pointer< Collection< Complex > > ptr = buildCollectionFromPySequence< Complex >( implObj.get() );
     UnsignedInteger nbColumns = checkAndConvert< _PyInt_, UnsignedInteger >( colunmsObj.get() );
     UnsignedInteger nbRows = checkAndConvert< _PyInt_, UnsignedInteger >( rowsObj.get() );
     ComplexMatrixImplementation *p_implementation = new ComplexMatrixImplementation( nbRows, nbColumns, *ptr );
@@ -1032,7 +1032,7 @@ convert< _PySequence_, ComplexMatrixImplementation* >(PyObject * pyObj)
   }
 
   // else try to convert from a sequence of sequences
-  Pointer< Collection< Collection< NumericalComplex > > > ptr = buildCollectionFromPySequence< Collection< NumericalComplex > >(pyObj);
+  Pointer< Collection< Collection< Complex > > > ptr = buildCollectionFromPySequence< Collection< Complex > >(pyObj);
   UnsignedInteger nbRows = ptr->getSize();
   UnsignedInteger nbColumns = ptr->getSize() > 0 ? (*ptr)[0].getSize() : 0;
   ComplexMatrixImplementation *p_implementation = new ComplexMatrixImplementation( nbRows, nbColumns );
@@ -1142,7 +1142,7 @@ convert< _PySequence_, ComplexTensorImplementation* >(PyObject * pyObj)
               {
                 try
                 {
-                  p_implementation->operator()( i, j, k ) = checkAndConvert<_PyComplex_, NumericalComplex>(elt.get());
+                  p_implementation->operator()( i, j, k ) = checkAndConvert<_PyComplex_, Complex>(elt.get());
                 }
                 catch (InvalidArgumentException &)
                 {
@@ -1173,7 +1173,7 @@ convert< _PySequence_, ComplexTensorImplementation* >(PyObject * pyObj)
     ScopedPyObjectPointer implObj(PyObject_CallMethod ( pyObj,
                                   const_cast<char *>( "getImplementation" ),
                                   const_cast<char *>( "()" ) ));
-    Pointer< Collection< NumericalComplex > > ptr = buildCollectionFromPySequence< NumericalComplex >( implObj.get() );
+    Pointer< Collection< Complex > > ptr = buildCollectionFromPySequence< Complex >( implObj.get() );
     UnsignedInteger nbColumns = checkAndConvert< _PyInt_, UnsignedInteger >( colunmsObj.get() );
     UnsignedInteger nbRows = checkAndConvert< _PyInt_, UnsignedInteger >( rowsObj.get() );
     UnsignedInteger nbSheets = checkAndConvert< _PyInt_, UnsignedInteger >( sheetsObj.get() );

@@ -424,12 +424,12 @@ Point Distribution::computeInverseSurvivalFunction(const Scalar prob,
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Distribution::computeCharacteristicFunction(const Scalar x) const
+Complex Distribution::computeCharacteristicFunction(const Scalar x) const
 {
   return getImplementation()->computeCharacteristicFunction(x);
 }
 
-NumericalComplex Distribution::computeLogCharacteristicFunction(const Scalar x) const
+Complex Distribution::computeLogCharacteristicFunction(const Scalar x) const
 {
   return getImplementation()->computeLogCharacteristicFunction(x);
 }
@@ -445,12 +445,12 @@ Scalar Distribution::computeLogGeneratingFunction(const Scalar z) const
   return getImplementation()->computeLogGeneratingFunction(z);
 }
 
-NumericalComplex Distribution::computeGeneratingFunction(const NumericalComplex & z) const
+Complex Distribution::computeGeneratingFunction(const Complex & z) const
 {
   return getImplementation()->computeGeneratingFunction(z);
 }
 
-NumericalComplex Distribution::computeLogGeneratingFunction(const NumericalComplex & z) const
+Complex Distribution::computeLogGeneratingFunction(const Complex & z) const
 {
   return getImplementation()->computeLogGeneratingFunction(z);
 }

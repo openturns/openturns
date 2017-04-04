@@ -477,7 +477,7 @@ Scalar MeixnerDistribution::computeLogPDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar z = (point[0] - mu_) / alpha_;
-  return logNormalizationFactor_ + beta_ * z + 2.0 * SpecFunc::LogGamma(NumericalComplex(delta_, z)).real();
+  return logNormalizationFactor_ + beta_ * z + 2.0 * SpecFunc::LogGamma(Complex(delta_, z)).real();
 }
 
 /* Get the CDF of the distribution */
@@ -523,14 +523,14 @@ Scalar MeixnerDistribution::computeScalarQuantile(const Scalar prob,
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex MeixnerDistribution::computeCharacteristicFunction(const Scalar x) const
+Complex MeixnerDistribution::computeCharacteristicFunction(const Scalar x) const
 {
   return std::exp(computeLogCharacteristicFunction(x));
 }
 
-NumericalComplex MeixnerDistribution::computeLogCharacteristicFunction(const Scalar x) const
+Complex MeixnerDistribution::computeLogCharacteristicFunction(const Scalar x) const
 {
-  return NumericalComplex(2.0 * delta_ * std::log(std::cos(0.5 * beta_)), mu_ * x) - 2.0 * delta_ * std::log(std::cosh(NumericalComplex(0.5 * alpha_ * x, -0.5 * mu_)));
+  return Complex(2.0 * delta_ * std::log(std::cos(0.5 * beta_)), mu_ * x) - 2.0 * delta_ * std::log(std::cosh(Complex(0.5 * alpha_ * x, -0.5 * mu_)));
 }
 
 /* Compute the mean of the distribution */

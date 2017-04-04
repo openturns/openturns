@@ -155,16 +155,16 @@ Scalar Bernoulli::computeScalarQuantile(const Scalar prob,
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Bernoulli::computeCharacteristicFunction(const Scalar x) const
+Complex Bernoulli::computeCharacteristicFunction(const Scalar x) const
 {
-  const NumericalComplex value(1.0 - p_ + p_ * std::exp(NumericalComplex(0.0, x)));
+  const Complex value(1.0 - p_ + p_ * std::exp(Complex(0.0, x)));
   return value;
 }
 
 /* Get the generating function of the distribution, i.e. psi(z) = E(z^X) */
-NumericalComplex Bernoulli::computeGeneratingFunction(const NumericalComplex & z) const
+Complex Bernoulli::computeGeneratingFunction(const Complex & z) const
 {
-  const NumericalComplex value(1.0 - p_ + p_ * z);
+  const Complex value(1.0 - p_ + p_ * z);
   return value;
 }
 

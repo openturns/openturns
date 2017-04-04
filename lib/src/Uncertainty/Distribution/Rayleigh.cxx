@@ -165,10 +165,10 @@ Scalar Rayleigh::computeCDF(const Point & point) const
    = (1 - sigma * x * (sqrt(2) * dawson(sigma * x / sqrt(2)) - i * exp(-sigma^2 * x^2 / 2) * sqrt(pi/2))) * exp(i * gamma * x)
    = (1 - t * (2 * dawson(t) - i * exp(-t * t) * sqrt(pi))) * exp(i * gamma * x) with t = sigma * x / sqrt(2)
 */
-NumericalComplex Rayleigh::computeCharacteristicFunction(const Scalar x) const
+Complex Rayleigh::computeCharacteristicFunction(const Scalar x) const
 {
   const Scalar t = sigma_ * x / std::sqrt(2.0);
-  return NumericalComplex(1 - 2 * t * SpecFunc::Dawson(t), t * std::exp(-t * t) * std::sqrt(M_PI)) * std::exp(NumericalComplex(0.0, x * gamma_));
+  return Complex(1 - 2 * t * SpecFunc::Dawson(t), t * std::exp(-t * t) * std::sqrt(M_PI)) * std::exp(Complex(0.0, x * gamma_));
 }
 
 /* Get the PDFGradient of the distribution */

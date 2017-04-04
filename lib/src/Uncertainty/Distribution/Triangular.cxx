@@ -152,22 +152,22 @@ Scalar Triangular::computeCDF(const Point & point) const
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Triangular::computeCharacteristicFunction(const Scalar x) const
+Complex Triangular::computeCharacteristicFunction(const Scalar x) const
 {
-  if (std::abs(x) < 1.0e-8) return NumericalComplex(1.0, (a_ + b_ + m_) * x / 3.0);
+  if (std::abs(x) < 1.0e-8) return Complex(1.0, (a_ + b_ + m_) * x / 3.0);
   const Scalar ba = b_ - a_;
   const Scalar bm = b_ - m_;
   const Scalar ma = m_ - a_;
-  return 2.0 / (x * x) * (-std::exp(NumericalComplex(0.0, a_ * x)) / (ba * ma) + std::exp(NumericalComplex(0.0, m_ * x)) / (bm * ma) - std::exp(NumericalComplex(0.0, b_ * x)) / (ba * bm));
+  return 2.0 / (x * x) * (-std::exp(Complex(0.0, a_ * x)) / (ba * ma) + std::exp(Complex(0.0, m_ * x)) / (bm * ma) - std::exp(Complex(0.0, b_ * x)) / (ba * bm));
 }
 
-NumericalComplex Triangular::computeLogCharacteristicFunction(const Scalar x) const
+Complex Triangular::computeLogCharacteristicFunction(const Scalar x) const
 {
   if (std::abs(x) < pdfEpsilon_) return 0.0;
   const Scalar ba = b_ - a_;
   const Scalar bm = b_ - m_;
   const Scalar ma = m_ - a_;
-  return  M_LN2 - 2.0 * std::log(std::abs(x)) + std::log(-std::exp(NumericalComplex(0.0, a_ * x)) / (ba * ma) + std::exp(NumericalComplex(0.0, m_ * x)) / (bm * ma) - std::exp(NumericalComplex(0.0, b_ * x)) / (ba * bm));
+  return  M_LN2 - 2.0 * std::log(std::abs(x)) + std::log(-std::exp(Complex(0.0, a_ * x)) / (ba * ma) + std::exp(Complex(0.0, m_ * x)) / (bm * ma) - std::exp(Complex(0.0, b_ * x)) / (ba * bm));
 }
 
 /* Get the PDFGradient of the distribution */

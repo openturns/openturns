@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(WelchFactory);
 static const Factory<WelchFactory> Factory_WelchFactory;
 
-typedef Collection<NumericalComplex> NumericalComplexCollection;
+typedef Collection<Complex> ComplexCollection;
 typedef Collection<HermitianMatrix>  HermitianMatrixCollection;
 
 /* Default constructor */
@@ -135,7 +135,7 @@ UserDefinedSpectralModel WelchFactory::buildAsUserDefinedSpectralModel(const Pro
   const Scalar timeStep = timeGrid.getStep();
   const Scalar T = timeGrid.getEnd() - timeGrid.getStart();
   // Preprocessing: the scaling factor, including the tappering window
-  NumericalComplexCollection alpha(N);
+  ComplexCollection alpha(N);
   const Scalar factor = timeStep / sqrt(sampleSize * T);
   for (UnsignedInteger m = 0; m < N; ++m)
   {
@@ -143,7 +143,7 @@ UserDefinedSpectralModel WelchFactory::buildAsUserDefinedSpectralModel(const Pro
     const Scalar xiM = static_cast<Scalar>(m) / N;
     // Phase shift
     const Scalar theta = M_PI * (N - 1) * xiM;
-    alpha[m] = factor * window_(xiM) * NumericalComplex(cos(theta), sin(theta));
+    alpha[m] = factor * window_(xiM) * Complex(cos(theta), sin(theta));
   }
   // The DSP estimate will be done over a regular frequency grid containing only
   // nonnegative frequency values. It is then extended as a stepwise function of
@@ -171,10 +171,10 @@ UserDefinedSpectralModel WelchFactory::buildAsUserDefinedSpectralModel(const Pro
     for (UnsignedInteger p = 0; p < dimension; ++p)
     {
       // Loop over the time stamps
-      NumericalComplexCollection zP(N);
+      ComplexCollection zP(N);
       for (UnsignedInteger m = 0; m < N; ++m) zP[m] = alpha[m] * sample[l][m][p]; // The first component of the value of a time series at a given index is the time value
       // Perform the FFT direct transform of the tapered data
-      const NumericalComplexCollection zPHat(fftAlgorithm_.transform(zP));
+      const ComplexCollection zPHat(fftAlgorithm_.transform(zP));
       // Stores the result. Only the values associated with nonnegative frequency values are stored.
       for (UnsignedInteger k = 0; k < kMax; ++k) zHat(k, p) = zPHat[N - kMax + k];
     }

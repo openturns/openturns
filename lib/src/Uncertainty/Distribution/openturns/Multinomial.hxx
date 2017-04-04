@@ -140,11 +140,11 @@ private:
   void computeRange();
 
   /** Compute the generating function of a sum of truncated Poisson distributions as needed in the computeCDF() method */
-  NumericalComplex computeGlobalPhi(const NumericalComplex & z,
+  Complex computeGlobalPhi(const Complex & z,
                                     const Point & x) const;
 
   /** Compute the generating function of a truncated Poisson distributions as needed in the computeCDF() method */
-  NumericalComplex computeLocalPhi(const NumericalComplex & z,
+  Complex computeLocalPhi(const Complex & z,
                                    const Scalar lambda,
                                    const Scalar a) const;
 

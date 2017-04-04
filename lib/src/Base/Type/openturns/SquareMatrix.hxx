@@ -136,8 +136,8 @@ public:
   Scalar computeTrace() const;
 
   /** Compute eigenvalues */
-  NumericalComplexCollection computeEigenValues(const Bool keepIntact = true);
-  NumericalComplexCollection computeEV(SquareComplexMatrix & v,
+  ComplexCollection computeEigenValues(const Bool keepIntact = true);
+  ComplexCollection computeEV(SquareComplexMatrix & v,
                                        const Bool keepIntact = true);
 
   /** Check if it is diagonal */

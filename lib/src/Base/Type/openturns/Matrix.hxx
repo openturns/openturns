@@ -53,7 +53,7 @@ class OT_API Matrix :
 public:
 
   typedef Collection<Scalar>       ScalarCollection;
-  typedef Collection<NumericalComplex>      NumericalComplexCollection;
+  typedef Collection<Complex>      ComplexCollection;
 
   /** Default constructor */
   Matrix();

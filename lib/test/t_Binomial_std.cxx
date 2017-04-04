@@ -95,13 +95,13 @@ int main(int argc, char *argv[])
     fullprint << "quantile (tail)=" << quantileTail << std::endl;
     Scalar CDFTail = distribution.computeComplementaryCDF( quantileTail );
     fullprint << "cdf (tail)=" << CDFTail << std::endl;
-    NumericalComplex CF = distribution.computeCharacteristicFunction( point[0] );
+    Complex CF = distribution.computeCharacteristicFunction( point[0] );
     fullprint << "characteristic function=" << CF << std::endl;
-    NumericalComplex LCF = distribution.computeLogCharacteristicFunction( point[0] );
+    Complex LCF = distribution.computeLogCharacteristicFunction( point[0] );
     fullprint << "log characteristic function=" << LCF << std::endl;
-    NumericalComplex GF = distribution.computeGeneratingFunction( NumericalComplex(0.3, 0.7) );
+    Complex GF = distribution.computeGeneratingFunction( Complex(0.3, 0.7) );
     fullprint << "generating function=" << GF << std::endl;
-    NumericalComplex LGF = distribution.computeLogGeneratingFunction( NumericalComplex(0.3, 0.7) );
+    Complex LGF = distribution.computeLogGeneratingFunction( Complex(0.3, 0.7) );
     fullprint << "log generating function=" << LGF << std::endl;
     Point mean = distribution.getMean();
     fullprint << "mean=" << mean << std::endl;

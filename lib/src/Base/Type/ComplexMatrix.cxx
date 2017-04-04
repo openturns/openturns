@@ -52,7 +52,7 @@ ComplexMatrix::ComplexMatrix(const UnsignedInteger rowDim,
 /* or the rest of the matrix is filled with zeros */
 ComplexMatrix::ComplexMatrix(const UnsignedInteger rowDim,
                              const UnsignedInteger colDim,
-                             const NumericalComplexCollection & elementsValues)
+                             const ComplexCollection & elementsValues)
   : TypedInterfaceObject<ComplexMatrixImplementation>(new ComplexMatrixImplementation(rowDim, colDim, elementsValues))
 {
   // Nothing to do
@@ -93,7 +93,7 @@ ComplexMatrix::ComplexMatrix(const HermitianMatrix & hermitian)
 
 
 /* Resolution of a linear system */
-ComplexMatrix::NumericalComplexCollection ComplexMatrix::solveLinearSystem(const NumericalComplexCollection & b,
+ComplexMatrix::ComplexCollection ComplexMatrix::solveLinearSystem(const ComplexCollection & b,
     const Bool keepIntact)
 {
   return getImplementation()->solveLinearSystemRect(b, keepIntact);
@@ -175,7 +175,7 @@ UnsignedInteger ComplexMatrix::getNbColumns() const
 /* Operator () gives access to the elements of the matrix (to modify these elements) */
 /* The element of the matrix is designated by its row number i and its column number j */
 /* the first element of the matrix is m(0,0) */
-NumericalComplex & ComplexMatrix::operator() (const UnsignedInteger i,
+Complex & ComplexMatrix::operator() (const UnsignedInteger i,
     const UnsignedInteger j)
 {
   copyOnWrite();
@@ -184,7 +184,7 @@ NumericalComplex & ComplexMatrix::operator() (const UnsignedInteger i,
 
 /* Operator () gives access to the elements of the matrix (read only) */
 /* The element of the matrix is designated by its row number i and its column number j */
-const NumericalComplex & ComplexMatrix::operator() (const UnsignedInteger i,
+const Complex & ComplexMatrix::operator() (const UnsignedInteger i,
     const UnsignedInteger j)  const
 {
   return (*getImplementation())(i, j);
@@ -285,31 +285,31 @@ ComplexMatrix ComplexMatrix::operator* (const IdentityMatrix & m) const
 }
 
 /* Multiplication with a ScalarCollection  */
-ComplexMatrix::NumericalComplexCollection ComplexMatrix::operator* (const ScalarCollection & collection) const
+ComplexMatrix::ComplexCollection ComplexMatrix::operator* (const ScalarCollection & collection) const
 {
   return getImplementation()->genVectProd(collection) ;
 }
 
 /* Multiplication with a Point  */
-ComplexMatrix::NumericalComplexCollection ComplexMatrix::operator* (const Point & point) const
+ComplexMatrix::ComplexCollection ComplexMatrix::operator* (const Point & point) const
 {
   return getImplementation()->genVectProd(point) ;
 }
 
-/* Multiplication with a NumericalComplexCollection */
-ComplexMatrix::NumericalComplexCollection ComplexMatrix::operator* (const NumericalComplexCollection & collection) const
+/* Multiplication with a ComplexCollection */
+ComplexMatrix::ComplexCollection ComplexMatrix::operator* (const ComplexCollection & collection) const
 {
   return getImplementation()->genVectProd(collection) ;
 }
 
-/* Multiplication with a NumericalComplex */
-ComplexMatrix ComplexMatrix::operator* (const NumericalComplex s) const
+/* Multiplication with a Complex */
+ComplexMatrix ComplexMatrix::operator* (const Complex s) const
 {
   return Implementation((*getImplementation() * s ).clone());
 }
 
-/* Division by a NumericalComplex*/
-ComplexMatrix ComplexMatrix::operator/ (const NumericalComplex s) const
+/* Division by a Complex*/
+ComplexMatrix ComplexMatrix::operator/ (const Complex s) const
 {
   return Implementation((*getImplementation() / s ).clone());
 }
@@ -330,7 +330,7 @@ Bool ComplexMatrix::operator == (const ComplexMatrix & rhs) const
 }
 
 
-const NumericalComplex* ComplexMatrix::__baseaddress__() const
+const Complex* ComplexMatrix::__baseaddress__() const
 {
   return getImplementation()->__baseaddress__();
 }

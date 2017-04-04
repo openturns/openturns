@@ -283,7 +283,7 @@ void SpectralGaussianProcess::computeTimeGrid()
 /* Set the alpha vector */
 void SpectralGaussianProcess::computeAlpha()
 {
-  alpha_ = PersistentNumericalComplexCollection(2 * nFrequency_);
+  alpha_ = PersistentComplexCollection(2 * nFrequency_);
   // Convert the frequency into pulsation, take into account that there are 2*nFrequency points and that
   // a sqrt(2) factor is needed to switch from Box Muller transform to normal complex random variable
   const Scalar factor = 2.0 * nFrequency_ * sqrt(frequencyStep_);
@@ -291,7 +291,7 @@ void SpectralGaussianProcess::computeAlpha()
   for (UnsignedInteger index = 0; index < 2 * nFrequency_; ++index)
   {
     const Scalar theta = beta * index;
-    alpha_[index] = factor * NumericalComplex(cos(theta), sin(theta));
+    alpha_[index] = factor * Complex(cos(theta), sin(theta));
   }
 }
 
@@ -300,7 +300,7 @@ Field SpectralGaussianProcess::getRealization() const
 {
   // Build the big collection of size dimension * number of frequencies
   const UnsignedInteger twoNF = 2 * nFrequency_;
-  NumericalComplexCollection arrayCollection(dimension_ * twoNF);
+  ComplexCollection arrayCollection(dimension_ * twoNF);
   // Loop over the frequencies
   // Gaussian vector
   // Loop over half of the frequency range
@@ -308,8 +308,8 @@ Field SpectralGaussianProcess::getRealization() const
   {
     const TriangularComplexMatrix choleskyFactor(getCholeskyFactor(k));
     // Use matrix/vector product to optimize the loop
-    NumericalComplexCollection left(dimension_);
-    NumericalComplexCollection right(dimension_);
+    ComplexCollection left(dimension_);
+    ComplexCollection right(dimension_);
     // Compute both the left and the right points using the current Cholesky factor R.
     // We use the relation S(-f)=conjugate(S(f)) from which R(-f)=conjugate(R(f))
     // and R(-f).z = conjugate(R(f).conjugate(z))
@@ -318,17 +318,17 @@ Field SpectralGaussianProcess::getRealization() const
     for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
       // Care! Getting a realization of a random gaussian should be done using two intermediate variables
-      // NumericalComplex(DistFunc::rNormal(), DistFunc::rNormal()) is correct but the fill of the complex depends on the os and compiler
+      // Complex(DistFunc::rNormal(), DistFunc::rNormal()) is correct but the fill of the complex depends on the os and compiler
       const Scalar realLeft = DistFunc::rNormal();
       const Scalar imagLeft = DistFunc::rNormal();
-      left[i] = NumericalComplex(realLeft, imagLeft);
+      left[i] = Complex(realLeft, imagLeft);
       const Scalar realRight = DistFunc::rNormal();
       const Scalar imagRight = DistFunc::rNormal();
-      right[i] = NumericalComplex(realRight, imagRight);
+      right[i] = Complex(realRight, imagRight);
     }
     // Use an efficient matrix/vector product here
-    NumericalComplexCollection resultLeft(choleskyFactor * left);
-    NumericalComplexCollection resultRight(choleskyFactor * right);
+    ComplexCollection resultLeft(choleskyFactor * left);
+    ComplexCollection resultRight(choleskyFactor * right);
     for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
       arrayCollection[i * twoNF + nFrequency_ - 1 - k] = conj(resultLeft[i]);
@@ -339,7 +339,7 @@ Field SpectralGaussianProcess::getRealization() const
   Sample sampleValues(twoNF , dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
-    const NumericalComplexCollection inverseFFTResult(fftAlgorithm_.inverseTransform(arrayCollection, i * twoNF, twoNF));
+    const ComplexCollection inverseFFTResult(fftAlgorithm_.inverseTransform(arrayCollection, i * twoNF, twoNF));
     for (UnsignedInteger k = 0; k < twoNF; ++k) sampleValues[k][i] = std::real(inverseFFTResult[k] * alpha_[k]);
   }
   sampleValues.setDescription(getDescription());

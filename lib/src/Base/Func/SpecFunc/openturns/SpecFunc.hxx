@@ -174,7 +174,7 @@ public:
                         const Scalar b);
   // Dawson function: Dawson(x) = \exp(-x^2) * \int_0^x \exp(t^2) dt
   static Scalar Dawson(const Scalar x);
-  static NumericalComplex Dawson(const NumericalComplex & z);
+  static Complex Dawson(const Complex & z);
   // Debye function of order n: DebyeN(x, n) = n / x^n \int_0^x t^n/(\exp(t)-1) dt
   static Scalar Debye(const Scalar x,
                       const UnsignedInteger n);
@@ -183,9 +183,9 @@ public:
   // Exponential integral function: Ei(x) = -\int_{-x}^{\infty}exp(-t)/t dt
   static Scalar Ei(const Scalar x);
   // Complex exponential integral function: Ei(z) = -\int_{-z}^{\infty}exp(-t)/t dt
-  static NumericalComplex Ei(const NumericalComplex & z);
+  static Complex Ei(const Complex & z);
   // Complex Faddeeva function: Faddeeva(z) = exp(-z^2)\erfc(-I*z)
-  static NumericalComplex Faddeeva(const NumericalComplex & z);
+  static Complex Faddeeva(const Complex & z);
   // Imaginary part of the Faddeeva function: FaddeevaIm(z) = Im(Faddeeva(x))
   static Scalar FaddeevaIm(const Scalar x);
   // Gamma function: gamma(a) = \int_0^{\infty} t^{a-1}\exp(-t) dt
@@ -195,12 +195,12 @@ public:
   // GammaCorrection(a) = LogGamma(a) - log(sqrt(2.Pi)) + a - (a - 1/2) log(a)
   static Scalar GammaCorrection(const Scalar a);
   // Complex gamma function: gamma(a) = \int_0^{\infty} t^{a-1}\exp(-t) dt
-  static NumericalComplex Gamma(const NumericalComplex & a);
+  static Complex Gamma(const Complex & a);
   // Natural logarithm of the gamma function
   static Scalar LnGamma(const Scalar a);
   static Scalar LogGamma(const Scalar a);
   static Scalar LogGamma1p(const Scalar a);
-  static NumericalComplex LogGamma(const NumericalComplex & a);
+  static Complex LogGamma(const Complex & a);
   // Incomplete gamma function: gamma(a, x) = \int_0^x t^{a-1}\exp(-t) dt
   static Scalar IncompleteGamma(const Scalar a,
                                 const Scalar x,
@@ -229,9 +229,9 @@ public:
                               const Scalar q1,
                               const Scalar x);
   // Complex hypergeometric function of type (1,1): hyperGeom_1_1(p1, q1, x) = \sum_{n=0}^{\infty} [\prod_{k=0}^{n-1} (p1 + k) / (q1 + k)] * x^n / n!
-  static NumericalComplex HyperGeom_1_1(const Scalar p1,
+  static Complex HyperGeom_1_1(const Scalar p1,
                                         const Scalar q1,
-                                        const NumericalComplex & x);
+                                        const Complex & x);
   // Hypergeometric function of type (2,1): hyperGeom_2_1(p1, p2, q1, x) = \sum_{n=0}^{\infty} [\prod_{k=0}^{n-1} (p1 + k) . (p2 + k) / (q1 + k)] * x^n / n!
   static Scalar HyperGeom_2_1(const Scalar p1,
                               const Scalar p2,
@@ -245,27 +245,27 @@ public:
                               const Scalar x);
   // Erf function erf(x) = 2 / \sqrt(\pi) . \int_0^x \exp(-t^2) dt
   static Scalar Erf(const Scalar x);
-  static NumericalComplex Erf(const NumericalComplex & z);
+  static Complex Erf(const Complex & z);
   // Erf function erfi(x) = -i.erf(iz)
   static Scalar ErfI(const Scalar x);
-  static NumericalComplex ErfI(const NumericalComplex & z);
+  static Complex ErfI(const Complex & z);
   // Erf function erfc(x) = 1 - erf(x)
   static Scalar ErfC(const Scalar x);
-  static NumericalComplex ErfC(const NumericalComplex & z);
+  static Complex ErfC(const Complex & z);
   // Erf function erfcx(x) = exp(x^2).erfc(x)
   static Scalar ErfCX(const Scalar x);
-  static NumericalComplex ErfCX(const NumericalComplex & z);
+  static Complex ErfCX(const Complex & z);
   // Inverse of the erf function
   static Scalar ErfInverse(const Scalar x);
   // Real branch of Lambert W function (principal or secndary)
   static Scalar LambertW(const Scalar x,
                          const Bool principal = true);
   // Accurate value of log(1+z) for |z|<<1
-  static NumericalComplex Log1p(const NumericalComplex & z);
+  static Complex Log1p(const Complex & z);
   // Accurate value of exp(z)-1 for |z|<<1
-  static NumericalComplex Expm1(const NumericalComplex & z);
+  static Complex Expm1(const Complex & z);
   // Accurate value of log(1-exp(-x)) for all x
-  static NumericalComplex Log1MExp(const Scalar x);
+  static Complex Log1MExp(const Scalar x);
   // MarcumQ- function
   //      static Scalar MarcumQFunction(const Scalar a,const Scalar b);
 

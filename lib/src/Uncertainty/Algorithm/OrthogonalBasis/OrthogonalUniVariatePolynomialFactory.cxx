@@ -160,7 +160,7 @@ void OrthogonalUniVariatePolynomialFactory::initializeCache()
 Point OrthogonalUniVariatePolynomialFactory::getRoots(const UnsignedInteger n) const
 {
   // As a specialized UniVariatePolynomial, the roots are complex
-  const OrthogonalUniVariatePolynomial::NumericalComplexCollection complexRoots(build(n).getRoots());
+  const OrthogonalUniVariatePolynomial::ComplexCollection complexRoots(build(n).getRoots());
   // But in fact we know that they are real
   Point roots(n);
   for (UnsignedInteger i = 0; i < n; ++i)

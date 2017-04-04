@@ -99,13 +99,13 @@ Scalar ParametrizedDistribution::computeComplementaryCDF(const Point & point) co
 }
 
 
-NumericalComplex ParametrizedDistribution::computeCharacteristicFunction(const Scalar x) const
+Complex ParametrizedDistribution::computeCharacteristicFunction(const Scalar x) const
 {
   return distribution_.computeCharacteristicFunction(x);
 }
 
 
-NumericalComplex ParametrizedDistribution::computeLogCharacteristicFunction(const Scalar x) const
+Complex ParametrizedDistribution::computeLogCharacteristicFunction(const Scalar x) const
 {
   return distribution_.computeLogCharacteristicFunction(x);
 }

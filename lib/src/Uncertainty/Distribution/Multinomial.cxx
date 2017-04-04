@@ -174,11 +174,11 @@ Scalar Multinomial::computePDF(const Point & point) const
 }
 
 /* Compute the generating function of a sum of truncated Poisson distributions as needed in the computeCDF() method */
-NumericalComplex Multinomial::computeGlobalPhi(const NumericalComplex & z,
+Complex Multinomial::computeGlobalPhi(const Complex & z,
     const Point & x) const
 {
   // Initialize with the non truncated term
-  NumericalComplex value(std::exp(-(1.0 - sumP_) * n_ * (1.0 - z)));
+  Complex value(std::exp(-(1.0 - sumP_) * n_ * (1.0 - z)));
   const UnsignedInteger dimension = getDimension();
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
@@ -193,34 +193,34 @@ NumericalComplex Multinomial::computeGlobalPhi(const NumericalComplex & z,
 }
 
 /* Compute the generating function of a truncated Poisson distributions as needed in the computeCDF() method */
-NumericalComplex Multinomial::computeLocalPhi(const NumericalComplex & z,
+Complex Multinomial::computeLocalPhi(const Complex & z,
     const Scalar lambda,
     const Scalar a) const
 {
   if (z == 0.0) return 1.0;
-  const NumericalComplex u(lambda * z);
+  const Complex u(lambda * z);
   const UnsignedInteger iMax = static_cast< UnsignedInteger > (floor(a));
   // Small value of a, evaluate the generating function as a polynomial
   if (a <= smallA_)
   {
-    NumericalComplex value(std::exp(-lambda));
-    NumericalComplex term(value);
+    Complex value(std::exp(-lambda));
+    Complex term(value);
     for (UnsignedInteger i = 1; i <= iMax; ++i)
     {
-      term *= u / NumericalComplex(i);
+      term *= u / Complex(i);
       value += term;
     }
     return value;
   } // smallA_
   // Large a
-  NumericalComplex value(std::exp(-lambda + u));
+  Complex value(std::exp(-lambda + u));
   UnsignedInteger i = iMax + 1;
-  NumericalComplex term(std::exp(-lambda + NumericalComplex(i) * std::log(u) - lgamma(i + 1.0)));
+  Complex term(std::exp(-lambda + Complex(i) * std::log(u) - lgamma(i + 1.0)));
   while (std::abs(term) > SpecFunc::Precision * std::abs(value))
   {
     value -= term;
     ++i;
-    term *= u / NumericalComplex(i);
+    term *= u / Complex(i);
   }
   return value - term;
 }
@@ -282,10 +282,10 @@ Scalar Multinomial::computeCDF(const Point & point) const
     return Multinomial(n_, pReduced).computeCDF(xReduced);
   }
   // Evaluation of P(W=n) using Poisson's formula
-  NumericalComplex phiK(computeGlobalPhi(r_, point));
-  const NumericalComplex zetaN(std::exp(NumericalComplex(0.0, M_PI / n_)));
-  NumericalComplex phiKp1(computeGlobalPhi(r_ * zetaN, point));
-  NumericalComplex delta(phiK - phiKp1);
+  Complex phiK(computeGlobalPhi(r_, point));
+  const Complex zetaN(std::exp(Complex(0.0, M_PI / n_)));
+  Complex phiKp1(computeGlobalPhi(r_ * zetaN, point));
+  Complex delta(phiK - phiKp1);
   Scalar value = delta.real();
   const Scalar dv0 = std::abs(delta);
   if (dv0 == 0.0)
@@ -294,7 +294,7 @@ Scalar Multinomial::computeCDF(const Point & point) const
     return 0.0;
   }
   Scalar sign = -1.0;
-  NumericalComplex t(zetaN);
+  Complex t(zetaN);
   for (UnsignedInteger k = 1; k < n_; ++k)
   {
     phiK = phiKp1;

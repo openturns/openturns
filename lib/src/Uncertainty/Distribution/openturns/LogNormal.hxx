@@ -84,8 +84,8 @@ public:
   Scalar computeComplementaryCDF(const Point & point) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
-  NumericalComplex computeLogCharacteristicFunction(const Scalar x) const;
+  Complex computeCharacteristicFunction(const Scalar x) const;
+  Complex computeLogCharacteristicFunction(const Scalar x) const;
 
   /** Get the PDFGradient of the LogNormal distribution */
   using ContinuousDistribution::computePDFGradient;
@@ -157,7 +157,7 @@ private:
                                const Bool tail = false) const;
 
   /** Compute the integrand that is involved in the computation of the characteristic function */
-  NumericalComplex characteristicIntegrand(const Scalar eta,
+  Complex characteristicIntegrand(const Scalar eta,
       const Scalar sStar) const;
 
   /** Compute the numerical range of the distribution given the parameters values */

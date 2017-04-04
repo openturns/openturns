@@ -46,7 +46,7 @@ class OT_API ComplexTensor :
 public:
 
   typedef TypedInterfaceObject<ComplexTensorImplementation>::Implementation Implementation;
-  typedef Collection<NumericalComplex>                          NumericalComplexCollection;
+  typedef Collection<Complex>                          ComplexCollection;
 
   /** Default constructor */
   ComplexTensor();
@@ -68,7 +68,7 @@ public:
   ComplexTensor(const UnsignedInteger rowDim,
                 const UnsignedInteger colDim,
                 const UnsignedInteger sheetDim,
-                const NumericalComplexCollection & elementsValues);
+                const ComplexCollection & elementsValues);
 
   /** Constructor with implementation */
   ComplexTensor(const Implementation & i);
@@ -85,13 +85,13 @@ public:
 #ifndef SWIG
   /** Operator () gives access to the elements of the tensor (to modify these elements) */
   /** The element of the tensor is designated by its row number i, its column number j and its sheet number k */
-  NumericalComplex & operator () (const UnsignedInteger i,
+  Complex & operator () (const UnsignedInteger i,
                                   const UnsignedInteger j,
                                   const UnsignedInteger k);
 
   /** Operator () gives access to the elements of the tensor (read only) */
   /** The element of the tensor is designated by its row number i, its column number j and its sheet number k */
-  const NumericalComplex & operator () (const UnsignedInteger i,
+  const Complex & operator () (const UnsignedInteger i,
                                         const UnsignedInteger j,
                                         const UnsignedInteger k) const;
 #endif
@@ -119,7 +119,7 @@ public:
 
   // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
   // INTENTIONALY NOT DOCUMENTED
-  const NumericalComplex * __baseaddress__ () const;
+  const Complex * __baseaddress__ () const;
   UnsignedInteger __elementsize__ () const;
   UnsignedInteger __stride__ (UnsignedInteger dim) const;
 

@@ -25,7 +25,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-typedef Collection<NumericalComplex> NumericalComplexCollection;
+typedef Collection<Complex> ComplexCollection;
 
 int main(int argc, char *argv[])
 {

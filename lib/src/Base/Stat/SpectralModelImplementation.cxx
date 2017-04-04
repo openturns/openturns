@@ -147,12 +147,12 @@ HermitianMatrix SpectralModelImplementation::operator() (const Scalar frequency)
   // Spectral density is given as the Fourier transform of the stationary covariance function
   // With the formal expression of stationary covariance, ie C(x,y) = S * rho( |x- y|/|scale|),
   // the dsp writes as S * \hat{rho}(f)
-  NumericalComplex rho = computeStandardRepresentative(frequency);
+  Complex rho = computeStandardRepresentative(frequency);
   return spatialCovariance_ * rho;
 }
 
 /** Standard representative */
-NumericalComplex SpectralModelImplementation::computeStandardRepresentative(const Scalar frequency) const
+Complex SpectralModelImplementation::computeStandardRepresentative(const Scalar frequency) const
 {
   throw NotYetImplementedException(HERE) << "In SpectralModelImplementation::computeStandardRepresentative(const Scalar frequency) const";
 }
@@ -237,7 +237,7 @@ Graph SpectralModelImplementation::draw(const UnsignedInteger rowIndex,
   for (UnsignedInteger i = 0; i < frequencyNumber; ++i)
   {
     const Scalar f = (i * minimumFrequency + (frequencyNumber - i - 1.0) * maximumFrequency) / (frequencyNumber - 1.0);
-    const NumericalComplex value((*this)(f)(rowIndex, columnIndex));
+    const Complex value((*this)(f)(rowIndex, columnIndex));
     data[i][0] = f;
     if (module) data[i][1] = std::abs(value);
     else data[i][1] = std::arg(value);

@@ -49,18 +49,18 @@ int main(int argc, char *argv[])
     tensor1.setName("tensor1");
 
     /* Check operator() methods */
-    tensor1(0, 0, 0) = NumericalComplex(1., 0.1);
-    tensor1(1, 0, 0) = NumericalComplex(2., 0.2);
-    tensor1(0, 1, 0) = NumericalComplex(3., 0.3);
-    tensor1(1, 1, 0) = NumericalComplex(4., 0.4);
-    tensor1(0, 0, 1) = NumericalComplex(5., 0.5);
-    tensor1(1, 0, 1) = NumericalComplex(6., 0.6);
-    tensor1(0, 1, 1) = NumericalComplex(7., 0.7);
-    tensor1(1, 1, 1) = NumericalComplex(8., 0.8);
-    tensor1(0, 0, 2) = NumericalComplex(9., 0.9);
-    tensor1(1, 0, 2) = NumericalComplex(10., 1.0) ;
-    tensor1(0, 1, 2) = NumericalComplex(11., 1.1) ;
-    tensor1(1, 1, 2) = NumericalComplex(12., 1.2) ;
+    tensor1(0, 0, 0) = Complex(1., 0.1);
+    tensor1(1, 0, 0) = Complex(2., 0.2);
+    tensor1(0, 1, 0) = Complex(3., 0.3);
+    tensor1(1, 1, 0) = Complex(4., 0.4);
+    tensor1(0, 0, 1) = Complex(5., 0.5);
+    tensor1(1, 0, 1) = Complex(6., 0.6);
+    tensor1(0, 1, 1) = Complex(7., 0.7);
+    tensor1(1, 1, 1) = Complex(8., 0.8);
+    tensor1(0, 0, 2) = Complex(9., 0.9);
+    tensor1(1, 0, 2) = Complex(10., 1.0) ;
+    tensor1(0, 1, 2) = Complex(11., 1.1) ;
+    tensor1(1, 1, 2) = Complex(12., 1.2) ;
 
     /* String converter */
     fullprint << "tensor1 = " << tensor1 << std::endl;

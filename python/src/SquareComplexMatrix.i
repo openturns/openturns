@@ -21,7 +21,7 @@ namespace OT {
   OTComplexMatrixGetAccessors()
 
 #if SWIG_VERSION < 0x030011
-  SquareComplexMatrix __truediv__(NumericalComplex s) { return (*self) / s; }
+  SquareComplexMatrix __truediv__(Complex s) { return (*self) / s; }
 #endif
 
 } // SquareComplexMatrix

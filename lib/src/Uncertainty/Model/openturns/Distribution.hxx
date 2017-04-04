@@ -190,15 +190,15 @@ public:
   Scalar computeProbability(const Interval & interval) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
-  NumericalComplex computeLogCharacteristicFunction(const Scalar x) const;
+  Complex computeCharacteristicFunction(const Scalar x) const;
+  Complex computeLogCharacteristicFunction(const Scalar x) const;
 
   /** Compute the generating function, i.e. psi(z) = E(z^X) */
   Scalar computeGeneratingFunction(const Scalar z) const;
   Scalar computeLogGeneratingFunction(const Scalar z) const;
 
-  NumericalComplex computeGeneratingFunction(const NumericalComplex & z) const;
-  NumericalComplex computeLogGeneratingFunction(const NumericalComplex & z) const;
+  Complex computeGeneratingFunction(const Complex & z) const;
+  Complex computeLogGeneratingFunction(const Complex & z) const;
 
   /** Get the PDF gradient of the distribution */
   Point computePDFGradient(const Point & point) const;

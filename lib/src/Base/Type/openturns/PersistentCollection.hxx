@@ -77,9 +77,9 @@ template<> inline String PersistentCollectionGetClassName<Scalar>()
 {
   return String("PersistentCollection<Scalar>");
 }
-template<> inline String PersistentCollectionGetClassName<NumericalComplex>()
+template<> inline String PersistentCollectionGetClassName<Complex>()
 {
-  return String("PersistentCollection<NumericalComplex>");
+  return String("PersistentCollection<Complex>");
 }
 template<> inline String PersistentCollectionGetClassName<SignedInteger>()
 {

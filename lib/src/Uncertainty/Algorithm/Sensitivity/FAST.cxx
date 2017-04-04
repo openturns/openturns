@@ -146,7 +146,7 @@ void FAST::run() const
       {
         // Fourier transformation
         Point y(output.getMarginal(out).getImplementation()->getData());
-        NumericalComplexCollection coefficients(fftAlgorithm_.transform(y));
+        ComplexCollection coefficients(fftAlgorithm_.transform(y));
 
         // Total variance
         for (UnsignedInteger j = 0; j < (samplingSize_ - 1) / 2; ++ j)

@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-typedef Collection<NumericalComplex> NumericalComplexCollection;
+typedef Collection<Complex> ComplexCollection;
 
 int main(int argc, char *argv[])
 {
@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
 
     /* Check operator() methods */
     triangularMatrix1(0, 0) = 1. ;
-    triangularMatrix1(1, 0) = NumericalComplex(3., 1.0) ;
+    triangularMatrix1(1, 0) = Complex(3., 1.0) ;
     triangularMatrix1(1, 1) = 4. ;
 
     /* String converter */
@@ -134,27 +134,27 @@ int main(int argc, char *argv[])
     fullprint << "pt = " << pt << std::endl;
 
     /* Check the product method */
-    NumericalComplexCollection ptResult = triangularMatrix1.operator * ( pt )  ;
+    ComplexCollection ptResult = triangularMatrix1.operator * ( pt )  ;
     fullprint << "ptResult = " << ptResult << std::endl;
 
     /**  MULTIPLICATION WITH A NUMERICAL COMPLEX COLLECTION METHOD */
     fullprint << "test 10 : multiplication with a numerical complex collection method" << std::endl;
 
     /* Create the numerical point */
-    NumericalComplexCollection ptComplexe ;
-    ptComplexe.add(NumericalComplex(1., 5)) ;
-    ptComplexe.add(NumericalComplex(0., 1)) ;
+    ComplexCollection ptComplexe ;
+    ptComplexe.add(Complex(1., 5)) ;
+    ptComplexe.add(Complex(0., 1)) ;
     fullprint << "ptComplexe = " << ptComplexe << std::endl;
 
     /* Check the product method */
-    NumericalComplexCollection ptResult2 = triangularMatrix1.operator * ( ptComplexe )  ;
+    ComplexCollection ptResult2 = triangularMatrix1.operator * ( ptComplexe )  ;
     fullprint << "ptResult2 = " << ptResult2 << std::endl;
 
     /** MULTIPLICATION AND DIVISION BY A NUMERICAL SCALAR METHODS */
     fullprint << "test 11 : multiplication and division by a numerical scalar methods" << std::endl;
 
     /* Check the multiplication method */
-    NumericalComplex s(3.0, 2.0);
+    Complex s(3.0, 2.0);
     TriangularComplexMatrix scalprod1 = triangularMatrix1.operator * (s) ;
     TriangularComplexMatrix scalprod2 = s * triangularMatrix1 ;
     fullprint << "scalprod1 = " << scalprod1 << std::endl;

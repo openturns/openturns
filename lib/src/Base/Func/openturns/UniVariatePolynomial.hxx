@@ -41,7 +41,7 @@ class OT_API UniVariatePolynomial
   CLASSNAME;
 public:
 
-  typedef UniVariatePolynomialImplementation::NumericalComplexCollection NumericalComplexCollection;
+  typedef UniVariatePolynomialImplementation::ComplexCollection ComplexCollection;
   typedef UniVariatePolynomialImplementation::Coefficients               Coefficients;
 
   /** Default constructor */
@@ -69,7 +69,7 @@ public:
 
   /** UniVariatePolynomial are evaluated as functors */
   Scalar operator() (const Scalar x) const;
-  NumericalComplex operator() (const NumericalComplex z) const;
+  Complex operator() (const Complex z) const;
 
   /** UniVariatePolynomialImplementation derivative */
   Scalar gradient(const Scalar x) const;
@@ -101,7 +101,7 @@ public:
   UnsignedInteger getDegree() const;
 
   /** Root of the polynomial of degree n as the eigenvalues of the associated matrix */
-  NumericalComplexCollection getRoots() const;
+  ComplexCollection getRoots() const;
 
   /** Method to draw the graph of the polynomial between given bounds */
   Graph draw(const Scalar xMin,

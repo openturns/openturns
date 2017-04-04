@@ -454,7 +454,7 @@ Scalar SpecFunc::Dawson(const Scalar x)
   return Faddeeva::Dawson(x);
 }
 
-NumericalComplex SpecFunc::Dawson(const NumericalComplex & z)
+Complex SpecFunc::Dawson(const Complex & z)
 {
   return Faddeeva::Dawson(z);
 }
@@ -508,13 +508,13 @@ Scalar SpecFunc::Ei(const Scalar x)
 }
 
 // Complex exponential integral function: Ei(z) = -\int_{-z}^{\infty}exp(-t)/t dt
-NumericalComplex SpecFunc::Ei(const NumericalComplex & z)
+Complex SpecFunc::Ei(const Complex & z)
 {
   return ExponentialIntegralFunctions::Ei(z);
 }
 
 // Complex Faddeeva function: faddeeva(z) = \exp(-z^2)\erfc(-I*z)
-NumericalComplex SpecFunc::Faddeeva(const NumericalComplex & z)
+Complex SpecFunc::Faddeeva(const Complex & z)
 {
   return Faddeeva::w(z);
 }
@@ -566,17 +566,17 @@ Scalar SpecFunc::GammaCorrection(const Scalar a)
 // Computed using Lanczos approximation, using a C++ translation of
 // Paul Godfrey's matlab implementation
 // http://home.att.net/~numericana/answer/info/godfrey.htm#matlabgamma
-NumericalComplex SpecFunc::Gamma(const NumericalComplex & a)
+Complex SpecFunc::Gamma(const Complex & a)
 {
   if (a.imag() == 0.0) return Gamma(a.real());
   return exp(LogGamma(a));
 }
 
-NumericalComplex SpecFunc::LogGamma(const NumericalComplex & a)
+Complex SpecFunc::LogGamma(const Complex & a)
 {
   if (a.imag() == 0.0) return LogGamma(a.real());
   const Scalar sqrt2Pi = sqrt(2.0 * M_PI);
-  NumericalComplex z(a);
+  Complex z(a);
   Bool flip = false;
   if (z.real() < 0.0)
   {
@@ -594,9 +594,9 @@ NumericalComplex SpecFunc::LogGamma(const NumericalComplex & a)
     -0.4023533141268236372067e-8
   };
   const Scalar g = coefficientsSize - 2.0;
-  NumericalComplex t(z + g);
-  NumericalComplex s(0.0);
-  NumericalComplex ss(t - 0.5);
+  Complex t(z + g);
+  Complex s(0.0);
+  Complex ss(t - 0.5);
   for (UnsignedInteger k = coefficientsSize - 1; k > 0; --k)
   {
     s += coefficients[k] / t;
@@ -604,7 +604,7 @@ NumericalComplex SpecFunc::LogGamma(const NumericalComplex & a)
   }
   s += coefficients[0];
   s = log(s * sqrt2Pi) + (z - 0.5) * log(ss) - ss;
-  NumericalComplex f(s);
+  Complex f(s);
   if (flip) f = f + Log1p(-M_PI * exp(-f) / (a * f * sin(M_PI * a)));
   return f;
 }
@@ -779,16 +779,16 @@ Scalar SpecFunc::HyperGeom_1_1(const Scalar p1,
 }
 
 // Complex hypergeometric function of type (1,1): HyperGeom_1_1(p1, q1, x) = \sum_{n=0}^{\infty} [\prod_{k=0}^{n-1} (p1 + k) / (q1 + k)] * x^n / n!
-NumericalComplex SpecFunc::HyperGeom_1_1(const Scalar p1,
+Complex SpecFunc::HyperGeom_1_1(const Scalar p1,
     const Scalar q1,
-    const NumericalComplex & x)
+    const Complex & x)
 {
-  NumericalComplex pochhammerP1(p1);
-  NumericalComplex pochhammerQ1(q1);
+  Complex pochhammerP1(p1);
+  Complex pochhammerQ1(q1);
   Scalar factorial = 1.0;
-  NumericalComplex term(1.0);
-  NumericalComplex sum(term);
-  NumericalComplex eps(0.0);
+  Complex term(1.0);
+  Complex sum(term);
+  Complex eps(0.0);
   UnsignedInteger k = 0;
   do
   {
@@ -878,7 +878,7 @@ Scalar SpecFunc::Erf(const Scalar x)
   return Faddeeva::erf(x);
 }
 
-NumericalComplex SpecFunc::Erf(const NumericalComplex & z)
+Complex SpecFunc::Erf(const Complex & z)
 {
   return Faddeeva::erf(z);
 }
@@ -889,7 +889,7 @@ Scalar SpecFunc::ErfI(const Scalar x)
   return Faddeeva::erfi(x);
 }
 
-NumericalComplex SpecFunc::ErfI(const NumericalComplex & z)
+Complex SpecFunc::ErfI(const Complex & z)
 {
   return Faddeeva::erfi(z);
 }
@@ -900,7 +900,7 @@ Scalar SpecFunc::ErfC(const Scalar x)
   return Faddeeva::erfc(x);
 }
 
-NumericalComplex SpecFunc::ErfC(const NumericalComplex & z)
+Complex SpecFunc::ErfC(const Complex & z)
 {
   return Faddeeva::erfc(z);
 }
@@ -911,7 +911,7 @@ Scalar SpecFunc::ErfCX(const Scalar x)
   return Faddeeva::erfcx(x);
 }
 
-NumericalComplex SpecFunc::ErfCX(const NumericalComplex & z)
+Complex SpecFunc::ErfCX(const Complex & z)
 {
   return Faddeeva::erfcx(z);
 }
@@ -1018,21 +1018,21 @@ Scalar SpecFunc::LambertW(const Scalar x,
 }
 
 // Accurate evaluation of log(1+z) for |z|<<1
-NumericalComplex SpecFunc::Log1p(const NumericalComplex & z)
+Complex SpecFunc::Log1p(const Complex & z)
 {
   if (std::norm(z) < 1e-5) return z * (1.0 + z * (-0.5 + z / 3.0));
   return log(1.0 + z);
 }
 
 // Accurate evaluation of exp(z)-1 for |z|<<1
-NumericalComplex SpecFunc::Expm1(const NumericalComplex & z)
+Complex SpecFunc::Expm1(const Complex & z)
 {
   if (std::norm(z) < 1e-5) return z * (1.0 + 0.5 * z * (1.0 + z / 3.0));
   return exp(z) - 1.0;
 }
 
 // Accurate evaluation of log(1-exp(-x)) for all x > 0
-NumericalComplex SpecFunc::Log1MExp(const Scalar x)
+Complex SpecFunc::Log1MExp(const Scalar x)
 {
   if (!(x > 0.0)) throw InvalidArgumentException(HERE) << "Error: x must be positive";
   if (x <= M_LN2) return log(-expm1(-x));

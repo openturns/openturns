@@ -40,14 +40,14 @@ class OT_API Cloud : public DrawableImplementation
   CLASSNAME;
 public:
 
-  typedef Collection<NumericalComplex>               NumericalComplexCollection;
+  typedef Collection<Complex>               ComplexCollection;
 
   /** Default constructor */
   explicit Cloud(const Sample & data,
                  const String & legend = "");
 
   /** Constructor from complex numbers */
-  explicit Cloud(const NumericalComplexCollection & data,
+  explicit Cloud(const ComplexCollection & data,
                  const String & legend = "");
 
   /** Contructor from 2 data sets */

@@ -204,12 +204,12 @@ Scalar InverseChiSquare::computeComplementaryCDF(const Point & point) const
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex InverseChiSquare::computeCharacteristicFunction(const Scalar x) const
+Complex InverseChiSquare::computeCharacteristicFunction(const Scalar x) const
 {
   return DistributionImplementation::computeCharacteristicFunction(x);
 }
 
-NumericalComplex InverseChiSquare::computeLogCharacteristicFunction(const Scalar x) const
+Complex InverseChiSquare::computeLogCharacteristicFunction(const Scalar x) const
 {
   return DistributionImplementation::computeLogCharacteristicFunction(x);
 }

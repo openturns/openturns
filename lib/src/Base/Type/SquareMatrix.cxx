@@ -197,12 +197,12 @@ Scalar SquareMatrix::computeTrace() const
 }
 
 /* Compute eigenvalues */
-SquareMatrix::NumericalComplexCollection SquareMatrix::computeEigenValues(const Bool keepIntact)
+SquareMatrix::ComplexCollection SquareMatrix::computeEigenValues(const Bool keepIntact)
 {
   return getImplementation()->computeEigenValuesSquare(keepIntact);
 }
 
-SquareMatrix::NumericalComplexCollection SquareMatrix::computeEV(SquareComplexMatrix & v,
+SquareMatrix::ComplexCollection SquareMatrix::computeEV(SquareComplexMatrix & v,
     const Bool keepIntact)
 {
   return getImplementation()->computeEVSquare(*(v.getImplementation()), keepIntact);

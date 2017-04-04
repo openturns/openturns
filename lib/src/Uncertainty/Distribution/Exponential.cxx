@@ -150,14 +150,14 @@ Scalar Exponential::computeComplementaryCDF(const Point & point) const
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Exponential::computeCharacteristicFunction(const Scalar x) const
+Complex Exponential::computeCharacteristicFunction(const Scalar x) const
 {
-  return std::exp(NumericalComplex(0.0, x * gamma_)) / NumericalComplex(1.0, -x / lambda_);
+  return std::exp(Complex(0.0, x * gamma_)) / Complex(1.0, -x / lambda_);
 }
 
-NumericalComplex Exponential::computeLogCharacteristicFunction(const Scalar x) const
+Complex Exponential::computeLogCharacteristicFunction(const Scalar x) const
 {
-  return NumericalComplex(0.0, x * gamma_) - std::log(NumericalComplex(1.0, - x / lambda_));
+  return Complex(0.0, x * gamma_) - std::log(Complex(1.0, - x / lambda_));
 }
 
 /* Get the PDFGradient of the distribution */

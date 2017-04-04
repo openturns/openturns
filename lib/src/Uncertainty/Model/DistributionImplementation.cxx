@@ -948,11 +948,11 @@ Scalar DistributionImplementation::computeProbabilityGeneral(const Interval & in
 
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex DistributionImplementation::computeCharacteristicFunction(const Scalar x) const
+Complex DistributionImplementation::computeCharacteristicFunction(const Scalar x) const
 {
   if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error:  cannot use the computeCharacteristicFunction method with distributions of dimension > 1";
   if (x == 0.0) return 1.0;
-  NumericalComplex value(0.0);
+  Complex value(0.0);
   // In the continuous case, we use simple gauss integration with a fixed number of integration points. We divide the interval in order to have a sufficient number of integration points by interval. It is good for low to moderate value of x, but is prohibitive for large x. In this case, we use Filon's method with linear interpolation, it means the modified trapezoidal rule as in E. O. Tuck, 'A simple "Filon-Trapezoidal" Rule'
   if (isContinuous())
   {
@@ -975,7 +975,7 @@ NumericalComplex DistributionImplementation::computeCharacteristicFunction(const
         for (UnsignedInteger i = 0; i < integrationNodesNumber_; ++i)
         {
           const Scalar xi = a + (1.0 + legendreNodes[i]) * halfLength;
-          value += legendreWeights[i] * computePDF(xi) * std::exp(NumericalComplex(0.0, x * xi));
+          value += legendreWeights[i] * computePDF(xi) * std::exp(Complex(0.0, x * xi));
         }
       }
       // We factor out the scaling as all the sub intervals have the same length
@@ -1002,21 +1002,21 @@ NumericalComplex DistributionImplementation::computeCharacteristicFunction(const
       const Scalar cosOmegaDt = std::cos(omegaDt);
       const Scalar sinOmegaDt = std::sin(omegaDt);
       // The bound 4.3556e-4 is such that we get full double precision
-      const NumericalComplex wM(std::abs(omegaDt) < 4.3556e-4 ? NumericalComplex(0.5 - omegaDt2 / 24.0, omegaDt / 6.0 * (1.0 - omegaDt2 / 40.0)) : NumericalComplex((1.0 - cosOmegaDt) / omegaDt2, (omegaDt - sinOmegaDt) / omegaDt2));
-      const NumericalComplex wP(std::abs(omegaDt) < 4.3556e-4 ? NumericalComplex(0.5 - omegaDt2 / 24.0, -omegaDt / 6.0 * (1.0 - omegaDt2 / 40.0)) : NumericalComplex((1.0 - cosOmegaDt) / omegaDt2, (-omegaDt + sinOmegaDt) / omegaDt2));
+      const Complex wM(std::abs(omegaDt) < 4.3556e-4 ? Complex(0.5 - omegaDt2 / 24.0, omegaDt / 6.0 * (1.0 - omegaDt2 / 40.0)) : Complex((1.0 - cosOmegaDt) / omegaDt2, (omegaDt - sinOmegaDt) / omegaDt2));
+      const Complex wP(std::abs(omegaDt) < 4.3556e-4 ? Complex(0.5 - omegaDt2 / 24.0, -omegaDt / 6.0 * (1.0 - omegaDt2 / 40.0)) : Complex((1.0 - cosOmegaDt) / omegaDt2, (-omegaDt + sinOmegaDt) / omegaDt2));
       const Scalar cosNOmegaDt = std::cos(N * omegaDt);
       const Scalar sinNOmegaDt = std::sin(N * omegaDt);
       // The bound 4.3556e-4 is such that we get full double precision
       const Scalar w = std::abs(omegaDt) < 4.3556e-4 ? std::pow(std::sin(0.5 * omegaDt) / (0.5 * omegaDt), 2) : 1.0 - omegaDt2 / 12.0;
-      //      value = pdfGrid_[N] * w + pdfGrid_[0] * wM * NumericalComplex(cosNOmegaDt, -sinNOmegaDt) + pdfGrid_[2 * N] * wP * NumericalComplex(cosNOmegaDt, sinNOmegaDt);
-      value = pdfGrid_[0] * wM * NumericalComplex(cosNOmegaDt, -sinNOmegaDt) + pdfGrid_[2 * N - 1] * wP * NumericalComplex(cosNOmegaDt, sinNOmegaDt);
+      //      value = pdfGrid_[N] * w + pdfGrid_[0] * wM * Complex(cosNOmegaDt, -sinNOmegaDt) + pdfGrid_[2 * N] * wP * Complex(cosNOmegaDt, sinNOmegaDt);
+      value = pdfGrid_[0] * wM * Complex(cosNOmegaDt, -sinNOmegaDt) + pdfGrid_[2 * N - 1] * wP * Complex(cosNOmegaDt, sinNOmegaDt);
       for (UnsignedInteger n = 1; n < N; ++n)
       {
         const Scalar cosN = std::cos(n * omegaDt);
         const Scalar sinN = std::sin(n * omegaDt);
-        value += NumericalComplex(w * cosN * (pdfGrid_[N + n - 1] + pdfGrid_[N - n]), w * sinN * (pdfGrid_[N + n - 1] - pdfGrid_[N - n]));
+        value += Complex(w * cosN * (pdfGrid_[N + n - 1] + pdfGrid_[N - n]), w * sinN * (pdfGrid_[N + n - 1] - pdfGrid_[N - n]));
       }
-      return dt * value * NumericalComplex(std::cos(x * c), std::sin(x * c));
+      return dt * value * Complex(std::cos(x * c), std::sin(x * c));
     }
   } // Continuous
   else
@@ -1030,7 +1030,7 @@ NumericalComplex DistributionImplementation::computeCharacteristicFunction(const
       for (UnsignedInteger i = 0; i < size; ++i)
       {
         const Scalar pt = support[i][0];
-        value += computePDF(pt) * std::exp(NumericalComplex(0.0, x * pt));
+        value += computePDF(pt) * std::exp(Complex(0.0, x * pt));
       }
     }
     // In the composite case, no default algorithm
@@ -1042,38 +1042,38 @@ NumericalComplex DistributionImplementation::computeCharacteristicFunction(const
   return value;
 }
 
-NumericalComplex DistributionImplementation::computeCharacteristicFunction(const Point & x) const
+Complex DistributionImplementation::computeCharacteristicFunction(const Point & x) const
 {
   if (dimension_ == 1) return computeCharacteristicFunction(x[0]);
   throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeCharacteristicFunction(const Point & x) const";
 }
 
-NumericalComplex DistributionImplementation::computeLogCharacteristicFunction(const Scalar x) const
+Complex DistributionImplementation::computeLogCharacteristicFunction(const Scalar x) const
 {
-  const NumericalComplex value(computeCharacteristicFunction(x));
-  const NumericalComplex result(std::log(value));
+  const Complex value(computeCharacteristicFunction(x));
+  const Complex result(std::log(value));
   return result;
 }
 
-NumericalComplex DistributionImplementation::computeLogCharacteristicFunction(const Point & x) const
+Complex DistributionImplementation::computeLogCharacteristicFunction(const Point & x) const
 {
   if (dimension_ == 1) return computeLogCharacteristicFunction(x[0]);
   throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeLogCharacteristicFunction(const Point & x) const";
 }
 
-NumericalComplex DistributionImplementation::computeCharacteristicFunction(const UnsignedInteger index,
+Complex DistributionImplementation::computeCharacteristicFunction(const UnsignedInteger index,
     const Scalar step) const
 {
   return computeCharacteristicFunction(index * step);
 }
 
-NumericalComplex DistributionImplementation::computeLogCharacteristicFunction(const UnsignedInteger index,
+Complex DistributionImplementation::computeLogCharacteristicFunction(const UnsignedInteger index,
     const Scalar step) const
 {
   return computeLogCharacteristicFunction(index * step);
 }
 
-NumericalComplex DistributionImplementation::computeCharacteristicFunction(const Indices & indices,
+Complex DistributionImplementation::computeCharacteristicFunction(const Indices & indices,
     const Point & step) const
 {
   Point point(dimension_);
@@ -1081,7 +1081,7 @@ NumericalComplex DistributionImplementation::computeCharacteristicFunction(const
   return computeCharacteristicFunction(point);
 }
 
-NumericalComplex DistributionImplementation::computeLogCharacteristicFunction(const Indices & indices,
+Complex DistributionImplementation::computeLogCharacteristicFunction(const Indices & indices,
     const Point & step) const
 {
   Point point(dimension_);
@@ -1092,21 +1092,21 @@ NumericalComplex DistributionImplementation::computeLogCharacteristicFunction(co
 /* Get the generating function of the distribution, i.e. psi(z) = E(z^X) */
 Scalar DistributionImplementation::computeGeneratingFunction(const Scalar z) const
 {
-  return computeGeneratingFunction(NumericalComplex(z, 0.0)).real();
+  return computeGeneratingFunction(Complex(z, 0.0)).real();
 }
 
 Scalar DistributionImplementation::computeLogGeneratingFunction(const Scalar z) const
 {
-  return computeLogGeneratingFunction(NumericalComplex(z, 0.0)).real();
+  return computeLogGeneratingFunction(Complex(z, 0.0)).real();
 }
 
-NumericalComplex DistributionImplementation::computeGeneratingFunction(const NumericalComplex & z) const
+Complex DistributionImplementation::computeGeneratingFunction(const Complex & z) const
 {
   if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error:  cannot use the computeCharacteristicFunction method with distributions of dimension > 1";
   if (!isDiscrete()) throw NotDefinedException(HERE) << "Error: cannot compute the generating function for non discrete distributions.";
   const Sample support(getSupport());
   const UnsignedInteger size = support.getSize();
-  NumericalComplex value(0.0);
+  Complex value(0.0);
   // If the distribution is integral, the generating function is either a polynomial if the support is finite, or can be well approximated by such a polynomial
   if (isAlreadyCreatedGeneratingFunction_) value = generatingFunction_(z);
   else
@@ -1131,9 +1131,9 @@ NumericalComplex DistributionImplementation::computeGeneratingFunction(const Num
   return value;
 }
 
-NumericalComplex DistributionImplementation::computeLogGeneratingFunction(const NumericalComplex & z) const
+Complex DistributionImplementation::computeLogGeneratingFunction(const Complex & z) const
 {
-  NumericalComplex value = computeGeneratingFunction(z);
+  Complex value = computeGeneratingFunction(z);
   return std::log(value);
 }
 

@@ -330,29 +330,29 @@ Scalar Binomial::computeScalarQuantile(const Scalar prob,
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Binomial::computeCharacteristicFunction(const Scalar x) const
+Complex Binomial::computeCharacteristicFunction(const Scalar x) const
 {
-  const NumericalComplex value(1.0 - p_ + p_ * std::exp(NumericalComplex(0.0, x)));
+  const Complex value(1.0 - p_ + p_ * std::exp(Complex(0.0, x)));
   return std::pow(value, n_);
 }
 
-NumericalComplex Binomial::computeLogCharacteristicFunction(const Scalar x) const
+Complex Binomial::computeLogCharacteristicFunction(const Scalar x) const
 {
-  const NumericalComplex value(1.0 - p_ + p_ * std::exp(NumericalComplex(0.0, x)));
+  const Complex value(1.0 - p_ + p_ * std::exp(Complex(0.0, x)));
   return Scalar(n_) * std::log(value);
 }
 
 /* Get the generating function of the distribution, i.e. psi(z) = E(z^X) */
-NumericalComplex Binomial::computeGeneratingFunction(const NumericalComplex & z) const
+Complex Binomial::computeGeneratingFunction(const Complex & z) const
 {
-  const NumericalComplex value(1.0 - p_ + p_ * z);
+  const Complex value(1.0 - p_ + p_ * z);
   return std::pow(value, n_);
 }
 
-NumericalComplex Binomial::computeLogGeneratingFunction(const NumericalComplex & z) const
+Complex Binomial::computeLogGeneratingFunction(const Complex & z) const
 {
-  const NumericalComplex value(1.0 - p_ + p_ * z);
-  return NumericalComplex(n_) * std::log(value);
+  const Complex value(1.0 - p_ + p_ * z);
+  return Complex(n_) * std::log(value);
 }
 
 /* Method save() stores the object through the StorageManager */

@@ -319,29 +319,29 @@ Scalar NegativeBinomial::computeScalarQuantile(const Scalar prob,
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex NegativeBinomial::computeCharacteristicFunction(const Scalar x) const
+Complex NegativeBinomial::computeCharacteristicFunction(const Scalar x) const
 {
-  const NumericalComplex value((1.0 - p_) / (1.0 - p_ * std::exp(NumericalComplex(0.0, x))));
+  const Complex value((1.0 - p_) / (1.0 - p_ * std::exp(Complex(0.0, x))));
   return std::pow(value, r_);
 }
 
-NumericalComplex NegativeBinomial::computeLogCharacteristicFunction(const Scalar x) const
+Complex NegativeBinomial::computeLogCharacteristicFunction(const Scalar x) const
 {
-  const NumericalComplex value((1.0 - p_) / (1.0 - p_ * std::exp(NumericalComplex(0.0, x))));
-  return NumericalComplex(r_) * std::log(value);
+  const Complex value((1.0 - p_) / (1.0 - p_ * std::exp(Complex(0.0, x))));
+  return Complex(r_) * std::log(value);
 }
 
 /* Get the generating function of the distribution, i.e. psi(z) = E(z^X) */
-NumericalComplex NegativeBinomial::computeGeneratingFunction(const NumericalComplex & z) const
+Complex NegativeBinomial::computeGeneratingFunction(const Complex & z) const
 {
-  const NumericalComplex value((1.0 - p_) / (1.0 - p_ * z));
+  const Complex value((1.0 - p_) / (1.0 - p_ * z));
   return std::pow(value, r_);
 }
 
-NumericalComplex NegativeBinomial::computeLogGeneratingFunction(const NumericalComplex & z) const
+Complex NegativeBinomial::computeLogGeneratingFunction(const Complex & z) const
 {
-  const NumericalComplex value((1.0 - p_) / (1.0 - p_ * z));
-  return NumericalComplex(r_) * std::log(value);
+  const Complex value((1.0 - p_) / (1.0 - p_ * z));
+  return Complex(r_) * std::log(value);
 }
 
 /* Method save() stores the object through the StorageManager */

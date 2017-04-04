@@ -187,15 +187,15 @@ void NonCentralChiSquare::computeCovariance() const
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex NonCentralChiSquare::computeCharacteristicFunction(const Scalar x) const
+Complex NonCentralChiSquare::computeCharacteristicFunction(const Scalar x) const
 {
   return std::exp(computeLogCharacteristicFunction(x));
 }
 
-NumericalComplex NonCentralChiSquare::computeLogCharacteristicFunction(const Scalar x) const
+Complex NonCentralChiSquare::computeLogCharacteristicFunction(const Scalar x) const
 {
-  const NumericalComplex denominator(1.0, -2.0 * x);
-  return NumericalComplex(0.0, lambda_ * x) / denominator - 0.5 * nu_ * std::log(denominator);
+  const Complex denominator(1.0, -2.0 * x);
+  return Complex(0.0, lambda_ * x) / denominator - 0.5 * nu_ * std::log(denominator);
 }
 
 Point NonCentralChiSquare::getParameter() const

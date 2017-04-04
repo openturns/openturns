@@ -74,7 +74,7 @@ HermitianMatrix SpectralModel::operator() (const Scalar frequency) const
   return getImplementation()->operator()(frequency);
 }
 
-NumericalComplex SpectralModel::computeStandardRepresentative(const Scalar frequency) const
+Complex SpectralModel::computeStandardRepresentative(const Scalar frequency) const
 {
   return getImplementation()->computeStandardRepresentative(frequency);
 }

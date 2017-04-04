@@ -155,16 +155,16 @@ LevelSet InverseNormal::computeMinimumVolumeLevelSetWithThreshold(const Scalar p
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex InverseNormal::computeCharacteristicFunction(const Scalar x) const
+Complex InverseNormal::computeCharacteristicFunction(const Scalar x) const
 {
   if (std::abs(x) < pdfEpsilon_) return 1.0;
   return std::exp(computeLogCharacteristicFunction(x));
 }
 
-NumericalComplex InverseNormal::computeLogCharacteristicFunction(const Scalar x) const
+Complex InverseNormal::computeLogCharacteristicFunction(const Scalar x) const
 {
   if (std::abs(x) < pdfEpsilon_) return 0.0;
-  const NumericalComplex logCF(lambda_ * (1.0 - std::sqrt(NumericalComplex(1.0, - 2.0 * mu_ * mu_ * x / lambda_))) / mu_);
+  const Complex logCF(lambda_ * (1.0 - std::sqrt(Complex(1.0, - 2.0 * mu_ * mu_ * x / lambda_))) / mu_);
   return logCF;
 }
 

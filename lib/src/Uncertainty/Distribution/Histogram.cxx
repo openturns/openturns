@@ -171,24 +171,24 @@ Scalar Histogram::computeCDF(const Point & point) const
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Histogram::computeCharacteristicFunction(const Scalar x) const
+Complex Histogram::computeCharacteristicFunction(const Scalar x) const
 {
   if (x == 0.0) return 1.0;
-  NumericalComplex result(0.0);
+  Complex result(0.0);
   const UnsignedInteger size = width_.getSize();
   if (std::abs(cumulatedWidth_[size - 1] * x) < 1e-10)
   {
     Scalar term = height_[0] * cumulatedWidth_[0] * cumulatedWidth_[0];
     for (UnsignedInteger k = 1; k < size; ++k) term += height_[k] * (cumulatedWidth_[k - 1] + cumulatedWidth_[k]) * width_[k];
-    result = NumericalComplex(1.0, 0.5 * x * term);
+    result = Complex(1.0, 0.5 * x * term);
   }
   else
   {
-    result = height_[0] * SpecFunc::Expm1(NumericalComplex(0.0, cumulatedWidth_[0] * x));
-    for (UnsignedInteger k = 1; k < size; ++k) result += height_[k] * (std::exp(NumericalComplex(0.0, cumulatedWidth_[k] * x)) - std::exp(NumericalComplex(0.0, cumulatedWidth_[k - 1] * x)));
-    result /= NumericalComplex(0.0, x);
+    result = height_[0] * SpecFunc::Expm1(Complex(0.0, cumulatedWidth_[0] * x));
+    for (UnsignedInteger k = 1; k < size; ++k) result += height_[k] * (std::exp(Complex(0.0, cumulatedWidth_[k] * x)) - std::exp(Complex(0.0, cumulatedWidth_[k - 1] * x)));
+    result /= Complex(0.0, x);
   }
-  result *= std::exp(NumericalComplex(0.0, first_ * x));
+  result *= std::exp(Complex(0.0, first_ * x));
   return result;
 }
 

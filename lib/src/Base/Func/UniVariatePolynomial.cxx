@@ -90,7 +90,7 @@ Scalar UniVariatePolynomial::operator() (const Scalar x) const
   return getImplementation()->operator()(x);
 }
 
-NumericalComplex UniVariatePolynomial::operator() (const NumericalComplex z) const
+Complex UniVariatePolynomial::operator() (const Complex z) const
 {
   return getImplementation()->operator()(z);
 }
@@ -177,7 +177,7 @@ UnsignedInteger UniVariatePolynomial::getDegree() const
 
 
 /* Root of the polynomial */
-UniVariatePolynomial::NumericalComplexCollection UniVariatePolynomial::getRoots() const
+UniVariatePolynomial::ComplexCollection UniVariatePolynomial::getRoots() const
 {
   return getImplementation()->getRoots();
 }

@@ -197,15 +197,15 @@ LevelSet GeneralizedPareto::computeMinimumVolumeLevelSetWithThreshold(const Scal
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex GeneralizedPareto::computeCharacteristicFunction(const Scalar x) const
+Complex GeneralizedPareto::computeCharacteristicFunction(const Scalar x) const
 {
-  if (xi_ == 0.0) return 1.0 / NumericalComplex(1.0, -x);
+  if (xi_ == 0.0) return 1.0 / Complex(1.0, -x);
   return DistributionImplementation::computeCharacteristicFunction(x);
 }
 
-NumericalComplex GeneralizedPareto::computeLogCharacteristicFunction(const Scalar x) const
+Complex GeneralizedPareto::computeLogCharacteristicFunction(const Scalar x) const
 {
-  if (xi_ == 0.0) return -std::log(NumericalComplex(1.0, -x));
+  if (xi_ == 0.0) return -std::log(Complex(1.0, -x));
   return std::log(computeCharacteristicFunction(x));
 }
 

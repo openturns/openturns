@@ -259,14 +259,14 @@ Scalar Gamma::computeComplementaryCDF(const Point & point) const
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Gamma::computeCharacteristicFunction(const Scalar x) const
+Complex Gamma::computeCharacteristicFunction(const Scalar x) const
 {
-  return std::exp(NumericalComplex(0.0, x * gamma_)) * std::pow(NumericalComplex(1.0, -x / lambda_), -k_);
+  return std::exp(Complex(0.0, x * gamma_)) * std::pow(Complex(1.0, -x / lambda_), -k_);
 }
 
-NumericalComplex Gamma::computeLogCharacteristicFunction(const Scalar x) const
+Complex Gamma::computeLogCharacteristicFunction(const Scalar x) const
 {
-  return NumericalComplex(0.0, x * gamma_) - k_ * std::log(NumericalComplex(1.0, -x / lambda_));
+  return Complex(0.0, x * gamma_) - k_ * std::log(Complex(1.0, -x / lambda_));
 }
 
 /* Get the PDFGradient of the distribution */

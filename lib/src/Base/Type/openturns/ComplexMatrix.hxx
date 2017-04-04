@@ -46,14 +46,14 @@ class OT_API ComplexMatrix :
 
 #ifndef SWIG
   /** Declaration of friend operators */
-  friend ComplexMatrix operator * (const NumericalComplex s,
+  friend ComplexMatrix operator * (const Complex s,
                                    const ComplexMatrix & m);
 #endif
 
 
 public:
 
-  typedef Collection<NumericalComplex>                       NumericalComplexCollection;
+  typedef Collection<Complex>                       ComplexCollection;
   typedef Collection<Scalar>                        ScalarCollection;
   typedef TypedInterfaceObject<ComplexMatrixImplementation>::Implementation     Implementation ;
 
@@ -83,7 +83,7 @@ public:
   /** or the rest of the matrix is filled with zeros */
   ComplexMatrix(const UnsignedInteger rowDim,
                 const UnsignedInteger colDim,
-                const NumericalComplexCollection & elementsValues);
+                const ComplexCollection & elementsValues);
 
 
   /** Constructor from external collection */
@@ -103,7 +103,7 @@ public:
   /** Resolution of a linear system */
   ComplexMatrix solveLinearSystem(const ComplexMatrix & b,
                                   const Bool keepIntact = true);
-  NumericalComplexCollection solveLinearSystem(const NumericalComplexCollection & b,
+  ComplexCollection solveLinearSystem(const ComplexCollection & b,
       const Bool keepIntact = true);
 
   /** String converter */
@@ -113,12 +113,12 @@ public:
 #ifndef SWIG
   /** Operator () gives access to the elements of the matrix (to modify these elements) */
   /** The element of the matrix is designated by its row number i and its column number j */
-  NumericalComplex & operator () (const UnsignedInteger i,
+  Complex & operator () (const UnsignedInteger i,
                                   const UnsignedInteger j);
 
   /** Operator () gives access to the elements of the matrix (read only) */
   /** The element of the matrix is designated by its row number i and its column number j */
-  const NumericalComplex & operator () (const UnsignedInteger i,
+  const Complex & operator () (const UnsignedInteger i,
                                         const UnsignedInteger j) const;
 #endif
 
@@ -174,19 +174,19 @@ public:
   ComplexMatrix operator * (const IdentityMatrix & m) const;
 
   /** Multiplication with a Point  */
-  virtual NumericalComplexCollection operator* (const Point & point) const;
+  virtual ComplexCollection operator* (const Point & point) const;
 
   /** Multiplication with a ScalarCollection  */
-  virtual  NumericalComplexCollection operator* (const ScalarCollection & collection) const;
+  virtual  ComplexCollection operator* (const ScalarCollection & collection) const;
 
-  /** Multiplication with a NumericalComplexCollection (must have consistent dimensions) */
-  virtual NumericalComplexCollection operator* (const NumericalComplexCollection & collection) const;
+  /** Multiplication with a ComplexCollection (must have consistent dimensions) */
+  virtual ComplexCollection operator* (const ComplexCollection & collection) const;
 
-  /** Multiplication with a NumericalComplex */
-  ComplexMatrix operator * (const NumericalComplex s) const;
+  /** Multiplication with a Complex */
+  ComplexMatrix operator * (const Complex s) const;
 
-  /** Division by a NumericalComplex*/
-  ComplexMatrix operator / (const NumericalComplex s) const;
+  /** Division by a Complex*/
+  ComplexMatrix operator / (const Complex s) const;
 
   /** Comparison operators */
   Bool operator == (const ComplexMatrix & rhs) const;
@@ -196,14 +196,14 @@ public:
 
   // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
   // INTENTIONALY NOT DOCUMENTED
-  const NumericalComplex * __baseaddress__ () const;
+  const Complex * __baseaddress__ () const;
   UnsignedInteger __elementsize__ () const;
   UnsignedInteger __stride__ (UnsignedInteger dim) const;
 
 }; /* class ComplexMatrix */
 
 /** Declaration of friend operators */
-inline ComplexMatrix operator * (const NumericalComplex s,
+inline ComplexMatrix operator * (const Complex s,
                                  const ComplexMatrix & m)
 {
   return m.operator * (s);

@@ -239,12 +239,12 @@ Scalar InverseGamma::computeComplementaryCDF(const Point & point) const
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex InverseGamma::computeCharacteristicFunction(const Scalar x) const
+Complex InverseGamma::computeCharacteristicFunction(const Scalar x) const
 {
   return DistributionImplementation::computeCharacteristicFunction(x);
 }
 
-NumericalComplex InverseGamma::computeLogCharacteristicFunction(const Scalar x) const
+Complex InverseGamma::computeLogCharacteristicFunction(const Scalar x) const
 {
   return DistributionImplementation::computeLogCharacteristicFunction(x);
 }

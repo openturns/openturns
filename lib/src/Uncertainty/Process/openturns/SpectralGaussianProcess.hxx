@@ -45,8 +45,8 @@ public:
 
   /** Some typedefs to ease reading */
   typedef PersistentCollection<TriangularComplexMatrix>    TriangularComplexMatrixPersistentCollection;
-  typedef PersistentCollection<NumericalComplex>           PersistentNumericalComplexCollection;
-  typedef Collection<NumericalComplex>                     NumericalComplexCollection;
+  typedef PersistentCollection<Complex>           PersistentComplexCollection;
+  typedef Collection<Complex>                     ComplexCollection;
 
   /** Default constructor */
   SpectralGaussianProcess();
@@ -156,7 +156,7 @@ private:
   mutable UnsignedInteger cacheSize_;
 
   /** alpha vector - scale factor */
-  PersistentNumericalComplexCollection alpha_;
+  PersistentComplexCollection alpha_;
 
   /** FFT Algorithm */
   FFT fftAlgorithm_;

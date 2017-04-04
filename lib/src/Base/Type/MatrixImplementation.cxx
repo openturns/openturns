@@ -1021,7 +1021,7 @@ Scalar MatrixImplementation::computeTrace() const
 }
 
 /* Compute the eigenvalues of a square matrix */
-MatrixImplementation::NumericalComplexCollection MatrixImplementation::computeEigenValuesSquare (const Bool keepIntact)
+MatrixImplementation::ComplexCollection MatrixImplementation::computeEigenValuesSquare (const Bool keepIntact)
 {
   int n(nbRows_);
   if (n == 0) throw InvalidDimensionException(HERE) << "Cannot compute the eigenvalues of an empty matrix";
@@ -1049,12 +1049,12 @@ MatrixImplementation::NumericalComplexCollection MatrixImplementation::computeEi
   dgeev_(&jobvl, &jobvr, &n, &A[0], &n, &wr[0], &wi[0], &vl, &ldvl, &vr, &ldvr, &work[0], &lwork, &info, &ljobvl, &ljobvr);
 
   if (info != 0) throw InternalException(HERE) << "Error: the QR algorithm failed to converge.";
-  NumericalComplexCollection eigenValues(n);
-  for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(n); ++i) eigenValues[i] = NumericalComplex(wr[i], wi[i]);
+  ComplexCollection eigenValues(n);
+  for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(n); ++i) eigenValues[i] = Complex(wr[i], wi[i]);
   return eigenValues;
 }
 
-MatrixImplementation::NumericalComplexCollection MatrixImplementation::computeEVSquare (ComplexMatrixImplementation & v,
+MatrixImplementation::ComplexCollection MatrixImplementation::computeEVSquare (ComplexMatrixImplementation & v,
     const Bool keepIntact)
 {
   int n(nbRows_);
@@ -1083,10 +1083,10 @@ MatrixImplementation::NumericalComplexCollection MatrixImplementation::computeEV
   dgeev_(&jobvl, &jobvr, &n, &A[0], &n, &wr[0], &wi[0], &vl, &ldvl, &vr[0], &ldvr, &work[0], &lwork, &info, &ljobvl, &ljobvr);
 
   // Cast the eigenvalues into OpenTURNS data structures
-  NumericalComplexCollection eigenValues(n);
+  ComplexCollection eigenValues(n);
   for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(n); ++i)
   {
-    eigenValues[i] = NumericalComplex(wr[i], wi[i]);
+    eigenValues[i] = Complex(wr[i], wi[i]);
   }
   if (info != 0) throw InternalException(HERE) << "Error: the QR algorithm failed to converge.";
   // Cast the eigenvectors into OpenTURNS data structures
@@ -1105,8 +1105,8 @@ MatrixImplementation::NumericalComplexCollection MatrixImplementation::computeEV
     {
       for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(n); ++i)
       {
-        v(i, j)     = NumericalComplex(vr(i, j),  vr(i, j + 1));
-        v(i, j + 1) = NumericalComplex(vr(i, j), -vr(i, j + 1));
+        v(i, j)     = Complex(vr(i, j),  vr(i, j + 1));
+        v(i, j + 1) = Complex(vr(i, j), -vr(i, j + 1));
       }
       j += 2;
     }

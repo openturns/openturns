@@ -86,7 +86,7 @@ Vectors
     Indices
     Point
     PointWithDescription
-    NumericalComplexCollection
+    ComplexCollection
     ScalarCollection
 
 Comparison operators

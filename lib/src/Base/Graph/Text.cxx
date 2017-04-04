@@ -49,7 +49,7 @@ Text::Text(const Sample & data,
 }
 
 /* Constructor from complex numbers */
-Text::Text(const NumericalComplexCollection & data,
+Text::Text(const ComplexCollection & data,
            const Description & textAnnotations,
            const String & textPosition,
            const String & legend)

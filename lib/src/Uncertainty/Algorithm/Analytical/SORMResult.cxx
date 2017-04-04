@@ -117,7 +117,7 @@ void SORMResult::computeSortedCurvatures() const
       kroneckerUnitGradientLimitStateFunction(i, j) = unitGradientLimitStateFunction[i] * unitGradientLimitStateFunction[j];
   /* W = (uGrad.uGrad^t -Id) * Hess(g) */
   const SquareMatrix id = IdentityMatrix(dimension);
-  const SquareMatrix::NumericalComplexCollection eigenValues(((kroneckerUnitGradientLimitStateFunction - id) * hessianLimitStateFunction_).computeEigenValues());
+  const SquareMatrix::ComplexCollection eigenValues(((kroneckerUnitGradientLimitStateFunction - id) * hessianLimitStateFunction_).computeEigenValues());
   Point realEigenValues(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i) realEigenValues[i] = eigenValues[i].real();
 
@@ -261,8 +261,8 @@ Scalar SORMResult::getEventProbabilityTvedt() const
 
   /* compute the second term A3 */
 
-  NumericalComplex complexProd3(1.0, 0.0);
-  NumericalComplex iPlusBeta(beta, 1.0);
+  Complex complexProd3(1.0, 0.0);
+  Complex iPlusBeta(beta, 1.0);
 
   for (UnsignedInteger index = 0; index < dimension; ++index) complexProd3 /= sqrt(1.0 + iPlusBeta * sortedCurvatures_[index]);
   const Scalar termA3 = (beta + 1.0) * rho * (prod1 - complexProd3.real());

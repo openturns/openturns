@@ -37,7 +37,7 @@ Cloud::Cloud(const Sample & data,
 }
 
 /* Constructor from complex numbers */
-Cloud::Cloud(const NumericalComplexCollection & data,
+Cloud::Cloud(const ComplexCollection & data,
              const String & legend)
   : DrawableImplementation(Sample(0, 2), legend)
 {

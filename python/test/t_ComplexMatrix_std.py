@@ -53,7 +53,7 @@ try:
     print("test 4 : constructor with collection method")
 
     # Create the collection of values
-    elementsValues = NumericalComplexCollection()
+    elementsValues = ComplexCollection()
     elementsValues.add(1. - 1j)
     elementsValues.add(2. - 1j)
     elementsValues.add(3. - 1j)

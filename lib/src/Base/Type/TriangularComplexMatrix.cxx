@@ -112,7 +112,7 @@ Bool TriangularComplexMatrix::isLowerTriangular() const
 /* Operator () gives access to the elements of the matrix (to modify these elements) */
 /* The element of the matrix is designated by its row number i and its column number j */
 /* the first element of the matrix is m(0,0) */
-NumericalComplex & TriangularComplexMatrix::operator() (const UnsignedInteger i,
+Complex & TriangularComplexMatrix::operator() (const UnsignedInteger i,
     const UnsignedInteger j)
 {
   if (isLowerTriangular() && (i < j))
@@ -128,7 +128,7 @@ NumericalComplex & TriangularComplexMatrix::operator() (const UnsignedInteger i,
 
 /* Operator () gives access to the elements of the matrix (read only) */
 /* The element of the matrix is designated by its row number i and its column number j */
-const NumericalComplex & TriangularComplexMatrix::operator() (const UnsignedInteger i,
+const Complex & TriangularComplexMatrix::operator() (const UnsignedInteger i,
     const UnsignedInteger j)  const
 {
   return (*getImplementation())(i, j) ;
@@ -221,8 +221,8 @@ TriangularComplexMatrix TriangularComplexMatrix::operator * (const IdentityMatri
   return (*this);
 }
 
-/* Multiplication with a NumericalComplexCollection (must have consistent dimensions) */
-TriangularComplexMatrix::NumericalComplexCollection TriangularComplexMatrix::operator * (const NumericalComplexCollection & pt) const
+/* Multiplication with a ComplexCollection (must have consistent dimensions) */
+TriangularComplexMatrix::ComplexCollection TriangularComplexMatrix::operator * (const ComplexCollection & pt) const
 {
   char uplo('L');
   if (!isLowerTriangular()) uplo = 'R';
@@ -230,7 +230,7 @@ TriangularComplexMatrix::NumericalComplexCollection TriangularComplexMatrix::ope
 }
 
 /* Multiplication with a ScalarCollection (must have consistent dimensions) */
-TriangularComplexMatrix::NumericalComplexCollection TriangularComplexMatrix::operator * (const ScalarCollection & pt) const
+TriangularComplexMatrix::ComplexCollection TriangularComplexMatrix::operator * (const ScalarCollection & pt) const
 {
   char uplo('L');
   if (!isLowerTriangular()) uplo = 'R';
@@ -238,21 +238,21 @@ TriangularComplexMatrix::NumericalComplexCollection TriangularComplexMatrix::ope
 }
 
 /* Multiplication with a Point (must have consistent dimensions) */
-TriangularComplexMatrix::NumericalComplexCollection TriangularComplexMatrix::operator * (const Point & pt) const
+TriangularComplexMatrix::ComplexCollection TriangularComplexMatrix::operator * (const Point & pt) const
 {
   char uplo('L');
   if (!isLowerTriangular()) uplo = 'R';
   return getImplementation()->triangularVectProd(pt, uplo) ;
 }
 
-/* Multiplication with a NumericalComplex */
-TriangularComplexMatrix TriangularComplexMatrix::operator* (const NumericalComplex s) const
+/* Multiplication with a Complex */
+TriangularComplexMatrix TriangularComplexMatrix::operator* (const Complex s) const
 {
   return TriangularComplexMatrix(Implementation((*getImplementation() * s ).clone()), isLowerTriangular_);
 }
 
-/* Division by a NumericalComplex*/
-TriangularComplexMatrix TriangularComplexMatrix::operator / (const NumericalComplex s) const
+/* Division by a Complex*/
+TriangularComplexMatrix TriangularComplexMatrix::operator / (const Complex s) const
 {
   return TriangularComplexMatrix(Implementation((*getImplementation() / s ).clone()), isLowerTriangular_);
 }

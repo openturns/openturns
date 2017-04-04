@@ -158,23 +158,23 @@ Scalar Poisson::computeScalarQuantile(const Scalar prob,
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Poisson::computeCharacteristicFunction(const Scalar x) const
+Complex Poisson::computeCharacteristicFunction(const Scalar x) const
 {
   return std::exp(computeLogCharacteristicFunction(x));
 }
 
-NumericalComplex Poisson::computeLogCharacteristicFunction(const Scalar x) const
+Complex Poisson::computeLogCharacteristicFunction(const Scalar x) const
 {
-  return lambda_ * (std::exp(NumericalComplex(0.0, x)) - 1.0);
+  return lambda_ * (std::exp(Complex(0.0, x)) - 1.0);
 }
 
 /* Get the generating function of the distribution, i.e. psi(z) = E(z^X) */
-NumericalComplex Poisson::computeGeneratingFunction(const NumericalComplex & z) const
+Complex Poisson::computeGeneratingFunction(const Complex & z) const
 {
   return std::exp(computeLogGeneratingFunction(z));
 }
 
-NumericalComplex Poisson::computeLogGeneratingFunction(const NumericalComplex & z) const
+Complex Poisson::computeLogGeneratingFunction(const Complex & z) const
 {
   return lambda_ * (z - 1.0);
 }

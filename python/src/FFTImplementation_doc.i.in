@@ -17,12 +17,12 @@ OT_FFT_doc
 
 Parameters
 ----------
-collection : :class:`~openturns.NumericalComplexCollection` or :class:`~openturns.ScalarCollection`, sequence of float
+collection : :class:`~openturns.ComplexCollection` or :class:`~openturns.ScalarCollection`, sequence of float
   Data to transform.
 
 Returns
 -------
-collection : :class:`~openturns.NumericalComplexCollection`
+collection : :class:`~openturns.ComplexCollection`
   The data in Fourier domain.
 
 Notes
@@ -54,12 +54,12 @@ OT_FFT_transform_doc
 
 Parameters
 ----------
-collection : :class:`~openturns.NumericalComplexCollection` or :class:`~openturns.ScalarCollection`, sequence of float
+collection : :class:`~openturns.ComplexCollection` or :class:`~openturns.ScalarCollection`, sequence of float
   Data to transform.
 
 Returns
 -------
-collection : :class:`~openturns.NumericalComplexCollection`
+collection : :class:`~openturns.ComplexCollection`
     The transformed data.
 
 Notes
@@ -77,7 +77,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> fft = ot.FFT()
->>> collection = ot.NumericalComplexCollection([1+1j,2-0.3j,5-.3j,6+1j,9+8j,16+8j,0.3])
+>>> collection = ot.ComplexCollection([1+1j,2-0.3j,5-.3j,6+1j,9+8j,16+8j,0.3])
 >>> result = fft.inverseTransform(collection)
 "
 %enddef

@@ -115,7 +115,7 @@ void KarhunenLoeveP1Algorithm::run()
   SquareMatrix M((C * G).getImplementation());
   LOGINFO("Solve the eigenvalue problem");
   SquareComplexMatrix eigenVectorsComplex;
-  SquareMatrix::NumericalComplexCollection eigenValuesComplex(M.computeEV(eigenVectorsComplex, false));
+  SquareMatrix::ComplexCollection eigenValuesComplex(M.computeEV(eigenVectorsComplex, false));
   LOGINFO("Post-process the eigenvalue problem");
   Sample eigenPairs(augmentedDimension, augmentedDimension + 1);
   for (UnsignedInteger i = 0; i < augmentedDimension; ++i)

@@ -150,16 +150,16 @@ Scalar Laplace::computeComplementaryCDF(const Point & point) const
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Laplace::computeCharacteristicFunction(const Scalar x) const
+Complex Laplace::computeCharacteristicFunction(const Scalar x) const
 {
   const Scalar t = x / lambda_;
-  return std::exp(NumericalComplex(0.0, mu_ * x)) / (1.0 + t * t);
+  return std::exp(Complex(0.0, mu_ * x)) / (1.0 + t * t);
 }
 
-NumericalComplex Laplace::computeLogCharacteristicFunction(const Scalar x) const
+Complex Laplace::computeLogCharacteristicFunction(const Scalar x) const
 {
   const Scalar t = x / lambda_;
-  return NumericalComplex(0.0, mu_ * x) - log1p(t * t);
+  return Complex(0.0, mu_ * x) - log1p(t * t);
 }
 
 /* Get the PDFGradient of the distribution */

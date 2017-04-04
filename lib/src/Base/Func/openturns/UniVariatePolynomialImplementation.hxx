@@ -44,7 +44,7 @@ class OT_API UniVariatePolynomialImplementation
 public:
 
   typedef Pointer<UniVariatePolynomialImplementation> Implementation;
-  typedef Matrix::NumericalComplexCollection          NumericalComplexCollection;
+  typedef Matrix::ComplexCollection          ComplexCollection;
   typedef Point                              Coefficients;
 
   /** Default constructor */
@@ -64,7 +64,7 @@ public:
 
   /** UniVariatePolynomialImplementation are evaluated as functors */
   virtual Scalar operator() (const Scalar x) const;
-  NumericalComplex operator() (const NumericalComplex z) const;
+  Complex operator() (const Complex z) const;
 
   /** UniVariatePolynomialImplementation derivative */
   virtual Scalar gradient(const Scalar x) const;
@@ -97,7 +97,7 @@ public:
   UnsignedInteger getDegree() const;
 
   /** Root of the polynomial of degree n as the eigenvalues of the associated matrix */
-  NumericalComplexCollection getRoots() const;
+  ComplexCollection getRoots() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

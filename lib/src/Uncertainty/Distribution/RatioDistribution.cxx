@@ -290,15 +290,15 @@ Scalar RatioDistribution::computePDFQ4(const Scalar x,
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex RatioDistribution::computeCharacteristicFunction(const Scalar x) const
+Complex RatioDistribution::computeCharacteristicFunction(const Scalar x) const
 {
   const Scalar muLeft = left_.getMean()[0];
   const Scalar muRight = right_.getMean()[0];
   const Scalar varLeft = left_.getCovariance()(0, 0);
   const Scalar varRight = right_.getCovariance()(0, 0);
-  if (x * x * (varLeft + muLeft * muLeft + varRight + muRight * muRight) < 2.0 * SpecFunc::ScalarEpsilon) return NumericalComplex(1.0, -x * muLeft * muRight);
+  if (x * x * (varLeft + muLeft * muLeft + varRight + muRight * muRight) < 2.0 * SpecFunc::ScalarEpsilon) return Complex(1.0, -x * muLeft * muRight);
   if (std::abs(x) > ResourceMap::GetAsScalar("RatioDistribution-LargeCharacteristicFunctionArgument")) return ContinuousDistribution::computeCharacteristicFunction(x);
-  NumericalComplex result(0.0);
+  Complex result(0.0);
   const Scalar aLeft = left_.getRange().getLowerBound()[0];
   const Scalar bLeft = left_.getRange().getUpperBound()[0];
   GaussKronrod algo;
@@ -308,7 +308,7 @@ NumericalComplex RatioDistribution::computeCharacteristicFunction(const Scalar x
   const Point negativePart(algo.integrate(cfKernel, Interval(aLeft, muLeft), negativeError));
   Scalar positiveError = 0.0;
   const Point positivePart(algo.integrate(cfKernel, Interval(muLeft, bLeft), positiveError));
-  NumericalComplex value(negativePart[0] + positivePart[0], negativePart[1] + positivePart[1]);
+  Complex value(negativePart[0] + positivePart[0], negativePart[1] + positivePart[1]);
   return value;
 }
 

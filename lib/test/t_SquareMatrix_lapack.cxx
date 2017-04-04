@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     determinant = matrix1.computeDeterminant();
     fullprint << "determinant = " << determinant << std::endl;
 
-    Collection<NumericalComplex> ev(2);
+    Collection<Complex> ev(2);
     ev = matrix1.computeEigenValues();
     fullprint << "ev = " << ev << std::endl;
     SquareComplexMatrix evect(2);

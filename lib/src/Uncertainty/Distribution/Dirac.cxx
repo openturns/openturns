@@ -168,27 +168,27 @@ Scalar Dirac::computeScalarQuantile(const Scalar prob,
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Dirac::computeCharacteristicFunction(const Scalar u) const
+Complex Dirac::computeCharacteristicFunction(const Scalar u) const
 {
   return std::exp(computeLogCharacteristicFunction(u));
 }
 
-NumericalComplex Dirac::computeLogCharacteristicFunction(const Scalar u) const
+Complex Dirac::computeLogCharacteristicFunction(const Scalar u) const
 {
   if (getDimension() != 1) throw NotYetImplementedException(HERE) << "In Dirac::computeLogCharacteristicFunction(const Scalar u) const: the computeCharacteristicFunction() method is implemented for 1D distributions only.";
-  const NumericalComplex value(0.0, u * point_[0]);
+  const Complex value(0.0, u * point_[0]);
   return value;
 }
 
 /* Get the generating function of the distribution, i.e. psi(z) = E(z^X) */
-NumericalComplex Dirac::computeGeneratingFunction(const NumericalComplex & z) const
+Complex Dirac::computeGeneratingFunction(const Complex & z) const
 {
   return std::exp(computeLogGeneratingFunction(z));
 }
 
-NumericalComplex Dirac::computeLogGeneratingFunction(const NumericalComplex & z) const
+Complex Dirac::computeLogGeneratingFunction(const Complex & z) const
 {
-  if (getDimension() != 1) throw NotYetImplementedException(HERE) << "In Dirac::computeLogGeneratingFunction(const NumericalComplex & z) const: the computeGeneratingFunction() method is implemented for 1D distributions only.";
+  if (getDimension() != 1) throw NotYetImplementedException(HERE) << "In Dirac::computeLogGeneratingFunction(const Complex & z) const: the computeGeneratingFunction() method is implemented for 1D distributions only.";
   return point_[0] * std::log(z);
 }
 

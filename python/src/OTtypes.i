@@ -25,12 +25,12 @@
   $1 = OT::convert< OT::_PyFloat_, OT::Scalar >($input);
 }
 
-%typemap(in) NumericalComplex {
-  $1 = OT::convert< OT::_PyComplex_, OT::NumericalComplex >($input);
+%typemap(in) Complex {
+  $1 = OT::convert< OT::_PyComplex_, OT::Complex >($input);
 }
 
-%typemap(out) NumericalComplex {
-  $result = OT::convert< OT::NumericalComplex, OT::_PyComplex_ >($1);
+%typemap(out) Complex {
+  $result = OT::convert< OT::Complex, OT::_PyComplex_ >($1);
 }
 
 

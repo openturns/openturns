@@ -156,7 +156,7 @@ Scalar Trapezoidal::computeCDF(const Point & point) const
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Trapezoidal::computeCharacteristicFunction(const Scalar u) const
+Complex Trapezoidal::computeCharacteristicFunction(const Scalar u) const
 {
   const Scalar au = a_ * u;
   const Scalar bu = b_ * u;
@@ -165,9 +165,9 @@ NumericalComplex Trapezoidal::computeCharacteristicFunction(const Scalar u) cons
 
   Scalar real = 0.0;
   Scalar imag = 0.0;
-  NumericalComplex phi;
+  Complex phi;
 
-  if (std::abs(u) <= 1.0e-10) phi = NumericalComplex((-a_ + 3.0 * b_ - 3.0 * c_ + d_) * h_ / 2.0, 1.0);
+  if (std::abs(u) <= 1.0e-10) phi = Complex((-a_ + 3.0 * b_ - 3.0 * c_ + d_) * h_ / 2.0, 1.0);
   else
   {
     if (a_ < b_)
@@ -182,7 +182,7 @@ NumericalComplex Trapezoidal::computeCharacteristicFunction(const Scalar u) cons
       real += -(std::cos(du) + (d_ - c_) * u * std::sin(cu) - std::cos(cu)) * h_ / ((d_ - c_) * u * u);
       imag += -(std::sin(du) - std::sin(cu) - (d_ - c_) * u * std::cos(cu)) * h_ / ((d_ - c_) * u * u);
     }
-    phi = NumericalComplex (real, imag);
+    phi = Complex (real, imag);
   }
   return phi;
 }

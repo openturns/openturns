@@ -49,7 +49,7 @@ public:
 
   typedef Collection<Distribution>               DistributionCollection;
   typedef PersistentCollection<Distribution>     DistributionPersistentCollection;
-  typedef PersistentCollection<NumericalComplex> NumericalComplexPersistentCollection;
+  typedef PersistentCollection<Complex> ComplexPersistentCollection;
   typedef Collection<DistributionFactory>        DistributionFactoryCollection;
 
 
@@ -154,13 +154,13 @@ private:
                                const Bool tail = false) const;
 
   /** Compute the characteristic function of 1D distributions by difference to a reference Normal distribution with the same mean and the same standard deviation in a regular pattern with cache */
-  NumericalComplex computeDeltaCharacteristicFunction(const UnsignedInteger index) const;
+  Complex computeDeltaCharacteristicFunction(const UnsignedInteger index) const;
 
   /** Compute the characteristic function of nD distributions by difference to a reference Normal distribution with the same mean and the same covariance */
   friend struct AddPDFOn1DGridPolicy;
   friend struct AddPDFOn2DGridPolicy;
   friend struct AddPDFOn3DGridPolicy;
-  NumericalComplex computeDeltaCharacteristicFunction(const Point & x) const;
+  Complex computeDeltaCharacteristicFunction(const Point & x) const;
 
   /** Update cache of the characteristic function */
   void updateCacheDeltaCharacteristicFunction(const Sample & points) const;
@@ -202,11 +202,11 @@ public:
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   using DistributionImplementation::computeCharacteristicFunction;
-  NumericalComplex computeCharacteristicFunction(const Scalar x) const;
-  NumericalComplex computeCharacteristicFunction(const Point & x) const;
+  Complex computeCharacteristicFunction(const Scalar x) const;
+  Complex computeCharacteristicFunction(const Point & x) const;
   using DistributionImplementation::computeLogCharacteristicFunction;
-  NumericalComplex computeLogCharacteristicFunction(const Scalar x) const;
-  NumericalComplex computeLogCharacteristicFunction(const Point & x) const;
+  Complex computeLogCharacteristicFunction(const Scalar x) const;
+  Complex computeLogCharacteristicFunction(const Point & x) const;
 
   /** Get the PDF gradient of the distribution */
   using DistributionImplementation::computePDFGradient;
@@ -433,7 +433,7 @@ private:
   mutable UnsignedInteger storedSize_;
 
   /** Cache for the characteristic function values */
-  mutable NumericalComplexPersistentCollection characteristicValuesCache_;
+  mutable ComplexPersistentCollection characteristicValuesCache_;
 
   /** A priori range of PDF and CDF argument expressed in dispersionIndicator units */
   Scalar alpha_;

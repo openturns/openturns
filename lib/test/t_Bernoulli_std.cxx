@@ -88,13 +88,13 @@ int main(int argc, char *argv[])
     fullprint << "ccdf=" << CCDF << std::endl;
     Scalar Survival = distribution.computeSurvivalFunction( point );
     fullprint << "survival=" << Survival << std::endl;
-    NumericalComplex CF = distribution.computeCharacteristicFunction( 0.5 );
+    Complex CF = distribution.computeCharacteristicFunction( 0.5 );
     fullprint << "characteristic function=" << CF << std::endl;
-    NumericalComplex LCF = distribution.computeLogCharacteristicFunction( 0.5 );
+    Complex LCF = distribution.computeLogCharacteristicFunction( 0.5 );
     fullprint << "log characteristic function=" << LCF << std::endl;
-    NumericalComplex GF = distribution.computeGeneratingFunction( NumericalComplex(0.3, 0.7) );
+    Complex GF = distribution.computeGeneratingFunction( Complex(0.3, 0.7) );
     fullprint << "generating function=" << GF << std::endl;
-    NumericalComplex LGF = distribution.computeLogGeneratingFunction( NumericalComplex(0.3, 0.7) );
+    Complex LGF = distribution.computeLogGeneratingFunction( Complex(0.3, 0.7) );
     fullprint << "log generating function=" << LGF << std::endl;
     Point quantile = distribution.computeQuantile( 0.95 );
     fullprint << "quantile=" << quantile << std::endl;
