@@ -12,14 +12,14 @@
 %define OTTensorAccessors(baseType, elementType, pythonElementType)
 
 PyObject * __getitem__(PyObject * args) const {
-  OT::UnsignedInteger arg2 ;
-  OT::UnsignedInteger arg3 ;
-  OT::UnsignedInteger arg4 ;
-  unsigned long val2 ;
+  OT::UnsignedInteger arg2 = 0;
+  OT::UnsignedInteger arg3 = 0;
+  OT::UnsignedInteger arg4 = 0;
+  unsigned long val2 = 0;
   int ecode2 = 0 ;
-  unsigned long val3 ;
+  unsigned long val3 = 0;
   int ecode3 = 0 ;
-  unsigned long val4 ;
+  unsigned long val4 = 0;
   int ecode4 = 0 ;
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;
@@ -54,14 +54,14 @@ fail:
 
 PyObject * __setitem__(PyObject * args, elementType val) {
 
-  OT::UnsignedInteger arg2 ;
-  OT::UnsignedInteger arg3 ;
-  OT::UnsignedInteger arg4 ;
-  unsigned long val2 ;
+  OT::UnsignedInteger arg2 = 0;
+  OT::UnsignedInteger arg3 = 0;
+  OT::UnsignedInteger arg4 = 0;
+  unsigned long val2 = 0;
   int ecode2 = 0 ;
-  unsigned long val3 ;
+  unsigned long val3 = 0;
   int ecode3 = 0 ;
-  unsigned long val4 ;
+  unsigned long val4 = 0;
   int ecode4 = 0 ;
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;

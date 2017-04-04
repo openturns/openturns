@@ -69,10 +69,10 @@ PyObject * __setitem__(PyObject * arg, PyObject * valObj)
 {
   if (PySlice_Check(arg))
   {
-    Py_ssize_t start1;
-    Py_ssize_t stop1;
-    Py_ssize_t step1;
-    Py_ssize_t slicelength1;
+    Py_ssize_t start1 = 0;
+    Py_ssize_t stop1 = 0;
+    Py_ssize_t step1 = 0;
+    Py_ssize_t slicelength1 = 0;
     PySlice_GetIndicesEx( OT::SliceCast( arg ), self->getSize(), &start1, &stop1, &step1, &slicelength1 );
     collectionType temp2 ;
     collectionType *val2 = 0 ;
