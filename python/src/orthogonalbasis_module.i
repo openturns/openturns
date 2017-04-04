@@ -42,8 +42,6 @@
 %include OrthonormalizationAlgorithmImplementation.i
 %include OrthonormalizationAlgorithm.i
 %include AdaptiveStieltjesAlgorithm.i
-%include ChebychevAlgorithm.i
-%include GramSchmidtAlgorithm.i
 %include StandardDistributionPolynomialFactory.i
 %include OrthogonalFunctionFactory.i
 %include OrthogonalProductPolynomialFactory.i

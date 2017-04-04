@@ -66,8 +66,6 @@ measure (implemented as a :class:`~openturns.Distribution`).
 OpenTURNS implements the following :class:`~openturns.OrthonormalizationAlgorithm`'s:
 
    - :class:`~openturns.AdaptiveStieltjesAlgorithm` (default),
-   - :class:`~openturns.GramSchmidtAlgorithm`,
-   - :class:`~openturns.ChebychevAlgorithm`
 
 .. [#orthonormal] A polynomial family :math:`(P_n)_{n \geq 0}` is said to be
     orthonormal with respect to the probability measure :math:`w(x) \di{x}` if
@@ -107,7 +105,7 @@ the default orthonormalization algorithm:
 Build an orthonormal polynomial factory for the log-normal distribution with
 Chebychev's othonormalization algorithm:
 
->>> algorithm = ot.ChebychevAlgorithm(ot.Weibull())
+>>> algorithm = ot.AdaptiveStieltjesAlgorithm(ot.Weibull())
 >>> polynomial_factory = ot.StandardDistributionPolynomialFactory(algorithm)
 >>> for i in range(3):
 ...     print(polynomial_factory.build(i))

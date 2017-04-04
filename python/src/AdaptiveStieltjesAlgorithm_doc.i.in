@@ -10,7 +10,7 @@ measure : :class:`~openturns.Distribution`
 
 See also
 --------
-OrthonormalizationAlgorithm, ChebychevAlgorithm, GramSchmidtAlgorithm
+OrthonormalizationAlgorithm
 
 Notes
 -----

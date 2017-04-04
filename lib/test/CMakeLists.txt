@@ -569,8 +569,6 @@ ot_check_test (MeixnerFactory_std)
 ot_check_test (SoizeGhanemFactory_std)
 ot_check_test (OrthonormalizationAlgorithm_std)
 ot_check_test (AdaptiveStieltjesAlgorithm_std)
-ot_check_test (ChebychevAlgorithm_std)
-ot_check_test (GramSchmidtAlgorithm_std)
 ot_check_test (StandardDistributionPolynomialFactory_std)
 ot_check_test (OrthogonalBasis_std)
 

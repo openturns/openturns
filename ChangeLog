@@ -15,6 +15,7 @@
  * Removed deprecated GeneralizedLinearModelAlgorithm, GeneralizedLinearModelResult classes
  * Removed deprecated DynamicalFunction, SpatialFunction, TemporalFunction classes
  * Removed deprecated KarhunenLoeveP1Factory, KarhunenLoeveQuadratureFactory classes
+ * Removed deprecated GramSchmidtAlgorithm, ChebychevAlgorithm classes
 
 === Python module ===
 
